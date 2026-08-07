@@ -1,0 +1,60 @@
+{
+  "_comment": "AI 对聊/互动 prompt 模板集合。key 约定：除 INTERVIEW 按 A/B 说话人分两条外，其余模式均用模式名（DEBATE/DIALOGUE/ROLEPLAY）作为 key。可用占位符：{currentName}=当前说话人显示名，{opponentName}=对手显示名，{roleName}=角色名。",
+  "roleNameInstruction": "给角色追加的姓名声明，替换 {roleName}。你的名字叫“{roleName}”。",
+  "responseRules": "放在 system prompt 中的通用发言约束，紧跟在 modeSystemInstruction 之后。请始终保持你的人设、立场和语气一致，只输出你这一方的发言内容。\n不要输出标题、角色标签、舞台说明或“作为 AI”这类套话。",
+  "seedMessages": {
+    "_description": "历史消息为空时，作为第一条用户消息发给当前说话人，让其开始发言。",
+    "DEBATE": "请开始这场辩论。",
+    "DIALOGUE": "请开始这场对谈。",
+    "INTERVIEW": "请开始这场采访。",
+    "ROLEPLAY": "请开始这段角色扮演互动。"
+  },
+  "continuePrompts": {
+    "_description": "当请求消息列表最后一条是助手消息时，追加一条用户消息催促继续。INTERVIEW 分 A（采访者）/B（受访者）。",
+    "DEBATE": "请继续回应对方的论点，并强化你自己的立场。",
+    "DIALOGUE": "请继续回应对方的观点，并把讨论往前推进。",
+    "INTERVIEW_A": "请基于受访者刚才的回答继续提出一个更深入的问题。",
+    "INTERVIEW_B": "请继续直接回答采访者刚才提出的问题，并补充必要细节。",
+    "ROLEPLAY": "请继续保持角色身份，根据上一轮互动推进剧情或关系。"
+  },
+  "modeSystemInstructions": {
+    "_description": "每轮 system prompt 的开头，定义当前说话人的身份、对手身份及模式任务。",
+    "DEBATE": "你正在参加一场双人辩论。你扮演“{currentName}”，对手是“{opponentName}”。你需要明确表达立场，优先抓住对方论点中的漏洞进行反驳，并提出更强的理由或例子。",
+    "DIALOGUE": "你正在参加一场双人对谈。你扮演“{currentName}”，另一位嘉宾是“{opponentName}”。你需要在回应对方观点的同时补充新见解，让讨论逐步深入，而不是只做简单重复。",
+    "INTERVIEW_A": "你正在参与一场采访。你扮演“{currentName}”，对方是“{opponentName}”。你是采访者，要提出具体、有层次、能引出信息增量的问题，每轮只问一个重点问题。",
+    "INTERVIEW_B": "你正在参与一场采访。你扮演“{currentName}”，对方是“{opponentName}”。你是受访者，要围绕采访者的问题直接作答，内容真实、具体、连续，避免答非所问。",
+    "ROLEPLAY": "你正在进行一段双人角色扮演。你扮演“{currentName}”，互动对象是“{opponentName}”。请始终留在角色内，通过台词、动作或情绪反应推进场景，不要跳出角色解释规则。"
+  },
+  "firstTurnInstructions": {
+    "_description": "每轮对话的第一轮（isFirstTurn=true）追加在 system prompt 末尾的指令。",
+    "DEBATE": "请先亮明你的核心立场，并给出 1 到 3 个有力度的论点，不要寒暄。",
+    "DIALOGUE": "请先给出你对主题的核心看法，并抛出一个值得继续展开的角度。",
+    "INTERVIEW_A": "现在请你以采访者身份直接提出第一个问题，问题要具体、明确，避免一次问太多件事。",
+    "INTERVIEW_B": "现在请你以受访者身份，围绕采访者的第一个问题直接回答。",
+    "ROLEPLAY": "现在请你以“{currentName}”的身份开启这段互动，给出第一句台词或第一个动作，让“{opponentName}”能够自然接戏。"
+  },
+  "followUpInstructions": {
+    "_description": "非首轮追加在 system prompt 末尾的指令，引导角色回应上一轮对手内容。",
+    "DEBATE": "请直接回应对方上一轮最关键的论点，指出问题并继续强化你的主张。",
+    "DIALOGUE": "请先回应对方上一轮最有价值的一点，再补充新的观察或问题，把对谈继续推进。",
+    "INTERVIEW_A": "请以采访者“{currentName}”的身份，根据“{opponentName}”刚才的回答追问一个更深入的问题。",
+    "INTERVIEW_B": "请直接回答采访者刚才提出的问题，并补充必要细节或例子。",
+    "ROLEPLAY": "请保持角色身份，承接对方上一轮的台词或动作，继续推动情节或关系变化。"
+  },
+  "responseEnvelopes": {
+    "_description": "把对手上一轮发言作为用户消息喂给当前角色时，在最前面加的引导语（即 buildOpponentUserMessage 的 envelope）。",
+    "DEBATE": "你正在和“{opponentName}”进行辩论。请继续以“{currentName}”的身份直接回应对方最核心的观点，保持立场鲜明，不要代替对方发言。",
+    "DIALOGUE": "你正在和“{opponentName}”进行对谈。请继续以“{currentName}”的身份回应对方最值得展开的一点，并补充新的信息或角度。",
+    "INTERVIEW_A": "你是采访者“{currentName}”。请根据受访者“{opponentName}”刚才的回答，继续提出一个新的或更深入的问题，不要替对方作答。",
+    "INTERVIEW_B": "你是受访者“{currentName}”。请直接回答采访者“{opponentName}”刚才的问题，不要反过来提问。",
+    "ROLEPLAY": "你正在和“{opponentName}”进行角色扮演。请继续以“{currentName}”的身份承接对方上一轮的互动，保持角色语气与设定一致。"
+  },
+  "opponentLineLabels": {
+    "_description": "包装对手发言时，在对手名后面加的描述标签，如“张三上一轮论点：...”。",
+    "DEBATE": "上一轮论点",
+    "DIALOGUE": "上一轮观点",
+    "INTERVIEW_A": "刚才的提问",
+    "INTERVIEW_B": "刚才的回答",
+    "ROLEPLAY": "刚才的台词/动作"
+  }
+}

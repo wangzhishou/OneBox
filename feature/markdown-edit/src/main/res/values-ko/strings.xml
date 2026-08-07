@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">코드 블록 삽입</string>
+    <string name="code_label">코드</string>
+    <string name="enter_code_hint">코드 입력...</string>
+    <string name="select_language">언어:</string>
+    <string name="search_language">언어 검색</string>
+    <string name="search_language_hint">언어 이름 입력...</string>
+    <string name="or_enter_image_url">또는 이미지 URL 입력:</string>
+    <string name="image_description_label">이미지 설명</string>
+    <string name="image_description_hint">이미지 대체 텍스트</string>
+    <string name="image_url_label">이미지 URL</string>
+    <string name="link_text_placeholder">표시할 텍스트</string>
+    <string name="resize_image">이미지 크기 조정</string>
+    <string name="width">너비</string>
+    <string name="original_width">원본 너비: %1$dpx</string>
+    <string name="markdown_placeholder">입력 시작...</string>
+</resources>

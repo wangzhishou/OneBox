@@ -1,0 +1,56 @@
+OneBox es una caja de herramientas todo en uno, gratuita y sin anuncios, que reúne más de 90 herramientas cuidadosamente diseñadas en una sola aplicación: procesamiento de imágenes, documentos y oficina, asistente de IA y utilidades de productividad diaria.
+
+【¿Por qué "OneBox"?】
+• One: todas las herramientas cotidianas, en una sola aplicación
+• Box: una caja que lo contiene todo
+Su verdadero objetivo no es solo "contener mucho", sino que ya no tengas que cambiar a otra aplicación de herramientas.
+
+【Herramientas de eficiencia】
+• Teleprompter, bloc de notas, lista de tareas, ruleta de decisiones
+• Calendario perpetuo, contabilidad, herramientas de nube, seguimiento de hábitos
+
+【Archivos y PDF】
+• Herramientas PDF: fusionar, dividir, extraer imágenes y texto
+• Editor Markdown con vista previa en tiempo real
+• Cifrado de archivos, extracción de carátulas de audio, edición de EXIF de imágenes
+• Explorador de archivos y transferencia de archivos entre dispositivos
+
+【Herramientas de imagen】
+• Recortar, rotar, redimensionar, conversión de formato (HEIC / WebP / AVIF y más)
+• Filtros, collages, unión de imágenes largas, herramientas GIF
+• Escaneo y generación de códigos QR, herramientas de color
+• Compresión de imágenes y conversión de formato, todo procesado localmente, sin subidas
+
+【Utilidades para la vida diaria】
+• Fotos de identificación, prueba de velocidad de red, cámara con marca de agua
+• Muro de deseos, reloj de arena del tiempo, instalador de Apk.1
+• Herramientas de pantalla y multimedia, mini-juegos para el tiempo libre
+
+【Asistente de IA: mucho más que muchas funciones】
+Si solo se tratara de tener muchas funciones, muchas cajas de herramientas lo logran. OneBox integra un asistente de IA: no necesitas buscar herramientas una por una ni memorizar pasos, solo habla:
+• "Convierte las imágenes a PDF."
+• "Anota esta captura de factura en el libro de cuentas."
+• "Genera una lista de tareas."
+• "Consulta la cotización de las acciones."
+La IA entiende, ejecuta y responde, todo de una vez.
+• Una sola entrada para conversar con varios modelos de IA líderes
+• El AI Agent puede invocar las herramientas de la aplicación para completar tareas por ti
+• Ayudantes de escritura, reescritura, resumen y traducción
+• Motores de IA personalizados y gestión de prompts
+
+【Una aplicación que evoluciona sola】
+OneBox no es estática: cuenta con un "sistema de autoevolución de IA":
+Los usuarios dejan sugerencias → la IA las analiza como un product manager → genera el código automáticamente → se prueba y se publica.
+Los errores que reportas, las funciones que deseas y las mejoras de experiencia que sugieres pueden ser evaluados e implementados por la IA. Esto significa que, cuanto más lo usas, más se adapta OneBox a tus necesidades.
+
+【Por qué elegir OneBox】
+• Gratis, sin anuncios
+• Privacidad ante todo: las imágenes y los documentos se procesan localmente
+• Interfaz limpia y moderna de Material Design
+• Actualizaciones continuas con nuevas herramientas
+
+"La última aplicación de herramientas" es una meta ambiciosa, pero OneBox ya ha dado tres pasos clave: reunir las herramientas habituales en una sola entrada, simplificar el uso con IA y hacer que los comentarios de los usuarios impulsen de verdad la evolución del producto.
+
+Si estás cansado de cambiar entre una docena de aplicaciones de herramientas, pruébalo: quizá realmente se convierta en la última.
+
+Contáctanos: support@oneboxable.com

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">축복의 벽</string>
+    <string name="blessing_wall_sub">매일 탭 · 행운이 따라와요</string>
+    <string name="blessing_record_title">축복 기록</string>
+    <string name="blessing_tab_wooden_fish">조용한 순간</string>
+    <string name="blessing_tab_wealth_god">행운</string>
+    <string name="blessing_tab_guanyin">평화와 기쁨</string>
+    <string name="blessing_tab_incense">진심 어린 소원</string>
+    <string name="blessing_subtitle_wooden_fish">매일 탭 · 걱정이 사라져요</string>
+    <string name="blessing_subtitle_wealth_god">행운이 머물고 · 모든 일이 잘 돼요</string>
+    <string name="blessing_subtitle_guanyin">마음속 선함 · 평화와 기쁨</string>
+    <string name="blessing_subtitle_incense">진심 어린 소원 · 복이 가득해요</string>
+    <string name="blessing_btn_wooden_fish">탭, 행운 +1</string>
+    <string name="blessing_btn_wealth_god">탭, 복 +1</string>
+    <string name="blessing_btn_guanyin">탭, 평화 +1</string>
+    <string name="blessing_btn_incense">탭, 축복 +1</string>
+    <string name="blessing_stat_wooden_fish">오늘의 횟수</string>
+    <string name="blessing_stat_wealth_god">오늘의 횟수</string>
+    <string name="blessing_stat_guanyin">오늘의 횟수</string>
+    <string name="blessing_stat_incense">오늘의 횟수</string>
+    <string name="blessing_count_unit">회</string>
+    <string name="blessing_total_count">%1$d회</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">일일 축복 통계</string>
+    <string name="blessing_empty_state">아직 축복 기록이 없습니다</string>
+    <string name="blessing_wish_edit">메모 편집</string>
+    <string name="blessing_wish_input_label">메모</string>
+    <string name="blessing_wish_save">저장</string>
+    <string name="blessing_wish_placeholder">메모 없음</string>
+    <string name="blessing_tab_text_edit">제목 편집</string>
+    <string name="blessing_tab_title_label">제목</string>
+    <string name="blessing_tab_subtitle_label">부제목</string>
+    <string name="blessing_tab_text_reset_hint">비워 두면 기본값으로 복원됩니다</string>
+    <string name="blessing_history_readonly_hint">기록, 보기 전용</string>
+    <string name="blessing_record_note_prefix">참고: %1$s</string>
+    <string name="blessing_sound_on">소리 켜짐</string>
+    <string name="blessing_sound_off">소리 꺼짐</string>
+    <string name="blessing_share">공유</string>
+</resources>

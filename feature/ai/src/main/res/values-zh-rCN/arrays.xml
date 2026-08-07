@@ -1,0 +1,845 @@
+<resources>
+    <string-array name="agent_tool_get_current_time_keywords">
+        <item>时间</item>
+        <item>几点</item>
+        <item>日期</item>
+        <item>今天</item>
+        <item>星期</item>
+        <item>周几</item>
+        <item>当前时间</item>
+        <item>今天几号</item>
+    </string-array>
+    <string-array name="agent_tool_get_current_time_examples">
+        <item>现在几点</item>
+        <item>今天几号</item>
+        <item>当前时区是什么</item>
+    </string-array>
+
+    <string-array name="agent_tool_get_device_info_keywords">
+        <item>设备</item>
+        <item>手机</item>
+        <item>型号</item>
+        <item>系统版本</item>
+        <item>屏幕</item>
+        <item>内存</item>
+        <item>电池</item>
+        <item>品牌</item>
+        <item>Android</item>
+    </string-array>
+    <string-array name="agent_tool_get_device_info_examples">
+        <item>帮我看看设备信息</item>
+        <item>当前手机型号是什么</item>
+        <item>获取系统版本</item>
+    </string-array>
+
+    <string-array name="agent_tool_ask_user_keywords">
+        <item>提问</item>
+        <item>补问</item>
+        <item>追问</item>
+        <item>收集信息</item>
+        <item>用户回答</item>
+        <item>选择题</item>
+        <item>表单问题</item>
+    </string-array>
+    <string-array name="agent_tool_ask_user_examples">
+        <item>请用户补充信息</item>
+        <item>让用户选择一个方案</item>
+        <item>需要用户确认几个字段后再继续</item>
+    </string-array>
+
+    <string-array name="agent_tool_pick_files_keywords">
+        <item>选文件</item>
+        <item>选取文件</item>
+        <item>文件路径</item>
+        <item>选图片</item>
+        <item>选择文件</item>
+        <item>上传文件</item>
+        <item>处理文件</item>
+    </string-array>
+    <string-array name="agent_tool_pick_files_examples">
+        <item>让用户选取要处理的文件</item>
+        <item>需要用户指定输入图片</item>
+        <item>帮我选一个 PDF 文件</item>
+    </string-array>
+
+    <string-array name="agent_tool_pick_folder_keywords">
+        <item>选目录</item>
+        <item>选文件夹</item>
+        <item>工作目录</item>
+        <item>输出目录</item>
+        <item>保存路径</item>
+        <item>选择目录</item>
+        <item>扫描目录</item>
+    </string-array>
+    <string-array name="agent_tool_pick_folder_examples">
+        <item>让用户选择保存文件的目录</item>
+        <item>需要用户指定工作目录</item>
+        <item>输出到哪个文件夹</item>
+    </string-array>
+
+    <!-- discover_tools 工具 -->
+    <string-array name="agent_tool_discover_tools_keywords">
+        <item>查找工具</item>
+        <item>可用工具</item>
+        <item>工具发现</item>
+        <item>有哪些工具</item>
+        <item>哪个工具</item>
+        <item>找工具</item>
+    </string-array>
+    <string-array name="agent_tool_discover_tools_examples">
+        <item>我现在能用哪些工具</item>
+        <item>我要修改主题设置，应该调用哪个工具</item>
+        <item>先查一下可用工具</item>
+    </string-array>
+
+    <!-- discover_apps 工具 -->
+    <string-array name="agent_tool_discover_apps_keywords">
+        <item>找页面</item>
+        <item>页面入口</item>
+        <item>deeplink</item>
+        <item>应用导航</item>
+    </string-array>
+    <string-array name="agent_tool_discover_apps_examples">
+        <item>帮我找笔记页面</item>
+        <item>有哪些可跳转页面</item>
+        <item>帮我找设置入口</item>
+    </string-array>
+
+    <string-array name="agent_tool_theme_setting_keywords">
+        <item>主题</item>
+        <item>配色</item>
+        <item>颜色</item>
+        <item>玻璃</item>
+        <item>液态玻璃</item>
+        <item>渐变</item>
+        <item>风格</item>
+        <item>主色</item>
+        <item>背景色</item>
+    </string-array>
+    <string-array name="agent_tool_theme_setting_examples">
+        <item>当前主题是什么</item>
+        <item>把主题改成深色模式</item>
+        <item>主色改成蓝色</item>
+        <item>主题调成更清透一点</item>
+        <item>打开薰衣草风格渐变</item>
+    </string-array>
+    <string-array name="agent_tool_theme_setting_gradient_styles">
+        <item>Classic</item>
+        <item>Aurora</item>
+        <item>Ocean</item>
+        <item>Sunset</item>
+        <item>SakuraMist</item>
+        <item>MintBreeze</item>
+        <item>StarryNight</item>
+        <item>Lavender</item>
+        <item>WarmGlow</item>
+        <item>Ethereal</item>
+        <item>NeonCyber</item>
+    </string-array>
+    <string-array name="agent_tool_theme_setting_builtin_presets">
+        <item>builtin_dynamic|千色千面 (Default / 动态取色)</item>
+        <item>builtin_logo|品牌色 (LogoTheme)</item>
+        <item>builtin_sakura_pink|樱花粉 (SakuraPink)</item>
+        <item>builtin_mint_fresh|薄荷苏打 (MintFresh)</item>
+        <item>builtin_starry_blue|晨雾蓝 (StarryBlue)</item>
+        <item>builtin_pure_gray|简约灰 (PureGray)</item>
+        <item>builtin_pure_glass_gray|烟雾灰 (PureGlassGray)</item>
+        <item>builtin_lavender_dream|薰衣草田 (LavenderDream)</item>
+        <item>builtin_sunset_warm|焦糖拿铁 (SunsetWarm)</item>
+        <item>builtin_ocean_deep|深海秘境 (OceanDeep)</item>
+    </string-array>
+
+    <string-array name="agent_tool_checksum_keywords">
+        <item>校验和</item>
+        <item>checksum</item>
+        <item>MD5</item>
+        <item>SHA-256</item>
+        <item>哈希</item>
+        <item>hash</item>
+        <item>文件校验</item>
+        <item>完整性校验</item>
+    </string-array>
+    <string-array name="agent_tool_checksum_examples">
+        <item>帮我计算这个文本的 SHA-256</item>
+        <item>对比这个文件 URI 的 MD5 是否一致</item>
+        <item>算一下下载文件的校验和</item>
+    </string-array>
+
+    <string-array name="agent_tool_base64_keywords">
+        <item>Base64</item>
+        <item>编码</item>
+        <item>解码</item>
+        <item>文本编码</item>
+        <item>文件转 base64</item>
+        <item>加解密</item>
+    </string-array>
+    <string-array name="agent_tool_base64_examples">
+        <item>把这个图片 URI 编码成 Base64</item>
+        <item>帮我解码这段 Base64 图片</item>
+        <item>先预览一下这个文件的 Base64 内容</item>
+    </string-array>
+
+    <string-array name="agent_tool_webp_keywords">
+        <item>WebP</item>
+        <item>图片合成</item>
+        <item>动画</item>
+        <item>帧提取</item>
+        <item>webp 转图片</item>
+        <item>图片转 webp</item>
+        <item>动图</item>
+        <item>格式转换</item>
+    </string-array>
+    <string-array name="agent_tool_webp_examples">
+        <item>把这个 WebP 文件拆成单帧图片</item>
+        <item>帮我把这几张图合成一个 WebP 动画</item>
+        <item>提取这个 WebP 的所有帧</item>
+    </string-array>
+
+    <string-array name="agent_tool_read_barcode_keywords">
+        <item>二维码</item>
+        <item>条码</item>
+        <item>扫码</item>
+        <item>QR</item>
+        <item>条形码</item>
+        <item>识别二维码</item>
+        <item>从图片读码</item>
+    </string-array>
+    <string-array name="agent_tool_read_barcode_examples">
+        <item>帮我识别这张图片里的二维码</item>
+        <item>从截图里读出条码内容</item>
+        <item>解析这张海报中的二维码链接</item>
+    </string-array>
+
+    <string-array name="agent_tool_limit_resize_keywords">
+        <item>裁剪</item>
+        <item>缩放</item>
+        <item>调整大小</item>
+        <item>resize</item>
+        <item>像素</item>
+        <item>限制宽高</item>
+        <item>图片裁剪</item>
+    </string-array>
+    <string-array name="agent_tool_limit_resize_examples">
+        <item>帮我把这张图缩放到最大 1920x1080</item>
+        <item>限制图片宽度不超过 800 像素</item>
+        <item>把图片裁剪成 1024x1024 以内</item>
+    </string-array>
+
+    <string-array name="agent_tool_compress_image_keywords">
+        <item>压缩</item>
+        <item>图片压缩</item>
+        <item>减小体积</item>
+        <item>缩小</item>
+        <item>文件大小</item>
+        <item>KB</item>
+        <item>MB</item>
+        <item>优化大小</item>
+    </string-array>
+    <string-array name="agent_tool_compress_image_examples">
+        <item>帮我把这张图压缩到 1MB 以下</item>
+        <item>减小图片文件大小</item>
+        <item>把图片压缩到 500KB 以内</item>
+    </string-array>
+
+    <string-array name="agent_tool_browse_files_keywords">
+        <item>文件浏览</item>
+        <item>目录列表</item>
+        <item>浏览文件</item>
+        <item>文件夹</item>
+        <item>文件路径</item>
+        <item>列出</item>
+    </string-array>
+    <string-array name="agent_tool_browse_files_examples">
+        <item>列出这个目录下的文件</item>
+        <item>帮我定位这个文件 URI 所在的目录</item>
+        <item>先看一下主存储目录里有什么</item>
+    </string-array>
+
+    <string-array name="agent_tool_add_bookkeeping_record_keywords">
+        <item>记账</item>
+        <item>账本</item>
+        <item>支出</item>
+        <item>收入</item>
+        <item>bookkeeping</item>
+        <item>消费</item>
+        <item>花费</item>
+        <item>记一笔</item>
+    </string-array>
+    <string-array name="agent_tool_add_bookkeeping_record_examples">
+        <item>记一笔餐饮支出 35 元</item>
+        <item>把昨天 5000 工资记到入账</item>
+        <item>新增一笔不计入收支的转账 200 元</item>
+        <item>批量记 3 笔今天的支出和收入</item>
+    </string-array>
+
+    <string-array name="agent_tool_query_bookkeeping_records_keywords">
+        <item>记账</item>
+        <item>账本</item>
+        <item>账目明细</item>
+        <item>查询账单</item>
+        <item>bookkeeping</item>
+        <item>ledger</item>
+        <item>records</item>
+        <item>消费记录</item>
+    </string-array>
+    <string-array name="agent_tool_query_bookkeeping_records_examples">
+        <item>查一下最近 7 天的账目明细</item>
+        <item>看看今天有哪些支出</item>
+        <item>查询 2026-05 的餐饮账单</item>
+        <item>列出本月最近 10 条入账</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_files_keywords">
+        <item>文件管理</item>
+        <item>删除文件</item>
+        <item>重命名文件</item>
+        <item>移动文件</item>
+        <item>复制文件</item>
+        <item>创建文件夹</item>
+        <item>剪切文件</item>
+    </string-array>
+    <string-array name="agent_tool_manage_files_examples">
+        <item>把这个文件移动到目标目录</item>
+        <item>删除这个 URI 对应的文件</item>
+        <item>在这个目录下创建一个空白文件</item>
+    </string-array>
+
+    <string-array name="agent_tool_process_file_keywords">
+        <item>读取文件</item>
+        <item>查看代码</item>
+        <item>搜索文本</item>
+        <item>上下文</item>
+        <item>行号</item>
+        <item>file read</item>
+    </string-array>
+    <string-array name="agent_tool_process_file_examples">
+        <item>读取这个文件第 1 到 120 行</item>
+        <item>帮我搜索文件里的 RootComponent</item>
+        <item>查找 keyword 并返回上下文</item>
+    </string-array>
+
+    <string-array name="agent_tool_edit_file_keywords">
+        <item>编辑文件</item>
+        <item>替换文本</item>
+        <item>插入代码</item>
+        <item>追加内容</item>
+        <item>局部修改</item>
+        <item>file edit</item>
+    </string-array>
+    <string-array name="agent_tool_edit_file_examples">
+        <item>把文件中的旧文本替换成新文本</item>
+        <item>将第 20 到 35 行替换为新的实现</item>
+        <item>在第 88 行后插入一段 Kotlin 代码</item>
+    </string-array>
+
+    <string-array name="agent_tool_glob_files_keywords">
+        <item>glob</item>
+        <item>查找文件</item>
+        <item>匹配文件</item>
+        <item>递归找文件</item>
+        <item>按模式搜索</item>
+        <item>文件发现</item>
+    </string-array>
+    <string-array name="agent_tool_glob_files_examples">
+        <item>查找所有 Kotlin 文件</item>
+        <item>找出所有 build.gradle.kts</item>
+        <item>列出 feature 目录下所有 Screen 相关文件</item>
+    </string-array>
+
+    <string-array name="agent_tool_grep_files_keywords">
+        <item>grep</item>
+        <item>搜索文件内容</item>
+        <item>跨文件搜索</item>
+        <item>查找关键词</item>
+        <item>正则搜索</item>
+        <item>代码搜索</item>
+    </string-array>
+    <string-array name="agent_tool_grep_files_examples">
+        <item>在所有 Kotlin 文件中搜索 RootComponent</item>
+        <item>查找所有包含 browse_files 的位置</item>
+        <item>用正则搜索所有 Hilt Module</item>
+    </string-array>
+
+    <string-array name="agent_tool_apply_text_patch_keywords">
+        <item>补丁</item>
+        <item>patch</item>
+        <item>文本替换</item>
+        <item>批量替换</item>
+        <item>代码修改</item>
+        <item>多段替换</item>
+    </string-array>
+    <string-array name="agent_tool_apply_text_patch_examples">
+        <item>对同一个文件应用两段 old_text/new_text 替换</item>
+        <item>把一个 import 和一个函数体一起改掉</item>
+        <item>在确认 old_text 后批量打补丁</item>
+    </string-array>
+
+    <string-array name="agent_tool_stat_file_keywords">
+        <item>stat</item>
+        <item>文件信息</item>
+        <item>文件元数据</item>
+        <item>大小</item>
+        <item>修改时间</item>
+        <item>exists</item>
+    </string-array>
+    <string-array name="agent_tool_stat_file_examples">
+        <item>查看这个文件是否存在</item>
+        <item>看看这个目录的大小和类型</item>
+        <item>获取目标文件的元信息</item>
+    </string-array>
+
+    <string-array name="agent_tool_read_multiple_files_keywords">
+        <item>批量读取文件</item>
+        <item>多文件读取</item>
+        <item>一次读多个文件</item>
+        <item>代码上下文</item>
+        <item>multi file read</item>
+        <item>read multiple files</item>
+    </string-array>
+    <string-array name="agent_tool_read_multiple_files_examples">
+        <item>一次读取 3 个 Kotlin 文件的前 120 行</item>
+        <item>同时查看接口和实现文件</item>
+        <item>把多个相关文件的上下文一起读出来</item>
+    </string-array>
+
+    <string-array name="agent_tool_workspace_roots_keywords">
+        <item>根目录</item>
+        <item>workspace</item>
+        <item>roots</item>
+        <item>存储根</item>
+        <item>可用目录</item>
+        <item>工作区</item>
+    </string-array>
+    <string-array name="agent_tool_workspace_roots_examples">
+        <item>先列出可用根目录</item>
+        <item>看看代码代理应该从哪些目录开始</item>
+        <item>展示可用的本地文件根目录</item>
+    </string-array>
+
+    <string-array name="agent_tool_apply_range_patch_keywords">
+        <item>行范围补丁</item>
+        <item>range patch</item>
+        <item>diff</item>
+        <item>按行替换</item>
+        <item>patch lines</item>
+        <item>代码补丁</item>
+    </string-array>
+    <string-array name="agent_tool_apply_range_patch_examples">
+        <item>把第 20 到 35 行替换成新的实现</item>
+        <item>一次修改两个不相邻的代码块</item>
+        <item>按行号应用类似 diff 的补丁</item>
+    </string-array>
+
+    <!-- fetch_webpage -->
+    <string-array name="agent_tool_fetch_webpage_keywords">
+        <item>网页</item>
+        <item>抓取</item>
+        <item>爬虫</item>
+        <item>网页内容</item>
+        <item>HTML</item>
+        <item>URL</item>
+        <item>读取网页</item>
+        <item>链接提取</item>
+    </string-array>
+    <string-array name="agent_tool_fetch_webpage_examples">
+        <item>帮我抓取这个网页的内容</item>
+        <item>获取这个页面的所有链接</item>
+        <item>提取网页中的图片URL</item>
+        <item>获取网页的纯文本内容</item>
+    </string-array>
+
+    <!-- search_web -->
+    <string-array name="agent_tool_search_web_keywords">
+        <item>搜索</item>
+        <item>网络搜索</item>
+        <item>查资料</item>
+        <item>百度</item>
+        <item>谷歌</item>
+        <item>必应</item>
+        <item>上网查</item>
+        <item>搜一搜</item>
+    </string-array>
+    <string-array name="agent_tool_search_web_examples">
+        <item>帮我搜索一下最新的AI新闻</item>
+        <item>用百度搜索天气预报</item>
+        <item>Google搜索Kotlin教程</item>
+        <item>搜索附近的餐厅</item>
+    </string-array>
+
+    <!-- check_url -->
+    <string-array name="agent_tool_check_url_keywords">
+        <item>URL</item>
+        <item>链接</item>
+        <item>网站</item>
+        <item>可访问</item>
+        <item>状态码</item>
+        <item>能不能打开</item>
+        <item>网址检查</item>
+    </string-array>
+    <string-array name="agent_tool_check_url_examples">
+        <item>检查这个网站是否能访问</item>
+        <item>这个链接还有效吗</item>
+        <item>查看URL的状态</item>
+        <item>测试网站响应时间</item>
+    </string-array>
+
+    <!-- get_network_info -->
+    <string-array name="agent_tool_get_network_info_keywords">
+        <item>网络</item>
+        <item>WiFi</item>
+        <item>移动数据</item>
+        <item>网络状态</item>
+        <item>联网</item>
+        <item>信号强度</item>
+        <item>连接</item>
+    </string-array>
+    <string-array name="agent_tool_get_network_info_examples">
+        <item>当前是什么网络</item>
+        <item>检查网络连接状态</item>
+        <item>获取网络信息</item>
+        <item>查看WiFi信号强度</item>
+    </string-array>
+
+    <!-- send_http_request -->
+    <string-array name="agent_tool_send_http_request_keywords">
+        <item>HTTP</item>
+        <item>API</item>
+        <item>请求</item>
+        <item>POST</item>
+        <item>GET</item>
+        <item>调用接口</item>
+        <item>REST</item>
+    </string-array>
+    <string-array name="agent_tool_send_http_request_examples">
+        <item>发送一个GET请求到这个API</item>
+        <item>调用这个接口并返回结果</item>
+        <item>POST数据到这个URL</item>
+        <item>测试REST API接口</item>
+    </string-array>
+
+    <!-- download_file -->
+    <string-array name="agent_tool_download_file_keywords">
+        <item>下载</item>
+        <item>保存</item>
+        <item>下载图片</item>
+        <item>下载文件</item>
+        <item>保存到本地</item>
+    </string-array>
+    <string-array name="agent_tool_download_file_examples">
+        <item>下载这个文件</item>
+        <item>保存这张图片到本地</item>
+        <item>下载PDF文档</item>
+        <item>下载视频到手机</item>
+    </string-array>
+
+    <!-- open_pdf_preview -->
+    <string-array name="agent_tool_open_pdf_preview_keywords">
+        <item>PDF</item>
+        <item>预览</item>
+        <item>打开PDF</item>
+        <item>查看PDF</item>
+        <item>阅读PDF</item>
+        <item>打开文档</item>
+    </string-array>
+    <string-array name="agent_tool_open_pdf_preview_examples">
+        <item>打开这个 PDF 文件</item>
+        <item>预览 https://example.com/sample.pdf</item>
+        <item>查看一下这份 PDF 报告</item>
+    </string-array>
+
+    <!-- convert_pdf_to_images -->
+    <string-array name="agent_tool_convert_pdf_to_images_keywords">
+        <item>PDF</item>
+        <item>转图片</item>
+        <item>导出图片</item>
+        <item>PDF转图</item>
+        <item>分页导出</item>
+        <item>PDF拆分</item>
+    </string-array>
+    <string-array name="agent_tool_convert_pdf_to_images_examples">
+        <item>把这个 PDF 转成 PNG 图片</item>
+        <item>导出 PDF 第 1-5 页为 JPG</item>
+        <item>把刚才那份 PDF 拆成图片</item>
+    </string-array>
+
+    <!-- convert_images_to_pdf -->
+    <string-array name="agent_tool_convert_images_to_pdf_keywords">
+        <item>合并PDF</item>
+        <item>图片转PDF</item>
+        <item>制作PDF</item>
+        <item>多图合一</item>
+        <item>导出PDF</item>
+        <item>扫描件</item>
+    </string-array>
+    <string-array name="agent_tool_convert_images_to_pdf_examples">
+        <item>把这几张图片合成一个 PDF</item>
+        <item>用这 5 张照片做一份 PDF 文档</item>
+        <item>把扫描图片转成 PDF</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_todo_keywords">
+        <item>待办</item>
+        <item>TODO</item>
+        <item>任务</item>
+        <item>待办事项</item>
+        <item>清单</item>
+        <item>完成</item>
+        <item>删除任务</item>
+        <item>创建分类</item>
+    </string-array>
+    <string-array name="agent_tool_manage_todo_examples">
+        <item>帮我看看我的待办事项</item>
+        <item>在“工作”分类下创建一个任务“提交报告”</item>
+        <item>帮我把“提交报告”标记为完成</item>
+        <item>创建一个新分类“学习”</item>
+        <item>删除任务 xxx</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_xiangqi_keywords">
+        <item>象棋</item>
+        <item>xiangqi</item>
+        <item>棋局</item>
+        <item>chess</item>
+        <item>中国象棋</item>
+        <item>对局</item>
+        <item>棋谱</item>
+        <item>下棋</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_xiangqi_examples">
+        <item>查看我的象棋对局</item>
+        <item>创建一个残局</item>
+        <item>摆一个残局</item>
+        <item>导入棋谱开局</item>
+        <item>导入对战记录</item>
+        <item>回放一盘棋</item>
+        <item>帮我创建一个人机对弈</item>
+        <item>导出 xxx 对局的棋谱</item>
+        <item>删除 xxx 对局</item>
+        <item>查看 xxx 对局详情</item>
+    </string-array>
+
+    <!-- ===== Browser Automation Tools ===== -->
+
+    <string-array name="agent_tool_browser_navigate_keywords">
+        <item>浏览器</item>
+        <item>browser</item>
+        <item>打开网页</item>
+        <item>网页</item>
+        <item>URL</item>
+        <item>导航</item>
+        <item>标签页</item>
+        <item>前进</item>
+        <item>后退</item>
+        <item>刷新</item>
+    </string-array>
+
+    <string-array name="agent_tool_browser_navigate_examples">
+        <item>打开 https://www.google.com</item>
+        <item>后退一页</item>
+        <item>刷新当前页面</item>
+        <item>新建一个标签页打开 https://github.com</item>
+    </string-array>
+
+    <string-array name="agent_tool_browser_read_page_keywords">
+        <item>读取页面</item>
+        <item>页面内容</item>
+        <item>提取文本</item>
+        <item>网页文字</item>
+        <item>DOM</item>
+        <item>页面快照</item>
+        <item>read page</item>
+    </string-array>
+
+    <string-array name="agent_tool_browser_read_page_examples">
+        <item>读取当前页面的文本内容</item>
+        <item>获取页面信息</item>
+        <item>提取页面中 #main-content 元素的 HTML</item>
+        <item>获取当前页面快照</item>
+    </string-array>
+
+    <string-array name="agent_tool_browser_execute_js_keywords">
+        <item>执行脚本</item>
+        <item>JavaScript</item>
+        <item>JS</item>
+        <item>DOM操作</item>
+        <item>脚本</item>
+        <item>表单填写</item>
+    </string-array>
+
+    <string-array name="agent_tool_browser_execute_js_examples">
+        <item>点击提交按钮 document.querySelector(\'button[type=submit]\').click()</item>
+        <item>填写搜索框 document.querySelector(\'input[name=q]\').value=\'test\'</item>
+        <item>获取所有链接 JSON.stringify([...document.querySelectorAll(\'a\')].map(a=&gt;({text:a.innerText,href:a.href})))</item>
+    </string-array>
+
+    <string-array name="agent_tool_browser_screenshot_keywords">
+        <item>截图</item>
+        <item>页面截图</item>
+        <item>网页截图</item>
+        <item>screenshot</item>
+        <item>截屏</item>
+    </string-array>
+
+    <string-array name="agent_tool_browser_screenshot_examples">
+        <item>截取当前页面截图</item>
+        <item>截屏</item>
+    </string-array>
+
+
+    <string-array name="agent_tool_discover_cloud_connections_keywords">
+        <item>云存储</item>
+        <item>连接</item>
+        <item>connection</item>
+        <item>cloud</item>
+        <item>S3</item>
+        <item>WebDAV</item>
+        <item>SMB</item>
+    </string-array>
+
+    <string-array name="agent_tool_discover_cloud_connections_examples">
+        <item>列出所有可用的云存储连接</item>
+        <item>有哪些 S3 兼容连接？</item>
+        <item>查找名字含 nas 的连接</item>
+    </string-array>
+
+
+    <string-array name="agent_tool_browse_cloud_files_keywords">
+        <item>浏览</item>
+        <item>列目录</item>
+        <item>browse</item>
+        <item>list</item>
+        <item>ls</item>
+        <item>stat</item>
+    </string-array>
+
+    <string-array name="agent_tool_browse_cloud_files_examples">
+        <item>列出连接 X 下 photos/ 目录的内容</item>
+        <item>查询 readme.md 的元信息</item>
+        <item>列出连接 X 的所有 share / bucket</item>
+    </string-array>
+
+
+    <string-array name="agent_tool_read_cloud_file_keywords">
+        <item>读取</item>
+        <item>下载</item>
+        <item>read</item>
+        <item>fetch</item>
+        <item>cat</item>
+    </string-array>
+
+    <string-array name="agent_tool_read_cloud_file_examples">
+        <item>读取连接 X 下 config.json 的内容</item>
+        <item>查看 notes.md 的最新内容</item>
+    </string-array>
+
+
+    <string-array name="agent_tool_search_cloud_files_keywords">
+        <item>搜索</item>
+        <item>查找</item>
+        <item>search</item>
+        <item>find</item>
+        <item>grep</item>
+    </string-array>
+
+    <string-array name="agent_tool_search_cloud_files_examples">
+        <item>在连接 X 下搜索包含 report 的文件名</item>
+        <item>查找 2025 年拍摄的图片</item>
+    </string-array>
+
+
+    <string-array name="agent_tool_manage_cloud_files_keywords">
+        <item>删除</item>
+        <item>重命名</item>
+        <item>建目录</item>
+        <item>delete</item>
+        <item>rename</item>
+        <item>mkdir</item>
+        <item>move</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_cloud_files_examples">
+        <item>在连接 X 下创建 archive/ 目录</item>
+        <item>删除连接 X 下的 tmp/ 整个目录</item>
+        <item>把 readme.txt 改名为 README.md</item>
+    </string-array>
+
+
+    <string-array name="agent_tool_upload_to_cloud_keywords">
+        <item>上传</item>
+        <item>写入</item>
+        <item>upload</item>
+        <item>write</item>
+        <item>put</item>
+    </string-array>
+
+    <string-array name="agent_tool_upload_to_cloud_examples">
+        <item>把一段 JSON 配置写入连接 X 的 config/app.json</item>
+        <item>上传 README 内容到 README.md</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_cloud_connections_keywords">
+        <item>连接</item>
+        <item>添加</item>
+        <item>创建</item>
+        <item>删除</item>
+        <item>connection</item>
+        <item>add</item>
+        <item>create</item>
+        <item>delete</item>
+        <item>setup</item>
+        <item>configure</item>
+    </string-array>
+    <string-array name="agent_tool_manage_cloud_connections_examples">
+        <item>添加一个 S3 兼容的 MinIO 连接</item>
+        <item>帮我创建一个 WebDAV 连接到坚果云</item>
+        <item>添加一个 SMB 共享到我的群晖</item>
+        <item>先测试一下我给的 S3 凭据能不能用</item>
+        <item>删除名字叫 "old-s3" 的连接</item>
+    </string-array>
+
+    <!-- UI 自动化三件套 keywords / examples -->
+    <string-array name="agent_tool_screenshot_ui_keywords">
+        <item>screenshot</item>
+        <item>snapshot</item>
+        <item>capture</item>
+        <item>screen</item>
+        <item>ui</item>
+        <item>view</item>
+    </string-array>
+    <string-array name="agent_tool_screenshot_ui_examples">
+        <item>{}</item>
+        <item>{"maxBase64Length": 200000}</item>
+    </string-array>
+
+    <string-array name="agent_tool_act_on_ui_keywords">
+        <item>act</item>
+        <item>click</item>
+        <item>swipe</item>
+        <item>type</item>
+        <item>tap</item>
+        <item>input</item>
+        <item>touch</item>
+        <item>ui</item>
+    </string-array>
+    <string-array name="agent_tool_act_on_ui_examples">
+        <item>{"action": "click", "x": 540, "y": 1200, "reason": "tap the search button"}</item>
+        <item>{"action": "input_text", "text": "Beijing weather"}</item>
+        <item>{"action": "swipe", "fromX": 540, "fromY": 1800, "toX": 540, "toY": 600, "durationMs": 300}</item>
+        <item>{"action": "go_back"}</item>
+        <item>{"action": "wait", "durationMs": 2000}</item>
+    </string-array>
+
+    <string-array name="agent_tool_automate_ui_task_keywords">
+        <item>automate</item>
+        <item>automation</item>
+        <item>ui task</item>
+        <item>run</item>
+        <item>execute</item>
+        <item>end-to-end</item>
+    </string-array>
+    <string-array name="agent_tool_automate_ui_task_examples">
+        <item>{"taskDescription": "search for weather in Beijing"}</item>
+        <item>{"taskDescription": "open the settings page and turn on dark mode", "maxSteps": 15}</item>
+    </string-array>
+</resources>

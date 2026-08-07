@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ ImageToolbox is an image editor for android
+  ~ Copyright (c) 2024 T8RIN (Malik Mukhametzyanov)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ You should have received a copy of the Apache License
+  ~ along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application tools:targetApi="tiramisu">
+        <service
+            android:name=".tiles.ColorPickerTile"
+            android:exported="true"
+            android:icon="@drawable/outline_colorize_24"
+            android:label="@string/pick_color"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tiles.ImageToolboxTile"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_monochrome_24"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tiles.EditScreenshotTile"
+            android:exported="true"
+            android:icon="@drawable/app_registration_24px"
+            android:label="@string/edit_screenshot"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tiles.TakeScreenshotTile"
+            android:exported="true"
+            android:icon="@drawable/mobile_screenshot"
+            android:label="@string/screenshot"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tiles.QrTile"
+            android:exported="true"
+            android:icon="@drawable/rounded_qr_code_scanner_24"
+            android:label="@string/qr_code"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tiles.DocumentScannerTile"
+            android:exported="true"
+            android:icon="@drawable/rounded_document_scanner_24"
+            android:label="@string/document_scanner"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tiles.ResizeAndConvertTile"
+            android:exported="true"
+            android:icon="@drawable/multiple_image_edit"
+            android:label="@string/resize_and_convert"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tiles.GeneratePaletteTile"
+            android:exported="true"
+            android:icon="@drawable/palette_swatch_outlined"
+            android:label="@string/generate_palette"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".screenshot.ScreenshotLauncher"
+            android:theme="@style/TransparentActivity" />
+
+        <service
+            android:name=".screenshot.ScreenshotService"
+            android:foregroundServiceType="mediaProjection"
+            android:process=":remote" />
+    </application>
+</manifest>

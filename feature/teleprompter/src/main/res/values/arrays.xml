@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AI Tool: manage_teleprompter -->
+    <string-array name="agent_tool_manage_teleprompter_keywords">
+        <item>teleprompter</item>
+        <item>prompter</item>
+        <item>script</item>
+        <item>speech</item>
+        <item>lines</item>
+        <item>presentation</item>
+    </string-array>
+    <string-array name="agent_tool_manage_teleprompter_examples">
+        <item>Create a teleprompter script titled Morning Standup</item>
+        <item>Save this speech to the teleprompter</item>
+        <item>List all my teleprompter scripts</item>
+        <item>Delete the script titled Morning Standup</item>
+    </string-array>
+</resources>

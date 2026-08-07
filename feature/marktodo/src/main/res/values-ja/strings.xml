@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">先にカテゴリを選択または追加してください</string>
+    <string name="schedule_section_title">スケジュール</string>
+    <string name="action_open_schedule">スケジュールハブを開く</string>
+    <string name="action_create_schedule">ローカルスケジュールを作成</string>
+    <string name="schedule_creating">スケジュールを作成中…</string>
+    <string name="schedule_missing_due_date">先にこのタスクの期限を設定してください</string>
+    <string name="schedule_created_success">ローカルスケジュールが作成されました</string>
+    <string name="schedule_created_failed">スケジュールの作成に失敗しました。後でもう一度お試しください</string>
+    <string name="dialog_delete_category_title">カテゴリを削除</string>
+    <string name="dialog_delete_category_message">\"%1$s\"を削除してもよろしいですか？\nこのカテゴリのすべてのタスクも削除されます。</string>
+    <string name="dialog_delete_task_message">\"%1$s\"を削除してもよろしいですか？</string>
+    <string name="cd_switch_to_list_view">リスト表示に切り替え</string>
+    <string name="cd_switch_to_grid_view">グリッド表示に切り替え</string>
+    <string name="cd_edit_mode_done">完了</string>
+    <string name="label_status">ステータス</string>
+    <string name="status_overdue">期限切れ</string>
+    <string name="category_unnamed">無名のカテゴリ</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d件のタスクを削除しました</string>
+    <string name="action_delete_selected_cd">選択項目を削除</string>
+    <string name="error_todo_not_found">To-doが見つかりません</string>
+    <string name="error_category_not_found">カテゴリが見つかりません</string>
+    <string name="error_load_failed">読み込みに失敗しました</string>
+    <string name="cd_task_completed">完了</string>
+    <string name="cd_task_pending">保留中</string>
+    <string name="cd_add_star">スターを追加</string>
+    <string name="cd_remove_star">スターを削除</string>
+    <string name="date_today">今日</string>
+    <string name="date_yesterday">昨日</string>
+    <string name="date_days_ago">%1$d日前</string>
+    <string name="date_tomorrow">明日</string>
+    <string name="date_days_later">%1$d日後</string>
+</resources>

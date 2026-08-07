@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 微信小程序跳转 -->
+    <string name="mini_program_jump_confirm">即将离开并跳转到微信打开？</string>
+    <string name="mini_program_redirecting">正在跳转中…</string>
+</resources>

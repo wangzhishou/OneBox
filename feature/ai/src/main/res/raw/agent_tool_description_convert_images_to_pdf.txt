@@ -1,0 +1,21 @@
+把多张图片按顺序合并为单个 PDF 文档，并保存到应用下载目录。
+
+功能说明：
+- 接受多张本地图片 URI（content:// 或 file://），按数组顺序排页。
+- preset 控制图片缩放百分比（1-100，默认 100）。
+- scale_small_to_large=true 时，较小的图片会被放大到与最大边长一致，避免页面尺寸不齐。
+- filename 可指定输出 PDF 文件名（自动补 .pdf 后缀）；省略时自动生成。
+- 转换成功后会写入 ActivityLog（FILE_CONVERT 分类）。
+
+参数：
+- uris (string[], 必填)：图片 URI 列表，至少一张。仅支持 content:// 或 file:// 本地地址。
+- preset (integer, 可选)：1-100 缩放百分比，默认 100。
+- scale_small_to_large (boolean, 可选)：是否拉伸小图，默认 false。
+- filename (string, 可选)：输出 PDF 文件名。
+
+返回：JSON，含 page_count、file_name、file_uri、save_path。
+
+注意事项：
+- 此工具非交互式，转换在后台完成后直接返回保存路径，不会跳转屏幕。
+- 远程图片 URL 不支持，请先用其他工具下载到本地后再调用本工具。
+- 用户如果希望对生成的 PDF 进一步预览或拆分，可串联 open_pdf_preview / convert_pdf_to_images。

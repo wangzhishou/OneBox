@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">Check-in</string>
+    <string name="habit_tab_checkin">Check-in</string>
+    <string name="habit_tab_stats">Statistik</string>
+    <string name="habit_add">Tambah kebiasaan</string>
+    <string name="habit_summary_rate">Tingkat check-in</string>
+    <string name="habit_summary_done">Selesai</string>
+    <string name="habit_summary_missed">Tertunda</string>
+    <string name="habit_today_section">Check-in hari ini</string>
+    <string name="habit_edit_mode">Edit</string>
+    <string name="habit_edit_done">Selesai</string>
+    <string name="habit_empty_list">Belum ada kebiasaan. Ketuk + untuk membuat.</string>
+    <string name="habit_delete_habit">Hapus kebiasaan</string>
+    <string-array name="habit_weekdays_short">
+        <item>Sen</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kam</item>
+        <item>Jum</item>
+        <item>Sab</item>
+        <item>Min</item>
+    </string-array>
+    <string name="habit_stats_week_trend">Minggu ini</string>
+    <string name="habit_stats_distribution">Distribusi</string>
+    <string name="habit_stats_rate_trend">Tren tingkat check-in</string>
+    <string name="habit_stats_not_started">Belum dimulai</string>
+    <string name="habit_stats_total_habits">Total kebiasaan</string>
+    <string name="habit_stats_empty">Belum ada data</string>
+    <string name="habit_last_7_days">7 hari terakhir</string>
+    <string name="habit_last_30_days">30 hari terakhir</string>
+    <string name="habit_add_title">Kebiasaan Baru</string>
+    <string name="habit_edit_title">Edit Kebiasaan</string>
+    <string name="habit_edit_name_label">Nama kebiasaan</string>
+    <string name="habit_edit_name_hint">Masukkan nama kebiasaan</string>
+    <string name="habit_edit_icon_label">Pilih ikon</string>
+    <string name="habit_edit_color_label">Pilih warna</string>
+    <string name="habit_edit_color_auto_hint">Warna tema otomatis saat tidak dipilih</string>
+    <string name="habit_edit_repeat_label">Ulangi</string>
+    <string name="habit_repeat_daily">Setiap hari</string>
+    <string name="habit_repeat_weekly">Mingguan</string>
+    <string name="habit_repeat_monthly">Bulanan</string>
+    <string name="habit_repeat_custom">Kustom</string>
+    <string name="habit_repeat_daily_desc">Berulang setiap hari</string>
+    <string name="habit_repeat_times_week_label">Kali per minggu</string>
+    <string name="habit_repeat_times_month_label">Kali per bulan</string>
+    <string name="habit_edit_reminder_label">Pengingat</string>
+    <string name="habit_edit_reminder_none">Tidak ada pengingat</string>
+    <string name="habit_edit_reminder_subtitle">Ingatkan saya untuk check-in pada waktu ini</string>
+    <string name="habit_edit_reminder_clear">Bersihkan</string>
+    <string name="habit_edit_note_label">Catatan (opsional)</string>
+    <string name="habit_edit_note_hint">Tambahkan catatan...</string>
+    <string name="habit_edit_stats_label">Lacak statistik check-in</string>
+    <string name="habit_edit_stats_subtitle">Lacak tingkat check-in dan rentetan saat aktif</string>
+    <string name="habit_save">Simpan</string>
+    <string name="habit_name_required">Silakan masukkan nama kebiasaan</string>
+    <string name="habit_saved">Tersimpan</string>
+    <string name="habit_freq_daily">Harian</string>
+    <string name="habit_freq_weekly_times">%1$d kali seminggu</string>
+    <string name="habit_freq_monthly_times">%1$d kali sebulan</string>
+    <string name="habit_preset_drink_water">Minum 8 gelas air</string>
+    <string name="habit_preset_wake_early">Bangun pagi</string>
+    <string name="habit_preset_exercise">Olahraga</string>
+    <string name="habit_preset_reading">Membaca</string>
+    <string name="habit_preset_meditation">Meditasi</string>
+    <string name="habit_preset_no_stay_up">Tidak begadang</string>
+    <string name="habit_notification_channel_name">Pengingat kebiasaan</string>
+    <string name="habit_notification_channel_desc">Pengingat check-in kebiasaan harian</string>
+    <string name="habit_notification_text">Waktu check-in: %1$s</string>
+    <string name="habit_streak_days">Runtutan %1$d hari</string>
+    <string name="agent_tool_add_habit_title">Tambah Kebiasaan</string>
+    <string name="agent_tool_add_habit_summary">Buat kebiasaan baru di pelacak kebiasaan</string>
+    <string name="agent_tool_add_habit_description">Buat kebiasaan baru di pelacak kebiasaan. Mendukung nama kustom, ikon, frekuensi pengulangan (harian / N kali per minggu / N kali per bulan / hari kerja kustom), waktu pengingat harian opsional dan catatan.</string>
+    <string name="agent_tool_add_habit_param_name">Nama kebiasaan, mis. \"Minum 8 gelas air\"</string>
+    <string name="agent_tool_add_habit_param_icon">Kunci ikon, salah satu: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">Jenis pengulangan: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">Kali per minggu atau per bulan, 1-30, hanya untuk weekly_times / monthly_times</string>
+    <string name="agent_tool_add_habit_param_weekdays">Hari kerja untuk custom_weekdays, array 1-7 (1=Senin, 7=Minggu)</string>
+    <string name="agent_tool_add_habit_param_remind_time">Waktu pengingat harian dalam HH:mm (24 jam), opsional</string>
+    <string name="agent_tool_add_habit_param_note">Catatan opsional</string>
+    <string name="agent_tool_add_habit_success">Kebiasaan dibuat</string>
+    <string name="agent_tool_add_habit_failed">Gagal membuat kebiasaan: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>kebiasaan</item>
+        <item>tambah kebiasaan</item>
+        <item>buat kebiasaan</item>
+        <item>check-in</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>Tambahkan kebiasaan untuk minum 8 gelas air setiap hari</item>
+        <item>Buat kebiasaan untuk berlari 3 kali seminggu</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">Check-in Kebiasaan</string>
+    <string name="agent_tool_check_in_habit_summary">Check-in kebiasaan untuk hari tertentu</string>
+    <string name="agent_tool_check_in_habit_description">Tandai kebiasaan sebagai check-in untuk hari tertentu (hari ini secara default). Temukan kebiasaan dengan habit_id atau habit_name fuzzy. Check-in dua kali pada hari yang sama tidak berpengaruh.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">ID Kebiasaan. Utamakan ini jika diketahui; habit_name digunakan jika tidak ada</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">Nama kebiasaan, dicocokkan fuzzy jika habit_id tidak ada</string>
+    <string name="agent_tool_check_in_habit_param_date">Tanggal check-in, yyyy-MM-dd, default hari ini, tidak boleh di masa depan</string>
+    <string name="agent_tool_check_in_habit_success">Sudah check in</string>
+    <string name="agent_tool_check_in_habit_already">Sudah check in pada hari itu</string>
+    <string name="agent_tool_check_in_habit_not_found">Kebiasaan tidak ditemukan: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">Gagal check in: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>kebiasaan</item>
+        <item>check in</item>
+        <item>selesai</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>Check in kebiasaan lari saya hari ini</item>
+        <item>Tandai membaca selesai untuk kemarin</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">Kueri Kebiasaan</string>
+    <string name="agent_tool_query_habits_summary">Daftar kebiasaan dengan status hari ini dan tingkat check-in mingguan</string>
+    <string name="agent_tool_query_habits_description">Kueri daftar kebiasaan: status check-in hari ini untuk setiap kebiasaan, rentetan kebiasaan harian, dan tingkat check-in keseluruhan minggu ini.</string>
+    <string name="agent_tool_query_habits_section_today">Hari ini</string>
+    <string name="agent_tool_query_habits_weekly_rate">Tingkat mingguan</string>
+    <string name="agent_tool_query_habits_empty">Belum ada kebiasaan</string>
+    <string name="agent_tool_query_habits_failed">Gagal mengueri kebiasaan: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>kebiasaan</item>
+        <item>status check-in</item>
+        <item>rentetan</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>Kebiasaan mana yang tersisa hari ini?</item>
+        <item>Tampilkan tingkat check-in kebiasaan saya minggu ini</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">Tanggal</string>
+    <string name="agent_tool_habit_label_repeat">Ulangi</string>
+    <string name="agent_tool_habit_label_reminder">Pengingat</string>
+    <string name="agent_tool_habit_label_name">Nama</string>
+    <string name="agent_tool_habit_open_link">Buka Pelacak Kebiasaan</string>
+    <string name="agent_tool_habit_edit_link">Lihat kebiasaan</string>
+    <string name="agent_tool_unknown_error">Kesalahan tidak diketahui</string>
+</resources>

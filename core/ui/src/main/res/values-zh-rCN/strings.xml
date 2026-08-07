@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_title" translatable="false">选择日期</string>
+    <string name="date_picker_confirm">确认</string>
+    <string name="date_picker_cancel">取消</string>
+    <string name="date_picker_edit">编辑</string>
+    <string name="date_picker_select_year_month">选择年月</string>
+    <string name="date_picker_year_input">年份</string>
+    <string name="date_picker_current_year">今年</string>
+    <string name="blessing_effect_merit_plus_one">好运 +1</string>
+    <string name="date_picker_month_format">%d月</string>
+    <string name="date_picker_previous_month">上个月</string>
+    <string name="date_picker_next_month">下个月</string>
+    <string name="date_picker_year_format">%d年</string>
+    <string name="date_picker_year_month_format">%1$d年%2$d月</string>
+    <string name="date_picker_date_format">%1$d年%2$d月%3$d日</string>
+    <string name="date_picker_weekday_sun">日</string>
+    <string name="date_picker_weekday_mon">一</string>
+    <string name="date_picker_weekday_tue">二</string>
+    <string name="date_picker_weekday_wed">三</string>
+    <string name="date_picker_weekday_thu">四</string>
+    <string name="date_picker_weekday_fri">五</string>
+    <string name="date_picker_weekday_sat">六</string>
+    <string name="time_range_picker_title" translatable="false">选择时间段</string>
+    <string name="time_picker_title" translatable="false">选择时间</string>
+    <string name="time_range_picker_start_time">开始时间</string>
+    <string name="time_range_picker_end_time">结束时间</string>
+    <string name="time_range_picker_hour">时</string>
+    <string name="time_range_picker_minute">分</string>
+    <string name="time_range_picker_hint">提示：输入0-23的小时和0-59的分钟</string>
+    <string name="date_range_picker_title">选择日期区间</string>
+    <string name="date_range_start">开始日期</string>
+    <string name="date_range_end">结束日期</string>
+
+    <!-- 周筛选器 WeekSelector:头部 "年月 · 第N周" + 周一~周日标签 -->
+    <string name="week_selector_week_title">%1$d年%2$d月 · 第%3$d周</string>
+    <!-- 图标选择弹层 IconPickerSheet:tab 行右侧的当前数量 -->
+    <string name="icon_picker_icon_count">%1$d 个图标</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </string-array>
+</resources>

@@ -1,0 +1,279 @@
+name: Android CI
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      app_flavor:
+        description: App flavor
+        type: choice
+        required: true
+        default: onebox
+        options:
+          - xiaomi
+          - yyb
+          - oppo
+          - vivo
+          - huawei
+          - onebox
+      abi_flavor:
+        description: ABI flavor
+        type: choice
+        required: true
+        default: universal
+        options:
+          - arm64
+          - arm32
+          - universal
+      build_type:
+        description: Build type
+        type: choice
+        required: true
+        default: debug
+        options:
+          - debug
+          - release
+      publish_release:
+        description: Auto publish GitHub Release (manual release only)
+        type: boolean
+        required: true
+        default: false
+      release_tag:
+        description: Release tag to publish (required when auto publish is enabled)
+        type: string
+        required: false
+
+env:
+  DEFAULT_APP_FLAVOR: onebox
+  DEFAULT_ABI_FLAVOR: universal
+  DEFAULT_BUILD_TYPE: debug
+
+concurrency:
+  group: android-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_and_release:
+    outputs:
+      should_publish_release: ${{ steps.compute.outputs.should_publish_release }}
+      release_tag: ${{ steps.compute.outputs.release_tag }}
+
+    runs-on: ubuntu-latest-larger
+    timeout-minutes: 180
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compute build variables
+        id: compute
+        shell: bash
+        env:
+          REQUESTED_APP_FLAVOR: ${{ github.event_name == 'workflow_dispatch' && inputs.app_flavor || env.DEFAULT_APP_FLAVOR }}
+          REQUESTED_ABI_FLAVOR: ${{ github.event_name == 'workflow_dispatch' && inputs.abi_flavor || env.DEFAULT_ABI_FLAVOR }}
+          REQUESTED_BUILD_TYPE: ${{ github.event_name == 'workflow_dispatch' && inputs.build_type || env.DEFAULT_BUILD_TYPE }}
+          REQUESTED_PUBLISH_RELEASE: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_release || 'false' }}
+          REQUESTED_RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || '' }}
+        run: |
+          capitalize() {
+            local value="$1"
+            echo "${value^}"
+          }
+
+          APP_FLAVOR="$REQUESTED_APP_FLAVOR"
+          ABI_FLAVOR="$REQUESTED_ABI_FLAVOR"
+
+          if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
+            BUILD_TYPE="release"
+            VERSION_NAME_OVERRIDE="$GITHUB_REF_NAME"
+            ARTIFACT_SUFFIX="$GITHUB_REF_NAME"
+            SHOULD_PUBLISH_RELEASE="true"
+            RELEASE_TAG="$GITHUB_REF_NAME"
+          else
+            BUILD_TYPE="$REQUESTED_BUILD_TYPE"
+            PUBLISH_RELEASE="$(echo "$REQUESTED_PUBLISH_RELEASE" | tr '[:upper:]' '[:lower:]')"
+
+            if [[ "$BUILD_TYPE" == "release" && "$PUBLISH_RELEASE" == "true" ]]; then
+              if [[ -z "$REQUESTED_RELEASE_TAG" ]]; then
+                echo "release_tag is required when auto publish is enabled for a manual release build"
+                exit 1
+              fi
+              VERSION_NAME_OVERRIDE="$REQUESTED_RELEASE_TAG"
+              ARTIFACT_SUFFIX="$REQUESTED_RELEASE_TAG"
+              SHOULD_PUBLISH_RELEASE="true"
+              RELEASE_TAG="$REQUESTED_RELEASE_TAG"
+            else
+              VERSION_NAME_OVERRIDE=""
+              ARTIFACT_SUFFIX="manual-${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}"
+              SHOULD_PUBLISH_RELEASE="false"
+              RELEASE_TAG=""
+            fi
+          fi
+
+          BUILD_TYPE_CAPITALIZED="$(capitalize "$BUILD_TYPE")"
+          VARIANT_NAME="$(capitalize "$APP_FLAVOR")$(capitalize "$ABI_FLAVOR")$BUILD_TYPE_CAPITALIZED"
+          VARIANT_DIR="${APP_FLAVOR}${ABI_FLAVOR}"
+          APK_DIR="app/build/outputs/apk/$VARIANT_DIR/$BUILD_TYPE"
+          OUTPUT_APK_NAME="OneBox-${ARTIFACT_SUFFIX}-${APP_FLAVOR}-${ABI_FLAVOR}-${BUILD_TYPE}.apk"
+          if [[ "$BUILD_TYPE" == "release" ]]; then
+            SHOULD_SIGN="true"
+          else
+            SHOULD_SIGN="false"
+          fi
+
+          {
+            echo "APP_FLAVOR=$APP_FLAVOR"
+            echo "ABI_FLAVOR=$ABI_FLAVOR"
+            echo "BUILD_TYPE=$BUILD_TYPE"
+            echo "VARIANT_NAME=$VARIANT_NAME"
+            echo "VARIANT_DIR=$VARIANT_DIR"
+            echo "BUILD_TASK=:app:assemble$VARIANT_NAME"
+            echo "APK_DIR=$APK_DIR"
+            echo "VERSION_NAME_OVERRIDE=$VERSION_NAME_OVERRIDE"
+            echo "OUTPUT_APK_NAME=$OUTPUT_APK_NAME"
+            echo "SHOULD_SIGN=$SHOULD_SIGN"
+            echo "RELEASE_TAG=$RELEASE_TAG"
+          } >> "$GITHUB_ENV"
+
+          {
+            echo "should_publish_release=$SHOULD_PUBLISH_RELEASE"
+            echo "release_tag=$RELEASE_TAG"
+            echo "build_type=$BUILD_TYPE"
+            echo "variant_name=$VARIANT_NAME"
+            echo "should_sign=$SHOULD_SIGN"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Get Git Version
+        shell: bash
+        run: |
+          echo "GIT_VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build selected release APK
+        env:
+          GIT_VERSION: ${{ env.GIT_VERSION }}
+          VERSION_NAME_OVERRIDE: ${{ env.VERSION_NAME_OVERRIDE }}
+        shell: bash
+        run: |
+          if [[ -n "$VERSION_NAME_OVERRIDE" ]]; then
+            VERSION_NAME="$VERSION_NAME_OVERRIDE" GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
+          else
+            GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
+          fi
+
+      - name: Prepare final APK artifact
+        id: package_apk
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_STORE_PASS: ${{ secrets.KEY_STORE_PASS }}
+          KEY_PASS: ${{ secrets.KEY_PASS }}
+        shell: bash
+        run: |
+          DIST_DIR="$GITHUB_WORKSPACE/dist"
+          rm -rf "$DIST_DIR"
+          mkdir -p "$DIST_DIR"
+
+          INPUT_APK="$(find "$APK_DIR" -maxdepth 1 -type f -name "*-$BUILD_TYPE.apk" ! -name '*-signed.apk' | sort | head -n 1)"
+          if [[ -z "$INPUT_APK" ]]; then
+            echo "No $BUILD_TYPE APK found in $APK_DIR"
+            ls -la "$APK_DIR" || true
+            exit 1
+          fi
+
+          OUTPUT_APK="$DIST_DIR/$OUTPUT_APK_NAME"
+
+          if [[ "$SHOULD_SIGN" == "true" ]]; then
+            if [[ -z "$SIGNING_KEY" || -z "$ALIAS" || -z "$KEY_STORE_PASS" || -z "$KEY_PASS" ]]; then
+              echo "Signing secrets are missing"
+              exit 1
+            fi
+
+            KEYSTORE_PATH="$RUNNER_TEMP/release.keystore"
+            printf '%s' "$SIGNING_KEY" | base64 --decode > "$KEYSTORE_PATH"
+
+            BUILD_TOOLS_DIR="$(find "${ANDROID_HOME:-$ANDROID_SDK_ROOT}/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)"
+            if [[ -z "$BUILD_TOOLS_DIR" ]]; then
+              echo "Android build-tools not found"
+              exit 1
+            fi
+
+            "$BUILD_TOOLS_DIR/apksigner" sign \
+              --ks "$KEYSTORE_PATH" \
+              --ks-key-alias "$ALIAS" \
+              --ks-pass "pass:$KEY_STORE_PASS" \
+              --key-pass "pass:$KEY_PASS" \
+              --out "$OUTPUT_APK" \
+              "$INPUT_APK"
+
+            "$BUILD_TOOLS_DIR/apksigner" verify --verbose "$OUTPUT_APK"
+            rm -f "$INPUT_APK"
+          else
+            mv "$INPUT_APK" "$OUTPUT_APK"
+          fi
+
+          echo "output_apk_path=$OUTPUT_APK" >> "$GITHUB_OUTPUT"
+          ls -la "$DIST_DIR"
+
+      - uses: actions/upload-artifact@v4
+        id: upload-signed-apk
+        with:
+          name: built-apk
+          path: ${{ steps.package_apk.outputs.output_apk_path }}
+
+
+
+  create_release:
+    if: needs.build_and_release.outputs.should_publish_release == 'true'
+    runs-on: ubuntu-latest-larger
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    needs:
+      - build_and_release
+
+    steps:
+      - name: Download signed APK
+        uses: actions/download-artifact@v4
+        with:
+          name: built-apk
+          path: release-assets
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.build_and_release.outputs.release_tag }}
+        shell: bash
+        run: |
+          if [[ -z "$RELEASE_TAG" ]]; then
+            echo "Release tag is empty"
+            exit 1
+          fi
+
+          shopt -s nullglob
+          apks=(release-assets/*.apk)
+          if (( ${#apks[@]} == 0 )); then
+            echo "No APK files downloaded"
+            exit 1
+          fi
+
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "${apks[@]}" --clobber
+          else
+            if [[ "$RELEASE_TAG" == *-* ]]; then
+              gh release create "$RELEASE_TAG" "${apks[@]}" --prerelease --generate-notes --target "$GITHUB_SHA"
+            else
+              gh release create "$RELEASE_TAG" "${apks[@]}" --generate-notes --target "$GITHUB_SHA"
+            fi
+          fi

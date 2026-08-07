@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Koneksi jaringan gagal, periksa pengaturan jaringan</string>
+    <string name="error_request_timeout">Permintaan waktu habis, coba lagi nanti</string>
+    <string name="error_cannot_connect_server">Tidak dapat terhubung ke server, periksa jaringan</string>
+    <string name="error_ssl_failed">Koneksi aman gagal, periksa pengaturan jaringan</string>
+    <string name="error_network_exception">Gangguan jaringan, periksa koneksi jaringan</string>
+    <string name="error_request_cancelled">Permintaan dibatalkan</string>
+    <string name="error_data_parse_failed">Gagal mengurai data, coba lagi nanti</string>
+    <string name="error_bad_request">Parameter permintaan tidak valid</string>
+    <string name="error_unauthorized">Tidak diotorisasi, silakan masuk lagi</string>
+    <string name="error_forbidden">Akses ditolak</string>
+    <string name="error_not_found">Sumber daya yang diminta tidak ditemukan</string>
+    <string name="error_server_internal">Kesalahan server internal</string>
+    <string name="error_server_maintenance">Server sedang pemeliharaan, coba lagi nanti</string>
+    <string name="error_server_code">Kesalahan server (%d)</string>
+    <string name="error_client_error">Kesalahan permintaan, periksa parameter</string>
+    <string name="error_server_error">Kesalahan server, coba lagi nanti</string>
+    <string name="error_request_failed">Permintaan gagal, coba lagi nanti</string>
+    <string name="error_request_failed_with_message">Permintaan gagal: %s</string>
+    <string name="error_unknown">Kesalahan tidak diketahui</string>
+    <string name="no_error_body">Tidak ada isi kesalahan</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

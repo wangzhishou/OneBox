@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">현재 점수</string>
+    <string name="game_2048_best_score">최고 점수</string>
+    <string name="game_2048_new_game">새 게임</string>
+    <string name="game_2048_game_over">게임 오버</string>
+    <string name="game_2048_you_win">2048에 도달했습니다!</string>
+    <string name="game_2048_no_moves">더 이상 이동할 수 없습니다</string>
+    <string name="game_2048_reached_2048">더 높은 점수를 위해 계속할 수 있습니다</string>
+    <string name="game_2048_continue">계속</string>
+    <string name="game_2048_new_best_score">새 기록!</string>
+</resources>

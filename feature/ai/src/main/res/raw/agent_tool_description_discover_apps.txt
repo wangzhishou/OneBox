@@ -1,0 +1,26 @@
+页面发现：按关键词检索可跳转页面。
+
+适用场景：
+- 想找某个功能页面
+- 想拿到 deeplink 继续跳转
+
+参数：
+- keywords：关键词数组
+- limit：可选，结果上限
+
+返回 JSON：
+{"apps":[{"t":"页面标题","u":"onebox://...","d":"一句话描述","c":"category","r":"route_key"}]}
+
+字段说明：
+- t：页面标题（必填）
+- u：deeplink（必填）
+- d：一句话描述（可选，告知页面是干什么的，避免歧义匹配）
+- c：category / 列表类型（可选，如 note/todo/bookkeeping/screen 等）
+- r：routeKey（可选，screen 的稳定标识，可用于后续 navigate_app_screen）
+
+结果处理方式：
+- 默认将结果以 Markdown 链接形式直接输出给用户（如 [页面标题](onebox://...)），让用户自行决定是否打开
+- 只有当用户明确说"帮我打开这个页面"或"带我去XX"时，才调用 navigate_app_screen 自动跳转
+- 如需调用功能工具，请使用 discover_tools
+
+> 注意：本工具用于搜索"可跳转页面"。如需调用功能工具，请使用 discover_tools。

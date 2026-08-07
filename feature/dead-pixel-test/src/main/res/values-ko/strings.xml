@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">화면 불량 감지</string>
+    <string name="dead_pixel_test_description">순수 색상 회전을 사용하여 화면 불량 및 카드 포인트 감지</string>
+    <string name="dead_pixel_color_white">흰색</string>
+    <string name="dead_pixel_color_black">검은색</string>
+    <string name="dead_pixel_color_red">빨간색</string>
+    <string name="dead_pixel_color_green">초록색</string>
+    <string name="dead_pixel_color_blue">파란색</string>
+    <string name="dead_pixel_hint">색상을 변경하려면 탭하세요. 오른쪽 및 왼쪽 슬라이드로 앞뒤로 전환할 수 있습니다.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">그리드 표시</string>
+    <string name="dead_pixel_grid_off">그리드 숨기기</string>
+    <string name="dead_pixel_auto_play">자동 회전</string>
+    <string name="dead_pixel_auto_stop">중지!</string>
+    <string name="dead_pixel_fullscreen">전체 화면 테스트</string>
+    <string name="dead_pixel_exit_fullscreen">전체 화면 종료</string>
+    <string name="dead_pixel_guide_title">손상을 어떻게 감지하나요?</string>
+    <string name="dead_pixel_guide_content">화면에 흰색, 검은색, 빨간색, 초록색, 파란색의 다섯 가지 단색이 순서대로 표시됩니다.\n\n• 흰색 배경: 검은색 어두운 점(죽은 픽셀) 확인\n• 검은색 배경: 밝은 점(고정 픽셀) 확인\n• 색상 배경: 다른 색상의 비정상 픽셀 확인\n\n화면을 탭하여 다음 색상으로 전환하거나 자동 재생을 활성화하세요. 최상의 결과를 위해 어두운 환경에서 테스트를 수행하세요.</string>
+    <string name="dead_pixel_guide_start">테스트 시작</string>
+</resources>

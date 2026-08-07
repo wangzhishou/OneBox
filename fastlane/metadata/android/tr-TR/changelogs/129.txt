@@ -1,0 +1,5 @@
+     • Uygulama genelinde daha temiz ve tutarlı bir görünüm için yepyeni çizgi tarzı simgeler
+     • Uygulama genelinde İngilizce yerelleştirme iyileştirildi
+     • Artık OneBox'ı uygulamadan ayrılmadan puanlayabilirsiniz
+     • Çince uygulama adı artık 万宝盒 olarak görünüyor
+     • Hata düzeltmeleri ve performans iyileştirmeleri

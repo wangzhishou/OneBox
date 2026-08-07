@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">Kod Bloğu Ekle</string>
+    <string name="code_label">Kod</string>
+    <string name="enter_code_hint">Kod girin...</string>
+    <string name="select_language">Dil:</string>
+    <string name="search_language">Dil ara</string>
+    <string name="search_language_hint">Bir dil adı yazın...</string>
+    <string name="or_enter_image_url">Veya bir görsel URL\'si girin:</string>
+    <string name="image_description_label">Görsel açıklaması</string>
+    <string name="image_description_hint">Görsel için alternatif metin</string>
+    <string name="image_url_label">Görsel URL\'si</string>
+    <string name="link_text_placeholder">Görüntülenecek metin</string>
+    <string name="resize_image">Görseli Yeniden Boyutlandır</string>
+    <string name="width">Genişlik</string>
+    <string name="original_width">Orijinal genişlik: %1$dpx</string>
+    <string name="markdown_placeholder">Yazmaya başlayın...</string>
+</resources>

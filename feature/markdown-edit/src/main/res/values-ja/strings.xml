@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">コードブロックを挿入</string>
+    <string name="code_label">コード</string>
+    <string name="enter_code_hint">コードを入力...</string>
+    <string name="select_language">言語:</string>
+    <string name="search_language">言語を検索</string>
+    <string name="search_language_hint">言語名を入力...</string>
+    <string name="or_enter_image_url">または画像URLを入力:</string>
+    <string name="image_description_label">画像の説明</string>
+    <string name="image_description_hint">画像の代替テキスト</string>
+    <string name="image_url_label">画像URL</string>
+    <string name="link_text_placeholder">表示するテキスト</string>
+    <string name="resize_image">画像サイズ変更</string>
+    <string name="width">幅</string>
+    <string name="original_width">元の幅: %1$dpx</string>
+    <string name="markdown_placeholder">入力を開始...</string>
+</resources>

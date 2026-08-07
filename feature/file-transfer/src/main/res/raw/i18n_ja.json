@@ -1,0 +1,145 @@
+{
+  "app.title": "ファイル転送 - Wanbaohe",
+  "app.name": "ファイル転送",
+
+  "login.title": "ファイル転送",
+  "login.subtitle": "アクセスパスワードを入力してください",
+  "login.placeholder": "パスワードを入力",
+  "login.button": "ログイン",
+  "login.error.emptyPassword": "パスワードを入力してください",
+  "login.error.wrongPassword": "パスワードが正しくありません",
+  "login.error.failed": "ログインに失敗しました。もう一度お試しください",
+
+  "nav.files": "ファイル",
+  "nav.transfer": "転送",
+  "nav.chat": "チャット",
+  "nav.settings": "設定",
+  "nav.allFiles": "すべてのファイル",
+
+  "connection.status": "接続済み",
+
+  "device.loading": "読み込み中...",
+  "device.defaultName": "デバイス",
+
+  "stats.currentFolder": "現在のフォルダー",
+  "stats.folders": "個のフォルダー",
+  "stats.files": "個のファイル",
+  "stats.totalSize": "合計サイズ: ",
+
+  "toolbar.view.grid": "グリッド表示",
+  "toolbar.view.list": "リスト表示",
+  "toolbar.refresh": "更新",
+  "toolbar.upload": "アップロード",
+
+  "breadcrumb.home": "ホーム",
+
+  "selection.count": "{count} 件選択中",
+
+  "sort.name": "名前",
+  "sort.size": "サイズ",
+  "sort.date": "日付",
+  "sort.asc": "昇順",
+  "sort.desc": "降順",
+
+  "empty.title": "フォルダーは空です",
+  "empty.subtitle": "ファイルをドラッグするか、アップロードボタンをクリックして追加してください",
+  "error.title": "読み込みに失敗しました",
+  "error.subtitle": "ネットワーク接続を確認してからもう一度お試しください",
+
+  "common.retry": "再試行",
+  "common.cancel": "キャンセル",
+  "common.confirm": "確認",
+  "common.delete": "削除",
+  "common.download": "ダウンロード",
+  "common.create": "作成",
+  "common.rename": "名前を変更",
+
+  "dropzone.sidebar": "ここにファイルをドラッグしてアップロード",
+  "dropzone.overlay": "マウスを離してファイルをアップロード",
+
+  "transfer.title": "転送タスク",
+  "transfer.empty": "転送タスクはありません",
+  "transfer.status.completed": "完了",
+  "transfer.status.error": "失敗",
+  "transfer.status.uploading": "アップロード中",
+
+  "uploadModal.title": "ファイルをアップロード",
+  "uploadModal.hint": "クリックまたはドラッグしてファイルをここに追加",
+  "uploadModal.subtitle": "複数ファイルのアップロードに対応",
+  "uploadModal.pending": "アップロード待ち",
+
+  "deleteModal.title": "削除の確認",
+  "deleteModal.text": "選択したファイルを削除してもよろしいですか？この操作は元に戻せません。",
+  "deleteModal.confirmOne": "\"{name}\" を削除してもよろしいですか？この操作は元に戻せません。",
+  "deleteModal.confirmMany": "選択した {count} 個のファイルを削除してもよろしいですか？この操作は元に戻せません。",
+
+  "newFolder.title": "新規フォルダー",
+  "newFolder.placeholder": "フォルダー名",
+
+  "renameModal.placeholder": "新しい名前",
+
+  "contextMenu.open": "開く/プレビュー",
+  "contextMenu.info": "詳細情報",
+
+  "infoModal.title": "ファイル情報",
+  "infoModal.name": "名前",
+  "infoModal.type": "種類",
+  "infoModal.size": "サイズ",
+  "infoModal.modified": "更新日時",
+  "infoModal.path": "パス",
+
+  "fileType.folder": "フォルダー",
+  "fileType.file": "ファイル",
+
+  "files.loadFailed": "読み込みに失敗しました",
+  "files.networkError": "ネットワーク接続に失敗しました",
+
+  "settings.chat": "チャット",
+  "settings.chat.desc": "スマートフォンとリアルタイムでやり取りします",
+  "settings.openChat": "チャットを開く",
+
+  "imageViewer.alt": "画像プレビュー",
+  "imageViewer.download": "ダウンロード",
+  "imageViewer.close": "閉じる",
+
+  "chat.title": "チャット",
+  "chat.empty": "メッセージはまだありません",
+  "chat.newMessages": "新着メッセージがあります。タップして確認してください",
+  "chat.sendFile": "ファイルを送信",
+  "chat.input.placeholder": "メッセージを入力...",
+  "chat.upload.progress": "アップロード中 {pct}%",
+  "chat.upload.queued": "アップロード待ち…",
+  "chat.upload.completed": "送信済み",
+  "chat.upload.canceled": "キャンセル済み",
+  "chat.upload.failedPrefix": "失敗：",
+  "chat.upload.failedHttp": "アップロードに失敗しました（{status}）",
+  "chat.upload.networkError": "ネットワークエラー：スマートフォン側のサービスに接続できません",
+
+  "toast.operationSuccess": "操作が成功しました",
+  "toast.networkError": "ネットワークエラー",
+  "toast.chat.connected": "チャットに接続しました",
+  "toast.chat.error": "チャット接続エラー",
+  "toast.chat.disconnected": "チャット接続が切断されました",
+  "toast.chat.cannotConnect": "チャット接続を確立できません",
+  "toast.chat.reconnecting": "チャット接続が切断されました。再接続しています...",
+  "toast.send.failed": "送信に失敗しました",
+  "toast.folder.nameRequired": "フォルダー名を入力してください",
+  "toast.folder.invalidName": "フォルダー名に / または \\ を含めることはできません",
+  "toast.folder.created": "フォルダーを作成しました",
+  "toast.folder.createFailed": "作成に失敗しました",
+  "toast.rename.nameRequired": "新しい名前を入力してください",
+  "toast.rename.invalidName": "名前に / または \\ を含めることはできません",
+  "toast.rename.success": "名前を変更しました",
+  "toast.rename.failed": "名前の変更に失敗しました",
+  "toast.delete.success": "削除しました",
+  "toast.delete.failed": "削除に失敗しました",
+  "toast.upload.disabled": "このデバイスではアップロードが無効になっています",
+  "toast.upload.manyFiles": "{count} 個のファイルをアップロードします",
+  "toast.upload.done": "アップロードに成功しました",
+  "toast.upload.failed": "アップロードに失敗しました",
+  "toast.download.noLink": "このファイルにはダウンロードリンクが生成されていません",
+  "toast.download.notFound": "ファイルが存在しないか、すでに削除されています",
+  "toast.download.noPermission": "このファイルをダウンロードする権限がありません",
+  "toast.download.failed": "ダウンロードに失敗しました（{status}）",
+  "toast.download.networkError": "ダウンロードに失敗しました：ネットワークエラー"
+}

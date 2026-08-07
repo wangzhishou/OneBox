@@ -1,0 +1,35 @@
+Theme settings tool: read the current theme or switch / fine-tune it.
+
+Three actions (pick by user intent):
+- list: read the current theme state. Response includes:
+  - `theme`: current colors, night mode, glass / mesh-gradient / glass_alpha / gradient_style
+  - `gradientStyles`: ALL valid values for `gradient_style` (use one of these)
+  - `nightModes`: ["Light", "Dark", "System"]
+  - `builtinPresets`: [{"id", "name"}, ...] for use with action="apply"
+- set: modify the current theme. All fields optional; pass only what to change.
+  Returns the updated theme in the same shape as the `theme` field of "list".
+- apply: switch to a built-in or user theme. Provide EITHER:
+  - `preset_id` (preferred, from list response), e.g. "builtin_sakura_pink"
+  - OR `preset_name` (case-insensitive fuzzy match, e.g. "SakuraPink", "default", "ocean")
+
+Fields for action="set" (all optional):
+- night_mode: "Light" | "Dark" | "System" (case-sensitive)
+- primary / secondary / tertiary / surface: hex color, "#RRGGBB" or "#AARRGGBB".
+  Leading "#" is optional; "0x" prefix is also accepted. Example: "#3B82F6" or "FF6A8DFF".
+- glass: STRING "true" or "false" (also accepts 1/0, yes/no, on/off) — enable glassmorphism
+- liquid_glass: STRING "true" or "false" — enable liquid glass
+- mesh_gradient: STRING "true" or "false" — enable mesh gradient background
+- gradient_style: one of the names from list response `gradientStyles`, e.g. "Lavender", "Sunset", "Ocean"
+- glass_alpha: NUMBER (not string) in [0.1, 1.0] — base glass opacity, default 1.0
+
+Examples:
+- "what is my current theme" → {"action": "list"}
+- "switch to dark mode" → {"action": "set", "night_mode": "Dark"}
+- "use the sakura pink preset" → {"action": "apply", "preset_name": "SakuraPink"}
+- "make the primary color blue" → {"action": "set", "primary": "#3B82F6"}
+- "more airy / less opaque glass" → {"action": "set", "glass_alpha": 0.75}
+- "enable lavender mesh gradient" → {"action": "set", "mesh_gradient": "true", "gradient_style": "Lavender"}
+
+On error, the response contains `reasonCode` (e.g. "invalid_color", "unknown_style",
+"unknown_preset") and `message`. Error responses may include `validOptions` (e.g. valid
+gradient styles, valid preset list) to help you self-correct on the next attempt.

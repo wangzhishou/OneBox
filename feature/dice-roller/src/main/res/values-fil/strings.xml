@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">Ihagis ang dice.</string>
+    <string name="dice_roller_roll">Iling ito.</string>
+    <string name="dice_roller_history">Kasaysayan</string>
+    <string name="dice_roller_history_empty">Walang tala ng kasaysayan.</string>
+    <string name="dice_roller_clear_history">Burahin ang Tala</string>
+    <string name="dice_roller_clear_confirm">Kumpirmahin na ang lahat ng tala ng kasaysayan ay nabura?</string>
+    <string name="dice_roller_confirm">Kumpirmahin.</string>
+    <string name="dice_roller_cancel">Kanselahin</string>
+    <string name="dice_roller_count">Bilang ng dice</string>
+    <string name="dice_roller_type">Uri ng dice</string>
+    <string name="dice_roller_total">Kabuuang puntos</string>
+    <string name="dice_roller_shake_hint">Iling ang iyong cell phone o i-click ang \"Screech.\"</string>
+    <string name="dice_roller_result_prefix">Mga resulta:</string>
+    <string name="dice_roller_description">Table dice.</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">Сначала выберите или добавьте категорию</string>
+    <string name="schedule_section_title">Расписание</string>
+    <string name="action_open_schedule">Открыть центр расписаний</string>
+    <string name="action_create_schedule">Создать локальное расписание</string>
+    <string name="schedule_creating">Создание расписания…</string>
+    <string name="schedule_missing_due_date">Сначала установите срок выполнения для этой задачи</string>
+    <string name="schedule_created_success">Локальное расписание создано</string>
+    <string name="schedule_created_failed">Не удалось создать расписание. Попробуйте позже</string>
+    <string name="dialog_delete_category_title">Удалить категорию</string>
+    <string name="dialog_delete_category_message">Вы уверены, что хотите удалить \"%1$s\"?\nВсе задачи в этой категории также будут удалены.</string>
+    <string name="dialog_delete_task_message">Вы уверены, что хотите удалить \"%1$s\"?</string>
+    <string name="cd_switch_to_list_view">Переключиться на список</string>
+    <string name="cd_switch_to_grid_view">Переключиться на сетку</string>
+    <string name="cd_edit_mode_done">Готово</string>
+    <string name="label_status">Статус</string>
+    <string name="status_overdue">Просрочено</string>
+    <string name="category_unnamed">Без названия</string>
+    <string name="snackbar_batch_tasks_deleted">Удалено задач: %1$d</string>
+    <string name="action_delete_selected_cd">Удалить выбранное</string>
+    <string name="error_todo_not_found">Задача не найдена</string>
+    <string name="error_category_not_found">Категория не найдена</string>
+    <string name="error_load_failed">Не удалось загрузить</string>
+    <string name="cd_task_completed">Завершено</string>
+    <string name="cd_task_pending">Ожидает</string>
+    <string name="cd_add_star">Добавить звезду</string>
+    <string name="cd_remove_star">Убрать звезду</string>
+    <string name="date_today">Сегодня</string>
+    <string name="date_yesterday">Вчера</string>
+    <string name="date_days_ago">%1$d дней назад</string>
+    <string name="date_tomorrow">Завтра</string>
+    <string name="date_days_later">Через %1$d дней</string>
+</resources>

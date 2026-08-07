@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 气压计无需权限，GPS 海拔校准需要 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 声明使用气压传感器（非强制） -->
+    <uses-feature
+        android:name="android.hardware.sensor.barometer"
+        android:required="false" />
+</manifest>
+

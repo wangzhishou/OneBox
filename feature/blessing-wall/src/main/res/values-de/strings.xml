@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">Segenswand</string>
+    <string name="blessing_wall_sub">Ein täglicher Tipp · Glück folgt</string>
+    <string name="blessing_record_title">Segensaufzeichnungen</string>
+    <string name="blessing_tab_wooden_fish">Ruhiger Moment</string>
+    <string name="blessing_tab_wealth_god">Viel Glück</string>
+    <string name="blessing_tab_guanyin">Frieden &amp; Freude</string>
+    <string name="blessing_tab_incense">Aufrichtiger Wunsch</string>
+    <string name="blessing_subtitle_wooden_fish">Ein täglicher Tipp · Sorgen verblassen</string>
+    <string name="blessing_subtitle_wealth_god">Glück bleibt · Alles geht gut</string>
+    <string name="blessing_subtitle_guanyin">Güte im Inneren · Frieden und Freude</string>
+    <string name="blessing_subtitle_incense">Aufrichtige Wünsche · Reichtum im Überfluss</string>
+    <string name="blessing_btn_wooden_fish">Tippen, Glück +1</string>
+    <string name="blessing_btn_wealth_god">Tippen, Vermögen +1</string>
+    <string name="blessing_btn_guanyin">Tippen, Frieden +1</string>
+    <string name="blessing_btn_incense">Tippen, Segen +1</string>
+    <string name="blessing_stat_wooden_fish">Heutige Anzahl</string>
+    <string name="blessing_stat_wealth_god">Heutige Anzahl</string>
+    <string name="blessing_stat_guanyin">Heutige Anzahl</string>
+    <string name="blessing_stat_incense">Heutige Anzahl</string>
+    <string name="blessing_count_unit">Mal</string>
+    <string name="blessing_total_count">%1$d Mal</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">Tägliche Segensstatistik</string>
+    <string name="blessing_empty_state">Noch keine Segensaufzeichnungen</string>
+    <string name="blessing_wish_edit">Notiz bearbeiten</string>
+    <string name="blessing_wish_input_label">Notiz</string>
+    <string name="blessing_wish_save">Speichern</string>
+    <string name="blessing_wish_placeholder">Noch keine Notiz</string>
+    <string name="blessing_tab_text_edit">Titel bearbeiten</string>
+    <string name="blessing_tab_title_label">Titel</string>
+    <string name="blessing_tab_subtitle_label">Untertitel</string>
+    <string name="blessing_tab_text_reset_hint">Leer lassen, um Standard wiederherzustellen</string>
+    <string name="blessing_history_readonly_hint">Verlauf, nur anzeigen</string>
+    <string name="blessing_record_note_prefix">Hinweis: %1$s</string>
+    <string name="blessing_sound_on">Ton an</string>
+    <string name="blessing_sound_off">Ton aus</string>
+    <string name="blessing_share">Teilen</string>
+</resources>

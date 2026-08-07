@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">30 saniye hayatta kal</string>
+    <string name="survive_30s_ready">Hazır mısın?</string>
+    <string name="survive_30s_instruction">Mavi topu sürükleyerek engellerden kaç\nHer yönde serbestçe hareket et. Kazanmak için 30 saniye hayatta kal!</string>
+    <string name="survive_30s_instruction_bonus">Yakın kaçışlar şarj biriktirir. Her 3 yakın kaçış 1 kalkan verir ve bir kalkan sizin için bir vuruşu engeller.</string>
+    <string name="survive_30s_start">Başla</string>
+    <string name="survive_30s_game_over">Oyun Bitti!</string>
+    <string name="survive_30s_survived_time">Hayatta kalınan: %.1f sn</string>
+    <string name="survive_30s_new_record">Yeni Rekor!</string>
+    <string name="survive_30s_win">Kazandın!</string>
+    <string name="survive_30s_win_desc">30 saniye hayatta kaldın!</string>
+    <string name="survive_30s_retry">Tekrar Dene</string>
+    <string name="survive_30s_best_time">En İyi: %.1fsn</string>
+    <string name="survive_30s_phase">Aşama</string>
+    <string name="survive_30s_phase_warmup">Isınma</string>
+    <string name="survive_30s_phase_rush">Hücum</string>
+    <string name="survive_30s_phase_storm">Fırtına</string>
+    <string name="survive_30s_shield">Kalkan</string>
+    <string name="survive_30s_charge">Şarj</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">Yakın</string>
+    <string name="survive_30s_near_miss_count">Yakın kaçışlar: %1$d</string>
+    <string name="survive_30s_danger_low">Şimdilik stabil. Alanını koru.</string>
+    <string name="survive_30s_danger_medium">Baskı artıyor. Karşıya geçmeye hazır ol.</string>
+    <string name="survive_30s_danger_high">Tehlike! Yakın kaçışlarla şarj biriktir veya hemen çıkış yap.</string>
+</resources>

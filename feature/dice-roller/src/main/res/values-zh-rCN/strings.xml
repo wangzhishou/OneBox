@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">投骰子</string>
+    <string name="dice_roller_roll">摇一摇</string>
+    <string name="dice_roller_history">历史记录</string>
+    <string name="dice_roller_history_empty">暂无历史记录</string>
+    <string name="dice_roller_clear_history">清空记录</string>
+    <string name="dice_roller_clear_confirm">确认清空所有历史记录？</string>
+    <string name="dice_roller_confirm">确认</string>
+    <string name="dice_roller_cancel">取消</string>
+    <string name="dice_roller_count">骰子数量</string>
+    <string name="dice_roller_type">骰子类型</string>
+    <string name="dice_roller_total">总点数</string>
+    <string name="dice_roller_shake_hint">摇动手机或点击"摇一摇"</string>
+    <string name="dice_roller_result_prefix">结果：</string>
+    <string name="dice_roller_description">桌游骰子</string>
+</resources>
+

@@ -1,0 +1,5 @@
+• Nuevos idiomas: español y portugués de Brasil
+• El selector de ubicación ahora usa el autocompletado de Google Places
+• Personaliza los prompts del sistema libremente, sin VIP
+• La página web de transferencia de archivos ahora está localizada
+• Correcciones de errores y mejoras de rendimiento

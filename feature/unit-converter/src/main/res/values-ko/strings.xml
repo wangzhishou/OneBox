@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">유틸리티 계산기</string>
+    <string name="unit_converter_from">FROM</string>
+    <string name="unit_converter_to">TO</string>
+    <string name="unit_converter_swap">환전</string>
+    <string name="unit_converter_other_conversions">기타 %s 변환</string>
+    <string name="unit_converter_currency_disclaimer">• 환율은 참고용 기준값으로, 실시간 데이터가 아닙니다</string>
+    <string name="unit_converter_select_category">변환 유형 선택</string>
+    <string name="unit_converter_select_unit">단위 선택</string>
+    <string name="unit_converter_close">닫기</string>
+    <string name="unit_converter_tab_calculator">계산기</string>
+    <string name="unit_converter_tab_converter">변환기</string>
+    <string name="unit_converter_tab_relative">상대</string>
+    <string name="unit_converter_invalid_expression">잘못된 수식입니다. 확인 후 다시 시도하세요</string>
+    <string name="unit_converter_calculator_expression">현재 수식</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">괄호, 백분율 및 사칙연산 지원</string>
+    <string name="unit_converter_calculator_history">최근 계산</string>
+    <string name="unit_converter_clear">지우기</string>
+    <string name="unit_converter_backspace">백스페이스</string>
+    <string name="unit_converter_equals">계산</string>
+    <string name="unit_converter_reference_subtitle">현재 입력에 대한 일반적인 참조값 빠르게 확인</string>
+    <string name="unit_converter_relative_path">관계 경로</string>
+    <string name="unit_converter_relative_path_placeholder">나</string>
+    <string name="unit_converter_relative_identity">내 신분</string>
+    <string name="unit_converter_relative_identity_hint">신분은 배우자 및 인척 호칭에 영향을 줍니다</string>
+    <string name="unit_converter_relative_male">남성</string>
+    <string name="unit_converter_relative_female">여성</string>
+    <string name="unit_converter_relative_generate">관계 생성</string>
+    <string name="unit_converter_relative_empty">먼저 관계 경로를 선택하세요</string>
+    <string name="unit_converter_converter_clear">지우기</string>
+    <string name="unit_converter_relative_result_label">결과 친족 관계</string>
+    <string name="unit_converter_negate">부정</string>
+</resources>

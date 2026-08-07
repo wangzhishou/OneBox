@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="teleprompter_title">Theatrics</string>
+    <string name="teleprompter_my_scripts">My Script</string>
+    <string name="teleprompter_recent_scripts">Latest communications</string>
+    <string name="teleprompter_scripts_total">Total   %d Scripts</string>
+    <string name="teleprompter_empty">No script, click on bottom right + new</string>
+    <string name="teleprompter_word_count"> %d word</string>
+    <string name="teleprompter_new_script">New Script</string>
+    <string name="teleprompter_edit_script">Edit Script</string>
+    <string name="teleprompter_title_hint">Script title</string>
+    <string name="teleprompter_content_hint">Enter here the content of the introduction...</string>
+    <string name="teleprompter_save">Save</string>
+    <string name="teleprompter_play">Play</string>
+    <string name="teleprompter_delete">Delete</string>
+    <string name="teleprompter_delete_confirm">Confirm to delete the script?</string>
+    <string name="teleprompter_confirm">Confirm.</string>
+    <string name="teleprompter_cancel">Cancel</string>
+    <string name="teleprompter_saved">Script saved</string>
+    <string name="teleprompter_deleted">Script deleted</string>
+    <string name="teleprompter_title_required">Please enter the script title</string>
+
+    <!-- Player -->
+    <string name="teleprompter_progress">Progress</string>
+    <string name="teleprompter_font_size">Character</string>
+    <string name="teleprompter_scroll_speed">Scroll speed</string>
+    <string name="teleprompter_mirror">Mirror</string>
+    <string name="teleprompter_reset">Reset</string>
+    <string name="teleprompter_exit">Exit</string>
+    <string name="teleprompter_pause">Pause</string>
+    <string name="teleprompter_resume">Go on.</string>
+    <string name="teleprompter_tap_to_control">Click to display control panel</string>
+    <string name="teleprompter_more_actions">More actions</string>
+
+    <!-- AI Tool: manage_teleprompter -->
+    <string name="agent_tool_manage_teleprompter_title">Teleprompter Script Manager</string>
+    <string name="agent_tool_manage_teleprompter_summary">Query, create, update and delete teleprompter scripts, with direct links to edit or play</string>
+    <string name="agent_tool_manage_teleprompter_param_action">Action to perform: list all scripts; get script detail; create a script; update a script; delete a script</string>
+    <string name="agent_tool_manage_teleprompter_param_script_id">Script ID, required for get / update / delete; obtain it from the list result</string>
+    <string name="agent_tool_manage_teleprompter_param_title">Script title, required for create; optional for update (original title kept when omitted)</string>
+    <string name="agent_tool_manage_teleprompter_param_content">Script content, recommended for create; optional for update (original content kept when omitted)</string>
+    <string name="agent_tool_manage_teleprompter_created">Script \"%s\" created</string>
+    <string name="agent_tool_manage_teleprompter_updated">Script \"%s\" updated</string>
+    <string name="agent_tool_manage_teleprompter_deleted">Script deleted</string>
+    <string name="agent_tool_manage_teleprompter_not_found">Script not found: %s</string>
+    <string name="agent_tool_manage_teleprompter_missing_script_id">Missing required parameter: script_id</string>
+    <string name="agent_tool_manage_teleprompter_missing_title">Missing required parameter: title</string>
+    <string name="agent_tool_manage_teleprompter_unknown_action">Unsupported action. Allowed values: list / get / create / update / delete</string>
+    <string name="agent_tool_manage_teleprompter_failed">Teleprompter script operation failed: %s</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_label_list">Open Teleprompter</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_guidance_list">View all teleprompter scripts</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_label_edit">Edit Script</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_guidance_edit">Open the editor for this script</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_label_play">Play Script</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_guidance_play">Start teleprompter playback now</string>
+</resources>

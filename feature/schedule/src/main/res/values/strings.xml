@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Schedule Hub</string>
+    <string name="schedule_sync_card_title">Sync foundation is ready</string>
+    <string name="schedule_sync_card_description">This module already owns its event model, sync cursor state, and todo bridge fields, so Google Calendar can be added later without polluting the almanac or todo modules.</string>
+    <string name="schedule_sync_ready">Sync cursor saved</string>
+    <string name="schedule_sync_not_connected">No account connected</string>
+    <string name="schedule_event_count_label">%1$d events</string>
+    <string name="schedule_linked_task_chip">Todo context linked</string>
+    <string name="schedule_last_error_label">Last error: %1$s</string>
+    <string name="schedule_action_card_title">Start with a clean local event domain</string>
+    <string name="schedule_action_create_local">Create local event</string>
+    <string name="schedule_action_create_focus">Create event from focus date</string>
+    <string name="schedule_action_open_todo">Open todo</string>
+    <string name="schedule_action_open_calendar">Open calendar</string>
+    <string name="schedule_event_section_title">Events</string>
+    <string name="schedule_empty_title">No schedule events yet</string>
+    <string name="schedule_empty_description">Start with local events first, then add Google account auth, delta sync, and conflict handling incrementally.</string>
+    <string name="schedule_provider_local">Local</string>
+    <string name="schedule_provider_system">System Calendar</string>
+    <string name="schedule_provider_google">Google Calendar</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Local only</string>
+    <string name="schedule_status_pending_upload">Pending upload</string>
+    <string name="schedule_status_synced">Synced</string>
+    <string name="schedule_status_pending_delete">Pending delete</string>
+    <string name="schedule_status_conflict">Conflict</string>
+    <string name="schedule_status_failed">Sync failed</string>
+    <string name="schedule_linked_task_badge">Task bridge</string>
+    <string name="schedule_quick_event_title">New local event</string>
+    <string name="schedule_focus_event_title">Focus event</string>
+    <string name="schedule_linked_task_description">Linked todo: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Write directly to system calendar</string>
+    <string name="schedule_export_to_system_calendar">Add to system calendar</string>
+    <string name="schedule_system_calendar_unavailable">No calendar app is available on this device</string>
+    <string name="schedule_no_writable_calendar">No writable system calendar is available</string>
+    <string name="schedule_saved_to_system_calendar">Saved to system calendar</string>
+    <string name="schedule_save_to_system_calendar_failed">Failed to save to system calendar. Please try again later</string>
+    <string name="schedule_calendar_permission_denied">Calendar permission is required for direct system calendar writing</string>
+    <string name="schedule_choose_calendar_title">Choose a target calendar</string>
+    <string name="schedule_calendar_primary_badge">Primary</string>
+    <string name="schedule_dialog_close">Close</string>
+    <string name="schedule_permission_dialog_title">Calendar permission required</string>
+    <string name="schedule_permission_dialog_message">Please enable calendar read/write permissions in system settings to write directly into the system calendar.</string>
+    <string name="schedule_open_settings">Open settings</string>
+</resources>
+

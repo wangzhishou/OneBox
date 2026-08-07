@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">Registros</string>
+    <string name="habit_tab_checkin">Registrar</string>
+    <string name="habit_tab_stats">Estadísticas</string>
+    <string name="habit_add">Añadir hábito</string>
+    <string name="habit_summary_rate">Tasa de registro</string>
+    <string name="habit_summary_done">Hecho</string>
+    <string name="habit_summary_missed">Pendiente</string>
+    <string name="habit_today_section">Registros de hoy</string>
+    <string name="habit_edit_mode">Editar</string>
+    <string name="habit_edit_done">Hecho</string>
+    <string name="habit_empty_list">Aún no hay hábitos. Toca + para crear uno.</string>
+    <string name="habit_delete_habit">Eliminar hábito</string>
+    <string-array name="habit_weekdays_short">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mié</item>
+        <item>Jue</item>
+        <item>Vie</item>
+        <item>Sáb</item>
+        <item>Dom</item>
+    </string-array>
+    <string name="habit_stats_week_trend">Esta semana</string>
+    <string name="habit_stats_distribution">Distribución</string>
+    <string name="habit_stats_rate_trend">Tendencia de tasa de registro</string>
+    <string name="habit_stats_not_started">No iniciado</string>
+    <string name="habit_stats_total_habits">Total de hábitos</string>
+    <string name="habit_stats_empty">Sin datos aún</string>
+    <string name="habit_last_7_days">Últimos 7 días</string>
+    <string name="habit_last_30_days">Últimos 30 días</string>
+    <string name="habit_add_title">Nuevo hábito</string>
+    <string name="habit_edit_title">Editar hábito</string>
+    <string name="habit_edit_name_label">Nombre del hábito</string>
+    <string name="habit_edit_name_hint">Ingresa el nombre del hábito</string>
+    <string name="habit_edit_icon_label">Elige un icono</string>
+    <string name="habit_edit_color_label">Elige un color</string>
+    <string name="habit_edit_color_auto_hint">Color de tema automático cuando no está seleccionado</string>
+    <string name="habit_edit_repeat_label">Repetir</string>
+    <string name="habit_repeat_daily">Todos los días</string>
+    <string name="habit_repeat_weekly">Semanal</string>
+    <string name="habit_repeat_monthly">Mensual</string>
+    <string name="habit_repeat_custom">Personalizado</string>
+    <string name="habit_repeat_daily_desc">Se repite todos los días</string>
+    <string name="habit_repeat_times_week_label">Veces por semana</string>
+    <string name="habit_repeat_times_month_label">Veces por mes</string>
+    <string name="habit_edit_reminder_label">Recordatorio</string>
+    <string name="habit_edit_reminder_none">Sin recordatorio</string>
+    <string name="habit_edit_reminder_subtitle">Recuérdame registrarme a esta hora</string>
+    <string name="habit_edit_reminder_clear">Borrar</string>
+    <string name="habit_edit_note_label">Nota (opcional)</string>
+    <string name="habit_edit_note_hint">Añade una nota...</string>
+    <string name="habit_edit_stats_label">Registrar estadísticas de registro</string>
+    <string name="habit_edit_stats_subtitle">Registrar tasa de registro y rachas cuando esté activado</string>
+    <string name="habit_save">Guardar</string>
+    <string name="habit_name_required">Por favor ingresa un nombre para el hábito</string>
+    <string name="habit_saved">Guardado</string>
+    <string name="habit_freq_daily">Diario</string>
+    <string name="habit_freq_weekly_times">%1$d veces a la semana</string>
+    <string name="habit_freq_monthly_times">%1$d veces al mes</string>
+    <string name="habit_preset_drink_water">Beber 8 vasos de agua</string>
+    <string name="habit_preset_wake_early">Despertar temprano</string>
+    <string name="habit_preset_exercise">Ejercicio</string>
+    <string name="habit_preset_reading">Lectura</string>
+    <string name="habit_preset_meditation">Meditación</string>
+    <string name="habit_preset_no_stay_up">No trasnochar</string>
+    <string name="habit_notification_channel_name">Recordatorios de hábitos</string>
+    <string name="habit_notification_channel_desc">Recordatorios diarios de registro de hábitos</string>
+    <string name="habit_notification_text">Hora de registrar: %1$s</string>
+    <string name="habit_streak_days">Racha de %1$d días</string>
+    <string name="agent_tool_add_habit_title">Añadir hábito</string>
+    <string name="agent_tool_add_habit_summary">Crea un nuevo hábito en el rastreador de hábitos</string>
+    <string name="agent_tool_add_habit_description">Crea un nuevo hábito en el rastreador de hábitos. Admite nombre personalizado, icono, frecuencia de repetición (diaria / N veces por semana / N veces por mes / días de semana personalizados), hora de recordatorio opcional y nota.</string>
+    <string name="agent_tool_add_habit_param_name">Nombre del hábito, p. ej. \"Beber 8 vasos de agua\"</string>
+    <string name="agent_tool_add_habit_param_icon">Clave del icono, una de: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">Tipo de repetición: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">Veces por semana o por mes, 1-30, solo para weekly_times / monthly_times</string>
+    <string name="agent_tool_add_habit_param_weekdays">Días de semana para custom_weekdays, matriz de 1-7 (1=lunes, 7=domingo)</string>
+    <string name="agent_tool_add_habit_param_remind_time">Hora de recordatorio diario en HH:mm (24h), opcional</string>
+    <string name="agent_tool_add_habit_param_note">Nota opcional</string>
+    <string name="agent_tool_add_habit_success">Hábito creado</string>
+    <string name="agent_tool_add_habit_failed">Error al crear el hábito: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>hábito</item>
+        <item>añadir hábito</item>
+        <item>crear hábito</item>
+        <item>registrar</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>Añade un hábito para beber 8 vasos de agua cada día</item>
+        <item>Crea un hábito para correr 3 veces por semana</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">Registrar hábito</string>
+    <string name="agent_tool_check_in_habit_summary">Registra un hábito para un día determinado</string>
+    <string name="agent_tool_check_in_habit_description">Marca un hábito como registrado para un día determinado (hoy por defecto). Localiza el hábito por habit_id o por habit_name difuso. Registrar el mismo día dos veces no tiene efecto.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">ID del hábito. Prefiere esto cuando se conozca; de lo contrario se usa habit_name</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">Nombre del hábito, coincidencia difusa cuando no se proporciona habit_id</string>
+    <string name="agent_tool_check_in_habit_param_date">Fecha de registro, yyyy-MM-dd, por defecto hoy, no debe ser en el futuro</string>
+    <string name="agent_tool_check_in_habit_success">Registrado</string>
+    <string name="agent_tool_check_in_habit_already">Ya registrado ese día</string>
+    <string name="agent_tool_check_in_habit_not_found">Hábito no encontrado: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">Error al registrar: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>hábito</item>
+        <item>registrar</item>
+        <item>hecho</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>Registrar mi hábito de correr hoy</item>
+        <item>Marcar lectura como hecha para ayer</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">Consultar hábitos</string>
+    <string name="agent_tool_query_habits_summary">Listar hábitos con el estado de hoy y la tasa semanal de registro</string>
+    <string name="agent_tool_query_habits_description">Consultar la lista de hábitos: estado de registro de hoy para cada hábito, rachas de hábitos diarios y la tasa general de registro de esta semana.</string>
+    <string name="agent_tool_query_habits_section_today">Hoy</string>
+    <string name="agent_tool_query_habits_weekly_rate">Tasa semanal</string>
+    <string name="agent_tool_query_habits_empty">Aún no hay hábitos</string>
+    <string name="agent_tool_query_habits_failed">Error al consultar hábitos: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>hábito</item>
+        <item>estado de registro</item>
+        <item>racha</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>¿Qué hábitos quedan hoy?</item>
+        <item>Mostrar mi tasa de registro de hábitos esta semana</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">Fecha</string>
+    <string name="agent_tool_habit_label_repeat">Repetir</string>
+    <string name="agent_tool_habit_label_reminder">Recordatorio</string>
+    <string name="agent_tool_habit_label_name">Nombre</string>
+    <string name="agent_tool_habit_open_link">Abrir Habit Tracker</string>
+    <string name="agent_tool_habit_edit_link">Ver hábito</string>
+    <string name="agent_tool_unknown_error">Error desconocido</string>
+</resources>

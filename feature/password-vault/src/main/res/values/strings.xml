@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="password_vault_title">Password Vault</string>
+    <string name="password_vault_subtitle">Securely store passwords for sites, apps, and door codes</string>
+    <string name="password_vault_locked">Vault is locked</string>
+    <string name="password_vault_locked_desc">Enter your master password to unlock. All data is encrypted with it, and the vault locks automatically when you leave.</string>
+    <string name="password_vault_unlock_title">Unlock vault</string>
+    <string name="password_vault_unlock_desc">Enter your master password to unlock or set up the vault.</string>
+    <string name="password_vault_master_password">Master password</string>
+    <string name="password_vault_unlock">Unlock</string>
+    <string name="password_vault_cancel">Cancel</string>
+    <string name="password_vault_lock">Lock</string>
+    <string name="password_vault_wrong_password">Wrong master password. Cannot decrypt.</string>
+    <string name="password_vault_empty_title">No saved passwords yet</string>
+    <string name="password_vault_empty_desc">Tap the button below to add your first secure entry.</string>
+    <string name="password_vault_add_entry">Add entry</string>
+    <string name="password_vault_add_first_entry">Add your first entry</string>
+    <string name="password_vault_new_entry">New entry</string>
+    <string name="password_vault_edit_entry">Edit entry</string>
+    <string name="password_vault_save">Save</string>
+    <string name="password_vault_entry_title">Name (site / app / location)</string>
+    <string name="password_vault_entry_category">Category</string>
+    <string name="password_vault_entry_account">Account / username</string>
+    <string name="password_vault_entry_password">Password</string>
+    <string name="password_vault_entry_note">Note</string>
+    <string name="password_vault_secret_fields">Secret fields</string>
+    <string name="password_vault_new_field_label">Field name</string>
+    <string name="password_vault_new_field_value">Field value</string>
+    <string name="password_vault_add_field">Add secret field</string>
+    <string name="password_vault_field_label">Field name</string>
+    <string name="password_vault_field_value">Field value</string>
+    <string name="password_vault_remove_field">Remove field</string>
+    <string name="password_vault_show_password">Show password</string>
+    <string name="password_vault_hide_password">Hide password</string>
+    <string name="password_vault_copy_password">Copy password</string>
+    <string name="password_vault_delete_entry">Delete entry</string>
+    <string name="password_vault_delete_title">Confirm delete</string>
+    <string name="password_vault_delete_message">Delete “%1$s”? This cannot be undone.</string>
+    <string name="password_vault_delete">Delete</string>
+    <string name="password_vault_default_category">Default</string>
+    <string name="password_vault_copy_account">Copy account</string>
+    <string name="password_vault_copied">Copied to clipboard</string>
+    <string name="password_vault_locked_notice">Content encrypted</string>
+    <string name="password_vault_locked_notice_desc">Password and secret fields are encrypted with your master password. Unlock to view and copy.</string>
+    <string name="password_vault_unlock_now">Unlock now</string>
+    <string name="password_vault_error_not_unlocked">Vault is locked</string>
+    <string name="password_vault_error_entry_not_found">Entry not found, or wrong master password</string>
+
+    <!-- Category management -->
+    <string name="password_vault_category_manage">Manage categories</string>
+    <string name="password_vault_category_empty">No categories yet. Tap the top right to add one.</string>
+    <string name="password_vault_category_default_login">Login</string>
+    <string name="password_vault_category_default_bank">Bank</string>
+    <string name="password_vault_category_default_email">Email</string>
+    <string name="password_vault_category_default_wifi">Wi-Fi</string>
+    <string name="password_vault_category_default_other">Other</string>
+    <string name="password_vault_filter_all">All</string>
+    <string name="password_vault_filter_empty">No entries match this filter</string>
+    <string name="password_vault_filter_clear">Clear filter</string>
+    <string name="password_vault_search_placeholder">Search name or account</string>
+
+    <!-- Password strength -->
+    <string name="password_vault_strength_title">Password strength</string>
+    <string name="password_vault_strength_empty">Not entered</string>
+    <string name="password_vault_strength_weak">Weak</string>
+    <string name="password_vault_strength_fair">Fair</string>
+    <string name="password_vault_strength_good">Good</string>
+    <string name="password_vault_strength_strong">Strong</string>
+    <string name="password_vault_strength_suggestion_length">Use at least 12 characters</string>
+    <string name="password_vault_strength_suggestion_case">Mix upper and lower case</string>
+    <string name="password_vault_strength_suggestion_digit">Add numbers</string>
+    <string name="password_vault_strength_suggestion_symbol">Add special characters</string>
+    <string name="password_vault_strength_suggestion_common">Avoid common weak passwords</string>
+
+    <!-- Password generator -->
+    <string name="password_vault_generate_password">Generate password</string>
+    <string name="password_vault_generator_title">Generate strong password</string>
+    <string name="password_vault_generator_length">Length</string>
+    <string name="password_vault_generator_uppercase">Uppercase (A–Z)</string>
+    <string name="password_vault_generator_lowercase">Lowercase (a–z)</string>
+    <string name="password_vault_generator_digits">Digits (0–9)</string>
+    <string name="password_vault_generator_symbols">Symbols (!@#…)</string>
+    <string name="password_vault_generator_exclude_ambiguous">Exclude ambiguous characters (0/O, 1/l/I)</string>
+    <string name="password_vault_generator_regenerate">Regenerate</string>
+    <string name="password_vault_generator_charset_invalid">Select at least one character set</string>
+    <string name="password_vault_generator_use">Use this password</string>
+</resources>

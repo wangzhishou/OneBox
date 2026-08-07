@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Schedule Hub</string>
+    <string name="schedule_sync_card_title">Handa na ang sync foundation</string>
+    <string name="schedule_sync_card_description">Ang modyul na ito ay may sariling event model, sync cursor state, at todo bridge fields, kaya maaaring idagdag ang Google Calendar sa ibang pagkakataon nang hindi nadudumihan ang almanac o todo modules.</string>
+    <string name="schedule_sync_ready">Na-save ang sync cursor</string>
+    <string name="schedule_sync_not_connected">Walang konektadong account</string>
+    <string name="schedule_event_count_label">%1$d mga event</string>
+    <string name="schedule_linked_task_chip">Naka-link ang todo context</string>
+    <string name="schedule_last_error_label">Huling error: %1$s</string>
+    <string name="schedule_action_card_title">Magsimula sa malinis na lokal na event domain</string>
+    <string name="schedule_action_create_local">Gumawa ng lokal na event</string>
+    <string name="schedule_action_create_focus">Gumawa ng event mula sa focus date</string>
+    <string name="schedule_action_open_todo">Buksan ang todo</string>
+    <string name="schedule_action_open_calendar">Buksan ang kalendaryo</string>
+    <string name="schedule_event_section_title">Mga Event</string>
+    <string name="schedule_empty_title">Wala pang schedule events</string>
+    <string name="schedule_empty_description">Magsimula sa mga lokal na event muna, pagkatapos ay idagdag ang Google account auth, delta sync, at conflict handling nang paunti-unti.</string>
+    <string name="schedule_provider_local">Lokal</string>
+    <string name="schedule_provider_system">System Calendar</string>
+    <string name="schedule_provider_google">Google Calendar</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Lokal lamang</string>
+    <string name="schedule_status_pending_upload">Nakapending na upload</string>
+    <string name="schedule_status_synced">Na-sync</string>
+    <string name="schedule_status_pending_delete">Nakapending na delete</string>
+    <string name="schedule_status_conflict">Salungatan</string>
+    <string name="schedule_status_failed">Nabigo ang sync</string>
+    <string name="schedule_linked_task_badge">Task bridge</string>
+    <string name="schedule_quick_event_title">Bagong lokal na event</string>
+    <string name="schedule_focus_event_title">Focus event</string>
+    <string name="schedule_linked_task_description">Naka-link na todo: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Direktang isulat sa kalendaryo ng system</string>
+    <string name="schedule_export_to_system_calendar">Idagdag sa kalendaryo ng system</string>
+    <string name="schedule_system_calendar_unavailable">Walang available na calendar app sa device na ito</string>
+    <string name="schedule_no_writable_calendar">Walang available na writable system calendar</string>
+    <string name="schedule_saved_to_system_calendar">Nai-save sa kalendaryo ng system</string>
+    <string name="schedule_save_to_system_calendar_failed">Nabigong i-save sa kalendaryo ng system. Pakisubukang muli mamaya</string>
+    <string name="schedule_calendar_permission_denied">Kinakailangan ang pahintulot sa kalendaryo para sa direktang pagsusulat sa system calendar</string>
+    <string name="schedule_choose_calendar_title">Pumili ng target na kalendaryo</string>
+    <string name="schedule_calendar_primary_badge">Pangunahin</string>
+    <string name="schedule_dialog_close">Isara</string>
+    <string name="schedule_permission_dialog_title">Kinakailangan ang pahintulot sa kalendaryo</string>
+    <string name="schedule_permission_dialog_message">Paki-enable ang read/write permissions sa kalendaryo sa mga setting ng system upang direktang makasulat sa system calendar.</string>
+    <string name="schedule_open_settings">Buksan ang mga setting</string>
+</resources>

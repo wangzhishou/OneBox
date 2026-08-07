@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">Perluas</string>
+    <string name="collapse">Simpan.</string>
+    <string name="dialog_clear_recents_title">Bersihkan Terbaru</string>
+    <string name="dialog_clear_recents_message">Bersihkan semua catatan akses terbaru? Tindakan ini tidak dapat dibatalkan.</string>
+</resources>

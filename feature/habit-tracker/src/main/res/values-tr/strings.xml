@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">Kontrol Etmeler</string>
+    <string name="habit_tab_checkin">Kontrol Et</string>
+    <string name="habit_tab_stats">İstatistikler</string>
+    <string name="habit_add">Alışkanlık ekle</string>
+    <string name="habit_summary_rate">Kontrol etme oranı</string>
+    <string name="habit_summary_done">Tamamlandı</string>
+    <string name="habit_summary_missed">Beklemede</string>
+    <string name="habit_today_section">Bugünün kontrol etmeleri</string>
+    <string name="habit_edit_mode">Düzenle</string>
+    <string name="habit_edit_done">Tamamlandı</string>
+    <string name="habit_empty_list">Henüz alışkanlık yok. Oluşturmak için + simgesine dokunun.</string>
+    <string name="habit_delete_habit">Alışkanlığı sil</string>
+    <string-array name="habit_weekdays_short">
+        <item>Pzt</item>
+        <item>Sal</item>
+        <item>Çar</item>
+        <item>Per</item>
+        <item>Cum</item>
+        <item>Cmt</item>
+        <item>Paz</item>
+    </string-array>
+    <string name="habit_stats_week_trend">Bu hafta</string>
+    <string name="habit_stats_distribution">Dağılım</string>
+    <string name="habit_stats_rate_trend">Kontrol etme oranı eğilimi</string>
+    <string name="habit_stats_not_started">Başlamadı</string>
+    <string name="habit_stats_total_habits">Toplam alışkanlıklar</string>
+    <string name="habit_stats_empty">Henüz veri yok</string>
+    <string name="habit_last_7_days">Son 7 gün</string>
+    <string name="habit_last_30_days">Son 30 gün</string>
+    <string name="habit_add_title">Yeni Alışkanlık</string>
+    <string name="habit_edit_title">Alışkanlığı Düzenle</string>
+    <string name="habit_edit_name_label">Alışkanlık adı</string>
+    <string name="habit_edit_name_hint">Alışkanlık adını girin</string>
+    <string name="habit_edit_icon_label">Simge seçin</string>
+    <string name="habit_edit_color_label">Renk seçin</string>
+    <string name="habit_edit_color_auto_hint">Seçilmediğinde otomatik tema rengi</string>
+    <string name="habit_edit_repeat_label">Tekrarla</string>
+    <string name="habit_repeat_daily">Her gün</string>
+    <string name="habit_repeat_weekly">Haftalık</string>
+    <string name="habit_repeat_monthly">Aylık</string>
+    <string name="habit_repeat_custom">Özel</string>
+    <string name="habit_repeat_daily_desc">Her gün tekrarlanır</string>
+    <string name="habit_repeat_times_week_label">Haftada kaç kez</string>
+    <string name="habit_repeat_times_month_label">Ayda kaç kez</string>
+    <string name="habit_edit_reminder_label">Hatırlatıcı</string>
+    <string name="habit_edit_reminder_none">Hatırlatıcı yok</string>
+    <string name="habit_edit_reminder_subtitle">Bu saatte kontrol etmemi hatırlat</string>
+    <string name="habit_edit_reminder_clear">Temizle</string>
+    <string name="habit_edit_note_label">Not (isteğe bağlı)</string>
+    <string name="habit_edit_note_hint">Not ekle...</string>
+    <string name="habit_edit_stats_label">Kontrol istatistiklerini takip et</string>
+    <string name="habit_edit_stats_subtitle">Açıkken kontrol oranını ve serileri takip et</string>
+    <string name="habit_save">Kaydet</string>
+    <string name="habit_name_required">Lütfen bir alışkanlık adı girin</string>
+    <string name="habit_saved">Kaydedildi</string>
+    <string name="habit_freq_daily">Günlük</string>
+    <string name="habit_freq_weekly_times">Haftada %1$d kez</string>
+    <string name="habit_freq_monthly_times">Ayda %1$d kez</string>
+    <string name="habit_preset_drink_water">8 bardak su iç</string>
+    <string name="habit_preset_wake_early">Erken uyan</string>
+    <string name="habit_preset_exercise">Egzersiz yap</string>
+    <string name="habit_preset_reading">Okuma</string>
+    <string name="habit_preset_meditation">Meditasyon</string>
+    <string name="habit_preset_no_stay_up">Geç saatlere kadar kalma</string>
+    <string name="habit_notification_channel_name">Alışkanlık hatırlatıcıları</string>
+    <string name="habit_notification_channel_desc">Günlük alışkanlık kontrol hatırlatıcıları</string>
+    <string name="habit_notification_text">Kontrol zamanı: %1$s</string>
+    <string name="habit_streak_days">%1$d günlük seri</string>
+    <string name="agent_tool_add_habit_title">Alışkanlık Ekle</string>
+    <string name="agent_tool_add_habit_summary">Alışkanlık takipçisinde yeni bir alışkanlık oluşturun</string>
+    <string name="agent_tool_add_habit_description">Alışkanlık takipçisinde yeni bir alışkanlık oluşturun. Özel ad, simge, tekrar sıklığı (günlük / haftada N kez / ayda N kez / özel hafta günleri), isteğe bağlı günlük hatırlatma saati ve not destekler.</string>
+    <string name="agent_tool_add_habit_param_name">Alışkanlık adı, örn. \"Günde 8 bardak su iç\"</string>
+    <string name="agent_tool_add_habit_param_icon">Simge anahtarı, şunlardan biri: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">Tekrar türü: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">Haftada veya ayda kez sayısı, 1-30, yalnızca weekly_times / monthly_times için</string>
+    <string name="agent_tool_add_habit_param_weekdays">custom_weekdays için hafta günleri, 1-7 dizisi (1=Pazartesi, 7=Pazar)</string>
+    <string name="agent_tool_add_habit_param_remind_time">Günlük hatırlatma saati HH:mm (24 saat), isteğe bağlı</string>
+    <string name="agent_tool_add_habit_param_note">İsteğe bağlı not</string>
+    <string name="agent_tool_add_habit_success">Alışkanlık oluşturuldu</string>
+    <string name="agent_tool_add_habit_failed">Alışkanlık oluşturulamadı: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>alışkanlık</item>
+        <item>alışkanlık ekle</item>
+        <item>alışkanlık oluştur</item>
+        <item>kontrol et</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>Her gün 8 bardak su içmek için bir alışkanlık ekleyin</item>
+        <item>Haftada 3 kez koşmak için bir alışkanlık oluşturun</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">Alışkanlığı Kontrol Et</string>
+    <string name="agent_tool_check_in_habit_summary">Belirli bir gün için bir alışkanlığı kontrol edin</string>
+    <string name="agent_tool_check_in_habit_description">Belirli bir gün için (varsayılan bugün) bir alışkanlığı kontrol edilmiş olarak işaretleyin. Alışkanlığı habit_id veya bulanık habit_name ile bulun. Aynı günü iki kez kontrol etmek işlem yapmaz.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">Alışkanlık Kimliği. Bilindiğinde bunu tercih edin; aksi halde habit_name kullanılır</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">Alışkanlık adı, habit_id yoksa bulanık eşleştirilir</string>
+    <string name="agent_tool_check_in_habit_param_date">Kontrol tarihi, yyyy-MM-dd, varsayılan bugün, gelecekte olmamalıdır</string>
+    <string name="agent_tool_check_in_habit_success">Giriş yapıldı</string>
+    <string name="agent_tool_check_in_habit_already">O gün zaten giriş yapıldı</string>
+    <string name="agent_tool_check_in_habit_not_found">Alışkanlık bulunamadı: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">Giriş yapılamadı: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>alışkanlık</item>
+        <item>giriş yap</item>
+        <item>tamamlandı</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>Bugünkü koşu alışkanlığım için giriş yap</item>
+        <item>Dünkü okuma alışkanlığını tamamlandı olarak işaretle</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">Alışkanlıkları Sorgula</string>
+    <string name="agent_tool_query_habits_summary">Bugünün durumu ve haftalık giriş oranı ile alışkanlıkları listele</string>
+    <string name="agent_tool_query_habits_description">Alışkanlık listesini sorgula: her alışkanlığın bugünkü giriş durumu, günlük alışkanlık serileri ve bu haftanın genel giriş oranı.</string>
+    <string name="agent_tool_query_habits_section_today">Bugün</string>
+    <string name="agent_tool_query_habits_weekly_rate">Haftalık oran</string>
+    <string name="agent_tool_query_habits_empty">Henüz alışkanlık yok</string>
+    <string name="agent_tool_query_habits_failed">Alışkanlıklar sorgulanamadı: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>alışkanlık</item>
+        <item>giriş durumu</item>
+        <item>seri</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>Bugün hangi alışkanlıklar kaldı?</item>
+        <item>Bu haftaki alışkanlık giriş oranımı göster</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">Tarih</string>
+    <string name="agent_tool_habit_label_repeat">Tekrarla</string>
+    <string name="agent_tool_habit_label_reminder">Hatırlatıcı</string>
+    <string name="agent_tool_habit_label_name">Ad</string>
+    <string name="agent_tool_habit_open_link">Alışkanlık Takipçisini Aç</string>
+    <string name="agent_tool_habit_edit_link">Alışkanlığı Görüntüle</string>
+    <string name="agent_tool_unknown_error">Bilinmeyen hata</string>
+</resources>

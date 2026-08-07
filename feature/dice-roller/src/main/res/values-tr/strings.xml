@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">Zarı at.</string>
+    <string name="dice_roller_roll">Salla.</string>
+    <string name="dice_roller_history">Geçmiş</string>
+    <string name="dice_roller_history_empty">Geçmiş kayıt yok.</string>
+    <string name="dice_roller_clear_history">Kaydı Temizle</string>
+    <string name="dice_roller_clear_confirm">Tüm geçmiş kayıtların temizlendiğini onaylıyor musun?</string>
+    <string name="dice_roller_confirm">Onayla.</string>
+    <string name="dice_roller_cancel">İptal</string>
+    <string name="dice_roller_count">Zar sayısı</string>
+    <string name="dice_roller_type">Zar türü</string>
+    <string name="dice_roller_total">Toplam puan</string>
+    <string name="dice_roller_shake_hint">Telefonunu salla veya \"Salla\"ya tıkla.</string>
+    <string name="dice_roller_result_prefix">Sonuçlar:</string>
+    <string name="dice_roller_description">Masa zarı.</string>
+</resources>

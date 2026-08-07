@@ -1,0 +1,27 @@
+manage_cloud_connections —— 创建 / 测试 / 删除远程存储连接。
+
+支持的协议：S3_COMPAT（OSS / COS / OBS / BOS / S3 / MinIO 等 S3 兼容存储）、
+WEB_DAV（坚果云 / Nextcloud / 自建 WebDAV）、SMB（群晖 / Windows 共享 / Samba）。
+
+三个 action：
+- create：先按 protocol 字段构造连接，先 testConnection 通过再写入 EncryptedSharedPreferences。
+  凭据从用户输入中提取，**不要**让 LLM 编造。返回 connection_id 供后续工具使用。
+- test：仅做连通性测试，不修改存储。返回 ok=true / ok=false + 错误信息。
+- delete：按 connection_id 移除已保存的连接。不可恢复（凭据即失）。
+
+参数（snake_case）：
+- 通用：action, protocol（S3_COMPAT/WEB_DAV/SMB）, connection_id, display_name, is_default
+- S3：s3_vendor, s3_endpoint, s3_region, s3_bucket, s3_access_key_id, s3_secret_access_key
+- WebDAV：webdav_base_url, webdav_root_path, webdav_username, webdav_password
+- SMB：smb_host, smb_port, smb_share, smb_domain, smb_username, smb_password
+
+安全要求：
+- 凭据写入 Android Keystore 加密的 EncryptedSharedPreferences，**不会**回显到 LLM 响应。
+- 所有写操作 requiresConfirmation=true。
+- 删除不可恢复，UI 端需二次确认。
+
+典型使用顺序：
+1. 用户在对话中提供凭据，LLM 调用 manage_cloud_connections(action=test, protocol=..., display_name=..., ...) 验证
+2. 通过后调用 manage_cloud_connections(action=create, ...) 保存
+3. 后续 browse_cloud_files / read_cloud_file / upload_to_cloud 通过返回的 connection_id 引用
+4. 凭据变更或失效时调用 manage_cloud_connections(action=delete, connection_id=...) 移除旧连接

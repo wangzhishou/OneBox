@@ -1,0 +1,255 @@
+package com.weather.icons
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.unit.dp
+
+val QWeatherIcons.Ic2165: ImageVector
+    get() {
+        val current = _ic2165
+        if (current != null) return current
+
+        return ImageVector.Builder(
+            name = "QWeather.Ic2165",
+            defaultWidth = 16.0.dp,
+            defaultHeight = 16.0.dp,
+            viewportWidth = 16.0f,
+            viewportHeight = 16.0f,
+        ).apply {
+            // m1 12 1 1.5 L1 16 l-1 -2.5 L1 12Z m4.667 0 1 1.5 -1 2.5 -1 -2.5 1 -1.5Z m5.666 1.5 -1 -1.5 -1 1.5 1 2.5 1 -2.5Z M15 12 l1 1.5 -1 2.5 -1 -2.5 1 -1.5Z M7.302 3.7 a.7 .7 0 0 1 1.4 0 v1.088 l.942 -.544 a.7 .7 0 1 1 .7 1.212 L9.402 6 l.942 .544 a.7 .7 0 0 1 -.7 1.212 l-.942 -.544 V8.3 a.7 .7 0 1 1 -1.4 0 V7.212 l-.942 .544 a.7 .7 0 0 1 -.7 -1.212 L6.602 6 l-.942 -.544 a.7 .7 0 0 1 .7 -1.212 l.942 .544 V3.7Z
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+            ) {
+                // M 1 12
+                moveTo(x = 1.0f, y = 12.0f)
+                // l 1 1.5
+                lineToRelative(dx = 1.0f, dy = 1.5f)
+                // L 1 16
+                lineTo(x = 1.0f, y = 16.0f)
+                // l -1 -2.5
+                lineToRelative(dx = -1.0f, dy = -2.5f)
+                // L 1 12z
+                lineTo(x = 1.0f, y = 12.0f)
+                close()
+                // m 4.667 0
+                moveToRelative(dx = 4.667f, dy = 0.0f)
+                // l 1 1.5
+                lineToRelative(dx = 1.0f, dy = 1.5f)
+                // l -1 2.5
+                lineToRelative(dx = -1.0f, dy = 2.5f)
+                // l -1 -2.5
+                lineToRelative(dx = -1.0f, dy = -2.5f)
+                // l 1 -1.5z
+                lineToRelative(dx = 1.0f, dy = -1.5f)
+                close()
+                // m 5.666 1.5
+                moveToRelative(dx = 5.666f, dy = 1.5f)
+                // l -1 -1.5
+                lineToRelative(dx = -1.0f, dy = -1.5f)
+                // l -1 1.5
+                lineToRelative(dx = -1.0f, dy = 1.5f)
+                // l 1 2.5
+                lineToRelative(dx = 1.0f, dy = 2.5f)
+                // l 1 -2.5z
+                lineToRelative(dx = 1.0f, dy = -2.5f)
+                close()
+                // M 15 12
+                moveTo(x = 15.0f, y = 12.0f)
+                // l 1 1.5
+                lineToRelative(dx = 1.0f, dy = 1.5f)
+                // l -1 2.5
+                lineToRelative(dx = -1.0f, dy = 2.5f)
+                // l -1 -2.5
+                lineToRelative(dx = -1.0f, dy = -2.5f)
+                // l 1 -1.5z
+                lineToRelative(dx = 1.0f, dy = -1.5f)
+                close()
+                // M 7.302 3.7
+                moveTo(x = 7.302f, y = 3.7f)
+                // a 0.7 0.7 0 0 1 1.4 0
+                arcToRelative(
+                    a = 0.7f,
+                    b = 0.7f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = true,
+                    dx1 = 1.4f,
+                    dy1 = 0.0f,
+                )
+                // v 1.088
+                verticalLineToRelative(dy = 1.088f)
+                // l 0.942 -0.544
+                lineToRelative(dx = 0.942f, dy = -0.544f)
+                // a 0.7 0.7 0 1 1 0.7 1.212
+                arcToRelative(
+                    a = 0.7f,
+                    b = 0.7f,
+                    theta = 0.0f,
+                    isMoreThanHalf = true,
+                    isPositiveArc = true,
+                    dx1 = 0.7f,
+                    dy1 = 1.212f,
+                )
+                // L 9.402 6
+                lineTo(x = 9.402f, y = 6.0f)
+                // l 0.942 0.544
+                lineToRelative(dx = 0.942f, dy = 0.544f)
+                // a 0.7 0.7 0 0 1 -0.7 1.212
+                arcToRelative(
+                    a = 0.7f,
+                    b = 0.7f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = true,
+                    dx1 = -0.7f,
+                    dy1 = 1.212f,
+                )
+                // l -0.942 -0.544
+                lineToRelative(dx = -0.942f, dy = -0.544f)
+                // V 8.3
+                verticalLineTo(y = 8.3f)
+                // a 0.7 0.7 0 1 1 -1.4 0
+                arcToRelative(
+                    a = 0.7f,
+                    b = 0.7f,
+                    theta = 0.0f,
+                    isMoreThanHalf = true,
+                    isPositiveArc = true,
+                    dx1 = -1.4f,
+                    dy1 = 0.0f,
+                )
+                // V 7.212
+                verticalLineTo(y = 7.212f)
+                // l -0.942 0.544
+                lineToRelative(dx = -0.942f, dy = 0.544f)
+                // a 0.7 0.7 0 0 1 -0.7 -1.212
+                arcToRelative(
+                    a = 0.7f,
+                    b = 0.7f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = true,
+                    dx1 = -0.7f,
+                    dy1 = -1.212f,
+                )
+                // L 6.602 6
+                lineTo(x = 6.602f, y = 6.0f)
+                // l -0.942 -0.544
+                lineToRelative(dx = -0.942f, dy = -0.544f)
+                // a 0.7 0.7 0 0 1 0.7 -1.212
+                arcToRelative(
+                    a = 0.7f,
+                    b = 0.7f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = true,
+                    dx1 = 0.7f,
+                    dy1 = -1.212f,
+                )
+                // l 0.942 0.544
+                lineToRelative(dx = 0.942f, dy = 0.544f)
+                // V 3.7z
+                verticalLineTo(y = 3.7f)
+                close()
+            }
+            // M12.987 2.807 8.262 .071 a.52 .52 0 0 0 -.525 0 L3.013 2.807 a.529 .529 0 0 0 -.263 .457 v5.472 c0 .188 .1 .362 .263 .457 l4.724 2.736 a.516 .516 0 0 0 .525 0 l4.724 -2.736 a.527 .527 0 0 0 .264 -.457 V3.264 a.529 .529 0 0 0 -.263 -.457Z m-.79 5.625 L8 10.863 3.802 8.432 V3.569 L8 1.137 l4.198 2.432 v4.863Z
+            path(
+                fill = SolidColor(Color(0xFF000000)),
+            ) {
+                // M 12.987 2.807
+                moveTo(x = 12.987f, y = 2.807f)
+                // L 8.262 0.071
+                lineTo(x = 8.262f, y = 0.071f)
+                // a 0.52 0.52 0 0 0 -0.525 0
+                arcToRelative(
+                    a = 0.52f,
+                    b = 0.52f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = false,
+                    dx1 = -0.525f,
+                    dy1 = 0.0f,
+                )
+                // L 3.013 2.807
+                lineTo(x = 3.013f, y = 2.807f)
+                // a 0.529 0.529 0 0 0 -0.263 0.457
+                arcToRelative(
+                    a = 0.529f,
+                    b = 0.529f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = false,
+                    dx1 = -0.263f,
+                    dy1 = 0.457f,
+                )
+                // v 5.472
+                verticalLineToRelative(dy = 5.472f)
+                // c 0 0.188 0.1 0.362 0.263 0.457
+                curveToRelative(
+                    dx1 = 0.0f,
+                    dy1 = 0.188f,
+                    dx2 = 0.1f,
+                    dy2 = 0.362f,
+                    dx3 = 0.263f,
+                    dy3 = 0.457f,
+                )
+                // l 4.724 2.736
+                lineToRelative(dx = 4.724f, dy = 2.736f)
+                // a 0.516 0.516 0 0 0 0.525 0
+                arcToRelative(
+                    a = 0.516f,
+                    b = 0.516f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = false,
+                    dx1 = 0.525f,
+                    dy1 = 0.0f,
+                )
+                // l 4.724 -2.736
+                lineToRelative(dx = 4.724f, dy = -2.736f)
+                // a 0.527 0.527 0 0 0 0.264 -0.457
+                arcToRelative(
+                    a = 0.527f,
+                    b = 0.527f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = false,
+                    dx1 = 0.264f,
+                    dy1 = -0.457f,
+                )
+                // V 3.264
+                verticalLineTo(y = 3.264f)
+                // a 0.529 0.529 0 0 0 -0.263 -0.457z
+                arcToRelative(
+                    a = 0.529f,
+                    b = 0.529f,
+                    theta = 0.0f,
+                    isMoreThanHalf = false,
+                    isPositiveArc = false,
+                    dx1 = -0.263f,
+                    dy1 = -0.457f,
+                )
+                close()
+                // m -0.79 5.625
+                moveToRelative(dx = -0.79f, dy = 5.625f)
+                // L 8 10.863
+                lineTo(x = 8.0f, y = 10.863f)
+                // L 3.802 8.432
+                lineTo(x = 3.802f, y = 8.432f)
+                // V 3.569
+                verticalLineTo(y = 3.569f)
+                // L 8 1.137
+                lineTo(x = 8.0f, y = 1.137f)
+                // l 4.198 2.432
+                lineToRelative(dx = 4.198f, dy = 2.432f)
+                // v 4.863z
+                verticalLineToRelative(dy = 4.863f)
+                close()
+            }
+        }.build().also { _ic2165 = it }
+    }
+
+@Suppress("ObjectPropertyName")
+private var _ic2165: ImageVector? = null

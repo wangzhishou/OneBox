@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题设置页面标题 -->
+    <string name="theme_settings_title">主题设置</string>
+    
+    <!-- 主题预设相关 -->
+    <string name="theme_night_mode_section">日夜模式</string>
+    <string name="theme_preset_new">新建</string>
+    <string name="theme_preset_save">保存</string>
+    <string name="theme_preset_section">选择主题</string>
+    <string name="theme_preset_name_hint">主题名称</string>
+    <string name="theme_preset_custom">自定义主题</string>
+    <string name="theme_preset_color_section">颜色方案</string>
+    <string name="theme_preset_primary_color">主色</string>
+    <string name="theme_preset_secondary_color">次要色</string>
+    <string name="theme_preset_tertiary_color">第三色</string>
+    <string name="theme_preset_surface_color">背景色</string>
+    <string name="theme_preset_glass_section">玻璃效果</string>
+    <string name="theme_preset_glass_alpha">玻璃透明度</string>
+    <string name="theme_preset_preview_gradient">预览：%s</string>
+    
+    <!-- 颜色选择器 -->
+    <string name="theme_color_picker_done">完成</string>
+    
+    <!-- 删除确认 -->
+    <string name="theme_delete_confirm_title">删除主题</string>
+    <string name="theme_delete_confirm_message">确定要删除主题"%s"吗？此操作不可撤销。</string>
+    <string name="theme_delete_confirm_ok">删除</string>
+    <string name="theme_delete_confirm_cancel">取消</string>
+    
+    <!-- 退出确认 -->
+    <string name="theme_discard_title">放弃修改</string>
+    <string name="theme_discard_message">确定要放弃当前未保存的修改吗？</string>
+    <string name="theme_discard_confirm">放弃</string>
+    <string name="theme_discard_dismiss">继续编辑</string>
+    
+    <!-- 玻璃效果 -->
+    <string name="glass_alpha_effect">玻璃透明</string>
+    <string name="liquid_glass_effect">液态玻璃</string>
+    
+    <!-- 渐变背景 -->
+    <string name="mesh_gradient_background">渐变背景</string>
+    <string name="gradient_style_classic">经典</string>
+    <string name="gradient_style_aurora">极光</string>
+    <string name="gradient_style_ocean">深海</string>
+    <string name="gradient_style_sunset">日落</string>
+    <string name="gradient_style_sakura_mist">樱花雾</string>
+    <string name="gradient_style_mint_breeze">薄荷苏打</string>
+    <string name="gradient_style_starry_night">午夜星河</string>
+    <string name="gradient_style_lavender">薰衣草田</string>
+    <string name="gradient_style_warm_glow">焦糖余晖</string>
+    <string name="gradient_style_ethereal">丝雾</string>
+    <string name="gradient_style_neon_cyber">电子梦境</string>
+
+    <!-- 预览状态 / 编辑模式标识条 -->
+    <string name="theme_preview_banner">预览中 · 未保存更改</string>
+    <string name="theme_mode_editing_user">编辑中 · 保存将更新此主题</string>
+    <string name="theme_mode_creating_new">新建主题 · 保存将创建新主题</string>
+    <string name="theme_mode_creating_from">基于「%s」· 保存将创建新主题</string>
+
+    <!-- 操作按钮 -->
+    <string name="theme_save_as_new">保存为新主题</string>
+    <string name="theme_reset_to_source">重置</string>
+    <string name="theme_preset_copy">复制主题</string>
+
+    <!-- 切换预设确认 -->
+    <string name="theme_switch_confirm_title">切换主题</string>
+    <string name="theme_switch_confirm_message">当前有未保存的修改，切换主题后这些修改将丢失。</string>
+
+    <string name="theme_saved_success">主题已保存</string>
+    <string name="theme_save_failed">保存失败，请重试</string>
+    <string name="theme_delete_success">已删除「%1$s」</string>
+    <string name="theme_delete_failed">删除失败，请重试</string>
+    <string name="theme_dynamic_colors_hint">自定义主题暂不支持动态取色</string>
+    <string name="theme_edit_name_desc">编辑主题名称</string>
+    <string name="theme_color_picker_desc">%1$s颜色选择</string>
+    <string name="theme_image_load_failed">图片加载失败</string>
+    <string name="theme_image_retry">重试</string>
+    <string name="theme_overlay_global_hint">此设置全局生效，不随主题切换</string>
+
+    <!-- 自定义背景 -->
+    <string name="custom_background">自定义背景</string>
+    <string name="custom_background_pick">选择背景图片</string>
+    <string name="custom_background_clear">清除</string>
+    <string name="custom_background_overlay_alpha">遮罩透明度</string>
+
+    <string name="ai_feature_settings_heading">AI 功能开关</string>
+    <string name="ai_feature_settings_desc">统一管理 AI 对话中的偏好开关。后续新增的 AI 相关开关设置，也会集中放在这里。</string>
+    <string name="ai_feature_settings_toggle_section_title">对话偏好</string>
+    <string name="ai_feature_settings_toggle_section_desc">控制 AI 对话体验中的自动行为与功能偏好。</string>
+    <string name="ai_feature_settings_title_summary_toggle_title">自动生成历史标题</string>
+    <string name="ai_feature_settings_title_summary_toggle_desc">首轮问答落库后，自动为会话生成 AI 摘要标题。关闭后将保留默认标题或首句标题。</string>
+    <string name="ai_feature_settings_reasoning_expand_toggle_title">默认展开深度思考</string>
+    <string name="ai_feature_settings_reasoning_expand_toggle_desc">控制 AI 回复中的深度思考内容是否默认展开显示。</string>
+    <string name="ai_feature_settings_prompt_expand_toggle_title">默认展开提示词</string>
+    <string name="ai_feature_settings_prompt_expand_toggle_desc">控制聊天中的提示词内容是否默认展开显示。</string>
+    <string name="ai_feature_settings_tool_call_expand_toggle_title">默认展开工具卡片</string>
+    <string name="ai_feature_settings_tool_call_expand_toggle_desc">控制 AI 回复中工具调用记录卡片是否默认展开显示。</string>
+    <string name="ai_feature_settings_agent_section_title">Agent 执行</string>
+    <string name="ai_feature_settings_agent_section_desc">控制 Agent 在单次自动执行中的最大连续轮次。达到上限后，仍可在聊天页手动继续。</string>
+    <string name="ai_feature_settings_max_iterations_title">最大连续执行轮次</string>
+    <string name="ai_feature_settings_max_iterations_desc">限制单次 Agent 自动执行的最大轮次，当前可设置范围为 %1$d-%2$d 轮。</string>
+    <string name="ai_feature_settings_max_iterations_decrement">减少最大连续执行轮次</string>
+    <string name="ai_feature_settings_max_iterations_increment">增加最大连续执行轮次</string>
+
+    <!-- AI 模型设置 -->
+    <!-- AI 引擎设置 -->
+    <string name="ai_engine_list_heading">服务商与模型服务</string>
+    <string name="ai_engine_list_desc">集中管理 AI 服务商、接口配置与可用模型。这里修改的是模型服务配置，不会直接切换当前工作模型。</string>
+    <string name="ai_engine_add_engine">新增服务</string>
+    <string name="ai_engine_add_dialog_title">新增模型服务</string>
+    <string name="ai_engine_add_dialog_desc">本地新增的模型服务不会被远程更新覆盖。</string>
+    <string name="ai_engine_dialog_required_hint">请先完善必填字段后再保存。</string>
+    <string name="ai_engine_dialog_validation_failed">请先完善必填项并修正错误字段。</string>
+    <string name="ai_engine_name_label">服务标识</string>
+    <string name="ai_engine_title_label">显示名称</string>
+    <string name="ai_engine_description_label">描述</string>
+    <string name="ai_engine_protocol_label">请求协议</string>
+    <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_anthropic">Anthropic 兼容</string>
+    <string name="ai_engine_protocol_proxy">应用代理</string>
+    <string name="ai_engine_protocol_local_on_device">端侧本地（不走网络）</string>
+    <string name="ai_engine_protocol_effective_direct">已验证 · 本地直连</string>
+    <string name="ai_engine_protocol_effective_proxy">未验证 · App 中转</string>
+    <string name="ai_engine_protocol_effective_unavailable">不可用 · 请先测试或切换服务</string>
+    <string name="ai_engine_protocol_direct_desc">授权码已验证通过，将优先使用本地直连方式访问。</string>
+    <string name="ai_engine_protocol_proxy_desc">授权码尚未验证，当前将走 App 中转代理方式访问。</string>
+    <string name="ai_engine_auto_refreshing">正在同步最新服务目录…</string>
+    <string name="ai_engine_refresh_failed">同步服务目录失败：%1$s</string>
+    <string name="ai_engine_add_success">已新增 %1$s</string>
+    <string name="ai_engine_add_failed">新增模型服务失败，请稍后重试。</string>
+    <string name="ai_engine_edit_action">编辑</string>
+    <string name="ai_engine_delete_action">删除</string>
+    <string name="ai_engine_local_badge">直连</string>
+    <string name="ai_engine_remote_badge">代理</string>
+    <string name="ai_engine_delete_confirm_title">删除本地服务</string>
+    <string name="ai_engine_delete_confirm_message">确定要删除模型服务“%1$s”吗？若没有同名服务保留，其关联模型也会一并清理。</string>
+    <string name="ai_engine_delete_success">已删除模型服务“%1$s”</string>
+    <string name="ai_engine_delete_failed">删除模型服务失败，请稍后重试。</string>
+    <string name="ai_engine_role_default">默认</string>
+    <string name="ai_engine_role_fast">快速</string>
+    <string name="ai_engine_role_verified">授权已验证</string>
+    <string name="ai_engine_model_label">当前模型</string>
+    <string name="ai_engine_route_label">当前链路</string>
+    <string name="ai_engine_request_protocol_label">请求协议</string>
+
+    <string name="ai_engine_detail_title">模型服务配置</string>
+    <string name="ai_engine_loading">正在加载服务配置…</string>
+    <string name="ai_engine_detail_desc_default">管理 API 地址、鉴权信息、模型参数与流式响应开关。</string>
+    <string name="ai_engine_add_model">添加模型</string>
+    <string name="ai_engine_model_dialog_title">新增模型</string>
+    <string name="ai_engine_model_edit_dialog_title">编辑模型</string>
+    <string name="ai_engine_model_name">模型标识</string>
+    <string name="ai_engine_model_display_name">模型名称</string>
+    <string name="ai_engine_model_description">模型说明</string>
+    <string name="ai_engine_model_add_success">模型已保存</string>
+    <string name="ai_engine_model_add_failed">模型保存失败，请稍后重试。</string>
+    <string name="ai_engine_model_no_items">当前服务暂无模型，点击右上角新增一个本地模型。</string>
+    <string name="ai_engine_model_selected_label">当前选中模型</string>
+    <string name="ai_engine_model_local_hint">本地模型可编辑名称、说明，也可直接删除。</string>
+    <string name="ai_engine_model_remote_hint">远程模型当前仅支持选择，不支持本地删除。</string>
+    <string name="ai_engine_model_delete_confirm_title">删除模型</string>
+    <string name="ai_engine_model_delete_confirm_message">确定要删除模型“%1$s”吗？当前服务会自动切换到剩余可用模型。</string>
+    <string name="ai_engine_model_delete_success">已删除模型“%1$s”</string>
+    <string name="ai_engine_model_delete_failed">删除模型失败，请稍后重试。</string>
+    <string name="ai_engine_model_not_editable">当前模型来自远程配置，暂不支持重命名或删除。</string>
+    <string name="ai_engine_model_restore_defaults_action">恢复远程默认</string>
+    <string name="ai_engine_model_restore_defaults_desc">清除当前模型的本地参数与能力覆盖，恢复使用远程目录中的默认配置。</string>
+    <string name="ai_engine_model_restore_defaults_success">已恢复远程默认配置</string>
+    <string name="ai_engine_model_restore_defaults_failed">恢复远程默认失败，请稍后重试。</string>
+    <string name="ai_working_model_settings_heading">对话与任务模型</string>
+    <string name="ai_working_model_settings_desc">为默认对话、快速任务和 AI 互聊选择实际使用的模型组合。</string>
+    <string name="ai_working_model_default_title">默认对话模型</string>
+    <string name="ai_working_model_default_desc">用于常规 AI 对话与主要任务场景。</string>
+    <string name="ai_working_model_fast_title">快速任务模型</string>
+    <string name="ai_working_model_fast_desc">用于轻量任务、快速响应与辅助场景。比如:标题生成、中国象棋AI</string>
+    <string name="ai_working_model_duel_a_title">互聊模型 A</string>
+    <string name="ai_working_model_duel_a_desc">用于 AI 互聊/对战 中的第一位角色。</string>
+    <string name="ai_working_model_duel_b_title">互聊模型 B</string>
+    <string name="ai_working_model_duel_b_desc">用于 AI 互聊/对战 互聊中的第二位角色。</string>
+    <string name="ai_working_model_engine_label">选择服务</string>
+    <string name="ai_working_model_model_label">选择模型</string>
+    <string name="ai_working_model_current_engine">服务：%1$s</string>
+    <string name="ai_working_model_current_model">模型：%1$s</string>
+    <string name="ai_working_model_change">点击更换</string>
+    <string name="ai_working_model_picker_title">选择%1$s</string>
+    <string name="ai_working_model_status_direct">当前链路：已测试直连</string>
+    <string name="ai_working_model_status_proxy">当前链路：代理可用</string>
+    <string name="ai_working_model_status_unavailable">当前链路：不可用，请先去设置</string>
+    <string name="ai_engine_server_title">服务连接</string>
+    <string name="ai_engine_server_desc">配置您的 API 端点和验证凭据，以连接到远程推理服务。</string>
+    <string name="ai_engine_api_url">API地址</string>
+    <string name="ai_engine_api_path">API路径</string>
+    <string name="ai_engine_auth_token">授权码</string>
+    <string name="ai_engine_auth_type_label">鉴权方式</string>
+    <string name="ai_engine_auth_type_bearer">Bearer</string>
+    <string name="ai_engine_auth_type_api_key">API Key</string>
+    <string name="ai_engine_auth_type_none">无鉴权</string>
+    <string name="ai_engine_model_title">模型管理</string>
+    <string name="ai_engine_model_desc">管理当前服务下的可用模型，并选择默认使用项。</string>
+    <string name="ai_engine_parameters_title">参数与能力</string>
+    <string name="ai_engine_parameters_desc">调整生成参数、能力开关与流式输出策略。</string>
+    <string name="ai_engine_temperature">采样温度</string>
+    <string name="ai_engine_temperature_desc">控制生成文本的随机性。较高值更有创意，但也可能降低稳定性。</string>
+    <string name="ai_engine_top_p">核采样 (Top-P)</string>
+    <string name="ai_engine_top_p_desc">限制候选 token 的累计概率范围，帮助控制输出分布。</string>
+    <string name="ai_engine_max_tokens">最大 Tokens</string>
+    <string name="ai_engine_max_tokens_desc">限制单次响应可生成的最大 token 数量。</string>
+    <string name="ai_engine_base_points">积分倍率</string>
+    <string name="ai_engine_base_points_desc">用于显示或控制该模型的基础积分倍率。</string>
+    <string name="ai_engine_capability_title">模型能力开关</string>
+    <string name="ai_engine_capability_desc">补充配置模型的能力标签与本地行为。</string>
+    <string name="ai_engine_capability_api">允许 API 自定义</string>
+    <string name="ai_engine_capability_upload">支持文件上传</string>
+    <string name="ai_engine_capability_network">支持联网</string>
+    <string name="ai_engine_capability_reasoning">支持推理</string>
+    <string name="ai_engine_capability_image">支持图片</string>
+    <string name="ai_engine_capability_video">支持视频</string>
+    <string name="ai_engine_capability_temp_api">支持临时 API</string>
+    <string name="ai_engine_capability_fast">快速模型</string>
+    <string name="ai_engine_capability_code">代码模型</string>
+    <string name="ai_engine_capability_tools">支持工具调用</string>
+    <string name="ai_engine_capability_free">免费模型</string>
+    <string name="ai_engine_stream_title">流式响应</string>
+    <string name="ai_engine_stream_desc">启用后，响应会以逐段方式返回，适合实时对话体验。</string>
+    <string name="ai_engine_save_action">保存配置</string>
+    <string name="ai_engine_save_success">模型服务配置已保存</string>
+    <string name="ai_engine_save_failed">保存失败，请稍后重试。</string>
+    <string name="ai_engine_invalid_server">请检查 API 地址和路径是否填写正确。</string>
+    <string name="ai_engine_discard_title">放弃服务修改</string>
+    <string name="ai_engine_discard_message">当前模型服务配置尚未保存，确定要放弃这些修改吗？</string>
+    <string name="ai_engine_list_empty">暂无模型服务，点击右上角新增</string>
+    <string name="ai_engine_not_found">模型服务不存在或已被删除</string>
+    <string name="ai_engine_remote_models_load_failed">加载远程模型失败</string>
+    <string name="ai_engine_remote_models_submit_success">模型提交成功</string>
+    <string name="ai_engine_remote_models_submit_failed">模型提交失败</string>
+    <string name="ai_engine_remote_models_picker_title">从服务商加载模型</string>
+    <string name="ai_engine_remote_models_loading">加载中…</string>
+    <string name="ai_engine_remote_models_retry">重试</string>
+    <string name="ai_engine_remote_models_empty">未获取到模型列表</string>
+    <string name="ai_engine_remote_models_submit_count">提交选中模型 (%1$d)</string>
+    <string name="ai_engine_load_from_provider">从服务商加载模型</string>
+    <string name="ai_engine_file_upload_strategy_title">文件上传策略</string>
+    <string name="ai_engine_file_upload_strategy_base64">Base64 直嵌</string>
+    <string name="ai_engine_file_upload_strategy_cloud">云存储</string>
+    <string name="ai_engine_cloud_storage_config_hint">请先在云存储管理页面配置云存储连接</string>
+    <string name="ai_engine_cloud_storage_go_config">前往配置</string>
+    <string name="ai_engine_cloud_storage_connection_label">选择云存储连接</string>
+    <string name="ai_engine_cloud_storage_bucket_label">存储桶 (Bucket)</string>
+    <string name="ai_engine_cloud_storage_prefix_label">上传目录前缀 (Prefix)</string>
+    <string name="ai_engine_cloud_storage_prefix_hint">例如: ai-uploads/</string>
+    <string name="ai_engine_cloud_storage_no_connection">还没有配置过云存储连接，请前往配置</string>
+    <string name="ai_engine_test_button_disabled_hint">请先填写授权码后再测试</string>
+
+    <string name="tts_settings_engine_section">语音合成引擎</string>
+    <string name="tts_settings_connection_section">直连配置</string>
+    <string name="tts_settings_model_section">模型配置</string>
+    <string name="tts_settings_api_url_label">接口地址</string>
+    <string name="tts_settings_api_url_hint">请填写完整请求地址，应用不再自动拼接接口路径。</string>
+    <string name="tts_settings_openai_endpoint_placeholder">https://api.openai.com/v1/audio/speech</string>
+    <string name="tts_settings_mimo_endpoint_placeholder">https://api.xiaomimimo.com/v1/chat/completions</string>
+    <string name="tts_settings_api_token_label">API Token</string>
+    <string name="tts_settings_api_token_placeholder">sk-...</string>
+    <string name="tts_settings_show_token">显示 Token</string>
+    <string name="tts_settings_hide_token">隐藏 Token</string>
+    <string name="tts_settings_proxy_hint">未配置直连时将使用代理服务器</string>
+    <string name="tts_settings_model_label">模型</string>
+    <string name="tts_settings_voice_label">默认音色</string>
+    <string name="tts_settings_speed_label">默认语速</string>
+    <string name="tts_settings_presets_label">预置音色</string>
+    <string name="tts_settings_save_action">保存</string>
+    <string name="tts_settings_save_loading">保存中…</string>
+    <string name="tts_settings_save_success">语音合成配置已保存</string>
+    <string name="tts_settings_reset_action">重置</string>
+    <string name="tts_settings_reset_loading">重置中…</string>
+    <string name="tts_settings_reset_success">已恢复为未配置状态</string>
+    <string name="tts_settings_reset_confirm_title">重置当前引擎配置</string>
+    <string name="tts_settings_reset_confirm_message">确定要清空「%1$s」当前已保存的接口地址、Token 和模型参数吗？此操作会保留引擎类型，但恢复为未配置状态。</string>
+    <string name="tts_settings_preview_action">试听</string>
+    <string name="tts_settings_preview_loading">试听中…</string>
+    <string name="tts_settings_preview_text">语音合成测试</string>
+    <string name="tts_settings_preview_success">试听音频已生成</string>
+    <string name="tts_settings_clear_cache_action">清除缓存</string>
+    <string name="tts_settings_clear_cache_loading">清理中…</string>
+    <string name="tts_settings_clear_cache_success">语音缓存已清除</string>
+    <string name="tts_settings_clear_cache_success_with_size">语音缓存已清除，释放 %1$s</string>
+    <string name="tts_settings_cache_size_label">当前缓存大小</string>
+    <string name="tts_settings_cache_size_loading">正在统计…</string>
+    <string name="tts_settings_cache_size_value">%1$s</string>
+    <string name="tts_settings_provider_openai">OpenAI 兼容</string>
+    <string name="tts_settings_provider_mimo">小米 MiMo</string>
+
+    <!-- 密码保护设置页 -->
+    <string name="auth_code_settings_title">密码保护</string>
+    <string name="auth_code_settings_subtitle">用于敏感操作前验证身份</string>
+    <string name="auth_code_settings_status_on">已启用</string>
+    <string name="auth_code_settings_status_off">未设置</string>
+    <string name="auth_code_settings_action_set">设置密码</string>
+    <string name="auth_code_settings_action_change">修改密码</string>
+    <string name="auth_code_settings_action_remove">关闭密码保护</string>
+    <string name="auth_code_settings_remove_confirm_title">关闭密码保护</string>
+    <string name="auth_code_settings_remove_confirm_message">关闭后访问应用将不再要求输入密码,确定要继续吗?</string>
+    <string name="auth_code_settings_step_verify_current">请输入当前密码</string>
+    <string name="auth_code_settings_step_enter_new">请输入新的 6 位密码</string>
+    <string name="auth_code_settings_step_confirm_new">请再次输入新密码</string>
+    <string name="auth_code_settings_step_enter_first">请输入 6 位密码</string>
+    <string name="auth_code_settings_step_confirm_first">请再次输入确认</string>
+    <string name="auth_code_settings_step_hint">首次使用,请设置您的 6 位密码,请牢记</string>
+    <string name="auth_code_settings_error_wrong_current">当前密码错误</string>
+    <string name="auth_code_settings_error_mismatch">两次输入不一致,请重新输入</string>
+    <string name="auth_code_settings_success_set">密码已设置</string>
+    <string name="auth_code_settings_success_change">密码已修改</string>
+    <string name="auth_code_settings_success_remove">密码保护已关闭</string>
+    <string name="auth_code_settings_action_back">返回</string>
+    <string name="auth_code_settings_pin_label">密码</string>
+    <string name="auth_code_settings_status_awaiting">请输入</string>
+    <string name="auth_code_settings_dialog_ok">好的</string>
+    <string name="auth_code_settings_dialog_cancel">取消</string>
+    <string name="auth_code_settings_action_submit">确认</string>
+    <string name="auth_code_settings_failed">操作失败,请重试</string>
+    <string name="auth_code_settings_section_actions">管理</string>
+    <string name="auth_code_settings_section_protected">已开启密码保护</string>
+    <string name="auth_code_settings_protected_empty">暂未对任何应用开启密码保护</string>
+    <string name="auth_code_settings_protected_swipe_hint">左滑或点击右侧按钮可关闭该应用的密码保护</string>
+    <string name="auth_code_settings_protected_swipe_action">关闭保护</string>
+    <string name="auth_code_settings_protected_close_button">关闭保护</string>
+    <string name="auth_code_settings_protected_verify_title">验证密码以关闭保护</string>
+    <string name="auth_code_settings_protected_remove_success">已关闭「%1$s」的密码保护</string>
+    <string name="auth_code_settings_immersive_enter">进入沉浸式</string>
+    <string name="auth_code_settings_immersive_exit">退出沉浸式</string>
+    <string name="auth_code_settings_unnamed_item">未命名应用</string>
+</resources>

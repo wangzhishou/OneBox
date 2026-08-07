@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">Detecção de defeitos na tela</string>
+    <string name="dead_pixel_test_description">Use rotação de cores sólidas para detectar falhas na tela e pontos de card</string>
+    <string name="dead_pixel_color_white">Branco</string>
+    <string name="dead_pixel_color_black">Preto</string>
+    <string name="dead_pixel_color_red">Vermelho</string>
+    <string name="dead_pixel_color_green">Verde</string>
+    <string name="dead_pixel_color_blue">Azul</string>
+    <string name="dead_pixel_hint">Toque para mudar a cor... deslize para a direita e para a esquerda para alternar.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Mostrar grade</string>
+    <string name="dead_pixel_grid_off">Ocultar grade</string>
+    <string name="dead_pixel_auto_play">Rotação automática</string>
+    <string name="dead_pixel_auto_stop">Parar!</string>
+    <string name="dead_pixel_fullscreen">Teste em tela cheia</string>
+    <string name="dead_pixel_exit_fullscreen">Sair da tela cheia</string>
+    <string name="dead_pixel_guide_title">Como detectamos os danos?</string>
+    <string name="dead_pixel_guide_content">A tela exibirá cinco cores sólidas em sequência: branco, preto, vermelho, verde e azul.\n\n• Fundo branco: verifique se há pontos escuros (pixels mortos)\n• Fundo preto: verifique se há pontos brilhantes (pixels presos)\n• Fundos coloridos: verifique se há pixels anormais em outras cores\n\nToque na tela para mudar para a próxima cor ou ative a reprodução automática. Para melhores resultados, faça o teste em um ambiente com pouca luz.</string>
+    <string name="dead_pixel_guide_start">Iniciar teste</string>
+</resources>

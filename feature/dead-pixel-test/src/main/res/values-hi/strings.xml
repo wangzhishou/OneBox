@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">स्क्रीन खराबी का पता लगाना</string>
+    <string name="dead_pixel_test_description">स्क्रीन की विफलताओं और कार्ड पॉइंट्स का पता लगाने के लिए शुद्ध रंग घुमाव का उपयोग करें</string>
+    <string name="dead_pixel_color_white">सफेद</string>
+    <string name="dead_pixel_color_black">काला</string>
+    <string name="dead_pixel_color_red">लाल</string>
+    <string name="dead_pixel_color_green">हरा</string>
+    <string name="dead_pixel_color_blue">नीला</string>
+    <string name="dead_pixel_hint">रंग बदलने के लिए क्लिक करें... दाएं और बाएं स्लाइड से आगे-पीछे स्विच किया जा सकता है।</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">ग्रिड दिखाएं</string>
+    <string name="dead_pixel_grid_off">ग्रिड छिपाएं</string>
+    <string name="dead_pixel_auto_play">ऑटो-रोटेशन</string>
+    <string name="dead_pixel_auto_stop">रोकें!</string>
+    <string name="dead_pixel_fullscreen">फुलस्क्रीन परीक्षण</string>
+    <string name="dead_pixel_exit_fullscreen">फुल स्क्रीन से बाहर निकलें</string>
+    <string name="dead_pixel_guide_title">हम क्षति का पता कैसे लगाते हैं?</string>
+    <string name="dead_pixel_guide_content">स्क्रीन क्रम में पांच ठोस रंग प्रदर्शित करेगी: सफेद, काला, लाल, हरा और नीला।\n\n• सफेद पृष्ठभूमि: काले धब्बे (मृत पिक्सेल) की जांच करें\n• काली पृष्ठभूमि: चमकीले धब्बे (अटके पिक्सेल) की जांच करें\n• रंगीन पृष्ठभूमि: अन्य रंगों में असामान्य पिक्सेल की जांच करें\n\nअगले रंग पर जाने के लिए स्क्रीन पर टैप करें, या ऑटो-प्ले सक्षम करें। सर्वोत्तम परिणामों के लिए, परीक्षण मंद वातावरण में करें।</string>
+    <string name="dead_pixel_guide_start">परीक्षण शुरू करें</string>
+</resources>

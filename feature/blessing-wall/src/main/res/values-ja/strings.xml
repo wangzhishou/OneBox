@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">祝福の壁</string>
+    <string name="blessing_wall_sub">毎日のタップ・幸運が続きます</string>
+    <string name="blessing_record_title">祝福記録</string>
+    <string name="blessing_tab_wooden_fish">静かなひととき</string>
+    <string name="blessing_tab_wealth_god">幸運</string>
+    <string name="blessing_tab_guanyin">平和と喜び</string>
+    <string name="blessing_tab_incense">真心の願い</string>
+    <string name="blessing_subtitle_wooden_fish">毎日のタップ・悩みが消えます</string>
+    <string name="blessing_subtitle_wealth_god">幸運が続く・すべてがうまくいく</string>
+    <string name="blessing_subtitle_guanyin">心の優しさ・平和と喜び</string>
+    <string name="blessing_subtitle_incense">真心の願い・福が満ちる</string>
+    <string name="blessing_btn_wooden_fish">タップ、運+1</string>
+    <string name="blessing_btn_wealth_god">タップ、福+1</string>
+    <string name="blessing_btn_guanyin">タップ、平和+1</string>
+    <string name="blessing_btn_incense">タップ、祝福+1</string>
+    <string name="blessing_stat_wooden_fish">今日の回数</string>
+    <string name="blessing_stat_wealth_god">今日の回数</string>
+    <string name="blessing_stat_guanyin">今日の回数</string>
+    <string name="blessing_stat_incense">今日の回数</string>
+    <string name="blessing_count_unit">回</string>
+    <string name="blessing_total_count">%1$d回</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">毎日の祝福統計</string>
+    <string name="blessing_empty_state">祝福記録はまだありません</string>
+    <string name="blessing_wish_edit">メモを編集</string>
+    <string name="blessing_wish_input_label">メモ</string>
+    <string name="blessing_wish_save">保存</string>
+    <string name="blessing_wish_placeholder">メモはまだありません</string>
+    <string name="blessing_tab_text_edit">タイトルを編集</string>
+    <string name="blessing_tab_title_label">タイトル</string>
+    <string name="blessing_tab_subtitle_label">サブタイトル</string>
+    <string name="blessing_tab_text_reset_hint">空白のままにするとデフォルトに戻ります</string>
+    <string name="blessing_history_readonly_hint">履歴、表示のみ</string>
+    <string name="blessing_record_note_prefix">注: %1$s</string>
+    <string name="blessing_sound_on">サウンドオン</string>
+    <string name="blessing_sound_off">サウンドオフ</string>
+    <string name="blessing_share">共有</string>
+</resources>

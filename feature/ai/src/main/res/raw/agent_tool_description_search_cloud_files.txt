@@ -1,0 +1,12 @@
+search_cloud_files —— 在指定 root 下按关键字模糊搜索对象名。
+
+策略：当前实现是 list + name contains 的轻量级方案。
+后续可换成真实协议搜索（S3 用 list-objects + 客户端过滤；WebDAV 暂未定义；SMB 用全 share 遍历）。
+
+参数：
+- connection_id（必填）
+- root（可选）
+- query（必填）
+  - 不含 /：按 displayName 模糊匹配
+  - 包含 /：按 path 前缀搜索
+- max_results（可选，默认 50）

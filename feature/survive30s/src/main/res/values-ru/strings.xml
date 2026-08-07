@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">Продержись 30 сек</string>
+    <string name="survive_30s_ready">Готов?</string>
+    <string name="survive_30s_instruction">Перетаскивай синий шар, чтобы уклоняться от препятствий\nДвигайся свободно во всех направлениях. Продержись 30 секунд, чтобы победить!</string>
+    <string name="survive_30s_instruction_bonus">Близкие уклонения накапливают заряд. Каждые 3 близких вызова дают 1 щит, а щит блокирует одно попадание.</string>
+    <string name="survive_30s_start">Старт</string>
+    <string name="survive_30s_game_over">Игра окончена!</string>
+    <string name="survive_30s_survived_time">Продержался: %.1f с</string>
+    <string name="survive_30s_new_record">Новый рекорд!</string>
+    <string name="survive_30s_win">Ты победил!</string>
+    <string name="survive_30s_win_desc">Ты продержался 30 секунд!</string>
+    <string name="survive_30s_retry">Заново</string>
+    <string name="survive_30s_best_time">Рекорд: %.1fс</string>
+    <string name="survive_30s_phase">Фаза</string>
+    <string name="survive_30s_phase_warmup">Разминка</string>
+    <string name="survive_30s_phase_rush">Рывок</string>
+    <string name="survive_30s_phase_storm">Шторм</string>
+    <string name="survive_30s_shield">Щит</string>
+    <string name="survive_30s_charge">Заряд</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">Близко</string>
+    <string name="survive_30s_near_miss_count">Близких уклонений: %1$d</string>
+    <string name="survive_30s_danger_low">Пока стабильно. Держи дистанцию.</string>
+    <string name="survive_30s_danger_medium">Давление растёт. Будь готов к резкому манёвру.</string>
+    <string name="survive_30s_danger_high">Опасность! Копи заряд близкими уклонениями или немедленно вырывайся.</string>
+</resources>

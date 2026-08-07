@@ -1,0 +1,886 @@
+<resources>
+    <string name="agent_tool_unknown_error">Unknown error</string>
+    <string name="agent_tool_callback_required">This tool requires callback support; please use execute(arguments, callback)</string>
+    <string name="agent_tool_unknown_type">UNKNOWN</string>
+
+    <string name="agent_tool_get_current_time_description">Get the device\'s current date, time, and timezone. Returns an ISO 8601 time string, timezone name, and UTC offset. No parameters required.
+
+    Use cases:
+    - Need current timestamp or date
+    - Date formatting or timezone conversion
+    - Calculate time difference</string>
+    <string name="agent_tool_get_current_time_title">Current Time</string>
+    <string name="agent_tool_get_current_time_summary">Get the device\'s current date, time, and timezone</string>
+    <string name="agent_tool_get_current_time_line_current">Current time: %1$s</string>
+    <string name="agent_tool_get_current_time_line_readable">Readable format: %1$s</string>
+    <string name="agent_tool_get_current_time_line_timezone">Timezone: %1$s (%2$s)</string>
+    <string name="agent_tool_get_current_time_line_utc_offset">UTC offset: %1$s hours</string>
+
+    <string name="agent_tool_get_device_info_description">Get hardware and software info of the current device: model, OS version, screen resolution, memory, ABI architecture, etc. No parameters required.
+
+    Use cases:
+    - Choose a suitable image resolution based on device capabilities
+    - Determine feature compatibility
+    - Collect device info for troubleshooting</string>
+    <string name="agent_tool_get_device_info_title">Device Info</string>
+    <string name="agent_tool_get_device_info_summary">Get device model, OS version, screen and memory info</string>
+    <string name="agent_tool_get_device_info_line_model">Device model: %1$s %2$s</string>
+    <string name="agent_tool_get_device_info_line_brand">Brand: %1$s</string>
+    <string name="agent_tool_get_device_info_line_os">OS version: Android %1$s (API %2$s)</string>
+    <string name="agent_tool_get_device_info_line_resolution">Screen resolution: %1$dx%2$d</string>
+    <string name="agent_tool_get_device_info_line_density">Screen density: %1$ddpi (%2$sx)</string>
+    <string name="agent_tool_get_device_info_line_abis">CPU architecture: %1$s</string>
+    <string name="agent_tool_get_device_info_line_jvm_max">JVM max memory: %1$dMB</string>
+    <string name="agent_tool_get_device_info_line_jvm_allocated">JVM allocated: %1$dMB, free: %2$dMB</string>
+    <string name="agent_tool_get_device_info_line_fingerprint">Device fingerprint: %1$s</string>
+
+    <!-- pick_files tool -->
+    <string name="agent_tool_pick_files_title">Pick Files</string>
+    <string name="agent_tool_pick_files_summary">Let the user pick one or more files via the system file picker</string>
+    <string name="agent_tool_pick_files_param_message">Prompt explaining why files need to be picked (optional).</string>
+    <string name="agent_tool_pick_files_param_mime_type">File type filter, e.g. image/*, application/pdf, */*. Defaults to */*.</string>
+    <string name="agent_tool_pick_files_param_multiple">Whether to allow multiple selection. Defaults to false.</string>
+    <string name="agent_tool_pick_files_failed">pick_files tool failed: %1$s</string>
+
+    <!-- pick_folder tool -->
+    <string name="agent_tool_pick_folder_title">Pick Folder</string>
+    <string name="agent_tool_pick_folder_summary">Let the user pick a working directory via the system folder picker</string>
+    <string name="agent_tool_pick_folder_param_message">Prompt explaining why a folder needs to be picked (optional).</string>
+    <string name="agent_tool_pick_folder_failed">pick_folder tool failed: %1$s</string>
+
+    <string name="agent_tool_ask_user_title">Ask User</string>
+    <string name="agent_tool_ask_user_summary">Show structured questions to the user and wait for answers before continuing</string>
+    <string name="agent_tool_ask_user_param_presentation">UI presentation style. `dialog` is suitable for single-choice / few-question prompts; `bottom_sheet` is suitable for multi-select / multi-text / long forms.</string>
+    <string name="agent_tool_ask_user_param_title">Header title shown at the top of the dialog (optional).</string>
+    <string name="agent_tool_ask_user_param_message">Supplementary text shown above the question list (optional).</string>
+    <string name="agent_tool_ask_user_param_questions">Array of questions; see the items schema for per-item details. Common mistakes: omitting `value` from choice `options`, omitting `options` from a choice question, or degrading to plain-text question.</string>
+    <string name="agent_tool_ask_user_param_question_type">Input type for a single question, controls the picker icon on the right of the input field. Options: text (default, plain text input), time (HH:mm), time_range (HH:mm ~ HH:mm), date (yyyy-MM-dd), date_range (yyyy-MM-dd ~ yyyy-MM-dd), color (#AARRGGBB), city (Province City District), image (system image picker, writes a file:// URI), file (system file picker, writes a file:// URI), folder (system folder picker, writes a file:// URI). System picker results are auto-converted to file:// URIs to avoid SAF permission expiration.</string>
+    <string name="agent_tool_ask_user_param_confirm_text">Confirm button label (optional).</string>
+    <string name="agent_tool_ask_user_param_cancel_text">Cancel button label (optional).</string>
+    <string name="agent_tool_ask_user_missing_questions">Missing the `questions` array; cannot ask the user</string>
+    <string name="agent_tool_ask_user_duplicate_question_names">Duplicate question `name` found: %1$s</string>
+    <string name="agent_tool_ask_user_question_name_required">Question is missing the `name` field (used as the answers key); please fill it in</string>
+    <string name="agent_tool_ask_user_question_text_required">Question `%1$s` is missing the `question` field (the full text shown to the user)</string>
+    <string name="agent_tool_ask_user_question_option_missing_value">Question `%1$s` has options missing the `value` field; label: %2$s. `value` is the machine-readable identifier written back to answers; every option must include both label and value</string>
+    <string name="agent_tool_ask_user_question_option_missing_label">Question `%1$s` has options missing the `label` field; value: %2$s</string>
+    <string name="agent_tool_ask_user_question_option_empty">Question `%1$s` has empty options (both label and value blank)</string>
+    <string name="agent_tool_ask_user_failed">ask_user tool failed: %1$s</string>
+
+    <!-- discover_tools tool -->
+    <string name="agent_tool_discover_tools_title">Tool Discovery</string>
+    <string name="agent_tool_discover_tools_summary">Search available Agent tools, return matching candidates</string>
+    <string name="agent_tool_discover_tools_param_keywords">Search keyword array. Each word independently fuzzy-matches tool name, title, and summary. e.g. ["scan", "qr code"].</string>
+    <string name="agent_tool_discover_tools_param_limit">Max candidates to return. Default 8, max 20.</string>
+    <string name="agent_tool_discover_tools_failed">Tool discovery failed: %1$s</string>
+
+    <!-- discover_apps tool -->
+    <string name="agent_tool_discover_apps_title">Page Discovery</string>
+    <string name="agent_tool_discover_apps_summary">Find navigable pages by keyword</string>
+    <string name="agent_tool_discover_apps_param_keywords">Page keyword array, e.g. ["note", "settings"].</string>
+    <string name="agent_tool_discover_apps_param_limit">Max candidates to return. Default 8, max 20.</string>
+    <string name="agent_tool_discover_apps_failed">Page discovery failed: %1$s</string>
+
+    <string name="agent_tool_navigate_deeplink_param">Required. Always use a onebox:// deeplink as the target; it can be tapped to navigate or used directly in tool calls.</string>
+    <string name="agent_tool_navigate_action_param">Optional. Navigation action: open=view/enter the page, edit=enter the edit flow. Default open.</string>
+    <string name="agent_tool_navigate_wait_for_result_param">Whether to wait for a result if the target page supports callbacks.</string>
+    <string name="agent_tool_navigate_deeplink_required">Missing deeplink. Please call discover_apps first to get an accurate deeplink or editDeeplink.</string>
+    <string name="agent_tool_navigate_invalid_action">Unsupported action: %1$s. Please use open or edit.</string>
+    <string name="agent_tool_navigate_target_not_found">No navigable target found. Please call discover_apps first to get an accurate deeplink.</string>
+    <string name="agent_tool_navigate_unsupported_target">This item does not support this type of navigation yet</string>
+    <string name="agent_tool_navigate_failed">Page navigation failed: %1$s</string>
+    <string name="agent_tool_navigate_open_link_label">Reopen "%1$s"</string>
+    <string name="agent_tool_navigate_edit_link_label">Re-edit "%1$s"</string>
+    <string name="agent_tool_navigate_default_open_link_label">Page</string>
+    <string name="agent_tool_navigate_default_edit_link_label">Edit page</string>
+    <string name="agent_tool_navigate_app_screen_description">Unified page navigation tool. When the user explicitly asks to open, enter, view, or edit a page/item, call this tool directly. Only deeplinks are accepted, with action=open|edit to decide whether to view or enter the edit flow. Edit confirmation is handled directly by the client; no additional model follow-up questions or multi-round tool calls are required. The tool result returns a reusable deeplink for reopening later.</string>
+    <string name="agent_tool_navigate_app_screen_title">Page Navigation</string>
+    <string name="agent_tool_navigate_app_screen_summary">Open or edit in-app pages by deeplink, and return a reusable link</string>
+
+    <string name="agent_tool_generate_agent_tool_draft_title">Tool Draft Generator</string>
+    <string name="agent_tool_generate_agent_tool_draft_summary">Generate AgentTool code skeleton, resource drafts and registration snippets from requirements</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_tool_purpose">Tool goal, responsibility boundary and expected capabilities. Recommend describing what to do and what not to do.</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_tool_name_hint">Optional. Suggested tool name; prefer snake_case.</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_desired_category">Optional. Desired tool category.</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_is_interactive">Optional. Whether user interaction is required, such as forms, confirmations, or pickers.</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_input_schema_notes">Optional. Input schema notes, e.g. fields, types, required params, enum values.</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_output_contract_notes">Optional. Output format contract, e.g. JSON structure, error structure or summary content.</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_related_tool_names">Optional. List of related reference tool names for reusing existing capabilities or keeping style consistent.</string>
+    <string name="agent_tool_generate_agent_tool_draft_missing_purpose">Missing `tool_purpose`; cannot generate tool draft</string>
+    <string name="agent_tool_generate_agent_tool_draft_failed">Tool draft generation failed: %1$s</string>
+
+    <string name="agent_tool_create_note_description">Create or update a note. To create, provide title, content, and category; if the category does not exist it is auto-created. Pass existing_note_id to enter update mode; in that case category is optional and the original category is kept if not provided. On success, an activity log entry is recorded automatically and the user is asked whether to open the note.</string>
+    <string name="agent_tool_create_note_title">Save Note</string>
+    <string name="agent_tool_create_note_summary">Create a new note, or update an existing one while keeping its original category and overwriting content</string>
+    <string name="agent_tool_create_note_param_title">Note title</string>
+    <string name="agent_tool_create_note_param_content">Note content (Markdown format)</string>
+    <string name="agent_tool_create_note_param_category">Required when creating; optional when updating, defaults to keeping the original category. If the category does not exist it is auto-created, e.g.: Work, Study, Life</string>
+    <string name="agent_tool_create_note_param_existing_note_id">Existing note ID (optional). When provided, enters update mode and overwrites the entire content; otherwise creates a new note.</string>
+    <string name="agent_tool_create_note_note_not_found">Note to update does not exist, ID: %1$d</string>
+    <string name="agent_tool_create_note_category_required_for_create">Creating a note requires category. Currently available categories: %1$s. If none fits, pass a new category name directly and the tool will auto-create it.</string>
+    <string name="agent_tool_create_note_category_required_for_create_no_existing">Creating a note requires category. No categories are available yet — pass a new category name directly and the tool will auto-create it.</string>
+    <string name="agent_tool_create_note_category_missing_for_update">When updating the note, category was not provided and the original note has no retainable category. Please pass category explicitly.</string>
+    <string name="agent_tool_create_note_success">Note saved successfully!\nTitle: %1$s\nID: %2$d</string>
+    <string name="agent_tool_create_note_open_confirm_title">Note Saved</string>
+    <string name="agent_tool_create_note_open_confirm_message">Note "%1$s" has been saved. Open it now?</string>
+    <string name="agent_tool_create_note_opened">Note saved and opened</string>
+    <string name="agent_tool_create_note_not_opened">Note saved; user chose not to open</string>
+    <string name="agent_tool_create_note_failed">Note saving failed: %1$s</string>
+
+    <string name="agent_tool_view_note_description">View a note\'s content. Provide a note ID to get the title, description, and body content.</string>
+    <string name="agent_tool_view_note_title">View Note</string>
+    <string name="agent_tool_view_note_summary">Read a note\'s title, description and body content</string>
+    <string name="agent_tool_view_note_param_note_id">Note ID</string>
+    <string name="agent_tool_view_note_not_found">Note does not exist, ID: %1$d</string>
+    <string name="agent_tool_view_note_line_title">Title: %1$s</string>
+    <string name="agent_tool_view_note_line_description">Description: %1$s</string>
+    <string name="agent_tool_view_note_failed">Failed to get note: %1$s</string>
+
+    <string name="agent_tool_theme_setting_title">Theme Settings</string>
+    <string name="agent_tool_theme_setting_summary">Read / switch / fine-tune the current theme (colors, night mode, glass effect, gradient background)</string>
+    <string name="agent_tool_theme_setting_param_action">Action type. list=read current theme; set=modify fields on current theme; apply=switch to a preset theme. **Only action is required**</string>
+    <string name="agent_tool_theme_setting_param_preset_id">Preset theme ID (from list response `builtinPresets[i].id`). Use either this or `preset_name`. apply only</string>
+    <string name="agent_tool_theme_setting_param_preset_name">Preset theme name (fuzzy match, supports Chinese display names like "樱花粉", or English id/pinyin, case-insensitive). apply only</string>
+    <string name="agent_tool_theme_setting_param_night_mode">Night mode. Values: Light / Dark / System, case-sensitive. Optional</string>
+    <string name="agent_tool_theme_setting_param_primary">Primary color hex, format `#RRGGBB` or `#AARRGGBB`. Leading "#" optional; "0x" prefix also accepted. Example: #3B82F6 / FF6A8DFF. Optional</string>
+    <string name="agent_tool_theme_setting_param_secondary">Secondary color hex (same format as primary). Optional</string>
+    <string name="agent_tool_theme_setting_param_tertiary">Tertiary color hex (same format as primary). Optional</string>
+    <string name="agent_tool_theme_setting_param_surface">Surface color hex (same format as primary). Optional</string>
+    <string name="agent_tool_theme_setting_param_glass">Glass transparency effect. Values: STRING "true" or "false" (also accepts 1/0, yes/no, on/off). Optional</string>
+    <string name="agent_tool_theme_setting_param_liquid_glass">Liquid glass effect. Same values as glass ("true" / "false"). Optional</string>
+    <string name="agent_tool_theme_setting_param_mesh_gradient">Mesh gradient background. Same values as glass ("true" / "false"). Optional</string>
+    <string name="agent_tool_theme_setting_param_gradient_style">Gradient background style name. **Must** be picked from list response `gradientStyles` (case-sensitive). Optional</string>
+    <string name="agent_tool_theme_setting_param_glass_alpha">Glass transparency base value. **Number type** (NOT string), range [0.1, 1.0], default 1.0. Lower = more transparent. Optional</string>
+    <string name="agent_tool_theme_setting_failed">Theme settings failed: %1$s</string>
+    <string name="agent_tool_theme_setting_unknown_action">Unknown action: %1$s. Must be one of list / set / apply</string>
+    <string name="agent_tool_theme_setting_missing_action">Missing action parameter</string>
+    <string name="agent_tool_theme_setting_list_message">Current theme read</string>
+    <string name="agent_tool_theme_setting_set_message">Current theme updated</string>
+    <string name="agent_tool_theme_setting_applied_preset">Switched to theme: %1$s</string>
+    <string name="agent_tool_theme_setting_no_fields">set action requires at least one field to modify</string>
+    <string name="agent_tool_theme_setting_no_preset_arg">apply action requires preset_id or preset_name</string>
+    <string name="agent_tool_theme_setting_deeplink_label">Theme Settings</string>
+    <string name="agent_tool_theme_setting_deeplink_guidance">Tap to view and fine-tune the theme</string>
+    <string name="agent_tool_theme_setting_invalid_color">%1$s is not a valid color: %2$s. Use #RRGGBB or #AARRGGBB ("#" optional)</string>
+    <string name="agent_tool_theme_setting_invalid_night_mode">Invalid night_mode: %1$s. Must be one of Light / Dark / System</string>
+    <string name="agent_tool_theme_setting_unknown_style">Unknown gradient style: %1$s</string>
+    <string name="agent_tool_theme_setting_unknown_preset">No matching theme preset: %1$s. Available presets: %2$s</string>
+    <string name="agent_tool_theme_setting_alpha_out_of_range">glass_alpha must be between 0.1 and 1.0</string>
+
+    <string name="agent_tool_checksum_title">Checksum Tool</string>
+    <string name="agent_tool_checksum_summary">Calculate or compare checksums for text and files</string>
+    <string name="agent_tool_checksum_param_action">Action type. calculate returns the checksum; compare returns whether it matches.</string>
+    <string name="agent_tool_checksum_param_algorithm">Checksum algorithm, e.g. MD5, SHA-256.</string>
+    <string name="agent_tool_checksum_param_source_type">Input source type. text means plain text; uri means file URI.</string>
+    <string name="agent_tool_checksum_param_text">Raw text passed in when source_type=text.</string>
+    <string name="agent_tool_checksum_param_uri">File URI passed in when source_type=uri.</string>
+    <string name="agent_tool_checksum_param_expected_checksum">Target checksum value to compare in compare mode.</string>
+    <string name="agent_tool_checksum_invalid_algorithm">Unsupported algorithm: %1$s. Available algorithms: %2$s</string>
+    <string name="agent_tool_checksum_invalid_action">Unknown action: %1$s</string>
+    <string name="agent_tool_checksum_missing_expected_checksum">compare mode requires the expected_checksum parameter</string>
+    <string name="agent_tool_checksum_missing_text">source_type=text requires the text parameter</string>
+    <string name="agent_tool_checksum_missing_uri">source_type=uri requires the uri parameter</string>
+    <string name="agent_tool_checksum_invalid_source_type">Unsupported source_type: %1$s</string>
+    <string name="agent_tool_checksum_failed">Checksum tool execution failed: %1$s</string>
+
+    <string name="agent_tool_base64_title">Base64 Tool</string>
+    <string name="agent_tool_base64_summary">Encode files to Base64, or decode Base64 image data to a cache file</string>
+    <string name="agent_tool_base64_param_action">Action type. encode reads a URI and encodes; decode parses Base64 image content.</string>
+    <string name="agent_tool_base64_param_uri">File URI to read in encode mode.</string>
+    <string name="agent_tool_base64_param_base64">Base64 string to parse in decode mode.</string>
+    <string name="agent_tool_base64_param_return_full">Whether to return the full Base64 string when encoding. Defaults to returning a preview only, to avoid overly long results.</string>
+    <string name="agent_tool_base64_param_preview_length">Preview length when encoding, default 256.</string>
+    <string name="agent_tool_base64_invalid_action">Unknown action: %1$s</string>
+    <string name="agent_tool_base64_missing_uri">encode mode requires the uri parameter</string>
+    <string name="agent_tool_base64_missing_base64">decode mode requires the base64 parameter</string>
+    <string name="agent_tool_base64_decode_failed">Base64 decode failed; currently only supports Base64 content that can be parsed as an image</string>
+    <string name="agent_tool_base64_failed">Base64 tool execution failed: %1$s</string>
+
+    <string name="agent_tool_webp_title">WebP Tool</string>
+    <string name="agent_tool_webp_summary">Extract WebP files into frame images, or combine multiple images into a WebP animation</string>
+    <string name="agent_tool_webp_param_action">Action type. extract_frames extracts frames from a WebP; create_webp combines images into WebP.</string>
+    <string name="agent_tool_webp_param_webp_uri">WebP file URI to read in extract_frames mode.</string>
+    <string name="agent_tool_webp_param_image_uris">Image URI list to combine in create_webp mode.</string>
+    <string name="agent_tool_webp_param_image_format">Output image format for extract_frames; options png/jpg/webp, default png.</string>
+    <string name="agent_tool_webp_param_quality">Output image quality, integer 1-100, default 100.</string>
+    <string name="agent_tool_webp_param_repeat_count">Animation loop count for create_webp; 0 means infinite, default 1.</string>
+    <string name="agent_tool_webp_param_delay">Per-frame interval for create_webp, in milliseconds, default 1000.</string>
+    <string name="agent_tool_webp_param_width">Output width for create_webp; uses first image\'s original width if omitted.</string>
+    <string name="agent_tool_webp_param_height">Output height for create_webp; uses first image\'s original height if omitted.</string>
+    <string name="agent_tool_webp_invalid_action">Unknown action: %1$s</string>
+    <string name="agent_tool_webp_missing_webp_uri">extract_frames mode requires the webp_uri parameter</string>
+    <string name="agent_tool_webp_missing_image_uris">create_webp mode requires the image_uris parameter, with at least one image</string>
+    <string name="agent_tool_webp_extract_failed">WebP frame extraction failed: %1$s</string>
+    <string name="agent_tool_webp_create_failed">WebP composition failed: %1$s</string>
+    <string name="agent_tool_webp_failed">WebP tool execution failed: %1$s</string>
+
+    <string name="agent_tool_read_barcode_title">Recognize Barcode</string>
+    <string name="agent_tool_read_barcode_summary">Recognize QR codes or barcodes from an image URI and return structured content</string>
+    <string name="agent_tool_read_barcode_param_image_uri">URI of the image to recognize.</string>
+    <string name="agent_tool_read_barcode_missing_image_uri">image_uri parameter required</string>
+    <string name="agent_tool_read_barcode_failed">Barcode recognition failed: %1$s</string>
+
+    <string name="agent_tool_limit_resize_title">Image Size Limit</string>
+    <string name="agent_tool_limit_resize_summary">Crop or scale images by max width/height limits</string>
+    <string name="agent_tool_limit_resize_description">Process images within the specified max width and height limits. Supports three modes: Skip (skip images within limits), Recode (re-encode only), Zoom (force scale into the limit range). Processed images are saved to the cache directory and the URI is returned.</string>
+    <string name="agent_tool_limit_resize_param_image_uri">URI of the image to process.</string>
+    <string name="agent_tool_limit_resize_param_max_width">Max width in pixels, 0 means no width limit.</string>
+    <string name="agent_tool_limit_resize_param_max_height">Max height in pixels, 0 means no height limit.</string>
+    <string name="agent_tool_limit_resize_param_resize_type">Resize type: skip (skip images within limits), recode (re-encode only), zoom (force scale). Default recode.</string>
+    <string name="agent_tool_limit_resize_param_image_format">Output format, e.g. jpeg, png, webp. Default jpeg.</string>
+    <string name="agent_tool_limit_resize_param_quality">Output quality 1-100, default 90.</string>
+    <string name="agent_tool_limit_resize_missing_image_uri">image_uri parameter required</string>
+    <string name="agent_tool_limit_resize_load_failed">Unable to load image; please check whether the URI is valid</string>
+    <string name="agent_tool_limit_resize_skipped">Image dimensions within limits; processing skipped</string>
+    <string name="agent_tool_limit_resize_save_failed">Failed to save processed result: %1$s</string>
+    <string name="agent_tool_limit_resize_failed">Image size limit processing failed: %1$s</string>
+
+    <string name="agent_tool_compress_image_title">Image Compression</string>
+    <string name="agent_tool_compress_image_summary">Compress an image below a target file size</string>
+    <string name="agent_tool_compress_image_description">Compress an image below the specified target byte size. Achieved by progressively lowering quality and shrinking dimensions. If the original is already smaller than the target, returns directly without processing. Compressed images are saved to the cache directory and the URI is returned.</string>
+    <string name="agent_tool_compress_image_param_image_uri">URI of the image to compress.</string>
+    <string name="agent_tool_compress_image_param_max_bytes">Target max byte size, e.g. 1048576 for 1MB.</string>
+    <string name="agent_tool_compress_image_param_image_format">Output format, e.g. jpeg, png, webp. Default jpeg.</string>
+    <string name="agent_tool_compress_image_missing_image_uri">image_uri parameter required</string>
+    <string name="agent_tool_compress_image_missing_max_bytes">max_bytes parameter required</string>
+    <string name="agent_tool_compress_image_load_failed">Unable to load image; please check whether the URI is valid</string>
+    <string name="agent_tool_compress_image_already_small">Original image is already smaller than the target size; no compression needed</string>
+    <string name="agent_tool_compress_image_save_failed">Failed to save compressed result: %1$s</string>
+    <string name="agent_tool_compress_image_failed">Image compression failed: %1$s</string>
+
+    <string name="agent_tool_browse_files_title">Browse Files</string>
+    <string name="agent_tool_browse_files_summary">Read-only directory listing, or locate which directory a file is in</string>
+    <string name="agent_tool_browse_files_param_action">Action type. list lists a directory; locate reverse-looks-up which directory a file is in.</string>
+    <string name="agent_tool_browse_files_param_directory_uri">Directory path or URI inside the workspace for list mode.</string>
+    <string name="agent_tool_browse_files_param_target_uri">File path or URI inside the workspace to locate in locate mode.</string>
+    <string name="agent_tool_browse_files_param_limit">Max entries returned in list mode, default 20, max 100.</string>
+    <string name="agent_tool_browse_files_param_include_directories">Whether to include directories in list mode, default true.</string>
+    <string name="agent_tool_browse_files_param_include_files">Whether to include files in list mode, default true.</string>
+    <string name="agent_tool_browse_files_invalid_action">Unknown action: %1$s</string>
+    <string name="agent_tool_browse_files_missing_target_uri">locate mode requires the target_uri parameter</string>
+    <string name="agent_tool_browse_files_failed">File browse tool execution failed: %1$s</string>
+
+    <string name="agent_tool_manage_files_title">Manage Files</string>
+    <string name="agent_tool_manage_files_summary">Perform high-risk file write operations: delete, rename, copy, move and create</string>
+    <string name="agent_tool_manage_files_param_action">Action type. delete/rename/copy/move/create_file/create_folder all really modify the file system.</string>
+    <string name="agent_tool_manage_files_param_source_uri">Workspace source file or source directory path / URI for delete, rename, copy, move, write_file modes.</string>
+    <string name="agent_tool_manage_files_param_destination_dir_uri">Workspace target directory path / URI for copy, move, create_file, create_folder modes.</string>
+    <string name="agent_tool_manage_files_param_new_name">Optional new name for rename, copy, move modes.</string>
+    <string name="agent_tool_manage_files_param_file_name">New file name for create_file mode.</string>
+    <string name="agent_tool_manage_files_param_folder_name">New folder name for create_folder mode.</string>
+    <string name="agent_tool_manage_files_param_mime_type">MIME type for the file in create_file mode, default application/octet-stream.</string>
+    <string name="agent_tool_manage_files_param_content">Required for write_file. Text content to write.</string>
+    <string name="agent_tool_manage_files_param_write_mode">Optional for write_file. Write mode: overwrite (default) or append.</string>
+    <string name="agent_tool_manage_files_invalid_action">Unknown action: %1$s</string>
+    <string name="agent_tool_manage_files_missing_source_uri">This action requires the source_uri parameter</string>
+    <string name="agent_tool_manage_files_missing_destination_dir_uri">This action requires the destination_dir_uri parameter</string>
+    <string name="agent_tool_manage_files_missing_new_name">rename mode requires the new_name parameter</string>
+    <string name="agent_tool_manage_files_missing_file_name">create_file mode requires the file_name parameter</string>
+    <string name="agent_tool_manage_files_missing_folder_name">create_folder mode requires the folder_name parameter</string>
+    <string name="agent_tool_manage_files_missing_content">write_file mode requires the content parameter</string>
+    <string name="agent_tool_manage_files_failed">File manager tool execution failed: %1$s</string>
+
+    <!-- AI chat input area -->
+    <string name="ai_input_file">File</string>
+    <string name="ai_chat_working_mode_ask_title">Ask</string>
+    <string name="ai_chat_working_mode_ask_description">Answer directly, do capability discovery only when needed</string>
+    <string name="ai_chat_working_mode_plan_title">Plan</string>
+    <string name="ai_chat_working_mode_plan_description">Investigate first then plan; only look up, do not execute</string>
+    <string name="ai_chat_working_mode_agent_title">Execute</string>
+    <string name="ai_chat_working_mode_agent_description">Invoke tools to advance the task and continue based on real results</string>
+
+    <!-- File processing tools -->
+    <string name="agent_tool_process_file_title">Read File</string>
+    <string name="agent_tool_process_file_summary">Read local text files, search keywords and return structured line-numbered results</string>
+    <string name="agent_tool_process_file_param_file_path">Local file path or URI inside the workspace.</string>
+    <string name="agent_tool_process_file_param_action">Action type: read reads a line range; search searches keywords; context returns match context.</string>
+    <string name="agent_tool_process_file_param_start_line">Start line number for read mode, starting from 1.</string>
+    <string name="agent_tool_process_file_param_end_line">End line number (inclusive) for read mode.</string>
+    <string name="agent_tool_process_file_param_max_length">Max characters returned in read mode, default 4096.</string>
+    <string name="agent_tool_process_file_param_keyword">Keyword to search in search / context modes.</string>
+    <string name="agent_tool_process_file_param_context_lines">Number of surrounding lines to keep before/after each match in context mode, default 50.</string>
+    <string name="agent_tool_process_file_param_max_matches">Max matches returned in search / context modes, default 20.</string>
+    <string name="agent_tool_process_file_param_case_sensitive">Whether search / context modes are case-sensitive, default false.</string>
+    <string name="agent_tool_process_file_missing_file_path">Missing file_path parameter</string>
+    <string name="agent_tool_process_file_missing_keyword">search / context mode requires the keyword parameter</string>
+    <string name="agent_tool_process_file_invalid_action">Unknown action: %1$s</string>
+    <string name="agent_tool_process_file_failed">File read tool execution failed: %1$s</string>
+
+    <string name="agent_tool_edit_file_title">Edit File</string>
+    <string name="agent_tool_edit_file_summary">Make partial replacements, line insertions or append content on a text file</string>
+    <string name="agent_tool_edit_file_param_file_uri">File path or URI inside the workspace to edit.</string>
+    <string name="agent_tool_edit_file_param_action">Edit action: replace_text, replace_lines, insert_before_line, insert_after_line, append, prepend.</string>
+    <string name="agent_tool_edit_file_param_old_text">Old text to match and replace in replace_text mode.</string>
+    <string name="agent_tool_edit_file_param_new_text">New text content to write.</string>
+    <string name="agent_tool_edit_file_param_start_line">Start line number (inclusive) for replace_lines mode.</string>
+    <string name="agent_tool_edit_file_param_end_line">End line number (inclusive) for replace_lines mode.</string>
+    <string name="agent_tool_edit_file_param_line">Target line number for insert_before_line / insert_after_line modes.</string>
+    <string name="agent_tool_edit_file_param_replace_all">Whether replace_text should replace all matches, default false.</string>
+    <string name="agent_tool_edit_file_missing_file_uri">Missing file_uri parameter</string>
+    <string name="agent_tool_edit_file_missing_action">Missing action parameter</string>
+    <string name="agent_tool_edit_file_missing_old_text">replace_text mode requires the old_text parameter</string>
+    <string name="agent_tool_edit_file_missing_new_text">This edit action requires the new_text parameter</string>
+    <string name="agent_tool_edit_file_missing_start_line">replace_lines mode requires the start_line parameter</string>
+    <string name="agent_tool_edit_file_missing_end_line">replace_lines mode requires the end_line parameter</string>
+    <string name="agent_tool_edit_file_missing_line">This insert action requires the line parameter</string>
+    <string name="agent_tool_edit_file_invalid_action">Unknown edit action: %1$s</string>
+    <string name="agent_tool_edit_file_failed">File edit failed: %1$s</string>
+
+    <string name="agent_tool_glob_files_title">Find Files</string>
+    <string name="agent_tool_glob_files_summary">Batch-find files or directories by glob patterns, suitable for code agents to discover target files first</string>
+    <string name="agent_tool_glob_files_param_directory_uri">Starting directory path or URI inside the workspace. Defaults to the app workspace root.</string>
+    <string name="agent_tool_glob_files_param_glob_pattern">Glob pattern, e.g. **/*.kt, **/build.gradle.kts, feature/**/Screen*.kt.</string>
+    <string name="agent_tool_glob_files_param_include_directories">Whether to return directories, default false.</string>
+    <string name="agent_tool_glob_files_param_include_files">Whether to return files, default true.</string>
+    <string name="agent_tool_glob_files_param_max_results">Max results to return, default 200.</string>
+    <string name="agent_tool_glob_files_missing_glob_pattern">Missing glob_pattern parameter</string>
+    <string name="agent_tool_glob_files_failed">File glob search failed: %1$s</string>
+
+    <string name="agent_tool_grep_files_title">Search File Content</string>
+    <string name="agent_tool_grep_files_summary">Search content in a batch of text files by keyword or regex and return files with line numbers</string>
+    <string name="agent_tool_grep_files_param_directory_uri">Starting directory path or URI inside the workspace. Defaults to the app workspace root.</string>
+    <string name="agent_tool_grep_files_param_glob_pattern">Optional file-filter glob, e.g. **/*.kt.</string>
+    <string name="agent_tool_grep_files_param_query">Keyword or regex pattern to search.</string>
+    <string name="agent_tool_grep_files_param_is_regex">Whether to treat query as a regex, default false.</string>
+    <string name="agent_tool_grep_files_param_case_sensitive">Whether matching is case-sensitive, default false.</string>
+    <string name="agent_tool_grep_files_param_max_matches">Max matches to return, default 200.</string>
+    <string name="agent_tool_grep_files_missing_query">Missing query parameter</string>
+    <string name="agent_tool_grep_files_failed">File content search failed: %1$s</string>
+
+    <string name="agent_tool_apply_text_patch_title">Apply Text Patch</string>
+    <string name="agent_tool_apply_text_patch_summary">Batch-modify a text file with multi-segment old_text/new_text patches</string>
+    <string name="agent_tool_apply_text_patch_param_file_uri">File path or URI inside the workspace to patch.</string>
+    <string name="agent_tool_apply_text_patch_param_hunks">Patch array. Each item must contain old_text, new_text, with optional replace_all.</string>
+    <string name="agent_tool_apply_text_patch_missing_file_uri">Missing file_uri parameter</string>
+    <string name="agent_tool_apply_text_patch_missing_hunks">Missing hunks parameter</string>
+    <string name="agent_tool_apply_text_patch_invalid_hunk">Hunk #%1$d is missing old_text or new_text</string>
+    <string name="agent_tool_apply_text_patch_failed">Apply text patch failed: %1$s</string>
+
+    <string name="agent_tool_stat_file_title">View File Info</string>
+    <string name="agent_tool_stat_file_summary">View existence, size, type, modification time and other metadata of a single file or directory</string>
+    <string name="agent_tool_stat_file_param_target_uri">File path or URI inside the workspace to inspect.</string>
+
+    <string name="agent_tool_workspace_roots_title">View Workspace Roots</string>
+    <string name="agent_tool_workspace_roots_summary">List the app workspace roots currently available to the code agent</string>
+    <string name="agent_tool_workspace_roots_failed">View workspace roots failed: %1$s</string>
+            <string name="agent_tool_apply_range_patch_title">Apply Line-Range Patch</string>
+            <string name="agent_tool_apply_range_patch_summary">Batch-replace multiple text fragments by start/end line numbers, closer to diff/patch style edits</string>
+            <string name="agent_tool_apply_range_patch_param_file_uri">File path or URI inside the workspace to patch.</string>
+            <string name="agent_tool_apply_range_patch_param_hunks">Patch array. Each item must contain start_line, end_line, new_text, with optional old_text.</string>
+            <string name="agent_tool_apply_range_patch_missing_file_uri">Missing file_uri parameter</string>
+            <string name="agent_tool_apply_range_patch_missing_hunks">Missing hunks parameter</string>
+            <string name="agent_tool_apply_range_patch_invalid_hunk">Hunk #%1$d is missing required fields</string>
+            <string name="agent_tool_apply_range_patch_failed">Apply line-range patch failed: %1$s</string>
+    <string name="agent_tool_stat_file_missing_target_uri">Missing target_uri parameter</string>
+    <string name="agent_tool_stat_file_failed">View file info failed: %1$s</string>
+
+    <string name="agent_tool_read_multiple_files_title">Batch Read Files</string>
+    <string name="agent_tool_read_multiple_files_summary">Read specified line ranges of multiple text files in one call to reduce code-agent round trips</string>
+    <string name="agent_tool_read_multiple_files_param_files">File array. Each item must contain file_uri, with optional start_line and end_line.</string>
+    <string name="agent_tool_read_multiple_files_param_max_length_per_file">Max characters returned per file, default 4096.</string>
+    <string name="agent_tool_read_multiple_files_missing_files">Missing files parameter</string>
+    <string name="agent_tool_read_multiple_files_invalid_file_item">File item #%1$d is missing file_uri</string>
+    <string name="agent_tool_read_multiple_files_failed">Batch read files failed: %1$s</string>
+
+    <!-- Bookkeeping tool: add entry -->
+    <string name="agent_tool_add_bookkeeping_record_title">Add Entry</string>
+    <string name="agent_tool_add_bookkeeping_record_summary">Add one or more entries (expense/income/excluded) to the ledger</string>
+    <string name="agent_tool_add_bookkeeping_record_description">Add entries to the ledger. Supports both single-entry params and a records array for batch insert. amount is in yuan and is auto-converted to cents with 2 decimals. type accepts expense / income / excluded; category is matched by name; on mismatch the result returns an error and lists the available categories. In batch mode, items are processed one-by-one; a single failure does not roll back other successful items. All write operations auto-log to ActivityLog.</string>
+    <string name="agent_tool_add_bookkeeping_record_param_records">Batch entry array. Each item supports amount/type/category/note/date fields; prefer this for batch bookkeeping.</string>
+    <string name="agent_tool_add_bookkeeping_record_param_amount">Single-entry amount (yuan), e.g. 12.50; must be > 0, max 2 decimals.</string>
+    <string name="agent_tool_add_bookkeeping_record_param_type">Single-entry type: expense=expense, income=income, excluded=not counted in income/expense.</string>
+    <string name="agent_tool_add_bookkeeping_record_param_category">Single-entry category name (must be an existing category, exact match; you can call query_bookkeeping_summary first to inspect current categories).</string>
+    <string name="agent_tool_add_bookkeeping_record_param_note">Single-entry note (optional).</string>
+    <string name="agent_tool_add_bookkeeping_record_param_date">Single-entry date in ISO yyyy-MM-dd; defaults to today; cannot be later than today.</string>
+    <string name="agent_tool_add_bookkeeping_record_failed">Failed to add bookkeeping record: %1$s</string>
+    <string name="agent_tool_add_bookkeeping_record_open_link_label">Open ledger</string>
+    <string name="agent_tool_add_bookkeeping_record_edit_link_label">View this entry</string>
+    <string name="agent_tool_bookkeeping_section_summary">Summary</string>
+    <string name="agent_tool_bookkeeping_section_records">Records</string>
+    <string name="agent_tool_bookkeeping_section_recent_records">Recent Records</string>
+    <string name="agent_tool_bookkeeping_section_expense_categories">Expense Categories Top 10</string>
+    <string name="agent_tool_bookkeeping_section_income_categories">Income Categories Top 10</string>
+    <string name="agent_tool_bookkeeping_section_success_records">Successful Entries</string>
+    <string name="agent_tool_bookkeeping_section_failure_records">Failed Entries</string>
+    <string name="agent_tool_bookkeeping_section_quick_actions">Quick Actions</string>
+    <string name="agent_tool_bookkeeping_label_month">Month</string>
+    <string name="agent_tool_bookkeeping_label_query_range">Query Range</string>
+    <string name="agent_tool_bookkeeping_label_type">Type</string>
+    <string name="agent_tool_bookkeeping_label_category">Category</string>
+    <string name="agent_tool_bookkeeping_label_date">Date</string>
+    <string name="agent_tool_bookkeeping_label_note">Note</string>
+    <string name="agent_tool_bookkeeping_label_expense">Expense</string>
+    <string name="agent_tool_bookkeeping_label_income">Income</string>
+    <string name="agent_tool_bookkeeping_label_excluded">Excluded</string>
+    <string name="agent_tool_bookkeeping_label_balance">Balance</string>
+    <string name="agent_tool_bookkeeping_label_record_count">Entry count</string>
+    <string name="agent_tool_bookkeeping_label_success_count">Success</string>
+    <string name="agent_tool_bookkeeping_label_failure_count">Failure</string>
+    <string name="agent_tool_bookkeeping_uncategorized">Uncategorized</string>
+    <string name="agent_tool_bookkeeping_type_expense">Expense</string>
+    <string name="agent_tool_bookkeeping_type_income">Income</string>
+    <string name="agent_tool_bookkeeping_type_excluded">Excluded</string>
+
+    <!-- Bookkeeping tool: query monthly summary -->
+    <string name="agent_tool_query_bookkeeping_summary_title">Query Ledger Summary</string>
+    <string name="agent_tool_query_bookkeeping_summary_summary">Query a month\'s total expense/income, category rankings and recent entries.</string>
+    <string name="agent_tool_query_bookkeeping_summary_description">Query the ledger summary for a month. Returns total expense/income (yuan), top 10 category rankings, and top 20 recent entries. Month defaults to the current month.</string>
+    <string name="agent_tool_query_bookkeeping_summary_param_month">Query month, format yyyy-MM, e.g. 2026-05; defaults to the current month.</string>
+    <string name="agent_tool_query_bookkeeping_summary_param_recent_limit">Max recent entries returned, 1-50, default 20.</string>
+    <string name="agent_tool_query_bookkeeping_summary_failed">Failed to query ledger summary: %1$s</string>
+
+    <!-- Bookkeeping tool: query ledger records -->
+    <string name="agent_tool_query_bookkeeping_records_title">Query Ledger Records</string>
+    <string name="agent_tool_query_bookkeeping_records_summary">Query ledger entries by month or date range, and return deeplinks that can open the ledger.</string>
+    <string name="agent_tool_query_bookkeeping_records_description">Query ledger entries within a specified month or date range. Supports filtering by type=expense/income/excluded and category name. Returns aggregated totals, matched entries, and deeplinks to reopen the ledger or jump directly into add/edit pages.</string>
+    <string name="agent_tool_query_bookkeeping_records_param_month">Query month, format yyyy-MM. Use either this or start_date/end_date; defaults to the current month if none are provided.</string>
+    <string name="agent_tool_query_bookkeeping_records_param_start_date">Start date, format yyyy-MM-dd; defaults to the first day of `month` or the current month if omitted.</string>
+    <string name="agent_tool_query_bookkeeping_records_param_end_date">End date, format yyyy-MM-dd; defaults to the last day of `month` or the current month if omitted.</string>
+    <string name="agent_tool_query_bookkeeping_records_param_type">Entry type filter: expense=expense, income=income, excluded=not counted in income/expense.</string>
+    <string name="agent_tool_query_bookkeeping_records_param_category">Optional category name filter; exact-matches current ledger category names.</string>
+    <string name="agent_tool_query_bookkeeping_records_param_limit">Max entries returned, 1-100, default 20.</string>
+    <string name="agent_tool_query_bookkeeping_records_failed">Failed to query ledger records: %1$s</string>
+    <string name="agent_tool_query_bookkeeping_records_open_link_label">Open ledger</string>
+    <string name="agent_tool_query_bookkeeping_records_add_link_label">Add an entry</string>
+    <string name="agent_tool_query_bookkeeping_records_edit_link_label">View this entry</string>
+
+    <!-- Network tools common -->
+    <string name="agent_tool_network_error">Network request failed: %1$s</string>
+    <string name="agent_tool_network_timeout">Request timed out</string>
+    <string name="agent_tool_network_no_connection">No network connection</string>
+
+    <!-- fetch_webpage -->
+    <string name="agent_tool_fetch_webpage_title">Fetch Webpage Content</string>
+    <string name="agent_tool_fetch_webpage_summary">Fetch webpage content from a specified URL</string>
+    <string name="agent_tool_fetch_webpage_param_url">Webpage URL to fetch</string>
+    <string name="agent_tool_fetch_webpage_param_extract_mode">Extract mode: text (plain text), html (raw HTML), links, images, all</string>
+    <string name="agent_tool_fetch_webpage_param_max_length">Max length of returned content, default 5000 chars</string>
+    <string name="agent_tool_fetch_webpage_success">Webpage content fetched successfully</string>
+    <string name="agent_tool_fetch_webpage_failed">Webpage fetch failed: %1$s</string>
+
+    <!-- search_web -->
+    <string name="agent_tool_search_web_title">Web Search</string>
+    <string name="agent_tool_search_web_summary">Search for information using a search engine</string>
+    <string name="agent_tool_search_web_param_query">Search keywords</string>
+    <string name="agent_tool_search_web_param_engine">Search engine: baidu (百度), google, bing, duckduckgo. Default baidu</string>
+    <string name="agent_tool_search_web_param_num_results">Number of results, default 5</string>
+    <string name="agent_tool_search_web_success">Search complete, found %1$d results</string>
+    <string name="agent_tool_search_web_failed">Search failed: %1$s</string>
+
+    <!-- check_url -->
+    <string name="agent_tool_check_url_title">Check URL Status</string>
+    <string name="agent_tool_check_url_summary">Check URL accessibility and response status</string>
+    <string name="agent_tool_check_url_param_url">URL to check</string>
+    <string name="agent_tool_check_url_param_timeout">Timeout in seconds, default 10</string>
+    <string name="agent_tool_check_url_success">URL check complete</string>
+    <string name="agent_tool_check_url_failed">URL check failed: %1$s</string>
+
+    <!-- get_network_info -->
+    <string name="agent_tool_get_network_info_title">Get Network Status</string>
+    <string name="agent_tool_get_network_info_summary">Get current device network connection info</string>
+    <string name="agent_tool_get_network_info_success">Network info retrieved</string>
+    <string name="agent_tool_get_network_info_failed">Failed to get network info: %1$s</string>
+
+    <!-- send_http_request -->
+    <string name="agent_tool_send_http_request_title">Send HTTP Request</string>
+    <string name="agent_tool_send_http_request_summary">Send a custom HTTP request</string>
+    <string name="agent_tool_send_http_request_param_url">Request URL</string>
+    <string name="agent_tool_send_http_request_param_method">HTTP method: GET, POST, PUT, DELETE, PATCH, HEAD</string>
+    <string name="agent_tool_send_http_request_param_headers">Request headers, JSON string format</string>
+    <string name="agent_tool_send_http_request_param_body">Request body content</string>
+    <string name="agent_tool_send_http_request_param_content_type">Content-Type</string>
+    <string name="agent_tool_send_http_request_success">Request succeeded, status code: %1$d</string>
+    <string name="agent_tool_send_http_request_failed">Request failed: %1$s</string>
+    <string name="agent_tool_send_http_request_confirm_title">Confirm HTTP Request</string>
+    <string name="agent_tool_send_http_request_confirm_message">About to send %2$s request to %1$s. Confirm?</string>
+
+    <!-- download_file -->
+    <string name="agent_tool_download_file_title">Download File</string>
+    <string name="agent_tool_download_file_summary">Download a file from a URL to local storage</string>
+    <string name="agent_tool_download_file_param_url">File download URL</string>
+    <string name="agent_tool_download_file_param_filename">Save file name</string>
+    <string name="agent_tool_download_file_param_save_path">Save path, default downloads/</string>
+    <string name="agent_tool_download_file_success">File downloaded successfully: %1$s</string>
+    <string name="agent_tool_download_file_failed">File download failed: %1$s</string>
+    <string name="agent_tool_download_file_confirm_title">Confirm File Download</string>
+    <string name="agent_tool_download_file_confirm_message">About to download file %1$s. Confirm?</string>
+
+    <!-- open_pdf_preview -->
+    <string name="agent_tool_open_pdf_preview_title">Open PDF Preview</string>
+    <string name="agent_tool_open_pdf_preview_summary">Preview a PDF document in-app</string>
+    <string name="agent_tool_open_pdf_preview_param_uri">PDF document address; supports http(s):// remote links, content:// and file:// local URIs.</string>
+    <string name="agent_tool_open_pdf_preview_success">Opened %1$s in PDF preview</string>
+    <string name="agent_tool_open_pdf_preview_failed">Open PDF preview failed: %1$s</string>
+    <string name="agent_tool_open_pdf_preview_missing_uri">uri parameter required</string>
+
+    <!-- convert_pdf_to_images -->
+    <string name="agent_tool_convert_pdf_to_images_title">PDF to Images</string>
+    <string name="agent_tool_convert_pdf_to_images_summary">Convert specified PDF pages to images and save locally</string>
+    <string name="agent_tool_convert_pdf_to_images_param_uri">PDF document address; supports http(s):// remote links, content:// and file:// local URIs.</string>
+    <string name="agent_tool_convert_pdf_to_images_param_pages">Page number list (1-based). Omit for all. e.g. [1,2,3].</string>
+    <string name="agent_tool_convert_pdf_to_images_param_format">Output image format, e.g. png, jpg, webp. Default png.</string>
+    <string name="agent_tool_convert_pdf_to_images_param_quality">Image quality 1-100, default 100.</string>
+    <string name="agent_tool_convert_pdf_to_images_param_preset">Scale percentage 1-100, default 100.</string>
+    <string name="agent_tool_convert_pdf_to_images_missing_uri">uri parameter required</string>
+    <string name="agent_tool_convert_pdf_to_images_resolve_failed">Failed to resolve PDF address: %1$s</string>
+    <string name="agent_tool_convert_pdf_to_images_preflight_failed">Failed to read PDF info (if password-protected, process it via the PDF tool screen first): %1$s</string>
+    <string name="agent_tool_convert_pdf_to_images_invalid_pages">Page number out of range. PDF has %1$d pages, please use integers from 1 to that count.</string>
+    <string name="agent_tool_convert_pdf_to_images_no_bitmaps">No images generated</string>
+    <string name="agent_tool_convert_pdf_to_images_save_failed">Failed to save images: %1$s</string>
+    <string name="agent_tool_convert_pdf_to_images_failed">PDF to images failed: %1$s</string>
+
+    <!-- convert_images_to_pdf -->
+    <string name="agent_tool_convert_images_to_pdf_title">Images to PDF</string>
+    <string name="agent_tool_convert_images_to_pdf_summary">Combine multiple images into a single PDF document</string>
+    <string name="agent_tool_convert_images_to_pdf_param_uris">Image URI array; each must be a content:// or file:// local address.</string>
+    <string name="agent_tool_convert_images_to_pdf_param_preset">Scale percentage 1-100, default 100.</string>
+    <string name="agent_tool_convert_images_to_pdf_param_scale_small">Whether to upscale smaller images to match the max side length, default false.</string>
+    <string name="agent_tool_convert_images_to_pdf_param_filename">Output PDF file name (no path). Auto-generated if omitted, e.g. images_xxxxxxxx.pdf.</string>
+    <string name="agent_tool_convert_images_to_pdf_missing_uris">uris parameter required (at least one image)</string>
+    <string name="agent_tool_convert_images_to_pdf_invalid_scheme">Unsupported image address: %1$s. Only content:// or file:// local URIs are accepted.</string>
+    <string name="agent_tool_convert_images_to_pdf_no_output">No PDF output generated</string>
+    <string name="agent_tool_convert_images_to_pdf_save_failed">Failed to save PDF: %1$s</string>
+    <string name="agent_tool_convert_images_to_pdf_failed">Images to PDF failed: %1$s</string>
+
+    <!-- manage_todo tool -->
+    <string name="agent_tool_manage_todo_title">Todo Manager</string>
+    <string name="agent_tool_manage_todo_summary">List, create, complete, star and delete todo items</string>
+    <string name="agent_tool_manage_todo_param_action">Action type: list (list all), create_task (create task), create_category (create category), toggle_complete (complete/reopen), toggle_star (star/unstar), delete_task (delete)</string>
+    <string name="agent_tool_manage_todo_param_category_name">Category name, used with create_task/create_category/list (optional filter)</string>
+    <string name="agent_tool_manage_todo_param_title">Title, required for create_task/create_category</string>
+    <string name="agent_tool_manage_todo_param_note">Note, optional for create_task</string>
+    <string name="agent_tool_manage_todo_param_due_date_millis">Due date timestamp (milliseconds), optional for create_task</string>
+    <string name="agent_tool_manage_todo_param_tags">Tags array, optional for create_task</string>
+    <string name="agent_tool_manage_todo_param_icon_key">Icon name, optional for create_category, default inbox</string>
+    <string name="agent_tool_manage_todo_param_color_argb">Category color ARGB value, optional for create_category, 0 for auto</string>
+    <string name="agent_tool_manage_todo_param_task_id">Task ID, required for toggle_complete/toggle_star/delete_task</string>
+    <string name="agent_tool_manage_todo_failed">Todo operation failed: %1$s</string>
+    <string name="agent_tool_manage_todo_unknown_action">Unknown action: %1$s</string>
+    <string name="agent_tool_manage_todo_missing_category_name">create_task action requires category_name parameter</string>
+    <string name="agent_tool_manage_todo_missing_title">create_task/create_category action requires title parameter</string>
+    <string name="agent_tool_manage_todo_missing_task_id">This action requires task_id parameter</string>
+    <string name="agent_tool_manage_todo_category_not_found">Category not found: %1$s</string>
+    <string name="agent_tool_manage_todo_task_not_found">Task not found: %1$s</string>
+    <string name="agent_tool_manage_todo_task_created">Task created: %1$s</string>
+    <string name="agent_tool_manage_todo_category_created">Category created: %1$s</string>
+    <string name="agent_tool_manage_todo_toggled">Task %1$s has been %2$s</string>
+    <string name="agent_tool_manage_todo_task_deleted">Task deleted: %1$s</string>
+
+    <!-- manage_xiangqi -->
+    <string name="agent_tool_manage_xiangqi_title">Manage Xiangqi Games</string>
+    <string name="agent_tool_manage_xiangqi_summary">Query, create, import endgame/opening, import game records, delete and export Chinese chess games</string>
+    <string name="agent_tool_manage_xiangqi_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_param_game_id">Game ID (required for detail / delete / export)</string>
+    <string name="agent_tool_manage_xiangqi_param_title">Game title (required for create)</string>
+    <string name="agent_tool_manage_xiangqi_param_ai_as_red">Whether to create a human-vs-AI game with AI playing red (optional for create, default false)</string>
+    <string name="agent_tool_manage_xiangqi_param_export_format">Export format: fen / json / both (optional for export, default both)</string>
+    <string name="agent_tool_manage_xiangqi_missing_game_id">Missing game_id parameter</string>
+    <string name="agent_tool_manage_xiangqi_missing_title">Missing title parameter</string>
+    <string name="agent_tool_manage_xiangqi_not_found">Game %1$s does not exist</string>
+    <string name="agent_tool_manage_xiangqi_unknown_action">Unknown action: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_failed">Xiangqi operation failed: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_created">Game created: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_deleted">Game deleted: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_param_fen">FEN notation string (required for import_fen). Used to import an endgame or a custom opening. Format: "position side halfmove-count fullmove-count", e.g. "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1". The position part is 10 rows separated by `/`, each row 9 columns; uppercase = Red (K=General A=Advisor B=Elephant N=Horse R=Chariot C=Cannon P=Pawn), lowercase = Black (k=a b=n r=c p), digits = empty squares.</string>
+    <string name="agent_tool_manage_xiangqi_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {"version":1,"title":"title","initialFen":"initial FEN","result":"result","moves":[{"move":"a0a1","moveCn":"炮二平五"},...]}. `move` is UCCI coordinate format (e.g. a0a1 means move from a0 to a1); `moves` is replayed in order.</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">Missing fen parameter</string>
+    <string name="agent_tool_manage_xiangqi_missing_json">Missing json_data parameter</string>
+    <string name="agent_tool_manage_xiangqi_imported_fen">FEN Imported</string>
+    <string name="agent_tool_manage_xiangqi_imported">Game imported: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_import_failed">Import failed: %1$s</string>
+
+    <!-- ===== Browser Automation Tools ===== -->
+    <string name="agent_tool_browser_not_available">Browser is currently unavailable; please open the built-in browser page first</string>
+
+    <!-- browser_navigate -->
+    <string name="agent_tool_browser_navigate_title">Browser Navigation</string>
+    <string name="agent_tool_browser_navigate_summary">Control the built-in browser: open URL, back, forward, reload, manage tabs</string>
+    <string name="agent_tool_browser_navigate_param_action">Action type: open_url / go_back / go_forward / reload / new_tab / switch_tab / close_tab</string>
+    <string name="agent_tool_browser_navigate_param_url">URL to open (used with open_url / new_tab)</string>
+    <string name="agent_tool_browser_navigate_param_tab_id">Tab ID (used with switch_tab / close_tab)</string>
+    <string name="agent_tool_browser_navigate_missing_url">Missing url parameter</string>
+    <string name="agent_tool_browser_navigate_missing_tab_id">Missing tab_id parameter</string>
+    <string name="agent_tool_browser_navigate_unknown_action">Unknown action: %1$s</string>
+    <string name="agent_tool_browser_navigate_failed">Browser navigation failed: %1$s</string>
+
+    <!-- browser_read_page -->
+    <string name="agent_tool_browser_read_page_title">Read Page Content</string>
+    <string name="agent_tool_browser_read_page_summary">Read the current browser page text, DOM or status info</string>
+    <string name="agent_tool_browser_read_page_param_mode">Read mode: full_text / dom / info / snapshot</string>
+    <string name="agent_tool_browser_read_page_param_selector">CSS selector (used in dom mode, default body)</string>
+    <string name="agent_tool_browser_read_page_param_max_length">Max characters returned (default 8192)</string>
+    <string name="agent_tool_browser_read_page_no_info">Cannot get page info</string>
+    <string name="agent_tool_browser_read_page_unknown_mode">Unknown mode: %1$s</string>
+    <string name="agent_tool_browser_read_page_failed">Read page failed: %1$s</string>
+
+    <!-- browser_execute_js -->
+    <string name="agent_tool_browser_execute_js_title">Execute JavaScript</string>
+    <string name="agent_tool_browser_execute_js_summary">Execute JavaScript code on the current browser page</string>
+    <string name="agent_tool_browser_execute_js_param_script">JavaScript code to execute</string>
+    <string name="agent_tool_browser_execute_js_missing_script">Missing script parameter</string>
+    <string name="agent_tool_browser_execute_js_failed">JavaScript execution failed: %1$s</string>
+    <string name="agent_tool_browser_execute_js_confirm_title">Execute JavaScript</string>
+    <string name="agent_tool_browser_execute_js_confirm_presentation">Will execute JavaScript on the current page; this may modify page state</string>
+
+    <!-- browser_screenshot -->
+    <string name="agent_tool_browser_screenshot_title">Page Screenshot</string>
+    <string name="agent_tool_browser_screenshot_summary">Take a screenshot of the current browser page</string>
+    <string name="agent_tool_browser_screenshot_failed">Screenshot failed</string>
+
+    <!-- Environment Context -->
+    <string name="ai_environment_context_title">[Current Environment]</string>
+    <string name="ai_environment_context_os">- OS: Android %1$s (API %2$d)</string>
+    <string name="ai_environment_context_arch">- Architecture: %1$s</string>
+    <string name="ai_environment_context_model">- Device model: %1$s</string>
+    <string name="ai_environment_context_app_version">- App version: %1$s (%2$s)</string>
+    <string name="ai_environment_context_work_dir">- Working directory: %1$s</string>
+    <string name="ai_environment_context_work_dir_unset">Not set</string>
+
+
+
+    <!-- AgentTool: discover_cloud_connections -->
+    <string name="agent_tool_discover_cloud_connections_title">Discover Cloud Storage Connections</string>
+
+    <string name="agent_tool_discover_cloud_connections_summary">List all locally saved remote storage connections (S3 / WebDAV / SMB supported), for selection by subsequent operations.</string>
+
+    <string name="agent_tool_discover_cloud_connections_param_name_filter">Fuzzy filter by name (optional)</string>
+
+    <string name="agent_tool_discover_cloud_connections_param_protocol">Filter by protocol (optional)</string>
+
+
+    <!-- AgentTool: browse_cloud_files -->
+    <string name="agent_tool_browse_cloud_files_title">Browse Cloud Storage Directories</string>
+
+    <string name="agent_tool_browse_cloud_files_summary">List directories under a connection, query object metadata, enumerate shares / buckets. Read-only.</string>
+
+    <string name="agent_tool_browse_cloud_files_param_action">Action type: list lists a directory; stat retrieves metadata for a single object; list_roots lists available shares / buckets</string>
+
+    <string name="agent_tool_browse_cloud_files_param_connection_id">Connection ID, from discover_cloud_connections</string>
+
+    <string name="agent_tool_browse_cloud_files_param_root">S3 bucket / SMB share / WebDAV root path (optional, defaults to the connection\'s default root)</string>
+
+    <string name="agent_tool_browse_cloud_files_param_path">Directory or file path, relative to root, separated by /</string>
+
+    <string name="agent_tool_browse_cloud_files_connection_not_found">No connection found with ID %s</string>
+
+    <string name="agent_tool_browse_cloud_files_missing_root">Missing root parameter and the connection has no default root</string>
+
+    <string name="agent_tool_browse_cloud_files_missing_path">stat action requires the path parameter</string>
+
+    <string name="agent_tool_browse_cloud_files_invalid_action">Unknown action: %s</string>
+
+    <string name="agent_tool_browse_cloud_files_failed">Failed to browse cloud storage: %s</string>
+
+
+    <!-- AgentTool: read_cloud_file -->
+    <string name="agent_tool_read_cloud_file_title">Read Cloud Storage File</string>
+
+    <string name="agent_tool_read_cloud_file_summary">Read remote file content (up to 256 KB), returned as base64. Suitable for text configs / simple metadata queries.</string>
+
+    <string name="agent_tool_read_cloud_file_param_connection_id">Connection ID</string>
+
+    <string name="agent_tool_read_cloud_file_param_root">S3 bucket / SMB share / WebDAV root path (optional)</string>
+
+    <string name="agent_tool_read_cloud_file_param_path">Remote file path</string>
+
+    <string name="agent_tool_read_cloud_file_connection_not_found">No connection found with ID %s</string>
+
+    <string name="agent_tool_read_cloud_file_missing_root">Missing root parameter and the connection has no default root</string>
+
+    <string name="agent_tool_read_cloud_file_missing_path">Missing path parameter</string>
+
+    <string name="agent_tool_read_cloud_file_too_large">File too large (%1$d bytes); per-read limit is %2$d bytes</string>
+
+    <string name="agent_tool_read_cloud_file_failed">Failed to read cloud storage file: %s</string>
+
+
+    <!-- AgentTool: search_cloud_files -->
+    <string name="agent_tool_search_cloud_files_title">Search Cloud Storage Files</string>
+
+    <string name="agent_tool_search_cloud_files_summary">Fuzzy search for object names under the current root (case-insensitive).</string>
+
+    <string name="agent_tool_search_cloud_files_param_connection_id">Connection ID</string>
+
+    <string name="agent_tool_search_cloud_files_param_root">S3 bucket / SMB share / WebDAV root path (optional)</string>
+
+    <string name="agent_tool_search_cloud_files_param_query">Search keyword; if it contains `/`, search by path prefix</string>
+
+    <string name="agent_tool_search_cloud_files_param_max_results">Max results returned (default 50)</string>
+
+    <string name="agent_tool_search_cloud_files_connection_not_found">No connection found with ID %s</string>
+
+    <string name="agent_tool_search_cloud_files_missing_root">Missing root parameter and the connection has no default root</string>
+
+    <string name="agent_tool_search_cloud_files_missing_query">Missing query parameter</string>
+
+    <string name="agent_tool_search_cloud_files_failed">Failed to search cloud storage: %s</string>
+
+
+    <!-- AgentTool: manage_cloud_files -->
+    <string name="agent_tool_manage_cloud_files_title">Manage Cloud Storage Files</string>
+
+    <string name="agent_tool_manage_cloud_files_summary">Perform write operations: create directory, delete, rename. All write operations require user confirmation.</string>
+
+    <string name="agent_tool_manage_cloud_files_confirm_title">Confirm Cloud Storage Change</string>
+
+    <string name="agent_tool_manage_cloud_files_confirm_presentation">About to perform an irreversible write operation on cloud storage</string>
+
+    <string name="agent_tool_manage_cloud_files_param_action">Action type: create_directory / delete / rename</string>
+
+    <string name="agent_tool_manage_cloud_files_param_connection_id">Connection ID</string>
+
+    <string name="agent_tool_manage_cloud_files_param_root">S3 bucket / SMB share / WebDAV root path (optional)</string>
+
+    <string name="agent_tool_manage_cloud_files_param_path">Path to operate on</string>
+
+    <string name="agent_tool_manage_cloud_files_param_target_path">Destination path for rename operation</string>
+
+    <string name="agent_tool_manage_cloud_files_param_is_directory">true means delete as a directory (recursive on S3, recursive on WebDAV / SMB)</string>
+
+    <string name="agent_tool_manage_cloud_files_connection_not_found">No connection found with ID %s</string>
+
+    <string name="agent_tool_manage_cloud_files_missing_root">Missing root parameter and the connection has no default root</string>
+
+    <string name="agent_tool_manage_cloud_files_missing_path">Missing path parameter</string>
+
+    <string name="agent_tool_manage_cloud_files_missing_target_path">rename operation requires target_path parameter</string>
+
+    <string name="agent_tool_manage_cloud_files_invalid_action">Unknown action: %s</string>
+
+    <string name="agent_tool_manage_cloud_files_failed">Failed to manage cloud storage: %s</string>
+
+
+    <!-- AgentTool: upload_to_cloud -->
+    <string name="agent_tool_upload_to_cloud_title">Upload Content to Cloud Storage</string>
+
+    <string name="agent_tool_upload_to_cloud_summary">Upload base64-encoded content (≤ 1 MB) to a remote path. Requires user confirmation.</string>
+
+    <string name="agent_tool_upload_to_cloud_confirm_title">Confirm Cloud Storage Upload</string>
+
+    <string name="agent_tool_upload_to_cloud_confirm_presentation">About to write to remote storage</string>
+
+    <string name="agent_tool_upload_to_cloud_param_connection_id">Connection ID</string>
+
+    <string name="agent_tool_upload_to_cloud_param_root">S3 bucket / SMB share / WebDAV root path (optional)</string>
+
+    <string name="agent_tool_upload_to_cloud_param_path">Remote target path</string>
+
+    <string name="agent_tool_upload_to_cloud_param_content_base64">Base64-encoded byte content</string>
+
+    <string name="agent_tool_upload_to_cloud_param_content_type">MIME type (default application/octet-stream)</string>
+
+    <string name="agent_tool_upload_to_cloud_connection_not_found">No connection found with ID %s</string>
+
+    <string name="agent_tool_upload_to_cloud_missing_root">Missing root parameter and the connection has no default root</string>
+
+    <string name="agent_tool_upload_to_cloud_missing_path">Missing path parameter</string>
+
+    <string name="agent_tool_upload_to_cloud_missing_payload">Missing content_base64 parameter</string>
+
+    <string name="agent_tool_upload_to_cloud_invalid_base64">content_base64 parse failed: %s</string>
+
+    <string name="agent_tool_upload_to_cloud_payload_too_large">payload too large (%1$d bytes); limit is %2$d bytes</string>
+
+    <string name="agent_tool_upload_to_cloud_failed">Failed to upload to cloud storage: %s</string>
+
+    <!-- AgentTool: add_local_ai_engine -->
+    <string name="agent_tool_add_local_ai_engine_title">Add Local AI Engine</string>
+    <string name="agent_tool_add_local_ai_engine_summary">Add a custom AI engine configuration locally (admin privileges required)</string>
+    <string name="agent_tool_add_local_ai_engine_description">Create a custom AI engine configuration locally. Requires engine name, display title, API URL, and path. Supports four protocols: OpenAI-compatible, Responses-compatible, Anthropic-compatible, and self-built proxy. This tool requires admin privileges; the user is asked to confirm before execution.</string>
+    <string name="agent_tool_add_local_ai_engine_param_name">Engine unique name (internal identifier), e.g. my-openai, local-ollama</string>
+    <string name="agent_tool_add_local_ai_engine_param_title">Engine display name, e.g. "My OpenAI Proxy"</string>
+    <string name="agent_tool_add_local_ai_engine_param_request_url">API base URL, e.g. https://api.openai.com</string>
+    <string name="agent_tool_add_local_ai_engine_param_request_path">API path, e.g. /v1/chat/completions</string>
+    <string name="agent_tool_add_local_ai_engine_param_request_protocol">Protocol type: openai_compatible (default), responses_compatible, anthropic_compatible, own_proxy</string>
+    <string name="agent_tool_add_local_ai_engine_param_auth_type">Authentication type: bearer (default), api_key, none</string>
+    <string name="agent_tool_add_local_ai_engine_param_authorization_code">API key or token (optional)</string>
+    <string name="agent_tool_add_local_ai_engine_param_description">Engine description (optional)</string>
+    <string name="agent_tool_add_local_ai_engine_admin_required">Admin privileges required to add a local AI engine</string>
+    <string name="agent_tool_add_local_ai_engine_invalid_params">Failed to parse parameters</string>
+    <string name="agent_tool_add_local_ai_engine_missing_name">Missing name parameter</string>
+    <string name="agent_tool_add_local_ai_engine_missing_title">Missing title parameter</string>
+    <string name="agent_tool_add_local_ai_engine_missing_request_url">Missing request_url parameter</string>
+    <string name="agent_tool_add_local_ai_engine_missing_request_path">Missing request_path parameter</string>
+    <string name="agent_tool_add_local_ai_engine_success">Local AI engine added successfully: %1$s</string>
+    <string name="agent_tool_add_local_ai_engine_save_failed">Failed to save engine configuration; please check for duplicate names</string>
+    <string name="agent_tool_add_local_ai_engine_failed">Failed to add local AI engine: %1$s</string>
+
+    <!-- AgentTool: add_local_ai_model -->
+    <string name="agent_tool_add_local_ai_model_title">Add Local AI Model</string>
+    <string name="agent_tool_add_local_ai_model_summary">Add a custom AI model to an existing engine (admin privileges required)</string>
+    <string name="agent_tool_add_local_ai_model_description">Add a custom model configuration to an existing local AI engine. Requires engine name, model internal name, and display title. This tool requires admin privileges; the user is asked to confirm before execution.</string>
+    <string name="agent_tool_add_local_ai_model_param_engine_name">Parent engine name (must already exist)</string>
+    <string name="agent_tool_add_local_ai_model_param_model_name">Model internal name / ID, e.g. gpt-4o, deepseek-chat</string>
+    <string name="agent_tool_add_local_ai_model_param_model_title">Model display name, e.g. "GPT-4o"</string>
+    <string name="agent_tool_add_local_ai_model_param_description">Model description (optional)</string>
+    <string name="agent_tool_add_local_ai_model_param_temperature">Temperature parameter, 0.0~2.0, default 0.95</string>
+    <string name="agent_tool_add_local_ai_model_param_top_p">Top-P parameter, 0.0~1.0, default 0.8</string>
+    <string name="agent_tool_add_local_ai_model_param_max_tokens">Max output tokens, 256~8192, default 2048</string>
+    <string name="agent_tool_add_local_ai_model_invalid_params">Failed to parse parameters</string>
+    <string name="agent_tool_add_local_ai_model_missing_engine_name">Missing engine_name parameter</string>
+    <string name="agent_tool_add_local_ai_model_missing_model_name">Missing model_name parameter</string>
+    <string name="agent_tool_add_local_ai_model_missing_model_title">Missing model_title parameter</string>
+    <string name="agent_tool_add_local_ai_model_success">Local AI model added successfully: %1$s</string>
+    <string name="agent_tool_add_local_ai_model_save_failed">Failed to save model configuration; please check for duplicate names</string>
+    <string name="agent_tool_add_local_ai_model_failed">Failed to add local AI model: %1$s</string>
+
+    <!-- AgentTool: manage_cloud_connections -->
+    <string name="agent_tool_manage_cloud_connections_title">Manage Cloud Storage Connections</string>
+    <string name="agent_tool_manage_cloud_connections_summary">Create / test / delete saved remote storage connections. Credentials are entered by the user and written to EncryptedSharedPreferences.</string>
+    <string name="agent_tool_manage_cloud_connections_confirm_title">Confirm Cloud Storage Connection Change</string>
+    <string name="agent_tool_manage_cloud_connections_confirm_presentation">About to modify a saved remote storage connection</string>
+    <string name="agent_tool_manage_cloud_connections_param_action">Action type: create creates and saves; test only tests without saving; delete removes a saved connection</string>
+    <string name="agent_tool_manage_cloud_connections_param_protocol">Required for create / test. Remote storage protocol: S3_COMPAT / WEB_DAV / SMB</string>
+    <string name="agent_tool_manage_cloud_connections_param_connection_id">Required for delete, not for create / test. Connection ID to operate on</string>
+    <string name="agent_tool_manage_cloud_connections_param_display_name">Required for create / test; user-recognizable connection name</string>
+    <string name="agent_tool_manage_cloud_connections_param_is_default">Whether to set as default connection (optional for create, default false)</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_vendor">S3 sub-vendor, default S3_COMPATIBLE</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_endpoint">S3 endpoint; can be left empty to use vendor default</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_region">S3 region</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_bucket">S3 bucket name</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_access_key_id">S3 access key id</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_secret_access_key">S3 secret access key</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_base_url">WebDAV server address (e.g. https://dav.example.com/remote.php/webdav)</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_root_path">WebDAV root path (default /)</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_username">WebDAV username</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_password">WebDAV password</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_host">SMB server IP / domain</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_port">SMB port (default 445)</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_share">SMB share name</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_domain">SMB domain / workgroup (can be empty)</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_username">SMB username</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_password">SMB password</string>
+    <string name="agent_tool_manage_cloud_connections_invalid_action">Unknown action: %s</string>
+    <string name="agent_tool_manage_cloud_connections_missing_protocol">Cannot construct connection for protocol=%s; please check the protocol type and corresponding fields</string>
+    <string name="agent_tool_manage_cloud_connections_missing_connection_id">delete operation requires connection_id</string>
+    <string name="agent_tool_manage_cloud_connections_connection_not_found">No connection found with ID %s</string>
+    <string name="agent_tool_manage_cloud_connections_test_ok">Connection %s tested OK</string>
+    <string name="agent_tool_manage_cloud_connections_create_ok">Connection %s created and saved</string>
+    <string name="agent_tool_manage_cloud_connections_create_test_failed">Connection %1$s test failed, not saved: %2$s</string>
+    <string name="agent_tool_manage_cloud_connections_delete_ok">Connection %s deleted</string>
+
+    <!-- UI automation trio (screenshot_ui / act_on_ui / automate_ui_task) -->
+    <string name="agent_tool_screenshot_ui_title">UI Screenshot</string>
+    <string name="agent_tool_screenshot_ui_summary">Capture the current screen and save it as a WebP image (using the same compression pipeline as chat attachments), letting the agent see the screen and decide the next action.</string>
+    <string name="agent_tool_screenshot_ui_param_max_base64_length">If set, truncate base64 to this length to control tool result size. 0 means no truncation; default 0.</string>
+    <string name="agent_tool_screenshot_ui_success">Screenshot captured (%1$d×%2$d, %3$d KB, WebP).</string>
+    <string name="agent_tool_screenshot_ui_truncated">Image truncated to %1$d characters to fit the tool result size limit.</string>
+    <string name="agent_tool_screenshot_ui_failed">Screenshot failed: %1$s</string>
+    <string name="agent_tool_screenshot_ui_no_activity">No Activity is currently available. Make sure you open chat from a normal page.</string>
+
+    <string name="agent_tool_act_on_ui_title">Act on UI</string>
+    <string name="agent_tool_act_on_ui_summary">Execute a single touch action on the current screen (tap / long-press / swipe / input text / go back / wait).</string>
+    <string name="agent_tool_act_on_ui_param_action">Action payload. Must be a JSON object matching one of: click, long_press, swipe, input_text, go_back, wait, done. Example: {\"action\":\"click\",\"x\":320,\"y\":640,\"reason\":\"tap confirm\"}</string>
+    <string name="agent_tool_act_on_ui_success">Action executed: %1$s</string>
+    <string name="agent_tool_act_on_ui_failed">Action failed: %1$s</string>
+    <string name="agent_tool_act_on_ui_parse_failed">Failed to parse action payload: %1$s</string>
+    <string name="agent_tool_act_on_ui_no_activity">No Activity is currently available. Make sure you open chat from a normal page.</string>
+
+    <string name="agent_tool_automate_ui_task_title">Automate UI Task</string>
+    <string name="agent_tool_automate_ui_task_summary">End-to-end automated UI task. The agent keeps screenshotting, asking the AI for the next action and executing it, until done, failed, or max steps reached.</string>
+    <string name="agent_tool_automate_ui_task_param_task_description">Plain-text description of what to achieve on the current screen, e.g. "search weather in Beijing".</string>
+    <string name="agent_tool_automate_ui_task_param_max_steps">Max automation steps; default 20.</string>
+    <string name="agent_tool_automate_ui_task_completed">Task completed after %1$d steps. %2$s</string>
+    <string name="agent_tool_automate_ui_task_failed">Task failed at step %1$d: %2$s</string>
+    <string name="agent_tool_automate_ui_task_step_limit">Task stopped after %1$d steps (limit reached). Last action: %2$s</string>
+    <string name="agent_tool_automate_ui_task_no_activity">No Activity is currently available. Make sure you open chat from a normal page.</string>
+</resources>

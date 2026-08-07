@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 会员等级 -->
+    <string name="vip_level_current_tag">当前</string>
+    <string name="vip_level_required_amount">≥%1$d元</string>
+</resources>

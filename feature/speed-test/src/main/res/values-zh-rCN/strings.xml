@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── 通用 ── -->
+    <string name="speed_test_cancel">取消</string>
+    <string name="speed_test_save">保存</string>
+    <string name="speed_test_close_desc">关闭</string>
+
+    <!-- ── 主屏幕 ── -->
+    <string name="speed_test_screen_title">网络测速</string>
+    <string name="speed_test_config_icon_desc">测速配置</string>
+    <string name="speed_test_current_network">当前网络：%1$s</string>
+    <string name="speed_test_open_wifi">开启并切换WIFI ›</string>
+    <string name="speed_test_history_link">测速记录</string>
+    <string name="speed_test_restart">重新测速</string>
+    <string name="speed_test_switch_wifi">切换WiFi</string>
+    <string name="speed_test_disclaimer">测速结果受服务器配置、地区网络、运营商等因素影响，仅供参考</string>
+    <string name="speed_test_error_failed">测速失败</string>
+
+    <!-- ── 网络类型 ── -->
+    <string name="speed_test_network_unknown">未知网络</string>
+    <string name="speed_test_network_none">无网络</string>
+    <string name="speed_test_network_mobile_5g">5G移动网络</string>
+    <string name="speed_test_network_mobile_4g">4G移动网络</string>
+    <string name="speed_test_network_mobile">移动网络</string>
+    <string name="speed_test_network_ethernet">以太网</string>
+
+    <!-- ── 仪表盘 Gauge ── -->
+    <string name="speed_test_start">开始测速</string>
+    <string name="speed_test_estimated_data">预计消耗%1$dMB流量</string>
+    <string name="speed_test_measuring">正在测速…</string>
+
+    <!-- ── 单位 ── -->
+    <string name="speed_test_unit_mbps">Mbps</string>
+    <string name="speed_test_unit_ms">ms</string>
+
+    <!-- ── 顶部指标行 ── -->
+    <string name="speed_test_latency_label">网络延迟</string>
+    <string name="speed_test_download_label">下载速度</string>
+
+    <!-- ── 结果页 ── -->
+    <string name="speed_test_result_download_title">下载速度</string>
+    <string name="speed_test_bar_slow">慢</string>
+    <string name="speed_test_bar_fast">快</string>
+    <!-- %1$.1f = MB/s 值；%2$d = 打败百分比 -->
+    <string name="speed_test_beat_percent">约等于%1$.1fMB/s，打败全国%2$d%%的用户！</string>
+    <string name="speed_test_result_mb_per_sec">约等于 %1$.1f MB/s</string>
+    <string name="speed_test_beat_percent_badge">打败全国 %1$d%% 的用户</string>
+    <string name="speed_test_latency_result_label">网络延迟</string>
+    <string name="speed_test_network_type_label">网络类型</string>
+
+    <!-- ── 历史记录 Sheet ── -->
+    <string name="speed_test_history_title">测速记录</string>
+    <string name="speed_test_history_network_col">网络名称</string>
+    <string name="speed_test_history_download_col">⬇ 下载速度</string>
+    <string name="speed_test_history_empty">暂无测速记录</string>
+    <string name="speed_test_clear_records">清除记录</string>
+
+    <!-- ── 配置管理 Sheet ── -->
+    <string name="speed_test_config_sheet_title">测速配置</string>
+    <string name="speed_test_config_add_btn">添加</string>
+    <string name="speed_test_config_edit_desc">编辑</string>
+    <string name="speed_test_config_delete_desc">删除</string>
+    <!-- %1$d = 流量 MB；%2$d = 时长秒 -->
+    <string name="speed_test_config_info">%1$dMB · %2$d秒</string>
+    <string name="speed_test_config_delete_dialog_title">删除配置</string>
+    <!-- %1$s = 配置名称 -->
+    <string name="speed_test_config_delete_dialog_msg">确定删除「%1$s」吗？</string>
+    <string name="speed_test_config_confirm_delete">删除</string>
+
+    <!-- ── 配置编辑 Dialog ── -->
+    <string name="speed_test_config_add_title">添加配置</string>
+    <string name="speed_test_config_edit_title">编辑配置</string>
+    <string name="speed_test_config_name_hint">配置名称</string>
+    <string name="speed_test_config_url_hint">测速 URL</string>
+    <string name="speed_test_config_estimated_mb_hint">预估流量 (MB)</string>
+    <string name="speed_test_config_duration_hint">时长 (秒)</string>
+</resources>
+

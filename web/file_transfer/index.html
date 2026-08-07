@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="app.title">文件传输 - Wanbaohe</title>
+    <!-- styles -->
+    <script src="/js/tailwindcss.js"></script>
+    <link rel="icon" href="data:;base64,=">
+    <style>
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        /* 骨架屏动画 */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        .dark .skeleton {
+            background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
+            background-size: 200% 100%;
+        }
+
+        /* 拖拽高亮 */
+        .drop-highlight {
+            background-color: rgba(59, 130, 246, 0.1) !important;
+            border-color: #3b82f6 !important;
+        }
+
+        /* 触摸友好按钮最小尺寸 */
+        .touch-target { min-height: 44px; min-width: 44px; }
+
+        /* 安全区（iOS） */
+        .safe-area-pb { padding-bottom: env(safe-area-inset-bottom); }
+
+        /* 主容器底部内边距（适配移动端底部导航 + 安全区） */
+        .main-safe-pb {
+            padding-bottom: 4.5rem;
+            padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+        }
+    </style>
+</head>
+<body class="h-full bg-background text-on-background transition-colors overflow-hidden">
+    <div id="app" class="h-full flex flex-col md:h-screen md:min-h-0 md:overflow-hidden">
+
+        <!-- 登录遮罩 -->
+        <div id="login-overlay" class="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center" style="display: none;">
+            <div class="bg-surface rounded-2xl shadow-xl p-8 w-full max-w-sm mx-4 border border-outline-variant">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-on-primary-container" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold text-on-surface" data-i18n="login.title">访问验证</h2>
+                    <p class="text-on-surface-variant mt-1" data-i18n="login.subtitle">请输入访问密码</p>
+                </div>
+                <input type="password" id="password-input" placeholder="输入密码" data-i18n-placeholder="login.placeholder"
+                    class="w-full px-4 py-3 border border-outline rounded-lg bg-surface-container text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors touch-target" />
+                <button id="login-btn" class="w-full mt-4 px-4 py-3 bg-primary hover:opacity-90 text-on-primary font-medium rounded-lg transition-colors touch-target" data-i18n="login.button">
+                    确认
+                </button>
+                <p id="login-error" class="text-tertiary text-sm text-center mt-3 min-h-[20px]"></p>
+            </div>
+        </div>
+
+        <!-- 移动端底部导航 -->
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-outline-variant safe-area-pb">
+            <div class="flex justify-around">
+                <button id="nav-files-mobile" class="flex flex-col items-center py-2 px-4 text-primary touch-target" data-nav="files">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                    </svg>
+                    <span class="text-xs mt-1" data-i18n="nav.files">文件</span>
+                </button>
+                <button id="nav-transfer-mobile" class="flex flex-col items-center py-2 px-4 text-on-surface-variant touch-target" data-nav="transfer">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                    </svg>
+                    <span class="text-xs mt-1" data-i18n="nav.transfer">传输</span>
+                </button>
+                <!-- 新增：聊天（移动端 Tab），移除设置 -->
+                <button id="nav-chat-mobile" class="flex flex-col items-center py-2 px-4 text-on-surface-variant touch-target" data-nav="chat">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8m-8 4h5m9 2a2 2 0 01-2 2H6l-4 4V4a2 2 0 012-2h16a2 2 0 012 2v12z"/>
+                    </svg>
+                    <span class="text-xs mt-1" data-i18n="nav.chat">聊天</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- 移动端顶部栏 -->
+        <header class="md:hidden sticky top-0 z-30 bg-surface border-b border-outline-variant">
+            <div class="flex items-center justify-between px-4 py-3">
+                <div class="flex items-center gap-2">
+                    <div id="connection-status" class="w-2 h-2 rounded-full bg-tertiary"></div>
+                    <span class="text-sm text-on-surface-variant" data-i18n="connection.status">已连接</span>
+                </div>
+                <div id="storage-mobile" class="flex items-center gap-2">
+                    <div class="w-20 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+                        <div id="storage-bar-mobile" class="h-full bg-primary transition-all" style="width: 0%"></div>
+                    </div>
+                    <span id="storage-text-mobile" class="text-xs text-on-surface-variant">--</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主布局 -->
+        <div class="flex flex-1 overflow-hidden min-h-0">
+
+            <!-- 桌面端侧边栏 -->
+            <aside class="hidden md:flex md:w-64 lg:w-72 flex-col bg-surface border-r border-outline-variant">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 px-6 py-5 border-b border-outline-variant">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-on-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="font-semibold text-on-surface" data-i18n="app.name">文件传输</h1>
+                        <p id="device-name" class="text-xs text-on-surface-variant" data-i18n="device.loading">加载中...</p>
+                    </div>
+                </div>
+
+                <!-- 连接状态 -->
+                <div class="px-4 py-3 mx-4 mt-4 bg-surface-container rounded-xl">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div id="connection-dot" class="w-2 h-2 rounded-full bg-tertiary"></div>
+                        <span class="text-sm text-on-surface-variant" data-i18n="connection.status">已连接</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-surface-container-high rounded-full overflow-hidden">
+                            <div id="storage-bar-desktop" class="h-full bg-primary transition-all" style="width: 0%"></div>
+                        </div>
+                        <span id="storage-text-desktop" class="text-xs text-on-surface-variant whitespace-nowrap">--</span>
+                    </div>
+                </div>
+
+                <!-- 文件统计 -->
+                <div id="file-stats" class="hidden px-4 py-3 mx-4 mt-2 bg-primary-container rounded-xl">
+                    <div class="text-xs text-on-surface-variant mb-2" data-i18n="stats.currentFolder">当前目录</div>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-on-surface">
+                            <span id="folder-count">0</span> <span data-i18n="stats.folders">个文件夹</span>
+                        </span>
+                        <span class="text-on-surface">
+                            <span id="file-count">0</span> <span data-i18n="stats.files">个文件</span>
+                        </span>
+                    </div>
+                    <div id="total-size" class="text-xs text-on-surface-variant mt-1">
+                        <span data-i18n="stats.totalSize">总大小: </span><span class="font-medium">0 B</span>
+                    </div>
+                </div>
+
+                <!-- 导航菜单 -->
+                <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
+                    <button class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors touch-target" data-nav="files">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                        </svg>
+                        <span data-i18n="nav.allFiles">全部文件</span>
+                    </button>
+                    <button class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors touch-target text-on-surface-variant hover:bg-surface-container-high" data-nav="transfer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                        </svg>
+                        <span data-i18n="transfer.title">传输任务</span>
+                    </button>
+                </nav>
+
+                <!-- 拖拽上传区域 -->
+                <div id="drop-zone-sidebar" class="mx-4 mb-4 p-4 border-2 border-dashed border-outline rounded-xl text-center text-sm text-on-surface-variant transition-colors hover:border-primary">
+                    <svg class="w-8 h-8 mx-auto mb-2 text-outline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    <span data-i18n="dropzone.sidebar">拖拽文件到此处上传</span>
+                </div>
+            </aside>
+
+            <!-- 主内容区 -->
+            <main class="flex-1 flex flex-col overflow-hidden min-h-0 md:pb-0 main-safe-pb">
+
+                <!-- 工具栏 -->
+                <div id="main-toolbar" class="bg-surface border-b border-outline-variant px-4 py-3">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <!-- 返回按钮 -->
+                        <button id="back-btn" disabled class="p-2 rounded-lg text-on-surface-variant transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface-container-high touch-target">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                        </button>
+
+                        <!-- 面包屑导航 -->
+                        <div id="breadcrumb" class="flex-1 flex items-center gap-1 overflow-x-auto text-sm">
+                            <span class="px-2 py-1 rounded hover:bg-surface-container-high cursor-pointer text-on-surface-variant" onclick="loadFiles('')" data-i18n="breadcrumb.home">首页</span>
+                        </div>
+
+                        <!-- 视图切换 -->
+                        <div class="flex items-center gap-1 border border-outline-variant rounded-lg p-1">
+                            <button id="view-grid" class="p-1.5 rounded bg-surface-container-high text-on-surface" title="网格视图" data-i18n-title="toolbar.view.grid">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                </svg>
+                            </button>
+                            <button id="view-list" class="p-1.5 rounded text-on-surface-variant hover:bg-surface-container-high" title="列表视图" data-i18n-title="toolbar.view.list">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- 刷新按钮 -->
+                        <button id="refresh-btn" class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors touch-target" title="刷新" data-i18n-title="toolbar.refresh">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </button>
+
+                        <!-- 上传按钮 -->
+                        <button id="upload-btn" class="flex items-center gap-2 px-4 py-2 bg-primary hover:opacity-90 text-on-primary rounded-lg transition-colors touch-target">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                            </svg>
+                            <span class="hidden sm:inline" data-i18n="toolbar.upload">上传</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 多选操作栏 -->
+                <div id="multi-select-bar" class="hidden bg-primary-container border-b border-primary-container px-4 py-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button id="cancel-select" class="p-2 rounded-lg hover:bg-primary-container/80 touch-target">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                            <span id="select-count" class="text-primary font-medium">已选择 0 项</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="download-selected" class="flex items-center gap-2 px-3 py-2 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-colors touch-target">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                </svg>
+                                <span class="hidden sm:inline" data-i18n="common.download">下载</span>
+                            </button>
+                            <button id="delete-selected" class="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors touch-target">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                                <span class="hidden sm:inline" data-i18n="common.delete">删除</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文件列表/网格 -->
+                <div id="file-container" class="flex-1 overflow-y-auto p-4">
+
+                    <!-- 拖拽上传覆盖层 -->
+                    <div id="drop-overlay" class="hidden fixed inset-0 z-20 bg-primary/10 backdrop-blur-sm flex items-center justify-center pointer-events-none">
+                        <div class="bg-surface rounded-2xl p-8 shadow-2xl text-center">
+                            <svg class="w-16 h-16 mx-auto text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <p class="text-xl font-medium text-on-surface" data-i18n="dropzone.overlay">松开鼠标上传文件</p>
+                        </div>
+                    </div>
+
+                    <!-- 骨架屏加载状态 -->
+                    <div id="loading-skeleton" class="hidden">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                            <div class="skeleton h-32 rounded-xl"></div>
+                            <div class="skeleton h-32 rounded-xl"></div>
+                            <div class="skeleton h-32 rounded-xl"></div>
+                            <div class="skeleton h-32 rounded-xl"></div>
+                            <div class="skeleton h-32 rounded-xl"></div>
+                            <div class="skeleton h-32 rounded-xl"></div>
+                        </div>
+                    </div>
+
+                    <!-- 网格视图 -->
+                    <div id="file-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                        <!-- 文件项由JS动态生成 -->
+                    </div>
+
+                    <!-- 列表视图 -->
+                    <div id="file-list" class="hidden space-y-1">
+                        <!-- 文件项由JS动态生成 -->
+                    </div>
+
+                    <!-- 空状态 -->
+                    <div id="empty-state" class="hidden flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500">
+                        <svg class="w-24 h-24 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                        </svg>
+                        <p class="text-lg font-medium" data-i18n="empty.title">文件夹为空</p>
+                        <p class="text-sm mt-1" data-i18n="empty.subtitle">拖拽文件或点击上传按钮添加文件</p>
+                    </div>
+
+                    <!-- 错误状态 -->
+                    <div id="error-state" class="hidden flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500">
+                        <svg class="w-24 h-24 mb-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <p class="text-lg font-medium" data-i18n="error.title">加载失败</p>
+                        <p id="error-message" class="text-sm mt-1" data-i18n="error.subtitle">请检查网络连接后重试</p>
+                        <button onclick="loadFiles(state.currentPath)" class="mt-4 px-4 py-2 bg-primary text-on-primary rounded-lg hover:opacity-90 transition-colors" data-i18n="common.retry">
+                            重试
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 新增：移动端 传输面板（占满主区域） -->
+                <div id="mobile-transfer-panel" class="hidden md:hidden flex-1 overflow-y-auto p-4">
+                    <div class="bg-surface rounded-xl border border-outline-variant overflow-hidden">
+                        <div class="px-4 py-3 border-b border-outline-variant">
+                            <h2 class="font-semibold text-on-surface" data-i18n="transfer.title">传输任务</h2>
+                        </div>
+                        <div class="p-4">
+                            <div id="mobile-transfer-empty" class="flex flex-col items-center justify-center py-10 text-on-surface-variant">
+                                <svg class="w-16 h-16 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                                <p class="text-sm" data-i18n="transfer.empty">暂无传输任务</p>
+                            </div>
+                            <!-- 复用同一份传输列表（移动端也看得到上传任务） -->
+                            <div id="mobile-transfer-list" class="space-y-3 hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 新增：移动端 聊天面板（占满主区域） -->
+                <div id="mobile-chat-panel" class="hidden md:hidden flex-1 flex flex-col overflow-hidden">
+                    <div class="flex-1 overflow-y-auto p-4 space-y-3" id="mobile-chat-messages"></div>
+                    <!-- 新消息提示（移动端） -->
+                    <div class="px-4 pb-2">
+                        <button id="mobile-new-messages" class="hidden w-full py-2 text-sm rounded-lg bg-primary text-on-primary hover:opacity-90 transition-colors" data-i18n="chat.newMessages">
+                            有新消息，点我查看
+                        </button>
+                    </div>
+                    <div class="p-2 border-t border-outline-variant bg-surface">
+                        <div class="flex items-end gap-2">
+                            <input type="file" id="mobile-chat-file-input" class="hidden" multiple />
+                            <button id="mobile-chat-file-btn" class="p-2 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container-high transition-colors" title="发送文件" data-i18n-title="chat.sendFile">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                                </svg>
+                            </button>
+                            <textarea id="mobile-chat-input" placeholder="输入消息..." data-i18n-placeholder="chat.input.placeholder" rows="1" class="flex-1 px-4 py-2 min-h-[42px] border border-outline rounded-lg bg-surface-container text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none transition-colors"></textarea>
+                            <button id="mobile-send-chat-btn" class="p-2 bg-primary hover:opacity-90 text-on-primary rounded-lg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 移除：settings-panel（设置tab） -->
+            </main>
+
+            <!-- 桌面端右侧：聊天/传输 Tab 面板 -->
+            <!-- UX：右侧面板在聊天场景偏窄，这里随屏幕变大逐步加宽 -->
+            <aside id="right-panel" class="hidden lg:flex lg:w-[28rem] xl:w-[32rem] 2xl:w-[36rem] flex-col bg-surface border-l border-outline-variant h-full min-h-0 overflow-hidden">
+                <!-- Tab Header -->
+                <div class="px-4 pt-4 border-b border-outline-variant flex-none">
+                    <div class="flex gap-1 bg-surface-container-high rounded-xl p-1">
+                        <button id="right-tab-chat" class="flex-1 py-2 px-3 rounded-lg text-sm font-medium bg-surface text-on-surface" data-right-tab="chat" data-i18n="nav.chat">聊天</button>
+                        <button id="right-tab-transfer" class="flex-1 py-2 px-3 rounded-lg text-sm font-medium text-on-surface-variant" data-right-tab="transfer" data-i18n="nav.transfer">传输</button>
+                    </div>
+                </div>
+
+                <!-- 聊天面板（嵌入右侧栏） -->
+                <!-- UX：确保“消息列表”是唯一滚动区域，输入框固定在底部 -->
+                <div id="chat-panel" class="flex-1 min-h-0 flex flex-col">
+                    <!-- 消息列表 -->
+                    <div id="chat-messages" class="flex-1 min-h-0 overflow-y-auto p-4 space-y-3"></div>
+                    <!-- 新消息提示（桌面端） -->
+                    <div class="px-4 pb-2">
+                        <button id="desktop-new-messages" class="hidden w-full py-2 text-sm rounded-lg bg-primary text-on-primary hover:opacity-90 transition-colors" data-i18n="chat.newMessages">
+                            有新消息，点我查看
+                        </button>
+                    </div>
+
+                    <!-- 输入框（固定区域，不参与滚动） -->
+                    <div class="p-4 border-t border-outline-variant flex-none bg-surface">
+                        <div class="flex items-end gap-2">
+                            <input type="file" id="chat-file-input" class="hidden" multiple />
+                            <button id="chat-file-btn" class="p-2 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container-high transition-colors" title="发送文件" data-i18n-title="chat.sendFile">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                                </svg>
+                            </button>
+                            <textarea id="chat-input" placeholder="输入消息..." data-i18n-placeholder="chat.input.placeholder" rows="1" class="flex-1 px-4 py-2 min-h-[42px] border border-outline rounded-lg bg-surface-container text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none transition-colors"></textarea>
+                            <button id="send-chat-btn" class="p-2 bg-primary hover:opacity-90 text-on-primary rounded-lg transition-colors">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 传输面板（嵌入右侧栏） -->
+                <div id="transfer-panel" class="hidden flex-1 min-h-0 flex-col">
+                    <div class="px-6 py-4 border-b border-outline-variant flex-none">
+                        <h2 class="font-semibold text-on-surface" data-i18n="transfer.title">传输任务</h2>
+                    </div>
+                    <!-- UX：列表区域可滚动，其它不滚 -->
+                    <div class="flex-1 min-h-0 overflow-y-auto p-4 space-y-3">
+                        <div id="transfer-list" class="space-y-3">
+                            <div id="transfer-empty" class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500">
+                                <svg class="w-16 h-16 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                                <p class="text-sm" data-i18n="transfer.empty">暂无传输任务</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- 上传弹窗 -->
+        <div id="upload-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-lg max-h-[80vh] flex flex-col">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white" data-i18n="uploadModal.title">上传文件</h3>
+                    <button id="close-upload" class="p-2 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors touch-target">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div id="upload-drop-zone" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+                        <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                        </svg>
+                        <p class="text-gray-600 dark:text-gray-300 font-medium" data-i18n="uploadModal.hint">点击或拖拽文件到此处</p>
+                        <p class="text-sm text-gray-400 dark:text-gray-500 mt-1" data-i18n="uploadModal.subtitle">支持多文件上传</p>
+                        <input type="file" id="file-input" multiple class="hidden" />
+                    </div>
+                    <div id="upload-file-list" class="mt-4 space-y-2 max-h-64 overflow-y-auto">
+                        <!-- 上传文件列表 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 确认删除对话框 -->
+        <div id="delete-confirm-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-sm p-6">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2" data-i18n="deleteModal.title">确认删除</h3>
+                    <p id="delete-confirm-text" class="text-gray-500 dark:text-gray-400" data-i18n="deleteModal.text">确定要删除所选文件吗？此操作不可撤销。</p>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button id="cancel-delete" class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors touch-target" data-i18n="common.cancel">
+                        取消
+                    </button>
+                    <button id="confirm-delete" class="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors touch-target" data-i18n="common.delete">
+                        删除
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新建文件夹对话框 -->
+        <div id="new-folder-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div class="bg-surface rounded-2xl shadow-xl w-full max-w-sm p-6">
+                <h3 class="text-lg font-semibold text-on-surface mb-4" data-i18n="newFolder.title">新建文件夹</h3>
+                <input type="text" id="new-folder-name" placeholder="文件夹名称" data-i18n-placeholder="newFolder.placeholder"
+                    class="w-full px-4 py-3 border border-outline rounded-xl bg-surface-container text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors" />
+                <div class="flex gap-3 mt-6">
+                    <button id="cancel-new-folder" class="flex-1 px-4 py-3 border border-outline text-on-surface-variant rounded-xl hover:bg-surface-container-high transition-colors touch-target" data-i18n="common.cancel">
+                        取消
+                    </button>
+                    <button id="confirm-new-folder" class="flex-1 px-4 py-3 bg-primary text-on-primary rounded-xl hover:opacity-90 transition-colors touch-target" data-i18n="common.create">
+                        创建
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右键菜单 -->
+        <div id="context-menu" class="hidden fixed z-50 bg-surface rounded-xl shadow-xl border border-outline-variant py-2 min-w-[180px]">
+            <button class="context-menu-item w-full flex items-center gap-3 px-4 py-2.5 text-left text-on-surface-variant hover:bg-surface-container-high transition-colors" data-action="open">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <span data-i18n="contextMenu.open">打开/预览</span>
+            </button>
+            <button class="context-menu-item w-full flex items-center gap-3 px-4 py-2.5 text-left text-on-surface-variant hover:bg-surface-container-high transition-colors" data-action="download">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span data-i18n="common.download">下载</span>
+            </button>
+            <button class="context-menu-item w-full flex items-center gap-3 px-4 py-2.5 text-left text-on-surface-variant hover:bg-surface-container-high transition-colors" data-action="rename">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                <span data-i18n="common.rename">重命名</span>
+            </button>
+            <button class="context-menu-item w-full flex items-center gap-3 px-4 py-2.5 text-left text-on-surface-variant hover:bg-surface-container-high transition-colors" data-action="info">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span data-i18n="contextMenu.info">详细信息</span>
+            </button>
+            <div class="border-t border-outline-variant my-1"></div>
+            <button class="context-menu-item w-full flex items-center gap-3 px-4 py-2.5 text-left text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" data-action="delete">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+                <span data-i18n="common.delete">删除</span>
+            </button>
+        </div>
+
+        <!-- 重命名对话框 -->
+        <div id="rename-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div class="bg-surface rounded-2xl shadow-xl w-full max-w-sm p-6">
+                <h3 class="text-lg font-semibold text-on-surface mb-4" data-i18n="common.rename">重命名</h3>
+                <input type="text" id="rename-input" placeholder="新名称" data-i18n-placeholder="renameModal.placeholder"
+                    class="w-full px-4 py-3 border border-outline rounded-xl bg-surface-container text-on-surface focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors" />
+                <div class="flex gap-3 mt-6">
+                    <button id="cancel-rename" class="flex-1 px-4 py-3 border border-outline text-on-surface-variant rounded-xl hover:bg-surface-container-high transition-colors touch-target" data-i18n="common.cancel">
+                        取消
+                    </button>
+                    <button id="confirm-rename" class="flex-1 px-4 py-3 bg-primary text-on-primary rounded-xl hover:opacity-90 transition-colors touch-target" data-i18n="common.confirm">
+                        确认
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文件详情对话框 -->
+        <div id="info-modal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div class="bg-surface rounded-2xl shadow-xl w-full max-w-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-on-surface" data-i18n="infoModal.title">文件信息</h3>
+                    <button id="close-info" class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="info-content" class="space-y-3">
+                    <!-- 动态内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 文件预览对话框 -->
+        <div id="preview-modal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+            <div class="relative w-full h-full flex flex-col">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 id="preview-title" class="text-lg font-semibold text-white truncate flex-1"></h3>
+                    <div class="flex gap-2">
+                        <button id="preview-download" class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors" title="下载图片" data-i18n-title="imageViewer.download">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                        </button>
+                        <button id="preview-close" class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors" title="关闭" data-i18n-title="imageViewer.close">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="preview-content" class="flex-1 flex items-center justify-center overflow-auto">
+                    <!-- 动态预览内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 图片放大查看器 -->
+        <div id="image-viewer" class="hidden fixed inset-0 z-50 bg-black/90">
+            <div class="absolute top-0 left-0 right-0 flex items-center justify-between p-4">
+                <div class="text-white text-sm truncate pr-4" id="image-viewer-title"></div>
+                <div class="flex items-center gap-2">
+                    <button id="image-viewer-download" class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors" title="下载图片" data-i18n-title="imageViewer.download">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                    </button>
+                    <button id="image-viewer-close" class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors" title="关闭" data-i18n-title="imageViewer.close">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="w-full h-full flex items-center justify-center overflow-hidden">
+                <img id="image-viewer-img" alt="图片预览" data-i18n-alt="imageViewer.alt" class="max-w-full max-h-full object-contain select-none" />
+            </div>
+        </div>
+
+        <!-- Toast 提示 -->
+        <div id="toast" class="fixed bottom-20 md:bottom-8 left-1/2 transform -translate-x-1/2 z-50 hidden">
+            <div class="bg-surface-container-highest text-on-surface px-4 py-3 rounded-xl shadow-lg flex items-center gap-2">
+                <span id="toast-message" data-i18n="toast.operationSuccess">操作成功</span>
+            </div>
+        </div>
+    </div>
+    <!-- 在页面底部（或原 js.js 引用位置）加载新的入口模块 -->
+    <script type="module" src="/static/js/bootstrap.js"></script>
+</body>
+</html>
+
+
+

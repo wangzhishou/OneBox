@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chronos - Set Starting Point</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#8794da",
+                        "surface-container-lowest": "#060e20",
+                        "secondary": "#ffd799",
+                        "surface-tint": "#adc6ff",
+                        "on-secondary-fixed": "#281900",
+                        "on-primary-fixed": "#001a42",
+                        "on-secondary": "#432c00",
+                        "inverse-primary": "#005ac2",
+                        "outline": "#908f9d",
+                        "on-primary-fixed-variant": "#004495",
+                        "surface-dim": "#0b1326",
+                        "surface-bright": "#31394d",
+                        "surface-container-low": "#131b2e",
+                        "on-primary-container": "#5c96ff",
+                        "surface-variant": "#2d3449",
+                        "secondary-fixed": "#ffdeac",
+                        "primary": "#adc6ff",
+                        "primary-fixed": "#d8e2ff",
+                        "on-background": "#dae2fd",
+                        "on-tertiary": "#1d2b6a",
+                        "tertiary-fixed": "#dee1ff",
+                        "inverse-surface": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#354282",
+                        "on-surface": "#dae2fd",
+                        "surface-container-high": "#222a3d",
+                        "on-secondary-container": "#6a4800",
+                        "on-primary": "#002e6a",
+                        "on-surface-variant": "#c6c5d4",
+                        "tertiary-fixed-dim": "#b9c3ff",
+                        "outline-variant": "#454652",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#b9c3ff",
+                        "primary-fixed-dim": "#adc6ff",
+                        "primary-container": "#002e69",
+                        "on-error": "#690005",
+                        "surface": "#0b1326",
+                        "inverse-on-surface": "#283044",
+                        "secondary-fixed-dim": "#ffba38",
+                        "surface-container": "#171f33",
+                        "on-secondary-fixed-variant": "#604100",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#021355",
+                        "background": "#0b1326",
+                        "tertiary-container": "#1c2a6a",
+                        "secondary-container": "#feb300",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#2d3449"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background-color: rgba(34, 42, 61, 0.5); /* surface-container-high @ 50% */
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(69, 70, 82, 0.15); /* outline-variant @ 15% */
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #adc6ff, #ffd799);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-gradient {
+            background: linear-gradient(to right, #adc6ff, #002e69);
+        }
+        .ambient-shadow {
+            box-shadow: 0 12px 40px rgba(11, 19, 38, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col justify-center items-center p-6 relative overflow-hidden">
+<!-- Background Decor -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+<div class="absolute -top-32 -left-32 w-96 h-96 bg-primary rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
+<div class="absolute -bottom-32 -right-32 w-96 h-96 bg-secondary rounded-full mix-blend-screen filter blur-[120px] opacity-10"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-md z-10 flex flex-col gap-10">
+<!-- Header -->
+<header class="text-center space-y-4">
+<h1 class="font-headline text-4xl font-bold tracking-tight text-on-surface">设置起点</h1>
+<p class="text-lg text-on-surface-variant font-light">先告诉我们你的起点，才能计算你的旅程。</p>
+</header>
+<!-- Form Card -->
+<div class="glass-card rounded-xl p-8 space-y-10 ambient-shadow">
+<!-- Date Picker Simulation (Editorial Asymmetry) -->
+<div class="space-y-6">
+<label class="font-label text-[10px] uppercase tracking-[0.05rem] text-on-surface-variant block mb-2">Birth Date</label>
+<div class="flex items-center justify-between bg-surface-container-highest/40 rounded-xl p-6">
+<div class="flex-1 text-center">
+<span class="font-headline text-3xl font-bold text-on-surface-variant">1990</span>
+<div class="text-xs text-on-surface-variant/60 uppercase tracking-widest mt-1">Year</div>
+</div>
+<div class="w-px h-12 bg-outline-variant/30"></div>
+<div class="flex-1 text-center">
+<span class="font-headline text-3xl font-bold text-gradient">08</span>
+<div class="text-xs text-on-surface-variant/60 uppercase tracking-widest mt-1">Month</div>
+</div>
+<div class="w-px h-12 bg-outline-variant/30"></div>
+<div class="flex-1 text-center">
+<span class="font-headline text-3xl font-bold text-on-surface-variant">15</span>
+<div class="text-xs text-on-surface-variant/60 uppercase tracking-widest mt-1">Day</div>
+</div>
+</div>
+</div>
+<!-- Expected Life Length Slider -->
+<div class="space-y-6">
+<div class="flex justify-between items-end">
+<label class="font-label text-[10px] uppercase tracking-[0.05rem] text-on-surface-variant">期望的人生长度</label>
+<span class="font-headline text-2xl font-bold text-on-surface">80</span>
+</div>
+<div class="relative w-full h-2 bg-surface-container-lowest rounded-full">
+<div class="absolute top-0 left-0 h-full w-[80%] rounded-full bg-gradient-to-r from-primary to-secondary"></div>
+<div class="absolute top-1/2 left-[80%] -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-surface-variant border border-outline-variant/30 rounded-full shadow-lg flex items-center justify-center">
+<div class="w-2 h-2 bg-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full btn-gradient text-on-primary-fixed font-headline font-bold text-lg py-5 rounded-full ambient-shadow hover:opacity-90 active:scale-[0.98] transition-all flex justify-center items-center gap-2">
+            进入时光沙漏
+            <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">hourglass_bottom</span>
+</button>
+</main>
+</body></html>

@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><!-- 页面标题 -->
+    <string name="camera_watermark_title">Camera Watermark</string>
+
+    <!-- Tab 标题 -->
+    <string name="camera_watermark_tab_selected_images">Selected (%d)</string>
+    <string name="camera_watermark_tab_select_style">Select Style</string>
+
+    <!-- 导出设置 -->
+    <string name="camera_watermark_export_settings">Export Settings</string>
+    <string name="camera_watermark_export_format">Export Format</string>
+    <string name="camera_watermark_quality">Quality</string>
+    <string name="camera_watermark_keep_exif">Keep Original EXIF</string>
+    <string name="camera_watermark_keep_exif_tip">Keep camera and shooting parameters</string>
+    <string name="camera_watermark_author_signature">Author Signature</string>
+    <string name="camera_watermark_author_signature_hint">Writes to the EXIF Artist field</string>
+
+    <!-- 模板管理 -->
+    <string name="camera_watermark_template">Watermark Template</string>
+    <string name="camera_watermark_edit_template">Edit Template</string>
+    <string name="camera_watermark_add_template">Add Template</string>
+    <string name="camera_watermark_manage_template">Manage Templates</string>
+    <string name="camera_watermark_edit">Edit</string>
+    <string name="camera_watermark_add">Add</string>
+    <string name="camera_watermark_delete">Delete</string>
+    <string name="camera_watermark_cancel">Cancel</string>
+    <string name="camera_watermark_confirm">Confirm</string>
+    <string name="camera_watermark_reset_presets">Reset to Default</string>
+    <string name="camera_watermark_custom">Custom</string>
+
+    <!-- 模板编辑 -->
+    <string name="camera_watermark_logo">Logo</string>
+    <string name="camera_watermark_custom_content">Custom content (leave blank to use EXIF)</string>
+    <string name="camera_watermark_show_divider">Show Divider</string>
+    <string name="camera_watermark_color_settings">Color Settings</string>
+    <string name="camera_watermark_size_settings">Size Settings</string>
+    <string name="camera_watermark_font_settings">Font Settings</string>
+    <string name="camera_watermark_watermark_height">Watermark Height</string>
+    <string name="camera_watermark_font_size">Font Size</string>
+    <string name="camera_watermark_text_color">Text Color</string>
+    <string name="camera_watermark_background_color">Background Color</string>
+    <string name="camera_watermark_template_name">Template Name</string>
+    <string name="camera_watermark_template_name_hint">Enter template name</string>
+    <string name="camera_watermark_model_name">Device Model</string>
+    <string name="camera_watermark_lens_info">Lens Info</string>
+    <string name="camera_watermark_datetime">Shooting Time</string>
+    <string name="camera_watermark_location">Location</string>
+    <string name="camera_watermark_padding_horizontal">Horizontal Padding</string>
+    <string name="camera_watermark_padding_vertical">Vertical Padding</string>
+    <string name="camera_watermark_primary_font_size">Primary Text Size</string>
+    <string name="camera_watermark_secondary_font_size">Secondary Text Size</string>
+
+    <!-- 操作 -->
+    <string name="camera_watermark_select_image">Select Image</string>
+    <string name="camera_watermark_add_image">Add Image</string>
+    <string name="camera_watermark_save">Save</string>
+    <string name="camera_watermark_batch_save">Batch Save</string>
+    <string name="camera_watermark_settings">Settings</string>
+
+    <!-- 结果提示 -->
+    <string name="camera_watermark_export_success">Saved successfully</string>
+    <string name="camera_watermark_export_failed">Save failed</string>
+    <string name="camera_watermark_batch_save_result">Successfully saved %1$d/%2$d images</string>
+
+    <!-- 占位符 -->
+    <string name="camera_watermark_select_image_hint">Please select an image</string>
+    <string name="camera_watermark_empty_placeholder">Select a photo to add a camera watermark</string>
+
+    <!-- 预置样式名称 -->
+    <string name="camera_watermark_style_leica">Leica Classic</string>
+    <string name="camera_watermark_style_wanbaohe">OneBox</string>
+    <string name="camera_watermark_style_xiaomi">Xiaomi</string>
+    <string name="camera_watermark_style_oneplus">OnePlus</string>
+    <string name="camera_watermark_style_vivo">vivo</string>
+    <string name="camera_watermark_style_oppo">OPPO</string>
+    <string name="camera_watermark_style_huawei">Huawei</string>
+    <string name="camera_watermark_style_google">Google Pixel</string>
+    <string name="camera_watermark_style_apple">Apple</string>
+    <string name="camera_watermark_style_classic">Classic White</string>
+    <string name="camera_watermark_style_dark">Dark</string>
+    <string name="camera_watermark_style_minimal">Minimal</string>
+    <string name="camera_watermark_style_hasselblad">Hasselblad</string>
+    <string name="camera_watermark_style_fujifilm">Fujifilm</string>
+
+    <!-- 新增常量 -->
+    <string name="camera_watermark_delete_count">Delete (%d)</string>
+    <string name="camera_watermark_new_template_default_name">New Template</string>
+
+    <string name="camera_watermark_logo_leica">Leica Logo</string>
+    <string name="camera_watermark_logo_wanbaohe">OneBox Logo</string>
+    <string name="camera_watermark_logo_apple">Apple Logo</string>
+    <string name="camera_watermark_logo_google">Google Logo</string>
+    <string name="camera_watermark_logo_huawei">Huawei Logo</string>
+    <string name="camera_watermark_logo_oppo">OPPO Logo</string>
+    <string name="camera_watermark_logo_vivo">vivo Logo</string>
+    <string name="camera_watermark_logo_xiaomi">Xiaomi Logo</string>
+    <string name="camera_watermark_logo_oneplus">OnePlus Logo</string>
+    <string name="camera_watermark_logo_custom">Custom Logo</string>
+    <string name="camera_watermark_logo_none">No Logo</string>
+
+    <string name="camera_watermark_brand_leica">Leica</string>
+    <string name="camera_watermark_brand_wanbaohe">OneBox</string>
+    <string name="camera_watermark_brand_apple">Apple</string>
+    <string name="camera_watermark_brand_google">Google</string>
+    <string name="camera_watermark_brand_huawei">Huawei</string>
+    <string name="camera_watermark_brand_oppo">OPPO</string>
+    <string name="camera_watermark_brand_vivo">vivo</string>
+    <string name="camera_watermark_brand_xiaomi">Xiaomi</string>
+    <string name="camera_watermark_brand_none">None</string>
+
+    <string name="camera_watermark_camera_info_tl">Camera Info (Top Left)</string>
+    <string name="camera_watermark_camera_info_hint">e.g., LEICA MP</string>
+    <string name="camera_watermark_params_info_tr">Shooting Parameters (Top Right)</string>
+    <string name="camera_watermark_params_info_hint">e.g., 50mm f/1.8</string>
+    <string name="camera_watermark_time_sign_bl">Time/Signature (Bottom Left)</string>
+    <string name="camera_watermark_time_sign_hint">e.g., 2026-01-01</string>
+    <string name="camera_watermark_location_br">Location (Bottom Right)</string>
+    <string name="camera_watermark_location_hint">e.g., Beijing</string>
+
+    <string name="camera_watermark_bg_color">Background Color</string>
+    <string name="camera_watermark_primary_text_color">Primary Text Color</string>
+    <string name="camera_watermark_secondary_text_color">Secondary Text Color</string>
+    <string name="camera_watermark_divider_color">Divider Color</string>
+
+    <string name="camera_watermark_reset_style">Reset to Default Style</string>
+    <string name="camera_watermark_create">Create</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">먼저 카테고리를 선택하거나 추가해 주세요</string>
+    <string name="schedule_section_title">일정</string>
+    <string name="action_open_schedule">일정 허브 열기</string>
+    <string name="action_create_schedule">로컬 일정 만들기</string>
+    <string name="schedule_creating">일정 만드는 중…</string>
+    <string name="schedule_missing_due_date">먼저 이 작업의 마감일을 설정해 주세요</string>
+    <string name="schedule_created_success">로컬 일정이 생성되었습니다</string>
+    <string name="schedule_created_failed">일정 생성에 실패했습니다. 나중에 다시 시도해 주세요</string>
+    <string name="dialog_delete_category_title">카테고리 삭제</string>
+    <string name="dialog_delete_category_message">\"%1$s\"을(를) 삭제하시겠습니까?\n이 카테고리의 모든 작업도 삭제됩니다.</string>
+    <string name="dialog_delete_task_message">\"%1$s\"을(를) 삭제하시겠습니까?</string>
+    <string name="cd_switch_to_list_view">목록 보기로 전환</string>
+    <string name="cd_switch_to_grid_view">그리드 보기로 전환</string>
+    <string name="cd_edit_mode_done">완료</string>
+    <string name="label_status">상태</string>
+    <string name="status_overdue">기한 초과</string>
+    <string name="category_unnamed">이름 없는 카테고리</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d개의 작업이 삭제되었습니다</string>
+    <string name="action_delete_selected_cd">선택 항목 삭제</string>
+    <string name="error_todo_not_found">할 일을 찾을 수 없습니다</string>
+    <string name="error_category_not_found">카테고리를 찾을 수 없습니다</string>
+    <string name="error_load_failed">불러오기 실패</string>
+    <string name="cd_task_completed">완료됨</string>
+    <string name="cd_task_pending">대기 중</string>
+    <string name="cd_add_star">별표 추가</string>
+    <string name="cd_remove_star">별표 제거</string>
+    <string name="date_today">오늘</string>
+    <string name="date_yesterday">어제</string>
+    <string name="date_days_ago">%1$d일 전</string>
+    <string name="date_tomorrow">내일</string>
+    <string name="date_days_later">%1$d일 후</string>
+</resources>

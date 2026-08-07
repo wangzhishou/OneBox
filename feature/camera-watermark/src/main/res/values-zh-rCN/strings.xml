@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 页面标题 -->
+    <string name="camera_watermark_title">相机水印</string>
+
+    <!-- Tab 标题 -->
+    <string name="camera_watermark_tab_selected_images">已选图片 (%d)</string>
+    <string name="camera_watermark_tab_select_style">选择样式</string>
+
+    <!-- 导出设置 -->
+    <string name="camera_watermark_export_settings">导出设置</string>
+    <string name="camera_watermark_export_format">导出格式</string>
+    <string name="camera_watermark_quality">质量</string>
+    <string name="camera_watermark_keep_exif">保留原始 EXIF</string>
+    <string name="camera_watermark_keep_exif_tip">保留相机、拍摄参数等信息</string>
+    <string name="camera_watermark_author_signature">作者签名</string>
+    <string name="camera_watermark_author_signature_hint">写入 EXIF 的 Artist 字段</string>
+
+    <!-- 模板管理 -->
+    <string name="camera_watermark_template">水印模板</string>
+    <string name="camera_watermark_edit_template">编辑模板</string>
+    <string name="camera_watermark_add_template">新增模板</string>
+    <string name="camera_watermark_manage_template">管理模板</string>
+    <string name="camera_watermark_edit">编辑</string>
+    <string name="camera_watermark_add">新增</string>
+    <string name="camera_watermark_delete">删除</string>
+    <string name="camera_watermark_cancel">取消</string>
+    <string name="camera_watermark_confirm">确认</string>
+    <string name="camera_watermark_reset_presets">恢复默认</string>
+    <string name="camera_watermark_custom">自定义</string>
+
+    <!-- 模板编辑 -->
+    <string name="camera_watermark_logo">Logo</string>
+    <string name="camera_watermark_custom_content">自定义内容（留空使用 EXIF）</string>
+    <string name="camera_watermark_show_divider">显示分隔线</string>
+    <string name="camera_watermark_color_settings">颜色设置</string>
+    <string name="camera_watermark_size_settings">尺寸设置</string>
+    <string name="camera_watermark_font_settings">字体设置</string>
+    <string name="camera_watermark_watermark_height">水印高度</string>
+    <string name="camera_watermark_font_size">字体大小</string>
+    <string name="camera_watermark_text_color">文字颜色</string>
+    <string name="camera_watermark_background_color">背景颜色</string>
+    <string name="camera_watermark_template_name">模板名称</string>
+    <string name="camera_watermark_template_name_hint">请输入模板名称</string>
+    <string name="camera_watermark_model_name">设备型号</string>
+    <string name="camera_watermark_lens_info">镜头信息</string>
+    <string name="camera_watermark_datetime">拍摄时间</string>
+    <string name="camera_watermark_location">位置信息</string>
+    <string name="camera_watermark_padding_horizontal">水平内边距</string>
+    <string name="camera_watermark_padding_vertical">垂直内边距</string>
+    <string name="camera_watermark_primary_font_size">主文字大小</string>
+    <string name="camera_watermark_secondary_font_size">次要文字大小</string>
+
+    <!-- 操作 -->
+    <string name="camera_watermark_select_image">选择图片</string>
+    <string name="camera_watermark_add_image">添加图片</string>
+    <string name="camera_watermark_save">保存</string>
+    <string name="camera_watermark_batch_save">批量保存</string>
+    <string name="camera_watermark_settings">设置</string>
+
+    <!-- 结果提示 -->
+    <string name="camera_watermark_export_success">保存成功</string>
+    <string name="camera_watermark_export_failed">保存失败</string>
+    <string name="camera_watermark_batch_save_result">成功保存 %1$d/%2$d 张图片</string>
+
+    <!-- 占位符 -->
+    <string name="camera_watermark_select_image_hint">请选择图片</string>
+    <string name="camera_watermark_empty_placeholder">选择照片添加相机水印</string>
+
+    <!-- 预置样式名称 -->
+    <string name="camera_watermark_style_leica">徕卡经典</string>
+    <string name="camera_watermark_style_wanbaohe">万宝盒</string>
+    <string name="camera_watermark_style_xiaomi">小米</string>
+    <string name="camera_watermark_style_oneplus">一加</string>
+    <string name="camera_watermark_style_vivo">vivo</string>
+    <string name="camera_watermark_style_oppo">OPPO</string>
+    <string name="camera_watermark_style_huawei">华为</string>
+    <string name="camera_watermark_style_google">Google Pixel</string>
+    <string name="camera_watermark_style_apple">Apple</string>
+    <string name="camera_watermark_style_classic">经典白</string>
+    <string name="camera_watermark_style_dark">暗黑</string>
+    <string name="camera_watermark_style_minimal">简约</string>
+    <string name="camera_watermark_style_hasselblad">哈苏</string>
+    <string name="camera_watermark_style_fujifilm">富士</string>
+
+    <!-- 新增常量 -->
+    <string name="camera_watermark_delete_count">删除(%d)</string>
+    <string name="camera_watermark_new_template_default_name">新模板</string>
+
+    <string name="camera_watermark_logo_leica">徕卡 Logo</string>
+    <string name="camera_watermark_logo_wanbaohe">万宝盒 Logo</string>
+    <string name="camera_watermark_logo_apple">Apple Logo</string>
+    <string name="camera_watermark_logo_google">Google Logo</string>
+    <string name="camera_watermark_logo_huawei">华为 Logo</string>
+    <string name="camera_watermark_logo_oppo">OPPO Logo</string>
+    <string name="camera_watermark_logo_vivo">vivo Logo</string>
+    <string name="camera_watermark_logo_xiaomi">小米 Logo</string>
+    <string name="camera_watermark_logo_oneplus">一加 Logo</string>
+    <string name="camera_watermark_logo_custom">自定义 Logo</string>
+    <string name="camera_watermark_logo_none">无 Logo</string>
+
+    <string name="camera_watermark_brand_leica">徕卡</string>
+    <string name="camera_watermark_brand_wanbaohe">万宝盒</string>
+    <string name="camera_watermark_brand_apple">Apple</string>
+    <string name="camera_watermark_brand_google">Google</string>
+    <string name="camera_watermark_brand_huawei">华为</string>
+    <string name="camera_watermark_brand_oppo">OPPO</string>
+    <string name="camera_watermark_brand_vivo">vivo</string>
+    <string name="camera_watermark_brand_xiaomi">小米</string>
+    <string name="camera_watermark_brand_none">无</string>
+
+    <string name="camera_watermark_camera_info_tl">相机信息（左上）</string>
+    <string name="camera_watermark_camera_info_hint">如: LEICA MP</string>
+    <string name="camera_watermark_params_info_tr">拍摄参数（右上）</string>
+    <string name="camera_watermark_params_info_hint">如: 50mm f/1.8</string>
+    <string name="camera_watermark_time_sign_bl">时间/签名（左下）</string>
+    <string name="camera_watermark_time_sign_hint">如: 2026-01-01</string>
+    <string name="camera_watermark_location_br">位置（右下）</string>
+    <string name="camera_watermark_location_hint">如: 北京市</string>
+
+    <string name="camera_watermark_bg_color">背景色</string>
+    <string name="camera_watermark_primary_text_color">主文字颜色</string>
+    <string name="camera_watermark_secondary_text_color">次要文字颜色</string>
+    <string name="camera_watermark_divider_color">分隔线颜色</string>
+
+    <string name="camera_watermark_reset_style">恢复默认样式</string>
+    <string name="camera_watermark_create">创建</string>
+</resources>
+

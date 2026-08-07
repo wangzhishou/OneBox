@@ -1,0 +1,5 @@
+• Yeni diller: İspanyolca ve Brezilya Portekizcesi
+• Konum seçici artık Google Places otomatik tamamlamayı kullanıyor
+• Sistem promptlarını dilediğiniz gibi özelleştirin, VIP gerekmez
+• Dosya aktarımı web sayfası artık sizin dilinizde
+• Hata düzeltmeleri ve performans iyileştirmeleri

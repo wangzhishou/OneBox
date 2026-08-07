@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">ローン計算機</string>
+    <string name="loan_calc_amount_label">融資額 ($)</string>
+    <string name="loan_calc_amount_hint">金額を入力してください。</string>
+    <string name="loan_calc_term_label">融資期間</string>
+    <string name="loan_calc_term_hint">選択</string>
+    <string name="loan_calc_rate_label">年利率 (%)</string>
+    <string name="loan_calc_rate_hint">年利率を入力してください</string>
+    <string name="loan_calc_method_label">返済方法</string>
+    <string name="loan_calc_method_hint">選択</string>
+    <string name="loan_calc_start">計算開始</string>
+    <string name="loan_calc_cancel">キャンセル</string>
+    <string name="loan_method_equal_installment">少々お待ちください。</string>
+    <string name="loan_method_equal_installment_desc">月々の返済額、元金、利息</string>
+    <string name="loan_method_equal_payment">元利均等</string>
+    <string name="loan_method_equal_payment_desc">毎月の返済額は同じで、元金が増え、利息が毎月減ります</string>
+    <string name="loan_method_equal_principal">元金均等</string>
+    <string name="loan_method_equal_principal_desc">毎月の返済額が減り、元金は毎月同じで、利息が毎月減ります</string>
+    <string name="loan_method_interest_first">入力しましょう。</string>
+    <string name="loan_method_interest_first_desc">毎月の利息は固定で、元金は満期一括返済</string>
+    <string name="loan_result_monthly_payment">月平均返済額</string>
+    <string name="loan_result_total_interest">総利息</string>
+    <string name="loan_result_total_repayment">総返済額</string>
+    <string name="loan_result_schedule_title">返済計画</string>
+    <string name="loan_result_month">期間</string>
+    <string name="loan_result_monthly_col">月返済額</string>
+    <string name="loan_result_principal_col">元金</string>
+    <string name="loan_result_interest_col">利息</string>
+    <string name="loan_result_remaining_col">残元金</string>
+    <string name="loan_input_error_amount">有効な融資額を入力してください</string>
+    <string name="loan_input_error_term">融資期間を選択してください</string>
+    <string name="loan_input_error_rate">有効な年利率を入力してください</string>
+    <string name="loan_input_error_method">返済方法を選択してください。</string>
+    <string name="loan_term_months">%1$dヶ月</string>
+    <string name="loan_term_years">%1$d年（%2$dヶ月）</string>
+    <string name="loan_term_picker_title">ローン期間を選択</string>
+</resources>

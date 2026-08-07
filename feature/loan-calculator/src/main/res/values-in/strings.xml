@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">Kalkulator Pinjaman</string>
+    <string name="loan_calc_amount_label">Jumlah pinjaman ($)</string>
+    <string name="loan_calc_amount_hint">Silakan masukkan jumlah.</string>
+    <string name="loan_calc_term_label">Jangka waktu pinjaman</string>
+    <string name="loan_calc_term_hint">Pilihan</string>
+    <string name="loan_calc_rate_label">Suku bunga tahunan (%)</string>
+    <string name="loan_calc_rate_hint">Masukkan suku bunga tahunan</string>
+    <string name="loan_calc_method_label">Metode pembayaran</string>
+    <string name="loan_calc_method_hint">Pilihan</string>
+    <string name="loan_calc_start">Mulai Menghitung</string>
+    <string name="loan_calc_cancel">Batal</string>
+    <string name="loan_method_equal_installment">Tunggu sebentar.</string>
+    <string name="loan_method_equal_installment_desc">Angsuran bulanan, pokok, bunga</string>
+    <string name="loan_method_equal_payment">Setara</string>
+    <string name="loan_method_equal_payment_desc">Angsuran bulanan sama, pokok meningkat dan bunga menurun setiap bulan</string>
+    <string name="loan_method_equal_principal">Pokok setara</string>
+    <string name="loan_method_equal_principal_desc">Angsuran bulanan menurun, pokok sama per bulan dan bunga menurun setiap bulan</string>
+    <string name="loan_method_interest_first">Mari kita tulis.</string>
+    <string name="loan_method_interest_first_desc">Bunga tetap bulanan dan pokok jatuh tempo penuh</string>
+    <string name="loan_result_monthly_payment">Rata-rata pembayaran bulanan</string>
+    <string name="loan_result_total_interest">Total bunga</string>
+    <string name="loan_result_total_repayment">Total pembayaran</string>
+    <string name="loan_result_schedule_title">Rencana pembayaran</string>
+    <string name="loan_result_month">Periode</string>
+    <string name="loan_result_monthly_col">Pembayaran bulan</string>
+    <string name="loan_result_principal_col">Pokok</string>
+    <string name="loan_result_interest_col">Bunga</string>
+    <string name="loan_result_remaining_col">Sisa pokok</string>
+    <string name="loan_input_error_amount">Silakan masukkan jumlah pinjaman yang valid</string>
+    <string name="loan_input_error_term">Silakan pilih jangka waktu pinjaman</string>
+    <string name="loan_input_error_rate">Masukkan tingkat bunga tahunan yang valid</string>
+    <string name="loan_input_error_method">Silakan pilih cara pembayaran.</string>
+    <string name="loan_term_months">%1$d bulan</string>
+    <string name="loan_term_years">%1$d tahun (%2$d bulan)</string>
+    <string name="loan_term_picker_title">Pilih jangka waktu pinjaman</string>
+</resources>

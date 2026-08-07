@@ -1,0 +1,145 @@
+{
+  "app.title": "文件传输 - Wanbaohe",
+  "app.name": "文件传输",
+
+  "login.title": "文件传输",
+  "login.subtitle": "请输入访问密码",
+  "login.placeholder": "输入密码",
+  "login.button": "登录",
+  "login.error.emptyPassword": "请输入密码",
+  "login.error.wrongPassword": "密码错误",
+  "login.error.failed": "登录失败，请重试",
+
+  "nav.files": "文件",
+  "nav.transfer": "传输",
+  "nav.chat": "聊天",
+  "nav.settings": "设置",
+  "nav.allFiles": "全部文件",
+
+  "connection.status": "已连接",
+
+  "device.loading": "加载中...",
+  "device.defaultName": "设备",
+
+  "stats.currentFolder": "当前目录",
+  "stats.folders": "个文件夹",
+  "stats.files": "个文件",
+  "stats.totalSize": "总大小: ",
+
+  "toolbar.view.grid": "网格视图",
+  "toolbar.view.list": "列表视图",
+  "toolbar.refresh": "刷新",
+  "toolbar.upload": "上传",
+
+  "breadcrumb.home": "首页",
+
+  "selection.count": "已选择 {count} 项",
+
+  "sort.name": "名称",
+  "sort.size": "大小",
+  "sort.date": "日期",
+  "sort.asc": "升序",
+  "sort.desc": "降序",
+
+  "empty.title": "文件夹为空",
+  "empty.subtitle": "拖拽文件或点击上传按钮添加文件",
+  "error.title": "加载失败",
+  "error.subtitle": "请检查网络连接后重试",
+
+  "common.retry": "重试",
+  "common.cancel": "取消",
+  "common.confirm": "确认",
+  "common.delete": "删除",
+  "common.download": "下载",
+  "common.create": "创建",
+  "common.rename": "重命名",
+
+  "dropzone.sidebar": "拖拽文件到此处上传",
+  "dropzone.overlay": "松开鼠标上传文件",
+
+  "transfer.title": "传输任务",
+  "transfer.empty": "暂无传输任务",
+  "transfer.status.completed": "完成",
+  "transfer.status.error": "失败",
+  "transfer.status.uploading": "上传中",
+
+  "uploadModal.title": "上传文件",
+  "uploadModal.hint": "点击或拖拽文件到此处",
+  "uploadModal.subtitle": "支持多文件上传",
+  "uploadModal.pending": "待上传",
+
+  "deleteModal.title": "确认删除",
+  "deleteModal.text": "确定要删除所选文件吗？此操作不可撤销。",
+  "deleteModal.confirmOne": "确定要删除 \"{name}\" 吗？此操作不可撤销。",
+  "deleteModal.confirmMany": "确定要删除选中的 {count} 个文件吗？此操作不可撤销。",
+
+  "newFolder.title": "新建文件夹",
+  "newFolder.placeholder": "文件夹名称",
+
+  "renameModal.placeholder": "新名称",
+
+  "contextMenu.open": "打开/预览",
+  "contextMenu.info": "详细信息",
+
+  "infoModal.title": "文件信息",
+  "infoModal.name": "名称",
+  "infoModal.type": "类型",
+  "infoModal.size": "大小",
+  "infoModal.modified": "修改时间",
+  "infoModal.path": "路径",
+
+  "fileType.folder": "文件夹",
+  "fileType.file": "文件",
+
+  "files.loadFailed": "加载失败",
+  "files.networkError": "网络连接失败",
+
+  "settings.chat": "聊天",
+  "settings.chat.desc": "与手机端实时沟通",
+  "settings.openChat": "打开聊天",
+
+  "imageViewer.alt": "图片预览",
+  "imageViewer.download": "下载",
+  "imageViewer.close": "关闭",
+
+  "chat.title": "聊天",
+  "chat.empty": "暂无消息",
+  "chat.newMessages": "有新消息，点我查看",
+  "chat.sendFile": "发送文件",
+  "chat.input.placeholder": "输入消息...",
+  "chat.upload.progress": "上传中 {pct}%",
+  "chat.upload.queued": "等待上传…",
+  "chat.upload.completed": "已发送",
+  "chat.upload.canceled": "已取消",
+  "chat.upload.failedPrefix": "失败：",
+  "chat.upload.failedHttp": "上传失败（{status}）",
+  "chat.upload.networkError": "网络错误：无法连接到手机端服务",
+
+  "toast.operationSuccess": "操作成功",
+  "toast.networkError": "网络错误",
+  "toast.chat.connected": "聊天连接成功",
+  "toast.chat.error": "聊天连接错误",
+  "toast.chat.disconnected": "聊天连接已断开",
+  "toast.chat.cannotConnect": "无法建立聊天连接",
+  "toast.chat.reconnecting": "聊天连接已断开，正在重连...",
+  "toast.send.failed": "发送失败",
+  "toast.folder.nameRequired": "请输入文件夹名称",
+  "toast.folder.invalidName": "文件夹名称不能包含 / 或 \\",
+  "toast.folder.created": "文件夹创建成功",
+  "toast.folder.createFailed": "创建失败",
+  "toast.rename.nameRequired": "请输入新名称",
+  "toast.rename.invalidName": "名称不能包含 / 或 \\",
+  "toast.rename.success": "重命名成功",
+  "toast.rename.failed": "重命名失败",
+  "toast.delete.success": "删除成功",
+  "toast.delete.failed": "删除失败",
+  "toast.upload.disabled": "当前设备已关闭上传权限",
+  "toast.upload.manyFiles": "将上传 {count} 个文件",
+  "toast.upload.done": "上传成功",
+  "toast.upload.failed": "上传失败",
+  "toast.download.noLink": "文件未生成下载链接",
+  "toast.download.notFound": "文件不存在或已被删除",
+  "toast.download.noPermission": "没有权限下载该文件",
+  "toast.download.failed": "下载失败（{status}）",
+  "toast.download.networkError": "下载失败：网络错误"
+}

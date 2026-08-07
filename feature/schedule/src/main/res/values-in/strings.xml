@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Pusat Jadwal</string>
+    <string name="schedule_sync_card_title">Fondasi sinkronisasi siap</string>
+    <string name="schedule_sync_card_description">Modul ini sudah memiliki model acara, status kursor sinkronisasi, dan bidang jembatan tugas, sehingga Google Calendar dapat ditambahkan nanti tanpa mengotori modul almanak atau tugas.</string>
+    <string name="schedule_sync_ready">Kursor sinkronisasi disimpan</string>
+    <string name="schedule_sync_not_connected">Tidak ada akun yang terhubung</string>
+    <string name="schedule_event_count_label">%1$d acara</string>
+    <string name="schedule_linked_task_chip">Konteks tugas tertaut</string>
+    <string name="schedule_last_error_label">Kesalahan terakhir: %1$s</string>
+    <string name="schedule_action_card_title">Mulai dengan domain acara lokal yang bersih</string>
+    <string name="schedule_action_create_local">Buat acara lokal</string>
+    <string name="schedule_action_create_focus">Buat acara dari tanggal fokus</string>
+    <string name="schedule_action_open_todo">Buka tugas</string>
+    <string name="schedule_action_open_calendar">Buka kalender</string>
+    <string name="schedule_event_section_title">Acara</string>
+    <string name="schedule_empty_title">Belum ada acara jadwal</string>
+    <string name="schedule_empty_description">Mulai dengan acara lokal terlebih dahulu, lalu tambahkan autentikasi akun Google, sinkronisasi delta, dan penanganan konflik secara bertahap.</string>
+    <string name="schedule_provider_local">Lokal</string>
+    <string name="schedule_provider_system">Kalender Sistem</string>
+    <string name="schedule_provider_google">Google Calendar</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Hanya lokal</string>
+    <string name="schedule_status_pending_upload">Menunggu unggah</string>
+    <string name="schedule_status_synced">Tersinkronisasi</string>
+    <string name="schedule_status_pending_delete">Menunggu hapus</string>
+    <string name="schedule_status_conflict">Konflik</string>
+    <string name="schedule_status_failed">Sinkronisasi gagal</string>
+    <string name="schedule_linked_task_badge">Jembatan tugas</string>
+    <string name="schedule_quick_event_title">Acara lokal baru</string>
+    <string name="schedule_focus_event_title">Acara fokus</string>
+    <string name="schedule_linked_task_description">Tugas tertaut: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Tulis langsung ke kalender sistem</string>
+    <string name="schedule_export_to_system_calendar">Tambahkan ke kalender sistem</string>
+    <string name="schedule_system_calendar_unavailable">Tidak ada aplikasi kalender yang tersedia di perangkat ini</string>
+    <string name="schedule_no_writable_calendar">Tidak ada kalender sistem yang dapat ditulis</string>
+    <string name="schedule_saved_to_system_calendar">Tersimpan ke kalender sistem</string>
+    <string name="schedule_save_to_system_calendar_failed">Gagal menyimpan ke kalender sistem. Silakan coba lagi nanti</string>
+    <string name="schedule_calendar_permission_denied">Izin kalender diperlukan untuk menulis langsung ke kalender sistem</string>
+    <string name="schedule_choose_calendar_title">Pilih kalender target</string>
+    <string name="schedule_calendar_primary_badge">Utama</string>
+    <string name="schedule_dialog_close">Tutup</string>
+    <string name="schedule_permission_dialog_title">Izin kalender diperlukan</string>
+    <string name="schedule_permission_dialog_message">Harap aktifkan izin baca/tulis kalender di pengaturan sistem untuk menulis langsung ke kalender sistem.</string>
+    <string name="schedule_open_settings">Buka pengaturan</string>
+</resources>

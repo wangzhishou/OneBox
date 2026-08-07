@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="date_picker_title" translatable="false">Select Date</string>
+    <string name="date_picker_confirm">Confirm</string>
+    <string name="date_picker_cancel">Cancel</string>
+    <string name="date_picker_edit">Edit</string>
+    <string name="date_picker_select_year_month">Select Year and Month</string>
+    <string name="date_picker_year_input">Year</string>
+    <string name="date_picker_current_year">Current year</string>
+    <string name="blessing_effect_merit_plus_one">Luck +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">Previous Month</string>
+    <string name="date_picker_next_month">Next Month</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">Sun</string>
+    <string name="date_picker_weekday_mon">Mon</string>
+    <string name="date_picker_weekday_tue">Tue</string>
+    <string name="date_picker_weekday_wed">Wed</string>
+    <string name="date_picker_weekday_thu">Thu</string>
+    <string name="date_picker_weekday_fri">Fri</string>
+    <string name="date_picker_weekday_sat">Sat</string>
+    <string name="time_range_picker_title" translatable="false">Select Time Range</string>
+    <string name="time_picker_title" translatable="false">Select Time</string>
+    <string name="time_range_picker_start_time">Start Time</string>
+    <string name="time_range_picker_end_time">End Time</string>
+    <string name="time_range_picker_hour">Hour</string>
+    <string name="time_range_picker_minute">Minute</string>
+    <string name="time_range_picker_hint">Tip: Enter hour (0-23) and minute (0-59)</string>
+    <string name="date_range_picker_title">Select Date Range</string>
+    <string name="date_range_start">Start Date</string>
+    <string name="date_range_end">End Date</string>
+
+    <!-- 周筛选器 WeekSelector:头部 "年月 · 第N周" + 周一~周日标签 -->
+    <string name="week_selector_week_title">%1$d-%2$02d · Week %3$d</string>
+    <!-- 图标选择弹层 IconPickerSheet:tab 行右侧的当前数量 -->
+    <string name="icon_picker_icon_count">%1$d icons</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+</resources>

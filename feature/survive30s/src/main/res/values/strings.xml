@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">Survive 30s</string>
+    <string name="survive_30s_ready">Ready?</string>
+    <string name="survive_30s_instruction">Drag the blue ball to dodge obstacles\nMove freely in all directions. Survive 30 seconds to win!</string>
+    <string name="survive_30s_instruction_bonus">Close dodges build charge. Every 3 close calls grants 1 shield, and a shield blocks one hit for you.</string>
+    <string name="survive_30s_start">Start</string>
+    <string name="survive_30s_game_over">Game Over!</string>
+    <string name="survive_30s_survived_time">Survived: %.1f s</string>
+    <string name="survive_30s_new_record">New Record!</string>
+    <string name="survive_30s_win">You Win!</string>
+    <string name="survive_30s_win_desc">You survived 30 seconds!</string>
+    <string name="survive_30s_retry">Retry</string>
+    <string name="survive_30s_best_time">Best: %.1fs</string>
+    <string name="survive_30s_phase">Phase</string>
+    <string name="survive_30s_phase_warmup">Warmup</string>
+    <string name="survive_30s_phase_rush">Rush</string>
+    <string name="survive_30s_phase_storm">Storm</string>
+    <string name="survive_30s_shield">Shield</string>
+    <string name="survive_30s_charge">Charge</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">Close</string>
+    <string name="survive_30s_near_miss_count">Close dodges: %1$d</string>
+    <string name="survive_30s_danger_low">Stable for now. Keep your space.</string>
+    <string name="survive_30s_danger_medium">Pressure is building. Be ready to cut across.</string>
+    <string name="survive_30s_danger_high">Danger! Farm charge with close dodges or break out immediately.</string>
+</resources>

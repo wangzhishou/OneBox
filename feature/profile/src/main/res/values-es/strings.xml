@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vip_level_current_tag">Actual</string>
+    <string name="vip_level_required_amount">≥¥%1$d</string>
+</resources>

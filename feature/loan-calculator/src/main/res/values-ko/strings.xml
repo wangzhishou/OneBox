@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">대출 계산기</string>
+    <string name="loan_calc_amount_label">대출 금액 ($)</string>
+    <string name="loan_calc_amount_hint">금액을 입력해 주세요.</string>
+    <string name="loan_calc_term_label">대출 기간</string>
+    <string name="loan_calc_term_hint">선택</string>
+    <string name="loan_calc_rate_label">연 이자율 (%)</string>
+    <string name="loan_calc_rate_hint">연 이자율 입력</string>
+    <string name="loan_calc_method_label">상환 방법</string>
+    <string name="loan_calc_method_hint">선택</string>
+    <string name="loan_calc_start">계산 시작</string>
+    <string name="loan_calc_cancel">취소</string>
+    <string name="loan_method_equal_installment">잠시만 기다려 주세요.</string>
+    <string name="loan_method_equal_installment_desc">월 공급액, 원금, 이자</string>
+    <string name="loan_method_equal_payment">원리금 균등</string>
+    <string name="loan_method_equal_payment_desc">월 공급액 동일, 원금 증가 및 이자 월별 감소</string>
+    <string name="loan_method_equal_principal">원금 균등</string>
+    <string name="loan_method_equal_principal_desc">월 공급액 월별 감소, 원금 동일 및 이자 월별 감소</string>
+    <string name="loan_method_interest_first">적어 봅시다.</string>
+    <string name="loan_method_interest_first_desc">월 고정 이자 및 만기 일시 상환</string>
+    <string name="loan_result_monthly_payment">월 평균 상환액</string>
+    <string name="loan_result_total_interest">총 이자</string>
+    <string name="loan_result_total_repayment">총 상환액</string>
+    <string name="loan_result_schedule_title">상환 계획</string>
+    <string name="loan_result_month">기간</string>
+    <string name="loan_result_monthly_col">월 상환액</string>
+    <string name="loan_result_principal_col">원금</string>
+    <string name="loan_result_interest_col">이자</string>
+    <string name="loan_result_remaining_col">잔여 원금</string>
+    <string name="loan_input_error_amount">유효한 대출 금액을 입력해 주세요</string>
+    <string name="loan_input_error_term">대출 기간을 선택해 주세요</string>
+    <string name="loan_input_error_rate">유효한 연이자율을 입력하세요</string>
+    <string name="loan_input_error_method">상환 방식을 선택하세요.</string>
+    <string name="loan_term_months">%1$d개월</string>
+    <string name="loan_term_years">%1$d년 (%2$d개월)</string>
+    <string name="loan_term_picker_title">대출 기간 선택</string>
+</resources>

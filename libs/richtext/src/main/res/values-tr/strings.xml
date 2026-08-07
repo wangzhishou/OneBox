@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">Yerelleştirilmiş açıklama</string>
+    <string name="copy">Kopyala</string>
+    <string name="create_widget">Küçük araçlar oluştur</string>
+    <string name="run">Çalıştır</string>
+    <string name="save">Kaydet</string>
+    <string name="mermaid_tab_diagram">Diyagram</string>
+    <string name="mermaid_tab_code">Kod</string>
+    <string name="mermaid_fullscreen">Tam ekran</string>
+    <string name="a2ui_parse_failed">A2UI ayrıştırma başarısız</string>
+    <string name="a2ui_parse_failed_hint">Kaynağı kopyalayın ve JSON biçimini veya ifade sözdizimini kontrol edin.</string>
+</resources>

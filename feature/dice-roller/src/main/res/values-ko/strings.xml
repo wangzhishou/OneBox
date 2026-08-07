@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">주사위를 던지세요.</string>
+    <string name="dice_roller_roll">흔들어 보세요.</string>
+    <string name="dice_roller_history">기록</string>
+    <string name="dice_roller_history_empty">기록이 없습니다.</string>
+    <string name="dice_roller_clear_history">기록 지우기</string>
+    <string name="dice_roller_clear_confirm">모든 기록을 지우시겠습니까?</string>
+    <string name="dice_roller_confirm">확인</string>
+    <string name="dice_roller_cancel">취소</string>
+    <string name="dice_roller_count">주사위 개수</string>
+    <string name="dice_roller_type">주사위 종류</string>
+    <string name="dice_roller_total">총점</string>
+    <string name="dice_roller_shake_hint">휴대폰을 흔들거나 \"흔들기\"를 클릭하세요.</string>
+    <string name="dice_roller_result_prefix">결과:</string>
+    <string name="dice_roller_description">테이블 주사위.</string>
+</resources>

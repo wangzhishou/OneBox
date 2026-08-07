@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ImagePickerList -->
+    <string name="common_add_image">添加图片</string>
+    <string name="common_more_options">可长按</string>
+    <string name="common_delete">删除</string>
+    <string name="common_selected_images">已选图片</string>
+    <string name="common_selected_images_count">已选图片 (%d)</string>
+
+    <!-- TabButton -->
+    <string name="common_tab">标签</string>
+
+    <!-- 通用操作 -->
+    <string name="common_edit">编辑</string>
+    <string name="common_save">保存</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_confirm">确认</string>
+    <string name="common_selected">已选中</string>
+    <string name="common_custom">自定义</string>
+
+    <!-- ImageBaseScreen -->
+    <string name="common_select_image_to_start">选择图片开始处理</string>
+    <string name="common_select_image">选择图片</string>
+    <string name="common_expand">展开</string>
+    <string name="common_collapse">收起</string>
+    <string name="common_format">格式:</string>
+    <string name="common_save_all">全部(%1$d)</string>
+
+    <!-- ZoomableAsyncImage -->
+    <string name="common_image_load_failed">加载失败</string>
+
+    <!-- PlayerControlPanel (共用播放控制面板) -->
+    <string name="common_player_progress">进度</string>
+    <string name="common_player_font_size">字号</string>
+    <string name="common_player_speed">速度</string>
+    <string name="common_player_mirror">镜像</string>
+    <string name="common_player_reset">重置</string>
+    <string name="common_player_exit">退出</string>
+    <string name="common_player_pause">暂停</string>
+    <string name="common_player_resume">继续</string>
+    <string name="common_player_playing">播放中</string>
+    <string name="common_player_paused">已暂停</string>
+
+    <string name="ai_model_protocol_label">请求协议</string>
+    <string name="ai_model_protocol_openai">OpenAI Chat/completions</string>
+    <string name="ai_model_protocol_responses">OpenAI Responses</string>
+    <string name="ai_model_protocol_anthropic">Anthropic 兼容</string>
+    <string name="ai_model_protocol_proxy">应用代理</string>
+    <string name="ai_model_protocol_local_on_device">端侧本地（不走网络）</string>
+    <string name="ai_model_route_label">当前链路</string>
+    <string name="ai_model_route_direct">已验证 · 本地直连</string>
+    <string name="ai_model_route_proxy">未验证 · App 中转</string>
+
+    <!-- DataSyncScreen 数据导出/导入 -->
+    <string name="data_sync_export_success">导出成功</string>
+    <string name="data_sync_export_failed">导出失败: %1$s</string>
+    <string name="data_sync_read_file_failed">读取文件失败: %1$s</string>
+    <string name="data_sync_import_success">导入成功</string>
+    <string name="data_sync_tab_export">导出</string>
+    <string name="data_sync_tab_import">导入</string>
+    <string name="data_sync_select_export_data">选择要导出的数据 (%1$d/%2$d)</string>
+    <string name="data_sync_select_import_data">选择要导入的数据 (%1$d/%2$d)</string>
+    <string name="data_sync_select_all">全选</string>
+    <string name="data_sync_deselect_all">取消全选</string>
+    <string name="data_sync_unknown_title">未知标题</string>
+    <string name="data_sync_exporting">正在导出…</string>
+    <string name="data_sync_export_selected">导出所选</string>
+    <string name="data_sync_import_from_file">从 JSON 文件导入</string>
+    <string name="data_sync_or_paste_json">或粘贴 JSON 数据</string>
+    <string name="data_sync_paste_json_hint">粘贴导出的 JSON 文本</string>
+    <string name="data_sync_parse_data">解析数据</string>
+    <string name="data_sync_reselect">重新选择</string>
+    <string name="data_sync_importing">正在导入…</string>
+    <string name="data_sync_confirm_import">确认导入</string>
+</resources>
+

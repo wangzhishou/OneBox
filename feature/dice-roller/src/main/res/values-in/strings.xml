@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">Lempar dadu.</string>
+    <string name="dice_roller_roll">Kocok.</string>
+    <string name="dice_roller_history">Riwayat</string>
+    <string name="dice_roller_history_empty">Tidak ada catatan riwayat.</string>
+    <string name="dice_roller_clear_history">Hapus Riwayat</string>
+    <string name="dice_roller_clear_confirm">Yakin ingin menghapus semua catatan riwayat?</string>
+    <string name="dice_roller_confirm">Konfirmasi.</string>
+    <string name="dice_roller_cancel">Batal</string>
+    <string name="dice_roller_count">Jumlah dadu</string>
+    <string name="dice_roller_type">Jenis dadu</string>
+    <string name="dice_roller_total">Total poin</string>
+    <string name="dice_roller_shake_hint">Kocok ponsel Anda atau klik \"Kocok.\"</string>
+    <string name="dice_roller_result_prefix">Hasil:</string>
+    <string name="dice_roller_description">Dadu meja.</string>
+</resources>

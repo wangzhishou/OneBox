@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">Утилитарный калькулятор</string>
+    <string name="unit_converter_from">ОТ</string>
+    <string name="unit_converter_to">ДО</string>
+    <string name="unit_converter_swap">Обмен</string>
+    <string name="unit_converter_other_conversions">Другая конвертация %s</string>
+    <string name="unit_converter_currency_disclaimer">• Курс обмена указан для справки, данные не в реальном времени</string>
+    <string name="unit_converter_select_category">Выберите тип конвертации</string>
+    <string name="unit_converter_select_unit">Выберите единицу</string>
+    <string name="unit_converter_close">Закрыть</string>
+    <string name="unit_converter_tab_calculator">Калькулятор</string>
+    <string name="unit_converter_tab_converter">Конвертер</string>
+    <string name="unit_converter_tab_relative">Относительный</string>
+    <string name="unit_converter_invalid_expression">Некорректное выражение, проверьте и попробуйте снова</string>
+    <string name="unit_converter_calculator_expression">Текущее выражение</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">Поддерживает скобки, проценты и арифметические операции</string>
+    <string name="unit_converter_calculator_history">Недавние вычисления</string>
+    <string name="unit_converter_clear">Очистить</string>
+    <string name="unit_converter_backspace">Удалить</string>
+    <string name="unit_converter_equals">Вычислить</string>
+    <string name="unit_converter_reference_subtitle">Быстрый просмотр справочных значений для текущего ввода</string>
+    <string name="unit_converter_relative_path">Путь родства</string>
+    <string name="unit_converter_relative_path_placeholder">Я</string>
+    <string name="unit_converter_relative_identity">Моя идентичность</string>
+    <string name="unit_converter_relative_identity_hint">Идентичность влияет на названия супруга и родственников по браку</string>
+    <string name="unit_converter_relative_male">Мужской</string>
+    <string name="unit_converter_relative_female">Женский</string>
+    <string name="unit_converter_relative_generate">Создать родство</string>
+    <string name="unit_converter_relative_empty">Сначала выберите путь родства</string>
+    <string name="unit_converter_converter_clear">Очистить</string>
+    <string name="unit_converter_relative_result_label">Итоговое родство</string>
+    <string name="unit_converter_negate">Отрицать</string>
+</resources>

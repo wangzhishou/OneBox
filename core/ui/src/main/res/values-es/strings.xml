@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_confirm">Confirmar</string>
+    <string name="date_picker_cancel">Cancelar</string>
+    <string name="date_picker_edit">Editar</string>
+    <string name="date_picker_select_year_month">Seleccionar año y mes</string>
+    <string name="date_picker_year_input">Año</string>
+    <string name="date_picker_current_year">Año actual</string>
+    <string name="blessing_effect_merit_plus_one">Suerte +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">Mes anterior</string>
+    <string name="date_picker_next_month">Mes siguiente</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">Dom</string>
+    <string name="date_picker_weekday_mon">Lun</string>
+    <string name="date_picker_weekday_tue">Mar</string>
+    <string name="date_picker_weekday_wed">Mié</string>
+    <string name="date_picker_weekday_thu">Jue</string>
+    <string name="date_picker_weekday_fri">Vie</string>
+    <string name="date_picker_weekday_sat">Sáb</string>
+    <string name="time_range_picker_start_time">Hora de inicio</string>
+    <string name="time_range_picker_end_time">Hora de fin</string>
+    <string name="time_range_picker_hour">Hora</string>
+    <string name="time_range_picker_minute">Minuto</string>
+    <string name="time_range_picker_hint">Consejo: Ingrese hora (0-23) y minuto (0-59)</string>
+    <string name="date_range_picker_title">Seleccionar rango de fechas</string>
+    <string name="date_range_start">Fecha de inicio</string>
+    <string name="date_range_end">Fecha de fin</string>
+    <string name="week_selector_week_title">%1$d-%2$02d · Semana %3$d</string>
+    <string name="icon_picker_icon_count">%1$d iconos</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>lun</item>
+        <item>mar</item>
+        <item>mié</item>
+        <item>jue</item>
+        <item>vie</item>
+        <item>sáb</item>
+        <item>dom</item>
+    </string-array>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Google Play 渠道: 登录页协议链接指向海外域名 oneboxable.com -->
+<resources>
+    <string name="user_privacy"><![CDATA[我已阅读并同意<a href="https://www.oneboxable.com/agreement/global.html">《用户协议》</a>与 <a href="https://www.oneboxable.com/privacy/global.html">《隐私政策》</a>。]]></string>
+</resources>

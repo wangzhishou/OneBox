@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">Silakan pilih atau tambahkan kategori terlebih dahulu</string>
+    <string name="schedule_section_title">Jadwal</string>
+    <string name="action_open_schedule">Buka hub jadwal</string>
+    <string name="action_create_schedule">Buat jadwal lokal</string>
+    <string name="schedule_creating">Membuat jadwal…</string>
+    <string name="schedule_missing_due_date">Silakan atur tanggal jatuh tempo untuk tugas ini terlebih dahulu</string>
+    <string name="schedule_created_success">Jadwal lokal dibuat</string>
+    <string name="schedule_created_failed">Gagal membuat jadwal. Silakan coba lagi nanti</string>
+    <string name="dialog_delete_category_title">Hapus Kategori</string>
+    <string name="dialog_delete_category_message">Apakah Anda yakin ingin menghapus \"%1$s\"?\nSemua tugas dalam kategori ini juga akan dihapus.</string>
+    <string name="dialog_delete_task_message">Apakah Anda yakin ingin menghapus \"%1$s\"?</string>
+    <string name="cd_switch_to_list_view">Beralih ke tampilan daftar</string>
+    <string name="cd_switch_to_grid_view">Beralih ke tampilan grid</string>
+    <string name="cd_edit_mode_done">Selesai</string>
+    <string name="label_status">Status</string>
+    <string name="status_overdue">Terlambat</string>
+    <string name="category_unnamed">Kategori Tanpa Nama</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d tugas dihapus</string>
+    <string name="action_delete_selected_cd">Hapus yang dipilih</string>
+    <string name="error_todo_not_found">Tugas tidak ditemukan</string>
+    <string name="error_category_not_found">Kategori tidak ditemukan</string>
+    <string name="error_load_failed">Gagal memuat</string>
+    <string name="cd_task_completed">Selesai</string>
+    <string name="cd_task_pending">Menunggu</string>
+    <string name="cd_add_star">Tambah bintang</string>
+    <string name="cd_remove_star">Hapus bintang</string>
+    <string name="date_today">Hari ini</string>
+    <string name="date_yesterday">Kemarin</string>
+    <string name="date_days_ago">%1$d hari yang lalu</string>
+    <string name="date_tomorrow">Besok</string>
+    <string name="date_days_later">Dalam %1$d hari</string>
+</resources>

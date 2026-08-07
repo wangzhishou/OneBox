@@ -1,0 +1,14 @@
+对单个文本文件应用多段 old_text/new_text 补丁，适合代码 Agent 在确认上下文后一次性修改多个片段。
+
+输入支持本地路径、file:// URI，以及可解析为真实路径的 SAF content:// URI；工具会先统一转换为 file:// URI。
+
+每个 hunk 包含：
+- old_text：必须精准匹配的旧文本
+- new_text：替换后的新文本
+- replace_all：是否替换全部匹配，默认 false
+
+注意：
+- 这是高风险写操作，需要用户确认
+- 任一 hunk 找不到 old_text 时会整体返回错误，避免误改
+- 返回结果包含 file:// URI、替换统计和预览片段
+

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">スケジュールハブ</string>
+    <string name="schedule_sync_card_title">同期基盤の準備ができました</string>
+    <string name="schedule_sync_card_description">このモジュールはすでにイベントモデル、同期カーソル状態、Todoブリッジフィールドを所有しているため、Googleカレンダーは後で追加しても、アルマナックやTodoモジュールを汚染しません。</string>
+    <string name="schedule_sync_ready">同期カーソルが保存されました</string>
+    <string name="schedule_sync_not_connected">アカウントが接続されていません</string>
+    <string name="schedule_event_count_label">%1$d件のイベント</string>
+    <string name="schedule_linked_task_chip">Todoコンテキストがリンクされました</string>
+    <string name="schedule_last_error_label">最後のエラー: %1$s</string>
+    <string name="schedule_action_card_title">クリーンなローカルイベントドメインから始める</string>
+    <string name="schedule_action_create_local">ローカルイベントを作成</string>
+    <string name="schedule_action_create_focus">フォーカス日からイベントを作成</string>
+    <string name="schedule_action_open_todo">Todoを開く</string>
+    <string name="schedule_action_open_calendar">カレンダーを開く</string>
+    <string name="schedule_event_section_title">イベント</string>
+    <string name="schedule_empty_title">スケジュールイベントはまだありません</string>
+    <string name="schedule_empty_description">まずローカルイベントから始め、その後Googleアカウント認証、デルタ同期、競合処理を段階的に追加します。</string>
+    <string name="schedule_provider_local">ローカル</string>
+    <string name="schedule_provider_system">システムカレンダー</string>
+    <string name="schedule_provider_google">Googleカレンダー</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">ローカルのみ</string>
+    <string name="schedule_status_pending_upload">アップロード待ち</string>
+    <string name="schedule_status_synced">同期済み</string>
+    <string name="schedule_status_pending_delete">削除待ち</string>
+    <string name="schedule_status_conflict">競合</string>
+    <string name="schedule_status_failed">同期失敗</string>
+    <string name="schedule_linked_task_badge">タスクブリッジ</string>
+    <string name="schedule_quick_event_title">新しいローカルイベント</string>
+    <string name="schedule_focus_event_title">フォーカスイベント</string>
+    <string name="schedule_linked_task_description">リンクされたTodo: %1$s</string>
+    <string name="schedule_save_to_system_calendar">システムカレンダーに直接書き込む</string>
+    <string name="schedule_export_to_system_calendar">システムカレンダーに追加</string>
+    <string name="schedule_system_calendar_unavailable">このデバイスではカレンダーアプリを利用できません</string>
+    <string name="schedule_no_writable_calendar">書き込み可能なシステムカレンダーがありません</string>
+    <string name="schedule_saved_to_system_calendar">システムカレンダーに保存しました</string>
+    <string name="schedule_save_to_system_calendar_failed">システムカレンダーへの保存に失敗しました。後でもう一度お試しください</string>
+    <string name="schedule_calendar_permission_denied">システムカレンダーへの直接書き込みにはカレンダー権限が必要です</string>
+    <string name="schedule_choose_calendar_title">保存先のカレンダーを選択</string>
+    <string name="schedule_calendar_primary_badge">プライマリ</string>
+    <string name="schedule_dialog_close">閉じる</string>
+    <string name="schedule_permission_dialog_title">カレンダー権限が必要です</string>
+    <string name="schedule_permission_dialog_message">システムカレンダーに直接書き込むには、システム設定でカレンダーの読み取り・書き込み権限を有効にしてください。</string>
+    <string name="schedule_open_settings">設定を開く</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">Pag-detect ng Pinsala sa Screen</string>
+    <string name="dead_pixel_test_description">Gamitin ang purong kulay na pag-ikot upang matukoy ang mga sira sa screen at mga card point</string>
+    <string name="dead_pixel_color_white">Puti</string>
+    <string name="dead_pixel_color_black">Itim</string>
+    <string name="dead_pixel_color_red">Pula</string>
+    <string name="dead_pixel_color_green">Berde</string>
+    <string name="dead_pixel_color_blue">Asul</string>
+    <string name="dead_pixel_hint">I-tap upang baguhin ang kulay... Ang pag-slide sa kanan at kaliwa ay maaaring magpalit-palit.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Ipakita ang Grid</string>
+    <string name="dead_pixel_grid_off">Itago ang Grid</string>
+    <string name="dead_pixel_auto_play">Awtomatikong pag-ikot</string>
+    <string name="dead_pixel_auto_stop">Itigil na!</string>
+    <string name="dead_pixel_fullscreen">Buong-screen na pagsubok</string>
+    <string name="dead_pixel_exit_fullscreen">Lumabas sa Buong Screen</string>
+    <string name="dead_pixel_guide_title">Paano natin matutukoy ang pinsala?</string>
+    <string name="dead_pixel_guide_content">Ang screen ay magpapakita ng limang solidong kulay nang sunud-sunod: puti, itim, pula, berde, at asul.\n\n• Puting background: suriin ang mga itim na dark spots (patay na pixel)\n• Itim na background: suriin ang mga maliwanag na spots (stuck pixels)\n• May kulay na background: suriin ang mga abnormal na pixel sa ibang kulay\n\nI-tap ang screen upang lumipat sa susunod na kulay, o paganahin ang auto-play. Para sa pinakamahusay na resulta, gawin ang pagsubok sa madilim na kapaligiran.</string>
+    <string name="dead_pixel_guide_start">Simulan ang pagsubok</string>
+</resources>

@@ -1,0 +1,15 @@
+browse_cloud_files —— 浏览已连接远程存储的目录或查询单文件元信息。
+
+协议：S3 兼容 / WebDAV / SMB，通过 connection_id 路由到正确的适配器。
+
+action 取值：
+- list_roots：返回该连接可用的所有 root（bucket / share / 根路径）。SMB 多 share 场景下尤其有用。
+- list：列出指定 root + path 下的子项，包含目录和文件元信息。path 为空时表示根目录。
+- stat：返回单文件/目录的元信息（大小、修改时间、ETag、MIME 等）。
+
+参数：
+- connection_id（必填）
+- root（可选，默认使用连接默认根）
+- path（可选；stat 必须；list 可选）
+
+read-only 操作，不会修改远端。

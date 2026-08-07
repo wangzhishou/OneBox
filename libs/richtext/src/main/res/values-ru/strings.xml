@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">Локализованное описание</string>
+    <string name="copy">Копировать</string>
+    <string name="create_widget">Создать небольшие инструменты</string>
+    <string name="run">Запустить</string>
+    <string name="save">Сохранить</string>
+    <string name="mermaid_tab_diagram">Диаграмма</string>
+    <string name="mermaid_tab_code">Код</string>
+    <string name="mermaid_fullscreen">Во весь экран</string>
+    <string name="a2ui_parse_failed">Ошибка разбора A2UI</string>
+    <string name="a2ui_parse_failed_hint">Скопируйте исходный код и проверьте формат JSON или синтаксис выражений.</string>
+</resources>

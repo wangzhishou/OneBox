@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">일정 허브</string>
+    <string name="schedule_sync_card_title">동기화 기반 준비 완료</string>
+    <string name="schedule_sync_card_description">이 모듈은 이미 자체 이벤트 모델, 동기화 커서 상태 및 할 일 브리지 필드를 보유하고 있어, 나중에 Google 캘린더를 추가해도 연감이나 할 일 모듈을 오염시키지 않습니다.</string>
+    <string name="schedule_sync_ready">동기화 커서 저장됨</string>
+    <string name="schedule_sync_not_connected">연결된 계정 없음</string>
+    <string name="schedule_event_count_label">%1$d개 이벤트</string>
+    <string name="schedule_linked_task_chip">할 일 컨텍스트 연결됨</string>
+    <string name="schedule_last_error_label">마지막 오류: %1$s</string>
+    <string name="schedule_action_card_title">깨끗한 로컬 이벤트 도메인으로 시작</string>
+    <string name="schedule_action_create_local">로컬 이벤트 만들기</string>
+    <string name="schedule_action_create_focus">포커스 날짜로 이벤트 만들기</string>
+    <string name="schedule_action_open_todo">할 일 열기</string>
+    <string name="schedule_action_open_calendar">캘린더 열기</string>
+    <string name="schedule_event_section_title">이벤트</string>
+    <string name="schedule_empty_title">아직 일정 이벤트 없음</string>
+    <string name="schedule_empty_description">먼저 로컬 이벤트로 시작한 다음 Google 계정 인증, 델타 동기화 및 충돌 처리를 점진적으로 추가하세요.</string>
+    <string name="schedule_provider_local">로컬</string>
+    <string name="schedule_provider_system">시스템 캘린더</string>
+    <string name="schedule_provider_google">Google 캘린더</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">로컬 전용</string>
+    <string name="schedule_status_pending_upload">업로드 대기 중</string>
+    <string name="schedule_status_synced">동기화됨</string>
+    <string name="schedule_status_pending_delete">삭제 대기 중</string>
+    <string name="schedule_status_conflict">충돌</string>
+    <string name="schedule_status_failed">동기화 실패</string>
+    <string name="schedule_linked_task_badge">작업 브리지</string>
+    <string name="schedule_quick_event_title">새 로컬 이벤트</string>
+    <string name="schedule_focus_event_title">포커스 이벤트</string>
+    <string name="schedule_linked_task_description">연결된 할 일: %1$s</string>
+    <string name="schedule_save_to_system_calendar">시스템 캘린더에 직접 쓰기</string>
+    <string name="schedule_export_to_system_calendar">시스템 캘린더에 추가</string>
+    <string name="schedule_system_calendar_unavailable">이 기기에는 캘린더 앱이 없습니다</string>
+    <string name="schedule_no_writable_calendar">쓰기 가능한 시스템 캘린더가 없습니다</string>
+    <string name="schedule_saved_to_system_calendar">시스템 캘린더에 저장됨</string>
+    <string name="schedule_save_to_system_calendar_failed">시스템 캘린더에 저장하지 못했습니다. 나중에 다시 시도해 주세요</string>
+    <string name="schedule_calendar_permission_denied">시스템 캘린더에 직접 쓰려면 캘린더 권한이 필요합니다</string>
+    <string name="schedule_choose_calendar_title">대상 캘린더 선택</string>
+    <string name="schedule_calendar_primary_badge">기본</string>
+    <string name="schedule_dialog_close">닫기</string>
+    <string name="schedule_permission_dialog_title">캘린더 권한 필요</string>
+    <string name="schedule_permission_dialog_message">시스템 캘린더에 직접 쓰려면 시스템 설정에서 캘린더 읽기/쓰기 권한을 활성화해 주세요.</string>
+    <string name="schedule_open_settings">설정 열기</string>
+</resources>

@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <!-- Module Name -->
+    <string name="marktodo" translatable="false">To-do List</string>
+
+    <!-- Add Category / Add Task Dialog -->
+    <string name="action_add_category" translatable="false">Add Category</string>
+    <string name="dialog_add_category_title" translatable="false">Add To-do Topic</string>
+    <string name="dialog_edit_category_title" translatable="false">Edit To-do Topic</string>
+    <string name="dialog_add_category_hint" translatable="false">Enter a topic name</string>
+    <string name="dialog_add_category_icon" translatable="false">Icon</string>
+    <string name="dialog_add_category_color" translatable="false">Color</string>
+    <string name="dialog_add_category_color_auto" translatable="false">Auto Color</string>
+    <string name="dialog_add_task_title" translatable="false">Add To-do</string>
+    <string name="dialog_add_task_title_with_category" translatable="false">Add To-do (%1$s)</string>
+    <string name="dialog_edit_task_title" translatable="false">Edit To-do</string>
+    <string name="dialog_add_task_hint" translatable="false">Enter a task title</string>
+    <string name="dialog_add_task_note_hint" translatable="false">Notes (optional)</string>
+    <string name="dialog_add_task_due_date" translatable="false">Due Date (optional)</string>
+    <string name="dialog_add_task_due_date_none" translatable="false">None</string>
+    <string name="dialog_add_task_tags_hint" translatable="false">Tags (comma-separated, optional)</string>
+    <string name="dialog_add_task_select_date" translatable="false">End Date</string>
+    <string name="action_confirm" translatable="false">Confirm</string>
+    <string name="action_cancel" translatable="false">Cancel</string>
+
+    <!-- Task Actions -->
+    <string name="add_task" translatable="false">Add To-do</string>
+    <string name="add_task_hint" translatable="false">Add To-do</string>
+    <string name="task_completed" translatable="false">Completed</string>
+    <string name="task_pending" translatable="false">Pending</string>
+
+    <!-- Task Progress -->
+    <string name="task_progress_format" translatable="false">%1$d/%2$d</string>
+    <string name="tasks_count" translatable="false">%1$d / %2$d</string>
+
+    <!-- Task Fields -->
+    <string name="task_title" translatable="false">Title</string>
+    <string name="task_note" translatable="false">Notes</string>
+    <string name="task_date" translatable="false">Date</string>
+    <string name="task_tags" translatable="false">Tags</string>
+
+    <!-- Common Tags -->
+    <string name="tag_life" translatable="false">Life</string>
+    <string name="tag_operation" translatable="false">Operations</string>
+    <string name="tag_writing" translatable="false">Writing</string>
+    <string name="tag_urgent" translatable="false">Urgent</string>
+    <string name="tag_important" translatable="false">Important</string>
+
+    <!-- Actions -->
+    <string name="action_menu" translatable="false">Menu</string>
+    <string name="action_edit" translatable="false">Edit</string>
+    <string name="action_delete" translatable="false">Delete</string>
+    <string name="action_complete" translatable="false">Complete</string>
+    <string name="action_star" translatable="false">Star</string>
+    <string name="action_select_all" translatable="false">Select All</string>
+    <string name="action_deselect_all" translatable="false">Deselect All</string>
+    <string name="action_delete_selected" translatable="false">Delete Selected</string>
+
+    <!-- Empty State -->
+    <string name="empty_tasks_title" translatable="false">No To-dos Yet</string>
+    <string name="empty_tasks_message" translatable="false">Tap the add button to create a new task</string>
+
+    <!-- More Tasks -->
+    <string name="more_tasks_indicator" translatable="false">%1$d more tasks…</string>
+
+    <!-- Validation / Snackbar -->
+    <string name="validation_category_title_required" translatable="false">Category name cannot be empty</string>
+    <string name="validation_category_title_duplicate" translatable="false">Category name already exists</string>
+    <string name="validation_task_title_required" translatable="false">Task title cannot be empty</string>
+    <string name="validation_task_title_duplicate" translatable="false">A task with the same name already exists in this category</string>
+    <string name="snackbar_category_added" translatable="false">Category added</string>
+    <string name="snackbar_task_added" translatable="false">To-do added</string>
+    <string name="snackbar_task_updated" translatable="false">To-do updated</string>
+    <string name="snackbar_task_deleted" translatable="false">To-do deleted</string>
+
+    <!-- Category Detail Screen -->
+    <string name="action_add_task" translatable="false">Add To-do</string>
+    <string name="action_filter" translatable="false">Filter</string>
+    <string name="action_sort" translatable="false">Sort</string>
+
+    <!-- Statistics Labels -->
+    <string name="label_total" translatable="false">Total</string>
+    <string name="label_completed" translatable="false">Completed</string>
+    <string name="label_active" translatable="false">In Progress</string>
+
+    <!-- Filter Options -->
+    <string name="filter_all" translatable="false">All</string>
+    <string name="filter_active" translatable="false">Active</string>
+    <string name="filter_completed" translatable="false">Completed</string>
+    <string name="filter_starred" translatable="false">Starred</string>
+
+    <!-- Sort Options -->
+    <string name="sort_date_desc" translatable="false">Date: Newest First</string>
+    <string name="sort_date_asc" translatable="false">Date: Oldest First</string>
+    <string name="sort_title_asc" translatable="false">Title: A to Z</string>
+    <string name="sort_title_desc" translatable="false">Title: Z to A</string>
+    <string name="sort_starred_first" translatable="false">Starred First</string>
+
+    <!-- Empty State -->
+    <string name="empty_tasks" translatable="false">No Tasks</string>
+    <string name="empty_tasks_hint" translatable="false">Tap the + button in the top-right corner to add a new task</string>
+
+    <!-- Edit Mode -->
+    <string name="edit_mode_title" translatable="false">%1$d selected</string>
+    <string name="snackbar_tasks_deleted" translatable="false">%1$d to-dos deleted</string>
+    <string name="dialog_add_task_clear" translatable="false">Clear</string>
+    <string name="toast_select_category_first">Please select or add a category first</string>
+    <string name="schedule_section_title">Schedule</string>
+    <string name="action_open_schedule">Open schedule hub</string>
+    <string name="action_create_schedule">Create local schedule</string>
+    <string name="schedule_creating">Creating schedule…</string>
+    <string name="schedule_missing_due_date">Please set a due date for this task first</string>
+    <string name="schedule_created_success">Local schedule created</string>
+    <string name="schedule_created_failed">Failed to create schedule. Please try again later</string>
+
+    <!-- Delete Confirmation -->
+    <string name="dialog_delete_category_title">Delete Category</string>
+    <string name="dialog_delete_category_message">Are you sure you want to delete \"%1$s\"?\nAll tasks under this category will also be deleted.</string>
+    <string name="dialog_delete_task_message">Are you sure you want to delete \"%1$s\"?</string>
+
+    <!-- View Mode Descriptions -->
+    <string name="cd_switch_to_list_view">Switch to list view</string>
+    <string name="cd_switch_to_grid_view">Switch to grid view</string>
+    <string name="cd_edit_mode_done">Done</string>
+
+    <!-- Status Labels -->
+    <string name="label_status">Status</string>
+    <string name="status_overdue">Overdue</string>
+    <string name="category_unnamed">Unnamed Category</string>
+
+    <!-- Batch Operations -->
+    <string name="snackbar_batch_tasks_deleted">%1$d tasks deleted</string>
+    <string name="action_delete_selected_cd">Delete selected</string>
+
+    <!-- Error Messages (used by Component) -->
+    <string name="error_todo_not_found">To-do not found</string>
+    <string name="error_category_not_found">Category not found</string>
+    <string name="error_load_failed">Failed to load</string>
+
+    <!-- Task State Descriptions -->
+    <string name="cd_task_completed">Completed</string>
+    <string name="cd_task_pending">Pending</string>
+    <string name="cd_add_star">Add star</string>
+    <string name="cd_remove_star">Remove star</string>
+    <string name="date_today">Today</string>
+    <string name="date_yesterday">Yesterday</string>
+    <string name="date_days_ago">%1$d days ago</string>
+    <string name="date_tomorrow">Tomorrow</string>
+    <string name="date_days_later">In %1$d days</string>
+</resources>

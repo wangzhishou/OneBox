@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cloud_storage_screen_title">远程存储</string>
+    <string name="cloud_storage_upload_action">上传文件</string>
+    <string name="cloud_storage_create_folder">新建目录</string>
+    <string name="cloud_storage_tab_files">Files</string>
+    <string name="cloud_storage_tab_search">Search</string>
+    <string name="cloud_storage_tab_sync">Sync</string>
+    <string name="cloud_storage_folder_name">目录名称</string>
+    <string name="cloud_storage_confirm">确认</string>
+    <string name="cloud_storage_cancel">取消</string>
+    <string name="cloud_storage_error_title">操作失败</string>
+    <string name="cloud_storage_loading">正在加载对象列表...</string>
+    <string name="cloud_storage_empty">当前前缀下暂无对象</string>
+    <string name="cloud_storage_current_path">当前路径</string>
+    <string name="cloud_storage_root_path">Bucket 根目录</string>
+    <string name="cloud_storage_refresh_action">刷新</string>
+    <string name="cloud_storage_up_action">返回上级</string>
+    <string name="cloud_storage_sync_placeholder_title">同步功能即将开放</string>
+    <string name="cloud_storage_sync_placeholder_desc">本期先提供多云对象存储的访问、浏览与管理能力，本地目录同步会在后续版本补齐。</string>
+    <string name="cloud_storage_search_label">搜索对象</string>
+    <string name="cloud_storage_search_hint">按前缀或对象名称搜索当前桶内容</string>
+    <string name="cloud_storage_search_action">开始搜索</string>
+    <string name="cloud_storage_rename_label">新名称</string>
+    <string name="cloud_storage_rename_action">重命名</string>
+    <string name="cloud_storage_move_label">目标前缀</string>
+    <string name="cloud_storage_move_action">移动到前缀</string>
+    <string name="cloud_storage_copy_download_link">复制签名链接</string>
+    <string name="cloud_storage_delete_action">删除对象</string>
+    <string name="cloud_storage_delete_selected_action">删除选中 (%d)</string>
+    <string name="cloud_storage_cancel_selection">取消选择</string>
+    <string name="cloud_storage_delete_confirm_title">确认删除</string>
+    <string name="cloud_storage_delete_confirm_message_single">确定要删除“%s”吗？删除后无法恢复。</string>
+    <string name="cloud_storage_delete_confirm_message_multi">确定要删除选中的 %d 个对象吗？删除后无法恢复。</string>
+    <string name="cloud_storage_delete_confirm_action">确认删除</string>
+    <string name="cloud_storage_bucket_sheet_title">切换桶</string>
+    <string name="cloud_storage_current_bucket">当前使用</string>
+    <string name="cloud_storage_connection_sheet_title">云存储连接</string>
+    <string name="cloud_storage_vendor_label">云厂商</string>
+    <string name="cloud_storage_display_name">连接名称</string>
+    <string name="cloud_storage_endpoint">Endpoint</string>
+    <string name="cloud_storage_region">Region</string>
+    <string name="cloud_storage_bucket_name">默认 Bucket</string>
+    <string name="cloud_storage_access_key">Access Key</string>
+    <string name="cloud_storage_secret_key">Secret Key</string>
+    <string name="cloud_storage_save_connection">保存连接</string>
+    <string name="cloud_storage_connection_label">当前连接</string>
+    <string name="cloud_storage_no_connection">暂未配置连接</string>
+    <string name="cloud_storage_connection_hint">点击配置远程存储连接</string>
+    <string name="cloud_storage_bucket_label">当前桶</string>
+    <string name="cloud_storage_no_bucket">暂未选择桶</string>
+    <string name="cloud_storage_bucket_hint">点击切换当前 Bucket</string>
+    <string name="cloud_storage_error_generic">远程存储操作失败，请稍后重试</string>
+    <string name="cloud_storage_error_read_file">读取本地文件失败</string>
+    <string name="cloud_storage_prefix_item">前缀目录</string>
+
+    <string name="cloud_vendor_aliyun_oss">阿里云 OSS</string>
+    <string name="cloud_vendor_tencent_cos">腾讯云 COS</string>
+    <string name="cloud_vendor_huawei_obs">华为云 OBS</string>
+    <string name="cloud_vendor_baidu_bos">百度云 BOS</string>
+    <string name="cloud_vendor_aws_s3">AWS S3</string>
+    <string name="cloud_vendor_s3_compatible">S3 兼容存储 (MinIO/R2...)</string>
+    <string name="cloud_storage_test_connection">测试连接</string>
+    <string name="cloud_storage_test_connection_success">测试连接成功</string>
+    <string name="cloud_storage_test_connection_failed">测试连接失败</string>
+    <string name="cloud_storage_upload_progress">正在上传 %d%%</string>
+
+    <string name="cloud_protocol_s3_compat">S3 兼容</string>
+    <string name="cloud_protocol_webdav">WebDAV</string>
+    <string name="cloud_protocol_smb">SMB / Samba</string>
+
+    <string name="cloud_storage_protocol_label">协议类型</string>
+
+    <string name="cloud_storage_webdav_base_url">服务器地址 (WebDAV Base URL)</string>
+    <string name="cloud_storage_webdav_root_path">根路径</string>
+    <string name="cloud_storage_webdav_username">用户名</string>
+    <string name="cloud_storage_webdav_password">密码</string>
+
+    <string name="cloud_storage_smb_host">服务器 IP / 域名</string>
+    <string name="cloud_storage_smb_port">端口</string>
+    <string name="cloud_storage_smb_share">共享名 (Share)</string>
+    <string name="cloud_storage_smb_domain">域 / 工作组</string>
+    <string name="cloud_storage_smb_username">用户名</string>
+    <string name="cloud_storage_smb_password">密码</string>
+
+    <string name="cloud_storage_clear_field">清除</string>
+    <string name="cloud_storage_show_secret">显示密码</string>
+    <string name="cloud_storage_hide_secret">隐藏密码</string>
+
+    <string name="cloud_storage_no_connection_title">暂未连接存储服务器</string>
+    <string name="cloud_storage_no_connection_desc">连接您的阿里云 OSS、腾讯云 COS、华为云 OBS、百度云 BOS 或 AWS S3 兼容存储，随时随地极速云存取文件。</string>
+    <string name="cloud_storage_no_connection_action">立刻添加云存储</string>
+    <string name="cloud_storage_empty_folder_title">这里没有任何文件</string>
+    <string name="cloud_storage_empty_folder_desc">在这个目录中暂时没有检测到任何文件或文件目录，轻按下方按钮来上传文件。</string>
+    <string name="cloud_storage_state_error_title">云同步发生异常</string>
+    <string name="cloud_storage_refresh_list_action">重新刷新列表</string>
+
+    <string name="cloud_storage_download_local">下载到本地</string>
+    <string name="cloud_storage_download_queued">已加入下载队列</string>
+    <string name="cloud_storage_download_failed">下载失败: %s</string>
+    <string name="cloud_storage_link_copied">链接已复制</string>
+    <string name="cloud_storage_copy_action">复制</string>
+    <string name="cloud_storage_copy_link_action">复制链接</string>
+    <string name="cloud_storage_download_icon_action">下载</string>
+    <string name="cloud_storage_manage_connections">管理连接</string>
+
+    <string name="cloud_storage_smb_port_placeholder">445（默认）</string>
+    <string name="cloud_storage_smb_share_placeholder">可选：留空保存后可列举 share</string>
+    <string name="cloud_storage_smb_domain_placeholder">可选：默认 WORKGROUP</string>
+    <string name="cloud_storage_smb_username_placeholder">可选：留空走匿名 / Guest</string>
+    <string name="cloud_storage_smb_password_placeholder">可选：匿名访问无需密码</string>
+
+    <string name="cloud_storage_smb_error_logon_failure">SMB 登录失败（NT_STATUS_LOGON_FAILURE）。\n常见原因：\n  1. 用户名 / 密码错误\n  2. 域不正确 —— 家庭 NAS 通常用 \"WORKGROUP\" 或 NAS 主机名当域；可在连接表单的\"域 / 工作组\"字段填入后重试\n  3. NAS 上该账号未启用 SMB 登录权限\n  4. 启用了 SMB1 但本客户端只支持 SMB2/3 —— 需在 NAS 控制台开启 SMB2/SMB3</string>
+    <string name="cloud_storage_smb_error_access_denied">SMB 访问被拒绝。该账号无访问此 share 的权限。</string>
+    <string name="cloud_storage_smb_error_bad_network">找不到指定的 share。请检查 share 名是否正确；也可以把 share 字段留空，先建立连接后由列表选择</string>
+    <string name="cloud_storage_smb_error_not_found">指定的文件 / 目录不存在</string>
+    <string name="cloud_storage_smb_error_invalid_parameter">SMB 参数无效。可能是路径含非法字符、share 不存在或 NAS 只支持 SMB1（smbj 0.13 不支持 SMB1）</string>
+    <string name="cloud_storage_smb_error_not_supported">服务器不支持此操作。常见原因：协议版本不匹配，或 NAS 仅启用 SMB1</string>
+    <string name="cloud_storage_smb_error_disconnected">连接被服务器关闭。请确认 host / port 可达，且 NAS 未限制并发连接数</string>
+    <string name="cloud_storage_smb_error_share_deleted">指定的 share 在服务器上不存在</string>
+    <string name="cloud_storage_smb_error_sharing_violation">文件被另一进程占用，无法访问</string>
+    <string name="cloud_storage_smb_error_generic">SMB 错误：%1$s（%2$s）</string>
+</resources>

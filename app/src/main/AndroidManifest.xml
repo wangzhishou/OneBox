@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <queries>
+        <package android:name="com.tencent.mm" />
+    </queries>
+
+    <uses-sdk tools:overrideLibrary="
+        com.colintheshots.prism4j,
+        com.google.mlkit.vision.segmentation.subject,
+        androidx.pdf,
+        androidx.pdf.viewer.fragment,
+        androidx.pdf.document.service" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+	
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <uses-permission android:name="android.permission.PROJECT_MEDIA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.USE_SENSOR" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <!-- 合规:移除 WorkManager 库自动合并进来的开机自启动权限与广播接收器。
+         本应用未使用 WorkManager 调度任务,无需在重启后恢复后台任务。 -->
+    <uses-permission
+        android:name="android.permission.RECEIVE_BOOT_COMPLETED"
+        tools:node="remove" />
+
+    <application
+        android:name=".AppApplication"
+        android:allowBackup="true"
+        android:colorMode="wideColorGamut"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:hasFragileUserData="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_launcher_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.OneBox.Launcher"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup, android:label"
+        tools:targetApi="36">
+
+        <profileable
+            android:shell="true"
+            tools:targetApi="29" />
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <meta-data
+            android:name="CHANNEL"
+            android:value="${flavorName}" />
+
+        <activity
+            android:name=".AppActivity"
+            android:exported="true"
+            android:supportsPictureInPicture="true"
+            android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter android:label="@string/app_launcher_name">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.android.camera.action.REVIEW" />
+                <action android:name="android.provider.action.REVIEW" />
+                <action android:name="android.provider.action.REVIEW_SECURE" />
+
+                <data
+                    android:scheme="content"
+                    tools:ignore="AppLinkUrlError" />
+                <data android:scheme="file" />
+                <data android:mimeType="image/*" />
+                <data android:pathSuffix=".qoi" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/pdf" />
+                <data android:mimeType="*/pdf" />
+                <data android:mimeType="application/vnd.android.package-archive" />
+                <data android:pathPattern=".*\\.apk\\.1" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/markdown" />
+                <data android:mimeType="text/x-markdown" />
+                <data android:pathSuffix=".md" />
+                <data android:pathSuffix=".markdown" />
+                <data android:pathSuffix=".html" />
+                <data android:pathSuffix=".htm" />
+                <data android:pathSuffix=".txt" />
+                <data android:pathSuffix=".json" />
+                <data android:pathSuffix=".xml" />
+                <data android:pathSuffix=".kt" />
+                <data android:pathSuffix=".kts" />
+                <data android:pathSuffix=".java" />
+                <data android:pathSuffix=".py" />
+                <data android:pathSuffix=".js" />
+                <data android:pathSuffix=".ts" />
+                <data android:pathSuffix=".css" />
+                <data android:pathSuffix=".yaml" />
+                <data android:pathSuffix=".yml" />
+                <data android:pathSuffix=".csv" />
+                <data android:pathSuffix=".log" />
+                <data android:pathSuffix=".sql" />
+                <data android:pathSuffix=".sh" />
+                <data android:pathSuffix=".gradle" />
+                <data android:pathSuffix=".ini" />
+                <data android:pathSuffix=".properties" />
+                <data android:pathSuffix=".conf" />
+                <data android:pathSuffix=".config" />
+                <data android:pathSuffix=".c" />
+                <data android:pathSuffix=".cpp" />
+                <data android:pathSuffix=".h" />
+                <data android:pathSuffix=".hpp" />
+                <data android:pathSuffix=".go" />
+                <data android:pathSuffix=".rs" />
+                <data android:pathSuffix=".rb" />
+                <data android:pathSuffix=".dart" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="*/*" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_BUG_REPORT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="*/*" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:mimeType="image/*"
+                    tools:ignore="AppLinkUrlError" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/zip" />
+                <data android:pathSuffix=".qoi" />
+                <data android:mimeType="application/pdf" />
+                <data android:mimeType="*/pdf" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/html" />
+                <data android:mimeType="text/markdown" />
+                <data android:mimeType="text/x-markdown" />
+                <data android:pathSuffix=".txt" />
+                <data android:pathSuffix=".json" />
+                <data android:pathSuffix=".xml" />
+                <data android:pathSuffix=".md" />
+                <data android:pathSuffix=".kt" />
+                <data android:pathSuffix=".java" />
+                <data android:pathSuffix=".py" />
+                <data android:pathSuffix=".js" />
+                <data android:pathSuffix=".css" />
+                <data android:pathSuffix=".yaml" />
+                <data android:pathSuffix=".yml" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT_OR_EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:mimeType="image/*"
+                    tools:ignore="AppLinkUrlError" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/zip" />
+                <data android:pathSuffix=".qoi" />
+                <data android:mimeType="application/pdf" />
+                <data android:mimeType="*/pdf" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.INSERT" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:mimeType="image/*"
+                    tools:ignore="AppLinkUrlError" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/zip" />
+                <data android:pathSuffix=".qoi" />
+                <data android:mimeType="application/pdf" />
+                <data android:mimeType="*/pdf" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="onebox" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.shifenmiao.app"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.shifenmiao.app"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${fileProviderAuthority}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <service
+            android:name="com.wanbaohe.app.service.FloatingRobotService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
+        <!-- 合规:移除 WorkManager 库合并进来的开机广播接收器(默认 enabled=false,
+             本应用未调度任何 WorkManager 任务,永不启用)。 -->
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            tools:node="remove" />
+
+    </application>
+
+</manifest>

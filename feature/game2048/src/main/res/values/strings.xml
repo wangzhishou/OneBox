@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">CURRENT SCORE</string>
+    <string name="game_2048_best_score">BEST SCORE</string>
+    <string name="game_2048_new_game">NEW GAME</string>
+    <string name="game_2048_game_over">Game Over</string>
+    <string name="game_2048_you_win">You reached 2048!</string>
+    <string name="game_2048_no_moves">No more moves available</string>
+    <string name="game_2048_reached_2048">You can keep going for a higher score</string>
+    <string name="game_2048_continue">Continue</string>
+    <string name="game_2048_new_best_score">New record!</string>
+</resources>
+

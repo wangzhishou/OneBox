@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Browser settings -->
+    <string name="browser_settings">Settings</string>
+    <string name="browser_section_general">General</string>
+    <string name="browser_search_engine">Search engine</string>
+    <string name="browser_user_agent">User-Agent</string>
+    <string name="browser_text_size">Text size</string>
+    <string name="browser_section_privacy">Privacy &amp; security</string>
+    <string name="browser_privacy_mode">Private mode</string>
+    <string name="browser_privacy_mode_subtitle">Browsing history won\'t be saved</string>
+    <string name="browser_clear_on_exit">Clear data on exit</string>
+    <string name="browser_clear_on_exit_subtitle">Automatically cleared when you close the browser</string>
+    <string name="browser_clear_browsing_data">Clear browsing data</string>
+    <string name="browser_clear_browsing_data_subtitle">Cache, cookies, history, and more</string>
+    <string name="browser_section_about">About</string>
+    <string name="browser_about">About browser</string>
+    <string name="browser_version">Version %1$s</string>
+    <string name="browser_clear_data_confirm">Clear cache, cookies, and history? This action can\'t be undone.</string>
+    <string name="browser_select_search_engine">Choose a search engine</string>
+    <string name="browser_ua_dialog_title">User-Agent (UA)</string>
+    <string name="browser_custom">Custom</string>
+    <string name="browser_custom_ua">Custom User-Agent</string>
+    <string name="browser_custom_ua_hint">Enter a custom User-Agent string</string>
+
+    <!-- Common actions -->
+    <string name="browser_clear">Clear</string>
+    <string name="browser_cancel">Cancel</string>
+    <string name="browser_confirm">OK</string>
+    <string name="browser_close">Close</string>
+    <string name="browser_delete">Delete</string>
+    <string name="browser_back">Back</string>
+    <string name="browser_stop">Stop</string>
+    <string name="browser_refresh">Refresh</string>
+    <string name="browser_reload">Reload</string>
+
+    <!-- Tabs -->
+    <string name="browser_tabs">Tabs</string>
+    <string name="browser_close_all">Close all</string>
+    <string name="browser_new_short">New</string>
+    <string name="browser_new_tab">New Tab</string>
+    <string name="browser_no_open_tabs">No open tabs</string>
+    <string name="browser_new_tab_hint">Tap New Tab to start browsing</string>
+
+    <!-- Home -->
+    <string name="browser_popular_sites">Popular sites</string>
+
+    <!-- Bookmarks & history -->
+    <string name="browser_bookmarks_history">Bookmarks &amp; history</string>
+    <string name="browser_manage_categories">Manage categories</string>
+    <string name="browser_bookmarks">Bookmarks</string>
+    <string name="browser_history">History</string>
+    <string name="browser_history_records">History</string>
+    <string name="browser_manage_bookmark_folders">Manage bookmark folders</string>
+    <string name="browser_no_bookmarks">No bookmarks yet</string>
+    <string name="browser_no_bookmarks_hint">Tap the bookmark icon on a page to add it here</string>
+    <string name="browser_uncategorized">Uncategorized</string>
+    <string name="browser_no_history">No history yet</string>
+    <string name="browser_clear_history">Clear history</string>
+
+    <!-- Top bar & suggestions -->
+    <string name="browser_search_or_url">Search or enter address</string>
+    <string name="browser_no_matches">No matching results</string>
+    <string name="browser_copy_link">Copy link</string>
+
+    <!-- Error page -->
+    <string name="browser_error">Error</string>
+    <string name="browser_url_label">URL: %1$s</string>
+    <string name="browser_check_network_hint">Check your network connection and make sure the URL is correct</string>
+</resources>

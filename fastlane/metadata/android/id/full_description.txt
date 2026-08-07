@@ -1,0 +1,56 @@
+OneBox adalah kotak peralatan serbaguna gratis dan bebas iklan, mengemas 90+ alat yang dibuat dengan cermat dalam satu aplikasi, mencakup pemrosesan gambar, dokumen dan pekerjaan kantor, asisten AI, serta alat efisiensi sehari-hari.
+
+【Mengapa disebut "OneBox"】
+• One: semua alat sehari-hari, satu aplikasi saja cukup
+• Box: satu kotak yang memuat semuanya
+Yang benar-benar ingin dicapainya bukan sekadar "memuat banyak", melainkan membuat Anda tidak perlu lagi berganti aplikasi alat lain.
+
+【Alat Efisiensi】
+• Teleprompter, catatan, daftar tugas, roda pengambil keputusan
+• Kalender abadi, pembukuan, alat cloud drive, pelacak kebiasaan
+
+【File & PDF】
+• Alat PDF: gabungkan, pisahkan, ekstrak gambar dan teks
+• Editor Markdown dengan pratinjau langsung
+• Enkripsi file, ekstraksi sampul audio, pengeditan EXIF gambar
+• Penjelajah file dan transfer file antar perangkat
+
+【Alat Gambar】
+• Pangkas, putar, ubah ukuran, konversi format (HEIC / WebP / AVIF, dll.)
+• Filter, kolase, penggabungan gambar panjang, alat GIF
+• Pemindaian dan pembuatan kode QR, alat warna
+• Kompresi gambar dan konversi format, semuanya diproses secara lokal, tidak diunggah
+
+【Alat Kehidupan Sehari-hari】
+• Foto dokumen, uji kecepatan jaringan, kamera watermark
+• Dinding harapan, jam pasir waktu, penginstal Apk.1
+• Alat layar dan media, mini-game santai untuk waktu luang
+
+【Asisten AI: Lebih dari Sekadar Banyak Fitur】
+Kalau hanya soal banyak fitur, banyak aplikasi kotak peralatan bisa melakukannya. OneBox memiliki asisten AI bawaan — Anda tidak perlu lagi mencari alat satu per satu atau mengingat langkah-langkahnya, cukup ucapkan saja:
+• "Ubah gambar menjadi PDF."
+• "Catat tangkapan layar tagihan ini ke pembukuan."
+• "Buatkan daftar tugas."
+• "Cek harga saham."
+AI memahami, mengeksekusi, dan memberikan umpan balik dalam satu alur.
+• Satu pintu untuk mengobrol dengan berbagai model AI utama
+• AI Agent dapat memanggil alat di dalam aplikasi untuk menyelesaikan tugas Anda
+• Asisten menulis, menulis ulang, meringkas, dan menerjemahkan
+• Mesin AI kustom dan manajemen prompt
+
+【Aplikasi yang Berevolusi Sendiri】
+OneBox bukan aplikasi yang statis — ia memiliki "Sistem Evolusi Mandiri AI":
+Saran dari pengguna → AI menganalisis sebagai product manager → kode dibuat secara otomatis → diuji dan dirilis.
+Bug yang Anda laporkan, fitur yang Anda inginkan, dan saran peningkatan pengalaman, semuanya berpeluang dievaluasi dan diwujudkan oleh AI. Artinya, OneBox akan semakin sesuai dengan kebutuhan Anda seiring pemakaian.
+
+【Mengapa Memilih OneBox】
+• Gratis digunakan, tanpa iklan
+• Privasi utama: gambar dan dokumen diproses secara lokal di perangkat Anda
+• Antarmuka Material Design yang bersih dan modern
+• Terus diperbarui dengan alat-alat baru
+
+"Aplikasi alat terakhir" adalah tujuan yang besar, tetapi OneBox telah mengambil tiga langkah penting: mengumpulkan alat yang sering dipakai dalam satu pintu, membuat penggunaan menjadi mudah dengan AI, dan menjadikan umpan balik pengguna sebagai penggerak nyata evolusi produk.
+
+Jika Anda lelah berpindah-pindah di antara belasan aplikasi alat, cobalah yang satu ini — mungkin ia benar-benar bisa menjadi yang terakhir untuk Anda.
+
+Hubungi kami: support@oneboxable.com

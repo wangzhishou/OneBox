@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">Dinding Berkah</string>
+    <string name="blessing_wall_sub">Ketukan harian · Keberuntungan menyertai</string>
+    <string name="blessing_record_title">Catatan Berkah</string>
+    <string name="blessing_tab_wooden_fish">Momen Tenang</string>
+    <string name="blessing_tab_wealth_god">Keberuntungan</string>
+    <string name="blessing_tab_guanyin">Damai &amp; Sukacita</string>
+    <string name="blessing_tab_incense">Harapan Tulus</string>
+    <string name="blessing_subtitle_wooden_fish">Ketukan harian · Kekhawatiran hilang</string>
+    <string name="blessing_subtitle_wealth_god">Keberuntungan bertahan · Semua berjalan baik</string>
+    <string name="blessing_subtitle_guanyin">Kebaikan di hati · Damai dan sukacita</string>
+    <string name="blessing_subtitle_incense">Harapan tulus · Rezeki melimpah</string>
+    <string name="blessing_btn_wooden_fish">Ketuk, keberuntungan +1</string>
+    <string name="blessing_btn_wealth_god">Ketuk, rezeki +1</string>
+    <string name="blessing_btn_guanyin">Ketuk, kedamaian +1</string>
+    <string name="blessing_btn_incense">Ketuk, berkah +1</string>
+    <string name="blessing_stat_wooden_fish">Jumlah hari ini</string>
+    <string name="blessing_stat_wealth_god">Jumlah hari ini</string>
+    <string name="blessing_stat_guanyin">Jumlah hari ini</string>
+    <string name="blessing_stat_incense">Jumlah hari ini</string>
+    <string name="blessing_count_unit">kali</string>
+    <string name="blessing_total_count">%1$d kali</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">Statistik Berkah Harian</string>
+    <string name="blessing_empty_state">Belum ada catatan berkah</string>
+    <string name="blessing_wish_edit">Edit catatan</string>
+    <string name="blessing_wish_input_label">Catatan</string>
+    <string name="blessing_wish_save">Simpan</string>
+    <string name="blessing_wish_placeholder">Belum ada catatan</string>
+    <string name="blessing_tab_text_edit">Edit judul</string>
+    <string name="blessing_tab_title_label">Judul</string>
+    <string name="blessing_tab_subtitle_label">Subjudul</string>
+    <string name="blessing_tab_text_reset_hint">Kosongkan untuk mengembalikan default</string>
+    <string name="blessing_history_readonly_hint">Riwayat, hanya lihat</string>
+    <string name="blessing_record_note_prefix">Catatan: %1$s</string>
+    <string name="blessing_sound_on">Suara aktif</string>
+    <string name="blessing_sound_off">Suara nonaktif</string>
+    <string name="blessing_share">Bagikan</string>
+</resources>

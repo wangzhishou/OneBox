@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 贷款计算器 -->
+    <string name="loan_calc_title">贷款计算器</string>
+    <string name="loan_calc_amount_label">贷款金额（元）</string>
+    <string name="loan_calc_amount_hint">请输入金额</string>
+    <string name="loan_calc_term_label">贷款期数</string>
+    <string name="loan_calc_term_hint">选择</string>
+    <string name="loan_calc_rate_label">年利率（%）</string>
+    <string name="loan_calc_rate_hint">请输入年利率</string>
+    <string name="loan_calc_method_label">还款方式</string>
+    <string name="loan_calc_method_hint">选择</string>
+    <string name="loan_calc_start">开始计算</string>
+    <string name="loan_calc_cancel">取消</string>
+
+    <!-- 还款方式 -->
+    <string name="loan_method_equal_installment">等本等息</string>
+    <string name="loan_method_equal_installment_desc">月供、本金、利息每月相同</string>
+    <string name="loan_method_equal_payment">等额本息</string>
+    <string name="loan_method_equal_payment_desc">月供每月相同，本金逐月递增，利息逐月递减</string>
+    <string name="loan_method_equal_principal">等额本金</string>
+    <string name="loan_method_equal_principal_desc">月供每月递减，本金每月相同，利息每月递减</string>
+    <string name="loan_method_interest_first">先息后本</string>
+    <string name="loan_method_interest_first_desc">每月还固定利息，到期还全部本金</string>
+
+    <!-- 计算结果 -->
+    <string name="loan_result_monthly_payment">月均还款</string>
+    <string name="loan_result_total_interest">总利息</string>
+    <string name="loan_result_total_repayment">还款总额</string>
+    <string name="loan_result_schedule_title">还款计划</string>
+    <string name="loan_result_month">期次</string>
+    <string name="loan_result_monthly_col">月还款</string>
+    <string name="loan_result_principal_col">本金</string>
+    <string name="loan_result_interest_col">利息</string>
+    <string name="loan_result_remaining_col">剩余本金</string>
+    <string name="loan_input_error_amount">请输入有效的贷款金额</string>
+    <string name="loan_input_error_term">请选择贷款期数</string>
+    <string name="loan_input_error_rate">请输入有效的年利率</string>
+    <string name="loan_input_error_method">请选择还款方式</string>
+
+    <!-- 期数选择（月） -->
+    <string name="loan_term_months">%d 个月</string>
+    <string name="loan_term_years">%1$d 年（%2$d 个月）</string>
+    <string name="loan_term_picker_title">选择贷款期数</string>
+</resources>
+

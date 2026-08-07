@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">विस्तार करें</string>
+    <string name="collapse">इसे हटा दें।</string>
+    <string name="dialog_clear_recents_title">हाल की सूची साफ़ करें</string>
+    <string name="dialog_clear_recents_message">सभी हालिया एक्सेस रिकॉर्ड साफ़ करें? इसे पूर्ववत नहीं किया जा सकता।</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Nabigo ang koneksyon sa network, pakisuri ang mga setting ng network</string>
+    <string name="error_request_timeout">Nag-timeout ang kahilingan, pakisubukan muli mamaya</string>
+    <string name="error_cannot_connect_server">Hindi makakonekta sa server, pakisuri ang network</string>
+    <string name="error_ssl_failed">Nabigo ang secure na koneksyon, pakisuri ang mga setting ng network</string>
+    <string name="error_network_exception">May problema sa network, pakisuri ang koneksyon sa network</string>
+    <string name="error_request_cancelled">Kinansela ang kahilingan</string>
+    <string name="error_data_parse_failed">Nabigo ang pag-parse ng data, pakisubukan muli mamaya</string>
+    <string name="error_bad_request">Hindi wasto ang mga parameter ng kahilingan</string>
+    <string name="error_unauthorized">Hindi awtorisado, mangyaring mag-login muli</string>
+    <string name="error_forbidden">Ipinagbabawal ang pag-access</string>
+    <string name="error_not_found">Hindi nahanap ang hinihiling na mapagkukunan</string>
+    <string name="error_server_internal">Error sa panloob na server</string>
+    <string name="error_server_maintenance">Ang server ay nasa maintenance, pakisubukan muli mamaya</string>
+    <string name="error_server_code">Error sa server (%d)</string>
+    <string name="error_client_error">Error sa kahilingan, pakisuri ang mga parameter</string>
+    <string name="error_server_error">Error sa server, pakisubukan muli mamaya</string>
+    <string name="error_request_failed">Nabigo ang kahilingan, pakisubukan muli mamaya</string>
+    <string name="error_request_failed_with_message">Nabigo ang kahilingan: %s</string>
+    <string name="error_unknown">Hindi kilalang error</string>
+    <string name="no_error_body">Walang error body</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

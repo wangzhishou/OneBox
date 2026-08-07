@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">30 सेकंड बचें</string>
+    <string name="survive_30s_ready">तैयार?</string>
+    <string name="survive_30s_instruction">नीली गेंद को खींचकर बाधाओं से बचें\nसभी दिशाओं में स्वतंत्र रूप से चलें। जीतने के लिए 30 सेकंड तक बचे रहें!</string>
+    <string name="survive_30s_instruction_bonus">करीबी बचाव से चार्ज बनता है। हर 3 करीबी बचाव पर 1 शील्ड मिलती है, और शील्ड आपके लिए एक हिट रोकती है।</string>
+    <string name="survive_30s_start">शुरू करें</string>
+    <string name="survive_30s_game_over">खेल समाप्त!</string>
+    <string name="survive_30s_survived_time">बचे: %.1f सेकंड</string>
+    <string name="survive_30s_new_record">नया रिकॉर्ड!</string>
+    <string name="survive_30s_win">आप जीत गए!</string>
+    <string name="survive_30s_win_desc">आप 30 सेकंड तक बचे रहे!</string>
+    <string name="survive_30s_retry">फिर से कोशिश करें</string>
+    <string name="survive_30s_best_time">सर्वश्रेष्ठ: %.1f सेकंड</string>
+    <string name="survive_30s_phase">चरण</string>
+    <string name="survive_30s_phase_warmup">वार्मअप</string>
+    <string name="survive_30s_phase_rush">तेज़ी</string>
+    <string name="survive_30s_phase_storm">तूफ़ान</string>
+    <string name="survive_30s_shield">शील्ड</string>
+    <string name="survive_30s_charge">चार्ज</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">करीब</string>
+    <string name="survive_30s_near_miss_count">करीबी बचाव: %1$d</string>
+    <string name="survive_30s_danger_low">अभी स्थिर है। अपनी जगह बनाए रखें।</string>
+    <string name="survive_30s_danger_medium">दबाव बढ़ रहा है। पार करने के लिए तैयार रहें।</string>
+    <string name="survive_30s_danger_high">खतरा! करीबी बचाव से चार्ज बनाएं या तुरंत बाहर निकलें।</string>
+</resources>

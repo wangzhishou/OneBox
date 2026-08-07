@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">Mga check-in</string>
+    <string name="habit_tab_checkin">Check-in</string>
+    <string name="habit_tab_stats">Mga estadistika</string>
+    <string name="habit_add">Magdagdag ng ugali</string>
+    <string name="habit_summary_rate">Rate ng check-in</string>
+    <string name="habit_summary_done">Tapos</string>
+    <string name="habit_summary_missed">Nakabinbin</string>
+    <string name="habit_today_section">Mga check-in ngayon</string>
+    <string name="habit_edit_mode">I-edit</string>
+    <string name="habit_edit_done">Tapos</string>
+    <string name="habit_empty_list">Wala pang ugali. Pindutin ang + upang gumawa.</string>
+    <string name="habit_delete_habit">Burahin ang ugali</string>
+    <string-array name="habit_weekdays_short">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Miy</item>
+        <item>Huw</item>
+        <item>Biy</item>
+        <item>Sab</item>
+        <item>Lin</item>
+    </string-array>
+    <string name="habit_stats_week_trend">Ngayong linggo</string>
+    <string name="habit_stats_distribution">Distribusyon</string>
+    <string name="habit_stats_rate_trend">Trend ng rate ng check-in</string>
+    <string name="habit_stats_not_started">Hindi pa nagsimula</string>
+    <string name="habit_stats_total_habits">Kabuuang mga ugali</string>
+    <string name="habit_stats_empty">Wala pang data</string>
+    <string name="habit_last_7_days">Huling 7 araw</string>
+    <string name="habit_last_30_days">Huling 30 araw</string>
+    <string name="habit_add_title">Bagong Ugali</string>
+    <string name="habit_edit_title">I-edit ang Ugali</string>
+    <string name="habit_edit_name_label">Pangalan ng ugali</string>
+    <string name="habit_edit_name_hint">Ilagay ang pangalan ng ugali</string>
+    <string name="habit_edit_icon_label">Pumili ng icon</string>
+    <string name="habit_edit_color_label">Pumili ng kulay</string>
+    <string name="habit_edit_color_auto_hint">Awtomatikong kulay ng tema kapag hindi napili</string>
+    <string name="habit_edit_repeat_label">Ulitin</string>
+    <string name="habit_repeat_daily">Araw-araw</string>
+    <string name="habit_repeat_weekly">Lingguhan</string>
+    <string name="habit_repeat_monthly">Buwanan</string>
+    <string name="habit_repeat_custom">Pasadya</string>
+    <string name="habit_repeat_daily_desc">Umuulit araw-araw</string>
+    <string name="habit_repeat_times_week_label">Beses bawat linggo</string>
+    <string name="habit_repeat_times_month_label">Beses bawat buwan</string>
+    <string name="habit_edit_reminder_label">Paalala</string>
+    <string name="habit_edit_reminder_none">Walang paalala</string>
+    <string name="habit_edit_reminder_subtitle">Paalalahanan akong mag-check in sa oras na ito</string>
+    <string name="habit_edit_reminder_clear">I-clear</string>
+    <string name="habit_edit_note_label">Tandaan (opsyonal)</string>
+    <string name="habit_edit_note_hint">Magdagdag ng tala...</string>
+    <string name="habit_edit_stats_label">Subaybayan ang stats ng check-in</string>
+    <string name="habit_edit_stats_subtitle">Subaybayan ang rate ng check-in at streak kapag naka-on</string>
+    <string name="habit_save">I-save</string>
+    <string name="habit_name_required">Mangyaring maglagay ng pangalan ng ugali</string>
+    <string name="habit_saved">Na-save</string>
+    <string name="habit_freq_daily">Araw-araw</string>
+    <string name="habit_freq_weekly_times">%1$d beses sa isang linggo</string>
+    <string name="habit_freq_monthly_times">%1$d beses sa isang buwan</string>
+    <string name="habit_preset_drink_water">Uminom ng 8 baso ng tubig</string>
+    <string name="habit_preset_wake_early">Gumising ng maaga</string>
+    <string name="habit_preset_exercise">Mag-ehersisyo</string>
+    <string name="habit_preset_reading">Pagbabasa</string>
+    <string name="habit_preset_meditation">Pagninilay</string>
+    <string name="habit_preset_no_stay_up">Walang pagpupuyat</string>
+    <string name="habit_notification_channel_name">Mga paalala ng ugali</string>
+    <string name="habit_notification_channel_desc">Araw-araw na paalala ng check-in ng ugali</string>
+    <string name="habit_notification_text">Oras ng check-in: %1$s</string>
+    <string name="habit_streak_days">%1$d-araw na sunod-sunod</string>
+    <string name="agent_tool_add_habit_title">Magdagdag ng Ugali</string>
+    <string name="agent_tool_add_habit_summary">Gumawa ng bagong ugali sa habit tracker</string>
+    <string name="agent_tool_add_habit_description">Gumawa ng bagong ugali sa habit tracker. Sumusuporta sa custom na pangalan, icon, dalas ng pag-uulit (araw-araw / N beses bawat linggo / N beses bawat buwan / custom na mga araw ng linggo), opsyonal na oras ng paalala at tala.</string>
+    <string name="agent_tool_add_habit_param_name">Pangalan ng ugali, hal. \"Uminom ng 8 basong tubig\"</string>
+    <string name="agent_tool_add_habit_param_icon">Icon key, isa sa: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">Uri ng pag-uulit: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">Mga beses bawat linggo o buwan, 1-30, para lamang sa weekly_times / monthly_times</string>
+    <string name="agent_tool_add_habit_param_weekdays">Mga araw ng linggo para sa custom_weekdays, array ng 1-7 (1=Lunes, 7=Linggo)</string>
+    <string name="agent_tool_add_habit_param_remind_time">Araw-araw na oras ng paalala sa HH:mm (24h), opsyonal</string>
+    <string name="agent_tool_add_habit_param_note">Opsyonal na tala</string>
+    <string name="agent_tool_add_habit_success">Nagawa ang ugali</string>
+    <string name="agent_tool_add_habit_failed">Nabigo ang paggawa ng ugali: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>ugali</item>
+        <item>magdagdag ng ugali</item>
+        <item>gumawa ng ugali</item>
+        <item>check-in</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>Magdagdag ng ugali na uminom ng 8 basong tubig araw-araw</item>
+        <item>Gumawa ng ugali na tumakbo ng 3 beses bawat linggo</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">I-Check In ang Ugali</string>
+    <string name="agent_tool_check_in_habit_summary">I-check in ang isang ugali para sa isang partikular na araw</string>
+    <string name="agent_tool_check_in_habit_description">Markahan ang isang ugali bilang na-check in para sa isang partikular na araw (ngayon bilang default). Hanapin ang ugali sa pamamagitan ng habit_id o fuzzy habit_name. Ang pag-check in sa parehong araw ng dalawang beses ay walang epekto.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">Habit ID. Mas gusto ito kapag kilala; habit_name ang ginagamit kung hindi</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">Pangalan ng ugali, fuzzy na itinutugma kapag walang habit_id</string>
+    <string name="agent_tool_check_in_habit_param_date">Petsa ng check-in, yyyy-MM-dd, default ngayon, hindi dapat nasa hinaharap</string>
+    <string name="agent_tool_check_in_habit_success">Na-check in</string>
+    <string name="agent_tool_check_in_habit_already">Na-check in na sa araw na iyon</string>
+    <string name="agent_tool_check_in_habit_not_found">Hindi nahanap ang ugali: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">Nabigong mag-check in: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>ugali</item>
+        <item>mag-check in</item>
+        <item>tapos</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>I-check in ang aking ugali sa pagtakbo para sa araw na ito</item>
+        <item>Markahan ang pagbabasa bilang tapos para kahapon</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">Kumusta ng mga Ugali</string>
+    <string name="agent_tool_query_habits_summary">Ilista ang mga ugali na may katayuan ngayon at lingguhang rate ng check-in</string>
+    <string name="agent_tool_query_habits_description">Kumusta ang listahan ng mga ugali: katayuan ng check-in ngayon para sa bawat ugali, araw-araw na streak ng ugali, at kabuuang rate ng check-in ngayong linggo.</string>
+    <string name="agent_tool_query_habits_section_today">Ngayon</string>
+    <string name="agent_tool_query_habits_weekly_rate">Lingguhang rate</string>
+    <string name="agent_tool_query_habits_empty">Wala pang mga ugali</string>
+    <string name="agent_tool_query_habits_failed">Nabigong kumusta ng mga ugali: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>ugali</item>
+        <item>katayuan ng check-in</item>
+        <item>streak</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>Aling mga ugali ang natitira ngayon?</item>
+        <item>Ipakita ang aking rate ng check-in ng ugali ngayong linggo</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">Petsa</string>
+    <string name="agent_tool_habit_label_repeat">Ulitin</string>
+    <string name="agent_tool_habit_label_reminder">Paalala</string>
+    <string name="agent_tool_habit_label_name">Pangalan</string>
+    <string name="agent_tool_habit_open_link">Buksan ang Habit Tracker</string>
+    <string name="agent_tool_habit_edit_link">Tingnan ang ugali</string>
+    <string name="agent_tool_unknown_error">Hindi kilalang error</string>
+</resources>

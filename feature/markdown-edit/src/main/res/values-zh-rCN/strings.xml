@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 代码块插入对话框 -->
+    <string name="insert_code_block">插入代码块</string>
+    <string name="code_label">代码</string>
+    <string name="enter_code_hint">输入代码...</string>
+    <string name="select_language">选择语言:</string>
+    <string name="search_language">搜索语言</string>
+    <string name="search_language_hint">输入语言名称...</string>
+
+    <!-- 图片插入对话框 -->
+    <string name="or_enter_image_url">或输入网络图片地址：</string>
+    <string name="image_description_label">图片描述</string>
+    <string name="image_description_hint">图片的文字说明</string>
+    <string name="image_url_label">图片地址</string>
+
+    <!-- 链接插入对话框 -->
+    <string name="link_text_placeholder">显示的文字</string>
+
+    <!-- 图片缩放弹窗 -->
+    <string name="resize_image">调整图片大小</string>
+    <string name="width">宽度</string>
+    <string name="original_width">原始宽度: %1$dpx</string>
+
+    <!-- 编辑器占位符 -->
+    <string name="markdown_placeholder">输入内容...</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">Expandir</string>
+    <string name="collapse">Guardar.</string>
+    <string name="dialog_clear_recents_title">Borrar recientes</string>
+    <string name="dialog_clear_recents_message">¿Borrar todos los registros de acceso recientes? Esta acción no se puede deshacer.</string>
+</resources>

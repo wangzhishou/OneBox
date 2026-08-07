@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">कोड ब्लॉक डालें</string>
+    <string name="code_label">कोड</string>
+    <string name="enter_code_hint">कोड दर्ज करें...</string>
+    <string name="select_language">भाषा:</string>
+    <string name="search_language">भाषा खोजें</string>
+    <string name="search_language_hint">भाषा का नाम टाइप करें...</string>
+    <string name="or_enter_image_url">या छवि URL दर्ज करें:</string>
+    <string name="image_description_label">छवि विवरण</string>
+    <string name="image_description_hint">छवि के लिए वैकल्पिक पाठ</string>
+    <string name="image_url_label">छवि URL</string>
+    <string name="link_text_placeholder">प्रदर्शित करने के लिए पाठ</string>
+    <string name="resize_image">छवि का आकार बदलें</string>
+    <string name="width">चौड़ाई</string>
+    <string name="original_width">मूल चौड़ाई: %1$dpx</string>
+    <string name="markdown_placeholder">टाइप करना शुरू करें...</string>
+</resources>

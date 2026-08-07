@@ -1,0 +1,5 @@
+     • Brandneue Icons im Linienstil in der gesamten App für ein saubereres, einheitlicheres Erscheinungsbild
+     • Verbesserte englische Lokalisierung in der gesamten App
+     • Sie können OneBox jetzt bewerten, ohne die App zu verlassen
+     • Der chinesische App-Name wird jetzt als 万宝盒 angezeigt
+     • Fehlerbehebungen und Leistungsverbesserungen

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主页 / 打卡 tab -->
+    <string name="habit_title">Check-ins</string>
+    <string name="habit_tab_checkin">Check-in</string>
+    <string name="habit_tab_stats">Stats</string>
+    <string name="habit_add">Add habit</string>
+    <string name="habit_summary_rate">Check-in rate</string>
+    <string name="habit_summary_done">Done</string>
+    <string name="habit_summary_missed">Pending</string>
+    <string name="habit_today_section">Today\'s check-ins</string>
+    <string name="habit_edit_mode">Edit</string>
+    <string name="habit_edit_done">Done</string>
+    <string name="habit_empty_list">No habits yet. Tap + to create one.</string>
+    <string name="habit_delete_habit">Delete habit</string>
+
+    <string-array name="habit_weekdays_short">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
+    <!-- 数据 tab -->
+    <string name="habit_stats_week_trend">This week</string>
+    <string name="habit_stats_distribution">Distribution</string>
+    <string name="habit_stats_rate_trend">Check-in rate trend</string>
+    <string name="habit_stats_not_started">Not started</string>
+    <string name="habit_stats_total_habits">Total habits</string>
+    <string name="habit_stats_empty">No data yet</string>
+    <string name="habit_last_7_days">Last 7 days</string>
+    <string name="habit_last_30_days">Last 30 days</string>
+
+    <!-- 新增/编辑页 -->
+    <string name="habit_add_title">New Habit</string>
+    <string name="habit_edit_title">Edit Habit</string>
+    <string name="habit_edit_name_label">Habit name</string>
+    <string name="habit_edit_name_hint">Enter habit name</string>
+    <string name="habit_edit_icon_label">Choose icon</string>
+    <string name="habit_edit_color_label">Choose color</string>
+    <string name="habit_edit_color_auto_hint">Auto theme color when unselected</string>
+    <string name="habit_edit_repeat_label">Repeat</string>
+    <string name="habit_repeat_daily">Every day</string>
+    <string name="habit_repeat_weekly">Weekly</string>
+    <string name="habit_repeat_monthly">Monthly</string>
+    <string name="habit_repeat_custom">Custom</string>
+    <string name="habit_repeat_daily_desc">Repeats every day</string>
+    <string name="habit_repeat_times_week_label">Times per week</string>
+    <string name="habit_repeat_times_month_label">Times per month</string>
+    <string name="habit_edit_reminder_label">Reminder</string>
+    <string name="habit_edit_reminder_none">No reminder</string>
+    <string name="habit_edit_reminder_subtitle">Remind me to check in at this time</string>
+    <string name="habit_edit_reminder_clear">Clear</string>
+    <string name="habit_edit_note_label">Note (optional)</string>
+    <string name="habit_edit_note_hint">Add a note...</string>
+    <string name="habit_edit_stats_label">Track check-in stats</string>
+    <string name="habit_edit_stats_subtitle">Track check-in rate and streaks when on</string>
+    <string name="habit_save">Save</string>
+    <string name="habit_name_required">Please enter a habit name</string>
+    <string name="habit_saved">Saved</string>
+
+    <!-- 频率副标题 -->
+    <string name="habit_freq_daily">Daily</string>
+    <string name="habit_freq_weekly_times">%1$d times a week</string>
+    <string name="habit_freq_monthly_times">%1$d times a month</string>
+
+    <!-- 预置习惯名称(首次进入播种) -->
+    <string name="habit_preset_drink_water">Drink 8 glasses of water</string>
+    <string name="habit_preset_wake_early">Wake up early</string>
+    <string name="habit_preset_exercise">Exercise</string>
+    <string name="habit_preset_reading">Reading</string>
+    <string name="habit_preset_meditation">Meditation</string>
+    <string name="habit_preset_no_stay_up">No staying up late</string>
+
+    <!-- 提醒通知 -->
+    <string name="habit_notification_channel_name">Habit reminders</string>
+    <string name="habit_notification_channel_desc">Daily habit check-in reminders</string>
+    <string name="habit_notification_text">Time to check in: %1$s</string>
+    <string name="habit_streak_days">%1$d-day streak</string>
+
+    <!-- AI 工具:add_habit -->
+    <string name="agent_tool_add_habit_title">Add Habit</string>
+    <string name="agent_tool_add_habit_summary">Create a new habit in the habit tracker</string>
+    <string name="agent_tool_add_habit_description">Create a new habit in the habit tracker. Supports custom name, icon, repeat frequency (daily / N times per week / N times per month / custom weekdays), optional daily reminder time and note.</string>
+    <string name="agent_tool_add_habit_param_name">Habit name, e.g. "Drink 8 glasses of water"</string>
+    <string name="agent_tool_add_habit_param_icon">Icon key, one of: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">Repeat type: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">Times per week or per month, 1-30, only for weekly_times / monthly_times</string>
+    <string name="agent_tool_add_habit_param_weekdays">Weekdays for custom_weekdays, array of 1-7 (1=Monday, 7=Sunday)</string>
+    <string name="agent_tool_add_habit_param_remind_time">Daily reminder time in HH:mm (24h), optional</string>
+    <string name="agent_tool_add_habit_param_note">Optional note</string>
+    <string name="agent_tool_add_habit_success">Habit created</string>
+    <string name="agent_tool_add_habit_failed">Failed to create habit: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>habit</item>
+        <item>add habit</item>
+        <item>create habit</item>
+        <item>check-in</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>Add a habit to drink 8 glasses of water every day</item>
+        <item>Create a habit to run 3 times a week</item>
+    </string-array>
+
+    <!-- AI 工具:check_in_habit -->
+    <string name="agent_tool_check_in_habit_title">Check In Habit</string>
+    <string name="agent_tool_check_in_habit_summary">Check in a habit for a given day</string>
+    <string name="agent_tool_check_in_habit_description">Mark a habit as checked in for a given day (today by default). Locate the habit by habit_id or fuzzy habit_name. Checking in the same day twice is a no-op.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">Habit ID. Prefer this when known; habit_name is used otherwise</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">Habit name, fuzzy matched when habit_id is absent</string>
+    <string name="agent_tool_check_in_habit_param_date">Check-in date, yyyy-MM-dd, defaults to today, must not be in the future</string>
+    <string name="agent_tool_check_in_habit_success">Checked in</string>
+    <string name="agent_tool_check_in_habit_already">Already checked in that day</string>
+    <string name="agent_tool_check_in_habit_not_found">Habit not found: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">Failed to check in: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>habit</item>
+        <item>check in</item>
+        <item>done</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>Check in my running habit for today</item>
+        <item>Mark reading as done for yesterday</item>
+    </string-array>
+
+    <!-- AI 工具:query_habits -->
+    <string name="agent_tool_query_habits_title">Query Habits</string>
+    <string name="agent_tool_query_habits_summary">List habits with today\'s status and weekly check-in rate</string>
+    <string name="agent_tool_query_habits_description">Query the habit list: today\'s check-in status for each habit, daily-habit streaks, and this week\'s overall check-in rate.</string>
+    <string name="agent_tool_query_habits_section_today">Today</string>
+    <string name="agent_tool_query_habits_weekly_rate">Weekly rate</string>
+    <string name="agent_tool_query_habits_empty">No habits yet</string>
+    <string name="agent_tool_query_habits_failed">Failed to query habits: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>habit</item>
+        <item>check-in status</item>
+        <item>streak</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>Which habits are left today?</item>
+        <item>Show my habit check-in rate this week</item>
+    </string-array>
+
+    <!-- AI 工具:公共 -->
+    <string name="agent_tool_habit_label_date">Date</string>
+    <string name="agent_tool_habit_label_repeat">Repeat</string>
+    <string name="agent_tool_habit_label_reminder">Reminder</string>
+    <string name="agent_tool_habit_label_name">Name</string>
+    <string name="agent_tool_habit_open_link">Open Habit Tracker</string>
+    <string name="agent_tool_habit_edit_link">View habit</string>
+    <string name="agent_tool_unknown_error">Unknown error</string>
+</resources>

@@ -1,0 +1,199 @@
+/*
+ * ImageToolbox is an image editor for android
+ * Copyright (c) 2026 T8RIN (Malik Mukhametzyanov)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
+package com.t8rin.cropper.widget
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import com.t8rin.imagetoolbox.core.resources.Icons
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.t8rin.cropper.model.CropOutline
+import com.t8rin.cropper.model.CropPath
+import com.t8rin.cropper.model.CropShape
+import com.t8rin.cropper.settings.Paths
+import com.t8rin.imagetoolbox.core.resources.icons.Favorite
+import com.t8rin.imagetoolbox.core.resources.icons.Image
+import com.t8rin.imagetoolbox.core.resources.icons.Star
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
+
+@Composable
+fun CropFrameDisplayCard(
+    modifier: Modifier = Modifier,
+    scale: Float,
+    outlineColor: Color,
+    fontSize: TextUnit = 12.sp,
+    title: String,
+    cropOutline: CropOutline,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            Modifier
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            CropFrameDisplay(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+                    .aspectRatio(1f),
+                cropOutline = cropOutline,
+                color = outlineColor,
+                content = {}
+            )
+
+
+            if (title.isNotEmpty()) {
+                Text(
+                    text = title,
+                    color = outlineColor,
+                    fontSize = fontSize,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CropFrameDisplay(
+    modifier: Modifier,
+    cropOutline: CropOutline,
+    color: Color,
+    content: @Composable () -> Unit
+) {
+
+    val density = LocalDensity.current
+    val layoutDirection = LocalLayoutDirection.current
+
+    when (cropOutline) {
+
+        is CropShape -> {
+            val shape = remember { cropOutline.shape }
+
+            Box(
+                modifier.drawWithCache {
+
+                    val outline = shape.createOutline(
+                        size = size,
+                        layoutDirection = layoutDirection,
+                        density = density
+                    )
+
+                    onDrawWithContent {
+                        val width = size.width
+                        val height = size.height
+                        val outlineWidth = outline.bounds.width
+                        val outlineHeight = outline.bounds.height
+
+                        translate(
+                            left = (width - outlineWidth) / 2,
+                            top = (height - outlineHeight) / 2
+                        ) {
+                            drawOutline(
+                                outline = outline,
+                                color = color,
+                                style = Stroke(6.dp.toPx())
+                            )
+                        }
+                        drawContent()
+                    }
+                },
+                contentAlignment = Alignment.TopEnd
+            ) {
+                content()
+            }
+        }
+
+        is CropPath -> {
+            Box(
+                modifier = modifier,
+                contentAlignment = Alignment.TopEnd
+            ) {
+                if (cropOutline.path == Paths.Star) {
+                    Icon(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .scale(1.3f),
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStar,
+                        tint = color,
+                        contentDescription = "Crop with Path"
+                    )
+                } else {
+                    Icon(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .scale(1.3f),
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFavorite,
+                        tint = color,
+                        contentDescription = "Crop with Path"
+                    )
+                }
+
+                content()
+            }
+        }
+
+        else -> {
+            Box(
+                modifier = modifier,
+                contentAlignment = Alignment.TopEnd
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .scale(1.3f),
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
+                    tint = color,
+                    contentDescription = "Crop with Image Mask"
+                )
+
+                content()
+            }
+        }
+    }
+}

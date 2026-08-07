@@ -1,0 +1,13 @@
+read_cloud_file —— 读取远端文件内容并以 base64 返回。
+
+限制：单次返回 ≤ 256 KB。超出大小会返回 isError=true。
+仅适合文本 / 配置文件 / 小型 JSON 解析场景；不要用来读图片或二进制大文件。
+
+参数：
+- connection_id（必填）
+- root（可选）
+- path（必填）
+
+返回：
+- contentType：基于扩展名推测的 MIME
+- contentBase64：原文 base64

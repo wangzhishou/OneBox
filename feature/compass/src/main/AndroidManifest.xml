@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 软性声明，设备无磁力计时仍可安装 -->
+    <uses-feature
+        android:name="android.hardware.sensor.compass"
+        android:required="false" />
+</manifest>

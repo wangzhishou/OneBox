@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">Detección de daños en la pantalla</string>
+    <string name="dead_pixel_test_description">Usa rotación de colores puros para detectar fallos en la pantalla y puntos de tarjeta</string>
+    <string name="dead_pixel_color_white">Blanco</string>
+    <string name="dead_pixel_color_black">Negro</string>
+    <string name="dead_pixel_color_red">Rojo</string>
+    <string name="dead_pixel_color_green">Verde</string>
+    <string name="dead_pixel_color_blue">Azul</string>
+    <string name="dead_pixel_hint">Toca para cambiar el color... Desliza a la derecha o izquierda para alternar.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Mostrar cuadrícula</string>
+    <string name="dead_pixel_grid_off">Ocultar cuadrícula</string>
+    <string name="dead_pixel_auto_play">Rotación automática</string>
+    <string name="dead_pixel_auto_stop">¡Detener!</string>
+    <string name="dead_pixel_fullscreen">Prueba de pantalla completa</string>
+    <string name="dead_pixel_exit_fullscreen">Salir de pantalla completa</string>
+    <string name="dead_pixel_guide_title">¿Cómo detectamos el daño?</string>
+    <string name="dead_pixel_guide_content">La pantalla mostrará cinco colores sólidos en secuencia: blanco, negro, rojo, verde y azul.\n\n• Fondo blanco: verifica manchas oscuras negras (píxeles muertos)\n• Fondo negro: verifica puntos brillantes (píxeles atascados)\n• Fondos de color: verifica píxeles anormales en otros colores\n\nToca la pantalla para cambiar al siguiente color, o activa la reproducción automática. Para mejores resultados, realiza la prueba en un entorno con poca luz.</string>
+    <string name="dead_pixel_guide_start">Iniciar prueba</string>
+</resources>

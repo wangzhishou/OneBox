@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">स्थानीय विवरण</string>
+    <string name="copy">कॉपी करें</string>
+    <string name="create_widget">छोटे उपकरण बनाएं</string>
+    <string name="run">चलाएं</string>
+    <string name="save">सहेजें</string>
+    <string name="mermaid_tab_diagram">आरेख</string>
+    <string name="mermaid_tab_code">कोड</string>
+    <string name="mermaid_fullscreen">पूर्ण स्क्रीन</string>
+    <string name="a2ui_parse_failed">A2UI पार्स विफल</string>
+    <string name="a2ui_parse_failed_hint">स्रोत कॉपी करें और JSON प्रारूप या अभिव्यक्ति सिंटैक्स जांचें।</string>
+</resources>

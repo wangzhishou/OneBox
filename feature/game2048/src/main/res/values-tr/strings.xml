@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">MEVCUT SKOR</string>
+    <string name="game_2048_best_score">EN İYİ SKOR</string>
+    <string name="game_2048_new_game">YENİ OYUN</string>
+    <string name="game_2048_game_over">Oyun Bitti</string>
+    <string name="game_2048_you_win">2048\'e ulaştınız!</string>
+    <string name="game_2048_no_moves">Başka hamle kalmadı</string>
+    <string name="game_2048_reached_2048">Daha yüksek skor için devam edebilirsiniz</string>
+    <string name="game_2048_continue">Devam Et</string>
+    <string name="game_2048_new_best_score">Yeni rekor!</string>
+</resources>

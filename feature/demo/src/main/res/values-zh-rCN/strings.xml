@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="demo_glass_showcase_title" translatable="false">Glass 组件展示</string>
+    <string name="demo_glass_showcase_button_title" translatable="false">Glass Showcase</string>
+    <string name="demo_glass_showcase_sheet_subtitle" translatable="false">展示当前主题下的扁平玻璃卡片、按钮、容器、选择器与输入容器效果；所有示例颜色均跟随主题变化。</string>
+
+    <string name="demo_glass_showcase_mode_title" translatable="false">风格档位</string>
+    <string name="demo_glass_showcase_mode_desc" translatable="false">通过分段按钮切换同一套组件的玻璃强度，观察浅色 / 深色主题下的层次变化。</string>
+    <string name="demo_glass_showcase_mode_quiet" translatable="false">轻薄</string>
+    <string name="demo_glass_showcase_mode_balanced" translatable="false">标准</string>
+    <string name="demo_glass_showcase_mode_expressive" translatable="false">强调</string>
+
+    <string name="demo_glass_showcase_tint_title" translatable="false">色调保留验证</string>
+    <string name="demo_glass_showcase_tint_desc" translatable="false">有色玻璃不应该只剩一层发白蒙版；传入主题色后，容器需要仍能读出明显的色相差异与边界。</string>
+    <string name="demo_glass_showcase_tint_primary" translatable="false">主色玻璃</string>
+    <string name="demo_glass_showcase_tint_secondary" translatable="false">辅助色玻璃</string>
+    <string name="demo_glass_showcase_tint_error" translatable="false">警示色玻璃</string>
+
+    <string name="demo_glass_showcase_colored_material_title" translatable="false">彩色玻璃材质</string>
+    <string name="demo_glass_showcase_colored_material_desc" translatable="false">对比普通透明彩色玻璃与液态彩色玻璃：前者更克制，后者强调边缘折射、焦散和镜片高光。</string>
+    <string name="demo_glass_showcase_colored_plain_title" translatable="false">普通透明</string>
+    <string name="demo_glass_showcase_colored_plain_body" translatable="false">适合列表卡片、工具条和信息分组。</string>
+    <string name="demo_glass_showcase_colored_liquid_title" translatable="false">液态玻璃</string>
+    <string name="demo_glass_showcase_colored_liquid_body" translatable="false">适合浮层、选中态和强调内容。</string>
+
+    <string name="demo_glass_showcase_cards_title" translatable="false">Card</string>
+    <string name="demo_glass_showcase_cards_desc" translatable="false">`GlassCard` 现在分为点击版和非点击版重载，参数顺序尽量贴近系统 Card。</string>
+    <string name="demo_glass_showcase_primary_card_title" translatable="false">主题联动的内容卡片</string>
+    <string name="demo_glass_showcase_primary_card_body" translatable="false">容器色与内容色来自当前主题，不写死颜色；玻璃关闭时会自动回退为普通 Material Card。</string>
+    <string name="demo_glass_showcase_clickable_card_title" translatable="false">可点击卡片</string>
+    <string name="demo_glass_showcase_clickable_card_body" translatable="false">已点击 %1$d 次，当前会保留 Card 的点击语义与交互方式。</string>
+
+    <string name="demo_glass_showcase_actions_title" translatable="false">Button 与 Surface</string>
+    <string name="demo_glass_showcase_actions_desc" translatable="false">按钮和可点击 Surface 共享同一套 ultra-flat glass 基座，按压反馈仍保持轻量。</string>
+    <string name="demo_glass_showcase_primary_button" translatable="false">主按钮</string>
+    <string name="demo_glass_showcase_secondary_button" translatable="false">色调按钮</string>
+    <string name="demo_glass_showcase_surface_title" translatable="false">可点击 Surface</string>
+    <string name="demo_glass_showcase_surface_body" translatable="false">累计交互 %1$d 次，色彩与层次来自当前主题。</string>
+
+    <string name="demo_glass_showcase_selection_title" translatable="false">选择类组件</string>
+    <string name="demo_glass_showcase_selection_desc" translatable="false">Switch、FilterChip 与 SegmentedButton 使用相同的玻璃基底，但保留各自系统组件的交互模型。</string>
+    <string name="demo_glass_showcase_switch_title" translatable="false">通知开关</string>
+    <string name="demo_glass_showcase_switch_state_on" translatable="false">当前状态：已开启</string>
+    <string name="demo_glass_showcase_switch_state_off" translatable="false">当前状态：已关闭</string>
+    <string name="demo_glass_showcase_chip_primary" translatable="false">智能筛选</string>
+    <string name="demo_glass_showcase_chip_secondary" translatable="false">最近使用</string>
+
+    <string name="demo_glass_showcase_input_title" translatable="false">输入容器</string>
+    <string name="demo_glass_showcase_input_desc" translatable="false">这里只展示 `GlassTextFieldContainer`，不重复展示已经单独梳理完成的 `GlassOutlinedTextField`。</string>
+    <string name="demo_glass_showcase_input_placeholder" translatable="false">搜索组件表现、切换主题观察细节</string>
+    <string name="demo_schedule_database_title" translatable="false">日程数据库预览</string>
+    <string name="demo_schedule_database_description" translatable="false">直接读取 schedule_event 表，方便确认当前数据库里已经写入的日程数据。</string>
+    <string name="demo_schedule_open_screen" translatable="false">打开日程中心</string>
+    <string name="demo_schedule_database_load_failed" translatable="false">读取日程数据库失败。</string>
+    <string name="demo_schedule_database_empty" translatable="false">数据库里还没有日程事件。</string>
+    <string name="demo_schedule_database_count" translatable="false">共 %1$d 条日程事件</string>
+    <string name="demo_schedule_database_more" translatable="false">其余 %1$d 条请进入日程中心查看。</string>
+    <string name="demo_schedule_event_time" translatable="false">时间：%1$s</string>
+    <string name="demo_schedule_event_provider" translatable="false">Provider：%1$s</string>
+    <string name="demo_schedule_event_sync" translatable="false">同步状态：%1$s</string>
+    <string name="demo_schedule_event_linked_task" translatable="false">关联待办：%1$s</string>
+    <string name="demo_xiangqi_entry_title" translatable="false">中国象棋</string>
+    <string name="demo_blessing_wall_entry_title">祈福墙</string>
+
+    <string name="demo_aigc_title" translatable="false">AIGC 隐式标识读写演示</string>
+    <string name="demo_aigc_description" translatable="false">读取本应用导出的 PDF / PNG / HTML 中嵌入的 AIGC 隐式标识元数据，或生成一条演示数据用于核对字段映射。</string>
+    <string name="demo_aigc_action_pick" translatable="false">选文件读 AIGC</string>
+    <string name="demo_aigc_action_demo" translatable="false">生成演示 AIGC</string>
+    <string name="demo_aigc_source_none" translatable="false">未选择文件，可点击上方按钮选择 PDF / PNG / HTML 或直接生成演示数据。</string>
+    <string name="demo_aigc_source_file" translatable="false">已选文件：%1$s</string>
+    <string name="demo_aigc_source_demo" translatable="false">当前显示的是本地生成的演示数据，不来自任何文件。</string>
+    <string name="demo_aigc_loading" translatable="false">读取中…</string>
+    <string name="demo_aigc_empty" translatable="false">未读取到 AIGC 信息</string>
+    <string name="demo_aigc_raw_title" translatable="false">AIGC 原文（JSON 原文）</string>
+    <string name="demo_aigc_raw_copy" translatable="false">复制</string>
+    <string name="demo_aigc_raw_copied" translatable="false">已复制</string>
+    <string name="demo_aigc_parsed_title" translatable="false">AIGC 字段解析</string>
+    <string name="demo_aigc_group_producer" translatable="false">生成合成服务</string>
+    <string name="demo_aigc_group_propagator" translatable="false">传播服务</string>
+    <string name="demo_aigc_group_integrity" translatable="false">完整性 / 安全字段</string>
+    <string name="demo_aigc_group_trace" translatable="false">传播追溯字段</string>
+    <string name="demo_aigc_label" translatable="false">标签</string>
+    <string name="demo_aigc_label_1" translatable="false">属于人工智能生成合成内容</string>
+    <string name="demo_aigc_label_2" translatable="false">可能为人工智能生成合成内容</string>
+    <string name="demo_aigc_label_3" translatable="false">疑似为人工智能生成合成内容</string>
+    <string name="demo_aigc_label_unknown" translatable="false">未知（%1$s）</string>
+    <string name="demo_aigc_field_engine" translatable="false">引擎</string>
+    <string name="demo_aigc_field_model" translatable="false">模型</string>
+    <string name="demo_aigc_field_completion" translatable="false">服务侧编号</string>
+    <string name="demo_aigc_field_user_hash" translatable="false">用户指纹（哈希）</string>
+    <string name="demo_aigc_field_entry" translatable="false">业务场景</string>
+    <string name="demo_aigc_field_ref" translatable="false">业务 ID</string>
+    <string name="demo_aigc_field_uid" translatable="false">用户 ID</string>
+    <string name="demo_aigc_value_blank" translatable="false">-</string>
+    <string name="demo_aigc_pick_failed" translatable="false">文件选择失败</string>
+    <string name="demo_aigc_demo_parse_failed" translatable="false">演示 AIGC 解析失败</string>
+</resources>

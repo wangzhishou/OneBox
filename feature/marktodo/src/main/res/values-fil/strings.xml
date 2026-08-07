@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">Mangyaring pumili o magdagdag muna ng kategorya</string>
+    <string name="schedule_section_title">Iskedyul</string>
+    <string name="action_open_schedule">Buksan ang hub ng iskedyul</string>
+    <string name="action_create_schedule">Gumawa ng lokal na iskedyul</string>
+    <string name="schedule_creating">Gumagawa ng iskedyul…</string>
+    <string name="schedule_missing_due_date">Mangyaring magtakda muna ng takdang petsa para sa gawaing ito</string>
+    <string name="schedule_created_success">Nagawa ang lokal na iskedyul</string>
+    <string name="schedule_created_failed">Nabigong gumawa ng iskedyul. Pakisubukang muli mamaya</string>
+    <string name="dialog_delete_category_title">Tanggalin ang Kategorya</string>
+    <string name="dialog_delete_category_message">Sigurado ka bang gusto mong tanggalin ang \"%1$s\"?\nAng lahat ng mga gawain sa ilalim ng kategoryang ito ay tatanggalin din.</string>
+    <string name="dialog_delete_task_message">Sigurado ka bang gusto mong tanggalin ang \"%1$s\"?</string>
+    <string name="cd_switch_to_list_view">Lumipat sa listahan view</string>
+    <string name="cd_switch_to_grid_view">Lumipat sa grid view</string>
+    <string name="cd_edit_mode_done">Tapos</string>
+    <string name="label_status">Katayuan</string>
+    <string name="status_overdue">Huli na</string>
+    <string name="category_unnamed">Walang Pangalan na Kategorya</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d mga gawain ang tinanggal</string>
+    <string name="action_delete_selected_cd">Tanggalin ang napili</string>
+    <string name="error_todo_not_found">Hindi nahanap ang gawain</string>
+    <string name="error_category_not_found">Hindi nahanap ang kategorya</string>
+    <string name="error_load_failed">Nabigong i-load</string>
+    <string name="cd_task_completed">Nakumpleto</string>
+    <string name="cd_task_pending">Nakabinbin</string>
+    <string name="cd_add_star">Magdagdag ng bituin</string>
+    <string name="cd_remove_star">Alisin ang bituin</string>
+    <string name="date_today">Ngayon</string>
+    <string name="date_yesterday">Kahapon</string>
+    <string name="date_days_ago">%1$d araw ang nakalipas</string>
+    <string name="date_tomorrow">Bukas</string>
+    <string name="date_days_later">Sa loob ng %1$d araw</string>
+</resources>

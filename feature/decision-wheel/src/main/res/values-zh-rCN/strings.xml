@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="decision_wheel_title">决策转盘</string>
+    <string name="new_wheel">新的转盘</string>
+    <string name="edit_wheel">编辑转盘</string>
+    <string name="edit_options">编辑选项</string>
+    <string name="spin_again">重新旋转</string>
+    <string name="options_list">选项列表</string>
+    <string name="result_is">结果是</string>
+    <string name="close">关闭</string>
+    <string name="spin_again_action">再转一次</string>
+    <string name="start">开始</string>
+    <string name="wheel_title">转盘标题</string>
+    <string name="options_list_count">选项列表 (%1$d)</string>
+    <string name="add_option">添加选项</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="add_new_option">添加新选项</string>
+    <string name="edit_option">编辑选项</string>
+    <string name="option_name">选项名称</string>
+    <string name="option_placeholder">例如：火锅、烧烤...</string>
+    <string name="select_color">选择颜色</string>
+    <string name="cancel">取消</string>
+    <string name="add">添加</string>
+    <string name="history">历史记录</string>
+    <string name="my_wheels">我的转盘</string>
+    <string name="switch_wheel">切换转盘</string>
+    <string name="create_wheel">创建转盘</string>
+    <string name="delete_wheel_confirm">确定要删除这个转盘吗？</string>
+    <string name="clear_history">清除历史</string>
+    <string name="no_history">暂无历史记录</string>
+    <string name="options_count">%1$d 个选项</string>
+    <string name="new_wheel_name">新转盘</string>
+    <string name="option_1">选项1</string>
+    <string name="option_2">选项2</string>
+
+    <!-- Presets - Food Wheel -->
+    <string name="preset_food">今天吃什么</string>
+    <string name="food_hotpot">火锅</string>
+    <string name="food_bbq">烧烤</string>
+    <string name="food_japanese">日料</string>
+    <string name="food_western">西餐</string>
+    <string name="food_chinese">中餐</string>
+    <string name="food_fastfood">快餐</string>
+    <string name="food_snacks">小吃</string>
+    <string name="food_dessert">甜品</string>
+
+    <!-- Presets - Dice Wheel -->
+    <string name="preset_dice">掷骰子</string>
+    <string name="dice_1">1点</string>
+    <string name="dice_2">2点</string>
+    <string name="dice_3">3点</string>
+    <string name="dice_4">4点</string>
+    <string name="dice_5">5点</string>
+    <string name="dice_6">6点</string>
+
+    <!-- Presets - Activity Wheel -->
+    <string name="preset_activity">周末去哪玩</string>
+    <string name="activity_movie">看电影</string>
+    <string name="activity_park">逛公园</string>
+    <string name="activity_shopping">逛街</string>
+    <string name="activity_game">打游戏</string>
+    <string name="activity_sleep">睡觉</string>
+    <string name="activity_read">看书</string>
+
+    <!-- Presets - Drink Wheel -->
+    <string name="preset_drink">今天喝什么</string>
+    <string name="drink_coffee">咖啡</string>
+    <string name="drink_milk_tea">奶茶</string>
+    <string name="drink_juice">果汁</string>
+    <string name="drink_water">白开水</string>
+    <string name="drink_soda">汽水</string>
+    <string name="drink_tea">茶</string>
+
+    <!-- Presets - Work Task Wheel -->
+    <string name="preset_work_task">工作任务分配</string>
+    <string name="task_coding">写代码</string>
+    <string name="task_meeting">开会</string>
+    <string name="task_review">代码审查</string>
+    <string name="task_document">写文档</string>
+    <string name="task_testing">测试</string>
+    <string name="task_break">休息一下</string>
+
+    <!-- Presets - Exercise Wheel -->
+    <string name="preset_exercise">运动项目</string>
+    <string name="exercise_run">跑步</string>
+    <string name="exercise_yoga">瑜伽</string>
+    <string name="exercise_swim">游泳</string>
+    <string name="exercise_basketball">打篮球</string>
+    <string name="exercise_badminton">羽毛球</string>
+    <string name="exercise_walk">散步</string>
+
+    <!-- Presets - Lucky Number Wheel -->
+    <string name="preset_lucky_number">幸运数字</string>
+    <string name="lucky_1">1</string>
+    <string name="lucky_2">2</string>
+    <string name="lucky_3">3</string>
+    <string name="lucky_4">4</string>
+    <string name="lucky_5">5</string>
+    <string name="lucky_6">6</string>
+    <string name="lucky_7">7</string>
+    <string name="lucky_8">8</string>
+    <string name="lucky_9">9</string>
+    <string name="result_celebration">🎉</string>
+    <string name="palette_scheme">配色方案</string>
+    <string name="target_emoji">🎯</string>
+    <string name="apply">应用</string>
+
+    <!-- Settings - Decision Wheel -->
+    <string name="wheel_settings_title">转盘设置</string>
+    <string name="wheel_settings">设置</string>
+    <string name="wheel_settings_duration">旋转时间</string>
+    <string name="wheel_settings_duration_value">%1$d ms</string>
+    <string name="wheel_settings_speed">旋转速度</string>
+    <string name="wheel_settings_speed_value">x%1$.2f</string>
+    <string name="wheel_settings_preview">预览</string>
+    <string name="wheel_settings_preview_rotations">预计圈数：%1$.1f 圈</string>
+    <string name="wheel_settings_preview_note">提示：设置只影响下一次旋转</string>
+
+    <!-- Edit wheel / option deletion -->
+    <string name="delete_option_confirm">确定要删除该选项吗？</string>
+    <string name="delete_option_min_two_tip">至少保留两个选项</string>
+
+    <!-- Presets - Who Pays -->
+    <string name="preset_who_pays">今天谁请客</string>
+    <string name="pay_me">我请客</string>
+    <string name="pay_you">你请客</string>
+    <string name="pay_aa">AA制</string>
+    <string name="pay_boss">老板请客</string>
+    <string name="pay_next_time">下次一定</string>
+    <string name="pay_luck">看运气</string>
+
+    <!-- Presets - Date Night -->
+    <string name="preset_date_night">约会干什么</string>
+    <string name="date_movie">看电影</string>
+    <string name="date_dinner">烛光晚餐</string>
+    <string name="date_walk">散步聊天</string>
+    <string name="date_game">玩游戏</string>
+    <string name="date_cook">一起做饭</string>
+    <string name="date_travel">周边游</string>
+
+    <!-- Presets - Movie Genre -->
+    <string name="preset_movie_genre">看什么电影</string>
+    <string name="movie_action">动作片</string>
+    <string name="movie_comedy">喜剧片</string>
+    <string name="movie_romance">爱情片</string>
+    <string name="movie_scifi">科幻片</string>
+    <string name="movie_horror">恐怖片</string>
+    <string name="movie_animation">动画片</string>
+    <string name="movie_documentary">纪录片</string>
+
+    <!-- Presets - Household Chores -->
+    <string name="preset_chores">家务分配</string>
+    <string name="chore_dishes">洗碗</string>
+    <string name="chore_floor">拖地</string>
+    <string name="chore_laundry">洗衣服</string>
+    <string name="chore_trash">倒垃圾</string>
+    <string name="chore_cooking">做饭</string>
+    <string name="chore_groceries">买菜</string>
+
+    <!-- Presets - Music Vibe -->
+    <string name="preset_music">听什么歌</string>
+    <string name="music_pop">流行</string>
+    <string name="music_rock">摇滚</string>
+    <string name="music_jazz">爵士</string>
+    <string name="music_classical">古典</string>
+    <string name="music_electronic">电子</string>
+    <string name="music_folk">民谣</string>
+    <string name="music_hiphop">嘻哈</string>
+</resources>

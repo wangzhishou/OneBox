@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme settings page title -->
+    <string name="theme_settings_title">Theme Settings</string>
+
+    <!-- Theme preset -->
+    <string name="theme_night_mode_section">Day &amp; Night Mode</string>
+    <string name="theme_preset_new">New</string>
+    <string name="theme_preset_save">Save</string>
+    <string name="theme_preset_section">Choose a Theme</string>
+    <string name="theme_preset_name_hint">Theme name</string>
+    <string name="theme_preset_custom">Custom Theme</string>
+    <string name="theme_preset_color_section">Color Scheme</string>
+    <string name="theme_preset_primary_color">Primary</string>
+    <string name="theme_preset_secondary_color">Secondary</string>
+    <string name="theme_preset_tertiary_color">Tertiary</string>
+    <string name="theme_preset_surface_color">Background</string>
+    <string name="theme_preset_glass_section">Glass Effect</string>
+    <string name="theme_preset_glass_alpha">Glass Opacity</string>
+    <string name="theme_preset_preview_gradient">Preview: %s</string>
+
+    <!-- Color picker -->
+    <string name="theme_color_picker_done">Done</string>
+
+    <!-- Delete confirmation -->
+    <string name="theme_delete_confirm_title">Delete Theme</string>
+    <string name="theme_delete_confirm_message">Delete theme \"%s\"? This action cannot be undone.</string>
+    <string name="theme_delete_confirm_ok">Delete</string>
+    <string name="theme_delete_confirm_cancel">Cancel</string>
+
+    <!-- Discard confirmation -->
+    <string name="theme_discard_title">Discard Changes</string>
+    <string name="theme_discard_message">Discard all unsaved changes?</string>
+    <string name="theme_discard_confirm">Discard</string>
+    <string name="theme_discard_dismiss">Keep Editing</string>
+
+    <!-- Glass effects -->
+    <string name="glass_alpha_effect">Frosted Glass</string>
+    <string name="liquid_glass_effect">Liquid Glass</string>
+
+    <!-- Gradient backgrounds -->
+    <string name="mesh_gradient_background">Gradient Background</string>
+    <string name="gradient_style_classic">Classic</string>
+    <string name="gradient_style_aurora">Aurora</string>
+    <string name="gradient_style_ocean">Deep Sea</string>
+    <string name="gradient_style_sunset">Sunset</string>
+    <string name="gradient_style_sakura_mist">Sakura Mist</string>
+    <string name="gradient_style_mint_breeze">Mint Soda</string>
+    <string name="gradient_style_starry_night">Midnight Galaxy</string>
+    <string name="gradient_style_lavender">Lavender Field</string>
+    <string name="gradient_style_warm_glow">Caramel Glow</string>
+    <string name="gradient_style_ethereal">Silk Mist</string>
+    <string name="gradient_style_neon_cyber">Cyber Dream</string>
+
+    <!-- Preview status / edit-mode banner -->
+    <string name="theme_preview_banner">Previewing · Unsaved Changes</string>
+    <string name="theme_mode_editing_user">Editing · Saving will update this theme</string>
+    <string name="theme_mode_creating_new">New Theme · Saving will create a new theme</string>
+    <string name="theme_mode_creating_from">Based on \"%s\" · Saving will create a new theme</string>
+
+    <!-- Action buttons -->
+    <string name="theme_save_as_new">Save as New Theme</string>
+    <string name="theme_reset_to_source">Reset</string>
+    <string name="theme_preset_copy">Duplicate Theme</string>
+
+    <!-- Switch preset confirmation -->
+    <string name="theme_switch_confirm_title">Switch Theme</string>
+    <string name="theme_switch_confirm_message">You have unsaved changes. Switching themes will discard them.</string>
+
+    <string name="theme_saved_success">Theme saved</string>
+    <string name="theme_save_failed">Save failed. Please try again.</string>
+    <string name="theme_delete_success">Deleted \"%1$s\"</string>
+    <string name="theme_delete_failed">Delete failed. Please try again.</string>
+    <string name="theme_dynamic_colors_hint">Dynamic colors are not yet supported for custom themes.</string>
+    <string name="theme_edit_name_desc">Edit theme name</string>
+    <string name="theme_color_picker_desc">%1$s color picker</string>
+    <string name="theme_image_load_failed">Failed to load image</string>
+    <string name="theme_image_retry">Retry</string>
+    <string name="theme_overlay_global_hint">This setting applies globally and does not change with theme switching.</string>
+
+    <!-- Custom background -->
+    <string name="custom_background">Custom Background</string>
+    <string name="custom_background_pick">Pick Background Image</string>
+    <string name="custom_background_clear">Clear</string>
+    <string name="custom_background_overlay_alpha">Overlay Opacity</string>
+
+    <string name="ai_feature_settings_heading">AI Feature Toggles</string>
+    <string name="ai_feature_settings_desc">Centrally manage the preference toggles used in AI conversations. Future AI-related toggles will be collected here.</string>
+    <string name="ai_feature_settings_toggle_section_title">Conversation Preferences</string>
+    <string name="ai_feature_settings_toggle_section_desc">Control automated behaviors and feature preferences for the AI conversation experience.</string>
+    <string name="ai_feature_settings_title_summary_toggle_title">Auto-generate history titles</string>
+    <string name="ai_feature_settings_title_summary_toggle_desc">After the first Q&amp;A is saved, an AI-generated summary title is created for the conversation automatically. When disabled, the default title or the first-message title is kept.</string>
+    <string name="ai_feature_settings_reasoning_expand_toggle_title">Expand reasoning by default</string>
+    <string name="ai_feature_settings_reasoning_expand_toggle_desc">Whether the reasoning content inside AI replies is expanded by default.</string>
+    <string name="ai_feature_settings_prompt_expand_toggle_title">Expand prompts by default</string>
+    <string name="ai_feature_settings_prompt_expand_toggle_desc">Whether prompt content inside the chat is expanded by default.</string>
+    <string name="ai_feature_settings_tool_call_expand_toggle_title">Expand tool cards by default</string>
+    <string name="ai_feature_settings_tool_call_expand_toggle_desc">Whether tool-call result cards inside AI replies are expanded by default.</string>
+    <string name="ai_feature_settings_agent_section_title">Agent Execution</string>
+    <string name="ai_feature_settings_agent_section_desc">Controls the maximum number of consecutive iterations in a single Agent auto-run. After hitting the limit, you can still continue manually from the chat page.</string>
+    <string name="ai_feature_settings_max_iterations_title">Max Consecutive Iterations</string>
+    <string name="ai_feature_settings_max_iterations_desc">Maximum number of iterations in a single Agent auto-run. Configurable range is %1$d–%2$d iterations.</string>
+    <string name="ai_feature_settings_max_iterations_decrement">Decrease max iterations</string>
+    <string name="ai_feature_settings_max_iterations_increment">Increase max iterations</string>
+
+    <!-- AI model settings -->
+    <!-- AI engine settings -->
+    <string name="ai_engine_list_heading">Providers &amp; Model Services</string>
+    <string name="ai_engine_list_desc">Centrally manage AI providers, endpoint configuration, and available models. Changes here affect service configuration only; they do not switch the currently active working model.</string>
+    <string name="ai_engine_add_engine">Add Service</string>
+    <string name="ai_engine_add_dialog_title">Add Model Service</string>
+    <string name="ai_engine_add_dialog_desc">Locally added model services will not be overwritten by remote updates.</string>
+    <string name="ai_engine_dialog_required_hint">Please complete all required fields before saving.</string>
+    <string name="ai_engine_dialog_validation_failed">Please complete the required fields and fix any invalid ones.</string>
+    <string name="ai_engine_name_label">Service Key</string>
+    <string name="ai_engine_title_label">Display Name</string>
+    <string name="ai_engine_description_label">Description</string>
+    <string name="ai_engine_protocol_label">Request Protocol</string>
+    <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_anthropic">Anthropic-Compatible</string>
+    <string name="ai_engine_protocol_proxy">App Proxy</string>
+    <string name="ai_engine_protocol_local_on_device">On-Device (No Network)</string>
+    <string name="ai_engine_protocol_effective_direct">Verified · Local Direct</string>
+    <string name="ai_engine_protocol_effective_proxy">Unverified · Via App Proxy</string>
+    <string name="ai_engine_protocol_effective_unavailable">Unavailable · Test or switch the service first</string>
+    <string name="ai_engine_protocol_direct_desc">The auth token has been verified. Local direct connection will be preferred.</string>
+    <string name="ai_engine_protocol_proxy_desc">The auth token has not been verified. Access will go through the app proxy for now.</string>
+    <string name="ai_engine_auto_refreshing">Syncing the latest service catalog…</string>
+    <string name="ai_engine_refresh_failed">Failed to sync service catalog: %1$s</string>
+    <string name="ai_engine_add_success">Added %1$s</string>
+    <string name="ai_engine_add_failed">Failed to add the model service. Please try again later.</string>
+    <string name="ai_engine_edit_action">Edit</string>
+    <string name="ai_engine_delete_action">Delete</string>
+    <string name="ai_engine_local_badge">Direct</string>
+    <string name="ai_engine_remote_badge">Proxy</string>
+    <string name="ai_engine_delete_confirm_title">Delete Local Service</string>
+    <string name="ai_engine_delete_confirm_message">Delete the model service \"%1$s\"? If no service with the same name remains, its associated models will be cleaned up as well.</string>
+    <string name="ai_engine_delete_success">Deleted model service \"%1$s\"</string>
+    <string name="ai_engine_delete_failed">Failed to delete the model service. Please try again later.</string>
+    <string name="ai_engine_role_default">Default</string>
+    <string name="ai_engine_role_fast">Fast</string>
+    <string name="ai_engine_role_verified">Auth Verified</string>
+    <string name="ai_engine_model_label">Current Model</string>
+    <string name="ai_engine_route_label">Current Route</string>
+    <string name="ai_engine_request_protocol_label">Request Protocol</string>
+
+    <string name="ai_engine_detail_title">Model Service Configuration</string>
+    <string name="ai_engine_loading">Loading service configuration…</string>
+    <string name="ai_engine_detail_desc_default">Manage the API endpoint, authentication, model parameters, and streaming response.</string>
+    <string name="ai_engine_add_model">Add Model</string>
+    <string name="ai_engine_model_dialog_title">Add Model</string>
+    <string name="ai_engine_model_edit_dialog_title">Edit Model</string>
+    <string name="ai_engine_model_name">Model Key</string>
+    <string name="ai_engine_model_display_name">Model Name</string>
+    <string name="ai_engine_model_description">Model Description</string>
+    <string name="ai_engine_model_add_success">Model saved</string>
+    <string name="ai_engine_model_add_failed">Failed to save the model. Please try again later.</string>
+    <string name="ai_engine_model_no_items">This service has no models yet. Tap the icon in the top-right to add a local one.</string>
+    <string name="ai_engine_model_selected_label">Currently Selected Model</string>
+    <string name="ai_engine_model_local_hint">Local models can be renamed, have their description edited, or be deleted.</string>
+    <string name="ai_engine_model_remote_hint">Remote models can currently only be selected, not deleted locally.</string>
+    <string name="ai_engine_model_delete_confirm_title">Delete Model</string>
+    <string name="ai_engine_model_delete_confirm_message">Delete the model \"%1$s\"? The current service will auto-switch to another available model.</string>
+    <string name="ai_engine_model_delete_success">Deleted model \"%1$s\"</string>
+    <string name="ai_engine_model_delete_failed">Failed to delete the model. Please try again later.</string>
+    <string name="ai_engine_model_not_editable">This model comes from a remote configuration and currently cannot be renamed or deleted.</string>
+    <string name="ai_engine_model_restore_defaults_action">Restore Remote Defaults</string>
+    <string name="ai_engine_model_restore_defaults_desc">Clear this model\'s local parameter and capability overrides and restore the defaults from the remote catalog.</string>
+    <string name="ai_engine_model_restore_defaults_success">Remote defaults restored</string>
+    <string name="ai_engine_model_restore_defaults_failed">Failed to restore remote defaults. Please try again later.</string>
+    <string name="ai_working_model_settings_heading">Chat &amp; Task Models</string>
+    <string name="ai_working_model_settings_desc">Choose the actual model combination used for default chat, fast tasks, and AI duels.</string>
+    <string name="ai_working_model_default_title">Default Chat Model</string>
+    <string name="ai_working_model_default_desc">Used for regular AI conversations and primary task scenarios.</string>
+    <string name="ai_working_model_fast_title">Fast-Task Model</string>
+    <string name="ai_working_model_fast_desc">Used for lightweight tasks, fast responses, and helper scenarios. e.g., title generation, Chinese chess AI.</string>
+    <string name="ai_working_model_duel_a_title">Duel Model A</string>
+    <string name="ai_working_model_duel_a_desc">The first role in an AI duel.</string>
+    <string name="ai_working_model_duel_b_title">Duel Model B</string>
+    <string name="ai_working_model_duel_b_desc">The second role in an AI duel.</string>
+    <string name="ai_working_model_engine_label">Choose Service</string>
+    <string name="ai_working_model_model_label">Choose Model</string>
+    <string name="ai_working_model_current_engine">Service: %1$s</string>
+    <string name="ai_working_model_current_model">Model: %1$s</string>
+    <string name="ai_working_model_change">Tap to change</string>
+    <string name="ai_working_model_picker_title">Choose %1$s</string>
+    <string name="ai_working_model_status_direct">Current route: verified direct</string>
+    <string name="ai_working_model_status_proxy">Current route: proxy available</string>
+    <string name="ai_working_model_status_unavailable">Current route: unavailable — go to settings first</string>
+    <string name="ai_engine_server_title">Service Connection</string>
+    <string name="ai_engine_server_desc">Configure your API endpoint and authentication credentials to connect to a remote inference service.</string>
+    <string name="ai_engine_api_url">API URL</string>
+    <string name="ai_engine_api_path">API Path</string>
+    <string name="ai_engine_auth_token">Auth Token</string>
+    <string name="ai_engine_auth_type_label">Authentication Type</string>
+    <string name="ai_engine_auth_type_bearer">Bearer</string>
+    <string name="ai_engine_auth_type_api_key">API Key</string>
+    <string name="ai_engine_auth_type_none">None</string>
+    <string name="ai_engine_model_title">Model Management</string>
+    <string name="ai_engine_model_desc">Manage the available models under the current service and choose the default one to use.</string>
+    <string name="ai_engine_parameters_title">Parameters &amp; Capabilities</string>
+    <string name="ai_engine_parameters_desc">Adjust generation parameters, capability toggles, and streaming strategy.</string>
+    <string name="ai_engine_temperature">Sampling Temperature</string>
+    <string name="ai_engine_temperature_desc">Controls the randomness of generated text. Higher values are more creative but may reduce stability.</string>
+    <string name="ai_engine_top_p">Nucleus Sampling (Top-P)</string>
+    <string name="ai_engine_top_p_desc">Limits the cumulative probability range of candidate tokens, helping control the output distribution.</string>
+    <string name="ai_engine_max_tokens">Max Tokens</string>
+    <string name="ai_engine_max_tokens_desc">Limits the maximum number of tokens generated in a single response.</string>
+    <string name="ai_engine_base_points">Point Multiplier</string>
+    <string name="ai_engine_base_points_desc">Displays or controls the base point multiplier for this model.</string>
+    <string name="ai_engine_capability_title">Model Capabilities</string>
+    <string name="ai_engine_capability_desc">Additional configuration for the model\'s capability tags and local behavior.</string>
+    <string name="ai_engine_capability_api">Allow API Customization</string>
+    <string name="ai_engine_capability_upload">Supports File Upload</string>
+    <string name="ai_engine_capability_network">Supports Network</string>
+    <string name="ai_engine_capability_reasoning">Supports Reasoning</string>
+    <string name="ai_engine_capability_image">Supports Images</string>
+    <string name="ai_engine_capability_video">Supports Video</string>
+    <string name="ai_engine_capability_temp_api">Supports Temporary API</string>
+    <string name="ai_engine_capability_fast">Fast Model</string>
+    <string name="ai_engine_capability_code">Code Model</string>
+    <string name="ai_engine_capability_tools">Supports Tool Calling</string>
+    <string name="ai_engine_capability_free">Free Model</string>
+    <string name="ai_engine_stream_title">Streaming Response</string>
+    <string name="ai_engine_stream_desc">When enabled, responses stream back in chunks, ideal for a real-time conversational experience.</string>
+    <string name="ai_engine_save_action">Save Configuration</string>
+    <string name="ai_engine_save_success">Model service configuration saved</string>
+    <string name="ai_engine_save_failed">Save failed. Please try again later.</string>
+    <string name="ai_engine_invalid_server">Please check that the API URL and path are filled in correctly.</string>
+    <string name="ai_engine_discard_title">Discard Service Changes</string>
+    <string name="ai_engine_discard_message">The current model service configuration has not been saved. Discard these changes?</string>
+    <string name="ai_engine_list_empty">No model services yet. Tap the icon in the top-right to add one.</string>
+    <string name="ai_engine_not_found">The model service does not exist or has been deleted.</string>
+    <string name="ai_engine_remote_models_load_failed">Failed to load remote models</string>
+    <string name="ai_engine_remote_models_submit_success">Models submitted</string>
+    <string name="ai_engine_remote_models_submit_failed">Models failed to submit</string>
+    <string name="ai_engine_remote_models_picker_title">Load Models from Provider</string>
+    <string name="ai_engine_remote_models_loading">Loading…</string>
+    <string name="ai_engine_remote_models_retry">Retry</string>
+    <string name="ai_engine_remote_models_empty">No models retrieved</string>
+    <string name="ai_engine_remote_models_submit_count">Submit Selected (%1$d)</string>
+    <string name="ai_engine_load_from_provider">Load Models from Provider</string>
+    <string name="ai_engine_file_upload_strategy_title">File Upload Strategy</string>
+    <string name="ai_engine_file_upload_strategy_base64">Base64 Inline</string>
+    <string name="ai_engine_file_upload_strategy_cloud">Cloud Storage</string>
+    <string name="ai_engine_cloud_storage_config_hint">Configure your cloud storage connection in the cloud storage management page first.</string>
+    <string name="ai_engine_cloud_storage_go_config">Configure</string>
+    <string name="ai_engine_cloud_storage_connection_label">Choose Cloud Storage Connection</string>
+    <string name="ai_engine_cloud_storage_bucket_label">Bucket</string>
+    <string name="ai_engine_cloud_storage_prefix_label">Upload Prefix</string>
+    <string name="ai_engine_cloud_storage_prefix_hint">e.g., ai-uploads/</string>
+    <string name="ai_engine_cloud_storage_no_connection">No cloud storage connection configured yet. Please configure one first.</string>
+    <string name="ai_engine_test_button_disabled_hint">Fill in the auth token before testing</string>
+
+    <string name="tts_settings_engine_section">Speech Synthesis Engine</string>
+    <string name="tts_settings_connection_section">Direct Connection</string>
+    <string name="tts_settings_model_section">Model Configuration</string>
+    <string name="tts_settings_api_url_label">Endpoint URL</string>
+    <string name="tts_settings_api_url_hint">Enter the full request URL; the app no longer appends the path automatically.</string>
+    <string name="tts_settings_openai_endpoint_placeholder">https://api.openai.com/v1/audio/speech</string>
+    <string name="tts_settings_mimo_endpoint_placeholder">https://api.xiaomimimo.com/v1/chat/completions</string>
+    <string name="tts_settings_api_token_label">API Token</string>
+    <string name="tts_settings_api_token_placeholder">sk-...</string>
+    <string name="tts_settings_show_token">Show Token</string>
+    <string name="tts_settings_hide_token">Hide Token</string>
+    <string name="tts_settings_proxy_hint">The proxy server will be used when no direct connection is configured.</string>
+    <string name="tts_settings_model_label">Model</string>
+    <string name="tts_settings_voice_label">Default Voice</string>
+    <string name="tts_settings_speed_label">Default Speed</string>
+    <string name="tts_settings_presets_label">Voice Presets</string>
+    <string name="tts_settings_save_action">Save</string>
+    <string name="tts_settings_save_loading">Saving…</string>
+    <string name="tts_settings_save_success">Speech synthesis configuration saved</string>
+    <string name="tts_settings_reset_action">Reset</string>
+    <string name="tts_settings_reset_loading">Resetting…</string>
+    <string name="tts_settings_reset_success">Restored to the unconfigured state</string>
+    <string name="tts_settings_reset_confirm_title">Reset Current Engine Configuration</string>
+    <string name="tts_settings_reset_confirm_message">Clear the saved endpoint URL, token, and model parameters for \"%1$s\"? The engine type will be kept, but the configuration will return to the unconfigured state.</string>
+    <string name="tts_settings_preview_action">Preview</string>
+    <string name="tts_settings_preview_loading">Generating preview…</string>
+    <string name="tts_settings_preview_text">Speech synthesis test</string>
+    <string name="tts_settings_preview_success">Preview audio generated</string>
+    <string name="tts_settings_clear_cache_action">Clear Cache</string>
+    <string name="tts_settings_clear_cache_loading">Clearing…</string>
+    <string name="tts_settings_clear_cache_success">Speech cache cleared</string>
+    <string name="tts_settings_clear_cache_success_with_size">Speech cache cleared. Freed %1$s</string>
+    <string name="tts_settings_cache_size_label">Current Cache Size</string>
+    <string name="tts_settings_cache_size_loading">Counting…</string>
+    <string name="tts_settings_cache_size_value">%1$s</string>
+    <string name="tts_settings_provider_openai">OpenAI-Compatible</string>
+    <string name="tts_settings_provider_mimo">Xiaomi MiMo</string>
+
+    <!-- Password protection settings page -->
+    <string name="auth_code_settings_title">Password Protection</string>
+    <string name="auth_code_settings_subtitle">Verify your identity before sensitive operations</string>
+    <string name="auth_code_settings_status_on">Enabled</string>
+    <string name="auth_code_settings_status_off">Not Set</string>
+    <string name="auth_code_settings_action_set">Set Password</string>
+    <string name="auth_code_settings_action_change">Change Password</string>
+    <string name="auth_code_settings_action_remove">Disable Password Protection</string>
+    <string name="auth_code_settings_remove_confirm_title">Disable Password Protection</string>
+    <string name="auth_code_settings_remove_confirm_message">After disabling, accessing the app will no longer require a password. Continue?</string>
+    <string name="auth_code_settings_step_verify_current">Enter your current password</string>
+    <string name="auth_code_settings_step_enter_new">Enter a new 6-digit password</string>
+    <string name="auth_code_settings_step_confirm_new">Re-enter the new password</string>
+    <string name="auth_code_settings_step_enter_first">Enter a 6-digit password</string>
+    <string name="auth_code_settings_step_confirm_first">Re-enter to confirm</string>
+    <string name="auth_code_settings_step_hint">First time? Set your 6-digit password and keep it safe.</string>
+    <string name="auth_code_settings_error_wrong_current">Current password is incorrect</string>
+    <string name="auth_code_settings_error_mismatch">The two entries do not match. Try again.</string>
+    <string name="auth_code_settings_success_set">Password set</string>
+    <string name="auth_code_settings_success_change">Password changed</string>
+    <string name="auth_code_settings_success_remove">Password protection disabled</string>
+    <string name="auth_code_settings_action_back">Back</string>
+    <string name="auth_code_settings_pin_label">Password</string>
+    <string name="auth_code_settings_status_awaiting">Awaiting input</string>
+    <string name="auth_code_settings_dialog_ok">OK</string>
+    <string name="auth_code_settings_dialog_cancel">Cancel</string>
+    <string name="auth_code_settings_action_submit">Confirm</string>
+    <string name="auth_code_settings_failed">Operation failed. Please try again.</string>
+    <string name="auth_code_settings_section_actions">Manage</string>
+    <string name="auth_code_settings_section_protected">Password protection is on</string>
+    <string name="auth_code_settings_protected_empty">Password protection is not enabled for any apps yet</string>
+    <string name="auth_code_settings_protected_swipe_hint">Swipe left or tap the right-side button to disable password protection for this app</string>
+    <string name="auth_code_settings_protected_swipe_action">Disable</string>
+    <string name="auth_code_settings_protected_close_button">Disable Protection</string>
+    <string name="auth_code_settings_protected_verify_title">Verify your password to disable protection</string>
+    <string name="auth_code_settings_protected_remove_success">Disabled password protection for \"%1$s\"</string>
+    <string name="auth_code_settings_immersive_enter">Enter Immersive Mode</string>
+    <string name="auth_code_settings_immersive_exit">Exit Immersive Mode</string>
+    <string name="auth_code_settings_unnamed_item">Unnamed App</string>
+</resources>

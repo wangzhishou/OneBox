@@ -1,0 +1,207 @@
+/*
+ * ImageToolbox is an image editor for android
+ * Copyright (c) 2024 T8RIN (Malik Mukhametzyanov)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
+package com.t8rin.imagetoolbox.core.resources.icons.line
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.ImageVector.Builder
+import androidx.compose.ui.graphics.vector.path
+import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.Icons
+
+val Icons.Outlined.LinePlace: ImageVector by lazy(LazyThreadSafetyMode.NONE) {
+    Builder(
+        name = "Outlined.LinePlace",
+        defaultWidth = 24.dp,
+        defaultHeight = 24.dp,
+        viewportWidth = 24f,
+        viewportHeight = 24f
+    ).apply {
+        path(fill = SolidColor(Color.Black)) {
+            moveTo(11.81f, 0.97f)
+            curveTo(11.95f, 0.97f, 12.08f, 0.97f, 12.21f, 0.97f)
+            curveTo(12.94f, 0.96f, 13.66f, 1.04f, 14.36f, 1.25f)
+            curveTo(14.4f, 1.26f, 14.44f, 1.27f, 14.49f, 1.28f)
+            curveTo(15.11f, 1.47f, 15.73f, 1.74f, 16.27f, 2.11f)
+            curveTo(16.29f, 2.13f, 16.29f, 2.13f, 16.41f, 2.21f)
+            curveTo(16.89f, 2.53f, 17.32f, 2.87f, 17.72f, 3.28f)
+            curveTo(17.76f, 3.31f, 17.79f, 3.34f, 17.82f, 3.37f)
+            curveTo(17.84f, 3.38f, 17.84f, 3.38f, 17.91f, 3.46f)
+            curveTo(17.92f, 3.47f, 17.92f, 3.47f, 17.99f, 3.54f)
+            curveTo(18.05f, 3.61f, 18.05f, 3.61f, 18.05f, 3.7f)
+            curveTo(18.09f, 3.72f, 18.14f, 3.73f, 18.19f, 3.75f)
+            curveTo(18.25f, 3.82f, 18.25f, 3.82f, 18.31f, 3.9f)
+            curveTo(18.33f, 3.93f, 18.36f, 3.97f, 18.38f, 4f)
+            curveTo(18.4f, 4.03f, 18.43f, 4.07f, 18.45f, 4.1f)
+            curveTo(18.48f, 4.14f, 18.5f, 4.18f, 18.53f, 4.21f)
+            curveTo(19.51f, 5.65f, 20f, 7.23f, 19.99f, 8.96f)
+            curveTo(19.99f, 9.1f, 19.99f, 9.24f, 19.99f, 9.38f)
+            curveTo(19.99f, 9.91f, 19.95f, 10.41f, 19.83f, 10.92f)
+            curveTo(19.82f, 10.94f, 19.82f, 10.94f, 19.8f, 11.04f)
+            curveTo(19.78f, 11.14f, 19.75f, 11.23f, 19.72f, 11.33f)
+            curveTo(19.71f, 11.36f, 19.7f, 11.4f, 19.69f, 11.43f)
+            curveTo(19.66f, 11.54f, 19.63f, 11.66f, 19.59f, 11.77f)
+            curveTo(19.58f, 11.8f, 19.57f, 11.84f, 19.56f, 11.88f)
+            curveTo(19.26f, 12.86f, 18.85f, 13.81f, 18.37f, 14.72f)
+            curveTo(18.33f, 14.8f, 18.29f, 14.89f, 18.25f, 14.97f)
+            curveTo(17.85f, 15.78f, 17.43f, 16.59f, 16.93f, 17.35f)
+            curveTo(16.85f, 17.48f, 16.77f, 17.61f, 16.69f, 17.73f)
+            curveTo(16.51f, 18.03f, 16.32f, 18.32f, 16.12f, 18.61f)
+            curveTo(16.1f, 18.65f, 16.07f, 18.7f, 16.04f, 18.74f)
+            curveTo(15.47f, 19.56f, 14.88f, 20.35f, 14.26f, 21.13f)
+            curveTo(14.14f, 21.28f, 14.02f, 21.43f, 13.9f, 21.59f)
+            curveTo(13.68f, 21.87f, 13.44f, 22.14f, 13.2f, 22.42f)
+            curveTo(13.13f, 22.5f, 13.06f, 22.58f, 12.99f, 22.66f)
+            curveTo(12.96f, 22.7f, 12.93f, 22.74f, 12.89f, 22.78f)
+            curveTo(12.86f, 22.78f, 12.83f, 22.78f, 12.8f, 22.78f)
+            curveTo(12.8f, 22.81f, 12.8f, 22.84f, 12.8f, 22.87f)
+            curveTo(12.41f, 23.12f, 11.88f, 23.07f, 11.44f, 23.02f)
+            curveTo(11.23f, 22.94f, 11.11f, 22.85f, 10.97f, 22.69f)
+            curveTo(10.94f, 22.65f, 10.9f, 22.61f, 10.87f, 22.57f)
+            curveTo(10.8f, 22.49f, 10.73f, 22.4f, 10.66f, 22.32f)
+            curveTo(10.51f, 22.13f, 10.35f, 21.95f, 10.2f, 21.76f)
+            curveTo(9.6f, 21.08f, 9.06f, 20.35f, 8.53f, 19.61f)
+            curveTo(8.52f, 19.59f, 8.52f, 19.59f, 8.46f, 19.51f)
+            curveTo(8.3f, 19.28f, 8.3f, 19.28f, 8.3f, 19.17f)
+            curveTo(8.27f, 19.17f, 8.23f, 19.17f, 8.2f, 19.17f)
+            curveTo(8.15f, 19.1f, 8.15f, 19.1f, 8.09f, 19f)
+            curveTo(8.07f, 18.97f, 8.05f, 18.93f, 8.03f, 18.89f)
+            curveTo(8.01f, 18.86f, 7.98f, 18.82f, 7.96f, 18.78f)
+            curveTo(7.8f, 18.5f, 7.63f, 18.24f, 7.44f, 17.98f)
+            curveTo(7.31f, 17.79f, 7.19f, 17.59f, 7.07f, 17.39f)
+            curveTo(7.04f, 17.35f, 7.01f, 17.31f, 6.99f, 17.27f)
+            curveTo(6.63f, 16.68f, 6.28f, 16.09f, 5.98f, 15.47f)
+            curveTo(5.92f, 15.35f, 5.85f, 15.23f, 5.79f, 15.11f)
+            curveTo(5.45f, 14.52f, 5.19f, 13.89f, 4.92f, 13.27f)
+            curveTo(4.9f, 13.21f, 4.87f, 13.15f, 4.85f, 13.1f)
+            curveTo(4.31f, 11.82f, 3.92f, 10.54f, 3.92f, 9.14f)
+            curveTo(3.92f, 9.03f, 3.92f, 8.92f, 3.92f, 8.81f)
+            curveTo(3.92f, 8.3f, 3.98f, 7.81f, 4.08f, 7.31f)
+            curveTo(4.09f, 7.27f, 4.1f, 7.22f, 4.11f, 7.17f)
+            curveTo(4.13f, 7.06f, 4.16f, 6.95f, 4.19f, 6.83f)
+            curveTo(4.2f, 6.8f, 4.21f, 6.76f, 4.22f, 6.72f)
+            curveTo(4.51f, 5.59f, 5.12f, 4.56f, 5.89f, 3.69f)
+            curveTo(5.96f, 3.61f, 6.03f, 3.52f, 6.1f, 3.43f)
+            curveTo(6.13f, 3.4f, 6.16f, 3.36f, 6.19f, 3.33f)
+            curveTo(6.22f, 3.33f, 6.25f, 3.33f, 6.28f, 3.33f)
+            curveTo(6.29f, 3.3f, 6.3f, 3.28f, 6.31f, 3.25f)
+            curveTo(6.4f, 3.1f, 6.52f, 3f, 6.65f, 2.9f)
+            curveTo(6.66f, 2.89f, 6.66f, 2.89f, 6.73f, 2.83f)
+            curveTo(7.01f, 2.6f, 7.29f, 2.4f, 7.59f, 2.2f)
+            curveTo(7.62f, 2.19f, 7.65f, 2.17f, 7.68f, 2.15f)
+            curveTo(8.31f, 1.75f, 8.98f, 1.46f, 9.7f, 1.24f)
+            curveTo(9.73f, 1.23f, 9.76f, 1.22f, 9.79f, 1.21f)
+            curveTo(10.46f, 1.01f, 11.12f, 0.96f, 11.81f, 0.97f)
+            close()
+            moveTo(11.44f, 2.06f)
+            curveTo(10f, 2.15f, 8.5f, 2.87f, 7.46f, 3.84f)
+            curveTo(7.38f, 3.92f, 7.3f, 3.99f, 7.21f, 4.06f)
+            curveTo(6.54f, 4.64f, 6.05f, 5.44f, 5.67f, 6.23f)
+            curveTo(5.65f, 6.28f, 5.62f, 6.33f, 5.6f, 6.38f)
+            curveTo(4.78f, 8.08f, 4.93f, 9.83f, 5.52f, 11.55f)
+            curveTo(5.9f, 12.61f, 6.34f, 13.65f, 6.89f, 14.62f)
+            curveTo(6.9f, 14.64f, 6.9f, 14.64f, 6.95f, 14.73f)
+            curveTo(7.03f, 14.88f, 7.12f, 15.04f, 7.21f, 15.19f)
+            curveTo(7.29f, 15.33f, 7.36f, 15.47f, 7.44f, 15.61f)
+            curveTo(7.62f, 15.94f, 7.81f, 16.25f, 8f, 16.57f)
+            curveTo(8f, 16.59f, 8f, 16.59f, 8.05f, 16.66f)
+            curveTo(8.35f, 17.16f, 8.66f, 17.64f, 8.99f, 18.11f)
+            curveTo(9.04f, 18.18f, 9.08f, 18.25f, 9.13f, 18.33f)
+            curveTo(9.15f, 18.36f, 9.17f, 18.39f, 9.19f, 18.42f)
+            curveTo(9.22f, 18.42f, 9.25f, 18.42f, 9.28f, 18.42f)
+            curveTo(9.29f, 18.45f, 9.3f, 18.48f, 9.31f, 18.52f)
+            curveTo(9.4f, 18.7f, 9.51f, 18.86f, 9.63f, 19.03f)
+            curveTo(9.64f, 19.04f, 9.64f, 19.04f, 9.7f, 19.13f)
+            curveTo(9.91f, 19.43f, 10.14f, 19.71f, 10.37f, 19.99f)
+            curveTo(10.49f, 20.14f, 10.6f, 20.29f, 10.71f, 20.44f)
+            curveTo(10.91f, 20.71f, 11.13f, 20.96f, 11.35f, 21.21f)
+            curveTo(11.54f, 21.44f, 11.72f, 21.66f, 11.91f, 21.89f)
+            curveTo(12.06f, 21.86f, 12.13f, 21.82f, 12.23f, 21.7f)
+            curveTo(12.26f, 21.67f, 12.28f, 21.64f, 12.31f, 21.61f)
+            curveTo(12.32f, 21.6f, 12.32f, 21.6f, 12.39f, 21.52f)
+            curveTo(12.41f, 21.49f, 12.44f, 21.45f, 12.47f, 21.42f)
+            curveTo(12.68f, 21.18f, 12.88f, 20.93f, 13.08f, 20.67f)
+            curveTo(13.14f, 20.6f, 13.2f, 20.52f, 13.26f, 20.44f)
+            curveTo(13.41f, 20.26f, 13.55f, 20.08f, 13.69f, 19.9f)
+            curveTo(13.72f, 19.85f, 13.76f, 19.8f, 13.8f, 19.76f)
+            curveTo(13.87f, 19.64f, 13.87f, 19.64f, 13.87f, 19.55f)
+            curveTo(13.91f, 19.55f, 13.94f, 19.55f, 13.97f, 19.55f)
+            curveTo(14.01f, 19.48f, 14.06f, 19.42f, 14.1f, 19.35f)
+            curveTo(14.16f, 19.26f, 14.22f, 19.17f, 14.29f, 19.08f)
+            curveTo(14.31f, 19.05f, 14.34f, 19.01f, 14.36f, 18.98f)
+            curveTo(14.39f, 18.94f, 14.41f, 18.91f, 14.44f, 18.87f)
+            curveTo(14.73f, 18.48f, 15.01f, 18.08f, 15.28f, 17.67f)
+            curveTo(15.3f, 17.64f, 15.32f, 17.61f, 15.34f, 17.58f)
+            curveTo(15.76f, 16.97f, 16.13f, 16.32f, 16.5f, 15.68f)
+            curveTo(16.56f, 15.57f, 16.62f, 15.47f, 16.68f, 15.36f)
+            curveTo(16.84f, 15.1f, 16.98f, 14.84f, 17.11f, 14.57f)
+            curveTo(17.23f, 14.3f, 17.35f, 14.04f, 17.48f, 13.78f)
+            curveTo(17.75f, 13.25f, 18.02f, 12.71f, 18.19f, 12.13f)
+            curveTo(18.23f, 12.02f, 18.27f, 11.92f, 18.32f, 11.81f)
+            curveTo(18.44f, 11.55f, 18.52f, 11.29f, 18.59f, 11.02f)
+            curveTo(18.6f, 10.99f, 18.6f, 10.99f, 18.63f, 10.87f)
+            curveTo(18.91f, 9.92f, 19.03f, 8.89f, 18.8f, 7.92f)
+            curveTo(18.78f, 7.84f, 18.76f, 7.76f, 18.75f, 7.69f)
+            curveTo(18.73f, 7.6f, 18.71f, 7.51f, 18.69f, 7.42f)
+            curveTo(18.68f, 7.38f, 18.67f, 7.34f, 18.66f, 7.3f)
+            curveTo(18.59f, 7.01f, 18.49f, 6.74f, 18.37f, 6.47f)
+            curveTo(18.35f, 6.42f, 18.33f, 6.37f, 18.31f, 6.31f)
+            curveTo(17.94f, 5.5f, 17.44f, 4.78f, 16.83f, 4.12f)
+            curveTo(16.81f, 4.11f, 16.81f, 4.11f, 16.72f, 4.01f)
+            curveTo(16.21f, 3.48f, 15.6f, 3.1f, 14.95f, 2.77f)
+            curveTo(14.9f, 2.74f, 14.85f, 2.71f, 14.8f, 2.69f)
+            curveTo(13.73f, 2.16f, 12.62f, 2.04f, 11.44f, 2.06f)
+            close()
+            moveTo(14.51f, 6.11f)
+            curveTo(15.24f, 6.76f, 15.74f, 7.6f, 15.84f, 8.58f)
+            curveTo(15.87f, 9.21f, 15.89f, 9.85f, 15.7f, 10.45f)
+            curveTo(15.69f, 10.5f, 15.68f, 10.54f, 15.66f, 10.59f)
+            curveTo(15.34f, 11.58f, 14.59f, 12.37f, 13.68f, 12.85f)
+            curveTo(13.46f, 12.96f, 13.23f, 13.02f, 12.98f, 13.08f)
+            curveTo(12.94f, 13.09f, 12.9f, 13.1f, 12.85f, 13.11f)
+            curveTo(12.03f, 13.27f, 11.07f, 13.21f, 10.31f, 12.84f)
+            curveTo(10.28f, 12.83f, 10.24f, 12.81f, 10.2f, 12.79f)
+            curveTo(9.86f, 12.64f, 9.56f, 12.43f, 9.28f, 12.19f)
+            curveTo(9.28f, 12.16f, 9.28f, 12.13f, 9.28f, 12.09f)
+            curveTo(9.25f, 12.08f, 9.23f, 12.07f, 9.2f, 12.06f)
+            curveTo(8.69f, 11.77f, 8.38f, 10.97f, 8.2f, 10.44f)
+            curveTo(7.99f, 9.59f, 7.94f, 8.66f, 8.25f, 7.83f)
+            curveTo(8.27f, 7.78f, 8.28f, 7.73f, 8.3f, 7.69f)
+            curveTo(8.68f, 6.66f, 9.46f, 5.95f, 10.44f, 5.48f)
+            curveTo(11.77f, 4.93f, 13.42f, 5.2f, 14.51f, 6.11f)
+            close()
+            moveTo(10f, 7.25f)
+            curveTo(9.65f, 7.6f, 9.45f, 7.98f, 9.28f, 8.44f)
+            curveTo(9.27f, 8.47f, 9.26f, 8.5f, 9.24f, 8.54f)
+            curveTo(9.05f, 9.14f, 9.19f, 9.85f, 9.47f, 10.4f)
+            curveTo(9.92f, 11.23f, 10.59f, 11.72f, 11.47f, 12.01f)
+            curveTo(12.12f, 12.15f, 12.74f, 12f, 13.3f, 11.66f)
+            curveTo(13.98f, 11.2f, 14.5f, 10.57f, 14.69f, 9.76f)
+            curveTo(14.81f, 9.01f, 14.7f, 8.27f, 14.25f, 7.64f)
+            curveTo(14.12f, 7.48f, 13.97f, 7.32f, 13.83f, 7.17f)
+            curveTo(13.8f, 7.14f, 13.78f, 7.11f, 13.75f, 7.08f)
+            curveTo(13.36f, 6.64f, 12.66f, 6.37f, 12.08f, 6.33f)
+            curveTo(11.27f, 6.33f, 10.58f, 6.71f, 10f, 7.25f)
+            close()
+        }
+    }.build()
+}

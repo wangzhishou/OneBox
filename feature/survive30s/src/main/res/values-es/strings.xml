@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">Sobrevive 30s</string>
+    <string name="survive_30s_ready">¿Listo?</string>
+    <string name="survive_30s_instruction">Arrastra la bola azul para esquivar obstáculos\nMuévete libremente en todas las direcciones. ¡Sobrevive 30 segundos para ganar!</string>
+    <string name="survive_30s_instruction_bonus">Las esquivas cercanas acumulan carga. Cada 3 roces cercanos otorgan 1 escudo, y un escudo bloquea un golpe por ti.</string>
+    <string name="survive_30s_start">Iniciar</string>
+    <string name="survive_30s_game_over">¡Juego Terminado!</string>
+    <string name="survive_30s_survived_time">Sobreviviste: %.1f s</string>
+    <string name="survive_30s_new_record">¡Nuevo Récord!</string>
+    <string name="survive_30s_win">¡Ganaste!</string>
+    <string name="survive_30s_win_desc">¡Sobreviviste 30 segundos!</string>
+    <string name="survive_30s_retry">Reintentar</string>
+    <string name="survive_30s_best_time">Mejor: %.1fs</string>
+    <string name="survive_30s_phase">Fase</string>
+    <string name="survive_30s_phase_warmup">Calentamiento</string>
+    <string name="survive_30s_phase_rush">Aceleración</string>
+    <string name="survive_30s_phase_storm">Tormenta</string>
+    <string name="survive_30s_shield">Escudo</string>
+    <string name="survive_30s_charge">Carga</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">Cerca</string>
+    <string name="survive_30s_near_miss_count">Esquivas cercanas: %1$d</string>
+    <string name="survive_30s_danger_low">Estable por ahora. Mantén tu espacio.</string>
+    <string name="survive_30s_danger_medium">La presión aumenta. Prepárate para cruzar.</string>
+    <string name="survive_30s_danger_high">¡Peligro! Acumula carga con esquivas cercanas o sal de inmediato.</string>
+</resources>

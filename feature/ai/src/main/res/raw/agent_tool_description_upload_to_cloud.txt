@@ -1,0 +1,12 @@
+upload_to_cloud —— 把 base64 编码的字节内容上传到远端路径。
+
+限制：payload ≤ 1 MB。需要用户二次确认。
+
+参数：
+- connection_id（必填）
+- root（可选）
+- path（必填）：远端目标路径
+- content_base64（必填）：字节内容的 base64 编码
+- content_type（可选，默认 application/octet-stream）：MIME 类型
+
+对于大文件场景，应使用专用下载/上传工具或 UI 端交互，不应通过 Agent 通道传大 payload。

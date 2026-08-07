@@ -1,0 +1,22 @@
+把 PDF 文档的指定页转换为图片，并保存到应用下载目录。
+
+功能说明：
+- 支持远程 http(s):// 链接（自动下载到缓存）和本地 content://、file:// URI。
+- 默认转换全部页；可通过 pages 数组指定要导出的页码（1 起始，例如 [1, 3, 5]）。
+- 输出格式默认 PNG，可改为 jpg、jpeg、webp、bmp 等 ImageFormat 支持的格式。
+- quality 控制图片质量（1-100，默认 100）；preset 控制缩放百分比（1-100，默认 100）。
+- 转换成功后会写入 ActivityLog（FILE_CONVERT 分类），用户可在历史里点开重新查看。
+
+参数：
+- uri (string, 必填)：PDF 文档地址。
+- pages (int[], 可选)：要导出的页码（1 起始）。省略时导出全部。
+- format (string, 可选)：输出图片格式，默认 png。
+- quality (integer, 可选)：1-100 之间的图片质量，默认 100。
+- preset (integer, 可选)：1-100 之间的缩放百分比，默认 100。
+
+返回：JSON，含 page_count、format、files（每项含 file_name / file_uri / save_path）。
+
+注意事项：
+- 此工具非交互式，转换在后台完成后直接返回保存路径，不会跳转屏幕。
+- 当前不接受密码：受密码保护的 PDF 请引导用户用 PDF 工具屏处理。
+- 如果用户希望先看 PDF 再决定是否导出，应优先调用 open_pdf_preview。

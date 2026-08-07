@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><string name="decision_wheel_title">Decision Turnboard</string>
+    <string name="new_wheel">New Loop</string>
+    <string name="edit_wheel">Edit Turnboard</string>
+    <string name="edit_options">Edit Options</string>
+    <string name="spin_again">Rotate again</string>
+    <string name="options_list">Options List</string>
+    <string name="result_is">As a result,</string>
+    <string name="close">Close</string>
+    <string name="spin_again_action">Turn again.</string>
+    <string name="start">Start</string>
+    <string name="wheel_title">Turnboard Title</string>
+    <string name="options_list_count">Options List (  %1$d )</string>
+    <string name="add_option">Add Options</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="add_new_option">Add New Options</string>
+    <string name="edit_option">Edit Options</string>
+    <string name="option_name">Option Name</string>
+    <string name="option_placeholder">For example, hotpots, barbecues...</string>
+    <string name="select_color">Select Color</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="history">History</string>
+    <string name="my_wheels">My wheel.</string>
+    <string name="switch_wheel">Toggle the wheel</string>
+    <string name="create_wheel">Create a wheel</string>
+    <string name="delete_wheel_confirm">Are you sure you want to delete this wheel?</string>
+    <string name="clear_history">Clear History</string>
+    <string name="no_history">There is no historical record.</string>
+    <string name="options_count"> %1$d options</string>
+    <string name="new_wheel_name">New Loop</string>
+    <string name="option_1">Option 1</string>
+    <string name="option_2">Option 2</string>
+
+    <!-- Presets - Food Wheel -->
+    <string name="preset_food">What are you eating today?</string>
+    <string name="food_hotpot">Hotpot.</string>
+    <string name="food_bbq">Barbecue.</string>
+    <string name="food_japanese">Days.</string>
+    <string name="food_western">Western.</string>
+    <string name="food_chinese">Chinese</string>
+    <string name="food_fastfood">Quickie.</string>
+    <string name="food_snacks">Snack.</string>
+    <string name="food_dessert">Sweets.</string>
+
+    <!-- Presets - Dice Wheel -->
+    <string name="preset_dice">Roll the dice.</string>
+    <string name="dice_1">One o\'clock.</string>
+    <string name="dice_2">Two o\'clock.</string>
+    <string name="dice_3">Three o\'clock.</string>
+    <string name="dice_4">Four o\'clock.</string>
+    <string name="dice_5">Five o\'clock.</string>
+    <string name="dice_6">Six o\'clock.</string>
+
+    <!-- Presets - Activity Wheel -->
+    <string name="preset_activity">Where are you going this weekend?</string>
+    <string name="activity_movie">Watching movies.</string>
+    <string name="activity_park">Go to the park.</string>
+    <string name="activity_shopping">I\'m going shopping.</string>
+    <string name="activity_game">Play the game.</string>
+    <string name="activity_sleep">Sleep.</string>
+    <string name="activity_read">Read.</string>
+
+    <!-- Presets - Drink Wheel -->
+    <string name="preset_drink">What can I get you today?</string>
+    <string name="drink_coffee">Coffee.</string>
+    <string name="drink_milk_tea">Milk tea.</string>
+    <string name="drink_juice">Juice.</string>
+    <string name="drink_water">White water.</string>
+    <string name="drink_soda">Soda.</string>
+    <string name="drink_tea">Tea.</string>
+
+    <!-- Presets - Work Task Wheel -->
+    <string name="preset_work_task">Task assignments</string>
+    <string name="task_coding">Write code</string>
+    <string name="task_meeting">Meeting</string>
+    <string name="task_review">Code Review</string>
+    <string name="task_document">Writing documents</string>
+    <string name="task_testing">Test</string>
+    <string name="task_break">Take a break.</string>
+
+    <!-- Presets - Exercise Wheel -->
+    <string name="preset_exercise">Sports</string>
+    <string name="exercise_run">Run.</string>
+    <string name="exercise_yoga">Yoga.</string>
+    <string name="exercise_swim">Swimming.</string>
+    <string name="exercise_basketball">Play basketball.</string>
+    <string name="exercise_badminton">Badminton</string>
+    <string name="exercise_walk">Walking.</string>
+
+    <!-- Presets - Lucky Number Wheel -->
+    <string name="preset_lucky_number">Lucky number</string>
+    <string name="lucky_1">1</string>
+    <string name="lucky_2">2</string>
+    <string name="lucky_3">3</string>
+    <string name="lucky_4">4</string>
+    <string name="lucky_5">5</string>
+    <string name="lucky_6">6</string>
+    <string name="lucky_7">7</string>
+    <string name="lucky_8">8</string>
+    <string name="lucky_9">9</string>
+    <string name="result_celebration">🎉</string>
+    <string name="palette_scheme">Colour Scheme</string>
+    <string name="target_emoji">🎯</string>
+    <string name="apply">Apply</string>
+
+    <!-- Settings - Decision Wheel -->
+    <string name="wheel_settings_title">Turnboard Settings</string>
+    <string name="wheel_settings">Settings</string>
+    <string name="wheel_settings_duration">Rotate Time</string>
+    <string name="wheel_settings_duration_value">%1$d ms</string>
+    <string name="wheel_settings_speed">Rotation speed</string>
+    <string name="wheel_settings_speed_value">x%1$.2f</string>
+    <string name="wheel_settings_preview">Preview</string>
+    <string name="wheel_settings_preview_rotations">Projected rotations: %1$.1f turns</string>
+    <string name="wheel_settings_preview_note">Hint: Settings affect only next rotation</string>
+
+    <!-- Edit wheel / option deletion -->
+    <string name="delete_option_confirm">Are you sure you want to delete this option?</string>
+    <string name="delete_option_min_two_tip">Keep at least two options</string>
+
+    <!-- Presets - Who Pays -->
+    <string name="preset_who_pays">Who\'s buying today?</string>
+    <string name="pay_me">It\'s on me.</string>
+    <string name="pay_you">Your treat.</string>
+    <string name="pay_aa">AA</string>
+    <string name="pay_boss">It\'s on the house.</string>
+    <string name="pay_next_time">Next time.</string>
+    <string name="pay_luck">It\'s luck.</string>
+
+    <!-- Presets - Date Night -->
+    <string name="preset_date_night">What for?</string>
+    <string name="date_movie">Watching movies.</string>
+    <string name="date_dinner">Candlelight dinner.</string>
+    <string name="date_walk">Walk and chat.</string>
+    <string name="date_game">Play Game</string>
+    <string name="date_cook">Let\'s cook together.</string>
+    <string name="date_travel">Surrounding</string>
+
+    <!-- Presets - Movie Genre -->
+    <string name="preset_movie_genre">What movie?</string>
+    <string name="movie_action">Action Film</string>
+    <string name="movie_comedy">Comedy.</string>
+    <string name="movie_romance">Love films.</string>
+    <string name="movie_scifi">Science fiction.</string>
+    <string name="movie_horror">Horror.</string>
+    <string name="movie_animation">Animation</string>
+    <string name="movie_documentary">Documentary</string>
+
+    <!-- Presets - Household Chores -->
+    <string name="preset_chores">Domestic distribution</string>
+    <string name="chore_dishes">Wash dishes.</string>
+    <string name="chore_floor">Drag</string>
+    <string name="chore_laundry">Laundry</string>
+    <string name="chore_trash">Take out the trash.</string>
+    <string name="chore_cooking">Cooking.</string>
+    <string name="chore_groceries">Buying food.</string>
+
+    <!-- Presets - Music Vibe -->
+    <string name="preset_music">What song?</string>
+    <string name="music_pop">Pop</string>
+    <string name="music_rock">Rock</string>
+    <string name="music_jazz">Sir.</string>
+    <string name="music_classical">Classical</string>
+    <string name="music_electronic">Electronic</string>
+    <string name="music_folk">Folk</string>
+    <string name="music_hiphop">Ha ha ha!</string>
+</resources>

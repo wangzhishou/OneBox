@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">Prompt padrão do sistema de chat</string>
+    <string name="sys_prompt_default_desc">Regras padrão do sistema para chat</string>
+    <string name="sys_prompt_agent_create_title">Prompt padrão do sistema de criação de Agentes</string>
+    <string name="sys_prompt_agent_create_desc">Prompt padrão do sistema para criar Agentes</string>
+    <string name="sys_prompt_prompt_create_title">Prompt padrão do sistema de criação de Prompts</string>
+    <string name="sys_prompt_prompt_create_desc">Prompt padrão do sistema para criar Prompts</string>
+    <string name="sys_prompt_bazi_title">Prompt padrão do sistema de análise do Mapa de BaZi</string>
+    <string name="sys_prompt_bazi_desc">Prompt padrão do sistema para análise do Mapa de BaZi (Quatro Pilares)</string>
+    <string name="sys_prompt_xiangqi_title">Prompt padrão do sistema de jogadas de Xiangqi</string>
+    <string name="sys_prompt_xiangqi_desc">Prompt padrão do sistema para partidas de Xiangqi (xadrez chinês) com LLM</string>
+    <string name="sys_prompt_mode_ask_title">Protocolo do modo somente perguntas e respostas ASK</string>
+    <string name="sys_prompt_mode_ask_desc">Prompt do protocolo de execução para o modo Ask</string>
+    <string name="sys_prompt_mode_plan_title">Protocolo do modo somente planejamento PLAN</string>
+    <string name="sys_prompt_mode_plan_desc">Prompt do protocolo de execução para o modo Plan</string>
+    <string name="sys_prompt_mode_agent_title">Protocolo do modo de execução AGENT</string>
+    <string name="sys_prompt_mode_agent_desc">Prompt do protocolo de execução para o modo Agent</string>
+    <string name="sys_prompt_duel_title">Modelos de prompt para duelo/interação de IA</string>
+    <string name="sys_prompt_duel_desc">Instruções do sistema, regras de função e modelos de orientação de turno para duelos e interações de IA</string>
+</resources>

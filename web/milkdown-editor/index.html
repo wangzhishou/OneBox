@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Markdown Editor</title>
+    <!-- 立即应用主题，避免闪白 -->
+    <script>
+        (function() {
+            // 从 URL hash 读取主题
+            if (window.location.hash === '#dark') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    <script src="/js/tailwindcss.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Material 3 CSS 变量 - 由 Android 注入 */
+        :root {
+            --md-primary: #6750A4;
+            --md-on-primary: #FFFFFF;
+            --md-primary-container: #EADDFF;
+            --md-on-primary-container: #21005D;
+            --md-secondary: #625B71;
+            --md-on-secondary: #FFFFFF;
+            --md-secondary-container: #E8DEF8;
+            --md-on-secondary-container: #1D192B;
+            --md-surface: #FEF7FF;
+            --md-on-surface: #1D1B20;
+            --md-surface-variant: #E7E0EC;
+            --md-on-surface-variant: #49454F;
+            --md-outline: #79747E;
+            --md-outline-variant: #CAC4D0;
+            --md-background: #FEF7FF;
+            --md-on-background: #1D1B20;
+            --md-error: #B3261E;
+            --md-on-error: #FFFFFF;
+        }
+
+        /* 深色主题 */
+        .dark {
+            --md-primary: #D0BCFF;
+            --md-on-primary: #381E72;
+            --md-primary-container: #4F378B;
+            --md-on-primary-container: #EADDFF;
+            --md-secondary: #CCC2DC;
+            --md-on-secondary: #332D41;
+            --md-secondary-container: #4A4458;
+            --md-on-secondary-container: #E8DEF8;
+            --md-surface: #141218;
+            --md-on-surface: #E6E0E9;
+            --md-surface-variant: #49454F;
+            --md-on-surface-variant: #CAC4D0;
+            --md-outline: #938F99;
+            --md-outline-variant: #49454F;
+            --md-background: #141218;
+            --md-on-background: #E6E0E9;
+            --md-error: #F2B8B5;
+            --md-on-error: #601410;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--md-background);
+            color: var(--md-on-background);
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* 工具栏样式 - 底部固定横向滚动 */
+        #toolbar {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 4px;
+            padding: 8px 12px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+            background-color: var(--md-surface);
+            border-top: 1px solid var(--md-outline-variant);
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            flex-shrink: 0;
+            order: 2;
+        }
+
+        .toolbar-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border: none;
+            border-radius: 8px;
+            background-color: transparent;
+            color: var(--md-on-surface-variant);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            flex-shrink: 0;
+        }
+
+        .toolbar-btn:hover {
+            background-color: var(--md-surface-variant);
+        }
+
+        .toolbar-btn:active {
+            background-color: var(--md-primary-container);
+        }
+
+        .toolbar-btn.active {
+            background-color: var(--md-primary-container);
+            color: var(--md-on-primary-container);
+        }
+
+        .toolbar-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 主要操作按钮 - 高亮显示(仅在源码模式下生效,通过 JS 动态加 class) */
+        .toolbar-btn-primary {
+            color: var(--md-primary);
+            background-color: var(--md-primary-container);
+        }
+
+        .toolbar-btn-primary:hover {
+            background-color: var(--md-primary-container);
+            filter: brightness(0.95);
+        }
+
+        .toolbar-btn-primary:active {
+            background-color: var(--md-primary);
+            color: var(--md-on-primary);
+        }
+
+        .toolbar-btn-primary.active {
+            background-color: var(--md-primary);
+            color: var(--md-on-primary);
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 24px;
+            background-color: var(--md-outline-variant);
+            margin: 6px 4px;
+            flex-shrink: 0;
+        }
+
+        /* 编辑器容器 */
+        #editor-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background-color: var(--md-background);
+            order: 1;
+        }
+
+        /* Milkdown 编辑器样式覆盖 */
+        .milkdown {
+            min-height: 100%;
+            outline: none;
+        }
+
+        .milkdown .editor {
+            outline: none;
+            min-height: 200px;
+        }
+
+        /* Placeholder 样式 */
+        .milkdown .editor[data-placeholder]:empty::before {
+            content: attr(data-placeholder);
+            color: var(--md-on-surface-variant);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* 标题样式 */
+        .milkdown h1 {
+            font-size: 2em;
+            font-weight: 700;
+            margin: 0.67em 0;
+            color: var(--md-on-surface);
+        }
+
+        .milkdown h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0.83em 0;
+            color: var(--md-on-surface);
+        }
+
+        .milkdown h3 {
+            font-size: 1.17em;
+            font-weight: 600;
+            margin: 1em 0;
+            color: var(--md-on-surface);
+        }
+
+        /* 段落样式 */
+        .milkdown p {
+            margin: 1em 0;
+            line-height: 1.6;
+            color: var(--md-on-surface);
+        }
+
+        /* 粗体和斜体 */
+        .milkdown strong {
+            font-weight: 700;
+        }
+
+        .milkdown em {
+            font-style: italic;
+        }
+
+        /* 删除线 */
+        .milkdown del {
+            text-decoration: line-through;
+            color: var(--md-on-surface-variant);
+        }
+
+        /* 链接样式 */
+        .milkdown a {
+            color: var(--md-primary);
+            text-decoration: none;
+        }
+
+        .milkdown a:hover {
+            text-decoration: underline;
+        }
+
+        /* 代码样式 */
+        .milkdown code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            background-color: var(--md-surface-variant);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .milkdown pre {
+            background-color: var(--md-surface-variant);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+
+        .milkdown pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* 引用样式 */
+        .milkdown blockquote {
+            border-left: 4px solid var(--md-primary);
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            background-color: var(--md-surface-variant);
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 列表样式 */
+        .milkdown ul, .milkdown ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+
+        .milkdown li {
+            margin: 0.5em 0;
+            line-height: 1.6;
+        }
+
+        /* 任务列表 */
+        .milkdown li[data-task-list-item] {
+            list-style: none;
+            margin-left: -1.5em;
+        }
+
+        .milkdown li[data-task-list-item] input[type="checkbox"] {
+            margin-right: 0.5em;
+            accent-color: var(--md-primary);
+        }
+
+        /* 分割线 */
+        .milkdown hr {
+            border: none;
+            border-top: 1px solid var(--md-outline-variant);
+            margin: 2em 0;
+        }
+
+        /* 图片样式 */
+        .milkdown img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1em 0;
+        }
+
+        /* 表格样式 */
+        .milkdown table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1em 0;
+        }
+
+        .milkdown th, .milkdown td {
+            border: 1px solid var(--md-outline-variant);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .milkdown th {
+            background-color: var(--md-surface-variant);
+            font-weight: 600;
+        }
+
+        /* Loading 动画 */
+        #loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--md-surface-variant);
+            border-top-color: var(--md-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #loading-text {
+            color: var(--md-on-surface-variant);
+            font-size: 14px;
+        }
+
+        /* 隐藏滚动条但保持功能 */
+        #editor-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #editor-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #editor-container::-webkit-scrollbar-thumb {
+            background-color: var(--md-outline-variant);
+            border-radius: 3px;
+        }
+
+        /* 隐藏工具栏滚动条 */
+        #toolbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        #toolbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 图片插入对话框 */
+        .dialog-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .dialog-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dialog {
+            background-color: var(--md-surface);
+            border-radius: 16px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            transform: scale(0.95);
+            transition: transform 0.2s ease;
+        }
+
+        .dialog-overlay.visible .dialog {
+            transform: scale(1);
+        }
+
+        .dialog-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--md-on-surface);
+            margin-bottom: 16px;
+        }
+
+        .dialog-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--md-outline);
+            border-radius: 8px;
+            background-color: var(--md-surface);
+            color: var(--md-on-surface);
+            font-size: 14px;
+            margin-bottom: 12px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .dialog-input:focus {
+            border-color: var(--md-primary);
+        }
+
+        .dialog-input::placeholder {
+            color: var(--md-on-surface-variant);
+            opacity: 0.6;
+        }
+
+        .dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .dialog-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .dialog-btn-cancel {
+            background-color: transparent;
+            color: var(--md-primary);
+        }
+
+        .dialog-btn-cancel:hover {
+            background-color: var(--md-surface-variant);
+        }
+
+        .dialog-btn-confirm {
+            background-color: var(--md-primary);
+            color: var(--md-on-primary);
+        }
+
+        .dialog-btn-confirm:hover {
+            opacity: 0.9;
+        }
+
+        .dialog-btn-pick {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background-color: var(--md-primary-container);
+            color: var(--md-on-primary-container);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Loading 状态 -->
+        <div id="loading">
+            <div class="spinner"></div>
+            <div id="loading-text">正在加载编辑器...</div>
+        </div>
+
+        <!-- 编辑器容器 -->
+        <div id="editor-container" style="display: none;">
+            <div id="editor"></div>
+        </div>
+
+        <!-- 工具栏 - 底部 -->
+        <div id="toolbar" style="display: none;">
+            <!-- 源码切换 (首位, 仅在源码模式下高亮) -->
+            <button class="toolbar-btn" data-action="toggleSource" title="查看 Markdown 源码">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <polyline points="9.5 13.5 7.5 15.5 9.5 17.5"/>
+                    <polyline points="14.5 13.5 16.5 15.5 14.5 17.5"/>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 撤销/重做 -->
+            <button class="toolbar-btn" data-action="undo" title="撤销">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 10h10a5 5 0 0 1 5 5v0a5 5 0 0 1-5 5H7m-4-10l4-4m-4 4l4 4"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="redo" title="重做">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10H11a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h6m4-10l-4-4m4 4l-4 4"/>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 标题 -->
+            <button class="toolbar-btn" data-action="heading1" title="一级标题">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <text x="4" y="18" font-size="14" font-weight="bold">H1</text>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="heading2" title="二级标题">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <text x="4" y="18" font-size="14" font-weight="bold">H2</text>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="heading3" title="三级标题">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <text x="4" y="18" font-size="14" font-weight="bold">H3</text>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 文本格式 -->
+            <button class="toolbar-btn" data-action="bold" title="粗体">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                    <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="italic" title="斜体">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="4" x2="10" y2="4"/>
+                    <line x1="14" y1="20" x2="5" y2="20"/>
+                    <line x1="15" y1="4" x2="9" y2="20"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="strikethrough" title="删除线">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 4H9a3 3 0 0 0-3 3v0a3 3 0 0 0 3 3h6"/>
+                    <path d="M8 20h7a3 3 0 0 0 3-3v0a3 3 0 0 0-3-3H6"/>
+                    <line x1="4" y1="12" x2="20" y2="12"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="code" title="行内代码">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6"/>
+                    <polyline points="8 6 2 12 8 18"/>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 列表 -->
+            <button class="toolbar-btn" data-action="bulletList" title="无序列表">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="9" y1="6" x2="20" y2="6"/>
+                    <line x1="9" y1="12" x2="20" y2="12"/>
+                    <line x1="9" y1="18" x2="20" y2="18"/>
+                    <circle cx="4" cy="6" r="1.5" fill="currentColor"/>
+                    <circle cx="4" cy="12" r="1.5" fill="currentColor"/>
+                    <circle cx="4" cy="18" r="1.5" fill="currentColor"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="orderedList" title="有序列表">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="10" y1="6" x2="21" y2="6"/>
+                    <line x1="10" y1="12" x2="21" y2="12"/>
+                    <line x1="10" y1="18" x2="21" y2="18"/>
+                    <text x="2" y="8" font-size="8" fill="currentColor">1</text>
+                    <text x="2" y="14" font-size="8" fill="currentColor">2</text>
+                    <text x="2" y="20" font-size="8" fill="currentColor">3</text>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="taskList" title="任务列表">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="5" width="6" height="6" rx="1"/>
+                    <path d="M5 8l1 1 2-2"/>
+                    <line x1="12" y1="8" x2="21" y2="8"/>
+                    <rect x="3" y="13" width="6" height="6" rx="1"/>
+                    <line x1="12" y1="16" x2="21" y2="16"/>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 引用和代码块 -->
+            <button class="toolbar-btn" data-action="blockquote" title="引用">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="codeBlock" title="代码块">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <polyline points="8 10 6 12 8 14"/>
+                    <polyline points="16 10 18 12 16 14"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 链接和图片 -->
+            <button class="toolbar-btn" data-action="link" title="链接">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="image" title="图片">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 分割线 -->
+            <button class="toolbar-btn" data-action="hr" title="分割线">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- 复制/粘贴/全选 -->
+            <button class="toolbar-btn" data-action="copy" title="复制">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="paste" title="粘贴">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                    <rect x="8" y="2" width="8" height="4" rx="1"/>
+                </svg>
+            </button>
+            <button class="toolbar-btn" data-action="selectAll" title="全选">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 8V5a2 2 0 0 1 2-2h3"/>
+                    <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                    <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+                    <path d="M21 16v3a2 2 0 0 1-2 2h-3"/>
+                    <rect x="8" y="8" width="8" height="8" rx="1"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 图片插入对话框 -->
+    <div id="image-dialog" class="dialog-overlay">
+        <div class="dialog">
+            <div class="dialog-title">插入图片</div>
+            <button class="dialog-btn dialog-btn-pick" id="pick-image-btn">
+                从相册选择
+            </button>
+            <input type="text" class="dialog-input" id="image-url" placeholder="或输入图片网址">
+            <input type="text" class="dialog-input" id="image-alt" placeholder="图片描述（可选）">
+            <div class="dialog-actions">
+                <button class="dialog-btn dialog-btn-cancel" id="image-cancel">取消</button>
+                <button class="dialog-btn dialog-btn-confirm" id="image-confirm">插入</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 链接插入对话框 -->
+    <div id="link-dialog" class="dialog-overlay">
+        <div class="dialog">
+            <div class="dialog-title">插入链接</div>
+            <input type="text" class="dialog-input" id="link-text" placeholder="链接文字">
+            <input type="text" class="dialog-input" id="link-url" placeholder="链接地址">
+            <div class="dialog-actions">
+                <button class="dialog-btn dialog-btn-cancel" id="link-cancel">取消</button>
+                <button class="dialog-btn dialog-btn-confirm" id="link-confirm">插入</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Compatibility for older Android WebView that does not support ES2022 Object.hasOwn
+        if (typeof Object.hasOwn !== 'function') {
+            Object.hasOwn = function (obj, prop) {
+                return Object.prototype.hasOwnProperty.call(Object(obj), prop);
+            };
+        }
+
+        if (typeof Array.prototype.at !== 'function') {
+            Object.defineProperty(Array.prototype, 'at', {
+                value: function(index) {
+                    var len = this.length >>> 0;
+                    var relative = Number(index) || 0;
+                    var k = relative < 0 ? len + relative : relative;
+                    return (k < 0 || k >= len) ? undefined : this[k];
+                },
+                writable: true,
+                configurable: true
+            });
+        }
+    </script>
+    <script src="editor.bundle.js"></script>
+</body>
+</html>
+

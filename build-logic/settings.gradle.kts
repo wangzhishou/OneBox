@@ -1,0 +1,39 @@
+/*
+ * ImageToolbox is an image editor for android
+ * Copyright (c) 2024 T8RIN (Malik Mukhametzyanov)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
+@file:Suppress("UnstableApiUsage")
+
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+        maven ("https://jitpack.io")
+        maven ("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") // 腾讯云
+        maven ("https://maven.aliyun.com/repository/public") // 阿里云
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
+    }
+    versionCatalogs {
+        create("libs") {
+            // make sure the file rootProject/gradle/verison.toml exists!
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
+}
+
+rootProject.name = "build-logic"
+include(":convention")

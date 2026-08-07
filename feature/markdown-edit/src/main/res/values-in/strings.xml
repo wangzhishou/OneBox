@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">Sisipkan Blok Kode</string>
+    <string name="code_label">Kode</string>
+    <string name="enter_code_hint">Masukkan kode...</string>
+    <string name="select_language">Bahasa:</string>
+    <string name="search_language">Cari bahasa</string>
+    <string name="search_language_hint">Ketik nama bahasa...</string>
+    <string name="or_enter_image_url">Atau masukkan URL gambar:</string>
+    <string name="image_description_label">Deskripsi gambar</string>
+    <string name="image_description_hint">Teks alternatif untuk gambar</string>
+    <string name="image_url_label">URL gambar</string>
+    <string name="link_text_placeholder">Teks untuk ditampilkan</string>
+    <string name="resize_image">Ubah Ukuran Gambar</string>
+    <string name="width">Lebar</string>
+    <string name="original_width">Lebar asli: %1$dpx</string>
+    <string name="markdown_placeholder">Mulai mengetik...</string>
+</resources>

@@ -1,0 +1,22 @@
+当你需要对用户设备上的文件进行处理，但不知道文件路径时，调用 pick_files 让用户通过系统文件选择器手动选取。
+
+适用场景：
+- 用户说"处理这个文件"、"帮我转换这张图片"，但没有提供路径
+- 需要读取、上传、转换、分析用户本地文件
+- 需要让用户明确指定输入文件
+
+参数说明：
+- message: 展示给用户的提示语，解释为什么需要选取文件（可选）
+- mimeType: 文件类型过滤，如 image/*、application/pdf、*/* 等（默认 */*）
+- multiple: 是否允许多选，默认 false
+
+返回格式：
+- 用户选取：{"status":"selected","count":N,"files":["file://...",...]}
+- 用户取消：{"status":"cancelled"}
+
+返回的 files 数组都是 file:// URI，可直接传给 read_multiple_files / process_file / browse_files 等工具。
+
+注意：
+- 已知文件路径时直接使用，不要重复弹选择器打扰用户
+- 只有在确实需要用户选择时才调用此工具
+

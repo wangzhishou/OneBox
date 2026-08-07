@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">Selecione ou adicione uma categoria primeiro</string>
+    <string name="schedule_section_title">Agendar</string>
+    <string name="action_open_schedule">Abrir central de agendamentos</string>
+    <string name="action_create_schedule">Criar agendamento local</string>
+    <string name="schedule_creating">Criando agendamento…</string>
+    <string name="schedule_missing_due_date">Defina uma data de vencimento para esta tarefa primeiro</string>
+    <string name="schedule_created_success">Agendamento local criado</string>
+    <string name="schedule_created_failed">Falha ao criar agendamento. Tente novamente mais tarde</string>
+    <string name="dialog_delete_category_title">Excluir categoria</string>
+    <string name="dialog_delete_category_message">Tem certeza de que deseja excluir \"%1$s\"?\nTodas as tarefas nesta categoria também serão excluídas.</string>
+    <string name="dialog_delete_task_message">Tem certeza de que deseja excluir \"%1$s\"?</string>
+    <string name="cd_switch_to_list_view">Alternar para visualização em lista</string>
+    <string name="cd_switch_to_grid_view">Alternar para visualização em grade</string>
+    <string name="cd_edit_mode_done">Concluído</string>
+    <string name="label_status">Status</string>
+    <string name="status_overdue">Atrasado</string>
+    <string name="category_unnamed">Categoria sem nome</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d tarefas excluídas</string>
+    <string name="action_delete_selected_cd">Excluir selecionados</string>
+    <string name="error_todo_not_found">Tarefa não encontrada</string>
+    <string name="error_category_not_found">Categoria não encontrada</string>
+    <string name="error_load_failed">Falha ao carregar</string>
+    <string name="cd_task_completed">Concluída</string>
+    <string name="cd_task_pending">Pendente</string>
+    <string name="cd_add_star">Adicionar estrela</string>
+    <string name="cd_remove_star">Remover estrela</string>
+    <string name="date_today">Hoje</string>
+    <string name="date_yesterday">Ontem</string>
+    <string name="date_days_ago">Há %1$d dias</string>
+    <string name="date_tomorrow">Amanhã</string>
+    <string name="date_days_later">Em %1$d dias</string>
+</resources>

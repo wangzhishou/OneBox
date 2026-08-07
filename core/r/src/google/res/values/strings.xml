@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Google Play channel: login agreement links point to the overseas domain oneboxable.com -->
+<resources>
+    <string name="user_privacy"><![CDATA[I have read and agree to the <a href="https://www.oneboxable.com/agreement/global.html">User Agreement</a> and <a href="https://www.oneboxable.com/privacy/global.html">Privacy Policy</a>.]]></string>
+</resources>

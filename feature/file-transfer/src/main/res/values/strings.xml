@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <!-- Title and basic text -->
+    <string name="file_transfer_title">File Transfer</string>
+    <string name="file_transfer_description">Access your phone files from a browser</string>
+
+    <!-- Tabs -->
+    <string name="file_transfer_tab_transfer">Transfer</string>
+    <string name="file_transfer_tab_chat">Chat</string>
+
+    <!-- Chat -->
+    <string name="file_transfer_chat_empty">No messages yet</string>
+    <string name="file_transfer_chat_empty_title">No chat messages yet</string>
+    <string name="file_transfer_chat_empty_guide">1. Start the service on the Transfer tab and make sure your phone and computer are on the same Wi-Fi network.\n2. Open the access address in a computer browser, or scan the QR code.\n3. Send text or upload files from the web chat page, and they will appear on your phone instantly.\n\nTip: You can also send files directly from your phone to the browser.</string>
+    <string name="file_transfer_chat_empty_no_session">No browser connection detected yet. Open the access address on your computer first.</string>
+    <string name="file_transfer_chat_empty_server_stopped">Service is not running. Go to the Transfer tab and tap Start Service first.</string>
+    <string name="file_transfer_chat_empty_server_running">Service is running. Open the access address on your computer to start chatting and transferring files.</string>
+    <string name="file_transfer_chat_input_hint">Type a message…</string>
+    <string name="file_transfer_cd_send">Send</string>
+    <string name="file_transfer_file_default_name">File</string>
+    <string name="file_transfer_tap_to_open">Tap to open</string>
+    <string name="file_transfer_cd_qr_code">QR code</string>
+
+    <!-- Service status -->
+    <string name="server_status_stopped">Service stopped</string>
+    <string name="server_status_running">Service running</string>
+    <string name="server_status_starting">Starting…</string>
+    <string name="server_status_error">Service error</string>
+
+    <!-- Action buttons -->
+    <string name="start_server">Start Service</string>
+    <string name="stop_server">Stop Service</string>
+    <string name="copy_address">Copy Address</string>
+    <string name="refresh">Refresh</string>
+
+    <!-- Info display -->
+    <string name="access_address">Access Address</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="qr_code_hint">Scan the QR code with a browser or type the address manually on your computer</string>
+    <string name="connected_clients">Connected: %d</string>
+    <string name="no_connection">No connections yet</string>
+
+    <!-- Wi-Fi / network -->
+    <string name="file_transfer_wifi_connected">Wi-Fi connected</string>
+    <string name="file_transfer_wifi_disconnected">Wi-Fi not connected</string>
+    <string name="file_transfer_ip_prefix">IP: %s</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="port_setting">Port</string>
+    <string name="port_hint">Default port: 8080</string>
+    <string name="password_protection">Password Protection</string>
+    <string name="password_hint">Leave blank to disable password protection</string>
+    <string name="allow_upload">Allow Uploads</string>
+    <string name="allow_upload_hint">Allow files to be uploaded from your computer to your phone</string>
+    <string name="root_directory">Root Directory</string>
+    <string name="select_directory">Select Directory</string>
+
+    <!-- Tips -->
+    <string name="address_copied">Address copied to clipboard</string>
+    <string name="server_started">Service started</string>
+    <string name="server_stopped">Service stopped</string>
+    <string name="server_error">Failed to start service: %s</string>
+    <string name="network_unavailable">Network unavailable. Please connect to Wi-Fi.</string>
+    <string name="storage_permission_required">Storage permission is required to access files</string>
+    <string name="notification_permission_required">Notification permission is required to keep the service running in the background</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">File Transfer Service</string>
+    <string name="notification_channel_description">Shows the current file transfer service status</string>
+    <string name="notification_title">File transfer service is running</string>
+    <string name="notification_content">Access address: %s</string>
+    <string name="notification_stop">Stop</string>
+
+    <!-- Web UI text -->
+    <string name="web_title">File Transfer</string>
+    <string name="web_upload">Upload File</string>
+    <string name="web_download">Download</string>
+    <string name="web_back">Go Up</string>
+    <string name="web_empty_folder">Folder is empty</string>
+    <string name="web_drag_hint">Drag files here to upload</string>
+    <string name="web_uploading">Uploading…</string>
+    <string name="web_upload_success">Upload successful</string>
+    <string name="web_upload_failed">Upload failed</string>
+    <string name="web_password_required">Please enter the access password</string>
+    <string name="web_password_incorrect">Incorrect password</string>
+
+    <!-- File info -->
+    <string name="file_size_bytes">%d B</string>
+    <string name="file_size_kb">%.1f KB</string>
+    <string name="file_size_mb">%.1f MB</string>
+    <string name="file_size_gb">%.1f GB</string>
+    <string name="files_count">%d files</string>
+    <string name="folders_count">%d folders</string>
+
+    <!-- Permissions -->
+    <string name="permission_required_title">Permission Required</string>
+    <string name="permission_required_message">The file transfer service needs storage permission to read and write files. Please grant access.</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="cancel">Cancel</string>
+</resources>

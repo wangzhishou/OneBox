@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Ağ bağlantısı başarısız, lütfen ağ ayarlarını kontrol edin</string>
+    <string name="error_request_timeout">İstek zaman aşımına uğradı, lütfen daha sonra tekrar deneyin</string>
+    <string name="error_cannot_connect_server">Sunucuya bağlanılamıyor, lütfen ağı kontrol edin</string>
+    <string name="error_ssl_failed">Güvenli bağlantı başarısız, lütfen ağ ayarlarını kontrol edin</string>
+    <string name="error_network_exception">Ağ hatası, lütfen ağ bağlantısını kontrol edin</string>
+    <string name="error_request_cancelled">İstek iptal edildi</string>
+    <string name="error_data_parse_failed">Veri ayrıştırma başarısız, lütfen daha sonra tekrar deneyin</string>
+    <string name="error_bad_request">Geçersiz istek parametreleri</string>
+    <string name="error_unauthorized">Yetkisiz erişim, lütfen tekrar giriş yapın</string>
+    <string name="error_forbidden">Erişim engellendi</string>
+    <string name="error_not_found">İstenen kaynak bulunamadı</string>
+    <string name="error_server_internal">Sunucu iç hatası</string>
+    <string name="error_server_maintenance">Sunucu bakımda, lütfen daha sonra tekrar deneyin</string>
+    <string name="error_server_code">Sunucu hatası (%d)</string>
+    <string name="error_client_error">İstek hatası, lütfen parametreleri kontrol edin</string>
+    <string name="error_server_error">Sunucu hatası, lütfen daha sonra tekrar deneyin</string>
+    <string name="error_request_failed">İstek başarısız, lütfen daha sonra tekrar deneyin</string>
+    <string name="error_request_failed_with_message">İstek başarısız: %s</string>
+    <string name="error_unknown">Bilinmeyen hata</string>
+    <string name="no_error_body">Hata gövdesi yok</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

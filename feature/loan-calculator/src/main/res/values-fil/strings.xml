@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">Calculator ng Utang</string>
+    <string name="loan_calc_amount_label">Halaga ng utang ($)</string>
+    <string name="loan_calc_amount_hint">Mangyaring ilagay ang halaga.</string>
+    <string name="loan_calc_term_label">Tagal ng utang</string>
+    <string name="loan_calc_term_hint">Pagpili</string>
+    <string name="loan_calc_rate_label">Taunang rate ng interes (%)</string>
+    <string name="loan_calc_rate_hint">Ilagay ang taunang rate ng interes</string>
+    <string name="loan_calc_method_label">Paraan ng pagbabayad</string>
+    <string name="loan_calc_method_hint">Pagpili</string>
+    <string name="loan_calc_start">Simulan ang Pagkalkula</string>
+    <string name="loan_calc_cancel">Kanselahin</string>
+    <string name="loan_method_equal_installment">Maghintay lang.</string>
+    <string name="loan_method_equal_installment_desc">Buwanang bayad, punong halaga, interes</string>
+    <string name="loan_method_equal_payment">Katumbas</string>
+    <string name="loan_method_equal_payment_desc">Ang buwanang bayad ay pareho, tumataas ang punong halaga at bumababa ang interes bawat buwan</string>
+    <string name="loan_method_equal_principal">Katumbas na punong halaga</string>
+    <string name="loan_method_equal_principal_desc">Bumababa ang buwanang bayad, pareho ang punong halaga bawat buwan at bumababa ang interes bawat buwan</string>
+    <string name="loan_method_interest_first">Isulat natin ito.</string>
+    <string name="loan_method_interest_first_desc">Buwanang fixed na interes at buong punong halaga na dapat bayaran</string>
+    <string name="loan_result_monthly_payment">Buwanang average na pagbabayad</string>
+    <string name="loan_result_total_interest">Kabuuang interes</string>
+    <string name="loan_result_total_repayment">Kabuuang pagbabayad</string>
+    <string name="loan_result_schedule_title">Plano ng pagbabayad</string>
+    <string name="loan_result_month">Panahon</string>
+    <string name="loan_result_monthly_col">Buwanang pagbabayad</string>
+    <string name="loan_result_principal_col">Punong halaga</string>
+    <string name="loan_result_interest_col">Interes</string>
+    <string name="loan_result_remaining_col">Natitirang punong halaga</string>
+    <string name="loan_input_error_amount">Mangyaring maglagay ng wastong halaga ng utang</string>
+    <string name="loan_input_error_term">Mangyaring piliin ang tagal ng utang</string>
+    <string name="loan_input_error_rate">Maglagay ng wastong taunang rate ng interes</string>
+    <string name="loan_input_error_method">Mangyaring pumili kung paano magbabayad.</string>
+    <string name="loan_term_months">%1$d buwan</string>
+    <string name="loan_term_years">%1$d taon (%2$d buwan)</string>
+    <string name="loan_term_picker_title">Pumili ng termino ng utang</string>
+</resources>

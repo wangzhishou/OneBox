@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">उपयोगिता कैलकुलेटर</string>
+    <string name="unit_converter_from">से</string>
+    <string name="unit_converter_to">तक</string>
+    <string name="unit_converter_swap">विनिमय</string>
+    <string name="unit_converter_other_conversions">अन्य %s रूपांतरण</string>
+    <string name="unit_converter_currency_disclaimer">• विनिमय दर संदर्भ मान के रूप में, वास्तविक समय डेटा नहीं</string>
+    <string name="unit_converter_select_category">रूपांतरण प्रकार चुनें</string>
+    <string name="unit_converter_select_unit">इकाई चुनें</string>
+    <string name="unit_converter_close">बंद करें</string>
+    <string name="unit_converter_tab_calculator">कैलकुलेटर</string>
+    <string name="unit_converter_tab_converter">कनवर्टर</string>
+    <string name="unit_converter_tab_relative">सापेक्ष</string>
+    <string name="unit_converter_invalid_expression">अमान्य अभिव्यक्ति, कृपया जांचें और पुनः प्रयास करें</string>
+    <string name="unit_converter_calculator_expression">वर्तमान अभिव्यक्ति</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">कोष्ठक, प्रतिशत और अंकगणितीय संचालन का समर्थन करता है</string>
+    <string name="unit_converter_calculator_history">हाल की गणनाएँ</string>
+    <string name="unit_converter_clear">साफ़ करें</string>
+    <string name="unit_converter_backspace">बैकस्पेस</string>
+    <string name="unit_converter_equals">गणना करें</string>
+    <string name="unit_converter_reference_subtitle">वर्तमान इनपुट के लिए सामान्य संदर्भ मान तुरंत देखें</string>
+    <string name="unit_converter_relative_path">संबंध पथ</string>
+    <string name="unit_converter_relative_path_placeholder">मैं</string>
+    <string name="unit_converter_relative_identity">मेरी पहचान</string>
+    <string name="unit_converter_relative_identity_hint">पहचान जीवनसाथी और ससुराल के रिश्तों को प्रभावित करती है</string>
+    <string name="unit_converter_relative_male">पुरुष</string>
+    <string name="unit_converter_relative_female">महिला</string>
+    <string name="unit_converter_relative_generate">संबंध उत्पन्न करें</string>
+    <string name="unit_converter_relative_empty">कृपया पहले संबंध पथ चुनें</string>
+    <string name="unit_converter_converter_clear">साफ़ करें</string>
+    <string name="unit_converter_relative_result_label">परिणामी रिश्तेदारी</string>
+    <string name="unit_converter_negate">नकारें</string>
+</resources>

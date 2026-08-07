@@ -1,0 +1,1 @@
+控制内置浏览器的导航操作。支持打开指定 URL、前进/后退/刷新页面、新建标签页、切换标签页和关闭标签页。操作前需要确保浏览器已打开（Screen.WebBrowser）。action 参数指定操作类型，url 参数在 open_url/new_tab 时必填，tab_id 在 switch_tab/close_tab 时必填。返回操作结果 JSON。

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 屏幕坏点检测 -->
+    <string name="dead_pixel_test">屏幕坏点检测</string>
+    <string name="dead_pixel_test_description">使用纯色轮播检测屏幕坏点与卡点</string>
+
+    <!-- 测试颜色名称 -->
+    <string name="dead_pixel_color_white">白色</string>
+    <string name="dead_pixel_color_black">黑色</string>
+    <string name="dead_pixel_color_red">红色</string>
+    <string name="dead_pixel_color_green">绿色</string>
+    <string name="dead_pixel_color_blue">蓝色</string>
+
+    <!-- 操作提示 -->
+    <string name="dead_pixel_hint">点击切换颜色 · 左右滑动可前后切换</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">显示网格</string>
+    <string name="dead_pixel_grid_off">隐藏网格</string>
+    <string name="dead_pixel_auto_play">自动轮播</string>
+    <string name="dead_pixel_auto_stop">停止轮播</string>
+    <string name="dead_pixel_fullscreen">全屏检测</string>
+    <string name="dead_pixel_exit_fullscreen">退出全屏</string>
+
+    <!-- 使用说明对话框 -->
+    <string name="dead_pixel_guide_title">如何检测坏点？</string>
+    <string name="dead_pixel_guide_content">屏幕将依次显示白、黑、红、绿、蓝五种纯色背景。\n\n• 白色背景：观察是否有黑色暗点（死点）\n• 黑色背景：观察是否有亮点（卡点）\n• 彩色背景：观察是否有其他颜色的异常像素\n\n点击屏幕切换到下一个颜色，也可开启自动轮播。建议在暗光环境下进行检测以获得最佳效果。</string>
+    <string name="dead_pixel_guide_start">开始检测</string>
+</resources>
+

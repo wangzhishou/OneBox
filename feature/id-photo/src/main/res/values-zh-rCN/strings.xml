@@ -1,0 +1,115 @@
+<resources>
+    <!-- 页面标题 -->
+    <string name="id_photo_title">证件照制作</string>
+
+    <!-- Tab 标题 -->
+    <string name="id_photo_tab_selected_images">已选图片 (%d)</string>
+    <string name="id_photo_tab_select_size">选择尺寸</string>
+
+    <!-- 导出设置 -->
+    <string name="id_photo_export_settings">导出设置</string>
+    <string name="id_photo_background_color">背景颜色</string>
+    <string name="id_photo_export_format">导出格式</string>
+    <string name="id_photo_quality">质量</string>
+    <string name="id_photo_quality_tip">质量越高，文件越大，建议 90%% 以上</string>
+    <string name="id_photo_print_info">打印说明</string>
+    <string name="id_photo_print_info_tip">按 300 DPI 打印时，输出尺寸为证件照标准尺寸</string>
+
+    <!-- 尺寸管理 -->
+    <string name="id_photo_size_template">尺寸模板</string>
+    <string name="id_photo_edit_size">编辑尺寸</string>
+    <string name="id_photo_add_size">新增尺寸</string>
+    <string name="id_photo_manage_size">管理尺寸</string>
+
+    <!-- 操作 -->
+    <string name="id_photo_select_size">选择尺寸</string>
+    <string name="id_photo_select_background">选择背景色</string>
+    <string name="id_photo_crop">裁剪</string>
+    <string name="id_photo_save">保存</string>
+    <string name="id_photo_settings">设置</string>
+    <string name="id_photo_delete">删除</string>
+    <string name="id_photo_selected">已选中</string>
+
+    <!-- 占位符 -->
+    <string name="id_photo_select_image_hint">请选择图片</string>
+    <string name="id_photo_background_label">背景色:</string>
+
+    <!-- 背景色名称 -->
+    <string name="id_photo_bg_white">白色</string>
+    <string name="id_photo_bg_blue">蓝色</string>
+    <string name="id_photo_bg_red">红色</string>
+    <string name="id_photo_bg_gradient_blue">渐变蓝</string>
+
+    <!-- 尺寸管理操作 -->
+    <string name="id_photo_reset_default">恢复默认</string>
+    <string name="id_photo_delete_count">删除(%d)</string>
+    <string name="id_photo_cancel">取消</string>
+    <string name="id_photo_edit">编辑</string>
+    <string name="id_photo_add">新增</string>
+    <string name="id_photo_create">创建</string>
+
+    <!-- 尺寸编辑器字段 -->
+    <string name="id_photo_field_name">名称</string>
+    <string name="id_photo_field_width_mm">宽度(mm)</string>
+    <string name="id_photo_field_height_mm">高度(mm)</string>
+    <string name="id_photo_field_width_px">宽度(px)</string>
+    <string name="id_photo_field_height_px">高度(px)</string>
+    <string name="id_photo_field_description_optional">描述（可选）</string>
+
+    <!-- 分辨率提示 -->
+    <string name="id_photo_resolution_sufficient">图片分辨率充足 (%1$d×%2$d)</string>
+    <string name="id_photo_resolution_insufficient">⚠️ 图片分辨率不足，可能影响打印质量 (%1$d×%2$d &lt; %3$d×%4$d)</string>
+
+    <!-- 预置尺寸名称（按播种进库的中文 name 映射） -->
+    <string name="id_photo_preset_size_one_inch">一寸</string>
+    <string name="id_photo_preset_size_small_one_inch">小一寸</string>
+    <string name="id_photo_preset_size_large_one_inch">大一寸</string>
+    <string name="id_photo_preset_size_two_inch">二寸</string>
+    <string name="id_photo_preset_size_small_two_inch">小二寸</string>
+    <string name="id_photo_preset_size_large_two_inch">大二寸</string>
+    <string name="id_photo_preset_size_us_visa">美国签证</string>
+    <string name="id_photo_preset_size_korea_visa">韩国签证</string>
+    <string name="id_photo_preset_size_drivers_license">驾驶证</string>
+    <string name="id_photo_preset_size_social_security">社保证</string>
+    <string name="id_photo_preset_size_civil_service">公务员</string>
+    <string name="id_photo_preset_size_putonghua">普通话水平测试</string>
+    <string name="id_photo_preset_size_gaokao">高考报名</string>
+    <string name="id_photo_preset_size_ncre">计算机等级考试</string>
+    <string name="id_photo_preset_size_teacher_cert">教师资格证</string>
+    <string name="id_photo_preset_size_nurse">护士执业资格</string>
+    <string name="id_photo_preset_size_accounting">会计资格</string>
+    <string name="id_photo_preset_size_tax_advisor">税务师职业资格</string>
+    <string name="id_photo_preset_size_judicial">国家司法考试</string>
+    <string name="id_photo_preset_size_health_professional">卫生专业技术资格</string>
+    <string name="id_photo_preset_size_insurance">保险执业证</string>
+    <string name="id_photo_preset_size_tour_guide">导游证</string>
+    <string name="id_photo_preset_size_chsi">学信网</string>
+    <string name="id_photo_preset_size_id_card">身份证</string>
+
+    <!-- 预置尺寸描述 -->
+    <string name="id_photo_preset_size_desc_one_inch">常用于身份证、驾驶证</string>
+    <string name="id_photo_preset_size_desc_small_one_inch">常用于简历、考试报名</string>
+    <string name="id_photo_preset_size_desc_large_one_inch">常用于护照、港澳通行证</string>
+    <string name="id_photo_preset_size_desc_two_inch">常用于护照、签证</string>
+    <string name="id_photo_preset_size_desc_small_two_inch">常用于中国护照</string>
+    <string name="id_photo_preset_size_desc_large_two_inch">常用于部分签证</string>
+    <string name="id_photo_preset_size_desc_us_visa">美国签证专用</string>
+    <string name="id_photo_preset_size_desc_korea_visa">韩国签证专用</string>
+    <string name="id_photo_preset_size_desc_drivers_license">驾驶证专用</string>
+    <string name="id_photo_preset_size_desc_social_security">社保卡专用</string>
+    <string name="id_photo_preset_size_desc_civil_service">公务员考试专用</string>
+    <string name="id_photo_preset_size_desc_putonghua">普通话水平测试专用</string>
+    <string name="id_photo_preset_size_desc_gaokao">高考报名专用</string>
+    <string name="id_photo_preset_size_desc_ncre">计算机等级考试专用</string>
+    <string name="id_photo_preset_size_desc_teacher_cert">教师资格证报名专用</string>
+    <string name="id_photo_preset_size_desc_nurse">护士执业资格报名专用</string>
+    <string name="id_photo_preset_size_desc_accounting">初级会计资格考试专用</string>
+    <string name="id_photo_preset_size_desc_tax_advisor">税务师职业资格考试专用</string>
+    <string name="id_photo_preset_size_desc_judicial">国家司法考试专用</string>
+    <string name="id_photo_preset_size_desc_health_professional">卫生专业技术资格考试专用</string>
+    <string name="id_photo_preset_size_desc_insurance">保险执业证专用</string>
+    <string name="id_photo_preset_size_desc_tour_guide">导游证专用</string>
+    <string name="id_photo_preset_size_desc_chsi">学信网图像采集专用</string>
+    <string name="id_photo_preset_size_desc_id_card">第二代身份证专用</string>
+</resources>
+

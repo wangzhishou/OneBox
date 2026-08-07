@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Program Merkezi</string>
+    <string name="schedule_sync_card_title">Senkronizasyon altyapısı hazır</string>
+    <string name="schedule_sync_card_description">Bu modül zaten kendi etkinlik modeline, senkronizasyon imleci durumuna ve yapılacaklar köprüsü alanlarına sahiptir; böylece Google Takvim daha sonra almanak veya yapılacaklar modüllerini kirletmeden eklenebilir.</string>
+    <string name="schedule_sync_ready">Senkronizasyon imleci kaydedildi</string>
+    <string name="schedule_sync_not_connected">Hesap bağlı değil</string>
+    <string name="schedule_event_count_label">%1$d etkinlik</string>
+    <string name="schedule_linked_task_chip">Yapılacaklar bağlamı bağlandı</string>
+    <string name="schedule_last_error_label">Son hata: %1$s</string>
+    <string name="schedule_action_card_title">Temiz bir yerel etkinlik alanıyla başlayın</string>
+    <string name="schedule_action_create_local">Yerel etkinlik oluştur</string>
+    <string name="schedule_action_create_focus">Odak tarihinden etkinlik oluştur</string>
+    <string name="schedule_action_open_todo">Yapılacakları aç</string>
+    <string name="schedule_action_open_calendar">Takvimi aç</string>
+    <string name="schedule_event_section_title">Etkinlikler</string>
+    <string name="schedule_empty_title">Henüz program etkinliği yok</string>
+    <string name="schedule_empty_description">Önce yerel etkinliklerle başlayın, ardından Google hesap kimlik doğrulaması, delta senkronizasyonu ve çakışma yönetimini kademeli olarak ekleyin.</string>
+    <string name="schedule_provider_local">Yerel</string>
+    <string name="schedule_provider_system">Sistem Takvimi</string>
+    <string name="schedule_provider_google">Google Takvim</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Yalnızca yerel</string>
+    <string name="schedule_status_pending_upload">Yükleme bekleniyor</string>
+    <string name="schedule_status_synced">Senkronize edildi</string>
+    <string name="schedule_status_pending_delete">Silme bekleniyor</string>
+    <string name="schedule_status_conflict">Çakışma</string>
+    <string name="schedule_status_failed">Senkronizasyon başarısız</string>
+    <string name="schedule_linked_task_badge">Görev köprüsü</string>
+    <string name="schedule_quick_event_title">Yeni yerel etkinlik</string>
+    <string name="schedule_focus_event_title">Odak etkinliği</string>
+    <string name="schedule_linked_task_description">Bağlı yapılacak: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Doğrudan sistem takvimine yaz</string>
+    <string name="schedule_export_to_system_calendar">Sistem takvimine ekle</string>
+    <string name="schedule_system_calendar_unavailable">Bu cihazda takvim uygulaması yok</string>
+    <string name="schedule_no_writable_calendar">Yazılabilir sistem takvimi yok</string>
+    <string name="schedule_saved_to_system_calendar">Sistem takvimine kaydedildi</string>
+    <string name="schedule_save_to_system_calendar_failed">Sistem takvimine kaydedilemedi. Lütfen daha sonra tekrar deneyin</string>
+    <string name="schedule_calendar_permission_denied">Doğrudan sistem takvimine yazmak için takvim izni gereklidir</string>
+    <string name="schedule_choose_calendar_title">Hedef takvimi seçin</string>
+    <string name="schedule_calendar_primary_badge">Birincil</string>
+    <string name="schedule_dialog_close">Kapat</string>
+    <string name="schedule_permission_dialog_title">Takvim izni gerekli</string>
+    <string name="schedule_permission_dialog_message">Sistem takvimine doğrudan yazmak için sistem ayarlarından takvim okuma/yazma izinlerini etkinleştirin.</string>
+    <string name="schedule_open_settings">Ayarları aç</string>
+</resources>

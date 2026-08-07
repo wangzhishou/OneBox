@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cloud_storage_sync_checklist">
+        <item>本地目录绑定与云端 Bucket / Share 映射</item>
+        <item>上传 / 下载 / 双向同步方向选择</item>
+        <item>冲突处理策略与覆盖确认</item>
+        <item>后台任务队列、进度和失败重试</item>
+    </string-array>
+</resources>

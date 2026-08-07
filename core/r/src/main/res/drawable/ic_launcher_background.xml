@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 2x2 棋盘格瓦片 -->
+    <!-- 底层：白色背景 -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#80FFFFFF" />
+            <size android:width="20dp" android:height="20dp" />
+        </shape>
+    </item>
+    <!-- 左上角灰色方格 -->
+    <item
+        android:width="10dp"
+        android:height="10dp"
+        android:left="0dp"
+        android:top="0dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#80CCCCCC" />
+        </shape>
+    </item>
+    <!-- 右下角灰色方格 -->
+    <item
+        android:width="10dp"
+        android:height="10dp"
+        android:left="10dp"
+        android:top="10dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#80CCCCCC" />
+        </shape>
+    </item>
+</layer-list>
+

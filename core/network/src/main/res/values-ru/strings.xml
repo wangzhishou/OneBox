@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Ошибка сетевого подключения, проверьте настройки сети</string>
+    <string name="error_request_timeout">Время ожидания запроса истекло, попробуйте позже</string>
+    <string name="error_cannot_connect_server">Не удается подключиться к серверу, проверьте сеть</string>
+    <string name="error_ssl_failed">Ошибка защищенного соединения, проверьте настройки сети</string>
+    <string name="error_network_exception">Сетевая ошибка, проверьте подключение к сети</string>
+    <string name="error_request_cancelled">Запрос отменен</string>
+    <string name="error_data_parse_failed">Ошибка разбора данных, попробуйте позже</string>
+    <string name="error_bad_request">Недопустимые параметры запроса</string>
+    <string name="error_unauthorized">Не авторизован, войдите снова</string>
+    <string name="error_forbidden">Доступ запрещен</string>
+    <string name="error_not_found">Запрошенный ресурс не найден</string>
+    <string name="error_server_internal">Внутренняя ошибка сервера</string>
+    <string name="error_server_maintenance">Сервер на обслуживании, попробуйте позже</string>
+    <string name="error_server_code">Ошибка сервера (%d)</string>
+    <string name="error_client_error">Ошибка запроса, проверьте параметры</string>
+    <string name="error_server_error">Ошибка сервера, попробуйте позже</string>
+    <string name="error_request_failed">Запрос не удался, попробуйте позже</string>
+    <string name="error_request_failed_with_message">Запрос не удался: %s</string>
+    <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="no_error_body">Нет тела ошибки</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

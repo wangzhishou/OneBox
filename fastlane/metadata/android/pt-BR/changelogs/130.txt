@@ -1,0 +1,5 @@
+• Novos idiomas: espanhol e português brasileiro
+• O seletor de localização agora usa o preenchimento automático do Google Places
+• Personalize os prompts do sistema livremente, sem VIP
+• A página web de transferência de arquivos agora está localizada
+• Correções de bugs e melhorias de desempenho

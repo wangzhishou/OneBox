@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">Calculadora de Empréstimo</string>
+    <string name="loan_calc_amount_label">Valor do empréstimo ($)</string>
+    <string name="loan_calc_amount_hint">Por favor, insira o valor.</string>
+    <string name="loan_calc_term_label">Prazo do empréstimo</string>
+    <string name="loan_calc_term_hint">Seleção</string>
+    <string name="loan_calc_rate_label">Taxa de juros anual (%)</string>
+    <string name="loan_calc_rate_hint">Insira a taxa de juros anual</string>
+    <string name="loan_calc_method_label">Método de pagamento</string>
+    <string name="loan_calc_method_hint">Seleção</string>
+    <string name="loan_calc_start">Iniciar Cálculo</string>
+    <string name="loan_calc_cancel">Cancelar</string>
+    <string name="loan_method_equal_installment">Aguarde.</string>
+    <string name="loan_method_equal_installment_desc">Parcela mensal, principal, juros</string>
+    <string name="loan_method_equal_payment">Equivalente</string>
+    <string name="loan_method_equal_payment_desc">Parcela mensal igual, principal aumenta e juros diminuem mensalmente</string>
+    <string name="loan_method_equal_principal">Principal equivalente</string>
+    <string name="loan_method_equal_principal_desc">Diminuição mensal na parcela, mesmo principal por mês e diminuição mensal dos juros</string>
+    <string name="loan_method_interest_first">Vamos anotar.</string>
+    <string name="loan_method_interest_first_desc">Juros fixos mensais e principal total devido</string>
+    <string name="loan_result_monthly_payment">Pagamentos médios mensais</string>
+    <string name="loan_result_total_interest">Juros totais</string>
+    <string name="loan_result_total_repayment">Total de pagamentos</string>
+    <string name="loan_result_schedule_title">Plano de pagamento</string>
+    <string name="loan_result_month">Período</string>
+    <string name="loan_result_monthly_col">Pagamento mensal</string>
+    <string name="loan_result_principal_col">Principal</string>
+    <string name="loan_result_interest_col">Juros</string>
+    <string name="loan_result_remaining_col">Principal restante</string>
+    <string name="loan_input_error_amount">Insira um valor de empréstimo válido</string>
+    <string name="loan_input_error_term">Selecione o período do empréstimo</string>
+    <string name="loan_input_error_rate">Insira uma taxa de juros anual válida</string>
+    <string name="loan_input_error_method">Por favor, escolha como pagar.</string>
+    <string name="loan_term_months">%1$d meses</string>
+    <string name="loan_term_years">%1$d anos (%2$d meses)</string>
+    <string name="loan_term_picker_title">Selecione o prazo do empréstimo</string>
+</resources>

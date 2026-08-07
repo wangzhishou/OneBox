@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">Blessing Wall</string>
+    <string name="blessing_wall_sub">A daily tap · Good luck follows</string>
+    <string name="blessing_record_title">Blessing Records</string>
+    <string name="blessing_tab_wooden_fish">Quiet Moment</string>
+    <string name="blessing_tab_wealth_god">Good Luck</string>
+    <string name="blessing_tab_guanyin">Peace &amp; Joy</string>
+    <string name="blessing_tab_incense">Sincere Wish</string>
+    <string name="blessing_subtitle_wooden_fish">A daily tap · Worries fade</string>
+    <string name="blessing_subtitle_wealth_god">Good luck stays · All goes well</string>
+    <string name="blessing_subtitle_guanyin">Kindness within · Peace and joy</string>
+    <string name="blessing_subtitle_incense">Sincere wishes · Fortune abound</string>
+    <string name="blessing_btn_wooden_fish">Tap, luck +1</string>
+    <string name="blessing_btn_wealth_god">Tap, fortune +1</string>
+    <string name="blessing_btn_guanyin">Tap, peace +1</string>
+    <string name="blessing_btn_incense">Tap, blessing +1</string>
+    <string name="blessing_stat_wooden_fish">Today\'s count</string>
+    <string name="blessing_stat_wealth_god">Today\'s count</string>
+    <string name="blessing_stat_guanyin">Today\'s count</string>
+    <string name="blessing_stat_incense">Today\'s count</string>
+    <string name="blessing_count_unit">times</string>
+    <string name="blessing_total_count">%1$d times</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">Daily Blessing Stats</string>
+    <string name="blessing_empty_state">No blessing records yet</string>
+    <string name="blessing_wish_edit">Edit note</string>
+    <string name="blessing_wish_input_label">Note</string>
+    <string name="blessing_wish_save">Save</string>
+    <string name="blessing_wish_placeholder">No note yet</string>
+    <string name="blessing_tab_text_edit">Edit title</string>
+    <string name="blessing_tab_title_label">Title</string>
+    <string name="blessing_tab_subtitle_label">Subtitle</string>
+    <string name="blessing_tab_text_reset_hint">Leave blank to restore default</string>
+    <string name="blessing_history_readonly_hint">History, view only</string>
+    <string name="blessing_record_note_prefix">Note: %1$s</string>
+    <string name="blessing_sound_on">Sound on</string>
+    <string name="blessing_sound_off">Sound off</string>
+    <string name="blessing_share">Share</string>
+</resources>

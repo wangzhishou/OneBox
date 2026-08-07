@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">चेक-इन</string>
+    <string name="habit_tab_checkin">चेक-इन</string>
+    <string name="habit_tab_stats">आँकड़े</string>
+    <string name="habit_add">आदत जोड़ें</string>
+    <string name="habit_summary_rate">चेक-इन दर</string>
+    <string name="habit_summary_done">पूर्ण</string>
+    <string name="habit_summary_missed">लंबित</string>
+    <string name="habit_today_section">आज के चेक-इन</string>
+    <string name="habit_edit_mode">संपादित करें</string>
+    <string name="habit_edit_done">पूर्ण</string>
+    <string name="habit_empty_list">अभी कोई आदत नहीं है। बनाने के लिए + दबाएँ।</string>
+    <string name="habit_delete_habit">आदत हटाएँ</string>
+    <string-array name="habit_weekdays_short">
+        <item>सोम</item>
+        <item>मंगल</item>
+        <item>बुध</item>
+        <item>गुरु</item>
+        <item>शुक्र</item>
+        <item>शनि</item>
+        <item>रवि</item>
+    </string-array>
+    <string name="habit_stats_week_trend">इस सप्ताह</string>
+    <string name="habit_stats_distribution">वितरण</string>
+    <string name="habit_stats_rate_trend">चेक-इन दर प्रवृत्ति</string>
+    <string name="habit_stats_not_started">शुरू नहीं</string>
+    <string name="habit_stats_total_habits">कुल आदतें</string>
+    <string name="habit_stats_empty">अभी कोई डेटा नहीं</string>
+    <string name="habit_last_7_days">पिछले 7 दिन</string>
+    <string name="habit_last_30_days">पिछले 30 दिन</string>
+    <string name="habit_add_title">नई आदत</string>
+    <string name="habit_edit_title">आदत संपादित करें</string>
+    <string name="habit_edit_name_label">आदत का नाम</string>
+    <string name="habit_edit_name_hint">आदत का नाम दर्ज करें</string>
+    <string name="habit_edit_icon_label">आइकन चुनें</string>
+    <string name="habit_edit_color_label">रंग चुनें</string>
+    <string name="habit_edit_color_auto_hint">चयन न होने पर स्वतः थीम रंग</string>
+    <string name="habit_edit_repeat_label">दोहराएँ</string>
+    <string name="habit_repeat_daily">हर दिन</string>
+    <string name="habit_repeat_weekly">साप्ताहिक</string>
+    <string name="habit_repeat_monthly">मासिक</string>
+    <string name="habit_repeat_custom">कस्टम</string>
+    <string name="habit_repeat_daily_desc">हर दिन दोहराता है</string>
+    <string name="habit_repeat_times_week_label">प्रति सप्ताह बार</string>
+    <string name="habit_repeat_times_month_label">प्रति माह बार</string>
+    <string name="habit_edit_reminder_label">अनुस्मारक</string>
+    <string name="habit_edit_reminder_none">कोई अनुस्मारक नहीं</string>
+    <string name="habit_edit_reminder_subtitle">इस समय मुझे चेक-इन करने की याद दिलाएँ</string>
+    <string name="habit_edit_reminder_clear">साफ़ करें</string>
+    <string name="habit_edit_note_label">नोट (वैकल्पिक)</string>
+    <string name="habit_edit_note_hint">नोट जोड़ें...</string>
+    <string name="habit_edit_stats_label">चेक-इन आँकड़े ट्रैक करें</string>
+    <string name="habit_edit_stats_subtitle">चालू होने पर चेक-इन दर और स्ट्रीक ट्रैक करें</string>
+    <string name="habit_save">सहेजें</string>
+    <string name="habit_name_required">कृपया आदत का नाम दर्ज करें</string>
+    <string name="habit_saved">सहेजा गया</string>
+    <string name="habit_freq_daily">दैनिक</string>
+    <string name="habit_freq_weekly_times">सप्ताह में %1$d बार</string>
+    <string name="habit_freq_monthly_times">महीने में %1$d बार</string>
+    <string name="habit_preset_drink_water">8 गिलास पानी पिएँ</string>
+    <string name="habit_preset_wake_early">जल्दी उठें</string>
+    <string name="habit_preset_exercise">व्यायाम करें</string>
+    <string name="habit_preset_reading">पढ़ना</string>
+    <string name="habit_preset_meditation">ध्यान</string>
+    <string name="habit_preset_no_stay_up">देर रात तक न जागें</string>
+    <string name="habit_notification_channel_name">आदत अनुस्मारक</string>
+    <string name="habit_notification_channel_desc">दैनिक आदत चेक-इन अनुस्मारक</string>
+    <string name="habit_notification_text">चेक-इन का समय: %1$s</string>
+    <string name="habit_streak_days">%1$d-दिन की श्रृंखला</string>
+    <string name="agent_tool_add_habit_title">आदत जोड़ें</string>
+    <string name="agent_tool_add_habit_summary">आदत ट्रैकर में नई आदत बनाएं</string>
+    <string name="agent_tool_add_habit_description">आदत ट्रैकर में नई आदत बनाएं। कस्टम नाम, आइकन, दोहराव आवृत्ति (दैनिक / सप्ताह में N बार / महीने में N बार / कस्टम सप्ताह के दिन), वैकल्पिक दैनिक अनुस्मारक समय और नोट का समर्थन करता है।</string>
+    <string name="agent_tool_add_habit_param_name">आदत का नाम, जैसे \"8 गिलास पानी पिएं\"</string>
+    <string name="agent_tool_add_habit_param_icon">आइकन कुंजी, इनमें से एक: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">दोहराव प्रकार: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">सप्ताह या महीने में बार, 1-30, केवल weekly_times / monthly_times के लिए</string>
+    <string name="agent_tool_add_habit_param_weekdays">custom_weekdays के लिए सप्ताह के दिन, 1-7 की सरणी (1=सोमवार, 7=रविवार)</string>
+    <string name="agent_tool_add_habit_param_remind_time">दैनिक अनुस्मारक समय HH:mm (24 घंटे) में, वैकल्पिक</string>
+    <string name="agent_tool_add_habit_param_note">वैकल्पिक नोट</string>
+    <string name="agent_tool_add_habit_success">आदत बनाई गई</string>
+    <string name="agent_tool_add_habit_failed">आदत बनाने में विफल: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>आदत</item>
+        <item>आदत जोड़ें</item>
+        <item>आदत बनाएं</item>
+        <item>चेक-इन</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>हर दिन 8 गिलास पानी पीने की आदत जोड़ें</item>
+        <item>सप्ताह में 3 बार दौड़ने की आदत बनाएं</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">आदत चेक-इन करें</string>
+    <string name="agent_tool_check_in_habit_summary">किसी दिए गए दिन के लिए आदत चेक-इन करें</string>
+    <string name="agent_tool_check_in_habit_description">किसी दिए गए दिन (डिफ़ॉल्ट आज) के लिए आदत को चेक-इन के रूप में चिह्नित करें। habit_id या फ़ज़ी habit_name द्वारा आदत खोजें। उसी दिन दो बार चेक-इन करना कोई क्रिया नहीं है।</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">आदत आईडी। जब ज्ञात हो तो इसे प्राथमिकता दें; अन्यथा habit_name का उपयोग किया जाता है</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">आदत का नाम, habit_id अनुपस्थित होने पर फ़ज़ी मिलान</string>
+    <string name="agent_tool_check_in_habit_param_date">चेक-इन तिथि, yyyy-MM-dd, डिफ़ॉल्ट आज, भविष्य में नहीं होनी चाहिए</string>
+    <string name="agent_tool_check_in_habit_success">चेक इन किया गया</string>
+    <string name="agent_tool_check_in_habit_already">उस दिन पहले ही चेक इन किया जा चुका है</string>
+    <string name="agent_tool_check_in_habit_not_found">आदत नहीं मिली: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">चेक इन विफल: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>आदत</item>
+        <item>चेक इन</item>
+        <item>पूर्ण</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>आज मेरी दौड़ने की आदत के लिए चेक इन करें</item>
+        <item>कल के लिए पढ़ने को पूर्ण के रूप में चिह्नित करें</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">आदतें क्वेरी करें</string>
+    <string name="agent_tool_query_habits_summary">आज की स्थिति और साप्ताहिक चेक-इन दर के साथ आदतों की सूची बनाएं</string>
+    <string name="agent_tool_query_habits_description">आदत सूची क्वेरी करें: प्रत्येक आदत के लिए आज की चेक-इन स्थिति, दैनिक आदत की लकीरें, और इस सप्ताह की समग्र चेक-इन दर।</string>
+    <string name="agent_tool_query_habits_section_today">आज</string>
+    <string name="agent_tool_query_habits_weekly_rate">साप्ताहिक दर</string>
+    <string name="agent_tool_query_habits_empty">अभी तक कोई आदत नहीं</string>
+    <string name="agent_tool_query_habits_failed">आदतें क्वेरी करने में विफल: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>आदत</item>
+        <item>चेक-इन स्थिति</item>
+        <item>लकीर</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>आज कौन सी आदतें बाकी हैं?</item>
+        <item>इस सप्ताह मेरी आदत चेक-इन दर दिखाएं</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">तारीख</string>
+    <string name="agent_tool_habit_label_repeat">दोहराएं</string>
+    <string name="agent_tool_habit_label_reminder">अनुस्मारक</string>
+    <string name="agent_tool_habit_label_name">नाम</string>
+    <string name="agent_tool_habit_open_link">हैबिट ट्रैकर खोलें</string>
+    <string name="agent_tool_habit_edit_link">आदत देखें</string>
+    <string name="agent_tool_unknown_error">अज्ञात त्रुटि</string>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">Кредитный калькулятор</string>
+    <string name="loan_calc_amount_label">Сумма кредита ($)</string>
+    <string name="loan_calc_amount_hint">Пожалуйста, введите сумму.</string>
+    <string name="loan_calc_term_label">Срок кредита</string>
+    <string name="loan_calc_term_hint">Выбор</string>
+    <string name="loan_calc_rate_label">Годовая процентная ставка (%)</string>
+    <string name="loan_calc_rate_hint">Введите годовую процентную ставку</string>
+    <string name="loan_calc_method_label">Метод погашения</string>
+    <string name="loan_calc_method_hint">Выбор</string>
+    <string name="loan_calc_start">Начать расчет</string>
+    <string name="loan_calc_cancel">Отмена</string>
+    <string name="loan_method_equal_installment">Подождите.</string>
+    <string name="loan_method_equal_installment_desc">Ежемесячный платеж, основной долг, проценты</string>
+    <string name="loan_method_equal_payment">Эквивалентный</string>
+    <string name="loan_method_equal_payment_desc">Ежемесячный платеж одинаков, основной долг увеличивается, проценты уменьшаются каждый месяц</string>
+    <string name="loan_method_equal_principal">Эквивалентный основной долг</string>
+    <string name="loan_method_equal_principal_desc">Ежемесячный платеж уменьшается, основной долг одинаков каждый месяц, проценты уменьшаются</string>
+    <string name="loan_method_interest_first">Давайте запишем.</string>
+    <string name="loan_method_interest_first_desc">Фиксированные проценты ежемесячно и полный основной долг по истечении срока</string>
+    <string name="loan_result_monthly_payment">Средние ежемесячные платежи</string>
+    <string name="loan_result_total_interest">Общие проценты</string>
+    <string name="loan_result_total_repayment">Общая сумма выплат</string>
+    <string name="loan_result_schedule_title">План погашения</string>
+    <string name="loan_result_month">Период</string>
+    <string name="loan_result_monthly_col">Ежемесячный платеж</string>
+    <string name="loan_result_principal_col">Основной долг</string>
+    <string name="loan_result_interest_col">Проценты</string>
+    <string name="loan_result_remaining_col">Остаток основного долга</string>
+    <string name="loan_input_error_amount">Пожалуйста, введите действительную сумму кредита</string>
+    <string name="loan_input_error_term">Пожалуйста, выберите срок кредита</string>
+    <string name="loan_input_error_rate">Введите действительную годовую процентную ставку</string>
+    <string name="loan_input_error_method">Пожалуйста, выберите способ погашения.</string>
+    <string name="loan_term_months">%1$d месяцев</string>
+    <string name="loan_term_years">%1$d лет (%2$d месяцев)</string>
+    <string name="loan_term_picker_title">Выберите срок кредита</string>
+</resources>

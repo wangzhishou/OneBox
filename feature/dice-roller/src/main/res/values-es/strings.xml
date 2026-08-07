@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">Lanza los dados.</string>
+    <string name="dice_roller_roll">Agítalo.</string>
+    <string name="dice_roller_history">Historial</string>
+    <string name="dice_roller_history_empty">No hay registro histórico.</string>
+    <string name="dice_roller_clear_history">Borrar registro</string>
+    <string name="dice_roller_clear_confirm">¿Confirmas que se borren todos los registros históricos?</string>
+    <string name="dice_roller_confirm">Confirmar.</string>
+    <string name="dice_roller_cancel">Cancelar</string>
+    <string name="dice_roller_count">Número de dados</string>
+    <string name="dice_roller_type">Tipo de dado</string>
+    <string name="dice_roller_total">Puntos totales</string>
+    <string name="dice_roller_shake_hint">Agita tu teléfono o haz clic en \"Agitar\".</string>
+    <string name="dice_roller_result_prefix">Resultados:</string>
+    <string name="dice_roller_description">Dados de mesa.</string>
+</resources>

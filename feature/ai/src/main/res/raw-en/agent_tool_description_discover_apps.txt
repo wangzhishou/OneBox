@@ -1,0 +1,27 @@
+App discovery: search navigable app pages by keyword.
+
+Use cases:
+- Find a page entry / screen by name or function (e.g. "theme settings", "notes", "todo list")
+- Need the deeplink to suggest to the user as a clickable link
+- Need candidates for navigate_app_screen to actually open
+
+Parameters:
+- keywords: array of search keywords (each independently fuzzy-matched)
+- limit: optional, max results (default 8, max 20)
+
+Response JSON shape:
+{"apps":[{"t":"Page title","u":"onebox://...","d":"one-line description","c":"category","r":"route_key"}]}
+
+Field meaning:
+- t (required): page title
+- u (required): deeplink URI (use with [t](u) markdown link in the user-facing reply)
+- d (optional): one-line description — disambiguates pages with the same title (e.g. "theme_settings" vs "display_settings")
+- c (optional): category / list type (e.g. "note", "todo", "bookkeeping", "screen")
+- r (optional): stable routeKey identifier (use with navigate_app_screen)
+
+Result handling:
+- Default: render results as clickable markdown links ([Title](onebox://...)) so the user can tap
+- Only call navigate_app_screen when the user explicitly says "open it" / "take me there" / "jump to X"
+- For finding callable tools (not pages), use discover_tools instead
+
+> Note: this tool searches navigable **pages**. To discover callable **tools**, use discover_tools.
