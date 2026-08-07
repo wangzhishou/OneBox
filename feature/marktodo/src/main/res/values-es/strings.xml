@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">Selecciona o añade una categoría primero</string>
+    <string name="schedule_section_title">Programar</string>
+    <string name="action_open_schedule">Abrir centro de programación</string>
+    <string name="action_create_schedule">Crear programación local</string>
+    <string name="schedule_creating">Creando programación…</string>
+    <string name="schedule_missing_due_date">Establece una fecha de vencimiento para esta tarea primero</string>
+    <string name="schedule_created_success">Programación local creada</string>
+    <string name="schedule_created_failed">No se pudo crear la programación. Inténtalo de nuevo más tarde</string>
+    <string name="dialog_delete_category_title">Eliminar categoría</string>
+    <string name="dialog_delete_category_message">¿Seguro que quieres eliminar \\"%1$s\\"?\nTodas las tareas bajo esta categoría también se eliminarán.</string>
+    <string name="dialog_delete_task_message">¿Seguro que quieres eliminar \\"%1$s\\"?</string>
+    <string name="cd_switch_to_list_view">Cambiar a vista de lista</string>
+    <string name="cd_switch_to_grid_view">Cambiar a vista de cuadrícula</string>
+    <string name="cd_edit_mode_done">Hecho</string>
+    <string name="label_status">Estado</string>
+    <string name="status_overdue">Vencida</string>
+    <string name="category_unnamed">Categoría sin nombre</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d tareas eliminadas</string>
+    <string name="action_delete_selected_cd">Eliminar seleccionadas</string>
+    <string name="error_todo_not_found">Tarea no encontrada</string>
+    <string name="error_category_not_found">Categoría no encontrada</string>
+    <string name="error_load_failed">Error al cargar</string>
+    <string name="cd_task_completed">Completada</string>
+    <string name="cd_task_pending">Pendiente</string>
+    <string name="cd_add_star">Añadir estrella</string>
+    <string name="cd_remove_star">Quitar estrella</string>
+    <string name="date_today">Hoy</string>
+    <string name="date_yesterday">Ayer</string>
+    <string name="date_days_ago">Hace %1$d días</string>
+    <string name="date_tomorrow">Mañana</string>
+    <string name="date_days_later">En %1$d días</string>
+</resources>

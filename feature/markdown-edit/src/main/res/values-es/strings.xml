@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">Insertar bloque de código</string>
+    <string name="code_label">Código</string>
+    <string name="enter_code_hint">Introducir código...</string>
+    <string name="select_language">Idioma:</string>
+    <string name="search_language">Buscar idioma</string>
+    <string name="search_language_hint">Escribe el nombre de un idioma...</string>
+    <string name="or_enter_image_url">O introduce una URL de imagen:</string>
+    <string name="image_description_label">Descripción de la imagen</string>
+    <string name="image_description_hint">Texto alternativo para la imagen</string>
+    <string name="image_url_label">URL de la imagen</string>
+    <string name="link_text_placeholder">Texto a mostrar</string>
+    <string name="resize_image">Redimensionar imagen</string>
+    <string name="width">Ancho</string>
+    <string name="original_width">Ancho original: %1$dpx</string>
+    <string name="markdown_placeholder">Empieza a escribir...</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">Universalrechner</string>
+    <string name="unit_converter_from">VON</string>
+    <string name="unit_converter_to">ZU</string>
+    <string name="unit_converter_swap">Umrechnen</string>
+    <string name="unit_converter_other_conversions">Andere %s-Umrechnung</string>
+    <string name="unit_converter_currency_disclaimer">• Wechselkurs als Referenzwert, keine Echtzeitdaten</string>
+    <string name="unit_converter_select_category">Umrechnungstyp wählen</string>
+    <string name="unit_converter_select_unit">Einheit wählen</string>
+    <string name="unit_converter_close">Schließen</string>
+    <string name="unit_converter_tab_calculator">Rechner</string>
+    <string name="unit_converter_tab_converter">Umrechner</string>
+    <string name="unit_converter_tab_relative">Relativ</string>
+    <string name="unit_converter_invalid_expression">Ungültiger Ausdruck, bitte überprüfen und erneut versuchen</string>
+    <string name="unit_converter_calculator_expression">Aktueller Ausdruck</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">Unterstützt Klammern, Prozent- und Rechenoperationen</string>
+    <string name="unit_converter_calculator_history">Letzte Berechnungen</string>
+    <string name="unit_converter_clear">Löschen</string>
+    <string name="unit_converter_backspace">Rücktaste</string>
+    <string name="unit_converter_equals">Berechnen</string>
+    <string name="unit_converter_reference_subtitle">Referenzwerte für die aktuelle Eingabe schnell anzeigen</string>
+    <string name="unit_converter_relative_path">Beziehungspfad</string>
+    <string name="unit_converter_relative_path_placeholder">Ich</string>
+    <string name="unit_converter_relative_identity">Meine Identität</string>
+    <string name="unit_converter_relative_identity_hint">Identität beeinflusst Ehepartner- und Schwiegerverwandtschaftsbezeichnungen</string>
+    <string name="unit_converter_relative_male">Männlich</string>
+    <string name="unit_converter_relative_female">Weiblich</string>
+    <string name="unit_converter_relative_generate">Beziehung generieren</string>
+    <string name="unit_converter_relative_empty">Bitte wählen Sie zuerst einen Beziehungspfad</string>
+    <string name="unit_converter_converter_clear">Löschen</string>
+    <string name="unit_converter_relative_result_label">Resultierende Verwandtschaft</string>
+    <string name="unit_converter_negate">Negieren</string>
+</resources>

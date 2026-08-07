@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">Bertahan 30 detik</string>
+    <string name="survive_30s_ready">Siap?</string>
+    <string name="survive_30s_instruction">Seret bola biru untuk menghindari rintangan\nBergerak bebas ke segala arah. Bertahan 30 detik untuk menang!</string>
+    <string name="survive_30s_instruction_bonus">Menghindar dekat membangun daya. Setiap 3 kali nyaris terkena memberi 1 perisai, dan perisai memblokir satu pukulan untukmu.</string>
+    <string name="survive_30s_start">Mulai</string>
+    <string name="survive_30s_game_over">Game Berakhir!</string>
+    <string name="survive_30s_survived_time">Bertahan: %.1f dtk</string>
+    <string name="survive_30s_new_record">Rekor Baru!</string>
+    <string name="survive_30s_win">Kamu Menang!</string>
+    <string name="survive_30s_win_desc">Kamu bertahan 30 detik!</string>
+    <string name="survive_30s_retry">Ulangi</string>
+    <string name="survive_30s_best_time">Terbaik: %.1f dtk</string>
+    <string name="survive_30s_phase">Fase</string>
+    <string name="survive_30s_phase_warmup">Pemanasan</string>
+    <string name="survive_30s_phase_rush">Serangan</string>
+    <string name="survive_30s_phase_storm">Badai</string>
+    <string name="survive_30s_shield">Perisai</string>
+    <string name="survive_30s_charge">Daya</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">Dekat</string>
+    <string name="survive_30s_near_miss_count">Menghindar dekat: %1$d</string>
+    <string name="survive_30s_danger_low">Stabil untuk saat ini. Jaga jarakmu.</string>
+    <string name="survive_30s_danger_medium">Tekanan meningkat. Bersiaplah untuk memotong.</string>
+    <string name="survive_30s_danger_high">Bahaya! Kumpulkan daya dengan menghindar dekat atau segera keluar.</string>
+</resources>

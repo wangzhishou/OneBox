@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">Hesap Makinesi</string>
+    <string name="unit_converter_from">KAYNAK</string>
+    <string name="unit_converter_to">HEDEF</string>
+    <string name="unit_converter_swap">Dönüştür</string>
+    <string name="unit_converter_other_conversions">Diğer %s dönüşümü</string>
+    <string name="unit_converter_currency_disclaimer">• Döviz kuru referans değeridir, gerçek zamanlı veri değildir</string>
+    <string name="unit_converter_select_category">Dönüşüm Türünü Seçin</string>
+    <string name="unit_converter_select_unit">Birim Seçin</string>
+    <string name="unit_converter_close">Kapat</string>
+    <string name="unit_converter_tab_calculator">Hesap Makinesi</string>
+    <string name="unit_converter_tab_converter">Dönüştürücü</string>
+    <string name="unit_converter_tab_relative">Akraba</string>
+    <string name="unit_converter_invalid_expression">Geçersiz ifade, lütfen kontrol edip tekrar deneyin</string>
+    <string name="unit_converter_calculator_expression">Geçerli ifade</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">Parantez, yüzde ve aritmetik işlemleri destekler</string>
+    <string name="unit_converter_calculator_history">Son hesaplamalar</string>
+    <string name="unit_converter_clear">Temizle</string>
+    <string name="unit_converter_backspace">Geri Al</string>
+    <string name="unit_converter_equals">Hesapla</string>
+    <string name="unit_converter_reference_subtitle">Geçerli girdi için ortak referans değerlerini hızlıca gözden geçirin</string>
+    <string name="unit_converter_relative_path">Akrabalık yolu</string>
+    <string name="unit_converter_relative_path_placeholder">Ben</string>
+    <string name="unit_converter_relative_identity">Kimliğim</string>
+    <string name="unit_converter_relative_identity_hint">Kimlik, eş ve kayın akrabalık unvanlarını etkiler</string>
+    <string name="unit_converter_relative_male">Erkek</string>
+    <string name="unit_converter_relative_female">Kadın</string>
+    <string name="unit_converter_relative_generate">Akrabalık oluştur</string>
+    <string name="unit_converter_relative_empty">Lütfen önce bir akrabalık yolu seçin</string>
+    <string name="unit_converter_converter_clear">Temizle</string>
+    <string name="unit_converter_relative_result_label">Sonuç Akrabalığı</string>
+    <string name="unit_converter_negate">Reddet</string>
+</resources>

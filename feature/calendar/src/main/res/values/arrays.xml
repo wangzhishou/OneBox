@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- lunar_calendar_query 工具 -->
+    <string-array name="agent_tool_lunar_calendar_keywords">
+        <item>农历</item>
+        <item>阴历</item>
+        <item>黄历</item>
+        <item>万年历</item>
+        <item>宜忌</item>
+        <item>时辰</item>
+        <item>节气</item>
+        <item>生肖</item>
+        <item>星座</item>
+        <item>干支</item>
+    </string-array>
+
+    <string-array name="agent_tool_lunar_calendar_examples">
+        <item>查询今天农历是什么日子</item>
+        <item>2026年6月1日的农历日期和宜忌</item>
+        <item>今天适合做什么，不适合做什么</item>
+    </string-array>
+
+    <!-- bazi_calculation 工具 -->
+    <string-array name="agent_tool_bazi_keywords">
+        <item>八字</item>
+        <item>生辰八字</item>
+        <item>四柱</item>
+        <item>命理</item>
+        <item>排盘</item>
+        <item>五行</item>
+        <item>十神</item>
+        <item>大运</item>
+        <item>流年</item>
+    </string-array>
+
+    <string-array name="agent_tool_bazi_examples">
+        <item>帮我排一下1990年5月20日早上8点的八字</item>
+        <item>1995年农历正月初一中午12点出生，八字是什么</item>
+        <item>查询八字五行分布和喜用神</item>
+    </string-array>
+
+    <!-- auspicious_day_query 工具 -->
+    <string-array name="agent_tool_auspicious_day_keywords">
+        <item>择日</item>
+        <item>吉日</item>
+        <item>黄道吉日</item>
+        <item>宜嫁娶</item>
+        <item>宜搬家</item>
+        <item>宜开业</item>
+        <item>忌日</item>
+        <item>避讳</item>
+    </string-array>
+
+    <string-array name="agent_tool_auspicious_day_examples">
+        <item>最近有哪些日子适合搬家</item>
+        <item>帮我找一下未来30天内适合结婚的日子</item>
+        <item>最近哪些日子不宜出行</item>
+    </string-array>
+
+    <!-- lunar_solar_conversion 工具 -->
+    <string-array name="agent_tool_lunar_convert_keywords">
+        <item>农历转换</item>
+        <item>公历转农历</item>
+        <item>农历转公历</item>
+        <item>阳历阴历</item>
+        <item>闰月</item>
+        <item>日期换算</item>
+    </string-array>
+
+    <string-array name="agent_tool_lunar_convert_examples">
+        <item>1990年5月20日对应的农历日期是多少</item>
+        <item>农历2026年五月初一是公历几号</item>
+        <item>把农历1988年闰六月十五转换成公历</item>
+    </string-array>
+
+</resources>

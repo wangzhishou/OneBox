@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Network Connection Errors -->
+    <string name="error_network_connection_failed">Network connection failed, please check network settings</string>
+    <string name="error_request_timeout">Request timeout, please try again later</string>
+    <string name="error_cannot_connect_server">Unable to connect to server, please check network</string>
+    <string name="error_ssl_failed">Secure connection failed, please check network settings</string>
+    <string name="error_network_exception">Network exception, please check network connection</string>
+    <string name="error_request_cancelled">Request cancelled</string>
+    <string name="error_data_parse_failed">Data parsing failed, please try again later</string>
+
+    <!-- HTTP Errors -->
+    <string name="error_bad_request">Invalid request parameters</string>
+    <string name="error_unauthorized">Unauthorized, please login again</string>
+    <string name="error_forbidden">Access forbidden</string>
+    <string name="error_not_found">Requested resource not found</string>
+    <string name="error_server_internal">Internal server error</string>
+    <string name="error_server_maintenance">Server under maintenance, please try again later</string>
+    <string name="error_server_code">Server error (%d)</string>
+    <string name="error_client_error">Request error, please check parameters</string>
+    <string name="error_server_error">Server error, please try again later</string>
+    <string name="error_request_failed">Request failed, please try again later</string>
+    <string name="error_request_failed_with_message">Request failed: %s</string>
+    <string name="error_unknown">Unknown error</string>
+
+    <!-- Others -->
+    <string name="no_error_body">No error body</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>
+

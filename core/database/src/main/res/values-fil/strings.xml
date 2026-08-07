@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">Default na System Prompt ng Chat</string>
+    <string name="sys_prompt_default_desc">Default na mga panuntunan ng system para sa chat</string>
+    <string name="sys_prompt_agent_create_title">System Prompt sa Paggawa ng Agent</string>
+    <string name="sys_prompt_agent_create_desc">Built-in na system prompt para sa paggawa ng mga Agent</string>
+    <string name="sys_prompt_prompt_create_title">System Prompt sa Paggawa ng Prompt</string>
+    <string name="sys_prompt_prompt_create_desc">Built-in na system prompt para sa paggawa ng mga Prompt</string>
+    <string name="sys_prompt_bazi_title">System Prompt sa Pagsusuri ng BaZi Chart</string>
+    <string name="sys_prompt_bazi_desc">Built-in na system prompt para sa pagsusuri ng BaZi (Apat na Haligi) chart</string>
+    <string name="sys_prompt_xiangqi_title">System Prompt sa Paglipat ng Xiangqi</string>
+    <string name="sys_prompt_xiangqi_desc">Built-in na system prompt para sa mga laban ng LLM Xiangqi (Chinese chess)</string>
+    <string name="sys_prompt_mode_ask_title">Protokol ng ASK na Q&amp;A-Lamang na Mode</string>
+    <string name="sys_prompt_mode_ask_desc">Protokol na prompt para sa pagpapatupad ng Ask mode</string>
+    <string name="sys_prompt_mode_plan_title">Protokol ng PLAN na Pagpaplano-Lamang na Mode</string>
+    <string name="sys_prompt_mode_plan_desc">Protokol na prompt para sa pagpapatupad ng Plan mode</string>
+    <string name="sys_prompt_mode_agent_title">Protokol ng AGENT na Mode ng Pagpapatupad</string>
+    <string name="sys_prompt_mode_agent_desc">Protokol na prompt para sa pagpapatupad ng Agent mode</string>
+    <string name="sys_prompt_duel_title">Mga Template ng Prompt para sa AI Duel/Interaksyon</string>
+    <string name="sys_prompt_duel_desc">Mga tagubilin ng system, mga panuntunan sa papel, at mga template ng gabay sa pagliko para sa mga AI duel at interaksyon</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">Utility Calculator</string>
+    <string name="unit_converter_from">FROM</string>
+    <string name="unit_converter_to">TO</string>
+    <string name="unit_converter_swap">Exchange</string>
+    <string name="unit_converter_other_conversions">Other %s conversion</string>
+    <string name="unit_converter_currency_disclaimer">• Exchange rate as reference value, non-real-time data</string>
+    <string name="unit_converter_select_category">Select Conversion Type</string>
+    <string name="unit_converter_select_unit">Select Unit</string>
+    <string name="unit_converter_close">Close</string>
+    <string name="unit_converter_tab_calculator">Calculator</string>
+    <string name="unit_converter_tab_converter">Converter</string>
+    <string name="unit_converter_tab_relative">Relative</string>
+    <string name="unit_converter_invalid_expression">Invalid expression, please check and try again</string>
+    <string name="unit_converter_calculator_expression">Current expression</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">Supports parentheses, percentage and arithmetic operations</string>
+    <string name="unit_converter_calculator_history">Recent calculations</string>
+    <string name="unit_converter_clear">Clear</string>
+    <string name="unit_converter_backspace">Backspace</string>
+    <string name="unit_converter_equals">Calculate</string>
+    <string name="unit_converter_reference_subtitle">Quickly review common reference values for the current input</string>
+    <string name="unit_converter_relative_path">Relationship path</string>
+    <string name="unit_converter_relative_path_placeholder">Me</string>
+    <string name="unit_converter_relative_identity">My identity</string>
+    <string name="unit_converter_relative_identity_hint">Identity affects spouse and in-law titles</string>
+    <string name="unit_converter_relative_male">Male</string>
+    <string name="unit_converter_relative_female">Female</string>
+    <string name="unit_converter_relative_generate">Generate relation</string>
+    <string name="unit_converter_relative_empty">Please choose a relationship path first</string>
+    <string name="unit_converter_converter_clear">Clear</string>
+    <string name="unit_converter_relative_result_label">Resulting Kinship</string>
+    <string name="unit_converter_negate">Negate</string>
+</resources>
+

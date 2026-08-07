@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">Pader ng Pagpapala</string>
+    <string name="blessing_wall_sub">Isang tap araw-araw · Sumusunod ang suwerte</string>
+    <string name="blessing_record_title">Mga Tala ng Pagpapala</string>
+    <string name="blessing_tab_wooden_fish">Tahimik na Sandali</string>
+    <string name="blessing_tab_wealth_god">Suwerte</string>
+    <string name="blessing_tab_guanyin">Kapayapaan at Kagalakan</string>
+    <string name="blessing_tab_incense">Taos-pusong Hangarin</string>
+    <string name="blessing_subtitle_wooden_fish">Isang tap araw-araw · Nawawala ang mga alalahanin</string>
+    <string name="blessing_subtitle_wealth_god">Mananatili ang suwerte · Magiging maayos ang lahat</string>
+    <string name="blessing_subtitle_guanyin">Kabutihan sa loob · Kapayapaan at kagalakan</string>
+    <string name="blessing_subtitle_incense">Taos-pusong hangarin · Sagana sa suwerte</string>
+    <string name="blessing_btn_wooden_fish">Tap, suwerte +1</string>
+    <string name="blessing_btn_wealth_god">Tap, kapalaran +1</string>
+    <string name="blessing_btn_guanyin">Tap, kapayapaan +1</string>
+    <string name="blessing_btn_incense">Tap, pagpapala +1</string>
+    <string name="blessing_stat_wooden_fish">Bilang ngayon</string>
+    <string name="blessing_stat_wealth_god">Bilang ngayon</string>
+    <string name="blessing_stat_guanyin">Bilang ngayon</string>
+    <string name="blessing_stat_incense">Bilang ngayon</string>
+    <string name="blessing_count_unit">beses</string>
+    <string name="blessing_total_count">%1$d beses</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">Araw-araw na Estadistika ng Pagpapala</string>
+    <string name="blessing_empty_state">Wala pang mga tala ng pagpapala</string>
+    <string name="blessing_wish_edit">I-edit ang tala</string>
+    <string name="blessing_wish_input_label">Tala</string>
+    <string name="blessing_wish_save">I-save</string>
+    <string name="blessing_wish_placeholder">Wala pang tala</string>
+    <string name="blessing_tab_text_edit">I-edit ang pamagat</string>
+    <string name="blessing_tab_title_label">Pamagat</string>
+    <string name="blessing_tab_subtitle_label">Subtitle</string>
+    <string name="blessing_tab_text_reset_hint">Iwanang blangko upang ibalik sa default</string>
+    <string name="blessing_history_readonly_hint">Kasaysayan, tingnan lamang</string>
+    <string name="blessing_record_note_prefix">Tandaan: %1$s</string>
+    <string name="blessing_sound_on">Tunog bukas</string>
+    <string name="blessing_sound_off">Tunog sarado</string>
+    <string name="blessing_share">Ibahagi</string>
+</resources>

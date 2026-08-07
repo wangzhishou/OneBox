@@ -1,0 +1,1844 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OneBox</string>
+    <string name="app_copyright">Copyright © 2024 OneBox</string>
+    <string name="app_description"><![CDATA[Hi, I\'m the developer of OneBox.
+
+Like many of you, I often found myself downloading an entire app just for one tiny feature, or jumping between different websites and tools. That experience sparked an idea: why not bring together all those handy, useful, and fun features in one place?
+
+And so, OneBox was born.]]></string>
+    <string name="app_description_download_des"><![CDATA[\n\nDownload (copy to browser): https://www.wanbaohe.com/download]]></string>
+    <string name="app_launcher_name">OneBox</string>
+    <string name="app_slogan">One Box. Everything. AI-Powered.</string>
+    <string name="dialog_title">Tip</string>
+
+
+    <!--button-->
+    <string name="button_close">Close</string>
+    <string name="button_confirm">Confirm</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_retry">Retry</string>
+    <string name="button_help">Help</string>
+    <string name="demo_navigation_deeplink_tool_title">Deeplink Examples</string>
+    <string name="demo_navigation_deeplink_tool_description">A collection of onebox:// deeplink examples for screen, action, and item types. Copy them directly or tap to test.</string>
+    <string name="demo_navigation_deeplink_section_screen">Screen Deeplinks</string>
+    <string name="demo_navigation_deeplink_section_action">Action Deeplinks</string>
+    <string name="demo_navigation_deeplink_section_item">Item Deeplinks</string>
+    <string name="demo_navigation_deeplink_copy">Copy</string>
+    <string name="demo_navigation_deeplink_open">Open</string>
+    <string name="demo_navigation_deeplink_no_item_examples">No local items available for demo. Real examples will appear once you have notes, HTML cards, or prompts.</string>
+    <string name="demo_navigation_deeplink_item_edit_format">%1$s · Edit Deeplink</string>
+    <string name="demo_navigation_deeplink_example_theme_settings">Theme Settings</string>
+    <string name="demo_navigation_deeplink_example_feedback">Feedback List</string>
+    <string name="demo_navigation_deeplink_example_create_feedback">Submit Feedback</string>
+    <string name="demo_navigation_deeplink_example_open_file_picker">Open File Picker</string>
+    <string name="demo_navigation_deeplink_example_pick_image">Pick Image</string>
+    <string name="demo_navigation_deeplink_example_pick_multiple_files">Pick Multiple Files</string>
+
+    <!--Home-->
+    <string name="home">Home</string>
+    <string name="home_description">All your tools in one place</string>
+    <string name="profile">Profile</string>
+    <string name="profile_description">Account and settings</string>
+    <string name="online">Discover</string>
+    <string name="online_description">Explore curated content</string>
+    <string name="mini_program">Mini Programs</string>
+
+    <!--search-->
+    <string name="search" translatable="false">Search</string>
+    <string name="back_button" translatable="false">Back</string>
+    <string name="search_place_holder" translatable="false">Search</string>
+    <string name="no_item_found" translatable="false">No item found</string>
+    <string name="no_search_history" translatable="false">No search history</string>
+
+    <!--AI-->
+    <string name="ai_chat_title">Chat</string>
+    <string name="ai_chat_send">Send</string>
+    <string name="ai_chat_uploading_attachments">Uploading attachments…</string>
+    <string name="ai_attachment_limit_reached">Maximum of 6 attachments allowed</string>
+    <string name="attachment_process_failed">Processing failed</string>
+    <string name="attachment_encode_failed">Encoding failed</string>
+    <string name="attachment_upload_failed">Upload failed</string>
+    <string name="attachment_read_failed">Cannot read file</string>
+    <string name="attachment_decode_failed">Cannot read image</string>
+    <string name="attachment_unsupported_type">Unsupported file type: %1$s</string>
+    <string name="cloud_storage_config_invalid">Cloud storage configuration is incomplete</string>
+    <string name="ai_system_prompt_selected_label">System Prompt:</string>
+    <string name="ai_duel_chat_title">AI Face-off</string>
+    <string name="ai_duel_chat_description">Two AIs automatically chat or debate with each other</string>
+    <string name="ai_duel_placeholder_title">AI Battle Mode</string>
+    <string name="ai_duel_placeholder_content">Enter a topic, and two AI characters will engage in multiple rounds of interaction. Choose from debate, dialogue, interview, or roleplay modes, and customize their personas and models.</string>
+    <string name="ai_duel_role_a_hint">Define this AI\'s stance, tone, and expression style</string>
+    <string name="ai_duel_role_b_hint">Define this AI\'s stance, tone, and expression style</string>
+    <string name="ai_duel_role_a">Character A</string>
+    <string name="ai_duel_role_b">Character B</string>
+    <string name="ai_duel_role_name_a_label">Display Name (optional)</string>
+    <string name="ai_duel_role_name_b_label">Display Name (optional)</string>
+    <string name="ai_duel_role_name_optional_hint">Leave blank for default</string>
+    <string name="ai_duel_choose_history_role_name">Select Saved Name</string>
+    <string name="ai_duel_choose_history_role_name_title_format">Select %1$s Saved Name</string>
+    <string name="ai_duel_history_empty">No history yet</string>
+    <string name="no_messages">No messages yet</string>
+    <string name="ai_duel_topic_hint">Topic or scenario setting (optional)</string>
+    <string name="ai_duel_start">Start</string>
+    <string name="ai_duel_stop">Stop</string>
+    <string name="ai_duel_running">Running</string>
+    <string name="ai_duel_choose_model">Select Model</string>
+    <string name="ai_duel_choose_prompt">Select Prompt</string>
+    <string name="ai_duel_mode_label">Interaction Mode</string>
+    <string name="ai_duel_mode_debate">Debate</string>
+    <string name="ai_duel_mode_dialogue">Dialogue</string>
+    <string name="ai_duel_mode_interview">Interview</string>
+    <string name="ai_duel_mode_roleplay">Roleplay</string>
+    <string name="ai_duel_mode_subtitle_debate">Set each side\'s stance and style, then let the two AIs debate the same topic. 1 round = each side speaks once.</string>
+    <string name="ai_duel_mode_subtitle_dialogue">Set each AI\'s identity and expression style for a natural, in-depth conversation. 1 round = each side speaks once.</string>
+    <string name="ai_duel_mode_subtitle_interview">Set the interviewer and interviewee for multi-round Q&amp;A. 1 round = one question and one answer.</string>
+    <string name="ai_duel_mode_subtitle_roleplay">Set character identities and relationships for scenario-based interaction. 1 round = each side advances the plot once.</string>
+    <string name="ai_duel_role_card_debate_a">Debater A</string>
+    <string name="ai_duel_role_card_debate_b">Debater B</string>
+    <string name="ai_duel_role_card_dialogue_a">Guest A</string>
+    <string name="ai_duel_role_card_dialogue_b">Guest B</string>
+    <string name="ai_duel_role_card_interview_a">Interviewer</string>
+    <string name="ai_duel_role_card_interview_b">Interviewee</string>
+    <string name="ai_duel_role_card_roleplay_a">Character 1</string>
+    <string name="ai_duel_role_card_roleplay_b">Character 2</string>
+    <string name="ai_duel_persona_label_debate">Stance &amp; Style</string>
+    <string name="ai_duel_persona_label_dialogue">Identity &amp; Expression</string>
+    <string name="ai_duel_persona_label_interview_a">Interviewer Setup</string>
+    <string name="ai_duel_persona_label_interview_b">Interviewee Setup</string>
+    <string name="ai_duel_persona_label_roleplay">Character Setup</string>
+    <string name="ai_duel_persona_hint_debate_a">e.g. Pro-AI productivity, rational tone, good at using examples</string>
+    <string name="ai_duel_persona_hint_debate_b">e.g. Human creativity is irreplaceable, sharp style, skilled at rebuttal</string>
+    <string name="ai_duel_persona_hint_dialogue_a">e.g. Product manager, user-experience focused, clear and measured</string>
+    <string name="ai_duel_persona_hint_dialogue_b">e.g. Engineering lead, cost-conscious, direct and pragmatic</string>
+    <string name="ai_duel_persona_hint_interview_a">e.g. Asks specific, layered questions; good at probing details</string>
+    <string name="ai_duel_persona_hint_interview_b">e.g. Serial entrepreneur, honest and detailed, willing to share experiences</string>
+    <string name="ai_duel_persona_hint_roleplay_a">e.g. Calm and restrained detective, observant, speaks concisely</string>
+    <string name="ai_duel_persona_hint_roleplay_b">e.g. Troubled suspect, guarded and defensive, occasionally loses composure</string>
+    <string name="ai_duel_topic_label_debate">Debate Topic</string>
+    <string name="ai_duel_topic_label_dialogue">Dialogue Topic</string>
+    <string name="ai_duel_topic_label_interview">Interview Topic</string>
+    <string name="ai_duel_topic_label_roleplay">Scene Setting</string>
+    <string name="ai_duel_topic_placeholder_debate">e.g. Will AI replace programmers?</string>
+    <string name="ai_duel_topic_placeholder_dialogue">e.g. Pros and cons of remote work</string>
+    <string name="ai_duel_topic_placeholder_interview">e.g. Interview an entrepreneur about lessons from their first failed startup</string>
+    <string name="ai_duel_topic_placeholder_roleplay">e.g. Late-night interrogation room, a detective confronts a suspect for the first time</string>
+    <string name="ai_duel_choose_history_prompt">Select Saved Prompt</string>
+    <string name="ai_duel_choose_history_prompt_title_format">Select %1$s Saved Prompt</string>
+    <string name="ai_duel_choose_history_topic">Select Saved Opening</string>
+    <string name="ai_duel_choose_history_topic_title">Select Saved Opening</string>
+    <string name="ai_prompt_picker_empty">No prompts yet. Create one!</string>
+    <string name="ai_prompt_picker_empty_search">No matching prompts. Create a new one!</string>
+    <string name="ai_prompt_picker_create">Create Prompt</string>
+    <string name="ai_duel_seed_start">Begin.</string>
+    <string name="ai_duel_opening_line_format">Opening: %1$s</string>
+    <string name="ai_duel_first_turn_instruction">Please speak first. State your position directly without repeating the prompt or instructions.</string>
+    <string name="ai_duel_selected_prompt">Prompt: %s</string>
+    <string name="ai_duel_open_config">Open Config</string>
+    <string name="ai_duel_speaker_a">A</string>
+    <string name="ai_duel_speaker_b">B</string>
+    <string name="ai_duel_running_detail_format">Running · Round %1$d/%2$d · %3$s\'s turn</string>
+    <string name="ai_duel_continue">Please continue responding and advancing the conversation.</string>
+    <string name="ai_duel_rounds">Rounds</string>
+    <string name="ai_duel_increase_rounds">Increase rounds</string>
+    <string name="ai_duel_decrease_rounds">Decrease rounds</string>
+    <string name="ai_duel_model_label">Model</string>
+    <string name="ai_duel_model_default">Tap to select model</string>
+    <string name="ai_duel_config_title">Configure AI Face-off</string>
+    <string name="ai_duel_config_subtitle">Choose an interaction mode, set up both AI characters, and start a multi-round conversation.</string>
+    <string name="ai_duel_error_persona_required">Please set personas or prompts for both characters</string>
+    <string name="ai_duel_error_model_not_selected">Please select models for both characters</string>
+    <string name="ai_duel_error_stream_timeout">Response timed out. Please try again later.</string>
+    <string name="ai_duel_sensitive_blocked">The input contains restricted content. Please revise and try again.</string>
+    <string name="ai_duel_message_stopped">Stopped</string>
+
+    <!--Latest Updates-->
+    <string name="latest_updates">Latest Updates</string>
+    <string name="recent_visits">Recent</string>
+    <string name="clear_recent_records">Clear</string>
+    <string name="recent_empty_hint">No recent activity</string>
+
+    <!--calendar-->
+    <string name="calendar">Chinese Calendar</string>
+    <string name="calendar_description">Lunar calendar, auspicious date finder, and moving date suggestions.</string>
+
+    <!--Marquee-->
+    <string name="marquee">Scrolling Marquee</string>
+    <string name="marquee_description">An interactive communication tool for outdoor events, performances, and festivals — add fun and engagement.</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_confirm">Confirm</string>
+    <string name="settings_close">Close</string>
+    <string name="settings_back">Back</string>
+    <string name="marquee_text_content">Text Content</string>
+    <string name="marquee_text_placeholder">Enter text to display</string>
+    <string name="marquee_text_color">Text Color</string>
+    <string name="marquee_background_color">Background Color</string>
+    <string name="marquee_velocity">Scroll Speed</string>
+    <string name="marquee_preview">Show Marquee</string>
+    <string name="marquee_exit_toast">Exit marquee?</string>
+    <string name="marquee_preview_title">Live Preview</string>
+    <string name="marquee_effects">Effects</string>
+    <string name="marquee_bold">Bold</string>
+    <string name="marquee_mirror">Mirror</string>
+    <string name="marquee_mirror_hint">Great for selfies</string>
+    <string name="marquee_blink">Blink</string>
+    <string name="marquee_blink_speed">Blink Speed</string>
+    <string name="marquee_blink_speed_unit">times/s</string>
+    <string name="history" translatable="false">History</string>
+
+    <!-- Marquee Mode Settings -->
+    <string name="marquee_letter_spacing">Letter Spacing</string>
+    <string name="marquee_text_spacing">Loop Interval</string>
+    <string name="marquee_typewriter_speed">Type Speed</string>
+    <string name="marquee_typewriter_speed_format">%.0f chars/s</string>
+    <string name="marquee_hold_duration">Hold Duration</string>
+    <string name="marquee_auto_page">Auto Page</string>
+    <string name="marquee_auto_page_hint">Split content by line breaks</string>
+    <string name="marquee_page_interval">Page Interval</string>
+    <string name="marquee_clock_settings">Clock Settings</string>
+    <string name="marquee_show_seconds">Show Seconds</string>
+    <string name="marquee_show_date">Show Date</string>
+    <string name="marquee_show_date_hint">Show date above the time</string>
+    <string name="marquee_24_hour">24-Hour Format</string>
+    <string name="marquee_countdown_settings">Countdown Settings</string>
+    <string name="marquee_countdown_duration">Countdown Duration</string>
+    <string name="marquee_show_millis">Show Milliseconds</string>
+    <string name="marquee_show_millis_hint">More precise countdown</string>
+    <string name="marquee_countdown_format_min_sec">%1$dm %2$02ds</string>
+    <string name="marquee_countdown_format_sec">%ds</string>
+    <string name="marquee_bouncing_speed">Bounce Speed</string>
+    <string name="marquee_presentation_style">Fullscreen Style</string>
+    <string name="marquee_preview_truncated_hint">Preview shows up to %d characters. Tap "Show Marquee" to see the full content.</string>
+    <string name="marquee_background_blink">Background Blink</string>
+    <string name="marquee_fireworks_background">Fireworks Background</string>
+    <string name="marquee_fullscreen_hint">Double-tap to toggle orientation · Pinch to zoom text</string>
+    <string name="marquee_preview_unavailable">Preview unavailable</string>
+
+    <!-- Presentation Mode Labels -->
+    <string name="marquee_mode_classic">Classic</string>
+    <string name="marquee_mode_classic_desc">Horizontal scroll</string>
+    <string name="marquee_mode_typewriter">Typewriter</string>
+    <string name="marquee_mode_typewriter_desc">Character by character</string>
+    <string name="marquee_mode_one_char">One at a Time</string>
+    <string name="marquee_mode_one_char_desc">Single character carousel</string>
+    <string name="marquee_mode_paged">Paged</string>
+    <string name="marquee_mode_paged_desc">Auto page turning</string>
+    <string name="marquee_mode_clock">Clock</string>
+    <string name="marquee_mode_clock_desc">Real-time display</string>
+    <string name="marquee_mode_countdown">Countdown</string>
+    <string name="marquee_mode_countdown_desc">Timer</string>
+    <string name="marquee_mode_bouncing">Bouncing</string>
+    <string name="marquee_mode_bouncing_desc">Bounce off edges</string>
+
+    <!--Pull to refresh-->
+    <string name="last_updated">Last updated %s</string>
+    <string name="pull_to_refresh_pull_label">Pull to refresh…</string>
+    <string name="pull_to_refresh_release_label">Release to refresh</string>
+    <string name="pull_to_refresh_refreshing_label">Refreshing…</string>
+    <string name="pull_to_refresh_complete_label">Up to date</string>
+    <string name="d_seconds_ago">%d seconds ago</string>
+    <string name="d_minutes_ago">%d minutes ago</string>
+    <string name="d_hours_ago">%1$d hours ago</string>
+    <string name="refresh_cooldown_hint">Refreshing too often, please try again later</string>
+
+    <!--online-->
+    <string name="open_mini_program">Open Mini Program</string>
+    <string name="open_url">Open</string>
+    <string name="open_url_by_browser">Browse</string>
+    <string name="copy_url">Copy</string>
+    <string name="share_url">Share</string>
+    <string name="like_url">Like</string>
+    <string name="item_source">Source: %s</string>
+    <string name="fetching_data_from_server">Loading data</string>
+
+
+    <!--toast-->
+    <string name="load_empty_toast">No content yet</string>
+    <string name="load_error_toast">Network issue or no data available.</string>
+    <string name="login_error_toast">Login error. Please try again later.</string>
+    <string name="login_first">Please log in first to use this feature</string>
+    <string name="open_url_toast">Opening in system browser</string>
+    <string name="open_qq_group">Opening QQ group. Please make sure QQ is installed.</string>
+
+
+    <!--New Add-->
+    <string name="wechat_login">WeChat Login</string>
+    <string name="google_login">Google Login</string>
+    <string name="empty_string" />
+    <string name="navigate_back">Go back</string>
+
+    <!--Login-->
+    <string name="default_user_name">Login / Register</string>
+    <string name="login_heading_text">Log In</string>
+    <string name="login_email_id_or_phone_label">Email</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_button_text">Log In</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="icon_password_visible">Password visible</string>
+    <string name="icon_password_hidden">Password hidden</string>
+    <string name="login_error">Login error</string>
+    <string name="login_response_empty">Empty login response. Please try again later.</string>
+    <string name="login_error_auth_denied">Authorization denied</string>
+    <string name="login_error_user_cancel">User cancelled</string>
+    <string name="login_closing">Sign out?</string>
+    <string name="login_closing_sub">All user data and operations will be lost after signing out.</string>
+
+    <!--Login Error Messages-->
+    <string name="login_error_msg_empty_email_mobile">Please enter your email</string>
+    <string name="login_error_msg_empty_password">Please enter your password</string>
+    <!--Login Page - Register Section-->
+    <string name="do_not_have_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <!--Registration-->
+    <string name="registration_heading_text">Register</string>
+    <string name="registration_email_label">Email</string>
+    <string name="registration_user_name">Username</string>
+    <string name="registration_password_label">Password</string>
+    <string name="registration_confirm_password_label">Confirm Password</string>
+    <string name="registration_button_text">Register</string>
+    <string name="back_to_login">Back to Login</string>
+
+    <!--Registration Error Messages-->
+    <string name="registration_error_msg_empty_email">Please enter your email</string>
+    <string name="registration_error_msg_empty_username">Please enter a username</string>
+    <string name="registration_error_msg_empty_password">Please enter your password</string>
+    <string name="registration_error_msg_empty_confirm_password">Please confirm your password</string>
+    <string name="registration_error_msg_password_mismatch">Passwords do not match</string>
+    <string name="registration_error_msg_already_taken">Username or email already exists</string>
+
+    <!--Forgot Password-->
+    <string name="forgot_password_title">Reset Password</string>
+    <string name="forgot_password_email_hint">Enter your registered email</string>
+    <string name="forgot_password_code_hint">Verification Code</string>
+    <string name="forgot_password_new_password_hint">Enter new password</string>
+    <string name="forgot_password_confirm_password_hint">Confirm new password</string>
+    <string name="forgot_password_send_code">Send Code</string>
+    <string name="forgot_password_resend_code">Resend (%1$ds)</string>
+    <string name="forgot_password_submit">Reset Password</string>
+    <string name="forgot_password_success">Password reset successfully. Please log in with your new password.</string>
+    <string name="forgot_password_code_sent">Verification code sent to your email</string>
+    <string name="forgot_password_error_invalid_email">Please enter a valid email address</string>
+    <string name="forgot_password_error_empty_code">Please enter the verification code</string>
+    <string name="forgot_password_error_empty_password">Please enter a new password</string>
+    <string name="forgot_password_error_password_mismatch">Passwords do not match</string>
+
+    <!--Dashboard-->
+    <string name="dashboard_title_welcome_user">Welcome</string>
+
+    <!--Profile-->
+    <string name="profile_group_support">Support &amp; Community</string>
+    <string name="profile_group_system">System</string>
+    <string name="profile_group_about">About</string>
+    <string name="profile_edit_profile">Edit Profile</string>
+    <string name="profile_stats_functions">Functions</string>
+    <string name="profile_stats_points">Points</string>
+    <string name="profile_stats_files">Files</string>
+    <string name="profile_boot_button">Request Features / Report Issues</string>
+    <string name="profile_setting_help">Need help? Tap here</string>
+    <string name="profile_setting_join_wechat_group">Join WeChat User Group</string>
+    <string name="profile_setting_join_wechat_public_account">WeChat Official Account</string>
+    <string name="profile_setting_version_upgrade">Check for Updates</string>
+    <string name="profile_setting_share_app">Share App</string>
+    <string name="profile_setting_about_us">About Us</string>
+    <string name="profile_setting_clean_cache">Clear Cache</string>
+
+    <string name="profile_item_qq_group">Join QQ Group</string>
+    <string name="profile_item_wechat">Official Account</string>
+    <string name="profile_item_wechat_account">ShiFenMiao</string>
+    <string name="profile_item_wechat_tips">Tap to copy. The developer\'s WeChat account "ShiFenMiao" will be copied to your clipboard. Open WeChat and search for it, or share it to WeChat File Assistant to scan and follow.</string>
+    <string name="profile_item_community">Join Community</string>
+    <string name="community_title">Join Community</string>
+    <string name="community_qq_group">QQ Group</string>
+    <string name="community_qq_group_subtitle">Tap to join QQ group</string>
+    <string name="community_wechat_public">WeChat Official Account</string>
+    <string name="community_wechat_public_subtitle">Follow for the latest updates</string>
+    <string name="community_wechat_group">WeChat Group</string>
+    <string name="community_wechat_group_subtitle">Scan QR code to join</string>
+    <string name="community_wechat_group_loading">Loading group QR code...</string>
+    <string name="community_wechat_group_error">Failed to load QR code</string>
+    <string name="profile_item_donate">Support the Developer / Donate Points</string>
+    <string name="profile_item_auth_code">Password Protection</string>
+    <string name="profile_item_clear">Clear Cache</string>
+    <string name="profile_item_analytics">Usage &amp; Crash Reporting</string>
+    <string name="profile_item_analytics_sub">Share anonymous usage stats and crash reports to help improve the app</string>
+    <string name="profile_item_found_cache">%1$s cache cleared successfully</string>
+
+    <string name="profile_item_folder">Output Directory</string>
+    <string name="profile_item_font_size">Font Size</string>
+    <string name="profile_item_font_family">Font</string>
+    <string name="profile_item_language">Language</string>
+
+    <string name="profile_item_about">About Us</string>
+    <string name="profile_item_check_update">Check for Updates</string>
+    <string name="profile_item_share_app">Share App</string>
+    <!--    AIChat-->
+    <string name="ai_chat_settings">Model Selection</string>
+    <string name="baidu_ai">Baidu ERNIE</string>
+    <string name="api_url">API URL</string>
+    <string name="api_access_token">Access Token</string>
+    <string name="kim_chat_ai">Moonshot (KimChat)</string>
+    <string name="json_exception">Data parsing error:\n %s ···</string>
+    <string name="load_failure">Network load failure:\n %s ···</string>
+    <string name="url_error_tips">URL must start with \'http\' or \'https\' and end with \'/\'.</string>
+    <string name="temperature">Temperature</string>
+    <string name="ai_temperature">Temperature</string>
+    <string name="ai_temperature_desc">Higher values (e.g. 0.7) make output more random, lower values (e.g. 0.2) make it more focused and deterministic.</string>
+    <string name="ai_cannot_proxy">This model does not support proxy in this app.</string>
+    <string name="ai_model_desc">Models differ in their maximum context length.</string>
+    <string name="ai_model_select">Model Selection</string>
+    <string name="ai_server_setting">Server Settings</string>
+    <string name="ai_api_desc">Set server URL and access token. Uses built-in proxy by default.</string>
+    <string name="ai_top_p">Top P</string>
+    <string name="ai_top_p_desc">Affects output diversity. Higher values produce more diverse text.</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="unspecified">Unspecified</string>
+    <string name="ai_save_path">Save Path</string>
+    <string name="save_path_dialog_title">Save As</string>
+    <string name="ai_question">Question:</string>
+    <string name="ai_answer">Answer</string>
+    <string name="ai_chat_delete_message">Confirm deletion to keep your data safe.</string>
+    <string name="delete_item_confirm_message" translatable="false">Delete "%1$s"?</string>
+
+
+    <string name="copy_errors">Copy Error</string>
+    <string name="buy_coffee">Support the Developer</string>
+    <string name="buy_coffee_description">Donate points to the developer</string>
+    <string name="donate_description">Most features in OneBox are free. Supporting the developer earns you points, which help cover AI compute and server costs while encouraging innovation.</string>
+    <string name="buy_coffee_title">Donate &amp; Earn Points</string>
+    <string name="donate_mode">Payment Method:</string>
+    <string name="donate_recommend">Recommended</string>
+    <string name="donate_confirm">Confirm &amp; Pay</string>
+    <string name="pay_wu_mao">Every penny counts</string>
+    <string name="pay_wu_mao_desc">+%d points</string>
+    <string name="pay_cola">Keep calm and code on</string>
+    <string name="pay_desc">Get %s points</string>
+    <string name="pay_coffee">Coffee for the coder</string>
+    <string name="pay_tea">A cup of inspiration</string>
+    <string name="pay_juice">Recharge and refresh</string>
+    <string name="pay_beer">Cheers, my friend</string>
+    <string name="pay_sauna">Relax those muscles</string>
+    <string name="pay_travel">Dream big, boss pays</string>
+    <string name="pay_movie">VIP treatment today</string>
+    <string name="pay_red_packet">Lifetime sponsorship</string>
+    <string name="pay_bike">Keep it simple</string>
+    <string name="pay_milk">Stay strong and healthy</string>
+    <string name="pay_medicine">One more all-nighter</string>
+    <string name="pay_plus_one">Make a friend, come again</string>
+    <string name="donate_prices">Amount:</string>
+    <string name="pay_price">¥%s</string>
+    <string name="unit">CNY</string>
+    <string name="profile_user_info_title">Personal Info</string>
+    <string name="profile_user_info_avatar">Avatar</string>
+    <string name="profile_user_info_exit">Sign Out</string>
+    <string name="profile_user_info_username">Username</string>
+    <string name="profile_user_info_email">Email</string>
+    <string name="profile_user_info_points">Points</string>
+    <string name="profile_user_info_invitation_code">Invite Code</string>
+    <string name="copy_to_clipboard_tips_prefix">Copied to clipboard</string>
+    <string name="profile_input_invitation_code">Enter invite code to earn 1000 points</string>
+    <string name="profile_share_invitation_code">Share Invite Code</string>
+    <string name="profile_input_invitation_copy">Copy:</string>
+    <string name="profile_item_theme">Theme</string>
+    <string name="profile_item_display">Layout</string>
+    <string name="profile_item_dispaly">Display Settings</string>
+    <string name="profile_item_theme_dark">Dark</string>
+    <string name="profile_item_theme_light">Light</string>
+    <string name="profile_item_dislay_list">Single Column</string>
+    <string name="profile_item_dislay_gird">Double Column</string>
+    <string name="profile_item_clear_cache_message">Clearing cache can improve app performance. Note that some downloaded or cached content will be removed, along with local data such as chat history, favorites, search history, and visit history. Continue?</string>
+    <string name="profile_item_clear_cache_title">Clear Cache</string>
+    <string name="profile_item_robot">Model Settings</string>
+    <string name="ai_chat_menu_history">History</string>
+    <string name="export_pdf">Export as PDF</string>
+    <string name="ai_chat_menu_setting">Chat Settings</string>
+    <string name="ai_chat_menu_show_avatar">Show Avatar</string>
+    <string name="ai_chat_delete_title">Confirm deletion?</string>
+    <string name="ai_chat_menu_show_tokens">Show Tokens</string>
+    <string name="ai_chat_menu_show_voice">Voice Settings</string>
+    <string name="demo_title">Demo</string>
+    <string name="ai_chat_release_to_cancel">Release to cancel</string>
+    <string name="ai_chat_release_to_confirm">Release to confirm, swipe up to cancel</string>
+    <string name="ai_chat_hold_to_record">Hold to talk</string>
+    <string name="clipboard_empty">Paste failed. Clipboard is empty or permission denied.</string>
+    <string name="profile_invitation_code_invalid">Invalid invite code. Must be 8 characters.</string>
+    <string name="pay_error">Payment error</string>
+    <string name="webview_title_ai_help">Help</string>
+    <string name="webview_title_feedback">Feedback</string>
+    <string name="ai_chat_description">Supports LLM APIs from Baidu, Alibaba Qwen, Moonshot, and more.</string>
+    <string name="ai_chat_menu_new_conversation">New Chat</string>
+    <string name="search_hint">Search for functions, e.g. AI, Marquee, Calendar…</string>
+    <string name="no_search_result">No results found!</string>
+    <string name="privacy_title">Privacy Policy</string>
+    <string name="privacy_item_1">Storage Permission</string>
+    <string name="privacy_item_1_description">Access storage to save generated or downloaded files.</string>
+    <string name="privacy_item_2_description">Access media files to pick images/videos for editing, then save them to your gallery.</string>
+    <string name="privacy_item_4">Microphone Permission</string>
+    <string name="privacy_item_4_description">Access the microphone for voice input.</string>
+    <string name="privacy_button_agree">Agree &amp; Continue</string>
+    <string name="privacy_button_disagree">Disagree</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="my_wechat">WeChat</string>
+    <string name="my_wechat_account">shifenmiao666</string>
+    <string name="my_wechat_account_tips">WeChat ID: shifenmiao666 — copied to clipboard. Open WeChat and search to add.</string>
+    <string name="qq_group">QQ Group</string>
+    <string name="qq_group_number">13110846</string>
+    <string name="email">Email</string>
+    <string name="email_value">admin@shifenmiao.com</string>
+    <string name="profile_item_update_failed">No update available. Check the official website.</string>
+    <string name="profile_item_official_website">Official Website</string>
+
+    <string name="baidu_ai_description">Proxy support for most Baidu LLM APIs. Free models have rate and concurrency limits.</string>
+    <string name="open_ai">Custom</string>
+    <string name="open_ai_description">Compatible with OpenAI API and similar interfaces.</string>
+    <string name="aliyun_qwen">Alibaba Qwen</string>
+    <string name="aliyun_qwen_description">Proxy support for Alibaba Qwen LLM APIs.</string>
+    <string name="button_share_to_wechat">Share to WeChat</string>
+    <string name="button_copy">Copy</string>
+    <string name="button_favorite">Favorite</string>
+    <string name="free_login">Official Account</string>
+    <string name="email_login">Email</string>
+    <string name="login_verification_code_label">Enter 6-digit code</string>
+    <string name="login_error_msg_empty_verification_code">Code cannot be empty</string>
+    <string name="login_error_msg_invalid_verification_code">Code must be digits</string>
+    <string name="login_error_msg_verification_code_length">Code must be 6 digits</string>
+    <string name="wechat_login_tips">Scan the QR code to follow our WeChat account, then send "OneBox" or "666" to get your login code.</string>
+    <string name="button_share_qr_code">Share QR Code</string>
+    <string name="button_copy_wechat_public_account">Copy Official Account</string>
+    <string name="or">Other Login Methods</string>
+    <string name="profile_user_info_nickname">Nickname</string>
+    <string name="default_user_nickname">OneBoxer</string>
+    <string name="profile_item_show_points_tip">Points Usage Tips</string>
+    <string name="no_points">Not enough points. Invite friends to earn free points.</string>
+    <string name="consume_points">"Consume %d points"</string>
+    <string name="reward_points">"Earn %d points"</string>
+    <string name="ai_url_error">Invalid URL or path</string>
+    <string name="ai_kimi">Moonshot</string>
+    <string name="ai_kimi_description">LLM API from Moonshot AI, with extra-large context support.</string>
+    <string name="type_default">App</string>
+    <string name="type_web">Web</string>
+    <string name="type_wechat_miniprogram">Mini Program</string>
+    <string name="type_wechat_video">Video</string>
+    <string name="type_prompt">Prompt</string>
+    <string name="profile_item_dynamic_colors">Dynamic Color Suggestions</string>
+    <string name="pay_success">Payment successful. Points will arrive in a few minutes.</string>
+    <string name="pay_fail">Payment error: %s</string>
+    <string name="ai_model_free">Free</string>
+    <string name="ai_model_not_free">Points Required</string>
+    <string name="login_button_custom">Custom</string>
+    <string name="force_update_tips">Your current version is too old and does not support some network protocols. Please update to the latest version from the official website or app store.</string>
+    <string name="user_privacy"><![CDATA[I have read and agree to the <a href="https://www.shifenmiao.com/privacy/agreement.html">User Agreement</a> and <a href="https://www.shifenmiao.com/privacy/example.html">Privacy Policy</a>.]]></string>
+    <string name="please_agree_to_the_user_agreement">Please agree to the User Agreement and Privacy Policy first.</string>
+    <string name="profile_user_info_Logout">Delete Account</string>
+    <string name="profile_Logout_desc">Destructive action (long-press to trigger)</string>
+    <string name="login_logout">Delete account?</string>
+    <string name="login_out_sub">All account-related data will be deleted, including but not limited to:</string>
+    <string name="user_agreement">User Agreement</string>
+    <string name="ai_chat_disable">No available LLM API</string>
+    <string name="third_party">Third-Party Open Source Licenses</string>
+    <string name="wechat_not_installed">WeChat is required to open mini programs. You can copy the link instead.</string>
+    <string name="wechat_pay_min_amount">WeChat Pay minimum is ¥1. Choose another amount or use Alipay.</string>
+    <string name="chat_not_available">Chat session is not available at this time.</string>
+    <string name="profile_item_beian">ICP Filing</string>
+    <string name="login_failed">Login failed</string>
+    <string name="profile_user_info_phone">Phone</string>
+    <string name="button_bind">Bind</string>
+    <string name="login_bind_phone">Bind Phone Number</string>
+    <string name="identity_verification">Identity Verification</string>
+    <string name="input_phone_number">Enter phone number</string>
+    <string name="input_code_number">Verification Code</string>
+    <string name="get_code">Send Code</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_number_error">Invalid phone number</string>
+    <string name="code_number_error">6 digits</string>
+    <string name="code_number">6 digits</string>
+    <string name="phone_placeholder">Phone: 139xxxxxxxx</string>
+    <string name="get_code_ed">Sent</string>
+    <string name="login_bind_phone_desc"><![CDATA[In accordance with <a href="https://www.cac.gov.cn/2022-06/14/c_1656821626455324.htm">Chinese regulations</a>, phone number verification is required to protect your account security. We are committed to protecting your privacy.]]></string>
+    <string name="phone_login">Phone</string>
+    <string name="please_enter_correct_phone_number_and_verification_code">Phone number or verification code is incorrect.</string>
+    <string name="profile_invitation_code_success">+%s points</string>
+    <string name="privacy_update_title">Privacy Policy Update</string>
+    <string name="profile_item_quick_setting">Shake to Start AI Chat</string>
+    <string name="profile_item_confetti">Success Confetti Effect</string>
+    <string name="close">Close</string>
+    <string name="quick_setting">Quick Settings</string>
+    <string name="profile_item_debug_environment">Debug Environment</string>
+    <string name="required_field">This field is required</string>
+    <string name="default_color_scheme_cannot_delete">Default theme colors cannot be deleted.</string>
+    <string name="current_color_scheme_cannot_delete">Currently active colors cannot be deleted.</string>
+    <string name="one_box">Agents</string>
+    <string name="one_box_description">Creativity is the future — everyone is a creator.</string>
+    <string name="required_field_error">Required field: %s</string>
+    <string name="type_agent">Agent</string>
+    <string name="date_range_picker_title">Select Date Range</string>
+    <string name="ai_content_notice">AI-generated content. Does not reflect the app\'s views.</string>
+    <string name="ai_models_modal_sheet_description">Swipe left/right to switch models</string>
+    <string name="ai_loading">Thinking…</string>
+    <string name="error_message">An unknown error occurred!</string>
+    <string name="ai_error">Sorry, something went wrong on our end.</string>
+    <string name="ai_stream_answer_retry">Retry</string>
+    <string name="ai_content_recommend">Not satisfied with the result?</string>
+    <string name="switch_ai_models">Switch Model</string>
+    <string name="ai_chat_model_settings">Advanced Settings</string>
+    <string name="ai_chat_model_select">Select Model</string>
+    <string name="popular">Featured</string>
+    <string name="see_random">Shuffle</string>
+    <string name="ai_chat_placeholder_title">Hey there! I\'m your personal AI assistant 👋</string>
+    <string name="ai_chat_placeholder_content">I can help you write copy, brainstorm creative ideas, chat with you anytime, and answer all sorts of questions!</string>
+    <string name="ai_prompt_working_title">Current Working Prompt</string>
+    <string name="ai_prompt_status_snapshot">Saved Snapshot</string>
+    <string name="ai_prompt_status_live">Current Version</string>
+    <string name="ai_prompt_working_snapshot_desc">This conversation continues with the prompt snapshot saved when the session was created, keeping the context stable.</string>
+    <string name="ai_prompt_working_live_desc">This conversation works with the latest content of this prompt, which is best for starting a new task.</string>
+    <string name="ai_chat_quick_start_title">Try Starting With</string>
+    <string name="ai_chat_quick_start_subtitle">Tap to fill the input, then hit Send to refine further</string>
+    <string name="ai_prompt_placeholder_title">Prompt Content</string>
+    <string name="ai_prompt_badge_system">System</string>
+    <string name="ai_prompt_placeholder_loading_desc">Loading this prompt. If it still does not appear after a while, the prompt may have been deleted or failed to sync.</string>
+    <string name="ai_prompt_placeholder_missing_desc">This prompt is missing a valid link, so its original content cannot be shown right now. You can go back and try again or edit the prompt again.</string>
+    <string name="ai_prompt_system_read_only_desc">System prompts can be copied, but they cannot be edited directly.</string>
+    <string name="ai_chat_quick_start_1">Record one of today\'s expenses for me and organize it into the right category</string>
+    <string name="ai_chat_quick_start_2">Turn this requirement into a note and a practical task list</string>
+    <string name="ai_chat_quick_start_3">Read the QR code or barcode in this image and explain what it is</string>
+    <string name="ai_chat_quick_start_4">Check this file\'s hash and help me confirm whether it has changed</string>
+    <string name="ai_chat_quick_start_5">Help me compress this image or limit its size, and suggest suitable settings</string>
+    <string name="ai_chat_quick_start_6">Search the local files for related content first, then summarize the key findings</string>
+    <string name="ai_chat_quick_start_7">Search the web for this topic and turn the result into a concise conclusion</string>
+    <string name="ai_chat_quick_start_8">Open the right screen for this task, then tell me the next step if needed</string>
+    <string name="ai_chat_quick_start_9">Add an SMB share for the media directory on 192.168.1.10 with username admin and password xxx</string>
+    <string name="ai_chat_quick_start_10">After connecting to this SMB share, browse the media directory and surface the most recently updated files</string>
+    <string name="ai_chat_jump_to_latest_streaming">New content being generated, tap to go to bottom</string>
+    <string name="ai_chat_jump_to_latest_message">New message, tap to view</string>
+    <string name="ai_chat_message_limit_notice">Only the last 50 messages are shown. Older messages are archived.</string>
+    <string name="ai_chat_status_model">Model</string>
+    <string name="ai_chat_status_tools">Tools</string>
+    <string name="ai_chat_status_tools_count">%1$d</string>
+    <string name="ai_mode_agent">Agent</string>
+    <string name="ai_mode_ask">Ask</string>
+    <string name="ai_chat_status_mode">Mode</string>
+    <string name="ai_chat_status_online">Web Search</string>
+    <string name="ai_chat_status_standard">Standard</string>
+    <string name="ai_history_center_title">AI History</string>
+    <string name="ai_history_center_subtitle">All your chats, prompts, and agent sessions in one place</string>
+    <string name="ai_history_search_hint">Search by title or content</string>
+    <string name="ai_history_filter_all">All</string>
+    <string name="ai_history_filter_chat">Chat</string>
+    <string name="ai_history_filter_prompt">Prompt</string>
+    <string name="ai_history_filter_agent">Agent</string>
+    <string name="ai_history_filter_duel">Face-off</string>
+    <string name="ai_history_filter_assistant">Assistant</string>
+    <string name="ai_assistant_default_title">Assistant</string>
+    <string name="ai_history_message_count">%1$d messages</string>
+    <string name="ai_history_delete_message">Deleting this session will also remove all messages in it. Continue?</string>
+    <string name="ai_history_rename_title">Rename Session</string>
+    <string name="ai_history_rename_hint">Enter a new title</string>
+    <string name="ai_history_rename_empty">Please enter a title</string>
+    <string name="confirm">Confirm</string>
+    <string name="free">Free</string>
+    <string name="token_price">Approx. %s points per 1000 characters</string>
+    <string name="max_length_error">Character limit exceeded</string>
+    <string name="clear">Clear</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="edit">Edit</string>
+    <string name="copy">Copy</string>
+    <string name="error_unknown_element_type">Data parsing error. Try updating the app or clearing the cache.</string>
+    <string name="select">Select</string>
+    <string name="ai_tips_1">Tap me</string>
+    <string name="ai_tips_2">Double-tap to dismiss</string>
+    <string name="ai_tips_3">Ask me anything!</string>
+    <string name="ai_tips_4">Tap me twice and I\'ll go quiet</string>
+    <string name="robot_bubble_hint_chat">Tap me to chat!</string>
+    <string name="robot_bubble_streaming">AI is replying…</string>
+    <string name="robot_bubble_completed">Done</string>
+    <string name="robot_sleep_indicator_letter">Z</string>
+    <string name="permission_title">Permission Required</string>
+    <string name="button_request_permission">Grant Permission</string>
+    <string name="profile_item_about_model">About LLMs</string>
+    <string name="ai_model_description">In the era of booming LLMs, every provider brings unique strengths. We\'ve gathered top-tier model APIs to offer you a one-stop experience.</string>
+    <string name="ai_type_generate">Generation</string>
+    <string name="select_city">Select City</string>
+    <string name="ai_doubao_description">ByteDance\'s in-house LLM</string>
+    <string name="ai_doubao">ByteDance Doubao</string>
+    <string name="ai_engine_seed_doubao_title">Doubao</string>
+    <string name="ai_engine_seed_doubao_description">AI assistant from ByteDance</string>
+    <string name="ai_engine_seed_deepseek_title">DeepSeek</string>
+    <string name="ai_engine_seed_deepseek_description">AI assistant from DeepSeek</string>
+    <string name="ai_engine_seed_qwen_title">Tongyi Qianwen</string>
+    <string name="ai_engine_seed_qwen_description">AI assistant from Alibaba Cloud</string>
+    <string name="ai_engine_seed_kimi_title">Kimi</string>
+    <string name="ai_engine_seed_kimi_description">AI assistant from Moonshot AI</string>
+    <string name="ai_engine_seed_tencent_title">Tencent Hunyuan</string>
+    <string name="ai_engine_seed_tencent_description">AI assistant from Tencent</string>
+    <string name="ai_engine_seed_mimo_title">Mimo</string>
+    <string name="ai_engine_seed_mimo_description">AI assistant from Xiaomi</string>
+    <string name="ai_engine_seed_openai_title">OpenAI</string>
+    <string name="ai_engine_seed_openai_description">OpenAI GPT family models</string>
+    <string name="ai_engine_seed_gemini_title">Gemini</string>
+    <string name="ai_engine_seed_gemini_description">Google Gemini family models</string>
+    <string name="ai_engine_seed_grok_title">Grok</string>
+    <string name="ai_engine_seed_grok_description">xAI Grok family models</string>
+    <string name="ai_engine_seed_claude_title">Claude</string>
+    <string name="ai_engine_seed_claude_description">Anthropic Claude family models</string>
+    <string name="ai_engine_seed_openrouter_title">OpenRouter</string>
+    <string name="ai_engine_seed_openrouter_description">OpenRouter multi-model aggregation platform</string>
+    <string name="ai_model_default_openai_title">gpt-4</string>
+    <string name="ai_model_default_gemini_title">Gemini 2.5 Flash</string>
+    <string name="ai_model_default_grok_title">Grok 4</string>
+    <string name="ai_model_default_claude_title">Claude Sonnet 4.5</string>
+    <string name="ai_model_default_openrouter_title">OpenRouter Auto</string>
+    <string name="ai_model_default_qwen_title">Qwen3.6-Plus</string>
+    <string name="ai_model_default_kimi_title">Kimi K2.6</string>
+    <string name="ai_model_default_doubao_title">Doubao-Seed-2.0-pro</string>
+    <string name="ai_model_default_doubao_description">A new-generation flagship model with comprehensive upgrades in knowledge, coding, and reasoning.</string>
+    <string name="ai_model_default_tencent_title">Hunyuan Hy3 preview</string>
+    <string name="ai_model_default_deepseek_title">DeepSeek-v4-flash</string>
+    <string name="ai_model_default_mimo_title">Mimo-V2.5-pro</string>
+    <string name="ai_bottom_sheet_title">Select Model</string>
+    <string name="ai_tencent">Tencent Hunyuan</string>
+    <string name="ai_tencent_description">Tencent Hunyuan is a powerful LLM with strong Chinese writing, complex logical reasoning, and reliable task execution capabilities.</string>
+    <string name="need_coffee">Not enough points. Get more points to continue.</string>
+    <string name="need_coffee_description">Most features in OneBox are free. Points are mainly used for premium AI compute and server costs. Invite friends to earn free points, or switch to a free model.</string>
+    <string name="free_coffee">Get Free Points</string>
+    <string name="current_points">Current points: %s</string>
+    <string name="input_invitation_code">Enter friend\'s invite code</string>
+    <string name="profile_invitation_code_hint">8-character string</string>
+    <string name="copy_invitation_code_hint">Your invite code:</string>
+    <string name="profile_invitation_code_same">You cannot use your own invite code.</string>
+    <string name="ai_prompt_suffix" />
+    <string name="ai_default_name">AI Assistant</string>
+    <string name="search_in_progress">Searching…</string>
+    <string name="need_update_new_version">Update to the latest version to use this feature.</string>
+    <string name="favorite">Favorites</string>
+    <string name="favorite_description">Favorites</string>
+    <string name="see_all">See All</string>
+    <string name="local_tips">Works offline, free to use</string>
+    <string name="local_title">Local</string>
+    <string name="local_total">%d tools</string>
+    <string name="common_settings">Quick Settings</string>
+    <string name="ai_history">History</string>
+    <string name="ai_history_empty">No history yet</string>
+    <string name="favorite_title">Favorites</string>
+    <string name="favorite_empty_toast">No favorites yet. Long-press a card to add it.</string>
+    <string name="cancel_favorite">Remove Favorite</string>
+    <string name="favorite_featured_title">Featured</string>
+    <string name="favorite_mine_title">Mine</string>
+    <string name="record_tab_title">Records</string>
+    <string name="my_content_local_created">Created locally</string>
+    <string name="placeholder_empty_title">No content yet</string>
+    <string name="placeholder_empty_action">Tap here to create</string>
+    <string name="my_content_empty">You haven’t created any local content yet</string>
+    <string name="my_content_empty_action_note">Create in Notebook</string>
+    <string name="playground_empty_title">No ideas yet</string>
+    <string name="playground_empty_description">Be the first to share your idea</string>
+    <string name="playground_footer_title">Share your idea</string>
+    <string name="playground_footer_description">Got a good idea? Write an article and explore it together</string>
+    <string name="favorite_usage_count">Used %d times</string>
+    <string name="favorite_time_just_now">Just now</string>
+    <string name="favorite_time_minutes_ago">%d minutes ago</string>
+    <string name="favorite_time_hours_ago">%d hours ago</string>
+    <string name="favorite_time_days_ago">%d days ago</string>
+    <string name="back_prressed_once">Press again to exit</string>
+    <string name="privacy_item_camera_description">Camera access is needed for scanning features.</string>
+    <string name="created_by_ai">Audio generated by AI</string>
+    <string name="created_by_ai_failed">Audio generation failed</string>
+    <string name="ai_aigc_image_title">AI Image Stylization</string>
+    <string name="ai_aigc_image_description">Transform your images with generative AI styles. Generates high-quality results with face similarity, diverse styles, suitable for entertainment, advertising, and design.</string>
+    <string name="ai_deep_seek">DeepSeek</string>
+    <string name="ai_deep_seek_description">DeepSeek is an innovative company focused on LLM research and development.</string>
+    <string name="tts_text_too_long">Text exceeds 1024 bytes. Only short text is supported.</string>
+    <string name="remember_choice">Don\'t show again</string>
+    <string name="mini_program_remember_choice">Quick-open WeChat mini programs?</string>
+    <string name="ai_error_sensitive">Some results were filtered for content safety.</string>
+    <string name="ai_error_insufficient_system_resource">Insufficient system resources. Generation was interrupted.</string>
+    <string name="ai_error_unknown">An unknown error occurred!</string>
+    <string name="ai_chat_expanded_reasoning_chat">Show reasoning</string>
+    <string name="ai_reasoning">Deep Reasoning</string>
+    <string name="deepseek_chat_description">DeepSeek-V3 tops the open-source model leaderboards, rivaling the world\'s most advanced closed-source models.</string>
+    <string name="deepseek_reasoner_description">Significantly improved reasoning capabilities. Matches OpenAI o1 on math, code, and natural language reasoning.</string>
+    <string name="deepseek_reasoner_distill_description">Distilled from R1 reasoning data, surpassing OpenAI o1-mini on multiple benchmarks.</string>
+    <string name="search_description">Search</string>
+    <string name="search_history">History</string>
+    <string name="ai_search_sources">%1$d sources</string>
+    <string name="ai_reasoning_title">AI Deep Reasoning:</string>
+    <string name="importing">Importing data…</string>
+    <string name="prompt">Prompts</string>
+    <string name="prompt_grid_title">AI Prompts</string>
+    <string name="prompt_grid_subtitle">Explore high-quality prompt templates</string>
+    <string name="prompt_view_all">View All</string>
+    <string name="prompt_description">Brief description</string>
+    <string name="edit_prompt">Edit Prompt</string>
+    <string name="prompt_name_empty">Name cannot be empty</string>
+    <string name="prompt_name">Agent Name</string>
+    <string name="preview">Preview</string>
+    <string name="prompt_prompt">System Instructions</string>
+    <string name="select_groups">Select Categories</string>
+    <string name="title">Title</string>
+    <string name="prompt_create">Prompt</string>
+    <string name="cancel">Cancelled</string>
+    <string name="settings">Settings</string>
+    <string name="profile_group_ai_settings">AI Settings</string>
+    <string name="profile_item_ai_service_and_models">Services &amp; Models</string>
+    <string name="profile_item_ai_workflow_models">Active Models</string>
+    <string name="profile_item_ai_usage">Usage</string>
+    <string name="profile_item_ai_reply_style">System Prompts</string>
+    <string name="profile_item_tts_settings">Voice Synthesis</string>
+    <string name="exporting">Exporting data…</string>
+    <string name="import_success">Imported %s item(s)!</string>
+    <string name="export_success">"Exported %1$s item(s) to %2$s"</string>
+    <string name="import_success_existing">Imported %1$s item(s). %2$s duplicate(s) skipped.</string>
+    <string name="export_png">Save as Image</string>
+    <string name="prompt_place_holder">Usage tips</string>
+    <string name="group_name_empty">Category name cannot be empty</string>
+    <string name="manage">Manage</string>
+    <string name="done">Done</string>
+    <string name="prompt_save">Save</string>
+    <string name="prompt_sensitive_words_hit">This request may contain prohibited content and cannot be processed. Try asking about compliant topics instead.</string>
+    <string name="prompt_sensitive_words_check_failed">Content check failed. Please try again later.</string>
+    <string name="prompt_name_duplicate">Name already exists. Please choose another.</string>
+    <string name="prompt_save_failed">Save failed. Please try again later.</string>
+    <string name="login_agreement_title">Service Agreement &amp; Privacy</string>
+    <string name="test_ai_engine_connection">Test API Connection</string>
+    <string name="provider">Provider:</string>
+    <string name="model">Model Name</string>
+    <string name="connection_successful">Connection successful!</string>
+    <string name="connection_failed">Connection failed!</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="api_path">API Path</string>
+    <string name="edit_custom_model">Custom Model Name</string>
+    <string name="edit_custom_name">Parameters</string>
+    <string name="edit_custom_title">Name</string>
+    <string name="ai_bottom_sheet_setting_title">Model Settings</string>
+    <string name="feedback_title">Help &amp; Feedback</string>
+    <string name="feedback_description">Report issues or suggest improvements</string>
+    <string name="feedback_create">Submit Feedback</string>
+    <string name="load_no_more">You\'ve reached the end</string>
+    <string name="feedback_submit">Submit</string>
+    <string name="feedback_title_hint">Title</string>
+    <string name="feedback_content_hint">Description</string>
+    <string name="feedback_placeholder">Please describe the issue in detail so we can help faster~</string>
+    <string name="fields_required">Please fill in required fields.</string>
+    <string name="feedback_failed">Submission failed. Please try again later.</string>
+    <string name="feedback_onSuccess">Feedback received! Thank you for helping us improve ❤️</string>
+    <string name="feedback_title_placeholder">Briefly describe the issue</string>
+    <string name="upload_failure">Upload failed. Please try again later.</string>
+    <string name="upload_cancel">Cancelled</string>
+    <string name="feedback_upload_image">Upload Image</string>
+    <string name="upload_max_files">Maximum %s images</string>
+    <string name="onebox_ai">OneBox AI</string>
+    <string name="profile_item_disable_robot">AI Assistant</string>
+    <string name="dispaly">Show</string>
+    <string name="hide">Hide</string>
+    <string name="default_placeholder">Ask me anything!</string>
+    <string name="profile_item_wechat_service">WeChat Customer Service</string>
+    <string name="message_card_tag">Chat History</string>
+    <string name="search_result">Search Results</string>
+    <string name="ai_chat_empty_message">Please enter your question.</string>
+    <string name="blog_title">View Article</string>
+    <string name="blog_escription">Read more</string>
+    <string name="no_app_to_open_file">Failed to open. Unknown error or missing permissions.</string>
+    <string name="no_file_browser_available">Folder does not exist</string>
+    <string name="file_explorer">File Manager</string>
+    <string name="file_explorer_escription">Browse and manage files</string>
+    <string name="ai_reasoning_time">Deep thought (%d seconds)</string>
+    <string name="ai_reasoning_collapsed_hint">Scroll to preview. Expand to see the full reasoning</string>
+    <string name="ai_reasoning_expanded_hint">Showing the full reasoning</string>
+    <string name="already_new_chat">Already in a new conversation.</string>
+    <string name="swipe_me_left_or_right">Swipe more than halfway to trigger deletion</string>
+    <string name="do_not_ask_again">Remember this choice and don\'t ask again.</string>
+    <string name="button_export_pdf">PDF</string>
+    <string name="button_export_image">Image</string>
+    <string name="button_print">Print</string>
+    <string name="share_image">Share</string>
+    <string name="builder_select_max">Select at least %d items</string>
+    <string name="button_export_image_pdf">Image PDF</string>
+    <string name="ai_tab_chat_title">Assistant</string>
+    <string name="type_blog">Article</string>
+    <string name="save_failed">Save failed</string>
+    <string name="please_select_save_path">Choose a save path and filename.</string>
+    <string name="share_title">Share</string>
+    <string name="exporting_share">Generating…</string>
+    <string name="webview_share_unavailable">The page is not ready yet. Please try again later.</string>
+    <string name="webview_share_failed">Failed to share the image. Please try again.</string>
+    <string name="webview_go_back">Back</string>
+    <string name="webview_go_forward">Forward</string>
+    <string name="profile_start_entry">Launch Entry</string>
+    <string name="marquee_text_size">Font Size</string>
+    <string name="network_search">Web Search</string>
+    <string name="ai_image">Image Understanding</string>
+    <string name="ai_input_voice">Voice</string>
+    <string name="ai_input_image">Image</string>
+    <string name="ai_input_take_photo">Take Photo</string>
+    <string name="ai_input_image_compression">Image Compression</string>
+    <string name="ai_input_file">File</string>
+    <string name="ai_input_recent">Recent</string>
+    <string name="ai_input_tools">Tools</string>
+    <string name="ai_input_tools_with_count">Tools (%1$d)</string>
+    <string name="ai_input_share">Share</string>
+    <string name="ai_input_system">System</string>
+    <string name="ai_input_prompts">Prompts</string>
+    <string name="ai_tools_center_title">Tool Center</string>
+    <string name="ai_tools_mode_auto">Auto</string>
+    <string name="ai_tools_mode_hybrid">Recommended</string>
+    <string name="ai_tools_mode_manual">Manual</string>
+    <string name="ai_tools_recommended">Recommended</string>
+    <string name="ai_tools_all">All Tools</string>
+    <string name="ai_tools_filtered">Filtered</string>
+    <string name="ai_tools_restore_recommended">Restore Recommended</string>
+    <string name="ai_tools_enabled_count">%1$d tools sent in the first round, more auto-discovered later. More tools = more token usage.</string>
+    <string name="ai_tools_none_enabled">No tools enabled. The model will reply in chat-only mode.</string>
+    <string name="ai_tools_select_all">Select All</string>
+    <string name="ai_tools_deselect_all">Deselect All</string>
+    <string name="ai_tools_select_group">Select Group</string>
+    <string name="ai_tools_deselect_group">Deselect Group</string>
+    <string name="ai_tools_select_filtered">Select Filtered</string>
+    <string name="ai_tools_deselect_filtered">Deselect Filtered</string>
+    <string name="ai_tools_deselect_all_regular">Deselect All Regular</string>
+    <string name="ai_tools_search_placeholder">Search tools, descriptions, or keywords</string>
+    <string name="ai_tools_no_results">No matching tools</string>
+    <string name="ai_tools_category_all">All Categories</string>
+    <string name="ai_tools_category_system">System</string>
+    <string name="ai_tools_category_device">Device</string>
+    <string name="ai_tools_category_form">Form</string>
+    <string name="ai_tools_category_file">File</string>
+    <string name="ai_tools_category_knowledge">Knowledge</string>
+    <string name="ai_tools_category_network">Network</string>
+    <string name="ai_tools_category_business">Business</string>
+    <string name="ai_tools_system_disable_confirm_title">Disable System Tool</string>
+    <string name="ai_tools_system_disable_confirm_message">Disabling "%1$s" will make related discovery capabilities unavailable. Continue?</string>
+    <string name="creation_meta_tab_categories">Categories</string>
+    <string name="creation_meta_tab_tools">Tools</string>
+    <string name="creation_meta_summary_title">Current Configuration</string>
+    <string name="creation_meta_selected_category_count">%1$d categories selected</string>
+    <string name="creation_meta_selected_tool_count">%1$d tools selected</string>
+    <string name="creation_meta_categories_empty">No categories selected yet</string>
+    <string name="creation_meta_add_category">Add Category</string>
+    <string name="ai_tools_system_tools_warning">System tool "%1$s" is disabled. Related discovery capabilities will be unavailable.</string>
+    <string name="ai_tools_system_section_title">System Tools</string>
+    <string name="ai_tools_system_section_hint">These 2 tools handle app and tool discovery. Disabling them affects discovery capabilities.</string>
+    <string name="ai_tools_regular_section_title">Regular Tools</string>
+    <string name="ai_tools_selected_section_title">Selected Tools (%1$d)</string>
+    <string name="ai_tools_unselected_section_title">Available Tools (%1$d)</string>
+    <string name="ai_tools_selected_section_empty">No tools selected yet. Add from the list below.</string>
+    <string name="ai_tools_unselected_section_empty">All tools in the current filter are already selected.</string>
+    <string name="agent_tool_binding_manage">Manage Bound Tools</string>
+    <string name="agent_tool_binding_manage_hint">Adjust which tools this Agent can use by default. Currently %1$d bound.</string>
+    <string name="agent_tool_binding_search_hint">Search tools by name, summary, or keyword</string>
+    <string name="agent_tool_binding_all_categories">All Categories</string>
+    <string name="agent_tool_binding_empty_result">No matching tools. Try a different keyword or category.</string>
+    <string name="agent_tool_binding_save">Save Tool Binding</string>
+    <string name="agent_tool_binding_update_success">Tool binding updated</string>
+    <string name="agent_tool_binding_update_failed">Failed to update tool binding: %1$s</string>
+    <string name="agent_bound_tools_title">Default Tools</string>
+    <string name="agent_bound_tools_empty">This Agent has no default tools bound.</string>
+    <string name="agent_bound_tools_more_count">+%1$d more</string>
+    <string name="ai_tool_risk_safe">Safe</string>
+    <string name="ai_tool_risk_sensitive">Needs Confirmation</string>
+    <string name="ai_tool_risk_dangerous">High Risk</string>
+    <string name="ai_tool_interactive">Interactive</string>
+    <string name="ai_tool_system_required">System Capability</string>
+    <string name="no_recent_questions">No recent questions</string>
+    <string name="use">Use</string>
+    <string name="search_recent_hint">Search past questions…</string>
+    <string name="search_prompts_hint">Search prompts…</string>
+
+    <string name="ai_error_intro">This could be caused by one of the following:</string>
+    <string name="ai_error_network">• Network instability: A temporary glitch in your connection or our server. Check your network and try again.</string>
+    <string name="ai_error_busy">• System is busy: Many users are online right now. The server may need a moment. Please wait and try again.</string>
+    <string name="ai_error_content">• Content restrictions: Your input may contain words we cannot process or that trigger safety policies. Try rephrasing or asking something else.</string>
+    <string name="ai_error_length">• Conversation length limit: Our conversations have a maximum length. If the current chat is very long, it may fail due to resource limits. Try starting a new chat.</string>
+    <string name="error_title_empty">Title cannot be empty</string>
+    <string name="error_data_empty">Data cannot be empty</string>
+    <string name="error_url_empty" translatable="false">URL cannot be empty</string>
+    <string name="description_placeholder">Description</string>
+    <string name="url_placeholder">URL</string>
+    <string name="input_data_placeholder">Source code (optional)</string>
+    <string name="title_placeholder">Name</string>
+    <string name="error_category_empty">Category cannot be empty</string>
+    <string name="note_default_category">Uncategorized</string>
+    <string name="save_success">Saved successfully</string>
+    <string name="operation_history_description_html_saved">Bookmarked URL "%s".</string>
+    <string name="operation_history_description_note_saved">Created note titled "%s".</string>
+    <string name="profile_item_theme_system">Follow System</string>
+    <string name="html_create">URL Bookmarks</string>
+    <string name="html_create_description">Bookmark URLs and save web content locally for offline reading.</string>
+    <string name="markdown">Markdown</string>
+    <string name="note_create">Notes</string>
+    <string name="note_create_description">Create rich text notes with images, code, and formulas.</string>
+    <string name="new_note">New Note</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="new_html">Add Bookmark</string>
+    <string name="edit_html">Edit Bookmark</string>
+    <string name="new_prompt">New Prompt</string>
+    <string name="html_preview">Preview</string>
+    <string name="html_preview_description">Preview web content</string>
+    <string name="html_data_placeholder">Scraped content will preview here…</string>
+    <string name="download_successful">Scraped successfully</string>
+    <string name="download_failed">Scrape failed</string>
+    <string name="save_to_collection">Save to Collection</string>
+    <string name="url_section_label">URL</string>
+    <string name="scraped_content_section_label">Scraped Content</string>
+    <string name="category_section_label">Category</string>
+    <string name="item_note_title">Notes</string>
+    <string name="item_note_description">Capture your thoughts</string>
+    <string name="decision_wheel_title">Decision Wheel</string>
+    <string name="decision_wheel_description">Spin the wheel to make random decisions. E.g., What\'s for dinner?</string>
+    <string name="file_transfer_title">File Transfer</string>
+    <string name="file_transfer_description">Transfer files between your computer and phone over LAN.</string>
+    <string name="cloud_storage_title">Cloud Storage Browser</string>
+    <string name="cloud_storage_description">Access and manage buckets and objects across multi-cloud object storage.</string>
+    <string name="reorderable_category">Manage Categories</string>
+    <string name="reorderable_category_escription">Add, edit, delete, and reorder categories.</string>
+    <string name="new_add">New</string>
+    <string name="delete_category_message">Delete category %s?</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="bring_to_top">Move to Top</string>
+    <string name="delete">Delete</string>
+    <string name="cannot_edit">Editing this type is not supported yet.</string>
+    <!-- Item navigation failure messages (ItemScreenResolver) -->
+    <string name="item_jump_missing_agent_id">This agent entry is missing an agent ID and cannot be opened.</string>
+    <string name="item_jump_missing_prompt_id">This prompt entry is missing a valid prompt ID and cannot be opened.</string>
+    <string name="item_jump_missing_blog_id">This blog entry is missing a valid screen ID.</string>
+    <string name="item_jump_edit_unsupported">Editing is not supported for this entry type yet.</string>
+    <string name="item_jump_no_target">No screen or URL is available for this entry.</string>
+    <string name="item_jump_wechat_unsupported">WeChat mini programs are not supported on this channel.</string>
+    <string name="item_jump_wechat_not_installed">WeChat is not installed, so the mini program cannot be opened.</string>
+    <string name="done_button">Done</string>
+    <string name="note_placeholder">Start typing — supports Markdown, diagrams, images…</string>
+
+    <!--Floating Robot exit confirm (playful) -->
+    <string name="robot_exit_dialog_title" translatable="false">Wait! Hiding me already?</string>
+    <string name="robot_exit_dialog_message" translatable="false">I was just getting ready to show off my skills! Are you sure you want me to step off stage?
+
+Hint: If you choose "Hide Forever", you can bring me back later in Settings > Display > AI Assistant.</string>
+    <string name="robot_exit_dialog_this_time" translatable="false">Hide for Now</string>
+    <string name="robot_exit_dialog_forever" translatable="false">Hide Forever</string>
+    <string name="robot_exit_dialog_cancel" translatable="false">I\'ll Bear It</string>
+    <string name="data_database">Data</string>
+    <string name="data_backup">Backup</string>
+    <string name="data_restore">Restore</string>
+    <string name="file_browser">File Browser</string>
+    <string name="file_browser_escription">Browse files and folders, view and edit images.</string>
+    <string name="file_not_found">Folder not found</string>
+
+    <string name="need_required_permissions_to_save_file">Storage permission required to save files.</string>
+    <string name="all_files_access_permission_title">Enable "All Files Access"</string>
+    <string name="all_files_access_permission_description">This permission is needed for full file browsing, management, and transfer features. Some features may not work without it.</string>
+    <string name="go_to_grant">Grant Permission</string>
+    <string name="mark_todo">To-Do List</string>
+    <string name="mark_todo_escription">Group and track your to-dos with completion status.</string>
+    <string name="schedule">Schedule Hub</string>
+    <string name="schedule_description">Manage events and schedules in one place, with sync ready for Google Calendar.</string>
+    <string name="bookkeeping">Expense Tracker</string>
+    <string name="bookkeeping_description">Track daily income and expenses with categorized summaries.</string>
+    <string name="habit_tracker">Habit Tracker</string>
+    <string name="habit_tracker_description">Daily habit check-ins and stats</string>
+    <string name="data_restore_success">Database restored. The app will restart in 3 seconds.</string>
+    <string name="data_backup_success">Backup successful! Saved to %1$s folder.</string>
+    <string name="lifetime">Life Clock</string>
+    <string name="lifetime_description">Track your life in moments — make every second count.</string>
+    <string name="camera_watermark">Watermark Camera</string>
+    <string name="camera_watermark_description">Add watermark info to the bottom of your photos.</string>
+    <string name="id_photo">ID Photo Maker</string>
+    <string name="id_photo_description">Create standard ID photos and print-ready sizes.</string>
+    <string name="image_viewer">Image Viewer</string>
+    <string name="image_viewer_description">View images</string>
+    <string name="reset_origin">Original</string>
+
+    <!-- Code Editor -->
+    <string name="code_editor_title">Code Editor</string>
+    <string name="code_editor_mode_text">Text</string>
+    <string name="code_editor_mode_tree">Tree</string>
+    <string name="code_editor_format">Format</string>
+    <string name="code_editor_parse_error">JSON parse failed. Switch to text mode to check syntax.</string>
+    <string name="code_editor_edit_value">Edit Value</string>
+    <string name="code_editor_save">Save</string>
+
+    <!-- Markdown Editor -->
+    <string name="markdown_editor">Markdown Editor</string>
+    <string name="new_file">New</string>
+    <string name="open_file">Open</string>
+    <string name="save_file">Save</string>
+    <string name="save_failure">Save failed</string>
+    <string name="unsaved_changes">Unsaved Changes</string>
+    <string name="unsaved_changes_message">You have unsaved changes. Are you sure you want to exit?</string>
+    <string name="discard">Discard</string>
+    <string name="markdown_editor_description">WYSIWYG editor with a clean, distraction-free interface for immersive writing.</string>
+    <string name="insert_image">Insert Image</string>
+    <string name="insert_link">Insert Link</string>
+    <string name="insert">Insert</string>
+    <string name="pick_from_gallery">Choose from Gallery</string>
+    <string name="image_url_hint">Or enter image URL</string>
+    <string name="image_alt_hint">Image description (optional)</string>
+    <string name="link_text_hint">Link text</string>
+    <string name="link_url_hint">Link URL</string>
+    <string name="link_default_text">Link</string>
+    <string name="recent_files">Recent</string>
+    <string name="clear_history">Clear History</string>
+    <string name="save_as">Save As</string>
+    <string name="save_as_pdf">Save as PDF</string>
+    <string name="home_qr_code">QR Code</string>
+    <string name="add_to_home_screen">Create Shortcut</string>
+    <string name="cannot_create_shortcut">Shortcut creation not supported.</string>
+    <string name="pdf_export_prepare">Preparing PDF export...</string>
+    <string name="pdf_export_failure">PDF export failed: %s</string>
+    <string name="pdf_url_not_found">PDF file not found. You may not have permission.</string>
+    <string name="ocr_document">PDF &amp; Image to Text</string>
+    <string name="ocr_document_description">Extract handwritten text, tables, formulas, and diagrams from images and PDFs with intelligent layout detection.</string>
+    <string name="doc_convert_document">PDF &amp; Image to Word</string>
+    <string name="doc_convert_document_description">Recognize document layouts, extract text, and convert to Word/Excel with preserved formatting.</string>
+    <string name="file_loading">Reading file...</string>
+    <string name="altitude">Altimeter &amp; Weather</string>
+    <string name="altitude_description">Get real-time altitude from barometric sensor + GPS, record history, and visualize trends.</string>
+    <string name="altitude_meters">Meters</string>
+    <string name="altitude_feet">Feet</string>
+    <string name="altitude_source_barometer">Barometer</string>
+    <string name="altitude_source_gps">GPS</string>
+    <string name="altitude_save_record">Save</string>
+    <string name="altitude_history">History</string>
+    <string name="altitude_no_history">No records yet. Tap Save to record current altitude.</string>
+    <string name="altitude_clear_all">Clear All</string>
+    <string name="altitude_record_deleted">Record deleted</string>
+    <string name="altitude_delete_confirm">Delete this record?</string>
+    <string name="altitude_saved">Altitude saved</string>
+    <string name="altitude_note_hint">Add a note (optional)</string>
+    <string name="altitude_accuracy">Accuracy: %1$s m</string>
+    <string name="altitude_vertical_accuracy">Vertical ±%1$s m</string>
+    <string name="altitude_vertical_accuracy_unavailable">Vertical accuracy unknown</string>
+    <string name="altitude_trend">Altitude Trend</string>
+    <string name="altitude_unavailable">Sensor unavailable</string>
+    <string name="altitude_gps_calibrate">GPS Calibration</string>
+    <string name="altitude_unit_m">m</string>
+    <string name="altitude_unit_ft">ft</string>
+    <string name="altitude_location_permission_title">Location Permission Required</string>
+    <string name="altitude_location_permission_description">The altimeter uses GPS for precise altitude. Please grant location permission to start.</string>
+    <string name="altitude_location_permission_denied">Location permission was permanently denied. Go to app settings to enable it manually.</string>
+    <string name="altitude_grant_permission">Grant Permission</string>
+    <string name="altitude_open_settings">Open Settings</string>
+    <string name="altitude_searching">Searching…</string>
+    <string name="altitude_waiting_altitude_short">Located, waiting for altitude</string>
+    <string name="altitude_waiting_altitude_hint">Coordinates acquired. Waiting for the device to return altitude data.</string>
+    <string name="altitude_elevation">Elevation</string>
+    <string name="altitude_ascending">Ascending</string>
+    <string name="altitude_descending">Descending</string>
+    <string name="altitude_level">Level</string>
+    <string name="altitude_2h_ago">2 hours ago</string>
+    <string name="altitude_current_peak">Current Peak</string>
+    <string name="altitude_current_location">Current Location</string>
+    <string name="altitude_coordinates">Coordinates</string>
+    <string name="altitude_tap_to_switch">Tap to switch</string>
+    <string name="altitude_wind_scale">Level %1$s</string>
+    <string name="altitude_humidity_value">Humidity %1$s%%</string>
+    <string name="altitude_admin_area">Region</string>
+    <string name="altitude_timezone">Timezone</string>
+    <string name="altitude_utc_offset">UTC Offset</string>
+    <string name="altitude_region">Area</string>
+    <string name="altitude_weather">Weather</string>
+    <string name="altitude_feels_like">Feels like %1$s°</string>
+    <string name="altitude_wind">Wind</string>
+    <string name="altitude_humidity">Humidity</string>
+    <string name="altitude_visibility">Visibility</string>
+    <string name="altitude_precipitation">Precipitation</string>
+    <string name="altitude_pressure">Pressure</string>
+    <string name="altitude_dew_point">Dew Point</string>
+    <string name="altitude_cloud_cover">Cloud Cover</string>
+    <string name="altitude_observation">Observation Time</string>
+    <string name="altitude_updated">Updated</string>
+    <string name="altitude_share">Share</string>
+    <string name="altitude_export_csv">Export CSV</string>
+    <string name="altitude_recalibrate">Recalibrate</string>
+    <string name="altitude_tab_instrument">Dashboard</string>
+    <string name="altitude_tab_history">History</string>
+    <string name="altitude_tab_bookmarks">Bookmarks</string>
+    <string name="altitude_clear_all_confirm">Delete all %1$d records?</string>
+    <string name="altitude_history_count">%1$d records</string>
+    <string name="altitude_live_sensor_map">Live Sensor Map</string>
+    <string name="altitude_regional_barometrics">Regional Pressure</string>
+    <string name="altitude_detail_title">Record Details</string>
+    <string name="altitude_detail_altitude">Altitude</string>
+    <string name="altitude_detail_source">Source</string>
+    <string name="altitude_detail_accuracy">Accuracy</string>
+    <string name="altitude_detail_location">Location</string>
+    <string name="altitude_detail_weather">Weather</string>
+    <string name="altitude_detail_temp">Temperature</string>
+    <string name="altitude_detail_feels_like">Feels Like</string>
+    <string name="altitude_detail_wind">Wind</string>
+    <string name="altitude_detail_humidity">Humidity</string>
+    <string name="altitude_detail_pressure">Pressure</string>
+    <string name="altitude_detail_note">Note</string>
+    <string name="altitude_detail_time">Recorded At</string>
+
+
+    <!-- Speed Test -->
+    <string name="speed_test">Speed Test</string>
+    <string name="speed_test_description">Test network download speed and latency, save history.</string>
+
+    <!-- Unit Converter -->
+    <string name="unit_converter">Unit Converter</string>
+    <string name="unit_converter_description">Convert between 16 categories: length, weight, temperature, area, volume, and more.</string>
+
+    <!-- Dead Pixel Test -->
+    <string name="dead_pixel_test">Dead Pixel Test</string>
+    <string name="dead_pixel_test_description">Full-screen color cycling to detect dead or stuck pixels.</string>
+
+    <!-- Compass -->
+    <string name="compass">Compass</string>
+    <string name="compass_description">Real-time bearing with localized direction display and calibration hint.</string>
+    <string name="compass_calibrate">Low sensor accuracy. Draw a figure-8 in the air to calibrate the compass.</string>
+    <string name="compass_unavailable">This device does not support rotation vector sensors. Compass is unavailable.</string>
+    <string name="compass_dir_n">N</string>
+    <string name="compass_dir_ne">NE</string>
+    <string name="compass_dir_e">E</string>
+    <string name="compass_dir_se">SE</string>
+    <string name="compass_dir_s">S</string>
+    <string name="compass_dir_sw">SW</string>
+    <string name="compass_dir_w">W</string>
+    <string name="compass_dir_nw">NW</string>
+
+    <!-- Loan Calculator -->
+    <string name="loan_calculator">Loan Calculator</string>
+    <string name="loan_calculator_description">Supports equal principal + interest, equal principal, interest-first, and flat-rate methods.</string>
+
+    <!-- Dice Roller -->
+    <string name="dice_roller_title">Dice Roller</string>
+    <string name="dice_roller_description">Tabletop dice D4/D6/D8/D10/D12/D20</string>
+
+    <!-- Teleprompter -->
+    <string name="teleprompter_title">Teleprompter</string>
+    <string name="teleprompter_description">Professional teleprompter with script management and smooth scrolling.</string>
+
+    <!-- Glass / Background -->
+    <string name="glass_alpha_effect">Glass Effect</string>
+    <string name="liquid_glass_effect">Liquid Glass Effect</string>
+    <string name="mesh_gradient_background">Gradient Background</string>
+    <string name="gradient_style_label">Background Style</string>
+    <string name="gradient_style_classic">Classic</string>
+    <string name="gradient_style_aurora">Aurora</string>
+    <string name="gradient_style_ocean">Deep Sea</string>
+    <string name="gradient_style_sunset">Sunset</string>
+    <string name="gradient_style_sakura_mist">Sakura Mist</string>
+    <string name="gradient_style_mint_breeze">Mint Soda</string>
+    <string name="gradient_style_starry_night">Midnight Galaxy</string>
+    <string name="gradient_style_lavender">Lavender Field</string>
+    <string name="gradient_style_warm_glow">Caramel Glow</string>
+    <string name="gradient_style_ethereal">Silk Mist</string>
+    <string name="gradient_style_neon_cyber">Electric Dream</string>
+    <string name="custom_background">Custom Background</string>
+    <string name="custom_background_pick">Pick Image</string>
+    <string name="custom_background_clear">Clear Custom Background</string>
+    <string name="custom_background_overlay_alpha">Overlay Opacity</string>
+
+    <!-- Theme Presets -->
+    <string name="theme_preset_section">Choose Theme</string>
+    <string name="theme_preset_create">New Theme</string>
+    <string name="theme_preset_create_title">New Theme</string>
+    <string name="theme_preset_name_hint">Theme name</string>
+    <string name="theme_preset_save">Save</string>
+    <string name="theme_preset_cancel">Cancel</string>
+    <string name="theme_preset_delete">Delete</string>
+    <string name="theme_preset_copy">Copy Theme</string>
+    <string name="theme_preset_glass_alpha">Glass Opacity</string>
+    <string name="theme_preset_color_section">Color Scheme</string>
+    <string name="theme_preset_glass_section">Glass Effect</string>
+    <string name="theme_preset_bg_section">Background Style</string>
+    <string name="theme_preset_dynamic_colors">Wallpaper Colors</string>
+    <string name="theme_preset_more_settings">More Settings</string>
+    <!-- Built-in theme preset display names (mapped by AppThemePreset built-in ids) -->
+    <string name="theme_preset_name_dynamic">Dynamic</string>
+    <string name="theme_preset_name_logo">Brand</string>
+    <string name="theme_preset_name_sakura_pink">Sakura Pink</string>
+    <string name="theme_preset_name_mint_fresh">Mint Soda</string>
+    <string name="theme_preset_name_starry_blue">Misty Blue</string>
+    <string name="theme_preset_name_pure_gray">Simple Gray</string>
+    <string name="theme_preset_name_pure_glass_gray">Smoke Gray</string>
+    <string name="theme_preset_name_lavender_dream">Lavender</string>
+    <string name="theme_preset_name_sunset_warm">Caramel Latte</string>
+    <string name="theme_preset_name_ocean_deep">Deep Ocean</string>
+    <string name="theme_preset_copy_suffix"> Copy</string>
+    <string name="theme_settings_title">Theme Settings</string>
+    <string name="theme_settings_description">Customize colors, glass effects, and backgrounds.</string>
+    <string name="theme_preset_new">+ New</string>
+    <string name="theme_preset_primary_color">Primary</string>
+    <string name="theme_preset_secondary_color">Secondary</string>
+    <string name="theme_preset_tertiary_color">Tertiary</string>
+    <string name="theme_preset_surface_color">Surface</string>
+    <string name="theme_preset_preview_gradient">Preview %s background</string>
+    <string name="theme_discard_title">Discard changes?</string>
+    <string name="theme_discard_message">You have unsaved changes. Exiting will revert to the previous theme.</string>
+    <string name="theme_discard_confirm">Discard</string>
+    <string name="theme_discard_dismiss">Keep Editing</string>
+    <string name="theme_color_picker_done">Done</string>
+    <string name="theme_delete_confirm_title">Confirm Delete</string>
+    <string name="theme_delete_confirm_message">Delete theme "%s"? This cannot be undone.</string>
+    <string name="theme_delete_confirm_ok">Delete</string>
+    <string name="theme_delete_confirm_cancel">Cancel</string>
+
+    <!-- Create AI Agent -->
+    <string name="create_ai_agent_title">Create AI App</string>
+    <string name="create_ai_agent_description">Describe what you want in natural language, and AI will build it for you.</string>
+    <string name="create_ai_agent_hint">Describe the AI app you want to create, e.g. travel planner, article style converter…</string>
+    <string name="create_ai_agent_generate">Generate</string>
+    <string name="create_ai_agent_generating">AI generating…</string>
+    <string name="create_ai_agent_save">Save</string>
+    <string name="create_ai_agent_preview">Preview</string>
+    <string name="create_ai_agent_drafts">Drafts</string>
+    <string name="create_ai_agent_no_drafts">No drafts</string>
+    <string name="create_ai_agent_save_success">Saved successfully</string>
+    <string name="create_ai_agent_save_failed">Save failed</string>
+    <string name="create_ai_agent_parse_error">JSON parse failed. Please regenerate.</string>
+    <string name="create_ai_agent_empty_input">Please enter a description.</string>
+    <string name="create_ai_agent_draft_saved">Draft saved</string>
+    <string name="create_ai_agent_draft_deleted">Draft deleted</string>
+    <string name="create_ai_agent_draft_delete_confirm">Are you sure you want to delete this draft? This cannot be undone.</string>
+    <string name="create_ai_agent_stream_error">Generation interrupted. Please retry.</string>
+    <string name="create_ai_agent_canvas_title">AI Creation Canvas</string>
+    <string name="create_ai_agent_canvas_desc">Share your idea below,\nand AI will bring it to life</string>
+    <string name="create_ai_agent_select_category">Select Category</string>
+    <string name="create_ai_agent_select_category_hint">Choose at least one category for your app.</string>
+    <string name="create_ai_agent_add_category">Add Category</string>
+    <string name="create_ai_agent_select_tool">Select Tools</string>
+    <string name="create_ai_agent_select_tool_hint">Choose default tools for this Agent. Currently %1$d selected.</string>
+    <string name="create_ai_agent_tool_default">Enabled by Default</string>
+    <string name="create_ai_agent_tool_interactive">Requires Interaction</string>
+    <string name="create_ai_agent_tool_confirmation">Requires Confirmation</string>
+    <string name="create_ai_agent_tool_risk">Risk: %1$s</string>
+    <string name="create_ai_agent_multi_turn_hint">Continue refining — AI will optimize based on the current result.</string>
+    <string name="create_ai_agent_multi_turn_placeholder">e.g. Change the button to blue, add a date picker…</string>
+    <string name="create_ai_agent_cancel">Cancel</string>
+    <string name="create_ai_agent_refine">Refine</string>
+    <string name="create_ai_agent_preview_default_title">AI App Preview</string>
+    <string name="create_ai_agent_preview_prefix">Preview: %s</string>
+    <string name="create_ai_agent_round">Round %d</string>
+    <string name="create_ai_agent_success_hint">Generation successful. Tap Preview to see the full result.</string>
+    <string name="create_ai_agent_error_title">Something went wrong</string>
+    <string name="create_ai_agent_retry">Regenerate</string>
+    <string name="create_ai_agent_draft_success">✅ Success</string>
+    <string name="create_ai_agent_draft_failed">❌ Failed</string>
+    <string name="create_ai_agent_draft_label">📝 Draft</string>
+    <string name="create_ai_agent_collapse">Collapse</string>
+    <string name="create_ai_agent_expand">Expand</string>
+    <string name="create_ai_agent_error_service_unavailable">AI service is temporarily unavailable. Please try again later.</string>
+    <string name="create_ai_agent_error_network">Network connection issue. Please check and retry.</string>
+    <string name="create_ai_agent_error_no_agent">No app to save.</string>
+    <string name="create_ai_agent_error_no_category">Please select at least one category.</string>
+    <string name="create_ai_agent_error_no_tool">Please select at least one tool.</string>
+    <string name="create_ai_agent_error_save">Save failed: %s</string>
+    <string name="create_ai_agent_error_preview">Preview preparation failed: %s</string>
+    <string name="create_ai_agent_sensitive_blocked">The title contains restricted content. Please revise and try again.</string>
+    <string name="create_ai_agent_config">Configure</string>
+    <string name="create_ai_agent_edit_raw">Edit Raw Result</string>
+    <string name="create_ai_agent_config_title">Configure Categories &amp; Tools</string>
+    <string name="create_ai_agent_config_summary">%1$d categories, %2$d tools configured</string>
+    <string name="create_ai_agent_apply_config">Apply</string>
+    <string name="create_ai_agent_default_category">AI Apps</string>
+    <string name="create_ai_agent_error_no_response">AI didn\'t respond. Try again or rephrase your description.</string>
+    <string name="create_ai_agent_error_unrecognized">AI response was unrecognizable. Tap "Regenerate" to try again.</string>
+    <string name="create_ai_agent_error_incomplete">Generated content is incomplete. Please regenerate.</string>
+    <string name="create_ai_agent_error_content">There was an issue with the generated UI. Tap "Regenerate" or try a different description.</string>
+    <string name="create_ai_agent_error_format">Incorrect format returned. Try regenerating.</string>
+    <string name="create_ai_agent_error_parse_fallback">Result could not be parsed. Try a different description.</string>
+    <string name="create_ai_agent_edit_unavailable">No editable Agent was found</string>
+    <string name="create_ai_agent_conversation_title">Create AI App</string>
+    <string name="ai_refresh_success">Refreshed</string>
+    <string name="ai_refresh_failed">Refresh failed</string>
+    <string name="ai_switch_to_grid">Switch to Grid</string>
+    <string name="ai_switch_to_list">Switch to List</string>
+    <string name="ai_filter_all">All</string>
+    <string name="ai_model_search_hint">Search models, engines, or capabilities</string>
+    <string name="ai_model_search_empty">No matching models</string>
+    <string name="ai_model_tag_balanced">Balanced</string>
+    <string name="ai_model_tag_speed">Speed</string>
+    <string name="ai_model_tag_fast">Fast</string>
+    <string name="ai_model_tag_code">Code</string>
+    <string name="ai_engine_capability_fast">Fast Models</string>
+    <string name="ai_engine_capability_code">Code Models</string>
+    <string name="ai_model_tag_reasoning">Reasoning</string>
+    <string name="ai_model_tag_vision">Vision</string>
+    <string name="ai_model_tag_context">Long Context</string>
+    <string name="empty_description">No info available</string>
+    <string name="create_ai_common_title_label">Title</string>
+    <string name="create_ai_common_description_label">Description</string>
+    <string name="create_ai_common_enable_meta_edit">Edit title and description</string>
+    <string name="create_ai_common_finish_meta_edit">Finish editing title and description</string>
+    <string name="create_ai_common_model_selector">Select model</string>
+    <string name="create_ai_common_tools_empty">No tools configured</string>
+    <string name="create_ai_common_config_summary_compact">%1$d categories · %2$d tools</string>
+
+    <!-- Create AI Prompt -->
+    <string name="create_ai_chat_prompt_title">Create AI Prompt</string>
+    <string name="create_ai_chat_prompt_description">Describe in natural language, and AI will generate a prompt or roleplay for you.</string>
+    <string name="create_ai_chat_prompt_hint">Describe the prompt or character you want, e.g. translation assistant, writing coach, counselor…</string>
+    <string name="create_ai_chat_prompt_generate">Generate</string>
+    <string name="create_ai_chat_prompt_generating">AI generating…</string>
+    <string name="create_ai_chat_prompt_save">Save</string>
+    <string name="create_ai_chat_prompt_preview">Preview</string>
+    <string name="create_ai_chat_prompt_drafts">Drafts</string>
+    <string name="create_ai_chat_prompt_save_success">Saved successfully</string>
+    <string name="create_ai_chat_prompt_parse_error">JSON parse failed. Please regenerate.</string>
+    <string name="create_ai_chat_prompt_draft_deleted">Draft deleted</string>
+    <string name="create_ai_chat_prompt_draft_delete_confirm">Are you sure you want to delete this draft? This cannot be undone.</string>
+    <string name="create_ai_chat_prompt_canvas_title">AI Prompt Workshop</string>
+    <string name="create_ai_chat_prompt_canvas_desc">Share your idea below,\nand AI will craft a custom prompt for you</string>
+    <string name="create_ai_chat_prompt_select_category">Select Category</string>
+    <string name="create_ai_chat_prompt_select_category_hint">Choose at least one category for your prompt.</string>
+    <string name="create_ai_chat_prompt_add_category">Add Category</string>
+    <string name="create_ai_chat_prompt_multi_turn_hint">Continue refining — AI will optimize based on the current result.</string>
+    <string name="create_ai_chat_prompt_multi_turn_placeholder">e.g. Make the tone friendlier, add formatting requirements…</string>
+    <string name="create_ai_chat_prompt_cancel">Cancel</string>
+    <string name="create_ai_chat_prompt_refine">Refine</string>
+    <string name="create_ai_chat_prompt_preview_default_title">AI Prompt Preview</string>
+    <string name="create_ai_chat_prompt_round">Round %d</string>
+    <string name="create_ai_chat_prompt_tap_preview">Tap to enter chat preview</string>
+    <string name="create_ai_chat_prompt_error_title">Something went wrong</string>
+    <string name="create_ai_chat_prompt_retry">Regenerate</string>
+    <string name="create_ai_chat_prompt_draft_success">✅ Success</string>
+    <string name="create_ai_chat_prompt_draft_failed">❌ Failed</string>
+    <string name="create_ai_chat_prompt_draft_label">📝 Draft</string>
+    <string name="create_ai_chat_prompt_collapse">Collapse</string>
+    <string name="create_ai_chat_prompt_expand">Expand</string>
+    <string name="create_ai_chat_prompt_error_service_unavailable">AI service is temporarily unavailable. Please try again later.</string>
+    <string name="create_ai_chat_prompt_error_network">Network connection issue. Please check and retry.</string>
+    <string name="create_ai_chat_prompt_error_no_prompt">No prompt to save.</string>
+    <string name="create_ai_chat_prompt_error_no_category">Please select at least one category.</string>
+    <string name="create_ai_chat_prompt_error_save">Save failed: %s</string>
+    <string name="create_ai_chat_prompt_sensitive_blocked">The title contains restricted content. Please revise and try again.</string>
+    <string name="create_ai_chat_prompt_config">Configure</string>
+    <string name="create_ai_chat_prompt_config_title">Configure Categories &amp; Tools</string>
+    <string name="create_ai_chat_prompt_config_summary">%1$d categories, %2$d tools configured</string>
+    <string name="create_ai_chat_prompt_apply_config">Apply</string>
+    <string name="create_ai_chat_prompt_select_tool">Select Tools</string>
+    <string name="create_ai_chat_prompt_select_tool_hint">Configure default capabilities for this prompt template. Currently %1$d selected.</string>
+    <string name="create_ai_chat_prompt_tool_none_hint">No default tools configured. Tool panel will remain fully closed.</string>
+    <string name="create_ai_chat_prompt_default_category">AI Prompts</string>
+    <string name="create_ai_chat_prompt_error_no_response">AI didn\'t respond. Try again or rephrase your description.</string>
+    <string name="create_ai_chat_prompt_error_unrecognized">AI response was unrecognizable. Tap "Regenerate" to try again.</string>
+    <string name="create_ai_chat_prompt_error_incomplete">Generated content is incomplete. Please regenerate.</string>
+    <string name="create_ai_chat_prompt_error_content">There was an issue with the generated prompt. Tap "Regenerate" or try a different description.</string>
+    <string name="create_ai_chat_prompt_error_format">Incorrect format returned. Try regenerating.</string>
+    <string name="create_ai_chat_prompt_error_parse_fallback">Result could not be parsed. Try a different description.</string>
+    <string name="create_ai_chat_prompt_edit_raw">Edit Raw Result</string>
+    <string name="create_ai_chat_prompt_conversation_title">Create AI Prompt</string>
+    <string name="create_ai_chat_prompt_system_prompt_label">System Prompt</string>
+    <string name="create_ai_chat_prompt_placeholder_label">Input Guide</string>
+    <string name="create_ai_chat_prompt_templates_label">Input Template</string>
+    <string name="create_ai_chat_prompt_templates_preview_disabled">Template preview has been switched to DynamicUi. Legacy UIElement preview has been removed.</string>
+
+    <!-- AI Stream Stage Labels -->
+    <string name="create_ai_agent_stream_stage_structure">Structuring the app…</string>
+    <string name="create_ai_agent_stream_stage_components">Generating UI components…</string>
+    <string name="create_ai_agent_stream_stage_finalizing">Finalizing…</string>
+    <string name="create_ai_agent_stream_raw_toggle">Technical Details</string>
+
+    <string name="create_ai_chat_prompt_stream_stage_structure">Building prompt framework…</string>
+    <string name="create_ai_chat_prompt_stream_stage_content">Writing prompt content…</string>
+    <string name="create_ai_chat_prompt_stream_stage_finalizing">Polishing details…</string>
+    <string name="create_ai_chat_prompt_stream_raw_toggle">Technical Details</string>
+
+    <!-- AI Tool Selection -->
+    <string name="create_ai_agent_tool_expand">Expand tool list</string>
+    <string name="create_ai_agent_tool_collapse">Collapse tool list</string>
+    <string name="create_ai_agent_tool_none_hint">No tools bound. This app will work in chat-only mode.</string>
+
+    <!-- AI Quick Refine Chips -->
+    <string name="create_ai_agent_quick_refine_simplify">Make it cleaner</string>
+    <string name="create_ai_agent_quick_refine_add_settings">Add settings page</string>
+    <string name="create_ai_chat_prompt_quick_refine_tone">Make it friendlier</string>
+    <string name="create_ai_chat_prompt_quick_refine_format">Add formatting</string>
+
+    <string name="create_ai_agent_edit">Edit</string>
+    <string name="create_ai_chat_prompt_edit">Edit</string>
+    <string name="agent_push_to_remote">Push to remote</string>
+    <string name="agent_push_success">Push succeeded</string>
+    <string name="agent_push_failed">Push failed</string>
+
+    <!-- Bottom Navigation - Add Menu -->
+    <string name="nav_add">Add</string>
+    <string name="nav_create_new_task">New Task</string>
+    <string name="nav_new_qr_code">Scan</string>
+    <string name="nav_notebook">Note</string>
+    <string name="nav_todo_list">To-Do</string>
+    <string name="nav_ai_app">Chat</string>
+
+    <!-- Game 2048 -->
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_description">Classic number-merging puzzle game</string>
+    <string name="xiangqi_title">Xiangqi</string>
+    <string name="xiangqi_description">Chinese chess with FEN snapshots, replay, import/export, and LLM battles.</string>
+
+    <string name="minesweeper_title">Minesweeper</string>
+    <string name="minesweeper_description">Classic minesweeper — test your logic and reasoning.</string>
+
+    <string name="survive_30s_screen_title">Survive 30 Seconds</string>
+    <string name="survive_30s_screen_description">Drag the ball to dodge obstacles. Survive 30 seconds to win!</string>
+    <string name="web_browser_title">Browser</string>
+    <string name="web_browser_description">Built-in web browser with tabs, bookmarks, and history.</string>
+
+    <!-- AI Agent Tool Calling -->
+    <string name="agent_tool_calling">Calling %s tool…</string>
+    <string name="agent_tool_starting">Let me handle that for you…</string>
+    <string name="agent_tool_default_deeplink_guidance">Tap to open: %1$s</string>
+    <string name="agent_tool_success">Tool executed successfully</string>
+    <string name="agent_tool_error">Tool execution failed</string>
+    <string name="agent_tool_timeout">Tool execution timed out</string>
+    <string name="agent_tool_not_found">Tool not found: %s</string>
+    <string name="agent_max_iterations">Maximum tool calls reached</string>
+    <string name="agent_tool_result">Result</string>
+    <string name="agent_tool_params">Parameters</string>
+    <string name="agent_tool_name_get_current_time">Get Current Time</string>
+    <string name="agent_tool_desc_get_current_time">Get the current date, time, and timezone from the device.</string>
+    <string name="agent_tool_name_get_device_info">Get Device Info</string>
+    <string name="agent_tool_desc_get_device_info">Get device model, OS version, screen resolution, etc.</string>
+
+    <!-- AI Agent Interactive Tool -->
+    <string name="agent_tool_waiting_input">Waiting for you to fill the form…</string>
+    <string name="agent_tool_form_title">📝 Please fill in the following</string>
+    <string name="agent_tool_form_submit">Submit</string>
+    <string name="agent_tool_form_cancel">Cancel</string>
+    <string name="agent_tool_form_submitted">Form submitted</string>
+    <string name="agent_tool_form_cancelled">User cancelled</string>
+    <string name="agent_tool_name_ask_user">Ask User</string>
+    <string name="agent_tool_desc_ask_user">Display structured questions and wait for a user response.</string>
+
+    <!-- AI Agent Tool Actions -->
+    <string name="agent_tool_retry">Retry</string>
+    <string name="agent_tool_skip">Skip</string>
+    <string name="agent_tool_continue">Continue</string>
+    <string name="agent_tool_confirm_title">AI wants to: %s</string>
+    <string name="agent_tool_confirm_risk">Risk level: %s</string>
+    <string name="agent_tool_confirm_category">Category: %s</string>
+    <string name="agent_tool_confirm_arguments">Parameters: %s</string>
+    <string name="agent_stream_timeout">Connection timed out. Please try again later.</string>
+    <string name="agent_tool_history_count">%d tool call(s)</string>
+    <string name="agent_tool_waiting_llm">Tool completed, waiting for AI response · Round %d</string>
+    <string name="agent_max_iterations_reached">%d rounds of tool calls executed. Tap "Continue" to proceed.</string>
+    <string name="agent_tool_waiting_user_input">Waiting for you to complete %s input…</string>
+    <string name="agent_tool_confirmation_required">This tool needs your confirmation before execution.</string>
+    <string name="agent_tool_confirm_approve">Continue</string>
+    <string name="agent_tool_confirm_reject">Reject</string>
+    <string name="agent_tool_execution_timeout">Tool execution timed out (%ds), automatically terminated</string>
+    <string name="agent_interaction_restore_failed">Failed to restore interaction request.</string>
+    <string name="agent_interaction_legacy_form_removed">Legacy form interaction is no longer supported. Please start the action again.</string>
+    <string name="agent_tool_execution_skipped">Tool execution skipped</string>
+    <string name="ai_chat_failed_to_load_messages">Failed to load messages</string>
+    <string name="ai_chat_cancelled">[Chat cancelled]</string>
+    <string name="ai_chat_failed">Chat failed</string>
+    <string name="ai_chat_token_warning">This conversation has consumed %d tokens. Consider starting a new chat for better performance.</string>
+    <string name="agent_tool_waiting_confirmation">Waiting for you to confirm %s…</string>
+    <string name="agent_tool_waiting_user_input_hint">Submit and AI will continue · Round %d</string>
+
+    <string name="ai_execution_running_title">Processing</string>
+    <string name="ai_execution_waiting_user_title">Confirmation needed</string>
+    <string name="ai_execution_waiting_input_title">More information needed</string>
+    <string name="ai_execution_waiting_response_title">Preparing response</string>
+    <string name="ai_execution_completed_title">Completed</string>
+    <string name="ai_execution_failed_title">Not completed</string>
+    <string name="ai_execution_paused_title">Waiting to continue</string>
+    <string name="ai_execution_current_step">Current step: %1$s</string>
+    <string name="ai_execution_progress">Completed %1$d / %2$d steps</string>
+    <string name="ai_execution_progress_completed">Completed %1$d steps</string>
+    <string name="ai_execution_action_continue">Continue</string>
+    <string name="ai_execution_action_cancel">Cancel</string>
+    <string name="ai_execution_waiting_user_summary">Waiting for your confirmation to continue</string>
+    <string name="ai_execution_waiting_input_summary">Waiting for more information to continue</string>
+    <string name="ai_execution_paused_summary_with_iteration">The AI has already executed multiple tool rounds (%1$d / %2$d) and may need more steps to finish the task. Generated content has been saved. You can continue or end here.</string>
+    <string name="ai_execution_waiting_response_summary">Execution finished. Preparing the reply</string>
+    <string name="ai_execution_failed_summary">Some steps did not complete successfully</string>
+    <string name="ai_execution_paused_summary">AI has run multiple rounds of tool calls and may need more steps to finish. Generated content has been saved — you can continue or stop.</string>
+    <string name="ai_execution_step_prepare">Prepare</string>
+    <string name="ai_execution_step_generate_response">Prepare reply</string>
+    <string name="ai_execution_status_running">Processing: %1$s</string>
+    <string name="ai_execution_status_done">Completed: %1$s</string>
+    <string name="ai_execution_status_failed">Not completed: %1$s</string>
+    <string name="ai_execution_status_waiting_input">Waiting for more information: %1$s</string>
+    <string name="ai_execution_status_waiting_confirmation">Waiting for confirmation: %1$s</string>
+
+    <!-- SelectableContentWrapper -->
+    <string name="select_text">Select Text</string>
+    <string name="ai_chat_text_selection_mode_hint">Selection mode enabled. Long-press text to start selecting.</string>
+    <string name="share_as_image">Share as Image</string>
+
+    <!-- Token Usage -->
+    <string name="token_usage_total_consumption">Total</string>
+    <string name="token_usage_prompt_tokens">Prompt Tokens</string>
+    <string name="token_usage_completion_tokens">Completion Tokens</string>
+    <string name="token_usage_request_count">Requests</string>
+    <string name="token_usage_model_distribution">Model Distribution</string>
+    <string name="token_usage_top_queries">Top Queries</string>
+    <string name="token_usage_empty_title">No usage data yet</string>
+    <string name="token_usage_empty_desc">Start an AI chat and your token usage will show up here.</string>
+    <string name="token_usage_error_title">Load failed</string>
+    <string name="token_usage_error_desc">Unable to read usage data. Please try again later.</string>
+    <string name="token_usage_default_model">Default Model</string>
+    <string name="token_usage_tokens_label">Tokens</string>
+
+    <!-- AI streaming persistence & PiP -->
+    <string name="ai_streaming_in_progress">AI is responding…</string>
+    <string name="ai_waiting_response">Waiting for AI response…</string>
+    <string name="ai_xiaomi">Xiaomi</string>
+    <string name="ai_xiaomi_description">Xiaomi MiMo</string>
+    <string name="ai_tools_category_image">Image</string>
+    <string name="ai_tools_category_media">Media</string>
+    <string name="ai_tools_category_prompt">Prompt</string>
+    <string name="ai_chat_quick_start_select">Select Model</string>
+    <string name="system_prompt_save_success">Saved successfully</string>
+    <string name="system_prompt_save_failed">Save failed</string>
+    <string name="system_prompt_friendly_reminder_title">Friendly reminder</string>
+    <string name="system_prompt_friendly_reminder_message">Changing a system prompt may affect the behavior of AI features such as chat and agents. If possible, back up the original content before editing.</string>
+    <string name="system_prompt_read_only_hint">VIP level too low. View only.</string>
+    <string name="system_prompt_edit_vip_required_title">VIP Required</string>
+    <string name="system_prompt_edit_vip_required_message">Editing system prompts requires VIP level 2 or above. Upgrade to customize your AI system prompts.</string>
+    <string name="system_prompt_edit_vip_upgrade">Upgrade</string>
+
+    <string name="vip_level_title">VIP Level</string>
+    <string name="vip_level_description">View level benefits and progress.</string>
+    <string name="vip_level_current">Current Level</string>
+    <string name="vip_level_total_recharged">Total Spent</string>
+    <string name="vip_level_next_level_progress">¥%s more to next level</string>
+    <string name="vip_level_max_reached">Max level reached</string>
+    <string name="vip_level_recharge_amount">Spent ≥ ¥%s</string>
+    <string name="vip_level_recharge_from_zero">Spent ¥%s</string>
+
+    <string name="vip_level_0_name">Newcomer</string>
+    <string name="vip_level_0_desc">Just arrived — start your journey</string>
+    <string name="vip_level_1_name">Apprentice</string>
+    <string name="vip_level_1_desc">Testing the waters, exploring OneBox</string>
+    <string name="vip_level_2_name">Beginner</string>
+    <string name="vip_level_2_desc">Finding your way, discovering more</string>
+    <string name="vip_level_3_name">Intermediate</string>
+    <string name="vip_level_3_desc">Getting the hang of it, unlocking advanced features</string>
+    <string name="vip_level_4_name">Advanced</string>
+    <string name="vip_level_4_desc">Mastering the craft, enjoying exclusive perks</string>
+    <string name="vip_level_5_name">Expert</string>
+    <string name="vip_level_5_desc">Standing out, experiencing premium service</string>
+    <string name="vip_level_6_name">Elite</string>
+    <string name="vip_level_6_desc">Exceptional, enjoying VIP treatment</string>
+    <string name="vip_level_7_name">Legendary</string>
+    <string name="vip_level_7_desc">Peak performance, wielding core power</string>
+    <string name="vip_level_8_name">Unrivaled</string>
+    <string name="vip_level_8_desc">One in a thousand, standing above the rest</string>
+    <string name="vip_level_9_name">Supreme</string>
+    <string name="vip_level_9_desc">Legendary, at the top of the world</string>
+
+    <!-- Category management dialog (shared) -->
+    <string name="add_new_category">Add Category</string>
+    <string name="category_name_label">Category Name</string>
+    <string name="drag_to_reorder">Drag to reorder</string>
+    <string name="ai_stream_answer_title">Streaming Q&amp;A</string>
+
+    <!-- AI Chat Cancel Confirmation -->
+    <string name="ai_chat_cancel_confirm_title">AI is responding</string>
+    <string name="ai_chat_cancel_confirm_message">Content generated so far will be saved to your chat history. You can view it anytime.</string>
+    <string name="ai_chat_cancel_confirm_stop">Stop responding</string>
+    <string name="ai_chat_cancel_confirm_cancel">Cancel</string>
+    <string name="ai_chat_cancel_confirm_message_bg">Content generated so far will be saved to your chat history. You can view it anytime.\n\nYou can also leave this page — AI will continue responding in the background.</string>
+    <string name="ai_chat_cancel_confirm_background">Continue in background</string>
+    <string name="ai_chat_interrupted">[Interrupted]</string>
+
+    <!-- AI Agent Loop Max Iterations Improved -->
+    <string name="ai_execution_paused_friendly_summary">AI has run multiple rounds of tool calls and may need more steps to finish. Generated content has been saved — you can continue or stop.</string>
+    <string name="ai_execution_action_continue_execution">Continue execution</string>
+
+    <!-- Home tabs (OnlineScreen) -->
+    <string name="home_tab_web_title">Websites</string>
+    <string name="home_tab_tags_manage">Manage tags</string>
+    <string name="home_chip_all">All</string>
+    <string name="home_chip_close">Hide filters</string>
+
+    <!-- Password protection global lock screen -->
+    <string name="auth_code_title">Access Verification</string>
+    <string name="auth_code_settings_title">Password Protection</string>
+    <string name="auth_code_settings_subtitle">Verify identity before sensitive actions</string>
+
+    <string name="a2ui_screen">A2UI Renderer</string>
+    <string name="a2ui_screen_description">Dynamic UI rendering via A2UI protocol</string>
+    <string name="a2ui_modal_dismiss">Close</string>
+    <string name="a2ui_datetime_label">Select date/time</string>
+    <string name="a2ui_datetime_pick">Pick</string>
+    <string name="a2ui_datetime_confirm">Confirm</string>
+    <string name="a2ui_datetime_cancel">Cancel</string>
+
+    <!-- AI chat engine availability -->
+    <string name="ai_chat_engine_unavailable_toast">No AI engine is available. Please finish engine setup first.</string>
+    <string name="ai_chat_engine_unavailable_dialog_title">Cannot send message</string>
+    <string name="ai_chat_engine_unavailable_dialog_message">No AI engine is available. Please test a working direct connection in engine settings, or switch to an engine with an available proxy, before sending.</string>
+    <string name="ai_chat_engine_unavailable_banner_title">No AI engine available</string>
+    <string name="ai_chat_engine_unavailable_banner_desc">The current working engine has no tested direct connection and no available proxy. Tap to open settings.</string>
+    <string name="ai_chat_engine_unavailable_banner_desc_overseas">The current engine has no API token configured and no available proxy. Tap to open settings.</string>
+    <string name="ai_chat_engine_unavailable_dialog_message_overseas">No AI engine is available. Please configure an API token in engine settings, or switch to an engine with an available proxy, before sending.</string>
+    <string name="ai_chat_engine_unavailable_banner_action">Open settings</string>
+    <string name="ai_chat_empty_response_error">The model returned nothing to display. Try again — if it keeps failing, switch engines or check protocol compatibility.</string>
+
+    <!-- AI quick starts -->
+    <string name="ai_chat_quick_start_11">Generate a famous Xiangqi endgame puzzle</string>
+    <string name="ai_chat_quick_start_12">Convert images into a PDF</string>
+
+    <!-- AI content / execution details -->
+    <string name="ai_content_notice_short">AI-generated</string>
+    <string name="ai_execution_input_label">Input parameters</string>
+    <string name="ai_execution_output_label">Execution result</string>
+    <string name="ai_execution_input_collapsed">Show input parameters</string>
+    <string name="ai_execution_output_collapsed">Show execution result</string>
+    <string name="ai_execution_detail_collapsed">Show full details</string>
+
+    <!-- AI streaming reasoning -->
+    <string name="create_ai_stream_output_chars">%1$d characters received</string>
+    <string name="create_ai_stream_reasoning_title">Reasoning</string>
+    <string name="create_ai_stream_reasoning_waiting">The model is thinking. Reasoning content will appear here once available.</string>
+
+    <!-- Auspicious day / BaZi / Calendar -->
+    <string name="auspicious_day">Auspicious date</string>
+    <string name="auspicious_day_description">Find auspicious dates to perform an activity, or dates to avoid.</string>
+    <string name="bazi">BaZi</string>
+    <string name="bazi_description">Calculate the four pillars, Five Elements, decade luck cycle, and yearly fortune from birth details.</string>
+    <string name="calendar_view">Calendar</string>
+    <string name="calendar_view_description">View the lunar calendar, solar terms, auspicious/inauspicious indicators, and Chinese hours for each day.</string>
+    <string name="lunar_convert">Calendar conversion</string>
+    <string name="lunar_convert_description">Convert between the Gregorian and Lunar calendars, with support for leap months and Chinese hours.</string>
+
+    <!-- Auth code (password protection) -->
+    <string name="auth_code_pin_label">Password</string>
+    <string name="auth_code_title_setup">Set password</string>
+    <string name="auth_code_title_confirm">Confirm password</string>
+    <string name="auth_code_status_setup">Enter a 6-digit password</string>
+    <string name="auth_code_status_confirm">Enter it again to confirm</string>
+    <string name="auth_code_status_unlock">Enter your 6-digit password</string>
+    <string name="auth_code_setup_hint">First-time setup — please choose a 6-digit password and remember it.</string>
+    <string name="auth_code_confirm">Confirm</string>
+    <string name="auth_code_cancel">Cancel</string>
+    <string name="auth_code_wrong">Wrong password</string>
+    <string name="auth_code_mismatch">The two entries don\'t match. Please try again.</string>
+    <string name="auth_code_cancelled">Verification cancelled</string>
+    <string name="auth_required">Auth required</string>
+    <string name="auth_required_description">Tap to require an auth code</string>
+    <string name="auth_not_required">No auth required</string>
+    <string name="auth_not_required_description">Tap to require no auth</string>
+    <string name="item_locked_title">Content locked</string>
+    <string name="item_locked_description">This note is locked. Enter the auth code to view it.</string>
+    <string name="item_locked_unlock">Unlock to view</string>
+    <string name="item_locked_preview">Content locked</string>
+    <string name="item_action_lock">Lock</string>
+    <string name="item_action_unlock">Unlock</string>
+
+    <!-- Password vault -->
+    <string name="password_vault">Password vault</string>
+    <string name="password_vault_description">Securely store passwords for sites, apps, and door codes.</string>
+
+    <!-- Comments / feedback -->
+    <string name="comment">Comment</string>
+    <string name="comments_title">Comments</string>
+    <string name="comments_count_format">%1$d comments</string>
+    <string name="comment_hint">Write a comment…</string>
+    <string name="reply_hint">Reply to %1$s…</string>
+    <string name="comment_char_counter_format">%1$d / %2$d</string>
+    <string name="comment_too_long_format">Comments cannot exceed %1$d characters</string>
+    <string name="comment_max_images_format">Up to %1$d images</string>
+    <string name="comment_anonymous">Anonymous</string>
+    <string name="comment_anonymous_initial">·</string>
+    <string name="comment_loading">Loading comments…</string>
+    <string name="comment_loading_more">Loading more…</string>
+    <string name="comment_load_failed_format">Failed to load comments (%1$d)</string>
+    <string name="comment_network_error">Network error. Please try again.</string>
+    <string name="comment_empty">No feedback yet. Feel free to share your thoughts.</string>
+    <string name="comment_end_marker">— No more —</string>
+    <string name="comment_send">Send</string>
+    <string name="comment_send_failed">Failed to send comment</string>
+    <string name="comment_send_with_images_pending">Please wait for images to finish uploading</string>
+    <string name="comment_delete">Delete comment</string>
+    <string name="comment_delete_success">Deleted</string>
+    <string name="comment_block">Block comment</string>
+    <string name="comment_unblock">Unblock</string>
+    <string name="comment_blocked">This comment is blocked</string>
+    <string name="comment_close">Close</string>
+    <string name="comment_reply">Reply</string>
+    <string name="comment_reply_count_format">%1$d replies</string>
+    <string name="comment_cancel_reply">Cancel reply</string>
+    <string name="comment_add_image">Add image</string>
+    <string name="comment_document_id_missing">Comments are still being prepared. Please try again.</string>
+    <string name="comment_image_audit_failed">Image moderation service error. Please try again.</string>
+    <string name="comment_image_blocked">This image violates our policy. Please choose another.</string>
+    <string name="comment_image_blocked_unknown">Image did not pass moderation (%1$s)</string>
+    <string name="comment_image_partial_blocked">Some images were filtered out.</string>
+    <string name="comment_image_suspicious">This image looks suspicious. Please choose another.</string>
+    <string name="comment_image_upload_failed">Image upload failed. Please try again.</string>
+    <string name="comment_text_audit_failed">Text moderation service error. Please try again.</string>
+    <string name="comment_text_blocked">Your comment violates our policy. Please revise and try again.</string>
+    <string name="login_to_comment">Log in to comment</string>
+
+    <!-- Deeplink demos (Home tab) -->
+    <string name="demo_navigation_deeplink_section_home_tab">Home tab deeplinks</string>
+    <string name="demo_navigation_deeplink_example_home_default">Home (default tab)</string>
+    <string name="demo_navigation_deeplink_example_home_agent">Home · Agents tab</string>
+    <string name="demo_navigation_deeplink_example_home_app">Home · Apps tab</string>
+    <string name="demo_navigation_deeplink_example_home_prompt">Home · Prompts tab</string>
+    <string name="demo_navigation_deeplink_example_home_text">Home · Notes tab</string>
+    <string name="demo_navigation_deeplink_example_home_web">Home · Web tab</string>
+
+    <!-- Home tabs (OnlineScreen) -->
+    <string name="home_tab_agent_title">Agents</string>
+    <string name="home_tab_agent_description">Open the Agents tab on Home to browse available AI agents.</string>
+    <string name="home_tab_app_title">Apps</string>
+    <string name="home_tab_app_description">Open the Apps tab on Home to browse common tools and mini apps.</string>
+    <string name="home_tab_prompt_title">Prompts</string>
+    <string name="home_tab_prompt_description">Open the Prompts tab on Home to browse and manage AI prompts.</string>
+    <string name="home_tab_text_title">Notes</string>
+    <string name="home_tab_text_description">Open the Notes tab on Home to view your locally created notes and documents.</string>
+    <string name="home_tab_web_description">Open the Web tab on Home to browse frequently used sites and links.</string>
+
+    <!-- Level (bubble level) -->
+    <string name="level">Level</string>
+    <string name="level_horizontal">Level</string>
+    <string name="level_pitch">Pitch</string>
+    <string name="level_roll">Roll</string>
+    <string name="level_lock">Lock reading</string>
+    <string name="level_unlock">Unlock reading</string>
+    <string name="level_unavailable">This device does not support an accelerometer, so the level tool is unavailable.</string>
+
+    <!-- Measurement tools -->
+    <string name="measurement_tools">Measurement tools</string>
+    <string name="measurement_tools_description">Bubble level and on-screen ruler — handy for quick measurements.</string>
+    <string name="ruler">On-screen ruler</string>
+
+    <!-- Playground -->
+    <string name="playground">Playground</string>
+    <string name="playground_description">Ideas and articles</string>
+    <string name="playground_empty">No playground articles yet</string>
+
+    <!-- Profile items -->
+    <string name="profile_item_ai_feature_settings">Feature Toggles</string>
+    <string name="profile_item_rate_app">Rate Us</string>
+
+    <!-- Prompt sync -->
+    <string name="prompt_push_failed">Prompt sync failed</string>
+    <string name="prompt_push_success">Prompt synced</string>
+    <string name="prompt_push_to_remote">Sync to remote</string>
+
+    <!-- Robot / agent hints and statuses (translatable="false" in source) -->
+    <string name="robot_hint_executing" translatable="false">Tool executing…</string>
+    <string name="robot_hint_max_iterations" translatable="false">Awaiting your instructions</string>
+    <string name="robot_hint_planning" translatable="false">Planning tool calls…</string>
+    <string name="robot_hint_waiting_confirmation" translatable="false">Awaiting your confirmation</string>
+    <string name="robot_hint_waiting_input" translatable="false">Awaiting your answer</string>
+    <string name="robot_hint_waiting_llm" translatable="false">Waiting for AI reply…</string>
+    <string name="robot_status_executing" translatable="false">Executing</string>
+    <string name="robot_status_max_iterations" translatable="false">Awaiting instructions</string>
+    <string name="robot_status_planning" translatable="false">Planning</string>
+    <string name="robot_status_waiting_confirmation" translatable="false">Awaiting confirmation</string>
+    <string name="robot_status_waiting_input" translatable="false">Awaiting answer</string>
+    <string name="robot_status_waiting_llm" translatable="false">Replying</string>
+
+    <!-- Startup trace overlay (Easter egg) -->
+    <string name="startup_trace_overlay_title">Startup timing panel</string>
+    <string name="startup_trace_overlay_toggle_desc">When enabled, startup trace points are shown on screen — useful for analyzing release cold-start time.</string>
+    <string name="startup_trace_overlay_hint">You can disable this in the Easter egg page; restart to observe the full cold-start chain again.</string>
+    <string name="startup_trace_overlay_total">Current chain total: %1$d ms</string>
+
+    <!-- Time formatting -->
+    <string name="time_just_now">Just now</string>
+    <string name="time_minutes_ago_format">%1$d minutes ago</string>
+    <string name="time_hours_ago_format">%1$d hours ago</string>
+    <string name="time_days_ago_format">%1$d days ago</string>
+    <string name="privacy_item_camera_title">Camera Permission</string>
+    <string name="blessing_wall">Blessing Wall</string>
+    <string name="blessing_wall_sub">A daily tap · Good luck follows</string>
+
+</resources>

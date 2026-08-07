@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">지역화된 설명</string>
+    <string name="copy">복사</string>
+    <string name="create_widget">작은 도구 만들기</string>
+    <string name="run">실행</string>
+    <string name="save">저장</string>
+    <string name="mermaid_tab_diagram">다이어그램</string>
+    <string name="mermaid_tab_code">코드</string>
+    <string name="mermaid_fullscreen">전체 화면</string>
+    <string name="a2ui_parse_failed">A2UI 파싱 실패</string>
+    <string name="a2ui_parse_failed_hint">소스를 복사하고 JSON 형식 또는 표현식 구문을 확인하세요.</string>
+</resources>

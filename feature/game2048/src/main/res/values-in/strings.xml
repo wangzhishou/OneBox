@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">SKOR SAAT INI</string>
+    <string name="game_2048_best_score">SKOR TERBAIK</string>
+    <string name="game_2048_new_game">PERMAINAN BARU</string>
+    <string name="game_2048_game_over">Permainan Selesai</string>
+    <string name="game_2048_you_win">Anda mencapai 2048!</string>
+    <string name="game_2048_no_moves">Tidak ada lagi langkah yang tersedia</string>
+    <string name="game_2048_reached_2048">Anda bisa melanjutkan untuk skor yang lebih tinggi</string>
+    <string name="game_2048_continue">Lanjutkan</string>
+    <string name="game_2048_new_best_score">Rekor baru!</string>
+</resources>

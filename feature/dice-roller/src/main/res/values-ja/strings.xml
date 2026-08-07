@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">サイコロを振る。</string>
+    <string name="dice_roller_roll">振ってください。</string>
+    <string name="dice_roller_history">履歴</string>
+    <string name="dice_roller_history_empty">履歴はありません。</string>
+    <string name="dice_roller_clear_history">履歴を消去</string>
+    <string name="dice_roller_clear_confirm">すべての履歴を消去しますか？</string>
+    <string name="dice_roller_confirm">確認</string>
+    <string name="dice_roller_cancel">キャンセル</string>
+    <string name="dice_roller_count">サイコロの数</string>
+    <string name="dice_roller_type">サイコロの種類</string>
+    <string name="dice_roller_total">合計ポイント</string>
+    <string name="dice_roller_shake_hint">携帯電話を振るか、「振る」をクリックしてください。</string>
+    <string name="dice_roller_result_prefix">結果：</string>
+    <string name="dice_roller_description">テーブルサイコロ。</string>
+</resources>

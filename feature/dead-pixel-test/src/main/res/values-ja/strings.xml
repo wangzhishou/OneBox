@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">屏幕坏点检测</string>
+    <string name="dead_pixel_test_description">使用纯色旋转检测屏幕故障和坏点</string>
+    <string name="dead_pixel_color_white">白色</string>
+    <string name="dead_pixel_color_black">黑色</string>
+    <string name="dead_pixel_color_red">红色</string>
+    <string name="dead_pixel_color_green">绿色</string>
+    <string name="dead_pixel_color_blue">蓝色</string>
+    <string name="dead_pixel_hint">点击可切换颜色...左右滑动可来回切换。</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">显示网格</string>
+    <string name="dead_pixel_grid_off">隐藏网格</string>
+    <string name="dead_pixel_auto_play">自动旋转</string>
+    <string name="dead_pixel_auto_stop">停止！</string>
+    <string name="dead_pixel_fullscreen">全屏测试</string>
+    <string name="dead_pixel_exit_fullscreen">退出全屏</string>
+    <string name="dead_pixel_guide_title">如何检测损坏？</string>
+    <string name="dead_pixel_guide_content">屏幕将依次显示五种纯色：白色、黑色、红色、绿色和蓝色。\n\n• 白色背景：检查黑色暗点（死像素）\n• 黑色背景：检查亮点（坏点）\n• 彩色背景：检查其他颜色的异常像素\n\n点击屏幕切换到下一种颜色，或启用自动播放。为了获得最佳效果，请在昏暗环境中进行测试。</string>
+    <string name="dead_pixel_guide_start">开始测试</string>
+</resources>

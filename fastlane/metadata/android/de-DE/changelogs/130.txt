@@ -1,0 +1,5 @@
+• Neue Sprachen: Spanisch und brasilianisches Portugiesisch
+• Die Ortsauswahl verwendet jetzt die Autovervollständigung von Google Places
+• System-Prompts frei anpassen – ganz ohne VIP
+• Die Webseite zur Dateiübertragung ist jetzt in Ihrer Sprache lokalisiert
+• Fehlerbehebungen und Leistungsverbesserungen

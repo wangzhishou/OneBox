@@ -1,0 +1,145 @@
+{
+  "app.title": "파일 전송 - Wanbaohe",
+  "app.name": "파일 전송",
+
+  "login.title": "파일 전송",
+  "login.subtitle": "접속 비밀번호를 입력해 주세요",
+  "login.placeholder": "비밀번호 입력",
+  "login.button": "로그인",
+  "login.error.emptyPassword": "비밀번호를 입력해 주세요",
+  "login.error.wrongPassword": "비밀번호가 올바르지 않습니다",
+  "login.error.failed": "로그인에 실패했습니다. 다시 시도해 주세요",
+
+  "nav.files": "파일",
+  "nav.transfer": "전송",
+  "nav.chat": "채팅",
+  "nav.settings": "설정",
+  "nav.allFiles": "모든 파일",
+
+  "connection.status": "연결됨",
+
+  "device.loading": "로딩 중...",
+  "device.defaultName": "기기",
+
+  "stats.currentFolder": "현재 폴더",
+  "stats.folders": "개의 폴더",
+  "stats.files": "개의 파일",
+  "stats.totalSize": "총 크기: ",
+
+  "toolbar.view.grid": "그리드 보기",
+  "toolbar.view.list": "목록 보기",
+  "toolbar.refresh": "새로고침",
+  "toolbar.upload": "업로드",
+
+  "breadcrumb.home": "홈",
+
+  "selection.count": "{count}개 선택됨",
+
+  "sort.name": "이름",
+  "sort.size": "크기",
+  "sort.date": "날짜",
+  "sort.asc": "오름차순",
+  "sort.desc": "내림차순",
+
+  "empty.title": "폴더가 비어 있습니다",
+  "empty.subtitle": "파일을 드래그하거나 업로드 버튼을 클릭하여 파일을 추가해 주세요",
+  "error.title": "불러오기에 실패했습니다",
+  "error.subtitle": "네트워크 연결을 확인한 후 다시 시도해 주세요",
+
+  "common.retry": "다시 시도",
+  "common.cancel": "취소",
+  "common.confirm": "확인",
+  "common.delete": "삭제",
+  "common.download": "다운로드",
+  "common.create": "생성",
+  "common.rename": "이름 변경",
+
+  "dropzone.sidebar": "파일을 여기로 드래그하여 업로드",
+  "dropzone.overlay": "마우스를 놓아 파일 업로드",
+
+  "transfer.title": "전송 작업",
+  "transfer.empty": "전송 작업이 없습니다",
+  "transfer.status.completed": "완료",
+  "transfer.status.error": "실패",
+  "transfer.status.uploading": "업로드 중",
+
+  "uploadModal.title": "파일 업로드",
+  "uploadModal.hint": "클릭하거나 파일을 여기로 드래그해 주세요",
+  "uploadModal.subtitle": "여러 파일 업로드 지원",
+  "uploadModal.pending": "업로드 대기 중",
+
+  "deleteModal.title": "삭제 확인",
+  "deleteModal.text": "선택한 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+  "deleteModal.confirmOne": "\"{name}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+  "deleteModal.confirmMany": "선택한 {count}개의 파일을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+
+  "newFolder.title": "새 폴더",
+  "newFolder.placeholder": "폴더 이름",
+
+  "renameModal.placeholder": "새 이름",
+
+  "contextMenu.open": "열기/미리보기",
+  "contextMenu.info": "상세 정보",
+
+  "infoModal.title": "파일 정보",
+  "infoModal.name": "이름",
+  "infoModal.type": "유형",
+  "infoModal.size": "크기",
+  "infoModal.modified": "수정 시간",
+  "infoModal.path": "경로",
+
+  "fileType.folder": "폴더",
+  "fileType.file": "파일",
+
+  "files.loadFailed": "불러오기에 실패했습니다",
+  "files.networkError": "네트워크 연결에 실패했습니다",
+
+  "settings.chat": "채팅",
+  "settings.chat.desc": "휴대폰과 실시간으로 소통합니다",
+  "settings.openChat": "채팅 열기",
+
+  "imageViewer.alt": "이미지 미리보기",
+  "imageViewer.download": "다운로드",
+  "imageViewer.close": "닫기",
+
+  "chat.title": "채팅",
+  "chat.empty": "메시지가 없습니다",
+  "chat.newMessages": "새 메시지가 있습니다. 탭하여 확인해 주세요",
+  "chat.sendFile": "파일 보내기",
+  "chat.input.placeholder": "메시지 입력...",
+  "chat.upload.progress": "업로드 중 {pct}%",
+  "chat.upload.queued": "업로드 대기 중…",
+  "chat.upload.completed": "전송됨",
+  "chat.upload.canceled": "취소됨",
+  "chat.upload.failedPrefix": "실패: ",
+  "chat.upload.failedHttp": "업로드에 실패했습니다({status})",
+  "chat.upload.networkError": "네트워크 오류: 휴대폰 측 서비스에 연결할 수 없습니다",
+
+  "toast.operationSuccess": "작업이 완료되었습니다",
+  "toast.networkError": "네트워크 오류",
+  "toast.chat.connected": "채팅에 연결되었습니다",
+  "toast.chat.error": "채팅 연결 오류",
+  "toast.chat.disconnected": "채팅 연결이 끊어졌습니다",
+  "toast.chat.cannotConnect": "채팅 연결을 설정할 수 없습니다",
+  "toast.chat.reconnecting": "채팅 연결이 끊어졌습니다. 다시 연결하는 중...",
+  "toast.send.failed": "전송에 실패했습니다",
+  "toast.folder.nameRequired": "폴더 이름을 입력해 주세요",
+  "toast.folder.invalidName": "폴더 이름에 / 또는 \\를 포함할 수 없습니다",
+  "toast.folder.created": "폴더가 생성되었습니다",
+  "toast.folder.createFailed": "생성에 실패했습니다",
+  "toast.rename.nameRequired": "새 이름을 입력해 주세요",
+  "toast.rename.invalidName": "이름에 / 또는 \\를 포함할 수 없습니다",
+  "toast.rename.success": "이름이 변경되었습니다",
+  "toast.rename.failed": "이름 변경에 실패했습니다",
+  "toast.delete.success": "삭제되었습니다",
+  "toast.delete.failed": "삭제에 실패했습니다",
+  "toast.upload.disabled": "현재 기기에서 업로드 권한이 비활성화되어 있습니다",
+  "toast.upload.manyFiles": "{count}개의 파일을 업로드합니다",
+  "toast.upload.done": "업로드에 성공했습니다",
+  "toast.upload.failed": "업로드에 실패했습니다",
+  "toast.download.noLink": "파일의 다운로드 링크가 생성되지 않았습니다",
+  "toast.download.notFound": "파일이 존재하지 않거나 이미 삭제되었습니다",
+  "toast.download.noPermission": "이 파일을 다운로드할 권한이 없습니다",
+  "toast.download.failed": "다운로드에 실패했습니다({status})",
+  "toast.download.networkError": "다운로드에 실패했습니다: 네트워크 오류"
+}

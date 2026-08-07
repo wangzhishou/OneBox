@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_confirm">Konfirmasi</string>
+    <string name="date_picker_cancel">Batal</string>
+    <string name="date_picker_edit">Edit</string>
+    <string name="date_picker_select_year_month">Pilih Tahun dan Bulan</string>
+    <string name="date_picker_year_input">Tahun</string>
+    <string name="date_picker_current_year">Tahun berjalan</string>
+    <string name="blessing_effect_merit_plus_one">Keberuntungan +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">Bulan Sebelumnya</string>
+    <string name="date_picker_next_month">Bulan Berikutnya</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">Min</string>
+    <string name="date_picker_weekday_mon">Sen</string>
+    <string name="date_picker_weekday_tue">Sel</string>
+    <string name="date_picker_weekday_wed">Rab</string>
+    <string name="date_picker_weekday_thu">Kam</string>
+    <string name="date_picker_weekday_fri">Jum</string>
+    <string name="date_picker_weekday_sat">Sab</string>
+    <string name="time_range_picker_start_time">Waktu Mulai</string>
+    <string name="time_range_picker_end_time">Waktu Selesai</string>
+    <string name="time_range_picker_hour">Jam</string>
+    <string name="time_range_picker_minute">Menit</string>
+    <string name="time_range_picker_hint">Tips: Masukkan jam (0-23) dan menit (0-59)</string>
+    <string name="date_range_picker_title">Pilih Rentang Tanggal</string>
+    <string name="date_range_start">Tanggal Mulai</string>
+    <string name="date_range_end">Tanggal Selesai</string>
+    <string name="week_selector_week_title">%1$d-%2$02d · Minggu %3$d</string>
+    <string name="icon_picker_icon_count">%1$d ikon</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>Sen</item>
+        <item>Sel</item>
+        <item>Rab</item>
+        <item>Kam</item>
+        <item>Jum</item>
+        <item>Sab</item>
+        <item>Min</item>
+    </string-array>
+</resources>

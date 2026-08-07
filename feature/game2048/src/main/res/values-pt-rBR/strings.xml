@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">PONTUAÇÃO ATUAL</string>
+    <string name="game_2048_best_score">MELHOR PONTUAÇÃO</string>
+    <string name="game_2048_new_game">NOVO JOGO</string>
+    <string name="game_2048_game_over">Fim de Jogo</string>
+    <string name="game_2048_you_win">Você chegou a 2048!</string>
+    <string name="game_2048_no_moves">Não há mais movimentos disponíveis</string>
+    <string name="game_2048_reached_2048">Você pode continuar para uma pontuação maior</string>
+    <string name="game_2048_continue">Continuar</string>
+    <string name="game_2048_new_best_score">Novo recorde!</string>
+</resources>

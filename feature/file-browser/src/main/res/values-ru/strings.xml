@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">Развернуть</string>
+    <string name="collapse">Убрать.</string>
+    <string name="dialog_clear_recents_title">Очистить недавние</string>
+    <string name="dialog_clear_recents_message">Очистить все записи недавнего доступа? Это действие нельзя отменить.</string>
+</resources>

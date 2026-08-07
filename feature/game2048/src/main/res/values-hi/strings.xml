@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">वर्तमान स्कोर</string>
+    <string name="game_2048_best_score">सर्वश्रेष्ठ स्कोर</string>
+    <string name="game_2048_new_game">नया गेम</string>
+    <string name="game_2048_game_over">खेल समाप्त</string>
+    <string name="game_2048_you_win">आप 2048 तक पहुँच गए!</string>
+    <string name="game_2048_no_moves">कोई और चाल उपलब्ध नहीं है</string>
+    <string name="game_2048_reached_2048">आप उच्च स्कोर के लिए जारी रख सकते हैं</string>
+    <string name="game_2048_continue">जारी रखें</string>
+    <string name="game_2048_new_best_score">नया रिकॉर्ड!</string>
+</resources>

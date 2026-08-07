@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">Ipasok ang Code Block</string>
+    <string name="code_label">Code</string>
+    <string name="enter_code_hint">Ilagay ang code...</string>
+    <string name="select_language">Wika:</string>
+    <string name="search_language">Maghanap ng wika</string>
+    <string name="search_language_hint">Mag-type ng pangalan ng wika...</string>
+    <string name="or_enter_image_url">O maglagay ng URL ng larawan:</string>
+    <string name="image_description_label">Paglalarawan ng larawan</string>
+    <string name="image_description_hint">Alt text para sa larawan</string>
+    <string name="image_url_label">URL ng larawan</string>
+    <string name="link_text_placeholder">Tekstong ipapakita</string>
+    <string name="resize_image">Baguhin ang laki ng Larawan</string>
+    <string name="width">Lapad</string>
+    <string name="original_width">Orihinal na lapad: %1$dpx</string>
+    <string name="markdown_placeholder">Magsimulang mag-type...</string>
+</resources>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh" class="{{DARK_MODE_CLASS}}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{TITLE}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>{{TAILWIND_CONFIG}}</script>
+    <style>{{CUSTOM_CSS}}</style>
+    <script src="https://appassets.androidplatform.net/assets/js/highlight.min.js"></script>
+</head>
+<body>
+    <!-- Main container -->
+    <div class="main-container">
+        {{HEADER_HTML}}
+        {{PROMPT_HTML}}
+
+        <main class="messages-wrapper">
+            {{MESSAGES_HTML}}
+        </main>
+    </div>
+
+    <!-- AI notice banner:挂在 body 直接子节点,在 .main-container 之外,保证全宽 100% 贴底 -->
+    <div class="ai-notice-banner" role="note" aria-label="AI 生成内容声明">{{CONTENT_NOTICE}}</div>
+
+    <script>{{INLINE_SCRIPT}}</script>
+</body>
+</html>

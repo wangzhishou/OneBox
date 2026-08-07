@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">네트워크 연결에 실패했습니다. 네트워크 설정을 확인해 주세요</string>
+    <string name="error_request_timeout">요청 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_cannot_connect_server">서버에 연결할 수 없습니다. 네트워크를 확인해 주세요</string>
+    <string name="error_ssl_failed">보안 연결에 실패했습니다. 네트워크 설정을 확인해 주세요</string>
+    <string name="error_network_exception">네트워크 오류가 발생했습니다. 네트워크 연결을 확인해 주세요</string>
+    <string name="error_request_cancelled">요청이 취소되었습니다</string>
+    <string name="error_data_parse_failed">데이터 파싱에 실패했습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_bad_request">잘못된 요청 매개변수입니다</string>
+    <string name="error_unauthorized">인증되지 않았습니다. 다시 로그인해 주세요</string>
+    <string name="error_forbidden">접근이 금지되었습니다</string>
+    <string name="error_not_found">요청한 리소스를 찾을 수 없습니다</string>
+    <string name="error_server_internal">서버 내부 오류가 발생했습니다</string>
+    <string name="error_server_maintenance">서버 점검 중입니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_server_code">서버 오류 (%d)</string>
+    <string name="error_client_error">요청 오류가 발생했습니다. 매개변수를 확인해 주세요</string>
+    <string name="error_server_error">서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_request_failed">요청에 실패했습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_request_failed_with_message">요청 실패: %s</string>
+    <string name="error_unknown">알 수 없는 오류</string>
+    <string name="no_error_body">오류 본문이 없습니다</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">기본 채팅 시스템 프롬프트</string>
+    <string name="sys_prompt_default_desc">채팅을 위한 기본 시스템 규칙</string>
+    <string name="sys_prompt_agent_create_title">에이전트 생성 시스템 프롬프트</string>
+    <string name="sys_prompt_agent_create_desc">에이전트 생성을 위한 내장 시스템 프롬프트</string>
+    <string name="sys_prompt_prompt_create_title">프롬프트 생성 시스템 프롬프트</string>
+    <string name="sys_prompt_prompt_create_desc">프롬프트 생성을 위한 내장 시스템 프롬프트</string>
+    <string name="sys_prompt_bazi_title">사주 분석 시스템 프롬프트</string>
+    <string name="sys_prompt_bazi_desc">사주(四柱) 분석을 위한 내장 시스템 프롬프트</string>
+    <string name="sys_prompt_xiangqi_title">샹치 이동 시스템 프롬프트</string>
+    <string name="sys_prompt_xiangqi_desc">LLM 샹치(중국 장기) 대국을 위한 내장 시스템 프롬프트</string>
+    <string name="sys_prompt_mode_ask_title">ASK 질문 전용 모드 프로토콜</string>
+    <string name="sys_prompt_mode_ask_desc">Ask 모드 실행을 위한 프로토콜 프롬프트</string>
+    <string name="sys_prompt_mode_plan_title">PLAN 계획 전용 모드 프로토콜</string>
+    <string name="sys_prompt_mode_plan_desc">Plan 모드 실행을 위한 프로토콜 프롬프트</string>
+    <string name="sys_prompt_mode_agent_title">AGENT 실행 모드 프로토콜</string>
+    <string name="sys_prompt_mode_agent_desc">Agent 모드 실행을 위한 프로토콜 프롬프트</string>
+    <string name="sys_prompt_duel_title">AI 대결/상호작용 프롬프트 템플릿</string>
+    <string name="sys_prompt_duel_desc">AI 대결 및 상호작용을 위한 시스템 지침, 역할 규칙 및 턴 안내 템플릿</string>
+</resources>

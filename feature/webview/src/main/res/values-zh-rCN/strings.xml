@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 浏览器设置 -->
+    <string name="browser_settings">设置</string>
+    <string name="browser_section_general">通用</string>
+    <string name="browser_search_engine">搜索引擎</string>
+    <string name="browser_user_agent">浏览器标识</string>
+    <string name="browser_text_size">网页字体大小</string>
+    <string name="browser_section_privacy">隐私与安全</string>
+    <string name="browser_privacy_mode">隐私模式</string>
+    <string name="browser_privacy_mode_subtitle">不保存浏览历史</string>
+    <string name="browser_clear_on_exit">退出时清除数据</string>
+    <string name="browser_clear_on_exit_subtitle">关闭浏览器后自动清理</string>
+    <string name="browser_clear_browsing_data">清除浏览数据</string>
+    <string name="browser_clear_browsing_data_subtitle">缓存、Cookie、历史记录等</string>
+    <string name="browser_section_about">关于</string>
+    <string name="browser_about">关于浏览器</string>
+    <string name="browser_version">版本 %1$s</string>
+    <string name="browser_clear_data_confirm">确定要清除缓存、Cookie 和历史记录吗？此操作不可撤销。</string>
+    <string name="browser_select_search_engine">选择搜索引擎</string>
+    <string name="browser_ua_dialog_title">浏览器标识 (UA)</string>
+    <string name="browser_custom">自定义</string>
+    <string name="browser_custom_ua">自定义 UA</string>
+    <string name="browser_custom_ua_hint">输入自定义 User-Agent 字符串</string>
+
+    <!-- 通用操作 -->
+    <string name="browser_clear">清除</string>
+    <string name="browser_cancel">取消</string>
+    <string name="browser_confirm">确定</string>
+    <string name="browser_close">关闭</string>
+    <string name="browser_delete">删除</string>
+    <string name="browser_back">返回</string>
+    <string name="browser_stop">停止</string>
+    <string name="browser_refresh">刷新</string>
+    <string name="browser_reload">重新加载</string>
+
+    <!-- 标签页 -->
+    <string name="browser_tabs">标签页</string>
+    <string name="browser_close_all">全部关闭</string>
+    <string name="browser_new_short">新建</string>
+    <string name="browser_new_tab">新建标签页</string>
+    <string name="browser_no_open_tabs">没有打开的标签页</string>
+    <string name="browser_new_tab_hint">点击新建标签页开始浏览</string>
+
+    <!-- 主页 -->
+    <string name="browser_popular_sites">常用网站</string>
+
+    <!-- 书签与历史 -->
+    <string name="browser_bookmarks_history">书签与历史</string>
+    <string name="browser_manage_categories">管理分类</string>
+    <string name="browser_bookmarks">书签</string>
+    <string name="browser_history">历史</string>
+    <string name="browser_history_records">历史记录</string>
+    <string name="browser_manage_bookmark_folders">管理书签分类</string>
+    <string name="browser_no_bookmarks">暂无书签</string>
+    <string name="browser_no_bookmarks_hint">在浏览网页时点击书签图标添加</string>
+    <string name="browser_uncategorized">未分类</string>
+    <string name="browser_no_history">暂无历史记录</string>
+    <string name="browser_clear_history">清空历史记录</string>
+
+    <!-- 顶栏与搜索建议 -->
+    <string name="browser_search_or_url">搜索或输入网址</string>
+    <string name="browser_no_matches">无匹配记录</string>
+    <string name="browser_copy_link">复制链接</string>
+
+    <!-- 错误页 -->
+    <string name="browser_error">错误</string>
+    <string name="browser_url_label">网址: %1$s</string>
+    <string name="browser_check_network_hint">请检查您的网络连接或URL是否正确</string>
+</resources>

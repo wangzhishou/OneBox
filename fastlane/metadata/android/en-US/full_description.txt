@@ -1,0 +1,56 @@
+OneBox is a free, ad-free all-in-one toolbox that packs 90+ carefully crafted tools into a single app, covering image processing, document work, AI assistance and everyday productivity.
+
+【Why the name "OneBox"】
+• One: all your everyday tools, in just one app
+• Box: one box that holds them all
+What it really aims for is not just "packing a lot in" — it's making sure you never have to switch to another tool app again.
+
+【Productivity tools】
+• Teleprompter, notepad, to-do lists, decision wheel
+• Perpetual calendar, bookkeeping, cloud drive tools, habit tracker
+
+【Files & PDF】
+• PDF tools: merge, split, extract images and text
+• Markdown editor with live preview
+• File encryption, audio cover art extraction, image EXIF editing
+• File browser and file transfer between devices
+
+【Image tools】
+• Crop, rotate, resize and convert formats (HEIC / WebP / AVIF and more)
+• Filters, collage maker, long-image stitching, GIF tools
+• QR code scanning and generation, color tools
+• Image compression and format conversion — all processed locally, never uploaded
+
+【Everyday gadgets】
+• ID photos, network speed test, watermark camera
+• Wish wall, time hourglass, Apk.1 installer
+• Screen and media tools, plus mini-games for your spare time
+
+【AI assistant: more than just a long feature list】
+Plenty of toolbox apps can claim a long feature list. OneBox goes further with a built-in AI assistant — no more hunting for the right tool or memorizing steps. Just say what you need:
+• "Turn this image into a PDF."
+• "Add this bill screenshot to my ledger."
+• "Make me a to-do list."
+• "Check the stock market for me."
+The AI understands, acts and reports back — all in one go.
+• Chat with multiple leading AI models from a single entry point
+• An AI Agent that can call the app's tools to get tasks done for you
+• Writing, rewriting, summarizing and translation helpers
+• Custom AI engines and prompt management
+
+【An app that evolves on its own】
+OneBox is not static. It runs an "AI self-evolution system":
+You leave feedback → an AI analyzes it as a product manager → code is generated automatically → tested and shipped.
+The bugs you report, the features you want, the polish you suggest — any of it may be evaluated and built by AI. In other words, OneBox fits your needs better the more you use it.
+
+【Why OneBox】
+• Free to use, no ads
+• Privacy first: images and documents are processed locally on your device
+• Clean, modern Material Design interface
+• Constantly updated with new tools
+
+"The last tool app you'll ever need" is an ambitious goal, but OneBox has already taken three key steps: bringing everyday tools into one place, making them effortless to use with AI, and letting real user feedback drive how the product evolves.
+
+If you're tired of hopping between a dozen tool apps, give it a try — it might really become the last one you need.
+
+Contact us: support@oneboxable.com

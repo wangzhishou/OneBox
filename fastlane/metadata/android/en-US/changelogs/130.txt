@@ -1,0 +1,5 @@
+• New languages: Spanish and Brazilian Portuguese
+• Location picker now uses Google Places autocomplete
+• Customize system prompts freely, no VIP required
+• File transfer web page now localized in your language
+• Bug fixes and performance improvements

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">Varsayılan Sohbet Sistem Komutu</string>
+    <string name="sys_prompt_default_desc">Sohbet için varsayılan sistem kuralları</string>
+    <string name="sys_prompt_agent_create_title">Ajan Oluşturma Sistem Komutu</string>
+    <string name="sys_prompt_agent_create_desc">Ajan oluşturmak için yerleşik sistem komutu</string>
+    <string name="sys_prompt_prompt_create_title">Komut Oluşturma Sistem Komutu</string>
+    <string name="sys_prompt_prompt_create_desc">Komut oluşturmak için yerleşik sistem komutu</string>
+    <string name="sys_prompt_bazi_title">BaZi Grafik Analizi Sistem Komutu</string>
+    <string name="sys_prompt_bazi_desc">BaZi (Dört Sütun) grafik analizi için yerleşik sistem komutu</string>
+    <string name="sys_prompt_xiangqi_title">Xiangqi Hamle Sistem Komutu</string>
+    <string name="sys_prompt_xiangqi_desc">LLM Xiangqi (Çin satrancı) maçları için yerleşik sistem komutu</string>
+    <string name="sys_prompt_mode_ask_title">ASK Sadece Soru-Cevap Modu Protokolü</string>
+    <string name="sys_prompt_mode_ask_desc">Ask modu için yürütme protokolü komutu</string>
+    <string name="sys_prompt_mode_plan_title">PLAN Sadece Planlama Modu Protokolü</string>
+    <string name="sys_prompt_mode_plan_desc">Plan modu için yürütme protokolü komutu</string>
+    <string name="sys_prompt_mode_agent_title">AGENT Yürütme Modu Protokolü</string>
+    <string name="sys_prompt_mode_agent_desc">Ajan modu için yürütme protokolü komutu</string>
+    <string name="sys_prompt_duel_title">AI Düello/Etkileşim Komut Şablonları</string>
+    <string name="sys_prompt_duel_desc">AI düelloları ve etkileşimleri için sistem talimatları, rol kuralları ve sıra yönlendirme şablonları</string>
+</resources>

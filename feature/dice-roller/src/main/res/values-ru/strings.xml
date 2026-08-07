@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">Бросьте кости.</string>
+    <string name="dice_roller_roll">Встряхните.</string>
+    <string name="dice_roller_history">История</string>
+    <string name="dice_roller_history_empty">Нет исторических записей.</string>
+    <string name="dice_roller_clear_history">Очистить записи</string>
+    <string name="dice_roller_clear_confirm">Подтвердить очистку всех исторических записей?</string>
+    <string name="dice_roller_confirm">Подтвердить.</string>
+    <string name="dice_roller_cancel">Отмена</string>
+    <string name="dice_roller_count">Количество костей</string>
+    <string name="dice_roller_type">Тип костей</string>
+    <string name="dice_roller_total">Сумма очков</string>
+    <string name="dice_roller_shake_hint">Встряхните телефон или нажмите «Встряхнуть».</string>
+    <string name="dice_roller_result_prefix">Результаты:</string>
+    <string name="dice_roller_description">Кости на столе.</string>
+</resources>

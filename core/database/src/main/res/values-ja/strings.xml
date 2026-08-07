@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">デフォルトのチャットシステムプロンプト</string>
+    <string name="sys_prompt_default_desc">チャットのデフォルトシステムルール</string>
+    <string name="sys_prompt_agent_create_title">エージェント作成システムプロンプト</string>
+    <string name="sys_prompt_agent_create_desc">エージェント作成用の組み込みシステムプロンプト</string>
+    <string name="sys_prompt_prompt_create_title">プロンプト作成システムプロンプト</string>
+    <string name="sys_prompt_prompt_create_desc">プロンプト作成用の組み込みシステムプロンプト</string>
+    <string name="sys_prompt_bazi_title">八字（四柱推命）分析システムプロンプト</string>
+    <string name="sys_prompt_bazi_desc">八字（四柱推命）チャート分析用の組み込みシステムプロンプト</string>
+    <string name="sys_prompt_xiangqi_title">シャンチー（中国将棋）手順システムプロンプト</string>
+    <string name="sys_prompt_xiangqi_desc">LLMシャンチー（中国将棋）対局用の組み込みシステムプロンプト</string>
+    <string name="sys_prompt_mode_ask_title">ASK Q&amp;A専用モードプロトコル</string>
+    <string name="sys_prompt_mode_ask_desc">Askモード用の実行プロトコルプロンプト</string>
+    <string name="sys_prompt_mode_plan_title">PLAN計画専用モードプロトコル</string>
+    <string name="sys_prompt_mode_plan_desc">Planモード用の実行プロトコルプロンプト</string>
+    <string name="sys_prompt_mode_agent_title">AGENT実行モードプロトコル</string>
+    <string name="sys_prompt_mode_agent_desc">Agentモード用の実行プロトコルプロンプト</string>
+    <string name="sys_prompt_duel_title">AI対決・対話プロンプトテンプレート</string>
+    <string name="sys_prompt_duel_desc">AI対決・対話用のシステム指示、役割ルール、ターンガイダンステンプレート</string>
+</resources>

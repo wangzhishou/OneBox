@@ -1,0 +1,338 @@
+[versions]
+alipaysdkAndroid = "15.8.42"
+androidMinSdk = "24"
+androidTargetSdk = "37"
+androidCompileSdk = "37"
+androidCompileSdkExtension = "-"
+
+eddsa = "0.3.0"
+nanohttpd = "2.3.1"
+versionName = "1.3.1"
+versionCode = "131"
+gitVersion = "000"
+jvmTarget = "17"
+
+oneBoxLibs = "1.0.1"
+trickle = "1.8.1"
+evaluator = "1.0.0"
+logger = "1.0.2"
+
+avifCoder = "2.1.4"
+aire = "0.18.1"
+jxlCoder = "2.6.1"
+jxlCoderCoil = "2.6.1"
+jpegliCoder = "1.0.2"
+
+m3color = "2024.1"
+paletteKtx = "1.0.0"
+material3 = "1.5.0-alpha21"
+composeVersion = "1.11.2"
+materialIconsExtended = "1.7.8"
+androidx-datastorePreferencesAndroid = "1.2.1"
+shadowGadgets = "2.5.0"
+fadingEdges = "1.0.4"
+firebaseCrashlyticsKtx = "19.4.4"
+firebaseBom = "34.15.0"
+konfettiCompose = "2.0.5"
+reimagined = "1.5.0"
+shadowsPlus = "1.0.4"
+exifinterface = "1.4.2"
+firebaseAnalyticsKtx = "22.5.0"
+detekt = "1.23.8"
+detektCompose = "0.6.0"
+decompose = "3.5.0"
+essenty = "2.5.0"
+
+kotlin = "2.4.0"
+agp = "9.3.0"
+hilt = "2.59.2"
+
+ktor = "3.5.0"
+coil = "3.5.0"
+appCompat = "1.7.1"
+androidxCore = "1.19.0"
+
+androidxLifecycle = "2.10.0"
+desugaring-version = "2.1.5"
+activityCompose = "1.13.0"
+kotlinxCollectionsImmutable = "0.5.0"
+scrollbar = "2.2.0"
+reorderable = "3.1.0"
+splashScreen = "1.2.0"
+room = "2.8.4"
+
+espresso = "3.7.0"
+kotlinxSerializationJson = "1.11.0"
+ksp = "2.3.9"
+
+androidx-test-ext-junit = "1.3.0"
+documentfile = "1.1.0"
+uiautomator = "2.3.0"
+androidxMacroBenchmark = "1.5.0-alpha06"
+quickie = "1.18.1"
+playServicesAuth = "21.6.0"
+playReview = "2.0.2"
+places = "5.3.0"
+squircle-shape = "5.2.1"
+#人肉添加开始
+coroutines = "1.11.0"
+retrofit = "3.0.0"
+okhttp = "5.4.0"
+junit = "4.13.2"
+material = "1.14.0"
+jsoup = "1.22.2"
+materialKolor = "4.1.1"
+juniversalchardet = "2.5.0"
+kotlinxCoroutinesCore = "1.11.0"
+documentScanner = "1.3.7"
+androidliquidglass = "1.0.0-rc01"
+capsule = "2.1.0"
+zxingAndroidEmbedded = "4.3.0"
+capturable = "3.0.1"
+moshi = "1.15.2"
+smbj = "0.14.0"
+
+bouncycastle = "1.84"
+androidxSecurityCrypto = "1.1.0"
+
+pdfviewer = "1.0.0-alpha18"
+fragmentCompose = "1.8.9"
+aboutlibraries = "14.2.1"
+
+ksoup = "0.6.0"
+jetbrainsMarkdown = "0.7.5"
+uiAndroid = "1.11.2"
+window = "1.5.1"
+
+moduleGraphGradle = "0.13.0"
+gson = "2.14.0"
+dataStore = "1.2.1"
+lunarJava = "v1.7.7"
+
+markwon = "4.6.2"
+prism4j = "2.0.0"
+constraintlayout = "2.2.1"
+webkitVersion = "1.16.0"
+foundationLayout = "1.11.2"
+ui = "1.11.2"
+animationCore = "1.11.2"
+pdfbox = "2.0.27.0"
+flinger = "2.0.2"
+opencv = "5.0.0"
+coilResvg = "1.0.0"
+[libraries]
+coil-resvg = { module = "com.hashsequence:coil-resvg", version.ref = "coilResvg" }
+flinger = { module = "com.github.iamjosephmj.flinger:flinger", version.ref = "flinger" }
+pdfbox = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfbox" }
+squircle-shape = { group = "com.stoyanvuchev", name = "squircle-shape-android", version.ref = "squircle-shape" }
+capsule = { module = "com.github.Kyant0:Capsule", version.ref = "capsule" }
+eddsa = { module = "net.i2p.crypto:eddsa", version.ref = "eddsa" }
+ksoup-html = { module = "com.mohamedrejeb.ksoup:ksoup-html", version.ref = "ksoup" }
+ksoup-entities = { module = "com.mohamedrejeb.ksoup:ksoup-entities", version.ref = "ksoup" }
+jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrainsMarkdown" }
+
+nanohttpd = { module = "org.nanohttpd:nanohttpd", version.ref = "nanohttpd" }
+nanohttpd-websocket = { module = "org.nanohttpd:nanohttpd-websocket", version.ref = "nanohttpd" }
+
+alipaysdk-android = { module = "com.alipay.sdk:alipaysdk-android", version.ref = "alipaysdkAndroid" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+androidliquidglass = { module = "com.github.Kyant0:AndroidLiquidGlass", version.ref = "androidliquidglass" }
+materialKolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
+opencv = { module = "org.opencv:opencv", version.ref = "opencv" }
+androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkitVersion" }
+androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "composeVersion" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+com-tencent-mmkv = "com.tencent:mmkv:2.4.0"
+com-tencent-mmkv-arm32 = "com.tencent:mmkv:1.3.16"
+com-tencent-opensdk = "com.tencent.mm.opensdk:wechat-sdk-android:6.8.34"
+org-greenrebot-eventbus = "org.greenrobot:eventbus:3.3.1"
+com-airbnb-lottie = "com.airbnb.android:lottie-compose:6.7.1"
+androidx-security-crypto = { module = "androidx.security:security-crypto-ktx", version.ref = "androidxSecurityCrypto" }
+com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+com-squareup-okhttp3-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version = "5.4.0" }
+hierynomus-smbj = { module = "com.hierynomus:smbj", version.ref = "smbj" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version = "3.5.0" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version = "3.5.0" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
+#noinspection SimilarGradleDependency
+androidx-fragment-compose = { module = "androidx.fragment:fragment-compose", version.ref = "fragmentCompose" }
+androidx-pdfviewer-fragment = { module = "androidx.pdf:pdf-viewer-fragment", version.ref = "pdfviewer" }
+androidx-pdf-document-service = { module = "androidx.pdf:pdf-document-service", version.ref = "pdfviewer" }
+
+evaluator = { module = "com.github.T8RIN:KotlinEvaluator", version.ref = "evaluator" }
+aboutlibraries-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
+lunar-java = { module = "com.github.6tail:lunar-java", version.ref = "lunarJava" }
+moshi = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
+moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
+symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+trickle = { module = "com.github.t8rin:trickle", version.ref = "trickle" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+juniversalchardet = { module = "com.github.albfernandez:juniversalchardet", version.ref = "juniversalchardet" }
+quickie-foss = { module = "com.github.T8RIN.QuickieExtended:quickie-foss", version.ref = "quickie" }
+
+zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxingAndroidEmbedded" }
+capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
+documentscanner = { module = "com.github.T8RIN:DocumentScanner", version.ref = "documentScanner" }
+
+toolbox-logger = { module = "com.github.T8RIN:Logger", version.ref = "logger" }
+onebox-cropper = { module = "com.wanbaohe.libs:cropper", version.ref = "oneBoxLibs" }
+onebox-colordetector = { module = "com.wanbaohe.libs:colordetector", version.ref = "oneBoxLibs" }
+onebox-beforeafter = { module = "com.wanbaohe.libs:beforeafter", version.ref = "oneBoxLibs" }
+onebox-image = { module = "com.wanbaohe.libs:image", version.ref = "oneBoxLibs" }
+onebox-screenshot = { module = "com.wanbaohe.libs:screenshot", version.ref = "oneBoxLibs" }
+onebox-gpuimage = { module = "com.wanbaohe.libs:gpuimage", version.ref = "oneBoxLibs" }
+onebox-colorpicker = { module = "com.wanbaohe.libs:colorpicker", version.ref = "oneBoxLibs" }
+onebox-systemuicontroller = { module = "com.wanbaohe.libs:systemuicontroller", version.ref = "oneBoxLibs" }
+onebox-placeholder = { module = "com.wanbaohe.libs:placeholder", version.ref = "oneBoxLibs" }
+onebox-extendedcolors = { module = "com.wanbaohe.libs:extendedcolors", version.ref = "oneBoxLibs" }
+onebox-androidwm = { module = "com.wanbaohe.libs:androidwm", version.ref = "oneBoxLibs" }
+onebox-gifConverter = { module = "com.wanbaohe.libs:gif-converter", version.ref = "oneBoxLibs" }
+onebox-apng = { module = "com.wanbaohe.libs:apng", version.ref = "oneBoxLibs" }
+onebox-svg = { module = "com.wanbaohe.libs:svg", version.ref = "oneBoxLibs" }
+onebox-jp2decoder = { module = "com.wanbaohe.libs:jp2decoder", version.ref = "oneBoxLibs" }
+onebox-tiff-decoder = { module = "com.wanbaohe.libs:tiffdecoder", version.ref = "oneBoxLibs" }
+onebox-qoiCoder = { module = "com.wanbaohe.libs:qoi-coder", version.ref = "oneBoxLibs" }
+onebox-awebp = { module = "com.wanbaohe.libs:awebp", version.ref = "oneBoxLibs" }
+onebox-psd = { module = "com.wanbaohe.libs:psd", version.ref = "oneBoxLibs" }
+onebox-djvuCoder = { module = "com.wanbaohe.libs:djvu-coder", version.ref = "oneBoxLibs" }
+onebox-fast-noise = { module = "com.wanbaohe.libs:fast-noise", version.ref = "oneBoxLibs" }
+onebox-histogram = { module = "com.wanbaohe.libs:histogram", version.ref = "oneBoxLibs" }
+onebox-ucrop = { module = "com.wanbaohe.libs:ucrop", version.ref = "oneBoxLibs" }
+onebox-curves = { module = "com.wanbaohe.libs:curves", version.ref = "oneBoxLibs" }
+onebox-exif = { module = "com.wanbaohe.libs:exif", version.ref = "oneBoxLibs" }
+onebox-jhlabs = { module = "com.wanbaohe.libs:jhlabs", version.ref = "oneBoxLibs" }
+onebox-ascii = { module = "com.wanbaohe.libs:ascii", version.ref = "oneBoxLibs" }
+onebox-qrose = { module = "com.wanbaohe.libs:qrose", version.ref = "oneBoxLibs" }
+onebox-palette = { module = "com.wanbaohe.libs:palette", version.ref = "oneBoxLibs" }
+
+aire = { module = "com.github.awxkee:aire", version.ref = "aire" }
+jpegli-coder = { module = "com.github.awxkee:jpegli-coder", version.ref = "jpegliCoder" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "paletteKtx" }
+androidx-ui-text = { module = "androidx.compose.ui:ui-text", version.ref = "composeVersion" }
+avif-coder = { module = "com.github.awxkee:avif-coder", version.ref = "avifCoder" }
+avif-coder-coil = { module = "com.github.awxkee:avif-coder-coil", version.ref = "avifCoder" }
+shadowGadgets = { module = "com.github.zed-alpha.shadow-gadgets:compose", version.ref = "shadowGadgets" }
+datastore-preferences-android = { module = "androidx.datastore:datastore-preferences-android", version.ref = "androidx-datastorePreferencesAndroid" }
+fadingEdges = { module = "com.github.t8rin:ComposeFadingEdges", version.ref = "fadingEdges" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "firebaseCrashlyticsKtx" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+konfetti-compose = { module = "nl.dionsegijn:konfetti-compose", version.ref = "konfettiCompose" }
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decomposeExtensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
+decomposelifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+shadowsPlus = { module = "com.github.GIGAMOLE:ComposeShadowsPlus", version.ref = "shadowsPlus" }
+m3color = { module = "com.github.Kyant0:m3color", version.ref = "m3color" }
+reimagined = { module = "dev.olshevski.navigation:reimagined", version.ref = "reimagined" }
+reimagined-hilt = { module = "dev.olshevski.navigation:reimagined-hilt", version.ref = "reimagined" }
+ktor = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coilGif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil" }
+coilSvg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebaseAnalyticsKtx" }
+jxl-coder-coil = { module = "io.github.awxkee:jxl-coder-coil", version.ref = "jxlCoderCoil" }
+jxl-coder = { module = "io.github.awxkee:jxl-coder", version.ref = "jxlCoder" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+coroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompat" }
+androidxCore = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+scrollbar = { module = "com.github.nanihadesuka:LazyColumnScrollbar", version.ref = "scrollbar" }
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
+splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
+activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "composeVersion" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "composeVersion" }
+compose-animation-core = { module = "androidx.compose.animation:animation-core", version.ref = "composeVersion" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "composeVersion" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "composeVersion" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "composeVersion" }
+compose-ui-util = { group = "androidx.compose.ui", name = "ui-util", version.ref = "composeVersion" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
+uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
+
+bouncycastle-pkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle" }
+bouncycastle-provider = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
+
+baselineprofile-gradle = { group = "androidx.benchmark", name = "benchmark-baseline-profile-gradle-plugin", version.ref = "androidxMacroBenchmark" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+kotlinx-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+ksp-gradle = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+aboutlibraries-gradle = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "aboutlibraries" }
+compose-compiler-gradle = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
+# Used in convention plugins
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektCompose" }
+
+compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsExtended" }
+window-sizeclass = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
+icons-extended= { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "composeVersion" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+
+desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring-version" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+androidx-window = { group = "androidx.window", name = "window", version.ref = "window" }
+androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
+
+coil-video = { module = "io.coil-kt.coil3:coil-video", version.ref = "coil" }
+
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+markwon-core = { module = "io.noties.markwon:core", version.ref = "markwon" }
+markwon-editor = { module = "io.noties.markwon:editor", version.ref = "markwon" }
+markwon-html = { module = "io.noties.markwon:html", version.ref = "markwon" }
+markwon-image-coil = { module = "io.noties.markwon:image-coil", version.ref = "markwon" }
+markwon-strikethrough = { module = "io.noties.markwon:ext-strikethrough", version.ref = "markwon" }
+markwon-tables = { module = "io.noties.markwon:ext-tables", version.ref = "markwon" }
+markwon-syntax-prism4j = {module = "io.noties:prism4j", version.ref = "prism4j" }
+markwon-latex = { module = "io.noties.markwon:ext-latex", version.ref = "markwon" }
+markwon-linkify = { module = "io.noties.markwon:linkify", version.ref = "markwon" }
+markwon-inline-parser = { module = "io.noties.markwon:inline-parser", version.ref = "markwon" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+androidx-compose-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animationCore" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+play-review = { module = "com.google.android.play:review", version.ref = "playReview" }
+places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+
+[bundles]
+compose = ["compose-runtime", "compose-foundation", "androidx-material3", "compose-material-icons-core", "compose-ui", "compose-ui-tooling", "compose-ui-util"]
+markwon = ["markwon-core", "markwon-editor", "markwon-html", "markwon-image-coil", "markwon-strikethrough", "markwon-tables", "markwon-latex", "markwon-linkify", "markwon-inline-parser", "markwon-syntax-prism4j"]
+
+[plugins]
+image-toolbox-library = { id = "image.toolbox.library", version = "unspecified" }
+image-toolbox-hilt = { id = "image.toolbox.hilt", version = "unspecified" }
+image-toolbox-feature = { id = "image.toolbox.feature", version = "unspecified" }
+image-toolbox-compose = { id = "image.toolbox.compose", version = "unspecified" }
+image-toolbox-application = { id = "image.toolbox.application", version = "unspecified" }
+image-toolbox-maven = { id = "image.toolbox.maven", version = "unspecified" }
+dev-iurysouza-modulegraph = { id = "dev.iurysouza.modulegraph", version.ref = "moduleGraphGradle" }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 網路連線錯誤 -->
+    <string name="error_network_connection_failed">網路連線失敗，請檢查網路設定</string>
+    <string name="error_request_timeout">請求逾時，請稍後重試</string>
+    <string name="error_cannot_connect_server">無法連線到伺服器，請檢查網路</string>
+    <string name="error_ssl_failed">安全連線失敗，請檢查網路設定</string>
+    <string name="error_network_exception">網路異常，請檢查網路連線</string>
+    <string name="error_request_cancelled">請求已取消</string>
+    <string name="error_data_parse_failed">資料解析失敗，請稍後重試</string>
+
+    <!-- HTTP 錯誤 -->
+    <string name="error_bad_request">請求參數錯誤</string>
+    <string name="error_unauthorized">未授權，請重新登入</string>
+    <string name="error_forbidden">無權限存取</string>
+    <string name="error_not_found">請求的資源不存在</string>
+    <string name="error_server_internal">伺服器內部錯誤</string>
+    <string name="error_server_maintenance">伺服器維護中，請稍後重試</string>
+    <string name="error_server_code">伺服器錯誤 (%d)</string>
+    <string name="error_client_error">請求錯誤，請檢查參數</string>
+    <string name="error_server_error">伺服器錯誤，請稍後重試</string>
+    <string name="error_request_failed">請求失敗，請稍後重試</string>
+    <string name="error_request_failed_with_message">請求失敗：%s</string>
+    <string name="error_unknown">未知錯誤</string>
+
+    <!-- 其他 -->
+    <string name="no_error_body">無錯誤內容</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>
+

@@ -1,0 +1,56 @@
+OneBox ücretsiz ve reklamsız, hepsi bir arada bir araç kutusudur; görsel işleme, belge ve ofis işleri, yapay zeka asistanı ve günlük verimlilik araçlarını kapsayan 90'dan fazla özenle hazırlanmış aracı tek bir uygulamada toplar.
+
+【Neden "OneBox"?】
+• One: Tüm günlük araçlar için tek bir uygulama yeterli
+• Box: Her şeyi içine alan bir kutu
+Asıl amacı sadece "çok şey barındırmak" değil, bir daha başka bir araç uygulamasına geçmek zorunda kalmamanızı sağlamak.
+
+【Verimlilik Araçları】
+• Teleprompter, not defteri, yapılacaklar listesi, karar çarkı
+• Daimi takvim, bütçe defteri, bulut disk araçları, alışkanlık takibi
+
+【Dosyalar ve PDF】
+• PDF araçları: birleştirme, bölme, görsel ve metin çıkarma
+• Canlı önizlemeli Markdown düzenleyici
+• Dosya şifreleme, ses dosyalarından kapak görseli çıkarma, görsel EXIF düzenleme
+• Dosya yöneticisi ve cihazlar arasında dosya aktarımı
+
+【Görsel Araçları】
+• Kırpma, döndürme, yeniden boyutlandırma, format dönüştürme (HEIC / WebP / AVIF vb.)
+• Filtreler, kolaj, uzun görsel birleştirme, GIF araçları
+• QR kod tarama ve oluşturma, renk araçları
+• Görsel sıkıştırma ve format dönüştürme — tümü cihazınızda işlenir, hiçbir şey yüklenmez
+
+【Yaşam İçin Küçük Araçlar】
+• Vesikalık fotoğraf, internet hız testi, filigranlı kamera
+• Dilek duvarı, zaman kum saati, Apk.1 yükleyici
+• Ekran ve medya araçları, boş zamanlar için mini oyunlar
+
+【Yapay Zeka Asistanı: Sadece Çok Özellik Değil】
+Sadece çok özellik olsaydı, bunu birçok araç kutusu uygulaması zaten yapıyor. OneBox'ta yerleşik bir yapay zeka asistanı var; araçları tek tek aramanıza veya adımları ezberlemenize gerek yok, sadece söyleyin:
+• "Görseli PDF'e dönüştür."
+• "Fatura ekran görüntüsünü bütçe defterine kaydet."
+• "Bir yapılacaklar listesi oluştur."
+• "Borsa fiyatlarına bak."
+Yapay zeka anlar, uygular ve sonucu bildirir — hepsi tek seferde.
+• Tek bir sohbetten önde gelen birçok yapay zeka modeline erişin
+• AI Agent, görevleri sizin için tamamlamak üzere uygulama içi araçları kullanabilir
+• Yazma, yeniden yazma, özetleme ve çeviri yardımcıları
+• Özel yapay zeka motorları ve prompt yönetimi
+
+【Kendi Kendine Evrilen Uygulama】
+OneBox statik değildir; bir "AI kendi kendine evrim sistemi"ne sahiptir:
+Kullanıcılar öneri bırakır → AI bunları bir ürün yöneticisi gibi analiz eder → kod otomatik olarak oluşturulur → test edilir ve yayınlanır.
+Bildirdiğiniz hatalar, istediğiniz özellikler ve deneyim iyileştirme önerileriniz AI tarafından değerlendirilip hayata geçirilebilir. Yani OneBox, kullandıkça ihtiyaçlarınıza daha çok uyum sağlar.
+
+【Neden OneBox】
+• Ücretsiz kullanım, reklam yok
+• Önce gizlilik: görseller ve belgeler cihazınızda yerel olarak işlenir
+• Sade ve modern Material Design arayüzü
+• Sürekli güncellenir, yeni araçlar eklenmeye devam eder
+
+"Son araç uygulamanız" olmak büyük bir hedef, ama OneBox şimdiden üç kritik adım attı: sık kullanılan araçları tek bir girişte toplamak, yapay zeka ile kullanımı kolaylaştırmak ve kullanıcı geri bildiriminin ürünün evrimini gerçekten yönlendirmesini sağlamak.
+
+Onlarca araç uygulaması arasında geçiş yapmaktan yorulduysanız, bir deneyin — belki de gerçekten son uygulamanız olur.
+
+Bize ulaşın: support@oneboxable.com

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_confirm">Onayla</string>
+    <string name="date_picker_cancel">İptal</string>
+    <string name="date_picker_edit">Düzenle</string>
+    <string name="date_picker_select_year_month">Yıl ve Ay Seçin</string>
+    <string name="date_picker_year_input">Yıl</string>
+    <string name="date_picker_current_year">Geçerli yıl</string>
+    <string name="blessing_effect_merit_plus_one">Şans +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">Önceki Ay</string>
+    <string name="date_picker_next_month">Sonraki Ay</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">Paz</string>
+    <string name="date_picker_weekday_mon">Pzt</string>
+    <string name="date_picker_weekday_tue">Sal</string>
+    <string name="date_picker_weekday_wed">Çar</string>
+    <string name="date_picker_weekday_thu">Per</string>
+    <string name="date_picker_weekday_fri">Cum</string>
+    <string name="date_picker_weekday_sat">Cmt</string>
+    <string name="time_range_picker_start_time">Başlangıç Saati</string>
+    <string name="time_range_picker_end_time">Bitiş Saati</string>
+    <string name="time_range_picker_hour">Saat</string>
+    <string name="time_range_picker_minute">Dakika</string>
+    <string name="time_range_picker_hint">İpucu: Saat (0-23) ve dakika (0-59) girin</string>
+    <string name="date_range_picker_title">Tarih Aralığı Seçin</string>
+    <string name="date_range_start">Başlangıç Tarihi</string>
+    <string name="date_range_end">Bitiş Tarihi</string>
+    <string name="week_selector_week_title">%1$d-%2$02d · %3$d. Hafta</string>
+    <string name="icon_picker_icon_count">%1$d simge</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>Pzt</item>
+        <item>Sal</item>
+        <item>Çar</item>
+        <item>Per</item>
+        <item>Cum</item>
+        <item>Cmt</item>
+        <item>Paz</item>
+    </string-array>
+</resources>

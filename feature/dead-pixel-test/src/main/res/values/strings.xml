@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources><!-- 屏幕坏点检测 -->
+    <string name="dead_pixel_test">Screen Badness Detection</string>
+    <string name="dead_pixel_test_description">Use pure-colour rotation to detect screen failures and card points</string>
+
+    <!-- 测试颜色名称 -->
+    <string name="dead_pixel_color_white">White</string>
+    <string name="dead_pixel_color_black">Black</string>
+    <string name="dead_pixel_color_red">Red</string>
+    <string name="dead_pixel_color_green">Green</string>
+    <string name="dead_pixel_color_blue">Blue</string>
+
+    <!-- 操作提示 -->
+    <string name="dead_pixel_hint">Click to change the colour. ..the right and left slide can be switched back and forth.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Show Grid</string>
+    <string name="dead_pixel_grid_off">Hide Grid</string>
+    <string name="dead_pixel_auto_play">Auto-rotation</string>
+    <string name="dead_pixel_auto_stop">Stop it!</string>
+    <string name="dead_pixel_fullscreen">Fullscreen testing</string>
+    <string name="dead_pixel_exit_fullscreen">Exit Full Screen</string>
+
+    <!-- 使用说明对话框 -->
+    <string name="dead_pixel_guide_title">How do we detect the damage?</string>
+    <string name="dead_pixel_guide_content">The screen will display five solid colors in sequence: white, black, red, green, and blue.\n\n• White background: check for black dark spots (dead pixels)\n• Black background: check for bright spots (stuck pixels)\n• Colored backgrounds: check for abnormal pixels in other colors\n\nTap the screen to switch to the next color, or enable auto-play. For the best results, perform the test in a dim environment.</string>
+    <string name="dead_pixel_guide_start">Start testing</string>
+</resources>

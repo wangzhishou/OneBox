@@ -1,0 +1,26 @@
+Execute a single touch action on the current foreground screen of the host app. This tool does NOT take a screenshot and does NOT consult the AI; it just performs the requested action and reports the result.
+
+Use this when:
+- You have already seen the screen via screenshot_ui and know exactly which action to take.
+- You are driving the UI step by step instead of calling automate_ui_task.
+
+The action payload must be a JSON object matching the visual automation protocol:
+
+- click:           {"action": "click",          "x": int, "y": int,                       "reason": "..."}
+- long_press:      {"action": "long_press",     "x": int, "y": int, "durationMs": 800,   "reason": "..."}
+- swipe:           {"action": "swipe",          "fromX": int, "fromY": int, "toX": int, "toY": int, "durationMs": 300, "reason": "..."}
+- input_text:      {"action": "input_text",     "text": "the content",                    "reason": "..."}
+- go_back:         {"action": "go_back",                                                     "reason": "..."}
+- wait:            {"action": "wait",            "durationMs": 1000,                       "reason": "..."}
+- done:            {"action": "done",            "message": "finished",                    "reason": "..."}
+
+Coordinate rules (must follow):
+- x and y are PIXEL coordinates measured from the TOP-LEFT of the screenshot you saw via screenshot_ui.
+- Since screenshot_ui preserves the original screen resolution (does NOT resize), your screenshot-relative coordinates equal the actual screen pixels. The runtime will still apply a small correction factor for any rounding, so prefer integer coordinates that match the screenshot.
+- Aim for the center of any button / interactive element.
+- Do not invent new action types. Stick to the list above.
+
+Risks:
+- This tool directly taps, swipes, or types on the user's screen. It may trigger destructive actions (delete, send, purchase).
+- Always requires explicit user confirmation before execution.
+- Do not call this from parallel tool batches; UI interactions must be strictly serial.

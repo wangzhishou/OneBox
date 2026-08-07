@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Google Play 渠道: 关闭明文流量, 只允许 HTTPS
+    如果未来需要 cleartext 访问某个内部域名, 在 domain-config 中白名单
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">wanbaohe.com</domain>
+        <domain includeSubdomains="true">shifenmiao.com</domain>
+    </domain-config>
+</network-security-config>

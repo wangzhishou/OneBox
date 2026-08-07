@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mini_program_jump_confirm">Aalis ka na at bubuksan ito sa WeChat. Magpatuloy?</string>
+    <string name="mini_program_redirecting">Nagre-redirect…</string>
+</resources>

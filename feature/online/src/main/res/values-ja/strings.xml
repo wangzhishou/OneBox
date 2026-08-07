@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mini_program_jump_confirm">WeChatで開こうとしています。続行しますか？</string>
+    <string name="mini_program_redirecting">リダイレクト中…</string>
+</resources>

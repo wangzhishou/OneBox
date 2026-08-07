@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">Dua Duvarı</string>
+    <string name="blessing_wall_sub">Günlük dokunuş · İyi şans peşini bırakmaz</string>
+    <string name="blessing_record_title">Dua Kayıtları</string>
+    <string name="blessing_tab_wooden_fish">Sessiz An</string>
+    <string name="blessing_tab_wealth_god">İyi Şans</string>
+    <string name="blessing_tab_guanyin">Huzur ve Mutluluk</string>
+    <string name="blessing_tab_incense">İçten Dilek</string>
+    <string name="blessing_subtitle_wooden_fish">Günlük dokunuş · Endişeler kaybolur</string>
+    <string name="blessing_subtitle_wealth_god">İyi şans kalır · Her şey yolunda gider</string>
+    <string name="blessing_subtitle_guanyin">İçinde iyilik · Huzur ve neşe</string>
+    <string name="blessing_subtitle_incense">İçten dilekler · Bolluk ve bereket</string>
+    <string name="blessing_btn_wooden_fish">Dokun, şans +1</string>
+    <string name="blessing_btn_wealth_god">Dokun, talih +1</string>
+    <string name="blessing_btn_guanyin">Dokun, huzur +1</string>
+    <string name="blessing_btn_incense">Dokun, dua +1</string>
+    <string name="blessing_stat_wooden_fish">Bugünkü sayı</string>
+    <string name="blessing_stat_wealth_god">Bugünkü sayı</string>
+    <string name="blessing_stat_guanyin">Bugünkü sayı</string>
+    <string name="blessing_stat_incense">Bugünkü sayı</string>
+    <string name="blessing_count_unit">kez</string>
+    <string name="blessing_total_count">%1$d kez</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">Günlük Dua İstatistikleri</string>
+    <string name="blessing_empty_state">Henüz dua kaydı yok</string>
+    <string name="blessing_wish_edit">Notu düzenle</string>
+    <string name="blessing_wish_input_label">Not</string>
+    <string name="blessing_wish_save">Kaydet</string>
+    <string name="blessing_wish_placeholder">Henüz not yok</string>
+    <string name="blessing_tab_text_edit">Başlığı düzenle</string>
+    <string name="blessing_tab_title_label">Başlık</string>
+    <string name="blessing_tab_subtitle_label">Alt başlık</string>
+    <string name="blessing_tab_text_reset_hint">Varsayılanı geri yüklemek için boş bırakın</string>
+    <string name="blessing_history_readonly_hint">Geçmiş, yalnızca görüntüleme</string>
+    <string name="blessing_record_note_prefix">Not: %1$s</string>
+    <string name="blessing_sound_on">Ses açık</string>
+    <string name="blessing_sound_off">Ses kapalı</string>
+    <string name="blessing_share">Paylaş</string>
+</resources>

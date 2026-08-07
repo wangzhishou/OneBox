@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="teleprompter_title">提词器</string>
+    <string name="teleprompter_my_scripts">我的文稿</string>
+    <string name="teleprompter_recent_scripts">最近文稿</string>
+    <string name="teleprompter_scripts_total">共 %d 篇文稿</string>
+    <string name="teleprompter_empty">暂无文稿，点击右上角 + 新建</string>
+    <string name="teleprompter_word_count">%d 字</string>
+    <string name="teleprompter_new_script">新建文稿</string>
+    <string name="teleprompter_edit_script">编辑文稿</string>
+    <string name="teleprompter_title_hint">文稿标题</string>
+    <string name="teleprompter_content_hint">在此输入提词内容…</string>
+    <string name="teleprompter_save">保存</string>
+    <string name="teleprompter_play">播放</string>
+    <string name="teleprompter_delete">删除</string>
+    <string name="teleprompter_delete_confirm">确认删除该文稿？</string>
+    <string name="teleprompter_confirm">确认</string>
+    <string name="teleprompter_cancel">取消</string>
+    <string name="teleprompter_saved">文稿已保存</string>
+    <string name="teleprompter_deleted">文稿已删除</string>
+    <string name="teleprompter_title_required">请输入文稿标题</string>
+
+    <!-- Player -->
+    <string name="teleprompter_progress">进度</string>
+    <string name="teleprompter_font_size">字号</string>
+    <string name="teleprompter_scroll_speed">滚动速度</string>
+    <string name="teleprompter_mirror">镜像</string>
+    <string name="teleprompter_reset">重置</string>
+    <string name="teleprompter_exit">退出</string>
+    <string name="teleprompter_pause">暂停</string>
+    <string name="teleprompter_resume">继续</string>
+    <string name="teleprompter_tap_to_control">点击屏幕显示控制面板</string>
+    <string name="teleprompter_more_actions">更多操作</string>
+
+    <!-- AI Tool: manage_teleprompter -->
+    <string name="agent_tool_manage_teleprompter_title">提词器文稿管理</string>
+    <string name="agent_tool_manage_teleprompter_summary">查询、创建、更新、删除提词器文稿，并可直达编辑或播放页</string>
+    <string name="agent_tool_manage_teleprompter_param_action">要执行的操作：list 列出全部文稿；get 读取文稿详情；create 创建文稿；update 更新文稿；delete 删除文稿</string>
+    <string name="agent_tool_manage_teleprompter_param_script_id">文稿 ID，get / update / delete 时必填，可从 list 结果中获取</string>
+    <string name="agent_tool_manage_teleprompter_param_title">文稿标题，create 时必填，update 时可选（不传则保持原标题）</string>
+    <string name="agent_tool_manage_teleprompter_param_content">文稿正文内容，create 时建议提供，update 时可选（不传则保持原内容）</string>
+    <string name="agent_tool_manage_teleprompter_created">已创建文稿《%s》</string>
+    <string name="agent_tool_manage_teleprompter_updated">已更新文稿《%s》</string>
+    <string name="agent_tool_manage_teleprompter_deleted">文稿已删除</string>
+    <string name="agent_tool_manage_teleprompter_not_found">未找到文稿：%s</string>
+    <string name="agent_tool_manage_teleprompter_missing_script_id">缺少必填参数 script_id</string>
+    <string name="agent_tool_manage_teleprompter_missing_title">缺少必填参数 title</string>
+    <string name="agent_tool_manage_teleprompter_unknown_action">不支持的 action，可选值：list / get / create / update / delete</string>
+    <string name="agent_tool_manage_teleprompter_failed">提词器文稿操作失败：%s</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_label_list">打开提词器</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_guidance_list">查看全部提词器文稿</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_label_edit">编辑文稿</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_guidance_edit">打开该文稿的编辑页面</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_label_play">播放文稿</string>
+    <string name="agent_tool_manage_teleprompter_deeplink_guidance_play">立即开始提词播放</string>
+</resources>
+

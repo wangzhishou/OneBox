@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">펼치기</string>
+    <string name="collapse">치워 두세요.</string>
+    <string name="dialog_clear_recents_title">최근 항목 지우기</string>
+    <string name="dialog_clear_recents_message">모든 최근 접근 기록을 지우시겠습니까? 이 작업은 되돌릴 수 없습니다.</string>
+</resources>

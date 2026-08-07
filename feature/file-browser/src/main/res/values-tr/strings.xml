@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">Genişlet</string>
+    <string name="collapse">Kaldır.</string>
+    <string name="dialog_clear_recents_title">Son Kullanılanları Temizle</string>
+    <string name="dialog_clear_recents_message">Tüm son erişim kayıtları temizlensin mi? Bu işlem geri alınamaz.</string>
+</resources>

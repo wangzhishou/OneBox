@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- WeChat mini program redirect -->
+    <string name="mini_program_jump_confirm">You\'re about to leave and open this in WeChat. Continue?</string>
+    <string name="mini_program_redirecting">Redirecting…</string>
+</resources>

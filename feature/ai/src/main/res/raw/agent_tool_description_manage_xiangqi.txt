@@ -1,0 +1,20 @@
+管理中国象棋对局，支持以下操作（每个操作成功后返回包含 deeplink 的结果，可跳转到象棋页面）：
+
+【列表与详情】
+- list: 列出所有历史对局，无需参数。
+- detail: 获取对局详情和走子记录，需传 game_id。
+
+【创建对局】
+- create: 创建新对局。需传 title。传 ai_as_red=true 创建人机对局（AI 执红），ai_as_red=false 创建人机对局（AI 执黑），不传 ai_as_red 则创建本地双人对局。
+
+【导入残局/棋谱开局】
+- import_fen: 从 FEN 字符串导入残局或自定义开局。当用户要求“创建残局”“摆一个残局”“导入棋谱开局”“从某个局面开始”时使用此操作。需传 fen 参数，可选 title。
+  FEN 格式: "局面 执子方 半步计数 回合数"，如 "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1"。局面部分 10 行用 / 分隔，每行 9 列。大写=红方（K帅 A仕 B相 N马 R车 C炮 P兵），小写=黑方（k将 a士 b象 n马 r车 c炮 p卒），数字=空格。
+
+【导入对战记录】
+- import_json: 从 JSON 对战记录导入完整对局并回放走子。当用户要求“导入对战记录”“回放一盘棋”“导入棋谱”时使用此操作。需传 json_data 参数，可选 title。
+  JSON 格式: {"version":1,"title":"标题","initialFen":"初始FEN","result":"结果","moves":[{"move":"a0a1","moveCn":"炮二平五"},...]}。move 为 UCCI 坐标格式（如 a0a1 表示从 a0 移动到 a1），moves 按顺序回放。
+
+【删除与导出】
+- delete: 删除对局，需传 game_id。
+- export: 导出棋谱和对战记录，需传 game_id，可选 export_format 为 fen/json/both。

@@ -1,0 +1,17 @@
+<paths>
+    <cache-path
+        name="shared_data"
+        path="/" />
+    <files-path
+        name="files_internal"
+        path="/" />
+    <cache-path
+        name="pdf_preview"
+        path="pdf-preview/" />
+    <external-files-path
+        name="images"
+        path="Pictures" />
+    <external-files-path
+        name="files"
+        path="Files" />
+</paths>

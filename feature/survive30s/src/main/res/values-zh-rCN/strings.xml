@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">撑30秒赚积分</string>
+    <string name="survive_30s_ready">准备好了吗？</string>
+    <string name="survive_30s_instruction">拖动蓝色圆球躲避障碍物\n可上下左右自由移动，坚持30秒即为胜利！</string>
+    <string name="survive_30s_instruction_bonus">近身闪避可积攒能量，3 次可获得 1 层护盾，护盾会帮你挡下一次撞击。</string>
+    <string name="survive_30s_start">开始挑战</string>
+    <string name="survive_30s_game_over">挑战失败！</string>
+    <string name="survive_30s_survived_time">存活：%.1f 秒</string>
+    <string name="survive_30s_new_record">新纪录！</string>
+    <string name="survive_30s_win">恭喜通关！</string>
+    <string name="survive_30s_win_desc">你成功撑过了30秒！</string>
+    <string name="survive_30s_retry">再来一次</string>
+    <string name="survive_30s_best_time">最佳：%.1fs</string>
+    <string name="survive_30s_phase">阶段</string>
+    <string name="survive_30s_phase_warmup">热身</string>
+    <string name="survive_30s_phase_rush">加压</string>
+    <string name="survive_30s_phase_storm">风暴</string>
+    <string name="survive_30s_shield">护盾</string>
+    <string name="survive_30s_charge">能量</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">擦身</string>
+    <string name="survive_30s_near_miss_count">近身闪避：%1$d 次</string>
+    <string name="survive_30s_danger_low">节奏稳定，继续拉开安全距离。</string>
+    <string name="survive_30s_danger_medium">危险正在逼近，准备变向。</string>
+    <string name="survive_30s_danger_high">高危！利用近身闪避抢能量，或立刻脱离包围。</string>
+</resources>

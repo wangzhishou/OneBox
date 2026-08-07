@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_privacy">Я прочитал(а) и соглашаюсь с <a href="https://www.oneboxable.com/agreement/global.html">Пользовательским соглашением</a> и <a href="https://www.oneboxable.com/privacy/global.html">Политикой конфиденциальности</a>.</string>
+</resources>

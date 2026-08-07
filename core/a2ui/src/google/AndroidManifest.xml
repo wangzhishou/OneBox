@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Places SDK 会传递合并定位权限,位置选择未用到"我的位置",剔除以保持权限最小化 -->
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        tools:node="remove" />
+
+    <application>
+        <!-- API key 由 app 模块 google flavor 的 manifestPlaceholders 注入(keystore.properties 的 googlePlacesApiKey) -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${googlePlacesApiKey}" />
+    </application>
+</manifest>

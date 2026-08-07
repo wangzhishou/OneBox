@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">ТЕКУЩИЙ СЧЕТ</string>
+    <string name="game_2048_best_score">ЛУЧШИЙ СЧЕТ</string>
+    <string name="game_2048_new_game">НОВАЯ ИГРА</string>
+    <string name="game_2048_game_over">Игра окончена</string>
+    <string name="game_2048_you_win">Вы достигли 2048!</string>
+    <string name="game_2048_no_moves">Больше нет доступных ходов</string>
+    <string name="game_2048_reached_2048">Вы можете продолжить для большего счета</string>
+    <string name="game_2048_continue">Продолжить</string>
+    <string name="game_2048_new_best_score">Новый рекорд!</string>
+</resources>

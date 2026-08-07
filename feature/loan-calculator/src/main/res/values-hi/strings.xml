@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">ऋण कैलकुलेटर</string>
+    <string name="loan_calc_amount_label">ऋण राशि ($)</string>
+    <string name="loan_calc_amount_hint">कृपया राशि दर्ज करें।</string>
+    <string name="loan_calc_term_label">ऋण अवधि</string>
+    <string name="loan_calc_term_hint">चयन</string>
+    <string name="loan_calc_rate_label">वार्षिक ब्याज दर (%)</string>
+    <string name="loan_calc_rate_hint">वार्षिक ब्याज दर दर्ज करें</string>
+    <string name="loan_calc_method_label">पुनर्भुगतान विधि</string>
+    <string name="loan_calc_method_hint">चयन</string>
+    <string name="loan_calc_start">गणना शुरू करें</string>
+    <string name="loan_calc_cancel">रद्द करें</string>
+    <string name="loan_method_equal_installment">बस प्रतीक्षा करें।</string>
+    <string name="loan_method_equal_installment_desc">मासिक किस्त, मूलधन, ब्याज</string>
+    <string name="loan_method_equal_payment">समतुल्य</string>
+    <string name="loan_method_equal_payment_desc">मासिक किस्त समान, मूलधन बढ़ता है और ब्याज मासिक घटता है</string>
+    <string name="loan_method_equal_principal">समतुल्य मूलधन</string>
+    <string name="loan_method_equal_principal_desc">मासिक किस्त में मासिक कमी, प्रति माह समान मूलधन और मासिक ब्याज में कमी</string>
+    <string name="loan_method_interest_first">इसे नीचे रखें।</string>
+    <string name="loan_method_interest_first_desc">मासिक निश्चित ब्याज और पूर्ण मूलधन देय</string>
+    <string name="loan_result_monthly_payment">मासिक औसत पुनर्भुगतान</string>
+    <string name="loan_result_total_interest">कुल ब्याज</string>
+    <string name="loan_result_total_repayment">कुल पुनर्भुगतान</string>
+    <string name="loan_result_schedule_title">पुनर्भुगतान योजना</string>
+    <string name="loan_result_month">अवधि</string>
+    <string name="loan_result_monthly_col">मासिक पुनर्भुगतान</string>
+    <string name="loan_result_principal_col">मूलधन</string>
+    <string name="loan_result_interest_col">ब्याज</string>
+    <string name="loan_result_remaining_col">शेष मूलधन</string>
+    <string name="loan_input_error_amount">कृपया वैध ऋण राशि दर्ज करें</string>
+    <string name="loan_input_error_term">कृपया ऋण अवधि चुनें</string>
+    <string name="loan_input_error_rate">वार्षिक ब्याज दर का मान्य मान दर्ज करें</string>
+    <string name="loan_input_error_method">कृपया चुनें कि पुनर्भुगतान कैसे करना है।</string>
+    <string name="loan_term_months">%1$d महीने</string>
+    <string name="loan_term_years">%1$d वर्ष (%2$d महीने)</string>
+    <string name="loan_term_picker_title">ऋण अवधि चुनें</string>
+</resources>

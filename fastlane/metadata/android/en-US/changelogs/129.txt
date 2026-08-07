@@ -1,0 +1,5 @@
+     • Brand new line-style icons across the app for a cleaner, more consistent look
+     • Improved English localization throughout the app
+     • You can now rate OneBox without leaving the app
+     • Chinese app name now shows as 万宝盒
+     • Bug fixes and performance improvements

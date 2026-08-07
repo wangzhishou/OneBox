@@ -1,0 +1,56 @@
+Ang OneBox ay isang libre at walang ads na all-in-one toolbox: mahigit 90 maingat na ginawang tools sa iisang app, mula sa image processing, document at office work, AI assistant, hanggang sa mga pang-araw-araw na productivity tools.
+
+【Bakit "OneBox" ang pangalan】
+• One: lahat ng pang-araw-araw na tools, isang app lang ang kailangan
+• Box: isang kahon na kasya ang lahat
+Ang tunay nitong layunin ay hindi lang "maraming laman", kundi hindi mo na kailangang lumipat-lipat sa ibang tool apps.
+
+【Mga productivity tool】
+• Teleprompter, notepad, to-do list, decision wheel
+• Perpetual calendar, bookkeeping, cloud drive tools, habit tracker
+
+【File at PDF】
+• Mga PDF tool: merge, split, pag-extract ng mga image at text
+• Markdown editor na may real-time na preview
+• File encryption, pag-extract ng audio cover art, pag-edit ng image EXIF
+• File browser at file transfer sa pagitan ng mga device
+
+【Mga image tool】
+• Crop, rotate, resize at format conversion (HEIC / WebP / AVIF at iba pa)
+• Mga filter, collage, long-image stitching, GIF tools
+• QR code scanning at generation, mga color tool
+• Image compression at format conversion, lahat pinoproseso nang lokal, walang upload
+
+【Mga tool sa pang-araw-araw na buhay】
+• ID photo, network speed test, watermark camera
+• Blessing wall, time hourglass, Apk.1 installer
+• Mga screen at media tool, at mga maliit na laro sa libreng oras
+
+【AI assistant: hindi lang basta maraming features】
+Kung maraming features lang ang batayan, maraming toolbox apps ang kayang gawin iyon. May built-in AI assistant ang OneBox — hindi mo na kailangang isa-isahin ang mga tool o tandaan ang mga hakbang, sabihin mo lang:
+• "I-convert ang picture na ito sa PDF."
+• "I-record ang screenshot ng bill na ito sa ledger."
+• "Gumawa ng to-do list."
+• "Tingnan ang stock market."
+Nauunawaan ng AI, isinasagawa, at ibinabalik ang resulta — tuloy-tuloy na daloy.
+• Makipag-chat sa maraming nangungunang AI models sa isang lugar
+• AI Agent na kayang gamitin ang mga tool sa loob ng app para tulungan ka
+• Mga assistant sa pagsulat, rewriting, summarizing at translation
+• Custom AI engines at pamamahala ng mga prompt
+
+【App na kusang nag-e-evolve】
+Hindi static ang OneBox — may "AI self-evolution system" ito:
+Feedback mula sa mga user → sinusuri ng AI bilang product manager → awtomatikong nag-ge-generate ng code → testing at release.
+Ang mga bug na ini-report mo, mga feature na gusto mo, at mga suggestion para sa mas magandang experience ay maaaring suriin at ipatupad ng AI. Ibig sabihin, habang ginagamit mo ang OneBox, lalo itong umaangkop sa mga pangangailangan mo.
+
+【Bakit OneBox】
+• Libreng gamitin, walang ads
+• Privacy muna: ang mga image at dokumento ay pinoproseso nang lokal
+• Malinis at modernong Material Design na interface
+• Tuloy-tuloy na updates, may mga bagong tool na idinaragdag
+
+Malaking mithiin ang maging "huling tool app", pero tatlong mahahalagang hakbang na ang nagawa ng OneBox: pagsamahin ang mga karaniwang tool sa isang entrance, gawing simple ang paggamit sa pamamagitan ng AI, at gawing tunay na nag-uudyok ng paglago ng produkto ang feedback ng mga user.
+
+Kung pagod ka nang lumipat-lipat sa napakaraming tool apps, subukan mo ito — baka ito na talaga ang huli mong kakailanganin.
+
+Makipag-ugnayan sa amin: support@oneboxable.com

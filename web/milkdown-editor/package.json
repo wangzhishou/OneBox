@@ -1,0 +1,29 @@
+{
+  "name": "milkdown-editor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Milkdown Markdown 编辑器打包",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch"
+  },
+  "dependencies": {
+    "@milkdown/core": "^7.5.0",
+    "@milkdown/preset-commonmark": "^7.5.0",
+    "@milkdown/preset-gfm": "^7.5.0",
+    "@milkdown/plugin-history": "^7.5.0",
+    "@milkdown/plugin-listener": "^7.5.0",
+    "@milkdown/plugin-clipboard": "^7.5.0",
+    "@milkdown/plugin-indent": "^7.5.0",
+    "@milkdown/plugin-trailing": "^7.5.0",
+    "@milkdown/plugin-prism": "^7.5.0",
+    "@milkdown/plugin-math": "^7.5.0",
+    "@milkdown/utils": "^7.5.0",
+    "@milkdown/ctx": "^7.5.0",
+    "katex": "^0.16.9"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.0"
+  }
+}
+

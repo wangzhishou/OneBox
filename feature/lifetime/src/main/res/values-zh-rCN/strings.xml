@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Module Title -->
+    <string name="lifetime_title">时光沙漏</string>
+    <string name="lifetime_loading">正在计算你的时光…</string>
+
+    <!-- Units -->
+    <string name="lifetime_unit_years">年</string>
+    <string name="lifetime_unit_months">月</string>
+    <string name="lifetime_unit_days">天</string>
+    <string name="lifetime_unit_hours">小时</string>
+    <string name="lifetime_unit_minutes">分钟</string>
+    <string name="lifetime_unit_seconds">秒</string>
+
+    <!-- Main Time Card -->
+    <string name="lifetime_time_card_label">已走过的人生</string>
+    <string name="lifetime_remaining_time_label">还剩余的人生</string>
+
+    <!-- Life Journey -->
+    <string name="lifetime_life_journey">人生旅程</string>
+    <string name="lifetime_progress_label">进度</string>
+    <string name="lifetime_remaining_estimate">预计还有 %1$d 年</string>
+
+    <!-- Sections -->
+    <string name="lifetime_milestone_section">纪念日</string>
+    <string name="lifetime_countdown_section">倒数日</string>
+    <string name="lifetime_frequency_section">时光频率</string>
+
+    <!-- Add Event -->
+    <string name="lifetime_add">添加</string>
+    <string name="lifetime_add_event">添加时光频率</string>
+    <string name="lifetime_add_milestone">添加纪念日</string>
+    <string name="lifetime_edit_milestone">编辑纪念日</string>
+    <string name="lifetime_event_name_label">事件名称</string>
+    <string name="lifetime_milestone_name_hint">纪念日名称</string>
+    <string name="lifetime_event_name_placeholder">吃饭</string>
+    <string name="lifetime_choose_icon">选择图标</string>
+    <string name="lifetime_frequency_label">频率</string>
+    <string name="lifetime_unit_label">单位</string>
+    <string name="lifetime_times_per_period">每个周期次数</string>
+    <string name="lifetime_add_to_timeline">记录时光频率</string>
+    <string name="lifetime_default_times_per_period">1</string>
+    <string name="lifetime_validation_event_name_required">请输入事件名称</string>
+    <string name="lifetime_validation_times_per_period_required">请输入大于 0 的次数</string>
+    <string name="lifetime_validation_milestone_name_required">请输入纪念日名称</string>
+    <string name="lifetime_validation_milestone_target_date_required">请选择目标日期</string>
+
+    <!-- Settings / Onboarding -->
+    <string name="lifetime_select_birthday">选择出生日期</string>
+    <string name="lifetime_confirm">确认</string>
+    <string name="lifetime_cancel">取消</string>
+    <string name="lifetime_settings">设置起点</string>
+    <string name="lifetime_birth_date">出生日期</string>
+    <string name="lifetime_target_age">期望的人生长度</string>
+    <string name="lifetime_target_age_description">你期望的人生长度定义了"时光沙漏"的可视化范围，代表你对充实人生的个人愿景。</string>
+    <string name="lifetime_tap_to_change">点击修改</string>
+    <string name="lifetime_update_settings">进入时光沙漏</string>
+    <string name="lifetime_hide_progress">隐藏人生进度</string>
+
+    <!-- Welcome -->
+    <string name="lifetime_welcome_title">时光沙漏</string>
+    <string name="lifetime_welcome_subtitle">时间从不等人，但你可以记住它。</string>
+    <string name="lifetime_welcome_start">开始</string>
+
+    <!-- Demo Mode -->
+    <string name="lifetime_demo_hint">演示数据 — 点击设置你的真实出生日期</string>
+    <string name="lifetime_demo_action">去设置</string>
+
+    <!-- Empty States -->
+    <string name="lifetime_empty_events_title">还没有时光频率</string>
+    <string name="lifetime_empty_events_subtitle">添加你关心的事情，比如吃饭、看书、旅行…</string>
+    <string name="lifetime_empty_milestones_title">还没有纪念日</string>
+    <string name="lifetime_empty_milestones_subtitle">毕业 1000 天、30 岁生日… 记录属于你的重要时刻</string>
+    <string name="lifetime_empty_countdown_title">还没有倒数日</string>
+    <string name="lifetime_empty_countdown_subtitle">系统已自动兜底未来 3 个月节日，添加你自己的重要日子</string>
+
+    <!-- Recommend -->
+    <string name="lifetime_recommend_events_title">为你推荐以下时光频率</string>
+
+    <!-- Event Picker -->
+    <string name="lifetime_event_date">事件日期</string>
+    <string name="lifetime_select_date">选择日期</string>
+    <string name="lifetime_event_picker_title">选择时光频率</string>
+    <string name="lifetime_event_picker_add">新增</string>
+    <string name="lifetime_event_picker_recommended">推荐</string>
+    <string name="lifetime_event_picker_preset">预置事件</string>
+    <string name="lifetime_event_picker_custom">我的时光频率</string>
+    <string name="lifetime_event_added">已添加</string>
+    <string name="lifetime_event_saved">时光频率已添加</string>
+    <string name="lifetime_event_updated">时光频率已更新</string>
+    <string name="lifetime_event_deleted">时光频率已删除</string>
+
+    <!-- Frequency Types -->
+    <string name="lifetime_frequency_one_time">一次</string>
+    <string name="lifetime_frequency_daily">每天</string>
+    <string name="lifetime_frequency_weekly">每周</string>
+    <string name="lifetime_frequency_monthly">每月</string>
+    <string name="lifetime_frequency_yearly">每年</string>
+    <string name="lifetime_frequency_progress">已过人生 %1$d%%</string>
+
+    <!-- Card hints -->
+    <string name="lifetime_card_flip_hint">点击翻转</string>
+    <string name="lifetime_completed_label">已完成</string>
+    <string name="lifetime_remaining_label">待完成</string>
+
+    <!-- Memorial (formerly Milestone) -->
+    <string name="lifetime_milestone_target_date">目标日期</string>
+    <string name="lifetime_milestone_target_days">目标天数</string>
+    <string name="lifetime_milestone_start_date">起始日期</string>
+    <string name="lifetime_milestone_note">备注</string>
+
+    <!-- Main Screen Actions -->
+    <string name="lifetime_action_frequency_events">频率事件</string>
+    <string name="lifetime_action_milestones">纪念日</string>
+    <string name="lifetime_action_countdown">倒数日</string>
+
+    <!-- Memorial Detail -->
+    <string name="lifetime_milestone_days_until">还有 %1$d 天</string>
+    <string name="lifetime_milestone_days_today">就是今天</string>
+    <string name="lifetime_milestone_days_past">已过去 %1$d 天</string>
+    <string name="lifetime_delete_confirm_title">确认删除</string>
+    <string name="lifetime_delete_confirm_message">删除后无法恢复，确定要删除这个纪念日吗？</string>
+    <string name="lifetime_delete">删除</string>
+    <string name="lifetime_note_placeholder">记录这个纪念日对你的意义…</string>
+    <string name="lifetime_milestone_name_placeholder">毕业 1000 天</string>
+    <string name="lifetime_milestone_note_placeholder">可选，记录这个纪念日的意义…</string>
+    <string name="lifetime_note_edit">编辑备注</string>
+    <string name="lifetime_note_delete">删除备注</string>
+    <string name="lifetime_note_add">添加备注</string>
+    <string name="lifetime_note_dialog_title">备注</string>
+    <string name="lifetime_note_save">保存</string>
+    <string name="lifetime_note_empty">暂无备注</string>
+
+    <!-- AI Insight History -->
+    <string name="lifetime_insight_current_title">今日灵感</string>
+    <string name="lifetime_insight_refresh">换一条</string>
+    <string name="lifetime_insight_loading">AI 正在思考…</string>
+    <string name="lifetime_insight_empty">还没有灵感，点击「换一条」生成</string>
+    <string name="lifetime_insight_history_title">历史灵感</string>
+    <string name="lifetime_insight_history_empty">暂无历史</string>
+
+    <!-- Countdown -->
+    <string name="lifetime_add_countdown">添加倒数日</string>
+    <string name="lifetime_countdown_detail_title">倒数日详情</string>
+    <string name="lifetime_countdown_name_label">倒数日名称</string>
+    <string name="lifetime_countdown_name_placeholder">发工资、发年终奖、纪念日…</string>
+    <string name="lifetime_countdown_target_date">目标日期</string>
+    <string name="lifetime_countdown_lunar_target">按农历计算（每年自动滚动）</string>
+    <string name="lifetime_countdown_lunar_target_help">适用于农历生日、传统节日等每年循环的场景</string>
+    <string name="lifetime_countdown_note_placeholder">可选，记录这个倒数日的意义…</string>
+    <string name="lifetime_countdown_holiday_badge">节日</string>
+    <string name="lifetime_countdown_holiday_hint">此倒数日由系统按农历/公历自动种入，每年生效。可删除后手动添加。</string>
+
+    <!-- Event Picker -->
+    <string name="lifetime_event_picker_delete">删除</string>
+
+    <!-- 日期格式 -->
+    <string name="lifetime_date_ymd">%1$d 年 %2$d 月 %3$d 日</string>
+    <string name="lifetime_lunar_date">农历 %1$s年 %2$s%3$s</string>
+
+    <!-- 频率值标签：周期 + 次数 + 单位（中文不加空格） -->
+    <string name="lifetime_frequency_value_label">%1$s%2$d%3$s</string>
+
+    <!-- 状态标签（倒数日 / 纪念日） -->
+    <string name="lifetime_status_today">今天</string>
+    <string name="lifetime_status_days_until">还有 %1$d 天</string>
+    <string name="lifetime_status_days_past">已过 %1$d 天</string>
+    <string name="lifetime_status_months_until">还有 %1$d 个月</string>
+    <string name="lifetime_status_months_past">已过 %1$d 个月</string>
+    <string name="lifetime_status_years_until">还有 %1$d 年</string>
+    <string name="lifetime_status_years_past">已过 %1$d 年</string>
+
+    <!-- 预置事件 / 节日展示名（key 为数据库播种的中文名） -->
+    <string name="lifetime_preset_name_spring_festival">春节</string>
+    <string name="lifetime_preset_name_lantern_festival">元宵节</string>
+    <string name="lifetime_preset_name_longtaitou">龙抬头</string>
+    <string name="lifetime_preset_name_shangsi">上巳节</string>
+    <string name="lifetime_preset_name_dragon_boat">端午节</string>
+    <string name="lifetime_preset_name_qixi">七夕</string>
+    <string name="lifetime_preset_name_zhongyuan">中元节</string>
+    <string name="lifetime_preset_name_mid_autumn">中秋节</string>
+    <string name="lifetime_preset_name_double_ninth">重阳节</string>
+    <string name="lifetime_preset_name_hanyi">寒衣节</string>
+    <string name="lifetime_preset_name_xiayuan">下元节</string>
+    <string name="lifetime_preset_name_laba">腊八节</string>
+    <string name="lifetime_preset_name_little_new_year">小年</string>
+    <string name="lifetime_preset_name_chinese_new_years_eve">除夕</string>
+    <string name="lifetime_preset_name_new_years_day">元旦</string>
+    <string name="lifetime_preset_name_valentines">情人节</string>
+    <string name="lifetime_preset_name_womens_day">妇女节</string>
+    <string name="lifetime_preset_name_arbor_day">植树节</string>
+    <string name="lifetime_preset_name_consumer_rights_day">消费者权益日</string>
+    <string name="lifetime_preset_name_april_fools">愚人节</string>
+    <string name="lifetime_preset_name_earth_day">地球日</string>
+    <string name="lifetime_preset_name_labor_day">劳动节</string>
+    <string name="lifetime_preset_name_youth_day">青年节</string>
+    <string name="lifetime_preset_name_nurses_day">护士节</string>
+    <string name="lifetime_preset_name_childrens_day">儿童节</string>
+    <string name="lifetime_preset_name_environment_day">环境日</string>
+    <string name="lifetime_preset_name_party_founding_day">建党节</string>
+    <string name="lifetime_preset_name_army_day">建军节</string>
+    <string name="lifetime_preset_name_victory_day">抗战胜利</string>
+    <string name="lifetime_preset_name_teachers_day">教师节</string>
+    <string name="lifetime_preset_name_national_day">国庆节</string>
+    <string name="lifetime_preset_name_singles_day">光棍节</string>
+    <string name="lifetime_preset_name_national_memorial_day">国家公祭日</string>
+    <string name="lifetime_preset_name_christmas_eve">平安夜</string>
+    <string name="lifetime_preset_name_christmas">圣诞节</string>
+    <string name="lifetime_preset_name_eating">吃饭</string>
+    <string name="lifetime_preset_name_sleeping">睡觉</string>
+    <string name="lifetime_preset_name_journaling">写日记</string>
+    <string name="lifetime_preset_name_exercise">运动</string>
+    <string name="lifetime_preset_name_reading">看书</string>
+    <string name="lifetime_preset_name_movies">看电影</string>
+    <string name="lifetime_preset_name_travel">旅行</string>
+
+    <!-- 事件单位（key 为固定下拉列表 / 播种的中文单位） -->
+    <string name="lifetime_event_unit_times">次</string>
+    <string name="lifetime_event_unit_meals">顿</string>
+    <string name="lifetime_event_unit_entries">篇</string>
+    <string name="lifetime_event_unit_books">本</string>
+    <string name="lifetime_event_unit_movies">部</string>
+    <string name="lifetime_event_unit_episodes">集</string>
+    <string name="lifetime_event_unit_km">公里</string>
+    <string name="lifetime_event_unit_meters">米</string>
+    <string name="lifetime_event_unit_steps">步</string>
+    <string name="lifetime_event_unit_minutes">分钟</string>
+    <string name="lifetime_event_unit_hours">小时</string>
+    <string name="lifetime_event_unit_items">个</string>
+    <string name="lifetime_event_unit_cups">杯</string>
+    <string name="lifetime_event_unit_bottles">瓶</string>
+    <string name="lifetime_event_unit_packs">包</string>
+    <string name="lifetime_event_unit_boxes">盒</string>
+</resources>

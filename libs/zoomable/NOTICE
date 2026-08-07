@@ -1,0 +1,9 @@
+This module is a source fork of Zoomable:
+
+    https://github.com/usuiat/Zoomable
+
+Upstream license: Apache License, Version 2.0
+(a copy is distributed with this repository at /LICENSE)
+
+Upstream copyright notices are retained per Apache-2.0 §4(c).
+Local modifications are likewise licensed under Apache-2.0.

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Google Play 渠道专属 Manifest
+    - 与 main/AndroidManifest.xml 合并: 这里只声明差异
+    - AGP 会自动把两个 manifest 合并到最终 APK
+    - 用 tools:node="remove" 移除主清单中与 Google Play 冲突的条目
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 移除微信客户端可见性 query (海外用户无微信) -->
+    <queries tools:node="remove" />
+
+    <!-- 移除 Google Play 严格审查/被拒的权限 -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:node="remove" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" tools:node="remove" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove" />
+    <uses-permission android:name="android.permission.PROJECT_MEDIA" tools:node="remove" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" tools:node="remove" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />
+
+    <!-- 读取媒体走系统照片选择器, 不需要 READ_EXTERNAL_STORAGE 旧权限 -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:node="remove" />
+
+    <!-- App 无广告, 移除 Firebase Analytics 合并进来的广告 ID 权限,
+         避免 Play 要求填写 Advertising ID 声明; Firebase 会回退到 app-instance ID -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" tools:node="remove" />
+
+    <application
+        android:label="@string/app_launcher_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="false"
+        android:usesCleartextTraffic="false"
+        tools:replace="android:label, android:networkSecurityConfig, android:requestLegacyExternalStorage, android:usesCleartextTraffic">
+
+        <!-- 移除国内 SDK 入口, 海外渠道不暴露 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            tools:node="remove" />
+
+        <service
+            android:name="com.wanbaohe.app.service.FloatingRobotService"
+            tools:node="remove" />
+
+    </application>
+
+</manifest>

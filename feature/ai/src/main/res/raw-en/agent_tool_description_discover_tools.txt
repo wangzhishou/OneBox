@@ -1,0 +1,9 @@
+Tool discovery: search available Agent tools and dynamically expand the current tool set.
+
+Use cases:
+- When no suitable tool exists in the current list, search first then execute
+
+Pass keywords array, each keyword is independently fuzzy-matched.
+Returns: JSON array of tool names, e.g. ["pdf_to_images", "pdf_merge"].
+Matched tools are auto-added to the next round's available tool list (union, deduplicated).
+Full definitions are already in the tools parameter — call them directly, no need to re-search.

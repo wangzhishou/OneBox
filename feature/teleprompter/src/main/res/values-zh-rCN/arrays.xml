@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AI Tool: manage_teleprompter -->
+    <string-array name="agent_tool_manage_teleprompter_keywords">
+        <item>提词器</item>
+        <item>提词板</item>
+        <item>文稿</item>
+        <item>台词</item>
+        <item>演讲稿</item>
+        <item>teleprompter</item>
+        <item>script</item>
+    </string-array>
+    <string-array name="agent_tool_manage_teleprompter_examples">
+        <item>帮我新建一篇提词器文稿，标题是晨会发言</item>
+        <item>把这段演讲内容保存到提词器</item>
+        <item>列出我的所有提词器文稿</item>
+        <item>删除标题为晨会发言的文稿</item>
+    </string-array>
+</resources>

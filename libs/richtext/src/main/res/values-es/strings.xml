@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">Descripción localizada</string>
+    <string name="copy">Copiar</string>
+    <string name="create_widget">Crear herramientas pequeñas</string>
+    <string name="run">Ejecutar</string>
+    <string name="save">Guardar</string>
+    <string name="mermaid_tab_diagram">Diagrama</string>
+    <string name="mermaid_tab_code">Código</string>
+    <string name="mermaid_fullscreen">Pantalla completa</string>
+    <string name="a2ui_parse_failed">Error al analizar A2UI</string>
+    <string name="a2ui_parse_failed_hint">Copia el origen y verifica el formato JSON o la sintaxis de la expresión.</string>
+</resources>

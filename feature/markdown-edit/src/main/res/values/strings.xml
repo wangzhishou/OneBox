@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Code block insert dialog -->
+    <string name="insert_code_block">Insert Code Block</string>
+    <string name="code_label">Code</string>
+    <string name="enter_code_hint">Enter code...</string>
+    <string name="select_language">Language:</string>
+    <string name="search_language">Search language</string>
+    <string name="search_language_hint">Type a language name...</string>
+
+    <!-- Image insert dialog -->
+    <string name="or_enter_image_url">Or enter an image URL:</string>
+    <string name="image_description_label">Image description</string>
+    <string name="image_description_hint">Alt text for the image</string>
+    <string name="image_url_label">Image URL</string>
+
+    <!-- Link insert dialog -->
+    <string name="link_text_placeholder">Text to display</string>
+
+    <!-- Image resize dialog -->
+    <string name="resize_image">Resize Image</string>
+    <string name="width">Width</string>
+    <string name="original_width">Original width: %1$dpx</string>
+
+    <!-- Editor placeholder -->
+    <string name="markdown_placeholder">Start typing...</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 系统预置提示词标题与描述(AppDatabase.ensureSystemPresets 播种用) -->
+    <string name="sys_prompt_default_title">默认聊天系统提示词</string>
+    <string name="sys_prompt_default_desc">聊天默认系统规则</string>
+    <string name="sys_prompt_agent_create_title">Agent 创建系统提示词</string>
+    <string name="sys_prompt_agent_create_desc">用于创建 Agent 的系统预置提示词</string>
+    <string name="sys_prompt_prompt_create_title">Prompt 创建系统提示词</string>
+    <string name="sys_prompt_prompt_create_desc">用于创建 Prompt 的系统预置提示词</string>
+    <string name="sys_prompt_bazi_title">八字命盘解析系统提示词</string>
+    <string name="sys_prompt_bazi_desc">用于八字命盘解析的系统预置提示词</string>
+    <string name="sys_prompt_xiangqi_title">中国象棋走子系统提示词</string>
+    <string name="sys_prompt_xiangqi_desc">用于中国象棋 LLM 人机对弈的系统预置提示词</string>
+    <string name="sys_prompt_mode_ask_title">ASK 仅问答模式执行协议</string>
+    <string name="sys_prompt_mode_ask_desc">Ask 模式下的执行协议提示词</string>
+    <string name="sys_prompt_mode_plan_title">PLAN 仅规划模式执行协议</string>
+    <string name="sys_prompt_mode_plan_desc">Plan 模式下的执行协议提示词</string>
+    <string name="sys_prompt_mode_agent_title">AGENT 执行模式执行协议</string>
+    <string name="sys_prompt_mode_agent_desc">Agent 模式下的执行协议提示词</string>
+    <string name="sys_prompt_duel_title">AI 对聊/互动 prompt 模板</string>
+    <string name="sys_prompt_duel_desc">AI 对聊/互动中使用的系统指令、角色发言规则与回合引导语模板</string>
+</resources>

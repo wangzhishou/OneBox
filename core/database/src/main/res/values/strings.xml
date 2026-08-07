@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- System preset prompt titles & descriptions (seeded by AppDatabase.ensureSystemPresets) -->
+    <string name="sys_prompt_default_title">Default Chat System Prompt</string>
+    <string name="sys_prompt_default_desc">Default system rules for chat</string>
+    <string name="sys_prompt_agent_create_title">Agent Creation System Prompt</string>
+    <string name="sys_prompt_agent_create_desc">Built-in system prompt for creating Agents</string>
+    <string name="sys_prompt_prompt_create_title">Prompt Creation System Prompt</string>
+    <string name="sys_prompt_prompt_create_desc">Built-in system prompt for creating Prompts</string>
+    <string name="sys_prompt_bazi_title">BaZi Chart Analysis System Prompt</string>
+    <string name="sys_prompt_bazi_desc">Built-in system prompt for BaZi (Four Pillars) chart analysis</string>
+    <string name="sys_prompt_xiangqi_title">Xiangqi Move System Prompt</string>
+    <string name="sys_prompt_xiangqi_desc">Built-in system prompt for LLM Xiangqi (Chinese chess) matches</string>
+    <string name="sys_prompt_mode_ask_title">ASK Q&amp;A-Only Mode Protocol</string>
+    <string name="sys_prompt_mode_ask_desc">Execution protocol prompt for Ask mode</string>
+    <string name="sys_prompt_mode_plan_title">PLAN Planning-Only Mode Protocol</string>
+    <string name="sys_prompt_mode_plan_desc">Execution protocol prompt for Plan mode</string>
+    <string name="sys_prompt_mode_agent_title">AGENT Execution Mode Protocol</string>
+    <string name="sys_prompt_mode_agent_desc">Execution protocol prompt for Agent mode</string>
+    <string name="sys_prompt_duel_title">AI Duel/Interaction Prompt Templates</string>
+    <string name="sys_prompt_duel_desc">System instructions, role rules, and turn guidance templates for AI duels and interactions</string>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Centro de horarios</string>
+    <string name="schedule_sync_card_title">La base de sincronización está lista</string>
+    <string name="schedule_sync_card_description">Este módulo ya posee su modelo de eventos, estado del cursor de sincronización y campos de puente de tareas, por lo que Google Calendar se puede agregar más tarde sin contaminar los módulos de almanaque o tareas.</string>
+    <string name="schedule_sync_ready">Cursor de sincronización guardado</string>
+    <string name="schedule_sync_not_connected">Ninguna cuenta conectada</string>
+    <string name="schedule_event_count_label">%1$d eventos</string>
+    <string name="schedule_linked_task_chip">Contexto de tarea vinculado</string>
+    <string name="schedule_last_error_label">Último error: %1$s</string>
+    <string name="schedule_action_card_title">Comienza con un dominio de eventos local limpio</string>
+    <string name="schedule_action_create_local">Crear evento local</string>
+    <string name="schedule_action_create_focus">Crear evento desde la fecha de enfoque</string>
+    <string name="schedule_action_open_todo">Abrir tarea</string>
+    <string name="schedule_action_open_calendar">Abrir calendario</string>
+    <string name="schedule_event_section_title">Eventos</string>
+    <string name="schedule_empty_title">Aún no hay eventos de horario</string>
+    <string name="schedule_empty_description">Comienza con eventos locales primero, luego agrega autenticación de cuenta de Google, sincronización delta y manejo de conflictos de forma incremental.</string>
+    <string name="schedule_provider_local">Local</string>
+    <string name="schedule_provider_system">Calendario del sistema</string>
+    <string name="schedule_provider_google">Google Calendar</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Solo local</string>
+    <string name="schedule_status_pending_upload">Carga pendiente</string>
+    <string name="schedule_status_synced">Sincronizado</string>
+    <string name="schedule_status_pending_delete">Eliminación pendiente</string>
+    <string name="schedule_status_conflict">Conflicto</string>
+    <string name="schedule_status_failed">Sincronización fallida</string>
+    <string name="schedule_linked_task_badge">Puente de tareas</string>
+    <string name="schedule_quick_event_title">Nuevo evento local</string>
+    <string name="schedule_focus_event_title">Evento de enfoque</string>
+    <string name="schedule_linked_task_description">Tarea vinculada: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Escribir directamente en el calendario del sistema</string>
+    <string name="schedule_export_to_system_calendar">Añadir al calendario del sistema</string>
+    <string name="schedule_system_calendar_unavailable">No hay ninguna aplicación de calendario disponible en este dispositivo</string>
+    <string name="schedule_no_writable_calendar">No hay ningún calendario del sistema escribible disponible</string>
+    <string name="schedule_saved_to_system_calendar">Guardado en el calendario del sistema</string>
+    <string name="schedule_save_to_system_calendar_failed">No se pudo guardar en el calendario del sistema. Inténtalo de nuevo más tarde</string>
+    <string name="schedule_calendar_permission_denied">Se requiere permiso de calendario para escribir directamente en el calendario del sistema</string>
+    <string name="schedule_choose_calendar_title">Elige un calendario de destino</string>
+    <string name="schedule_calendar_primary_badge">Principal</string>
+    <string name="schedule_dialog_close">Cerrar</string>
+    <string name="schedule_permission_dialog_title">Permiso de calendario requerido</string>
+    <string name="schedule_permission_dialog_message">Habilita los permisos de lectura/escritura del calendario en la configuración del sistema para escribir directamente en el calendario del sistema.</string>
+    <string name="schedule_open_settings">Abrir configuración</string>
+</resources>

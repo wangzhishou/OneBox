@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">チェックイン</string>
+    <string name="habit_tab_checkin">チェックイン</string>
+    <string name="habit_tab_stats">統計</string>
+    <string name="habit_add">習慣を追加</string>
+    <string name="habit_summary_rate">チェックイン率</string>
+    <string name="habit_summary_done">完了</string>
+    <string name="habit_summary_missed">保留中</string>
+    <string name="habit_today_section">今日のチェックイン</string>
+    <string name="habit_edit_mode">編集</string>
+    <string name="habit_edit_done">完了</string>
+    <string name="habit_empty_list">習慣はまだありません。+をタップして作成してください。</string>
+    <string name="habit_delete_habit">習慣を削除</string>
+    <string-array name="habit_weekdays_short">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+        <item>日</item>
+    </string-array>
+    <string name="habit_stats_week_trend">今週</string>
+    <string name="habit_stats_distribution">分布</string>
+    <string name="habit_stats_rate_trend">チェックイン率の推移</string>
+    <string name="habit_stats_not_started">未開始</string>
+    <string name="habit_stats_total_habits">習慣の総数</string>
+    <string name="habit_stats_empty">データはまだありません</string>
+    <string name="habit_last_7_days">過去7日間</string>
+    <string name="habit_last_30_days">過去30日間</string>
+    <string name="habit_add_title">新しい習慣</string>
+    <string name="habit_edit_title">習慣を編集</string>
+    <string name="habit_edit_name_label">習慣名</string>
+    <string name="habit_edit_name_hint">習慣名を入力</string>
+    <string name="habit_edit_icon_label">アイコンを選択</string>
+    <string name="habit_edit_color_label">色を選択</string>
+    <string name="habit_edit_color_auto_hint">未選択時は自動テーマカラー</string>
+    <string name="habit_edit_repeat_label">繰り返し</string>
+    <string name="habit_repeat_daily">毎日</string>
+    <string name="habit_repeat_weekly">毎週</string>
+    <string name="habit_repeat_monthly">毎月</string>
+    <string name="habit_repeat_custom">カスタム</string>
+    <string name="habit_repeat_daily_desc">毎日繰り返す</string>
+    <string name="habit_repeat_times_week_label">週あたりの回数</string>
+    <string name="habit_repeat_times_month_label">月あたりの回数</string>
+    <string name="habit_edit_reminder_label">リマインダー</string>
+    <string name="habit_edit_reminder_none">リマインダーなし</string>
+    <string name="habit_edit_reminder_subtitle">この時間にチェックインを促す</string>
+    <string name="habit_edit_reminder_clear">クリア</string>
+    <string name="habit_edit_note_label">メモ（任意）</string>
+    <string name="habit_edit_note_hint">メモを追加...</string>
+    <string name="habit_edit_stats_label">チェックイン統計を記録</string>
+    <string name="habit_edit_stats_subtitle">オンにするとチェックイン率と連続記録を追跡</string>
+    <string name="habit_save">保存</string>
+    <string name="habit_name_required">習慣名を入力してください</string>
+    <string name="habit_saved">保存しました</string>
+    <string name="habit_freq_daily">毎日</string>
+    <string name="habit_freq_weekly_times">週に%1$d回</string>
+    <string name="habit_freq_monthly_times">月に%1$d回</string>
+    <string name="habit_preset_drink_water">水を8杯飲む</string>
+    <string name="habit_preset_wake_early">早起きする</string>
+    <string name="habit_preset_exercise">運動</string>
+    <string name="habit_preset_reading">読書</string>
+    <string name="habit_preset_meditation">瞑想</string>
+    <string name="habit_preset_no_stay_up">夜更かししない</string>
+    <string name="habit_notification_channel_name">習慣リマインダー</string>
+    <string name="habit_notification_channel_desc">毎日の習慣チェックインリマインダー</string>
+    <string name="habit_notification_text">チェックイン時間: %1$s</string>
+    <string name="habit_streak_days">%1$d日連続</string>
+    <string name="agent_tool_add_habit_title">習慣を追加</string>
+    <string name="agent_tool_add_habit_summary">習慣トラッカーに新しい習慣を作成</string>
+    <string name="agent_tool_add_habit_description">習慣トラッカーに新しい習慣を作成します。カスタム名、アイコン、繰り返し頻度（毎日 / 週N回 / 月N回 / カスタム曜日）、任意の毎日のリマインダー時間とメモをサポートします。</string>
+    <string name="agent_tool_add_habit_param_name">習慣名、例：「水を8杯飲む」</string>
+    <string name="agent_tool_add_habit_param_icon">アイコンキー：waterdrop、sunrise、running、book、meditation、moon、toothbrush、pill、fruit、writing、piggybank、dumbbell のいずれか</string>
+    <string name="agent_tool_add_habit_param_repeat_type">繰り返しタイプ：daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">週または月あたりの回数、1〜30、weekly_times / monthly_times のみ</string>
+    <string name="agent_tool_add_habit_param_weekdays">custom_weekdays の曜日、1〜7の配列（1=月曜日、7=日曜日）</string>
+    <string name="agent_tool_add_habit_param_remind_time">毎日のリマインダー時間（HH:mm、24時間制）、任意</string>
+    <string name="agent_tool_add_habit_param_note">任意のメモ</string>
+    <string name="agent_tool_add_habit_success">習慣が作成されました</string>
+    <string name="agent_tool_add_habit_failed">習慣の作成に失敗しました: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>習慣</item>
+        <item>習慣を追加</item>
+        <item>習慣を作成</item>
+        <item>チェックイン</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>毎日水を8杯飲む習慣を追加</item>
+        <item>週3回走る習慣を作成</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">習慣チェックイン</string>
+    <string name="agent_tool_check_in_habit_summary">指定した日の習慣をチェックイン</string>
+    <string name="agent_tool_check_in_habit_description">指定した日（デフォルトは今日）の習慣をチェックイン済みとしてマークします。habit_id または曖昧な habit_name で習慣を特定します。同じ日に2回チェックインしても何も起こりません。</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">習慣ID。既知の場合はこれを優先し、それ以外は habit_name を使用</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">習慣名、habit_id がない場合は曖昧一致</string>
+    <string name="agent_tool_check_in_habit_param_date">チェックイン日、yyyy-MM-dd、デフォルトは今日、未来の日付は不可</string>
+    <string name="agent_tool_check_in_habit_success">チェックイン済み</string>
+    <string name="agent_tool_check_in_habit_already">その日はすでにチェックイン済みです</string>
+    <string name="agent_tool_check_in_habit_not_found">習慣が見つかりません: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">チェックインに失敗しました: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>習慣</item>
+        <item>チェックイン</item>
+        <item>完了</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>今日のランニング習慣にチェックイン</item>
+        <item>昨日の読書を完了としてマーク</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">習慣を照会</string>
+    <string name="agent_tool_query_habits_summary">今日のステータスと週間チェックイン率で習慣を一覧表示</string>
+    <string name="agent_tool_query_habits_description">習慣リストを照会: 各習慣の今日のチェックイン状況、毎日の習慣の連続記録、今週の全体のチェックイン率。</string>
+    <string name="agent_tool_query_habits_section_today">今日</string>
+    <string name="agent_tool_query_habits_weekly_rate">週間率</string>
+    <string name="agent_tool_query_habits_empty">まだ習慣がありません</string>
+    <string name="agent_tool_query_habits_failed">習慣の照会に失敗しました: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>習慣</item>
+        <item>チェックイン状況</item>
+        <item>連続記録</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>今日はどの習慣が残っていますか？</item>
+        <item>今週の習慣チェックイン率を表示</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">日付</string>
+    <string name="agent_tool_habit_label_repeat">繰り返し</string>
+    <string name="agent_tool_habit_label_reminder">リマインダー</string>
+    <string name="agent_tool_habit_label_name">名前</string>
+    <string name="agent_tool_habit_open_link">習慣トラッカーを開く</string>
+    <string name="agent_tool_habit_edit_link">習慣を表示</string>
+    <string name="agent_tool_unknown_error">不明なエラー</string>
+</resources>

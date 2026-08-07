@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wanbaohe.habittracker">
+
+    <!-- 习惯提醒通知 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application>
+        <!-- 习惯提醒闹钟接收器,仅接收本应用 AlarmManager 广播 -->
+        <receiver
+            android:name=".reminder.HabitReminderReceiver"
+            android:exported="false" />
+    </application>
+</manifest>

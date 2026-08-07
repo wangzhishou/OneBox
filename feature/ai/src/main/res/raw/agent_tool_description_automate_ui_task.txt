@@ -1,0 +1,26 @@
+Run a complete UI automation task end-to-end on the host app's current foreground screen.
+
+The orchestrator takes care of: capturing a screenshot, sending it with the task description to the configured multimodal AI engine, parsing the returned action, and executing it on the device. This loop repeats until the AI returns "done", "error", or the step limit is reached.
+
+Use this when:
+- The user asks for a multi-step UI task like "search for X", "open Y and turn on Z", "navigate to W".
+- You want to delegate the entire loop to one tool call instead of alternating screenshot_ui / act_on_ui yourself.
+
+Do NOT use this when:
+- The task is a single discrete action — prefer act_on_ui instead.
+- The user just wants to see what's on screen — prefer screenshot_ui instead.
+
+Parameters:
+- taskDescription (string, required): Plain text description of the goal, e.g. "search for weather in Beijing".
+- maxSteps (integer, optional, default 20): Maximum automation steps before giving up.
+
+Behavior:
+- Each step: screenshot → AI decides next action → execute.
+- Step delay: respects VisualAutomationController.stepDelayMs (default 800ms) so the UI has time to update.
+- On "done" or "error", the task finishes and the full step log is returned.
+- On step limit, the task stops with a "step_limit_reached" status.
+
+Risks:
+- This tool will tap, swipe, and type on the user's actual screen. It may trigger irreversible actions.
+- Always requires explicit user confirmation before execution.
+- Strongly recommended to be the only automation tool in any one agent turn; do not mix with screenshot_ui or act_on_ui.

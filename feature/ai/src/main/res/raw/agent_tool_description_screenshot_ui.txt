@@ -1,0 +1,27 @@
+Capture the current foreground screen of the host app as a WebP image and return its dimensions.
+
+The returned image is also forwarded to the LLM as a multimodal attachment so the same model turn can both see the screenshot and decide what to do next. The tool result text contains only metadata (dimensions, size, mime type) so the tool message stays small even when the screenshot itself is large.
+
+Compression pipeline (DIFFERENT from chat attachments — preserves original dimensions):
+- Unlike chat attachments (which cap longest edge at 1920px to save tokens), UI automation screenshots preserve the ORIGINAL screen resolution. The agent decides UI actions by pixel coordinates, so resizing would introduce a second scale conversion on top of the runtime's already-existing coordinate remapping and accumulate error. Half-pixel buttons and dense icons also become harder to identify in resized images.
+- The screenshot is still converted from raw Bitmap to WebP and compressed: WebP quality 80 starting point, downgraded in steps of 10 until size is at or below 1MB.
+- Output mime type is image/webp.
+- A 200px thumbnail is also generated internally for message-list rendering.
+- The processed image is cached to disk for later re-use.
+
+Parameters:
+- maxBase64Length (integer, optional, default 0): If greater than 0, truncate the base64 string to this length before sending. Useful for very long tasks where context budget is tight. 0 means no truncation.
+
+Returns:
+- screenshot captured as a multimodal attachment (WebP, original dimensions)
+- text metadata: original screen dimensions, processed size in KB, optional truncation note
+
+Usage:
+- Call this when the user asks you to "look at the current screen" or to drive UI automation.
+- After viewing the screenshot, decide which UI action to take and call act_on_ui, or call automate_ui_task to run the whole flow end-to-end.
+- IMPORTANT: When you report UI coordinates in subsequent act_on_ui calls, use PIXEL coordinates relative to the top-left of THIS screenshot. The runtime will rescale them to the actual screen resolution automatically.
+
+Restrictions:
+- Captures only the current Activity. Cannot see other apps or system UI overlays outside the Activity's DecorView.
+- Does not require any Android runtime permission.
+- Does not modify the UI state.

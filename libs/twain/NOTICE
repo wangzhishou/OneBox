@@ -1,0 +1,10 @@
+This module contains code forked from Markwon / prism4j:
+
+    https://github.com/noties/Markwon
+
+Upstream license: Apache License, Version 2.0
+(a copy is distributed with this repository at /LICENSE)
+
+Upstream copyright (Dimitry Ivanov / noties) notices are retained
+per Apache-2.0 §4(c). Local modifications are likewise licensed
+under Apache-2.0.

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">Mural de Bênçãos</string>
+    <string name="blessing_wall_sub">Um toque diário · Boa sorte acompanha</string>
+    <string name="blessing_record_title">Registros de Bênçãos</string>
+    <string name="blessing_tab_wooden_fish">Momento de Paz</string>
+    <string name="blessing_tab_wealth_god">Boa Sorte</string>
+    <string name="blessing_tab_guanyin">Paz e Alegria</string>
+    <string name="blessing_tab_incense">Desejo Sincero</string>
+    <string name="blessing_subtitle_wooden_fish">Um toque diário · Preocupações se vão</string>
+    <string name="blessing_subtitle_wealth_god">Boa sorte permanece · Tudo vai bem</string>
+    <string name="blessing_subtitle_guanyin">Bondade interior · Paz e alegria</string>
+    <string name="blessing_subtitle_incense">Desejos sinceros · Fortuna abundante</string>
+    <string name="blessing_btn_wooden_fish">Toque, sorte +1</string>
+    <string name="blessing_btn_wealth_god">Toque, fortuna +1</string>
+    <string name="blessing_btn_guanyin">Toque, paz +1</string>
+    <string name="blessing_btn_incense">Toque, bênção +1</string>
+    <string name="blessing_stat_wooden_fish">Contagem de hoje</string>
+    <string name="blessing_stat_wealth_god">Contagem de hoje</string>
+    <string name="blessing_stat_guanyin">Contagem de hoje</string>
+    <string name="blessing_stat_incense">Contagem de hoje</string>
+    <string name="blessing_count_unit">vezes</string>
+    <string name="blessing_total_count">%1$d vezes</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">Estatísticas Diárias de Bênçãos</string>
+    <string name="blessing_empty_state">Ainda não há registros de bênçãos</string>
+    <string name="blessing_wish_edit">Editar nota</string>
+    <string name="blessing_wish_input_label">Nota</string>
+    <string name="blessing_wish_save">Salvar</string>
+    <string name="blessing_wish_placeholder">Sem nota ainda</string>
+    <string name="blessing_tab_text_edit">Editar título</string>
+    <string name="blessing_tab_title_label">Título</string>
+    <string name="blessing_tab_subtitle_label">Subtítulo</string>
+    <string name="blessing_tab_text_reset_hint">Deixe em branco para restaurar o padrão</string>
+    <string name="blessing_history_readonly_hint">Histórico, somente visualização</string>
+    <string name="blessing_record_note_prefix">Nota: %1$s</string>
+    <string name="blessing_sound_on">Som ligado</string>
+    <string name="blessing_sound_off">Som desligado</string>
+    <string name="blessing_share">Compartilhar</string>
+</resources>

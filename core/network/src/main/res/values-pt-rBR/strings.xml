@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Falha na conexão de rede, verifique as configurações de rede</string>
+    <string name="error_request_timeout">Tempo de solicitação esgotado, tente novamente mais tarde</string>
+    <string name="error_cannot_connect_server">Não foi possível conectar ao servidor, verifique a rede</string>
+    <string name="error_ssl_failed">Falha na conexão segura, verifique as configurações de rede</string>
+    <string name="error_network_exception">Exceção de rede, verifique a conexão de rede</string>
+    <string name="error_request_cancelled">Solicitação cancelada</string>
+    <string name="error_data_parse_failed">Falha na análise de dados, tente novamente mais tarde</string>
+    <string name="error_bad_request">Parâmetros de solicitação inválidos</string>
+    <string name="error_unauthorized">Não autorizado, faça login novamente</string>
+    <string name="error_forbidden">Acesso proibido</string>
+    <string name="error_not_found">Recurso solicitado não encontrado</string>
+    <string name="error_server_internal">Erro interno do servidor</string>
+    <string name="error_server_maintenance">Servidor em manutenção, tente novamente mais tarde</string>
+    <string name="error_server_code">Erro do servidor (%d)</string>
+    <string name="error_client_error">Erro na solicitação, verifique os parâmetros</string>
+    <string name="error_server_error">Erro do servidor, tente novamente mais tarde</string>
+    <string name="error_request_failed">Falha na solicitação, tente novamente mais tarde</string>
+    <string name="error_request_failed_with_message">Falha na solicitação: %s</string>
+    <string name="error_unknown">Erro desconhecido</string>
+    <string name="no_error_body">Sem corpo de erro</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

@@ -1,0 +1,886 @@
+<resources>
+    <string name="agent_tool_unknown_error">未知错误</string>
+    <string name="agent_tool_callback_required">此工具需要回调支持，请使用 execute(arguments, callback)</string>
+    <string name="agent_tool_unknown_type">UNKNOWN</string>
+
+    <string name="agent_tool_get_current_time_description">获取设备当前日期、时间和时区。返回 ISO 8601 格式时间串、时区名称和 UTC 偏移量。无需参数。
+    
+    使用场景：
+    - 需要当前时间戳或日期
+    - 日期格式化或时区转换
+    - 计算时间差</string>
+    <string name="agent_tool_get_current_time_title">当前时间</string>
+    <string name="agent_tool_get_current_time_summary">获取设备当前的日期、时间和时区</string>
+    <string name="agent_tool_get_current_time_line_current">当前时间: %1$s</string>
+    <string name="agent_tool_get_current_time_line_readable">可读格式: %1$s</string>
+    <string name="agent_tool_get_current_time_line_timezone">时区: %1$s (%2$s)</string>
+    <string name="agent_tool_get_current_time_line_utc_offset">UTC偏移: %1$s小时</string>
+
+    <string name="agent_tool_get_device_info_description">获取当前设备的硬件和软件信息：型号、系统版本、屏幕分辨率、内存、ABI 架构等。无需参数。
+    
+    使用场景：
+    - 根据设备能力选择合适的图片分辨率
+    - 判断功能兼容性
+    - 故障排查时收集设备信息</string>
+    <string name="agent_tool_get_device_info_title">设备信息</string>
+    <string name="agent_tool_get_device_info_summary">获取设备型号、系统版本、屏幕和内存信息</string>
+    <string name="agent_tool_get_device_info_line_model">设备型号: %1$s %2$s</string>
+    <string name="agent_tool_get_device_info_line_brand">品牌: %1$s</string>
+    <string name="agent_tool_get_device_info_line_os">系统版本: Android %1$s (API %2$s)</string>
+    <string name="agent_tool_get_device_info_line_resolution">屏幕分辨率: %1$dx%2$d</string>
+    <string name="agent_tool_get_device_info_line_density">屏幕密度: %1$ddpi (%2$sx)</string>
+    <string name="agent_tool_get_device_info_line_abis">处理器架构: %1$s</string>
+    <string name="agent_tool_get_device_info_line_jvm_max">JVM最大内存: %1$dMB</string>
+    <string name="agent_tool_get_device_info_line_jvm_allocated">JVM已分配: %1$dMB, 空闲: %2$dMB</string>
+    <string name="agent_tool_get_device_info_line_fingerprint">设备指纹: %1$s</string>
+
+    <!-- pick_files 工具 -->
+    <string name="agent_tool_pick_files_title">选取文件</string>
+    <string name="agent_tool_pick_files_summary">让用户通过系统文件选择器选取一个或多个文件</string>
+    <string name="agent_tool_pick_files_param_message">提示语，向用户说明为什么需要选取文件（可选）。</string>
+    <string name="agent_tool_pick_files_param_mime_type">文件类型过滤，如 image/*、application/pdf、*/*，默认 */*。</string>
+    <string name="agent_tool_pick_files_param_multiple">是否允许多选，默认 false。</string>
+    <string name="agent_tool_pick_files_failed">文件选取工具执行失败: %1$s</string>
+
+    <!-- pick_folder 工具 -->
+    <string name="agent_tool_pick_folder_title">选取目录</string>
+    <string name="agent_tool_pick_folder_summary">让用户通过系统目录选择器选取一个工作目录</string>
+    <string name="agent_tool_pick_folder_param_message">提示语，向用户说明为什么需要选取目录（可选）。</string>
+    <string name="agent_tool_pick_folder_failed">目录选取工具执行失败: %1$s</string>
+
+    <string name="agent_tool_ask_user_title">向用户提问</string>
+    <string name="agent_tool_ask_user_summary">向用户展示结构化问题并等待回答后继续</string>
+    <string name="agent_tool_ask_user_param_presentation">UI 展示样式，`dialog` 适合单选 / 少量问题，`bottom_sheet` 适合多选 / 多文本 / 长表单。</string>
+    <string name="agent_tool_ask_user_param_title">弹层顶部标题，可选。</string>
+    <string name="agent_tool_ask_user_param_message">问题列表上方的补充说明，可选。</string>
+    <string name="agent_tool_ask_user_param_questions">问题数组；每项详见 items schema。常见错误：选择题 options 漏 `value`、选择题没传 options、退化为纯文本题。</string>
+    <string name="agent_tool_ask_user_param_question_type">单道题的输入类型，控制输入框右侧的选择图标。可选 text（默认，纯文本输入）、time（时间 HH:mm）、time_range（时间段 HH:mm ~ HH:mm）、date（日期 yyyy-MM-dd）、date_range（日期段 yyyy-MM-dd ~ yyyy-MM-dd）、color（颜色 #AARRGGBB）、city（城市 省份 城市 区县）、image（系统图片选择器，回写 file:// URI）、file（系统文件选择器，回写 file:// URI）、folder（系统目录选择器，回写 file:// URI）。系统类 picker 结果会自动转 file:// 避免 SAF 权限过期。</string>
+    <string name="agent_tool_ask_user_param_confirm_text">确认按钮文案，可选。</string>
+    <string name="agent_tool_ask_user_param_cancel_text">取消按钮文案，可选。</string>
+    <string name="agent_tool_ask_user_missing_questions">缺少 `questions` 数组，无法向用户提问</string>
+    <string name="agent_tool_ask_user_duplicate_question_names">存在重复的问题 `name`: %1$s</string>
+    <string name="agent_tool_ask_user_question_name_required">问题缺少 `name` 字段（用作 answers 的 key），请补全</string>
+    <string name="agent_tool_ask_user_question_text_required">问题 `%1$s` 缺少 `question` 字段（用户看到的完整问题）</string>
+    <string name="agent_tool_ask_user_question_option_missing_value">问题 `%1$s` 的 options 缺少 `value` 字段；label: %2$s。`value` 是回写到 answers 的机器可读标识，每个选项都必须同时包含 label 和 value</string>
+    <string name="agent_tool_ask_user_question_option_missing_label">问题 `%1$s` 的 options 缺少 `label` 字段；value: %2$s</string>
+    <string name="agent_tool_ask_user_question_option_empty">问题 `%1$s` 的 options 含空选项（label 和 value 都为空）</string>
+    <string name="agent_tool_ask_user_failed">提问工具执行失败: %1$s</string>
+
+    <!-- discover_tools 工具 -->
+    <string name="agent_tool_discover_tools_title">工具发现</string>
+    <string name="agent_tool_discover_tools_summary">检索可用 Agent 工具，返回匹配候选项</string>
+    <string name="agent_tool_discover_tools_param_keywords">搜索关键词数组，每个词独立模糊匹配工具名称、标题、摘要。例如 [\"扫描\", \"二维码\"]。</string>
+    <string name="agent_tool_discover_tools_param_limit">返回候选数量上限，默认 8，最大 20。</string>
+    <string name="agent_tool_discover_tools_failed">工具发现失败: %1$s</string>
+
+    <!-- discover_apps 工具 -->
+    <string name="agent_tool_discover_apps_title">页面发现</string>
+    <string name="agent_tool_discover_apps_summary">按关键词找可跳转页面</string>
+    <string name="agent_tool_discover_apps_param_keywords">页面关键词数组，如 [\"笔记\", \"设置\"]。</string>
+    <string name="agent_tool_discover_apps_param_limit">返回候选数量上限，默认 8，最大 20。</string>
+    <string name="agent_tool_discover_apps_failed">页面发现失败: %1$s</string>
+
+    <string name="agent_tool_navigate_deeplink_param">必填。统一使用 onebox:// deeplink 作为目标，既可点击跳转，也可直接用于工具调用。</string>
+    <string name="agent_tool_navigate_action_param">可选。跳转动作，open=查看/进入页面，edit=进入编辑流程；默认 open。</string>
+    <string name="agent_tool_navigate_wait_for_result_param">若目标页面支持回调，是否等待结果。</string>
+    <string name="agent_tool_navigate_deeplink_required">缺少 deeplink。请先调用 discover_apps 获取准确的 deeplink 或 editDeeplink。</string>
+    <string name="agent_tool_navigate_invalid_action">不支持的 action：%1$s。请使用 open 或 edit。</string>
+    <string name="agent_tool_navigate_target_not_found">未找到可跳转目标。请先调用 discover_apps 获取准确的 deeplink。</string>
+    <string name="agent_tool_navigate_unsupported_target">该条目暂不支持此类跳转</string>
+    <string name="agent_tool_navigate_failed">执行页面跳转失败: %1$s</string>
+    <string name="agent_tool_navigate_open_link_label">再次打开「%1$s」</string>
+    <string name="agent_tool_navigate_edit_link_label">再次编辑「%1$s」</string>
+    <string name="agent_tool_navigate_default_open_link_label">页面</string>
+    <string name="agent_tool_navigate_default_edit_link_label">编辑页</string>
+    <string name="agent_tool_navigate_app_screen_description">统一页面跳转工具。用户明确要求打开、进入、查看或编辑页面/条目时，应直接调用本工具。仅支持传入 deeplink，并通过 action=open|edit 决定是查看还是进入编辑流程。编辑场景的确认由客户端直接处理，不需要模型额外追问或拆成多轮工具调用。工具结果会返回可直接复用的 deeplink 链接，方便后续再次打开。</string>
+    <string name="agent_tool_navigate_app_screen_title">页面跳转</string>
+    <string name="agent_tool_navigate_app_screen_summary">按 deeplink 打开或编辑项目内页面，并返回可再次打开的链接</string>
+
+    <string name="agent_tool_generate_agent_tool_draft_title">工具草案生成器</string>
+    <string name="agent_tool_generate_agent_tool_draft_summary">根据需求生成 AgentTool 的代码骨架、资源草案和注册片段</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_tool_purpose">工具目标、职责边界和期望能力。建议写清楚要做什么、不要做什么。</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_tool_name_hint">可选。期望的工具名提示，尽量使用 snake_case。</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_desired_category">可选。期望归属的工具分类。</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_is_interactive">可选。是否需要用户交互，如表单、确认或选择器。</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_input_schema_notes">可选。入参设计说明，例如字段、类型、必填项、枚举值。</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_output_contract_notes">可选。返回格式约定，例如 JSON 结构、错误结构或摘要内容。</string>
+    <string name="agent_tool_generate_agent_tool_draft_param_related_tool_names">可选。相关参考工具名列表，用于复用现有能力或保持风格一致。</string>
+    <string name="agent_tool_generate_agent_tool_draft_missing_purpose">缺少 `tool_purpose`，无法生成工具草案</string>
+    <string name="agent_tool_generate_agent_tool_draft_failed">工具草案生成失败: %1$s</string>
+
+    <string name="agent_tool_create_note_description">创建或更新笔记。创建时需要提供 title、content、category；若分类不存在会自动创建。额外传入 existing_note_id 则进入更新模式，此时 category 可省略，未传则保留原分类。成功后自动记录活动日志，并在保存成功后询问用户是否打开该笔记。</string>
+    <string name="agent_tool_create_note_title">保存笔记</string>
+    <string name="agent_tool_create_note_summary">创建新笔记，或在更新时保留原分类并覆盖内容</string>
+    <string name="agent_tool_create_note_param_title">笔记标题</string>
+    <string name="agent_tool_create_note_param_content">笔记内容（Markdown 格式）</string>
+    <string name="agent_tool_create_note_param_category">创建时必填；更新时可选，不传则保留原分类。若分类不存在会自动创建，如：工作、学习、生活</string>
+    <string name="agent_tool_create_note_param_existing_note_id">已有笔记 ID（可选）。传入则为更新模式，覆盖该笔记的全部内容；不传则创建新笔记。</string>
+    <string name="agent_tool_create_note_note_not_found">要更新的笔记不存在，ID: %1$d</string>
+    <string name="agent_tool_create_note_category_required_for_create">创建笔记时必须提供 category。当前可用分类：%1$s。若没有合适分类，可直接传入新的分类名，工具会自动创建。</string>
+    <string name="agent_tool_create_note_category_required_for_create_no_existing">创建笔记时必须提供 category。当前还没有可用分类，你可以直接传入一个新的分类名，工具会自动创建。</string>
+    <string name="agent_tool_create_note_category_missing_for_update">更新笔记时未提供 category，且原笔记没有可保留的分类，请显式传入 category。</string>
+    <string name="agent_tool_create_note_success">笔记保存成功！\n标题: %1$s\nID: %2$d</string>
+    <string name="agent_tool_create_note_open_confirm_title">笔记已保存</string>
+    <string name="agent_tool_create_note_open_confirm_message">已保存笔记「%1$s」。是否现在打开这篇笔记？</string>
+    <string name="agent_tool_create_note_opened">笔记已保存并打开</string>
+    <string name="agent_tool_create_note_not_opened">笔记已保存，用户选择暂不打开</string>
+    <string name="agent_tool_create_note_failed">保存笔记失败: %1$s</string>
+
+    <string name="agent_tool_view_note_description">查看笔记内容。提供笔记 ID 即可获取笔记的标题、描述和内容。</string>
+    <string name="agent_tool_view_note_title">查看笔记</string>
+    <string name="agent_tool_view_note_summary">读取笔记标题、描述和正文内容</string>
+    <string name="agent_tool_view_note_param_note_id">笔记 ID</string>
+    <string name="agent_tool_view_note_not_found">笔记不存在，ID: %1$d</string>
+    <string name="agent_tool_view_note_line_title">标题: %1$s</string>
+    <string name="agent_tool_view_note_line_description">描述: %1$s</string>
+    <string name="agent_tool_view_note_failed">获取笔记失败: %1$s</string>
+
+    <string name="agent_tool_theme_setting_title">主题设置</string>
+    <string name="agent_tool_theme_setting_summary">读取 / 切换 / 微调当前主题（配色、日夜模式、玻璃质感、渐变背景）</string>
+    <string name="agent_tool_theme_setting_param_action">操作类型。list=读取当前主题；set=修改当前主题的若干字段；apply=切换到预设主题。**仅 action 必填**</string>
+    <string name="agent_tool_theme_setting_param_preset_id">预设主题 ID（来自 list 响应的 builtinPresets[i].id），与 preset_name 二选一。apply 专用</string>
+    <string name="agent_tool_theme_setting_param_preset_name">预设主题名（模糊匹配，支持中文名如"樱花粉"，或英文 id/拼音，大小写不敏感）。apply 专用</string>
+    <string name="agent_tool_theme_setting_param_night_mode">日夜模式。值：Light / Dark / System，区分大小写。可选</string>
+    <string name="agent_tool_theme_setting_param_primary">主色 hex，格式 #RRGGBB 或 #AARRGGBB。"#" 前缀可省略，也接受 "0x" 前缀。示例：#3B82F6 / FF6A8DFF。可选</string>
+    <string name="agent_tool_theme_setting_param_secondary">次色 hex（同 primary 格式）。可选</string>
+    <string name="agent_tool_theme_setting_param_tertiary">第三色 hex（同 primary 格式）。可选</string>
+    <string name="agent_tool_theme_setting_param_surface">背景色 hex（同 primary 格式）。可选</string>
+    <string name="agent_tool_theme_setting_param_glass">玻璃透明效果。值：字符串 "true" 或 "false"（也接受 1/0、yes/no、on/off）。可选</string>
+    <string name="agent_tool_theme_setting_param_liquid_glass">液态玻璃效果。值同 glass（"true" / "false"）。可选</string>
+    <string name="agent_tool_theme_setting_param_mesh_gradient">网格渐变背景。值同 glass（"true" / "false"）。可选</string>
+    <string name="agent_tool_theme_setting_param_gradient_style">渐变背景风格名。**必须**从 list 响应的 gradientStyles 中选取（区分大小写）。可选</string>
+    <string name="agent_tool_theme_setting_param_glass_alpha">玻璃透明度基准值。**数字类型**（非字符串），范围 [0.1, 1.0]，默认 1.0。越小越透。可选</string>
+    <string name="agent_tool_theme_setting_failed">主题设置失败：%1$s</string>
+    <string name="agent_tool_theme_setting_unknown_action">未知操作：%1$s。应为 list / set / apply 之一</string>
+    <string name="agent_tool_theme_setting_missing_action">缺少 action 参数</string>
+    <string name="agent_tool_theme_setting_list_message">已读取当前主题</string>
+    <string name="agent_tool_theme_setting_set_message">已更新当前主题</string>
+    <string name="agent_tool_theme_setting_applied_preset">已切换到主题：%1$s</string>
+    <string name="agent_tool_theme_setting_no_fields">set 操作需要至少提供一个修改字段</string>
+    <string name="agent_tool_theme_setting_no_preset_arg">apply 操作需要 preset_id 或 preset_name 之一</string>
+    <string name="agent_tool_theme_setting_deeplink_label">主题设置</string>
+    <string name="agent_tool_theme_setting_deeplink_guidance">点击查看并微调主题</string>
+    <string name="agent_tool_theme_setting_invalid_color">%1$s 不是有效颜色：%2$s。请使用 #RRGGBB 或 #AARRGGBB（"#" 可省略）</string>
+    <string name="agent_tool_theme_setting_invalid_night_mode">无效的 night_mode：%1$s。应为 Light / Dark / System 之一</string>
+    <string name="agent_tool_theme_setting_unknown_style">未知渐变风格：%1$s</string>
+    <string name="agent_tool_theme_setting_unknown_preset">未找到匹配的主题预设：%1$s。可用预设：%2$s</string>
+    <string name="agent_tool_theme_setting_alpha_out_of_range">glass_alpha 需要在 0.1 到 1.0 之间</string>
+
+    <string name="agent_tool_checksum_title">校验和工具</string>
+    <string name="agent_tool_checksum_summary">计算或比对文本与文件的校验和</string>
+    <string name="agent_tool_checksum_param_action">操作类型。calculate 返回校验和，compare 返回是否匹配。</string>
+    <string name="agent_tool_checksum_param_algorithm">校验和算法，例如 MD5、SHA-256。</string>
+    <string name="agent_tool_checksum_param_source_type">输入来源类型。text 表示纯文本，uri 表示文件 URI。</string>
+    <string name="agent_tool_checksum_param_text">当 source_type=text 时传入的原始文本。</string>
+    <string name="agent_tool_checksum_param_uri">当 source_type=uri 时传入的文件 URI。</string>
+    <string name="agent_tool_checksum_param_expected_checksum">compare 模式下要比对的目标校验和值。</string>
+    <string name="agent_tool_checksum_invalid_algorithm">不支持的算法: %1$s。可用算法: %2$s</string>
+    <string name="agent_tool_checksum_invalid_action">未知操作: %1$s</string>
+    <string name="agent_tool_checksum_missing_expected_checksum">compare 模式需要 expected_checksum 参数</string>
+    <string name="agent_tool_checksum_missing_text">source_type=text 时需要 text 参数</string>
+    <string name="agent_tool_checksum_missing_uri">source_type=uri 时需要 uri 参数</string>
+    <string name="agent_tool_checksum_invalid_source_type">不支持的 source_type: %1$s</string>
+    <string name="agent_tool_checksum_failed">校验和工具执行失败: %1$s</string>
+
+    <string name="agent_tool_base64_title">Base64 工具</string>
+    <string name="agent_tool_base64_summary">对文件做 Base64 编码，或将图片 Base64 解码为缓存文件</string>
+    <string name="agent_tool_base64_param_action">操作类型。encode 读取 URI 并编码，decode 解析 Base64 图片内容。</string>
+    <string name="agent_tool_base64_param_uri">encode 模式下要读取的文件 URI。</string>
+    <string name="agent_tool_base64_param_base64">decode 模式下要解析的 Base64 字符串。</string>
+    <string name="agent_tool_base64_param_return_full">encode 时是否完整返回 Base64 字符串。默认只返回预览，避免结果过长。</string>
+    <string name="agent_tool_base64_param_preview_length">encode 时预览长度，默认 256。</string>
+    <string name="agent_tool_base64_invalid_action">未知操作: %1$s</string>
+    <string name="agent_tool_base64_missing_uri">encode 模式需要 uri 参数</string>
+    <string name="agent_tool_base64_missing_base64">decode 模式需要 base64 参数</string>
+    <string name="agent_tool_base64_decode_failed">Base64 解码失败，当前仅支持可解析为图片的 Base64 内容</string>
+    <string name="agent_tool_base64_failed">Base64 工具执行失败: %1$s</string>
+
+    <string name="agent_tool_webp_title">WebP 工具</string>
+    <string name="agent_tool_webp_summary">将 WebP 文件提取为多帧图片，或将多张图片合成为 WebP 动画</string>
+    <string name="agent_tool_webp_param_action">操作类型。extract_frames 从 WebP 提取帧，create_webp 将多张图片合成为 WebP。</string>
+    <string name="agent_tool_webp_param_webp_uri">extract_frames 模式下要读取的 WebP 文件 URI。</string>
+    <string name="agent_tool_webp_param_image_uris">create_webp 模式下要合成的图片 URI 列表。</string>
+    <string name="agent_tool_webp_param_image_format">extract_frames 时输出图片格式，可选 png/jpg/webp，默认 png。</string>
+    <string name="agent_tool_webp_param_quality">输出图片质量，整数 1-100，默认 100。</string>
+    <string name="agent_tool_webp_param_repeat_count">create_webp 时动画循环次数，0 表示无限循环，默认 1。</string>
+    <string name="agent_tool_webp_param_delay">create_webp 时每帧间隔，单位毫秒，默认 1000。</string>
+    <string name="agent_tool_webp_param_width">create_webp 时输出宽度，不填则使用第一张图片的原始宽度。</string>
+    <string name="agent_tool_webp_param_height">create_webp 时输出高度，不填则使用第一张图片的原始高度。</string>
+    <string name="agent_tool_webp_invalid_action">未知操作: %1$s</string>
+    <string name="agent_tool_webp_missing_webp_uri">extract_frames 模式需要 webp_uri 参数</string>
+    <string name="agent_tool_webp_missing_image_uris">create_webp 模式需要 image_uris 参数，且至少包含一张图片</string>
+    <string name="agent_tool_webp_extract_failed">WebP 帧提取失败: %1$s</string>
+    <string name="agent_tool_webp_create_failed">WebP 合成失败: %1$s</string>
+    <string name="agent_tool_webp_failed">WebP 工具执行失败: %1$s</string>
+
+    <string name="agent_tool_read_barcode_title">识别二维码</string>
+    <string name="agent_tool_read_barcode_summary">从图片 URI 中识别二维码或条码并结构化返回内容</string>
+    <string name="agent_tool_read_barcode_param_image_uri">待识别图片的 URI。</string>
+    <string name="agent_tool_read_barcode_missing_image_uri">需要 image_uri 参数</string>
+    <string name="agent_tool_read_barcode_failed">识别二维码失败: %1$s</string>
+
+    <string name="agent_tool_limit_resize_title">图片尺寸限制</string>
+    <string name="agent_tool_limit_resize_summary">按最大宽高限制裁剪或缩放图片</string>
+    <string name="agent_tool_limit_resize_description">按指定的最大宽度和高度限制处理图片。支持三种模式：Skip（跳过未超限的图片）、Recode（仅重编码压缩）、Zoom（强制缩放到限制范围内）。处理后的图片保存到缓存目录并返回 URI。</string>
+    <string name="agent_tool_limit_resize_param_image_uri">待处理图片的 URI。</string>
+    <string name="agent_tool_limit_resize_param_max_width">最大宽度像素，0 表示不限制宽度。</string>
+    <string name="agent_tool_limit_resize_param_max_height">最大高度像素，0 表示不限制高度。</string>
+    <string name="agent_tool_limit_resize_param_resize_type">调整类型：skip（跳过未超限图）、recode（仅重编码）、zoom（强制缩放）。默认 recode。</string>
+    <string name="agent_tool_limit_resize_param_image_format">输出格式，如 jpeg、png、webp。默认 jpeg。</string>
+    <string name="agent_tool_limit_resize_param_quality">输出质量 1-100，默认 90。</string>
+    <string name="agent_tool_limit_resize_missing_image_uri">需要 image_uri 参数</string>
+    <string name="agent_tool_limit_resize_load_failed">无法加载图片，请检查 URI 是否有效</string>
+    <string name="agent_tool_limit_resize_skipped">图片尺寸未超过限制，已跳过处理</string>
+    <string name="agent_tool_limit_resize_save_failed">保存处理结果失败: %1$s</string>
+    <string name="agent_tool_limit_resize_failed">图片尺寸限制处理失败: %1$s</string>
+
+    <string name="agent_tool_compress_image_title">图片压缩</string>
+    <string name="agent_tool_compress_image_summary">将图片压缩到目标文件大小以下</string>
+    <string name="agent_tool_compress_image_description">将图片压缩到指定的目标字节数以下。通过逐步降低质量和缩小尺寸来实现。如果原图已小于目标大小，则直接返回无需处理。压缩后的图片保存到缓存目录并返回 URI。</string>
+    <string name="agent_tool_compress_image_param_image_uri">待压缩图片的 URI。</string>
+    <string name="agent_tool_compress_image_param_max_bytes">目标最大字节数，例如 1048576 表示 1MB。</string>
+    <string name="agent_tool_compress_image_param_image_format">输出格式，如 jpeg、png、webp。默认 jpeg。</string>
+    <string name="agent_tool_compress_image_missing_image_uri">需要 image_uri 参数</string>
+    <string name="agent_tool_compress_image_missing_max_bytes">需要 max_bytes 参数</string>
+    <string name="agent_tool_compress_image_load_failed">无法加载图片，请检查 URI 是否有效</string>
+    <string name="agent_tool_compress_image_already_small">原图已小于目标大小，无需压缩</string>
+    <string name="agent_tool_compress_image_save_failed">保存压缩结果失败: %1$s</string>
+    <string name="agent_tool_compress_image_failed">图片压缩失败: %1$s</string>
+
+    <string name="agent_tool_browse_files_title">浏览文件</string>
+    <string name="agent_tool_browse_files_summary">只读浏览目录内容，或定位文件所在目录</string>
+    <string name="agent_tool_browse_files_param_action">操作类型。list 列目录，locate 反查文件所在目录。</string>
+    <string name="agent_tool_browse_files_param_directory_uri">list 模式下的工作区内目录路径或 URI。</string>
+    <string name="agent_tool_browse_files_param_target_uri">locate 模式下工作区内要定位的文件路径或 URI。</string>
+    <string name="agent_tool_browse_files_param_limit">list 模式返回条目数量上限，默认 20，最大 100。</string>
+    <string name="agent_tool_browse_files_param_include_directories">list 模式是否包含目录，默认 true。</string>
+    <string name="agent_tool_browse_files_param_include_files">list 模式是否包含文件，默认 true。</string>
+    <string name="agent_tool_browse_files_invalid_action">未知操作: %1$s</string>
+    <string name="agent_tool_browse_files_missing_target_uri">locate 模式需要 target_uri 参数</string>
+    <string name="agent_tool_browse_files_failed">文件浏览工具执行失败: %1$s</string>
+
+    <string name="agent_tool_manage_files_title">管理文件</string>
+    <string name="agent_tool_manage_files_summary">执行高风险文件写操作，如删除、重命名、复制、移动和创建</string>
+    <string name="agent_tool_manage_files_param_action">操作类型。delete/rename/copy/move/create_file/create_folder 都会真实修改文件系统。</string>
+    <string name="agent_tool_manage_files_param_source_uri">delete、rename、copy、move、write_file 模式下工作区内的源文件或源目录路径 / URI。</string>
+    <string name="agent_tool_manage_files_param_destination_dir_uri">copy、move、create_file、create_folder 模式下工作区内的目标目录路径 / URI。</string>
+    <string name="agent_tool_manage_files_param_new_name">rename、copy、move 模式下可选的新名称。</string>
+    <string name="agent_tool_manage_files_param_file_name">create_file 模式下的新文件名。</string>
+    <string name="agent_tool_manage_files_param_folder_name">create_folder 模式下的新文件夹名。</string>
+    <string name="agent_tool_manage_files_param_mime_type">create_file 模式下文件的 MIME 类型，默认 application/octet-stream。</string>
+    <string name="agent_tool_manage_files_param_content">write_file 操作必填。要写入的文本内容。</string>
+    <string name="agent_tool_manage_files_param_write_mode">write_file 操作可选。写入模式：overwrite（覆盖，默认）或 append（追加）。</string>
+    <string name="agent_tool_manage_files_invalid_action">未知操作: %1$s</string>
+    <string name="agent_tool_manage_files_missing_source_uri">该操作需要 source_uri 参数</string>
+    <string name="agent_tool_manage_files_missing_destination_dir_uri">该操作需要 destination_dir_uri 参数</string>
+    <string name="agent_tool_manage_files_missing_new_name">rename 模式需要 new_name 参数</string>
+    <string name="agent_tool_manage_files_missing_file_name">create_file 模式需要 file_name 参数</string>
+    <string name="agent_tool_manage_files_missing_folder_name">create_folder 模式需要 folder_name 参数</string>
+    <string name="agent_tool_manage_files_missing_content">write_file 模式需要 content 参数</string>
+    <string name="agent_tool_manage_files_failed">文件管理工具执行失败: %1$s</string>
+
+    <!-- AI 聊天输入区域 -->
+    <string name="ai_input_file">文件</string>
+    <string name="ai_chat_working_mode_ask_title">提问</string>
+    <string name="ai_chat_working_mode_ask_description">直接回答，必要时再做能力发现</string>
+    <string name="ai_chat_working_mode_plan_title">规划</string>
+    <string name="ai_chat_working_mode_plan_description">先调研再规划，只查不执行</string>
+    <string name="ai_chat_working_mode_agent_title">执行</string>
+    <string name="ai_chat_working_mode_agent_description">调用工具推进任务，并基于真实结果继续</string>
+
+    <!-- 文件处理工具 -->
+    <string name="agent_tool_process_file_title">读取文件</string>
+    <string name="agent_tool_process_file_summary">读取本地文本文件、搜索关键词并返回带行号的结构化结果</string>
+    <string name="agent_tool_process_file_param_file_path">工作区内的本地文件路径或 URI。</string>
+    <string name="agent_tool_process_file_param_action">操作类型：read 读取行范围，search 搜索关键词，context 返回命中上下文。</string>
+    <string name="agent_tool_process_file_param_start_line">read 模式下起始行号，从 1 开始。</string>
+    <string name="agent_tool_process_file_param_end_line">read 模式下结束行号（包含）。</string>
+    <string name="agent_tool_process_file_param_max_length">read 模式下返回文本最大字符数，默认 4096。</string>
+    <string name="agent_tool_process_file_param_keyword">search / context 模式下要搜索的关键词。</string>
+    <string name="agent_tool_process_file_param_context_lines">context 模式下每个命中前后保留的行数，默认 50。</string>
+    <string name="agent_tool_process_file_param_max_matches">search / context 模式下最多返回多少个命中，默认 20。</string>
+    <string name="agent_tool_process_file_param_case_sensitive">search / context 模式是否区分大小写，默认 false。</string>
+    <string name="agent_tool_process_file_missing_file_path">缺少 file_path 参数</string>
+    <string name="agent_tool_process_file_missing_keyword">search / context 模式需要 keyword 参数</string>
+    <string name="agent_tool_process_file_invalid_action">未知操作: %1$s</string>
+    <string name="agent_tool_process_file_failed">文件读取工具执行失败: %1$s</string>
+
+    <string name="agent_tool_edit_file_title">编辑文件</string>
+    <string name="agent_tool_edit_file_summary">对文本文件做局部替换、按行插入或追加内容</string>
+    <string name="agent_tool_edit_file_param_file_uri">工作区内要编辑的文件路径或 URI。</string>
+    <string name="agent_tool_edit_file_param_action">编辑动作：replace_text、replace_lines、insert_before_line、insert_after_line、append、prepend。</string>
+    <string name="agent_tool_edit_file_param_old_text">replace_text 模式下要匹配并替换的旧文本。</string>
+    <string name="agent_tool_edit_file_param_new_text">要写入的新文本内容。</string>
+    <string name="agent_tool_edit_file_param_start_line">replace_lines 模式下的起始行号（包含）。</string>
+    <string name="agent_tool_edit_file_param_end_line">replace_lines 模式下的结束行号（包含）。</string>
+    <string name="agent_tool_edit_file_param_line">insert_before_line / insert_after_line 模式下的目标行号。</string>
+    <string name="agent_tool_edit_file_param_replace_all">replace_text 模式是否替换全部匹配，默认 false。</string>
+    <string name="agent_tool_edit_file_missing_file_uri">缺少 file_uri 参数</string>
+    <string name="agent_tool_edit_file_missing_action">缺少 action 参数</string>
+    <string name="agent_tool_edit_file_missing_old_text">replace_text 模式需要 old_text 参数</string>
+    <string name="agent_tool_edit_file_missing_new_text">当前编辑动作需要 new_text 参数</string>
+    <string name="agent_tool_edit_file_missing_start_line">replace_lines 模式需要 start_line 参数</string>
+    <string name="agent_tool_edit_file_missing_end_line">replace_lines 模式需要 end_line 参数</string>
+    <string name="agent_tool_edit_file_missing_line">当前插入动作需要 line 参数</string>
+    <string name="agent_tool_edit_file_invalid_action">未知编辑动作: %1$s</string>
+    <string name="agent_tool_edit_file_failed">文件编辑失败: %1$s</string>
+
+    <string name="agent_tool_glob_files_title">查找文件</string>
+    <string name="agent_tool_glob_files_summary">按 glob 模式批量查找文件或目录，适合代码代理先发现目标文件</string>
+    <string name="agent_tool_glob_files_param_directory_uri">工作区内的起始目录路径或 URI，默认 app 工作区根目录。</string>
+    <string name="agent_tool_glob_files_param_glob_pattern">glob 模式，例如 **/*.kt、**/build.gradle.kts、feature/**/Screen*.kt。</string>
+    <string name="agent_tool_glob_files_param_include_directories">是否返回目录，默认 false。</string>
+    <string name="agent_tool_glob_files_param_include_files">是否返回文件，默认 true。</string>
+    <string name="agent_tool_glob_files_param_max_results">最大返回数量，默认 200。</string>
+    <string name="agent_tool_glob_files_missing_glob_pattern">缺少 glob_pattern 参数</string>
+    <string name="agent_tool_glob_files_failed">文件 glob 查找失败: %1$s</string>
+
+    <string name="agent_tool_grep_files_title">搜索文件内容</string>
+    <string name="agent_tool_grep_files_summary">在一批文本文件中按关键词或正则搜索内容，返回文件与行号</string>
+    <string name="agent_tool_grep_files_param_directory_uri">工作区内的起始目录路径或 URI，默认 app 工作区根目录。</string>
+    <string name="agent_tool_grep_files_param_glob_pattern">可选的文件过滤 glob，例如 **/*.kt。</string>
+    <string name="agent_tool_grep_files_param_query">要搜索的关键词或正则表达式。</string>
+    <string name="agent_tool_grep_files_param_is_regex">是否将 query 当作正则表达式处理，默认 false。</string>
+    <string name="agent_tool_grep_files_param_case_sensitive">是否区分大小写，默认 false。</string>
+    <string name="agent_tool_grep_files_param_max_matches">最多返回多少个匹配，默认 200。</string>
+    <string name="agent_tool_grep_files_missing_query">缺少 query 参数</string>
+    <string name="agent_tool_grep_files_failed">文件内容搜索失败: %1$s</string>
+
+    <string name="agent_tool_apply_text_patch_title">应用文本补丁</string>
+    <string name="agent_tool_apply_text_patch_summary">按多段 old_text/new_text 补丁批量修改文本文件</string>
+    <string name="agent_tool_apply_text_patch_param_file_uri">工作区内要打补丁的文件路径或 URI。</string>
+    <string name="agent_tool_apply_text_patch_param_hunks">补丁数组。每项需包含 old_text、new_text，可选 replace_all。</string>
+    <string name="agent_tool_apply_text_patch_missing_file_uri">缺少 file_uri 参数</string>
+    <string name="agent_tool_apply_text_patch_missing_hunks">缺少 hunks 参数</string>
+    <string name="agent_tool_apply_text_patch_invalid_hunk">第 %1$d 个 hunk 缺少 old_text 或 new_text</string>
+    <string name="agent_tool_apply_text_patch_failed">应用文本补丁失败: %1$s</string>
+
+    <string name="agent_tool_stat_file_title">查看文件信息</string>
+    <string name="agent_tool_stat_file_summary">查看单个文件或目录的存在性、大小、类型、修改时间等元信息</string>
+    <string name="agent_tool_stat_file_param_target_uri">工作区内要查看的文件路径或 URI。</string>
+
+    <string name="agent_tool_workspace_roots_title">查看工作区根目录</string>
+    <string name="agent_tool_workspace_roots_summary">列出代码代理当前可使用的 app 工作区根目录</string>
+    <string name="agent_tool_workspace_roots_failed">查看根目录失败: %1$s</string>
+            <string name="agent_tool_apply_range_patch_title">应用行范围补丁</string>
+            <string name="agent_tool_apply_range_patch_summary">按起止行号批量替换多个文本片段，更接近 diff/patch 的修改方式</string>
+            <string name="agent_tool_apply_range_patch_param_file_uri">工作区内要打补丁的文件路径或 URI。</string>
+            <string name="agent_tool_apply_range_patch_param_hunks">补丁数组。每项需包含 start_line、end_line、new_text，可选 old_text。</string>
+            <string name="agent_tool_apply_range_patch_missing_file_uri">缺少 file_uri 参数</string>
+            <string name="agent_tool_apply_range_patch_missing_hunks">缺少 hunks 参数</string>
+            <string name="agent_tool_apply_range_patch_invalid_hunk">第 %1$d 个 hunk 缺少必要字段</string>
+            <string name="agent_tool_apply_range_patch_failed">应用行范围补丁失败: %1$s</string>
+    <string name="agent_tool_stat_file_missing_target_uri">缺少 target_uri 参数</string>
+    <string name="agent_tool_stat_file_failed">查看文件信息失败: %1$s</string>
+
+    <string name="agent_tool_read_multiple_files_title">批量读取文件</string>
+    <string name="agent_tool_read_multiple_files_summary">一次读取多个文本文件的指定行范围，减少代码 Agent 的往返轮次</string>
+    <string name="agent_tool_read_multiple_files_param_files">文件数组。每项需包含 file_uri，可选 start_line、end_line。</string>
+    <string name="agent_tool_read_multiple_files_param_max_length_per_file">每个文件最多返回字符数，默认 4096。</string>
+    <string name="agent_tool_read_multiple_files_missing_files">缺少 files 参数</string>
+    <string name="agent_tool_read_multiple_files_invalid_file_item">第 %1$d 个文件项缺少 file_uri</string>
+    <string name="agent_tool_read_multiple_files_failed">批量读取文件失败: %1$s</string>
+
+    <!-- 记账工具：新增账目 -->
+    <string name="agent_tool_add_bookkeeping_record_title">新增账目</string>
+    <string name="agent_tool_add_bookkeeping_record_summary">向记账本中新增单条或多条账目（支出/入账/不计入）</string>
+    <string name="agent_tool_add_bookkeeping_record_description">向记账本中新增账目。支持单笔参数，也支持传入 records 数组批量新增。amount 为元,会自动按 2 位小数转换为分。type 取值 expense / income / excluded;category 通过名称匹配,匹配不到时会在结果里返回错误并列出可用分类。批量模式按条处理，单条失败不会回滚其他成功项。所有写入操作会自动写入 ActivityLog。</string>
+    <string name="agent_tool_add_bookkeeping_record_param_records">批量新增账目数组。每项对象支持 amount/type/category/note/date 字段；推荐优先使用该字段做批量记账。</string>
+    <string name="agent_tool_add_bookkeeping_record_param_amount">单笔金额(元),例如 12.50;必须大于 0,最多 2 位小数。</string>
+    <string name="agent_tool_add_bookkeeping_record_param_type">单笔账目类型:expense=支出,income=入账,excluded=不计入收支。</string>
+    <string name="agent_tool_add_bookkeeping_record_param_category">单笔分类名称(必须为已存在的分类,精确匹配,可以先用 query_bookkeeping_summary 查询当前分类)。</string>
+    <string name="agent_tool_add_bookkeeping_record_param_note">单笔备注(可选)。</string>
+    <string name="agent_tool_add_bookkeeping_record_param_date">单笔发生日期 ISO 格式 yyyy-MM-dd,缺省取今天;不能晚于今天。</string>
+    <string name="agent_tool_add_bookkeeping_record_failed">新增账目失败: %1$s</string>
+    <string name="agent_tool_add_bookkeeping_record_open_link_label">打开记账本</string>
+    <string name="agent_tool_add_bookkeeping_record_edit_link_label">查看这笔账目</string>
+    <string name="agent_tool_bookkeeping_section_summary">汇总</string>
+    <string name="agent_tool_bookkeeping_section_records">账目明细</string>
+    <string name="agent_tool_bookkeeping_section_recent_records">最近账目</string>
+    <string name="agent_tool_bookkeeping_section_expense_categories">支出分类 Top 10</string>
+    <string name="agent_tool_bookkeeping_section_income_categories">入账分类 Top 10</string>
+    <string name="agent_tool_bookkeeping_section_success_records">成功账目</string>
+    <string name="agent_tool_bookkeeping_section_failure_records">失败账目</string>
+    <string name="agent_tool_bookkeeping_section_quick_actions">快捷操作</string>
+    <string name="agent_tool_bookkeeping_label_month">月份</string>
+    <string name="agent_tool_bookkeeping_label_query_range">查询范围</string>
+    <string name="agent_tool_bookkeeping_label_type">类型</string>
+    <string name="agent_tool_bookkeeping_label_category">分类</string>
+    <string name="agent_tool_bookkeeping_label_date">日期</string>
+    <string name="agent_tool_bookkeeping_label_note">备注</string>
+    <string name="agent_tool_bookkeeping_label_expense">支出</string>
+    <string name="agent_tool_bookkeeping_label_income">入账</string>
+    <string name="agent_tool_bookkeeping_label_excluded">不计入收支</string>
+    <string name="agent_tool_bookkeeping_label_balance">结余</string>
+    <string name="agent_tool_bookkeeping_label_record_count">账目数</string>
+    <string name="agent_tool_bookkeeping_label_success_count">成功</string>
+    <string name="agent_tool_bookkeeping_label_failure_count">失败</string>
+    <string name="agent_tool_bookkeeping_uncategorized">未分类</string>
+    <string name="agent_tool_bookkeeping_type_expense">支出</string>
+    <string name="agent_tool_bookkeeping_type_income">入账</string>
+    <string name="agent_tool_bookkeeping_type_excluded">不计入收支</string>
+
+    <!-- 记账工具:查询月度概览 -->
+    <string name="agent_tool_query_bookkeeping_summary_title">查询账本概览</string>
+    <string name="agent_tool_query_bookkeeping_summary_summary">查询某月的支出/入账总额、分类排行与最近账目。</string>
+    <string name="agent_tool_query_bookkeeping_summary_description">查询某月的记账本概览。返回支出/入账总额(元)、分类排行 top10、最近账目 top20。月份缺省为本月。</string>
+    <string name="agent_tool_query_bookkeeping_summary_param_month">查询月份,格式 yyyy-MM,例如 2026-05;缺省为本月。</string>
+    <string name="agent_tool_query_bookkeeping_summary_param_recent_limit">最近账目返回上限,1-50,默认 20。</string>
+    <string name="agent_tool_query_bookkeeping_summary_failed">查询账本概览失败: %1$s</string>
+
+    <!-- 记账工具:查询账目明细 -->
+    <string name="agent_tool_query_bookkeeping_records_title">查询账目明细</string>
+    <string name="agent_tool_query_bookkeeping_records_summary">按月份或日期范围查询账本明细，并返回可打开记账本的 DeepLink。</string>
+    <string name="agent_tool_query_bookkeeping_records_description">查询指定月份或日期范围内的账目明细。支持按 type=expense/income/excluded 和 category 分类名进一步过滤。返回聚合金额、命中的账目列表，以及可再次打开记账本或直接进入新增/编辑页的 DeepLink。</string>
+    <string name="agent_tool_query_bookkeeping_records_param_month">查询月份，格式 yyyy-MM。与 start_date/end_date 二选一；都不传时默认本月。</string>
+    <string name="agent_tool_query_bookkeeping_records_param_start_date">开始日期，格式 yyyy-MM-dd；不传时默认取 month 月初或本月月初。</string>
+    <string name="agent_tool_query_bookkeeping_records_param_end_date">结束日期，格式 yyyy-MM-dd；不传时默认取 month 月末或本月月末。</string>
+    <string name="agent_tool_query_bookkeeping_records_param_type">账目类型过滤：expense=支出，income=入账，excluded=不计入收支。</string>
+    <string name="agent_tool_query_bookkeeping_records_param_category">分类名称过滤，可选；按当前记账分类名精确匹配。</string>
+    <string name="agent_tool_query_bookkeeping_records_param_limit">返回账目条数上限，1-100，默认 20。</string>
+    <string name="agent_tool_query_bookkeeping_records_failed">查询账目明细失败: %1$s</string>
+    <string name="agent_tool_query_bookkeeping_records_open_link_label">打开记账本</string>
+    <string name="agent_tool_query_bookkeeping_records_add_link_label">新增一笔账目</string>
+    <string name="agent_tool_query_bookkeeping_records_edit_link_label">查看这笔账目</string>
+
+    <!-- 网络工具通用 -->
+    <string name="agent_tool_network_error">网络请求失败: %1$s</string>
+    <string name="agent_tool_network_timeout">请求超时</string>
+    <string name="agent_tool_network_no_connection">无网络连接</string>
+
+    <!-- fetch_webpage -->
+    <string name="agent_tool_fetch_webpage_title">获取网页内容</string>
+    <string name="agent_tool_fetch_webpage_summary">抓取指定URL的网页内容</string>
+    <string name="agent_tool_fetch_webpage_param_url">要抓取的网页URL</string>
+    <string name="agent_tool_fetch_webpage_param_extract_mode">提取模式: text(纯文本)、html(原始HTML)、links(链接)、images(图片)、all(全部)</string>
+    <string name="agent_tool_fetch_webpage_param_max_length">返回内容最大长度，默认5000字符</string>
+    <string name="agent_tool_fetch_webpage_success">网页内容获取成功</string>
+    <string name="agent_tool_fetch_webpage_failed">网页抓取失败: %1$s</string>
+
+    <!-- search_web -->
+    <string name="agent_tool_search_web_title">网络搜索</string>
+    <string name="agent_tool_search_web_summary">使用搜索引擎搜索信息</string>
+    <string name="agent_tool_search_web_param_query">搜索关键词</string>
+    <string name="agent_tool_search_web_param_engine">搜索引擎: baidu(百度)、google、bing、duckduckgo，默认百度</string>
+    <string name="agent_tool_search_web_param_num_results">返回结果数量，默认5</string>
+    <string name="agent_tool_search_web_success">搜索完成，找到 %1$d 条结果</string>
+    <string name="agent_tool_search_web_failed">搜索失败: %1$s</string>
+
+    <!-- check_url -->
+    <string name="agent_tool_check_url_title">检查URL状态</string>
+    <string name="agent_tool_check_url_summary">检查URL的可访问性和响应状态</string>
+    <string name="agent_tool_check_url_param_url">要检查的URL</string>
+    <string name="agent_tool_check_url_param_timeout">超时时间（秒），默认10</string>
+    <string name="agent_tool_check_url_success">URL检查完成</string>
+    <string name="agent_tool_check_url_failed">URL检查失败: %1$s</string>
+
+    <!-- get_network_info -->
+    <string name="agent_tool_get_network_info_title">获取网络状态</string>
+    <string name="agent_tool_get_network_info_summary">获取当前设备的网络连接信息</string>
+    <string name="agent_tool_get_network_info_success">网络信息获取成功</string>
+    <string name="agent_tool_get_network_info_failed">获取网络信息失败: %1$s</string>
+
+    <!-- send_http_request -->
+    <string name="agent_tool_send_http_request_title">发送HTTP请求</string>
+    <string name="agent_tool_send_http_request_summary">发送自定义HTTP请求</string>
+    <string name="agent_tool_send_http_request_param_url">请求URL</string>
+    <string name="agent_tool_send_http_request_param_method">HTTP方法: GET、POST、PUT、DELETE、PATCH、HEAD</string>
+    <string name="agent_tool_send_http_request_param_headers">请求头，JSON格式字符串</string>
+    <string name="agent_tool_send_http_request_param_body">请求体内容</string>
+    <string name="agent_tool_send_http_request_param_content_type">Content-Type类型</string>
+    <string name="agent_tool_send_http_request_success">请求成功，状态码: %1$d</string>
+    <string name="agent_tool_send_http_request_failed">请求失败: %1$s</string>
+    <string name="agent_tool_send_http_request_confirm_title">确认发送HTTP请求</string>
+    <string name="agent_tool_send_http_request_confirm_message">即将向 %1$s 发送 %2$s 请求，是否确认？</string>
+
+    <!-- download_file -->
+    <string name="agent_tool_download_file_title">下载文件</string>
+    <string name="agent_tool_download_file_summary">从URL下载文件到本地</string>
+    <string name="agent_tool_download_file_param_url">文件下载URL</string>
+    <string name="agent_tool_download_file_param_filename">保存的文件名</string>
+    <string name="agent_tool_download_file_param_save_path">保存路径，默认 downloads/</string>
+    <string name="agent_tool_download_file_success">文件下载成功: %1$s</string>
+    <string name="agent_tool_download_file_failed">文件下载失败: %1$s</string>
+    <string name="agent_tool_download_file_confirm_title">确认下载文件</string>
+    <string name="agent_tool_download_file_confirm_message">即将下载文件 %1$s，是否确认？</string>
+
+    <!-- open_pdf_preview -->
+    <string name="agent_tool_open_pdf_preview_title">打开 PDF 预览</string>
+    <string name="agent_tool_open_pdf_preview_summary">在应用内预览 PDF 文档</string>
+    <string name="agent_tool_open_pdf_preview_param_uri">PDF 文档地址，支持 http(s):// 远程链接、content:// 与 file:// 本地 URI。</string>
+    <string name="agent_tool_open_pdf_preview_success">已在 PDF 预览屏打开 %1$s</string>
+    <string name="agent_tool_open_pdf_preview_failed">打开 PDF 预览失败：%1$s</string>
+    <string name="agent_tool_open_pdf_preview_missing_uri">需要 uri 参数</string>
+
+    <!-- convert_pdf_to_images -->
+    <string name="agent_tool_convert_pdf_to_images_title">PDF 转图片</string>
+    <string name="agent_tool_convert_pdf_to_images_summary">将 PDF 指定页转换为图片并保存到本地</string>
+    <string name="agent_tool_convert_pdf_to_images_param_uri">PDF 文档地址，支持 http(s):// 远程链接、content:// 与 file:// 本地 URI。</string>
+    <string name="agent_tool_convert_pdf_to_images_param_pages">页码列表（1 起始）。省略表示全部。例如 [1,2,3]。</string>
+    <string name="agent_tool_convert_pdf_to_images_param_format">输出图片格式，如 png、jpg、webp。默认 png。</string>
+    <string name="agent_tool_convert_pdf_to_images_param_quality">图片质量 1-100，默认 100。</string>
+    <string name="agent_tool_convert_pdf_to_images_param_preset">缩放百分比 1-100，默认 100。</string>
+    <string name="agent_tool_convert_pdf_to_images_missing_uri">需要 uri 参数</string>
+    <string name="agent_tool_convert_pdf_to_images_resolve_failed">解析 PDF 地址失败：%1$s</string>
+    <string name="agent_tool_convert_pdf_to_images_preflight_failed">读取 PDF 信息失败（如有密码，请先用 PDF 工具屏处理）：%1$s</string>
+    <string name="agent_tool_convert_pdf_to_images_invalid_pages">页码超出范围。PDF 共有 %1$d 页，请使用 1 到该页数的整数。</string>
+    <string name="agent_tool_convert_pdf_to_images_no_bitmaps">未生成任何图片</string>
+    <string name="agent_tool_convert_pdf_to_images_save_failed">保存图片失败：%1$s</string>
+    <string name="agent_tool_convert_pdf_to_images_failed">PDF 转图片失败：%1$s</string>
+
+    <!-- convert_images_to_pdf -->
+    <string name="agent_tool_convert_images_to_pdf_title">图片转 PDF</string>
+    <string name="agent_tool_convert_images_to_pdf_summary">将多张图片合并为单个 PDF 文档</string>
+    <string name="agent_tool_convert_images_to_pdf_param_uris">图片 URI 数组，每项必须为 content:// 或 file:// 本地地址。</string>
+    <string name="agent_tool_convert_images_to_pdf_param_preset">缩放百分比 1-100，默认 100。</string>
+    <string name="agent_tool_convert_images_to_pdf_param_scale_small">是否将较小的图片放大到最大边长一致，默认 false。</string>
+    <string name="agent_tool_convert_images_to_pdf_param_filename">输出 PDF 文件名（不含路径）。省略时自动生成，如 images_xxxxxxxx.pdf。</string>
+    <string name="agent_tool_convert_images_to_pdf_missing_uris">需要 uris 参数（至少一张图片）</string>
+    <string name="agent_tool_convert_images_to_pdf_invalid_scheme">不支持的图片地址：%1$s。仅接受 content:// 或 file:// 本地 URI。</string>
+    <string name="agent_tool_convert_images_to_pdf_no_output">未生成 PDF 输出</string>
+    <string name="agent_tool_convert_images_to_pdf_save_failed">保存 PDF 失败：%1$s</string>
+    <string name="agent_tool_convert_images_to_pdf_failed">图片转 PDF 失败：%1$s</string>
+
+    <!-- manage_todo tool -->
+    <string name="agent_tool_manage_todo_title">待办管理</string>
+    <string name="agent_tool_manage_todo_summary">列出、创建、完成、收藏、删除待办事项</string>
+    <string name="agent_tool_manage_todo_param_action">操作类型: list(列出全部), create_task(创建任务), create_category(创建分类), toggle_complete(完成/重开), toggle_star(收藏/取消), delete_task(删除)</string>
+    <string name="agent_tool_manage_todo_param_category_name">分类名称，create_task/create_category/list(可选过滤)时使用</string>
+    <string name="agent_tool_manage_todo_param_title">标题，create_task/create_category时必填</string>
+    <string name="agent_tool_manage_todo_param_note">备注，create_task时可选</string>
+    <string name="agent_tool_manage_todo_param_due_date_millis">截止日期时间戳(毫秒)，create_task时可选</string>
+    <string name="agent_tool_manage_todo_param_tags">标签数组，create_task时可选</string>
+    <string name="agent_tool_manage_todo_param_icon_key">图标名称，create_category时可选，默认 inbox</string>
+    <string name="agent_tool_manage_todo_param_color_argb">分类颜色 ARGB 值，create_category时可选，0为自动</string>
+    <string name="agent_tool_manage_todo_param_task_id">任务 ID，toggle_complete/toggle_star/delete_task时必填</string>
+    <string name="agent_tool_manage_todo_failed">待办操作失败: %1$s</string>
+    <string name="agent_tool_manage_todo_unknown_action">未知操作: %1$s</string>
+    <string name="agent_tool_manage_todo_missing_category_name">create_task 操作需要 category_name 参数</string>
+    <string name="agent_tool_manage_todo_missing_title">create_task/create_category 操作需要 title 参数</string>
+    <string name="agent_tool_manage_todo_missing_task_id">该操作需要 task_id 参数</string>
+    <string name="agent_tool_manage_todo_category_not_found">未找到分类: %1$s</string>
+    <string name="agent_tool_manage_todo_task_not_found">未找到任务: %1$s</string>
+    <string name="agent_tool_manage_todo_task_created">已创建任务: %1$s</string>
+    <string name="agent_tool_manage_todo_category_created">已创建分类: %1$s</string>
+    <string name="agent_tool_manage_todo_toggled">任务 %1$s 已 %2$s</string>
+    <string name="agent_tool_manage_todo_task_deleted">已删除任务: %1$s</string>
+
+    <!-- manage_xiangqi -->
+    <string name="agent_tool_manage_xiangqi_title">管理象棋对局</string>
+    <string name="agent_tool_manage_xiangqi_summary">查询、创建、导入残局/棋谱开局、导入对战记录、删除、导出中国象棋对局</string>
+    <string name="agent_tool_manage_xiangqi_param_action">操作类型: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_param_game_id">对局 ID（detail / delete / export 必填）</string>
+    <string name="agent_tool_manage_xiangqi_param_title">对局标题（create 必填）</string>
+    <string name="agent_tool_manage_xiangqi_param_ai_as_red">是否创建人机对局且 AI 执红（create 可选，默认 false）</string>
+    <string name="agent_tool_manage_xiangqi_param_export_format">导出格式: fen / json / both（export 可选，默认 both）</string>
+    <string name="agent_tool_manage_xiangqi_missing_game_id">缺少 game_id 参数</string>
+    <string name="agent_tool_manage_xiangqi_missing_title">缺少 title 参数</string>
+    <string name="agent_tool_manage_xiangqi_not_found">对局 %1$s 不存在</string>
+    <string name="agent_tool_manage_xiangqi_unknown_action">未知操作: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_failed">象棋操作失败: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_created">已创建对局: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_deleted">已删除对局: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_param_fen">FEN 棋谱字符串（import_fen 必填）。用于导入残局或自定义开局。格式: "局面 执子方 半步计数 回合数"，例如 "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1"。局面部分 10 行用 / 分隔，每行 9 列，大写=红方(K帅 A仕 B相 N马 R车 C炮 P兵)，小写=黑方(k将 a士 b象 n马 r车 c炮 p卒)，数字=空格。</string>
+    <string name="agent_tool_manage_xiangqi_param_json_data">JSON 对战记录字符串（import_json 必填）。用于导入完整对局并回放走子。格式: {"version":1,"title":"标题","initialFen":"初始FEN","result":"结果","moves":[{"move":"a0a1","moveCn":"炮二平五"},...]}。move 为 UCCI 坐标格式（如 a0a1 表示从 a0 移动到 a1），moves 按顺序回放。</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">缺少 fen 参数</string>
+    <string name="agent_tool_manage_xiangqi_missing_json">缺少 json_data 参数</string>
+    <string name="agent_tool_manage_xiangqi_imported_fen">FEN 导入</string>
+    <string name="agent_tool_manage_xiangqi_imported">已导入对局: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_import_failed">导入失败: %1$s</string>
+
+    <!-- ===== Browser Automation Tools ===== -->
+    <string name="agent_tool_browser_not_available">浏览器当前不可用，请先打开内置浏览器页面</string>
+
+    <!-- browser_navigate -->
+    <string name="agent_tool_browser_navigate_title">浏览器导航</string>
+    <string name="agent_tool_browser_navigate_summary">控制内置浏览器：打开 URL、前进后退、刷新、管理标签页</string>
+    <string name="agent_tool_browser_navigate_param_action">操作类型: open_url / go_back / go_forward / reload / new_tab / switch_tab / close_tab</string>
+    <string name="agent_tool_browser_navigate_param_url">要打开的 URL（open_url / new_tab 时使用）</string>
+    <string name="agent_tool_browser_navigate_param_tab_id">标签页 ID（switch_tab / close_tab 时使用）</string>
+    <string name="agent_tool_browser_navigate_missing_url">缺少 url 参数</string>
+    <string name="agent_tool_browser_navigate_missing_tab_id">缺少 tab_id 参数</string>
+    <string name="agent_tool_browser_navigate_unknown_action">未知操作: %1$s</string>
+    <string name="agent_tool_browser_navigate_failed">浏览器导航失败: %1$s</string>
+
+    <!-- browser_read_page -->
+    <string name="agent_tool_browser_read_page_title">读取页面内容</string>
+    <string name="agent_tool_browser_read_page_summary">读取当前浏览器页面的文本、DOM 或状态信息</string>
+    <string name="agent_tool_browser_read_page_param_mode">读取模式: full_text / dom / info / snapshot</string>
+    <string name="agent_tool_browser_read_page_param_selector">CSS 选择器（dom 模式使用，默认 body）</string>
+    <string name="agent_tool_browser_read_page_param_max_length">最大返回字符数（默认 8192）</string>
+    <string name="agent_tool_browser_read_page_no_info">无法获取页面信息</string>
+    <string name="agent_tool_browser_read_page_unknown_mode">未知模式: %1$s</string>
+    <string name="agent_tool_browser_read_page_failed">读取页面失败: %1$s</string>
+
+    <!-- browser_execute_js -->
+    <string name="agent_tool_browser_execute_js_title">执行 JavaScript</string>
+    <string name="agent_tool_browser_execute_js_summary">在当前浏览器页面执行 JavaScript 代码</string>
+    <string name="agent_tool_browser_execute_js_param_script">要执行的 JavaScript 代码</string>
+    <string name="agent_tool_browser_execute_js_missing_script">缺少 script 参数</string>
+    <string name="agent_tool_browser_execute_js_failed">JavaScript 执行失败: %1$s</string>
+    <string name="agent_tool_browser_execute_js_confirm_title">执行 JavaScript 脚本</string>
+    <string name="agent_tool_browser_execute_js_confirm_presentation">将在当前页面执行 JavaScript 代码，可能修改页面状态</string>
+
+    <!-- browser_screenshot -->
+    <string name="agent_tool_browser_screenshot_title">页面截图</string>
+    <string name="agent_tool_browser_screenshot_summary">截取当前浏览器页面的屏幕截图</string>
+    <string name="agent_tool_browser_screenshot_failed">截图失败</string>
+
+    <!-- Environment Context -->
+    <string name="ai_environment_context_title">[当前环境]</string>
+    <string name="ai_environment_context_os">- 操作系统: Android %1$s (API %2$d)</string>
+    <string name="ai_environment_context_arch">- 设备架构: %1$s</string>
+    <string name="ai_environment_context_model">- 设备型号: %1$s</string>
+    <string name="ai_environment_context_app_version">- 应用版本: %1$s (%2$s)</string>
+    <string name="ai_environment_context_work_dir">- 工作目录: %1$s</string>
+    <string name="ai_environment_context_work_dir_unset">未设置</string>
+
+
+
+    <!-- AgentTool: discover_cloud_connections -->
+    <string name="agent_tool_discover_cloud_connections_title">发现云存储连接</string>
+
+    <string name="agent_tool_discover_cloud_connections_summary">列出本地已保存的所有远程存储连接（支持 S3 / WebDAV / SMB），供后续操作选择。</string>
+
+    <string name="agent_tool_discover_cloud_connections_param_name_filter">按名称模糊过滤（可选）</string>
+
+    <string name="agent_tool_discover_cloud_connections_param_protocol">按协议过滤（可选）</string>
+
+
+    <!-- AgentTool: browse_cloud_files -->
+    <string name="agent_tool_browse_cloud_files_title">浏览云存储目录</string>
+
+    <string name="agent_tool_browse_cloud_files_summary">列出指定连接下的目录、查询对象元信息、列举 share / bucket。只读操作。</string>
+
+    <string name="agent_tool_browse_cloud_files_param_action">操作类型：list 列出目录；stat 查询单文件元信息；list_roots 列出可用的 share / bucket</string>
+
+    <string name="agent_tool_browse_cloud_files_param_connection_id">连接 ID，来自 discover_cloud_connections</string>
+
+    <string name="agent_tool_browse_cloud_files_param_root">S3 bucket / SMB share / WebDAV 根路径（可选，默认使用连接默认根）</string>
+
+    <string name="agent_tool_browse_cloud_files_param_path">目录或文件路径，相对 root，以 / 分隔</string>
+
+    <string name="agent_tool_browse_cloud_files_connection_not_found">未找到 ID 为 %s 的连接</string>
+
+    <string name="agent_tool_browse_cloud_files_missing_root">缺少 root 参数且连接没有默认根</string>
+
+    <string name="agent_tool_browse_cloud_files_missing_path">stat 操作需要 path 参数</string>
+
+    <string name="agent_tool_browse_cloud_files_invalid_action">未知的 action: %s</string>
+
+    <string name="agent_tool_browse_cloud_files_failed">浏览云存储失败：%s</string>
+
+
+    <!-- AgentTool: read_cloud_file -->
+    <string name="agent_tool_read_cloud_file_title">读取云存储文件</string>
+
+    <string name="agent_tool_read_cloud_file_summary">读取远端文件内容（最多 256 KB），以 base64 返回。适合文本配置 / 简单元数据查询。</string>
+
+    <string name="agent_tool_read_cloud_file_param_connection_id">连接 ID</string>
+
+    <string name="agent_tool_read_cloud_file_param_root">S3 bucket / SMB share / WebDAV 根路径（可选）</string>
+
+    <string name="agent_tool_read_cloud_file_param_path">远端文件路径</string>
+
+    <string name="agent_tool_read_cloud_file_connection_not_found">未找到 ID 为 %s 的连接</string>
+
+    <string name="agent_tool_read_cloud_file_missing_root">缺少 root 参数且连接没有默认根</string>
+
+    <string name="agent_tool_read_cloud_file_missing_path">缺少 path 参数</string>
+
+    <string name="agent_tool_read_cloud_file_too_large">文件过大（%1$d 字节），单次读取上限 %2$d 字节</string>
+
+    <string name="agent_tool_read_cloud_file_failed">读取云存储文件失败：%s</string>
+
+
+    <!-- AgentTool: search_cloud_files -->
+    <string name="agent_tool_search_cloud_files_title">搜索云存储文件</string>
+
+    <string name="agent_tool_search_cloud_files_summary">按关键字模糊搜索当前 root 下的对象名（大小写不敏感）。</string>
+
+    <string name="agent_tool_search_cloud_files_param_connection_id">连接 ID</string>
+
+    <string name="agent_tool_search_cloud_files_param_root">S3 bucket / SMB share / WebDAV 根路径（可选）</string>
+
+    <string name="agent_tool_search_cloud_files_param_query">搜索关键字；若包含 / 则按路径前缀搜索</string>
+
+    <string name="agent_tool_search_cloud_files_param_max_results">最多返回条数（默认 50）</string>
+
+    <string name="agent_tool_search_cloud_files_connection_not_found">未找到 ID 为 %s 的连接</string>
+
+    <string name="agent_tool_search_cloud_files_missing_root">缺少 root 参数且连接没有默认根</string>
+
+    <string name="agent_tool_search_cloud_files_missing_query">缺少 query 参数</string>
+
+    <string name="agent_tool_search_cloud_files_failed">搜索云存储失败：%s</string>
+
+
+    <!-- AgentTool: manage_cloud_files -->
+    <string name="agent_tool_manage_cloud_files_title">管理云存储文件</string>
+
+    <string name="agent_tool_manage_cloud_files_summary">执行写操作：建目录、删除、重命名。所有写操作需要用户确认。</string>
+
+    <string name="agent_tool_manage_cloud_files_confirm_title">确认修改云存储</string>
+
+    <string name="agent_tool_manage_cloud_files_confirm_presentation">即将对云存储执行不可恢复的写操作</string>
+
+    <string name="agent_tool_manage_cloud_files_param_action">操作类型：create_directory / delete / rename</string>
+
+    <string name="agent_tool_manage_cloud_files_param_connection_id">连接 ID</string>
+
+    <string name="agent_tool_manage_cloud_files_param_root">S3 bucket / SMB share / WebDAV 根路径（可选）</string>
+
+    <string name="agent_tool_manage_cloud_files_param_path">要操作的路径</string>
+
+    <string name="agent_tool_manage_cloud_files_param_target_path">rename 操作的目标路径</string>
+
+    <string name="agent_tool_manage_cloud_files_param_is_directory">true 表示按目录删除（S3 走递归、WebDAV / SMB 走递归）</string>
+
+    <string name="agent_tool_manage_cloud_files_connection_not_found">未找到 ID 为 %s 的连接</string>
+
+    <string name="agent_tool_manage_cloud_files_missing_root">缺少 root 参数且连接没有默认根</string>
+
+    <string name="agent_tool_manage_cloud_files_missing_path">缺少 path 参数</string>
+
+    <string name="agent_tool_manage_cloud_files_missing_target_path">rename 操作需要 target_path 参数</string>
+
+    <string name="agent_tool_manage_cloud_files_invalid_action">未知的 action: %s</string>
+
+    <string name="agent_tool_manage_cloud_files_failed">管理云存储失败：%s</string>
+
+
+    <!-- AgentTool: upload_to_cloud -->
+    <string name="agent_tool_upload_to_cloud_title">上传内容到云存储</string>
+
+    <string name="agent_tool_upload_to_cloud_summary">把 base64 编码的内容（≤ 1 MB）上传到远端路径。需要用户确认。</string>
+
+    <string name="agent_tool_upload_to_cloud_confirm_title">确认上传到云存储</string>
+
+    <string name="agent_tool_upload_to_cloud_confirm_presentation">即将写入远端存储</string>
+
+    <string name="agent_tool_upload_to_cloud_param_connection_id">连接 ID</string>
+
+    <string name="agent_tool_upload_to_cloud_param_root">S3 bucket / SMB share / WebDAV 根路径（可选）</string>
+
+    <string name="agent_tool_upload_to_cloud_param_path">远端目标路径</string>
+
+    <string name="agent_tool_upload_to_cloud_param_content_base64">base64 编码的字节内容</string>
+
+    <string name="agent_tool_upload_to_cloud_param_content_type">MIME 类型（默认 application/octet-stream）</string>
+
+    <string name="agent_tool_upload_to_cloud_connection_not_found">未找到 ID 为 %s 的连接</string>
+
+    <string name="agent_tool_upload_to_cloud_missing_root">缺少 root 参数且连接没有默认根</string>
+
+    <string name="agent_tool_upload_to_cloud_missing_path">缺少 path 参数</string>
+
+    <string name="agent_tool_upload_to_cloud_missing_payload">缺少 content_base64 参数</string>
+
+    <string name="agent_tool_upload_to_cloud_invalid_base64">content_base64 解析失败：%s</string>
+
+    <string name="agent_tool_upload_to_cloud_payload_too_large">payload 过大（%1$d 字节），上限 %2$d 字节</string>
+
+    <string name="agent_tool_upload_to_cloud_failed">上传到云存储失败：%s</string>
+
+    <!-- AgentTool: add_local_ai_engine -->
+    <string name="agent_tool_add_local_ai_engine_title">添加本地 AI 引擎</string>
+    <string name="agent_tool_add_local_ai_engine_summary">在本地添加自定义 AI 引擎配置（需要管理员权限）</string>
+    <string name="agent_tool_add_local_ai_engine_description">在本地创建自定义 AI 引擎配置。需要提供引擎名称、显示标题、API URL 和路径。支持 OpenAI 兼容、Responses、Anthropic 兼容和自建代理四种协议。此工具需要管理员权限，执行前会要求用户确认。</string>
+    <string name="agent_tool_add_local_ai_engine_param_name">引擎唯一名称（内部标识），例如 my-openai、local-ollama</string>
+    <string name="agent_tool_add_local_ai_engine_param_title">引擎显示名称，例如 "我的 OpenAI 代理"</string>
+    <string name="agent_tool_add_local_ai_engine_param_request_url">API 基础 URL，例如 https://api.openai.com</string>
+    <string name="agent_tool_add_local_ai_engine_param_request_path">API 路径，例如 /v1/chat/completions</string>
+    <string name="agent_tool_add_local_ai_engine_param_request_protocol">协议类型：openai_compatible（默认）、responses_compatible、anthropic_compatible、own_proxy</string>
+    <string name="agent_tool_add_local_ai_engine_param_auth_type">认证类型：bearer（默认）、api_key、none</string>
+    <string name="agent_tool_add_local_ai_engine_param_authorization_code">API 密钥或令牌（可选）</string>
+    <string name="agent_tool_add_local_ai_engine_param_description">引擎描述（可选）</string>
+    <string name="agent_tool_add_local_ai_engine_admin_required">需要管理员权限才能添加本地 AI 引擎</string>
+    <string name="agent_tool_add_local_ai_engine_invalid_params">参数解析失败</string>
+    <string name="agent_tool_add_local_ai_engine_missing_name">缺少 name 参数</string>
+    <string name="agent_tool_add_local_ai_engine_missing_title">缺少 title 参数</string>
+    <string name="agent_tool_add_local_ai_engine_missing_request_url">缺少 request_url 参数</string>
+    <string name="agent_tool_add_local_ai_engine_missing_request_path">缺少 request_path 参数</string>
+    <string name="agent_tool_add_local_ai_engine_success">本地 AI 引擎添加成功：%1$s</string>
+    <string name="agent_tool_add_local_ai_engine_save_failed">保存引擎配置失败，请检查名称是否重复</string>
+    <string name="agent_tool_add_local_ai_engine_failed">添加本地 AI 引擎失败：%1$s</string>
+
+    <!-- AgentTool: add_local_ai_model -->
+    <string name="agent_tool_add_local_ai_model_title">添加本地 AI 模型</string>
+    <string name="agent_tool_add_local_ai_model_summary">为已有引擎添加自定义 AI 模型（需要管理员权限）</string>
+    <string name="agent_tool_add_local_ai_model_description">为已有本地 AI 引擎添加自定义模型配置。需要提供引擎名称、模型内部名称和显示标题。此工具需要管理员权限，执行前会要求用户确认。</string>
+    <string name="agent_tool_add_local_ai_model_param_engine_name">所属引擎名称（必须已存在）</string>
+    <string name="agent_tool_add_local_ai_model_param_model_name">模型内部名称/ID，例如 gpt-4o、deepseek-chat</string>
+    <string name="agent_tool_add_local_ai_model_param_model_title">模型显示名称，例如 "GPT-4o"</string>
+    <string name="agent_tool_add_local_ai_model_param_description">模型描述（可选）</string>
+    <string name="agent_tool_add_local_ai_model_param_temperature">温度参数，0.0~2.0，默认 0.95</string>
+    <string name="agent_tool_add_local_ai_model_param_top_p">Top-P 参数，0.0~1.0，默认 0.8</string>
+    <string name="agent_tool_add_local_ai_model_param_max_tokens">最大输出 token 数，256~8192，默认 2048</string>
+    <string name="agent_tool_add_local_ai_model_invalid_params">参数解析失败</string>
+    <string name="agent_tool_add_local_ai_model_missing_engine_name">缺少 engine_name 参数</string>
+    <string name="agent_tool_add_local_ai_model_missing_model_name">缺少 model_name 参数</string>
+    <string name="agent_tool_add_local_ai_model_missing_model_title">缺少 model_title 参数</string>
+    <string name="agent_tool_add_local_ai_model_success">本地 AI 模型添加成功：%1$s</string>
+    <string name="agent_tool_add_local_ai_model_save_failed">保存模型配置失败，请检查名称是否重复</string>
+    <string name="agent_tool_add_local_ai_model_failed">添加本地 AI 模型失败：%1$s</string>
+
+    <!-- AgentTool: manage_cloud_connections -->
+    <string name="agent_tool_manage_cloud_connections_title">管理云存储连接</string>
+    <string name="agent_tool_manage_cloud_connections_summary">创建 / 测试 / 删除已保存的远程存储连接。凭据由用户输入，写入 EncryptedSharedPreferences。</string>
+    <string name="agent_tool_manage_cloud_connections_confirm_title">确认修改云存储连接</string>
+    <string name="agent_tool_manage_cloud_connections_confirm_presentation">即将修改已保存的远程存储连接</string>
+    <string name="agent_tool_manage_cloud_connections_param_action">操作类型：create 创建并保存；test 仅测试不保存；delete 删除已保存的连接</string>
+    <string name="agent_tool_manage_cloud_connections_param_protocol">create / test 必填。远程存储协议：S3_COMPAT / WEB_DAV / SMB</string>
+    <string name="agent_tool_manage_cloud_connections_param_connection_id">delete 必填，create / test 不填。要操作的连接 ID</string>
+    <string name="agent_tool_manage_cloud_connections_param_display_name">create / test 必填，用户可识别的连接名称</string>
+    <string name="agent_tool_manage_cloud_connections_param_is_default">是否设为默认连接（create 时可选，默认 false）</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_vendor">S3 子 vendor，默认 S3_COMPATIBLE</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_endpoint">S3 endpoint，可不填使用 vendor 默认值</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_region">S3 region</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_bucket">S3 bucket 名</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_access_key_id">S3 access key id</string>
+    <string name="agent_tool_manage_cloud_connections_param_s3_secret_access_key">S3 secret access key</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_base_url">WebDAV 服务器地址（如 https://dav.example.com/remote.php/webdav）</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_root_path">WebDAV 根路径（默认 /）</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_username">WebDAV 用户名</string>
+    <string name="agent_tool_manage_cloud_connections_param_webdav_password">WebDAV 密码</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_host">SMB 服务器 IP / 域名</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_port">SMB 端口（默认 445）</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_share">SMB 共享名（share）</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_domain">SMB 域 / 工作组（可空）</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_username">SMB 用户名</string>
+    <string name="agent_tool_manage_cloud_connections_param_smb_password">SMB 密码</string>
+    <string name="agent_tool_manage_cloud_connections_invalid_action">未知的 action: %s</string>
+    <string name="agent_tool_manage_cloud_connections_missing_protocol">无法根据 protocol=%s 构造连接，请检查协议类型与对应字段</string>
+    <string name="agent_tool_manage_cloud_connections_missing_connection_id">delete 操作需要 connection_id</string>
+    <string name="agent_tool_manage_cloud_connections_connection_not_found">未找到 ID 为 %s 的连接</string>
+    <string name="agent_tool_manage_cloud_connections_test_ok">连接 %s 测试通过</string>
+    <string name="agent_tool_manage_cloud_connections_create_ok">已创建并保存连接 %s</string>
+    <string name="agent_tool_manage_cloud_connections_create_test_failed">连接 %1$s 测试失败，未保存：%2$s</string>
+    <string name="agent_tool_manage_cloud_connections_delete_ok">已删除连接 %s</string>
+
+    <!-- UI 自动化三件套 (screenshot_ui / act_on_ui / automate_ui_task) -->
+    <string name="agent_tool_screenshot_ui_title">界面截图</string>
+    <string name="agent_tool_screenshot_ui_summary">截取当前屏幕并保存为 WebP 图片（使用与聊天附件相同的压缩流程），让智能体看到屏幕并决定下一步操作。</string>
+    <string name="agent_tool_screenshot_ui_param_max_base64_length">如果设置，则按此长度截断 base64，以控制工具结果大小。0 表示不截断，默认 0。</string>
+    <string name="agent_tool_screenshot_ui_success">已截图（%1$d×%2$d，%3$d KB，WebP）。</string>
+    <string name="agent_tool_screenshot_ui_truncated">图片已截断至 %1$d 字符，以符合工具结果大小限制。</string>
+    <string name="agent_tool_screenshot_ui_failed">截图失败：%1$s</string>
+    <string name="agent_tool_screenshot_ui_no_activity">当前没有可用的 Activity。请确保从普通页面打开聊天。</string>
+
+    <string name="agent_tool_act_on_ui_title">操作界面</string>
+    <string name="agent_tool_act_on_ui_summary">在当前屏幕上执行单次触摸操作（点击 / 长按 / 滑动 / 输入文字 / 返回 / 等待）。</string>
+    <string name="agent_tool_act_on_ui_param_action">操作负载。必须是 JSON 对象，匹配以下之一：click、long_press、swipe、input_text、go_back、wait、done。示例：{\"action\":\"click\",\"x\":320,\"y\":640,\"reason\":\"点击确认\"}</string>
+    <string name="agent_tool_act_on_ui_success">操作已执行：%1$s</string>
+    <string name="agent_tool_act_on_ui_failed">操作失败：%1$s</string>
+    <string name="agent_tool_act_on_ui_parse_failed">解析操作负载失败：%1$s</string>
+    <string name="agent_tool_act_on_ui_no_activity">当前没有可用的 Activity。请确保从普通页面打开聊天。</string>
+
+    <string name="agent_tool_automate_ui_task_title">自动执行界面任务</string>
+    <string name="agent_tool_automate_ui_task_summary">端到端自动完成一项界面任务。智能体会不断截图、向 AI 询问下一步操作并执行，直到完成、失败或达到最大步数。</string>
+    <string name="agent_tool_automate_ui_task_param_task_description">要在当前屏幕上完成的目标纯文本描述，例如\"搜索北京天气\"。</string>
+    <string name="agent_tool_automate_ui_task_param_max_steps">自动化最大步数，默认 20。</string>
+    <string name="agent_tool_automate_ui_task_completed">任务已在 %1$d 步后完成。%2$s</string>
+    <string name="agent_tool_automate_ui_task_failed">任务在第 %1$d 步失败：%2$s</string>
+    <string name="agent_tool_automate_ui_task_step_limit">任务在 %1$d 步后停止（已达上限）。最后操作：%2$s</string>
+    <string name="agent_tool_automate_ui_task_no_activity">当前没有可用的 Activity。请确保从普通页面打开聊天。</string>
+</resources>

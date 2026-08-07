@@ -1,0 +1,9 @@
+manage_cloud_files —— 对远端文件/目录执行写操作。
+
+action 取值：
+- create_directory：在 root 下创建目录
+- delete：删除文件或目录；is_directory=true 时按目录删除（S3 走 list + 批量 delete；WebDAV / SMB 走递归）
+- rename：移动/重命名
+
+所有写操作 requiresConfirmation=true，会触发用户确认弹窗。
+不可恢复的破坏性操作：执行前请用 browse_cloud_files / stat 确认目标存在。

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_confirm">확인</string>
+    <string name="date_picker_cancel">취소</string>
+    <string name="date_picker_edit">편집</string>
+    <string name="date_picker_select_year_month">연도와 월 선택</string>
+    <string name="date_picker_year_input">연도</string>
+    <string name="date_picker_current_year">올해</string>
+    <string name="blessing_effect_merit_plus_one">행운 +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">이전 달</string>
+    <string name="date_picker_next_month">다음 달</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">일</string>
+    <string name="date_picker_weekday_mon">월</string>
+    <string name="date_picker_weekday_tue">화</string>
+    <string name="date_picker_weekday_wed">수</string>
+    <string name="date_picker_weekday_thu">목</string>
+    <string name="date_picker_weekday_fri">금</string>
+    <string name="date_picker_weekday_sat">토</string>
+    <string name="time_range_picker_start_time">시작 시간</string>
+    <string name="time_range_picker_end_time">종료 시간</string>
+    <string name="time_range_picker_hour">시</string>
+    <string name="time_range_picker_minute">분</string>
+    <string name="time_range_picker_hint">팁: 시(0-23)와 분(0-59)을 입력하세요</string>
+    <string name="date_range_picker_title">날짜 범위 선택</string>
+    <string name="date_range_start">시작 날짜</string>
+    <string name="date_range_end">종료 날짜</string>
+    <string name="week_selector_week_title">%1$d년 %2$d월 · %3$d주차</string>
+    <string name="icon_picker_icon_count">아이콘 %1$d개</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </string-array>
+</resources>

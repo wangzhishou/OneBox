@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">Отметки</string>
+    <string name="habit_tab_checkin">Отметить</string>
+    <string name="habit_tab_stats">Статистика</string>
+    <string name="habit_add">Добавить привычку</string>
+    <string name="habit_summary_rate">Частота отметок</string>
+    <string name="habit_summary_done">Готово</string>
+    <string name="habit_summary_missed">Ожидает</string>
+    <string name="habit_today_section">Отметки за сегодня</string>
+    <string name="habit_edit_mode">Изменить</string>
+    <string name="habit_edit_done">Готово</string>
+    <string name="habit_empty_list">Пока нет привычек. Нажмите +, чтобы создать.</string>
+    <string name="habit_delete_habit">Удалить привычку</string>
+    <string-array name="habit_weekdays_short">
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+        <item>Вс</item>
+    </string-array>
+    <string name="habit_stats_week_trend">Эта неделя</string>
+    <string name="habit_stats_distribution">Распределение</string>
+    <string name="habit_stats_rate_trend">Тенденция частоты отметок</string>
+    <string name="habit_stats_not_started">Не начато</string>
+    <string name="habit_stats_total_habits">Всего привычек</string>
+    <string name="habit_stats_empty">Нет данных</string>
+    <string name="habit_last_7_days">Последние 7 дней</string>
+    <string name="habit_last_30_days">Последние 30 дней</string>
+    <string name="habit_add_title">Новая привычка</string>
+    <string name="habit_edit_title">Изменить привычку</string>
+    <string name="habit_edit_name_label">Название привычки</string>
+    <string name="habit_edit_name_hint">Введите название привычки</string>
+    <string name="habit_edit_icon_label">Выберите иконку</string>
+    <string name="habit_edit_color_label">Выберите цвет</string>
+    <string name="habit_edit_color_auto_hint">Автоматический цвет темы, если не выбран</string>
+    <string name="habit_edit_repeat_label">Повтор</string>
+    <string name="habit_repeat_daily">Каждый день</string>
+    <string name="habit_repeat_weekly">Еженедельно</string>
+    <string name="habit_repeat_monthly">Ежемесячно</string>
+    <string name="habit_repeat_custom">Свой вариант</string>
+    <string name="habit_repeat_daily_desc">Повторяется каждый день</string>
+    <string name="habit_repeat_times_week_label">Раз в неделю</string>
+    <string name="habit_repeat_times_month_label">Раз в месяц</string>
+    <string name="habit_edit_reminder_label">Напоминание</string>
+    <string name="habit_edit_reminder_none">Без напоминания</string>
+    <string name="habit_edit_reminder_subtitle">Напомнить мне отметить в это время</string>
+    <string name="habit_edit_reminder_clear">Очистить</string>
+    <string name="habit_edit_note_label">Заметка (необязательно)</string>
+    <string name="habit_edit_note_hint">Добавить заметку...</string>
+    <string name="habit_edit_stats_label">Отслеживать статистику отметок</string>
+    <string name="habit_edit_stats_subtitle">Отслеживать частоту отметок и серии, когда включено</string>
+    <string name="habit_save">Сохранить</string>
+    <string name="habit_name_required">Пожалуйста, введите название привычки</string>
+    <string name="habit_saved">Сохранено</string>
+    <string name="habit_freq_daily">Ежедневно</string>
+    <string name="habit_freq_weekly_times">%1$d раз в неделю</string>
+    <string name="habit_freq_monthly_times">%1$d раз в месяц</string>
+    <string name="habit_preset_drink_water">Выпить 8 стаканов воды</string>
+    <string name="habit_preset_wake_early">Просыпаться рано</string>
+    <string name="habit_preset_exercise">Заниматься спортом</string>
+    <string name="habit_preset_reading">Чтение</string>
+    <string name="habit_preset_meditation">Медитация</string>
+    <string name="habit_preset_no_stay_up">Не ложиться спать поздно</string>
+    <string name="habit_notification_channel_name">Напоминания о привычках</string>
+    <string name="habit_notification_channel_desc">Ежедневные напоминания о проверке привычек</string>
+    <string name="habit_notification_text">Время для отметки: %1$s</string>
+    <string name="habit_streak_days">Серия из %1$d дней</string>
+    <string name="agent_tool_add_habit_title">Добавить привычку</string>
+    <string name="agent_tool_add_habit_summary">Создайте новую привычку в трекере привычек</string>
+    <string name="agent_tool_add_habit_description">Создайте новую привычку в трекере привычек. Поддерживает настраиваемое название, иконку, частоту повторения (ежедневно / N раз в неделю / N раз в месяц / настраиваемые дни недели), необязательное время напоминания и заметку.</string>
+    <string name="agent_tool_add_habit_param_name">Название привычки, например, «Выпивать 8 стаканов воды»</string>
+    <string name="agent_tool_add_habit_param_icon">Ключ иконки, один из: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">Тип повторения: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">Количество раз в неделю или месяц, 1-30, только для weekly_times / monthly_times</string>
+    <string name="agent_tool_add_habit_param_weekdays">Дни недели для custom_weekdays, массив от 1 до 7 (1=понедельник, 7=воскресенье)</string>
+    <string name="agent_tool_add_habit_param_remind_time">Время ежедневного напоминания в формате HH:mm (24 часа), необязательно</string>
+    <string name="agent_tool_add_habit_param_note">Необязательная заметка</string>
+    <string name="agent_tool_add_habit_success">Привычка создана</string>
+    <string name="agent_tool_add_habit_failed">Не удалось создать привычку: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>привычка</item>
+        <item>добавить привычку</item>
+        <item>создать привычку</item>
+        <item>отметить</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>Добавьте привычку выпивать 8 стаканов воды каждый день</item>
+        <item>Создайте привычку бегать 3 раза в неделю</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">Отметить привычку</string>
+    <string name="agent_tool_check_in_habit_summary">Отметить привычку за определённый день</string>
+    <string name="agent_tool_check_in_habit_description">Отметьте привычку как выполненную за определённый день (по умолчанию сегодня). Найдите привычку по habit_id или нечёткому habit_name. Повторная отметка за тот же день не имеет эффекта.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">ID привычки. Предпочтительно использовать его, если известен; иначе используется habit_name</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">Название привычки, нечёткое совпадение, если habit_id отсутствует</string>
+    <string name="agent_tool_check_in_habit_param_date">Дата отметки, yyyy-MM-dd, по умолчанию сегодня, не должна быть в будущем</string>
+    <string name="agent_tool_check_in_habit_success">Отмечено</string>
+    <string name="agent_tool_check_in_habit_already">Уже отмечено в этот день</string>
+    <string name="agent_tool_check_in_habit_not_found">Привычка не найдена: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">Не удалось отметить: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>привычка</item>
+        <item>отметить</item>
+        <item>готово</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>Отметить мою привычку бега на сегодня</item>
+        <item>Отметить чтение как выполненное за вчера</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">Запросить привычки</string>
+    <string name="agent_tool_query_habits_summary">Список привычек с сегодняшним статусом и еженедельной частотой отметок</string>
+    <string name="agent_tool_query_habits_description">Запросить список привычек: статус отметки на сегодня для каждой привычки, серии ежедневных привычек и общая частота отметок за эту неделю.</string>
+    <string name="agent_tool_query_habits_section_today">Сегодня</string>
+    <string name="agent_tool_query_habits_weekly_rate">Недельная частота</string>
+    <string name="agent_tool_query_habits_empty">Пока нет привычек</string>
+    <string name="agent_tool_query_habits_failed">Не удалось запросить привычки: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>привычка</item>
+        <item>статус отметки</item>
+        <item>серия</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>Какие привычки остались на сегодня?</item>
+        <item>Показать мою частоту отметок привычек за эту неделю</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">Дата</string>
+    <string name="agent_tool_habit_label_repeat">Повтор</string>
+    <string name="agent_tool_habit_label_reminder">Напоминание</string>
+    <string name="agent_tool_habit_label_name">Название</string>
+    <string name="agent_tool_habit_open_link">Открыть трекер привычек</string>
+    <string name="agent_tool_habit_edit_link">Просмотреть привычку</string>
+    <string name="agent_tool_unknown_error">Неизвестная ошибка</string>
+</resources>

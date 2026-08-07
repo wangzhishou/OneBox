@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">ネットワーク接続に失敗しました。ネットワーク設定を確認してください</string>
+    <string name="error_request_timeout">リクエストがタイムアウトしました。後でもう一度お試しください</string>
+    <string name="error_cannot_connect_server">サーバーに接続できません。ネットワークを確認してください</string>
+    <string name="error_ssl_failed">セキュア接続に失敗しました。ネットワーク設定を確認してください</string>
+    <string name="error_network_exception">ネットワーク異常です。ネットワーク接続を確認してください</string>
+    <string name="error_request_cancelled">リクエストがキャンセルされました</string>
+    <string name="error_data_parse_failed">データの解析に失敗しました。後でもう一度お試しください</string>
+    <string name="error_bad_request">リクエストパラメータが無効です</string>
+    <string name="error_unauthorized">認証されていません。再度ログインしてください</string>
+    <string name="error_forbidden">アクセスが拒否されました</string>
+    <string name="error_not_found">要求されたリソースが見つかりません</string>
+    <string name="error_server_internal">サーバー内部エラー</string>
+    <string name="error_server_maintenance">サーバーはメンテナンス中です。後でもう一度お試しください</string>
+    <string name="error_server_code">サーバーエラー (%d)</string>
+    <string name="error_client_error">リクエストエラーです。パラメータを確認してください</string>
+    <string name="error_server_error">サーバーエラーです。後でもう一度お試しください</string>
+    <string name="error_request_failed">リクエストに失敗しました。後でもう一度お試しください</string>
+    <string name="error_request_failed_with_message">リクエストに失敗しました: %s</string>
+    <string name="error_unknown">不明なエラー</string>
+    <string name="no_error_body">エラーボディなし</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

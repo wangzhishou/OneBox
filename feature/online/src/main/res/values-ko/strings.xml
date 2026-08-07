@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mini_program_jump_confirm">곧 떠나서 WeChat에서 이 내용을 열려고 합니다. 계속하시겠습니까?</string>
+    <string name="mini_program_redirecting">리디렉션 중…</string>
+</resources>

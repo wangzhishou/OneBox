@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">Lokal na paglalarawan</string>
+    <string name="copy">Kopyahin</string>
+    <string name="create_widget">Gumawa ng maliliit na tool</string>
+    <string name="run">Patakbuhin</string>
+    <string name="save">I-save</string>
+    <string name="mermaid_tab_diagram">Diagram</string>
+    <string name="mermaid_tab_code">Code</string>
+    <string name="mermaid_fullscreen">Buong screen</string>
+    <string name="a2ui_parse_failed">Nabigo ang pag-parse ng A2UI</string>
+    <string name="a2ui_parse_failed_hint">Kopyahin ang source at suriin ang JSON format o syntax ng expression.</string>
+</resources>

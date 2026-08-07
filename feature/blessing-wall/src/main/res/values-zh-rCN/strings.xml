@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">祈福墙</string>
+    <string name="blessing_wall_sub">每日一点 · 好运相伴</string>
+    <string name="blessing_record_title">祈福记录</string>
+    <string name="blessing_tab_wooden_fish">静心一刻</string>
+    <string name="blessing_tab_wealth_god">好运连连</string>
+    <string name="blessing_tab_guanyin">平安顺遂</string>
+    <string name="blessing_tab_incense">心诚则灵</string>
+    <string name="blessing_subtitle_wooden_fish">每日一点 · 烦恼消散</string>
+    <string name="blessing_subtitle_wealth_god">好运常伴 · 诸事顺意</string>
+    <string name="blessing_subtitle_guanyin">心怀善意 · 平安喜乐</string>
+    <string name="blessing_subtitle_incense">诚心祈愿 · 福气满满</string>
+    <string name="blessing_btn_wooden_fish">点我一下，好运 +1</string>
+    <string name="blessing_btn_wealth_god">点我一下，财运 +1</string>
+    <string name="blessing_btn_guanyin">点我一下，平安 +1</string>
+    <string name="blessing_btn_incense">点我一下，福气 +1</string>
+    <string name="blessing_stat_wooden_fish">今日次数</string>
+    <string name="blessing_stat_wealth_god">今日次数</string>
+    <string name="blessing_stat_guanyin">今日次数</string>
+    <string name="blessing_stat_incense">今日次数</string>
+    <string name="blessing_count_unit">次</string>
+    <string name="blessing_total_count">%1$d次</string>
+    <string name="blessing_calendar_year_month">%1$d年%2$d月</string>
+    <string name="blessing_date_display">%1$d月%2$d日</string>
+    <string name="blessing_daily_stats_title">每日祈福统计</string>
+    <string name="blessing_empty_state">暂无祈福记录</string>
+    <string name="blessing_wish_edit">编辑备注</string>
+    <string name="blessing_wish_input_label">备注</string>
+    <string name="blessing_wish_save">保存</string>
+    <string name="blessing_wish_placeholder">暂无备注</string>
+    <string name="blessing_tab_text_edit">编辑标题</string>
+    <string name="blessing_tab_title_label">主标题</string>
+    <string name="blessing_tab_subtitle_label">副标题</string>
+    <string name="blessing_tab_text_reset_hint">留空则恢复默认文案</string>
+    <string name="blessing_history_readonly_hint">历史记录，仅供查看</string>
+    <string name="blessing_record_note_prefix">备注：%1$s</string>
+    <string name="blessing_sound_on">开启音效</string>
+    <string name="blessing_sound_off">关闭音效</string>
+    <string name="blessing_share">分享</string>
+</resources>

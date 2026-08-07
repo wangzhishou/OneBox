@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">Erkennung von Bildschirmfehlern</string>
+    <string name="dead_pixel_test_description">Verwenden Sie die Drehung mit reinen Farben, um Bildschirmfehler und Kartenpunkte zu erkennen</string>
+    <string name="dead_pixel_color_white">Weiß</string>
+    <string name="dead_pixel_color_black">Schwarz</string>
+    <string name="dead_pixel_color_red">Rot</string>
+    <string name="dead_pixel_color_green">Grün</string>
+    <string name="dead_pixel_color_blue">Blau</string>
+    <string name="dead_pixel_hint">Zum Ändern der Farbe tippen... Durch Wischen nach rechts und links kann hin- und hergewechselt werden.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Raster anzeigen</string>
+    <string name="dead_pixel_grid_off">Raster ausblenden</string>
+    <string name="dead_pixel_auto_play">Automatische Drehung</string>
+    <string name="dead_pixel_auto_stop">Stoppen!</string>
+    <string name="dead_pixel_fullscreen">Vollbildtest</string>
+    <string name="dead_pixel_exit_fullscreen">Vollbild verlassen</string>
+    <string name="dead_pixel_guide_title">Wie erkennen wir den Schaden?</string>
+    <string name="dead_pixel_guide_content">Der Bildschirm zeigt nacheinander fünf Vollfarben an: Weiß, Schwarz, Rot, Grün und Blau.\n\n• Weißer Hintergrund: Prüfen auf schwarze dunkle Flecken (tote Pixel)\n• Schwarzer Hintergrund: Prüfen auf helle Flecken (hängende Pixel)\n• Farbige Hintergründe: Prüfen auf abnormale Pixel in anderen Farben\n\nTippen Sie auf den Bildschirm, um zur nächsten Farbe zu wechseln, oder aktivieren Sie die automatische Wiedergabe. Für beste Ergebnisse führen Sie den Test in einer dunklen Umgebung durch.</string>
+    <string name="dead_pixel_guide_start">Test starten</string>
+</resources>

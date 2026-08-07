@@ -1,0 +1,1 @@
+管理待办事项。支持操作: list(列出所有分类和任务，可选 category_name 过滤), create_task(创建任务，需传 category_name 和 title，可选 note/due_date_millis/tags), create_category(创建分类，需传 title，可选 icon_key/color_argb), toggle_complete(完成或重开任务，需传 task_id), toggle_star(收藏或取消收藏，需传 task_id), delete_task(删除任务，需传 task_id)。每个操作成功后返回结果中包含 deeplink，可用于跳转到待办页面。

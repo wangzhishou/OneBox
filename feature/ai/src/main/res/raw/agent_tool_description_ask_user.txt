@@ -1,0 +1,65 @@
+当你缺少必要信息、询问收集信息，调用 ask_user。
+可以让用户做选择题, options选项
+可以让用户填写内容, question选项. 支持文本、时间、图片、文件、文件夹输入选择.
+
+输入要求：
+- 使用 `presentation` 指定展示样式：dialog 或 bottom_sheet。
+- 使用 `title` 和 `message` 提供上下文。
+- 使用 `questions` 数组描述问题。**每个问题都必须放在 `questions` 数组里**，每项含：
+  - `name`: 输出 answers 的字段名（snake_case）
+  - `header`: 短标题
+  - `question`: 给用户看的完整问题
+  - `required`: 是否必填
+  - `options`: 选择题选项；有 options 就是选择题，**每个 option 必须同时含 `label` 和 `value` 字段**（最常见错误：只填 label 漏 value）
+  - `multiSelect`: 是否多选
+  - `placeholder`: 文本输入占位
+  - `multiline`: 是否多行文本
+  - `type`: 输入类型（text / time / date / image / file / folder ...），**写在 question 对象内部**
+
+返回格式：
+- 用户提交：{"status":"submitted","answers":{"<name>": <value>, ...}}
+- 用户取消：{"status":"cancelled"}
+
+最小可工作示例（选择题）：
+{
+  "presentation": "dialog",
+  "title": "确认支付方式",
+  "questions": [
+    {
+      "name": "payment",
+      "header": "支付方式",
+      "question": "请选择支付方式",
+      "required": true,
+      "options": [
+        {"label": "支付宝", "value": "alipay"},
+        {"label": "微信支付", "value": "wechat"}
+      ]
+    }
+  ]
+}
+
+最小可工作示例（文件输入）：
+{
+  "presentation": "bottom_sheet",
+  "title": "上传资料",
+  "questions": [
+    {
+      "name": "image_path",
+      "header": "图片路径",
+      "question": "请选择或输入要处理的图片",
+      "required": true,
+      "type": "image"
+    }
+  ]
+}
+
+常见错误与修复：
+- "options 的选项必须同时包含 label 和 value" → 检查 options 数组里每项是否都填了 value
+- 调用了 ask_user 但 LLM 把 type 误填到 questions 外面（请求级）→ 移到 question 对象内部
+- 调用 ask_user 但 LLM 给选择题漏了 options 字段 → 该题会退化为纯文本题；如要保持选择题必须显式传 options
+
+使用原则：
+- 单个缺失字段可直接自然语言补问。
+- 需要结构化回答、多个字段、明确选项时，优先调用 ask_user。
+- 单选择题、少量问题时优先使用 `dialog`。
+- 多选择题、多文本输入、长表单，优先使用 `bottom_sheet`。

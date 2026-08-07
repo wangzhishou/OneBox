@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">पासा फेंकें।</string>
+    <string name="dice_roller_roll">इसे हिलाएं।</string>
+    <string name="dice_roller_history">इतिहास</string>
+    <string name="dice_roller_history_empty">कोई ऐतिहासिक रिकॉर्ड नहीं है।</string>
+    <string name="dice_roller_clear_history">रिकॉर्ड साफ़ करें</string>
+    <string name="dice_roller_clear_confirm">क्या आप सभी ऐतिहासिक रिकॉर्ड साफ़ करने की पुष्टि करते हैं?</string>
+    <string name="dice_roller_confirm">पुष्टि करें।</string>
+    <string name="dice_roller_cancel">रद्द करें</string>
+    <string name="dice_roller_count">पासों की संख्या</string>
+    <string name="dice_roller_type">पासे का प्रकार</string>
+    <string name="dice_roller_total">कुल अंक</string>
+    <string name="dice_roller_shake_hint">अपना मोबाइल फोन हिलाएं या \"स्क्रीच\" पर क्लिक करें।</string>
+    <string name="dice_roller_result_prefix">परिणाम:</string>
+    <string name="dice_roller_description">टेबल पासे।</string>
+</resources>

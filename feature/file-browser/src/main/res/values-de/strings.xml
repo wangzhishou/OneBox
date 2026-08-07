@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">Erweitern</string>
+    <string name="collapse">Weglegen.</string>
+    <string name="dialog_clear_recents_title">Letzte löschen</string>
+    <string name="dialog_clear_recents_message">Alle letzten Zugriffsaufzeichnungen löschen? Dies kann nicht rückgängig gemacht werden.</string>
+</resources>

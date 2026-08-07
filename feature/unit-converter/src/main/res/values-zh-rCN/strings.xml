@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">计算转换</string>
+    <string name="unit_converter_from">FROM</string>
+    <string name="unit_converter_to">TO</string>
+    <string name="unit_converter_swap">交换</string>
+    <string name="unit_converter_other_conversions">其他%s换算</string>
+    <string name="unit_converter_currency_disclaimer">⚠ 汇率为参考值，非实时数据</string>
+    <string name="unit_converter_select_category">选择换算类型</string>
+    <string name="unit_converter_select_unit">选择单位</string>
+    <string name="unit_converter_close">关闭</string>
+    <string name="unit_converter_tab_calculator">计算器</string>
+    <string name="unit_converter_tab_converter">换算</string>
+    <string name="unit_converter_tab_relative">亲戚</string>
+    <string name="unit_converter_invalid_expression">表达式无效，请检查后重试</string>
+    <string name="unit_converter_calculator_expression">当前表达式</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">支持括号、百分号与四则运算</string>
+    <string name="unit_converter_calculator_history">最近计算</string>
+    <string name="unit_converter_clear">清空</string>
+    <string name="unit_converter_backspace">退格</string>
+    <string name="unit_converter_equals">计算结果</string>
+    <string name="unit_converter_reference_subtitle">快速查看当前输入对应的常用参考值</string>
+    <string name="unit_converter_relative_path">关系链路</string>
+    <string name="unit_converter_relative_path_placeholder">我</string>
+    <string name="unit_converter_relative_identity">我的身份</string>
+    <string name="unit_converter_relative_identity_hint">身份会影响配偶与姻亲称谓</string>
+    <string name="unit_converter_relative_male">男性</string>
+    <string name="unit_converter_relative_female">女性</string>
+    <string name="unit_converter_relative_generate">生成关系</string>
+    <string name="unit_converter_relative_empty">请先选择亲属链路</string>
+    <string name="unit_converter_converter_clear">清零</string>
+    <string name="unit_converter_relative_result_label">计算结果</string>
+    <string name="unit_converter_negate">正负</string>
+</resources>

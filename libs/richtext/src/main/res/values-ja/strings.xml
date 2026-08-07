@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">ローカライズされた説明</string>
+    <string name="copy">コピー</string>
+    <string name="create_widget">小さなツールを作成</string>
+    <string name="run">実行</string>
+    <string name="save">保存</string>
+    <string name="mermaid_tab_diagram">図</string>
+    <string name="mermaid_tab_code">コード</string>
+    <string name="mermaid_fullscreen">全画面</string>
+    <string name="a2ui_parse_failed">A2UIの解析に失敗しました</string>
+    <string name="a2ui_parse_failed_hint">ソースをコピーして、JSON形式または式の構文を確認してください。</string>
+</resources>

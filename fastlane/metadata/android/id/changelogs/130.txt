@@ -1,0 +1,5 @@
+• Bahasa baru: Spanyol, Portugis Brasil, dan Indonesia
+• Pemilih lokasi kini menggunakan pelengkapan otomatis Google Places
+• Kustomisasi prompt sistem dengan bebas, tanpa VIP
+• Halaman web transfer file kini dilokalkan dalam bahasa Anda
+• Perbaikan bug dan peningkatan performa

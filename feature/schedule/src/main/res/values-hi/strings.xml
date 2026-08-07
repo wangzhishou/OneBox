@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">शेड्यूल हब</string>
+    <string name="schedule_sync_card_title">सिंक फाउंडेशन तैयार है</string>
+    <string name="schedule_sync_card_description">इस मॉड्यूल के पास पहले से ही अपना इवेंट मॉडल, सिंक कर्सर स्थिति और टोडो ब्रिज फ़ील्ड हैं, इसलिए Google कैलेंडर को बाद में जोड़ा जा सकता है बिना अल्मनैक या टोडो मॉड्यूल को प्रदूषित किए।</string>
+    <string name="schedule_sync_ready">सिंक कर्सर सहेजा गया</string>
+    <string name="schedule_sync_not_connected">कोई खाता कनेक्ट नहीं है</string>
+    <string name="schedule_event_count_label">%1$d इवेंट</string>
+    <string name="schedule_linked_task_chip">टोडो संदर्भ लिंक किया गया</string>
+    <string name="schedule_last_error_label">अंतिम त्रुटि: %1$s</string>
+    <string name="schedule_action_card_title">स्वच्छ स्थानीय इवेंट डोमेन से शुरू करें</string>
+    <string name="schedule_action_create_local">स्थानीय इवेंट बनाएं</string>
+    <string name="schedule_action_create_focus">फोकस तिथि से इवेंट बनाएं</string>
+    <string name="schedule_action_open_todo">टोडो खोलें</string>
+    <string name="schedule_action_open_calendar">कैलेंडर खोलें</string>
+    <string name="schedule_event_section_title">इवेंट</string>
+    <string name="schedule_empty_title">अभी तक कोई शेड्यूल इवेंट नहीं</string>
+    <string name="schedule_empty_description">पहले स्थानीय इवेंट से शुरू करें, फिर Google खाता प्रमाणीकरण, डेल्टा सिंक और संघर्ष प्रबंधन को धीरे-धीरे जोड़ें।</string>
+    <string name="schedule_provider_local">स्थानीय</string>
+    <string name="schedule_provider_system">सिस्टम कैलेंडर</string>
+    <string name="schedule_provider_google">Google कैलेंडर</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">केवल स्थानीय</string>
+    <string name="schedule_status_pending_upload">अपलोड लंबित</string>
+    <string name="schedule_status_synced">सिंक किया गया</string>
+    <string name="schedule_status_pending_delete">हटाना लंबित</string>
+    <string name="schedule_status_conflict">संघर्ष</string>
+    <string name="schedule_status_failed">सिंक विफल</string>
+    <string name="schedule_linked_task_badge">कार्य ब्रिज</string>
+    <string name="schedule_quick_event_title">नया स्थानीय इवेंट</string>
+    <string name="schedule_focus_event_title">फोकस इवेंट</string>
+    <string name="schedule_linked_task_description">लिंक किया गया टोडो: %1$s</string>
+    <string name="schedule_save_to_system_calendar">सीधे सिस्टम कैलेंडर में लिखें</string>
+    <string name="schedule_export_to_system_calendar">सिस्टम कैलेंडर में जोड़ें</string>
+    <string name="schedule_system_calendar_unavailable">इस डिवाइस पर कोई कैलेंडर ऐप उपलब्ध नहीं है</string>
+    <string name="schedule_no_writable_calendar">कोई लिखने योग्य सिस्टम कैलेंडर उपलब्ध नहीं है</string>
+    <string name="schedule_saved_to_system_calendar">सिस्टम कैलेंडर में सहेजा गया</string>
+    <string name="schedule_save_to_system_calendar_failed">सिस्टम कैलेंडर में सहेजने में विफल। कृपया बाद में पुनः प्रयास करें</string>
+    <string name="schedule_calendar_permission_denied">सीधे सिस्टम कैलेंडर में लिखने के लिए कैलेंडर अनुमति आवश्यक है</string>
+    <string name="schedule_choose_calendar_title">लक्ष्य कैलेंडर चुनें</string>
+    <string name="schedule_calendar_primary_badge">प्राथमिक</string>
+    <string name="schedule_dialog_close">बंद करें</string>
+    <string name="schedule_permission_dialog_title">कैलेंडर अनुमति आवश्यक</string>
+    <string name="schedule_permission_dialog_message">सिस्टम कैलेंडर में सीधे लिखने के लिए कृपया सिस्टम सेटिंग्स में कैलेंडर पढ़ने/लिखने की अनुमति सक्षम करें।</string>
+    <string name="schedule_open_settings">सेटिंग्स खोलें</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">Würfeln.</string>
+    <string name="dice_roller_roll">Schütteln.</string>
+    <string name="dice_roller_history">Verlauf</string>
+    <string name="dice_roller_history_empty">Es gibt keinen Verlauf.</string>
+    <string name="dice_roller_clear_history">Verlauf löschen</string>
+    <string name="dice_roller_clear_confirm">Möchten Sie den gesamten Verlauf löschen?</string>
+    <string name="dice_roller_confirm">Bestätigen.</string>
+    <string name="dice_roller_cancel">Abbrechen</string>
+    <string name="dice_roller_count">Anzahl der Würfel</string>
+    <string name="dice_roller_type">Würfeltyp</string>
+    <string name="dice_roller_total">Gesamtpunkte</string>
+    <string name="dice_roller_shake_hint">Schütteln Sie Ihr Handy oder klicken Sie auf \"Schütteln\".</string>
+    <string name="dice_roller_result_prefix">Ergebnisse:</string>
+    <string name="dice_roller_description">Tischwürfel.</string>
+</resources>

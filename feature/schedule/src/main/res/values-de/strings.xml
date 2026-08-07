@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Zeitplan-Hub</string>
+    <string name="schedule_sync_card_title">Sync-Grundlage ist bereit</string>
+    <string name="schedule_sync_card_description">Dieses Modul besitzt bereits sein eigenes Ereignismodell, den Sync-Cursor-Zustand und die Todo-Brückenfelder, sodass Google Kalender später hinzugefügt werden kann, ohne die Almanach- oder Todo-Module zu verschmutzen.</string>
+    <string name="schedule_sync_ready">Sync-Cursor gespeichert</string>
+    <string name="schedule_sync_not_connected">Kein Konto verbunden</string>
+    <string name="schedule_event_count_label">%1$d Ereignisse</string>
+    <string name="schedule_linked_task_chip">Todo-Kontext verknüpft</string>
+    <string name="schedule_last_error_label">Letzter Fehler: %1$s</string>
+    <string name="schedule_action_card_title">Mit einer sauberen lokalen Ereignisdomäne beginnen</string>
+    <string name="schedule_action_create_local">Lokales Ereignis erstellen</string>
+    <string name="schedule_action_create_focus">Ereignis aus Fokusdatum erstellen</string>
+    <string name="schedule_action_open_todo">Todo öffnen</string>
+    <string name="schedule_action_open_calendar">Kalender öffnen</string>
+    <string name="schedule_event_section_title">Ereignisse</string>
+    <string name="schedule_empty_title">Noch keine Zeitplan-Ereignisse</string>
+    <string name="schedule_empty_description">Zuerst mit lokalen Ereignissen beginnen, dann Google-Konto-Authentifizierung, Delta-Sync und Konfliktbehandlung schrittweise hinzufügen.</string>
+    <string name="schedule_provider_local">Lokal</string>
+    <string name="schedule_provider_system">Systemkalender</string>
+    <string name="schedule_provider_google">Google Kalender</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Nur lokal</string>
+    <string name="schedule_status_pending_upload">Upload ausstehend</string>
+    <string name="schedule_status_synced">Synchronisiert</string>
+    <string name="schedule_status_pending_delete">Löschung ausstehend</string>
+    <string name="schedule_status_conflict">Konflikt</string>
+    <string name="schedule_status_failed">Sync fehlgeschlagen</string>
+    <string name="schedule_linked_task_badge">Aufgabenbrücke</string>
+    <string name="schedule_quick_event_title">Neues lokales Ereignis</string>
+    <string name="schedule_focus_event_title">Fokusereignis</string>
+    <string name="schedule_linked_task_description">Verknüpftes Todo: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Direkt in den Systemkalender schreiben</string>
+    <string name="schedule_export_to_system_calendar">Zum Systemkalender hinzufügen</string>
+    <string name="schedule_system_calendar_unavailable">Auf diesem Gerät ist keine Kalender-App verfügbar</string>
+    <string name="schedule_no_writable_calendar">Kein beschreibbarer Systemkalender verfügbar</string>
+    <string name="schedule_saved_to_system_calendar">Im Systemkalender gespeichert</string>
+    <string name="schedule_save_to_system_calendar_failed">Speichern im Systemkalender fehlgeschlagen. Bitte später erneut versuchen</string>
+    <string name="schedule_calendar_permission_denied">Für das direkte Schreiben in den Systemkalender ist die Kalenderberechtigung erforderlich</string>
+    <string name="schedule_choose_calendar_title">Zielkalender auswählen</string>
+    <string name="schedule_calendar_primary_badge">Primär</string>
+    <string name="schedule_dialog_close">Schließen</string>
+    <string name="schedule_permission_dialog_title">Kalenderberechtigung erforderlich</string>
+    <string name="schedule_permission_dialog_message">Bitte aktivieren Sie in den Systemeinstellungen die Lese-/Schreibberechtigung für den Kalender, um direkt in den Systemkalender schreiben zu können.</string>
+    <string name="schedule_open_settings">Einstellungen öffnen</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">Bitte wählen oder fügen Sie zuerst eine Kategorie hinzu</string>
+    <string name="schedule_section_title">Zeitplan</string>
+    <string name="action_open_schedule">Zeitplan-Hub öffnen</string>
+    <string name="action_create_schedule">Lokalen Zeitplan erstellen</string>
+    <string name="schedule_creating">Zeitplan wird erstellt…</string>
+    <string name="schedule_missing_due_date">Bitte legen Sie zuerst ein Fälligkeitsdatum für diese Aufgabe fest</string>
+    <string name="schedule_created_success">Lokaler Zeitplan erstellt</string>
+    <string name="schedule_created_failed">Zeitplan konnte nicht erstellt werden. Bitte versuchen Sie es später erneut</string>
+    <string name="dialog_delete_category_title">Kategorie löschen</string>
+    <string name="dialog_delete_category_message">Möchten Sie \"%1$s\" wirklich löschen?\nAlle Aufgaben in dieser Kategorie werden ebenfalls gelöscht.</string>
+    <string name="dialog_delete_task_message">Möchten Sie \"%1$s\" wirklich löschen?</string>
+    <string name="cd_switch_to_list_view">Zur Listenansicht wechseln</string>
+    <string name="cd_switch_to_grid_view">Zur Rasteransicht wechseln</string>
+    <string name="cd_edit_mode_done">Fertig</string>
+    <string name="label_status">Status</string>
+    <string name="status_overdue">Überfällig</string>
+    <string name="category_unnamed">Unbenannte Kategorie</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d Aufgaben gelöscht</string>
+    <string name="action_delete_selected_cd">Ausgewählte löschen</string>
+    <string name="error_todo_not_found">Aufgabe nicht gefunden</string>
+    <string name="error_category_not_found">Kategorie nicht gefunden</string>
+    <string name="error_load_failed">Laden fehlgeschlagen</string>
+    <string name="cd_task_completed">Abgeschlossen</string>
+    <string name="cd_task_pending">Ausstehend</string>
+    <string name="cd_add_star">Stern hinzufügen</string>
+    <string name="cd_remove_star">Stern entfernen</string>
+    <string name="date_today">Heute</string>
+    <string name="date_yesterday">Gestern</string>
+    <string name="date_days_ago">Vor %1$d Tagen</string>
+    <string name="date_tomorrow">Morgen</string>
+    <string name="date_days_later">In %1$d Tagen</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">डिफ़ॉल्ट चैट सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_default_desc">चैट के लिए डिफ़ॉल्ट सिस्टम नियम</string>
+    <string name="sys_prompt_agent_create_title">एजेंट निर्माण सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_agent_create_desc">एजेंट बनाने के लिए अंतर्निहित सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_prompt_create_title">प्रॉम्प्ट निर्माण सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_prompt_create_desc">प्रॉम्प्ट बनाने के लिए अंतर्निहित सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_bazi_title">बाज़ी चार्ट विश्लेषण सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_bazi_desc">बाज़ी (चार स्तंभ) चार्ट विश्लेषण के लिए अंतर्निहित सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_xiangqi_title">शतरंज चाल सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_xiangqi_desc">एलएलएम शतरंज (चीनी शतरंज) मैचों के लिए अंतर्निहित सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_mode_ask_title">ASK प्रश्न-उत्तर-केवल मोड प्रोटोकॉल</string>
+    <string name="sys_prompt_mode_ask_desc">Ask मोड के लिए निष्पादन प्रोटोकॉल प्रॉम्प्ट</string>
+    <string name="sys_prompt_mode_plan_title">PLAN योजना-केवल मोड प्रोटोकॉल</string>
+    <string name="sys_prompt_mode_plan_desc">Plan मोड के लिए निष्पादन प्रोटोकॉल प्रॉम्प्ट</string>
+    <string name="sys_prompt_mode_agent_title">AGENT निष्पादन मोड प्रोटोकॉल</string>
+    <string name="sys_prompt_mode_agent_desc">Agent मोड के लिए निष्पादन प्रोटोकॉल प्रॉम्प्ट</string>
+    <string name="sys_prompt_duel_title">AI द्वंद्व/इंटरैक्शन प्रॉम्प्ट टेम्पलेट</string>
+    <string name="sys_prompt_duel_desc">AI द्वंद्व और इंटरैक्शन के लिए सिस्टम निर्देश, भूमिका नियम और टर्न मार्गदर्शन टेम्पलेट</string>
+</resources>

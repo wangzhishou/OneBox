@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_confirm">Kumpirmahin</string>
+    <string name="date_picker_cancel">Kanselahin</string>
+    <string name="date_picker_edit">I-edit</string>
+    <string name="date_picker_select_year_month">Pumili ng Taon at Buwan</string>
+    <string name="date_picker_year_input">Taon</string>
+    <string name="date_picker_current_year">Kasalukuyang taon</string>
+    <string name="blessing_effect_merit_plus_one">Suwerte +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">Nakaraang Buwan</string>
+    <string name="date_picker_next_month">Susunod na Buwan</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">Lin</string>
+    <string name="date_picker_weekday_mon">Lun</string>
+    <string name="date_picker_weekday_tue">Mar</string>
+    <string name="date_picker_weekday_wed">Miy</string>
+    <string name="date_picker_weekday_thu">Huw</string>
+    <string name="date_picker_weekday_fri">Biy</string>
+    <string name="date_picker_weekday_sat">Sab</string>
+    <string name="time_range_picker_start_time">Oras ng Pagsisimula</string>
+    <string name="time_range_picker_end_time">Oras ng Pagtatapos</string>
+    <string name="time_range_picker_hour">Oras</string>
+    <string name="time_range_picker_minute">Minuto</string>
+    <string name="time_range_picker_hint">Tip: Ilagay ang oras (0-23) at minuto (0-59)</string>
+    <string name="date_range_picker_title">Pumili ng Saklaw ng Petsa</string>
+    <string name="date_range_start">Petsa ng Pagsisimula</string>
+    <string name="date_range_end">Petsa ng Pagtatapos</string>
+    <string name="week_selector_week_title">%1$d-%2$02d · Linggo %3$d</string>
+    <string name="icon_picker_icon_count">%1$d icon</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Miy</item>
+        <item>Huw</item>
+        <item>Biy</item>
+        <item>Sab</item>
+        <item>Lin</item>
+    </string-array>
+</resources>

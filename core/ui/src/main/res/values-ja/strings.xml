@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_confirm">確認</string>
+    <string name="date_picker_cancel">キャンセル</string>
+    <string name="date_picker_edit">編集</string>
+    <string name="date_picker_select_year_month">年と月を選択</string>
+    <string name="date_picker_year_input">年</string>
+    <string name="date_picker_current_year">今年</string>
+    <string name="blessing_effect_merit_plus_one">運 +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">前の月</string>
+    <string name="date_picker_next_month">次の月</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">日</string>
+    <string name="date_picker_weekday_mon">月</string>
+    <string name="date_picker_weekday_tue">火</string>
+    <string name="date_picker_weekday_wed">水</string>
+    <string name="date_picker_weekday_thu">木</string>
+    <string name="date_picker_weekday_fri">金</string>
+    <string name="date_picker_weekday_sat">土</string>
+    <string name="time_range_picker_start_time">開始時間</string>
+    <string name="time_range_picker_end_time">終了時間</string>
+    <string name="time_range_picker_hour">時</string>
+    <string name="time_range_picker_minute">分</string>
+    <string name="time_range_picker_hint">ヒント: 時(0-23)と分(0-59)を入力してください</string>
+    <string name="date_range_picker_title">日付範囲を選択</string>
+    <string name="date_range_start">開始日</string>
+    <string name="date_range_end">終了日</string>
+    <string name="week_selector_week_title">%1$d年%2$d月 · 第%3$d週</string>
+    <string name="icon_picker_icon_count">%1$d 個のアイコン</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>月</item>
+        <item>火</item>
+        <item>水</item>
+        <item>木</item>
+        <item>金</item>
+        <item>土</item>
+        <item>日</item>
+    </string-array>
+</resources>

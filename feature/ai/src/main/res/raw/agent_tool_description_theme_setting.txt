@@ -1,0 +1,33 @@
+主题设置工具：读取 / 切换 / 微调当前主题。
+
+三个 action，按用户意图选用：
+- list：读取当前主题状态，响应包含：
+  - `theme`：当前主题（颜色、日夜模式、玻璃 / 网格渐变 / glass_alpha / gradient_style）
+  - `gradientStyles`：所有合法的 `gradient_style` 取值（用其中之一）
+  - `nightModes`：[Light, Dark, System]
+  - `builtinPresets`：[{"id","name"} 列表]，用于 action="apply" 切换预设主题
+- set：修改当前主题的若干字段。**所有字段可选**，只传想改的即可；返回更新后的 theme。
+- apply：切换到内置或用户主题。两种方式二选一：
+  - `preset_id`（推荐，来自 list 响应的 builtinPresets），如 "builtin_sakura_pink"
+  - 或 `preset_name`（大小写不敏感、模糊匹配），如 "SakuraPink"、"樱花粉"、"default"、"ocean"
+
+action="set" 的字段（全部可选）：
+- night_mode：Light / Dark / System
+- primary / secondary / tertiary / surface：hex 颜色，格式 "#RRGGBB" 或 "#AARRGGBB"。
+  "#" 前缀可省略，也接受 "0x" 前缀。示例：#3B82F6 或 FF6A8DFF。
+- glass："true" 或 "false"（同时接受 1/0、yes/no、on/off）—— 玻璃透明效果
+- liquid_glass："true" 或 "false" —— 液态玻璃
+- mesh_gradient："true" 或 "false" —— 网格渐变背景
+- gradient_style：`gradientStyles` 数组中的名字，如 "Lavender"、"Sunset"、"Ocean"
+- glass_alpha：0.1 ~ 1.0 的浮点数 —— 玻璃透明度基准值，默认 1.0
+
+示例：
+- "当前主题是什么" → {"action": "list"}
+- "换成深色模式" → {"action": "set", "night_mode": "Dark"}
+- "用樱花粉主题" → {"action": "apply", "preset_name": "樱花粉"}
+- "主色改成蓝色" → {"action": "set", "primary": "#3B82F6"}
+- "更清透一点" → {"action": "set", "glass_alpha": 0.75}
+- "打开网格渐变，风格用薰衣草" → {"action": "set", "mesh_gradient": "true", "gradient_style": "Lavender"}
+
+错误响应会带 `reasonCode`（如 "invalid_color"、"unknown_style"、"unknown_preset"）
+和 `message`，部分错误还会带 `validOptions` 供下次自纠。

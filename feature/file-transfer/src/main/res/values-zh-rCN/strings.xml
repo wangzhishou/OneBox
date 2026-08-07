@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 标题和基本文字 -->
+    <string name="file_transfer_title">文件传输</string>
+    <string name="file_transfer_description">通过浏览器访问手机文件</string>
+
+    <!-- Tabs -->
+    <string name="file_transfer_tab_transfer">传输</string>
+    <string name="file_transfer_tab_chat">聊天</string>
+
+    <!-- Chat -->
+    <string name="file_transfer_chat_empty">暂无消息</string>
+    <string name="file_transfer_chat_empty_title">还没有聊天消息</string>
+    <string name="file_transfer_chat_empty_guide">1. 在「传输」页启动服务，确保手机与电脑在同一 Wi‑Fi。\n2. 用电脑浏览器打开访问地址（或扫码）。\n3. 在网页「聊天」中发送文字/上传文件，手机端会同步显示。\n\n小提示：你也可以在手机端直接发送文件给浏览器。</string>
+    <string name="file_transfer_chat_empty_no_session">尚未检测到浏览器连接，先让电脑打开访问地址建立连接。</string>
+    <string name="file_transfer_chat_empty_server_stopped">服务未启动：请先到「传输」页点击“启动服务”。</string>
+    <string name="file_transfer_chat_empty_server_running">服务已启动：用电脑打开访问地址后，就可以开始聊天与传文件。</string>
+    <string name="file_transfer_chat_input_hint">输入消息…</string>
+    <string name="file_transfer_cd_send">发送</string>
+    <string name="file_transfer_file_default_name">文件</string>
+    <string name="file_transfer_tap_to_open">点击打开</string>
+    <string name="file_transfer_cd_qr_code">二维码</string>
+
+    <!-- 服务状态 -->
+    <string name="server_status_stopped">服务已停止</string>
+    <string name="server_status_running">服务运行中</string>
+    <string name="server_status_starting">正在启动…</string>
+    <string name="server_status_error">服务出错</string>
+
+    <!-- 操作按钮 -->
+    <string name="start_server">启动服务</string>
+    <string name="stop_server">停止服务</string>
+    <string name="copy_address">复制地址</string>
+    <string name="refresh">刷新</string>
+
+    <!-- 信息展示 -->
+    <string name="access_address">访问地址</string>
+    <string name="scan_qr_code">扫描二维码访问</string>
+    <string name="qr_code_hint">使用电脑浏览器扫描二维码或输入地址访问</string>
+    <string name="connected_clients">已连接: %d</string>
+    <string name="no_connection">暂无连接</string>
+
+    <!-- WiFi/网络 -->
+    <string name="file_transfer_wifi_connected">WiFi 已连接</string>
+    <string name="file_transfer_wifi_disconnected">WiFi 未连接</string>
+    <string name="file_transfer_ip_prefix">IP：%s</string>
+
+    <!-- 设置项 -->
+    <string name="settings">设置</string>
+    <string name="port_setting">端口</string>
+    <string name="port_hint">默认端口: 8080</string>
+    <string name="password_protection">密码保护</string>
+    <string name="password_hint">留空表示无须密码</string>
+    <string name="allow_upload">允许上传</string>
+    <string name="allow_upload_hint">允许从电脑上传文件到手机</string>
+    <string name="root_directory">根目录</string>
+    <string name="select_directory">选择目录</string>
+
+    <!-- 提示消息 -->
+    <string name="address_copied">地址已复制到剪贴板</string>
+    <string name="server_started">服务已启动</string>
+    <string name="server_stopped">服务已停止</string>
+    <string name="server_error">服务启动失败: %s</string>
+    <string name="network_unavailable">网络不可用，请连接WiFi</string>
+    <string name="storage_permission_required">需要存储权限才能访问文件</string>
+    <string name="notification_permission_required">需要通知权限才能在后台运行</string>
+
+    <!-- 通知 -->
+    <string name="notification_channel_name">文件传输服务</string>
+    <string name="notification_channel_description">显示文件传输服务状态</string>
+    <string name="notification_title">文件传输服务运行中</string>
+    <string name="notification_content">访问地址: %s</string>
+    <string name="notification_stop">停止</string>
+
+    <!-- Web界面文字 -->
+    <string name="web_title">文件传输</string>
+    <string name="web_upload">上传文件</string>
+    <string name="web_download">下载</string>
+    <string name="web_back">返回上级</string>
+    <string name="web_empty_folder">文件夹为空</string>
+    <string name="web_drag_hint">拖拽文件到此处上传</string>
+    <string name="web_uploading">上传中…</string>
+    <string name="web_upload_success">上传成功</string>
+    <string name="web_upload_failed">上传失败</string>
+    <string name="web_password_required">请输入访问密码</string>
+    <string name="web_password_incorrect">密码错误</string>
+
+    <!-- 文件信息 -->
+    <string name="file_size_bytes">%d B</string>
+    <string name="file_size_kb">%.1f KB</string>
+    <string name="file_size_mb">%.1f MB</string>
+    <string name="file_size_gb">%.1f GB</string>
+    <string name="files_count">%d 个文件</string>
+    <string name="folders_count">%d 个文件夹</string>
+
+    <!-- 权限相关 -->
+    <string name="permission_required_title">需要权限</string>
+    <string name="permission_required_message">文件传输服务需要访问存储权限以读取和写入文件，请授权。</string>
+    <string name="grant_permission">授权</string>
+    <string name="cancel">取消</string>
+</resources>

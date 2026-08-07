@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="password_vault_title">密码保险箱</string>
+    <string name="password_vault_subtitle">安全保存网站、APP 与大门等密码</string>
+    <string name="password_vault_locked">保险箱已锁定</string>
+    <string name="password_vault_locked_desc">请输入主密码解锁。所有数据均通过主密码加密，离开本页后自动锁定。</string>
+    <string name="password_vault_unlock_title">解锁保险箱</string>
+    <string name="password_vault_unlock_desc">请输入主密码以解锁或初始化保险箱。</string>
+    <string name="password_vault_master_password">主密码</string>
+    <string name="password_vault_unlock">解锁</string>
+    <string name="password_vault_cancel">取消</string>
+    <string name="password_vault_lock">锁定</string>
+    <string name="password_vault_wrong_password">主密码错误，无法解密。</string>
+    <string name="password_vault_empty_title">还没有保存任何密码</string>
+    <string name="password_vault_empty_desc">点击下方按钮添加第一条安全记录。</string>
+    <string name="password_vault_add_entry">添加记录</string>
+    <string name="password_vault_add_first_entry">添加第一条记录</string>
+    <string name="password_vault_new_entry">新建记录</string>
+    <string name="password_vault_edit_entry">编辑记录</string>
+    <string name="password_vault_save">保存</string>
+    <string name="password_vault_entry_title">名称（网站/APP/场所）</string>
+    <string name="password_vault_entry_category">分类</string>
+    <string name="password_vault_entry_account">账号/用户名</string>
+    <string name="password_vault_entry_password">密码</string>
+    <string name="password_vault_entry_note">备注</string>
+    <string name="password_vault_secret_fields">私密字段</string>
+    <string name="password_vault_new_field_label">字段名称</string>
+    <string name="password_vault_new_field_value">字段内容</string>
+    <string name="password_vault_add_field">添加私密字段</string>
+    <string name="password_vault_field_label">字段名</string>
+    <string name="password_vault_field_value">字段值</string>
+    <string name="password_vault_remove_field">删除字段</string>
+    <string name="password_vault_show_password">显示密码</string>
+    <string name="password_vault_hide_password">隐藏密码</string>
+    <string name="password_vault_copy_password">复制密码</string>
+    <string name="password_vault_delete_entry">删除记录</string>
+    <string name="password_vault_delete_title">确认删除</string>
+    <string name="password_vault_delete_message">确定要删除「%1$s」吗？删除后无法恢复。</string>
+    <string name="password_vault_delete">删除</string>
+    <string name="password_vault_default_category">默认</string>
+    <string name="password_vault_copy_account">复制账号</string>
+    <string name="password_vault_copied">已复制到剪贴板</string>
+    <string name="password_vault_locked_notice">内容已加密</string>
+    <string name="password_vault_locked_notice_desc">密码与私密字段已使用主密码加密，解锁后可查看与复制</string>
+    <string name="password_vault_unlock_now">立即解锁</string>
+    <string name="password_vault_error_not_unlocked">保险箱未解锁</string>
+    <string name="password_vault_error_entry_not_found">记录不存在或主密码错误</string>
+
+    <!-- Category management -->
+    <string name="password_vault_category_manage">分类管理</string>
+    <string name="password_vault_category_empty">还没有分类，点击右上角添加</string>
+    <string name="password_vault_category_default_login">登录</string>
+    <string name="password_vault_category_default_bank">银行</string>
+    <string name="password_vault_category_default_email">邮箱</string>
+    <string name="password_vault_category_default_wifi">Wi-Fi</string>
+    <string name="password_vault_category_default_other">其他</string>
+    <string name="password_vault_filter_all">全部</string>
+    <string name="password_vault_filter_empty">该筛选下还没有记录</string>
+    <string name="password_vault_filter_clear">清除筛选</string>
+    <string name="password_vault_search_placeholder">搜索名称或账号</string>
+
+    <!-- Password strength -->
+    <string name="password_vault_strength_title">密码强度</string>
+    <string name="password_vault_strength_empty">未输入</string>
+    <string name="password_vault_strength_weak">弱</string>
+    <string name="password_vault_strength_fair">一般</string>
+    <string name="password_vault_strength_good">良好</string>
+    <string name="password_vault_strength_strong">强</string>
+    <string name="password_vault_strength_suggestion_length">长度建议至少 12 位</string>
+    <string name="password_vault_strength_suggestion_case">同时包含大小写字母</string>
+    <string name="password_vault_strength_suggestion_digit">加入数字</string>
+    <string name="password_vault_strength_suggestion_symbol">加入特殊字符</string>
+    <string name="password_vault_strength_suggestion_common">避免常见弱密码</string>
+
+    <!-- Password generator -->
+    <string name="password_vault_generate_password">生成密码</string>
+    <string name="password_vault_generator_title">生成强密码</string>
+    <string name="password_vault_generator_length">长度</string>
+    <string name="password_vault_generator_uppercase">大写字母 (A-Z)</string>
+    <string name="password_vault_generator_lowercase">小写字母 (a-z)</string>
+    <string name="password_vault_generator_digits">数字 (0-9)</string>
+    <string name="password_vault_generator_symbols">特殊字符 (!@#…)</string>
+    <string name="password_vault_generator_exclude_ambiguous">排除易混淆字符 (0/O, 1/l/I)</string>
+    <string name="password_vault_generator_regenerate">重新生成</string>
+    <string name="password_vault_generator_charset_invalid">请至少选择一种字符集</string>
+    <string name="password_vault_generator_use">使用此密码</string>
+</resources>

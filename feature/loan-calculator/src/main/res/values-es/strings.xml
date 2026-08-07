@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">Calculadora de Préstamos</string>
+    <string name="loan_calc_amount_label">Monto del préstamo ($)</string>
+    <string name="loan_calc_amount_hint">Por favor ingrese el monto.</string>
+    <string name="loan_calc_term_label">Plazo del préstamo</string>
+    <string name="loan_calc_term_hint">Selección</string>
+    <string name="loan_calc_rate_label">Tasa de interés anual (%)</string>
+    <string name="loan_calc_rate_hint">Ingrese la tasa de interés anual</string>
+    <string name="loan_calc_method_label">Método de pago</string>
+    <string name="loan_calc_method_hint">Selección</string>
+    <string name="loan_calc_start">Comenzar cálculo</string>
+    <string name="loan_calc_cancel">Cancelar</string>
+    <string name="loan_method_equal_installment">Solo espere.</string>
+    <string name="loan_method_equal_installment_desc">Cuota mensual, capital, interés</string>
+    <string name="loan_method_equal_payment">Equivalente</string>
+    <string name="loan_method_equal_payment_desc">La cuota mensual es la misma, el capital aumenta y el interés disminuye mensualmente</string>
+    <string name="loan_method_equal_principal">Capital equivalente</string>
+    <string name="loan_method_equal_principal_desc">Disminución mensual en la cuota, mismo capital por mes y disminución mensual del interés</string>
+    <string name="loan_method_interest_first">Anotémoslo.</string>
+    <string name="loan_method_interest_first_desc">Interés fijo mensual y capital total al vencimiento</string>
+    <string name="loan_result_monthly_payment">Pagos mensuales promedio</string>
+    <string name="loan_result_total_interest">Interés total</string>
+    <string name="loan_result_total_repayment">Pagos totales</string>
+    <string name="loan_result_schedule_title">Plan de pago</string>
+    <string name="loan_result_month">Período</string>
+    <string name="loan_result_monthly_col">Pago mensual</string>
+    <string name="loan_result_principal_col">Capital</string>
+    <string name="loan_result_interest_col">Interés</string>
+    <string name="loan_result_remaining_col">Capital restante</string>
+    <string name="loan_input_error_amount">Ingrese un monto de préstamo válido</string>
+    <string name="loan_input_error_term">Seleccione el período del préstamo</string>
+    <string name="loan_input_error_rate">Ingrese una tasa de interés anual válida</string>
+    <string name="loan_input_error_method">Por favor, elija cómo pagar.</string>
+    <string name="loan_term_months">%1$d meses</string>
+    <string name="loan_term_years">%1$d años (%2$d meses)</string>
+    <string name="loan_term_picker_title">Seleccione el plazo del préstamo</string>
+</resources>

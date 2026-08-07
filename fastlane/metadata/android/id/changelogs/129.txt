@@ -1,0 +1,5 @@
+• Ikon gaya garis baru di seluruh aplikasi untuk tampilan yang lebih bersih dan konsisten
+• Peningkatan lokalisasi bahasa Inggris di seluruh aplikasi
+• Kini Anda dapat memberi rating OneBox tanpa meninggalkan aplikasi
+• Nama aplikasi dalam bahasa Tionghoa kini tampil sebagai 万宝盒
+• Perbaikan bug dan peningkatan performa

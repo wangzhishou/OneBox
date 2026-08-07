@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.OneBox" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <style name="Theme.OneBox.Launcher" parent="Theme.SplashScreen">
+        <!-- Must be a solid color, NOT a drawable/layer-list. The compat splash
+             screen uses this as the window background; a semi-transparent
+             drawable causes the icon to "float" on a transparent background
+             on some devices. -->
+        <item name="windowSplashScreenBackground">#FFF5F7F7</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_animated_icon</item>
+        <item name="windowSplashScreenAnimationDuration">500</item>
+        <item name="postSplashScreenTheme">@style/Theme.OneBox</item>
+    </style>
+
+    <style name="TransparentActivity" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+</resources>

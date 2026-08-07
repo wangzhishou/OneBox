@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">Palawakin</string>
+    <string name="collapse">Itago ito.</string>
+    <string name="dialog_clear_recents_title">I-clear ang mga Kamakailan</string>
+    <string name="dialog_clear_recents_message">I-clear ang lahat ng mga tala ng kamakailang pag-access? Hindi ito maaaring i-undo.</string>
+</resources>

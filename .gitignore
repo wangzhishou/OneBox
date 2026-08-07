@@ -1,0 +1,37 @@
+*.iml
+*.salive
+.kotlin
+.trae
+.gradle
+.qoder
+.mimocode
+# 仅忽略根目录的 release 产物目录 (build_release.sh 输出), 不能写成裸 `release`,
+# 否则会误伤 src/release 源码目录
+/release
+# gradle.properties 需要入库 (项目构建依赖其中的配置); 本机覆盖请用 ~/.gradle/gradle.properties
+local.properties
+.DS_Store
+/build
+/app/release
+/captures
+.externalNativeBuild
+.cxx
+/.idea
+/keystore.properties
+/keystore-google.properties
+/app/google-services.json
+/app/src/*/google-services.json
+/libs/nQuant/build
+build/
+/libs/snowfall/build/
+/wanbaohe.cer
+/.kotlin/
+/stacktrace.txt
+.claude/settings.local.json
+scripts/__pycache__/
+__pycache__/
+/gradle/*.properties
+
+# Play Console API key 与本地环境(勿入库)
+fastlane/*.json
+fastlane/.venv/

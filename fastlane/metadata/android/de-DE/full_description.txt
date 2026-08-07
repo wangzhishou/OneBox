@@ -1,0 +1,56 @@
+OneBox ist eine kostenlose, werbefreie All-in-One-Toolbox: Über 90 sorgfältig gefertigte Werkzeuge in einer einzigen App – Bildbearbeitung, Dokumente & Büro, KI-Assistent und praktische Alltagshelfer.
+
+【Warum „OneBox"?】
+• One: Alle Alltags-Tools – eine App genügt
+• Box: Eine Box, die alles enthält
+Es geht dabei nicht nur darum, viel hineinzupacken, sondern darum, dass du nie wieder zu einer anderen Tool-App wechseln musst.
+
+【Effizienz-Tools】
+• Teleprompter, Notizen, To-do-Listen, Entscheidungsrad
+• Kalender, Haushaltsbuch, Cloud-Speicher-Tools, Habit-Tracker
+
+【Dateien & PDF】
+• PDF-Tools: zusammenführen, aufteilen, Bilder und Text extrahieren
+• Markdown-Editor mit Live-Vorschau
+• Dateiverschlüsselung, Audio-Cover-Extraktion, EXIF-Bearbeitung
+• Dateibrowser und Dateiübertragung zwischen Geräten
+
+【Bildtools】
+• Zuschneiden, Drehen, Skalieren, Formatkonvertierung (HEIC / WebP / AVIF u. a.)
+• Filter, Collagen, Langbild-Zusammenführung, GIF-Tools
+• QR-Code-Scanner und -Generator, Farbtools
+• Bildkomprimierung und Formatkonvertierung – komplett lokal verarbeitet, ohne Upload
+
+【Alltagshelfer】
+• Passfotos, Netzwerk-Geschwindigkeitstest, Wasserzeichen-Kamera
+• Gebetswand, Zeit-Sanduhr, Apk.1-Installer
+• Bildschirm- und Medientools, kleine Spiele für zwischendurch
+
+【KI-Assistent: Mehr als nur viele Funktionen】
+Wäre es nur die Menge an Funktionen, könnten das viele Toolbox-Apps. OneBox hat einen integrierten KI-Assistenten: Du musst nicht mehr jedes Tool suchen und dir Schritte merken – sag einfach, was du brauchst:
+• „Wandle das Bild in ein PDF um."
+• „Trag diesen Kassenbon-Screenshot ins Haushaltsbuch ein."
+• „Erstelle eine To-do-Liste."
+• „Schau mal nach den aktuellen Aktienkursen."
+Die KI versteht, führt aus und gibt Feedback – alles in einem Zug.
+• Ein Eingang für Gespräche mit mehreren führenden KI-Modellen
+• Der AI Agent kann die Werkzeuge der App aufrufen, um Aufgaben für dich zu erledigen
+• Helfer zum Schreiben, Umschreiben, Zusammenfassen und Übersetzen
+• Eigene KI-Engines und Prompt-Verwaltung
+
+【Eine App, die sich selbst weiterentwickelt】
+OneBox ist nicht statisch – es verfügt über ein „KI-Selbstevolutionssystem":
+Nutzer hinterlassen Feedback → die KI analysiert es als Produktmanager → Code wird automatisch generiert → getestet und veröffentlicht.
+Bugs, die du meldest, Funktionen, die du dir wünschst, Vorschläge zur Verbesserung – all das kann von der KI bewertet und umgesetzt werden. So passt sich OneBox mit jeder Nutzung besser an deine Bedürfnisse an.
+
+【Warum OneBox】
+• Kostenlos nutzbar, ohne Werbung
+• Datenschutz zuerst: Bilder und Dokumente werden lokal verarbeitet
+• Übersichtliche, moderne Material-Design-Oberfläche
+• Ständige Updates mit immer neuen Tools
+
+„Die letzte Tool-App, die du brauchst" ist ein großes Ziel, aber OneBox hat bereits drei entscheidende Schritte gemacht: alle wichtigen Tools an einem Eingang gebündelt, dank KI mühelos bedienbar und ein Produkt, das sich wirklich vom Feedback seiner Nutzer treiben lässt.
+
+Wenn du es leid bist, zwischen einem Dutzend Tool-Apps hin- und herzuwechseln, probiere OneBox aus – vielleicht wird es wirklich deine letzte.
+
+Kontakt: support@oneboxable.com

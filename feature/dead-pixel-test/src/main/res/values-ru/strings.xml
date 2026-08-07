@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">Обнаружение дефектов экрана</string>
+    <string name="dead_pixel_test_description">Используйте вращение чистых цветов для обнаружения неисправностей экрана и битых пикселей</string>
+    <string name="dead_pixel_color_white">Белый</string>
+    <string name="dead_pixel_color_black">Черный</string>
+    <string name="dead_pixel_color_red">Красный</string>
+    <string name="dead_pixel_color_green">Зеленый</string>
+    <string name="dead_pixel_color_blue">Синий</string>
+    <string name="dead_pixel_hint">Нажмите, чтобы изменить цвет... Свайпы вправо и влево позволяют переключаться туда и обратно.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Показать сетку</string>
+    <string name="dead_pixel_grid_off">Скрыть сетку</string>
+    <string name="dead_pixel_auto_play">Автопрокрутка</string>
+    <string name="dead_pixel_auto_stop">Остановить!</string>
+    <string name="dead_pixel_fullscreen">Полноэкранный тест</string>
+    <string name="dead_pixel_exit_fullscreen">Выйти из полноэкранного режима</string>
+    <string name="dead_pixel_guide_title">Как мы обнаруживаем повреждения?</string>
+    <string name="dead_pixel_guide_content">Экран последовательно отобразит пять сплошных цветов: белый, черный, красный, зеленый и синий.\n\n• Белый фон: проверка на черные темные пятна (битые пиксели)\n• Черный фон: проверка на яркие точки (застрявшие пиксели)\n• Цветные фоны: проверка на аномальные пиксели других цветов\n\nНажмите на экран, чтобы переключиться на следующий цвет, или включите автопрокрутку. Для лучших результатов проводите тест в затемненном помещении.</string>
+    <string name="dead_pixel_guide_start">Начать тест</string>
+</resources>

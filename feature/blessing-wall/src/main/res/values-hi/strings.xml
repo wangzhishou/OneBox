@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">आशीर्वाद दीवार</string>
+    <string name="blessing_wall_sub">रोज़ एक टैप · शुभकामनाएँ साथ चलती हैं</string>
+    <string name="blessing_record_title">आशीर्वाद रिकॉर्ड</string>
+    <string name="blessing_tab_wooden_fish">शांत पल</string>
+    <string name="blessing_tab_wealth_god">शुभ भाग्य</string>
+    <string name="blessing_tab_guanyin">शांति और आनंद</string>
+    <string name="blessing_tab_incense">सच्ची शुभकामना</string>
+    <string name="blessing_subtitle_wooden_fish">रोज़ एक टैप · चिंताएँ दूर होती हैं</string>
+    <string name="blessing_subtitle_wealth_god">शुभ भाग्य बना रहे · सब अच्छा हो</string>
+    <string name="blessing_subtitle_guanyin">दया भीतर · शांति और आनंद</string>
+    <string name="blessing_subtitle_incense">सच्ची शुभकामनाएँ · भाग्य प्रचुर</string>
+    <string name="blessing_btn_wooden_fish">टैप करें, भाग्य +1</string>
+    <string name="blessing_btn_wealth_god">टैप करें, सौभाग्य +1</string>
+    <string name="blessing_btn_guanyin">टैप करें, शांति +1</string>
+    <string name="blessing_btn_incense">टैप करें, आशीर्वाद +1</string>
+    <string name="blessing_stat_wooden_fish">आज की गिनती</string>
+    <string name="blessing_stat_wealth_god">आज की गिनती</string>
+    <string name="blessing_stat_guanyin">आज की गिनती</string>
+    <string name="blessing_stat_incense">आज की गिनती</string>
+    <string name="blessing_count_unit">बार</string>
+    <string name="blessing_total_count">%1$d बार</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">दैनिक आशीर्वाद आँकड़े</string>
+    <string name="blessing_empty_state">अभी तक कोई आशीर्वाद रिकॉर्ड नहीं</string>
+    <string name="blessing_wish_edit">नोट संपादित करें</string>
+    <string name="blessing_wish_input_label">नोट</string>
+    <string name="blessing_wish_save">सहेजें</string>
+    <string name="blessing_wish_placeholder">अभी तक कोई नोट नहीं</string>
+    <string name="blessing_tab_text_edit">शीर्षक संपादित करें</string>
+    <string name="blessing_tab_title_label">शीर्षक</string>
+    <string name="blessing_tab_subtitle_label">उपशीर्षक</string>
+    <string name="blessing_tab_text_reset_hint">डिफ़ॉल्ट पुनर्स्थापित करने के लिए खाली छोड़ें</string>
+    <string name="blessing_history_readonly_hint">इतिहास, केवल देखें</string>
+    <string name="blessing_record_note_prefix">नोट: %1$s</string>
+    <string name="blessing_sound_on">ध्वनि चालू</string>
+    <string name="blessing_sound_off">ध्वनि बंद</string>
+    <string name="blessing_share">साझा करें</string>
+</resources>

@@ -1,0 +1,261 @@
+/*
+ * ImageToolbox is an image editor for android
+ * Copyright (c) 2024 T8RIN (Malik Mukhametzyanov)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
+package com.t8rin.imagetoolbox.core.data.utils
+
+import android.content.Context
+import android.net.Uri
+import android.os.Build
+import android.os.ParcelFileDescriptor
+import android.provider.DocumentsContract
+import android.provider.MediaStore
+import android.provider.OpenableColumns
+import androidx.core.net.toFile
+import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
+import com.t8rin.imagetoolbox.core.domain.model.ImageModel
+import com.t8rin.imagetoolbox.core.domain.saving.io.Writeable
+import com.t8rin.imagetoolbox.core.domain.utils.FileMode
+import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.utils.appContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import java.io.OutputStream
+import java.net.URLDecoder
+import java.util.LinkedList
+
+fun ImageModel.toUri(): Uri? = when (data) {
+    is Uri -> data as Uri
+    is String -> (data as String).toUri()
+    else -> null
+}
+
+private fun isDirectory(mimeType: String): Boolean {
+    return DocumentsContract.Document.MIME_TYPE_DIR == mimeType
+}
+
+internal suspend fun Context.listFilesInDirectory(
+    rootUri: Uri
+): List<Uri> = listFilesInDirectoryAsFlowImpl(rootUri).filterIsInstance<DirUri.All>().first().uris
+
+internal fun Context.listFilesInDirectoryProgressive(
+    rootUri: Uri
+): Flow<Uri> = listFilesInDirectoryAsFlowImpl(rootUri)
+    .filterIsInstance<DirUri.Entry>()
+    .map { it.uri }
+
+private fun Context.listFilesInDirectoryAsFlowImpl(
+    rootUri: Uri
+): Flow<DirUri> = callbackFlow {
+    var childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
+        rootUri,
+        DocumentsContract.getTreeDocumentId(rootUri)
+    )
+
+    val files: MutableList<Pair<Uri, Long>> = LinkedList()
+
+    val dirNodes: MutableList<Uri> = LinkedList()
+    dirNodes.add(childrenUri)
+    while (dirNodes.isNotEmpty()) {
+        childrenUri = dirNodes.removeAt(0)
+
+        contentResolver.query(
+            childrenUri,
+            arrayOf(
+                DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+                DocumentsContract.Document.COLUMN_MIME_TYPE,
+            ),
+            null,
+            null,
+            null
+        ).use {
+            while (it!!.moveToNext()) {
+                val docId = it.getString(0)
+                val lastModified = it.getLong(1)
+                val mime = it.getString(2)
+                if (isDirectory(mime)) {
+                    val newNode = DocumentsContract.buildChildDocumentsUriUsingTree(rootUri, docId)
+                    dirNodes.add(newNode)
+                } else {
+                    val uri = DocumentsContract.buildDocumentUriUsingTree(rootUri, docId)
+
+                    channel.send(DirUri.Entry(uri))
+
+                    files.add(
+                        uri to lastModified
+                    )
+                }
+            }
+        }
+    }
+
+    files.sortedByDescending { it.second }.map { it.first }.also {
+        channel.send(DirUri.All(it))
+        channel.close()
+    }
+}
+
+private sealed interface DirUri {
+    data class Entry(val uri: Uri) : DirUri
+    data class All(val uris: List<Uri>) : DirUri
+}
+
+fun Uri.fileSize(context: Context): Long? {
+    if (this.toString().isEmpty()) return null
+
+    if (this.scheme == "content") {
+        runCatching {
+            context.contentResolver
+                .query(this, null, null, null, null, null)
+                .use { cursor ->
+                    if (cursor != null && cursor.moveToFirst()) {
+                        val sizeIndex: Int = cursor.getColumnIndex(OpenableColumns.SIZE)
+                        if (!cursor.isNull(sizeIndex)) {
+                            return cursor.getLong(sizeIndex)
+                        }
+                    }
+                }
+        }
+    } else {
+        runCatching {
+            return this.toFile().length()
+        }
+    }
+    return null
+}
+
+fun String?.getPath(
+    context: Context
+) = this?.takeIf { it.isNotEmpty() }?.toUri().toUiPath(
+    context = context,
+    default = context.getString(R.string.default_folder)
+)
+
+fun Uri?.toUiPath(
+    context: Context,
+    default: String,
+    isTreeUri: Boolean = true
+): String = this?.let { uri ->
+    runCatching {
+        val uriString = uri.toString()
+
+        // 处理下载文档 URI: content://com.android.providers.downloads.documents/document/xxx
+        if (uriString.contains("com.android.providers.downloads.documents")) {
+            return@runCatching "${context.getString(R.string.device_storage)}/Download"
+        }
+
+        // 处理媒体文档 URI: content://com.android.providers.media.documents/document/xxx
+        if (uriString.contains("com.android.providers.media.documents")) {
+            val docId = DocumentsContract.getDocumentId(uri)
+            val split = docId.split(":")
+            if (split.size >= 2) {
+                val type = split[0]
+                val relativePath = split.getOrNull(1) ?: ""
+                val startPath = if (type.equals("primary", ignoreCase = true)) {
+                    context.getString(R.string.device_storage)
+                } else {
+                    context.getString(R.string.external_storage)
+                }
+                val endPath = if (relativePath.isNotEmpty()) "/$relativePath" else ""
+                return@runCatching startPath + endPath
+            }
+        }
+
+        // 处理外部存储文档 URI: content://com.android.externalstorage.documents/xxx
+        if (uriString.contains("com.android.externalstorage.documents")) {
+            val docId = if (isTreeUri) {
+                DocumentsContract.getTreeDocumentId(uri)
+            } else {
+                DocumentsContract.getDocumentId(uri)
+            }
+            val split = docId.split(":")
+            if (split.isNotEmpty()) {
+                val type = split[0]
+                val relativePath = split.getOrNull(1) ?: ""
+                val startPath = if (type.equals("primary", ignoreCase = true)) {
+                    context.getString(R.string.device_storage)
+                } else {
+                    context.getString(R.string.external_storage)
+                }
+                val endPath = if (relativePath.isNotEmpty()) "/$relativePath" else ""
+                return@runCatching startPath + endPath
+            }
+        }
+
+        // 原有的通用处理逻辑
+        val document = if (isTreeUri) DocumentFile.fromTreeUri(context, uri)
+        else DocumentFile.fromSingleUri(context, uri)
+
+        document?.uri?.path?.split(":")
+            ?.lastOrNull()?.let { p ->
+                val endPath = p.takeIf {
+                    it.isNotEmpty()
+                }?.let { "/$it" } ?: ""
+                val startPath = if (
+                    uriString
+                        .split("%")[0]
+                        .contains("primary")
+                ) context.getString(R.string.device_storage)
+                else context.getString(R.string.external_storage)
+
+                startPath + endPath
+            }
+    }.getOrNull()
+} ?: default
+
+fun Context.getFileDescriptorFor(
+    uri: Uri?
+): ParcelFileDescriptor? = uri?.let {
+    runCatching {
+        openFileDescriptor(
+            uri = uri,
+            mode = FileMode.ReadWrite
+        )
+    }.getOrNull()
+}
+
+internal fun Uri.tryRequireOriginal(context: Context): Uri {
+    val tempUri = this
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        runCatching {
+            MediaStore.setRequireOriginal(this).also {
+                context.openFileDescriptor(it)?.close()
+            }
+        }.getOrNull() ?: tempUri
+    } else this
+}
+
+fun Uri.getFilename(
+    context: Context = appContext
+): String? = DocumentFile.fromSingleUri(context, this)?.name
+
+fun String.decodeEscaped(): String = runCatching {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        URLDecoder.decode(URLDecoder.decode(this, Charsets.UTF_8), Charsets.UTF_8)
+    } else {
+        @Suppress("DEPRECATION")
+        URLDecoder.decode(URLDecoder.decode(this))
+    }
+}.getOrDefault(this)
+
+fun Writeable.outputStream(): OutputStream = object : OutputStream() {
+    override fun write(b: Int) = writeBytes(byteArrayOf(b.toByte()))
+}

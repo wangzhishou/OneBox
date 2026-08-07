@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unit_converter_title">ユーティリティ計算機</string>
+    <string name="unit_converter_from">変換元</string>
+    <string name="unit_converter_to">変換先</string>
+    <string name="unit_converter_swap">換算</string>
+    <string name="unit_converter_other_conversions">その他の%s変換</string>
+    <string name="unit_converter_currency_disclaimer">• 為替レートは参考値であり、リアルタイムデータではありません</string>
+    <string name="unit_converter_select_category">変換タイプを選択</string>
+    <string name="unit_converter_select_unit">単位を選択</string>
+    <string name="unit_converter_close">閉じる</string>
+    <string name="unit_converter_tab_calculator">計算機</string>
+    <string name="unit_converter_tab_converter">変換</string>
+    <string name="unit_converter_tab_relative">相対</string>
+    <string name="unit_converter_invalid_expression">式が正しくありません。確認してもう一度お試しください</string>
+    <string name="unit_converter_calculator_expression">現在の式</string>
+    <string name="unit_converter_calculator_result">= %1$s</string>
+    <string name="unit_converter_calculator_hint">括弧、パーセント、四則演算に対応</string>
+    <string name="unit_converter_calculator_history">最近の計算</string>
+    <string name="unit_converter_clear">クリア</string>
+    <string name="unit_converter_backspace">バックスペース</string>
+    <string name="unit_converter_equals">計算</string>
+    <string name="unit_converter_reference_subtitle">現在の入力に対する一般的な参考値をすばやく確認</string>
+    <string name="unit_converter_relative_path">関係パス</string>
+    <string name="unit_converter_relative_path_placeholder">自分</string>
+    <string name="unit_converter_relative_identity">自分の性別</string>
+    <string name="unit_converter_relative_identity_hint">性別は配偶者や姻族の呼称に影響します</string>
+    <string name="unit_converter_relative_male">男性</string>
+    <string name="unit_converter_relative_female">女性</string>
+    <string name="unit_converter_relative_generate">関係を生成</string>
+    <string name="unit_converter_relative_empty">先に関係パスを選択してください</string>
+    <string name="unit_converter_converter_clear">クリア</string>
+    <string name="unit_converter_relative_result_label">結果の親族関係</string>
+    <string name="unit_converter_negate">否定</string>
+</resources>

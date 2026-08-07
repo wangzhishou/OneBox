@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Error de conexión de red, por favor verifique la configuración de red</string>
+    <string name="error_request_timeout">Tiempo de espera agotado, inténtelo de nuevo más tarde</string>
+    <string name="error_cannot_connect_server">No se puede conectar al servidor, por favor verifique la red</string>
+    <string name="error_ssl_failed">Error de conexión segura, por favor verifique la configuración de red</string>
+    <string name="error_network_exception">Excepción de red, por favor verifique la conexión de red</string>
+    <string name="error_request_cancelled">Solicitud cancelada</string>
+    <string name="error_data_parse_failed">Error al analizar los datos, inténtelo de nuevo más tarde</string>
+    <string name="error_bad_request">Parámetros de solicitud no válidos</string>
+    <string name="error_unauthorized">No autorizado, inicie sesión de nuevo</string>
+    <string name="error_forbidden">Acceso denegado</string>
+    <string name="error_not_found">Recurso solicitado no encontrado</string>
+    <string name="error_server_internal">Error interno del servidor</string>
+    <string name="error_server_maintenance">Servidor en mantenimiento, inténtelo de nuevo más tarde</string>
+    <string name="error_server_code">Error del servidor (%d)</string>
+    <string name="error_client_error">Error en la solicitud, verifique los parámetros</string>
+    <string name="error_server_error">Error del servidor, inténtelo de nuevo más tarde</string>
+    <string name="error_request_failed">Solicitud fallida, inténtelo de nuevo más tarde</string>
+    <string name="error_request_failed_with_message">Solicitud fallida: %s</string>
+    <string name="error_unknown">Error desconocido</string>
+    <string name="no_error_body">Sin cuerpo de error</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

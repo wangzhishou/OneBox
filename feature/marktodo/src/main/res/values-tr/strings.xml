@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toast_select_category_first">Lütfen önce bir kategori seçin veya ekleyin</string>
+    <string name="schedule_section_title">Zamanlama</string>
+    <string name="action_open_schedule">Zamanlama merkezini aç</string>
+    <string name="action_create_schedule">Yerel zamanlama oluştur</string>
+    <string name="schedule_creating">Zamanlama oluşturuluyor…</string>
+    <string name="schedule_missing_due_date">Lütfen önce bu görev için bir son tarih belirleyin</string>
+    <string name="schedule_created_success">Yerel zamanlama oluşturuldu</string>
+    <string name="schedule_created_failed">Zamanlama oluşturulamadı. Lütfen daha sonra tekrar deneyin</string>
+    <string name="dialog_delete_category_title">Kategoriyi Sil</string>
+    <string name="dialog_delete_category_message">\"%1$s\" kategorisini silmek istediğinize emin misiniz?\nBu kategorideki tüm görevler de silinecek.</string>
+    <string name="dialog_delete_task_message">\"%1$s\" öğesini silmek istediğinize emin misiniz?</string>
+    <string name="cd_switch_to_list_view">Liste görünümüne geç</string>
+    <string name="cd_switch_to_grid_view">Izgara görünümüne geç</string>
+    <string name="cd_edit_mode_done">Tamam</string>
+    <string name="label_status">Durum</string>
+    <string name="status_overdue">Gecikmiş</string>
+    <string name="category_unnamed">Adsız Kategori</string>
+    <string name="snackbar_batch_tasks_deleted">%1$d görev silindi</string>
+    <string name="action_delete_selected_cd">Seçilenleri sil</string>
+    <string name="error_todo_not_found">Yapılacak bulunamadı</string>
+    <string name="error_category_not_found">Kategori bulunamadı</string>
+    <string name="error_load_failed">Yüklenemedi</string>
+    <string name="cd_task_completed">Tamamlandı</string>
+    <string name="cd_task_pending">Beklemede</string>
+    <string name="cd_add_star">Yıldız ekle</string>
+    <string name="cd_remove_star">Yıldızı kaldır</string>
+    <string name="date_today">Bugün</string>
+    <string name="date_yesterday">Dün</string>
+    <string name="date_days_ago">%1$d gün önce</string>
+    <string name="date_tomorrow">Yarın</string>
+    <string name="date_days_later">%1$d gün içinde</string>
+</resources>

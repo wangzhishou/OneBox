@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Central de Agenda</string>
+    <string name="schedule_sync_card_title">Base de sincronização pronta</string>
+    <string name="schedule_sync_card_description">Este módulo já possui seu próprio modelo de eventos, estado do cursor de sincronização e campos de ponte de tarefas, então o Google Agenda pode ser adicionado posteriormente sem poluir os módulos de almanaque ou tarefas.</string>
+    <string name="schedule_sync_ready">Cursor de sincronização salvo</string>
+    <string name="schedule_sync_not_connected">Nenhuma conta conectada</string>
+    <string name="schedule_event_count_label">%1$d eventos</string>
+    <string name="schedule_linked_task_chip">Contexto de tarefa vinculado</string>
+    <string name="schedule_last_error_label">Último erro: %1$s</string>
+    <string name="schedule_action_card_title">Comece com um domínio de eventos local limpo</string>
+    <string name="schedule_action_create_local">Criar evento local</string>
+    <string name="schedule_action_create_focus">Criar evento a partir da data de foco</string>
+    <string name="schedule_action_open_todo">Abrir tarefa</string>
+    <string name="schedule_action_open_calendar">Abrir calendário</string>
+    <string name="schedule_event_section_title">Eventos</string>
+    <string name="schedule_empty_title">Nenhum evento de agenda ainda</string>
+    <string name="schedule_empty_description">Comece com eventos locais primeiro, depois adicione autenticação de conta Google, sincronização delta e tratamento de conflitos incrementalmente.</string>
+    <string name="schedule_provider_local">Local</string>
+    <string name="schedule_provider_system">Calendário do sistema</string>
+    <string name="schedule_provider_google">Google Agenda</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Somente local</string>
+    <string name="schedule_status_pending_upload">Upload pendente</string>
+    <string name="schedule_status_synced">Sincronizado</string>
+    <string name="schedule_status_pending_delete">Exclusão pendente</string>
+    <string name="schedule_status_conflict">Conflito</string>
+    <string name="schedule_status_failed">Falha na sincronização</string>
+    <string name="schedule_linked_task_badge">Ponte de tarefas</string>
+    <string name="schedule_quick_event_title">Novo evento local</string>
+    <string name="schedule_focus_event_title">Evento de foco</string>
+    <string name="schedule_linked_task_description">Tarefa vinculada: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Escrever diretamente no calendário do sistema</string>
+    <string name="schedule_export_to_system_calendar">Adicionar ao calendário do sistema</string>
+    <string name="schedule_system_calendar_unavailable">Nenhum aplicativo de calendário está disponível neste dispositivo</string>
+    <string name="schedule_no_writable_calendar">Nenhum calendário do sistema gravável está disponível</string>
+    <string name="schedule_saved_to_system_calendar">Salvo no calendário do sistema</string>
+    <string name="schedule_save_to_system_calendar_failed">Falha ao salvar no calendário do sistema. Tente novamente mais tarde</string>
+    <string name="schedule_calendar_permission_denied">A permissão de calendário é necessária para escrever diretamente no calendário do sistema</string>
+    <string name="schedule_choose_calendar_title">Escolha um calendário de destino</string>
+    <string name="schedule_calendar_primary_badge">Principal</string>
+    <string name="schedule_dialog_close">Fechar</string>
+    <string name="schedule_permission_dialog_title">Permissão de calendário necessária</string>
+    <string name="schedule_permission_dialog_message">Ative as permissões de leitura e gravação do calendário nas configurações do sistema para escrever diretamente no calendário do sistema.</string>
+    <string name="schedule_open_settings">Abrir configurações</string>
+</resources>

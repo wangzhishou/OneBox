@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">Ekran Kusuru Tespiti</string>
+    <string name="dead_pixel_test_description">Ekran arızalarını ve noktalarını tespit etmek için saf renk döndürme kullanın</string>
+    <string name="dead_pixel_color_white">Beyaz</string>
+    <string name="dead_pixel_color_black">Siyah</string>
+    <string name="dead_pixel_color_red">Kırmızı</string>
+    <string name="dead_pixel_color_green">Yeşil</string>
+    <string name="dead_pixel_color_blue">Mavi</string>
+    <string name="dead_pixel_hint">Rengi değiştirmek için dokunun... sağa ve sola kaydırarak ileri geri geçiş yapabilirsiniz.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Izgarayı Göster</string>
+    <string name="dead_pixel_grid_off">Izgarayı Gizle</string>
+    <string name="dead_pixel_auto_play">Otomatik Döndürme</string>
+    <string name="dead_pixel_auto_stop">Durdur!</string>
+    <string name="dead_pixel_fullscreen">Tam Ekran Testi</string>
+    <string name="dead_pixel_exit_fullscreen">Tam Ekrandan Çık</string>
+    <string name="dead_pixel_guide_title">Hasarı nasıl tespit ederiz?</string>
+    <string name="dead_pixel_guide_content">Ekran sırasıyla beş düz renk gösterecektir: beyaz, siyah, kırmızı, yeşil ve mavi.\n\n• Beyaz arka plan: siyah koyu lekeleri (ölü pikseller) kontrol edin\n• Siyah arka plan: parlak lekeleri (sabit pikseller) kontrol edin\n• Renkli arka planlar: diğer renklerdeki anormal pikselleri kontrol edin\n\nBir sonraki renge geçmek için ekrana dokunun veya otomatik oynatmayı etkinleştirin. En iyi sonuçlar için testi loş bir ortamda yapın.</string>
+    <string name="dead_pixel_guide_start">Testi Başlat</string>
+</resources>

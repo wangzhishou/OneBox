@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">Codeblock einfügen</string>
+    <string name="code_label">Code</string>
+    <string name="enter_code_hint">Code eingeben...</string>
+    <string name="select_language">Sprache:</string>
+    <string name="search_language">Sprache suchen</string>
+    <string name="search_language_hint">Sprachnamen eingeben...</string>
+    <string name="or_enter_image_url">Oder Bild-URL eingeben:</string>
+    <string name="image_description_label">Bildbeschreibung</string>
+    <string name="image_description_hint">Alternativtext für das Bild</string>
+    <string name="image_url_label">Bild-URL</string>
+    <string name="link_text_placeholder">Anzuzeigender Text</string>
+    <string name="resize_image">Bildgröße ändern</string>
+    <string name="width">Breite</string>
+    <string name="original_width">Originalbreite: %1$dpx</string>
+    <string name="markdown_placeholder">Tippen starten...</string>
+</resources>

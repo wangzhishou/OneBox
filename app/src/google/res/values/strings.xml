@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!--
+        Google Play channel default app name, overrides the "万宝盒" value in core/resources.
+        Note: this strings.xml is merged with main, same-name strings will be replaced.
+    -->
+    <string name="app_launcher_name" translatable="false">OneBox</string>
+    <string name="app_name" translatable="false">OneBox</string>
+    <string name="file_provider" translatable="false">com.shifenmiao.app.fileprovider</string>
+    <string name="default_folder" translatable="false">Documents/OneBox</string>
+    <string name="default_prefix" translatable="false">OneBox</string>
+</resources>

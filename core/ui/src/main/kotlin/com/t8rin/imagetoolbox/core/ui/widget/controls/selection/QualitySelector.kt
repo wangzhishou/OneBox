@@ -1,0 +1,332 @@
+/*
+ * ImageToolbox is an image editor for android
+ * Copyright (c) 2026 T8RIN (Malik Mukhametzyanov)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * You should have received a copy of the Apache License
+ * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
+ */
+
+package com.t8rin.imagetoolbox.core.ui.widget.controls.selection
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import com.t8rin.imagetoolbox.core.resources.Icons
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
+import com.t8rin.imagetoolbox.core.domain.image.model.Quality
+import com.t8rin.imagetoolbox.core.domain.image.model.TiffCompressionScheme
+import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.Palette
+import com.t8rin.imagetoolbox.core.resources.icons.QualityHigh
+import com.t8rin.imagetoolbox.core.resources.icons.QualityLow
+import com.t8rin.imagetoolbox.core.resources.icons.QualityMedium
+import com.t8rin.imagetoolbox.core.resources.icons.Stream
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButtonGroup
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.enhancedFlingBehavior
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.fadingEdges
+import com.t8rin.imagetoolbox.core.ui.widget.saver.OneTimeEffect
+import com.t8rin.imagetoolbox.core.ui.widget.text.AutoSizeText
+import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStream
+
+@Composable
+fun QualitySelector(
+    imageFormat: ImageFormat,
+    quality: Quality,
+    onQualityChange: (Quality) -> Unit,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    shape: Shape = ShapeDefaults.extraLarge,
+    inactiveButtonColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    activeButtonColor: Color = MaterialTheme.colorScheme.secondary,
+    autoCoerce: Boolean = true
+) {
+    val settingsState = LocalSettingsState.current
+    var actualImageFormat by remember {
+        mutableStateOf(imageFormat)
+    }
+
+    LaunchedEffect(imageFormat, quality) {
+        if (
+            actualImageFormat.canChangeCompressionValue == imageFormat.canChangeCompressionValue
+            || !actualImageFormat.canChangeCompressionValue
+        ) {
+            actualImageFormat = imageFormat
+        } else {
+            launch {
+                delay(1000)
+            }.invokeOnCompletion {
+                actualImageFormat = imageFormat
+            }
+        }
+        if (autoCoerce) {
+            onQualityChange(
+                quality.coerceIn(imageFormat)
+            )
+        }
+    }
+
+    AnimatedVisibility(
+        visible = imageFormat.canChangeCompressionValue,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically(),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        if (autoCoerce) {
+            OneTimeEffect {
+                if (quality != settingsState.defaultQuality) {
+                    onQualityChange(settingsState.defaultQuality)
+                }
+            }
+        }
+
+        Column(
+            modifier = modifier.container(shape)
+        ) {
+            actualImageFormat.compressionTypes.forEach { type ->
+                val currentIcon by remember(quality, icon) {
+                    derivedStateOf {
+                        when {
+                            icon != null -> icon
+                            actualImageFormat.isHighQuality(quality.qualityValue) -> Icons.Outlined.QualityHigh
+                            actualImageFormat.isMidQuality(quality.qualityValue) -> Icons.Outlined.QualityMedium
+                            else -> Icons.Outlined.QualityLow
+                        }
+                    }
+                }
+
+                val isQuality = type is ImageFormat.CompressionType.Quality
+                val isEffort = type is ImageFormat.CompressionType.Effort
+
+                val compressingLiteral = if (isQuality) "%" else ""
+
+                EnhancedSliderItem(
+                    value = when (type) {
+                        is ImageFormat.CompressionType.Effort -> {
+                            when (quality) {
+                                is Quality.Base -> quality.qualityValue
+                                is Quality.PngLossy -> quality.compressionLevel
+                                is Quality.Tiff -> quality.qualityValue
+                            }
+                        }
+
+                        is ImageFormat.CompressionType.Quality -> quality.qualityValue
+                    },
+                    title = if (isQuality) {
+                        stringResource(R.string.quality)
+                    } else stringResource(R.string.effort),
+                    icon = if (isQuality) currentIcon else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStream,
+                    valueRange = type.compressionRange.let { it.first.toFloat()..it.last.toFloat() },
+                    steps = type.compressionRange.let { it.last - it.first - 1 },
+                    internalStateTransformation = {
+                        it.roundToInt().coerceIn(type.compressionRange).toFloat()
+                    },
+                    onValueChange = {
+                        when (type) {
+                            is ImageFormat.CompressionType.Effort -> {
+                                onQualityChange(
+                                    when (quality) {
+                                        is Quality.Base -> quality.copy(qualityValue = it.toInt())
+                                        is Quality.PngLossy -> quality.copy(compressionLevel = it.toInt())
+                                        is Quality.Tiff -> quality.copy(compressionScheme = it.toInt())
+                                    }.coerceIn(actualImageFormat)
+                                )
+                            }
+
+                            is ImageFormat.CompressionType.Quality -> {
+                                onQualityChange(
+                                    when (quality) {
+                                        is Quality.Base -> quality.copy(qualityValue = it.toInt())
+                                        is Quality.PngLossy -> quality.copy(compressionLevel = it.toInt())
+                                        is Quality.Tiff -> quality.copy(compressionScheme = it.toInt())
+                                    }.coerceIn(actualImageFormat)
+                                )
+                            }
+                        }
+                    },
+                    valueSuffix = " $compressingLiteral",
+                    behaveAsContainer = false,
+                    titleFontWeight = FontWeight.Medium
+                ) {
+                    AnimatedVisibility(isEffort) {
+                        Text(
+                            text = stringResource(
+                                R.string.effort_sub,
+                                type.compressionRange.first,
+                                type.compressionRange.last
+                            ),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 12.sp,
+                            color = LocalContentColor.current.copy(0.5f),
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .container(
+                                    shape = ShapeDefaults.large,
+                                    color = MaterialTheme.colorScheme.surface
+                                )
+                                .padding(6.dp)
+                        )
+                    }
+                }
+            }
+            AnimatedVisibility(actualImageFormat is ImageFormat.Png.Lossy) {
+                val pngLossyQuality = quality as? Quality.PngLossy
+                EnhancedSliderItem(
+                    value = pngLossyQuality?.maxColors ?: 0,
+                    title = stringResource(R.string.max_colors_count),
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePaletteTools,
+                    valueRange = 2f..1024f,
+                    internalStateTransformation = {
+                        it.roundToInt().coerceIn(2..1024).toFloat()
+                    },
+                    onValueChange = {
+                        pngLossyQuality?.copy(
+                            maxColors = it.roundToInt()
+                        )?.coerceIn(actualImageFormat)?.let(onQualityChange)
+                    },
+                    behaveAsContainer = false
+                )
+            }
+            AnimatedVisibility(actualImageFormat is ImageFormat.Tiff || actualImageFormat is ImageFormat.Tif) {
+                val tiffQuality = quality as? Quality.Tiff
+                val compressionItems = TiffCompressionScheme.safeEntries
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TitleItem(
+                        text = stringResource(R.string.tiff_compression_scheme),
+                        modifier = Modifier
+                            .padding(top = 12.dp, start = 12.dp, bottom = 8.dp, end = 12.dp)
+                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .container(
+                                shape = ShapeDefaults.large,
+                                color = MaterialTheme.colorScheme.surface
+                            )
+                    ) {
+                        val state = rememberLazyStaggeredGridState()
+                        LazyHorizontalStaggeredGrid(
+                            verticalArrangement = Arrangement.spacedBy(
+                                space = 8.dp,
+                                alignment = Alignment.CenterVertically
+                            ),
+                            state = state,
+                            horizontalItemSpacing = 8.dp,
+                            rows = StaggeredGridCells.Adaptive(30.dp),
+                            modifier = Modifier
+                                .heightIn(max = 100.dp)
+                                .fadingEdges(
+                                    scrollableState = state,
+                                    isVertical = false,
+                                    spanCount = 2
+                                ),
+                            contentPadding = PaddingValues(8.dp),
+                            flingBehavior = enhancedFlingBehavior()
+                        ) {
+                            items(compressionItems) {
+                                val selected by remember(it, tiffQuality?.compressionScheme) {
+                                    derivedStateOf {
+                                        tiffQuality?.compressionScheme == it.ordinal
+                                    }
+                                }
+                                EnhancedChip(
+                                    selected = selected,
+                                    onClick = {
+                                        tiffQuality?.copy(
+                                            compressionScheme = it.ordinal
+                                        )?.coerceIn(actualImageFormat)?.let(onQualityChange)
+                                    },
+                                    selectedColor = MaterialTheme.colorScheme.tertiary,
+                                    contentPadding = PaddingValues(
+                                        horizontal = 12.dp,
+                                        vertical = 8.dp
+                                    ),
+                                    modifier = Modifier.height(36.dp)
+                                ) {
+                                    AutoSizeText(
+                                        text = compressionItems[it.ordinal].title,
+                                        maxLines = 1
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun ImageFormat.isHighQuality(quality: Int): Boolean {
+    val range = compressionTypes[0].compressionRange.run { endInclusive - start }
+    return quality > range * (4 / 5f)
+}
+
+private fun ImageFormat.isMidQuality(quality: Int): Boolean {
+    val range = compressionTypes[0].compressionRange.run { endInclusive - start }
+    return quality > range * (2 / 5f)
+}
+
+private val TiffCompressionScheme.title: String
+    get() = when (this) {
+        TiffCompressionScheme.CCITTRLE -> "RLE"
+        TiffCompressionScheme.CCITTFAX3 -> "FAX 3"
+        TiffCompressionScheme.CCITTFAX4 -> "FAX 4"
+        TiffCompressionScheme.ADOBE_DEFLATE -> "ADOBE DEFLATE"
+        else -> this.name
+    }

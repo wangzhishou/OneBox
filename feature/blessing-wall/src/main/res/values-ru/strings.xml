@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blessing_wall_title">Стена благословений</string>
+    <string name="blessing_wall_sub">Ежедневное касание · Удача следует за тобой</string>
+    <string name="blessing_record_title">Записи благословений</string>
+    <string name="blessing_tab_wooden_fish">Тихий момент</string>
+    <string name="blessing_tab_wealth_god">Удача</string>
+    <string name="blessing_tab_guanyin">Мир и радость</string>
+    <string name="blessing_tab_incense">Искреннее пожелание</string>
+    <string name="blessing_subtitle_wooden_fish">Ежедневное касание · Заботы уходят</string>
+    <string name="blessing_subtitle_wealth_god">Удача остаётся · Всё идёт хорошо</string>
+    <string name="blessing_subtitle_guanyin">Доброта внутри · Мир и радость</string>
+    <string name="blessing_subtitle_incense">Искренние пожелания · Изобилие удачи</string>
+    <string name="blessing_btn_wooden_fish">Касание, удача +1</string>
+    <string name="blessing_btn_wealth_god">Касание, фортуна +1</string>
+    <string name="blessing_btn_guanyin">Касание, мир +1</string>
+    <string name="blessing_btn_incense">Касание, благословение +1</string>
+    <string name="blessing_stat_wooden_fish">Счёт сегодня</string>
+    <string name="blessing_stat_wealth_god">Счёт сегодня</string>
+    <string name="blessing_stat_guanyin">Счёт сегодня</string>
+    <string name="blessing_stat_incense">Счёт сегодня</string>
+    <string name="blessing_count_unit">раз</string>
+    <string name="blessing_total_count">%1$d раз</string>
+    <string name="blessing_calendar_year_month">%1$d-%2$02d</string>
+    <string name="blessing_date_display">%1$d/%2$d</string>
+    <string name="blessing_daily_stats_title">Ежедневная статистика благословений</string>
+    <string name="blessing_empty_state">Записей благословений пока нет</string>
+    <string name="blessing_wish_edit">Изменить заметку</string>
+    <string name="blessing_wish_input_label">Заметка</string>
+    <string name="blessing_wish_save">Сохранить</string>
+    <string name="blessing_wish_placeholder">Заметки пока нет</string>
+    <string name="blessing_tab_text_edit">Изменить заголовок</string>
+    <string name="blessing_tab_title_label">Заголовок</string>
+    <string name="blessing_tab_subtitle_label">Подзаголовок</string>
+    <string name="blessing_tab_text_reset_hint">Оставьте пустым для восстановления по умолчанию</string>
+    <string name="blessing_history_readonly_hint">История, только просмотр</string>
+    <string name="blessing_record_note_prefix">Примечание: %1$s</string>
+    <string name="blessing_sound_on">Звук включен</string>
+    <string name="blessing_sound_off">Звук выключен</string>
+    <string name="blessing_share">Поделиться</string>
+</resources>

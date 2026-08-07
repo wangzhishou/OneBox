@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">Localized description</string>
+    <string name="copy">复制</string>
+    <string name="create_widget">收藏网页</string>
+    <string name="run">运行</string>
+    <string name="save">保存</string>
+    <string name="mermaid_tab_diagram">图表</string>
+    <string name="mermaid_tab_code">代码</string>
+    <string name="mermaid_fullscreen">全屏</string>
+    <string name="a2ui_parse_failed">A2UI 解析失败</string>
+    <string name="a2ui_parse_failed_hint">请复制源码检查 JSON 格式或表达式语法。</string>
+</resources>
+

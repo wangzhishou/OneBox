@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">KASALUKUYANG ISKOR</string>
+    <string name="game_2048_best_score">PINAKAMATAAS NA ISKOR</string>
+    <string name="game_2048_new_game">BAGONG LARO</string>
+    <string name="game_2048_game_over">Tapos na ang Laro</string>
+    <string name="game_2048_you_win">Naabot mo ang 2048!</string>
+    <string name="game_2048_no_moves">Wala nang natitirang galaw</string>
+    <string name="game_2048_reached_2048">Maaari kang magpatuloy para sa mas mataas na iskor</string>
+    <string name="game_2048_continue">Magpatuloy</string>
+    <string name="game_2048_new_best_score">Bagong rekord!</string>
+</resources>

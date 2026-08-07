@@ -1,0 +1,1 @@
+在当前浏览器页面执行任意 JavaScript 代码并返回执行结果。可用于：填写表单（document.querySelector('input').value='...'）、点击按钮（document.querySelector('button').click()）、提取数据（JSON.stringify([...document.querySelectorAll('a')].map(a=>a.href))）、修改页面样式、触发事件等。执行前需要用户确认（安全策略）。脚本的返回值会作为 result 字段返回。注意：脚本在页面上下文中执行，可以访问页面的 DOM 和 JavaScript 全局变量。

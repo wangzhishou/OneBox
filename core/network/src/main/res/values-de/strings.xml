@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Netzwerkverbindung fehlgeschlagen, bitte Netzwerkeinstellungen prüfen</string>
+    <string name="error_request_timeout">Zeitüberschreitung der Anfrage, bitte später erneut versuchen</string>
+    <string name="error_cannot_connect_server">Verbindung zum Server nicht möglich, bitte Netzwerk prüfen</string>
+    <string name="error_ssl_failed">Sichere Verbindung fehlgeschlagen, bitte Netzwerkeinstellungen prüfen</string>
+    <string name="error_network_exception">Netzwerkfehler, bitte Netzwerkverbindung prüfen</string>
+    <string name="error_request_cancelled">Anfrage abgebrochen</string>
+    <string name="error_data_parse_failed">Datenanalyse fehlgeschlagen, bitte später erneut versuchen</string>
+    <string name="error_bad_request">Ungültige Anfrageparameter</string>
+    <string name="error_unauthorized">Nicht autorisiert, bitte erneut anmelden</string>
+    <string name="error_forbidden">Zugriff verweigert</string>
+    <string name="error_not_found">Angeforderte Ressource nicht gefunden</string>
+    <string name="error_server_internal">Interner Serverfehler</string>
+    <string name="error_server_maintenance">Server wird gewartet, bitte später erneut versuchen</string>
+    <string name="error_server_code">Serverfehler (%d)</string>
+    <string name="error_client_error">Anfragefehler, bitte Parameter prüfen</string>
+    <string name="error_server_error">Serverfehler, bitte später erneut versuchen</string>
+    <string name="error_request_failed">Anfrage fehlgeschlagen, bitte später erneut versuchen</string>
+    <string name="error_request_failed_with_message">Anfrage fehlgeschlagen: %s</string>
+    <string name="error_unknown">Unbekannter Fehler</string>
+    <string name="no_error_body">Kein Fehlertext</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

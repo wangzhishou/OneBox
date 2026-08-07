@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cloud_storage_sync_checklist">
+        <item>Bind local folders to cloud buckets / shares</item>
+        <item>Upload / download / two-way sync direction</item>
+        <item>Conflict handling and overwrite confirmation</item>
+        <item>Background task queue with progress and retry</item>
+    </string-array>
+</resources>

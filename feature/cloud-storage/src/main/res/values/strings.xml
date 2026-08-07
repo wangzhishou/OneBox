@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cloud_storage_screen_title">Remote Storage</string>
+    <string name="cloud_storage_upload_action">Upload File</string>
+    <string name="cloud_storage_create_folder">New Folder</string>
+    <string name="cloud_storage_tab_files">Files</string>
+    <string name="cloud_storage_tab_search">Search</string>
+    <string name="cloud_storage_tab_sync">Sync</string>
+    <string name="cloud_storage_folder_name">Folder name</string>
+    <string name="cloud_storage_confirm">OK</string>
+    <string name="cloud_storage_cancel">Cancel</string>
+    <string name="cloud_storage_error_title">Operation failed</string>
+    <string name="cloud_storage_loading">Loading objects…</string>
+    <string name="cloud_storage_empty">No objects under the current prefix</string>
+    <string name="cloud_storage_current_path">Current path</string>
+    <string name="cloud_storage_root_path">Bucket root</string>
+    <string name="cloud_storage_refresh_action">Refresh</string>
+    <string name="cloud_storage_up_action">Up</string>
+    <string name="cloud_storage_sync_placeholder_title">Sync coming soon</string>
+    <string name="cloud_storage_sync_placeholder_desc">This release focuses on browsing and managing objects across cloud providers. Local folder sync will arrive in a later version.</string>
+    <string name="cloud_storage_search_label">Search objects</string>
+    <string name="cloud_storage_search_hint">Search the current bucket by prefix or object name</string>
+    <string name="cloud_storage_search_action">Search</string>
+    <string name="cloud_storage_rename_label">New name</string>
+    <string name="cloud_storage_rename_action">Rename</string>
+    <string name="cloud_storage_move_label">Destination prefix</string>
+    <string name="cloud_storage_move_action">Move to prefix</string>
+    <string name="cloud_storage_copy_download_link">Copy signed URL</string>
+    <string name="cloud_storage_delete_action">Delete object</string>
+    <string name="cloud_storage_delete_selected_action">Delete selected (%d)</string>
+    <string name="cloud_storage_cancel_selection">Cancel selection</string>
+    <string name="cloud_storage_delete_confirm_title">Confirm delete</string>
+    <string name="cloud_storage_delete_confirm_message_single">Delete “%s”? This cannot be undone.</string>
+    <string name="cloud_storage_delete_confirm_message_multi">Delete the %d selected objects? This cannot be undone.</string>
+    <string name="cloud_storage_delete_confirm_action">Delete</string>
+    <string name="cloud_storage_bucket_sheet_title">Switch bucket</string>
+    <string name="cloud_storage_current_bucket">Currently using</string>
+    <string name="cloud_storage_connection_sheet_title">Cloud Storage Connection</string>
+    <string name="cloud_storage_vendor_label">Provider</string>
+    <string name="cloud_storage_display_name">Connection name</string>
+    <string name="cloud_storage_endpoint">Endpoint</string>
+    <string name="cloud_storage_region">Region</string>
+    <string name="cloud_storage_bucket_name">Default bucket</string>
+    <string name="cloud_storage_access_key">Access Key</string>
+    <string name="cloud_storage_secret_key">Secret Key</string>
+    <string name="cloud_storage_save_connection">Save connection</string>
+    <string name="cloud_storage_connection_label">Current connection</string>
+    <string name="cloud_storage_no_connection">No connection configured</string>
+    <string name="cloud_storage_connection_hint">Tap to configure a remote storage connection</string>
+    <string name="cloud_storage_bucket_label">Current bucket</string>
+    <string name="cloud_storage_no_bucket">No bucket selected</string>
+    <string name="cloud_storage_bucket_hint">Tap to switch the current bucket</string>
+    <string name="cloud_storage_error_generic">Remote storage operation failed. Please try again.</string>
+    <string name="cloud_storage_error_read_file">Failed to read the local file</string>
+    <string name="cloud_storage_prefix_item">Prefix folder</string>
+
+    <string name="cloud_vendor_aliyun_oss">Aliyun OSS</string>
+    <string name="cloud_vendor_tencent_cos">Tencent COS</string>
+    <string name="cloud_vendor_huawei_obs">Huawei OBS</string>
+    <string name="cloud_vendor_baidu_bos">Baidu BOS</string>
+    <string name="cloud_vendor_aws_s3">AWS S3</string>
+    <string name="cloud_vendor_s3_compatible">S3-compatible (MinIO, R2…)</string>
+    <string name="cloud_storage_test_connection">Test connection</string>
+    <string name="cloud_storage_test_connection_success">Connection successful</string>
+    <string name="cloud_storage_test_connection_failed">Connection failed</string>
+    <string name="cloud_storage_upload_progress">Uploading… %d%%</string>
+
+    <string name="cloud_protocol_s3_compat">S3 compatible</string>
+    <string name="cloud_protocol_webdav">WebDAV</string>
+    <string name="cloud_protocol_smb">SMB / Samba</string>
+
+    <string name="cloud_storage_protocol_label">Protocol</string>
+
+    <string name="cloud_storage_webdav_base_url">Server URL (WebDAV Base URL)</string>
+    <string name="cloud_storage_webdav_root_path">Root path</string>
+    <string name="cloud_storage_webdav_username">Username</string>
+    <string name="cloud_storage_webdav_password">Password</string>
+
+    <string name="cloud_storage_smb_host">Server IP / domain</string>
+    <string name="cloud_storage_smb_port">Port</string>
+    <string name="cloud_storage_smb_share">Share name</string>
+    <string name="cloud_storage_smb_domain">Domain / workgroup</string>
+    <string name="cloud_storage_smb_username">Username</string>
+    <string name="cloud_storage_smb_password">Password</string>
+
+    <string name="cloud_storage_clear_field">Clear</string>
+    <string name="cloud_storage_show_secret">Show password</string>
+    <string name="cloud_storage_hide_secret">Hide password</string>
+
+    <string name="cloud_storage_no_connection_title">No storage server connected</string>
+    <string name="cloud_storage_no_connection_desc">Connect an S3-compatible object storage service such as AWS S3, Alibaba Cloud OSS, Tencent Cloud COS, Huawei Cloud OBS, or Baidu BOS, and access your files from anywhere.</string>
+    <string name="cloud_storage_no_connection_action">Add cloud storage</string>
+    <string name="cloud_storage_empty_folder_title">Nothing here yet</string>
+    <string name="cloud_storage_empty_folder_desc">No files or folders found in this directory. Tap the button below to upload a file.</string>
+    <string name="cloud_storage_state_error_title">Something went wrong</string>
+    <string name="cloud_storage_refresh_list_action">Refresh the list</string>
+
+    <string name="cloud_storage_download_local">Download to device</string>
+    <string name="cloud_storage_download_queued">Added to download queue</string>
+    <string name="cloud_storage_download_failed">Download failed: %s</string>
+    <string name="cloud_storage_link_copied">Link copied</string>
+    <string name="cloud_storage_copy_action">Copy</string>
+    <string name="cloud_storage_copy_link_action">Copy link</string>
+    <string name="cloud_storage_download_icon_action">Download</string>
+    <string name="cloud_storage_manage_connections">Manage connections</string>
+
+    <string name="cloud_storage_smb_port_placeholder">445 (default)</string>
+    <string name="cloud_storage_smb_share_placeholder">Optional: leave empty to list shares after saving</string>
+    <string name="cloud_storage_smb_domain_placeholder">Optional: defaults to WORKGROUP</string>
+    <string name="cloud_storage_smb_username_placeholder">Optional: leave empty for anonymous / Guest access</string>
+    <string name="cloud_storage_smb_password_placeholder">Optional: no password needed for anonymous access</string>
+
+    <string name="cloud_storage_smb_error_logon_failure">SMB sign-in failed (NT_STATUS_LOGON_FAILURE).\nCommon causes:\n  1. Incorrect username or password\n  2. Wrong domain — home NAS devices usually use \"WORKGROUP\" or the NAS hostname; enter it in the \"Domain / workgroup\" field of the connection form and try again\n  3. This account is not allowed to sign in via SMB on the NAS\n  4. Only SMB1 is enabled, but this client requires SMB2/3 — enable SMB2/SMB3 in the NAS settings</string>
+    <string name="cloud_storage_smb_error_access_denied">SMB access denied. This account does not have permission to access this share.</string>
+    <string name="cloud_storage_smb_error_bad_network">Share not found. Check the share name, or leave the share field empty and pick one from the list after connecting.</string>
+    <string name="cloud_storage_smb_error_not_found">The specified file or folder does not exist</string>
+    <string name="cloud_storage_smb_error_invalid_parameter">Invalid SMB parameter. The path may contain illegal characters, the share may not exist, or the NAS only supports SMB1 (smbj 0.13 does not support SMB1)</string>
+    <string name="cloud_storage_smb_error_not_supported">The server does not support this operation. The protocol version may not match, or the NAS only has SMB1 enabled</string>
+    <string name="cloud_storage_smb_error_disconnected">The connection was closed by the server. Make sure the host / port is reachable and the NAS is not limiting concurrent connections</string>
+    <string name="cloud_storage_smb_error_share_deleted">The specified share does not exist on the server</string>
+    <string name="cloud_storage_smb_error_sharing_violation">The file is in use by another process and cannot be accessed</string>
+    <string name="cloud_storage_smb_error_generic">SMB error: %1$s (%2$s)</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">नेटवर्क कनेक्शन विफल हुआ, कृपया नेटवर्क सेटिंग्स जांचें</string>
+    <string name="error_request_timeout">अनुरोध समय समाप्त हुआ, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="error_cannot_connect_server">सर्वर से कनेक्ट नहीं हो सका, कृपया नेटवर्क जांचें</string>
+    <string name="error_ssl_failed">सुरक्षित कनेक्शन विफल हुआ, कृपया नेटवर्क सेटिंग्स जांचें</string>
+    <string name="error_network_exception">नेटवर्क त्रुटि, कृपया नेटवर्क कनेक्शन जांचें</string>
+    <string name="error_request_cancelled">अनुरोध रद्द किया गया</string>
+    <string name="error_data_parse_failed">डेटा पार्सिंग विफल हुई, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="error_bad_request">अमान्य अनुरोध पैरामीटर</string>
+    <string name="error_unauthorized">अनधिकृत, कृपया पुनः लॉगिन करें</string>
+    <string name="error_forbidden">पहुंच निषिद्ध</string>
+    <string name="error_not_found">अनुरोधित संसाधन नहीं मिला</string>
+    <string name="error_server_internal">आंतरिक सर्वर त्रुटि</string>
+    <string name="error_server_maintenance">सर्वर रखरखाव में है, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="error_server_code">सर्वर त्रुटि (%d)</string>
+    <string name="error_client_error">अनुरोध त्रुटि, कृपया पैरामीटर जांचें</string>
+    <string name="error_server_error">सर्वर त्रुटि, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="error_request_failed">अनुरोध विफल हुआ, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="error_request_failed_with_message">अनुरोध विफल: %s</string>
+    <string name="error_unknown">अज्ञात त्रुटि</string>
+    <string name="no_error_body">कोई त्रुटि बॉडी नहीं</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

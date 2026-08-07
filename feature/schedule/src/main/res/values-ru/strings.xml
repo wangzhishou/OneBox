@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Расписание</string>
+    <string name="schedule_sync_card_title">База синхронизации готова</string>
+    <string name="schedule_sync_card_description">Этот модуль уже владеет своей моделью событий, состоянием курсора синхронизации и полями моста задач, поэтому Google Календарь можно добавить позже, не загрязняя модули альманаха или задач.</string>
+    <string name="schedule_sync_ready">Курсор синхронизации сохранен</string>
+    <string name="schedule_sync_not_connected">Аккаунт не подключен</string>
+    <string name="schedule_event_count_label">Событий: %1$d</string>
+    <string name="schedule_linked_task_chip">Контекст задачи связан</string>
+    <string name="schedule_last_error_label">Последняя ошибка: %1$s</string>
+    <string name="schedule_action_card_title">Начните с чистого локального домена событий</string>
+    <string name="schedule_action_create_local">Создать локальное событие</string>
+    <string name="schedule_action_create_focus">Создать событие из даты фокуса</string>
+    <string name="schedule_action_open_todo">Открыть задачу</string>
+    <string name="schedule_action_open_calendar">Открыть календарь</string>
+    <string name="schedule_event_section_title">События</string>
+    <string name="schedule_empty_title">Пока нет событий расписания</string>
+    <string name="schedule_empty_description">Начните с локальных событий, затем постепенно добавьте авторизацию Google, дельта-синхронизацию и обработку конфликтов.</string>
+    <string name="schedule_provider_local">Локальные</string>
+    <string name="schedule_provider_system">Системный календарь</string>
+    <string name="schedule_provider_google">Google Календарь</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Только локально</string>
+    <string name="schedule_status_pending_upload">Ожидает загрузки</string>
+    <string name="schedule_status_synced">Синхронизировано</string>
+    <string name="schedule_status_pending_delete">Ожидает удаления</string>
+    <string name="schedule_status_conflict">Конфликт</string>
+    <string name="schedule_status_failed">Синхронизация не удалась</string>
+    <string name="schedule_linked_task_badge">Мост задач</string>
+    <string name="schedule_quick_event_title">Новое локальное событие</string>
+    <string name="schedule_focus_event_title">Событие фокуса</string>
+    <string name="schedule_linked_task_description">Связанная задача: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Записать напрямую в системный календарь</string>
+    <string name="schedule_export_to_system_calendar">Добавить в системный календарь</string>
+    <string name="schedule_system_calendar_unavailable">На этом устройстве нет приложения календаря</string>
+    <string name="schedule_no_writable_calendar">Нет доступного записываемого системного календаря</string>
+    <string name="schedule_saved_to_system_calendar">Сохранено в системный календарь</string>
+    <string name="schedule_save_to_system_calendar_failed">Не удалось сохранить в системный календарь. Попробуйте позже</string>
+    <string name="schedule_calendar_permission_denied">Для прямой записи в системный календарь требуется разрешение на доступ к календарю</string>
+    <string name="schedule_choose_calendar_title">Выберите целевой календарь</string>
+    <string name="schedule_calendar_primary_badge">Основной</string>
+    <string name="schedule_dialog_close">Закрыть</string>
+    <string name="schedule_permission_dialog_title">Требуется разрешение на доступ к календарю</string>
+    <string name="schedule_permission_dialog_message">Включите разрешения на чтение и запись календаря в настройках системы, чтобы записывать напрямую в системный календарь.</string>
+    <string name="schedule_open_settings">Открыть настройки</string>
+</resources>

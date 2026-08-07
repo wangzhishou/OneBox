@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">Deskripsi yang dilokalkan</string>
+    <string name="copy">Salin</string>
+    <string name="create_widget">Buat alat kecil</string>
+    <string name="run">Jalankan</string>
+    <string name="save">Simpan</string>
+    <string name="mermaid_tab_diagram">Diagram</string>
+    <string name="mermaid_tab_code">Kode</string>
+    <string name="mermaid_fullscreen">Layar penuh</string>
+    <string name="a2ui_parse_failed">Penguraian A2UI gagal</string>
+    <string name="a2ui_parse_failed_hint">Salin sumber dan periksa format JSON atau sintaks ekspresi.</string>
+</resources>

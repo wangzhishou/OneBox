@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="expand">展開</string>
+    <string name="collapse">片付ける。</string>
+    <string name="dialog_clear_recents_title">最近の履歴をクリア</string>
+    <string name="dialog_clear_recents_message">最近のアクセス記録をすべてクリアしますか？この操作は元に戻せません。</string>
+</resources>

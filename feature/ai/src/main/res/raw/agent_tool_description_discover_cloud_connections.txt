@@ -1,0 +1,18 @@
+discover_cloud_connections —— 列出本地"远程存储"已保存的所有远程存储连接。
+
+支持的协议：
+- S3_COMPAT：阿里云 OSS / 腾讯云 COS / 华为云 OBS / 百度云 BOS / AWS S3 / MinIO 等 S3 兼容存储
+- WEB_DAV：坚果云 / Nextcloud / 自建 Apache / nginx WebDAV
+- SMB：Windows 共享 / 群晖 / Linux Samba
+
+返回字段：id、displayName、protocol、defaultRoot（默认 bucket / share / root path）、isDefault。
+
+筛选方式：
+- name_filter：按 displayName 模糊匹配（大小写不敏感）
+- protocol：精确匹配协议名（S3_COMPAT / WEB_DAV / SMB）
+
+典型使用顺序：
+1. discover_cloud_connections → 拿到 connection_id
+2. browse_cloud_files（action=list_roots）→ 拿到可用的 share / bucket
+3. browse_cloud_files（action=list / stat）→ 浏览具体内容
+4. manage_cloud_files / read_cloud_file / upload_to_cloud → 进一步操作

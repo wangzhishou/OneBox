@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_confirm">Bestätigen</string>
+    <string name="date_picker_cancel">Abbrechen</string>
+    <string name="date_picker_edit">Bearbeiten</string>
+    <string name="date_picker_select_year_month">Jahr und Monat auswählen</string>
+    <string name="date_picker_year_input">Jahr</string>
+    <string name="date_picker_current_year">Aktuelles Jahr</string>
+    <string name="blessing_effect_merit_plus_one">Glück +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">Vorheriger Monat</string>
+    <string name="date_picker_next_month">Nächster Monat</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">So</string>
+    <string name="date_picker_weekday_mon">Mo</string>
+    <string name="date_picker_weekday_tue">Di</string>
+    <string name="date_picker_weekday_wed">Mi</string>
+    <string name="date_picker_weekday_thu">Do</string>
+    <string name="date_picker_weekday_fri">Fr</string>
+    <string name="date_picker_weekday_sat">Sa</string>
+    <string name="time_range_picker_start_time">Startzeit</string>
+    <string name="time_range_picker_end_time">Endzeit</string>
+    <string name="time_range_picker_hour">Stunde</string>
+    <string name="time_range_picker_minute">Minute</string>
+    <string name="time_range_picker_hint">Tipp: Stunde (0-23) und Minute (0-59) eingeben</string>
+    <string name="date_range_picker_title">Datumsbereich auswählen</string>
+    <string name="date_range_start">Startdatum</string>
+    <string name="date_range_end">Enddatum</string>
+    <string name="week_selector_week_title">%1$d-%2$02d · Woche %3$d</string>
+    <string name="icon_picker_icon_count">%1$d Icons</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>Mo</item>
+        <item>Di</item>
+        <item>Mi</item>
+        <item>Do</item>
+        <item>Fr</item>
+        <item>Sa</item>
+        <item>So</item>
+    </string-array>
+</resources>
