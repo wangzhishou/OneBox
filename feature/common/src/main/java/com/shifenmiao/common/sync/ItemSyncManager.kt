@@ -2,6 +2,7 @@ package com.shifenmiao.common.sync
 
 import androidx.room.withTransaction
 import com.shifenmiao.base.utils.CoreUtils
+import com.shifenmiao.common.BuildConfig
 import com.shifenmiao.core.constants.Constants
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.item.entity.Category
@@ -48,6 +49,7 @@ class ItemSyncManager @Inject constructor(
     private val syncLocks = mutableMapOf<SyncKey, Mutex>()
     private val categoriesSyncLock = Mutex()
     private val appLaunchSyncCalled = AtomicBoolean(false)
+    private val pageEnterSyncAt = mutableMapOf<SyncKey, Long>()
 
     /**
      * 订阅指定 (listType, categoryId) 的同步状态。
@@ -64,6 +66,11 @@ class ItemSyncManager @Inject constructor(
     }
 
     private data class SyncKey(val listType: Int, val categoryId: Int?)
+
+    private companion object {
+        /** 页面进入同步的会话内冷却时间。 */
+        const val PAGE_ENTER_SYNC_COOLDOWN_MS = 10 * 60 * 1000L
+    }
 
     /**
      * 在后台触发指定列表类型的增量同步（会同步一次分类）。
@@ -87,9 +94,21 @@ class ItemSyncManager @Inject constructor(
     /**
      * 应用启动时调用：在同步间隔到期时，同步分类一次，然后依次同步所有列表类型。
      * 重复调用会被忽略。
+     *
+     * App 版本升级后强制全量同步：服务端按 version_code 过滤条目，
+     * 新版本才可见的条目其 updatedAt 可能早于本地水位线，增量同步拉不到，
+     * 因此版本变化时先清空全部同步水位。
      */
     fun syncAllOnAppLaunch() {
         if (!appLaunchSyncCalled.compareAndSet(false, true)) return
+        val currentVersionCode = BuildConfig.VersionCode.toIntOrNull() ?: 0
+        if (currentVersionCode > 0 &&
+            AppSharedStorage.loadLastKnownVersionCode() != currentVersionCode
+        ) {
+            makeLog { "syncAllOnAppLaunch: version changed to $currentVersionCode, clear sync watermarks" }
+            AppSharedStorage.saveLastKnownVersionCode(currentVersionCode)
+            AppSharedStorage.clearSyncTimestamps()
+        }
         if (!SyncIntervalPolicy.shouldSync()) {
             makeLog { "syncAllOnAppLaunch: skipped, within sync interval" }
             return
@@ -100,6 +119,23 @@ class ItemSyncManager @Inject constructor(
             }.getOrElse { error ->
                 makeLog { "syncAllOnAppLaunch failed: ${error.message}" }
             }
+        }
+    }
+
+    /**
+     * 进入列表页时触发一次增量同步（水位线协议，成本低，且不同步分类）。
+     * 按 (listType, categoryId) 维度做会话内冷却，避免频繁进出页面/切换 chip 打爆请求。
+     */
+    fun syncOnPageEnter(listType: ListItemType, categoryId: Int? = null) {
+        val key = SyncKey(listType.id, categoryId)
+        val now = System.currentTimeMillis()
+        synchronized(pageEnterSyncAt) {
+            val last = pageEnterSyncAt[key] ?: 0L
+            if (now - last < PAGE_ENTER_SYNC_COOLDOWN_MS) return
+            pageEnterSyncAt[key] = now
+        }
+        scope.launch(ioDispatcher) {
+            syncInternal(listType, categoryId, syncCategories = false, forceRefresh = true)
         }
     }
 

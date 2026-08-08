@@ -204,6 +204,13 @@ class ItemListComponent @AssistedInject internal constructor(
     }
 
     /**
+     * 页面进入/切换 chip 时调用，做一次带会话内冷却的增量同步。
+     */
+    fun syncOnPageEnter(listType: ListItemType, chipCategoryId: Int?) {
+        itemSyncManager.syncOnPageEnter(listType, chipCategoryId)
+    }
+
+    /**
      * chip 分类列表：先取 listType 下被 item 引用过的分类；为空时回退到全部分类。
      */
     fun observeChips(listType: ListItemType): Flow<List<ChipFilter>> =

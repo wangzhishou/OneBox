@@ -21,6 +21,7 @@ object AppSharedStorage {
     private const val ITEMS_LAST_SYNC_AT = "items_last_sync_at"
     private const val CATEGORIES_LAST_SYNC_AT = "categories_last_sync_at"
     private const val FULL_SYNC_LAST_AT = "full_sync_last_at"
+    private const val LAST_KNOWN_VERSION_CODE = "last_known_version_code"
     private const val MINI_PROGRAM_REMEMBER_CHOICE = "mini_program_remember_choice"
     private const val IS_EXPANDED_REASONING_CHAT = "is_expanded_reasoning_chat"
     private const val IS_EXPANDED_PROMPT = "is_expanded_chat_prompt"
@@ -197,6 +198,32 @@ object AppSharedStorage {
 
     fun loadFullSyncLastAt(): Long {
         return load(FULL_SYNC_LAST_AT, 0L) ?: 0L
+    }
+
+    fun saveLastKnownVersionCode(versionCode: Int) {
+        save(LAST_KNOWN_VERSION_CODE, versionCode)
+    }
+
+    fun loadLastKnownVersionCode(): Int {
+        return load(LAST_KNOWN_VERSION_CODE, 0) ?: 0
+    }
+
+    /**
+     * 清空条目/分类的同步水位线与全量同步时间戳。
+     * 用于 App 版本升级后强制全量重拉：服务端按 version_code 过滤条目，
+     * 新版本才可见的条目其 updatedAt 可能早于本地水位线，增量同步永远拉不到。
+     */
+    fun clearSyncTimestamps() {
+        val shouldClear: (String) -> Boolean = { key ->
+            key.startsWith(ITEMS_LAST_SYNC_AT) ||
+                key == CATEGORIES_LAST_SYNC_AT ||
+                key == FULL_SYNC_LAST_AT
+        }
+        val syncKeys = mmkv.allKeys()?.filter(shouldClear)?.toTypedArray()
+        if (!syncKeys.isNullOrEmpty()) {
+            mmkv.removeValuesForKeys(syncKeys)
+        }
+        memoryCache.keys.removeAll(shouldClear)
     }
 
     fun saveIsEnableSensor(isEnableSensor: Boolean) {
