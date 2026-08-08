@@ -25,7 +25,7 @@ jpegliCoder = "1.0.2"
 
 m3color = "2024.1"
 paletteKtx = "1.0.0"
-material3 = "1.5.0-alpha21"
+material3 = "1.5.0-alpha25"
 composeVersion = "1.11.2"
 materialIconsExtended = "1.7.8"
 androidx-datastorePreferencesAndroid = "1.2.1"
