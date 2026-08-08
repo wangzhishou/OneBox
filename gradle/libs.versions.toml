@@ -43,7 +43,7 @@ detektCompose = "0.6.0"
 decompose = "3.5.0"
 essenty = "2.5.0"
 
-kotlin = "2.4.0"
+kotlin = "2.4.10"
 agp = "9.3.0"
 hilt = "2.59.2"
 
