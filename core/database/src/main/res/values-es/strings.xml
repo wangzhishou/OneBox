@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Prompt de protocolo de ejecución para el modo Agent</string>
     <string name="sys_prompt_duel_title">Plantillas de prompt para duelos/interacciones de IA</string>
     <string name="sys_prompt_duel_desc">Instrucciones de sistema, reglas de rol y plantillas de guía de turnos para duelos e interacciones de IA</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">Seguimiento de hábitos</string>
+    <string name="activity_log_habit_created">Nuevo hábito: %1$s</string>
+    <string name="activity_log_habit_check_in">Registro: %1$s</string>
 </resources>

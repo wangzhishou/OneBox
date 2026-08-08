@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Prompt protokol eksekusi untuk mode Agent</string>
     <string name="sys_prompt_duel_title">Template Prompt Duel/Interaksi AI</string>
     <string name="sys_prompt_duel_desc">Instruksi sistem, aturan peran, dan template panduan giliran untuk duel dan interaksi AI</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">Pelacak Kebiasaan</string>
+    <string name="activity_log_habit_created">Kebiasaan baru: %1$s</string>
+    <string name="activity_log_habit_check_in">Check-in: %1$s</string>
 </resources>

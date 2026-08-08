@@ -77,8 +77,7 @@ import com.wanbaohe.app.component.FavoriteComponent
 import com.wanbaohe.app.navigation.ActivityLogNavigator
 import com.wanbaohe.com.string.TimeFormatter
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Locale
+import java.text.DateFormat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
@@ -695,7 +694,7 @@ private fun ActivityLogItemContent(entry: ActivityLogEntry) {
                 HistoryTitleTag(title = entry.appTitle)
             }
             Spacer(modifier = Modifier.weight(1f))
-            val dateFormat = SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA)
+            val dateFormat = DateFormat.getDateInstance(DateFormat.LONG)
             val formattedDate = dateFormat.format(entry.createdAt)
             Text(
                 text = formattedDate,

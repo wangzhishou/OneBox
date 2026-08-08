@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Agent 모드 실행을 위한 프로토콜 프롬프트</string>
     <string name="sys_prompt_duel_title">AI 대결/상호작용 프롬프트 템플릿</string>
     <string name="sys_prompt_duel_desc">AI 대결 및 상호작용을 위한 시스템 지침, 역할 규칙 및 턴 안내 템플릿</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">습관 트래커</string>
+    <string name="activity_log_habit_created">새 습관: %1$s</string>
+    <string name="activity_log_habit_check_in">체크인: %1$s</string>
 </resources>

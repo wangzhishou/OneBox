@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Промпт протокола выполнения для режима Agent</string>
     <string name="sys_prompt_duel_title">Шаблоны промптов для AI-дуэлей и взаимодействий</string>
     <string name="sys_prompt_duel_desc">Шаблоны системных инструкций, правил ролей и руководств по ходам для AI-дуэлей и взаимодействий</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">Трекер привычек</string>
+    <string name="activity_log_habit_created">Новая привычка: %1$s</string>
+    <string name="activity_log_habit_check_in">Отметка: %1$s</string>
 </resources>

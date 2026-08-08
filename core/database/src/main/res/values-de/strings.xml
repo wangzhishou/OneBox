@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Ausführungsprotokoll-Prompt für den Agent-Modus</string>
     <string name="sys_prompt_duel_title">KI-Duell-/Interaktions-Promptvorlagen</string>
     <string name="sys_prompt_duel_desc">Systemanweisungen, Rollenregeln und Zugführungsvorlagen für KI-Duelle und Interaktionen</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">Gewohnheits-Tracker</string>
+    <string name="activity_log_habit_created">Neue Gewohnheit: %1$s</string>
+    <string name="activity_log_habit_check_in">Check-in: %1$s</string>
 </resources>

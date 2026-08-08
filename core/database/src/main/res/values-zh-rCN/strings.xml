@@ -19,4 +19,8 @@
     <string name="sys_prompt_mode_agent_desc">Agent 模式下的执行协议提示词</string>
     <string name="sys_prompt_duel_title">AI 对聊/互动 prompt 模板</string>
     <string name="sys_prompt_duel_desc">AI 对聊/互动中使用的系统指令、角色发言规则与回合引导语模板</string>
+    <!-- 习惯打卡活动日志 -->
+    <string name="activity_log_habit_app_title">习惯打卡</string>
+    <string name="activity_log_habit_created">新建习惯:%1$s</string>
+    <string name="activity_log_habit_check_in">打卡:%1$s</string>
 </resources>

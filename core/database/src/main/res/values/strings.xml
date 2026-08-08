@@ -19,4 +19,8 @@
     <string name="sys_prompt_mode_agent_desc">Execution protocol prompt for Agent mode</string>
     <string name="sys_prompt_duel_title">AI Duel/Interaction Prompt Templates</string>
     <string name="sys_prompt_duel_desc">System instructions, role rules, and turn guidance templates for AI duels and interactions</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">Habit Tracker</string>
+    <string name="activity_log_habit_created">New habit: %1$s</string>
+    <string name="activity_log_habit_check_in">Check-in: %1$s</string>
 </resources>

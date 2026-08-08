@@ -1,6 +1,7 @@
 package com.shifenmiao.database.activity
 
 import android.content.Context
+import com.shifenmiao.database.R
 import com.shifenmiao.database.activity.repository.ActivityLogRepository
 import com.shifenmiao.database.item.entity.ItemEntity
 import com.shifenmiao.interfaces.logging.ImageSaveLogger
@@ -438,9 +439,9 @@ class ActivityLogRecorder @Inject constructor(
         repository.record(
             ActivityLogEntry(
                 category = ActivityCategory.HABIT,
-                title = "新建习惯: $habitName",
-                appTitle = "习惯打卡",
-                description = "新建习惯: $habitName",
+                title = context.getString(R.string.activity_log_habit_created, habitName),
+                appTitle = context.getString(R.string.activity_log_habit_app_title),
+                description = context.getString(R.string.activity_log_habit_created, habitName),
                 screenRoute = screenRoute,
                 payload = payload,
                 dedupKey = "habit_created_$habitId",
@@ -479,9 +480,9 @@ class ActivityLogRecorder @Inject constructor(
         repository.record(
             ActivityLogEntry(
                 category = ActivityCategory.HABIT,
-                title = "打卡: $habitName",
-                appTitle = "习惯打卡",
-                description = "打卡: $habitName",
+                title = context.getString(R.string.activity_log_habit_check_in, habitName),
+                appTitle = context.getString(R.string.activity_log_habit_app_title),
+                description = context.getString(R.string.activity_log_habit_check_in, habitName),
                 screenRoute = screenRoute,
                 payload = payload,
                 dedupKey = "habit_checkin_${habitId}_$epochDay",

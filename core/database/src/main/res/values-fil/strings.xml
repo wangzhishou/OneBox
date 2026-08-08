@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Protokol na prompt para sa pagpapatupad ng Agent mode</string>
     <string name="sys_prompt_duel_title">Mga Template ng Prompt para sa AI Duel/Interaksyon</string>
     <string name="sys_prompt_duel_desc">Mga tagubilin ng system, mga panuntunan sa papel, at mga template ng gabay sa pagliko para sa mga AI duel at interaksyon</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">Habit Tracker</string>
+    <string name="activity_log_habit_created">Bagong ugali: %1$s</string>
+    <string name="activity_log_habit_check_in">Check-in: %1$s</string>
 </resources>

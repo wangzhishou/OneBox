@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Ajan modu için yürütme protokolü komutu</string>
     <string name="sys_prompt_duel_title">AI Düello/Etkileşim Komut Şablonları</string>
     <string name="sys_prompt_duel_desc">AI düelloları ve etkileşimleri için sistem talimatları, rol kuralları ve sıra yönlendirme şablonları</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">Alışkanlık Takibi</string>
+    <string name="activity_log_habit_created">Yeni alışkanlık: %1$s</string>
+    <string name="activity_log_habit_check_in">Check-in: %1$s</string>
 </resources>

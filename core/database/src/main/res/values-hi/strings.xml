@@ -18,4 +18,8 @@
     <string name="sys_prompt_mode_agent_desc">Agent मोड के लिए निष्पादन प्रोटोकॉल प्रॉम्प्ट</string>
     <string name="sys_prompt_duel_title">AI द्वंद्व/इंटरैक्शन प्रॉम्प्ट टेम्पलेट</string>
     <string name="sys_prompt_duel_desc">AI द्वंद्व और इंटरैक्शन के लिए सिस्टम निर्देश, भूमिका नियम और टर्न मार्गदर्शन टेम्पलेट</string>
+    <!-- Habit tracker activity log entries -->
+    <string name="activity_log_habit_app_title">आदत ट्रैकर</string>
+    <string name="activity_log_habit_created">नई आदत: %1$s</string>
+    <string name="activity_log_habit_check_in">चेक-इन: %1$s</string>
 </resources>
