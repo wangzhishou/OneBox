@@ -268,6 +268,7 @@ class RootComponent @AssistedInject internal constructor(
         componentScope.launch {
             hideSelectDialog()
             screen.simpleName.makeLog("Navigator")
+            analyticsManager.logEvent("item_click", mapOf("item_name" to screen.simpleName))
             val containsScreen = childStack.value.items.any { it.configuration == screen }
             if (containsScreen) {
                 navController.pushToFront(screen)

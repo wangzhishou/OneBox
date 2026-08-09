@@ -32,4 +32,8 @@ internal object AnalyticsManagerImpl : AnalyticsManager {
     override fun sendReport(throwable: Throwable) = Unit
 
     override fun registerScreenOpen(screenName: String) = Unit
+
+    override fun logEvent(name: String, params: Map<String, Any>) = Unit
+
+    override fun setUserProperty(name: String, value: String?) = Unit
 }

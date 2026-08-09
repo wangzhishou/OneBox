@@ -67,6 +67,28 @@ internal object AnalyticsManagerImpl : AnalyticsManager {
         }
     }
 
+    override fun logEvent(name: String, params: Map<String, Any>) {
+        if (allowCollectAnalytics && isFirebaseAvailable) {
+            analytics.logEvent(name) {
+                params.forEach { (key, value) ->
+                    when (value) {
+                        is Double -> param(key, value)
+                        is Float -> param(key, value.toDouble())
+                        is Int -> param(key, value.toLong())
+                        is Long -> param(key, value)
+                        else -> param(key, value.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    override fun setUserProperty(name: String, value: String?) {
+        if (allowCollectAnalytics && isFirebaseAvailable) {
+            analytics.setUserProperty(name, value)
+        }
+    }
+
     private fun deviceInfo(): String {
         val info = get()
 

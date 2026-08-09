@@ -3,6 +3,7 @@ package com.shifenmiao.login.state
 import com.shifenmiao.model.login.LoginState
 import com.shifenmiao.model.user.Login
 import com.shifenmiao.storage.TokenStorage
+import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,9 @@ import javax.inject.Singleton
  * LoginComponent 创建后通过此类读写状态，保持单一数据源。
  */
 @Singleton
-class LoginStateHolder @Inject constructor() {
+class LoginStateHolder @Inject constructor(
+    private val analyticsManager: AnalyticsManager
+) {
 
     private val _loginState = MutableStateFlow(LoginState())
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
@@ -45,6 +48,10 @@ class LoginStateHolder @Inject constructor() {
                     vipLevel = user.vipLevel ?: 0,
                     totalRechargeAmount = user.totalRechargeAmount ?: 0.0,
                 )
+                syncAnalyticsUserProperties(
+                    vipLevel = user.vipLevel ?: 0,
+                    isWechat = user.openid?.isNotEmpty() ?: false
+                )
             }
         }
     }
@@ -68,11 +75,31 @@ class LoginStateHolder @Inject constructor() {
             vipLevel = user.vipLevel ?: 0,
             totalRechargeAmount = user.totalRechargeAmount ?: 0.0,
         )
+        val isWechat = user.openid?.isNotEmpty() ?: false
+        analyticsManager.logEvent(
+            "login",
+            mapOf("method" to if (isWechat) "wechat" else "account")
+        )
+        syncAnalyticsUserProperties(
+            vipLevel = user.vipLevel ?: 0,
+            isWechat = isWechat
+        )
     }
 
     fun clearLoginState() {
         TokenStorage.clearLoginInfo()
         _loginState.value = LoginState()
+        analyticsManager.setUserProperty("vip_level", "0")
+        analyticsManager.setUserProperty("login_method", null)
+    }
+
+    /** 登录/登出/本地恢复时同步 GA 用户属性(国内渠道为 no-op) */
+    private fun syncAnalyticsUserProperties(vipLevel: Int, isWechat: Boolean) {
+        analyticsManager.setUserProperty("vip_level", vipLevel.toString())
+        analyticsManager.setUserProperty(
+            "login_method",
+            if (isWechat) "wechat" else "account"
+        )
     }
 
     fun updatePoints(points: Int) {

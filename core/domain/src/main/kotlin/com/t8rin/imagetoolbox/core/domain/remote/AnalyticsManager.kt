@@ -31,4 +31,14 @@ interface AnalyticsManager {
 
     fun registerScreenOpen(screenName: String)
 
+    /**
+     * 上报自定义事件(如 item 点击), 字符串值原样上报, 数字值(value/points 等)按数值上报
+     */
+    fun logEvent(name: String, params: Map<String, Any> = emptyMap())
+
+    /**
+     * 设置用户属性(仅限低基数枚举值, 如 vip 等级/登录方式), value 传 null 清除
+     */
+    fun setUserProperty(name: String, value: String?)
+
 }

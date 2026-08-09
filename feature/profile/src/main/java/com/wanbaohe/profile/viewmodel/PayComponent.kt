@@ -34,6 +34,7 @@ import com.shifenmiao.pay.alipay.Alipay
 import com.shifenmiao.pay.google.GooglePlayBilling
 import com.shifenmiao.pay.wechat.WechatPay
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import dagger.assisted.Assisted
@@ -48,6 +49,7 @@ class PayComponent @AssistedInject internal constructor(
     private val apiService: ApiService,
     private val resourceProvider: ResourceProvider,
     private val channelConfig: ChannelConfig,
+    private val analyticsManager: AnalyticsManager,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -185,6 +187,11 @@ class PayComponent @AssistedInject internal constructor(
         return _paymentOptions
     }
 
+    /** 支付成功埋点: 服务端验单通过后上报 GA4 预定义 purchase 事件(国内渠道为 no-op) */
+    private fun trackPurchase(method: String, params: Map<String, Any>) {
+        analyticsManager.logEvent("purchase", params + ("payment_method" to method))
+    }
+
     fun prePayInfo(
         context: Context,
         paymentMethod: PaymentMethod<PrePayResponse>,
@@ -236,6 +243,13 @@ class PayComponent @AssistedInject internal constructor(
                         componentScope.launch(defaultDispatcher) {
                             billing.consumePurchase(result.purchaseToken)
                         }
+                        trackPurchase(
+                            method = "google_play",
+                            params = mapOf(
+                                "item_id" to product.productId,
+                                "points" to product.points
+                            )
+                        )
                         ActionUtils.showToast(R.string.pay_success)
                         setPayUIState(PayState.SUCCESS)
                     },
@@ -309,6 +323,13 @@ class PayComponent @AssistedInject internal constructor(
                     loginComponent.wechatReturnVerify(
                         payResult = payResult as WechatPayResult,
                         onSuccess = {
+                            trackPurchase(
+                                method = "wechat",
+                                params = mapOf(
+                                    "value" to payPrice.price.toDouble(),
+                                    "currency" to "CNY"
+                                )
+                            )
                             ActionUtils.showToast(R.string.pay_success)
                             setPayUIState(PayState.SUCCESS)
                         },
@@ -377,6 +398,13 @@ class PayComponent @AssistedInject internal constructor(
                         loginComponent.alipayReturnVerify(
                             alipayResult = payResult as AlipayResult,
                             onSuccess = {
+                                trackPurchase(
+                                    method = "alipay",
+                                    params = mapOf(
+                                        "value" to payPrice.price.toDouble(),
+                                        "currency" to "CNY"
+                                    )
+                                )
                                 setPayUIState(PayState.SUCCESS)
                                 ActionUtils.showToast(R.string.pay_success)
                             },
