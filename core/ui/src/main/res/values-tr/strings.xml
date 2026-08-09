@@ -30,6 +30,11 @@
     <string name="date_range_end">Bitiş Tarihi</string>
     <string name="week_selector_week_title">%1$d-%2$02d · %3$d. Hafta</string>
     <string name="icon_picker_icon_count">%1$d simge</string>
+    <string name="icon_picker_title">Simge seç</string>
+    <string name="icon_picker_search_hint">Simge adı ara…</string>
+    <string name="icon_picker_tab_app">Uygulamalar</string>
+    <string name="icon_picker_tab_material">Genel</string>
+    <string name="icon_picker_tab_all">Tümü</string>
     <string-array name="week_selector_weekdays_short">
         <item>Pzt</item>
         <item>Sal</item>

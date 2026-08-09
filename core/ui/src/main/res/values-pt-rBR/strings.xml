@@ -30,6 +30,11 @@
     <string name="date_range_end">Data de Término</string>
     <string name="week_selector_week_title">%1$d-%2$02d · Semana %3$d</string>
     <string name="icon_picker_icon_count">%1$d ícones</string>
+    <string name="icon_picker_title">Escolher ícone</string>
+    <string name="icon_picker_search_hint">Pesquisar nome do ícone…</string>
+    <string name="icon_picker_tab_app">Apps</string>
+    <string name="icon_picker_tab_material">Geral</string>
+    <string name="icon_picker_tab_all">Todos</string>
     <string-array name="week_selector_weekdays_short">
         <item>seg</item>
         <item>ter</item>

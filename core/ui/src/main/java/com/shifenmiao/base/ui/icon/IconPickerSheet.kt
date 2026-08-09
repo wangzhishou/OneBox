@@ -1,5 +1,6 @@
 package com.shifenmiao.base.ui.icon
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,10 +55,10 @@ import com.t8rin.imagetoolbox.core.ui.R
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 
-private enum class IconTab(val label: String) {
-    APP("应用"),
-    MATERIAL("通用"),
-    ALL("全部"),
+private enum class IconTab(@StringRes val labelRes: Int) {
+    APP(R.string.icon_picker_tab_app),
+    MATERIAL(R.string.icon_picker_tab_material),
+    ALL(R.string.icon_picker_tab_all),
 }
 
 @Composable
@@ -110,7 +111,7 @@ fun IconPickerSheet(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "选择图标",
+                        text = stringResource(R.string.icon_picker_title),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -142,7 +143,7 @@ fun IconPickerSheet(
                                 onClick = { selectedTab = index },
                                 text = {
                                     Text(
-                                        text = tab.label,
+                                        text = stringResource(tab.labelRes),
                                         style = MaterialTheme.typography.labelLarge
                                     )
                                 }
@@ -202,7 +203,7 @@ private fun IconSearchBar(
             .padding(horizontal = 16.dp, vertical = 4.dp),
         placeholder = {
             Text(
-                "搜索图标名称…",
+                stringResource(R.string.icon_picker_search_hint),
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
             )
         },

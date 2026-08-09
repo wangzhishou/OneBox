@@ -36,6 +36,12 @@
     <string name="week_selector_week_title">%1$d年%2$d月 · 第%3$d周</string>
     <!-- 图标选择弹层 IconPickerSheet:tab 行右侧的当前数量 -->
     <string name="icon_picker_icon_count">%1$d 个图标</string>
+    <!-- 图标选择弹层:标题 / 搜索框占位 / tab 标签 -->
+    <string name="icon_picker_title">选择图标</string>
+    <string name="icon_picker_search_hint">搜索图标名称…</string>
+    <string name="icon_picker_tab_app">应用</string>
+    <string name="icon_picker_tab_material">通用</string>
+    <string name="icon_picker_tab_all">全部</string>
     <string-array name="week_selector_weekdays_short">
         <item>一</item>
         <item>二</item>

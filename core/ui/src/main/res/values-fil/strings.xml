@@ -30,6 +30,11 @@
     <string name="date_range_end">Petsa ng Pagtatapos</string>
     <string name="week_selector_week_title">%1$d-%2$02d · Linggo %3$d</string>
     <string name="icon_picker_icon_count">%1$d icon</string>
+    <string name="icon_picker_title">Pumili ng icon</string>
+    <string name="icon_picker_search_hint">Maghanap ng pangalan ng icon…</string>
+    <string name="icon_picker_tab_app">Mga app</string>
+    <string name="icon_picker_tab_material">Pangkalahatan</string>
+    <string name="icon_picker_tab_all">Lahat</string>
     <string-array name="week_selector_weekdays_short">
         <item>Lun</item>
         <item>Mar</item>

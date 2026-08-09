@@ -30,6 +30,11 @@
     <string name="date_range_end">종료 날짜</string>
     <string name="week_selector_week_title">%1$d년 %2$d월 · %3$d주차</string>
     <string name="icon_picker_icon_count">아이콘 %1$d개</string>
+    <string name="icon_picker_title">아이콘 선택</string>
+    <string name="icon_picker_search_hint">아이콘 이름 검색…</string>
+    <string name="icon_picker_tab_app">앱</string>
+    <string name="icon_picker_tab_material">일반</string>
+    <string name="icon_picker_tab_all">전체</string>
     <string-array name="week_selector_weekdays_short">
         <item>월</item>
         <item>화</item>

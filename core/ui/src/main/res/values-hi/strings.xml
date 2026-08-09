@@ -30,6 +30,11 @@
     <string name="date_range_end">समाप्ति दिनांक</string>
     <string name="week_selector_week_title">%1$d-%2$02d · सप्ताह %3$d</string>
     <string name="icon_picker_icon_count">%1$d आइकन</string>
+    <string name="icon_picker_title">आइकन चुनें</string>
+    <string name="icon_picker_search_hint">आइकन का नाम खोजें…</string>
+    <string name="icon_picker_tab_app">ऐप्स</string>
+    <string name="icon_picker_tab_material">सामान्य</string>
+    <string name="icon_picker_tab_all">सभी</string>
     <string-array name="week_selector_weekdays_short">
         <item>सोम</item>
         <item>मंगल</item>

@@ -30,6 +30,11 @@
     <string name="date_range_end">Дата окончания</string>
     <string name="week_selector_week_title">%1$d-%2$02d · Неделя %3$d</string>
     <string name="icon_picker_icon_count">%1$d иконок</string>
+    <string name="icon_picker_title">Выбор значка</string>
+    <string name="icon_picker_search_hint">Поиск по имени значка…</string>
+    <string name="icon_picker_tab_app">Приложения</string>
+    <string name="icon_picker_tab_material">Общие</string>
+    <string name="icon_picker_tab_all">Все</string>
     <string-array name="week_selector_weekdays_short">
         <item>пн</item>
         <item>вт</item>

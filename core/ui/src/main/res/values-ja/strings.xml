@@ -30,6 +30,11 @@
     <string name="date_range_end">終了日</string>
     <string name="week_selector_week_title">%1$d年%2$d月 · 第%3$d週</string>
     <string name="icon_picker_icon_count">%1$d 個のアイコン</string>
+    <string name="icon_picker_title">アイコンを選択</string>
+    <string name="icon_picker_search_hint">アイコン名を検索…</string>
+    <string name="icon_picker_tab_app">アプリ</string>
+    <string name="icon_picker_tab_material">汎用</string>
+    <string name="icon_picker_tab_all">すべて</string>
     <string-array name="week_selector_weekdays_short">
         <item>月</item>
         <item>火</item>

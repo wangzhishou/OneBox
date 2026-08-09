@@ -30,6 +30,11 @@
     <string name="date_range_end">Tanggal Selesai</string>
     <string name="week_selector_week_title">%1$d-%2$02d · Minggu %3$d</string>
     <string name="icon_picker_icon_count">%1$d ikon</string>
+    <string name="icon_picker_title">Pilih ikon</string>
+    <string name="icon_picker_search_hint">Cari nama ikon…</string>
+    <string name="icon_picker_tab_app">Aplikasi</string>
+    <string name="icon_picker_tab_material">Umum</string>
+    <string name="icon_picker_tab_all">Semua</string>
     <string-array name="week_selector_weekdays_short">
         <item>Sen</item>
         <item>Sel</item>

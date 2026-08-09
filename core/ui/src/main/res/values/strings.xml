@@ -36,6 +36,12 @@
     <string name="week_selector_week_title">%1$d-%2$02d · Week %3$d</string>
     <!-- 图标选择弹层 IconPickerSheet:tab 行右侧的当前数量 -->
     <string name="icon_picker_icon_count">%1$d icons</string>
+    <!-- 图标选择弹层:标题 / 搜索框占位 / tab 标签 -->
+    <string name="icon_picker_title">Choose icon</string>
+    <string name="icon_picker_search_hint">Search icon name…</string>
+    <string name="icon_picker_tab_app">Apps</string>
+    <string name="icon_picker_tab_material">Common</string>
+    <string name="icon_picker_tab_all">All</string>
     <string-array name="week_selector_weekdays_short">
         <item>Mon</item>
         <item>Tue</item>
