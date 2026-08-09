@@ -22,6 +22,7 @@ object AppSharedStorage {
     private const val CATEGORIES_LAST_SYNC_AT = "categories_last_sync_at"
     private const val FULL_SYNC_LAST_AT = "full_sync_last_at"
     private const val LAST_KNOWN_VERSION_CODE = "last_known_version_code"
+    private const val PAGE_ENTER_SYNC_AT = "page_enter_sync_at"
     private const val MINI_PROGRAM_REMEMBER_CHOICE = "mini_program_remember_choice"
     private const val IS_EXPANDED_REASONING_CHAT = "is_expanded_reasoning_chat"
     private const val IS_EXPANDED_PROMPT = "is_expanded_chat_prompt"
@@ -206,6 +207,17 @@ object AppSharedStorage {
 
     fun loadLastKnownVersionCode(): Int {
         return load(LAST_KNOWN_VERSION_CODE, 0) ?: 0
+    }
+
+    /**
+     * 进入列表页增量同步的时间戳，按 listType 维度持久化（杀进程不重置）。
+     */
+    fun savePageEnterSyncAt(listType: Int, timestamp: Long) {
+        save("${PAGE_ENTER_SYNC_AT}_$listType", timestamp)
+    }
+
+    fun loadPageEnterSyncAt(listType: Int): Long {
+        return load("${PAGE_ENTER_SYNC_AT}_$listType", 0L) ?: 0L
     }
 
     /**

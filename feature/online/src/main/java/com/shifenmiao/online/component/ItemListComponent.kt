@@ -204,10 +204,10 @@ class ItemListComponent @AssistedInject internal constructor(
     }
 
     /**
-     * 页面进入/切换 chip 时调用，做一次带会话内冷却的增量同步。
+     * 进入列表页时调用，做一次带持久化冷却（按 listType）的增量同步。
      */
-    fun syncOnPageEnter(listType: ListItemType, chipCategoryId: Int?) {
-        itemSyncManager.syncOnPageEnter(listType, chipCategoryId)
+    fun syncOnPageEnter(listType: ListItemType) {
+        itemSyncManager.syncOnPageEnter(listType)
     }
 
     /**

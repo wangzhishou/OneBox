@@ -12,6 +12,7 @@ import com.shifenmiao.model.Source
 import com.shifenmiao.model.datasource.DataItemRemoteDataSource
 import com.shifenmiao.model.datasource.SyncResult
 import com.shifenmiao.storage.AppSharedStorage
+import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.CancellationException
@@ -49,7 +50,6 @@ class ItemSyncManager @Inject constructor(
     private val syncLocks = mutableMapOf<SyncKey, Mutex>()
     private val categoriesSyncLock = Mutex()
     private val appLaunchSyncCalled = AtomicBoolean(false)
-    private val pageEnterSyncAt = mutableMapOf<SyncKey, Long>()
 
     /**
      * 订阅指定 (listType, categoryId) 的同步状态。
@@ -68,8 +68,8 @@ class ItemSyncManager @Inject constructor(
     private data class SyncKey(val listType: Int, val categoryId: Int?)
 
     private companion object {
-        /** 页面进入同步的会话内冷却时间。 */
-        const val PAGE_ENTER_SYNC_COOLDOWN_MS = 10 * 60 * 1000L
+        /** 页面进入同步的默认冷却时间：1 天，可被 RemoteConfig 覆盖。 */
+        const val DEFAULT_PAGE_ENTER_SYNC_COOLDOWN_MS = 24 * 60 * 60 * 1000L
     }
 
     /**
@@ -124,18 +124,26 @@ class ItemSyncManager @Inject constructor(
 
     /**
      * 进入列表页时触发一次增量同步（水位线协议，成本低，且不同步分类）。
-     * 按 (listType, categoryId) 维度做会话内冷却，避免频繁进出页面/切换 chip 打爆请求。
+     *
+     * 冷却只按 listType 维度并持久化到 MMKV：切 chip 不触发，杀进程/冷启动
+     * 也不会重复刷新；冷却时长由 RemoteConfig `pageEnterSyncIntervalSeconds`
+     * 控制（默认 1 天），内容更新频率低时可在服务端调大。
      */
-    fun syncOnPageEnter(listType: ListItemType, categoryId: Int? = null) {
-        val key = SyncKey(listType.id, categoryId)
+    fun syncOnPageEnter(listType: ListItemType) {
         val now = System.currentTimeMillis()
-        synchronized(pageEnterSyncAt) {
-            val last = pageEnterSyncAt[key] ?: 0L
-            if (now - last < PAGE_ENTER_SYNC_COOLDOWN_MS) return
-            pageEnterSyncAt[key] = now
-        }
+        if (now - AppSharedStorage.loadPageEnterSyncAt(listType.id) < getPageEnterCooldownMs()) return
+        AppSharedStorage.savePageEnterSyncAt(listType.id, now)
         scope.launch(ioDispatcher) {
-            syncInternal(listType, categoryId, syncCategories = false, forceRefresh = true)
+            syncInternal(listType, categoryId = null, syncCategories = false, forceRefresh = true)
+        }
+    }
+
+    private fun getPageEnterCooldownMs(): Long {
+        val seconds = RemoteConfigStorage.getRemoteConfig().pageEnterSyncIntervalSeconds
+        return if (seconds != null && seconds > 0) {
+            seconds * 1000L
+        } else {
+            DEFAULT_PAGE_ENTER_SYNC_COOLDOWN_MS
         }
     }
 

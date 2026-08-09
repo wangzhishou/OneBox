@@ -99,9 +99,9 @@ fun PagingDataItemScreen(
     }
     val pagingItems = flow.collectAsLazyPagingItems()
 
-    // 进入页面/切换 chip 时做一次带冷却的增量同步,新发布的条目能及时出现。
-    LaunchedEffect(listType.id, selectedChipId) {
-        itemListComponent.syncOnPageEnter(listType, selectedChipId)
+    // 进入页面时做一次带持久化冷却的增量同步(切 chip 不触发),新发布的条目能及时出现。
+    LaunchedEffect(listType.id) {
+        itemListComponent.syncOnPageEnter(listType)
     }
 
 

@@ -113,6 +113,13 @@ data class RemoteConfig(
     val appLaunchSyncIntervalSeconds: Int? = 3 * 24 * 60 * 60,
 
     /**
+     * 进入列表页增量同步的冷却时间。
+     * 单位秒，默认 1 天，按 listType 维度持久化（杀进程不重置）；
+     * 内容更新频率低时可在服务端调大，无需发版。
+     */
+    val pageEnterSyncIntervalSeconds: Int? = 24 * 60 * 60,
+
+    /**
      * 博客列表
      */
     val helpBlogIds: Map<String, Int>? = mapOf(
@@ -272,6 +279,7 @@ data class RemoteConfig(
         cacheTimeout = mergeField(net.cacheTimeout, cacheTimeout),
         manualRefreshCooldown = mergeField(net.manualRefreshCooldown, manualRefreshCooldown),
         appLaunchSyncIntervalSeconds = mergeField(net.appLaunchSyncIntervalSeconds, appLaunchSyncIntervalSeconds),
+        pageEnterSyncIntervalSeconds = mergeField(net.pageEnterSyncIntervalSeconds, pageEnterSyncIntervalSeconds),
         helpBlogIds = mergeField(net.helpBlogIds, helpBlogIds),
         defaultWorkingEngine = mergeField(net.defaultWorkingEngine, defaultWorkingEngine) { !it.isNullOrBlank() },
         defaultWorkingModel = mergeField(net.defaultWorkingModel, defaultWorkingModel) { !it.isNullOrBlank() },
@@ -320,6 +328,7 @@ data class RemoteConfig(
                 cacheTimeout == other.cacheTimeout &&
                 manualRefreshCooldown == other.manualRefreshCooldown &&
                 appLaunchSyncIntervalSeconds == other.appLaunchSyncIntervalSeconds &&
+                pageEnterSyncIntervalSeconds == other.pageEnterSyncIntervalSeconds &&
                 networkCache == other.networkCache &&
                 forceBindPhone == other.forceBindPhone &&
                 needWechatBindPhone == other.needWechatBindPhone &&
@@ -359,6 +368,7 @@ data class RemoteConfig(
             cacheTimeout,
             manualRefreshCooldown,
             appLaunchSyncIntervalSeconds,
+            pageEnterSyncIntervalSeconds,
             networkCache,
             forceBindPhone,
             needWechatBindPhone,
