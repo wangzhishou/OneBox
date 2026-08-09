@@ -19,8 +19,10 @@ data class ChannelConfig(
     val userAgreementUrl: String,
     /** 是否展示语言切换入口; 只有打包了多语言资源的渠道才应开启 */
     val showLanguageSetting: Boolean = false,
+    /** Google Play Billing 应用内购买(消耗型积分商品), 仅 google 渠道开启 */
+    val enablePlayBilling: Boolean = false,
 ) {
-    /** 是否有可用的应用内支付渠道; Google Play 渠道全关(数字商品须走 Play Billing) */
+    /** 是否有可用的应用内支付渠道(微信/支付宝/Google Play Billing 任一) */
     val enablePayment: Boolean
-        get() = enableWechat || enableAlipay
+        get() = enableWechat || enableAlipay || enablePlayBilling
 }

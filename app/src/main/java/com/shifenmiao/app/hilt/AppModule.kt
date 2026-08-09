@@ -83,6 +83,7 @@ object AppModule {
         privacyPolicyUrl = AppBuildConfig.PRIVACY_POLICY_URL,
         userAgreementUrl = AppBuildConfig.USER_AGREEMENT_URL,
         showLanguageSetting = AppBuildConfig.SHOW_LANGUAGE_SETTING,
+        enablePlayBilling = AppBuildConfig.ENABLE_PLAY_BILLING,
     )
 
 }

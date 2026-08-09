@@ -549,6 +549,13 @@
     <string name="profile_item_dynamic_colors">千色千面主题</string>
     <string name="pay_success">支付成功, 积分预计几分钟以后到账</string>
     <string name="pay_fail">支付错误:%s</string>
+    <string name="google_pay_product_unavailable">商品不可用, 请稍后重试</string>
+    <string name="google_pay_already_owned">你已购买该商品, 积分将稍后到账</string>
+    <string name="google_play_products_load_failed">商品加载失败, 请稍后重试</string>
+    <string name="google_pay_billing_unavailable">当前设备不支持 Google Play 结算, 请确认设备已安装 Google Play 服务并从 Google Play 下载本应用</string>
+    <string name="google_pay_service_unavailable">无法连接 Google Play 服务, 请稍后重试</string>
+    <string name="google_pay_network_error">网络异常, 请检查网络后重试</string>
+    <string name="play_points_desc">获得 %s 积分</string>
     <string name="ai_model_free">免费</string>
     <string name="ai_model_not_free">需积分</string>
     <string name="login_button_custom">自定义</string>

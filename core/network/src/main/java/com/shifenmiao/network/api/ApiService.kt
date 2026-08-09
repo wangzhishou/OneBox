@@ -27,6 +27,8 @@ import com.shifenmiao.model.moderation.SensitiveWordCheckResponse
 import com.shifenmiao.model.pay.alipay.AlipayResult
 import com.shifenmiao.model.pay.alipay.PayEncodeParamResult
 import com.shifenmiao.model.pay.alipay.PayParams
+import com.shifenmiao.model.pay.google.GooglePayVerifyRequest
+import com.shifenmiao.model.pay.google.GooglePlayProduct
 import com.shifenmiao.model.pay.wechat.WechatPayQueryRequest
 import com.shifenmiao.model.pay.wechat.WechatPrepayRequest
 import com.shifenmiao.model.pay.wechat.WechatPrepayResponse
@@ -285,6 +287,18 @@ interface ApiService {
     suspend fun wechatPayOrder(
         @Body payParams: WechatPrepayRequest
     ): Response<WechatPrepayResponse>
+
+    // ─────────────── Google Play Billing (google 渠道积分商品) ───────────────
+
+    /** google 渠道商品目录: productId 与积分的映射 */
+    @GET("google/pay/products")
+    suspend fun googlePlayProducts(): Response<List<GooglePlayProduct>>
+
+    /** 服务端验单(Google Play Developer API)并幂等发放积分, 返回最新用户信息 */
+    @POST("google/pay/verify")
+    suspend fun googlePlayVerify(
+        @Body request: GooglePayVerifyRequest
+    ): Response<Login>
 
 
     // ─────────────── 评论 (strapi-plugin-comments via go-proxy) ───────────────

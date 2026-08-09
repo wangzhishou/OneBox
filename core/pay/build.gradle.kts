@@ -14,6 +14,8 @@ dependencies {
     api(projects.core.base)
     api(libs.alipaysdk.android)
     api(libs.com.tencent.opensdk)
+    api(libs.com.android.billingclient.billing.ktx)
+    api(libs.kotlinx.coroutines.core)
     api(libs.org.greenrebot.eventbus)
 }
 

@@ -17,6 +17,10 @@ import com.shifenmiao.model.pay.alipay.AlipayResult
 import com.shifenmiao.model.pay.alipay.PayEncodeParamResult
 import com.shifenmiao.model.pay.alipay.PayParams
 import com.shifenmiao.model.pay.alipay.PayPrice
+import com.shifenmiao.model.pay.google.GooglePayVerifyRequest
+import com.shifenmiao.model.pay.google.GooglePlayOrder
+import com.shifenmiao.model.pay.google.GooglePlayPayResult
+import com.shifenmiao.model.pay.google.PlayProduct
 import com.shifenmiao.model.pay.wechat.WechatPayResult
 import com.shifenmiao.model.pay.wechat.WechatPrepayRequest
 import com.shifenmiao.model.pay.wechat.WechatPrepayResponse
@@ -27,6 +31,7 @@ import com.shifenmiao.network.utils.NetworkUtils
 import com.shifenmiao.pay.PaymentMethod
 import com.shifenmiao.pay.PaymentResultCallback
 import com.shifenmiao.pay.alipay.Alipay
+import com.shifenmiao.pay.google.GooglePlayBilling
 import com.shifenmiao.pay.wechat.WechatPay
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
@@ -53,11 +58,29 @@ class PayComponent @AssistedInject internal constructor(
         if (channelConfig.enableWechat) {
             add(WechatPay())
         }
+        if (channelConfig.enablePlayBilling) {
+            add(GooglePlayBilling())
+        }
     }
+
+    /** Google Play Billing 实例(google 渠道), 供商品查询/消耗直接调用 */
+    private val googlePlayBilling: GooglePlayBilling? =
+        _paymentOptions.filterIsInstance<GooglePlayBilling>().firstOrNull()
+
+    /** 是否 Google Play Billing 渠道(决定充值 UI 展示 Play 商品而非人民币档位) */
+    val playBillingEnabled: Boolean = channelConfig.enablePlayBilling
+
+    /** Play 商品目录(后端 productId/points + Play 本地化价格) */
+    private val _playProducts = MutableStateFlow<List<PlayProduct>>(emptyList())
+    val playProducts: StateFlow<List<PlayProduct>> = _playProducts
+
+    /** Play 商品加载失败原因(非空表示加载已结束且失败, UI 据此展示失败占位而非一直转圈) */
+    private val _playProductsError = MutableStateFlow<String?>(null)
+    val playProductsError: StateFlow<String?> = _playProductsError
 
     private var currentTradeNo: String = ""
 
-    // 默认选中第一个可用支付方式; 支付全关时(google 渠道)入口均已隐藏, 此处仅兜底
+    // 默认选中第一个可用支付方式; 支付全关时入口均已隐藏, 此处仅兜底
     private val _selectedPayment = mutableStateOf<PaymentMethod<PrePayResponse>>(
         _paymentOptions.firstOrNull() ?: Alipay()
     )
@@ -78,7 +101,66 @@ class PayComponent @AssistedInject internal constructor(
                 com.shifenmiao.model.event.AppEventBus.wechatEvents.collect { onWechatPayEvent(it) }
             }
         }
+        if (channelConfig.enablePlayBilling) {
+            componentScope.launch(defaultDispatcher) {
+                loadPlayProducts()
+                recoverOwnedPurchases()
+            }
+        }
         setPayUIState(PayState.DEFAULT)
+    }
+
+    /** 拉取后端商品目录(productId+points), 再查询 Play 本地化价格合并为 UI 模型 */
+    private suspend fun loadPlayProducts() {
+        val billing = googlePlayBilling ?: return
+        val response = NetworkUtils.safeApiCall { apiService.googlePlayProducts() }
+        val catalog = response?.body().orEmpty()
+        if (response?.isSuccessful != true || catalog.isEmpty()) {
+            onPlayProductsLoadFailed(resourceProvider.getString(R.string.google_play_products_load_failed))
+            return
+        }
+        val detailsList = billing.queryPlayProducts(catalog.map { it.productId })
+        if (detailsList.isEmpty()) {
+            onPlayProductsLoadFailed(billing.lastErrorMessage())
+            return
+        }
+        val detailsById = detailsList.associateBy { it.productId }
+        // 顺序以后端目录为准, Play 查不到详情的商品直接剔除
+        _playProducts.value = catalog.mapNotNull { product ->
+            val details = detailsById[product.productId] ?: return@mapNotNull null
+            PlayProduct(
+                productId = product.productId,
+                points = product.points,
+                title = details.name,
+                formattedPrice = details.oneTimePurchaseOfferDetails?.formattedPrice.orEmpty(),
+            )
+        }
+    }
+
+    private fun onPlayProductsLoadFailed(message: String) {
+        _playProductsError.value = message
+        addError(message)
+    }
+
+    /**
+     * 支付中断补偿: 用户已付款但验单失败(如断网)时购买会滞留未消耗,
+     * 这里静默重新验单 + 消耗(服务端幂等), 避免付了钱拿不到积分也无法复购
+     */
+    private suspend fun recoverOwnedPurchases() {
+        val billing = googlePlayBilling ?: return
+        billing.queryOwnedPurchases().forEach { owned ->
+            val response = NetworkUtils.safeApiCall {
+                apiService.googlePlayVerify(
+                    GooglePayVerifyRequest(
+                        productId = owned.productId,
+                        purchaseToken = owned.purchaseToken,
+                    )
+                )
+            }
+            if (response?.isSuccessful == true) {
+                billing.consumePurchase(owned.purchaseToken)
+            }
+        }
     }
 
     fun onWechatPayEvent(event: WechatEvent) {
@@ -132,6 +214,50 @@ class PayComponent @AssistedInject internal constructor(
                 preWechatPay(context, paymentMethod, payPrice, loginComponent)
             }
         }
+    }
+
+    /** Google Play 渠道支付: 拉起 Play 支付 → 服务端验单 → 验单成功后消耗商品(可复购) */
+    fun payPlayProduct(
+        context: Context,
+        product: PlayProduct,
+        loginComponent: LoginComponent
+    ) {
+        val billing = googlePlayBilling ?: return
+        if (_loadingState.value) return
+        showLoading()
+        billing.setPaymentResultCallback(object : PaymentResultCallback {
+            override fun onPaymentSuccess(payResult: PayResult) {
+                val result = payResult as GooglePlayPayResult
+                loginComponent.googlePlayReturnVerify(
+                    productId = result.productId,
+                    purchaseToken = result.purchaseToken,
+                    onSuccess = {
+                        // 验单成功后才能消耗; 失败仅影响复购, 由 recoverOwnedPurchases 补偿
+                        componentScope.launch(defaultDispatcher) {
+                            billing.consumePurchase(result.purchaseToken)
+                        }
+                        ActionUtils.showToast(R.string.pay_success)
+                        setPayUIState(PayState.SUCCESS)
+                    },
+                    onFail = {
+                        ActionUtils.showError(
+                            resourceProvider.getString(R.string.pay_fail, it)
+                        )
+                        setPayUIState(PayState.FAILURE)
+                    })
+            }
+
+            override fun onPaymentFailure(error: String) {
+                ActionUtils.showError(error)
+                setPayUIState(PayState.FAILURE)
+            }
+
+            override fun onPaymentIncomplete() {
+                setPayUIState(PayState.INCOMPLETE)
+            }
+        })
+        // payPrice 在 Google Play 路径不使用(价格由 Play 商品详情提供), 传占位值
+        billing.pay(context, PayPrice.WuMaoPrice, GooglePlayOrder(product.productId))
     }
 
     private fun preWechatPay(

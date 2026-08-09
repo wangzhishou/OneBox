@@ -141,6 +141,7 @@ android {
             buildConfigField("boolean", "ENABLE_ALIPAY", "true")
             buildConfigField("boolean", "ENABLE_HMS", "true")
             buildConfigField("boolean", "ENABLE_GMS", "false")
+            buildConfigField("boolean", "ENABLE_PLAY_BILLING", "false")
             // 国内渠道只打中文包, 不展示语言切换入口
             buildConfigField("boolean", "SHOW_LANGUAGE_SETTING", "false")
         }
@@ -193,6 +194,8 @@ android {
         buildConfigField("boolean", "ENABLE_ALIPAY", "false")
         buildConfigField("boolean", "ENABLE_HMS", "false")
         buildConfigField("boolean", "ENABLE_GMS", "true")
+        // Google Play 渠道数字商品(积分)必须走 Play Billing
+        buildConfigField("boolean", "ENABLE_PLAY_BILLING", "true")
         // 海外多语言包, 展示语言切换入口
         buildConfigField("boolean", "SHOW_LANGUAGE_SETTING", "true")
     }
@@ -366,6 +369,9 @@ android {
     lint {
         // 禁用 32 位架构警告，因为我们已经通过 productFlavors 分开打包
         disable += "ChromeOsAbiSupport"
+        // 误报: google flavor 用 raw-zh-rCN/initial_data.sql 覆盖 core:database 的同名资源,
+        // 基础 raw 在库模块里存在, lintVital 不跨模块认基础资源, 会导致 release 构建失败
+        disable += "MissingDefaultResource"
     }
 }
 

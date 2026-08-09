@@ -522,6 +522,13 @@ And so, OneBox was born.]]></string>
     <string name="profile_item_dynamic_colors">Dynamic Color Suggestions</string>
     <string name="pay_success">Payment successful. Points will arrive in a few minutes.</string>
     <string name="pay_fail">Payment error: %s</string>
+    <string name="google_pay_product_unavailable">Product unavailable, please try again later.</string>
+    <string name="google_pay_already_owned">You already own this item. Points will be credited shortly.</string>
+    <string name="google_play_products_load_failed">Failed to load products, please try again later.</string>
+    <string name="google_pay_billing_unavailable">Google Play billing is not supported on this device. Please install the app from Google Play on a device with Google Play services.</string>
+    <string name="google_pay_service_unavailable">Unable to connect to Google Play services, please try again later.</string>
+    <string name="google_pay_network_error">Network error, please check your connection and try again.</string>
+    <string name="play_points_desc">Get %s points</string>
     <string name="ai_model_free">Free</string>
     <string name="ai_model_not_free">Points Required</string>
     <string name="login_button_custom">Custom</string>

@@ -33,6 +33,7 @@ import com.shifenmiao.login.state.userNameEmptyErrorState
 import com.shifenmiao.model.common.Status
 import com.shifenmiao.model.login.LoginEvent
 import com.shifenmiao.model.pay.alipay.AlipayResult
+import com.shifenmiao.model.pay.google.GooglePayVerifyRequest
 import com.shifenmiao.model.pay.wechat.WechatPayQueryRequest
 import com.shifenmiao.model.pay.wechat.WechatPayResult
 import com.shifenmiao.model.points.ConsumePointsEvent
@@ -758,6 +759,44 @@ class LoginComponent @AssistedInject internal constructor(
                 )
             }
             if (response == null) {
+                return@launch
+            }
+            responseHandle(
+                response,
+                onSuccess = {
+                    onSuccess()
+                },
+                onFail = {
+                    onFail(it)
+                },
+                onlyUpdate = true
+            )
+        }
+    }
+
+
+    /** Google Play 验单: 服务端校验 purchaseToken 并幂等发放积分, 返回最新用户信息 */
+    fun googlePlayReturnVerify(
+        productId: String,
+        purchaseToken: String,
+        onSuccess: () -> Unit,
+        onFail: (String) -> Unit
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = { errorMsg ->
+                    onFail(errorMsg)
+                }
+            ) {
+                apiService.googlePlayVerify(
+                    request = GooglePayVerifyRequest(
+                        productId = productId,
+                        purchaseToken = purchaseToken
+                    )
+                )
+            }
+            if (response == null) {
+                onFail(appContext.getString(R.string.error_message))
                 return@launch
             }
             responseHandle(

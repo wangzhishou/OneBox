@@ -45,6 +45,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.model.pay.PrePayResponse
 import com.shifenmiao.model.pay.alipay.PayPrice
+import com.shifenmiao.model.pay.google.PlayProduct
 import com.shifenmiao.pay.PaymentMethod
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
@@ -52,6 +53,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
 import com.wanbaohe.profile.components.AnimatedViewPager
 import com.wanbaohe.profile.components.AppTextInfo
+import com.wanbaohe.profile.components.PlayProductSlider
 import com.wanbaohe.profile.viewmodel.PayComponent
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWorkspacePremium
@@ -109,6 +111,9 @@ fun ColumnScope.BuyCoffeeBody(
 ) {
     val context = LocalContext.current
     val payPriceState = remember { mutableStateOf<PayPrice>(PayPrice.WuMaoPrice) }
+    val playProducts by payComponent.playProducts.collectAsState()
+    val playProductsError by payComponent.playProductsError.collectAsState()
+    val selectedPlayProduct = remember { mutableStateOf<PlayProduct?>(null) }
     val selectedPayment = payComponent.selectedPayment
     val coroutineScope = rememberCoroutineScope()
     val loginState = LocalLoginState.current
@@ -172,12 +177,29 @@ fun ColumnScope.BuyCoffeeBody(
         }
         item {
             Spacer(modifier = Modifier.height(AppTheme.dimens.paddingLarge))
-            BuildLoginSlider(
-                modifier = Modifier.fillMaxWidth(),
-                onPayPriceSelected = { payPrice ->
-                    payPriceState.value = payPrice
-                },
-            )
+            if (payComponent.playBillingEnabled) {
+                // google 渠道: Play 商品(本地化价格 + 积分), 替换人民币硬编码档位
+                val screenWidth = LocalScreenSize.current.width
+                val pageWidth = remember(screenWidth) {
+                    if (screenWidth > 0.dp) screenWidth / 3f else 100.dp
+                }
+                PlayProductSlider(
+                    modifier = Modifier.fillMaxWidth(),
+                    pageSize = pageWidth,
+                    products = playProducts,
+                    loadError = playProductsError,
+                    onProductSelected = { product ->
+                        selectedPlayProduct.value = product
+                    },
+                )
+            } else {
+                BuildLoginSlider(
+                    modifier = Modifier.fillMaxWidth(),
+                    onPayPriceSelected = { payPrice ->
+                        payPriceState.value = payPrice
+                    },
+                )
+            }
             Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
         }
         item {
@@ -206,13 +228,23 @@ fun ColumnScope.BuyCoffeeBody(
                 GlassButton(
                     onClick = {
                         val handlePayment = {
-                            payPriceState.value.userId = loginState.userId
-                            payComponent.prePayInfo(
-                                context,
-                                selectedPayment,
-                                payPriceState.value,
-                                loginComponent,
-                            )
+                            if (payComponent.playBillingEnabled) {
+                                selectedPlayProduct.value?.let { product ->
+                                    payComponent.payPlayProduct(
+                                        context = context,
+                                        product = product,
+                                        loginComponent = loginComponent,
+                                    )
+                                }
+                            } else {
+                                payPriceState.value.userId = loginState.userId
+                                payComponent.prePayInfo(
+                                    context,
+                                    selectedPayment,
+                                    payPriceState.value,
+                                    loginComponent,
+                                )
+                            }
                         }
                         if (loginState.isLogin) {
                             handlePayment.invoke()
@@ -225,7 +257,8 @@ fun ColumnScope.BuyCoffeeBody(
                             )
                         }
                     },
-                    enabled = !isLoading,
+                    enabled = !isLoading &&
+                            (!payComponent.playBillingEnabled || selectedPlayProduct.value != null),
                     modifier = Modifier
                         .requiredHeight(AppTheme.dimens.normalButtonHeight)
                         .padding(horizontal = 16.dp),
