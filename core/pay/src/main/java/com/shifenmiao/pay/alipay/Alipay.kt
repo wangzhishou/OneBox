@@ -27,7 +27,7 @@ class Alipay : PaymentMethod<PrePayResponse> {
     override val id: Int
         get() = 0
     override val displayName: String
-        get() = "Alipay"
+        get() = "支付宝"
 
     override fun getIcon(): Int {
         return R.drawable.alipay

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
+import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
 import com.shifenmiao.base.manager.DataBaseManager
 import com.shifenmiao.base.manager.StorageManager
 import com.shifenmiao.base.ui.ConfirmDialog
@@ -30,8 +31,6 @@ import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.di.WebViewEntryPoint
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.findActivity
-import com.wanbaohe.core.ui.review.InAppReviewPrompt
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
@@ -56,6 +55,12 @@ fun ProfileSettingItem(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val onNavigate = LocalOnNavigate.current
+    val channelConfig = remember {
+        EntryPointAccessors.fromApplication(
+            context = context.applicationContext,
+            entryPoint = ChannelConfigEntryPoint::class.java,
+        ).getChannelConfig()
+    }
 
     val settingsUIState = LocalSettingsState.current
     val currentFolderUri = settingsUIState.saveFolderUri
@@ -281,9 +286,18 @@ fun ProfileSettingItem(
                 setting = setting,
                 themeIndex = themeIndex,
                 onclick = {
-                    onNavigate(
-                        Screen.BuyCoffee()
-                    )
+                    // google 渠道(Play Billing)支付入口先登录; 国内渠道直接进入
+                    if (channelConfig.enablePlayBilling) {
+                        ActionUtils.showLogin(source = "ProfileSettingDonate") {
+                            onNavigate(
+                                Screen.BuyCoffee()
+                            )
+                        }
+                    } else {
+                        onNavigate(
+                            Screen.BuyCoffee()
+                        )
+                    }
                 },
                 settingsComponent = settingsComponent
             )
@@ -437,14 +451,12 @@ fun ProfileSettingItem(
                             }
                         }
                     }
-                    // google 渠道优先弹应用内评分半屏层,不可用时回退跳商店;
-                    // 国内渠道 InAppReviewPrompt 为空实现,直接走回退
-                    val activity = context.findActivity()
-                    if (activity != null) {
-                        InAppReviewPrompt.launch(activity, onUnavailable = openStore)
-                    } else {
-                        openStore()
-                    }
+                    // 用户主动点击的入口直接跳商店详情页,保证点击必有反馈。
+                    // 之前 google 渠道这里走 Play In-App Review 半屏评分层,但该 API 有配额,
+                    // 配额耗尽(如启动满 5 次的自动弹出已消耗)后 launchReviewFlow 静默不弹
+                    // 且无任何回调,表现为"点击无反应",App 侧无法感知,故不再用于手动入口;
+                    // InAppReviewPrompt 仅保留给 AppActivity 的自动弹出场景。
+                    openStore()
                 },
                 settingsComponent = settingsComponent
             )

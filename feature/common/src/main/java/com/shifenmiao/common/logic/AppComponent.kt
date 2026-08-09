@@ -335,8 +335,16 @@ class AppComponent @AssistedInject internal constructor(
             MainShowType.QUICK_DRAWER -> showDrawer()
             MainShowType.AI_SETTING -> showAIChatSettings()
             MainShowType.BUY_COFFEE -> {
-                // 支付全关的渠道(google)忽略购买入口
-                if (channelConfig.enablePayment) showBuyCoffeeDialogModalSheet()
+                // 支付全关的渠道忽略购买入口; google 渠道(Play Billing)支付入口先登录, 国内渠道直接弹出
+                if (channelConfig.enablePayment) {
+                    if (channelConfig.enablePlayBilling) {
+                        ActionUtils.showLogin(source = "RobotBuyCoffee") {
+                            showBuyCoffeeDialogModalSheet()
+                        }
+                    } else {
+                        showBuyCoffeeDialogModalSheet()
+                    }
+                }
             }
         }
     }

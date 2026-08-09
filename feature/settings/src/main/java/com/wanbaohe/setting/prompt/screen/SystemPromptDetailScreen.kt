@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
 import com.shifenmiao.base.ui.MarkdownLazyContent
+import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
@@ -219,7 +220,14 @@ fun SystemPromptDetailScreen(
                     TextButton(
                         onClick = {
                             showVipDialog = false
-                            onNavigate(Screen.BuyCoffee())
+                            // google 渠道(Play Billing)支付入口先登录; 国内渠道直接进入
+                            if (channelConfig.enablePlayBilling) {
+                                ActionUtils.showLogin(source = "SystemPromptVipUpgrade") {
+                                    onNavigate(Screen.BuyCoffee())
+                                }
+                            } else {
+                                onNavigate(Screen.BuyCoffee())
+                            }
                         }
                     ) {
                         Text(stringResource(R.string.system_prompt_edit_vip_upgrade))

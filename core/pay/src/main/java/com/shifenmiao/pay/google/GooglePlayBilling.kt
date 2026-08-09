@@ -59,7 +59,7 @@ class GooglePlayBilling : PaymentMethod<PrePayResponse>, PurchasesUpdatedListene
     override val id: Int
         get() = 2
     override val displayName: String
-        get() = "GooglePlay"
+        get() = "Google Play"
 
     override fun getIcon(): Int {
         return R.drawable.google_play
