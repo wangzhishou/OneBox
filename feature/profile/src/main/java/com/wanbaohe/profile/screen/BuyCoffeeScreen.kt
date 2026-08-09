@@ -20,6 +20,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -207,15 +208,26 @@ fun ColumnScope.BuyCoffeeBody(
             Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
         }
         item {
-            Text(
-                modifier = Modifier.padding(
-                    horizontal = AppTheme.dimens.paddingNormal,
-                    vertical = AppTheme.dimens.paddingSmall
-                ),
-                text = stringResource(id = R.string.donate_mode),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            // 支付方式标题 + 分隔线, 卡片与上下元素拉开行距
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.dimens.paddingNormal),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.donate_mode),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(start = AppTheme.dimens.paddingNormal)
+                        .weight(1f),
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                )
+            }
+            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -224,7 +236,7 @@ fun ColumnScope.BuyCoffeeBody(
             }
         }
         item {
-            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
+            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingLarge))
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -309,6 +321,7 @@ fun PaymentOptionsSelector(
     Row(
         Modifier
             .selectableGroup()
+            .fillMaxWidth()
             .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -316,8 +329,9 @@ fun PaymentOptionsSelector(
             val selected = selectedPayment?.id == option.id
             Row(
                 modifier = Modifier
+                    .weight(1f)
                     .glassRegular(
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(16.dp),
                         color = if (selected) {
                             MaterialTheme.colorScheme.primaryContainer
                         } else {
@@ -332,7 +346,7 @@ fun PaymentOptionsSelector(
                         },
                         role = Role.RadioButton,
                     )
-                    .padding(horizontal = 12.dp, vertical = 4.dp),
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(selected = selected, onClick = null)
@@ -340,7 +354,7 @@ fun PaymentOptionsSelector(
                     painter = painterResource(id = option.getIcon()),
                     contentDescription = null,
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(24.dp),
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
