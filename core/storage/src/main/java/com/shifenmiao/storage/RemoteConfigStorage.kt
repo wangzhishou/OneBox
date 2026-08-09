@@ -1,6 +1,7 @@
 package com.shifenmiao.storage
 
 import com.shifenmiao.model.remote.RemoteConfig
+import com.t8rin.imagetoolbox.core.utils.LocaleUtils
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -8,8 +9,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 
 object RemoteConfigStorage {
 
-    private val mmkv: MMKV = MMKV.mmkvWithID(MMKVName.REMOTE_CONFIG)
+    // 按语言隔离：远程配置按 locale 拉取，内含本地化文案与 defaultEngines
+    private val mmkv: MMKV get() = localizedMmkv(MMKVName.REMOTE_CONFIG)
     private var remoteConfigCache: RemoteConfig? = null
+    private var cacheLocaleTag: String? = null
 
     // 升级 key：RemoteConfig 新增 adminVipLevel 等中间字段后，旧的 Parcelable 缓存格式已不兼容，
     // 继续使用旧缓存会导致字段错位/列表中出现 null。改为新 key 后首次读取会回退到默认 RemoteConfig。
@@ -26,6 +29,7 @@ object RemoteConfigStorage {
 
     fun saveRemoteConfigToLocalStorage(remoteConfig: RemoteConfig) {
         remoteConfigCache = remoteConfig
+        cacheLocaleTag = LocaleUtils.getCurrentLocaleTag()
         mmkv.encode(KEY_REMOTE_CONFIG, remoteConfig)
         _rulesChanged.tryEmit(Unit)
     }
@@ -36,11 +40,12 @@ object RemoteConfigStorage {
             remoteConfig = RemoteConfig()
         }
         remoteConfigCache = remoteConfig
+        cacheLocaleTag = LocaleUtils.getCurrentLocaleTag()
         return remoteConfig
     }
 
     fun getRemoteConfig(): RemoteConfig {
-        if (remoteConfigCache == null) {
+        if (remoteConfigCache == null || cacheLocaleTag != LocaleUtils.getCurrentLocaleTag()) {
             remoteConfigCache = getRemoteConfigFromLocalStorage()
         }
 
@@ -49,6 +54,7 @@ object RemoteConfigStorage {
 
     fun clearRemoteConfig() {
         remoteConfigCache = null
+        cacheLocaleTag = null
         mmkv.remove(KEY_REMOTE_CONFIG)
         _rulesChanged.tryEmit(Unit)
     }

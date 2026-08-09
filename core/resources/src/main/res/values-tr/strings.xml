@@ -83,6 +83,7 @@
     <string name="allow_image_monet">Görüntülerden Monet renklerine izin ver</string>
     <string name="allow_image_monet_sub">Etkinleştirilirse, düzenlemek için bir görüntü seçtiğinizde uygulama renkleri buna göre değişir</string>
     <string name="language">Dil</string>
+    <string name="language_switch_restart_message">Yeni dilin uygulanması için uygulama yeniden başlatılacak. Devam eden işlemler kesintiye uğrayacak.</string>
     <string name="dynamic_colors">Dinamik renkler</string>
     <string name="amoled_mode">AMOLED modu</string>
     <string name="amoled_mode_sub">Etkinleştirilirse, gece modunda arka plan saf siyah olur</string>

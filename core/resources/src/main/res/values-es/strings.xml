@@ -83,6 +83,7 @@
     <string name="allow_image_monet">Permitir colores Monet de las imágenes</string>
     <string name="allow_image_monet_sub">Si está habilitado, al elegir una imagen para editar, los colores de la aplicación cambiarán según ella</string>
     <string name="language">Idioma</string>
+    <string name="language_switch_restart_message">La aplicación se reiniciará para aplicar el nuevo idioma. Las tareas en curso se interrumpirán.</string>
     <string name="dynamic_colors">Colores dinámicos</string>
     <string name="amoled_mode">Modo AMOLED</string>
     <string name="amoled_mode_sub">Si está habilitado, el fondo será negro puro en modo nocturno</string>

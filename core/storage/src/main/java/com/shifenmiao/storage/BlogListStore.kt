@@ -6,7 +6,8 @@ import com.tencent.mmkv.MMKV
 
 object BlogListStore {
 
-    private val mmkv: MMKV = MMKV.mmkvWithID(MMKVName.BLOG_LIST)
+    // 按语言隔离：博客内容按 locale 下发
+    private val mmkv: MMKV get() = localizedMmkv(MMKVName.BLOG_LIST)
     private val CACHE_TIMEOUT = RemoteConfigStorage.getRemoteConfig().cacheTimeout
     private const val KEY_BLOGS_PREFIX = "blogs_page_"
     private const val KEY_BLOG_DETAIL_PREFIX = "blog_detail_"

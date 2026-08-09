@@ -83,6 +83,7 @@
     <string name="allow_image_monet">이미지에서 Monet 색상 허용</string>
     <string name="allow_image_monet_sub">활성화하면 편집할 이미지를 선택할 때 앱 색상이 해당 이미지에 따라 변경됩니다</string>
     <string name="language">언어</string>
+    <string name="language_switch_restart_message">새 언어를 적용하려면 앱이 다시 시작됩니다. 진행 중인 작업이 중단됩니다.</string>
     <string name="dynamic_colors">동적 색상</string>
     <string name="amoled_mode">AMOLED 모드</string>
     <string name="amoled_mode_sub">활성화하면 야간 모드에서 배경이 순수한 검정색이 됩니다</string>

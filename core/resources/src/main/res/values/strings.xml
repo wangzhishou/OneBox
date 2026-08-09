@@ -100,6 +100,7 @@
     <string name="allow_image_monet">Allow Monet colors from images</string>
     <string name="allow_image_monet_sub">If enabled, when you pick an image to edit, the app colors will change based on it</string>
     <string name="language">Language</string>
+    <string name="language_switch_restart_message">The app will restart to apply the new language. Ongoing tasks will be interrupted.</string>
     <string name="dynamic_colors">Dynamic colors</string>
     <string name="amoled_mode">AMOLED mode</string>
     <string name="amoled_mode_sub">If enabled, the background will be pure black in night mode</string>

@@ -1,7 +1,6 @@
 package com.shifenmiao.common.logic
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import androidx.room.withTransaction
 import com.arkivanov.decompose.ComponentContext
@@ -23,6 +22,7 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.t8rin.imagetoolbox.core.utils.AppRestarter
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +37,6 @@ import java.io.File
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
-import kotlin.system.exitProcess
 
 abstract class CommonComponent(
     settingsManager: SettingsManager,
@@ -373,9 +372,9 @@ abstract class CommonComponent(
                 )
                 onImportSuccess()
 
-                // Delay 10 seconds before cold restart so that DI/Room uses the restored files.
+                // Delay before cold restart so that DI/Room uses the restored files.
                 kotlinx.coroutines.delay(3_000)
-                restartToColdStart(context.applicationContext)
+                AppRestarter.restartToColdStart(context.applicationContext)
             } catch (e: Exception) {
                 _importOrExportProgress.value = ImportOrExportProgress(
                     visible = false,
@@ -386,19 +385,6 @@ abstract class CommonComponent(
                 onImportFailure(e.message ?: "Unknown error")
             }
         }
-    }
-
-    private fun restartToColdStart(context: Context) {
-        val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
-            ?: return
-        launchIntent.addFlags(
-            Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                Intent.FLAG_ACTIVITY_CLEAR_TASK
-        )
-        context.startActivity(launchIntent)
-        // Ensure process is killed so Room reopens files from disk.
-        exitProcess(0)
     }
 }
 

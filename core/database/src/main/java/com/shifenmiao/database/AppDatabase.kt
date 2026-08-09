@@ -168,6 +168,9 @@ abstract class AppDatabase : RoomDatabase() {
 
         const val DB_NAME_PREFIX: String = "one_box"
 
+        // 语言切换后进程会冷重启（见 LocaleSwitchWatcher），Hilt @Singleton 注入的库实例
+        // 因此总能对应当前语言；getInstanceOrCreate 内的懒切换是直连调用方
+        // （如 FileTransferServer）在重启完成前的兜底。
         @Volatile
         private var INSTANCE: AppDatabase? = null
 

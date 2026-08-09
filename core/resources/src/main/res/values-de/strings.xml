@@ -83,6 +83,7 @@
     <string name="allow_image_monet">Monet-Farben aus Bildern zulassen</string>
     <string name="allow_image_monet_sub">Wenn aktiviert, ändern sich die App-Farben basierend auf dem ausgewählten Bild</string>
     <string name="language">Sprache</string>
+    <string name="language_switch_restart_message">Die App wird neu gestartet, um die neue Sprache anzuwenden. Laufende Vorgänge werden unterbrochen.</string>
     <string name="dynamic_colors">Dynamische Farben</string>
     <string name="amoled_mode">AMOLED-Modus</string>
     <string name="amoled_mode_sub">Wenn aktiviert, wird der Hintergrund im Nachtmodus rein schwarz</string>

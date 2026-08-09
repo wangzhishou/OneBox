@@ -10,6 +10,14 @@ import java.util.concurrent.TimeUnit
 object AppSharedStorage {
 
     private val mmkv: MMKV = MMKV.mmkvWithID(MMKVName.APP_SHARED)
+
+    /**
+     * 按语言隔离的 MMKV（"app_<locale>"）：存放与分库数据绑定/按语言下发的内容——
+     * 条目/分类同步水位线、系统预置 prompt 版本、工具目录快照版本、远程配置检查时间。
+     * 这些 key 不进 memoryCache，避免跨语言串味（MMKV mmap 直读足够快）。
+     */
+    private val localeMmkv: MMKV get() = localizedMmkv(MMKVName.APP_SHARED)
+
     private val memoryCache = mutableMapOf<String, Any>()
     private const val IS_SHOW_POINTS_TIPS = "is_show_points_tips"
     private const val BASE_POINTS = "base_points_float"
@@ -35,6 +43,7 @@ object AppSharedStorage {
     private const val TOOL_CATALOG_SNAPSHOT_VERSION = "tool_catalog_snapshot_version"
     private const val SYSTEM_PRESET_VERSION = "system_preset_version"
     private const val HABIT_PRESETS_SEEDED = "habit_presets_seeded"
+    private const val LANGUAGE_SWITCH_NOTICE_DISMISSED = "language_switch_notice_dismissed"
 
     // ─── 启动关键设置 key（DataStore → MMKV 镜像缓存） ────────────────────────
     private const val S_FONT_SCALE = "s_font_scale"
@@ -171,34 +180,34 @@ object AppSharedStorage {
 
     fun saveItemsLastSyncAt(listType: Int, categoryId: Int?, timestamp: Long) {
         val key = "${ITEMS_LAST_SYNC_AT}_${listType}_${categoryId ?: 0}"
-        val current = load(key, 0L) ?: 0L
+        val current = localeMmkv.decodeLong(key, 0L)
         if (timestamp > current) {
-            save(key, timestamp)
+            localeMmkv.encode(key, timestamp)
         }
     }
 
     fun loadItemsLastSyncAt(listType: Int, categoryId: Int?): Long {
         val key = "${ITEMS_LAST_SYNC_AT}_${listType}_${categoryId ?: 0}"
-        return load(key, 0L) ?: 0L
+        return localeMmkv.decodeLong(key, 0L)
     }
 
     fun saveCategoriesLastSyncAt(timestamp: Long) {
-        val current = load(CATEGORIES_LAST_SYNC_AT, 0L) ?: 0L
+        val current = localeMmkv.decodeLong(CATEGORIES_LAST_SYNC_AT, 0L)
         if (timestamp > current) {
-            save(CATEGORIES_LAST_SYNC_AT, timestamp)
+            localeMmkv.encode(CATEGORIES_LAST_SYNC_AT, timestamp)
         }
     }
 
     fun loadCategoriesLastSyncAt(): Long {
-        return load(CATEGORIES_LAST_SYNC_AT, 0L) ?: 0L
+        return localeMmkv.decodeLong(CATEGORIES_LAST_SYNC_AT, 0L)
     }
 
     fun saveFullSyncLastAt(timestamp: Long) {
-        save(FULL_SYNC_LAST_AT, timestamp)
+        localeMmkv.encode(FULL_SYNC_LAST_AT, timestamp)
     }
 
     fun loadFullSyncLastAt(): Long {
-        return load(FULL_SYNC_LAST_AT, 0L) ?: 0L
+        return localeMmkv.decodeLong(FULL_SYNC_LAST_AT, 0L)
     }
 
     fun saveLastKnownVersionCode(versionCode: Int) {
@@ -211,19 +220,21 @@ object AppSharedStorage {
 
     /**
      * 进入列表页增量同步的时间戳，按 listType 维度持久化（杀进程不重置）。
+     * 按语言隔离：水位线度量的是按语言分库的 item 表。
      */
     fun savePageEnterSyncAt(listType: Int, timestamp: Long) {
-        save("${PAGE_ENTER_SYNC_AT}_$listType", timestamp)
+        localeMmkv.encode("${PAGE_ENTER_SYNC_AT}_$listType", timestamp)
     }
 
     fun loadPageEnterSyncAt(listType: Int): Long {
-        return load("${PAGE_ENTER_SYNC_AT}_$listType", 0L) ?: 0L
+        return localeMmkv.decodeLong("${PAGE_ENTER_SYNC_AT}_$listType", 0L)
     }
 
     /**
      * 清空条目/分类的同步水位线与全量同步时间戳。
      * 用于 App 版本升级后强制全量重拉：服务端按 version_code 过滤条目，
      * 新版本才可见的条目其 updatedAt 可能早于本地水位线，增量同步永远拉不到。
+     * 只清当前语言的水位线（水位线已按语言隔离）。
      */
     fun clearSyncTimestamps() {
         val shouldClear: (String) -> Boolean = { key ->
@@ -231,11 +242,10 @@ object AppSharedStorage {
                 key == CATEGORIES_LAST_SYNC_AT ||
                 key == FULL_SYNC_LAST_AT
         }
-        val syncKeys = mmkv.allKeys()?.filter(shouldClear)?.toTypedArray()
+        val syncKeys = localeMmkv.allKeys()?.filter(shouldClear)?.toTypedArray()
         if (!syncKeys.isNullOrEmpty()) {
-            mmkv.removeValuesForKeys(syncKeys)
+            localeMmkv.removeValuesForKeys(syncKeys)
         }
-        memoryCache.keys.removeAll(shouldClear)
     }
 
     fun saveIsEnableSensor(isEnableSensor: Boolean) {
@@ -306,14 +316,14 @@ object AppSharedStorage {
             ?.takeIf { it != Int.MIN_VALUE }
     }
 
-    // ─── Remote Config 检查限流 ─────────────────────────────────────────
+    // ─── Remote Config 检查限流（按语言隔离：远程配置本身按语言下发） ─────────────
 
     fun saveRemoteConfigLastCheckTime(timestamp: Long = System.currentTimeMillis()) {
-        save(REMOTE_CONFIG_LAST_CHECK_TIME, timestamp)
+        localeMmkv.encode(REMOTE_CONFIG_LAST_CHECK_TIME, timestamp)
     }
 
     fun loadRemoteConfigLastCheckTime(): Long {
-        return load(REMOTE_CONFIG_LAST_CHECK_TIME, 0L) ?: 0L
+        return localeMmkv.decodeLong(REMOTE_CONFIG_LAST_CHECK_TIME, 0L)
     }
 
     fun shouldCheckRemoteConfig(intervalMillis: Long = 10 * 60 * 1000): Boolean {
@@ -329,11 +339,11 @@ object AppSharedStorage {
      * (已删除的运行时缓存) 用的; 现在仅服务于导出/导入场景下的快照判断.
      */
     fun saveToolCatalogSnapshotVersion(version: Int) {
-        save(TOOL_CATALOG_SNAPSHOT_VERSION, version)
+        localeMmkv.encode(TOOL_CATALOG_SNAPSHOT_VERSION, version)
     }
 
     fun loadToolCatalogSnapshotVersion(): Int {
-        return load(TOOL_CATALOG_SNAPSHOT_VERSION, 0) ?: 0
+        return localeMmkv.decodeInt(TOOL_CATALOG_SNAPSHOT_VERSION, 0)
     }
 
     fun <T> save(key: String, value: T) {
@@ -513,13 +523,13 @@ object AppSharedStorage {
     fun loadStartupSelectedFont(): String =
         load(S_SELECTED_FONT, "0") ?: "0"  // default: System(0)
 
-    // ─── 系统预置提示词版本 ──────────────────────────────────────────────────
+    // ─── 系统预置提示词版本（按语言隔离：预置 prompt 写入各语言自己的 Room 库） ──────────
 
     fun loadSystemPresetVersion(): String =
-        load(SYSTEM_PRESET_VERSION, "") ?: ""
+        localeMmkv.decodeString(SYSTEM_PRESET_VERSION, "") ?: ""
 
     fun saveSystemPresetVersion(version: String) {
-        save(SYSTEM_PRESET_VERSION, version)
+        localeMmkv.encode(SYSTEM_PRESET_VERSION, version)
     }
 
     // ─── 习惯打卡预置播种 flag ───────────────────────────────────────────────
@@ -530,5 +540,15 @@ object AppSharedStorage {
 
     fun saveHabitPresetsSeeded(seeded: Boolean) {
         save(HABIT_PRESETS_SEEDED, seeded)
+    }
+
+    // ─── 语言切换重启提醒 ──────────────────────────────────────────────────
+
+    /** 语言选择页"切换语言后将重启"提醒是否已被用户勾选不再提醒（全局偏好，不随语言隔离） */
+    fun loadLanguageSwitchNoticeDismissed(): Boolean =
+        load(LANGUAGE_SWITCH_NOTICE_DISMISSED, false) ?: false
+
+    fun saveLanguageSwitchNoticeDismissed(dismissed: Boolean) {
+        save(LANGUAGE_SWITCH_NOTICE_DISMISSED, dismissed)
     }
 }

@@ -9,7 +9,9 @@ import com.tencent.mmkv.MMKV
  */
 object AiConfigVersionStorage {
 
-    private val mmkv: MMKV = MMKV.mmkvWithID(MMKVName.AI_ENGINE_SETTING)
+    // 整个 store 按语言隔离：版本水位度量的是按语言分库的 ai_engine 目录，
+    // 选中的引擎 Parcelable 内嵌当时语言的 title/description，每种语言各一套选择。
+    private val mmkv: MMKV get() = localizedMmkv(MMKVName.AI_ENGINE_SETTING)
 
     private const val AI_CONFIG_VERSION = "ai_config_version"
     private const val AI_CONFIG_LAST_UPDATE_TIME = "ai_config_last_update_time"

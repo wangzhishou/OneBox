@@ -83,6 +83,7 @@
     <string name="allow_image_monet">Izinkan warna Monet dari gambar</string>
     <string name="allow_image_monet_sub">Jika diaktifkan, saat Anda memilih gambar untuk diedit, warna aplikasi akan berubah berdasarkan gambar tersebut</string>
     <string name="language">Bahasa</string>
+    <string name="language_switch_restart_message">Aplikasi akan dimulai ulang untuk menerapkan bahasa baru. Tugas yang sedang berjalan akan terganggu.</string>
     <string name="dynamic_colors">Warna dinamis</string>
     <string name="amoled_mode">Mode AMOLED</string>
     <string name="amoled_mode_sub">Jika diaktifkan, latar belakang akan menjadi hitam pekat dalam mode malam</string>

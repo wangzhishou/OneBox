@@ -83,6 +83,7 @@
     <string name="allow_image_monet">छवियों से Monet रंगों की अनुमति दें</string>
     <string name="allow_image_monet_sub">यदि सक्षम है, जब आप संपादित करने के लिए एक छवि चुनते हैं, तो ऐप रंग उसके आधार पर बदल जाएंगे</string>
     <string name="language">भाषा</string>
+    <string name="language_switch_restart_message">नई भाषा लागू करने के लिए ऐप पुनः आरंभ होगा। चल रहे कार्य बाधित हो जाएंगे।</string>
     <string name="dynamic_colors">गतिशील रंग</string>
     <string name="amoled_mode">AMOLED मोड</string>
     <string name="amoled_mode_sub">यदि सक्षम है, तो रात मोड में पृष्ठभूमि शुद्ध काली होगी</string>

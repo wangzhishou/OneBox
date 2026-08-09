@@ -1,5 +1,6 @@
 package com.shifenmiao.app
 
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Process
 import android.webkit.WebView
@@ -26,6 +27,7 @@ import com.shifenmiao.app.BuildConfig as AppBuildConfig
 import com.t8rin.imagetoolbox.core.crash.presentation.components.applyGlobalExceptionHandler
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 import com.t8rin.imagetoolbox.core.domain.saving.KeepAliveService
+import com.t8rin.imagetoolbox.core.utils.LocaleSwitchWatcher
 import com.t8rin.imagetoolbox.core.utils.initAppContext
 import com.tencent.mmkv.MMKV
 import dagger.hilt.android.HiltAndroidApp
@@ -83,7 +85,16 @@ class AppApplication : BaseApplication() {
         }
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // 语言在进程存活期间被切换(应用内选择或系统 per-app 语言设置):
+        // Room/MMKV 按语言分库, Hilt 单例只在进程创建时注入, 需要冷重启整体切换到新语言数据源
+        LocaleSwitchWatcher.onConfigurationChanged(this)
+    }
+
     private fun initializeMainProcess(needShowPrivacyPolicyDialog: Boolean) {
+        // 记录进程启动时的语言, 之后运行中语言变化会触发冷重启(见 onConfigurationChanged)
+        LocaleSwitchWatcher.onProcessStart()
         applyEnglishFallbackLocaleIfNeeded()
         DecomposeSettings.update { it.copy(duplicateConfigurationsEnabled = true) }
 
@@ -145,6 +156,8 @@ class AppApplication : BaseApplication() {
         val systemLanguage = Resources.getSystem().configuration.locales[0]?.language
         if (systemLanguage == Locale.CHINESE.language) return
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
+        // 启动期主动改写语言, 告知 watcher 避免被误判为运行中切换而触发重启
+        LocaleSwitchWatcher.onLocaleOverriddenAtStartup("en")
     }
 
     /**

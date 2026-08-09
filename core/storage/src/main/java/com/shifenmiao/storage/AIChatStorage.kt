@@ -13,6 +13,10 @@ object AIChatStorage {
     const val MAX_MAX_AGENT_ITERATIONS = 60
 
     private val mmkv: MMKV = MMKV.mmkvWithID(MMKVName.AI_CHAT_SETTING)
+
+    // 会话快照按语言隔离（"ai_chat_<locale>"）：快照内嵌 AiEngine，含本地化 title/description
+    private val localeMmkv: MMKV get() = localizedMmkv(MMKVName.AI_CHAT_SETTING)
+
     private var cachedConversation: Conversation? = null
 
     private const val AI_CHAT_SETTING = "ai_chat_setting"
@@ -35,7 +39,7 @@ object AIChatStorage {
 
     fun saveConfigs(conversation: Conversation) {
         val copy = conversation.copy()
-        mmkv.encode(AI_CHAT_SETTING + conversation.entryType.name, copy, 24 * 60 * 60 * 1)
+        localeMmkv.encode(AI_CHAT_SETTING + conversation.entryType.name, copy, 24 * 60 * 60 * 1)
         cachedConversation = copy
     }
 
@@ -44,12 +48,16 @@ object AIChatStorage {
             return cachedConversation
         }
         cachedConversation =
-            mmkv.decodeParcelable(AI_CHAT_SETTING + entryTypeName, Conversation::class.java)
+            localeMmkv.decodeParcelable(AI_CHAT_SETTING + entryTypeName, Conversation::class.java)
         return cachedConversation
     }
 
+    /**
+     * 清空当前语言的会话快照。开关类字段（web_search/reasoning 等用户偏好）
+     * 在全局文件中，不受此清理影响。
+     */
     fun clearConfigs() {
-        mmkv.clear()
+        localeMmkv.clear()
         cachedConversation = null
     }
 

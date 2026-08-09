@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.theme)
     implementation(projects.core.interfaces)
+    implementation(projects.core.utils)
 
     api(libs.toolbox.logger)
 

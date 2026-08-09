@@ -5,7 +5,8 @@ import com.shifenmiao.model.common.DataList
 import com.tencent.mmkv.MMKV
 
 object AnnouncementListStore {
-    private val mmkv: MMKV = MMKV.mmkvWithID(MMKVName.ANNOUNCEMENT_LIST)
+    // 按语言隔离：公告内容按 locale 下发
+    private val mmkv: MMKV get() = localizedMmkv(MMKVName.ANNOUNCEMENT_LIST)
     private val CACHE_TIMEOUT = RemoteConfigStorage.getRemoteConfig().cacheTimeout
     private const val KEY_ANNOUNCEMENTS = "announcements"
 

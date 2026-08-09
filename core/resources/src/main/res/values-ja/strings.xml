@@ -83,6 +83,7 @@
     <string name="allow_image_monet">画像からMonetカラーを許可</string>
     <string name="allow_image_monet_sub">有効にすると、編集する画像を選んだときにアプリの色がそれに基づいて変わります</string>
     <string name="language">言語</string>
+    <string name="language_switch_restart_message">新しい言語を適用するにはアプリが再起動します。実行中のタスクは中断されます。</string>
     <string name="dynamic_colors">ダイナミックカラー</string>
     <string name="amoled_mode">AMOLEDモード</string>
     <string name="amoled_mode_sub">有効にすると、ナイトモードで背景が純黒になります</string>

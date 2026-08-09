@@ -1,8 +1,6 @@
 package com.wanbaohe.profile.settingItem
 
 import android.content.Intent
-import android.os.Build
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.size
@@ -347,20 +345,9 @@ fun ProfileSettingItem(
                 setting = setting,
                 themeIndex = themeIndex,
                 onclick = {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        runCatching {
-                            context.startActivity(
-                                Intent(
-                                    Settings.ACTION_APP_LOCALE_SETTINGS,
-                                    "package:${context.packageName}".toUri()
-                                )
-                            )
-                        }.onFailure {
-                            showLanguageSheet.value = true
-                        }
-                    } else {
-                        showLanguageSheet.value = true
-                    }
+                    // 始终走应用内语言选择 sheet（带"切换后将重启"提醒横幅）;
+                    // 不再优先跳系统 per-app 语言页——系统页里无法展示重启提醒
+                    showLanguageSheet.value = true
                 }
             )
             ChangeLanguageSheet(

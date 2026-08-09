@@ -83,6 +83,7 @@
     <string name="allow_image_monet">Разрешить цвета Monet из изображений</string>
     <string name="allow_image_monet_sub">Если включено, при выборе изображения для редактирования цвета приложения изменятся на основе него</string>
     <string name="language">Язык</string>
+    <string name="language_switch_restart_message">Приложение перезапустится, чтобы применить новый язык. Текущие задачи будут прерваны.</string>
     <string name="dynamic_colors">Динамические цвета</string>
     <string name="amoled_mode">Режим AMOLED</string>
     <string name="amoled_mode_sub">Если включено, фон будет чисто чёрным в ночном режиме</string>

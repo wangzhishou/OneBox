@@ -83,6 +83,7 @@
     <string name="allow_image_monet">Permitir cores Monet das imagens</string>
     <string name="allow_image_monet_sub">Se ativado, ao escolher uma imagem para editar, as cores do aplicativo mudarão com base nela</string>
     <string name="language">Idioma</string>
+    <string name="language_switch_restart_message">O app será reiniciado para aplicar o novo idioma. As tarefas em andamento serão interrompidas.</string>
     <string name="dynamic_colors">Cores dinâmicas</string>
     <string name="amoled_mode">Modo AMOLED</string>
     <string name="amoled_mode_sub">Se ativado, o fundo será preto puro no modo noturno</string>
