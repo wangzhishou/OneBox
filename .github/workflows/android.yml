@@ -10,8 +10,9 @@ on:
         description: App flavor
         type: choice
         required: true
-        default: onebox
+        default: google
         options:
+          - google
           - xiaomi
           - yyb
           - oppo
@@ -46,7 +47,7 @@ on:
         required: false
 
 env:
-  DEFAULT_APP_FLAVOR: onebox
+  DEFAULT_APP_FLAVOR: google
   DEFAULT_ABI_FLAVOR: universal
   DEFAULT_BUILD_TYPE: debug
 
@@ -161,6 +162,47 @@ jobs:
         run: |
           echo "GIT_VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
+      # 生成 keystore.properties / keystore-google.properties:
+      # 1) Gradle 构建期签名需要真实 storeFile; 2) 后端域名/游客 token/和风凭据
+      #    经 keystore.properties 注入 BuildConfig, 缺失时构建产物为"断网版"
+      - name: Prepare signing keys and injected config
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_STORE_PASS: ${{ secrets.KEY_STORE_PASS }}
+          KEY_PASS: ${{ secrets.KEY_PASS }}
+          GOOGLE_SIGNING_KEY: ${{ secrets.GOOGLE_SIGNING_KEY }}
+          GOOGLE_ALIAS: ${{ secrets.GOOGLE_ALIAS }}
+          GOOGLE_KEY_STORE_PASS: ${{ secrets.GOOGLE_KEY_STORE_PASS }}
+          GOOGLE_KEY_PASS: ${{ secrets.GOOGLE_KEY_PASS }}
+          APP_KEYS_PROPERTIES: ${{ secrets.APP_KEYS_PROPERTIES }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > keystore.properties
+          if [[ "$BUILD_TYPE" == "release" && "$APP_FLAVOR" == "google" ]]; then
+            printf '%s' "$GOOGLE_SIGNING_KEY" | base64 --decode > "$RUNNER_TEMP/google.keystore"
+            cat > keystore-google.properties <<EOF
+          storeFile=$RUNNER_TEMP/google.keystore
+          storePassword=$GOOGLE_KEY_STORE_PASS
+          keyAlias=$GOOGLE_ALIAS
+          keyPassword=$GOOGLE_KEY_PASS
+          EOF
+          elif [[ "$BUILD_TYPE" == "release" ]]; then
+            printf '%s' "$SIGNING_KEY" | base64 --decode > "$RUNNER_TEMP/release.keystore"
+            cat > keystore.properties <<EOF
+          storeFile=$RUNNER_TEMP/release.keystore
+          storePassword=$KEY_STORE_PASS
+          keyAlias=$ALIAS
+          keyPassword=$KEY_PASS
+          EOF
+          fi
+          if [[ -n "$APP_KEYS_PROPERTIES" ]]; then
+            cat >> keystore.properties <<EOF
+          $APP_KEYS_PROPERTIES
+          EOF
+          fi
+
       - name: Build selected release APK
         env:
           GIT_VERSION: ${{ env.GIT_VERSION }}
@@ -180,6 +222,10 @@ jobs:
           ALIAS: ${{ secrets.ALIAS }}
           KEY_STORE_PASS: ${{ secrets.KEY_STORE_PASS }}
           KEY_PASS: ${{ secrets.KEY_PASS }}
+          GOOGLE_SIGNING_KEY: ${{ secrets.GOOGLE_SIGNING_KEY }}
+          GOOGLE_ALIAS: ${{ secrets.GOOGLE_ALIAS }}
+          GOOGLE_KEY_STORE_PASS: ${{ secrets.GOOGLE_KEY_STORE_PASS }}
+          GOOGLE_KEY_PASS: ${{ secrets.GOOGLE_KEY_PASS }}
         shell: bash
         run: |
           DIST_DIR="$GITHUB_WORKSPACE/dist"
@@ -196,13 +242,22 @@ jobs:
           OUTPUT_APK="$DIST_DIR/$OUTPUT_APK_NAME"
 
           if [[ "$SHOULD_SIGN" == "true" ]]; then
-            if [[ -z "$SIGNING_KEY" || -z "$ALIAS" || -z "$KEY_STORE_PASS" || -z "$KEY_PASS" ]]; then
-              echo "Signing secrets are missing"
-              exit 1
+            # 按渠道选择签名密钥 (google 渠道使用独立的 Google 签名)
+            if [[ "$APP_FLAVOR" == "google" ]]; then
+              KS_ALIAS="$GOOGLE_ALIAS"; KS_STORE_PASS="$GOOGLE_KEY_STORE_PASS"; KS_KEY_PASS="$GOOGLE_KEY_PASS"
+              KEYSTORE_PATH="$RUNNER_TEMP/google.keystore"
+              if [[ -z "$GOOGLE_SIGNING_KEY" || -z "$KS_ALIAS" || -z "$KS_STORE_PASS" || -z "$KS_KEY_PASS" ]]; then
+                echo "Google signing secrets are missing (GOOGLE_SIGNING_KEY/GOOGLE_ALIAS/GOOGLE_KEY_STORE_PASS/GOOGLE_KEY_PASS)"
+                exit 1
+              fi
+            else
+              KS_ALIAS="$ALIAS"; KS_STORE_PASS="$KEY_STORE_PASS"; KS_KEY_PASS="$KEY_PASS"
+              KEYSTORE_PATH="$RUNNER_TEMP/release.keystore"
+              if [[ -z "$SIGNING_KEY" || -z "$KS_ALIAS" || -z "$KS_STORE_PASS" || -z "$KS_KEY_PASS" ]]; then
+                echo "Signing secrets are missing"
+                exit 1
+              fi
             fi
-
-            KEYSTORE_PATH="$RUNNER_TEMP/release.keystore"
-            printf '%s' "$SIGNING_KEY" | base64 --decode > "$KEYSTORE_PATH"
 
             BUILD_TOOLS_DIR="$(find "${ANDROID_HOME:-$ANDROID_SDK_ROOT}/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)"
             if [[ -z "$BUILD_TOOLS_DIR" ]]; then
@@ -212,9 +267,9 @@ jobs:
 
             "$BUILD_TOOLS_DIR/apksigner" sign \
               --ks "$KEYSTORE_PATH" \
-              --ks-key-alias "$ALIAS" \
-              --ks-pass "pass:$KEY_STORE_PASS" \
-              --key-pass "pass:$KEY_PASS" \
+              --ks-key-alias "$KS_ALIAS" \
+              --ks-pass "pass:$KS_STORE_PASS" \
+              --key-pass "pass:$KS_KEY_PASS" \
               --out "$OUTPUT_APK" \
               "$INPUT_APK"
 
