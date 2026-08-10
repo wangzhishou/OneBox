@@ -107,8 +107,8 @@ class ImageToolboxLibraryPlugin : Plugin<Project> {
                 val deepSeekAuthorizationCode = properties.getProperty("deepSeekAuthorizationCode")
                 defaultConfig.buildConfigField("String", "DeepSeekAuthorizationCode", deepSeekAuthorizationCode.toBuildConfigStringLiteral())
 
-                val tencentAuthorizationCOde = properties.getProperty("tencentAuthorizationCOde")
-                defaultConfig.buildConfigField("String", "TencentAuthorizationCOde", tencentAuthorizationCOde.toBuildConfigStringLiteral())
+                val tencentAuthorizationCode = properties.getProperty("tencentAuthorizationCode")
+                defaultConfig.buildConfigField("String", "TencentAuthorizationCode", tencentAuthorizationCode.toBuildConfigStringLiteral())
 
                 // 和风天气 JWT 凭据 (core/weather 使用; release/debug 两组,
                 // 未配置时为空串, 天气功能静默降级)
