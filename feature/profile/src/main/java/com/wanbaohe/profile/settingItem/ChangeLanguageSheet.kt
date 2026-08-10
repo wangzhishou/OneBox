@@ -195,6 +195,9 @@ fun ChangeLanguageSheet(
 
 @Suppress("DEPRECATION")
 private fun Context.setGlobalLocale(locale: Locale?) {
+    // 显式选择(含"跟随系统")即落标记: 英文兜底只对从未选择过的用户生效,
+    // 避免"跟随系统"+非中文系统的用户每次冷启动被强制成英文
+    AppSharedStorage.saveLanguageUserChosen(true)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getSystemService(LocaleManager::class.java).applicationLocales =
             locale?.let {

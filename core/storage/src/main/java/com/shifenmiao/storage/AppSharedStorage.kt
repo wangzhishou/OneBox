@@ -44,6 +44,7 @@ object AppSharedStorage {
     private const val SYSTEM_PRESET_VERSION = "system_preset_version"
     private const val HABIT_PRESETS_SEEDED = "habit_presets_seeded"
     private const val LANGUAGE_SWITCH_NOTICE_DISMISSED = "language_switch_notice_dismissed"
+    private const val LANGUAGE_USER_CHOSEN = "language_user_chosen"
 
     // ─── 启动关键设置 key（DataStore → MMKV 镜像缓存） ────────────────────────
     private const val S_FONT_SCALE = "s_font_scale"
@@ -550,5 +551,17 @@ object AppSharedStorage {
 
     fun saveLanguageSwitchNoticeDismissed(dismissed: Boolean) {
         save(LANGUAGE_SWITCH_NOTICE_DISMISSED, dismissed)
+    }
+
+    /**
+     * 用户是否已在应用内语言选择页显式选择过语言（含"跟随系统"）。
+     * 全局偏好，不随语言隔离；英文兜底（AppApplication.applyEnglishFallbackLocaleIfNeeded）
+     * 只在未选择过时生效——否则"跟随系统"+非中文系统的用户会被每次冷启动强制成英文。
+     */
+    fun loadLanguageUserChosen(): Boolean =
+        load(LANGUAGE_USER_CHOSEN, false) ?: false
+
+    fun saveLanguageUserChosen(chosen: Boolean) {
+        save(LANGUAGE_USER_CHOSEN, chosen)
     }
 }

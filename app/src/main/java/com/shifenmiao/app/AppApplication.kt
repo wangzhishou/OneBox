@@ -151,7 +151,8 @@ class AppApplication : BaseApplication() {
     /**
      * 海外语言兜底: 默认资源 values/ 是中文, 系统语言非中文且用户从未手动选择过
      * 应用语言时, 首次启动直接把应用语言切到英文, 避免日/韩/法等地区用户看到中文界面。
-     * 用户一旦选过语言(per-app locales 非空), 本逻辑不再干预。
+     * 用户一旦选过语言(应用内选择页落 LANGUAGE_USER_CHOSEN 标记——含"跟随系统";
+     * 或系统侧 per-app locales 非空), 本逻辑不再干预。
      *
      * API 33+ 必须直查/直写系统 LocaleManager: AppCompatDelegate 静态方法在
      * Application.onCreate 期间(尚无 Activity delegate)读恒为空、写为 no-op——
@@ -159,6 +160,9 @@ class AppApplication : BaseApplication() {
      * LocaleUtils 缓存错误覆写成 "en"(strings 与数据源语言不一致的根因)。
      */
     private fun applyEnglishFallbackLocaleIfNeeded() {
+        // 用户显式选择过语言(含"跟随系统")就不再干预;
+        // 否则"跟随系统"+非中文系统的用户每次冷启动都会被强制成英文
+        if (AppSharedStorage.loadLanguageUserChosen()) return
         val perAppTag: String? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getSystemService(LocaleManager::class.java)
                 ?.applicationLocales
