@@ -1,5 +1,8 @@
 package com.t8rin.imagetoolbox.core.utils
 
+import android.app.LocaleManager
+import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import java.util.Locale
 
 object LocaleUtils {
@@ -13,7 +16,18 @@ object LocaleUtils {
     private var cachedTag: String? = null
 
     /**
-     * 返回当前设备 locale tag（BCP-47 格式）。
+     * 返回当前应用语言 tag（BCP-47 格式）。
+     *
+     * API 33+ 主源是系统 LocaleManager 的 per-app locales（应用内语言选择/系统
+     * per-app 设置写入的权威存储，直查 system_server，任何时机都准）；
+     * 未设置过时回退 JVM 默认 locale（≈系统语言）。
+     *
+     * 两个不能用的源：
+     * - Locale.getDefault()：实测（API 37 模拟器）带 per-app locale 冷启动时
+     *   JVM 默认 locale 与资源配置不一致（系统只把 per-app locale 应用进
+     *   Configuration），分库/分 MMKV/请求 locale 参数会解析成旧语言；
+     * - AppCompatDelegate.getApplicationLocales()：尚无 Activity delegate 时
+     *   （Application.onCreate 期间）恒返回空，写入也是 no-op。
      *
      * 注意：这里不做 zh-* -> zh-CN 之类的强制归一化，而是把原始 tag
      * 透传给后端。这样以后新增某个 zh-XX 语言时，只需要改后端/Strapi，
@@ -43,6 +57,21 @@ object LocaleUtils {
     }
 
     private fun computeLocaleTag(): String {
-        return Locale.getDefault().toLanguageTag().ifBlank { "en" }
+        val appTag: String? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // AppContext 未初始化时(极早期/非主进程)返回 null, 落到 JVM 默认 locale
+            AppContext.appContext
+                ?.getSystemService(LocaleManager::class.java)
+                ?.applicationLocales
+                ?.takeIf { !it.isEmpty }
+                ?.get(0)
+                ?.toLanguageTag()
+        } else {
+            // <33: 选择只在 AppCompatDelegate 内存存储里(autoStore 已关), 同进程可读
+            AppCompatDelegate.getApplicationLocales()
+                .takeIf { !it.isEmpty }
+                ?.get(0)
+                ?.toLanguageTag()
+        }
+        return (appTag ?: Locale.getDefault().toLanguageTag()).ifBlank { "en" }
     }
 }

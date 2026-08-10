@@ -14,4 +14,6 @@ dependencies {
     implementation(libs.quickie.foss)
     implementation(libs.zxing.android.embedded)
     implementation(libs.androidx.documentfile)
+    // AppCompatDelegate.getApplicationLocales(): LocaleUtils 读应用 per-app 语言用
+    implementation(libs.appCompat)
 }

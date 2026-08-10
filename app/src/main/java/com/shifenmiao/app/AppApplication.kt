@@ -1,7 +1,9 @@
 package com.shifenmiao.app
 
+import android.app.LocaleManager
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.os.Build
 import android.os.Process
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatDelegate
@@ -93,13 +95,14 @@ class AppApplication : BaseApplication() {
     }
 
     private fun initializeMainProcess(needShowPrivacyPolicyDialog: Boolean) {
+        // 最先初始化 AppContext: LocaleUtils 在 API 33+ 需经它直查系统 LocaleManager
+        initAppContext()
         // 记录进程启动时的语言, 之后运行中语言变化会触发冷重启(见 onConfigurationChanged)
         LocaleSwitchWatcher.onProcessStart()
         applyEnglishFallbackLocaleIfNeeded()
         DecomposeSettings.update { it.copy(duplicateConfigurationsEnabled = true) }
 
         setupFlags()
-        initAppContext()
         applyGlobalExceptionHandler()
         if (BuildConfig.DEBUG) {
             WebView.setWebContentsDebuggingEnabled(true)
@@ -148,14 +151,33 @@ class AppApplication : BaseApplication() {
     /**
      * 海外语言兜底: 默认资源 values/ 是中文, 系统语言非中文且用户从未手动选择过
      * 应用语言时, 首次启动直接把应用语言切到英文, 避免日/韩/法等地区用户看到中文界面。
-     * 用户一旦选过语言(应用内选择器或系统 per-app 语言设置都会使
-     * AppCompatDelegate locales 非空), 本逻辑不再干预。
+     * 用户一旦选过语言(per-app locales 非空), 本逻辑不再干预。
+     *
+     * API 33+ 必须直查/直写系统 LocaleManager: AppCompatDelegate 静态方法在
+     * Application.onCreate 期间(尚无 Activity delegate)读恒为空、写为 no-op——
+     * 之前因此每次冷启动都误判"从未选择", 虽没改成系统存储, 但会把
+     * LocaleUtils 缓存错误覆写成 "en"(strings 与数据源语言不一致的根因)。
      */
     private fun applyEnglishFallbackLocaleIfNeeded() {
-        if (!AppCompatDelegate.getApplicationLocales().isEmpty) return
+        val perAppTag: String? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getSystemService(LocaleManager::class.java)
+                ?.applicationLocales
+                ?.takeIf { !it.isEmpty }
+                ?.toLanguageTags()
+        } else {
+            AppCompatDelegate.getApplicationLocales()
+                .takeIf { !it.isEmpty }
+                ?.toLanguageTags()
+        }
+        if (!perAppTag.isNullOrBlank()) return
         val systemLanguage = Resources.getSystem().configuration.locales[0]?.language
         if (systemLanguage == Locale.CHINESE.language) return
-        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getSystemService(LocaleManager::class.java).applicationLocales =
+                android.os.LocaleList.forLanguageTags("en")
+        } else {
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
+        }
         // 启动期主动改写语言, 告知 watcher 避免被误判为运行中切换而触发重启
         LocaleSwitchWatcher.onLocaleOverriddenAtStartup("en")
     }

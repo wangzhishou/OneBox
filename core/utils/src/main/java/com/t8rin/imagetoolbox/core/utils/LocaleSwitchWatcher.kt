@@ -44,4 +44,17 @@ object LocaleSwitchWatcher {
         if (!restarting.compareAndSet(false, true)) return
         AppRestarter.restartToColdStart(context.applicationContext)
     }
+
+    /**
+     * 应用内语言选择完成后直接冷重启（不依赖 onConfigurationChanged 回调——
+     * 实测部分设备上应用内改语言该回调不触发/时机不定）。
+     * 仅用于语言选择已被系统持久化的场景（API 33+ LocaleManager）；
+     * 更低版本语言选择只在内存里，进程死亡会丢失选择，不能走这条路。
+     */
+    fun restartForLocaleSwitch(context: Context, newTag: String) {
+        // 进程死亡前把 LocaleUtils 进程级缓存对齐到新语言, 避免临终读写落到旧语言文件
+        LocaleUtils.overrideCachedTagAtStartup(newTag)
+        if (!restarting.compareAndSet(false, true)) return
+        AppRestarter.restartToColdStart(context.applicationContext)
+    }
 }

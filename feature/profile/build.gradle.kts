@@ -13,6 +13,7 @@ dependencies {
     api(project(":core:network"))
     implementation(projects.core.pay)
     implementation(projects.core.ui)
+    implementation(projects.core.utils)
     implementation(projects.core.database)
     /**
      * mmkv

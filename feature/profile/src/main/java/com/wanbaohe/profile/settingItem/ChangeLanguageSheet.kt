@@ -48,6 +48,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItemOverload
 import com.t8rin.imagetoolbox.core.ui.widget.text.AutoSizeText
 import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
+import com.t8rin.imagetoolbox.core.utils.LocaleSwitchWatcher
 import java.util.Locale
 
 /**
@@ -217,4 +218,17 @@ private fun Context.setGlobalLocale(locale: Locale?) {
             LocaleListCompat.forLanguageTags(it.toLanguageTag())
         } ?: LocaleListCompat.getEmptyLocaleList()
     )
+
+    // API 33+：语言选择已被 LocaleManager 同步持久化，直接冷重启切到新语言数据源，
+    // 不赌 onConfigurationChanged 回调（实测部分设备应用内改语言该回调不触发）。
+    // 更低版本选择只在内存里（manifest 关闭了 autoStoreLocales 服务），杀进程会丢，
+    // 仍走 LocaleSwitchWatcher 的回调路径兜底。
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val newTag = locale?.toLanguageTag()
+            ?: Resources.getSystem().configuration.locales[0]?.toLanguageTag()
+        LocaleSwitchWatcher.restartForLocaleSwitch(
+            this,
+            newTag?.takeIf { it.isNotBlank() } ?: "en"
+        )
+    }
 }
