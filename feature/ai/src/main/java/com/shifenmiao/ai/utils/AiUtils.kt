@@ -34,6 +34,7 @@ import com.shifenmiao.model.ai.unified.LlmMessage
 import com.shifenmiao.model.ai.unified.LlmTurnRequest
 import com.shifenmiao.model.ai.unified.toLlmMessage
 import com.shifenmiao.ai.context.ContextWindowManager
+import com.shifenmiao.network.AiRequestUrlResolver
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.utils.LocaleUtils
@@ -106,9 +107,13 @@ object AiUtils {
         )
     }
 
+    /**
+     * 是否走 Go 网关代理聊天（以真实请求路由为准）：
+     * 只有走代理才要求登录并扣积分；自带 token 直连、端侧本地引擎不受积分门槛限制。
+     */
     fun canProxy(conversation: Conversation): Boolean {
-        val engine = conversation.engine
-        return !engine.isDetestPassed
+        return AiRequestUrlResolver.resolveRequestRoute(conversation.engine) ==
+            AiRequestUrlResolver.RequestRoute.PROXY
     }
 
     fun concatenateQuestionsAndAnswers(questionMessageEntityList: List<MessageEntity>): String {

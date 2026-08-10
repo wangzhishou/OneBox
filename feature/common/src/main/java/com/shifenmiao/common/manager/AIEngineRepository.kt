@@ -152,7 +152,7 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
             )
 
             val engine = AiEngine.builtInEngine(provider)
-                .withoutProxyRoutesForGoogleFlavor()
+                .withGoogleFlavorRoutePolicy()
                 .copy(
                     model = defaultModel.copy(
                         engineName = engineName,
@@ -190,10 +190,37 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
 
         // v2 迁移: Google 渠道清理老安装预制引擎上误带的 Go 网关代理
         // (服务端种子即为空代理, 本地种子在首次同步前会从 builtInEngine 继承国内网关代理)
+        // 注意: MiMo/DeepSeek 自 v3/v4 起是 Google 渠道保留代理的例外, 不在清理名单内。
         if (appliedVersion < AiEngineConfig.PRESET_VERSION_CLEAR_GOOGLE_PROXY &&
             flavorType == FlavorType.GOOGLE
         ) {
-            appDatabase.aiEngineDao().clearProxyRoutesByNames(AiEngineConfig.googleEnabledEngines)
+            appDatabase.aiEngineDao().clearProxyRoutesByNames(
+                AiEngineConfig.googleEnabledEngines - AiEngineConfig.googleProxyEngines.toSet()
+            )
+        }
+
+        // v4 迁移: Google 渠道 MiMo/DeepSeek 恢复 Go 网关代理(走自家网关按积分计费)。
+        // 仅处理 REMOTE 预制行: token 为空或仍是内置注入值时清空、强制走代理;
+        // 用户自配 token 的行保留 token(google 渠道"有 token 即可直连"优先级更高, 行为不变)。
+        if (appliedVersion < AiEngineConfig.PRESET_VERSION_GOOGLE_PROXY_ENGINES &&
+            flavorType == FlavorType.GOOGLE
+        ) {
+            AiEngineConfig.googleProxyEngines.forEach { engineName ->
+                val builtIn = AiEngine.builtInEngine(AiProvider.fromValue(engineName))
+                getEnginesByName(engineName)
+                    .filter { it.source == AiConfigSource.REMOTE.name }
+                    .forEach { row ->
+                        val tokenIsBuiltIn = row.authorizationCode.isBlank() ||
+                            row.authorizationCode == builtIn.authorizationCode
+                        updateEngine(
+                            row.copy(
+                                proxyUrl = builtIn.proxyUrl,
+                                proxyPath = builtIn.proxyPath,
+                                authorizationCode = if (tokenIsBuiltIn) "" else row.authorizationCode,
+                            )
+                        )
+                    }
+            }
         }
 
         AiEngineConfig.getFlavorFallbackEngines(flavorType).distinct()
@@ -201,7 +228,7 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
                 val provider = AiProvider.fromValue(engineName)
                 if (provider == AiProvider.Default) return@forEachIndexed
 
-                val engine = AiEngine.builtInEngine(provider).withoutProxyRoutesForGoogleFlavor()
+                val engine = AiEngine.builtInEngine(provider).withGoogleFlavorRoutePolicy()
                 if (getEngineByNameAndProtocol(engineName, engine.requestProtocol.name) != null) {
                     return@forEachIndexed
                 }
@@ -241,13 +268,18 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
     }
 
     /**
-     * Google 渠道预制引擎不走 Go 网关代理（与服务端种子一致），入库前清空代理路由。
+     * Google 渠道预制引擎的路由策略：
+     * - [AiEngineConfig.googleProxyEngines]（MiMo/DeepSeek）为例外：保留 Go 网关代理
+     *   （走自家网关按积分计费），并清空内置 token 强制走代理
+     *   （否则 google 渠道"有 token 即可直连"会绕过积分门槛）；
+     * - 其余引擎不走 Go 网关代理（与服务端种子一致），入库前清空代理路由，用户自带 token 直连。
      */
-    private fun AiEngine.withoutProxyRoutesForGoogleFlavor(): AiEngine {
-        return if (FlavorType.fromName() == FlavorType.GOOGLE) {
-            copy(proxyUrl = "", proxyPath = "")
+    private fun AiEngine.withGoogleFlavorRoutePolicy(): AiEngine {
+        if (FlavorType.fromName() != FlavorType.GOOGLE) return this
+        return if (AiEngineConfig.googleProxyEngines.any { name.equals(it, ignoreCase = true) }) {
+            copy(authorizationCode = "")
         } else {
-            this
+            copy(proxyUrl = "", proxyPath = "")
         }
     }
     // ==================== Model 查询 ====================

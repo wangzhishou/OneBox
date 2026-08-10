@@ -13,11 +13,27 @@ object AiEngineConfig {
      * 客户端据此对老安装做增量补插(见 AIEngineRepository.ensureFlavorPresetEngines)。
      *
      * v2: Google 渠道清理老安装预制引擎上误带的 Go 网关代理(服务端种子即为空代理)。
+     * v3: Google 渠道预制 MiMo 并保留 Go 网关代理(走自家网关按积分计费, 见 AIEngineRepository)。
+     * v4: Google 渠道 DeepSeek 也改走 Go 网关代理; 老安装的 REMOTE 行恢复代理路由,
+     *     仅清空仍为内置注入值的 token(用户自配 token 的行不动)。
      */
-    const val FLAVOR_PRESET_VERSION = 2
+    const val FLAVOR_PRESET_VERSION = 4
 
     /** 引入"清理 Google 渠道预制引擎代理"迁移的版本号 */
     const val PRESET_VERSION_CLEAR_GOOGLE_PROXY = 2
+
+    /** 引入"Google 渠道 MiMo/DeepSeek 恢复 Go 网关代理"迁移的版本号 */
+    const val PRESET_VERSION_GOOGLE_PROXY_ENGINES = 4
+
+    /**
+     * Google 渠道保留 Go 网关代理(按积分计费、需登录)的引擎名;
+     * 不在此列表的 google 预制引擎一律清空代理, 用户自带 token 直连。
+     */
+    val googleProxyEngines: List<String>
+        get() = listOf(
+            AiProvider.Mimo.value,
+            AiProvider.DeepSeek.value,
+        )
 
     val defaultEnabledEngines: List<String>
         get() = listOf(
@@ -35,10 +51,12 @@ object AiEngineConfig {
 
     /**
      * Google Play 渠道: 预制主流海外 OpenAI 兼容引擎, 用户自带 token 直连.
-     * 国内大模型 (豆包/Kimi/腾讯/小米) 在海外无法访问, 不展示.
+     * 国内大模型 (豆包/Kimi/腾讯) 在海外无法访问, 不展示.
+     * MiMo 为默认引擎, 走 Go 网关代理(按积分计费), 故放首位且保留代理路由。
      */
     val googleEnabledEngines: List<String>
         get() = listOf(
+            AiProvider.Mimo.value,
             AiProvider.OpenAi.value,
             AiProvider.Gemini.value,
             AiProvider.Grok.value,
