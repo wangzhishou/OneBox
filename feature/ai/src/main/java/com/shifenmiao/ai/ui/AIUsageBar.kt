@@ -25,7 +25,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineCallMade
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 
 @Composable
 fun AIUsageBar(
@@ -84,7 +84,7 @@ fun AIUsageBar(
         )
         Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
         ActionButton(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCallMade,
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
             contentDescription = "",
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             onClick = {

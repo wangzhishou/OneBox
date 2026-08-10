@@ -16,6 +16,7 @@ import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.AttachmentPayloadDto
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.RoleType
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.theme.AppTheme
 import io.noties.markwon.utils.MarkdownStringUtils
 import kotlinx.coroutines.Dispatchers
@@ -98,7 +99,13 @@ class HtmlExporter {
         val darkModeClass = if (isDark) "dark" else ""
         val promptHtml = buildPromptHtml(conversation, colorScheme)
         val messagesHtml = buildMessagesHtml(messages, aiEngineCatalogManager, conversation)
-        val contentNotice = escapeHtml(AppContext.getString(R.string.ai_content_notice_short))
+        // "AI 生成内容"显式标识是国内合规要求,海外(google)渠道不展示
+        val noticeBannerHtml = if (FlavorType.fromName() == FlavorType.GOOGLE) {
+            ""
+        } else {
+            val contentNotice = escapeHtml(AppContext.getString(R.string.ai_content_notice_short))
+            """<div class="ai-notice-banner" role="note" aria-label="AI 生成内容声明">$contentNotice</div>"""
+        }
         val headerHtml = buildHeaderHtml(conversation, colorScheme)
 
         template
@@ -109,7 +116,7 @@ class HtmlExporter {
             .replace("{{HEADER_HTML}}", headerHtml)
             .replace("{{PROMPT_HTML}}", promptHtml)
             .replace("{{MESSAGES_HTML}}", messagesHtml)
-            .replace("{{CONTENT_NOTICE}}", contentNotice)
+            .replace("{{NOTICE_BANNER_HTML}}", noticeBannerHtml)
             .replace("{{INLINE_SCRIPT}}", inlineScript)
     }
 

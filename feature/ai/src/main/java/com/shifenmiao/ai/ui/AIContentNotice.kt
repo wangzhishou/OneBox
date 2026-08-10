@@ -13,15 +13,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
+import com.shifenmiao.model.channel.FlavorType
 
 @Composable
 fun AIContentNotice(
     isVisible: Boolean,
     modifier: Modifier = Modifier
 ) {
+    // "AI 生成内容"声明是国内合规要求,海外(google)渠道不展示
+    val showNotice = isVisible && FlavorType.fromName() != FlavorType.GOOGLE
     AnimatedVisibility(
         modifier = modifier.padding(top = 20.dp, bottom = 30.dp),
-        visible = isVisible,
+        visible = showNotice,
         enter = fadeIn(),
         exit = fadeOut()
     ) {

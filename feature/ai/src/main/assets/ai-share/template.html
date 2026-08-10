@@ -20,8 +20,9 @@
         </main>
     </div>
 
-    <!-- AI notice banner:挂在 body 直接子节点,在 .main-container 之外,保证全宽 100% 贴底 -->
-    <div class="ai-notice-banner" role="note" aria-label="AI 生成内容声明">{{CONTENT_NOTICE}}</div>
+    <!-- AI notice banner:挂在 body 直接子节点,在 .main-container 之外,保证全宽 100% 贴底;
+         国内合规要求,海外(google)渠道导出时该占位符会被替换为空 -->
+    {{NOTICE_BANNER_HTML}}
 
     <script>{{INLINE_SCRIPT}}</script>
 </body>

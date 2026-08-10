@@ -14,6 +14,7 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.RoleType
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.theme.AppTheme
 import io.noties.markwon.utils.MarkdownStringUtils
 import kotlinx.coroutines.Dispatchers
@@ -84,7 +85,13 @@ class DuelHtmlExporter {
         val headerHtml = buildHeaderHtml(conversation, config)
         val promptsHtml = buildPromptsHtml(config)
         val messagesHtml = buildMessagesHtml(sortedMessages, config, aiEngineCatalogManager)
-        val notice = escapeHtml(AppContext.getString(R.string.ai_content_notice_short))
+        // "AI 生成内容"显式标识是国内合规要求,海外(google)渠道不展示
+        val noticeBannerHtml = if (FlavorType.fromName() == FlavorType.GOOGLE) {
+            ""
+        } else {
+            val notice = escapeHtml(AppContext.getString(R.string.ai_content_notice_short))
+            """<div class="ai-notice-banner" role="note" aria-label="AI 生成内容声明">$notice</div>"""
+        }
         // 按 GB 45438-2025,AIGC 隐式标识写入 <head> 中的 <meta name="AIGC" content="...">
         val aigcMetaTag = if (aIgcInfoString.isNotBlank()) {
             val escaped = aIgcInfoString
@@ -114,7 +121,7 @@ class DuelHtmlExporter {
                     $messagesHtml
                 </div>
             </div>
-            <div class="ai-notice-banner" role="note" aria-label="AI 生成内容声明">$notice</div>
+            $noticeBannerHtml
             <script>
             ${buildInlineScript()}
             </script>
