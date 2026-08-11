@@ -49,7 +49,7 @@ It understands, acts, and reports back — in one flow.
 - **An agent that drives the tools**: the AI agent can invoke 90+ in-app local tools (PDF processing, image editing, file management, bookkeeping…), chaining multi-step tasks across tools — executed locally with per-tool timeouts and iteration limits.
 - **Picture-in-picture robot, no more waiting around**: long agent task? Just leave the app — with an active AI session it drops into system picture-in-picture, where the mini-window robot keeps you posted on progress and one tap brings you back to the result. Native PiP, zero permissions required.
 - **One chat, many models**: talk to multiple mainstream LLMs from a single entry, with custom AI engines and prompt management.
-- **Bring your own keys**: configure third-party API keys and pick any model provider — even free APIs — extending AI capabilities at zero cost.
+- **Bring your own key — use it for free**: drop in any OpenAI-compatible API key (including free tiers like Gemini or OpenRouter's free models) and the full assistant + agent is yours at zero cost. Custom engines, endpoints and tokens are fully open in the Google Play build and in builds from this repo.
 - **Transparent by source**: every line is public — how data is processed locally and what never leaves the device is something you can verify, not a promise you have to trust.
 
 ## Features
