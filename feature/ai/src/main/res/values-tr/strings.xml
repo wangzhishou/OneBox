@@ -552,6 +552,8 @@
     <string name="agent_tool_browser_screenshot_summary">Geçerli tarayıcı sayfasının ekran görüntüsünü alın</string>
     <string name="agent_tool_browser_screenshot_failed">Ekran görüntüsü alınamadı</string>
     <string name="ai_environment_context_title">[Mevcut Ortam]</string>
+    <string name="ai_environment_context_time">- Geçerli saat: %1$s</string>
+    <string name="ai_environment_context_language">- Dil: %1$s</string>
     <string name="ai_environment_context_os">- İşletim Sistemi: Android %1$s (API %2$d)</string>
     <string name="ai_environment_context_arch">- Mimari: %1$s</string>
     <string name="ai_environment_context_model">- Cihaz modeli: %1$s</string>

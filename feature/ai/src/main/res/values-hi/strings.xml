@@ -552,6 +552,8 @@
     <string name="agent_tool_browser_screenshot_summary">वर्तमान ब्राउज़र पृष्ठ का स्क्रीनशॉट लें</string>
     <string name="agent_tool_browser_screenshot_failed">स्क्रीनशॉट विफल</string>
     <string name="ai_environment_context_title">[वर्तमान वातावरण]</string>
+    <string name="ai_environment_context_time">- वर्तमान समय: %1$s</string>
+    <string name="ai_environment_context_language">- भाषा: %1$s</string>
     <string name="ai_environment_context_os">- OS: Android %1$s (API %2$d)</string>
     <string name="ai_environment_context_arch">- आर्किटेक्चर: %1$s</string>
     <string name="ai_environment_context_model">- डिवाइस मॉडल: %1$s</string>

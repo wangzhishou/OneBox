@@ -628,6 +628,8 @@
 
     <!-- Environment Context -->
     <string name="ai_environment_context_title">[当前环境]</string>
+    <string name="ai_environment_context_time">- 当前时间: %1$s</string>
+    <string name="ai_environment_context_language">- 语言: %1$s</string>
     <string name="ai_environment_context_os">- 操作系统: Android %1$s (API %2$d)</string>
     <string name="ai_environment_context_arch">- 设备架构: %1$s</string>
     <string name="ai_environment_context_model">- 设备型号: %1$s</string>

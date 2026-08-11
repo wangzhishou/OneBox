@@ -552,6 +552,8 @@
     <string name="agent_tool_browser_screenshot_summary">現在のブラウザページのスクリーンショットを撮ります</string>
     <string name="agent_tool_browser_screenshot_failed">スクリーンショットに失敗しました</string>
     <string name="ai_environment_context_title">[現在の環境]</string>
+    <string name="ai_environment_context_time">- 現在時刻: %1$s</string>
+    <string name="ai_environment_context_language">- 言語: %1$s</string>
     <string name="ai_environment_context_os">- OS: Android %1$s (API %2$d)</string>
     <string name="ai_environment_context_arch">- アーキテクチャ: %1$s</string>
     <string name="ai_environment_context_model">- デバイスモデル: %1$s</string>

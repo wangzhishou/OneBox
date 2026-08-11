@@ -552,6 +552,8 @@
     <string name="agent_tool_browser_screenshot_summary">Kumuha ng screenshot ng kasalukuyang pahina ng browser</string>
     <string name="agent_tool_browser_screenshot_failed">Nabigo ang screenshot</string>
     <string name="ai_environment_context_title">[Kasalukuyang Kapaligiran]</string>
+    <string name="ai_environment_context_time">- Kasalukuyang oras: %1$s</string>
+    <string name="ai_environment_context_language">- Wika: %1$s</string>
     <string name="ai_environment_context_os">- OS: Android %1$s (API %2$d)</string>
     <string name="ai_environment_context_arch">- Arkitektura: %1$s</string>
     <string name="ai_environment_context_model">- Modelo ng device: %1$s</string>

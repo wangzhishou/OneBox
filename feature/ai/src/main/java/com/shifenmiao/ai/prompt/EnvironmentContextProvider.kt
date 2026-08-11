@@ -5,6 +5,10 @@ import com.shifenmiao.ai.BuildConfig
 import com.shifenmiao.ai.R
 import com.shifenmiao.ai.file.AppWorkspaceResolver
 import com.t8rin.imagetoolbox.core.utils.getString
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -23,6 +27,18 @@ class AndroidEnvironmentContextProvider @Inject constructor(
 
     override fun buildContextText(): String = buildString {
         appendLine(getString(R.string.ai_environment_context_title))
+        appendLine(
+            getString(
+                R.string.ai_environment_context_time,
+                currentTimeText()
+            )
+        )
+        appendLine(
+            getString(
+                R.string.ai_environment_context_language,
+                currentLanguageText()
+            )
+        )
         appendLine(
             getString(
                 R.string.ai_environment_context_os,
@@ -57,4 +73,17 @@ class AndroidEnvironmentContextProvider @Inject constructor(
             )
         )
     }.trimEnd()
+
+    /** 例: 2026-08-11T08:18:16.717+08:00 星期二 (Asia/Shanghai) — 含时区与星期,便于 LLM 推算"今天/明天/上周五" */
+    private fun currentTimeText(): String {
+        val now = ZonedDateTime.now()
+        val dayOfWeek = now.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+        return "${now.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)} $dayOfWeek (${now.zone.id})"
+    }
+
+    /** 例: 中文(简体) (zh-CN) — 告诉模型用用户语言生成内容(记账分类/笔记/待办等) */
+    private fun currentLanguageText(): String {
+        val locale = Locale.getDefault()
+        return "${locale.getDisplayName(locale)} (${locale.toLanguageTag()})"
+    }
 }

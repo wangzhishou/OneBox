@@ -552,6 +552,8 @@
     <string name="agent_tool_browser_screenshot_summary">Tomar una captura de pantalla de la página actual del navegador</string>
     <string name="agent_tool_browser_screenshot_failed">Captura de pantalla fallida</string>
     <string name="ai_environment_context_title">[Entorno actual]</string>
+    <string name="ai_environment_context_time">- Hora actual: %1$s</string>
+    <string name="ai_environment_context_language">- Idioma: %1$s</string>
     <string name="ai_environment_context_os">- SO: Android %1$s (API %2$d)</string>
     <string name="ai_environment_context_arch">- Arquitectura: %1$s</string>
     <string name="ai_environment_context_model">- Modelo de dispositivo: %1$s</string>

@@ -628,6 +628,8 @@
 
     <!-- Environment Context -->
     <string name="ai_environment_context_title">[Current Environment]</string>
+    <string name="ai_environment_context_time">- Current time: %1$s</string>
+    <string name="ai_environment_context_language">- Language: %1$s</string>
     <string name="ai_environment_context_os">- OS: Android %1$s (API %2$d)</string>
     <string name="ai_environment_context_arch">- Architecture: %1$s</string>
     <string name="ai_environment_context_model">- Device model: %1$s</string>
