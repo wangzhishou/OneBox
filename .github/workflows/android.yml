@@ -61,7 +61,7 @@ jobs:
       should_publish_release: ${{ steps.compute.outputs.should_publish_release }}
       release_tag: ${{ steps.compute.outputs.release_tag }}
 
-    runs-on: ubuntu-latest-larger
+    runs-on: ubuntu-latest
     timeout-minutes: 180
     permissions:
       contents: read
@@ -210,9 +210,9 @@ jobs:
         shell: bash
         run: |
           if [[ -n "$VERSION_NAME_OVERRIDE" ]]; then
-            VERSION_NAME="$VERSION_NAME_OVERRIDE" GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
+            VERSION_NAME="$VERSION_NAME_OVERRIDE" GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.jvmargs="-Xmx12g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8" -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
           else
-            GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
+            GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.jvmargs="-Xmx12g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8" -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
           fi
 
       - name: Prepare final APK artifact
@@ -292,7 +292,7 @@ jobs:
 
   create_release:
     if: needs.build_and_release.outputs.should_publish_release == 'true'
-    runs-on: ubuntu-latest-larger
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: write
