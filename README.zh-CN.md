@@ -217,6 +217,26 @@ AI 理解、执行、反馈,一气呵成。
 - 存量代码命名空间遵循周边风格；新项目 / 新模块优先使用 `com.wanbaohe.*`
 - 用户可见文本优先进入 Android 字符串资源
 
+## 赞助与支持
+
+万宝盒由一人公司（OPC）独立开发与维护，服务器和 AI 资源成本有限。如果它帮到了你：
+
+- **应用内打赏**：App 内「我的 → 请喝咖啡」，用积分请作者喝杯咖啡
+- **合作与资源支持**：欢迎 AI 服务商、云厂商或合作伙伴提供 token / 资源赞助，请联系 admin@shifenmiao.com
+
+每一份支持都会直接变成更好的功能和更稳定的服务。
+
+## 交流与反馈
+
+- **QQ 群**：[点击加入](https://qm.qq.com/q/1JOfn5KCue56UhXT1fRe6NgCLJB5sHFO)
+- **微信群**：扫码加入（群二维码有时效，会定期更新；若失效请先提 Issue 提醒）
+
+<div align="center">
+  <img src=".github/readme/wechat-group.jpg" width="220" alt="微信群二维码" />
+</div>
+
+- **问题反馈与建议**：[GitHub Issues](https://github.com/wangzhishou/OneBox/issues) · [Discussions](https://github.com/wangzhishou/OneBox/discussions)
+
 ## 许可证
 
 Apache-2.0，详见 `LICENSE`。本项目基于 [ImageToolbox](https://github.com/T8RIN/ImageToolbox)（T8RIN，Apache-2.0）二次开发，源文件中保留上游版权声明。

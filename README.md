@@ -183,6 +183,21 @@ The tool-calling chain is built on `ToolCallTaskManager`, `AgentLoopExecutor` an
 - `docs/modules.md`: module catalog (Chinese)
 - `CONTRIBUTING.md`: contribution guidelines
 
+## Support the Project
+
+OneBox is built and maintained by a one-person company (OPC), with a limited budget for servers and AI resources. If it helps you:
+
+- **In-app donation**: in the app, go to Profile → Buy Me a Coffee (points-based)
+- **Partnership & sponsorship**: AI providers, cloud vendors and partners willing to sponsor tokens or resources are very welcome — reach us at support@oneboxable.com
+
+Every bit of support turns directly into better features and a more stable service.
+
+## Community & Feedback
+
+- **Bug reports & feature requests**: [GitHub Issues](https://github.com/wangzhishou/OneBox/issues)
+- **Questions, ideas, show & tell**: [GitHub Discussions](https://github.com/wangzhishou/OneBox/discussions)
+- **中文用户**:QQ 群 / 微信群见[中文版 README](README.zh-CN.md#交流与反馈)
+
 ## License
 
 Apache-2.0, see `LICENSE`. This project is built on [ImageToolbox](https://github.com/T8RIN/ImageToolbox) (T8RIN, Apache-2.0); upstream copyright notices are preserved in source files.
