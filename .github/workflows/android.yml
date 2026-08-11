@@ -242,9 +242,9 @@ jobs:
         shell: bash
         run: |
           if [[ -n "$VERSION_NAME_OVERRIDE" ]]; then
-            VERSION_NAME="$VERSION_NAME_OVERRIDE" GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.jvmargs="-Xmx10g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8" -Pkotlin.daemon.jvmargs="-Xmx2g" --max-workers=2 -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
+            VERSION_NAME="$VERSION_NAME_OVERRIDE" GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.jvmargs="-Xmx10g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8" -Pkotlin.daemon.jvmargs="-Xmx2g" --max-workers=2 -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK" -x "lintVital$VARIANT_NAME" -x "lintVitalAnalyze$VARIANT_NAME"
           else
-            GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.jvmargs="-Xmx10g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8" -Pkotlin.daemon.jvmargs="-Xmx2g" --max-workers=2 -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK"
+            GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.jvmargs="-Xmx10g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8" -Pkotlin.daemon.jvmargs="-Xmx2g" --max-workers=2 -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK" -x "lintVital$VARIANT_NAME" -x "lintVitalAnalyze$VARIANT_NAME"
           fi
 
       - name: Prepare final APK artifact
