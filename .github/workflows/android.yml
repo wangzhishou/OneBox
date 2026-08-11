@@ -61,6 +61,12 @@ jobs:
       should_publish_release: ${{ steps.compute.outputs.should_publish_release }}
       release_tag: ${{ steps.compute.outputs.release_tag }}
 
+    # tag 推送: Google 渠道出 universal + arm64 两个包; 手动触发: 单个所选变体
+    strategy:
+      fail-fast: false
+      matrix:
+        abi_flavor: ${{ github.event_name == 'push' && fromJSON('["universal","arm64"]') || fromJSON(format('["{0}"]', inputs.abi_flavor || 'universal')) }}
+
     runs-on: ubuntu-latest
     timeout-minutes: 180
     permissions:
@@ -84,7 +90,7 @@ jobs:
         shell: bash
         env:
           REQUESTED_APP_FLAVOR: ${{ github.event_name == 'workflow_dispatch' && inputs.app_flavor || env.DEFAULT_APP_FLAVOR }}
-          REQUESTED_ABI_FLAVOR: ${{ github.event_name == 'workflow_dispatch' && inputs.abi_flavor || env.DEFAULT_ABI_FLAVOR }}
+          REQUESTED_ABI_FLAVOR: ${{ matrix.abi_flavor }}
           REQUESTED_BUILD_TYPE: ${{ github.event_name == 'workflow_dispatch' && inputs.build_type || env.DEFAULT_BUILD_TYPE }}
           REQUESTED_PUBLISH_RELEASE: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_release || 'false' }}
           REQUESTED_RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || '' }}
@@ -285,7 +291,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         id: upload-signed-apk
         with:
-          name: built-apk
+          # matrix 各分支产物名必须唯一 (artifact v4 不可变), 发布时按前缀归集
+          name: built-apk-${{ matrix.abi_flavor }}
           path: ${{ steps.package_apk.outputs.output_apk_path }}
 
 
@@ -303,8 +310,9 @@ jobs:
       - name: Download signed APK
         uses: actions/download-artifact@v4
         with:
-          name: built-apk
+          pattern: built-apk-*
           path: release-assets
+          merge-multiple: true
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
