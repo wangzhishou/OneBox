@@ -76,6 +76,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      # 免费 runner 只有 16G 物理内存, R8 全量混淆峰值超内存会被杀进程
+      # (日志表现为 The operation was canceled); 参照上游 ImageToolbox 加 swap 兜底
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
