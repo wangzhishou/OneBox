@@ -34,6 +34,16 @@
 - **International**: [Google Play](https://play.google.com/store/apps/details?id=com.shifenmiao.app) · [Official site](https://www.oneboxable.com)
 - **中国大陆**: [万宝盒官网](https://www.wanbaohe.com) · 小米 / 应用宝 / OPPO / vivo / 华为应用商店搜索「万宝盒」
 
+## Intro Video
+
+<div align="center">
+  <a href="https://youtube.com/shorts/dD9qCHK-hP4">
+    <img src=".github/readme/intro-en.jpg" width="220" alt="OneBox intro video" />
+  </a>
+  <br/>
+  ▶ <a href="https://youtube.com/shorts/dD9qCHK-hP4">Watch the intro (YouTube Shorts)</a>
+</div>
+
 ## AI Assistant: More Than Just Feature Count
 
 Plenty of toolbox apps are long on features. OneBox's built-in AI assistant saves you from hunting for tools and memorizing steps — just say what you want:

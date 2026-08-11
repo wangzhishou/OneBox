@@ -34,6 +34,16 @@
 - **中国大陆**: [万宝盒官网](https://www.wanbaohe.com) · 小米 / 应用宝 / OPPO / vivo / 华为应用商店搜索「万宝盒」
 - **海外**: [Google Play](https://play.google.com/store/apps/details?id=com.shifenmiao.app) · [国际版官网](https://www.oneboxable.com)
 
+## 视频介绍
+
+<div align="center">
+  <a href="https://youtube.com/shorts/3hM2e1LspoY">
+    <img src=".github/readme/intro-zh.jpg" width="220" alt="万宝盒视频介绍" />
+  </a>
+  <br/>
+  ▶ <a href="https://youtube.com/shorts/3hM2e1LspoY">观看介绍视频(YouTube Shorts)</a>
+</div>
+
 ## AI 助手:不只是功能多
 
 功能多,很多工具箱 App 都能做到。万宝盒内置的 AI 助手,让你不用再一个个找工具、记步骤——直接说话就行:
