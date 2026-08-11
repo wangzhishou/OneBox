@@ -14,6 +14,7 @@ import com.wanbaohe.bookkeeping.model.BookkeepingBackupPayload
 import com.wanbaohe.bookkeeping.model.BookkeepingBackupRecord
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordType
 import com.wanbaohe.bookkeeping.model.BookkeepingRestoreResult
+import com.wanbaohe.bookkeeping.model.DefaultCategories
 import com.wanbaohe.bookkeeping.model.localizedDefaultCategoryName
 import org.json.JSONObject
 import java.math.BigDecimal
@@ -417,19 +418,33 @@ class BookkeepingService @Inject constructor(
 
     // ── 只读查询（供 AgentTool 使用） ─────────────────
 
+    /**
+     * 兜底播种预置分类。
+     *
+     * 预置分类原本只在首次打开记账页面时由 Component 播种;
+     * Agent 路径不经过 UI,直接读写数据库,因此每个只读入口调用前先确保分类存在。
+     * [BookkeepingRepository.ensureDefaults] 本身幂等(库内已有分类时直接返回),开销可忽略。
+     */
+    private suspend fun ensureCategoriesSeeded() {
+        repository.ensureDefaults(DefaultCategories.all())
+    }
+
     suspend fun listCategoriesByType(type: BookkeepingRecordType): List<BookkeepingCategoryEntity> {
+        ensureCategoriesSeeded()
         return repository.getAllCategories()
             .filter { it.type == type.code }
             .sortedBy { it.sortOrder }
     }
 
     suspend fun findCategoryByName(name: String, type: BookkeepingRecordType?): BookkeepingCategoryEntity? {
+        ensureCategoriesSeeded()
         val all = repository.getAllCategories()
         val target = name.trim().lowercase()
         return all.firstOrNull { it.name.lowercase() == target && (type == null || it.type == type.code) }
     }
 
     suspend fun summarizeMonth(month: YearMonth): MonthSummary {
+        ensureCategoriesSeeded()
         val zone = ZoneId.systemDefault()
         val start = month.atDay(1).atStartOfDay(zone).toInstant().toEpochMilli()
         val end = month.atEndOfMonth().atTime(23, 59, 59).atZone(zone).toInstant().toEpochMilli()
@@ -473,6 +488,7 @@ class BookkeepingService @Inject constructor(
         type: BookkeepingRecordType? = null,
         limit: Int = 100,
     ): List<RecordView> {
+        ensureCategoriesSeeded()
         val zone = ZoneId.systemDefault()
         val start = startDate.atStartOfDay(zone).toInstant().toEpochMilli()
         val end = endDate.atTime(23, 59, 59).atZone(zone).toInstant().toEpochMilli()
@@ -508,6 +524,7 @@ class BookkeepingService @Inject constructor(
     ): RecordsQueryResult {
         require(!endDate.isBefore(startDate)) { "date_range_invalid" }
 
+        ensureCategoriesSeeded()
         val zone = ZoneId.systemDefault()
         val start = startDate.atStartOfDay(zone).toInstant().toEpochMilli()
         val end = endDate.atTime(23, 59, 59).atZone(zone).toInstant().toEpochMilli()
