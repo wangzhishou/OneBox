@@ -78,11 +78,16 @@ jobs:
           fetch-depth: 1
 
       # 免费 runner 只有 16G 物理内存, R8 全量混淆峰值超内存会被杀进程
-      # (日志表现为 The operation was canceled); 参照上游 ImageToolbox 加 swap 兜底
+      # (日志表现为 The operation was canceled); 加 10G swap 兜底(替代第三方 action)
       - name: Set Swap Space
-        uses: pierotofy/set-swap-space@master
-        with:
-          swap-size-gb: 10
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo fallocate -l 10G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile >/dev/null
+          sudo swapon /swapfile
+          free -h
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
