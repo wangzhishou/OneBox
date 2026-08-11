@@ -196,20 +196,27 @@ jobs:
           : > keystore.properties
           if [[ "$BUILD_TYPE" == "release" && "$APP_FLAVOR" == "google" ]]; then
             printf '%s' "$GOOGLE_SIGNING_KEY" | base64 --decode > "$RUNNER_TEMP/google.keystore"
-            cat > keystore-google.properties <<EOF
-          storeFile=$RUNNER_TEMP/google.keystore
-          storePassword=$GOOGLE_KEY_STORE_PASS
-          keyAlias=$GOOGLE_ALIAS
-          keyPassword=$GOOGLE_KEY_PASS
-          EOF
+            {
+              printf 'storeFile=%s\n' "$RUNNER_TEMP/google.keystore"
+              printf 'storePassword=%s\n' "$GOOGLE_KEY_STORE_PASS"
+              printf 'keyAlias=%s\n' "$GOOGLE_ALIAS"
+              printf 'keyPassword=%s\n' "$GOOGLE_KEY_PASS"
+            } > keystore-google.properties
+            # 快速校验密钥库与密码, 失败立即中止, 不用等 40 分钟构建
+            "$JAVA_HOME/bin/keytool" -list -keystore "$RUNNER_TEMP/google.keystore" \
+              -storepass "$GOOGLE_KEY_STORE_PASS" -alias "$GOOGLE_ALIAS" >/dev/null \
+              && echo "google keystore verified"
           elif [[ "$BUILD_TYPE" == "release" ]]; then
             printf '%s' "$SIGNING_KEY" | base64 --decode > "$RUNNER_TEMP/release.keystore"
-            cat > keystore.properties <<EOF
-          storeFile=$RUNNER_TEMP/release.keystore
-          storePassword=$KEY_STORE_PASS
-          keyAlias=$ALIAS
-          keyPassword=$KEY_PASS
-          EOF
+            {
+              printf 'storeFile=%s\n' "$RUNNER_TEMP/release.keystore"
+              printf 'storePassword=%s\n' "$KEY_STORE_PASS"
+              printf 'keyAlias=%s\n' "$ALIAS"
+              printf 'keyPassword=%s\n' "$KEY_PASS"
+            } > keystore.properties
+            "$JAVA_HOME/bin/keytool" -list -keystore "$RUNNER_TEMP/release.keystore" \
+              -storepass "$KEY_STORE_PASS" -alias "$ALIAS" >/dev/null \
+              && echo "release keystore verified"
           fi
           if [[ -n "$APP_KEYS_PROPERTIES" ]]; then
             cat >> keystore.properties <<EOF
