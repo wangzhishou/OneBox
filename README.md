@@ -47,6 +47,7 @@ It understands, acts, and reports back — in one flow.
 
 - **Bounded by its own permissions**: everything the agent does stays inside the app's own Android sandbox and declared permission set — it never touches contacts, SMS or call logs; local tools run entirely on-device, and only the conversation with your chosen model goes online.
 - **An agent that drives the tools**: the AI agent can invoke 90+ in-app local tools (PDF processing, image editing, file management, bookkeeping…), chaining multi-step tasks across tools — executed locally with per-tool timeouts and iteration limits.
+- **A floating robot, no more waiting around**: long agent tasks keep running in the background — leave the app and get on with things; the draggable floating robot docks to any screen edge, and one tap brings you back to the finished result. (Available in domestic-channel builds; requires the overlay permission.)
 - **One chat, many models**: talk to multiple mainstream LLMs from a single entry, with custom AI engines and prompt management.
 - **Bring your own keys**: configure third-party API keys and pick any model provider — even free APIs — extending AI capabilities at zero cost.
 - **Transparent by source**: every line is public — how data is processed locally and what never leaves the device is something you can verify, not a promise you have to trust.
