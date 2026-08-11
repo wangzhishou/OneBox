@@ -34,8 +34,12 @@ dependencyResolutionManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://jitpack.io") { name = "JitPack" }
-        maven ("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") // 腾讯云
-        maven ("https://maven.aliyun.com/repository/public") // 阿里云
+        // 国内镜像仅供本地开发加速; CI(GitHub Actions, 海外网络) 下直连更快更稳,
+        // 避免腾讯 nexus 对 androidx 等不存在产物的大量 404/超时拖慢依赖解析
+        if (System.getenv("GITHUB_ACTIONS") != "true") {
+            maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") // 腾讯云
+            maven("https://maven.aliyun.com/repository/public") // 阿里云
+        }
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
     }
 }

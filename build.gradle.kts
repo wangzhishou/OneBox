@@ -5,8 +5,11 @@ buildscript {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
-        maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") // 腾讯云
-        maven("https://maven.aliyun.com/repository/public") // 阿里云
+        // 同 settings.gradle.kts: 国内镜像在 CI(GITHUB_ACTIONS=true) 下跳过
+        if (System.getenv("GITHUB_ACTIONS") != "true") {
+            maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/") // 腾讯云
+            maven("https://maven.aliyun.com/repository/public") // 阿里云
+        }
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
     }
 
