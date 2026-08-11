@@ -333,6 +333,10 @@ jobs:
       - build_and_release
 
     steps:
+      # gh release create/upload 需要本地 git 仓库上下文
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: Download signed APK
         uses: actions/download-artifact@v4
         with:
