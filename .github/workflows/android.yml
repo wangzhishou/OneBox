@@ -78,15 +78,20 @@ jobs:
           fetch-depth: 1
 
       # 免费 runner 只有 16G 物理内存, R8 全量混淆峰值超内存会被杀进程
-      # (日志表现为 The operation was canceled); 加 10G swap 兜底(替代第三方 action)
+      # (日志表现为 The operation was canceled); 加 10G swap 兜底(原生 bash, dd 写 /mnt 数据盘)
       - name: Set Swap Space
         shell: bash
         run: |
           set -euo pipefail
-          sudo fallocate -l 10G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile >/dev/null
-          sudo swapon /swapfile
+          SWAP=/mnt/ghswap.img
+          if swapon --show=NAME --noheadings | grep -qx "$SWAP"; then
+            echo "swap already active"
+          else
+            sudo dd if=/dev/zero of="$SWAP" bs=1M count=10240 status=none
+            sudo chmod 600 "$SWAP"
+            sudo mkswap "$SWAP" >/dev/null
+            sudo swapon "$SWAP"
+          fi
           free -h
 
       - name: Set up JDK 17
