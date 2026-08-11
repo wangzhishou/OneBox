@@ -1,11 +1,12 @@
 <div align="center">
-  <img src="fastlane/metadata/android/zh-CN/images/icon/01.png" width="96" alt="万宝盒图标" />
+  <img src=".github/readme/icon.webp" width="96" alt="万宝盒图标" />
 
   # 万宝盒 OneBox
 
   [English](README.md) | **简体中文**
 
-  免费的一站式 Android 工具箱：图片与文档工具、AI 助手 / Agent、效率与生活工具，一个入口完成日常百事。
+  免费的 AI Agent 一站式 Android 工具箱:说句话,内置 Agent 就能驱动 90+ 应用内工具替你干活;
+  图片与文档处理、效率与生活工具,一个入口完成日常百事。
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
   [![Google Play](https://img.shields.io/badge/Google%20Play-OneBox-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.shifenmiao.app)
@@ -15,16 +16,16 @@
 
 <table>
   <tr>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/01%20-%20Tools.png" width="180" alt="工具" /></td>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/02%20-%20AI%20Assistant.png" width="180" alt="AI 助手" /></td>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/03%20-%20Privacy.png" width="180" alt="隐私" /></td>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/04%20-%20Decision%20Turnboard.png" width="180" alt="决策转盘" /></td>
+    <td><img src=".github/readme/zh/01.webp" width="180" alt="工具" /></td>
+    <td><img src=".github/readme/zh/02.webp" width="180" alt="AI 助手" /></td>
+    <td><img src=".github/readme/zh/03.webp" width="180" alt="隐私" /></td>
+    <td><img src=".github/readme/zh/04.webp" width="180" alt="决策转盘" /></td>
   </tr>
   <tr>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/05%20-%20Markdown%20Editor.png" width="180" alt="Markdown 编辑器" /></td>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/06%20-%20Peace%20%26%20Joy.png" width="180" alt="木鱼祈福" /></td>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/07%20-%20Speed%20Test.png" width="180" alt="测速" /></td>
-    <td><img src="fastlane/metadata/android/zh-CN/images/phoneScreenshots/08%20-%20To-Do%20List.png" width="180" alt="待办清单" /></td>
+    <td><img src=".github/readme/zh/05.webp" width="180" alt="Markdown 编辑器" /></td>
+    <td><img src=".github/readme/zh/06.webp" width="180" alt="木鱼祈福" /></td>
+    <td><img src=".github/readme/zh/07.webp" width="180" alt="测速" /></td>
+    <td><img src=".github/readme/zh/08.webp" width="180" alt="待办清单" /></td>
   </tr>
 </table>
 

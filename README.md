@@ -1,12 +1,12 @@
 <div align="center">
-  <img src="fastlane/metadata/android/en-US/images/icon/01.png" width="96" alt="OneBox icon" />
+  <img src=".github/readme/icon.webp" width="96" alt="OneBox icon" />
 
   # OneBox (万宝盒)
 
   **English** | [简体中文](README.zh-CN.md)
 
-  A free all-in-one Android toolbox: image & document tools, AI assistant / agent,
-  productivity and daily-life utilities — one entry for a hundred tasks.
+  A free AI-agent toolbox for Android: say what you need and the built-in agent drives
+  90+ in-app tools to get it done — plus image & document tools, productivity and daily utilities.
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
   [![Google Play](https://img.shields.io/badge/Google%20Play-OneBox-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.shifenmiao.app)
@@ -16,16 +16,16 @@
 
 <table>
   <tr>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01%20-%20Tools.png" width="180" alt="Tools" /></td>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02%20-%20AI%20Assistant.png" width="180" alt="AI Assistant" /></td>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03%20-%20Privacy.png" width="180" alt="Privacy" /></td>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04%20-%20Decision%20Turnboard.png" width="180" alt="Decision Turnboard" /></td>
+    <td><img src=".github/readme/en/01.webp" width="180" alt="Tools" /></td>
+    <td><img src=".github/readme/en/02.webp" width="180" alt="AI Assistant" /></td>
+    <td><img src=".github/readme/en/03.webp" width="180" alt="Privacy" /></td>
+    <td><img src=".github/readme/en/04.webp" width="180" alt="Decision Turnboard" /></td>
   </tr>
   <tr>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05%20-%20Markdown%20Editor.png" width="180" alt="Markdown Editor" /></td>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06%20-%20Peace%20%26%20Joy.png" width="180" alt="Peace & Joy" /></td>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07%20-%20Speed%20Test.png" width="180" alt="Speed Test" /></td>
-    <td><img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08%20-%20To-Do%20List.png" width="180" alt="To-Do List" /></td>
+    <td><img src=".github/readme/en/05.webp" width="180" alt="Markdown Editor" /></td>
+    <td><img src=".github/readme/en/06.webp" width="180" alt="Peace & Joy" /></td>
+    <td><img src=".github/readme/en/07.webp" width="180" alt="Speed Test" /></td>
+    <td><img src=".github/readme/en/08.webp" width="180" alt="To-Do List" /></td>
   </tr>
 </table>
 
