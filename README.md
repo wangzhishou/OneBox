@@ -41,9 +41,11 @@ Plenty of toolbox apps are long on features. OneBox's built-in AI assistant save
 > "Turn these images into a PDF."
 > "Log this bill screenshot into my ledger."
 > "Make me a to-do list."
+> "Look up today's stock prices online."
 
 It understands, acts, and reports back — in one flow.
 
+- **Bounded by its own permissions**: everything the agent does stays inside the app's own Android sandbox and declared permission set — it never touches contacts, SMS or call logs; local tools run entirely on-device, and only the conversation with your chosen model goes online.
 - **An agent that drives the tools**: the AI agent can invoke 90+ in-app local tools (PDF processing, image editing, file management, bookkeeping…), chaining multi-step tasks across tools — executed locally with per-tool timeouts and iteration limits.
 - **One chat, many models**: talk to multiple mainstream LLMs from a single entry, with custom AI engines and prompt management.
 - **Bring your own keys**: configure third-party API keys and pick any model provider — even free APIs — extending AI capabilities at zero cost.
