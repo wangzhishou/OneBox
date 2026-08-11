@@ -34,6 +34,21 @@
 - **International**: [Google Play](https://play.google.com/store/apps/details?id=com.shifenmiao.app) · [Official site](https://www.oneboxable.com)
 - **中国大陆**: [万宝盒官网](https://www.wanbaohe.com) · 小米 / 应用宝 / OPPO / vivo / 华为应用商店搜索「万宝盒」
 
+## AI Assistant: More Than Just Feature Count
+
+Plenty of toolbox apps are long on features. OneBox's built-in AI assistant saves you from hunting for tools and memorizing steps — just say what you want:
+
+> "Turn these images into a PDF."
+> "Log this bill screenshot into my ledger."
+> "Make me a to-do list."
+
+It understands, acts, and reports back — in one flow.
+
+- **An agent that drives the tools**: the AI agent can invoke 90+ in-app local tools (PDF processing, image editing, file management, bookkeeping…), chaining multi-step tasks across tools — executed locally with per-tool timeouts and iteration limits.
+- **One chat, many models**: talk to multiple mainstream LLMs from a single entry, with custom AI engines and prompt management.
+- **Bring your own keys**: configure third-party API keys and pick any model provider — even free APIs — extending AI capabilities at zero cost.
+- **Transparent by source**: every line is public — how data is processed locally and what never leaves the device is something you can verify, not a promise you have to trust.
+
 ## Features
 
 - **Image & media tools**: crop, collage, filters, background removal, format conversion, EXIF editing, document scanning, QR scanning, and more.
