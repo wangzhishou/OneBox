@@ -150,7 +150,8 @@ jobs:
 
           BUILD_TYPE_CAPITALIZED="$(capitalize "$BUILD_TYPE")"
           VARIANT_NAME="$(capitalize "$APP_FLAVOR")$(capitalize "$ABI_FLAVOR")$BUILD_TYPE_CAPITALIZED"
-          VARIANT_DIR="${APP_FLAVOR}${ABI_FLAVOR}"
+          # AGP 输出目录是 flavor 组合的 camelCase: 第一个小写, 后续首字母大写 (googleUniversal)
+          VARIANT_DIR="${APP_FLAVOR}$(capitalize "$ABI_FLAVOR")"
           APK_DIR="app/build/outputs/apk/$VARIANT_DIR/$BUILD_TYPE"
           OUTPUT_APK_NAME="OneBox-${ARTIFACT_SUFFIX}-${APP_FLAVOR}-${ABI_FLAVOR}-${BUILD_TYPE}.apk"
           if [[ "$BUILD_TYPE" == "release" ]]; then
