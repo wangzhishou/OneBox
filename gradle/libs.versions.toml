@@ -147,7 +147,7 @@ androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "u
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 com-tencent-mmkv = "com.tencent:mmkv:2.4.0"
 com-tencent-mmkv-arm32 = "com.tencent:mmkv:1.3.16"
-com-tencent-opensdk = "com.tencent.mm.opensdk:wechat-sdk-android:6.8.34"
+com-tencent-opensdk = "com.tencent.mm.opensdk:wechat-sdk-android:6.8.40"
 org-greenrebot-eventbus = "org.greenrobot:eventbus:3.3.1"
 com-airbnb-lottie = "com.airbnb.android:lottie-compose:6.7.1"
 androidx-security-crypto = { module = "androidx.security:security-crypto-ktx", version.ref = "androidxSecurityCrypto" }
