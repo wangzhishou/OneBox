@@ -92,7 +92,7 @@ capturable = "3.0.1"
 moshi = "1.15.2"
 smbj = "0.14.0"
 
-bouncycastle = "1.84"
+bouncycastle = "1.85"
 androidxSecurityCrypto = "1.1.0"
 
 pdfviewer = "1.0.0-alpha18"
