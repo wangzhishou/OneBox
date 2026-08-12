@@ -351,6 +351,8 @@ android {
         }
         resources {
             excludes += "META-INF/"
+            // BouncyCastle 1.85 起三个 jar 都打包了相同的 META-INF/LICENSE.md,只保留一份避免 merge 冲突
+            pickFirsts += "META-INF/LICENSE.md"
             excludes += "kotlin/"
             excludes += "org/"
             excludes += ".properties"
