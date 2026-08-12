@@ -39,7 +39,7 @@ shadowsPlus = "1.0.4"
 exifinterface = "1.4.2"
 firebaseAnalyticsKtx = "22.5.0"
 detekt = "1.23.8"
-detektCompose = "0.6.0"
+detektCompose = "0.6.4"
 decompose = "3.5.0"
 essenty = "2.5.0"
 
