@@ -128,7 +128,7 @@ AI 理解、执行、反馈,一气呵成。
 `app` 模块使用两个 flavor 维度：
 
 - `app`：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google`
-- `abi`：`arm64` / `arm32` / `universal`
+- `abi`：`arm64` / `universal`（仅 64 位）
 
 因此最终任务名会组合为：
 
@@ -154,17 +154,17 @@ AI 理解、执行、反馈,一气呵成。
 
 ### 多渠道发布打包
 
-项目根目录提供 `build_release.sh` 脚本，用于本地一次性打出 **6 渠道 × 2 架构 (arm64 / arm32) = 12 个 Release APK**，统一归集到 `release/` 目录，并生成 `release/manifest.txt` 汇总清单。
+项目根目录提供 `build_release.sh` 脚本，用于本地一次性打出 **7 渠道 × 2 架构 (arm64 / universal，仅 64 位) = 14 个 Release APK**，统一归集到 `release/` 目录，并生成 `release/manifest.txt` 汇总清单。
 
 文件名沿用 Gradle 生成的 `OneBox-<version>-<渠道>-<架构>-release.apk`（如 `OneBox-1.2.3-xiaomi-arm64-release.apk`）。
 
 **常用命令**
 
 ```bash
-./build_release.sh                                # 全部 12 个
+./build_release.sh                                # 全部 14 个
 ./build_release.sh --channel xiaomi huawei        # 指定渠道
-./build_release.sh --abi arm64                    # 只打 64 位 (6 个)
-./build_release.sh --channel onebox --abi arm32   # 单个组合
+./build_release.sh --abi arm64                    # 只打 arm64 (7 个)
+./build_release.sh --channel onebox --abi arm64   # 单个组合
 ./build_release.sh --no-offline --clean           # 联网拉依赖 + 先 clean
 ./build_release.sh --skip-build                   # 不跑 gradlew，只重新归集
 ```
@@ -174,7 +174,7 @@ AI 理解、执行、反馈,一气呵成。
 | 参数 | 说明 |
 | --- | --- |
 | `--channel <a> [b...]` | 只构建指定渠道 (可空格分隔多个) |
-| `--abi <arm64\|arm32>` | 只构建指定架构 (可空格分隔多个) |
+| `--abi <arm64\|universal>` | 只构建指定架构 (可空格分隔多个) |
 | `--no-offline` | 覆盖离线模式配置，允许联网拉依赖（本仓库默认在线） |
 | `--clean` | 构建前先执行 `clean` |
 | `--skip-build` | 跳过 `gradlew`，只把已有 `app/build/outputs/apk/...` 复制到 `release/` |

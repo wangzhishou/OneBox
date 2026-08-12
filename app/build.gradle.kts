@@ -82,7 +82,7 @@ fun crashlyticsMappingFileId(abi: String): String = UUID.nameUUIDFromBytes(
 
 android {
 
-    val supportedAbi = arrayOf("armeabi-v7a", "arm64-v8a")
+    val supportedAbi = arrayOf("arm64-v8a")
 
     namespace = "com.shifenmiao.app"
 
@@ -214,21 +214,11 @@ android {
             resValue("string", "com.google.firebase.crashlytics.mapping_file_id", crashlyticsMappingFileId("arm64"))
         }
 
-        create("arm32") {
-            dimension = "abi"
-            ndk {
-                abiFilters.clear()
-                abiFilters.add("armeabi-v7a")
-            }
-            manifestPlaceholders["flavorAbi"] = "arm32"
-            resValue("string", "com.google.firebase.crashlytics.mapping_file_id", crashlyticsMappingFileId("arm32"))
-        }
-
         create("universal") {
             dimension = "abi"
             ndk {
                 abiFilters.clear()
-                abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
+                abiFilters.add("arm64-v8a")
             }
             manifestPlaceholders["flavorAbi"] = "universal"
             resValue("string", "com.google.firebase.crashlytics.mapping_file_id", crashlyticsMappingFileId("universal"))
@@ -402,10 +392,9 @@ base {
 // 由 build_release.sh 在 google release 构建后用于手动上传
 val writeCrashlyticsMappingFileIds by tasks.registering {
     val outputDir = layout.buildDirectory.dir("crashlytics")
-    // 配置期算好三个 id, doLast 只捕获普通 Map, 避免引用脚本对象破坏 configuration cache
+    // 配置期算好两个 id, doLast 只捕获普通 Map, 避免引用脚本对象破坏 configuration cache
     val idByAbi = mapOf(
         "arm64" to crashlyticsMappingFileId("arm64"),
-        "arm32" to crashlyticsMappingFileId("arm32"),
         "universal" to crashlyticsMappingFileId("universal"),
     )
     outputs.dir(outputDir)
@@ -453,7 +442,6 @@ dependencies {
      * mmkv
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "arm32Api"(libs.com.tencent.mmkv.arm32)
     "universalApi"(libs.com.tencent.mmkv)
     api(libs.coil)
     api(libs.coil.network)
@@ -553,8 +541,7 @@ afterEvaluate {
 
 // 强制用 NDK 自带的 16 KB 对齐 libc++_shared.so 覆盖合并后的副本，避免 AAR 带下来的旧版 .so 导致 16 KB 警告
 val abiToNdkTriple = mapOf(
-    "arm64-v8a" to "aarch64-linux-android",
-    "armeabi-v7a" to "arm-linux-androideabi"
+    "arm64-v8a" to "aarch64-linux-android"
 )
 
 // Defer NDK resolution to execution time so Gradle configuration / IDE sync

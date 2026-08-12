@@ -128,7 +128,7 @@ It understands, acts, and reports back — in one flow.
 The `app` module uses two flavor dimensions:
 
 - `app`: `xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google`
-- `abi`: `arm64` / `arm32` / `universal`
+- `abi`: `arm64` / `universal` (64-bit only)
 
 Task names combine them, e.g.:
 
@@ -154,10 +154,10 @@ Both target files are git-ignored; never commit real values.
 
 ### Multi-channel Release Builds
 
-`build_release.sh` builds **6 channels × 2 ABIs (arm64 / arm32) = 12 release APKs** into `release/` with a `release/manifest.txt` summary. Examples:
+`build_release.sh` builds **7 channels × 2 ABIs (arm64 / universal, 64-bit only) = 14 release APKs** into `release/` with a `release/manifest.txt` summary. Examples:
 
 ```bash
-./build_release.sh                                # all 12
+./build_release.sh                                # all 14
 ./build_release.sh --channel xiaomi huawei        # selected channels
 ./build_release.sh --abi arm64                    # 64-bit only
 ./build_release.sh --no-offline --clean           # fetch deps online + clean first

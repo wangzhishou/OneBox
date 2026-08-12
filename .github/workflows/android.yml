@@ -26,7 +26,6 @@ on:
         default: universal
         options:
           - arm64
-          - arm32
           - universal
       build_type:
         description: Build type

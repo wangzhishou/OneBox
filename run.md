@@ -18,7 +18,7 @@
 本项目 `app` 模块有 2 个 flavor 维度：`app` + `abi`（见 `app/build.gradle.kts`）。
 
 - app flavors：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox`
-- abi flavors：`arm64` / `arm32` / `universal`
+- abi flavors：`arm64` / `universal`（仅 64 位）
 - buildTypes：`Debug` / `Release`
 
 最终 Variant 名称形如：`<AppFlavor><AbiFlavor><BuildType>`（首字母大写驼峰）

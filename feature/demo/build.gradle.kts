@@ -12,7 +12,6 @@ dependencies {
      * mmkv - 根据不同架构使用不同的依赖
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "arm32Api"(libs.com.tencent.mmkv.arm32)
     //Di
     implementation(libs.dagger.hilt.android)
     /**

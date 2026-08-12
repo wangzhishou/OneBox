@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # -----------------------------------------------------------------------------
-# build_release.sh — 打各个渠道的 Release 包 (arm64 / arm32 单独出)
+# build_release.sh — 打各个渠道的 Release 包 (仅 64 位: arm64 / universal)
 #
 # 用法:
-#   ./build_release.sh                       # 6 渠道 × 2 架构 = 12 个 APK
+#   ./build_release.sh                       # 7 渠道 × 2 架构 = 14 个 APK
 #   ./build_release.sh --channel xiaomi huawei
 #   ./build_release.sh --abi arm64
 #   ./build_release.sh --channel onebox --abi arm64
@@ -25,7 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 ALL_CHANNELS=("xiaomi" "yyb" "oppo" "vivo" "huawei" "onebox" "google")
-ALL_ABIS=("arm64" "arm32" "universal")
+ALL_ABIS=("arm64" "universal")
 OUT_DIR="release"
 GRADLE="./gradlew"
 KEYSTORE_FILE="keystore.properties"

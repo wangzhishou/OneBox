@@ -64,18 +64,11 @@ class ImageToolboxLibraryPlugin : Plugin<Project> {
                             abiFilters.add("arm64-v8a")
                         }
                     }
-                    create("arm32") {
-                        dimension = "abi"
-                        ndk {
-                            abiFilters.clear()
-                            abiFilters.add("armeabi-v7a")
-                        }
-                    }
                     create("universal") {
                         dimension = "abi"
                         ndk {
                             abiFilters.clear()
-                            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
+                            abiFilters.add("arm64-v8a")
                         }
                     }
                 }
