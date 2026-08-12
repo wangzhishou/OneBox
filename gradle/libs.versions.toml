@@ -100,7 +100,7 @@ fragmentCompose = "1.8.9"
 aboutlibraries = "14.2.1"
 
 ksoup = "0.6.0"
-jetbrainsMarkdown = "0.7.5"
+jetbrainsMarkdown = "0.7.8"
 uiAndroid = "1.11.2"
 window = "1.5.1"
 
