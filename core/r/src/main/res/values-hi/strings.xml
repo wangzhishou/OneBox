@@ -518,6 +518,10 @@
     <string name="error_message">कोई अज्ञात त्रुटि हुई!</string>
     <string name="ai_error">क्षमा करें, हमारी ओर से कुछ गड़बड़ हो गई।</string>
     <string name="ai_stream_answer_retry">पुनः प्रयास करें</string>
+    <string name="ai_stream_answer_regenerate">पुनः जेनरेट करें</string>
+    <string name="ai_stream_answer_interrupt_title">उत्तर जेनरेट हो रहा है</string>
+    <string name="ai_stream_answer_interrupt_message">उत्तर अभी जेनरेट हो रहा है। क्या आप वाकई रोकना चाहते हैं?</string>
+    <string name="ai_stream_answer_interrupt_confirm">रोकें</string>
     <string name="ai_content_recommend">परिणाम से संतुष्ट नहीं हैं?</string>
     <string name="switch_ai_models">मॉडल बदलें</string>
     <string name="ai_chat_model_settings">उन्नत सेटिंग्स</string>

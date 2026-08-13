@@ -518,6 +518,10 @@
     <string name="error_message">发生未知错误！</string>
     <string name="ai_error">申し訳ございません、サーバー側で問題が発生しました。</string>
     <string name="ai_stream_answer_retry">再試行</string>
+    <string name="ai_stream_answer_regenerate">再生成</string>
+    <string name="ai_stream_answer_interrupt_title">回答を生成中</string>
+    <string name="ai_stream_answer_interrupt_message">回答はまだ生成中です。中断してもよろしいですか？</string>
+    <string name="ai_stream_answer_interrupt_confirm">中断</string>
     <string name="ai_content_recommend">結果に満足できませんか？</string>
     <string name="switch_ai_models">モデルを切り替える</string>
     <string name="ai_chat_model_settings">詳細設定</string>

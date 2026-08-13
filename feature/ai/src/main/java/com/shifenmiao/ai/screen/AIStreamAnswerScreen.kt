@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -23,11 +24,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +62,7 @@ import com.shifenmiao.base.ui.ExpandableMarkdownContent
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
+import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.node.AstNode
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
@@ -65,6 +70,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 
 @Composable
 fun AIStreamAnswerScreen(
@@ -77,9 +84,65 @@ fun AIStreamAnswerScreen(
     val errorMessage by component.errorMessage.collectAsState()
     val engineInfo by component.engineInfo.collectAsState()
 
+    // 生成中（LOADING/STREAMING）时，退出/跳历史/重新生成都先弹确认
+    val isBusy = status == AIStreamAnswerStatus.LOADING || status == AIStreamAnswerStatus.STREAMING
+    var showInterruptDialog by remember { mutableStateOf(false) }
+    var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
+
+    fun runWithInterruptConfirm(action: () -> Unit) {
+        if (isBusy) {
+            pendingAction = action
+            showInterruptDialog = true
+        } else {
+            action()
+        }
+    }
+
+    // 系统返回手势/按键在生成中同样拦截
+    BackHandler(enabled = isBusy) {
+        runWithInterruptConfirm {
+            component.cancelAnswer()
+            appComponent.onGoBack()
+        }
+    }
+
     BaseScreen(
         title = component.displayTitle,
-        onGoBack = appComponent.onGoBack,
+        onGoBack = {
+            runWithInterruptConfirm {
+                component.cancelAnswer()
+                appComponent.onGoBack()
+            }
+        },
+        actions = {
+            IconButton(
+                onClick = { runWithInterruptConfirm { component.retry() } }
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                    contentDescription = stringResource(R.string.ai_stream_answer_regenerate),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            IconButton(
+                onClick = {
+                    // 跳历史不中断生成（组件在返回栈中继续跑），只需提示
+                    runWithInterruptConfirm {
+                        appComponent.onNavigate(
+                            Screen.AIHistoryCenter(
+                                initialFilter = AIConversationEntryType.STREAM_QA
+                            )
+                        )
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
+                    contentDescription = stringResource(R.string.history),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        },
     ) {
         ProvideMermaidRenderer {
             AnimatedContent(
@@ -151,6 +214,30 @@ fun AIStreamAnswerScreen(
                 }
             }
         }
+    }
+
+    if (showInterruptDialog) {
+        AlertDialog(
+            onDismissRequest = { showInterruptDialog = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showInterruptDialog = false
+                        pendingAction?.invoke()
+                        pendingAction = null
+                    }
+                ) {
+                    Text(stringResource(R.string.ai_stream_answer_interrupt_confirm))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showInterruptDialog = false }) {
+                    Text(stringResource(R.string.button_cancel))
+                }
+            },
+            title = { Text(stringResource(R.string.ai_stream_answer_interrupt_title)) },
+            text = { Text(stringResource(R.string.ai_stream_answer_interrupt_message)) },
+        )
     }
 }
 
@@ -259,10 +346,11 @@ private fun TypewriterMarkdownBlock(
     // 打字机步进逻辑
     LaunchedEffect(targetText) {
         displayedLength = 0
+        // 按总时长约 1s 反推步长：长内容不再逐字慢跑，短内容仍保留打字感
+        val step = (targetText.length / 60).coerceIn(2, 48)
         while (displayedLength < targetText.length) {
-            val step = ((targetText.length - displayedLength) / 10).coerceIn(1, 5)
             displayedLength = (displayedLength + step).coerceAtMost(targetText.length)
-            delay(20L)
+            delay(16L)
         }
     }
 

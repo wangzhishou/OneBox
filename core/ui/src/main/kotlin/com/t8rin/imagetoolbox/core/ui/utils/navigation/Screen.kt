@@ -30,6 +30,7 @@ import com.shifenmiao.model.ScreenParams
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Agent
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.model.ai.StreamAnswerCachePolicy
 import com.shifenmiao.model.image.ImageViewerInfo
 import com.shifenmiao.model.item.ItemEntityParams
 import com.shifenmiao.model.reorderable.ReorderableType
@@ -1847,6 +1848,7 @@ sealed class Screen(
         val question: String = "",
         val label: String = "",
         val useStreaming: Boolean = true,
+        val cachePolicy: StreamAnswerCachePolicy = StreamAnswerCachePolicy.NONE,
     ) : Screen(
         id = 1066,
         title = com.shifenmiao.core.R.string.ai_chat_title,

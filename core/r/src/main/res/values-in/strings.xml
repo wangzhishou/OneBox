@@ -518,6 +518,10 @@ Maka, lahirlah OneBox.</string>
     <string name="error_message">Terjadi kesalahan yang tidak diketahui!</string>
     <string name="ai_error">Maaf, terjadi kesalahan di sisi kami.</string>
     <string name="ai_stream_answer_retry">Coba lagi</string>
+    <string name="ai_stream_answer_regenerate">Buat ulang</string>
+    <string name="ai_stream_answer_interrupt_title">Sedang membuat jawaban</string>
+    <string name="ai_stream_answer_interrupt_message">Jawaban masih dibuat. Yakin ingin menghentikannya?</string>
+    <string name="ai_stream_answer_interrupt_confirm">Hentikan</string>
     <string name="ai_content_recommend">Tidak puas dengan hasilnya?</string>
     <string name="switch_ai_models">Ganti Model</string>
     <string name="ai_chat_model_settings">Pengaturan Lanjutan</string>

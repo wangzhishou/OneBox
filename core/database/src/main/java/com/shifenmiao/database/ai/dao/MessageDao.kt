@@ -127,6 +127,38 @@ interface MessageDao {
     @Query("SELECT * FROM message WHERE completion_id = :completionId")
     fun queryQuestionAndAnswerByCompletionId(completionId: String): List<MessageEntity>
 
+    /**
+     * 流式问答缓存查询：按「问题 + systemPrompt + 引擎/模型」内容键找最新一条有效回答。
+     *
+     * user/assistant 两条消息共享 completion_id；systemPrompt 落在 conversations 表。
+     * [since] 为有效期的起始时间戳（毫秒），永久缓存传 0。
+     */
+    @Query(
+        """
+        SELECT a.* FROM message a
+        INNER JOIN message q ON q.completion_id = a.completion_id AND q.role = 'user'
+        INNER JOIN conversations c ON c.conversation_id = a.conversation_id
+        WHERE a.role = 'assistant'
+          AND a.expired = 0
+          AND a.entry_type = 'STREAM_QA'
+          AND a.answer != ''
+          AND q.question = :question
+          AND c.prompt = :systemPrompt
+          AND a.engine = :engine
+          AND a.model = :model
+          AND a.created_at >= :since
+        ORDER BY a.created_at DESC
+        LIMIT 1
+        """
+    )
+    suspend fun findLatestStreamAnswer(
+        question: String,
+        systemPrompt: String,
+        engine: String,
+        model: String,
+        since: Long,
+    ): MessageEntity?
+
     @Query(
         """
         SELECT conversation_id AS conversationId, COUNT(*) AS messageCount

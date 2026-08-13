@@ -518,6 +518,10 @@ Ve böylece OneBox doğdu.</string>
     <string name="error_message">Bilinmeyen bir hata oluştu!</string>
     <string name="ai_error">Üzgünüz, tarafımızda bir şeyler ters gitti.</string>
     <string name="ai_stream_answer_retry">Tekrar Dene</string>
+    <string name="ai_stream_answer_regenerate">Yeniden oluştur</string>
+    <string name="ai_stream_answer_interrupt_title">Yanıt oluşturuluyor</string>
+    <string name="ai_stream_answer_interrupt_message">Yanıt hâlâ oluşturuluyor. Durdurmak istediğinizden emin misiniz?</string>
+    <string name="ai_stream_answer_interrupt_confirm">Durdur</string>
     <string name="ai_content_recommend">Sonuçtan memnun değil misiniz?</string>
     <string name="switch_ai_models">Modeli Değiştir</string>
     <string name="ai_chat_model_settings">Gelişmiş Ayarlar</string>

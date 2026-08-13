@@ -15,6 +15,7 @@ import com.wanbaohe.calendar.data.DaYunItem
 import com.wanbaohe.calendar.data.FortuneData
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
+import com.shifenmiao.model.ai.StreamAnswerCachePolicy
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -100,6 +101,7 @@ class BaZiComponent @AssistedInject internal constructor(
                     question = question,
                     label = "八字解盘 ${state.year}年${state.month}月${state.day}日",
                     useStreaming = true,
+                    cachePolicy = StreamAnswerCachePolicy.PERMANENT,
                 )
             )
         }

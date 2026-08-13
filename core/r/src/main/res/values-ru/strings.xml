@@ -518,6 +518,10 @@
     <string name="error_message">Произошла неизвестная ошибка!</string>
     <string name="ai_error">Извините, на нашей стороне произошла ошибка.</string>
     <string name="ai_stream_answer_retry">Повторить</string>
+    <string name="ai_stream_answer_regenerate">Сгенерировать заново</string>
+    <string name="ai_stream_answer_interrupt_title">Ответ генерируется</string>
+    <string name="ai_stream_answer_interrupt_message">Ответ всё ещё генерируется. Прервать?</string>
+    <string name="ai_stream_answer_interrupt_confirm">Прервать</string>
     <string name="ai_content_recommend">Не устраивает результат?</string>
     <string name="switch_ai_models">Сменить модель</string>
     <string name="ai_chat_model_settings">Расширенные настройки</string>

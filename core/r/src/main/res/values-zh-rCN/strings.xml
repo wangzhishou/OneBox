@@ -612,6 +612,10 @@
     <string name="error_message">发生未知错误！</string>
     <string name="ai_error">抱歉，服务时出了点小状况。</string>
     <string name="ai_stream_answer_retry">重试</string>
+    <string name="ai_stream_answer_regenerate">重新生成</string>
+    <string name="ai_stream_answer_interrupt_title">正在生成回答</string>
+    <string name="ai_stream_answer_interrupt_message">回答正在生成中，确定要中断吗？</string>
+    <string name="ai_stream_answer_interrupt_confirm">中断</string>
     <string name="ai_content_recommend">效果不理想？</string>
     <string name="switch_ai_models">切换模型</string>
     <string name="ai_chat_model_settings">高级设置</string>

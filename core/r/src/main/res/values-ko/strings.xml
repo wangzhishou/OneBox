@@ -518,6 +518,10 @@
     <string name="error_message">알 수 없는 오류가 발생했습니다!</string>
     <string name="ai_error">죄송합니다. 저희 쪽에서 문제가 발생했습니다.</string>
     <string name="ai_stream_answer_retry">재시도</string>
+    <string name="ai_stream_answer_regenerate">다시 생성</string>
+    <string name="ai_stream_answer_interrupt_title">답변 생성 중</string>
+    <string name="ai_stream_answer_interrupt_message">답변이 아직 생성 중입니다. 중단하시겠습니까?</string>
+    <string name="ai_stream_answer_interrupt_confirm">중단</string>
     <string name="ai_content_recommend">결과가 마음에 들지 않으세요?</string>
     <string name="switch_ai_models">모델 전환</string>
     <string name="ai_chat_model_settings">고급 설정</string>

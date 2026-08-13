@@ -518,6 +518,10 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="error_message">May naganap na hindi kilalang error!</string>
     <string name="ai_error">Pasensya, may nangyaring mali sa aming dulo.</string>
     <string name="ai_stream_answer_retry">Subukan Muli</string>
+    <string name="ai_stream_answer_regenerate">Muling buuin</string>
+    <string name="ai_stream_answer_interrupt_title">Binubuo ang sagot</string>
+    <string name="ai_stream_answer_interrupt_message">Binubuo pa ang sagot. Sigurado ka bang gusto mong itigil?</string>
+    <string name="ai_stream_answer_interrupt_confirm">Itigil</string>
     <string name="ai_content_recommend">Hindi ka ba nasisiyahan sa resulta?</string>
     <string name="switch_ai_models">Palitan ang Modelo</string>
     <string name="ai_chat_model_settings">Mga Advanced na Setting</string>

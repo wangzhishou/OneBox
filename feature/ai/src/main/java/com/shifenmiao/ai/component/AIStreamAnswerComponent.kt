@@ -15,6 +15,7 @@ import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.RoleType
+import com.shifenmiao.model.ai.StreamAnswerCachePolicy
 import com.shifenmiao.model.ai.unified.LlmStreamEvent
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
@@ -27,6 +28,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Calendar
 import java.util.Date
 import java.util.UUID
 
@@ -88,12 +90,13 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
 
     // ── 公开操作 ──────────────────────────────────────────────────────
 
+    /** 重试 / 重新生成：强制绕过缓存重新请求 */
     fun retry() {
         _accumulatedText.value = ""
         _reasoningText.value = ""
         _status.value = AIStreamAnswerStatus.LOADING
         _errorMessage.value = ""
-        startAnswer()
+        startAnswer(skipCache = true)
     }
 
     fun cancelAnswer() {
@@ -103,11 +106,12 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
 
     // ── 内部逻辑 ─────────────────────────────────────────────────────
 
-    private fun startAnswer() {
+    private fun startAnswer(skipCache: Boolean = false) {
         answerJob?.cancel()
         answerJob = componentScope.launch(Dispatchers.IO) {
             val engine = aiEngineManager.getCurrentAiEngine()
             _engineInfo.value = buildEngineInfo(engine)
+            if (!skipCache && tryLoadCachedAnswer(engine)) return@launch
             if (screen.useStreaming) {
                 runStreamingAnswer(engine)
             } else {
@@ -115,6 +119,38 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
             }
         }
     }
+
+    // ── 回答缓存 ──────────────────────────────────────────────────────
+
+    /**
+     * 按「问题 + systemPrompt + 引擎/模型」内容键查找已持久化的回答，
+     * 命中则直接展示（含思考内容），不再发起网络请求。
+     */
+    private suspend fun tryLoadCachedAnswer(engine: AiEngine): Boolean {
+        val since = when (screen.cachePolicy) {
+            StreamAnswerCachePolicy.NONE -> return false
+            StreamAnswerCachePolicy.PERMANENT -> 0L
+            StreamAnswerCachePolicy.TODAY -> startOfTodayMillis()
+        }
+        val cached = appDatabase.messageDao().findLatestStreamAnswer(
+            question = screen.question,
+            systemPrompt = screen.systemPrompt,
+            engine = engine.name,
+            model = engine.model.name,
+            since = since,
+        ) ?: return false
+        _accumulatedText.value = cached.answer
+        _reasoningText.value = cached.reasoningContent
+        _status.value = AIStreamAnswerStatus.SUCCESS
+        return true
+    }
+
+    private fun startOfTodayMillis(): Long = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }.timeInMillis
 
     // ── 流式路径 ──────────────────────────────────────────────────────
 
@@ -133,6 +169,12 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
         val textBuffer = StringBuilder()
         val reasoningBuffer = StringBuilder()
 
+        // UI 刷新节流：SSE chunk 可能极碎（逐字），每个 chunk 都触发
+        // StateFlow 更新会导致整页 Markdown 反复重解析重组，观感又慢又卡。
+        // 正文/思考分别按间隔节流，流结束时再 flush 余量。
+        var lastTextEmitAt = 0L
+        var lastReasoningEmitAt = 0L
+
         try {
             messageRemoteMediator.fetchAndSaveMessages(
                 conversation = conversation,
@@ -148,13 +190,21 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
                     is LlmStreamEvent.TextDelta -> {
                         _status.value = AIStreamAnswerStatus.STREAMING
                         textBuffer.append(event.text)
-                        _accumulatedText.value = textBuffer.toString()
+                        val now = System.currentTimeMillis()
+                        if (now - lastTextEmitAt >= STREAM_UI_EMIT_INTERVAL_MS) {
+                            lastTextEmitAt = now
+                            _accumulatedText.value = textBuffer.toString()
+                        }
                     }
 
                     is LlmStreamEvent.ReasoningDelta -> {
                         _status.value = AIStreamAnswerStatus.STREAMING
                         reasoningBuffer.append(event.text)
-                        _reasoningText.value = reasoningBuffer.toString()
+                        val now = System.currentTimeMillis()
+                        if (now - lastReasoningEmitAt >= STREAM_UI_EMIT_INTERVAL_MS) {
+                            lastReasoningEmitAt = now
+                            _reasoningText.value = reasoningBuffer.toString()
+                        }
                     }
 
                     is LlmStreamEvent.UsageUpdated -> {
@@ -174,6 +224,9 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
             if (_status.value == AIStreamAnswerStatus.STREAMING ||
                 _status.value == AIStreamAnswerStatus.LOADING
             ) {
+                // flush 节流期间的余量，保证最终内容完整
+                _accumulatedText.value = textBuffer.toString()
+                _reasoningText.value = reasoningBuffer.toString()
                 val answer = textBuffer.toString()
                 if (answer.isNotEmpty()) {
                     persistMessages(
@@ -344,6 +397,11 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
             componentContext: ComponentContext,
             screen: Screen.AIStreamAnswer,
         ): AIStreamAnswerComponent
+    }
+
+    private companion object {
+        /** 流式内容刷新到 UI 的最小间隔（毫秒） */
+        const val STREAM_UI_EMIT_INTERVAL_MS = 80L
     }
 }
 

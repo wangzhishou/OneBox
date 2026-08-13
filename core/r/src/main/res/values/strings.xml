@@ -584,6 +584,10 @@ And so, OneBox was born.]]></string>
     <string name="error_message">An unknown error occurred!</string>
     <string name="ai_error">Sorry, something went wrong on our end.</string>
     <string name="ai_stream_answer_retry">Retry</string>
+    <string name="ai_stream_answer_regenerate">Regenerate</string>
+    <string name="ai_stream_answer_interrupt_title">Generating answer</string>
+    <string name="ai_stream_answer_interrupt_message">The answer is still being generated. Are you sure you want to interrupt?</string>
+    <string name="ai_stream_answer_interrupt_confirm">Interrupt</string>
     <string name="ai_content_recommend">Not satisfied with the result?</string>
     <string name="switch_ai_models">Switch Model</string>
     <string name="ai_chat_model_settings">Advanced Settings</string>
