@@ -1246,7 +1246,7 @@ private fun MonthNavigator(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFirstPage,
                     contentDescription = stringResource(R.string.previous_year),
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
             IconButton(onClick = onPreviousMonth) {
@@ -1254,7 +1254,7 @@ private fun MonthNavigator(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronLeft,
                     contentDescription = stringResource(R.string.previous_month),
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }
@@ -1338,7 +1338,7 @@ private fun MonthNavigator(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
                     contentDescription = stringResource(R.string.next_month),
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
             IconButton(onClick = { applyYear(year + 1) }) {
@@ -1346,7 +1346,7 @@ private fun MonthNavigator(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLastPage,
                     contentDescription = stringResource(R.string.next_year),
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }
