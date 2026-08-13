@@ -59,6 +59,10 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
     private val _accumulatedText = MutableStateFlow("")
     val accumulatedText: StateFlow<String> = _accumulatedText.asStateFlow()
 
+    /** 深度思考（reasoning）累积内容 */
+    private val _reasoningText = MutableStateFlow("")
+    val reasoningText: StateFlow<String> = _reasoningText.asStateFlow()
+
     private val _status = MutableStateFlow(AIStreamAnswerStatus.LOADING)
     val status: StateFlow<AIStreamAnswerStatus> = _status.asStateFlow()
 
@@ -86,6 +90,7 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
 
     fun retry() {
         _accumulatedText.value = ""
+        _reasoningText.value = ""
         _status.value = AIStreamAnswerStatus.LOADING
         _errorMessage.value = ""
         startAnswer()
@@ -117,13 +122,16 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
         val conversation = buildConversation(engine)
         val questionMessage = buildQuestionMessage(engine, conversation)
 
-        _status.value = AIStreamAnswerStatus.STREAMING
-
+        // 注意：不要在一开始就切到 STREAMING。
+        // 深度思考模式下模型会先长时间只输出 ReasoningDelta，若提前切换状态，
+        // UI 会停留在空白内容区（看起来没有 loading）。
+        // 等首个正文/思考增量到达后再切换。
         var lastUsagePromptTokens = 0
         var lastUsageCompletionTokens = 0
         var lastUsageTotalTokens = 0
 
         val textBuffer = StringBuilder()
+        val reasoningBuffer = StringBuilder()
 
         try {
             messageRemoteMediator.fetchAndSaveMessages(
@@ -138,8 +146,15 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
                     }
 
                     is LlmStreamEvent.TextDelta -> {
+                        _status.value = AIStreamAnswerStatus.STREAMING
                         textBuffer.append(event.text)
                         _accumulatedText.value = textBuffer.toString()
+                    }
+
+                    is LlmStreamEvent.ReasoningDelta -> {
+                        _status.value = AIStreamAnswerStatus.STREAMING
+                        reasoningBuffer.append(event.text)
+                        _reasoningText.value = reasoningBuffer.toString()
                     }
 
                     is LlmStreamEvent.UsageUpdated -> {
@@ -151,19 +166,21 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
                     is LlmStreamEvent.ResponseStarted,
                     is LlmStreamEvent.SearchResultsEvent,
                     is LlmStreamEvent.ToolCallDeltaEvent,
-                    is LlmStreamEvent.ReasoningDelta,
                     is LlmStreamEvent.Completed -> Unit
                 }
             }
 
-            // Flow 正常结束，若仍处于 STREAMING 状态则视为完成
-            if (_status.value == AIStreamAnswerStatus.STREAMING) {
+            // Flow 正常结束，若未出错则视为完成
+            if (_status.value == AIStreamAnswerStatus.STREAMING ||
+                _status.value == AIStreamAnswerStatus.LOADING
+            ) {
                 val answer = textBuffer.toString()
                 if (answer.isNotEmpty()) {
                     persistMessages(
                         conversation = conversation,
                         questionMessage = questionMessage,
                         answer = answer,
+                        reasoningContent = reasoningBuffer.toString(),
                         promptTokens = lastUsagePromptTokens,
                         completionTokens = lastUsageCompletionTokens,
                         totalTokens = lastUsageTotalTokens,
@@ -245,6 +262,7 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
         conversation: Conversation,
         questionMessage: MessageEntity,
         answer: String,
+        reasoningContent: String = "",
         promptTokens: Int,
         completionTokens: Int,
         totalTokens: Int,
@@ -262,7 +280,7 @@ class AIStreamAnswerComponent @AssistedInject internal constructor(
             role = RoleType.ASSISTANT.value,
             question = "",
             answer = answer,
-            reasoningContent = "",
+            reasoningContent = reasoningContent,
             engine = questionMessage.engine,
             model = questionMessage.model,
             entryType = AIConversationEntryType.STREAM_QA,

@@ -54,6 +54,7 @@ import com.shifenmiao.ai.component.AIStreamAnswerComponent
 import com.shifenmiao.ai.component.AIStreamAnswerStatus
 import com.shifenmiao.ai.model.BlockReuseCache
 import com.shifenmiao.base.ui.AILoadingRow
+import com.shifenmiao.base.ui.ExpandableMarkdownContent
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
@@ -72,6 +73,7 @@ fun AIStreamAnswerScreen(
 ) {
     val status by component.status.collectAsState()
     val accumulatedText by component.accumulatedText.collectAsState()
+    val reasoningText by component.reasoningText.collectAsState()
     val errorMessage by component.errorMessage.collectAsState()
     val engineInfo by component.engineInfo.collectAsState()
 
@@ -105,8 +107,11 @@ fun AIStreamAnswerScreen(
                         MarkdownScrollContainer(
                             modifier = Modifier.fillMaxSize(),
                             autoScroll = true,
-                            scrollTrigger = accumulatedText,
+                            scrollTrigger = accumulatedText.length + reasoningText.length,
                         ) {
+                            if (reasoningText.isNotEmpty()) {
+                                ExpandableMarkdownContent(reasoningText)
+                            }
                             MarkdownBlocksContent(
                                 text = accumulatedText,
                                 isStreaming = true,
@@ -118,6 +123,9 @@ fun AIStreamAnswerScreen(
                         if (component.useStreaming) {
                             // 流式路径：文本已实时显示过，直接渲染分块 Markdown（无 cursor）
                             MarkdownScrollContainer(modifier = Modifier.fillMaxSize()) {
+                                if (reasoningText.isNotEmpty()) {
+                                    ExpandableMarkdownContent(reasoningText)
+                                }
                                 MarkdownBlocksContent(
                                     text = accumulatedText,
                                     isStreaming = false,
