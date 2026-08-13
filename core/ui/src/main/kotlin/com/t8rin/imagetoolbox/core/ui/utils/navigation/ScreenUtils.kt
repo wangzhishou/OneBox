@@ -225,7 +225,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineModelTraining
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWorkspacePremium
 
 internal fun Screen.isBetaFeature(): Boolean = when (this) {
-    is MarkupLayers -> true
     else -> false
 }
 

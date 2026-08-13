@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 空状态首页 -->
+    <string name="markup_home_title">图片处理控制台</string>
+    <string name="markup_back">返回</string>
+    <string name="markup_home_tagline">专业 · 高效 · 智能</string>
+    <string name="markup_import_hint">导入图片开始编辑</string>
+    <string name="markup_import_subtitle">支持多种方式导入图片</string>
+    <string name="markup_entry_gallery">相册</string>
+    <string name="markup_entry_camera">相机</string>
+    <string name="markup_entry_paste">粘贴图片</string>
+
+    <!-- 编辑器 -->
+    <string name="markup_editor_title">图片创作</string>
+    <string name="markup_save">保存</string>
+    <string name="markup_undo">撤销</string>
+    <string name="markup_redo">重做</string>
+    <string name="markup_more_options">更多选项</string>
+    <string name="markup_menu_share">分享</string>
+    <string name="markup_menu_copy">复制到剪贴板</string>
+    <string name="markup_menu_clear_layers">清空图层</string>
+    <string name="markup_menu_save_exif">保存 Exif 信息</string>
+    <string name="markup_coming_soon">敬请期待</string>
+
+    <!-- 工具 -->
+    <string name="markup_tool_select">选择</string>
+    <string name="markup_tool_draw">画笔</string>
+    <string name="markup_tool_text">文字</string>
+    <string name="markup_tool_sticker">贴纸</string>
+    <string name="markup_tool_shape">形状</string>
+    <string name="markup_tool_basic">基础工具</string>
+    <string name="markup_tool_crop">裁剪</string>
+    <string name="markup_tool_filter">滤镜</string>
+    <string name="markup_tool_adjust">调色</string>
+    <string name="markup_tool_ai">AI 处理</string>
+    <string name="markup_tool_layers">图层</string>
+
+    <!-- AI 处理 -->
+    <string name="markup_ai_sheet_title">AI 智能处理</string>
+    <string name="markup_ai_sheet_subtitle">智能识别图像内容，一键提升图片质量与创意表现</string>
+    <string name="markup_ai_badge_new">NEW</string>
+    <string name="markup_ai_enhance">AI 增强</string>
+    <string name="markup_ai_enhance_sub">智能提升画质，增强细节与色彩表现</string>
+    <string name="markup_ai_cutout">智能抠图</string>
+    <string name="markup_ai_cutout_sub">精准识别主体，支持发丝级抠图</string>
+    <string name="markup_ai_style">风格迁移</string>
+    <string name="markup_ai_style_sub">将图片转换为多种艺术风格</string>
+    <string name="markup_ai_repair">一键修复</string>
+    <string name="markup_ai_repair_sub">智能去除瑕疵、划痕、噪点等</string>
+    <string name="markup_ai_outpaint">AI 扩图</string>
+    <string name="markup_ai_outpaint_sub">智能扩展画面，补充边缘内容</string>
+    <string name="markup_ai_dewatermark">去水印</string>
+    <string name="markup_ai_dewatermark_sub">智能识别并去除图片水印和文字</string>
+    <string name="markup_ai_upscale">画质提升</string>
+    <string name="markup_ai_upscale_sub">提升分辨率，优化模糊图片</string>
+
+    <!-- 基础调节 -->
+    <string name="markup_adjust_brightness">亮度</string>
+    <string name="markup_adjust_contrast">对比度</string>
+    <string name="markup_adjust_saturation">饱和度</string>
+    <string name="markup_reset">重置</string>
+
+    <!-- 裁剪旋转 -->
+    <string name="markup_crop_title">裁剪与旋转</string>
+    <string name="markup_crop_ratio">裁剪比例</string>
+    <string name="markup_crop_ratio_free">自由</string>
+    <string name="markup_crop_rotate_flip">旋转与翻转</string>
+    <string name="markup_crop_rotate_left">向左旋转</string>
+    <string name="markup_crop_rotate_right">向右旋转</string>
+    <string name="markup_crop_flip_horizontal">水平翻转</string>
+    <string name="markup_crop_flip_vertical">垂直翻转</string>
+    <string name="markup_crop_rotate_entry">旋转</string>
+    <string name="markup_layers_merged">已合并图层</string>
+    <string name="markup_base_transform_failed">裁剪/旋转失败</string>
+
+    <!-- 画笔工具 -->
+    <string name="markup_draw_title">绘画工具</string>
+    <string name="markup_draw_brush_type">画笔类型</string>
+    <string name="markup_brush_pencil">铅笔</string>
+    <string name="markup_brush_pen">钢笔</string>
+    <string name="markup_brush_brush">毛笔</string>
+    <string name="markup_brush_marker">马克笔</string>
+    <string name="markup_draw_color">颜色</string>
+    <string name="markup_draw_width">粗细</string>
+    <string name="markup_draw_opacity">不透明度</string>
+    <string name="markup_draw_brush_mode">画笔</string>
+    <string name="markup_draw_eraser_mode">橡皮擦</string>
+    <string name="markup_draw_pan_mode">浏览</string>
+    <string name="markup_draw_done">完成</string>
+
+    <!-- 贴纸工具 -->
+    <string name="markup_sticker_title">贴纸素材</string>
+    <string name="markup_sticker_category_emoji">表情</string>
+    <string name="markup_sticker_category_decor">装饰</string>
+    <string name="markup_sticker_category_frame">边框</string>
+    <string name="markup_sticker_category_trend">潮流</string>
+    <string name="markup_sticker_category_ai">AI 生成贴纸</string>
+    <string name="markup_sticker_new_badge">NEW</string>
+    <string name="markup_sticker_empty">该分类暂无贴纸素材</string>
+
+    <!-- 形状工具 -->
+    <string name="markup_shape_basic_shapes">基础形状</string>
+    <string name="markup_shape_kind_rectangle">矩形</string>
+    <string name="markup_shape_kind_circle">圆形</string>
+    <string name="markup_shape_kind_triangle">三角形</string>
+    <string name="markup_shape_kind_arrow">箭头</string>
+    <string name="markup_shape_kind_line">线条</string>
+    <string name="markup_shape_kind_star">星形</string>
+    <string name="markup_shape_style">样式</string>
+    <string name="markup_shape_style_filled">填充</string>
+    <string name="markup_shape_style_stroke">描边</string>
+    <string name="markup_shape_corner_radius">圆角</string>
+    <string name="markup_shape_stroke_width">描边粗细</string>
+
+    <!-- 文字工具 -->
+    <string name="markup_confirm">确认</string>
+    <string name="markup_text_tab_keyboard">键盘</string>
+    <string name="markup_text_tab_style">样式</string>
+    <string name="markup_text_tab_wordart">花字</string>
+    <string name="markup_text_tab_animation">动画</string>
+    <string name="markup_text_input_hint">输入文字</string>
+    <string name="markup_text_font">字体</string>
+    <string name="markup_text_more_fonts">更多字体</string>
+    <string name="markup_text_font_size">字号</string>
+    <string name="markup_text_color">颜色</string>
+    <string name="markup_text_alignment">对齐</string>
+    <string name="markup_text_align_left">左对齐</string>
+    <string name="markup_text_align_center">居中对齐</string>
+    <string name="markup_text_align_right">右对齐</string>
+    <string name="markup_text_align_justify">两端对齐</string>
+    <string name="markup_text_line_height">行距</string>
+    <string name="markup_text_letter_spacing">字间距</string>
+    <string name="markup_text_bold">加粗</string>
+    <string name="markup_text_italic">斜体</string>
+    <string name="markup_text_underline">下划线</string>
+    <string name="markup_text_strikethrough">删除线</string>
+    <string name="markup_text_background">背景</string>
+    <string name="markup_text_outline">描边</string>
+    <string name="markup_text_duplicate">复制</string>
+    <string name="markup_delete">删除</string>
+
+    <!-- 图层 -->
+    <string name="markup_add_text">添加文字</string>
+    <string name="markup_edit_text">编辑文字</string>
+    <string name="markup_add_layer">添加图层</string>
+    <string name="markup_layers_empty">暂无图层，点右上角 + 添加</string>
+    <string name="markup_layer_kind_text">文字</string>
+    <string name="markup_layer_kind_sticker">贴纸</string>
+    <string name="markup_layer_kind_image">图片</string>
+    <string name="markup_layer_kind_draw">画笔</string>
+    <string name="markup_layer_kind_shape">形状</string>
+    <string name="markup_layer_toggle_visible">切换可见性</string>
+    <string name="markup_layer_default_name">%1$s %2$d</string>
+    <string name="markup_layer_opacity">不透明度</string>
+    <string name="markup_layer_blend_mode">混合模式</string>
+    <string name="markup_blend_normal">正常</string>
+    <string name="markup_layer_toggle_lock">切换锁定</string>
+    <string name="markup_delete_layer">删除图层</string>
+    <string name="markup_merge_layer">合并图层</string>
+    <string name="markup_move_layer_up">向上移动</string>
+    <string name="markup_move_layer_down">向下移动</string>
+    <string name="markup_merge_no_layer_below">下方没有可合并的图层</string>
+    <string name="markup_merge_failed">合并图层失败</string>
+    <string name="markup_layer_background">背景</string>
+    <string name="markup_drag_reorder">长按拖拽排序</string>
+    <string name="markup_expand_layers">展开图层面板</string>
+
+    <!-- 导出设置 -->
+    <string name="markup_export_title">导出 / 保存</string>
+    <string name="markup_export_subtitle">选择格式与设置</string>
+    <string name="markup_export_format">格式</string>
+    <string name="markup_export_format_jpg_sub">体积小，通用性强</string>
+    <string name="markup_export_format_png_sub">无损，支持透明</string>
+    <string name="markup_export_format_webp_sub">体积小，质量高</string>
+    <string name="markup_export_quality">质量</string>
+    <string name="markup_export_resolution">分辨率</string>
+    <string name="markup_export_res_original">原始</string>
+    <string name="markup_export_res_custom">自定义</string>
+    <string name="markup_export_res_custom_sub">输入尺寸</string>
+    <string name="markup_export_width">宽</string>
+    <string name="markup_export_height">高</string>
+    <string name="markup_export_dimensions">%1$d × %2$d</string>
+    <string name="markup_export_more">更多选项</string>
+    <string name="markup_export_share_after">导出后分享</string>
+    <string name="markup_export_share_after_sub">保存后打开分享面板</string>
+    <string name="markup_export_failed_no_image">没有可导出的图片</string>
+    <string name="markup_cancel">取消</string>
+</resources>

@@ -146,8 +146,8 @@ import com.t8rin.imagetoolbox.feature.limits_resize.presentation.LimitsResizeCon
 import com.t8rin.imagetoolbox.feature.limits_resize.presentation.screenLogic.LimitsResizeComponent
 import com.t8rin.imagetoolbox.feature.load_net_image.presentation.LoadNetImageContent
 import com.t8rin.imagetoolbox.feature.load_net_image.presentation.screenLogic.LoadNetImageComponent
-import com.t8rin.imagetoolbox.feature.markup_layers.presentation.MarkupLayersContent
-import com.t8rin.imagetoolbox.feature.markup_layers.presentation.screenLogic.MarkupLayersComponent
+import com.wanbaohe.markuplayers.presentation.MarkupLayersContent
+import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import com.t8rin.imagetoolbox.feature.mesh_gradients.presentation.MeshGradientsContent
 import com.t8rin.imagetoolbox.feature.mesh_gradients.presentation.screenLogic.MeshGradientsComponent
 import com.t8rin.imagetoolbox.feature.palette_tools.presentation.PaletteToolsContent
