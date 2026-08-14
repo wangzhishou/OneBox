@@ -19,8 +19,8 @@ package com.shifenmiao.app.functions
 
 import android.app.Application
 import com.shifenmiao.app.utils.isMain
-import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.ui.utils.helper.DeviceInfo
+import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.logger.Logger
 import com.t8rin.logger.attachLogWriter
 
@@ -29,7 +29,7 @@ internal fun Application.attachLogWriter() {
     if (isMain()) {
         Logger.attachLogWriter(
             context = this@attachLogWriter,
-            fileProvider = getString(R.string.file_provider),
+            fileProvider = fileProviderAuthority,
             logsFilename = "one_box_logs.txt",
             startupLog = Logger.Log(
                 tag = "Device Info",

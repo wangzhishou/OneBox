@@ -71,6 +71,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.shifenmiao.model.event.AppEventBus
 import com.t8rin.imagetoolbox.core.utils.appContext
+import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.imagetoolbox.core.utils.filename
 import com.t8rin.logger.makeLog
 import java.io.BufferedReader
@@ -734,7 +735,7 @@ object ContextUtils {
     }
 
     fun Uri.isFromAppFileProvider() = toString().run {
-        contains("content://media/external") || contains(appContext.getString(R.string.file_provider))
+        contains("content://media/external") || contains(appContext.fileProviderAuthority)
     }
 
 

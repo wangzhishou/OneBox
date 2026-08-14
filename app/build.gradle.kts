@@ -281,8 +281,8 @@ android {
                 signingConfig = signingConfigs.getByName("release")
             }
             applicationIdSuffix = ".debug"
-            resValue("string", "file_provider", "com.shifenmiao.app.fileprovider.debug")
-            manifestPlaceholders["fileProviderAuthority"] = "com.shifenmiao.app.fileprovider.debug"
+            // authority 由 Context.fileProviderAuthority 按 applicationId 派生, 此处须保持同值
+            manifestPlaceholders["fileProviderAuthority"] = "com.shifenmiao.app.debug.fileprovider"
             // 未应用 google-services 插件, 手动注入 Firebase 资源 (.debug client);
             // 国内 flavor 无 Firebase, 资源不会被读取
             injectFirebaseResValues(this, "com.shifenmiao.app.debug")
@@ -299,7 +299,7 @@ android {
             ndk {
                 debugSymbolLevel = "NONE"  // 移除调试符号
             }
-            resValue("string", "file_provider", "com.shifenmiao.app.fileprovider")
+            // authority 由 Context.fileProviderAuthority 按 applicationId 派生, 此处须保持同值
             manifestPlaceholders["fileProviderAuthority"] = "com.shifenmiao.app.fileprovider"
             // 同上: 匹配 com.shifenmiao.app client
             injectFirebaseResValues(this, "com.shifenmiao.app")

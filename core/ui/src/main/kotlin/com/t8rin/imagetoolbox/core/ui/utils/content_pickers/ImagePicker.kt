@@ -53,6 +53,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.IntentUtils.parcelableArrayLi
 import com.t8rin.imagetoolbox.core.ui.utils.helper.clipList
 import com.t8rin.imagetoolbox.core.ui.utils.helper.createMediaPickerIntent
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
+import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.imagetoolbox.core.utils.makeLog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -82,7 +83,7 @@ private class ImagePickerImpl(
                 val file = File(imagesFolder, "${Random.nextLong()}.jpg")
                 FileProvider.getUriForFile(
                     context,
-                    context.getString(R.string.file_provider),
+                    context.fileProviderAuthority,
                     file
                 )
             }.onFailure {

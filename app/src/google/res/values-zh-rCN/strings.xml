@@ -7,7 +7,6 @@
     -->
     <string name="app_launcher_name" translatable="false">万宝盒</string>
     <string name="app_name" translatable="false">万宝盒</string>
-    <string name="file_provider" translatable="false">com.shifenmiao.app.fileprovider</string>
     <string name="default_folder" translatable="false">Documents/OneBox</string>
     <string name="default_prefix" translatable="false">OneBox</string>
 </resources>

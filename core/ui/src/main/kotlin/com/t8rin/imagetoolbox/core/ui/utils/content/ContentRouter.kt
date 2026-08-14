@@ -12,6 +12,7 @@ import com.t8rin.imagetoolbox.core.domain.content.ContentType
 import com.t8rin.imagetoolbox.core.domain.content.ContentTypeResolver
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import java.io.File
 
 /**
@@ -181,9 +182,7 @@ class DefaultContentRouter(
                 try {
                     FileProvider.getUriForFile(
                         context,
-                        context.getString(
-                            com.t8rin.imagetoolbox.core.resources.R.string.file_provider
-                        ),
+                        context.fileProviderAuthority,
                         file
                     )
                 } catch (_: Exception) {

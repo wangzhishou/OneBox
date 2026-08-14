@@ -34,6 +34,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.isFromAppFilePro
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.takePersistablePermission
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.imagetoolbox.core.utils.filename
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.common.BasePdfToolComponent
@@ -92,7 +93,7 @@ class PreviewPdfToolComponent @AssistedInject internal constructor(
 
             FileProvider.getUriForFile(
                 context,
-                context.getString(R.string.file_provider),
+                context.fileProviderAuthority,
                 targetFile
             )
         }.onFailure {

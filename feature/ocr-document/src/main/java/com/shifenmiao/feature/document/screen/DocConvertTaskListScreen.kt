@@ -78,6 +78,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.utils.appContext
+import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -736,7 +737,7 @@ private fun openLocalFile(context: android.content.Context, filePath: String) {
     if (!file.exists()) return
     val uri = FileProvider.getUriForFile(
         context,
-        context.getString(com.t8rin.imagetoolbox.core.resources.R.string.file_provider),
+        context.fileProviderAuthority,
         file
     )
     val type = when {
