@@ -704,14 +704,21 @@ private fun EditorCanvas(
                                 } else Modifier
                             )
                     ) {
+                        // 透明棋盘格内缩 1dp:与图片同 bounds 时,缩放/平移带来的亚像素
+                        // 边缘抗锯齿会让棋盘格在图片下缘/右缘露出细条;内缩后只有图片
+                        // 内部真正的透明区域才会透出棋盘格
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .padding(1.dp)
+                                .transparencyChecker()
+                        )
                         Picture(
                             model = imageBitmap,
                             contentDescription = null,
                             contentScale = ContentScale.FillBounds,
                             modifier = Modifier
                                 .matchParentSize()
-                                // 底图自身的透明棋盘格:透明图片/透明空白画布仍能看出透明区域
-                                .transparencyChecker()
                                 .clipToBounds()
                         )
                         // 选中图层的画布级手势层:置于图层之下,手指不在图层上也能变换选中图层
