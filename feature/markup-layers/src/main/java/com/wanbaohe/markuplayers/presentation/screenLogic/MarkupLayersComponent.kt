@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.IntSize
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.childContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
@@ -20,14 +21,21 @@ import com.t8rin.imagetoolbox.core.domain.image.ImageScaler
 import com.t8rin.imagetoolbox.core.domain.image.ImageShareProvider
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
+import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
+import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
+import com.t8rin.imagetoolbox.core.filters.domain.FilterProvider
+import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
+import com.t8rin.imagetoolbox.core.filters.presentation.widget.FilterTemplateCreationSheetComponent
+import com.t8rin.imagetoolbox.core.filters.presentation.widget.addFilters.AddFiltersSheetComponent
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.MarkupLayersApplier
 import com.wanbaohe.markuplayers.domain.history.LayerHistory
@@ -40,6 +48,7 @@ import com.wanbaohe.markuplayers.domain.model.NormalizedRect
 import com.wanbaohe.markuplayers.domain.model.ShapeSpec
 import com.wanbaohe.markuplayers.presentation.export.ExportSettings
 import com.wanbaohe.markuplayers.presentation.export.toExportFormat
+import com.wanbaohe.markuplayers.presentation.editor.CanvasBackground
 import com.wanbaohe.markuplayers.presentation.render.IMAGE_LAYER_BASE_WIDTH_RATIO
 import com.wanbaohe.markuplayers.presentation.tools.adjust.BaseAdjustments
 import com.wanbaohe.markuplayers.presentation.tools.adjust.toColorMatrixValues
@@ -47,6 +56,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
@@ -70,8 +80,23 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val imageGetter: ImageGetter<Bitmap>,
     private val imageScaler: ImageScaler<Bitmap>,
     private val shareProvider: ImageShareProvider<Bitmap>,
-    private val markupLayersApplier: MarkupLayersApplier<Bitmap>
+    private val markupLayersApplier: MarkupLayersApplier<Bitmap>,
+    private val filterProvider: FilterProvider<Bitmap>,
+    addFiltersSheetComponentFactory: AddFiltersSheetComponent.Factory,
+    filterTemplateCreationSheetComponentFactory: FilterTemplateCreationSheetComponent.Factory
 ) : BaseComponent(dispatchersHolder, componentContext) {
+
+    // AddFiltersSheet 子组件:随本组件创建,生命周期一致
+    val addFiltersSheetComponent: AddFiltersSheetComponent = addFiltersSheetComponentFactory(
+        componentContext = componentContext.childContext(key = "markupAddFiltersSheet")
+    )
+
+    val filterTemplateCreationSheetComponent: FilterTemplateCreationSheetComponent =
+        filterTemplateCreationSheetComponentFactory(
+            componentContext = componentContext.childContext(
+                key = "markupFilterTemplateCreationSheet"
+            )
+        )
 
     init {
         debounce {
@@ -91,6 +116,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
 
     private val _uri: MutableState<Uri?> = mutableStateOf(null)
     val uri: Uri? by _uri
+
+    // 空白画布底图:无 uri 场景下的全分辨率底图,随 setUri/resetState/applyBaseTransform 清理
+    private val _blankBaseBitmap: MutableState<Bitmap?> = mutableStateOf(null)
 
     val hasImage: Boolean get() = _bitmap.value != null
 
@@ -141,8 +169,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     // ---------------- 基础调节(亮度/对比度/饱和度) ----------------
 
     /**
-     * 基础调节参数,不进图层 undo 历史;预览经 colorFilter 实时生效,
-     * 导出时在画图层之前烘焙进全分辨率位图。
+     * 基础调节参数,不进图层 undo 历史;预览经画布容器 colorFilter 实时生效
+     * (作用于底图+图层的整体),导出时在图层合成之后烘焙进全分辨率位图。
      */
     private val _baseAdjustments: MutableState<BaseAdjustments> = mutableStateOf(BaseAdjustments())
     val baseAdjustments: BaseAdjustments by _baseAdjustments
@@ -154,6 +182,175 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     }
 
     fun resetBaseAdjustments() = updateBaseAdjustments(BaseAdjustments())
+
+    // ---------------- 滤镜(作用于合成结果,顺序:底图+图层合成 → 滤镜 → 调节) ----------------
+
+    /** 当前选中滤镜;与基础调节同级,不进图层 undo 历史 */
+    private val _selectedFilter: MutableState<UiFilter<*>?> = mutableStateOf(null)
+    val selectedFilter: UiFilter<*>? by _selectedFilter
+
+    // 滤镜预览缓存(仅底图):对展示底图应用滤镜后的结果,随底图/滤镜变化异步重算
+    private val _filterPreviewBitmap: MutableState<Bitmap?> = mutableStateOf(null)
+    val filterPreviewBitmap: Bitmap? by _filterPreviewBitmap
+
+    private var filterPreviewJob: Job? by smartJob()
+
+    /**
+     * 滤镜面板打开期间的合成预览:预览尺寸底图 + 可见图层合成后过滤镜,
+     * 此模式下图层不再单独渲染;面板关闭即清空,回到实时编辑。
+     * 调色不烘焙进该位图,始终由画布容器 colorFilter 叠加,避免双重生效。
+     */
+    private val _filterCompositeBitmap: MutableState<Bitmap?> = mutableStateOf(null)
+    val filterCompositeBitmap: Bitmap? by _filterCompositeBitmap
+
+    private val _filterSheetOpen: MutableState<Boolean> = mutableStateOf(false)
+
+    private var filterCompositeJob: Job? by smartJob()
+
+    /** 画布展示用底图(仅底图,不含图层):滤镜预览优先,调节经画布容器 colorFilter 叠加 */
+    val displayBitmap: Bitmap? get() = _filterPreviewBitmap.value ?: _bitmap.value
+
+    fun selectFilter(filter: UiFilter<*>?) {
+        val current = _selectedFilter.value
+        if (filter === current) return
+        if (filter != null && current != null && filter::class == current::class) return
+        _selectedFilter.value = filter
+        registerChanges()
+        updateFilterPreview()
+        if (_filterSheetOpen.value) updateFilterCompositePreview()
+    }
+
+    /** 滤镜 → 变换(供缩略图 coil transformation 与导出烘焙复用同一入口) */
+    fun filterTransformation(filter: UiFilter<*>): Transformation<Bitmap> =
+        filterProvider.filterToTransformation(filter)
+
+    private fun updateFilterPreview() {
+        val filter = _selectedFilter.value
+        val base = _bitmap.value
+        if (filter == null || base == null) {
+            _filterPreviewBitmap.value = null
+            return
+        }
+        filterPreviewJob = componentScope.launch {
+            _filterPreviewBitmap.value = runCatching {
+                withContext(defaultDispatcher) {
+                    filterTransformation(filter)
+                        .transform(base, IntegerSize(base.width, base.height))
+                }
+            }.getOrNull()
+        }
+    }
+
+    /** 把选中滤镜烘焙进位图;无滤镜或变换失败时返回原位图 */
+    private suspend fun Bitmap.withSelectedFilter(): Bitmap {
+        val filter = _selectedFilter.value ?: return this
+        return runCatching {
+            withContext(defaultDispatcher) {
+                filterTransformation(filter)
+                    .transform(this@withSelectedFilter, IntegerSize(width, height))
+            }
+        }.getOrNull() ?: this
+    }
+
+    /** 滤镜面板开关:打开时算合成预览;关闭时取消未完成任务并清空,回到实时编辑 */
+    fun setFilterSheetOpen(open: Boolean) {
+        if (_filterSheetOpen.value == open) return
+        _filterSheetOpen.value = open
+        if (open) {
+            updateFilterCompositePreview()
+        } else {
+            filterCompositeJob = null
+            _filterCompositeBitmap.value = null
+        }
+    }
+
+    /** 合成预览重算:预览尺寸底图 + 可见图层 → 滤镜;smartJob 取消上一次未完成计算 */
+    private fun updateFilterCompositePreview() {
+        val base = _bitmap.value
+        if (base == null) {
+            _filterCompositeBitmap.value = null
+            return
+        }
+        val visibleLayers = _layers.value.filter { it.transform.visible }
+        val filter = _selectedFilter.value
+        filterCompositeJob = componentScope.launch {
+            val result = runCatching {
+                val composited = markupLayersApplier.applyToImage(
+                    image = base,
+                    layers = visibleLayers
+                )
+                filter?.let {
+                    withContext(defaultDispatcher) {
+                        filterTransformation(it)
+                            .transform(composited, IntegerSize(composited.width, composited.height))
+                    }
+                } ?: composited
+            }.getOrNull() ?: return@launch
+            if (isActive) _filterCompositeBitmap.value = result
+        }
+    }
+
+    // ---------------- 画布背景(操作台显示,会话级不持久化) ----------------
+
+    /** 编辑器画布背景:棋盘格(默认)或纯色;仅影响画布显示,不参与导出,故不记 changes */
+    private val _canvasBackground: MutableState<CanvasBackground> =
+        mutableStateOf(CanvasBackground.Checkerboard)
+    val canvasBackground: CanvasBackground by _canvasBackground
+
+    fun setCanvasBackground(background: CanvasBackground) {
+        _canvasBackground.value = background
+    }
+
+    // ---------------- 空白画布(无 uri 的内存底图) ----------------
+
+    /**
+     * 以纯色/透明底图开始创作:不产生 uri,预览/导出/分享全链路走内存底图
+     * (见 [loadBaseBitmap])。[backgroundColor] 为 null 时透明,默认 PNG;
+     * 否则以该颜色填充,默认 JPG。
+     */
+    fun startWithBlankCanvas(
+        width: Int,
+        height: Int,
+        backgroundColor: Int?
+    ) {
+        val transparent = backgroundColor == null
+        val safeWidth = width.coerceIn(1, MAX_CANVAS_SIDE)
+        val safeHeight = height.coerceIn(1, MAX_CANVAS_SIDE)
+        componentScope.launch {
+            _layers.value = emptyList()
+            _selectedLayerId.value = null
+            _baseAdjustments.value = BaseAdjustments()
+            _selectedFilter.value = null
+            _filterPreviewBitmap.value = null
+            history.clear()
+            _canUndo.value = false
+            _canRedo.value = false
+            _isImageLoading.value = true
+
+            val base = withContext(defaultDispatcher) {
+                Bitmap.createBitmap(safeWidth, safeHeight, Bitmap.Config.ARGB_8888).apply {
+                    if (!transparent) eraseColor(backgroundColor)
+                }
+            }
+            _uri.value = null
+            _blankBaseBitmap.value = base
+            _sourceSize.value = IntSize(safeWidth, safeHeight)
+            val format = if (transparent) ImageFormat.Png.Lossless else ImageFormat.Jpg
+            _imageFormat.update { format }
+            _exportSettings.update { it.copy(format = format.toExportFormat()) }
+            updateBitmap(base)
+        }
+    }
+
+    /** 全分辨率底图:uri 场景解码原图;空白画布场景用内存底图 */
+    private suspend fun loadBaseBitmap(): Bitmap? {
+        val base = _uri.value?.let { imageGetter.getImage(data = it) } ?: _blankBaseBitmap.value
+        // HARDWARE 配置位图无法绘制进软件 Canvas,会让矩阵变换/抠图直接抛
+        // IllegalArgumentException;这里统一转软件位图兜底
+        return base?.takeIf { it.config == Bitmap.Config.HARDWARE }
+            ?.copy(Bitmap.Config.ARGB_8888, false)
+            ?: base
+    }
 
     // ---------------- 裁剪 / 旋转 / 翻转(作用于底图) ----------------
 
@@ -172,8 +369,14 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         flipVertical: Boolean,
         cropRect: NormalizedRect,
     ) {
-        val currentUri = _uri.value ?: return
-        val oldSize = _sourceSize.value ?: return
+        if (_uri.value == null && _blankBaseBitmap.value == null) {
+            "applyBaseTransform skipped: no base image".makeLog(LOG_TAG)
+            return
+        }
+        val oldSize = _sourceSize.value ?: run {
+            "applyBaseTransform skipped: source size not ready".makeLog(LOG_TAG)
+            return
+        }
         val steps = ((rotationSteps % 4) + 4) % 4
         val isIdentity = steps == 0 && freeRotation == 0f &&
             !flipHorizontal && !flipVertical && cropRect == NormalizedRect.Full
@@ -183,8 +386,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             _isSaving.value = true
             val outcome = runCatching {
                 withContext(defaultDispatcher) {
-                    var source = imageGetter.getImage(data = currentUri)
-                        ?: error("source image is null")
+                    var source = loadBaseBitmap()
+                        ?: error("source image is null (uri=${_uri.value != null}, blank=${_blankBaseBitmap.value != null})")
                     // 自由旋转下精确重映射图层成本高:先烘焙可见图层,确认后清空
                     val bakeLayers = freeRotation != 0f && _layers.value.isNotEmpty()
                     if (bakeLayers) {
@@ -200,8 +403,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                     )
                     transformed.cropped(cropRect) to bakeLayers
                 }
-            }.getOrNull()
-            val (result, baked) = outcome ?: run {
+            }
+            val (result, baked) = outcome.getOrNull() ?: run {
+                outcome.exceptionOrNull()?.makeLog(LOG_TAG)
                 AppToastHost.showFailureToast(R.string.markup_base_transform_failed)
                 _isSaving.value = false
                 return@launch
@@ -215,6 +419,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 )
             )?.toUri()
             if (cachedUri == null) {
+                "applyBaseTransform failed: cacheImage returned null, size=${result.width}x${result.height}"
+                    .makeLog(LOG_TAG)
                 AppToastHost.showFailureToast(R.string.markup_base_transform_failed)
                 _isSaving.value = false
                 return@launch
@@ -222,6 +428,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
 
             if (_layers.value.isNotEmpty()) history.snapshot(_layers.value)
             _uri.value = cachedUri
+            _blankBaseBitmap.value = null
             _sourceSize.value = IntSize(result.width, result.height)
             _imageFormat.update { ImageFormat.Png.Lossless }
             _exportSettings.update {
@@ -263,18 +470,25 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 width / 2f,
                 height / 2f
             )
-            postRotate(degrees)
+            postRotate(normalizedDegrees)
         }
         return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
     }
 
-    /** 按归一化裁剪框抠图;框即整图时返回原位图 */
+    /**
+     * 按归一化裁剪框抠图;框即整图时返回原位图。
+     * 归一化坐标 × 位图尺寸四舍五入后分别钳制:left/top ∈ [0, 宽/高-1],
+     * right ∈ [left+1, 宽],bottom ∈ [top+1, 高],保证 createBitmap
+     * 的 w/h ≥ 1 且 x+w ≤ width,浮点 ±1 误差不会越界。
+     */
     private fun Bitmap.cropped(rect: NormalizedRect): Bitmap {
         if (rect == NormalizedRect.Full) return this
         val left = (rect.left * width).roundToInt().coerceIn(0, width - 1)
         val top = (rect.top * height).roundToInt().coerceIn(0, height - 1)
-        val cropWidth = (rect.width * width).roundToInt().coerceIn(1, width - left)
-        val cropHeight = (rect.height * height).roundToInt().coerceIn(1, height - top)
+        val right = (rect.right * width).roundToInt().coerceIn(left + 1, width)
+        val bottom = (rect.bottom * height).roundToInt().coerceIn(top + 1, height)
+        val cropWidth = right - left
+        val cropHeight = bottom - top
         if (left == 0 && top == 0 && cropWidth == width && cropHeight == height) return this
         return Bitmap.createBitmap(this, left, top, cropWidth, cropHeight)
     }
@@ -680,6 +894,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             _layers.value = emptyList()
             _selectedLayerId.value = null
             _baseAdjustments.value = BaseAdjustments()
+            _selectedFilter.value = null
+            _filterPreviewBitmap.value = null
+            _blankBaseBitmap.value = null
             history.clear()
             _canUndo.value = false
             _canRedo.value = false
@@ -707,17 +924,27 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             _isImageLoading.value = true
             _bitmap.value = imageScaler.scaleUntilCanShow(bitmap)
             _isImageLoading.value = false
+            // 底图更换后滤镜预览缓存失效,按当前滤镜重算
+            if (_selectedFilter.value != null) updateFilterPreview()
+            if (_filterSheetOpen.value) updateFilterCompositePreview()
         }
     }
 
     override fun resetState() {
         _bitmap.value = null
         _uri.value = null
+        _blankBaseBitmap.value = null
         _sourceSize.value = null
         _layers.value = emptyList()
         _selectedLayerId.value = null
         _activeToolId.value = null
         _baseAdjustments.value = BaseAdjustments()
+        _selectedFilter.value = null
+        _filterPreviewBitmap.value = null
+        filterCompositeJob = null
+        _filterCompositeBitmap.value = null
+        _filterSheetOpen.value = false
+        _canvasBackground.value = CanvasBackground.Checkerboard
         endLayerEditSession()
         history.clear()
         _canUndo.value = false
@@ -728,11 +955,14 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     // ---------------- 导出(原图重绘,不再截图) ----------------
 
     private suspend fun renderResultBitmap(): Bitmap? {
-        val source = _uri.value?.let { imageGetter.getImage(data = it) } ?: return null
+        val source = loadBaseBitmap() ?: return null
+        // 顺序:全分辨率底图 → 合成全部可见图层 → 滤镜 → 调色烘焙,
+        // 滤镜/调色作用于「底图+图层」的合成结果,与画布预览一致
         return markupLayersApplier.applyToImage(
-            image = source.withBaseAdjustments(_baseAdjustments.value),
+            image = source,
             layers = _layers.value.filter { it.transform.visible }
-        )
+        ).withSelectedFilter()
+            .withBaseAdjustments(_baseAdjustments.value)
     }
 
     private fun resultImageInfo(bitmap: Bitmap): ImageInfo =
@@ -765,7 +995,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             val saveResult = fileController.save(
                 saveTarget = ImageSaveTarget(
                     imageInfo = imageInfo,
-                    originalUri = _uri.value.toString(),
+                    originalUri = _uri.value?.toString().orEmpty(),
                     sequenceNumber = null,
                     data = imageCompressor.compressAndTransform(
                         image = rendered,
@@ -853,3 +1083,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     }
 
 }
+
+/** 空白画布单边像素上限,防止自定义尺寸输入过大导致 OOM */
+private const val MAX_CANVAS_SIDE = 8192
+
+/** 底图变换(裁剪/旋转/翻转)链路日志 tag */
+private const val LOG_TAG = "MarkupBaseTransform"

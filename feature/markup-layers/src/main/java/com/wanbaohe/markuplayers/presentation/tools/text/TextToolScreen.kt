@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -82,6 +84,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.wanbaohe.markuplayers.presentation.components.EditBox
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
@@ -188,6 +191,7 @@ private fun TextTopBar(
                 modifier = Modifier.marquee()
             )
         },
+        type = EnhancedTopAppBarType.Center,
         navigationIcon = {
             EnhancedIconButton(onClick = onCancel) {
                 Icon(
@@ -220,7 +224,8 @@ private fun TextCanvas(
         contentAlignment = Alignment.Center
     ) {
         val bitmap = component.bitmap ?: return@Box
-        val imageBitmap = remember(bitmap) { bitmap.asImageBitmap() }
+        val display = component.displayBitmap ?: bitmap
+        val imageBitmap = remember(display) { display.asImageBitmap() }
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
@@ -397,6 +402,8 @@ private fun TextBottomPanel(
             .fillMaxWidth()
             .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
             .background(MaterialTheme.colorScheme.surfaceContainer)
+            .navigationBarsPadding()
+            .imePadding()
     ) {
         TextToolTabRow(
             selected = selectedTab,

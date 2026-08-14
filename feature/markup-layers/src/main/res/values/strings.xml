@@ -9,6 +9,15 @@
     <string name="markup_entry_gallery">Gallery</string>
     <string name="markup_entry_camera">Camera</string>
     <string name="markup_entry_paste">Paste</string>
+    <string name="markup_entry_blank_canvas">Blank canvas</string>
+
+    <!-- 空白画布 -->
+    <string name="markup_blank_canvas_title">New blank canvas</string>
+    <string name="markup_blank_canvas_size">Canvas size</string>
+    <string name="markup_blank_canvas_custom">Custom</string>
+    <string name="markup_blank_canvas_background">Background</string>
+    <string name="markup_blank_canvas_bg_transparent">Transparent</string>
+    <string name="markup_blank_canvas_create">Create</string>
 
     <!-- 编辑器 -->
     <string name="markup_editor_title">Image Editor</string>
@@ -20,7 +29,12 @@
     <string name="markup_menu_copy">Copy to clipboard</string>
     <string name="markup_menu_clear_layers">Clear layers</string>
     <string name="markup_menu_save_exif">Save Exif</string>
+    <string name="markup_menu_clear_filter">Clear filter</string>
+    <string name="markup_menu_immersive_preview">Immersive preview</string>
     <string name="markup_coming_soon">Coming soon</string>
+    <string name="markup_canvas_background">Canvas background</string>
+    <string name="markup_canvas_bg_checkerboard">Checkerboard (default)</string>
+    <string name="markup_canvas_bg_solid">Solid color</string>
 
     <!-- 工具 -->
     <string name="markup_tool_select">Select</string>

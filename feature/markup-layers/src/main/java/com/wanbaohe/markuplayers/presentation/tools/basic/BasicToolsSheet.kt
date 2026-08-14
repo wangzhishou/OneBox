@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -24,7 +25,6 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCrop
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilters
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotateRight
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
@@ -40,6 +40,7 @@ fun BasicToolsSheet(
     visible: Boolean,
     component: MarkupLayersComponent,
     onOpenCrop: () -> Unit,
+    onOpenFilter: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     EnhancedModalBottomSheet(
@@ -50,6 +51,7 @@ fun BasicToolsSheet(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -73,7 +75,8 @@ fun BasicToolsSheet(
                         icon = Icons.Outlined.LineFilters,
                         label = stringResource(R.string.markup_tool_filter),
                         onClick = {
-                            AppToastHost.showToast(R.string.markup_coming_soon)
+                            onDismiss()
+                            onOpenFilter()
                         },
                         modifier = Modifier.weight(1f)
                     )

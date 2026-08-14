@@ -3,6 +3,7 @@ package com.wanbaohe.markuplayers.presentation.home
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,14 +12,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,12 +41,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.CameraAlt
 import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
 import com.t8rin.imagetoolbox.core.resources.icons.Image
+import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.ImagePickerMode
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.rememberClipboardData
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
@@ -66,6 +74,7 @@ fun MarkupHomeContent(
         onSuccess = { uris -> uris.firstOrNull()?.let(setImage) }
     )
     val clipboardUris by rememberClipboardData()
+    var showBlankCanvasSheet by rememberSaveable { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         EnhancedTopAppBar(
@@ -79,6 +88,7 @@ fun MarkupHomeContent(
                     )
                 }
             },
+            type = EnhancedTopAppBarType.Center,
             navigationIcon = {
                 EnhancedIconButton(onClick = component.onGoBack) {
                     Icon(
@@ -93,6 +103,7 @@ fun MarkupHomeContent(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .padding(24.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -116,10 +127,28 @@ fun MarkupHomeContent(
                             onClick = { clipboardUris.firstOrNull()?.let(setImage) }
                         )
                     }
+                    ImportEntry(
+                        icon = Icons.Outlined.NoteAdd,
+                        label = stringResource(R.string.markup_entry_blank_canvas),
+                        onClick = { showBlankCanvasSheet = true }
+                    )
                 }
             )
         }
     }
+
+    BlankCanvasSheet(
+        visible = showBlankCanvasSheet,
+        onDismiss = { showBlankCanvasSheet = false },
+        onCreate = { width, height, backgroundColor ->
+            showBlankCanvasSheet = false
+            component.startWithBlankCanvas(
+                width = width,
+                height = height,
+                backgroundColor = backgroundColor
+            )
+        }
+    )
 }
 
 @Composable
@@ -174,7 +203,9 @@ private fun ImportCard(
         Spacer(Modifier.height(24.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
         ) {
             entries()
         }

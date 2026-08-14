@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
@@ -23,10 +26,44 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContrast
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSunny
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import kotlin.math.roundToInt
+
+/**
+ * 「调色」底部 Tab 的独立面板:内容复用 [AdjustPanelContent],
+ * 与「基础工具」面板里的调节滑杆读写同一份 component.baseAdjustments 状态,
+ * 预览经 colorFilter 实时生效,导出时统一烘焙。
+ */
+@Composable
+fun AdjustToolSheet(
+    visible: Boolean,
+    component: MarkupLayersComponent,
+    onDismiss: () -> Unit,
+) {
+    EnhancedModalBottomSheet(
+        visible = visible,
+        onDismiss = { onDismiss() },
+        sheetContent = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(horizontal = 16.dp, vertical = 10.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.markup_tool_adjust),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(Modifier.height(4.dp))
+                AdjustPanelContent(component = component)
+            }
+        }
+    )
+}
 
 /**
  * 基础调节面板内容(亮度/对比度/饱和度三条滑杆 + 重置),

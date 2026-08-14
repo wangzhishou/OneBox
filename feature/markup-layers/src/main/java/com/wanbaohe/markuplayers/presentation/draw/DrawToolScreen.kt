@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -52,6 +53,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
@@ -112,6 +114,7 @@ private fun DrawTopBar(
                 modifier = Modifier.marquee()
             )
         },
+        type = EnhancedTopAppBarType.Center,
         navigationIcon = {
             EnhancedIconButton(onClick = onBack) {
                 Icon(
@@ -156,7 +159,8 @@ private fun DrawCanvas(
             contentAlignment = Alignment.Center
         ) {
             val bitmap = component.bitmap ?: return@Box
-            val imageBitmap = remember(bitmap) { bitmap.asImageBitmap() }
+            val display = component.displayBitmap ?: bitmap
+            val imageBitmap = remember(display) { display.asImageBitmap() }
             BoxWithConstraints(
                 modifier = Modifier
                     .fillMaxSize()
@@ -311,6 +315,7 @@ private fun DrawBottomBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
+            .navigationBarsPadding()
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
         DrawBarItem(

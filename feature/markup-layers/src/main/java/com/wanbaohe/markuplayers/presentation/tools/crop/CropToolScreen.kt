@@ -12,14 +12,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -59,6 +62,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlip
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotateLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotateRight
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.text.marquee
@@ -172,6 +176,7 @@ private fun CropTopBar(
                 modifier = Modifier.marquee()
             )
         },
+        type = EnhancedTopAppBarType.Center,
         navigationIcon = {
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.markup_cancel))
@@ -181,11 +186,12 @@ private fun CropTopBar(
             TextButton(onClick = onReset) {
                 Text(stringResource(R.string.markup_reset))
             }
-            TextButton(onClick = onConfirm) {
-                Text(
-                    text = stringResource(R.string.markup_confirm),
-                    color = MaterialTheme.colorScheme.primary
-                )
+            // 确认按钮实心主色,与文字样式的取消/重置拉开层级
+            Button(
+                onClick = onConfirm,
+                contentPadding = PaddingValues(horizontal = 16.dp)
+            ) {
+                Text(stringResource(R.string.markup_confirm))
             }
         }
     )
@@ -208,6 +214,7 @@ private fun CropCanvasArea(
         contentAlignment = Alignment.Center
     ) {
         val bitmap = component.bitmap ?: return@BoxWithConstraints
+        val display = component.displayBitmap ?: bitmap
         val density = LocalDensity.current
         val degrees = session.totalDegrees
         val radians = Math.toRadians(degrees.toDouble())
@@ -228,7 +235,7 @@ private fun CropCanvasArea(
                 height = with(density) { boxHeight.toDp() }
             )
         ) {
-            val imageBitmap = remember(bitmap) { bitmap.asImageBitmap() }
+            val imageBitmap = remember(display) { display.asImageBitmap() }
             val adjustments = component.baseAdjustments
             val colorFilter = remember(adjustments) {
                 if (adjustments.isNeutral) null
@@ -714,6 +721,7 @@ private fun CropControlPanel(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
+            .navigationBarsPadding()
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         PanelLabel(text = stringResource(R.string.markup_crop_ratio))
