@@ -182,4 +182,29 @@ object UrlConstants {
     // rest/2.0/ocr/v1/doc_convert/get_request_result
     const val BAIDU_DOC_CONVERT_REQUEST_RESULT_PATH = "ai/doc_convert/get_request_result"
 
+    /**
+     * 百度图像处理 API(经 Go 网关代理,网关注入真实 token):
+     * 直连路径为 rest/2.0/image-process/v1/<op>,网关映射为 ai/image-process/<op>
+     */
+    // 图像去雾
+    const val BAIDU_IMAGE_PROCESS_DEHAZE_PATH = "ai/image-process/dehaze"
+    // 对比度增强
+    const val BAIDU_IMAGE_PROCESS_CONTRAST_ENHANCE_PATH = "ai/image-process/contrast_enhance"
+    // 图像无损放大
+    const val BAIDU_IMAGE_PROCESS_QUALITY_ENHANCE_PATH = "ai/image-process/image_quality_enhance"
+    // 拉伸图像恢复
+    const val BAIDU_IMAGE_PROCESS_STRETCH_RESTORE_PATH = "ai/image-process/stretch_restore"
+    // 图像修复(需传 rectangle 矩形区域)
+    const val BAIDU_IMAGE_PROCESS_INPAINTING_PATH = "ai/image-process/inpainting"
+    // 图像清晰度增强
+    const val BAIDU_IMAGE_PROCESS_DEFINITION_ENHANCE_PATH = "ai/image-process/image_definition_enhance"
+    // 图像色彩增强
+    const val BAIDU_IMAGE_PROCESS_COLOR_ENHANCE_PATH = "ai/image-process/color_enhance"
+    // 图片去摩尔纹
+    const val BAIDU_IMAGE_PROCESS_REMOVE_MOIRE_PATH = "ai/image-process/remove_moire"
+    // 文档图片去底纹
+    const val BAIDU_IMAGE_PROCESS_DOC_REPAIR_PATH = "ai/image-process/doc_repair"
+    // 智能抠图(application/json,结果在 foreground 字段)
+    const val BAIDU_IMAGE_PROCESS_SEGMENT_PATH = "ai/image-process/segment"
+
 }

@@ -98,6 +98,7 @@ import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
+import com.wanbaohe.markuplayers.domain.model.NormalizedRect
 import com.wanbaohe.markuplayers.domain.model.ShapeKind
 import com.wanbaohe.markuplayers.domain.model.ShapeSpec
 import com.wanbaohe.markuplayers.presentation.components.EditBox
@@ -115,6 +116,8 @@ import com.wanbaohe.markuplayers.presentation.tools.EditorTool
 import com.wanbaohe.markuplayers.presentation.tools.EditorTools
 import com.wanbaohe.markuplayers.presentation.tools.adjust.AdjustToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.adjust.toColorMatrixValues
+import com.wanbaohe.markuplayers.domain.model.AiImageOp
+import com.wanbaohe.markuplayers.presentation.tools.ai.AiRectSelectOverlay
 import com.wanbaohe.markuplayers.presentation.tools.ai.AiToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.crop.CropToolScreen
 import com.wanbaohe.markuplayers.presentation.tools.filter.FilterPanel
@@ -153,6 +156,9 @@ fun EditorScaffold(
     var showShapeSheet by rememberSaveable { mutableStateOf(false) }
     var showFullFilterSheet by rememberSaveable { mutableStateOf(false) }
     var showCanvasBackgroundSheet by rememberSaveable { mutableStateOf(false) }
+    // 图像修复框选模式:true 时画布叠加框选层(矩形相对底图归一化),底部换成取消/确认操作条
+    var aiRectSelect by rememberSaveable { mutableStateOf(false) }
+    var aiRect by remember { mutableStateOf(DEFAULT_AI_RECT) }
     // 底部 Tab 单一工作态:任一时刻至多一个 Tab 高亮(高亮即「当前工作态」)。
     // basic=左侧工具栏、layers=浮动图层面板、filter=滤镜横滚面板、adjust/ai=对应 Sheet;
     // 再点当前 Tab 或 Sheet dismiss 即清除(同时收起对应面板/Sheet)
@@ -210,9 +216,10 @@ fun EditorScaffold(
     }
     val onDrawCancel: () -> Unit = { component.setActiveTool(null) }
 
-    // 返回键由 BaseScreen 处理(沉浸态先退沉浸):绘制模式下返回 = 取消绘制,否则按原逻辑退出
+    // 返回键由 BaseScreen 处理(沉浸态先退沉浸):框选/绘制模式下返回 = 取消当前模式,否则按原逻辑退出
     val onBack = {
         when {
+            aiRectSelect -> aiRectSelect = false
             isDrawMode -> onDrawCancel()
             component.haveChanges -> showExitDialog = true
             else -> component.resetState()
@@ -279,9 +286,12 @@ fun EditorScaffold(
                 component = component,
                 immersiveModeState = immersiveModeState,
                 drawSession = drawSession,
-                sideBarVisible = sideBarVisible,
-                layersPanelVisible = layersPanelVisible,
-                filterPanelVisible = filterPanelVisible,
+                sideBarVisible = sideBarVisible && !aiRectSelect,
+                layersPanelVisible = layersPanelVisible && !aiRectSelect,
+                filterPanelVisible = filterPanelVisible && !aiRectSelect,
+                aiRectSelect = aiRectSelect,
+                aiRect = aiRect,
+                onAiRectChange = { aiRect = it },
                 onEditTextLayer = { layerId ->
                     component.beginTextEditSession(layerId)
                     component.setActiveTool(EditorTools.ID_TEXT)
@@ -296,19 +306,35 @@ fun EditorScaffold(
                     .fillMaxWidth()
             )
             AnimatedVisibility(visible = immersiveModeState.isUiVisible) {
-                if (drawSession != null) {
-                    // 绘制模式:底部 Tab 栏换成取消/完成操作条,画笔操作由画布右侧浮动竖条承载
-                    DrawModeActionBar(
-                        onCancel = onDrawCancel,
-                        onConfirm = onDrawConfirm
-                    )
-                } else {
-                    EditorBottomBar(
-                        component = component,
-                        activeBottomTab = activeBottomTab,
-                        onToolClick = onToolClick,
-                        onSaveClick = { showExportSheet = true }
-                    )
+                when {
+                    // 图像修复框选模式:底部 Tab 栏换成取消/确认操作条
+                    aiRectSelect -> {
+                        AiRectActionBar(
+                            onCancel = { aiRectSelect = false },
+                            onConfirm = {
+                                component.processAiImage(AiImageOp.Inpainting, aiRect)
+                                aiRectSelect = false
+                                aiRect = DEFAULT_AI_RECT
+                            }
+                        )
+                    }
+
+                    drawSession != null -> {
+                        // 绘制模式:底部 Tab 栏换成取消/完成操作条,画笔操作由画布右侧浮动竖条承载
+                        DrawModeActionBar(
+                            onCancel = onDrawCancel,
+                            onConfirm = onDrawConfirm
+                        )
+                    }
+
+                    else -> {
+                        EditorBottomBar(
+                            component = component,
+                            activeBottomTab = activeBottomTab,
+                            onToolClick = onToolClick,
+                            onSaveClick = { showExportSheet = true }
+                        )
+                    }
                 }
             }
         }
@@ -375,7 +401,17 @@ fun EditorScaffold(
 
     AiToolSheet(
         visible = activeBottomTab == EditorTools.ID_AI,
-        onDismiss = { if (activeBottomTab == EditorTools.ID_AI) activeBottomTab = null }
+        onDismiss = { if (activeBottomTab == EditorTools.ID_AI) activeBottomTab = null },
+        onOpClick = { op ->
+            // 面板收起:直出能力立即处理;需框选的能力(图像修复)进入框选模式
+            activeBottomTab = null
+            if (op.needsRect) {
+                aiRect = DEFAULT_AI_RECT
+                aiRectSelect = true
+            } else {
+                component.processAiImage(op)
+            }
+        }
     )
 
     CanvasBackgroundSheet(
@@ -550,6 +586,9 @@ private fun EditorCanvas(
     sideBarVisible: Boolean,
     layersPanelVisible: Boolean,
     filterPanelVisible: Boolean,
+    aiRectSelect: Boolean,
+    aiRect: NormalizedRect,
+    onAiRectChange: (NormalizedRect) -> Unit,
     onEditTextLayer: (String) -> Unit,
     onToolClick: (EditorTool) -> Unit,
     onOpenBrushSettings: () -> Unit,
@@ -565,7 +604,7 @@ private fun EditorCanvas(
     val gestureLayer = component.layers
         .firstOrNull { it.id == component.selectedLayerId }
         ?.takeIf {
-            !drawMode && !it.transform.locked
+            !drawMode && !aiRectSelect && !it.transform.locked
         }
     val transformSelection = gestureLayer != null
 
@@ -573,10 +612,11 @@ private fun EditorCanvas(
         modifier = modifier
             .clipToBounds()
             .tappable {
-                // 沉浸态下单击画布任意处退出沉浸;平时点击空白处取消图层选中
+                // 沉浸态下单击画布任意处退出沉浸;平时点击空白处取消图层选中;
+                // 框选模式下点按让位给框选手势,不做取消选中
                 if (immersiveModeState.isImmersive) {
                     immersiveModeState.exitImmersive()
-                } else {
+                } else if (!aiRectSelect) {
                     component.selectLayer(null)
                 }
             }
@@ -587,10 +627,12 @@ private fun EditorCanvas(
             modifier = Modifier
                 .fillMaxSize()
                 // 绘制模式下单指让位给笔画采集;浏览模式(pan)才恢复缩放/平移;
-                // 选中图层时缩放/平移让位给图层手势(下方 SelectedLayerGestureBox)
+                // 选中图层时缩放/平移让位给图层手势(下方 SelectedLayerGestureBox);
+                // 框选模式下手势全部让位给框选层
                 .zoomable(
                     zoomState = zoomState,
-                    zoomEnabled = (drawSession == null || drawSession.isPanMode) && !transformSelection
+                    zoomEnabled = !aiRectSelect &&
+                        (drawSession == null || drawSession.isPanMode) && !transformSelection
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -684,8 +726,8 @@ private fun EditorCanvas(
                                             onTransformEnd = { newTransform ->
                                                 component.updateLayerTransform(layer.id, newTransform)
                                             },
-                                            // 绘制模式下图层不响应手势(纯静态渲染)
-                                            tapSelectable = !drawMode && layer.type !is LayerType.Draw
+                                            // 绘制/框选模式下图层不响应手势(纯静态渲染)
+                                            tapSelectable = !drawMode && !aiRectSelect && layer.type !is LayerType.Draw
                                         ) {
                                             LayerPreviewRenderers.Content(
                                                 layer = layer,
@@ -705,15 +747,23 @@ private fun EditorCanvas(
                                 canvasHeightPx = canvasHeightPx
                             )
                         }
+                        // 图像修复框选模式:框选层置顶(铺满底图适配盒,归一化坐标直接对应)
+                        if (aiRectSelect) {
+                            AiRectSelectOverlay(
+                                rect = aiRect,
+                                onRectChange = onAiRectChange,
+                                modifier = Modifier.matchParentSize()
+                            )
+                        }
                     }
                 }
             }
         }
 
-        // 缩放胶囊:仅缩放比例 ≠100% 且画布手势未被选中图层接管时显示,绘制/沉浸模式下不显示
+        // 缩放胶囊:仅缩放比例 ≠100% 且画布手势未被选中图层接管时显示,绘制/框选/沉浸模式下不显示
         ZoomCapsule(
             zoomState = zoomState,
-            enabled = !drawMode && !immersiveModeState.isImmersive && !transformSelection,
+            enabled = !drawMode && !aiRectSelect && !immersiveModeState.isImmersive && !transformSelection,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 8.dp)
@@ -1052,6 +1102,44 @@ private fun DrawModeActionBar(
         )
     }
 }
+
+/** 框选模式底部操作条:左「取消」退出框选,中间提示文案,右「确认」执行图像修复;与底部 Tab 栏同款玻璃容器 */
+@Composable
+private fun AiRectActionBar(
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+            .navigationBarsPadding()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        CancelButton(
+            text = stringResource(R.string.markup_cancel),
+            onClick = onCancel
+        )
+        Text(
+            text = stringResource(R.string.markup_ai_rect_hint),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            maxLines = 1,
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+        )
+        ConfirmButton(
+            text = stringResource(R.string.markup_confirm),
+            onClick = onConfirm
+        )
+    }
+}
+
+/** 框选模式初始矩形:居中 50% 区域 */
+private val DEFAULT_AI_RECT = NormalizedRect(0.25f, 0.25f, 0.75f, 0.75f)
 
 @Composable
 private fun EditorToolItem(

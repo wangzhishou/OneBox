@@ -25,6 +25,7 @@ plugins {
 android.namespace = "com.wanbaohe.markuplayers"
 
 dependencies {
+    implementation(projects.core.network)
     implementation(projects.core.filters)
     implementation(projects.core.database)
     implementation(projects.feature.common)

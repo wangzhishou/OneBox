@@ -43,8 +43,10 @@ import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.imagetoolbox.core.utils.filename
 import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.R
+import com.wanbaohe.markuplayers.data.ai.ImageAiProcessor
 import com.wanbaohe.markuplayers.domain.MarkupLayersApplier
 import com.wanbaohe.markuplayers.domain.history.LayerHistory
+import com.wanbaohe.markuplayers.domain.model.AiImageOp
 import com.wanbaohe.markuplayers.domain.model.LayerBaseRemap
 import com.wanbaohe.markuplayers.domain.model.LayerBlendMode
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
@@ -61,6 +63,7 @@ import com.wanbaohe.markuplayers.presentation.tools.adjust.toColorMatrixValues
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -87,6 +90,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val imageScaler: ImageScaler<Bitmap>,
     private val shareProvider: ImageShareProvider<Bitmap>,
     private val markupLayersApplier: MarkupLayersApplier<Bitmap>,
+    private val imageAiProcessor: ImageAiProcessor,
     private val filterProvider: FilterProvider<Bitmap>,
     private val recentAccessRepository: RecentAccessRepository,
     addFiltersSheetComponentFactory: AddFiltersSheetComponent.Factory,
@@ -528,6 +532,86 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         }
         Canvas(output).drawBitmap(this, 0f, 0f, paint)
         return output
+    }
+
+    // ---------------- AI 图像处理(作用于底图,图层全部保留) ----------------
+
+    private val _isAiProcessing: MutableState<Boolean> = mutableStateOf(false)
+    val isAiProcessing: Boolean by _isAiProcessing
+
+    private var aiProcessJob: Job? by smartJob {
+        _isAiProcessing.update { false }
+    }
+
+    /**
+     * AI 图像处理:取全分辨率底图([loadBaseBitmap])调 [ImageAiProcessor],
+     * 成功后结果图缓存并替换底图(与 [applyBaseTransform] 同路径直改 _uri/_sourceSize/
+     * _bitmap,图层列表不动,归一化坐标天然适配;抠图结果为透明底 PNG)。
+     * 处理中重复调用直接忽略;[cancelAiProcessing] 取消进行中的请求。
+     * 底图变化与裁剪一样不可撤销,这里无需记图层快照。
+     */
+    fun processAiImage(
+        op: AiImageOp,
+        rect: NormalizedRect? = null,
+    ) {
+        if (_isAiProcessing.value) return
+        if (_uri.value == null && _blankBaseBitmap.value == null) {
+            "processAiImage skipped: no base image".makeLog(LOG_TAG)
+            return
+        }
+        aiProcessJob = componentScope.launch {
+            _isAiProcessing.value = true
+            val outcome = runCatching {
+                val source = loadBaseBitmap()
+                    ?: error("source image is null (uri=${_uri.value != null}, blank=${_blankBaseBitmap.value != null})")
+                imageAiProcessor.process(op = op, bitmap = source, rect = rect).getOrThrow()
+            }
+            val result = outcome.getOrNull()
+            if (result == null) {
+                val failure = outcome.exceptionOrNull()
+                // 用户取消:不提示,交由 smartJob 复位状态
+                if (failure is CancellationException) throw failure
+                failure?.makeLog(LOG_TAG)
+                AppToastHost.showFailureToast(
+                    failure?.message?.takeIf { it.isNotBlank() }
+                        ?: appContext.getString(R.string.markup_ai_process_failed)
+                )
+                _isAiProcessing.value = false
+                return@launch
+            }
+            val cachedUri = shareProvider.cacheImage(
+                image = result,
+                imageInfo = ImageInfo(
+                    width = result.width,
+                    height = result.height,
+                    imageFormat = ImageFormat.Png.Lossless
+                )
+            )?.toUri()
+            if (cachedUri == null) {
+                "processAiImage failed: cacheImage returned null, size=${result.width}x${result.height}"
+                    .makeLog(LOG_TAG)
+                AppToastHost.showFailureToast(R.string.markup_ai_process_failed)
+                _isAiProcessing.value = false
+                return@launch
+            }
+            _uri.value = cachedUri
+            _blankBaseBitmap.value = null
+            _sourceSize.value = IntSize(result.width, result.height)
+            _imageFormat.update { ImageFormat.Png.Lossless }
+            _exportSettings.update {
+                it.copy(format = ImageFormat.Png.Lossless.toExportFormat())
+            }
+            updateBitmap(result)
+            onLayersChanged()
+            AppToastHost.showToast(R.string.markup_ai_process_success)
+            _isAiProcessing.value = false
+        }
+    }
+
+    fun cancelAiProcessing() {
+        aiProcessJob?.cancel()
+        aiProcessJob = null
+        _isAiProcessing.value = false
     }
 
     // ---------------- 图层操作(修改前一律先记快照) ----------------
@@ -1040,6 +1124,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         _uri.value = null
         _blankBaseBitmap.value = null
         _sourceSize.value = null
+        aiProcessJob = null
         _layers.value = emptyList()
         _selectedLayerId.value = null
         _activeToolId.value = null

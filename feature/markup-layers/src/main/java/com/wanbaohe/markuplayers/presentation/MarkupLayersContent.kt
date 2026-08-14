@@ -20,8 +20,11 @@ fun MarkupLayersContent(
     }
 
     LoadingDialog(
-        visible = component.isSaving || component.isImageLoading,
-        onCancelLoading = component::cancelSaving,
-        canCancel = component.isSaving
+        visible = component.isSaving || component.isImageLoading || component.isAiProcessing,
+        onCancelLoading = {
+            component.cancelSaving()
+            component.cancelAiProcessing()
+        },
+        canCancel = component.isSaving || component.isAiProcessing
     )
 }

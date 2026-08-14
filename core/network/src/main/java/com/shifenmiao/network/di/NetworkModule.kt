@@ -7,6 +7,7 @@ import com.shifenmiao.network.NetworkBuilder
 import com.shifenmiao.network.NetworkBuilder.cache
 import com.shifenmiao.network.api.AnthropicCompatibleService
 import com.shifenmiao.network.api.ApiService
+import com.shifenmiao.network.api.BaiduImageProcessApiService
 import com.shifenmiao.network.api.DocConvertApiService
 import com.shifenmiao.network.api.OpenAICompatibleService
 import com.shifenmiao.network.api.OpenAIWithApiKeyService
@@ -168,6 +169,11 @@ object NetworkModule {
     @Singleton
     fun provideDocConvertApiService(@Named("BaiduOcrRetrofit") retrofit: Retrofit): DocConvertApiService =
         retrofit.create(DocConvertApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideBaiduImageProcessApiService(@Named("BaiduOcrRetrofit") retrofit: Retrofit): BaiduImageProcessApiService =
+        retrofit.create(BaiduImageProcessApiService::class.java)
 
 
     @Provides
