@@ -14,8 +14,6 @@ class AuthInterceptor : Interceptor {
      */
     private val anonymousPaths = setOf(
         "/api/auth/local",
-        "/api/auth/send-code",
-        "/api/auth/phone",
         "/api/register",
         "/api/login",
         "/api/forgot-password",
@@ -25,6 +23,16 @@ class AuthInterceptor : Interceptor {
         "/api/google-login"
     )
 
+    /**
+     * 由 go-proxy 处理、要求 App 级 API token 的免登录接口：
+     * 只附带 RemoteConfig.accessToken，不附带用户 JWT
+     * （APIAuthMiddleware 只认 API token，用户 JWT 会判 "Invalid or expired token"）。
+     */
+    private val apiTokenOnlyPaths = setOf(
+        "/api/auth/send-code",
+        "/api/auth/phone"
+    )
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         if (originalRequest.header("Authorization").isNullOrBlank().not()) {
@@ -32,6 +40,16 @@ class AuthInterceptor : Interceptor {
         }
         if (originalRequest.url.encodedPath in anonymousPaths) {
             return chain.proceed(originalRequest)
+        }
+        if (originalRequest.url.encodedPath in apiTokenOnlyPaths) {
+            val apiToken = RemoteConfigStorage.getRemoteConfig().accessToken
+                ?.takeIf { it.isNotBlank() }
+            val request = apiToken?.let { token ->
+                originalRequest.newBuilder()
+                    .header("Authorization", "Bearer $token")
+                    .build()
+            } ?: originalRequest
+            return chain.proceed(request)
         }
 
         val bearerToken = TokenStorage.getTokenFromLocalStorage()
