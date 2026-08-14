@@ -53,6 +53,7 @@
     <string name="markup_ai_sheet_title">AI 智能处理</string>
     <string name="markup_ai_sheet_subtitle">智能识别图像内容，一键提升图片质量与创意表现</string>
     <string name="markup_ai_badge_new">NEW</string>
+    <string name="markup_ai_points_badge">%1$d 积分</string>
     <string name="markup_ai_dehaze">图像去雾</string>
     <string name="markup_ai_dehaze_sub">去除雾霾，还原清晰通透的画面</string>
     <string name="markup_ai_contrast_enhance">对比度增强</string>
@@ -209,6 +210,11 @@
     <string name="markup_export_width">宽</string>
     <string name="markup_export_height">高</string>
     <string name="markup_export_dimensions">%1$d × %2$d</string>
+    <string name="markup_export_current_size">导出尺寸</string>
+    <string name="markup_export_source_size">源文件</string>
+    <string name="markup_export_estimated_size">预估大小</string>
+    <string name="markup_export_size_approx">约 %1$s</string>
+    <string name="markup_export_size_unavailable">--</string>
     <string name="markup_export_more">更多选项</string>
     <string name="markup_export_share_after">导出后分享</string>
     <string name="markup_export_share_after_sub">保存后打开分享面板</string>

@@ -16,7 +16,9 @@ import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.shifenmiao.common.recent.RecentAccessRepository
+import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
+import com.shifenmiao.network.repository.BaiduImageProcessRepository
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
@@ -43,7 +45,6 @@ import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.imagetoolbox.core.utils.filename
 import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.R
-import com.wanbaohe.markuplayers.data.ai.ImageAiProcessor
 import com.wanbaohe.markuplayers.domain.MarkupLayersApplier
 import com.wanbaohe.markuplayers.domain.history.LayerHistory
 import com.wanbaohe.markuplayers.domain.model.AiImageOp
@@ -54,6 +55,7 @@ import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.model.NormalizedRect
 import com.wanbaohe.markuplayers.domain.model.ShapeSpec
+import com.wanbaohe.markuplayers.domain.model.toImageProcessRect
 import com.wanbaohe.markuplayers.presentation.export.ExportSettings
 import com.wanbaohe.markuplayers.presentation.export.toExportFormat
 import com.wanbaohe.markuplayers.presentation.editor.CanvasBackground
@@ -90,7 +92,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val imageScaler: ImageScaler<Bitmap>,
     private val shareProvider: ImageShareProvider<Bitmap>,
     private val markupLayersApplier: MarkupLayersApplier<Bitmap>,
-    private val imageAiProcessor: ImageAiProcessor,
+    private val imageProcessRepository: BaiduImageProcessRepository,
     private val filterProvider: FilterProvider<Bitmap>,
     private val recentAccessRepository: RecentAccessRepository,
     addFiltersSheetComponentFactory: AddFiltersSheetComponent.Factory,
@@ -544,15 +546,19 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     }
 
     /**
-     * AI 图像处理:取全分辨率底图([loadBaseBitmap])调 [ImageAiProcessor],
+     * AI 图像处理:取全分辨率底图([loadBaseBitmap])调 [BaiduImageProcessRepository],
      * 成功后结果图缓存并替换底图(与 [applyBaseTransform] 同路径直改 _uri/_sourceSize/
      * _bitmap,图层列表不动,归一化坐标天然适配;抠图结果为透明底 PNG)。
      * 处理中重复调用直接忽略;[cancelAiProcessing] 取消进行中的请求。
      * 底图变化与裁剪一样不可撤销,这里无需记图层快照。
+     *
+     * 登录与积分预检由调用方(UI 层 ActionUtils.ensureLoginAndCheckPoints)完成;
+     * [pointsCost] > 0 时,仅处理成功后经 BaseUtils.consumePoints 扣积分,失败不扣。
      */
     fun processAiImage(
         op: AiImageOp,
         rect: NormalizedRect? = null,
+        pointsCost: Int = 0,
     ) {
         if (_isAiProcessing.value) return
         if (_uri.value == null && _blankBaseBitmap.value == null) {
@@ -564,7 +570,11 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             val outcome = runCatching {
                 val source = loadBaseBitmap()
                     ?: error("source image is null (uri=${_uri.value != null}, blank=${_blankBaseBitmap.value != null})")
-                imageAiProcessor.process(op = op, bitmap = source, rect = rect).getOrThrow()
+                imageProcessRepository.process(
+                    op = op.processOp,
+                    bitmap = source,
+                    rect = rect?.toImageProcessRect()
+                ).getOrThrow()
             }
             val result = outcome.getOrNull()
             if (result == null) {
@@ -604,6 +614,15 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             updateBitmap(result)
             onLayersChanged()
             AppToastHost.showToast(R.string.markup_ai_process_success)
+            // 处理成功才扣积分(失败/取消走到上面 return,不会扣)
+            if (pointsCost > 0) {
+                BaseUtils.consumePoints(
+                    degree = pointsCost,
+                    desc = appContext.getString(op.nameRes),
+                    source = AI_POINTS_SOURCE,
+                    showToast = true
+                )
+            }
             _isAiProcessing.value = false
         }
     }
@@ -1299,3 +1318,6 @@ private const val FALLBACK_IMAGE_NAME = "图片"
 
 /** 底图变换(裁剪/旋转/翻转)链路日志 tag */
 private const val LOG_TAG = "MarkupBaseTransform"
+
+/** AI 图像处理积分消耗/预检的来源标识 */
+private const val AI_POINTS_SOURCE = "markup_ai"

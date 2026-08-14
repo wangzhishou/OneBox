@@ -54,6 +54,14 @@ data class RemoteConfig(
     val adminVipLevel: Int? = null,
 
     /**
+     * AI 图像处理（百度图像处理，如 markup-layers「AI 处理」）单次消耗积分。
+     *
+     * 与 [adminVipLevel] 同款意图：默认 `null` 表示服务端未下发，
+     * 由消费端回退到本地默认值（当前为 200），避免“未下发”被误判为“显式下发默认值”。
+     */
+    val aiImageProcessPoints: Int? = null,
+
+    /**
      * 网络请求访问的token。
      * 按渠道隔离：国内渠道与 google 渠道使用不同的默认 token，
      * 见 core/r 中 src/domestic / src/google 的 UrlConstantsFlavor。
@@ -267,6 +275,7 @@ data class RemoteConfig(
         needWechatBindPhone = mergeField(net.needWechatBindPhone, needWechatBindPhone),
         loginBindPhone = mergeField(net.loginBindPhone, loginBindPhone),
         adminVipLevel = mergeField(net.adminVipLevel, adminVipLevel),
+        aiImageProcessPoints = mergeField(net.aiImageProcessPoints, aiImageProcessPoints),
         accessToken = mergeField(net.accessToken, accessToken) { !it.isNullOrBlank() },
         requestUrl = mergeField(net.requestUrl, requestUrl) { !it.isNullOrBlank() },
         aiAgentUpdateInterval = mergeField(net.aiAgentUpdateInterval, aiAgentUpdateInterval),
@@ -334,6 +343,7 @@ data class RemoteConfig(
                 needWechatBindPhone == other.needWechatBindPhone &&
                 loginBindPhone == other.loginBindPhone &&
                 adminVipLevel == other.adminVipLevel &&
+                aiImageProcessPoints == other.aiImageProcessPoints &&
                 helpBlogIds == other.helpBlogIds &&
                 webViewResourceRules == other.webViewResourceRules &&
                 defaultWorkingEngine == other.defaultWorkingEngine &&
@@ -374,6 +384,7 @@ data class RemoteConfig(
             needWechatBindPhone,
             loginBindPhone,
             adminVipLevel,
+            aiImageProcessPoints,
             helpBlogIds,
             webViewResourceRules,
             defaultWorkingEngine,

@@ -53,6 +53,7 @@
     <string name="markup_ai_sheet_title">AI Smart Processing</string>
     <string name="markup_ai_sheet_subtitle">Understands image content and boosts quality and creativity in one tap</string>
     <string name="markup_ai_badge_new">NEW</string>
+    <string name="markup_ai_points_badge">%1$d points</string>
     <string name="markup_ai_dehaze">Dehaze</string>
     <string name="markup_ai_dehaze_sub">Remove haze and fog for a clear scene</string>
     <string name="markup_ai_contrast_enhance">Contrast Enhance</string>
@@ -210,6 +211,11 @@
     <string name="markup_export_width">Width</string>
     <string name="markup_export_height">Height</string>
     <string name="markup_export_dimensions">%1$d × %2$d</string>
+    <string name="markup_export_current_size">Export size</string>
+    <string name="markup_export_source_size">Source file</string>
+    <string name="markup_export_estimated_size">Estimated</string>
+    <string name="markup_export_size_approx">~%1$s</string>
+    <string name="markup_export_size_unavailable">--</string>
     <string name="markup_export_more">More options</string>
     <string name="markup_export_share_after">Share after export</string>
     <string name="markup_export_share_after_sub">Open share panel after saving</string>

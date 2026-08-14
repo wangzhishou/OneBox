@@ -1,16 +1,16 @@
-package com.wanbaohe.markuplayers.data.ai
+package com.shifenmiao.network.repository
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import com.shifenmiao.core.constants.UrlConstants
-import com.shifenmiao.network.api.BaiduImageProcessApiService
+import com.shifenmiao.model.imageprocess.ImageProcessOp
+import com.shifenmiao.model.imageprocess.ImageProcessRect
 import com.shifenmiao.model.imageprocess.ImageProcessResponse
 import com.shifenmiao.model.imageprocess.ImageSegmentRequest
+import com.shifenmiao.network.api.BaiduImageProcessApiService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.logger.makeLog
-import com.wanbaohe.markuplayers.domain.model.AiImageOp
-import com.wanbaohe.markuplayers.domain.model.NormalizedRect
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -24,14 +24,16 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
- * 百度 AI 图像处理执行器:负责把底图位图按接口约束(最长边 ≤3000px、
+ * 百度 AI 图像处理仓库:负责把位图按接口约束(最长边 ≤3000px、
  * 最短边 ≥128px、base64 ≤10M)预处理后调用网关代理接口,并解码结果图。
  *
- * 坐标约定:[rect](归一化,相对传入底图)在实际发出的图片像素坐标系内换算,
+ * 自 markup-layers 的 ImageAiProcessor 下沉,供各 feature(如 AI Agent 工具)直接注入复用。
+ *
+ * 坐标约定:[rect](归一化,相对传入位图)在实际发出的图片像素坐标系内换算,
  * 与预处理缩放解耦。
  */
 @Singleton
-class ImageAiProcessor @Inject constructor(
+class BaiduImageProcessRepository @Inject constructor(
     private val apiService: BaiduImageProcessApiService,
     dispatchersHolder: DispatchersHolder,
 ) : DispatchersHolder by dispatchersHolder {
@@ -40,13 +42,13 @@ class ImageAiProcessor @Inject constructor(
      * 执行一次 AI 图像处理。
      *
      * @param op 能力项
-     * @param bitmap 全分辨率底图(软件位图)
-     * @param rect 修复区域(仅 [AiImageOp.needsRect] 的能力需要,归一化坐标)
+     * @param bitmap 全分辨率源图(软件位图)
+     * @param rect 修复区域(仅 [ImageProcessOp.Inpainting] 需要,归一化坐标,null 视为全图)
      */
     suspend fun process(
-        op: AiImageOp,
+        op: ImageProcessOp,
         bitmap: Bitmap,
-        rect: NormalizedRect? = null,
+        rect: ImageProcessRect? = null,
     ): Result<Bitmap> = try {
         val encoded = withContext(encodingDispatcher) { encodeWithinLimit(prepare(bitmap)) }
         val response = call(op, encoded, rect)
@@ -73,28 +75,28 @@ class ImageAiProcessor @Inject constructor(
     }
 
     private suspend fun call(
-        op: AiImageOp,
+        op: ImageProcessOp,
         encoded: EncodedImage,
-        rect: NormalizedRect?,
+        rect: ImageProcessRect?,
     ): Response<ImageProcessResponse> {
         val token = UrlConstants.ACCESS_TOKEN
         val image = encoded.base64
         return when (op) {
-            AiImageOp.Dehaze -> apiService.dehaze(token, image)
-            AiImageOp.ContrastEnhance -> apiService.contrastEnhance(token, image)
-            AiImageOp.QualityEnhance -> apiService.imageQualityEnhance(token, image)
-            AiImageOp.StretchRestore -> apiService.stretchRestore(token, image)
-            AiImageOp.Inpainting -> apiService.inpainting(
+            ImageProcessOp.Dehaze -> apiService.dehaze(token, image)
+            ImageProcessOp.ContrastEnhance -> apiService.contrastEnhance(token, image)
+            ImageProcessOp.QualityEnhance -> apiService.imageQualityEnhance(token, image)
+            ImageProcessOp.StretchRestore -> apiService.stretchRestore(token, image)
+            ImageProcessOp.Inpainting -> apiService.inpainting(
                 accessToken = token,
                 image = image,
                 rectangle = rectangleJson(encoded.bitmap, rect)
             )
 
-            AiImageOp.DefinitionEnhance -> apiService.imageDefinitionEnhance(token, image)
-            AiImageOp.ColorEnhance -> apiService.colorEnhance(token, image)
-            AiImageOp.RemoveMoire -> apiService.removeMoire(token, image)
-            AiImageOp.DocRepair -> apiService.docRepair(token, image)
-            AiImageOp.Segment -> apiService.segment(token, ImageSegmentRequest(image = image))
+            ImageProcessOp.DefinitionEnhance -> apiService.imageDefinitionEnhance(token, image)
+            ImageProcessOp.ColorEnhance -> apiService.colorEnhance(token, image)
+            ImageProcessOp.RemoveMoire -> apiService.removeMoire(token, image)
+            ImageProcessOp.DocRepair -> apiService.docRepair(token, image)
+            ImageProcessOp.Segment -> apiService.segment(token, ImageSegmentRequest(image = image))
         }
     }
 
@@ -165,8 +167,8 @@ class ImageAiProcessor @Inject constructor(
      * 修复区域 JSON:[{"width":w,"height":h,"top":y,"left":x}],
      * 归一化矩形换算为所发图片的像素坐标(钳制在图内,w/h ≥1)
      */
-    private fun rectangleJson(bitmap: Bitmap, rect: NormalizedRect?): String {
-        val region = rect ?: NormalizedRect.Full
+    private fun rectangleJson(bitmap: Bitmap, rect: ImageProcessRect?): String {
+        val region = rect ?: ImageProcessRect.Full
         val left = (region.left * bitmap.width).roundToInt().coerceIn(0, bitmap.width - 1)
         val top = (region.top * bitmap.height).roundToInt().coerceIn(0, bitmap.height - 1)
         val right = (region.right * bitmap.width).roundToInt().coerceIn(left + 1, bitmap.width)
@@ -188,7 +190,7 @@ class ImageAiProcessor @Inject constructor(
 
 }
 
-private const val LOG_TAG = "ImageAiProcessor"
+private const val LOG_TAG = "BaiduImageProcessRepository"
 
 /** 百度图像处理图片约束:最长边 ≤3000px */
 private const val MAX_SIDE = 3000

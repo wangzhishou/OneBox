@@ -64,9 +64,11 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
+import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ImmersiveModeState
 import com.shifenmiao.common.ui.rememberImmersiveModeState
@@ -117,6 +119,7 @@ import com.wanbaohe.markuplayers.presentation.tools.EditorTools
 import com.wanbaohe.markuplayers.presentation.tools.adjust.AdjustToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.adjust.toColorMatrixValues
 import com.wanbaohe.markuplayers.domain.model.AiImageOp
+import com.wanbaohe.markuplayers.domain.model.aiImageProcessPointsCost
 import com.wanbaohe.markuplayers.presentation.tools.ai.AiRectSelectOverlay
 import com.wanbaohe.markuplayers.presentation.tools.ai.AiToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.crop.CropToolScreen
@@ -312,7 +315,12 @@ fun EditorScaffold(
                         AiRectActionBar(
                             onCancel = { aiRectSelect = false },
                             onConfirm = {
-                                component.processAiImage(AiImageOp.Inpainting, aiRect)
+                                // 登录/积分预检已在进入框选模式前完成,这里直接执行
+                                component.processAiImage(
+                                    op = AiImageOp.Inpainting,
+                                    rect = aiRect,
+                                    pointsCost = aiImageProcessPointsCost()
+                                )
                                 aiRectSelect = false
                                 aiRect = DEFAULT_AI_RECT
                             }
@@ -402,14 +410,22 @@ fun EditorScaffold(
     AiToolSheet(
         visible = activeBottomTab == EditorTools.ID_AI,
         onDismiss = { if (activeBottomTab == EditorTools.ID_AI) activeBottomTab = null },
+        pointsCost = aiImageProcessPointsCost(),
         onOpClick = { op ->
-            // 面板收起:直出能力立即处理;需框选的能力(图像修复)进入框选模式
+            // 面板收起后先做登录+积分预检;需框选的能力(图像修复)预检通过
+            // 才进框选模式,避免白框选;积分在处理成功后由组件扣除,失败不扣
             activeBottomTab = null
-            if (op.needsRect) {
-                aiRect = DEFAULT_AI_RECT
-                aiRectSelect = true
-            } else {
-                component.processAiImage(op)
+            val cost = aiImageProcessPointsCost()
+            ActionUtils.ensureLoginAndCheckPoints(
+                source = AI_POINTS_SOURCE,
+                point = cost
+            ) {
+                if (op.needsRect) {
+                    aiRect = DEFAULT_AI_RECT
+                    aiRectSelect = true
+                } else {
+                    component.processAiImage(op, pointsCost = cost)
+                }
             }
         }
     )
@@ -425,6 +441,8 @@ fun EditorScaffold(
         visible = showExportSheet,
         settings = component.exportSettings,
         sourceSize = component.sourceSize,
+        imageUri = component.uri,
+        estimateBitmap = component.displayBitmap ?: component.bitmap,
         onDismiss = { showExportSheet = false },
         onSettingsChange = component::updateExportSettings,
         onSave = {
@@ -658,15 +676,23 @@ private fun EditorCanvas(
                         constraints.maxWidth / bitmap.width.toFloat(),
                         constraints.maxHeight / bitmap.height.toFloat()
                     )
-                    val canvasWidthPx = bitmap.width * fitScale
-                    val canvasHeightPx = bitmap.height * fitScale
+                    // 画布尺寸统一向下取整到整像素:底图 Picture、透明棋盘格(按 Picture
+                    // 布局尺寸绘制)、图层画布与手势/绘制层全部共用同一 IntSize。
+                    // 此前直接用 Float 像素转小数 Dp,布局阶段再四舍五入,容器可能比
+                    // 图片实际显示尺寸大 1~2px,下缘/右缘露出一条棋盘格
+                    val canvasSize = IntSize(
+                        width = (bitmap.width * fitScale).toInt().coerceAtLeast(1),
+                        height = (bitmap.height * fitScale).toInt().coerceAtLeast(1)
+                    )
+                    val canvasWidthPx = canvasSize.width.toFloat()
+                    val canvasHeightPx = canvasSize.height.toFloat()
                     val density = LocalDensity.current
 
                     Box(
                         modifier = Modifier
                             .size(
-                                width = with(density) { canvasWidthPx.toDp() },
-                                height = with(density) { canvasHeightPx.toDp() }
+                                width = with(density) { canvasSize.width.toDp() },
+                                height = with(density) { canvasSize.height.toDp() }
                             )
                             // 调色作用于「底图+图层」整个画布:离屏合成后整体过 colorFilter,与导出一致
                             .then(
@@ -1140,6 +1166,9 @@ private fun AiRectActionBar(
 
 /** 框选模式初始矩形:居中 50% 区域 */
 private val DEFAULT_AI_RECT = NormalizedRect(0.25f, 0.25f, 0.75f, 0.75f)
+
+/** AI 图像处理登录/积分预检的来源标识 */
+private const val AI_POINTS_SOURCE = "markup_ai"
 
 @Composable
 private fun EditorToolItem(
