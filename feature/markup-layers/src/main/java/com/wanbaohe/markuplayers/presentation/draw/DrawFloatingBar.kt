@@ -24,11 +24,12 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFrontHand
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 
 /**
- * 绘制模式画布右侧的精简浮动竖条(与左侧工具栏同款 surfaceContainer 容器):
+ * 绘制模式画布右侧的精简浮动竖条(与左侧工具栏同款玻璃容器):
  * 画笔设置(开 [BrushSettingsDialog])/橡皮擦快捷开关/笔画撤销/笔画重做/浏览模式切换。
  */
 @Composable
@@ -41,8 +42,15 @@ internal fun DrawFloatingBar(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier
-            .clip(ShapeDefaults.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
+            .background(
+                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                shape = ShapeDefaults.extraLarge
+            )
+            .glassDense(
+                shape = ShapeDefaults.extraLarge,
+                color = MaterialTheme.colorScheme.surfaceContainer
+            )
             .padding(horizontal = 4.dp, vertical = 8.dp)
     ) {
         DrawBarButton(

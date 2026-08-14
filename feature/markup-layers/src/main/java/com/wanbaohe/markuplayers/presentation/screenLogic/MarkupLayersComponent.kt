@@ -204,8 +204,10 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private var filterPreviewJob: Job? by smartJob()
 
     /**
-     * 滤镜面板打开期间的合成预览:预览尺寸底图 + 可见图层合成后过滤镜,
-     * 此模式下图层不再单独渲染;面板关闭即清空,回到实时编辑。
+     * 合成滤镜预览(预览尺寸底图 + 可见图层,排除当前选中图层,再过滤镜)。
+     * 常驻机制:选中滤镜期间始终维护,画布以它替换底图显示,与导出(全局生效)一致;
+     * 选中图层不在合成图内,仍走画布 live 渲染。滤镜面板打开且无选中滤镜时同样维护
+     * (滤镜步退化为原样合成)。无滤镜且面板关闭时为 null,回到全量实时编辑。
      * 调色不烘焙进该位图,始终由画布容器 colorFilter 叠加,避免双重生效。
      */
     private val _filterCompositeBitmap: MutableState<Bitmap?> = mutableStateOf(null)
@@ -214,6 +216,10 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val _filterSheetOpen: MutableState<Boolean> = mutableStateOf(false)
 
     private var filterCompositeJob: Job? by smartJob()
+
+    /** 合成预览是否激活:滤镜面板打开,或已选中滤镜(常驻) */
+    private val compositePreviewActive: Boolean
+        get() = _filterSheetOpen.value || _selectedFilter.value != null
 
     /** 画布展示用底图(仅底图,不含图层):滤镜预览优先,调节经画布容器 colorFilter 叠加 */
     val displayBitmap: Bitmap? get() = _filterPreviewBitmap.value ?: _bitmap.value
@@ -225,7 +231,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         _selectedFilter.value = filter
         registerChanges()
         updateFilterPreview()
-        if (_filterSheetOpen.value) updateFilterCompositePreview()
+        updateFilterCompositePreview()
     }
 
     /** 滤镜 → 变换(供缩略图 coil transformation 与导出烘焙复用同一入口) */
@@ -260,33 +266,45 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         }.getOrNull() ?: this
     }
 
-    /** 滤镜面板开关:打开时算合成预览;关闭时取消未完成任务并清空,回到实时编辑 */
+    /** 滤镜面板开关:打开即算合成预览;关闭时若仍选中滤镜则保留(常驻机制),否则取消并清空 */
     fun setFilterSheetOpen(open: Boolean) {
         if (_filterSheetOpen.value == open) return
         _filterSheetOpen.value = open
         if (open) {
             updateFilterCompositePreview()
-        } else {
+        } else if (_selectedFilter.value == null) {
             filterCompositeJob = null
             _filterCompositeBitmap.value = null
         }
     }
 
-    /** 合成预览重算:预览尺寸底图 + 可见图层 → 滤镜;smartJob 取消上一次未完成计算 */
+    /**
+     * 合成预览重算:预览尺寸底图 + 可见图层(排除当前选中图层) → 滤镜;
+     * smartJob 取消上一次未完成计算。未激活(无滤镜且面板关闭)或无底图时清空。
+     * 触发时机:图层提交级变更([onLayersChanged])、选中变化([selectLayer])、
+     * 滤镜切换([selectFilter])、底图更换([updateBitmap])、面板开关。
+     */
     private fun updateFilterCompositePreview() {
         val base = _bitmap.value
-        if (base == null) {
+        if (!compositePreviewActive || base == null) {
+            filterCompositeJob = null
             _filterCompositeBitmap.value = null
             return
         }
-        val visibleLayers = _layers.value.filter { it.transform.visible }
+        val visibleLayers = _layers.value.filter {
+            it.transform.visible && it.id != _selectedLayerId.value
+        }
         val filter = _selectedFilter.value
         filterCompositeJob = componentScope.launch {
+            val composited = runCatching {
+                withContext(defaultDispatcher) {
+                    markupLayersApplier.applyToImage(
+                        image = base,
+                        layers = visibleLayers
+                    )
+                }
+            }.getOrNull() ?: return@launch
             val result = runCatching {
-                val composited = markupLayersApplier.applyToImage(
-                    image = base,
-                    layers = visibleLayers
-                )
                 filter?.let {
                     withContext(defaultDispatcher) {
                         filterTransformation(it)
@@ -761,7 +779,10 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     }
 
     fun selectLayer(id: String?) {
+        if (_selectedLayerId.value == id) return
         _selectedLayerId.value = id
+        // 选中图层被排除在滤镜合成图外,选中变化需重算合成预览
+        if (compositePreviewActive) updateFilterCompositePreview()
     }
 
     fun setActiveTool(id: String?) {
@@ -908,6 +929,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         _canUndo.value = history.canUndo
         _canRedo.value = history.canRedo
         registerChanges()
+        // 提交级图层变更(增/删/改/排序/手势结束提交/undo/redo)联动滤镜合成预览
+        if (compositePreviewActive) updateFilterCompositePreview()
     }
 
     // ---------------- 首页「最近项目」(最近打开的图片文件) ----------------
@@ -1008,7 +1031,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             _isImageLoading.value = false
             // 底图更换后滤镜预览缓存失效,按当前滤镜重算
             if (_selectedFilter.value != null) updateFilterPreview()
-            if (_filterSheetOpen.value) updateFilterCompositePreview()
+            updateFilterCompositePreview()
         }
     }
 
@@ -1065,6 +1088,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         oneTimeSaveLocationUri: String?,
         onComplete: (saveResult: SaveResult) -> Unit,
     ) {
+        // 快速连点防抖:保存/分享/复制共用 savingJob,进行中直接忽略新请求
+        if (_isSaving.value) return
         savingJob = componentScope.launch {
             _isSaving.value = true
             val rendered = renderResultBitmap()
@@ -1104,6 +1129,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     }
 
     fun shareBitmap(onComplete: () -> Unit) {
+        if (_isSaving.value) return
         savingJob = componentScope.launch {
             _isSaving.value = true
             val rendered = renderResultBitmap()
@@ -1122,6 +1148,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     }
 
     fun cacheCurrentImage(onComplete: (Uri) -> Unit) {
+        if (_isSaving.value) return
         savingJob = componentScope.launch {
             _isSaving.value = true
             val rendered = renderResultBitmap()

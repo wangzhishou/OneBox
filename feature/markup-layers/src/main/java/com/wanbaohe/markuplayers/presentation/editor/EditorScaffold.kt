@@ -89,6 +89,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.tappable
@@ -116,6 +117,7 @@ import com.wanbaohe.markuplayers.presentation.tools.adjust.AdjustToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.adjust.toColorMatrixValues
 import com.wanbaohe.markuplayers.presentation.tools.ai.AiToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.crop.CropToolScreen
+import com.wanbaohe.markuplayers.presentation.tools.filter.FilterPanel
 import com.wanbaohe.markuplayers.presentation.tools.shape.ShapeToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.sticker.StickerToolSheet
 import kotlin.math.abs
@@ -149,22 +151,26 @@ fun EditorScaffold(
     var showLayersSheet by rememberSaveable { mutableStateOf(false) }
     var showExportSheet by rememberSaveable { mutableStateOf(false) }
     var showShapeSheet by rememberSaveable { mutableStateOf(false) }
-    var showAiSheet by rememberSaveable { mutableStateOf(false) }
-    var showFilterSheet by rememberSaveable { mutableStateOf(false) }
-    var showAdjustSheet by rememberSaveable { mutableStateOf(false) }
+    var showFullFilterSheet by rememberSaveable { mutableStateOf(false) }
     var showCanvasBackgroundSheet by rememberSaveable { mutableStateOf(false) }
-    // 左侧工具栏 / 右侧浮动图层面板显隐,由底部「基础工具」「图层」Tab 切换
-    var sideBarVisible by rememberSaveable { mutableStateOf(true) }
-    var layersPanelVisible by rememberSaveable { mutableStateOf(true) }
+    // 底部 Tab 单一工作态:任一时刻至多一个 Tab 高亮(高亮即「当前工作态」)。
+    // basic=左侧工具栏、layers=浮动图层面板、filter=滤镜横滚面板、adjust/ai=对应 Sheet;
+    // 再点当前 Tab 或 Sheet dismiss 即清除(同时收起对应面板/Sheet)
+    var activeBottomTab by rememberSaveable { mutableStateOf<String?>(EditorTools.ID_BASIC) }
+    val sideBarVisible = activeBottomTab == EditorTools.ID_BASIC
+    val layersPanelVisible = activeBottomTab == EditorTools.ID_LAYERS
+    val filterPanelVisible = activeBottomTab == EditorTools.ID_FILTER
     // 「下一个新形状」的默认样式,由形状面板维护,关闭面板后保留
     var shapeDefaultSpec by remember { mutableStateOf(ShapeSpec.default(ShapeKind.Rectangle)) }
     val immersiveModeState = rememberImmersiveModeState()
 
     val onToolClick: (EditorTool) -> Unit = { tool ->
-        when (tool.id) {
-            // 「基础工具」Tab = 左侧工具栏显隐开关;「图层」Tab = 浮动图层面板显隐开关
-            EditorTools.ID_BASIC -> sideBarVisible = !sideBarVisible
-            EditorTools.ID_LAYERS -> layersPanelVisible = !layersPanelVisible
+        when {
+            // 底部 Tab 互斥:已是当前 → 清除;否则设为当前(显隐/开关由 activeBottomTab 派生)
+            tool.placement == EditorTool.Placement.BottomTab -> {
+                activeBottomTab = if (activeBottomTab == tool.id) null else tool.id
+            }
+
             else -> {
                 component.setActiveTool(tool.id)
                 when (tool.id) {
@@ -175,9 +181,6 @@ fun EditorScaffold(
                     EditorTools.ID_DRAW -> component.selectLayer(null)
                     EditorTools.ID_STICKER -> showStickerSheet = true
                     EditorTools.ID_SHAPE -> showShapeSheet = true
-                    EditorTools.ID_AI -> showAiSheet = true
-                    EditorTools.ID_FILTER -> showFilterSheet = true
-                    EditorTools.ID_ADJUST -> showAdjustSheet = true
                     // FullScreen 工具(裁剪)由 activeToolId 驱动,下方直接切换全屏页
                 }
             }
@@ -227,9 +230,9 @@ fun EditorScaffold(
         }
     }
 
-    // 滤镜面板开关同步给组件:打开期间画布切换为合成预览(底图+图层合成后过滤镜)
-    LaunchedEffect(showFilterSheet) {
-        component.setFilterSheetOpen(showFilterSheet)
+    // 滤镜横滚面板开关同步给组件:面板打开或已选滤镜期间,画布显示合成滤镜预览
+    LaunchedEffect(filterPanelVisible) {
+        component.setFilterSheetOpen(filterPanelVisible)
     }
 
     BaseScreen(
@@ -278,6 +281,7 @@ fun EditorScaffold(
                 drawSession = drawSession,
                 sideBarVisible = sideBarVisible,
                 layersPanelVisible = layersPanelVisible,
+                filterPanelVisible = filterPanelVisible,
                 onEditTextLayer = { layerId ->
                     component.beginTextEditSession(layerId)
                     component.setActiveTool(EditorTools.ID_TEXT)
@@ -286,6 +290,7 @@ fun EditorScaffold(
                 onOpenBrushSettings = { showBrushSettings = true },
                 onAddImageLayer = { imageLayerPicker.pickImage() },
                 onExpandLayers = { showLayersSheet = true },
+                onOpenFullFilterCatalog = { showFullFilterSheet = true },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
@@ -300,8 +305,7 @@ fun EditorScaffold(
                 } else {
                     EditorBottomBar(
                         component = component,
-                        sideBarVisible = sideBarVisible,
-                        layersPanelVisible = layersPanelVisible,
+                        activeBottomTab = activeBottomTab,
                         onToolClick = onToolClick,
                         onSaveClick = { showExportSheet = true }
                     )
@@ -344,28 +348,34 @@ fun EditorScaffold(
     )
 
     AdjustToolSheet(
-        visible = showAdjustSheet,
+        visible = activeBottomTab == EditorTools.ID_ADJUST,
         component = component,
-        onDismiss = { showAdjustSheet = false }
+        // Sheet dismiss(下滑/点外侧)时清除 Tab 高亮
+        onDismiss = { if (activeBottomTab == EditorTools.ID_ADJUST) activeBottomTab = null }
     )
 
+    // 完整滤镜目录(由横滚面板「更多」进入),选中滤镜回填后关闭
     AddFiltersSheet(
         component = component.addFiltersSheetComponent,
         filterTemplateCreationSheetComponent = component.filterTemplateCreationSheetComponent,
-        visible = showFilterSheet,
-        onDismiss = { showFilterSheet = false },
+        visible = showFullFilterSheet,
+        onDismiss = { showFullFilterSheet = false },
         previewBitmap = component.displayBitmap,
-        onFilterPicked = component::selectFilter,
+        onFilterPicked = { filter ->
+            component.selectFilter(filter)
+            showFullFilterSheet = false
+        },
         onFilterPickedWithParams = { filter ->
             // TODO: 带参数滤镜暂未做参数编辑页,本期按默认参数直接应用
             component.selectFilter(filter)
+            showFullFilterSheet = false
         },
         canAddTemplates = false
     )
 
     AiToolSheet(
-        visible = showAiSheet,
-        onDismiss = { showAiSheet = false }
+        visible = activeBottomTab == EditorTools.ID_AI,
+        onDismiss = { if (activeBottomTab == EditorTools.ID_AI) activeBottomTab = null }
     )
 
     CanvasBackgroundSheet(
@@ -539,20 +549,23 @@ private fun EditorCanvas(
     drawSession: DrawSessionState?,
     sideBarVisible: Boolean,
     layersPanelVisible: Boolean,
+    filterPanelVisible: Boolean,
     onEditTextLayer: (String) -> Unit,
     onToolClick: (EditorTool) -> Unit,
     onOpenBrushSettings: () -> Unit,
     onAddImageLayer: () -> Unit,
     onExpandLayers: () -> Unit,
+    onOpenFullFilterCatalog: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val zoomState = rememberZoomState(maxScale = 10f)
     val drawMode = drawSession != null
-    // 有选中(非锁定)图层且非滤镜合成预览时:画布手势作用于选中图层本身,画布缩放/平移让位
+    // 有选中(非锁定)图层时:画布手势作用于选中图层本身,画布缩放/平移让位
+    // (滤镜合成预览下选中图层不在合成图内,仍走 live 渲染与直接操纵)
     val gestureLayer = component.layers
         .firstOrNull { it.id == component.selectedLayerId }
         ?.takeIf {
-            !drawMode && component.filterCompositeBitmap == null && !it.transform.locked
+            !drawMode && !it.transform.locked
         }
     val transformSelection = gestureLayer != null
 
@@ -583,8 +596,8 @@ private fun EditorCanvas(
         ) {
             val bitmap = component.bitmap
             if (bitmap != null) {
-                // 滤镜面板打开期间展示合成预览(底图+图层烘焙后过滤镜),图层不再单独渲染;
-                // 否则底图滤镜预览(displayBitmap)+ 图层实时渲染
+                // 滤镜激活(选中滤镜或滤镜面板打开)时展示合成预览(底图+图层烘焙后过滤镜),
+                // 仅选中图层仍 live 渲染在最上层;无滤镜时底图滤镜预览(displayBitmap)+ 全量图层实时渲染
                 val filterComposite = component.filterCompositeBitmap
                 val display = filterComposite ?: component.displayBitmap ?: bitmap
                 val imageBitmap = remember(display) { display.asImageBitmap() }
@@ -646,13 +659,20 @@ private fun EditorCanvas(
                                 }
                             )
                         }
-                        if (filterComposite == null) {
+                        // 滤镜合成预览激活时仅选中图层保持 live 渲染(未过滤镜,作为「正在编辑」
+                        // 的视觉反馈,其余图层已烘焙进合成图);无滤镜时全部图层实时渲染
+                        val liveLayers = if (filterComposite == null) {
+                            component.layers
+                        } else {
+                            component.layers.filter { it.id == component.selectedLayerId }
+                        }
+                        if (liveLayers.isNotEmpty()) {
                             BoxWithConstraints(
                                 modifier = Modifier.matchParentSize()
                             ) {
                                 val layerCanvasWidth = constraints.maxWidth.toFloat()
                                 val layerCanvasHeight = constraints.maxHeight.toFloat()
-                                component.layers.forEach { layer ->
+                                liveLayers.forEach { layer ->
                                     key(layer.id) {
                                         val onEditRequest = (layer.type as? LayerType.Text)
                                             ?.let { { onEditTextLayer(layer.id) } }
@@ -707,6 +727,18 @@ private fun EditorCanvas(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .padding(end = 8.dp)
+            )
+        }
+
+        // 滤镜横滚面板:半浮动玻璃卡片,浮在画布底部(底部 Tab 栏上方),「滤镜」Tab 控制显隐
+        AnimatedVisibility(
+            visible = immersiveModeState.isUiVisible && !drawMode && filterPanelVisible,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            FilterPanel(
+                component = component,
+                onOpenFullCatalog = onOpenFullFilterCatalog,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
         }
 
@@ -874,8 +906,15 @@ private fun ZoomCapsule(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .clip(ShapeDefaults.circle)
-                .background(MaterialTheme.colorScheme.surfaceContainer)
+                // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                    shape = ShapeDefaults.circle
+                )
+                .glassDense(
+                    shape = ShapeDefaults.circle,
+                    color = MaterialTheme.colorScheme.surfaceContainer
+                )
                 .padding(horizontal = 4.dp, vertical = 2.dp)
         ) {
             EnhancedIconButton(
@@ -923,8 +962,15 @@ private fun EditorSideBar(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier
-            .clip(ShapeDefaults.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
+            .background(
+                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                shape = ShapeDefaults.extraLarge
+            )
+            .glassDense(
+                shape = ShapeDefaults.extraLarge,
+                color = MaterialTheme.colorScheme.surfaceContainer
+            )
             .padding(horizontal = 4.dp, vertical = 8.dp)
     ) {
         EditorTools.sideBar.forEach { tool ->
@@ -941,8 +987,7 @@ private fun EditorSideBar(
 @Composable
 private fun EditorBottomBar(
     component: MarkupLayersComponent,
-    sideBarVisible: Boolean,
-    layersPanelVisible: Boolean,
+    activeBottomTab: String?,
     onToolClick: (EditorTool) -> Unit,
     onSaveClick: () -> Unit,
 ) {
@@ -950,9 +995,8 @@ private fun EditorBottomBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            // 不透明容器背景(顶部圆角),避免透出画布背景,与顶栏风格协调
-            .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            // 容器背景走全局玻璃体系(顶部圆角),玻璃关闭时退化为实色
+            .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
             .navigationBarsPadding()
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
@@ -964,11 +1008,7 @@ private fun EditorBottomBar(
                 tabs.forEach { tool ->
                     EditorToolItem(
                         tool = tool,
-                        isActive = when (tool.id) {
-                            EditorTools.ID_BASIC -> sideBarVisible
-                            EditorTools.ID_LAYERS -> layersPanelVisible
-                            else -> component.activeToolId == tool.id
-                        },
+                        isActive = activeBottomTab == tool.id,
                         onClick = { onToolClick(tool) },
                         modifier = Modifier.width(itemWidth)
                     )
@@ -987,7 +1027,7 @@ private fun EditorBottomBar(
 /** 底部 Tab 单项的最小宽度,窄屏低于该宽度时 Tab 区进入横滑 */
 private val TAB_ITEM_MIN_WIDTH = 64.dp
 
-/** 绘制模式底部操作条:左「取消」丢弃退出,右「完成」落成 Draw 图层;与底部 Tab 栏同款容器风格 */
+/** 绘制模式底部操作条:左「取消」丢弃退出,右「完成」落成 Draw 图层;与底部 Tab 栏同款玻璃容器 */
 @Composable
 private fun DrawModeActionBar(
     onCancel: () -> Unit,
@@ -997,8 +1037,7 @@ private fun DrawModeActionBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
             .navigationBarsPadding()
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {

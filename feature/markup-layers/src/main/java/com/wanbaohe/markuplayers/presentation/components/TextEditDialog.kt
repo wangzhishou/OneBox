@@ -27,7 +27,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,6 +66,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerType
@@ -153,7 +153,7 @@ private fun TextEditContent(
 ) {
     val focusRequester = remember { FocusRequester() }
     Column(modifier = Modifier.fillMaxWidth()) {
-        OutlinedTextField(
+        GlassOutlinedTextField(
             value = text.text,
             onValueChange = { value -> onTextChange { it.copy(text = value) } },
             placeholder = { Text(stringResource(R.string.markup_text_input_hint)) },
@@ -594,6 +594,8 @@ private fun TextSliderRow(
             value = value,
             onValueChange = onValueChange,
             valueRange = valueRange,
+            // 滑杆不带背景容器,直接排布
+            drawContainer = false,
             modifier = Modifier.weight(1f)
         )
         Text(

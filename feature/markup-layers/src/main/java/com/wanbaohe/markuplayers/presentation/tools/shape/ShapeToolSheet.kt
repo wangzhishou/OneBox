@@ -342,6 +342,7 @@ private fun ShapeSliderRow(
             onValueChangeFinished = { dragValue = null },
             valueRange = valueRange,
             enabled = enabled,
+            drawContainer = false,
             modifier = Modifier.weight(1f)
         )
         Text(

@@ -114,6 +114,7 @@ private fun BrushSettingsContent(session: DrawSessionState) {
                 value = session.widthPx,
                 onValueChange = { session.widthPx = it },
                 valueRange = 2f..96f,
+                drawContainer = false,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -126,6 +127,7 @@ private fun BrushSettingsContent(session: DrawSessionState) {
                 value = session.alpha,
                 onValueChange = { session.alpha = it },
                 valueRange = 0.05f..1f,
+                drawContainer = false,
                 modifier = Modifier.weight(1f)
             )
         }

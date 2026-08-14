@@ -5,9 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
@@ -53,8 +56,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.rememberClipboardData
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
@@ -65,6 +66,7 @@ import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
  * 居中大卡片 + 相册/相机/粘贴/空白画布导入入口,下方「最近项目」横排缩略图
  * (公共最近访问表:打开图片/保存成功时记录,uri 去重,组件内 Flow 持续观察)。
  * 设计稿的「示例图」入口因项目无现成示例图资源,本期省略。
+ * 顶栏走 [BaseScreen]:不传 actions,右上角显示默认 actionIcon(TopAppBarEmoji)。
  */
 @Composable
 fun MarkupHomeContent(
@@ -84,71 +86,85 @@ fun MarkupHomeContent(
     val clipboardUris by rememberClipboardData()
     var showBlankCanvasSheet by rememberSaveable { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        EnhancedTopAppBar(
-            title = {
-                Column {
-                    Text(stringResource(R.string.markup_home_title))
-                    Text(
-                        text = stringResource(R.string.markup_home_tagline),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            },
-            type = EnhancedTopAppBarType.Center,
-            navigationIcon = {
-                EnhancedIconButton(onClick = component.onGoBack) {
-                    Icon(
-                        imageVector = Icons.Rounded.ArrowBack,
-                        contentDescription = stringResource(R.string.markup_back)
-                    )
-                }
+    BaseScreen(
+        title = {
+            Column {
+                Text(stringResource(R.string.markup_home_title))
+                Text(
+                    text = stringResource(R.string.markup_home_tagline),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
-        )
-
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(24.dp)
-        ) {
-            ImportCard(
-                onImportClick = galleryPicker::pickImage,
-                entries = {
-                    ImportEntry(
-                        icon = Icons.Outlined.Image,
-                        label = stringResource(R.string.markup_entry_gallery),
-                        onClick = galleryPicker::pickImage
-                    )
-                    ImportEntry(
-                        icon = Icons.Outlined.CameraAlt,
-                        label = stringResource(R.string.markup_entry_camera),
-                        onClick = cameraPicker::pickImage
-                    )
-                    if (clipboardUris.isNotEmpty()) {
-                        ImportEntry(
-                            icon = Icons.Rounded.ContentPaste,
-                            label = stringResource(R.string.markup_entry_paste),
-                            onClick = { clipboardUris.firstOrNull()?.let(setImage) }
+        },
+        onGoBack = component.onGoBack,
+        navigationIcon = {
+            EnhancedIconButton(onClick = component.onGoBack) {
+                Icon(
+                    imageVector = Icons.Rounded.ArrowBack,
+                    contentDescription = stringResource(R.string.markup_back)
+                )
+            }
+        },
+        content = {
+            // 导入卡片 + 最近项目作为整体在剩余空间内垂直居中;内容超出高度时再滚动
+            // (scroll 容器内嵌一层 minHeight=视口高度的 Column,由 Arrangement.Center 居中)
+            BoxWithConstraints(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+            ) {
+                val viewportHeight = maxHeight
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = viewportHeight)
+                            .padding(24.dp)
+                    ) {
+                        ImportCard(
+                            onImportClick = galleryPicker::pickImage,
+                            entries = {
+                                ImportEntry(
+                                    icon = Icons.Outlined.Image,
+                                    label = stringResource(R.string.markup_entry_gallery),
+                                    onClick = galleryPicker::pickImage
+                                )
+                                ImportEntry(
+                                    icon = Icons.Outlined.CameraAlt,
+                                    label = stringResource(R.string.markup_entry_camera),
+                                    onClick = cameraPicker::pickImage
+                                )
+                                if (clipboardUris.isNotEmpty()) {
+                                    ImportEntry(
+                                        icon = Icons.Rounded.ContentPaste,
+                                        label = stringResource(R.string.markup_entry_paste),
+                                        onClick = { clipboardUris.firstOrNull()?.let(setImage) }
+                                    )
+                                }
+                                ImportEntry(
+                                    icon = Icons.Outlined.NoteAdd,
+                                    label = stringResource(R.string.markup_entry_blank_canvas),
+                                    onClick = { showBlankCanvasSheet = true }
+                                )
+                            }
+                        )
+                        Spacer(Modifier.height(24.dp))
+                        RecentProjectsSection(
+                            projects = component.recentProjects,
+                            onProjectClick = setImage
                         )
                     }
-                    ImportEntry(
-                        icon = Icons.Outlined.NoteAdd,
-                        label = stringResource(R.string.markup_entry_blank_canvas),
-                        onClick = { showBlankCanvasSheet = true }
-                    )
                 }
-            )
-            Spacer(Modifier.height(24.dp))
-            RecentProjectsSection(
-                projects = component.recentProjects,
-                onProjectClick = setImage
-            )
+            }
         }
-    }
+    )
 
     BlankCanvasSheet(
         visible = showBlankCanvasSheet,

@@ -89,7 +89,9 @@ private fun StickerPanel(
     onStickerClick: (StickerSource) -> Unit,
 ) {
     var category by rememberSaveable { mutableStateOf(StickerCategory.Emoji.name) }
-    val currentCategory = StickerCategory.valueOf(category)
+    // 兜底:枚举改名/重构后恢复出的旧值不再存在时回退到默认分类,避免 valueOf 抛异常
+    val currentCategory = StickerCategory.entries.firstOrNull { it.name == category }
+        ?: StickerCategory.Emoji
 
     Column(
         modifier = Modifier

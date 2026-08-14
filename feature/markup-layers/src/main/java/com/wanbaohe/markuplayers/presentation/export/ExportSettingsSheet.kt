@@ -15,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +30,7 @@ import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import kotlin.math.roundToInt
@@ -119,6 +119,8 @@ fun ExportSettingsSheet(
                     },
                     valueRange = 10f..100f,
                     enabled = settings.format.canChangeCompressionValue,
+                    // 滑杆不带背景容器,直接排布
+                    drawContainer = false,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -357,7 +359,7 @@ private fun SizeField(
     onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedTextField(
+    GlassOutlinedTextField(
         value = value.takeIf { it > 0 }?.toString().orEmpty(),
         onValueChange = { text ->
             onValueChange(text.filter(Char::isDigit).take(5).toIntOrNull() ?: 0)

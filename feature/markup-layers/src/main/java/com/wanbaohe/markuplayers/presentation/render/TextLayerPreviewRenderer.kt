@@ -36,7 +36,8 @@ object TextLayerPreviewRenderer : LayerPreviewRenderer {
         canvasHeightPx: Float,
     ) {
         val type = layer.type as? LayerType.Text ?: return
-        if (type.text.isEmpty()) return
+        // 与导出侧(isBlank 跳过)一致:纯空白字符不渲染,避免预览/导出不一致
+        if (type.text.isBlank()) return
 
         val density = LocalDensity.current
         val fontSizePx = type.fontSizeRatio * canvasWidthPx

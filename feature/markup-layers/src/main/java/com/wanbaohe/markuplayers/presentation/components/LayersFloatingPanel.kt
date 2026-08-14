@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,8 +40,11 @@ import com.t8rin.imagetoolbox.core.resources.icons.Visibility
 import com.t8rin.imagetoolbox.core.resources.icons.VisibilityOff
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.longPress
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.press
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
+import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
@@ -50,15 +52,16 @@ import kotlin.math.roundToInt
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.outlined.CheckBoxOutlineBlank
 import androidx.compose.material.icons.outlined.UnfoldMore
 import androidx.compose.material.icons.rounded.Lock
 
 /**
  * 画布右侧浮动图层小面板(设计稿「图片创作」主界面):
- * 紧凑图层列表(长按拖拽排序)+ 背景装饰行 + 选中图层的不透明度滑杆
+ * 紧凑图层列表(长按拖拽排序)+ 背景层行(当前底图缩略图 + 锁,装饰不可操作)
  * + 底部操作行(删除/复制选中图层)。
- * 点标题区/展开按钮打开完整 [LayersSheet]。仅在有图层时显示。
+ * 面板始终可打开:零图层时列表区显示空提示,背景层行保留。
+ * 选中图层的不透明度滑杆在玻璃容器外(面板下方独立一行,无背景)。
+ * 点标题区/展开按钮打开完整 [LayersSheet]。
  */
 @Composable
 internal fun LayersFloatingPanel(
@@ -70,23 +73,41 @@ internal fun LayersFloatingPanel(
     modifier: Modifier = Modifier,
 ) {
     val layers = component.layers
-    if (layers.isEmpty()) return
 
-    Column(
-        modifier = modifier
-            .width(160.dp)
-            .clip(ShapeDefaults.extraLarge)
-            .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f))
-            .padding(horizontal = 8.dp, vertical = 6.dp)
-    ) {
-        PanelHeader(
-            onAddText = onAddText,
-            onAddSticker = onAddSticker,
-            onAddImage = onAddImage,
-            onExpand = onExpand
-        )
-        CompactLayerList(component = component)
-        BackgroundRow()
+    Column(modifier = modifier.width(160.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                    shape = ShapeDefaults.extraLarge
+                )
+                .glassDense(
+                    shape = ShapeDefaults.extraLarge,
+                    color = MaterialTheme.colorScheme.surfaceContainer
+                )
+                .padding(horizontal = 8.dp, vertical = 6.dp)
+        ) {
+            PanelHeader(
+                onAddText = onAddText,
+                onAddSticker = onAddSticker,
+                onAddImage = onAddImage,
+                onExpand = onExpand
+            )
+            if (layers.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.markup_layers_empty),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            } else {
+                CompactLayerList(component = component)
+            }
+            BackgroundRow(component = component)
+            PanelActionRow(component = component)
+        }
         val selected = layers.firstOrNull { it.id == component.selectedLayerId }
         if (selected != null) {
             SelectedLayerOpacity(
@@ -96,7 +117,6 @@ internal fun LayersFloatingPanel(
                 enabled = !selected.transform.locked
             )
         }
-        PanelActionRow(component = component)
     }
 }
 
@@ -240,20 +260,23 @@ private fun CompactLayerRow(
     }
 }
 
-/** 背景行:装饰用,不可操作 */
+/** 背景层行:当前底图缩略图 + 锁图标,装饰用,不可选中/删除;始终在列表底部 */
 @Composable
-private fun BackgroundRow() {
+private fun BackgroundRow(component: MarkupLayersComponent) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
-        Icon(
-            imageVector = MaterialIcons.Outlined.CheckBoxOutlineBlank,
+        Picture(
+            model = component.displayBitmap,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(18.dp)
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(28.dp)
+                .clip(ShapeDefaults.small)
+                .transparencyChecker()
         )
         Text(
             text = stringResource(R.string.markup_layer_background),
@@ -272,7 +295,7 @@ private fun BackgroundRow() {
     }
 }
 
-/** 当前选中图层的不透明度 */
+/** 当前选中图层的不透明度:面板玻璃容器外、下方独立一行,无背景容器 */
 @Composable
 private fun SelectedLayerOpacity(
     component: MarkupLayersComponent,
@@ -280,34 +303,35 @@ private fun SelectedLayerOpacity(
     alpha: Float,
     enabled: Boolean,
 ) {
-    HorizontalDivider(
-        color = MaterialTheme.colorScheme.outlineVariant,
-        modifier = Modifier.padding(vertical = 4.dp)
-    )
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp, start = 4.dp, end = 4.dp)
     ) {
-        Text(
-            text = stringResource(R.string.markup_layer_opacity),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = "${(alpha * 100).roundToInt()}%",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.markup_layer_opacity),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "${(alpha * 100).roundToInt()}%",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        LayerOpacitySlider(
+            alpha = alpha,
+            enabled = enabled,
+            onDragStart = component::beginLayerAlphaChange,
+            onAlphaChange = { component.updateLayerAlphaTransient(layerId, it) },
+            modifier = Modifier.fillMaxWidth()
         )
     }
-    LayerOpacitySlider(
-        alpha = alpha,
-        enabled = enabled,
-        onDragStart = component::beginLayerAlphaChange,
-        onAlphaChange = { component.updateLayerAlphaTransient(layerId, it) },
-        modifier = Modifier.fillMaxWidth()
-    )
-    Spacer(Modifier.height(2.dp))
 }
 
 /** 底部操作行:删除/复制选中图层,无选中或选中项锁定时置灰 */

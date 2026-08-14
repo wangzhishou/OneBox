@@ -74,6 +74,10 @@
     <string name="markup_adjust_saturation">饱和度</string>
     <string name="markup_reset">重置</string>
 
+    <!-- 滤镜面板 -->
+    <string name="markup_filter_original">原图</string>
+    <string name="markup_filter_more">更多</string>
+
     <!-- 裁剪旋转 -->
     <string name="markup_crop_title">裁剪与旋转</string>
     <string name="markup_crop_ratio">裁剪比例</string>

@@ -74,6 +74,10 @@
     <string name="markup_adjust_saturation">Saturation</string>
     <string name="markup_reset">Reset</string>
 
+    <!-- 滤镜面板 -->
+    <string name="markup_filter_original">Original</string>
+    <string name="markup_filter_more">More</string>
+
     <!-- 裁剪旋转 -->
     <string name="markup_crop_title">Crop &amp; Rotate</string>
     <string name="markup_crop_ratio">Aspect ratio</string>
