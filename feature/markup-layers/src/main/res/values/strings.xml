@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 空状态首页 -->
-    <string name="markup_home_title">Image Console</string>
+    <string name="markup_home_title">Image Studio</string>
     <string name="markup_back">Back</string>
     <string name="markup_home_tagline">Pro · Fast · Smart</string>
     <string name="markup_import_hint">Import an image to start editing</string>
@@ -33,7 +33,7 @@
     <string name="markup_menu_immersive_preview">Immersive preview</string>
     <string name="markup_coming_soon">Coming soon</string>
     <string name="markup_canvas_background">Canvas background</string>
-    <string name="markup_canvas_bg_checkerboard">Checkerboard (default)</string>
+    <string name="markup_canvas_bg_default">Default</string>
     <string name="markup_canvas_bg_solid">Solid color</string>
 
     <!-- 工具 -->
@@ -83,12 +83,10 @@
     <string name="markup_crop_rotate_right">Rotate right</string>
     <string name="markup_crop_flip_horizontal">Flip horizontal</string>
     <string name="markup_crop_flip_vertical">Flip vertical</string>
-    <string name="markup_crop_rotate_entry">Rotate</string>
     <string name="markup_layers_merged">Layers merged</string>
     <string name="markup_base_transform_failed">Failed to apply crop/rotate</string>
 
     <!-- 画笔工具 -->
-    <string name="markup_draw_title">Draw</string>
     <string name="markup_draw_brush_type">Brush type</string>
     <string name="markup_brush_pencil">Pencil</string>
     <string name="markup_brush_pen">Pen</string>
@@ -101,6 +99,15 @@
     <string name="markup_draw_eraser_mode">Eraser</string>
     <string name="markup_draw_pan_mode">Pan</string>
     <string name="markup_draw_done">Done</string>
+    <string name="markup_brush_settings_title">Brush settings</string>
+
+    <!-- 缩放胶囊 -->
+    <string name="markup_zoom_in">Zoom in</string>
+    <string name="markup_zoom_out">Zoom out</string>
+
+    <!-- 最近项目 -->
+    <string name="markup_recent_projects">Recent projects</string>
+    <string name="markup_recent_projects_empty">No recent projects</string>
 
     <!-- 贴纸工具 -->
     <string name="markup_sticker_title">Stickers</string>
@@ -128,10 +135,6 @@
 
     <!-- 文字工具 -->
     <string name="markup_confirm">Confirm</string>
-    <string name="markup_text_tab_keyboard">Keyboard</string>
-    <string name="markup_text_tab_style">Style</string>
-    <string name="markup_text_tab_wordart">WordArt</string>
-    <string name="markup_text_tab_animation">Animation</string>
     <string name="markup_text_input_hint">Enter text</string>
     <string name="markup_text_font">Font</string>
     <string name="markup_text_more_fonts">More fonts</string>
@@ -150,7 +153,6 @@
     <string name="markup_text_strikethrough">Strikethrough</string>
     <string name="markup_text_background">Background</string>
     <string name="markup_text_outline">Outline</string>
-    <string name="markup_text_duplicate">Duplicate</string>
     <string name="markup_delete">Delete</string>
 
     <!-- 图层 -->
@@ -170,6 +172,7 @@
     <string name="markup_blend_normal">Normal</string>
     <string name="markup_layer_toggle_lock">Toggle lock</string>
     <string name="markup_delete_layer">Delete layer</string>
+    <string name="markup_duplicate_layer">Duplicate layer</string>
     <string name="markup_merge_layer">Merge down</string>
     <string name="markup_move_layer_up">Move up</string>
     <string name="markup_move_layer_down">Move down</string>

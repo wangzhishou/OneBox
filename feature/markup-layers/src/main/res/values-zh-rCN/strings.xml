@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 空状态首页 -->
-    <string name="markup_home_title">图片处理控制台</string>
+    <string name="markup_home_title">图片创作</string>
     <string name="markup_back">返回</string>
     <string name="markup_home_tagline">专业 · 高效 · 智能</string>
     <string name="markup_import_hint">导入图片开始编辑</string>
@@ -33,7 +33,7 @@
     <string name="markup_menu_immersive_preview">沉浸预览</string>
     <string name="markup_coming_soon">敬请期待</string>
     <string name="markup_canvas_background">画布背景</string>
-    <string name="markup_canvas_bg_checkerboard">棋盘格(默认)</string>
+    <string name="markup_canvas_bg_default">默认</string>
     <string name="markup_canvas_bg_solid">纯色</string>
 
     <!-- 工具 -->
@@ -83,14 +83,11 @@
     <string name="markup_crop_rotate_right">向右旋转</string>
     <string name="markup_crop_flip_horizontal">水平翻转</string>
     <string name="markup_crop_flip_vertical">垂直翻转</string>
-    <string name="markup_crop_rotate_entry">旋转</string>
     <string name="markup_layers_merged">已合并图层</string>
     <string name="markup_base_transform_failed">裁剪/旋转失败</string>
 
     <!-- 画笔工具 -->
-    <string name="markup_draw_title">绘画工具</string>
-    <string name="markup_draw_brush_type">画笔类型</string>
-    <string name="markup_brush_pencil">铅笔</string>
+    <string name="markup_draw_brush_type">画笔类型</string>    <string name="markup_brush_pencil">铅笔</string>
     <string name="markup_brush_pen">钢笔</string>
     <string name="markup_brush_brush">毛笔</string>
     <string name="markup_brush_marker">马克笔</string>
@@ -101,6 +98,15 @@
     <string name="markup_draw_eraser_mode">橡皮擦</string>
     <string name="markup_draw_pan_mode">浏览</string>
     <string name="markup_draw_done">完成</string>
+    <string name="markup_brush_settings_title">画笔设置</string>
+
+    <!-- 缩放胶囊 -->
+    <string name="markup_zoom_in">放大</string>
+    <string name="markup_zoom_out">缩小</string>
+
+    <!-- 最近项目 -->
+    <string name="markup_recent_projects">最近项目</string>
+    <string name="markup_recent_projects_empty">暂无最近项目</string>
 
     <!-- 贴纸工具 -->
     <string name="markup_sticker_title">贴纸素材</string>
@@ -128,10 +134,6 @@
 
     <!-- 文字工具 -->
     <string name="markup_confirm">确认</string>
-    <string name="markup_text_tab_keyboard">键盘</string>
-    <string name="markup_text_tab_style">样式</string>
-    <string name="markup_text_tab_wordart">花字</string>
-    <string name="markup_text_tab_animation">动画</string>
     <string name="markup_text_input_hint">输入文字</string>
     <string name="markup_text_font">字体</string>
     <string name="markup_text_more_fonts">更多字体</string>
@@ -150,7 +152,6 @@
     <string name="markup_text_strikethrough">删除线</string>
     <string name="markup_text_background">背景</string>
     <string name="markup_text_outline">描边</string>
-    <string name="markup_text_duplicate">复制</string>
     <string name="markup_delete">删除</string>
 
     <!-- 图层 -->
@@ -170,6 +171,7 @@
     <string name="markup_blend_normal">正常</string>
     <string name="markup_layer_toggle_lock">切换锁定</string>
     <string name="markup_delete_layer">删除图层</string>
+    <string name="markup_duplicate_layer">复制图层</string>
     <string name="markup_merge_layer">合并图层</string>
     <string name="markup_move_layer_up">向上移动</string>
     <string name="markup_move_layer_down">向下移动</string>

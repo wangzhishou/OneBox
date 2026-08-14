@@ -27,8 +27,8 @@ data class EditorTool(
     /** SideBar = 画布左侧竖排;BottomTab = 底部主 Tab 栏;Hidden = 不在栏位展示(由其他入口打开) */
     enum class Placement { SideBar, BottomTab, Hidden }
 
-    /** Sheet = 底部弹面板;FullScreen = 全屏子页;Action = 立即动作 */
-    enum class Mode { Sheet, FullScreen, Action }
+    /** Sheet = 底部弹面板;FullScreen = 全屏子页;Inline = 画布内模式(不跳页,由 EditorScaffold 内切换);Action = 立即动作 */
+    enum class Mode { Sheet, FullScreen, Inline, Action }
 }
 
 object EditorTools {
@@ -58,14 +58,14 @@ object EditorTools {
             titleRes = R.string.markup_tool_draw,
             icon = Icons.Rounded.FreeDraw,
             placement = EditorTool.Placement.SideBar,
-            mode = EditorTool.Mode.FullScreen
+            mode = EditorTool.Mode.Inline
         ),
         EditorTool(
             id = ID_TEXT,
             titleRes = R.string.markup_tool_text,
             icon = Icons.Outlined.LineText,
             placement = EditorTool.Placement.SideBar,
-            mode = EditorTool.Mode.FullScreen
+            mode = EditorTool.Mode.Action
         ),
         EditorTool(
             id = ID_STICKER,
@@ -81,12 +81,21 @@ object EditorTools {
             placement = EditorTool.Placement.SideBar,
             mode = EditorTool.Mode.Sheet
         ),
+        // 裁剪旋转页:左侧工具栏入口,点击直接进全屏工具页
+        EditorTool(
+            id = ID_CROP,
+            titleRes = R.string.markup_tool_crop,
+            icon = Icons.Outlined.LineCrop,
+            placement = EditorTool.Placement.SideBar,
+            mode = EditorTool.Mode.FullScreen
+        ),
+        // 「基础工具」Tab:左侧工具栏的显隐开关(侧栏承载选择/画笔/文字/贴纸/形状/裁剪)
         EditorTool(
             id = ID_BASIC,
             titleRes = R.string.markup_tool_basic,
             icon = Icons.Outlined.LineContentCut,
             placement = EditorTool.Placement.BottomTab,
-            mode = EditorTool.Mode.Sheet
+            mode = EditorTool.Mode.Action
         ),
         EditorTool(
             id = ID_AI,
@@ -109,20 +118,13 @@ object EditorTools {
             placement = EditorTool.Placement.BottomTab,
             mode = EditorTool.Mode.Sheet
         ),
+        // 「图层」Tab:右侧浮动图层面板的显隐开关(完整 LayersSheet 由面板内「展开」打开)
         EditorTool(
             id = ID_LAYERS,
             titleRes = R.string.markup_tool_layers,
             icon = Icons.Outlined.Stacks,
             placement = EditorTool.Placement.BottomTab,
-            mode = EditorTool.Mode.Sheet
-        ),
-        // 裁剪旋转页:从「基础工具」面板的入口打开,不占栏位
-        EditorTool(
-            id = ID_CROP,
-            titleRes = R.string.markup_tool_crop,
-            icon = Icons.Outlined.LineCrop,
-            placement = EditorTool.Placement.Hidden,
-            mode = EditorTool.Mode.FullScreen
+            mode = EditorTool.Mode.Action
         ),
     )
 

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -61,6 +59,8 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlip
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotateLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotateRight
+import com.shifenmiao.base.ui.button.CancelButton
+import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
@@ -178,21 +178,20 @@ private fun CropTopBar(
         },
         type = EnhancedTopAppBarType.Center,
         navigationIcon = {
-            TextButton(onClick = onCancel) {
-                Text(stringResource(R.string.markup_cancel))
-            }
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = onCancel
+            )
         },
         actions = {
+            // 「重置」为次级操作,保留文字按钮
             TextButton(onClick = onReset) {
                 Text(stringResource(R.string.markup_reset))
             }
-            // 确认按钮实心主色,与文字样式的取消/重置拉开层级
-            Button(
-                onClick = onConfirm,
-                contentPadding = PaddingValues(horizontal = 16.dp)
-            ) {
-                Text(stringResource(R.string.markup_confirm))
-            }
+            ConfirmButton(
+                text = stringResource(R.string.markup_confirm),
+                onClick = onConfirm
+            )
         }
     )
 }

@@ -1,5 +1,6 @@
 package com.wanbaohe.markuplayers.presentation.screenLogic
 
+import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorMatrix
@@ -14,6 +15,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.shifenmiao.common.recent.RecentAccessRepository
+import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
@@ -35,6 +38,9 @@ import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.t8rin.imagetoolbox.core.utils.appContext
+import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
+import com.t8rin.imagetoolbox.core.utils.filename
 import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.MarkupLayersApplier
@@ -82,6 +88,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val shareProvider: ImageShareProvider<Bitmap>,
     private val markupLayersApplier: MarkupLayersApplier<Bitmap>,
     private val filterProvider: FilterProvider<Bitmap>,
+    private val recentAccessRepository: RecentAccessRepository,
     addFiltersSheetComponentFactory: AddFiltersSheetComponent.Factory,
     filterTemplateCreationSheetComponentFactory: FilterTemplateCreationSheetComponent.Factory
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -99,6 +106,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         )
 
     init {
+        observeRecentProjects()
         debounce {
             initialUri?.let {
                 setUri(
@@ -292,9 +300,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
 
     // ---------------- 画布背景(操作台显示,会话级不持久化) ----------------
 
-    /** 编辑器画布背景:棋盘格(默认)或纯色;仅影响画布显示,不参与导出,故不记 changes */
+    /** 编辑器画布背景:默认(主题 surface 色)或纯色;仅影响画布显示,不参与导出,故不记 changes */
     private val _canvasBackground: MutableState<CanvasBackground> =
-        mutableStateOf(CanvasBackground.Checkerboard)
+        mutableStateOf(CanvasBackground.Default)
     val canvasBackground: CanvasBackground by _canvasBackground
 
     fun setCanvasBackground(background: CanvasBackground) {
@@ -527,6 +535,24 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         id: String,
         transform: LayerTransform
     ) = updateLayer(id) { it.copy(transform = transform) }
+
+    /** 画布手势拖动开始:整段手势只记一次历史快照,配合 [updateLayerTransformTransient] 使用 */
+    fun beginLayerTransformChange() {
+        history.snapshot(_layers.value)
+        onLayersChanged()
+    }
+
+    /** 画布手势拖动中:直接改值不入历史(快照已在 [beginLayerTransformChange] 记录) */
+    fun updateLayerTransformTransient(
+        id: String,
+        transform: LayerTransform
+    ) {
+        if (_layers.value.none { it.id == id }) return
+        _layers.update { list ->
+            list.map { if (it.id == id) it.copy(transform = transform) else it }
+        }
+        registerChanges()
+    }
 
     fun removeLayer(id: String) {
         if (_layers.value.none { it.id == id }) return
@@ -884,6 +910,60 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
+    // ---------------- 首页「最近项目」(最近打开的图片文件) ----------------
+
+    /**
+     * 最近打开/保存的图片文件,供首页「最近项目」横排展示。
+     * 数据来自公共最近访问表([RecentAccessRepository]):setUri 打开图片与
+     * 保存成功时各记录一次,uri 为唯一键自动去重;失效 uri 由 UI 层加载失败时剔除。
+     */
+    private val _recentProjects: MutableState<List<RecentAccessEntity>> = mutableStateOf(emptyList())
+    val recentProjects: List<RecentAccessEntity> by _recentProjects
+
+    private fun observeRecentProjects() {
+        componentScope.launch {
+            recentAccessRepository
+                .observeByType(RecentAccessRepository.TYPE_FILE, limit = RECENT_OBSERVE_LIMIT)
+                .collect { entries ->
+                    _recentProjects.update {
+                        entries.filter { entity ->
+                            IMAGE_EXTENSIONS.any {
+                                entity.displayName.lowercase().endsWith(".$it")
+                            }
+                        }.take(RECENT_PROJECTS_LIMIT)
+                    }
+                }
+        }
+    }
+
+    /**
+     * 记录一次图片文件访问(最近打开/保存产物),uri 为唯一键自动去重。
+     * 相机拍摄/粘贴缓存等临时 uri 直接跳过,其余失败静默(记录只是辅助行为)。
+     */
+    private fun recordRecentAccess(
+        uri: Uri,
+        displayName: String? = null
+    ) {
+        if (uri.isTransientUri()) return
+        componentScope.launch(ioDispatcher) {
+            runCatching {
+                recentAccessRepository.recordAccess(
+                    uri = uri.toString(),
+                    displayName = displayName?.takeIf { it.isNotBlank() }
+                        ?: uri.filename().orEmpty().ifBlank { FALLBACK_IMAGE_NAME },
+                    accessType = RecentAccessRepository.TYPE_FILE,
+                    pathHint = uri.path
+                )
+            }
+        }
+    }
+
+    /** 相机拍摄(app FileProvider)与粘贴缓存(cacheDir 下 file://)等临时 uri 不进最近记录 */
+    private fun Uri.isTransientUri(): Boolean =
+        toString().contains(appContext.fileProviderAuthority) ||
+            (scheme == ContentResolver.SCHEME_FILE &&
+                path?.startsWith(appContext.cacheDir.absolutePath) == true)
+
     // ---------------- 图片加载 ----------------
 
     fun setUri(
@@ -913,6 +993,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                         it.copy(format = data.imageInfo.imageFormat.toExportFormat())
                     }
                     updateBitmap(data.image)
+                    // 「最近打开」记录:仅在图片确实加载成功后记
+                    recordRecentAccess(uri)
                 },
                 onFailure = onFailure
             )
@@ -944,7 +1026,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         filterCompositeJob = null
         _filterCompositeBitmap.value = null
         _filterSheetOpen.value = false
-        _canvasBackground.value = CanvasBackground.Checkerboard
+        _canvasBackground.value = CanvasBackground.Default
         endLayerEditSession()
         history.clear()
         _canUndo.value = false
@@ -1006,12 +1088,16 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 oneTimeSaveLocationUri = oneTimeSaveLocationUri
             ).onSuccess(::registerSave)
             onComplete(saveResult)
-            if (saveResult is SaveResult.Success && _exportSettings.value.shareAfterSave) {
-                shareProvider.shareImage(
-                    image = rendered,
-                    imageInfo = imageInfo,
-                    onComplete = {}
-                )
+            if (saveResult is SaveResult.Success) {
+                // 保存产物记入「最近项目」(覆盖原图时 fileUri 即原 uri,等于刷新其时间戳)
+                saveResult.fileUri?.let { recordRecentAccess(it.toUri(), saveResult.fileName) }
+                if (_exportSettings.value.shareAfterSave) {
+                    shareProvider.shareImage(
+                        image = rendered,
+                        imageInfo = imageInfo,
+                        onComplete = {}
+                    )
+                }
             }
             _isSaving.value = false
         }
@@ -1086,6 +1172,18 @@ class MarkupLayersComponent @AssistedInject internal constructor(
 
 /** 空白画布单边像素上限,防止自定义尺寸输入过大导致 OOM */
 private const val MAX_CANVAS_SIDE = 8192
+
+/** 首页「最近项目」展示条数上限 */
+private const val RECENT_PROJECTS_LIMIT = 12
+
+/** 观察最近访问表的拉取条数(过滤图片扩展名后再截取展示上限) */
+private const val RECENT_OBSERVE_LIMIT = 50
+
+/** 「最近项目」纳入展示的图片扩展名(小写比较) */
+private val IMAGE_EXTENSIONS = listOf("jpg", "jpeg", "png", "webp", "gif", "bmp")
+
+/** 无法从 uri 解析文件名时的兜底显示名 */
+private const val FALLBACK_IMAGE_NAME = "图片"
 
 /** 底图变换(裁剪/旋转/翻转)链路日志 tag */
 private const val LOG_TAG = "MarkupBaseTransform"

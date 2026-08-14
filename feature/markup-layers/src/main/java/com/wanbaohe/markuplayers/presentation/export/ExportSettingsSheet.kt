@@ -11,15 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -31,9 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.base.ui.button.CancelButton
+import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.Save
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
@@ -58,22 +53,18 @@ fun ExportSettingsSheet(
         visible = visible,
         onDismiss = { onDismiss() },
         title = {
-            // 取消用描边样式,与实心主色的保存拉开层级
-            OutlinedButton(onClick = onDismiss) {
-                Text(stringResource(R.string.markup_cancel))
-            }
+            // 底栏 Row 仅自带 end padding,左侧这里补齐,与右侧对称
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = onDismiss,
+                modifier = Modifier.padding(start = 16.dp)
+            )
         },
         confirmButton = {
-            // 实心主色确认按钮(M3 Button 不受全局玻璃样式影响)
-            Button(onClick = onSave) {
-                Icon(
-                    imageVector = Icons.Outlined.Save,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(stringResource(R.string.markup_save))
-            }
+            ConfirmButton(
+                text = stringResource(R.string.markup_save),
+                onClick = onSave
+            )
         },
         sheetContent = {
             Column(

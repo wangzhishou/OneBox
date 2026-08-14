@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -33,6 +32,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
@@ -167,8 +167,10 @@ fun BlankCanvasSheet(
                     allowAlpha = false
                 )
 
-                // 实心主色确认按钮(M3 Button 不受全局玻璃样式影响)
-                Button(
+                // 创建为主操作,走项目封装的实心确认按钮
+                ConfirmButton(
+                    text = stringResource(R.string.markup_blank_canvas_create),
+                    enabled = resolvedWidth > 0 && resolvedHeight > 0,
                     onClick = {
                         onCreate(
                             resolvedWidth,
@@ -176,11 +178,8 @@ fun BlankCanvasSheet(
                             backgroundColor
                         )
                     },
-                    enabled = resolvedWidth > 0 && resolvedHeight > 0,
                     modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.markup_blank_canvas_create))
-                }
+                )
                 Spacer(Modifier.height(4.dp))
             }
         }

@@ -1,5 +1,7 @@
 package com.wanbaohe.markuplayers.presentation.editor
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,13 +29,12 @@ import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.markuplayers.R
 
 /**
- * 画布背景设置面板:「棋盘格(默认)」/「纯色」两个选项卡,选择即时生效。
- * 纯色选项卡内嵌滚动色板 [ColorSelectionRow];纯色记忆在面板内,
- * 从棋盘格切回纯色时沿用上次颜色(默认白)。
+ * 画布背景设置面板:「默认」/「纯色」两个选项卡,选择即时生效。
+ * 默认 = 跟随主题 surface 背景色;纯色选项卡内嵌滚动色板 [ColorSelectionRow],
+ * 纯色记忆在面板内,从默认切回纯色时沿用上次颜色(默认白)。
  */
 @Composable
 fun CanvasBackgroundSheet(
@@ -65,14 +66,14 @@ fun CanvasBackgroundSheet(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     EnhancedChip(
-                        selected = background is CanvasBackground.Checkerboard,
-                        onClick = { onBackgroundChange(CanvasBackground.Checkerboard) },
+                        selected = background is CanvasBackground.Default,
+                        onClick = { onBackgroundChange(CanvasBackground.Default) },
                         selectedColor = MaterialTheme.colorScheme.secondary,
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = stringResource(R.string.markup_canvas_bg_checkerboard),
+                            text = stringResource(R.string.markup_canvas_bg_default),
                             maxLines = 1
                         )
                     }
@@ -91,12 +92,17 @@ fun CanvasBackgroundSheet(
                 }
 
                 when (background) {
-                    CanvasBackground.Checkerboard -> Box(
+                    CanvasBackground.Default -> Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(72.dp)
                             .clip(ShapeDefaults.default)
-                            .transparencyChecker()
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                shape = ShapeDefaults.default
+                            )
+                            .background(MaterialTheme.colorScheme.surface)
                     )
 
                     is CanvasBackground.Solid -> ColorSelectionRow(
