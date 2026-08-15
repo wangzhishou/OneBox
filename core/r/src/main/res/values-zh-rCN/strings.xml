@@ -1505,6 +1505,9 @@
     <string name="nav_notebook">记事本</string>
     <string name="nav_todo_list">待办事项</string>
         <string name="nav_ai_app">聊天</string>
+    <string name="nav_check_in">打卡</string>
+    <string name="nav_blessing">祈福</string>
+    <string name="nav_image_creation">图片创作</string>
 
     <!-- Game 2048 -->
     <string name="game_2048_title">2048</string>

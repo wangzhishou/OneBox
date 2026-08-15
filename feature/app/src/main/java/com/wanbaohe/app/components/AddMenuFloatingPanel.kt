@@ -44,8 +44,11 @@ import com.shifenmiao.base.ui.shapes.BubbleShape
 import com.t8rin.imagetoolbox.core.resources.icons.ChatPlus
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlessingWall
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
@@ -112,6 +115,9 @@ private fun addMenuItemContentColor(theme: AddMenuItemTheme): Color = when (them
  * @param onNavigateToMarkdown  导航到 Markdown 编辑器
  * @param onNavigateToTodoList  导航到待办事项
  * @param onNavigateToAiApp     导航到智能体
+ * @param onNavigateToHabitTracker  导航到习惯打卡
+ * @param onNavigateToBlessingWall  导航到祈福墙
+ * @param onNavigateToImageCreation 导航到图片创作
  */
 @Composable
 fun AddMenuFloatingPanel(
@@ -127,6 +133,9 @@ fun AddMenuFloatingPanel(
     onNavigateToAiApp: () -> Unit,
     onNavigateToCreateAIAgent: () -> Unit,
     onNavigateToCreateAIPrompt: () -> Unit,
+    onNavigateToHabitTracker: () -> Unit,
+    onNavigateToBlessingWall: () -> Unit,
+    onNavigateToImageCreation: () -> Unit,
 ) {
     val visibleState = remember { MutableTransitionState(false) }
     visibleState.targetState = expanded
@@ -270,6 +279,30 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToCreateAIPrompt()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckCircleOutline,
+                    label = CoreR.string.nav_check_in,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToHabitTracker()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall,
+                    label = CoreR.string.nav_blessing,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToBlessingWall()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkupLayers,
+                    label = CoreR.string.nav_image_creation,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToImageCreation()
                     }
                 ),
             )

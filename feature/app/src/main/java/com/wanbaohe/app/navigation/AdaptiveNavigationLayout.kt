@@ -447,6 +447,18 @@ private fun QuickCreateFloatingPanel(
             onDismiss()
             rootComponent.navigateToNew(Screen.CreateAIChatPrompt())
         },
+        onNavigateToHabitTracker = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.HabitTracker())
+        },
+        onNavigateToBlessingWall = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.BlessingWall())
+        },
+        onNavigateToImageCreation = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.MarkupLayers())
+        },
     )
 }
 

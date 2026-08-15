@@ -1438,6 +1438,9 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="nav_notebook">Note</string>
     <string name="nav_todo_list">To-Do</string>
     <string name="nav_ai_app">Chat</string>
+    <string name="nav_check_in">Check-in</string>
+    <string name="nav_blessing">Blessing</string>
+    <string name="nav_image_creation">Image Creation</string>
 
     <!-- Game 2048 -->
     <string name="game_2048_title">2048</string>
