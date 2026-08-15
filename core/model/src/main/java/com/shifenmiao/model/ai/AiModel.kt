@@ -251,7 +251,7 @@ data class AiModel(
                     provider = AiProvider.Mimo,
                     basePoints = 0.1f,
                     maxTokens = 2048,
-                    canReasoning = true,
+                    canReasoning = false,
                     canEdit = false,
                     canImage = true,
                     canVideo = false,
