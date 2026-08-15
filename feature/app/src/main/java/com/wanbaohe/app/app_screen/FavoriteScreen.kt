@@ -1,20 +1,25 @@
 package com.wanbaohe.app.app_screen
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
@@ -39,7 +44,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -54,6 +63,7 @@ import com.shifenmiao.base.ui.icon.BuildCustomIcon
 import com.shifenmiao.common.components.ClickInfoType
 import com.shifenmiao.common.components.FeaturedGrid
 import com.shifenmiao.common.components.SectionTheme
+import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
 import com.shifenmiao.common.components.sectionIconContainerColor
 import com.shifenmiao.common.handle.LocalUrlNavigator
@@ -62,13 +72,12 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.TopActions
 import com.shifenmiao.core.R
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
+import com.shifenmiao.model.activity.ActivityCategory
 import com.shifenmiao.model.activity.ActivityLogEntry
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
 import com.t8rin.imagetoolbox.core.ui.widget.text.HtmlText
@@ -77,8 +86,27 @@ import com.wanbaohe.app.component.FavoriteComponent
 import com.wanbaohe.app.navigation.ActivityLogNavigator
 import com.wanbaohe.com.string.TimeFormatter
 import kotlinx.coroutines.launch
-import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiDuelChat
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlog
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookkeeping
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineOcrDocument
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineResizeConvert
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTeleprompter
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineXiangqi
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
@@ -287,14 +315,24 @@ private fun ContentListSection(
             }) { index ->
                 val entry = activityLogItems[index]
                 if (entry != null) {
-                    ActivityLogItem(
+                    val previous = if (index > 0) activityLogItems.peek(index - 1) else null
+                    val next = if (index < activityLogItems.itemCount - 1) {
+                        activityLogItems.peek(index + 1)
+                    } else null
+                    val isFirstInDay = previous == null ||
+                        !isSameDay(previous.createdAt, entry.createdAt)
+                    val isLastInDay = next == null ||
+                        !isSameDay(next.createdAt, entry.createdAt)
+                    ActivityLogTimelineItem(
                         entry = entry,
+                        showDateHeader = isFirstInDay,
+                        isFirstInDay = isFirstInDay,
+                        isLastInDay = isLastInDay,
                         onDeleteRequested = {
                             selectedLogEntry.value = entry
                             showDeleteDialog.value = true
                         }
                     )
-                    Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
                 }
             }
         } else {
@@ -620,20 +658,122 @@ private fun MineListItemCard(
 }
 
 // ══════════════════════════════════════════════════════════════
-//  5. 历史记录分区
+//  5. 历史记录分区 — 时间线样式
 // ══════════════════════════════════════════════════════════════
+
+private val recordTimeFormat by lazy { SimpleDateFormat("HH:mm", Locale.getDefault()) }
+
+/** 时间线左轨宽度、圆点中心坐标（相对左轨左上） */
+private val railWidth = 52.dp
+private val railDotSize = 8.dp
+private val railLineX = 42.dp
+private val railDotCenterY = 25.dp
+
+@Composable
+private fun ActivityLogTimelineItem(
+    entry: ActivityLogEntry,
+    showDateHeader: Boolean,
+    isFirstInDay: Boolean,
+    isLastInDay: Boolean,
+    onDeleteRequested: () -> Unit
+) {
+    val theme = recordSectionTheme(entry.category)
+    val accent = sectionIconColor(theme)
+    Column(modifier = Modifier.fillMaxWidth()) {
+        if (showDateHeader) {
+            Text(
+                text = recordDayHeaderText(entry.createdAt),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(top = 10.dp, bottom = 2.dp)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Max)
+        ) {
+            TimelineRail(
+                timeText = recordTimeFormat.format(entry.createdAt),
+                accent = accent,
+                isFirstInDay = isFirstInDay,
+                isLastInDay = isLastInDay
+            )
+            ActivityLogCard(
+                entry = entry,
+                theme = theme,
+                onDeleteRequested = onDeleteRequested,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp, top = 6.dp, bottom = 6.dp)
+            )
+        }
+    }
+}
+
+/** 左轨：时间文本 + 彩色圆点 + 连接线（组内首/尾截断） */
+@Composable
+private fun TimelineRail(
+    timeText: String,
+    accent: Color,
+    isFirstInDay: Boolean,
+    isLastInDay: Boolean
+) {
+    val lineColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+    Box(
+        modifier = Modifier
+            .width(railWidth)
+            .fillMaxHeight()
+            .drawBehind {
+                val x = railLineX.toPx()
+                val dotY = railDotCenterY.toPx()
+                val stroke = 1.dp.toPx()
+                if (!isFirstInDay) {
+                    drawLine(lineColor, Offset(x, 0f), Offset(x, dotY), strokeWidth = stroke)
+                }
+                if (!isLastInDay) {
+                    drawLine(lineColor, Offset(x, dotY), Offset(x, size.height), strokeWidth = stroke)
+                }
+            }
+    ) {
+        Text(
+            text = timeText,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(end = railWidth - railLineX + railDotSize / 2 + 4.dp, top = 16.dp)
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(
+                    end = railWidth - railLineX - railDotSize / 2,
+                    top = railDotCenterY - railDotSize / 2
+                )
+                .size(railDotSize)
+                .background(accent, CircleShape)
+        )
+    }
+}
+
 @Composable
 @Suppress("DEPRECATION")
-private fun ActivityLogItem(
+private fun ActivityLogCard(
     entry: ActivityLogEntry,
-    onDeleteRequested: () -> Unit
+    theme: SectionTheme,
+    onDeleteRequested: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val onNavigate = LocalOnNavigate.current
     val dataDraftHelper = LocalDataDraftHelper.current
     val logScope = rememberCoroutineScope()
-    val shape = RoundedCornerShape(16.dp)
+    val shape = RoundedCornerShape(20.dp)
 
     SwipeToDismissBox(
+        modifier = modifier,
         state = rememberSwipeToDismissBoxState(
             confirmValueChange = { dismissValue ->
                 if (dismissValue == SwipeToDismissBoxValue.EndToStart
@@ -646,10 +786,12 @@ private fun ActivityLogItem(
         ),
         backgroundContent = {},
         content = {
-            Box(
+            ActivityLogCardContent(
+                entry = entry,
+                theme = theme,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .glassRegular(shape = shape)
+                    .glassRegular(shape = shape, color = sectionGradient(theme))
                     .clickable {
                         logScope.launch {
                             ActivityLogNavigator.resolve(entry, dataDraftHelper)?.let { screen ->
@@ -657,68 +799,164 @@ private fun ActivityLogItem(
                             }
                         }
                     }
-                    .padding(horizontal = 16.dp)
-            ) {
-                ActivityLogItemContent(entry = entry)
-            }
+                    .padding(horizontal = 14.dp, vertical = 12.dp)
+            )
         }
     )
 }
 
 @Composable
-private fun ActivityLogItemContent(entry: ActivityLogEntry) {
+private fun ActivityLogCardContent(
+    entry: ActivityLogEntry,
+    theme: SectionTheme,
+    modifier: Modifier = Modifier
+) {
     val localUrlNavigator = LocalUrlNavigator.current
-    Column(
-        modifier = Modifier.padding(vertical = 16.dp),
-        horizontalAlignment = Alignment.Start,
-    ) {
-        HtmlText(
-            html = entry.description,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSurface
-            ),
-            hyperlinkStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.primary
-            ),
-            onHyperlinkClick = { localUrlNavigator.navigate(it) },
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 3,
-            enableAutoLinkify = false
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            if (entry.appTitle.isNotEmpty()) {
-                HistoryTitleTag(title = entry.appTitle)
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            val dateFormat = DateFormat.getDateInstance(DateFormat.LONG)
-            val formattedDate = dateFormat.format(entry.createdAt)
+    val accent = sectionIconColor(theme)
+    val topLabel = entry.appTitle.trim()
+    var rowTitle = entry.title.trim()
+    if (rowTitle.isEmpty() && entry.description.isBlank()) {
+        rowTitle = topLabel.ifEmpty { stringResource(R.string.record_tab_title) }
+    }
+
+    Column(modifier = modifier) {
+        if (topLabel.isNotEmpty() && topLabel != rowTitle) {
             Text(
-                text = formattedDate,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.outline
+                text = topLabel,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = accent,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(46.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(sectionIconContainerColor(theme).copy(alpha = 0.9f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = recordCategoryIcon(entry.category),
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp),
+                    tint = accent
+                )
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                if (rowTitle.isNotEmpty()) {
+                    Text(
+                        text = rowTitle,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(2.dp))
+                }
+                if (entry.description.isNotBlank()) {
+                    HtmlText(
+                        html = entry.description,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        ),
+                        hyperlinkStyle = MaterialTheme.typography.bodySmall.copy(
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        onHyperlinkClick = { localUrlNavigator.navigate(it) },
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        enableAutoLinkify = false
+                    )
+                }
+            }
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
+                contentDescription = null,
+                modifier = Modifier.size(9.dp),
+                tint = MaterialTheme.colorScheme.outline
             )
         }
     }
 }
 
+/**
+ * 各活动分类的卡片主题色 — 复用精选卡片的 SectionTheme 体系，
+ * 圆点 / 标签 / 图标用 sectionIconColor，卡片底色用 sectionGradient。
+ */
+private fun recordSectionTheme(category: ActivityCategory): SectionTheme = when (category) {
+    ActivityCategory.AI_CHAT -> SectionTheme.PRIMARY
+    ActivityCategory.AI_DUEL -> SectionTheme.SECONDARY
+    ActivityCategory.AI_AGENT -> SectionTheme.TERTIARY
+    ActivityCategory.IMAGE_EDIT -> SectionTheme.SECONDARY
+    ActivityCategory.FILE_CONVERT -> SectionTheme.TERTIARY
+    ActivityCategory.NOTE_EDIT -> SectionTheme.PRIMARY
+    ActivityCategory.HTML_EDIT -> SectionTheme.SECONDARY
+    ActivityCategory.AUDIO_EDIT -> SectionTheme.TERTIARY
+    ActivityCategory.BLOG_POST -> SectionTheme.PRIMARY
+    ActivityCategory.OCR_DOCUMENT -> SectionTheme.SECONDARY
+    ActivityCategory.BOOKKEEPING -> SectionTheme.TERTIARY
+    ActivityCategory.TODO -> SectionTheme.PRIMARY
+    ActivityCategory.XIANGQI -> SectionTheme.SECONDARY
+    ActivityCategory.TELEPROMPTER -> SectionTheme.TERTIARY
+    ActivityCategory.HABIT -> SectionTheme.PRIMARY
+    ActivityCategory.OTHER -> SectionTheme.SURFACE
+}
+
+private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (category) {
+    ActivityCategory.AI_CHAT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat
+    ActivityCategory.AI_DUEL -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiDuelChat
+    ActivityCategory.AI_AGENT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAgent
+    ActivityCategory.IMAGE_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage
+    ActivityCategory.FILE_CONVERT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineResizeConvert
+    ActivityCategory.NOTE_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNote
+    ActivityCategory.HTML_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkdownEdit
+    ActivityCategory.AUDIO_EDIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAudioFile
+    ActivityCategory.BLOG_POST -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlog
+    ActivityCategory.OCR_DOCUMENT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOcrDocument
+    ActivityCategory.BOOKKEEPING -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBookkeeping
+    ActivityCategory.TODO -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList
+    ActivityCategory.XIANGQI -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineXiangqi
+    ActivityCategory.TELEPROMPTER -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTeleprompter
+    ActivityCategory.HABIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckCircleOutline
+    ActivityCategory.OTHER -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory
+}
+
+private fun isSameDay(a: Date, b: Date): Boolean {
+    val ca = Calendar.getInstance().apply { time = a }
+    val cb = Calendar.getInstance().apply { time = b }
+    return ca.get(Calendar.YEAR) == cb.get(Calendar.YEAR) &&
+        ca.get(Calendar.DAY_OF_YEAR) == cb.get(Calendar.DAY_OF_YEAR)
+}
+
+/** 分组标题，如「今天 · 8月15日」「昨天 · 8月14日」「8月13日」 */
 @Composable
-private fun HistoryTitleTag(title: String) {
-    Text(
-        modifier = Modifier
-            .glassBackground(
-                style = GlassStyle.Thick,
-                shape = RoundedCornerShape(50),
-                color = MaterialTheme.colorScheme.primaryContainer,
-            )
-            .padding(horizontal = 8.dp, vertical = 3.dp),
-        text = title,
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onPrimaryContainer
-    )
+private fun recordDayHeaderText(date: Date): String {
+    val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }.time
+    val dayLabel = when {
+        TimeFormatter.isToday(date.time) -> stringResource(R.string.activity_log_today)
+        isSameDay(date, yesterday) -> stringResource(R.string.activity_log_yesterday)
+        else -> null
+    }
+    val sameYear = Calendar.getInstance().get(Calendar.YEAR) ==
+        Calendar.getInstance().apply { time = date }.get(Calendar.YEAR)
+    val isZh = Locale.getDefault().language == Locale.CHINESE.language
+    val pattern = when {
+        isZh && sameYear -> "M月d日"
+        isZh -> "yyyy年M月d日"
+        sameYear -> "MMM d"
+        else -> "MMM d, yyyy"
+    }
+    val dateText = SimpleDateFormat(pattern, Locale.getDefault()).format(date)
+    return listOfNotNull(dayLabel, dateText).joinToString(" · ")
 }
 
 @Composable

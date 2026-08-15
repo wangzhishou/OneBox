@@ -695,6 +695,8 @@ And so, OneBox was born.]]></string>
     <string name="common_settings">Quick Settings</string>
     <string name="ai_history">History</string>
     <string name="ai_history_empty">No history yet</string>
+    <string name="activity_log_today">Today</string>
+    <string name="activity_log_yesterday">Yesterday</string>
     <string name="favorite_title">Favorites</string>
     <string name="favorite_empty_toast">No favorites yet. Long-press a card to add it.</string>
     <string name="cancel_favorite">Remove Favorite</string>
