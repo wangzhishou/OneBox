@@ -1,8 +1,12 @@
 package com.shifenmiao.ai.screen
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,11 +34,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -48,15 +56,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import coil3.compose.AsyncImage
 import com.shifenmiao.ai.component.AIDuelChatComponent
 import com.shifenmiao.ai.component.ChatLoadingIndicator
 import com.shifenmiao.ai.component.RobotReasoningBlock
 import com.shifenmiao.ai.component.RobotReasoningContent
 import com.shifenmiao.ai.component.RobotReasoningHeader
 import com.shifenmiao.ai.model.AIDuelConfig
-import com.shifenmiao.ai.model.DuelMode
 import com.shifenmiao.ai.model.DuelSpeaker
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.ai.ui.AIChatBottom
@@ -79,29 +94,39 @@ import com.shifenmiao.model.state.PageState
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.mermaid.ProvideMermaidRenderer
+import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
+import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitBackHandler
+import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassCardSegment
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.collectLatest
+import java.io.File
 import com.t8rin.imagetoolbox.core.resources.icons.Add
+import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSwapVert
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinus
+
+// 提示词输入框字数上限
+private const val PERSONA_MAX_CHARS = 800
+// 头像压缩后的最长边像素
+private const val AVATAR_MAX_SIZE_PX = 512
 
 @Composable
 fun AIDuelChatScreen(
@@ -124,49 +149,68 @@ fun AIDuelChatScreen(
     CompositionLocalProvider(
         LocalChatUIState provides chatUIState,
     ) {
+        // 与 DuelChatContent 一致：无消息且未运行时处于入口配置页
+        val showInlineConfig =
+            messageUiModels.isEmpty() && !duelState.running && !conversation.showLastMessage
+        // 互聊进行中退出/新建的确认弹窗开关
+        val showExitConfirm = remember { mutableStateOf(false) }
+        val showNewConfirm = remember { mutableStateOf(false) }
+
+        // 互聊进行中拦截返回键，先弹确认（遵循设置里的退出确认开关）
+        ExitBackHandler(enabled = duelState.running && !chatUIState.showHistory) {
+            showExitConfirm.value = true
+        }
+
         BaseScreen(
             title = conversation.appTitle.ifBlank {
                 stringResource(id = R.string.ai_duel_chat_title)
             },
             actions = {
-                DisableContainer(
-                    enabled = chatUIState.pageState != PageState.INITIALIZING
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingTooSmall),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingTooSmall),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        if (!chatUIState.showHistory) {
-                            IconButton(onClick = {
-                                onNavigate(Screen.AIHistoryCenter(initialFilter = AIConversationEntryType.DUEL))
-                            }) {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = {
-                                duelChatComponent.startNewConversation()
-                            },
-                            enabled = !duelState.running
-                        ) {
+                    // 历史入口始终可用（不随页面初始化置灰），跳转历史中心
+                    if (!chatUIState.showHistory) {
+                        IconButton(onClick = {
+                            onNavigate(Screen.AIHistoryCenter(initialFilter = AIConversationEntryType.DUEL))
+                        }) {
                             Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAddAiChat,
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
+                    // 新建只在互聊会话页显示（入口配置页本身就是“新建”）
+                    if (!chatUIState.showHistory && !showInlineConfig) {
+                        DisableContainer(
+                            enabled = chatUIState.pageState != PageState.INITIALIZING
+                        ) {
+                            IconButton(
+                                onClick = {
+                                    if (duelState.running) {
+                                        showNewConfirm.value = true
+                                    } else {
+                                        duelChatComponent.startNewConversation()
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAddAiChat,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
                 }
             },
             onGoBack = {
-                if (chatUIState.showHistory) {
-                    duelChatComponent.hideHistory()
-                } else {
-                    appComponent.onGoBack()
+                when {
+                    chatUIState.showHistory -> duelChatComponent.hideHistory()
+                    duelState.running -> showExitConfirm.value = true
+                    else -> appComponent.onGoBack()
                 }
             },
             foreground = {
@@ -188,6 +232,44 @@ fun AIDuelChatScreen(
                 conversation = conversation,
             )
         }
+
+        // 互聊进行中退出确认（复用公共退出确认弹窗，遵循设置开关）
+        ExitWithoutSavingDialog(
+            visible = showExitConfirm.value,
+            onDismiss = { showExitConfirm.value = false },
+            onExit = {
+                duelChatComponent.stopDuel()
+                appComponent.onGoBack()
+            },
+            title = stringResource(R.string.ai_duel_chat_title),
+            text = stringResource(R.string.ai_duel_exit_confirm_message)
+        )
+
+        // 互聊进行中新建确认
+        if (showNewConfirm.value) {
+            AlertDialog(
+                onDismissRequest = { showNewConfirm.value = false },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showNewConfirm.value = false
+                            duelChatComponent.stopDuel()
+                            duelChatComponent.startNewConversation()
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.button_confirm))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showNewConfirm.value = false }) {
+                        Text(text = stringResource(R.string.button_cancel))
+                    }
+                },
+                text = {
+                    Text(text = stringResource(R.string.ai_duel_new_confirm_message))
+                }
+            )
+        }
     }
 }
 
@@ -206,8 +288,8 @@ private fun DuelChatContent(
     val roleNameB = remember { mutableStateOf(duelConfig.roleNameB) }
     val personaA = remember { mutableStateOf(duelConfig.personaA) }
     val personaB = remember { mutableStateOf(duelConfig.personaB) }
-    val mode = remember { mutableStateOf(duelConfig.mode) }
-    val topic = remember { mutableStateOf(duelConfig.topic) }
+    val avatarA = remember { mutableStateOf(duelConfig.avatarA) }
+    val avatarB = remember { mutableStateOf(duelConfig.avatarB) }
     val maxRounds = remember { mutableIntStateOf(duelConfig.maxRounds) }
     val pickingModelRole = remember { mutableStateOf<DuelSpeaker?>(null) }
     val showModelPicker = remember { mutableStateOf(false) }
@@ -218,7 +300,6 @@ private fun DuelChatContent(
     val pickingPersonaHistoryRole = remember { mutableStateOf<DuelSpeaker?>(null) }
     val showRoleNameHistoryPicker = remember { mutableStateOf(false) }
     val pickingRoleNameHistoryRole = remember { mutableStateOf<DuelSpeaker?>(null) }
-    val showTopicHistoryPicker = remember { mutableStateOf(false) }
     val isExporting = remember { mutableStateOf(false) }
 
     LaunchedEffect(duelConfig) {
@@ -226,8 +307,8 @@ private fun DuelChatContent(
         roleNameB.value = duelConfig.roleNameB
         personaA.value = duelConfig.personaA
         personaB.value = duelConfig.personaB
-        mode.value = duelConfig.mode
-        topic.value = duelConfig.topic
+        avatarA.value = duelConfig.avatarA
+        avatarB.value = duelConfig.avatarB
         maxRounds.intValue = duelConfig.maxRounds
     }
 
@@ -239,8 +320,8 @@ private fun DuelChatContent(
                 roleNameB = roleNameB.value,
                 personaA = personaA.value,
                 personaB = personaB.value,
-                mode = mode.value,
-                topic = topic.value,
+                avatarA = avatarA.value,
+                avatarB = avatarB.value,
                 maxRounds = maxRounds.intValue,
                 engineA = duelConfig.engineA,
                 engineB = duelConfig.engineB,
@@ -260,6 +341,26 @@ private fun DuelChatContent(
     val showInlineConfig =
         messageUiModels.isEmpty() && !duelState.running && !conversation.showLastMessage
 
+    // 交换位置：对调 A/B 的全部配置（角色 A 固定先发言，交换后即换先手）
+    val onSwapRoles = {
+        duelChatComponent.updateDraftConfig(
+            duelConfig.copy(
+                roleNameA = roleNameB.value,
+                roleNameB = roleNameA.value,
+                personaA = personaB.value,
+                personaB = personaA.value,
+                avatarA = avatarB.value,
+                avatarB = avatarA.value,
+                engineA = duelConfig.engineB,
+                engineB = duelConfig.engineA,
+                promptIdA = duelConfig.promptIdB,
+                promptIdB = duelConfig.promptIdA,
+                promptNameA = duelConfig.promptNameB,
+                promptNameB = duelConfig.promptNameA,
+            )
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -273,8 +374,8 @@ private fun DuelChatContent(
                 roleNameB = roleNameB,
                 personaA = personaA,
                 personaB = personaB,
-                mode = mode,
-                topic = topic,
+                avatarA = avatarA,
+                avatarB = avatarB,
                 maxRounds = maxRounds,
                 pickingModelRole = pickingModelRole,
                 showModelPicker = showModelPicker,
@@ -284,7 +385,7 @@ private fun DuelChatContent(
                 pickingPersonaHistoryRole = pickingPersonaHistoryRole,
                 showRoleNameHistoryPicker = showRoleNameHistoryPicker,
                 pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
-                showTopicHistoryPicker = showTopicHistoryPicker,
+                onSwapRoles = onSwapRoles,
             )
         } else {
             DuelMessagesList(
@@ -293,6 +394,7 @@ private fun DuelChatContent(
                 lazyListState = lazyListState,
                 appComponent = appComponent,
                 conversation = conversation,
+                duelConfig = duelConfig,
             )
         }
         val showShare = messageUiModels.isNotEmpty() && !duelState.running
@@ -308,8 +410,8 @@ private fun DuelChatContent(
                         roleNameB = roleNameB.value,
                         personaA = personaA.value,
                         personaB = personaB.value,
-                        mode = mode.value,
-                        topic = topic.value,
+                        avatarA = avatarA.value,
+                        avatarB = avatarB.value,
                         maxRounds = maxRounds.intValue,
                         engineA = duelConfig.engineA,
                         engineB = duelConfig.engineB,
@@ -371,7 +473,6 @@ private fun DuelChatContent(
             roleNameB = roleNameB,
             personaA = personaA,
             personaB = personaB,
-            topic = topic,
             pickingModelRole = pickingModelRole,
             showModelPicker = showModelPicker,
             pickingPromptRole = pickingPromptRole,
@@ -381,7 +482,6 @@ private fun DuelChatContent(
             pickingPersonaHistoryRole = pickingPersonaHistoryRole,
             showRoleNameHistoryPicker = showRoleNameHistoryPicker,
             pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
-            showTopicHistoryPicker = showTopicHistoryPicker,
         )
     }
 }
@@ -399,8 +499,8 @@ private fun DuelInlineConfigPanel(
     roleNameB: MutableState<String>,
     personaA: MutableState<String>,
     personaB: MutableState<String>,
-    mode: MutableState<DuelMode>,
-    topic: MutableState<String>,
+    avatarA: MutableState<String>,
+    avatarB: MutableState<String>,
     maxRounds: MutableState<Int>,
     pickingModelRole: MutableState<DuelSpeaker?>,
     showModelPicker: MutableState<Boolean>,
@@ -410,7 +510,7 @@ private fun DuelInlineConfigPanel(
     pickingPersonaHistoryRole: MutableState<DuelSpeaker?>,
     showRoleNameHistoryPicker: MutableState<Boolean>,
     pickingRoleNameHistoryRole: MutableState<DuelSpeaker?>,
-    showTopicHistoryPicker: MutableState<Boolean>,
+    onSwapRoles: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -437,24 +537,18 @@ private fun DuelInlineConfigPanel(
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = duelConfig.mode.subtitle(),
+                text = stringResource(R.string.ai_duel_config_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
         // ── Role A section ──
-        DuelModeSection(
-            selectedMode = mode.value,
-            enabled = !duelState.running,
-            onModeSelected = { mode.value = it }
-        )
-
-        // ── Role A section ──
         DuelRoleConfigSection(
             speaker = DuelSpeaker.A,
             roleName = roleNameA,
             persona = personaA,
+            avatar = avatarA,
             duelConfig = duelConfig,
             duelState = duelState,
             pickingModelRole = pickingModelRole,
@@ -472,6 +566,7 @@ private fun DuelInlineConfigPanel(
             speaker = DuelSpeaker.B,
             roleName = roleNameB,
             persona = personaB,
+            avatar = avatarB,
             duelConfig = duelConfig,
             duelState = duelState,
             pickingModelRole = pickingModelRole,
@@ -482,36 +577,6 @@ private fun DuelInlineConfigPanel(
             pickingPersonaHistoryRole = pickingPersonaHistoryRole,
             showRoleNameHistoryPicker = showRoleNameHistoryPicker,
             pickingRoleNameHistoryRole = pickingRoleNameHistoryRole,
-        )
-
-        // ── Topic ──
-        GlassOutlinedTextField(
-            value = topic.value,
-            onValueChange = { topic.value = it },
-            enabled = !duelState.running,
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(duelConfig.mode.topicLabel()) },
-            placeholder = { Text(duelConfig.mode.topicPlaceholder()) },
-            trailingIcon = {
-                IconButton(
-                    enabled = !duelState.running,
-                    onClick = {
-                        showTopicHistoryPicker.value = true
-                    },
-                    modifier = Modifier.size(28.dp)
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                        contentDescription = stringResource(R.string.ai_duel_choose_history_topic),
-                        modifier = Modifier.size(18.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            },
-            minLines = 3,
-            maxLines = 5,
-            shape = MaterialTheme.shapes.medium,
-            colors = AppTheme.colors.getOutlinedTextFieldColors()
         )
 
         // ── Rounds stepper ──
@@ -544,6 +609,7 @@ private fun DuelInlineConfigPanel(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMinus,
                         contentDescription = stringResource(R.string.ai_duel_decrease_rounds),
+                        modifier = Modifier.size(12.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -559,48 +625,29 @@ private fun DuelInlineConfigPanel(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                         contentDescription = stringResource(R.string.ai_duel_increase_rounds),
+                        modifier = Modifier.size(12.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.dimens.paddingSmall))
-    }
-}
-
-@Composable
-private fun DuelModeSection(
-    selectedMode: DuelMode,
-    enabled: Boolean,
-    onModeSelected: (DuelMode) -> Unit,
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
-    ) {
-        Text(
-            text = stringResource(R.string.ai_duel_mode_label),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
+        // ── Swap roles（角色 A 固定先发言，交换位置即换先手）──
+        GlassTonalButton(
+            onClick = onSwapRoles,
+            enabled = !duelState.running,
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            DuelMode.entries.forEach { duelMode ->
-                GlassFilterChip(
-                    selected = selectedMode == duelMode,
-                    onClick = {
-                        if (enabled) onModeSelected(duelMode)
-                    },
-                    enabled = enabled,
-                    label = { Text(text = duelMode.label()) }
-                )
-            }
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwapVert,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(AppTheme.dimens.paddingSmall))
+            Text(text = stringResource(R.string.ai_duel_swap_roles))
         }
+
+        Spacer(modifier = Modifier.height(AppTheme.dimens.paddingSmall))
     }
 }
 
@@ -609,6 +656,7 @@ private fun DuelRoleConfigSection(
     speaker: DuelSpeaker,
     roleName: MutableState<String>,
     persona: MutableState<String>,
+    avatar: MutableState<String>,
     duelConfig: AIDuelConfig,
     duelState: com.shifenmiao.ai.model.AIDuelState,
     pickingModelRole: MutableState<DuelSpeaker?>,
@@ -620,24 +668,51 @@ private fun DuelRoleConfigSection(
     showRoleNameHistoryPicker: MutableState<Boolean>,
     pickingRoleNameHistoryRole: MutableState<DuelSpeaker?>,
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val roleTitle = if (speaker == DuelSpeaker.A) {
+        stringResource(R.string.ai_duel_role_a)
+    } else {
+        stringResource(R.string.ai_duel_role_b)
+    }
     val roleNameLabel = if (speaker == DuelSpeaker.A) {
         stringResource(R.string.ai_duel_role_name_a_label)
     } else {
         stringResource(R.string.ai_duel_role_name_b_label)
     }
-    val personaHint = duelConfig.mode.personaHint(speaker)
     val promptName =
         if (speaker == DuelSpeaker.A) duelConfig.promptNameA else duelConfig.promptNameB
     val engine = if (speaker == DuelSpeaker.A) duelConfig.engineA else duelConfig.engineB
     val modelDisplayName = engine?.model?.title?.takeIf { it.isNotBlank() }
         ?: stringResource(R.string.ai_duel_model_default)
-    val roleHeaderText = duelConfig.mode.roleCardTitle(speaker)
+    val avatarContainerColor = if (speaker == DuelSpeaker.A) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.tertiaryContainer
+    }
+    val avatarLetterTint = if (speaker == DuelSpeaker.A) {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    } else {
+        MaterialTheme.colorScheme.onTertiaryContainer
+    }
+
+    // 点击头像从相册选图，压缩后存到 filesDir/duel_avatars/，路径写入 avatar 状态
+    val imagePicker = rememberImagePicker(onSuccess = { uri: Uri ->
+        coroutineScope.launch(Dispatchers.IO) {
+            val path = saveDuelAvatar(context, uri, speaker, avatar.value)
+            if (path != null) avatar.value = path
+        }
+    })
+    // 大面积编辑提示词弹窗开关
+    val showExpandEditor = remember { mutableStateOf(false) }
 
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         borderWidth = 0.dp,
-        containerAlpha = 0.5f
+        // 卡片底色与头像同色系（A=primary / B=tertiary），玻璃效果调淡
+        colors = CardDefaults.cardColors(containerColor = avatarContainerColor),
+        containerAlpha = 0.22f
     ) {
         Column(
             modifier = Modifier
@@ -645,37 +720,63 @@ private fun DuelRoleConfigSection(
                 .padding(AppTheme.dimens.paddingNormal),
             verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
         ) {
-            // ── Card header ──
+            // ── Card header: 头像 + 角色标题（A 卡带“先发言”标记）──
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = roleHeaderText,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Box(
+                DuelRoleAvatar(
+                    avatarPath = avatar.value,
+                    fallbackName = roleTitle,
+                    containerColor = avatarContainerColor,
+                    letterTint = avatarLetterTint,
                     modifier = Modifier
-                        .size(32.dp)
-                        .background(
-                            color = if (speaker == DuelSpeaker.A)
-                                MaterialTheme.colorScheme.primaryContainer
-                            else
-                                MaterialTheme.colorScheme.tertiaryContainer,
-                            shape = CircleShape
-                        )
-                        .padding(4.dp)
+                        .size(56.dp)
+                        .clickable(enabled = !duelState.running) { imagePicker.pickImage() }
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    LetterIcon(
-                        name = roleHeaderText,
-                        modifier = Modifier.fillMaxSize(),
-                        tint = if (speaker == DuelSpeaker.A)
-                            MaterialTheme.colorScheme.onPrimaryContainer.copy(0.12f)
-                        else
-                            MaterialTheme.colorScheme.onTertiaryContainer.copy(0.12f),
-                        showOutline = false
+                    Text(
+                        text = roleTitle,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    if (speaker == DuelSpeaker.A) {
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = MaterialTheme.colorScheme.secondaryContainer,
+                                    shape = RoundedCornerShape(6.dp)
+                                )
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.ai_duel_first_speaker_badge),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                TextButton(
+                    enabled = !duelState.running,
+                    onClick = {
+                        pickingPromptRole.value = speaker
+                        showPromptPicker.value = true
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.ai_duel_choose_prompt),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
+                        contentDescription = null,
+                        modifier = Modifier.size(10.dp)
                     )
                 }
             }
@@ -706,64 +807,6 @@ private fun DuelRoleConfigSection(
                     }
                 },
                 singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                colors = AppTheme.colors.getOutlinedTextFieldColors()
-            )
-
-            // ── Persona / prompt ──
-            GlassOutlinedTextField(
-                value = persona.value,
-                onValueChange = { persona.value = it },
-                enabled = !duelState.running,
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(buildPersonaLabel(speaker, duelConfig)) },
-                placeholder = { Text(personaHint) },
-                trailingIcon = {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        IconButton(
-                            enabled = !duelState.running,
-                            onClick = {
-                                pickingPersonaHistoryRole.value = speaker
-                                showPersonaHistoryPicker.value = true
-                            },
-                            modifier = Modifier.size(28.dp)
-                        ) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                                contentDescription = stringResource(R.string.ai_duel_choose_history_prompt),
-                                modifier = Modifier.size(18.dp),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        IconButton(
-                            enabled = !duelState.running,
-                            onClick = {
-                                pickingPromptRole.value = speaker
-                                showPromptPicker.value = true
-                            },
-                            modifier = Modifier.size(28.dp)
-                        ) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText,
-                                contentDescription = stringResource(R.string.ai_duel_choose_prompt),
-                                modifier = Modifier.size(18.dp),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                },
-                supportingText = {
-                    if (promptName.isNotBlank()) {
-                        Text(
-                            text = stringResource(R.string.ai_duel_selected_prompt, promptName)
-                        )
-                    }
-                },
-                minLines = 3,
-                maxLines = 5,
                 shape = MaterialTheme.shapes.medium,
                 colors = AppTheme.colors.getOutlinedTextFieldColors()
             )
@@ -812,13 +855,241 @@ private fun DuelRoleConfigSection(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(12.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
+
+            // ── Persona / prompt: 标签行（历史入口）──
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.ai_duel_persona_label),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                IconButton(
+                    enabled = !duelState.running,
+                    onClick = {
+                        pickingPersonaHistoryRole.value = speaker
+                        showPersonaHistoryPicker.value = true
+                    },
+                    modifier = Modifier.size(28.dp)
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
+                        contentDescription = stringResource(R.string.ai_duel_choose_history_prompt),
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            // ── Persona / prompt: 输入框 ──
+            GlassOutlinedTextField(
+                value = persona.value,
+                onValueChange = { persona.value = it.take(PERSONA_MAX_CHARS) },
+                enabled = !duelState.running,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text(stringResource(R.string.ai_duel_persona_hint)) },
+                minLines = 3,
+                maxLines = 5,
+                shape = MaterialTheme.shapes.medium,
+                colors = AppTheme.colors.getOutlinedTextFieldColors()
+            )
+
+            // ── 已选提示词 + 字数统计 + 放大编辑：独立一行，两端与输入框边缘对齐 ──
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (promptName.isNotBlank()) {
+                    Text(
+                        text = stringResource(R.string.ai_duel_selected_prompt, promptName),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = stringResource(
+                        R.string.ai_duel_persona_counter,
+                        persona.value.length,
+                        PERSONA_MAX_CHARS
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Fullscreen,
+                    contentDescription = stringResource(R.string.edit_prompt),
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .size(16.dp)
+                        // 图标字形在 24dp 视口内自带约 2dp 右内边距，右移补偿使其视觉右缘与输入框右边框贴齐
+                        .offset(x = 1.5.dp)
+                        .clickable(enabled = !duelState.running) {
+                            showExpandEditor.value = true
+                        },
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
+
+    // 大面积查看/编辑提示词弹窗
+    if (showExpandEditor.value) {
+        DuelPersonaExpandEditorDialog(
+            roleTitle = roleTitle,
+            persona = persona,
+            onDismiss = { showExpandEditor.value = false }
+        )
+    }
+}
+
+// 全屏提示词编辑弹窗：更大面积查看和编辑当前角色的提示词
+@Composable
+private fun DuelPersonaExpandEditorDialog(
+    roleTitle: String,
+    persona: MutableState<String>,
+    onDismiss: () -> Unit,
+) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        // 不透明背景，避免下层聊天内容透过来干扰编辑
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(AppTheme.dimens.paddingNormal)
+                .navigationBarsPadding()
+                .imePadding(),
+            shape = MaterialTheme.shapes.large,
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(AppTheme.dimens.paddingNormal),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.edit_prompt) + " · " + roleTitle,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = stringResource(
+                            R.string.ai_duel_persona_counter,
+                            persona.value.length,
+                            PERSONA_MAX_CHARS
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                GlassOutlinedTextField(
+                    value = persona.value,
+                    onValueChange = { persona.value = it.take(PERSONA_MAX_CHARS) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    placeholder = { Text(stringResource(R.string.ai_duel_persona_hint)) },
+                    shape = MaterialTheme.shapes.medium,
+                    colors = AppTheme.colors.getOutlinedTextFieldColors()
+                )
+                GlassTonalButton(
+                    onClick = onDismiss,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(text = stringResource(R.string.done))
+                }
+            }
+        }
+    }
+}
+
+// 角色头像：已设置头像文件则圆形裁剪显示图片，否则回退首字母 LetterIcon
+@Composable
+private fun DuelRoleAvatar(
+    avatarPath: String,
+    fallbackName: String,
+    containerColor: Color,
+    letterTint: Color,
+    modifier: Modifier = Modifier,
+) {
+    val avatarFile = remember(avatarPath) {
+        avatarPath.takeIf { it.isNotBlank() }?.let(::File)?.takeIf { it.exists() }
+    }
+    Box(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(color = containerColor, shape = CircleShape)
+    ) {
+        if (avatarFile != null) {
+            AsyncImage(
+                model = avatarFile,
+                contentDescription = fallbackName,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            LetterIcon(
+                name = fallbackName,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(4.dp),
+                tint = letterTint.copy(0.12f),
+                showOutline = false
+            )
+        }
+    }
+}
+
+// 把选中的头像图压缩（最长边 ≤512px JPEG）保存到 filesDir/duel_avatars/，返回绝对路径；失败返回 null
+private fun saveDuelAvatar(
+    context: Context,
+    uri: Uri,
+    speaker: DuelSpeaker,
+    oldPath: String
+): String? {
+    return runCatching {
+        val source = context.contentResolver.openInputStream(uri)?.use { input ->
+            BitmapFactory.decodeStream(input)
+        } ?: return null
+        val longestSide = maxOf(source.width, source.height)
+        val bitmap = if (longestSide > AVATAR_MAX_SIZE_PX) {
+            val scale = AVATAR_MAX_SIZE_PX.toFloat() / longestSide
+            Bitmap.createScaledBitmap(
+                source,
+                (source.width * scale).toInt().coerceAtLeast(1),
+                (source.height * scale).toInt().coerceAtLeast(1),
+                true
+            )
+        } else {
+            source
+        }
+        val dir = File(context.filesDir, "duel_avatars").apply { mkdirs() }
+        // 文件名带时间戳，避免 Coil 按路径命中旧缓存；替换后尽力删除旧文件
+        val file = File(dir, "avatar_${speaker.name.lowercase()}_${System.currentTimeMillis()}.jpg")
+        file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.JPEG, 90, it) }
+        if (oldPath.isNotBlank() && oldPath != file.absolutePath) {
+            runCatching { File(oldPath).delete() }
+        }
+        file.absolutePath
+    }.getOrNull()
 }
 
 // ────────────────────────────���─────────────────────────────────
@@ -863,6 +1134,8 @@ private fun DuelStatusBar(
                     )
                 }
             }
+            // 开始/停止按钮始终右对齐
+            Spacer(modifier = Modifier.weight(1f))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingSmall, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically
@@ -923,7 +1196,6 @@ private fun DuelPickerBottomSheets(
     roleNameB: MutableState<String>,
     personaA: MutableState<String>,
     personaB: MutableState<String>,
-    topic: MutableState<String>,
     pickingModelRole: MutableState<DuelSpeaker?>,
     showModelPicker: MutableState<Boolean>,
     pickingPromptRole: MutableState<DuelSpeaker?>,
@@ -933,7 +1205,6 @@ private fun DuelPickerBottomSheets(
     pickingPersonaHistoryRole: MutableState<DuelSpeaker?>,
     showRoleNameHistoryPicker: MutableState<Boolean>,
     pickingRoleNameHistoryRole: MutableState<DuelSpeaker?>,
-    showTopicHistoryPicker: MutableState<Boolean>,
 ) {
     val onNavigate = LocalOnNavigate.current
     val modelRole = pickingModelRole.value ?: DuelSpeaker.A
@@ -970,20 +1241,14 @@ private fun DuelPickerBottomSheets(
 
     val personaHistoryItems = remember { mutableStateOf<List<String>>(emptyList()) }
     val roleNameHistoryItems = remember { mutableStateOf<List<String>>(emptyList()) }
-    val topicHistoryItems = remember { mutableStateOf<List<String>>(emptyList()) }
 
     BackHandler(
-        enabled = showTopicHistoryPicker.value ||
-                showRoleNameHistoryPicker.value ||
+        enabled = showRoleNameHistoryPicker.value ||
                 showPersonaHistoryPicker.value ||
                 showPromptPicker.value ||
                 showModelPicker.value
     ) {
         when {
-            showTopicHistoryPicker.value -> {
-                showTopicHistoryPicker.value = false
-            }
-
             showRoleNameHistoryPicker.value -> {
                 showRoleNameHistoryPicker.value = false
                 pickingRoleNameHistoryRole.value = null
@@ -1018,11 +1283,6 @@ private fun DuelPickerBottomSheets(
         roleNameHistoryItems.value = duelChatComponent.loadRoleNameHistory(role)
     }
 
-    LaunchedEffect(showTopicHistoryPicker.value) {
-        if (!showTopicHistoryPicker.value) return@LaunchedEffect
-        topicHistoryItems.value = duelChatComponent.loadTopicHistory()
-    }
-
     AIPromptsPickerBottomSheet(
         visible = showPromptPicker.value,
         categories = promptCategories,
@@ -1043,6 +1303,12 @@ private fun DuelPickerBottomSheets(
         onDismiss = {
             showPromptPicker.value = false
             pickingPromptRole.value = null
+        },
+        onManualCreatePrompt = {
+            // 手动创建：跳转提示词编辑页（同首页 + 面板的提示词入口）
+            showPromptPicker.value = false
+            pickingPromptRole.value = null
+            onNavigate(Screen.EditPromptItem())
         }
     )
 
@@ -1110,131 +1376,7 @@ private fun DuelPickerBottomSheets(
             pickingPersonaHistoryRole.value = null
         }
     )
-
-    AIDuelPersonaHistoryPickerBottomSheet(
-        visible = showTopicHistoryPicker.value,
-        title = stringResource(R.string.ai_duel_choose_history_topic_title),
-        items = topicHistoryItems.value,
-        onSelected = { selected ->
-            topic.value = selected
-            showTopicHistoryPicker.value = false
-        },
-        onDismiss = {
-            showTopicHistoryPicker.value = false
-        }
-    )
 }
-
-// ──────────────────────────────────────────────────────────────
-//  Helper composables
-// ──────────────────────────────────────────────────────────────
-
-@Composable
-private fun buildPersonaLabel(role: DuelSpeaker, duelConfig: AIDuelConfig): String {
-    val baseLabel = when (duelConfig.mode) {
-        DuelMode.DEBATE -> stringResource(R.string.ai_duel_persona_label_debate)
-        DuelMode.DIALOGUE -> stringResource(R.string.ai_duel_persona_label_dialogue)
-        DuelMode.INTERVIEW -> if (role == DuelSpeaker.A) {
-            stringResource(R.string.ai_duel_persona_label_interview_a)
-        } else {
-            stringResource(R.string.ai_duel_persona_label_interview_b)
-        }
-
-        DuelMode.ROLEPLAY -> stringResource(R.string.ai_duel_persona_label_roleplay)
-    }
-    val modelTitle = when (role) {
-        DuelSpeaker.A -> duelConfig.engineA?.model?.title.orEmpty()
-        DuelSpeaker.B -> duelConfig.engineB?.model?.title.orEmpty()
-    }
-    return if (modelTitle.isBlank()) baseLabel else "$baseLabel（$modelTitle）"
-}
-
-@Composable
-private fun DuelMode.label(): String = when (this) {
-    DuelMode.DEBATE -> stringResource(R.string.ai_duel_mode_debate)
-    DuelMode.DIALOGUE -> stringResource(R.string.ai_duel_mode_dialogue)
-    DuelMode.INTERVIEW -> stringResource(R.string.ai_duel_mode_interview)
-    DuelMode.ROLEPLAY -> stringResource(R.string.ai_duel_mode_roleplay)
-}
-
-@Composable
-private fun DuelMode.subtitle(): String = when (this) {
-    DuelMode.DEBATE -> stringResource(R.string.ai_duel_mode_subtitle_debate)
-    DuelMode.DIALOGUE -> stringResource(R.string.ai_duel_mode_subtitle_dialogue)
-    DuelMode.INTERVIEW -> stringResource(R.string.ai_duel_mode_subtitle_interview)
-    DuelMode.ROLEPLAY -> stringResource(R.string.ai_duel_mode_subtitle_roleplay)
-}
-
-@Composable
-private fun DuelMode.roleCardTitle(speaker: DuelSpeaker): String = when (this) {
-    DuelMode.DEBATE -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_role_card_debate_a)
-    } else {
-        stringResource(R.string.ai_duel_role_card_debate_b)
-    }
-
-    DuelMode.DIALOGUE -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_role_card_dialogue_a)
-    } else {
-        stringResource(R.string.ai_duel_role_card_dialogue_b)
-    }
-
-    DuelMode.INTERVIEW -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_role_card_interview_a)
-    } else {
-        stringResource(R.string.ai_duel_role_card_interview_b)
-    }
-
-    DuelMode.ROLEPLAY -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_role_card_roleplay_a)
-    } else {
-        stringResource(R.string.ai_duel_role_card_roleplay_b)
-    }
-}
-
-@Composable
-private fun DuelMode.personaHint(speaker: DuelSpeaker): String = when (this) {
-    DuelMode.DEBATE -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_persona_hint_debate_a)
-    } else {
-        stringResource(R.string.ai_duel_persona_hint_debate_b)
-    }
-
-    DuelMode.DIALOGUE -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_persona_hint_dialogue_a)
-    } else {
-        stringResource(R.string.ai_duel_persona_hint_dialogue_b)
-    }
-
-    DuelMode.INTERVIEW -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_persona_hint_interview_a)
-    } else {
-        stringResource(R.string.ai_duel_persona_hint_interview_b)
-    }
-
-    DuelMode.ROLEPLAY -> if (speaker == DuelSpeaker.A) {
-        stringResource(R.string.ai_duel_persona_hint_roleplay_a)
-    } else {
-        stringResource(R.string.ai_duel_persona_hint_roleplay_b)
-    }
-}
-
-@Composable
-private fun DuelMode.topicLabel(): String = when (this) {
-    DuelMode.DEBATE -> stringResource(R.string.ai_duel_topic_label_debate)
-    DuelMode.DIALOGUE -> stringResource(R.string.ai_duel_topic_label_dialogue)
-    DuelMode.INTERVIEW -> stringResource(R.string.ai_duel_topic_label_interview)
-    DuelMode.ROLEPLAY -> stringResource(R.string.ai_duel_topic_label_roleplay)
-}
-
-@Composable
-private fun DuelMode.topicPlaceholder(): String = when (this) {
-    DuelMode.DEBATE -> stringResource(R.string.ai_duel_topic_placeholder_debate)
-    DuelMode.DIALOGUE -> stringResource(R.string.ai_duel_topic_placeholder_dialogue)
-    DuelMode.INTERVIEW -> stringResource(R.string.ai_duel_topic_placeholder_interview)
-    DuelMode.ROLEPLAY -> stringResource(R.string.ai_duel_topic_placeholder_roleplay)
-}
-
 
 // ──────────────────────────────────────────────────────────────
 //  Messages list
@@ -1247,6 +1389,7 @@ private fun DuelMessagesList(
     lazyListState: LazyListState,
     appComponent: AppComponent,
     conversation: Conversation,
+    duelConfig: AIDuelConfig,
 ) {
     val codeBlockClickListener = rememberCodeBlockClickListener(appComponent = appComponent)
 
@@ -1278,7 +1421,12 @@ private fun DuelMessagesList(
                         item = item,
                         index = index,
                         codeBlockClickListener = codeBlockClickListener,
-                        onUserContainerHeader = { DuelUserMessageHeader(userContainerHeader = it) },
+                        onUserContainerHeader = {
+                            DuelUserMessageHeader(
+                                userContainerHeader = it,
+                                avatarPath = duelConfig.avatarA,
+                            )
+                        },
                         onUserVerticalSpace = { userSpace ->
                             Spacer(
                                 modifier = Modifier
@@ -1317,7 +1465,12 @@ private fun DuelMessagesList(
                                 leftLine = MaterialTheme.colorScheme.primary.copy(alpha = 0.48f)
                             )
                         },
-                        onRobotContainerHeader = { DuelRobotMessageHeader(robotContainerHeader = it) },
+                        onRobotContainerHeader = {
+                            DuelRobotMessageHeader(
+                                robotContainerHeader = it,
+                                avatarPath = duelConfig.avatarB,
+                            )
+                        },
                         onRobotContainerFooter = { _, _ -> DuelRobotFooter() },
                         onRobotError = {}
                     )
@@ -1377,7 +1530,10 @@ private fun DuelRobotFooter() {
 }
 
 @Composable
-private fun DuelUserMessageHeader(userContainerHeader: MessageUiModel.UserContainerHeader) {
+private fun DuelUserMessageHeader(
+    userContainerHeader: MessageUiModel.UserContainerHeader,
+    avatarPath: String,
+) {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
@@ -1412,30 +1568,22 @@ private fun DuelUserMessageHeader(userContainerHeader: MessageUiModel.UserContai
         }
         if (showRoleAvatar) {
             Spacer(modifier = Modifier.size(8.dp))
-            val avatarBackground = MaterialTheme.colorScheme.primaryContainer
-            val avatarTint = MaterialTheme.colorScheme.onPrimaryContainer
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .background(
-                        color = avatarBackground,
-                        shape = CircleShape
-                    )
-                    .padding(4.dp)
-            ) {
-                LetterIcon(
-                    name = userContainerHeader.modelName,
-                    modifier = Modifier.fillMaxSize(),
-                    tint = avatarTint.copy(0.12f),
-                    showOutline = false
-                )
-            }
+            DuelRoleAvatar(
+                avatarPath = avatarPath,
+                fallbackName = userContainerHeader.modelName,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                letterTint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(32.dp)
+            )
         }
     }
 }
 
 @Composable
-private fun DuelRobotMessageHeader(robotContainerHeader: MessageUiModel.RobotContainerHeader) {
+private fun DuelRobotMessageHeader(
+    robotContainerHeader: MessageUiModel.RobotContainerHeader,
+    avatarPath: String,
+) {
     Spacer(
         modifier = Modifier
             .padding(top = 6.dp)
@@ -1453,24 +1601,13 @@ private fun DuelRobotMessageHeader(robotContainerHeader: MessageUiModel.RobotCon
     ) {
         val showRoleAvatar = robotContainerHeader.modelSubtitle.isNotBlank()
         if (showRoleAvatar) {
-            val avatarBackground = MaterialTheme.colorScheme.tertiaryContainer
-            val avatarTint = MaterialTheme.colorScheme.onTertiaryContainer
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .background(
-                        color = avatarBackground,
-                        shape = CircleShape
-                    )
-                    .padding(4.dp)
-            ) {
-                LetterIcon(
-                    name = robotContainerHeader.modelName,
-                    modifier = Modifier.fillMaxSize(),
-                    tint = avatarTint.copy(0.12f),
-                    showOutline = false
-                )
-            }
+            DuelRoleAvatar(
+                avatarPath = avatarPath,
+                fallbackName = robotContainerHeader.modelName,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                letterTint = MaterialTheme.colorScheme.onTertiaryContainer,
+                modifier = Modifier.size(32.dp)
+            )
             Spacer(modifier = Modifier.size(8.dp))
         }
         Column {

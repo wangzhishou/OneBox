@@ -12,18 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -32,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,13 +39,22 @@ import com.shifenmiao.core.R
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 
 /**
  * 提示词选择底部弹窗（重构版）
  *
  * 数据源从 Category + ChatPromptEntity (item 联表查询) 获取，
  * 替换原来的 Group + Prompt。
+ *
+ * @param onManualCreatePrompt 手动创建提示词入口回调（跳转手动编辑页），为 null 时隐藏手动创建入口
  */
 @Composable
 fun AIPromptsPickerBottomSheet(
@@ -59,6 +66,7 @@ fun AIPromptsPickerBottomSheet(
     onPromptSelected: (PromptEntity) -> Unit,
     onCreatePrompt: () -> Unit,
     onDismiss: (Boolean) -> Unit,
+    onManualCreatePrompt: (() -> Unit)? = null,
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
@@ -151,6 +159,43 @@ fun AIPromptsPickerBottomSheet(
                     }
                 }
             }
+
+            // ── 底部创建入口：手动创建 + AI 自动创建 ──
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = AppTheme.dimens.paddingSmall),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                if (onManualCreatePrompt != null) {
+                    PromptCreateEntryCard(
+                        modifier = Modifier.weight(1f),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Edit,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        title = stringResource(R.string.ai_prompt_picker_create_manual),
+                        subtitle = stringResource(R.string.ai_prompt_picker_create_manual_sub),
+                        onClick = onManualCreatePrompt
+                    )
+                }
+                PromptCreateEntryCard(
+                    modifier = Modifier.weight(1f),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.LineMagic,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    title = stringResource(R.string.ai_prompt_picker_create_ai),
+                    subtitle = stringResource(R.string.ai_prompt_picker_create_ai_sub),
+                    onClick = onCreatePrompt
+                )
+            }
         }
     }
 }
@@ -188,40 +233,46 @@ private fun PromptEmptyState(
     }
 }
 
+// 提示词卡片：首字符圆形图标 + 标题 + 描述 + 底部全宽“使用”按钮
 @Composable
 private fun ChatPromptGridItem(
     prompt: PromptEntity,
     onClick: () -> Unit,
 ) {
-    Card(
+    GlassCard(
         onClick = onClick,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        containerAlpha = GlassStyle.Thin.backgroundAlpha,
+        borderWidth = 0.dp,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp)
+                .height(170.dp)
                 .padding(12.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                // 标题首字符作为 emoji 标签
+                // 标题首字符作为圆形图标
                 val firstChar = prompt.title?.firstOrNull()?.toString()
                 if (!firstChar.isNullOrBlank()) {
-                    Text(
-                        text = firstChar,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.secondaryContainer)
-                            .padding(horizontal = 8.dp, vertical = 3.dp)
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
+                            .size(36.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = firstChar,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
 
                 // 标题
@@ -231,42 +282,93 @@ private fun ChatPromptGridItem(
                         fontWeight = FontWeight.SemiBold
                     ),
                     color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 // 描述
                 if (!prompt.description.isNullOrBlank()) {
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = prompt.description.orEmpty(),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 3,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
             }
 
-            // 底部：USE 按钮
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextButton(
-                    onClick = onClick,
-                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
+            // 底部：右对齐的“使用”按钮（自适应内容宽度，上方留白）
+            Column {
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
                 ) {
-                    Text(
-                        text = stringResource(R.string.use),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    GlassTonalButton(
+                        onClick = onClick,
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 2.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.use),
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                    }
                 }
             }
+        }
+    }
+}
+
+// 底部创建入口卡片：图标 + 标题/副标题 + 右箭头
+@Composable
+private fun PromptCreateEntryCard(
+    icon: @Composable () -> Unit,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    GlassCard(
+        onClick = onClick,
+        modifier = modifier,
+        shape = MaterialTheme.shapes.large,
+        containerAlpha = GlassStyle.Thin.backgroundAlpha,
+        borderWidth = 0.dp,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            icon()
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Icon(
+                imageVector = Icons.Outlined.LineChevronRight,
+                contentDescription = null,
+                modifier = Modifier.size(14.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

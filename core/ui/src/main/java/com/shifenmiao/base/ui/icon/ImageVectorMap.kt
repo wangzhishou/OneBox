@@ -25,6 +25,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.RobotHappy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiDuelChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAltitude
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineApngTools
@@ -313,6 +314,8 @@ object IconRegistry {
         "UserInfo" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineProfile },
         "Demo" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDemo },
         "AiChatScreen" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat },
+        "AIDuelChatScreen" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiDuelChat },
+        "AiDuelChat" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiDuelChat },
         "AboutUs" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo },
         "AgentScreen" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.RobotHappy },
         "AgentDetail" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.RobotHappy },

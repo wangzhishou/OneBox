@@ -4,7 +4,6 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.toArgb
 import com.shifenmiao.ai.model.AIDuelConfig
 import com.shifenmiao.ai.model.AIDuelConfigCodec
-import com.shifenmiao.ai.model.DuelMode
 import com.shifenmiao.ai.model.DuelSpeaker
 import com.shifenmiao.common.ai.aigc.AigcInfoGenerator
 import com.shifenmiao.common.manager.AIEngineCatalogManager
@@ -82,7 +81,7 @@ class DuelHtmlExporter {
 
         val css = buildCss(colorScheme, fontSizePx)
         val bodyClass = if (isDark) "dark" else ""
-        val headerHtml = buildHeaderHtml(conversation, config)
+        val headerHtml = buildHeaderHtml(conversation)
         val promptsHtml = buildPromptsHtml(config)
         val messagesHtml = buildMessagesHtml(sortedMessages, config, aiEngineCatalogManager)
         // "AI 生成内容"显式标识是国内合规要求,海外(google)渠道不展示
@@ -132,30 +131,13 @@ class DuelHtmlExporter {
 
     // ===== 头部 =====
 
-    private fun buildHeaderHtml(conversation: Conversation, config: AIDuelConfig): String {
+    private fun buildHeaderHtml(conversation: Conversation): String {
         val title = escapeHtml(conversation.appTitle.ifBlank { conversation.title })
-        val topic = escapeHtml(config.topic.trim())
-        val modeLabel = escapeHtml(resolveModeLabel(config.mode))
-        val topicHtml = if (topic.isNotBlank()) {
-            """<div class="topic">$topic</div>"""
-        } else ""
         return """
             <header class="page-header">
-                <div class="mode-badge">$modeLabel</div>
                 <h1>$title</h1>
-                $topicHtml
             </header>
         """.trimIndent()
-    }
-
-    private fun resolveModeLabel(mode: DuelMode): String {
-        val res = when (mode) {
-            DuelMode.DEBATE -> R.string.ai_duel_mode_debate
-            DuelMode.DIALOGUE -> R.string.ai_duel_mode_dialogue
-            DuelMode.INTERVIEW -> R.string.ai_duel_mode_interview
-            DuelMode.ROLEPLAY -> R.string.ai_duel_mode_roleplay
-        }
-        return AppContext.getString(res)
     }
 
     // ===== 提示词区 =====
@@ -348,25 +330,11 @@ body {
   text-align: center;
   margin-bottom: 1.25rem;
 }
-.page-header .mode-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  background: $primaryContainer;
-  color: $onPrimaryContainer;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
 .page-header h1 {
   font-size: 1.375rem;
   font-weight: 600;
   margin: 0 0 0.5rem;
   color: $onSurface;
-}
-.page-header .topic {
-  font-size: 0.9375rem;
-  color: $onSurfaceVariant;
 }
 
 /* Prompts */

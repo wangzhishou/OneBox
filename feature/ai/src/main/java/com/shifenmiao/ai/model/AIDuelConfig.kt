@@ -20,10 +20,10 @@ data class AIDuelConfig(
     val personaA: String = "",
     @SerializedName("personaB")
     val personaB: String = "",
-    @SerializedName("mode")
-    val mode: DuelMode = DuelMode.DEBATE,
-    @SerializedName("topic")
-    val topic: String = "",
+    @SerializedName("avatarA")
+    val avatarA: String = "",
+    @SerializedName("avatarB")
+    val avatarB: String = "",
     @SerializedName("maxRounds")
     val maxRounds: Int = 5,
     @SerializedName("engineA")
@@ -70,8 +70,9 @@ internal object AIDuelConfigCodec {
         AIDuelConfig(
             personaA = str("personaA"),
             personaB = str("personaB"),
-            mode = DuelMode.entries.firstOrNull { it.name == str("mode") } ?: DuelMode.DEBATE,
-            topic = str("topic"),
+            // 旧 JSON 里的 mode/topic 字段直接忽略，历史会话保持兼容
+            avatarA = str("avatarA"),
+            avatarB = str("avatarB"),
             maxRounds = int("maxRounds", 5),
             engineA = engineA,
             engineB = engineB,
@@ -83,13 +84,6 @@ internal object AIDuelConfigCodec {
             roleNameB = str("roleNameB"),
         )
     }.getOrNull()
-}
-
-enum class DuelMode {
-    DEBATE,
-    DIALOGUE,
-    INTERVIEW,
-    ROLEPLAY,
 }
 
 enum class DuelSpeaker {

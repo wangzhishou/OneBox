@@ -156,8 +156,9 @@ abstract class AppDatabase : RoomDatabase() {
          * v2 新增 AI 对聊/互动 prompt 模板预置。
          * v3 raw-en 默认系统提示词英文化(原为中文), en 语言库需重刷。
          * v4 raw-en 新增英文 AI 对聊/互动模板, en 语言库需重刷。
+         * v5 AI 互聊模板扁平化(删除模式/主题维度), 需重刷覆盖旧的分模式模板。
          */
-        private const val SYSTEM_PRESET_VERSION = 4
+        private const val SYSTEM_PRESET_VERSION = 5
 
         fun loadRawPrompt(context: Context, resId: Int): String =
             context.resources.openRawResource(resId).bufferedReader(Charsets.UTF_8).use { it.readText() }.trim()

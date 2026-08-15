@@ -15,7 +15,6 @@ import com.shifenmiao.network.service.SensitiveWordCheckOutcome
 import com.shifenmiao.network.service.SensitiveWordChecker
 import com.shifenmiao.ai.model.AIDuelConfig
 import com.shifenmiao.ai.model.AIDuelConfigCodec
-import com.shifenmiao.ai.model.DuelMode
 import com.shifenmiao.ai.model.AIDuelState
 import com.shifenmiao.ai.model.DuelSpeaker
 import com.shifenmiao.ai.model.MessageUiModel
@@ -85,13 +84,21 @@ import kotlin.math.ceil
 private data class DuelPromptTemplates(
     @SerializedName("roleNameInstruction") val roleNameInstruction: String = "",
     @SerializedName("responseRules") val responseRules: String = "",
-    @SerializedName("seedMessages") val seedMessages: Map<String, String> = emptyMap(),
-    @SerializedName("continuePrompts") val continuePrompts: Map<String, String> = emptyMap(),
-    @SerializedName("modeSystemInstructions") val modeSystemInstructions: Map<String, String> = emptyMap(),
-    @SerializedName("firstTurnInstructions") val firstTurnInstructions: Map<String, String> = emptyMap(),
-    @SerializedName("followUpInstructions") val followUpInstructions: Map<String, String> = emptyMap(),
-    @SerializedName("responseEnvelopes") val responseEnvelopes: Map<String, String> = emptyMap(),
-    @SerializedName("opponentLineLabels") val opponentLineLabels: Map<String, String> = emptyMap()
+    @SerializedName("seedMessage") val seedMessage: String = "",
+    @SerializedName("continuePrompt") val continuePrompt: String = "",
+    @SerializedName("systemInstruction") val systemInstruction: String = "",
+    @SerializedName("firstTurnInstruction") val firstTurnInstruction: String = "",
+    @SerializedName("followUpInstruction") val followUpInstruction: String = "",
+    @SerializedName("responseEnvelope") val responseEnvelope: String = "",
+    @SerializedName("opponentLineLabel") val opponentLineLabel: String = "",
+    // 旧版按模式分 key 的 map，仅用于兼容解析存量数据：扁平字段为空时回退读取
+    @SerializedName("seedMessages") val legacySeedMessages: Map<String, String> = emptyMap(),
+    @SerializedName("continuePrompts") val legacyContinuePrompts: Map<String, String> = emptyMap(),
+    @SerializedName("modeSystemInstructions") val legacySystemInstructions: Map<String, String> = emptyMap(),
+    @SerializedName("firstTurnInstructions") val legacyFirstTurnInstructions: Map<String, String> = emptyMap(),
+    @SerializedName("followUpInstructions") val legacyFollowUpInstructions: Map<String, String> = emptyMap(),
+    @SerializedName("responseEnvelopes") val legacyResponseEnvelopes: Map<String, String> = emptyMap(),
+    @SerializedName("opponentLineLabels") val legacyOpponentLineLabels: Map<String, String> = emptyMap()
 )
 
 class AIDuelChatComponent @AssistedInject internal constructor(
@@ -274,14 +281,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         return result
     }
 
-    private fun resolveDuelTemplateKey(mode: DuelMode, speaker: DuelSpeaker? = null): String {
-        return if (speaker != null && mode == DuelMode.INTERVIEW) {
-            "${mode.name}_${speaker.name}"
-        } else {
-            mode.name
-        }
-    }
-
     private fun String.replaceDuelPlaceholders(
         currentName: String = "",
         opponentName: String = ""
@@ -297,60 +296,57 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         return duelPromptTemplates?.roleNameInstruction?.replace("{roleName}", roleName.trim()) ?: ""
     }
 
-    private fun getSeedMessage(mode: DuelMode): String {
-        return duelPromptTemplates?.seedMessages?.get(mode.name) ?: ""
+    // 以下 getter 均带旧模板兼容：扁平字段为空时回退到旧 map 的 DEBATE key，避免模板缺失时提示词全空
+
+    private fun getSeedMessage(): String {
+        return duelPromptTemplates?.seedMessage?.takeIf { it.isNotBlank() }
+            ?: duelPromptTemplates?.legacySeedMessages?.get("DEBATE").orEmpty()
     }
 
-    private fun getContinuePrompt(mode: DuelMode, speaker: DuelSpeaker): String {
-        return duelPromptTemplates?.continuePrompts?.get(resolveDuelTemplateKey(mode, speaker)) ?: ""
+    private fun getContinuePrompt(): String {
+        return duelPromptTemplates?.continuePrompt?.takeIf { it.isNotBlank() }
+            ?: duelPromptTemplates?.legacyContinuePrompts?.get("DEBATE").orEmpty()
     }
 
-    private fun getModeSystemInstruction(
-        mode: DuelMode,
-        speaker: DuelSpeaker,
+    private fun getSystemInstruction(
         currentName: String,
         opponentName: String
     ): String {
-        val key = resolveDuelTemplateKey(mode, speaker)
-        return duelPromptTemplates?.modeSystemInstructions?.get(key)
-            ?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
+        val template = duelPromptTemplates?.systemInstruction?.takeIf { it.isNotBlank() }
+            ?: duelPromptTemplates?.legacySystemInstructions?.get("DEBATE")
+        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
     }
 
     private fun getFirstTurnInstruction(
-        mode: DuelMode,
-        speaker: DuelSpeaker,
         currentName: String,
         opponentName: String
     ): String {
-        val key = resolveDuelTemplateKey(mode, speaker)
-        return duelPromptTemplates?.firstTurnInstructions?.get(key)
-            ?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
+        val template = duelPromptTemplates?.firstTurnInstruction?.takeIf { it.isNotBlank() }
+            ?: duelPromptTemplates?.legacyFirstTurnInstructions?.get("DEBATE")
+        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
     }
 
     private fun getFollowUpInstruction(
-        mode: DuelMode,
-        speaker: DuelSpeaker,
         currentName: String,
         opponentName: String
     ): String {
-        val key = resolveDuelTemplateKey(mode, speaker)
-        return duelPromptTemplates?.followUpInstructions?.get(key)
-            ?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
+        val template = duelPromptTemplates?.followUpInstruction?.takeIf { it.isNotBlank() }
+            ?: duelPromptTemplates?.legacyFollowUpInstructions?.get("DEBATE")
+        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
     }
 
     private fun getResponseEnvelope(
-        mode: DuelMode,
-        currentSpeaker: DuelSpeaker,
         currentName: String,
         opponentName: String
     ): String {
-        val key = resolveDuelTemplateKey(mode, currentSpeaker)
-        return duelPromptTemplates?.responseEnvelopes?.get(key)
-            ?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
+        val template = duelPromptTemplates?.responseEnvelope?.takeIf { it.isNotBlank() }
+            ?: duelPromptTemplates?.legacyResponseEnvelopes?.get("DEBATE")
+        return template?.replaceDuelPlaceholders(currentName, opponentName) ?: ""
     }
 
-    private fun getOpponentLineLabel(mode: DuelMode, opponentSpeaker: DuelSpeaker): String {
-        return duelPromptTemplates?.opponentLineLabels?.get(resolveDuelTemplateKey(mode, opponentSpeaker)) ?: ""
+    private fun getOpponentLineLabel(): String {
+        return duelPromptTemplates?.opponentLineLabel?.takeIf { it.isNotBlank() }
+            ?: duelPromptTemplates?.legacyOpponentLineLabels?.get("DEBATE").orEmpty()
     }
 
     private var observeMessagesJob: Job? = null
@@ -460,7 +456,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             historyVisible = false,
         ).withHistorySnapshot(
             defaultTitle = applicationContext.getString(R.string.ai_duel_chat_title),
-            assistantMessage = config.topic.ifBlank { appTitle },
+            assistantMessage = appTitle,
             timestamp = System.currentTimeMillis()
         )
         synchronized(cachedMessageUiModels) { cachedMessageUiModels.clear() }
@@ -494,10 +490,10 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     private fun AIDuelConfig.hasMeaningfulDraftContent(): Boolean {
         return personaA.isNotBlank() ||
             personaB.isNotBlank() ||
-            mode != DuelMode.DEBATE ||
-            topic.isNotBlank() ||
             roleNameA.isNotBlank() ||
             roleNameB.isNotBlank() ||
+            avatarA.isNotBlank() ||
+            avatarB.isNotBlank() ||
             promptIdA > 0 ||
             promptIdB > 0 ||
             promptNameA.isNotBlank() ||
@@ -506,17 +502,21 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
     fun applyPromptToRole(role: DuelSpeaker, prompt: PromptEntity) {
         if (_duelState.value.running) return
+        // 显示名称为空时，用提示词标题填充
+        val current = _duelConfig.value
         val updated = if (role == DuelSpeaker.A) {
-            _duelConfig.value.copy(
+            current.copy(
                 personaA = prompt.prompt ?: "",
                 promptIdA = prompt.id,
-                promptNameA = prompt.title ?: ""
+                promptNameA = prompt.title ?: "",
+                roleNameA = current.roleNameA.ifBlank { prompt.title ?: "" }
             )
         } else {
-            _duelConfig.value.copy(
+            current.copy(
                 personaB = prompt.prompt ?: "",
                 promptIdB = prompt.id,
-                promptNameB = prompt.title ?: ""
+                promptNameB = prompt.title ?: "",
+                roleNameB = current.roleNameB.ifBlank { prompt.title ?: "" }
             )
         }
         updateDraftConfig(updated)
@@ -598,7 +598,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 placeholder = applicationContext.getString(R.string.ai_duel_chat_description)
             ).withHistorySnapshot(
                 defaultTitle = applicationContext.getString(R.string.ai_duel_chat_title),
-                assistantMessage = resolvedConfig.topic.ifBlank { appTitle },
+                assistantMessage = appTitle,
                 timestamp = System.currentTimeMillis()
             )
 
@@ -657,22 +657,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 val key = if (role == DuelSpeaker.A) "roleNameA" else "roleNameB"
                 val roleName = parseDuelConfigTextField(prompt, key)
                 if (roleName.isNotBlank()) dedup.add(roleName)
-            }
-            dedup.toList()
-        }
-    }
-
-    suspend fun loadTopicHistory(limit: Int = 30): List<String> {
-        return withContext(ioDispatcher) {
-            val entities = appDatabase.conversationDao()
-                .getVisibleConversationsByType(AIConversationEntryType.DUEL.name, limit)
-
-            val dedup = LinkedHashSet<String>()
-            for (entity in entities) {
-                val prompt = entity.prompt
-                if (prompt.isBlank()) continue
-                val topic = parseDuelConfigTextField(prompt, "topic")
-                if (topic.isNotBlank()) dedup.add(topic)
             }
             dedup.toList()
         }
@@ -795,7 +779,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                     val requestConversation = _conversation.value.copy(
                         prompt = buildRoundPrompt(
                             speakerPrompt = speakerPrompt,
-                            topic = config.topic,
                             isFirstTurn = isFirstTurn,
                             speaker = speaker,
                             config = config,
@@ -1316,7 +1299,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     private fun buildRequestMessages(
-        @Suppress("UNUSED_PARAMETER") config: AIDuelConfig,
+        config: AIDuelConfig,
         speaker: DuelSpeaker
     ): List<MessageEntity> {
         val turnsAsc = synchronized(messages) { messages.toList() }
@@ -1330,7 +1313,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                     completionId = "seed",
                     conversationId = _conversation.value.id,
                     role = RoleType.USER.value,
-                    question = getSeedMessage(config.mode)
+                    question = getSeedMessage()
                 )
             )
         }
@@ -1367,7 +1350,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
                 completionId = "u_tail",
                 conversationId = _conversation.value.id,
                 role = RoleType.USER.value,
-                question = getContinuePrompt(config.mode, speaker)
+                question = getContinuePrompt()
             )
         }
 
@@ -1388,18 +1371,18 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         val opponentName = resolveSpeakerDisplayName(config, opponentSpeaker)
         val currentName = resolveSpeakerDisplayName(config, currentSpeaker)
         return buildString {
-            append(getResponseEnvelope(config.mode, currentSpeaker, currentName, opponentName))
+            append(getResponseEnvelope(currentName, opponentName))
             append("\n\n")
             append(opponentName)
-            append(getOpponentLineLabel(config.mode, opponentSpeaker))
+            append(getOpponentLineLabel())
             append("：\n")
             append(normalizedContent)
         }
     }
 
+    // 每轮的 system prompt：通用指令 + 发言约束 + 角色 persona（每轮都带，贯穿整个上下文）+ 首轮/后续指令
     private fun buildRoundPrompt(
         speakerPrompt: String,
-        topic: String,
         isFirstTurn: Boolean,
         speaker: DuelSpeaker,
         config: AIDuelConfig,
@@ -1407,28 +1390,20 @@ class AIDuelChatComponent @AssistedInject internal constructor(
         val normalizedPrompt = speakerPrompt.trim()
         val currentName = resolveSpeakerDisplayName(config, speaker)
         val opponentName = resolveSpeakerDisplayName(config, speaker.other())
-        val openingLine = topic.trim()
-            .takeIf { it.isNotBlank() }
-            ?.let { "${applicationContext.getString(R.string.ai_duel_opening_line_format)} $it" }
-            .orEmpty()
 
         return buildString {
-            append(getModeSystemInstruction(config.mode, speaker, currentName, opponentName))
+            append(getSystemInstruction(currentName, opponentName))
             append("\n")
             append(getResponseRules())
             if (normalizedPrompt.isNotBlank()) {
                 append("\n\n")
                 append(normalizedPrompt)
             }
-            if (openingLine.isNotBlank()) {
-                append("\n\n")
-                append(openingLine)
-            }
             append("\n\n")
             if (isFirstTurn) {
-                append(getFirstTurnInstruction(config.mode, speaker, currentName, opponentName))
+                append(getFirstTurnInstruction(currentName, opponentName))
             } else {
-                append(getFollowUpInstruction(config.mode, speaker, currentName, opponentName))
+                append(getFollowUpInstruction(currentName, opponentName))
             }
         }
     }
@@ -1472,7 +1447,7 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     /**
-     * 在启动 duel 前对双方人设、角色名、主题进行敏感词检测。
+     * 在启动 duel 前对双方人设、角色名进行敏感词检测。
      * - 远端开关未启用 → 返回 null (放行)
      * - 命中 → 返回 [SensitiveWordCheckOutcome.Hit] (调用方负责拦截)
      * - 网络/接口异常 → 返回 null (fail-open, 放行)
@@ -1494,9 +1469,6 @@ class AIDuelChatComponent @AssistedInject internal constructor(
             }
             if (config.roleNameB.isNotBlank()) {
                 add(SensitiveWordCheckField(key = "roleNameB", text = config.roleNameB))
-            }
-            if (config.topic.isNotBlank()) {
-                add(SensitiveWordCheckField(key = "topic", text = config.topic))
             }
         }
         if (fields.isEmpty()) return null

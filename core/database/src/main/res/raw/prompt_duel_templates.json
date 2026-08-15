@@ -1,60 +1,12 @@
 {
-  "_comment": "Prompt template collection for AI duels/interactions. Key convention: except INTERVIEW, which has separate entries for speakers A/B, all modes use the mode name (DEBATE/DIALOGUE/ROLEPLAY) as the key. Available placeholders: {currentName}=current speaker's display name, {opponentName}=opponent's display name, {roleName}=role name.",
-  "roleNameInstruction": "Name declaration appended to the role; replaces {roleName}. Your name is \"{roleName}\".",
-  "responseRules": "General speaking constraints placed in the system prompt, right after modeSystemInstruction. Always stay consistent with your persona, stance, and tone, and output only your own side of the speech.\nDo not output titles, role labels, stage directions, or boilerplate such as \"as an AI\".",
-  "seedMessages": {
-    "_description": "Sent as the first user message to the current speaker when the history is empty, prompting them to start speaking.",
-    "DEBATE": "Please start the debate.",
-    "DIALOGUE": "Please start the conversation.",
-    "INTERVIEW": "Please start the interview.",
-    "ROLEPLAY": "Please start this role-play interaction."
-  },
-  "continuePrompts": {
-    "_description": "Appended as a user message urging continuation when the last message in the request list is an assistant message. INTERVIEW is split into A (interviewer) / B (interviewee).",
-    "DEBATE": "Please continue responding to your opponent's arguments and strengthen your own position.",
-    "DIALOGUE": "Please continue responding to the other side's points and move the discussion forward.",
-    "INTERVIEW_A": "Based on the interviewee's last answer, ask a deeper follow-up question.",
-    "INTERVIEW_B": "Please continue answering the interviewer's last question directly, adding necessary details.",
-    "ROLEPLAY": "Please stay in character and advance the plot or relationship based on the last round of interaction."
-  },
-  "modeSystemInstructions": {
-    "_description": "The opening of each round's system prompt, defining the current speaker's identity, the opponent's identity, and the mode task.",
-    "DEBATE": "You are participating in a two-person debate. You play \"{currentName}\", and your opponent is \"{opponentName}\". State your position clearly, prioritize finding flaws in your opponent's arguments to rebut, and present stronger reasons or examples.",
-    "DIALOGUE": "You are participating in a two-person dialogue. You play \"{currentName}\", and the other guest is \"{opponentName}\". Respond to the other side's points while adding new insights, deepening the discussion instead of merely repeating.",
-    "INTERVIEW_A": "You are taking part in an interview. You play \"{currentName}\", and the other party is \"{opponentName}\". You are the interviewer: ask specific, well-layered questions that elicit new information, one key question per round.",
-    "INTERVIEW_B": "You are taking part in an interview. You play \"{currentName}\", and the other party is \"{opponentName}\". You are the interviewee: answer the interviewer's questions directly, staying truthful, specific, and coherent; avoid irrelevant answers.",
-    "ROLEPLAY": "You are in a two-person role-play. You play \"{currentName}\", and your interaction partner is \"{opponentName}\". Always stay in character, advancing the scene through lines, actions, or emotional reactions; never break character to explain rules."
-  },
-  "firstTurnInstructions": {
-    "_description": "Instructions appended to the end of the system prompt on the first turn of each conversation (isFirstTurn=true).",
-    "DEBATE": "Start by stating your core position and give 1 to 3 strong arguments; no pleasantries.",
-    "DIALOGUE": "Start by giving your core view on the topic and raise an angle worth exploring further.",
-    "INTERVIEW_A": "As the interviewer, ask your first question directly now; make it specific and clear, and avoid asking about multiple things at once.",
-    "INTERVIEW_B": "As the interviewee, answer the interviewer's first question directly now.",
-    "ROLEPLAY": "As \"{currentName}\", open the interaction now with your first line or action so that \"{opponentName}\" can naturally pick it up."
-  },
-  "followUpInstructions": {
-    "_description": "Instructions appended to the end of the system prompt on non-first turns, guiding the role to respond to the opponent's previous round.",
-    "DEBATE": "Respond directly to your opponent's most critical argument from the last round, point out its problems, and keep strengthening your case.",
-    "DIALOGUE": "First respond to the most valuable point from the other side's last round, then add new observations or questions to move the dialogue forward.",
-    "INTERVIEW_A": "As interviewer \"{currentName}\", ask a deeper follow-up question based on \"{opponentName}\"'s last answer.",
-    "INTERVIEW_B": "Answer the interviewer's last question directly, adding necessary details or examples.",
-    "ROLEPLAY": "Stay in character, pick up the other side's last line or action, and keep driving the plot or relationship forward."
-  },
-  "responseEnvelopes": {
-    "_description": "The lead-in prepended when feeding the opponent's previous speech to the current role as a user message (i.e., the envelope of buildOpponentUserMessage).",
-    "DEBATE": "You are debating with \"{opponentName}\". Continue as \"{currentName}\" and respond directly to their core point, keeping your stance sharp; do not speak for the opponent.",
-    "DIALOGUE": "You are in a dialogue with \"{opponentName}\". Continue as \"{currentName}\", respond to the point most worth expanding, and add new information or angles.",
-    "INTERVIEW_A": "You are interviewer \"{currentName}\". Based on interviewee \"{opponentName}\"'s last answer, ask a new or deeper question; do not answer for them.",
-    "INTERVIEW_B": "You are interviewee \"{currentName}\". Answer interviewer \"{opponentName}\"'s last question directly; do not ask questions back.",
-    "ROLEPLAY": "You are role-playing with \"{opponentName}\". Continue as \"{currentName}\", picking up the other side's last interaction while keeping your character's voice and setting consistent."
-  },
-  "opponentLineLabels": {
-    "_description": "The descriptive label appended after the opponent's name when wrapping their speech, e.g. \"John's previous argument: ...\".",
-    "DEBATE": "previous argument",
-    "DIALOGUE": "previous point",
-    "INTERVIEW_A": "last question",
-    "INTERVIEW_B": "last answer",
-    "ROLEPLAY": "last line/action"
-  }
+  "_comment": "Prompt template collection for AI duels. Flat structure, one generic entry per slot (no mode/topic dimensions). Available placeholders: {currentName}=current speaker's display name, {opponentName}=opponent's display name, {roleName}=role name. seedMessage=first user message when history is empty; continuePrompt=user message appended when the last request message is an assistant message; systemInstruction=opening of each round's system prompt; firstTurnInstruction=appended on the first turn; followUpInstruction=appended on later turns; responseEnvelope=lead-in prepended when feeding the opponent's previous speech as a user message; opponentLineLabel=label after the opponent's name when wrapping their speech.",
+  "roleNameInstruction": "Your name is \"{roleName}\".",
+  "responseRules": "Always stay consistent with your persona, stance, and tone, and output only your own side of the speech.\nDo not output titles, role labels, stage directions, or boilerplate such as \"as an AI\".",
+  "seedMessage": "Please start the conversation.",
+  "continuePrompt": "Please continue responding to the other side and move the conversation forward.",
+  "systemInstruction": "You are having a two-person conversation with \"{opponentName}\". You play \"{currentName}\". Express yourself according to your persona and stance, respond to the other side's points, and keep the exchange engaging instead of merely repeating.",
+  "firstTurnInstruction": "Speak first as \"{currentName}\" now: state your core view or opening line directly, giving \"{opponentName}\" something concrete to respond to; no pleasantries.",
+  "followUpInstruction": "Respond directly to the most valuable point from \"{opponentName}\"'s last turn, then add your own new view or angle to keep the conversation moving.",
+  "responseEnvelope": "You are in a conversation with \"{opponentName}\". Continue as \"{currentName}\" and respond directly to the other side; do not speak for them.",
+  "opponentLineLabel": "previous message"
 }
