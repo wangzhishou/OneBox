@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 空状态首页 -->
+    <string name="markup_home_title">Image Studio</string>
+    <string name="markup_back">Bumalik</string>
+    <string name="markup_home_tagline">Pro · Mabilis · Matalino</string>
+    <string name="markup_import_hint">Mag-import ng larawan para magsimulang mag-edit</string>
+    <string name="markup_import_subtitle">Maraming paraan ng pag-import</string>
+    <string name="markup_entry_gallery">Gallery</string>
+    <string name="markup_entry_camera">Camera</string>
+    <string name="markup_entry_paste">I-paste</string>
+    <string name="markup_entry_blank_canvas">Blankong canvas</string>
+
+    <!-- 空白画布 -->
+    <string name="markup_blank_canvas_title">Bagong blankong canvas</string>
+    <string name="markup_blank_canvas_size">Laki ng canvas</string>
+    <string name="markup_blank_canvas_custom">Custom</string>
+    <string name="markup_blank_canvas_background">Background</string>
+    <string name="markup_blank_canvas_bg_transparent">Transparent</string>
+    <string name="markup_blank_canvas_create">Gumawa</string>
+
+    <!-- 编辑器 -->
+    <string name="markup_editor_title">Image Editor</string>
+    <string name="markup_save">I-save</string>
+    <string name="markup_undo">I-undo</string>
+    <string name="markup_redo">I-redo</string>
+    <string name="markup_more_options">Higit pang opsyon</string>
+    <string name="markup_menu_share">Ibahagi</string>
+    <string name="markup_menu_copy">Kopyahin sa clipboard</string>
+    <string name="markup_menu_clear_layers">I-clear ang mga layer</string>
+    <string name="markup_menu_save_exif">I-save ang Exif</string>
+    <string name="markup_menu_clear_filter">Alisin ang filter</string>
+    <string name="markup_menu_immersive_preview">Immersive na preview</string>
+    <string name="markup_coming_soon">Malapit na</string>
+    <string name="markup_canvas_background">Background ng canvas</string>
+    <string name="markup_canvas_bg_default">Default</string>
+    <string name="markup_canvas_bg_solid">Solidong kulay</string>
+
+    <!-- 工具 -->
+    <string name="markup_tool_select">Piliin</string>
+    <string name="markup_tool_draw">Guhit</string>
+    <string name="markup_tool_text">Teksto</string>
+    <string name="markup_tool_sticker">Sticker</string>
+    <string name="markup_tool_shape">Hugis</string>
+    <string name="markup_tool_basic">Pangunahin</string>
+    <string name="markup_tool_crop">I-crop</string>
+    <string name="markup_tool_filter">Filter</string>
+    <string name="markup_tool_adjust">I-adjust</string>
+    <string name="markup_tool_ai">AI</string>
+    <string name="markup_tool_layers">Mga layer</string>
+
+    <!-- AI 处理 -->
+    <string name="markup_ai_sheet_title">AI Smart Processing</string>
+    <string name="markup_ai_sheet_subtitle">Nauunawaan ang nilalaman ng larawan at pinapahusay ang kalidad at pagkamalikhain sa isang tap</string>
+    <string name="markup_ai_badge_new">NEW</string>
+    <string name="markup_ai_points_badge">%1$d puntos</string>
+    <string name="markup_ai_dehaze">Alisin ang Hamog</string>
+    <string name="markup_ai_dehaze_sub">Alisin ang hamog at ulap para sa malinaw na tanawin</string>
+    <string name="markup_ai_contrast_enhance">Pahusayin ang Contrast</string>
+    <string name="markup_ai_contrast_enhance_sub">Palakasin ang contrast para sa maputla at flat na mga larawan</string>
+    <string name="markup_ai_quality_enhance">Lossless na Paglaki</string>
+    <string name="markup_ai_quality_enhance_sub">Palakihin ang mga larawan nang may pinahusay na detalye</string>
+    <string name="markup_ai_stretch_restore">Ibalik ang Hugis</string>
+    <string name="markup_ai_stretch_restore_sub">Ayusin ang mga sobrang naka-stretch o naka-pisil na larawan</string>
+    <string name="markup_ai_inpainting">Pagkumpuni ng Larawan</string>
+    <string name="markup_ai_inpainting_sub">Piliin ang lugar para burahin at punan muli</string>
+    <string name="markup_ai_definition_enhance">Pahusayin ang Linaw</string>
+    <string name="markup_ai_definition_enhance_sub">Patayurin ang mga malabong litrato, ibalik ang detalye</string>
+    <string name="markup_ai_color_enhance">Pahusayin ang Kulay</string>
+    <string name="markup_ai_color_enhance_sub">Masiglang mga kulay para sa mga kumupas na litrato</string>
+    <string name="markup_ai_remove_moire">Pag-alis ng Moire</string>
+    <string name="markup_ai_remove_moire_sub">Alisin ang mga moire pattern mula sa mga litrato ng screen</string>
+    <string name="markup_ai_doc_repair">Paglilinis ng Dokumento</string>
+    <string name="markup_ai_doc_repair_sub">Alisin ang tint ng background mula sa mga litrato ng dokumento</string>
+    <string name="markup_ai_segment">Smart Cutout</string>
+    <string name="markup_ai_segment_sub">I-detect ang subject, transparent na background</string>
+    <string name="markup_ai_process_success">Tapos na ang AI processing</string>
+    <string name="markup_ai_process_failed">Nabigo ang AI processing, subukan ulit</string>
+    <string name="markup_ai_rect_hint">I-drag ang kahon sa lugar na kukumpunihin</string>
+
+    <!-- 基础调节 -->
+    <string name="markup_adjust_brightness">Brightness</string>
+    <string name="markup_adjust_contrast">Contrast</string>
+    <string name="markup_adjust_saturation">Saturation</string>
+    <string name="markup_reset">I-reset</string>
+
+    <!-- 滤镜面板 -->
+    <string name="markup_filter_original">Orihinal</string>
+    <string name="markup_filter_more">Higit pa</string>
+
+    <!-- 裁剪旋转 -->
+    <string name="markup_crop_title">I-crop at I-ikot</string>
+    <string name="markup_crop_ratio">Aspect ratio</string>
+    <string name="markup_crop_ratio_free">Libre</string>
+    <string name="markup_crop_rotate_flip">I-ikot at I-flip</string>
+    <string name="markup_crop_rotate_left">I-ikot pakaliwa</string>
+    <string name="markup_crop_rotate_right">I-ikot pakanan</string>
+    <string name="markup_crop_flip_horizontal">I-flip nang pahalang</string>
+    <string name="markup_crop_flip_vertical">I-flip nang patayo</string>
+    <string name="markup_layers_merged">Na-merge na ang mga layer</string>
+    <string name="markup_base_transform_failed">Nabigong mag-apply ng crop/ikot</string>
+
+    <!-- 画笔工具 -->
+    <string name="markup_draw_brush_type">Uri ng brush</string>
+    <string name="markup_brush_pencil">Lapis</string>
+    <string name="markup_brush_pen">Panulat</string>
+    <string name="markup_brush_brush">Brush</string>
+    <string name="markup_brush_marker">Marker</string>
+    <string name="markup_draw_color">Kulay</string>
+    <string name="markup_draw_width">Lapad</string>
+    <string name="markup_draw_opacity">Opacity</string>
+    <string name="markup_draw_brush_mode">Brush</string>
+    <string name="markup_draw_eraser_mode">Pambura</string>
+    <string name="markup_draw_pan_mode">I-pan</string>
+    <string name="markup_draw_done">Tapos na</string>
+    <string name="markup_brush_settings_title">Mga setting ng brush</string>
+
+    <!-- 缩放胶囊 -->
+    <string name="markup_zoom_in">I-zoom in</string>
+    <string name="markup_zoom_out">I-zoom out</string>
+
+    <!-- 最近项目 -->
+    <string name="markup_recent_projects">Mga kamakailang proyekto</string>
+    <string name="markup_recent_projects_empty">Walang mga kamakailang proyekto</string>
+
+    <!-- 贴纸工具 -->
+    <string name="markup_sticker_title">Mga sticker</string>
+    <string name="markup_sticker_category_emoji">Emoji</string>
+    <string name="markup_sticker_category_decor">Dekorasyon</string>
+    <string name="markup_sticker_category_frame">Mga frame</string>
+    <string name="markup_sticker_category_trend">Trend</string>
+    <string name="markup_sticker_category_ai">AI Sticker</string>
+    <string name="markup_sticker_new_badge">NEW</string>
+    <string name="markup_sticker_empty">Wala pang sticker sa kategoryang ito</string>
+
+    <!-- 形状工具 -->
+    <string name="markup_shape_basic_shapes">Mga pangunahing hugis</string>
+    <string name="markup_shape_kind_rectangle">Parihaba</string>
+    <string name="markup_shape_kind_circle">Bilog</string>
+    <string name="markup_shape_kind_triangle">Tatsulok</string>
+    <string name="markup_shape_kind_arrow">Pana</string>
+    <string name="markup_shape_kind_line">Linya</string>
+    <string name="markup_shape_kind_star">Bituin</string>
+    <string name="markup_shape_style">Estilo</string>
+    <string name="markup_shape_style_filled">Punan</string>
+    <string name="markup_shape_style_stroke">Stroke</string>
+    <string name="markup_shape_corner_radius">Kanto</string>
+    <string name="markup_shape_stroke_width">Lapad ng stroke</string>
+
+    <!-- 文字工具 -->
+    <string name="markup_confirm">Kumpirmahin</string>
+    <string name="markup_text_input_hint">Maglagay ng teksto</string>
+    <string name="markup_text_font">Font</string>
+    <string name="markup_text_more_fonts">Higit pang font</string>
+    <string name="markup_text_font_size">Laki</string>
+    <string name="markup_text_color">Kulay</string>
+    <string name="markup_text_alignment">Pagkakahanay</string>
+    <string name="markup_text_align_left">Ihanay sa kaliwa</string>
+    <string name="markup_text_align_center">Ihanay sa gitna</string>
+    <string name="markup_text_align_right">Ihanay sa kanan</string>
+    <string name="markup_text_align_justify">I-justify</string>
+    <string name="markup_text_line_height">Agwat ng linya</string>
+    <string name="markup_text_letter_spacing">Agwat ng letra</string>
+    <string name="markup_text_bold">Bold</string>
+    <string name="markup_text_italic">Italic</string>
+    <string name="markup_text_underline">Salungguhit</string>
+    <string name="markup_text_strikethrough">Strikethrough</string>
+    <string name="markup_text_background">Background</string>
+    <string name="markup_text_outline">Outline</string>
+    <string name="markup_delete">Tanggalin</string>
+
+    <!-- 图层 -->
+    <string name="markup_add_text">Magdagdag ng teksto</string>
+    <string name="markup_edit_text">I-edit ang teksto</string>
+    <string name="markup_add_layer">Magdagdag ng layer</string>
+    <string name="markup_layers_empty">Wala pang layer. I-tap ang + para magdagdag.</string>
+    <string name="markup_layer_kind_text">Teksto</string>
+    <string name="markup_layer_kind_sticker">Sticker</string>
+    <string name="markup_layer_kind_image">Larawan</string>
+    <string name="markup_layer_kind_draw">Guhit</string>
+    <string name="markup_layer_kind_shape">Hugis</string>
+    <string name="markup_layer_toggle_visible">I-toggle ang visibility</string>
+    <string name="markup_layer_default_name">%1$s %2$d</string>
+    <string name="markup_layer_opacity">Opacity</string>
+    <string name="markup_layer_blend_mode">Blend mode</string>
+    <string name="markup_blend_normal">Normal</string>
+    <string name="markup_layer_toggle_lock">I-toggle ang lock</string>
+    <string name="markup_delete_layer">Tanggalin ang layer</string>
+    <string name="markup_duplicate_layer">I-duplicate ang layer</string>
+    <string name="markup_merge_layer">I-merge pababa</string>
+    <string name="markup_move_layer_up">Ilipat pataas</string>
+    <string name="markup_move_layer_down">Ilipat pababa</string>
+    <string name="markup_merge_no_layer_below">Walang nakikitang layer sa ibaba na puwedeng i-merge</string>
+    <string name="markup_merge_failed">Nabigong i-merge ang mga layer</string>
+    <string name="markup_layer_background">Background</string>
+    <string name="markup_drag_reorder">Pindutin nang matagal at i-drag para muling ayusin</string>
+    <string name="markup_expand_layers">I-expand ang panel ng mga layer</string>
+
+    <!-- 导出设置 -->
+    <string name="markup_export_title">I-export / I-save</string>
+    <string name="markup_export_subtitle">Piliin ang format at mga setting</string>
+    <string name="markup_export_format">Format</string>
+    <string name="markup_export_format_jpg_sub">Maliit, unibersal</string>
+    <string name="markup_export_format_png_sub">Lossless, transparent</string>
+    <string name="markup_export_format_webp_sub">Maliit, mataas na kalidad</string>
+    <string name="markup_export_quality">Kalidad</string>
+    <string name="markup_export_resolution">Resolusyon</string>
+    <string name="markup_export_res_original">Orihinal</string>
+    <string name="markup_export_res_custom">Custom</string>
+    <string name="markup_export_res_custom_sub">Ilagay ang laki</string>
+    <string name="markup_export_width">Lapad</string>
+    <string name="markup_export_height">Taas</string>
+    <string name="markup_export_dimensions">%1$d × %2$d</string>
+    <string name="markup_export_current_size">Laki ng export</string>
+    <string name="markup_export_source_size">Source file</string>
+    <string name="markup_export_estimated_size">Tinatayang laki</string>
+    <string name="markup_export_size_approx">~%1$s</string>
+    <string name="markup_export_size_unavailable">--</string>
+    <string name="markup_export_more">Higit pang opsyon</string>
+    <string name="markup_export_share_after">Ibahagi pagkatapos i-export</string>
+    <string name="markup_export_share_after_sub">Buksan ang share panel pagkatapos i-save</string>
+    <string name="markup_export_failed_no_image">Walang larawang puwedeng i-export</string>
+    <string name="markup_cancel">Kanselahin</string>
+</resources>

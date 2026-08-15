@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 空状态首页 -->
+    <string name="markup_home_title">Estúdio de Imagem</string>
+    <string name="markup_back">Voltar</string>
+    <string name="markup_home_tagline">Pro · Rápido · Inteligente</string>
+    <string name="markup_import_hint">Importe uma imagem para começar a editar</string>
+    <string name="markup_import_subtitle">Várias formas de importar</string>
+    <string name="markup_entry_gallery">Galeria</string>
+    <string name="markup_entry_camera">Câmera</string>
+    <string name="markup_entry_paste">Colar</string>
+    <string name="markup_entry_blank_canvas">Tela em branco</string>
+
+    <!-- 空白画布 -->
+    <string name="markup_blank_canvas_title">Nova tela em branco</string>
+    <string name="markup_blank_canvas_size">Tamanho da tela</string>
+    <string name="markup_blank_canvas_custom">Personalizado</string>
+    <string name="markup_blank_canvas_background">Plano de fundo</string>
+    <string name="markup_blank_canvas_bg_transparent">Transparente</string>
+    <string name="markup_blank_canvas_create">Criar</string>
+
+    <!-- 编辑器 -->
+    <string name="markup_editor_title">Editor de Imagem</string>
+    <string name="markup_save">Salvar</string>
+    <string name="markup_undo">Desfazer</string>
+    <string name="markup_redo">Refazer</string>
+    <string name="markup_more_options">Mais opções</string>
+    <string name="markup_menu_share">Compartilhar</string>
+    <string name="markup_menu_copy">Copiar para a área de transferência</string>
+    <string name="markup_menu_clear_layers">Limpar camadas</string>
+    <string name="markup_menu_save_exif">Salvar Exif</string>
+    <string name="markup_menu_clear_filter">Limpar filtro</string>
+    <string name="markup_menu_immersive_preview">Prévia imersiva</string>
+    <string name="markup_coming_soon">Em breve</string>
+    <string name="markup_canvas_background">Plano de fundo da tela</string>
+    <string name="markup_canvas_bg_default">Padrão</string>
+    <string name="markup_canvas_bg_solid">Cor sólida</string>
+
+    <!-- 工具 -->
+    <string name="markup_tool_select">Selecionar</string>
+    <string name="markup_tool_draw">Desenhar</string>
+    <string name="markup_tool_text">Texto</string>
+    <string name="markup_tool_sticker">Adesivo</string>
+    <string name="markup_tool_shape">Forma</string>
+    <string name="markup_tool_basic">Básico</string>
+    <string name="markup_tool_crop">Cortar</string>
+    <string name="markup_tool_filter">Filtro</string>
+    <string name="markup_tool_adjust">Ajustar</string>
+    <string name="markup_tool_ai">IA</string>
+    <string name="markup_tool_layers">Camadas</string>
+
+    <!-- AI 处理 -->
+    <string name="markup_ai_sheet_title">Processamento Inteligente com IA</string>
+    <string name="markup_ai_sheet_subtitle">Entende o conteúdo da imagem e melhora a qualidade e a criatividade com um toque</string>
+    <string name="markup_ai_badge_new">NOVO</string>
+    <string name="markup_ai_points_badge">%1$d pontos</string>
+    <string name="markup_ai_dehaze">Remover névoa</string>
+    <string name="markup_ai_dehaze_sub">Remova névoa e neblina para uma cena nítida</string>
+    <string name="markup_ai_contrast_enhance">Realce de contraste</string>
+    <string name="markup_ai_contrast_enhance_sub">Realce o contraste de imagens planas e sem vida</string>
+    <string name="markup_ai_quality_enhance">Ampliação sem perdas</string>
+    <string name="markup_ai_quality_enhance_sub">Amplie imagens com mais detalhes</string>
+    <string name="markup_ai_stretch_restore">Restaurar distorção</string>
+    <string name="markup_ai_stretch_restore_sub">Corrija imagens esticadas ou comprimidas demais</string>
+    <string name="markup_ai_inpainting">Reparo de imagem</string>
+    <string name="markup_ai_inpainting_sub">Selecione uma área para apagar e preencher</string>
+    <string name="markup_ai_definition_enhance">Realce de nitidez</string>
+    <string name="markup_ai_definition_enhance_sub">Torne fotos desfocadas nítidas, recuperando detalhes</string>
+    <string name="markup_ai_color_enhance">Realce de cores</string>
+    <string name="markup_ai_color_enhance_sub">Cores vivas para fotos desbotadas</string>
+    <string name="markup_ai_remove_moire">Remover moiré</string>
+    <string name="markup_ai_remove_moire_sub">Remova padrões de moiré de fotos de telas</string>
+    <string name="markup_ai_doc_repair">Limpeza de documento</string>
+    <string name="markup_ai_doc_repair_sub">Remova a tonalidade de fundo de fotos de documentos</string>
+    <string name="markup_ai_segment">Recorte inteligente</string>
+    <string name="markup_ai_segment_sub">Detecta o objeto principal, fundo transparente</string>
+    <string name="markup_ai_process_success">Processamento de IA concluído</string>
+    <string name="markup_ai_process_failed">Falha no processamento de IA, tente novamente</string>
+    <string name="markup_ai_rect_hint">Arraste a caixa sobre a área a reparar</string>
+
+    <!-- 基础调节 -->
+    <string name="markup_adjust_brightness">Brilho</string>
+    <string name="markup_adjust_contrast">Contraste</string>
+    <string name="markup_adjust_saturation">Saturação</string>
+    <string name="markup_reset">Redefinir</string>
+
+    <!-- 滤镜面板 -->
+    <string name="markup_filter_original">Original</string>
+    <string name="markup_filter_more">Mais</string>
+
+    <!-- 裁剪旋转 -->
+    <string name="markup_crop_title">Cortar e girar</string>
+    <string name="markup_crop_ratio">Proporção</string>
+    <string name="markup_crop_ratio_free">Livre</string>
+    <string name="markup_crop_rotate_flip">Girar e espelhar</string>
+    <string name="markup_crop_rotate_left">Girar à esquerda</string>
+    <string name="markup_crop_rotate_right">Girar à direita</string>
+    <string name="markup_crop_flip_horizontal">Espelhar horizontalmente</string>
+    <string name="markup_crop_flip_vertical">Espelhar verticalmente</string>
+    <string name="markup_layers_merged">Camadas mescladas</string>
+    <string name="markup_base_transform_failed">Falha ao aplicar corte/rotação</string>
+
+    <!-- 画笔工具 -->
+    <string name="markup_draw_brush_type">Tipo de pincel</string>
+    <string name="markup_brush_pencil">Lápis</string>
+    <string name="markup_brush_pen">Caneta</string>
+    <string name="markup_brush_brush">Pincel</string>
+    <string name="markup_brush_marker">Marcador</string>
+    <string name="markup_draw_color">Cor</string>
+    <string name="markup_draw_width">Espessura</string>
+    <string name="markup_draw_opacity">Opacidade</string>
+    <string name="markup_draw_brush_mode">Pincel</string>
+    <string name="markup_draw_eraser_mode">Borracha</string>
+    <string name="markup_draw_pan_mode">Mover</string>
+    <string name="markup_draw_done">Concluir</string>
+    <string name="markup_brush_settings_title">Configurações do pincel</string>
+
+    <!-- 缩放胶囊 -->
+    <string name="markup_zoom_in">Ampliar</string>
+    <string name="markup_zoom_out">Reduzir</string>
+
+    <!-- 最近项目 -->
+    <string name="markup_recent_projects">Projetos recentes</string>
+    <string name="markup_recent_projects_empty">Nenhum projeto recente</string>
+
+    <!-- 贴纸工具 -->
+    <string name="markup_sticker_title">Adesivos</string>
+    <string name="markup_sticker_category_emoji">Emoji</string>
+    <string name="markup_sticker_category_decor">Decoração</string>
+    <string name="markup_sticker_category_frame">Molduras</string>
+    <string name="markup_sticker_category_trend">Tendências</string>
+    <string name="markup_sticker_category_ai">Adesivo de IA</string>
+    <string name="markup_sticker_new_badge">NOVO</string>
+    <string name="markup_sticker_empty">Ainda não há adesivos nesta categoria</string>
+
+    <!-- 形状工具 -->
+    <string name="markup_shape_basic_shapes">Formas básicas</string>
+    <string name="markup_shape_kind_rectangle">Retângulo</string>
+    <string name="markup_shape_kind_circle">Círculo</string>
+    <string name="markup_shape_kind_triangle">Triângulo</string>
+    <string name="markup_shape_kind_arrow">Seta</string>
+    <string name="markup_shape_kind_line">Linha</string>
+    <string name="markup_shape_kind_star">Estrela</string>
+    <string name="markup_shape_style">Estilo</string>
+    <string name="markup_shape_style_filled">Preenchimento</string>
+    <string name="markup_shape_style_stroke">Contorno</string>
+    <string name="markup_shape_corner_radius">Cantos</string>
+    <string name="markup_shape_stroke_width">Espessura do contorno</string>
+
+    <!-- 文字工具 -->
+    <string name="markup_confirm">Confirmar</string>
+    <string name="markup_text_input_hint">Digite o texto</string>
+    <string name="markup_text_font">Fonte</string>
+    <string name="markup_text_more_fonts">Mais fontes</string>
+    <string name="markup_text_font_size">Tamanho</string>
+    <string name="markup_text_color">Cor</string>
+    <string name="markup_text_alignment">Alinhamento</string>
+    <string name="markup_text_align_left">Alinhar à esquerda</string>
+    <string name="markup_text_align_center">Centralizar</string>
+    <string name="markup_text_align_right">Alinhar à direita</string>
+    <string name="markup_text_align_justify">Justificar</string>
+    <string name="markup_text_line_height">Espaçamento entre linhas</string>
+    <string name="markup_text_letter_spacing">Espaçamento entre letras</string>
+    <string name="markup_text_bold">Negrito</string>
+    <string name="markup_text_italic">Itálico</string>
+    <string name="markup_text_underline">Sublinhado</string>
+    <string name="markup_text_strikethrough">Tachado</string>
+    <string name="markup_text_background">Plano de fundo</string>
+    <string name="markup_text_outline">Contorno</string>
+    <string name="markup_delete">Excluir</string>
+
+    <!-- 图层 -->
+    <string name="markup_add_text">Adicionar texto</string>
+    <string name="markup_edit_text">Editar texto</string>
+    <string name="markup_add_layer">Adicionar camada</string>
+    <string name="markup_layers_empty">Nenhuma camada ainda. Toque em + para adicionar.</string>
+    <string name="markup_layer_kind_text">Texto</string>
+    <string name="markup_layer_kind_sticker">Adesivo</string>
+    <string name="markup_layer_kind_image">Imagem</string>
+    <string name="markup_layer_kind_draw">Desenho</string>
+    <string name="markup_layer_kind_shape">Forma</string>
+    <string name="markup_layer_toggle_visible">Alternar visibilidade</string>
+    <string name="markup_layer_default_name">%1$s %2$d</string>
+    <string name="markup_layer_opacity">Opacidade</string>
+    <string name="markup_layer_blend_mode">Modo de mesclagem</string>
+    <string name="markup_blend_normal">Normal</string>
+    <string name="markup_layer_toggle_lock">Alternar bloqueio</string>
+    <string name="markup_delete_layer">Excluir camada</string>
+    <string name="markup_duplicate_layer">Duplicar camada</string>
+    <string name="markup_merge_layer">Mesclar para baixo</string>
+    <string name="markup_move_layer_up">Mover para cima</string>
+    <string name="markup_move_layer_down">Mover para baixo</string>
+    <string name="markup_merge_no_layer_below">Não há camada visível abaixo para mesclar</string>
+    <string name="markup_merge_failed">Falha ao mesclar camadas</string>
+    <string name="markup_layer_background">Plano de fundo</string>
+    <string name="markup_drag_reorder">Toque e segure, depois arraste para reordenar</string>
+    <string name="markup_expand_layers">Expandir painel de camadas</string>
+
+    <!-- 导出设置 -->
+    <string name="markup_export_title">Exportar / Salvar</string>
+    <string name="markup_export_subtitle">Escolha o formato e as configurações</string>
+    <string name="markup_export_format">Formato</string>
+    <string name="markup_export_format_jpg_sub">Pequeno, universal</string>
+    <string name="markup_export_format_png_sub">Sem perdas, transparente</string>
+    <string name="markup_export_format_webp_sub">Pequeno, alta qualidade</string>
+    <string name="markup_export_quality">Qualidade</string>
+    <string name="markup_export_resolution">Resolução</string>
+    <string name="markup_export_res_original">Original</string>
+    <string name="markup_export_res_custom">Personalizada</string>
+    <string name="markup_export_res_custom_sub">Insira o tamanho</string>
+    <string name="markup_export_width">Largura</string>
+    <string name="markup_export_height">Altura</string>
+    <string name="markup_export_dimensions">%1$d × %2$d</string>
+    <string name="markup_export_current_size">Tamanho de exportação</string>
+    <string name="markup_export_source_size">Arquivo original</string>
+    <string name="markup_export_estimated_size">Estimado</string>
+    <string name="markup_export_size_approx">~%1$s</string>
+    <string name="markup_export_size_unavailable">--</string>
+    <string name="markup_export_more">Mais opções</string>
+    <string name="markup_export_share_after">Compartilhar após exportar</string>
+    <string name="markup_export_share_after_sub">Abrir painel de compartilhamento após salvar</string>
+    <string name="markup_export_failed_no_image">Nenhuma imagem para exportar</string>
+    <string name="markup_cancel">Cancelar</string>
+</resources>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 空状态首页 -->
+    <string name="markup_home_title">इमेज स्टूडियो</string>
+    <string name="markup_back">वापस</string>
+    <string name="markup_home_tagline">प्रो · तेज़ · स्मार्ट</string>
+    <string name="markup_import_hint">एडिटिंग शुरू करने के लिए एक इमेज इंपोर्ट करें</string>
+    <string name="markup_import_subtitle">इंपोर्ट करने के कई तरीके</string>
+    <string name="markup_entry_gallery">गैलरी</string>
+    <string name="markup_entry_camera">कैमरा</string>
+    <string name="markup_entry_paste">पेस्ट करें</string>
+    <string name="markup_entry_blank_canvas">खाली कैनवस</string>
+
+    <!-- 空白画布 -->
+    <string name="markup_blank_canvas_title">नया खाली कैनवस</string>
+    <string name="markup_blank_canvas_size">कैनवस का आकार</string>
+    <string name="markup_blank_canvas_custom">कस्टम</string>
+    <string name="markup_blank_canvas_background">बैकग्राउंड</string>
+    <string name="markup_blank_canvas_bg_transparent">पारदर्शी</string>
+    <string name="markup_blank_canvas_create">बनाएं</string>
+
+    <!-- 编辑器 -->
+    <string name="markup_editor_title">इमेज एडिटर</string>
+    <string name="markup_save">सेव करें</string>
+    <string name="markup_undo">पूर्ववत करें</string>
+    <string name="markup_redo">फिर से करें</string>
+    <string name="markup_more_options">और विकल्प</string>
+    <string name="markup_menu_share">शेयर करें</string>
+    <string name="markup_menu_copy">क्लिपबोर्ड पर कॉपी करें</string>
+    <string name="markup_menu_clear_layers">लेयर साफ़ करें</string>
+    <string name="markup_menu_save_exif">Exif सेव करें</string>
+    <string name="markup_menu_clear_filter">फ़िल्टर हटाएं</string>
+    <string name="markup_menu_immersive_preview">इमर्सिव प्रीव्यू</string>
+    <string name="markup_coming_soon">जल्द आ रहा है</string>
+    <string name="markup_canvas_background">कैनवस बैकग्राउंड</string>
+    <string name="markup_canvas_bg_default">डिफ़ॉल्ट</string>
+    <string name="markup_canvas_bg_solid">ठोस रंग</string>
+
+    <!-- 工具 -->
+    <string name="markup_tool_select">चुनें</string>
+    <string name="markup_tool_draw">ब्रश</string>
+    <string name="markup_tool_text">टेक्स्ट</string>
+    <string name="markup_tool_sticker">स्टिकर</string>
+    <string name="markup_tool_shape">शेप</string>
+    <string name="markup_tool_basic">बेसिक</string>
+    <string name="markup_tool_crop">क्रॉप</string>
+    <string name="markup_tool_filter">फ़िल्टर</string>
+    <string name="markup_tool_adjust">एडजस्ट</string>
+    <string name="markup_tool_ai">AI</string>
+    <string name="markup_tool_layers">लेयर</string>
+
+    <!-- AI 处理 -->
+    <string name="markup_ai_sheet_title">AI स्मार्ट प्रोसेसिंग</string>
+    <string name="markup_ai_sheet_subtitle">इमेज की सामग्री को समझता है और एक टैप में गुणवत्ता और क्रिएटिविटी बढ़ाता है</string>
+    <string name="markup_ai_badge_new">NEW</string>
+    <string name="markup_ai_points_badge">%1$d पॉइंट</string>
+    <string name="markup_ai_dehaze">धुंध हटाएं</string>
+    <string name="markup_ai_dehaze_sub">साफ़ दृश्य के लिए धुंध और कोहरा हटाएं</string>
+    <string name="markup_ai_contrast_enhance">कंट्रास्ट बढ़ाएं</string>
+    <string name="markup_ai_contrast_enhance_sub">फीकी और बेरंग इमेज का कंट्रास्ट बढ़ाएं</string>
+    <string name="markup_ai_quality_enhance">लॉसलेस अपस्केल</string>
+    <string name="markup_ai_quality_enhance_sub">बेहतर डिटेल के साथ इमेज बड़ी करें</string>
+    <string name="markup_ai_stretch_restore">स्ट्रेच रिपेयर</string>
+    <string name="markup_ai_stretch_restore_sub">ज़्यादा खिंची या दबी हुई इमेज ठीक करें</string>
+    <string name="markup_ai_inpainting">इमेज रिपेयर</string>
+    <string name="markup_ai_inpainting_sub">मिटाने और भरने के लिए क्षेत्र चुनें</string>
+    <string name="markup_ai_definition_enhance">क्लैरिटी बढ़ाएं</string>
+    <string name="markup_ai_definition_enhance_sub">धुंधली फ़ोटो शार्प करें, डिटेल वापस लाएं</string>
+    <string name="markup_ai_color_enhance">कलर बढ़ाएं</string>
+    <string name="markup_ai_color_enhance_sub">फीकी पड़ी फ़ोटो के लिए जीवंत रंग</string>
+    <string name="markup_ai_remove_moire">मोरे हटाएं</string>
+    <string name="markup_ai_remove_moire_sub">स्क्रीन की फ़ोटो से मोरे पैटर्न हटाएं</string>
+    <string name="markup_ai_doc_repair">दस्तावेज़ क्लीनअप</string>
+    <string name="markup_ai_doc_repair_sub">दस्तावेज़ की फ़ोटो से बैकग्राउंड का रंग हटाएं</string>
+    <string name="markup_ai_segment">स्मार्ट कटआउट</string>
+    <string name="markup_ai_segment_sub">सब्जेक्ट पहचानें, पारदर्शी बैकग्राउंड</string>
+    <string name="markup_ai_process_success">AI प्रोसेसिंग पूरी हुई</string>
+    <string name="markup_ai_process_failed">AI प्रोसेसिंग विफल, कृपया फिर कोशिश करें</string>
+    <string name="markup_ai_rect_hint">रिपेयर करने के क्षेत्र पर बॉक्स खींचें</string>
+
+    <!-- 基础调节 -->
+    <string name="markup_adjust_brightness">ब्राइटनेस</string>
+    <string name="markup_adjust_contrast">कंट्रास्ट</string>
+    <string name="markup_adjust_saturation">सैचुरेशन</string>
+    <string name="markup_reset">रीसेट</string>
+
+    <!-- 滤镜面板 -->
+    <string name="markup_filter_original">ओरिजिनल</string>
+    <string name="markup_filter_more">और</string>
+
+    <!-- 裁剪旋转 -->
+    <string name="markup_crop_title">क्रॉप और रोटेट</string>
+    <string name="markup_crop_ratio">आस्पेक्ट रेशियो</string>
+    <string name="markup_crop_ratio_free">फ़्री</string>
+    <string name="markup_crop_rotate_flip">रोटेट और फ़्लिप</string>
+    <string name="markup_crop_rotate_left">बाएं घुमाएं</string>
+    <string name="markup_crop_rotate_right">दाएं घुमाएं</string>
+    <string name="markup_crop_flip_horizontal">हॉरिज़ॉन्टल फ़्लिप</string>
+    <string name="markup_crop_flip_vertical">वर्टिकल फ़्लिप</string>
+    <string name="markup_layers_merged">लेयर मर्ज हो गईं</string>
+    <string name="markup_base_transform_failed">क्रॉप/रोटेट लागू करने में विफल</string>
+
+    <!-- 画笔工具 -->
+    <string name="markup_draw_brush_type">ब्रश का प्रकार</string>
+    <string name="markup_brush_pencil">पेंसिल</string>
+    <string name="markup_brush_pen">पेन</string>
+    <string name="markup_brush_brush">ब्रश</string>
+    <string name="markup_brush_marker">मार्कर</string>
+    <string name="markup_draw_color">रंग</string>
+    <string name="markup_draw_width">मोटाई</string>
+    <string name="markup_draw_opacity">अपारदर्शिता</string>
+    <string name="markup_draw_brush_mode">ब्रश</string>
+    <string name="markup_draw_eraser_mode">इरेज़र</string>
+    <string name="markup_draw_pan_mode">पैन</string>
+    <string name="markup_draw_done">हो गया</string>
+    <string name="markup_brush_settings_title">ब्रश सेटिंग</string>
+
+    <!-- 缩放胶囊 -->
+    <string name="markup_zoom_in">ज़ूम इन</string>
+    <string name="markup_zoom_out">ज़ूम आउट</string>
+
+    <!-- 最近项目 -->
+    <string name="markup_recent_projects">हाल के प्रोजेक्ट</string>
+    <string name="markup_recent_projects_empty">कोई हालिया प्रोजेक्ट नहीं</string>
+
+    <!-- 贴纸工具 -->
+    <string name="markup_sticker_title">स्टिकर</string>
+    <string name="markup_sticker_category_emoji">इमोजी</string>
+    <string name="markup_sticker_category_decor">डेकोर</string>
+    <string name="markup_sticker_category_frame">फ़्रेम</string>
+    <string name="markup_sticker_category_trend">ट्रेंड</string>
+    <string name="markup_sticker_category_ai">AI स्टिकर</string>
+    <string name="markup_sticker_new_badge">NEW</string>
+    <string name="markup_sticker_empty">इस श्रेणी में अभी कोई स्टिकर नहीं</string>
+
+    <!-- 形状工具 -->
+    <string name="markup_shape_basic_shapes">बेसिक शेप</string>
+    <string name="markup_shape_kind_rectangle">आयत</string>
+    <string name="markup_shape_kind_circle">वृत्त</string>
+    <string name="markup_shape_kind_triangle">त्रिभुज</string>
+    <string name="markup_shape_kind_arrow">तीर</string>
+    <string name="markup_shape_kind_line">रेखा</string>
+    <string name="markup_shape_kind_star">तारा</string>
+    <string name="markup_shape_style">स्टाइल</string>
+    <string name="markup_shape_style_filled">फ़िल</string>
+    <string name="markup_shape_style_stroke">स्ट्रोक</string>
+    <string name="markup_shape_corner_radius">कोना</string>
+    <string name="markup_shape_stroke_width">स्ट्रोक की मोटाई</string>
+
+    <!-- 文字工具 -->
+    <string name="markup_confirm">पुष्टि करें</string>
+    <string name="markup_text_input_hint">टेक्स्ट दर्ज करें</string>
+    <string name="markup_text_font">फ़ॉन्ट</string>
+    <string name="markup_text_more_fonts">और फ़ॉन्ट</string>
+    <string name="markup_text_font_size">आकार</string>
+    <string name="markup_text_color">रंग</string>
+    <string name="markup_text_alignment">अलाइन</string>
+    <string name="markup_text_align_left">बाएं अलाइन</string>
+    <string name="markup_text_align_center">बीच में अलाइन</string>
+    <string name="markup_text_align_right">दाएं अलाइन</string>
+    <string name="markup_text_align_justify">जस्टिफ़ाई</string>
+    <string name="markup_text_line_height">स्पेसिंग</string>
+    <string name="markup_text_letter_spacing">ट्रैकिंग</string>
+    <string name="markup_text_bold">बोल्ड</string>
+    <string name="markup_text_italic">इटैलिक</string>
+    <string name="markup_text_underline">अंडरलाइन</string>
+    <string name="markup_text_strikethrough">स्ट्राइकथ्रू</string>
+    <string name="markup_text_background">बैकग्राउंड</string>
+    <string name="markup_text_outline">आउटलाइन</string>
+    <string name="markup_delete">हटाएं</string>
+
+    <!-- 图层 -->
+    <string name="markup_add_text">टेक्स्ट जोड़ें</string>
+    <string name="markup_edit_text">टेक्स्ट एडिट करें</string>
+    <string name="markup_add_layer">लेयर जोड़ें</string>
+    <string name="markup_layers_empty">अभी कोई लेयर नहीं। जोड़ने के लिए + टैप करें।</string>
+    <string name="markup_layer_kind_text">टेक्स्ट</string>
+    <string name="markup_layer_kind_sticker">स्टिकर</string>
+    <string name="markup_layer_kind_image">इमेज</string>
+    <string name="markup_layer_kind_draw">ब्रश</string>
+    <string name="markup_layer_kind_shape">शेप</string>
+    <string name="markup_layer_toggle_visible">दृश्यता टॉगल करें</string>
+    <string name="markup_layer_default_name">%1$s %2$d</string>
+    <string name="markup_layer_opacity">अपारदर्शिता</string>
+    <string name="markup_layer_blend_mode">ब्लेंड मोड</string>
+    <string name="markup_blend_normal">सामान्य</string>
+    <string name="markup_layer_toggle_lock">लॉक टॉगल करें</string>
+    <string name="markup_delete_layer">लेयर हटाएं</string>
+    <string name="markup_duplicate_layer">लेयर डुप्लिकेट करें</string>
+    <string name="markup_merge_layer">नीचे मर्ज करें</string>
+    <string name="markup_move_layer_up">ऊपर ले जाएं</string>
+    <string name="markup_move_layer_down">नीचे ले जाएं</string>
+    <string name="markup_merge_no_layer_below">नीचे मर्ज करने के लिए कोई दिखाई देने वाली लेयर नहीं</string>
+    <string name="markup_merge_failed">लेयर मर्ज करने में विफल</string>
+    <string name="markup_layer_background">बैकग्राउंड</string>
+    <string name="markup_drag_reorder">क्रम बदलने के लिए दबाकर रखें और खींचें</string>
+    <string name="markup_expand_layers">लेयर पैनल खोलें</string>
+
+    <!-- 导出设置 -->
+    <string name="markup_export_title">एक्सपोर्ट / सेव</string>
+    <string name="markup_export_subtitle">फ़ॉर्मैट और सेटिंग चुनें</string>
+    <string name="markup_export_format">फ़ॉर्मैट</string>
+    <string name="markup_export_format_jpg_sub">छोटा, सार्वभौमिक</string>
+    <string name="markup_export_format_png_sub">लॉसलेस, पारदर्शी</string>
+    <string name="markup_export_format_webp_sub">छोटा, उच्च गुणवत्ता</string>
+    <string name="markup_export_quality">गुणवत्ता</string>
+    <string name="markup_export_resolution">रेज़ोल्यूशन</string>
+    <string name="markup_export_res_original">ओरिजिनल</string>
+    <string name="markup_export_res_custom">कस्टम</string>
+    <string name="markup_export_res_custom_sub">आकार दर्ज करें</string>
+    <string name="markup_export_width">चौड़ाई</string>
+    <string name="markup_export_height">ऊंचाई</string>
+    <string name="markup_export_dimensions">%1$d × %2$d</string>
+    <string name="markup_export_current_size">एक्सपोर्ट का आकार</string>
+    <string name="markup_export_source_size">सोर्स फ़ाइल</string>
+    <string name="markup_export_estimated_size">अनुमानित</string>
+    <string name="markup_export_size_approx">~%1$s</string>
+    <string name="markup_export_size_unavailable">--</string>
+    <string name="markup_export_more">और विकल्प</string>
+    <string name="markup_export_share_after">एक्सपोर्ट के बाद शेयर करें</string>
+    <string name="markup_export_share_after_sub">सेव करने के बाद शेयर पैनल खोलें</string>
+    <string name="markup_export_failed_no_image">एक्सपोर्ट करने के लिए कोई इमेज नहीं</string>
+    <string name="markup_cancel">रद्द करें</string>
+</resources>
