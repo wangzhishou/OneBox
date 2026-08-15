@@ -58,6 +58,11 @@ class BaiduImageProcessRepository @Inject constructor(
         val body = response.body() ?: error("响应体为空")
         val resultBase64 = body.image ?: body.foreground
         if (resultBase64.isNullOrBlank()) {
+            val errorCode = body.errorCode
+            if (errorCode != null) {
+                // 带上百度错误码,方便定位(如 6=控制台未开通该能力)
+                throw Exception("${body.errorMsg ?: "处理失败"} (error_code=$errorCode)")
+            }
             throw Exception(body.errorMsg?.takeIf { it.isNotBlank() } ?: "处理结果为空")
         }
         val bytes = Base64.decode(resultBase64, Base64.DEFAULT)
