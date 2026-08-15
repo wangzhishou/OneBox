@@ -1,0 +1,3 @@
+• Studio Gambar baru: layer, kuas, teks, bentuk, stiker, potong & filter dalam satu editor
+• Alat gambar AI baru: pembesaran lossless, cutout pintar, dehaze, dan lainnya
+• Perbaikan bug dan peningkatan performa

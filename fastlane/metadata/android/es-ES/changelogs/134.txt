@@ -1,0 +1,3 @@
+• Nuevo estudio de imagen: capas, pinceles, texto, formas, stickers, recorte y filtros en un solo editor
+• Nuevas herramientas de IA: ampliación sin pérdida, recorte inteligente, eliminación de niebla y más
+• Corrección de errores y mejoras de rendimiento

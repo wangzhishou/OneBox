@@ -1,0 +1,3 @@
+• Novo estúdio de imagem: camadas, pincéis, texto, formas, adesivos, corte e filtros em um só editor
+• Novas ferramentas de IA: ampliação sem perdas, recorte inteligente, remoção de névoa e muito mais
+• Correções de bugs e melhorias de desempenho

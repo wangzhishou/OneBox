@@ -1,0 +1,3 @@
+• Neue Bildbearbeitung: Ebenen, Pinsel, Text, Formen, Sticker, Zuschneiden & Filter in einem Editor
+• Neue KI-Bildtools: verlustfreie Vergrößerung, smarter Freisteller, Entnebeln u. v. m.
+• Fehlerbehebungen und Leistungsverbesserungen
