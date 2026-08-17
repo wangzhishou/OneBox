@@ -95,7 +95,7 @@ smbj = "0.14.0"
 bouncycastle = "1.85"
 androidxSecurityCrypto = "1.1.0"
 
-pdfviewer = "1.0.0-alpha18" # alpha19 起 minSdk 提到 28,与项目 minSdk 24 冲突
+pdfviewer = "1.0.0-alpha19" # alpha19 起 minSdk 提到 28,与项目 minSdk 24 冲突
 fragmentCompose = "1.9.0"
 aboutlibraries = "14.2.1"
 
