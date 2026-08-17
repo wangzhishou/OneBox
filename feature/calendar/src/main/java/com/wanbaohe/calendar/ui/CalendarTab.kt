@@ -1754,7 +1754,7 @@ private fun SelectedDayCard(
                 InfoChip(icon = zodiacIconFor(zodiac), label = stringResource(R.string.zodiac_chip, zodiac))
                 InfoChip(
                     icon = constellationIconFor(lunar.constellation),
-                    label = stringResource(R.string.constellation_chip, lunar.constellation)
+                    label = stringResource(R.string.constellation_chip, lunar.constellation.removeSuffix("座"))
                 )
             }
         }

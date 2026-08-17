@@ -43,9 +43,13 @@ object BaZiCalculator {
         solarDay: Int,
         hour: Int = 12
     ): BaZiData {
-        val yearPillar = getYearPillar(solarYear, solarMonth)
-        val monthPillar = getMonthPillar(solarYear, solarMonth)
-        val dayPillar = getDayPillar(solarYear, solarMonth, solarDay)
+        // 优先用 lunar-java 的精确干支(年柱以立春为界、月柱以节气为界、日柱精确);
+        // 库不可用时回退到下方的本地简化公式
+        val lunar = LunarJavaBridge.solarToLunarDate(solarYear, solarMonth, solarDay)
+
+        val yearPillar = lunar.toPillarOrNull { it.ganZhiYear } ?: getYearPillar(solarYear, solarMonth)
+        val monthPillar = lunar.toPillarOrNull { it.ganZhiMonth } ?: getMonthPillar(solarYear, solarMonth)
+        val dayPillar = lunar.toPillarOrNull { it.ganZhiDay } ?: getDayPillar(solarYear, solarMonth, solarDay)
         val hourPillar = getHourPillar(dayPillar.tianGan, hour)
 
         val dayMaster = dayPillar.tianGan
@@ -83,6 +87,13 @@ object BaZiCalculator {
             strength = strength,
             favorableElements = favorable
         )
+    }
+
+    /** 从 LunarDate 的干支字符串(如"丙申")拆出柱;无效时返回 null */
+    private fun LunarDate?.toPillarOrNull(ganZhi: (LunarDate) -> String): BaZiPillar? {
+        val gz = this?.let(ganZhi)?.trim().orEmpty()
+        if (gz.length < 2) return null
+        return BaZiPillar(tianGan = gz.substring(0, 1), diZhi = gz.substring(1, 2))
     }
 
     /** 年柱：立春为界 */
