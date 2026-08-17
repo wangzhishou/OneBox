@@ -1,7 +1,14 @@
 package com.wanbaohe.compass.component
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.hardware.GeomagneticField
 import android.hardware.SensorManager
+import android.location.LocationManager
 import androidx.compose.runtime.Immutable
+import androidx.core.content.ContextCompat
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
@@ -9,6 +16,7 @@ import com.wanbaohe.compass.data.sensor.CompassSensorSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -35,7 +43,9 @@ data class CompassUiState(
     /** 设备是否具备旋转向量传感器 */
     val isSensorAvailable: Boolean = true,
     /** 传感器精度是否不可靠（需要校准） */
-    val needsCalibration: Boolean = false
+    val needsCalibration: Boolean = false,
+    /** 磁偏角（度，东偏为正）；无位置授权或无缓存位置时为 null，UI 显示占位符 */
+    val declination: Float? = null
 )
 
 /**
@@ -52,11 +62,15 @@ class CompassComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
     dispatchersHolder: DispatchersHolder,
-    private val sensorSource: CompassSensorSource
+    private val sensorSource: CompassSensorSource,
+    @ApplicationContext private val context: Context
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     private val _uiState = MutableStateFlow(
-        CompassUiState(isSensorAvailable = sensorSource.isAvailable)
+        CompassUiState(
+            isSensorAvailable = sensorSource.isAvailable,
+            declination = resolveDeclination()
+        )
     )
     val uiState = _uiState.asStateFlow()
 
@@ -97,6 +111,37 @@ class CompassComponent @AssistedInject internal constructor(
     }
 
     // ─── 私有工具 ─────────────────────────────────────────────────────────
+
+    /**
+     * 被动计算磁偏角（只在进入页面时算一次，不请求权限、不监听位置更新）：
+     * 位置权限已授予（如用户用过海拔等定位功能）时取系统缓存的 last known location，
+     * 经 [GeomagneticField] 算出当地磁偏角；任一步不可行返回 null，UI 显示占位符。
+     */
+    @SuppressLint("MissingPermission")
+    private fun resolveDeclination(): Float? {
+        val hasPermission = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!hasPermission) return null
+
+        return try {
+            val locationManager =
+                context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                ?: return null
+            GeomagneticField(
+                location.latitude.toFloat(),
+                location.longitude.toFloat(),
+                location.altitude.toFloat(),
+                System.currentTimeMillis()
+            ).declination
+        } catch (e: SecurityException) {
+            null
+        }
+    }
 
     /**
      * 低通滤波，特殊处理角度在 0/360 附近的回绕问题。

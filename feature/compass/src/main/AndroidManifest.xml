@@ -4,4 +4,7 @@
     <uses-feature
         android:name="android.hardware.sensor.compass"
         android:required="false" />
+
+    <!-- 磁偏角被动计算用：仅读 last known location，不主动请求、不监听更新 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>

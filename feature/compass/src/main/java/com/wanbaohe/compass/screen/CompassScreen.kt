@@ -8,49 +8,49 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.wanbaohe.compass.component.CompassComponent
-import com.wanbaohe.compass.ui.CompassDial
+import com.wanbaohe.compass.ui.DialPages
+import kotlinx.coroutines.launch
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
 import com.t8rin.imagetoolbox.core.resources.icons.Compass
 
-/** 表盘最大直径：在大屏（平板/折叠屏）上避免表盘过大失真 */
-private val DIAL_MAX_SIZE = 340.dp
-
 /**
- * 指南针主屏幕
+ * 电子罗盘主屏幕（Tab + ViewPager 多表盘架构）
  *
  * 布局（由上至下）：
  *   - 校准警告条（仅在精度不可靠时显示）
- *   - CompassDial 表盘（权重撑满剩余空间，自适应方形）
- *   - 底部朝向读数（大号整数度数 + 本地化方位，与表盘上下对称）
+ *   - 表盘 TabRow（与 HorizontalPager 双向同步：点 tab 切页，左右滑动切 tab）
+ *   - HorizontalPager：每页自含表盘与自己的底部面板（见 [DialPages] 注册表，
+ *     默认第 0 页罗经盘；新增仪表盘在注册表加一行即可）
  *   - 传感器不可用时，整体替换为提示卡
  *
- * 性能要点：高频平滑角度经 [CompassComponent.heading] 直达表盘绘制层，
+ * 性能要点：高频平滑角度经 [CompassComponent.heading] 直达各表盘绘制层，
  * 本屏幕只消费取整后的低频 [CompassComponent.uiState]，
  * 静止时传感器抖动不会引发重组。
  */
@@ -58,6 +58,9 @@ private val DIAL_MAX_SIZE = 340.dp
 fun CompassScreen(component: CompassComponent) {
     val state by component.uiState.collectAsState()
     val heading = component.heading.collectAsState()
+
+    val pagerState = rememberPagerState(pageCount = { DialPages.size })
+    val scope = rememberCoroutineScope()
 
     BaseScreen(
         title = stringResource(CoreR.string.compass),
@@ -93,77 +96,43 @@ fun CompassScreen(component: CompassComponent) {
                     SensorUnavailableCard(modifier = Modifier.fillMaxWidth())
                 }
             } else {
-                // ── 表盘（权重撑满剩余空间，方形自适应） ──────────────
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                // ── 表盘 Tab（与 Pager 双向同步） ─────────────────────
+                TabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.primary
                 ) {
-                    CompassDial(
-                        heading = heading,
-                        modifier = Modifier
-                            .padding(20.dp)
-                            .sizeIn(maxWidth = DIAL_MAX_SIZE, maxHeight = DIAL_MAX_SIZE)
-                            .fillMaxSize()
-                            .aspectRatio(1f)
-                    )
+                    DialPages.forEachIndexed { index, page ->
+                        Tab(
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                scope.launch { pagerState.animateScrollToPage(index) }
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(page.titleRes),
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                            }
+                        )
+                    }
                 }
 
-                // ── 底部朝向读数（与表盘上下对称） ────────────────────
-                HeadingReadout(
-                    degrees = state.degrees,
-                    directionIndex = state.directionIndex
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
+                // ── 表盘 Pager：每页自含表盘 + 底部面板 ───────────────
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                ) { page ->
+                    DialPages[page].content(heading, state)
+                }
             }
         }
     }
 }
 
 // ─── 子组件 ───────────────────────────────────────────────────────────────────
-
-/**
- * 底部朝向读数：大号整数度数（等宽数字，避免位数变化抖动）+ 本地化方位
- */
-@Composable
-private fun HeadingReadout(
-    degrees: Int,
-    directionIndex: Int,
-    modifier: Modifier = Modifier
-) {
-    val directionNames = listOf(
-        stringResource(CoreR.string.compass_dir_n),
-        stringResource(CoreR.string.compass_dir_ne),
-        stringResource(CoreR.string.compass_dir_e),
-        stringResource(CoreR.string.compass_dir_se),
-        stringResource(CoreR.string.compass_dir_s),
-        stringResource(CoreR.string.compass_dir_sw),
-        stringResource(CoreR.string.compass_dir_w),
-        stringResource(CoreR.string.compass_dir_nw)
-    )
-
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "$degrees°",
-            style = MaterialTheme.typography.displayMedium.copy(
-                fontFeatureSettings = "tnum"   // 等宽数字，读数变化时字形不跳动
-            ),
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = directionNames[directionIndex.coerceIn(directionNames.indices)],
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.primary
-        )
-    }
-}
 
 /**
  * 校准提示横幅：显示"传感器精度低，请画 8 字形校准"

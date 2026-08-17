@@ -1223,10 +1223,18 @@
     <string name="dead_pixel_test_description">纯色轮播，快速检测屏幕死点与卡点</string>
 
     <!-- Compass -->
-    <string name="compass">指南针</string>
-    <string name="compass_description">实时方位角显示，中文方位与校准提示</string>
+    <string name="compass">电子罗盘</string>
+    <string name="compass_description">罗经盘与指南针双表盘，实时方位与坐向显示</string>
     <string name="compass_calibrate">传感器精度低，请在空中画"8"字形以校准指南针</string>
     <string name="compass_unavailable">当前设备不支持旋转向量传感器，无法使用指南针功能</string>
+    <string name="compass_tab_luopan">罗经盘</string>
+    <string name="compass_tab_compass">指南针</string>
+    <string name="compass_info_direction">方位</string>
+    <string name="compass_info_seat">坐向</string>
+    <string name="compass_info_declination">磁偏角</string>
+    <string name="compass_info_calibration">校准状态</string>
+    <string name="compass_calibrated">已校准</string>
+    <string name="compass_not_calibrated">待校准</string>
     <string name="compass_dir_n">北</string>
     <string name="compass_dir_ne">东北</string>
     <string name="compass_dir_e">东</string>
