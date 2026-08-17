@@ -263,3 +263,21 @@
 -dontwarn org.ietf.jgss.Oid
 
 -dontwarn org.opencv.geometry.Geometry
+
+# coil-resvg (SVG 解码): UniFFI 生成的 JNA direct mapping,native 方法名必须与
+# libresvg_core.so 导出符号一致;同时 libjnidispatch.so 会按名反射一批 JNA 内部
+# 类/方法/字段(Pointer.peer、Native.dispose、Native$ffi_callback.invoke、
+# Structure 子类公有字段与无参构造等),被 R8 裁剪/混淆后 release 下 SVG 解码
+# 必挂(贴纸/emoji 面板一直 loading)。coil-resvg 与 jna 的 AAR 均未自带
+# consumer proguard 规则,故整体保留。
+# JNA 内桌面端 AWT 分支(Native$AWT 等)引用 java.awt.*,Android 上永远不会
+# 被调用,用 dontwarn 压制缺失类报错。
+-dontwarn java.awt.**
+-keep class com.hashsequence.coilresvg.** { *; }
+-keep class com.sun.jna.** { *; }
+-keepclassmembers class * extends com.sun.jna.** { *; }
+
+# lunar-java (feature/calendar): LunarJavaBridge 全部通过反射调用(Class.forName +
+# Method.invoke),无 keep 规则时 R8 会把 com.nlf.calendar 整个裁掉,release 下静默
+# 回退到本地简化算法,农历/干支/宜忌全部出错(如 2026-08-14 显示成庚子年腊月十五)。
+-keep class com.nlf.calendar.** { *; }
