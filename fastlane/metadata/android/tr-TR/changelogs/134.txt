@@ -1,3 +1,2 @@
 • Yeni görsel stüdyosu: katmanlar, fırçalar, metin, şekiller, çıkartmalar, kırpma ve filtreler tek düzenleyicide
-• Yeni AI görsel araçları: kayıpsız büyütme, akıllı kırpma, pus giderme ve daha fazlası
 • Hata düzeltmeleri ve performans iyileştirmeleri

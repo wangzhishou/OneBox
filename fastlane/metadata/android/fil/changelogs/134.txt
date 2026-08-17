@@ -1,3 +1,2 @@
 • Bagong Image Studio: layers, brushes, text, shapes, stickers, crop at filters sa iisang editor
-• Mga bagong AI image tool: lossless upscale, smart cutout, dehaze at iba pa
 • Mga pag-aayos ng bug at pagpapabuti ng performance

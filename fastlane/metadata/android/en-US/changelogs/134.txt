@@ -1,3 +1,2 @@
 • All-new Image Studio: layers, brushes, text, shapes, stickers, crop & filters in one editor
-• New AI image tools: lossless upscale, smart cutout, dehaze and more
 • Bug fixes and performance improvements
