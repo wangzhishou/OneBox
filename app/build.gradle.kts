@@ -509,10 +509,10 @@ allprojects {
     configurations.all {
         resolutionStrategy {
             // 强制使用 4.11.0 版本
-            force("org.opencv:opencv:4.11.0")
+            force("org.opencv:opencv:5.0.0.1")
             dependencySubstitution {
                 substitute(module("com.caverock:androidsvg-aar:1.4")).using(module("com.github.deckerst:androidsvg:cc9d59a88f"))
-                substitute(module("org.opencv:opencv:4.11.0")).using(module("org.opencv:opencv:4.11.0"))
+                substitute(module("org.opencv:opencv:5.0.0.1")).using(module("org.opencv:opencv:5.0.0.1"))
                 substitute(module("org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.4.0")).using(
                     module("org.jetbrains.kotlin:kotlin-parcelize-runtime:2.2.20")
                 )
