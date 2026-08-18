@@ -20,8 +20,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
+import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.compass.component.CompassComponent
 import com.wanbaohe.compass.ui.DialPages
 import kotlinx.coroutines.launch
@@ -41,13 +41,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
 import com.t8rin.imagetoolbox.core.resources.icons.Compass
 
 /**
- * 电子罗盘主屏幕（Tab + ViewPager 多表盘架构）
+ * 电子罗盘主屏幕（ViewPager 多表盘架构）
  *
  * 布局（由上至下）：
  *   - 校准警告条（仅在精度不可靠时显示）
- *   - 表盘 TabRow（与 HorizontalPager 双向同步：点 tab 切页，左右滑动切 tab）
  *   - HorizontalPager：每页自含表盘与自己的底部面板（见 [DialPages] 注册表，
  *     默认第 0 页罗经盘；新增仪表盘在注册表加一行即可）
+ *   - 底部表盘导航（复用 core/ui 的 BottomNavigationBar，与万年历同款：
+ *     图标 + 文案，点 tab 切页，左右滑动后选中态跟随）
  *   - 传感器不可用时，整体替换为提示卡
  *
  * 性能要点：高频平滑角度经 [CompassComponent.heading] 直达各表盘绘制层，
@@ -65,13 +66,10 @@ fun CompassScreen(component: CompassComponent) {
     BaseScreen(
         title = stringResource(CoreR.string.compass),
         onGoBack = component.onGoBack,
+        // 底部导航栏自行处理 navigationBars 内边距（与万年历一致）
+        showNavigationBarsPadding = false,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
 
             // ── 校准提示横幅 ──────────────────────────────────────────
             AnimatedVisibility(
@@ -79,7 +77,7 @@ fun CompassScreen(component: CompassComponent) {
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-                Column {
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                     CalibrationBanner(modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(12.dp))
                 }
@@ -90,35 +88,14 @@ fun CompassScreen(component: CompassComponent) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     SensorUnavailableCard(modifier = Modifier.fillMaxWidth())
                 }
             } else {
-                // ── 表盘 Tab（与 Pager 双向同步） ─────────────────────
-                TabRow(
-                    selectedTabIndex = pagerState.currentPage,
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.primary
-                ) {
-                    DialPages.forEachIndexed { index, page ->
-                        Tab(
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                scope.launch { pagerState.animateScrollToPage(index) }
-                            },
-                            text = {
-                                Text(
-                                    text = stringResource(page.titleRes),
-                                    style = MaterialTheme.typography.titleSmall
-                                )
-                            }
-                        )
-                    }
-                }
-
-                // ── 表盘 Pager：每页自含表盘 + 底部面板 ───────────────
+                // ── 表盘 Pager：每页自含表盘 + 底部面板（页面自带内边距） ──
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier
@@ -127,6 +104,25 @@ fun CompassScreen(component: CompassComponent) {
                 ) { page ->
                     DialPages[page].content(heading, state)
                 }
+
+                // ── 底部表盘导航（复用 core/ui 的 BottomNavigationBar，万年历同款） ──
+                val tabItems = DialPages.mapIndexed { index, page ->
+                    BottomNavItem(
+                        id = index.toString(),
+                        label = stringResource(page.titleRes),
+                        icon = page.icon
+                    )
+                }
+                BottomNavigationBar(
+                    items = tabItems,
+                    selectedItemId = pagerState.currentPage.toString(),
+                    onItemClick = { item ->
+                        item.id.toIntOrNull()?.let { index ->
+                            scope.launch { pagerState.animateScrollToPage(index) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }

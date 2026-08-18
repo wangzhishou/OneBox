@@ -1,14 +1,16 @@
 package com.wanbaohe.compass.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,10 +24,12 @@ import com.wanbaohe.compass.component.CompassUiState
 import com.shifenmiao.core.R as CoreR
 
 /**
- * 经典指南针页面：CompassDial 表盘（权重撑满）+ 底部朝向读数
+ * 经典指南针页面：CompassDial 表盘 + 底部朝向读数
  *
- * 即重构前的指南针主界面原样搬迁：表盘消费高频 [heading]（只重绘），
- * 底部读数消费低频 [uiState]（取整度数变化才重组）。
+ * 自适应布局：竖屏（宽 ≤ 高）表盘吃满宽度、读数在底部；
+ * 宽屏（宽 > 高）表盘吃满高度居左、读数右侧居中，避免圆形表盘两侧大面积留白。
+ *
+ * 表盘消费高频 [heading]（只重绘），读数消费低频 [uiState]（取整度数变化才重组）。
  */
 @Composable
 fun ClassicCompassPage(
@@ -33,34 +37,76 @@ fun ClassicCompassPage(
     uiState: CompassUiState,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            CompassDial(
-                heading = heading,
+    // 指针配色跟随主题：北针用 error 呼应罗经盘，南针用 outlineVariant
+    val northColor = MaterialTheme.colorScheme.error
+    val southColor = MaterialTheme.colorScheme.outlineVariant
+
+    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+        if (maxWidth > maxHeight) {
+            // ── 宽屏：表盘居左吃满高度，读数右侧居中 ──────────────────
+            Row(
                 modifier = Modifier
-                    .padding(20.dp)
-                    .sizeIn(maxWidth = DIAL_MAX_SIZE, maxHeight = DIAL_MAX_SIZE)
                     .fillMaxSize()
-                    .aspectRatio(1f)
-            )
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CompassDial(
+                        heading = heading,
+                        northColor = northColor,
+                        southColor = southColor,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .fillMaxHeight()
+                            .aspectRatio(1f)
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    HeadingReadout(
+                        degrees = uiState.degrees,
+                        directionIndex = uiState.directionIndex
+                    )
+                }
+            }
+        } else {
+            // ── 竖屏：表盘吃满宽度，读数底部 ──────────────────────────
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CompassDial(
+                        heading = heading,
+                        northColor = northColor,
+                        southColor = southColor,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .fillMaxSize()
+                            .aspectRatio(1f)
+                    )
+                }
+
+                HeadingReadout(
+                    degrees = uiState.degrees,
+                    directionIndex = uiState.directionIndex
+                )
+
+                Spacer(modifier = Modifier.height(32.dp))
+            }
         }
-
-        HeadingReadout(
-            degrees = uiState.degrees,
-            directionIndex = uiState.directionIndex
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
