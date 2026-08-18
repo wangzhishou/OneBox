@@ -14,6 +14,12 @@
     <string name="id_photo_quality_tip">The higher the quality, the larger the file, the more than 90% recommended</string>
     <string name="id_photo_print_info">Print Notes</string>
     <string name="id_photo_print_info_tip">When pressing 300 DPI for printing, the output size is the standard size of the document</string>
+    <string name="id_photo_export_target_size">Export Size</string>
+    <string name="id_photo_export_source_size">Source Size</string>
+    <string name="id_photo_export_estimated_size">Estimated Size</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
 
     <!-- 尺寸管理 -->
     <string name="id_photo_size_template">Size Template</string>
@@ -26,7 +32,6 @@
     <string name="id_photo_select_background">Select background colour</string>
     <string name="id_photo_crop">Crop</string>
     <string name="id_photo_save">Save</string>
-    <string name="id_photo_settings">Settings</string>
     <string name="id_photo_delete">Delete</string>
     <string name="id_photo_selected">Selected</string>
 
@@ -111,4 +116,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">For tour guide licenses</string>
     <string name="id_photo_preset_size_desc_chsi">For CHSI/Xuexin photo collection</string>
     <string name="id_photo_preset_size_desc_id_card">For second-generation ID cards</string>
+
+    <!-- AI 美化 -->
+    <string name="id_photo_tab_beauty">One-Tap Beautify</string>
+    <string name="id_photo_beauty_light">Light</string>
+    <string name="id_photo_beauty_standard">Standard</string>
+    <string name="id_photo_beauty_deep">Strong</string>
+    <string name="id_photo_beauty_points_tip">~%d credits per use</string>
+    <string name="id_photo_ai_process_failed">AI processing failed, please try again later</string>
+    <string name="id_photo_beauty">AI portrait beautify</string>
+    <string name="id_photo_bg_replace">AI background replacement</string>
+    <string name="id_photo_bg_original">Original</string>
+    <string name="id_photo_bg_transparent">Transparent</string>
+
+    <!-- AI 美化单项调节 -->
+    <string name="id_photo_beauty_apply">Apply</string>
+    <string name="id_photo_beauty_group_skin">Skin</string>
+    <string name="id_photo_beauty_group_flaw">Blemish Removal</string>
+    <string name="id_photo_beauty_group_reshape">Face Reshape</string>
+    <string name="id_photo_beauty_group_eye">Eye Enhancement</string>
+    <string name="id_photo_beauty_group_hair">Hair</string>
+    <string name="id_photo_beauty_group_teeth">Teeth</string>
+    <string name="id_photo_beauty_group_body">Body Reshape</string>
+    <string name="id_photo_bp_face_smooth">Smoothing</string>
+    <string name="id_photo_bp_face_smooth_gray">Neutral Gray Smoothing</string>
+    <string name="id_photo_bp_face_smooth_fine">High/Low-Frequency Smoothing</string>
+    <string name="id_photo_bp_face_smooth_new">Face Contour Smoothing</string>
+    <string name="id_photo_bp_skin_white">Whitening</string>
+    <string name="id_photo_bp_skin_bright">Radiance</string>
+    <string name="id_photo_bp_skin_red">Rosiness</string>
+    <string name="id_photo_bp_skin_sharpen">Skin Clarity</string>
+    <string name="id_photo_bp_face_color_same">Even Skin Tone</string>
+    <string name="id_photo_bp_skin_prefer">Warm-Cool Tone</string>
+    <string name="id_photo_bp_face_highlight">Face Highlight</string>
+    <string name="id_photo_bp_face_shadow">Face Shadow</string>
+    <string name="id_photo_bp_remove_face_flaw">Facial Blemishes</string>
+    <string name="id_photo_bp_remove_dark_circles">Dark Circles</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">Eye Wrinkles</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">Forehead Wrinkles</string>
+    <string name="id_photo_bp_remove_laugh_line">Laugh Lines</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">Neck Wrinkles</string>
+    <string name="id_photo_bp_remove_double_chin">Double Chin</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">Lip Wrinkles</string>
+    <string name="id_photo_bp_remove_face_glossy">Oily Shine</string>
+    <string name="id_photo_bp_remove_face_moles">Remove Moles</string>
+    <string name="id_photo_bp_face_small">Smaller Face</string>
+    <string name="id_photo_bp_face_thin">Slimmer Face</string>
+    <string name="id_photo_bp_face_v">V-Shaped Face</string>
+    <string name="id_photo_bp_jaw_width">Jawline</string>
+    <string name="id_photo_bp_cheekbone_width">Cheekbones</string>
+    <string name="id_photo_bp_face_width">Face Width</string>
+    <string name="id_photo_bp_forehead_height">Forehead</string>
+    <string name="id_photo_bp_chin_height">Chin Length</string>
+    <string name="id_photo_bp_face_symmetry">Face Symmetry</string>
+    <string name="id_photo_bp_eyebrow_thickness">Eyebrow Thickness</string>
+    <string name="id_photo_bp_eyebrow_distance">Eyebrow Distance</string>
+    <string name="id_photo_bp_eyebrow_height">Eyebrow Height</string>
+    <string name="id_photo_bp_eye_scale">Eye Size</string>
+    <string name="id_photo_bp_eye_distance">Eye Distance</string>
+    <string name="id_photo_bp_eye_angle">Eye Angle</string>
+    <string name="id_photo_bp_nose_scale">Nose Size</string>
+    <string name="id_photo_bp_nose_height">Nose Height</string>
+    <string name="id_photo_bp_nose_bridge">Nose Bridge</string>
+    <string name="id_photo_bp_nose_wing">Nose Wings</string>
+    <string name="id_photo_bp_nose_tip">Nose Tip</string>
+    <string name="id_photo_bp_mouth_scale">Mouth Size</string>
+    <string name="id_photo_bp_mouth_width">Mouth Width</string>
+    <string name="id_photo_bp_mouth_position">Mouth Position</string>
+    <string name="id_photo_bp_shiny_eye">Bright Eyes</string>
+    <string name="id_photo_bp_remove_eye_streaks">Eye Redness</string>
+    <string name="id_photo_bp_fill_hair_part">Hair Part Fill</string>
+    <string name="id_photo_bp_calvaria_height">Crown Height</string>
+    <string name="id_photo_bp_hairline_height">Hairline</string>
+    <string name="id_photo_bp_remove_white_hair">White Hair</string>
+    <string name="id_photo_bp_remove_burst_hair">Flyaway Hair</string>
+    <string name="id_photo_bp_teeth_white">Teeth Whitening</string>
+    <string name="id_photo_bp_teeth_repair">Teeth Repair</string>
+    <string name="id_photo_bp_ai_body_thin">AI Body Shaping</string>
+    <string name="id_photo_bp_body_thin">Body Slimming</string>
+    <string name="id_photo_bp_head_small">Smaller Head</string>
+    <string name="id_photo_bp_neck_length">Neck Length</string>
+    <string name="id_photo_bp_neck_thin">Slimmer Neck</string>
+    <string name="id_photo_bp_arm_thin">Slimmer Arms</string>
+    <string name="id_photo_bp_waist_thin">Slimmer Waist</string>
+    <string name="id_photo_bp_leg_thin">Slimmer Legs</string>
+    <string name="id_photo_bp_leg_long">Longer Legs</string>
+    <string name="id_photo_bp_body_heighten">Heighten</string>
+
+    <!-- AI 美化单项数值说明 -->
+    <string name="id_photo_bp_desc_face_smooth">Higher = smoother, more hydrated skin</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">Higher = more even skin brightness</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">Higher = smoother skin</string>
+    <string name="id_photo_bp_desc_face_smooth_new">Higher = smoother, softer face contour</string>
+    <string name="id_photo_bp_desc_skin_white">Higher = whiter skin</string>
+    <string name="id_photo_bp_desc_skin_bright">Higher = more radiant skin</string>
+    <string name="id_photo_bp_desc_skin_red">Higher = rosier skin</string>
+    <string name="id_photo_bp_desc_skin_sharpen">Higher = clearer skin texture</string>
+    <string name="id_photo_bp_desc_face_color_same">Higher = more even facial skin tone</string>
+    <string name="id_photo_bp_desc_skin_prefer">Negative = cooler, positive = warmer</string>
+    <string name="id_photo_bp_desc_face_highlight">Higher = stronger face highlight</string>
+    <string name="id_photo_bp_desc_face_shadow">Higher = deeper face shadow</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">Higher = cleaner blemish removal</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">Higher = lighter dark circles</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">Higher = lighter eye-area wrinkles</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">Higher = lighter forehead wrinkles</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">Higher = lighter laugh lines</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">Higher = cleaner neck wrinkle removal</string>
+    <string name="id_photo_bp_desc_remove_double_chin">Higher = less visible double chin</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">Higher = lighter lip wrinkles</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">Higher = less oily shine</string>
+    <string name="id_photo_bp_desc_remove_face_moles">Turn on to remove facial moles</string>
+    <string name="id_photo_bp_desc_face_small">Higher = smaller face</string>
+    <string name="id_photo_bp_desc_face_thin">Higher = slimmer face</string>
+    <string name="id_photo_bp_desc_face_v">Higher = sharper V-line</string>
+    <string name="id_photo_bp_desc_jaw_width">Higher = slimmer jawline</string>
+    <string name="id_photo_bp_desc_cheekbone_width">Higher = less prominent cheekbones</string>
+    <string name="id_photo_bp_desc_face_width">Higher = wider face</string>
+    <string name="id_photo_bp_desc_forehead_height">Higher = taller forehead</string>
+    <string name="id_photo_bp_desc_chin_height">Higher = longer chin</string>
+    <string name="id_photo_bp_desc_face_symmetry">Higher = more symmetric face</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">Higher = thicker eyebrows</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">Higher = wider eyebrow spacing</string>
+    <string name="id_photo_bp_desc_eyebrow_height">Higher = higher eyebrows</string>
+    <string name="id_photo_bp_desc_eye_scale">Higher = bigger eyes</string>
+    <string name="id_photo_bp_desc_eye_distance">Higher = wider eye spacing</string>
+    <string name="id_photo_bp_desc_eye_angle">Higher = more upturned eye corners</string>
+    <string name="id_photo_bp_desc_nose_scale">Higher = bigger nose</string>
+    <string name="id_photo_bp_desc_nose_height">Higher = taller nose</string>
+    <string name="id_photo_bp_desc_nose_bridge">Higher = higher nose bridge</string>
+    <string name="id_photo_bp_desc_nose_wing">Higher = wider nose wings</string>
+    <string name="id_photo_bp_desc_nose_tip">Higher = bigger nose tip</string>
+    <string name="id_photo_bp_desc_mouth_scale">Higher = bigger mouth</string>
+    <string name="id_photo_bp_desc_mouth_width">Higher = wider mouth</string>
+    <string name="id_photo_bp_desc_mouth_position">Higher = higher mouth position</string>
+    <string name="id_photo_bp_desc_shiny_eye">Higher = brighter eyes</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">Higher = stronger red-vein removal</string>
+    <string name="id_photo_bp_desc_fill_hair_part">Higher = stronger hair-part filling</string>
+    <string name="id_photo_bp_desc_calvaria_height">Higher = higher crown</string>
+    <string name="id_photo_bp_desc_hairline_height">Higher = higher hairline</string>
+    <string name="id_photo_bp_desc_remove_white_hair">Higher = stronger white-hair removal</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">Higher = stronger flyaway removal</string>
+    <string name="id_photo_bp_desc_teeth_white">Higher = whiter teeth</string>
+    <string name="id_photo_bp_desc_teeth_repair">Turn on to repair teeth defects</string>
+    <string name="id_photo_bp_desc_ai_body_thin">Higher = slimmer body (AI)</string>
+    <string name="id_photo_bp_desc_body_thin">Higher = slimmer body</string>
+    <string name="id_photo_bp_desc_head_small">Higher = smaller head</string>
+    <string name="id_photo_bp_desc_neck_length">Higher = longer neck</string>
+    <string name="id_photo_bp_desc_neck_thin">Higher = slimmer neck</string>
+    <string name="id_photo_bp_desc_arm_thin">Higher = slimmer arms</string>
+    <string name="id_photo_bp_desc_waist_thin">Higher = slimmer waist</string>
+    <string name="id_photo_bp_desc_leg_thin">Higher = slimmer legs</string>
+    <string name="id_photo_bp_desc_leg_long">Higher = longer legs</string>
+    <string name="id_photo_bp_desc_body_heighten">Higher = taller figure</string>
 </resources>

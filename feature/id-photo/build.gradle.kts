@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.di)
     implementation(projects.core.domain)
+    implementation(projects.core.network)
     implementation(projects.core.resources)
     implementation(projects.core.settings)
     implementation(projects.core.ui)

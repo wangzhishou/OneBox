@@ -8,15 +8,20 @@ import com.shifenmiao.model.imageprocess.ImageProcessOp
 import com.shifenmiao.model.imageprocess.ImageProcessRect
 import com.shifenmiao.model.imageprocess.ImageProcessResponse
 import com.shifenmiao.model.imageprocess.ImageSegmentRequest
+import com.shifenmiao.model.imageprocess.RetouchCreateRequest
+import com.shifenmiao.model.imageprocess.RetouchParams
+import com.shifenmiao.model.imageprocess.RetouchQueryRequest
 import com.shifenmiao.network.api.BaiduImageProcessApiService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.net.URL
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.max
@@ -193,6 +198,90 @@ class BaiduImageProcessRepository @Inject constructor(
         val base64: String,
     )
 
+    /**
+     * AI 修图(人像美化,异步任务制):创建任务 → 轮询查询 → 下载结果图。
+     *
+     * 官方建议提交任务约 15s 后再查询,这里先等 [RETOUCH_INITIAL_DELAY_MS],
+     * 之后每 [RETOUCH_POLL_INTERVAL_MS] 轮询一次,总超时 [RETOUCH_TIMEOUT_MS];
+     * 轮询在调用方协程内进行,取消协程即中断等待。
+     *
+     * @param bitmap 全分辨率源图(软件位图),按接口约束预处理后上传
+     * @param params 人像美化参数(PartialHumanOptions 子集)
+     */
+    suspend fun retouch(bitmap: Bitmap, params: RetouchParams): Result<Bitmap> = try {
+        val encoded = withContext(encodingDispatcher) { encodeWithinLimit(prepare(bitmap)) }
+        val token = UrlConstants.ACCESS_TOKEN
+
+        val createResponse = apiService.retouchingCreateTask(
+            accessToken = token,
+            request = RetouchCreateRequest(
+                image = encoded.base64,
+                partialHumanOptions = params.partialHumanValues(),
+                allHumanOptions = params.allHumanValues()
+            )
+        )
+        if (!createResponse.isSuccessful) {
+            error("创建修图任务失败: ${createResponse.code()} ${createResponse.message()}")
+        }
+        val createBody = createResponse.body() ?: error("创建修图任务响应体为空")
+        val taskId = createBody.result?.taskId ?: run {
+            val errorCode = createBody.errorCode
+            if (errorCode != null) {
+                // 带上百度错误码,方便定位(如 6=控制台未开通该能力)
+                throw Exception("${createBody.errorMsg ?: "创建修图任务失败"} (error_code=$errorCode)")
+            }
+            throw Exception(createBody.errorMsg?.takeIf { it.isNotBlank() } ?: "未获取到修图任务 ID")
+        }
+
+        delay(RETOUCH_INITIAL_DELAY_MS)
+        val dlink = pollRetouchResult(token, taskId)
+        val decoded = withContext(ioDispatcher) { downloadBitmap(dlink) }
+        "retouch success: taskId=$taskId ${decoded.width}x${decoded.height} logId=${createBody.logId}"
+            .makeLog(LOG_TAG)
+        Result.success(decoded)
+    } catch (cancellation: CancellationException) {
+        throw cancellation
+    } catch (throwable: Throwable) {
+        throwable.makeLog(LOG_TAG)
+        Result.failure(throwable)
+    }
+
+    /**
+     * 轮询修图任务结果,返回结果图下载链接。
+     * 判定:dlink 非空即成功;task_errcode 非 0 或 status==failed 即失败;其余继续轮询直至超时。
+     */
+    private suspend fun pollRetouchResult(accessToken: String, taskId: String): String {
+        val deadline = System.currentTimeMillis() + RETOUCH_TIMEOUT_MS
+        while (true) {
+            val response = apiService.retouchingQueryTask(accessToken, RetouchQueryRequest(taskId))
+            if (response.isSuccessful) {
+                val body = response.body()
+                val result = body?.result
+                val dlink = result?.dlink
+                when {
+                    !dlink.isNullOrBlank() -> return dlink
+                    body?.errorCode != null ->
+                        throw Exception("${body.errorMsg ?: "修图任务查询失败"} (error_code=${body.errorCode})")
+
+                    result?.taskErrcode != null && result.taskErrcode != 0 ->
+                        throw Exception("修图任务执行失败 (task_errcode=${result.taskErrcode})")
+
+                    result?.status == "failed" -> throw Exception("修图任务执行失败")
+                }
+            }
+            if (System.currentTimeMillis() >= deadline) {
+                throw Exception("修图任务超时,请稍后重试")
+            }
+            delay(RETOUCH_POLL_INTERVAL_MS)
+        }
+    }
+
+    /** 下载结果图(dlink 为百度侧签名直链,无需鉴权)并解码为位图 */
+    private fun downloadBitmap(dlink: String): Bitmap {
+        val bytes = URL(dlink).openStream().use { it.readBytes() }
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: error("修图结果图解码失败")
+    }
+
 }
 
 private const val LOG_TAG = "BaiduImageProcessRepository"
@@ -211,3 +300,12 @@ private const val MIN_JPEG_QUALITY = 50
 private const val JPEG_QUALITY_STEP = 20
 private const val ENCODE_SHRINK_FACTOR = 0.8f
 private const val MAX_ENCODE_ATTEMPTS = 6
+
+/** AI 修图:提交任务后首次查询的等待时长(官方建议约 15s) */
+private const val RETOUCH_INITIAL_DELAY_MS = 12_000L
+
+/** AI 修图:轮询间隔(接口 QPS 上限 2) */
+private const val RETOUCH_POLL_INTERVAL_MS = 3_000L
+
+/** AI 修图:轮询总超时 */
+private const val RETOUCH_TIMEOUT_MS = 90_000L

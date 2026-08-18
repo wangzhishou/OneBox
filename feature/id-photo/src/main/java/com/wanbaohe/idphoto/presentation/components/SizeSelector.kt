@@ -1,7 +1,6 @@
 package com.wanbaohe.idphoto.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,13 +25,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.idphoto.R
 import com.wanbaohe.idphoto.domain.IdPhotoSize
@@ -96,23 +95,23 @@ private fun AddSizeItem(
 ) {
     val shape = MaterialTheme.shapes.medium
 
-    Box(
-        modifier = Modifier
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = shape
-            )
-            .clip(shape)
-            .clickable(onClick = onClick)
-            .size(60.dp),
-        contentAlignment = Alignment.Center
+    GlassSurface(
+        onClick = onClick,
+        modifier = Modifier.size(60.dp),
+        shape = shape,
+        color = MaterialTheme.colorScheme.surfaceContainerHighest
     ) {
-        Icon(
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-            contentDescription = stringResource(R.string.id_photo_manage_size),
-            modifier = Modifier.size(28.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
+                contentDescription = stringResource(R.string.id_photo_manage_size),
+                modifier = Modifier.size(28.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
 
@@ -128,57 +127,46 @@ private fun SizePresetItem(
 ) {
     val shape = MaterialTheme.shapes.medium
 
-    Box(
-        modifier = Modifier
-            .size(60.dp)
-            .clip(shape)
-            .background(
-                color = if (isSelected) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else {
-                    MaterialTheme.colorScheme.surfaceContainerHighest
-                },
-                shape = shape
-            ),
-        contentAlignment = Alignment.Center
+    GlassSurface(
+        onClick = onClick,
+        modifier = Modifier.size(60.dp),
+        shape = shape,
+        color = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surfaceContainerHighest
+        }
     ) {
         // 主卡片
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable(onClick = onClick),
-            contentAlignment = Alignment.Center
+                .padding(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                // 尺寸比例图示
-                SizePreviewIcon(
-                    widthPx = size.widthPx,
-                    heightPx = size.heightPx,
-                    isSelected = isSelected
-                )
+            // 尺寸比例图示
+            SizePreviewIcon(
+                widthPx = size.widthPx,
+                heightPx = size.heightPx,
+                isSelected = isSelected
+            )
 
-                Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(2.dp))
 
-                // 尺寸名称
-                Text(
-                    text = localizedSizeName(size.name),
-                    style = MaterialTheme.typography.labelSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    color = if (isSelected) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
-                    }
-                )
-            }
+            // 尺寸名称
+            Text(
+                text = localizedSizeName(size.name),
+                style = MaterialTheme.typography.labelSmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                }
+            )
         }
 
         // 右侧中间编辑按钮（仅选中时显示）
@@ -189,8 +177,7 @@ private fun SizePresetItem(
                     .background(
                         MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
                         shape = shape
-                    )
-                    .align(Alignment.Center),
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 GlassTonalIconButton(

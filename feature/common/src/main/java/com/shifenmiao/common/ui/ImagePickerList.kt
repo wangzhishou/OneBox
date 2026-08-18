@@ -64,9 +64,10 @@ fun ImagePickerList(
         stickyHeader {
             AddImageButton(onClick = onAddClick, onLongClick = onAddLongClick)
         }
-        // 已选图片列表 - 使用 uri.toString() 作为唯一 key
+        // 已选图片列表 - key 必须唯一:同一张图可能被重复添加(同 uri 出现多次),
+        // 仅用 uri 作 key 会触发 "was already used" 崩溃,故拼上位置序号
         selectedUris.forEachIndexed { index, uri ->
-            item(key = "image_$uri") {
+            item(key = "image_${index}_$uri") {
                 ImageThumbnail(
                     uri = uri,
                     isSelected = index == currentIndex,

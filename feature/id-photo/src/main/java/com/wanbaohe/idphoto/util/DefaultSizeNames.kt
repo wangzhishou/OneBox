@@ -91,6 +91,8 @@ fun localizedSizeDescription(sizeName: String, description: String): String {
  */
 @Composable
 fun localizedBackgroundName(backgroundName: String): String = when (backgroundName) {
+    "原图" -> stringResource(R.string.id_photo_bg_original)
+    "透明" -> stringResource(R.string.id_photo_bg_transparent)
     "白色" -> stringResource(R.string.id_photo_bg_white)
     "蓝色" -> stringResource(R.string.id_photo_bg_blue)
     "红色" -> stringResource(R.string.id_photo_bg_red)

@@ -206,5 +206,8 @@ object UrlConstants {
     const val BAIDU_IMAGE_PROCESS_DOC_REPAIR_PATH = "ai/image-process/doc_repair"
     // 智能抠图(application/json,结果在 foreground 字段)
     const val BAIDU_IMAGE_PROCESS_SEGMENT_PATH = "ai/image-process/segment"
+    // AI修图(异步任务制:先创建任务拿 task_id,再轮询查询结果,结果在 result.dlink)
+    const val BAIDU_IMAGE_PROCESS_RETOUCHING_CREATE_PATH = "ai/image-process/retouching/create_task"
+    const val BAIDU_IMAGE_PROCESS_RETOUCHING_QUERY_PATH = "ai/image-process/retouching/query_task"
 
 }

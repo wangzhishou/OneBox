@@ -1,52 +1,47 @@
 package com.wanbaohe.idphoto.presentation.components
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
+import com.t8rin.imagetoolbox.core.domain.utils.humanFileSize
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.idphoto.R
-import com.wanbaohe.idphoto.domain.IdPhotoBackground
 import com.wanbaohe.idphoto.domain.IdPhotoExportConfig
-import com.wanbaohe.idphoto.util.localizedBackgroundName
-import com.t8rin.imagetoolbox.core.resources.icons.Check
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 
 /**
- * 证件照导出配置面板
+ * 证件照导出配置面板(保存时弹出,参考图片创作的导出设置):
+ * 分辨率提示 + 格式 + 质量 + 打印尺寸说明;背景选择已挪到「背景」tab。
  */
 @Composable
 fun IdPhotoExportConfigPanel(
     config: IdPhotoExportConfig,
     onConfigChanged: (IdPhotoExportConfig) -> Unit,
-    currentBackground: IdPhotoBackground,
-    onBackgroundSelected: (IdPhotoBackground) -> Unit,
     resolutionTip: String = "",
     isResolutionSufficient: Boolean? = null,
     modifier: Modifier = Modifier
@@ -56,23 +51,19 @@ fun IdPhotoExportConfigPanel(
     ) {
         // 分辨率提示（如果有）
         if (resolutionTip.isNotEmpty()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = if (isResolutionSufficient == true) {
-                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-                        } else {
-                            MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
-                        },
-                        shape = MaterialTheme.shapes.small
-                    )
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+            GlassSurface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small,
+                color = if (isResolutionSufficient == true) {
+                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                } else {
+                    MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                }
             ) {
                 Text(
                     text = resolutionTip,
                     style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     color = if (isResolutionSufficient == true) {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
@@ -82,22 +73,6 @@ fun IdPhotoExportConfigPanel(
             }
             Spacer(modifier = Modifier.height(12.dp))
         }
-
-        // 背景色选择
-        Text(
-            text = stringResource(R.string.id_photo_background_color),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BackgroundColorSelector(
-            selectedBackground = currentBackground,
-            onBackgroundSelected = onBackgroundSelected
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         // 格式选择
         Text(
@@ -168,82 +143,6 @@ fun IdPhotoExportConfigPanel(
 }
 
 /**
- * 背景色选择器
- */
-@Composable
-private fun BackgroundColorSelector(
-    selectedBackground: IdPhotoBackground,
-    onBackgroundSelected: (IdPhotoBackground) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IdPhotoBackground.PRESETS.forEach { background ->
-            BackgroundColorItem(
-                background = background,
-                isSelected = background.color == selectedBackground.color,
-                onClick = { onBackgroundSelected(background) }
-            )
-        }
-    }
-}
-
-/**
- * 单个背景色选项
- */
-@Composable
-private fun BackgroundColorItem(
-    background: IdPhotoBackground,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(background.getColor(), CircleShape)
-                .then(
-                    if (isSelected) {
-                        Modifier.border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                    } else {
-                        Modifier.border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f), CircleShape)
-                    }
-                )
-                .clickable(onClick = onClick),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isSelected) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                    contentDescription = stringResource(R.string.id_photo_selected),
-                    tint = if (background.color == 0xFFFFFFFF) {
-                        Color.Black
-                    } else {
-                        Color.White
-                    },
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = localizedBackgroundName(background.name),
-            style = MaterialTheme.typography.labelSmall,
-            color = if (isSelected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            }
-        )
-    }
-}
-
-/**
  * 格式选择器
  */
 @Composable
@@ -292,14 +191,120 @@ private fun FormatChip(
         MaterialTheme.colorScheme.onSurfaceVariant
     }
 
-    FilledTonalButton(
+    GlassTonalButton(
         onClick = onClick,
-        colors = ButtonDefaults.filledTonalButtonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        )
+        color = containerColor,
+        contentColor = contentColor
     ) {
         Text(text = text)
     }
 }
 
+
+/**
+ * 导出信息行(参考图像创作的导出设置):导出尺寸 / 源图尺寸 / 预估导出大小。
+ * 预估导出大小为纯估算:用当前预览位图按所选格式/质量编码一次得 bytesPerPixel,
+ * 外推到目标导出分辨率;设置或预览变化时自动重算。
+ */
+@Composable
+fun IdPhotoExportInfoRow(
+    targetWidth: Int,
+    targetHeight: Int,
+    sourceSize: Pair<Int, Int>?,
+    estimateBitmap: Bitmap?,
+    format: ImageFormat,
+    quality: Int,
+    modifier: Modifier = Modifier
+) {
+    val unavailable = stringResource(R.string.id_photo_export_size_unavailable)
+    val dimensionsText = stringResource(R.string.id_photo_export_dimensions, targetWidth, targetHeight)
+    val sourceSizeText = sourceSize?.let {
+        stringResource(R.string.id_photo_export_dimensions, it.first, it.second)
+    } ?: unavailable
+
+    val estimatedBytes by produceState<Long?>(
+        initialValue = null,
+        estimateBitmap, format, quality, targetWidth, targetHeight
+    ) {
+        val bitmap = estimateBitmap
+        if (bitmap == null) {
+            value = null
+            return@produceState
+        }
+        value = withContext(Dispatchers.Default) {
+            estimateEncodedSize(bitmap, format, quality, targetWidth, targetHeight)
+        }
+    }
+    val estimatedText = estimatedBytes?.let {
+        stringResource(R.string.id_photo_export_size_approx, humanFileSize(it))
+    } ?: unavailable
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(ShapeDefaults.large)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+    ) {
+        ExportInfoItem(
+            label = stringResource(R.string.id_photo_export_target_size),
+            value = dimensionsText,
+            modifier = Modifier.weight(1f)
+        )
+        ExportInfoItem(
+            label = stringResource(R.string.id_photo_export_source_size),
+            value = sourceSizeText,
+            modifier = Modifier.weight(1f)
+        )
+        ExportInfoItem(
+            label = stringResource(R.string.id_photo_export_estimated_size),
+            value = estimatedText,
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+private fun ExportInfoItem(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleSmall,
+            maxLines = 1
+        )
+    }
+}
+
+/** 编码预览位图求 bytesPerPixel 后外推到目标分辨率;失败返回 null */
+private fun estimateEncodedSize(
+    bitmap: Bitmap,
+    format: ImageFormat,
+    quality: Int,
+    targetWidth: Int,
+    targetHeight: Int
+): Long? = runCatching {
+    val output = ByteArrayOutputStream()
+    bitmap.compress(format.toCompressFormat(), quality, output)
+    val pixels = bitmap.width.toLong() * bitmap.height
+    if (pixels <= 0) return null
+    val bytesPerPixel = output.size().toDouble() / pixels
+    (bytesPerPixel * targetWidth * targetHeight).toLong()
+}.getOrNull()
+
+private fun ImageFormat.toCompressFormat(): Bitmap.CompressFormat = when (this) {
+    is ImageFormat.Png -> Bitmap.CompressFormat.PNG
+    is ImageFormat.Webp -> Bitmap.CompressFormat.WEBP
+    else -> Bitmap.CompressFormat.JPEG
+}

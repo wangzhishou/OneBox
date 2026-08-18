@@ -8,10 +8,16 @@ import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_DOC_REPAIR
 import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_INPAINTING_PATH
 import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_QUALITY_ENHANCE_PATH
 import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_REMOVE_MOIRE_PATH
+import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_RETOUCHING_CREATE_PATH
+import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_RETOUCHING_QUERY_PATH
 import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_SEGMENT_PATH
 import com.shifenmiao.core.constants.UrlConstants.BAIDU_IMAGE_PROCESS_STRETCH_RESTORE_PATH
 import com.shifenmiao.model.imageprocess.ImageProcessResponse
 import com.shifenmiao.model.imageprocess.ImageSegmentRequest
+import com.shifenmiao.model.imageprocess.RetouchCreateRequest
+import com.shifenmiao.model.imageprocess.RetouchCreateResponse
+import com.shifenmiao.model.imageprocess.RetouchQueryRequest
+import com.shifenmiao.model.imageprocess.RetouchQueryResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -23,8 +29,8 @@ import retrofit2.http.Query
  * 百度图像处理 API(经 Go 网关代理,与 [DocConvertApiService] 同模式:
  * access_token 由网关替换为真实百度 token,App 侧占位传入即可)。
  *
- * 除智能抠图(application/json)外均为 form-urlencoded,图片 base64 经
- * @Field 自动 URLEncode;base64 后 ≤10M,最长边 ≤3000px(抠图最短边 ≥128px)。
+ * 智能抠图与 AI 修图(retouching)为 application/json,其余均为 form-urlencoded,
+ * 图片 base64 经 @Field 自动 URLEncode;base64 后 ≤10M,最长边 ≤3000px(抠图最短边 ≥128px)。
  */
 interface BaiduImageProcessApiService {
 
@@ -112,4 +118,23 @@ interface BaiduImageProcessApiService {
         @Query("access_token") accessToken: String,
         @Body request: ImageSegmentRequest
     ): Response<ImageProcessResponse>
+
+    /**
+     * AI 修图:创建任务(异步,application/json)。
+     * PartialHumanOptions / AllHumanOptions 为嵌套 JSON 对象
+     * (见 [com.shifenmiao.model.imageprocess.RetouchParams]),
+     * 成功后凭返回的 task_id 轮询 [retouchingQueryTask]
+     */
+    @POST(BAIDU_IMAGE_PROCESS_RETOUCHING_CREATE_PATH)
+    suspend fun retouchingCreateTask(
+        @Query("access_token") accessToken: String,
+        @Body request: RetouchCreateRequest
+    ): Response<RetouchCreateResponse>
+
+    /** AI 修图:查询任务结果(application/json),成功时结果图下载链接在 result.dlink */
+    @POST(BAIDU_IMAGE_PROCESS_RETOUCHING_QUERY_PATH)
+    suspend fun retouchingQueryTask(
+        @Query("access_token") accessToken: String,
+        @Body request: RetouchQueryRequest
+    ): Response<RetouchQueryResponse>
 }

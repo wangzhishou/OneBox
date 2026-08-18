@@ -462,6 +462,8 @@ fun ImagePreviewBox(
 
 /**
  * 底部保存栏
+ *
+ * @param saveContent 自定义操作位内容(替换默认保存按钮,如美化的「应用/重置」),为 null 时用默认保存按钮
  */
 @Composable
 fun ImageSaveBar(
@@ -473,6 +475,7 @@ fun ImageSaveBar(
     modifier: Modifier = Modifier,
     leadingContent: @Composable (RowScope.() -> Unit)? = null,
     trailingContent: @Composable (RowScope.() -> Unit)? = null,
+    saveContent: @Composable (RowScope.() -> Unit)? = null,
 ) {
     // 格式 + 保存按钮
     Row(
@@ -500,13 +503,18 @@ fun ImageSaveBar(
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        FixedHeightButton(
-            text = stringResource(R.string.common_save),
-            onClick = onSave,
-            enabled = hasSelectedImages && !isSaving,
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
-            onLongClick = onSaveLongClick
-        )
+        if (saveContent != null) {
+            // 自定义操作位(如美化「应用/重置」),替换默认保存按钮
+            saveContent.invoke(this)
+        } else {
+            FixedHeightButton(
+                text = stringResource(R.string.common_save),
+                onClick = onSave,
+                enabled = hasSelectedImages && !isSaving,
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+                onLongClick = onSaveLongClick
+            )
+        }
         if (trailingContent != null) {
             Spacer(modifier = Modifier.width(8.dp))
             trailingContent.invoke(this)
@@ -516,6 +524,8 @@ fun ImageSaveBar(
 
 /**
  * 可折叠的保存栏（带展开/收起功能）
+ *
+ * @param saveContent 自定义操作位内容(替换默认保存按钮),为 null 时用默认保存按钮
  */
 @Composable
 fun ImageCollapsibleSaveBar(
@@ -529,6 +539,7 @@ fun ImageCollapsibleSaveBar(
     modifier: Modifier = Modifier,
     expandableContent: @Composable (ColumnScope.() -> Unit)? = null,
     trailingContent: @Composable (RowScope.() -> Unit)? = null,
+    saveContent: @Composable (RowScope.() -> Unit)? = null,
 ) {
     // 箭头旋转动画
     val arrowRotation by animateFloatAsState(
@@ -564,12 +575,15 @@ fun ImageCollapsibleSaveBar(
                         contentDescription = if (isExpanded) stringResource(R.string.common_collapse) else stringResource(
                             R.string.common_expand
                         ),
-                        modifier = Modifier.rotate(arrowRotation),
+                        modifier = Modifier
+                            .size(16.dp)
+                            .rotate(arrowRotation),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
-            trailingContent = trailingContent
+            trailingContent = trailingContent,
+            saveContent = saveContent
         )
     }
 }

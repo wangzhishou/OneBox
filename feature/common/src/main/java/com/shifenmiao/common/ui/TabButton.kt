@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 /**
@@ -20,13 +21,18 @@ import androidx.compose.ui.unit.dp
  * - 选中时有背景色，未选中时透明
  * - 底部无圆角，与下方内容区域无缝衔接
  * - 可复用于相机水印、证件照等模块
+ *
+ * @param selectedTextStyle 选中态文字样式,默认 titleSmall
+ * @param unselectedTextStyle 未选中态文字样式,默认 labelMedium
  */
 @Composable
 fun TabButton(
     text: String,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedTextStyle: TextStyle = MaterialTheme.typography.titleSmall,
+    unselectedTextStyle: TextStyle = MaterialTheme.typography.labelMedium
 ) {
     val backgroundColor = if (isSelected) {
         MaterialTheme.colorScheme.surfaceContainer
@@ -51,11 +57,7 @@ fun TabButton(
     ) {
         Text(
             text = text,
-            style = if (isSelected) {
-                MaterialTheme.typography.titleSmall
-            } else {
-                MaterialTheme.typography.labelMedium
-            },
+            style = if (isSelected) selectedTextStyle else unselectedTextStyle,
             color = textColor,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
         )
