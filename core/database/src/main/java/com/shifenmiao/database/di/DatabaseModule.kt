@@ -47,6 +47,8 @@ import com.shifenmiao.database.habit.dao.HabitCheckInDao
 import com.shifenmiao.database.habit.dao.HabitDao
 import com.shifenmiao.database.habit.repo.HabitRepository
 import com.shifenmiao.database.ocr.dao.PaddleOcrTaskDao
+import com.shifenmiao.database.poem.dao.PoemDao
+import com.shifenmiao.database.poem.repo.PoemRepository
 import com.shifenmiao.database.schedule.dao.ScheduleEventDao
 import com.shifenmiao.database.schedule.dao.ScheduleProviderBindingDao
 import com.shifenmiao.database.schedule.dao.ScheduleSyncStateDao
@@ -453,5 +455,16 @@ object DatabaseModule {
             wishDao = wishDao,
             tabConfigDao = tabConfigDao,
         )
+    }
+
+    @Provides
+    fun providePoemDao(database: FeatureDatabase): PoemDao {
+        return database.poemDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providePoemRepository(poemDao: PoemDao): PoemRepository {
+        return PoemRepository(poemDao = poemDao)
     }
 }

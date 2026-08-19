@@ -17,6 +17,9 @@ import com.wanbaohe.a2ui.viewModel.A2uiComponent
 import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
 import com.wanbaohe.blessingwall.component.BlessingWallComponent
+import com.wanbaohe.poem.component.PoemComponent
+import com.wanbaohe.poem.component.PoemHistoryComponent
+import com.wanbaohe.poem.component.PoemSearchComponent
 import com.wanbaohe.bookkeeping.router.screenLogic.BookkeepingRouterComponent
 import com.wanbaohe.habittracker.router.screenLogic.HabitTrackerRouterComponent
 import com.wanbaohe.calendar.router.screenLogic.CalendarRouterComponent
@@ -33,6 +36,7 @@ import com.wanbaohe.markdown.edit.component.MarkdownEditorComponent
 import com.wanbaohe.passwordvault.router.screenLogic.PasswordVaultRouterComponent
 import com.wanbaohe.schedule.component.ScheduleComponent
 import com.wanbaohe.setting.router.screenLogic.SettingRouterComponent
+import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.speedtest.component.SpeedTestComponent
 import com.wanbaohe.survive30s.component.Survive30sComponent
 import com.wanbaohe.teleprompter.component.TeleprompterComponent
@@ -68,6 +72,7 @@ class LifeNavigationFactories @Inject constructor(
     val altitudeComponentFactory: AltitudeComponent.Factory,
     val compassComponentFactory: CompassComponent.Factory,
     val speedTestComponentFactory: SpeedTestComponent.Factory,
+    val dshRootComponentFactory: DshRootComponent.Factory,
     val measurementComponentFactory: MeasurementComponent.Factory,
     val teleprompterComponentFactory: TeleprompterComponent.Factory,
     val cloudStorageComponentFactory: CloudStorageComponent.Factory,
@@ -84,4 +89,7 @@ class LifeNavigationFactories @Inject constructor(
     val a2uiComponentFactory: A2uiComponent.Factory,
     val blessingWallComponentFactory: BlessingWallComponent.Factory,
     val blessingRecordComponentFactory: BlessingRecordComponent.Factory,
+    val poemComponentFactory: PoemComponent.Factory,
+    val poemSearchComponentFactory: PoemSearchComponent.Factory,
+    val poemHistoryComponentFactory: PoemHistoryComponent.Factory,
 )

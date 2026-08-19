@@ -52,6 +52,9 @@ enum class ActivityCategory {
     /** 习惯打卡（创建习惯/打卡） */
     HABIT,
 
+    /** 中国古诗词（浏览/收藏/解读等操作） */
+    POEM,
+
     /** 其他 / 通用 */
     OTHER;
 

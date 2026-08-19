@@ -28,6 +28,8 @@
     <string name="demo_navigation_deeplink_example_theme_settings">テーマ設定</string>
     <string name="demo_navigation_deeplink_example_feedback">フィードバック一覧</string>
     <string name="demo_navigation_deeplink_example_create_feedback">フィードバックを送信</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">ファイルピッカーを開く</string>
     <string name="demo_navigation_deeplink_example_pick_image">画像を選択</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">複数ファイルを選択</string>
@@ -1620,6 +1622,10 @@
     <string name="time_days_ago_format">%1$d 天前</string>
     <string name="privacy_item_camera_title">相机权限</string>
     <string name="blessing_wall">祝福墙</string>
+    <string name="poem">中国古詩詞</string>
+    <string name="poem_sub">毎日一詩 · AI 解説</string>
+    <string name="poem_search">詩詞検索</string>
+    <string name="poem_history">詩詞履歴</string>
     <string name="blessing_wall_sub">每日一按 · 好运相随</string>
     <string name="habit_tracker">習慣トラッカー</string>
     <string name="habit_tracker_description">毎日の習慣チェックインと統計</string>

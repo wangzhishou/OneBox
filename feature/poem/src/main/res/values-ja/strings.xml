@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">中国の詩詞</string>
+    <string name="poem_latest">最新生成</string>
+    <string name="poem_generate">新しい詩</string>
+    <string name="poem_generate_random">ランダムな詩</string>
+    <string name="poem_generating_pinyin">拼音を生成中…</string>
+    <string name="poem_search">検索</string>
+    <string name="poem_history">履歴</string>
+    <string name="poem_ai_insight">AI 鑑賞</string>
+    <string name="poem_favorite">お気に入り</string>
+    <string name="poem_favorited">お気に入り済み</string>
+    <string name="poem_retry">再試行</string>
+    <string name="poem_load_failed">読み込みに失敗しました。後でもう一度お試しください。</string>
+    <string name="poem_generating_insight">鑑賞を生成中…</string>
+    <string name="poem_generating_translation">翻訳を生成中…</string>
+    <string name="poem_insight_title">詩の鑑賞</string>
+    <string name="poem_translation_title">現代語訳</string>
+    <string name="poem_regenerate">再生成</string>
+    <string name="poem_insight_empty_hint">タップして鑑賞を生成し、詩句の深い意味を理解しましょう</string>
+    <string name="poem_translation_empty_hint">タップして現代語訳を生成し、詩句の現代的な意味を理解しましょう</string>
+    <string name="poem_generate_click">タップして生成</string>
+    <string name="poem_history_title">履歴</string>
+    <string name="poem_clear_history">履歴をクリア</string>
+    <string name="poem_clear_history_confirm">履歴をすべてクリアしますか?お気に入りの詩は保持されます。</string>
+    <string name="poem_confirm">確認</string>
+    <string name="poem_cancel">キャンセル</string>
+    <string name="poem_empty_title">まだ詩を生成していません</string>
+    <string name="poem_empty_subtitle">下のボタンをタップして始めましょう</string>
+    <string name="poem_search_hint">詩句・詩人・キーワードで検索</string>
+    <string name="poem_filter_dynasty">朝代</string>
+    <string name="poem_filter_type">体裁</string>
+    <string name="poem_filter_author">詩人</string>
+    <string name="poem_filter_all">すべて</string>
+    <string name="poem_search_results">検索結果</string>
+    <string name="poem_result_count">%1$d 首</string>
+    <string name="poem_search_empty">結果が見つかりません</string>
+    <string name="poem_history_empty">履歴はまだありません</string>
+    <string name="poem_favorites_only">お気に入りのみ</string>
+    <string name="poem_delete">削除</string>
+    <string name="poem_back_to_list">リストに戻る</string>
+</resources>

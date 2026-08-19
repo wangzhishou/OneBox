@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">中国古诗词</string>
+    <string name="poem_latest">最新生成</string>
+    <string name="poem_generate">生成一首</string>
+    <string name="poem_generate_random">随机生成一首</string>
+    <string name="poem_generating_pinyin">正在生成拼音…</string>
+    <string name="poem_search">搜索</string>
+    <string name="poem_history">历史</string>
+    <string name="poem_ai_insight">AI 解读</string>
+    <string name="poem_favorite">收藏</string>
+    <string name="poem_favorited">已收藏</string>
+    <string name="poem_retry">重试</string>
+    <string name="poem_load_failed">加载失败,请稍后重试</string>
+    <string name="poem_generating_insight">正在生成解读…</string>
+    <string name="poem_generating_translation">正在生成翻译…</string>
+    <string name="poem_insight_title">诗意解读</string>
+    <string name="poem_translation_title">现代翻译</string>
+    <string name="poem_regenerate">重新生成</string>
+    <string name="poem_insight_empty_hint">点击生成诗意解读,帮你理解诗句的深层含义</string>
+    <string name="poem_translation_empty_hint">点击生成现代翻译,帮你理解诗句的现代意思</string>
+    <string name="poem_generate_click">点击生成</string>
+    <string name="poem_history_title">历史记录</string>
+    <string name="poem_clear_history">清空记录</string>
+    <string name="poem_clear_history_confirm">确定清空历史记录吗?已收藏的诗词会保留。</string>
+    <string name="poem_confirm">确定</string>
+    <string name="poem_cancel">取消</string>
+    <string name="poem_empty_title">还没有生成过诗词</string>
+    <string name="poem_empty_subtitle">点击下方按钮开始</string>
+    <string name="poem_search_hint">搜索诗句 / 诗人 / 关键词</string>
+    <string name="poem_filter_dynasty">朝代</string>
+    <string name="poem_filter_type">体裁</string>
+    <string name="poem_filter_author">诗人</string>
+    <string name="poem_filter_all">全部</string>
+    <string name="poem_search_results">搜索结果</string>
+    <string name="poem_result_count">共 %1$d 首</string>
+    <string name="poem_search_empty">暂无搜索结果</string>
+    <string name="poem_history_empty">暂无历史记录</string>
+    <string name="poem_favorites_only">只看收藏</string>
+    <string name="poem_delete">删除</string>
+    <string name="poem_back_to_list">返回列表</string>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">중국 시사</string>
+    <string name="poem_latest">최신 생성</string>
+    <string name="poem_generate">새 시 생성</string>
+    <string name="poem_generate_random">랜덤 시</string>
+    <string name="poem_generating_pinyin">병음 생성 중…</string>
+    <string name="poem_search">검색</string>
+    <string name="poem_history">기록</string>
+    <string name="poem_ai_insight">AI 해설</string>
+    <string name="poem_favorite">즐겨찾기</string>
+    <string name="poem_favorited">즐겨찾기됨</string>
+    <string name="poem_retry">다시 시도</string>
+    <string name="poem_load_failed">불러오기에 실패했습니다. 나중에 다시 시도해 주세요.</string>
+    <string name="poem_generating_insight">해설 생성 중…</string>
+    <string name="poem_generating_translation">번역 생성 중…</string>
+    <string name="poem_insight_title">시적 해설</string>
+    <string name="poem_translation_title">현대어 번역</string>
+    <string name="poem_regenerate">다시 생성</string>
+    <string name="poem_insight_empty_hint">탭하여 해설을 생성하고 시구의 깊은 의미를 이해해 보세요</string>
+    <string name="poem_translation_empty_hint">탭하여 현대어 번역을 생성하고 시구의 현대적 의미를 이해해 보세요</string>
+    <string name="poem_generate_click">탭하여 생성</string>
+    <string name="poem_history_title">기록</string>
+    <string name="poem_clear_history">기록 지우기</string>
+    <string name="poem_clear_history_confirm">모든 기록을 지우시겠습니까? 즐겨찾기한 시는 유지됩니다.</string>
+    <string name="poem_confirm">확인</string>
+    <string name="poem_cancel">취소</string>
+    <string name="poem_empty_title">아직 생성한 시가 없습니다</string>
+    <string name="poem_empty_subtitle">아래 버튼을 탭하여 시작하세요</string>
+    <string name="poem_search_hint">시구, 시인, 키워드 검색</string>
+    <string name="poem_filter_dynasty">왕조</string>
+    <string name="poem_filter_type">장르</string>
+    <string name="poem_filter_author">시인</string>
+    <string name="poem_filter_all">전체</string>
+    <string name="poem_search_results">검색 결과</string>
+    <string name="poem_result_count">%1$d 수</string>
+    <string name="poem_search_empty">검색 결과가 없습니다</string>
+    <string name="poem_history_empty">기록이 아직 없습니다</string>
+    <string name="poem_favorites_only">즐겨찾기만 보기</string>
+    <string name="poem_delete">삭제</string>
+    <string name="poem_back_to_list">목록으로 돌아가기</string>
+</resources>

@@ -28,6 +28,8 @@
     <string name="demo_navigation_deeplink_example_theme_settings">थीम सेटिंग्स</string>
     <string name="demo_navigation_deeplink_example_feedback">फीडबैक सूची</string>
     <string name="demo_navigation_deeplink_example_create_feedback">फीडबैक सबमिट करें</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">फ़ाइल पिकर खोलें</string>
     <string name="demo_navigation_deeplink_example_pick_image">छवि चुनें</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">कई फ़ाइलें चुनें</string>
@@ -1620,6 +1622,10 @@
     <string name="time_days_ago_format">%1$d दिन पहले</string>
     <string name="privacy_item_camera_title">कैमरा अनुमति</string>
     <string name="blessing_wall">आशीर्वाद दीवार</string>
+    <string name="poem">चीनी कविता</string>
+    <string name="poem_sub">प्रतिदिन एक कविता · AI व्याख्या</string>
+    <string name="poem_search">कविता खोज</string>
+    <string name="poem_history">कविता इतिहास</string>
     <string name="blessing_wall_sub">एक दैनिक टैप · शुभकामनाएँ साथ चलती हैं</string>
     <string name="habit_tracker">आदत ट्रैकर</string>
     <string name="habit_tracker_description">दैनिक आदत चेक-इन और आंकड़े</string>

@@ -28,6 +28,8 @@ Ve böylece OneBox doğdu.</string>
     <string name="demo_navigation_deeplink_example_theme_settings">Tema Ayarları</string>
     <string name="demo_navigation_deeplink_example_feedback">Geri Bildirim Listesi</string>
     <string name="demo_navigation_deeplink_example_create_feedback">Geri Bildirim Gönder</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">Dosya Seçiciyi Aç</string>
     <string name="demo_navigation_deeplink_example_pick_image">Görsel Seç</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Birden Fazla Dosya Seç</string>
@@ -1620,6 +1622,10 @@ Ve böylece OneBox doğdu.</string>
     <string name="time_days_ago_format">%1$d gün önce</string>
     <string name="privacy_item_camera_title">Kamera İzni</string>
     <string name="blessing_wall">Dilek Duvarı</string>
+    <string name="poem">Çin Şiiri</string>
+    <string name="poem_sub">Her güne bir şiir · YZ yorumu</string>
+    <string name="poem_search">Şiir Arama</string>
+    <string name="poem_history">Şiir Geçmişi</string>
     <string name="blessing_wall_sub">Günlük bir dokunuş · İyi şans peşinden gelir</string>
     <string name="habit_tracker">Alışkanlık Takibi</string>
     <string name="habit_tracker_description">Günlük alışkanlık işaretlemeleri ve istatistikler</string>

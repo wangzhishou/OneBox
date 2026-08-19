@@ -48,6 +48,8 @@ import com.shifenmiao.database.marktodo.entity.MarkTodoCategoryEntity
 import com.shifenmiao.database.marktodo.entity.MarkTodoTaskEntity
 import com.shifenmiao.database.ocr.dao.PaddleOcrTaskDao
 import com.shifenmiao.database.ocr.entity.PaddleOcrTaskEntity
+import com.shifenmiao.database.poem.dao.PoemDao
+import com.shifenmiao.database.poem.entity.PoemEntity
 import com.shifenmiao.database.recent_access.dao.RecentAccessDao
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.shifenmiao.database.schedule.dao.ScheduleEventDao
@@ -121,8 +123,9 @@ import java.io.InputStreamReader
         BlessingTabConfigEntity::class,
         HabitEntity::class,
         HabitCheckInEntity::class,
+        PoemEntity::class,
     ],
-    version = 3,
+    version = 5,
     exportSchema = true
 )
 @TypeConverters(MarkTodoTypeConverters::class)
@@ -186,6 +189,8 @@ abstract class FeatureDatabase : RoomDatabase() {
     abstract fun blessingRecordDao(): BlessingRecordDao
     abstract fun blessingWishDao(): BlessingWishDao
     abstract fun blessingTabConfigDao(): BlessingTabConfigDao
+
+    abstract fun poemDao(): PoemDao
 
     abstract fun habitDao(): HabitDao
 
@@ -276,6 +281,36 @@ abstract class FeatureDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_3_4 = object : androidx.room.migration.Migration(3, 4) {
+            override fun migrate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `poem` (
+                        `id` INTEGER NOT NULL,
+                        `title` TEXT NOT NULL,
+                        `content` TEXT NOT NULL,
+                        `author` TEXT NOT NULL,
+                        `dynasty` TEXT NOT NULL,
+                        `type` TEXT NOT NULL,
+                        `aiInsight` TEXT,
+                        `isFavorite` INTEGER NOT NULL,
+                        `createdAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`id`)
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_poem_createdAt` ON `poem` (`createdAt`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_poem_isFavorite` ON `poem` (`isFavorite`)")
+            }
+        }
+
+        private val MIGRATION_4_5 = object : androidx.room.migration.Migration(4, 5) {
+            override fun migrate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `poem` ADD COLUMN `pinyin` TEXT")
+                db.execSQL("ALTER TABLE `poem` ADD COLUMN `translation` TEXT")
+            }
+        }
+
         const val DB_NAME_PREFIX: String = "feature"
 
         // 语言切换后进程会冷重启（见 LocaleSwitchWatcher），Hilt @Singleton 注入的库实例
@@ -325,7 +360,7 @@ abstract class FeatureDatabase : RoomDatabase() {
                     FeatureDatabase::class.java,
                     currentDbName
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {

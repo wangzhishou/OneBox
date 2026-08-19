@@ -28,6 +28,8 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="demo_navigation_deeplink_example_theme_settings">Mga Setting ng Tema</string>
     <string name="demo_navigation_deeplink_example_feedback">Listahan ng Feedback</string>
     <string name="demo_navigation_deeplink_example_create_feedback">Isumite ang Feedback</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">Buksan ang File Picker</string>
     <string name="demo_navigation_deeplink_example_pick_image">Pumili ng Larawan</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Pumili ng Maramihang File</string>
@@ -1620,6 +1622,10 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="time_days_ago_format">%1$d araw ang nakalipas</string>
     <string name="privacy_item_camera_title">Pahintulot sa Camera</string>
     <string name="blessing_wall">Pader ng Pagpapala</string>
+    <string name="poem">Tulang Tsino</string>
+    <string name="poem_sub">Isang tula bawat araw · AI insight</string>
+    <string name="poem_search">Maghanap ng Tula</string>
+    <string name="poem_history">Kasaysayan ng Tula</string>
     <string name="blessing_wall_sub">Isang araw-araw na tap · Sumusunod ang suwerte</string>
     <string name="habit_tracker">Tagasubaybay ng Gawi</string>
     <string name="habit_tracker_description">Araw-araw na habit check-in at estadistika</string>

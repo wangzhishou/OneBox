@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Puisi Tiongkok</string>
+    <string name="poem_latest">Terbaru</string>
+    <string name="poem_generate">Puisi Baru</string>
+    <string name="poem_generate_random">Puisi Acak</string>
+    <string name="poem_generating_pinyin">Membuat pinyin…</string>
+    <string name="poem_search">Cari</string>
+    <string name="poem_history">Riwayat</string>
+    <string name="poem_ai_insight">Tafsir AI</string>
+    <string name="poem_favorite">Favorit</string>
+    <string name="poem_favorited">Difavoritkan</string>
+    <string name="poem_retry">Coba lagi</string>
+    <string name="poem_load_failed">Gagal memuat. Coba lagi nanti.</string>
+    <string name="poem_generating_insight">Membuat tafsir…</string>
+    <string name="poem_generating_translation">Membuat terjemahan…</string>
+    <string name="poem_insight_title">Tafsir Puitis</string>
+    <string name="poem_translation_title">Terjemahan Modern</string>
+    <string name="poem_regenerate">Buat ulang</string>
+    <string name="poem_insight_empty_hint">Ketuk untuk membuat tafsir dan memahami makna mendalam bait-baitnya</string>
+    <string name="poem_translation_empty_hint">Ketuk untuk membuat terjemahan modern dan memahami makna bait-baitnya saat ini</string>
+    <string name="poem_generate_click">Ketuk untuk Membuat</string>
+    <string name="poem_history_title">Riwayat</string>
+    <string name="poem_clear_history">Hapus semua</string>
+    <string name="poem_clear_history_confirm">Hapus semua riwayat? Puisi favorit akan tetap disimpan.</string>
+    <string name="poem_confirm">Konfirmasi</string>
+    <string name="poem_cancel">Batal</string>
+    <string name="poem_empty_title">Belum ada puisi yang dibuat</string>
+    <string name="poem_empty_subtitle">Ketuk tombol di bawah untuk mulai</string>
+    <string name="poem_search_hint">Cari bait, penyair, atau kata kunci</string>
+    <string name="poem_filter_dynasty">Dinasti</string>
+    <string name="poem_filter_type">Genre</string>
+    <string name="poem_filter_author">Penyair</string>
+    <string name="poem_filter_all">Semua</string>
+    <string name="poem_search_results">Hasil Pencarian</string>
+    <string name="poem_result_count">%1$d puisi</string>
+    <string name="poem_search_empty">Tidak ada hasil</string>
+    <string name="poem_history_empty">Belum ada riwayat</string>
+    <string name="poem_favorites_only">Hanya favorit</string>
+    <string name="poem_delete">Hapus</string>
+    <string name="poem_back_to_list">Kembali ke daftar</string>
+</resources>

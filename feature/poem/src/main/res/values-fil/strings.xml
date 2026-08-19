@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Tulang Tsino</string>
+    <string name="poem_latest">Pinakabago</string>
+    <string name="poem_generate">Bagong Tula</string>
+    <string name="poem_generate_random">Random na Tula</string>
+    <string name="poem_generating_pinyin">Ginagawa ang pinyin…</string>
+    <string name="poem_search">Maghanap</string>
+    <string name="poem_history">Kasaysayan</string>
+    <string name="poem_ai_insight">AI na Interpretasyon</string>
+    <string name="poem_favorite">Paborito</string>
+    <string name="poem_favorited">Naka-paborito</string>
+    <string name="poem_retry">Subukan muli</string>
+    <string name="poem_load_failed">Nabigong mag-load. Subukan ulit mamaya.</string>
+    <string name="poem_generating_insight">Ginagawa ang interpretasyon…</string>
+    <string name="poem_generating_translation">Ginagawa ang pagsasalin…</string>
+    <string name="poem_insight_title">Interpretasyon ng Tula</string>
+    <string name="poem_translation_title">Modernong Salin</string>
+    <string name="poem_regenerate">Gumawa muli</string>
+    <string name="poem_insight_empty_hint">I-tap para gumawa ng interpretasyon at maunawaan ang malalim na kahulugan ng mga taludtud</string>
+    <string name="poem_translation_empty_hint">I-tap para gumawa ng modernong salin at maunawaan ang kahulugan ng mga taludtud ngayon</string>
+    <string name="poem_generate_click">I-tap para Bumuo</string>
+    <string name="poem_history_title">Kasaysayan</string>
+    <string name="poem_clear_history">I-clear</string>
+    <string name="poem_clear_history_confirm">I-clear ang lahat ng kasaysayan? Mananatili ang mga naka-paboritong tula.</string>
+    <string name="poem_confirm">Kumpirmahin</string>
+    <string name="poem_cancel">Kanselahin</string>
+    <string name="poem_empty_title">Wala pang nagawang tula</string>
+    <string name="poem_empty_subtitle">I-tap ang button sa ibaba para magsimula</string>
+    <string name="poem_search_hint">Maghanap ng taludtud, makata o keyword</string>
+    <string name="poem_filter_dynasty">Dinastiya</string>
+    <string name="poem_filter_type">Uri</string>
+    <string name="poem_filter_author">Makata</string>
+    <string name="poem_filter_all">Lahat</string>
+    <string name="poem_search_results">Mga Resulta ng Paghahanap</string>
+    <string name="poem_result_count">%1$d tula</string>
+    <string name="poem_search_empty">Walang nahanap na resulta</string>
+    <string name="poem_history_empty">Wala pang kasaysayan</string>
+    <string name="poem_favorites_only">Mga paborito lang</string>
+    <string name="poem_delete">Burahin</string>
+    <string name="poem_back_to_list">Bumalik sa listahan</string>
+</resources>

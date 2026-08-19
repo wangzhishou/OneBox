@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">चीनी कविता</string>
+    <string name="poem_latest">नवीनतम</string>
+    <string name="poem_generate">नई कविता</string>
+    <string name="poem_generate_random">यादृच्छिक कविता</string>
+    <string name="poem_generating_pinyin">पिनयिन बनाया जा रहा है…</string>
+    <string name="poem_search">खोजें</string>
+    <string name="poem_history">इतिहास</string>
+    <string name="poem_ai_insight">AI व्याख्या</string>
+    <string name="poem_favorite">पसंदीदा</string>
+    <string name="poem_favorited">पसंदीदा में जोड़ा गया</string>
+    <string name="poem_retry">पुनः प्रयास करें</string>
+    <string name="poem_load_failed">लोड करने में विफल। बाद में पुनः प्रयास करें।</string>
+    <string name="poem_generating_insight">व्याख्या तैयार हो रही है…</string>
+    <string name="poem_generating_translation">अनुवाद तैयार हो रहा है…</string>
+    <string name="poem_insight_title">काव्यात्मक व्याख्या</string>
+    <string name="poem_translation_title">आधुनिक अनुवाद</string>
+    <string name="poem_regenerate">पुनः उत्पन्न करें</string>
+    <string name="poem_insight_empty_hint">व्याख्या बनाने और पंक्तियों का गहरा अर्थ समझने के लिए टैप करें</string>
+    <string name="poem_translation_empty_hint">आधुनिक अनुवाद बनाने और पंक्तियों का आज का अर्थ समझने के लिए टैप करें</string>
+    <string name="poem_generate_click">बनाने के लिए टैप करें</string>
+    <string name="poem_history_title">इतिहास</string>
+    <string name="poem_clear_history">साफ़ करें</string>
+    <string name="poem_clear_history_confirm">पूरा इतिहास साफ़ करें? पसंदीदा कविताएँ बनी रहेंगी।</string>
+    <string name="poem_confirm">पुष्टि करें</string>
+    <string name="poem_cancel">रद्द करें</string>
+    <string name="poem_empty_title">अभी तक कोई कविता नहीं बनी</string>
+    <string name="poem_empty_subtitle">शुरू करने के लिए नीचे बटन टैप करें</string>
+    <string name="poem_search_hint">पंक्तियाँ, कवि या कीवर्ड खोजें</string>
+    <string name="poem_filter_dynasty">राजवंश</string>
+    <string name="poem_filter_type">विधा</string>
+    <string name="poem_filter_author">कवि</string>
+    <string name="poem_filter_all">सभी</string>
+    <string name="poem_search_results">खोज परिणाम</string>
+    <string name="poem_result_count">%1$d कविताएँ</string>
+    <string name="poem_search_empty">कोई परिणाम नहीं मिला</string>
+    <string name="poem_history_empty">अभी कोई इतिहास नहीं</string>
+    <string name="poem_favorites_only">केवल पसंदीदा</string>
+    <string name="poem_delete">हटाएँ</string>
+    <string name="poem_back_to_list">सूची पर वापस जाएँ</string>
+</resources>

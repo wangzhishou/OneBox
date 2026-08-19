@@ -28,6 +28,8 @@
     <string name="demo_navigation_deeplink_example_theme_settings">Настройки темы</string>
     <string name="demo_navigation_deeplink_example_feedback">Список отзывов</string>
     <string name="demo_navigation_deeplink_example_create_feedback">Отправить отзыв</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">Открыть выбор файла</string>
     <string name="demo_navigation_deeplink_example_pick_image">Выбрать изображение</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Выбрать несколько файлов</string>
@@ -1620,6 +1622,10 @@
     <string name="time_days_ago_format">%1$d дн назад</string>
     <string name="privacy_item_camera_title">Разрешение на камеру</string>
     <string name="blessing_wall">Стена благословений</string>
+    <string name="poem">Китайская поэзия</string>
+    <string name="poem_sub">Стих дня · Разбор с ИИ</string>
+    <string name="poem_search">Поиск стихов</string>
+    <string name="poem_history">История стихов</string>
     <string name="blessing_wall_sub">Ежедневное касание · Удача следует</string>
     <string name="habit_tracker">Трекер привычек</string>
     <string name="habit_tracker_description">Ежедневные отметки привычек и статистика</string>

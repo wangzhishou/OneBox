@@ -35,6 +35,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioCoverExtractor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBase64Tools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlessingWall
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlog
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookkeeping
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraWatermark
@@ -368,6 +369,8 @@ object IconRegistry {
         "CreateAIChatPrompt" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ChatPlus },
         "PasswordVault" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePasswordVault },
         "BlessingWall" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall },
+        // TODO(poem): 占位图标,待定制 LinePoem 后替换
+        "Poem" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook },
         // ── 习惯打卡定制图标(键与 HabitIcons 存库 iconKey 的 PascalCase 形式对应)──
         "Waterdrop" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWaterDrop },
         "Sunrise" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSunrise },

@@ -213,6 +213,11 @@ data class RemoteConfig(
      * 微信群二维码图片URL，动态下发
      */
     val wechatGroupQrcodeUrl: String? = null,
+
+    /**
+     * 中国古诗词接口地址，动态下发
+     */
+    val poemApiUrl: String? = null,
     /**
      * 设置ai token的权限,动态下发
      */
@@ -302,6 +307,7 @@ data class RemoteConfig(
         enablePromptSensitiveCheck = mergeField(net.enablePromptSensitiveCheck, enablePromptSensitiveCheck),
         enableAgentSensitiveCheck = mergeField(net.enableAgentSensitiveCheck, enableAgentSensitiveCheck),
         wechatGroupQrcodeUrl = mergeField(net.wechatGroupQrcodeUrl, wechatGroupQrcodeUrl) { !it.isNullOrBlank() },
+        poemApiUrl = mergeField(net.poemApiUrl, poemApiUrl) { !it.isNullOrBlank() },
         canSetAiToken = mergeField(net.canSetAiToken, canSetAiToken),
         aigcSubjectUscc = mergeField(net.aigcSubjectUscc, aigcSubjectUscc) { !it.isNullOrBlank() },
         survive30sWinPoints = mergeField(net.survive30sWinPoints, survive30sWinPoints),
@@ -357,6 +363,7 @@ data class RemoteConfig(
                 enablePromptSensitiveCheck == other.enablePromptSensitiveCheck &&
                 enableAgentSensitiveCheck == other.enableAgentSensitiveCheck &&
                 wechatGroupQrcodeUrl == other.wechatGroupQrcodeUrl &&
+                poemApiUrl == other.poemApiUrl &&
                 canSetAiToken == other.canSetAiToken &&
                 aigcSubjectUscc == other.aigcSubjectUscc &&
                 survive30sWinPoints == other.survive30sWinPoints &&
@@ -398,6 +405,7 @@ data class RemoteConfig(
             enablePromptSensitiveCheck,
             enableAgentSensitiveCheck,
             wechatGroupQrcodeUrl,
+            poemApiUrl,
             canSetAiToken,
             aigcSubjectUscc,
             survive30sWinPoints,

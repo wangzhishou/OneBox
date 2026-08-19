@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Китайская поэзия</string>
+    <string name="poem_latest">Новейшее</string>
+    <string name="poem_generate">Новое стихотворение</string>
+    <string name="poem_generate_random">Случайное стихотворение</string>
+    <string name="poem_generating_pinyin">Создание пиньиня…</string>
+    <string name="poem_search">Поиск</string>
+    <string name="poem_history">История</string>
+    <string name="poem_ai_insight">Интерпретация ИИ</string>
+    <string name="poem_favorite">В избранное</string>
+    <string name="poem_favorited">В избранном</string>
+    <string name="poem_retry">Повторить</string>
+    <string name="poem_load_failed">Не удалось загрузить. Попробуйте позже.</string>
+    <string name="poem_generating_insight">Создание интерпретации…</string>
+    <string name="poem_generating_translation">Создание перевода…</string>
+    <string name="poem_insight_title">Поэтическая интерпретация</string>
+    <string name="poem_translation_title">Современный перевод</string>
+    <string name="poem_regenerate">Создать заново</string>
+    <string name="poem_insight_empty_hint">Нажмите, чтобы создать интерпретацию и понять глубокий смысл стихов</string>
+    <string name="poem_translation_empty_hint">Нажмите, чтобы создать современный перевод и понять, что стихи значат сегодня</string>
+    <string name="poem_generate_click">Нажмите для создания</string>
+    <string name="poem_history_title">История</string>
+    <string name="poem_clear_history">Очистить</string>
+    <string name="poem_clear_history_confirm">Очистить всю историю? Избранные стихи будут сохранены.</string>
+    <string name="poem_confirm">Подтвердить</string>
+    <string name="poem_cancel">Отмена</string>
+    <string name="poem_empty_title">Пока нет созданных стихов</string>
+    <string name="poem_empty_subtitle">Нажмите кнопку ниже, чтобы начать</string>
+    <string name="poem_search_hint">Поиск стихов, поэтов или ключевых слов</string>
+    <string name="poem_filter_dynasty">Династия</string>
+    <string name="poem_filter_type">Жанр</string>
+    <string name="poem_filter_author">Поэт</string>
+    <string name="poem_filter_all">Все</string>
+    <string name="poem_search_results">Результаты поиска</string>
+    <string name="poem_result_count">Стихотворений: %1$d</string>
+    <string name="poem_search_empty">Ничего не найдено</string>
+    <string name="poem_history_empty">История пуста</string>
+    <string name="poem_favorites_only">Только избранное</string>
+    <string name="poem_delete">Удалить</string>
+    <string name="poem_back_to_list">Назад к списку</string>
+</resources>

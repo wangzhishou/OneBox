@@ -89,6 +89,7 @@ dependencies {
     implementation(projects.feature.ocrDocument)
     implementation(projects.feature.altitude)
     implementation(projects.feature.speedTest)
+    implementation(projects.feature.dshClient)
     implementation(projects.feature.unitConverter)
     implementation(projects.feature.compass)
     implementation(projects.feature.measurement)
@@ -103,6 +104,7 @@ dependencies {
     implementation(projects.feature.visualAutomation)
     implementation(projects.feature.passwordVault)
     implementation(projects.feature.blessingWall)
+    implementation(projects.feature.poem)
     implementation(projects.core.a2ui)
 
     implementation(libs.androidx.window)

@@ -21,6 +21,7 @@ object MMKVName {
     const val BLOG_LIST = "blog"
     const val MARKDOWN_HISTORY: String = "markdown_history"
     const val MERMAID_CACHE: String = "mermaid_cache"
+    const val POEM_FILTER: String = "poem_filter"
 }
 
 /**

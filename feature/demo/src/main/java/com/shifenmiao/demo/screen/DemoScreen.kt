@@ -70,10 +70,12 @@ import com.t8rin.imagetoolbox.core.resources.icons.BrokenImageAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccountBalance
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDashboardCustomize
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShield
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTravelExplore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAltitude
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookkeeping
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTeleprompter
@@ -743,6 +745,7 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry("远程存储", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudStorage) { Screen.CloudStorage() },
     DemoNavigationEntry("海拔仪", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAltitude) { Screen.Altitude },
     DemoNavigationEntry("网络测速", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSpeedTest) { Screen.SpeedTest },
+    DemoNavigationEntry("DSH 客户端", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRobot) { Screen.DshClient },
     DemoNavigationEntry("计算转换", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalculate) { Screen.UnitConverter() },
     DemoNavigationEntry("计算器 Demo", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalculate) {
         Screen.UnitConverter(initialTab = "calculator")
@@ -764,6 +767,7 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
         getString(DemoR.string.demo_blessing_wall_entry_title),
         com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
     ) { Screen.BlessingWall() },
+    DemoNavigationEntry("中国古诗词", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook) { Screen.Poem() },
     DemoNavigationEntry(getString(DemoR.string.demo_xiangqi_entry_title),
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino,
     ) { Screen.XiangqiRouter() },

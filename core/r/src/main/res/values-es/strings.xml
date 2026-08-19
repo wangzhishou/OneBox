@@ -28,6 +28,8 @@ Y así nació OneBox.</string>
     <string name="demo_navigation_deeplink_example_theme_settings">Configuración de Tema</string>
     <string name="demo_navigation_deeplink_example_feedback">Lista de Comentarios</string>
     <string name="demo_navigation_deeplink_example_create_feedback">Enviar Comentarios</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">Abrir Selector de Archivos</string>
     <string name="demo_navigation_deeplink_example_pick_image">Elegir Imagen</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Elegir Múltiples Archivos</string>
@@ -1620,6 +1622,10 @@ Y así nació OneBox.</string>
     <string name="time_days_ago_format">Hace %1$d días</string>
     <string name="privacy_item_camera_title">Permiso de cámara</string>
     <string name="blessing_wall">Muro de bendiciones</string>
+    <string name="poem">Poesía china</string>
+    <string name="poem_sub">Un poema al día · Análisis con IA</string>
+    <string name="poem_search">Buscar poemas</string>
+    <string name="poem_history">Historial de poemas</string>
     <string name="blessing_wall_sub">Un toque diario · La buena suerte te acompaña</string>
     <string name="habit_tracker">Seguimiento de hábitos</string>
     <string name="habit_tracker_description">Registro diario de hábitos y estadísticas</string>

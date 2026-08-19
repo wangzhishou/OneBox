@@ -1098,6 +1098,13 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        is Screen.DshClient -> NavigationChild.DshClient(
+            dshRootComponent = lifeFactories.get().dshRootComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack
+            )
+        )
+
         is Screen.UnitConverter -> UnitConverter(
             unitConverterComponent = lifeFactories.get().unitConverterComponentFactory(
                 componentContext = componentContext,
@@ -1314,6 +1321,32 @@ class ChildProvider @Inject constructor(
 
         Screen.BlessingWallRecord -> NavigationChild.BlessingWallRecord(
             lifeFactories.get().blessingRecordComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+            )
+        )
+
+        is Screen.Poem -> NavigationChild.Poem(
+            lifeFactories.get().poemComponentFactory(
+                componentContext = componentContext,
+                poemId = config.poemId,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+            )
+        )
+
+        is Screen.PoemSearch -> NavigationChild.PoemSearch(
+            lifeFactories.get().poemSearchComponentFactory(
+                componentContext = componentContext,
+                initialQuery = config.initialQuery,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+            )
+        )
+
+        Screen.PoemHistory -> NavigationChild.PoemHistory(
+            lifeFactories.get().poemHistoryComponentFactory(
                 componentContext = componentContext,
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo,

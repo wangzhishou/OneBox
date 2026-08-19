@@ -55,6 +55,16 @@ fun NavigationDeeplinkHelpSheet(
             label = stringResource(R.string.demo_navigation_deeplink_example_create_feedback),
             url = "onebox://screen/create_feedback",
             openScreen = Screen.CreateFeedback()
+        ),
+        DeeplinkExample(
+            label = stringResource(R.string.demo_navigation_deeplink_example_poem),
+            url = "onebox://screen/poem?poem_id=350678",
+            openScreen = Screen.Poem(poemId = 350678)
+        ),
+        DeeplinkExample(
+            label = stringResource(R.string.demo_navigation_deeplink_example_poem_search),
+            url = "onebox://screen/poem_search?q=明月光",
+            openScreen = Screen.PoemSearch(initialQuery = "明月光")
         )
     )
 

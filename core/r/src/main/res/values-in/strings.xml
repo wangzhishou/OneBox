@@ -28,6 +28,8 @@ Maka, lahirlah OneBox.</string>
     <string name="demo_navigation_deeplink_example_theme_settings">Pengaturan Tema</string>
     <string name="demo_navigation_deeplink_example_feedback">Daftar Masukan</string>
     <string name="demo_navigation_deeplink_example_create_feedback">Kirim Masukan</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">Buka Pemilih File</string>
     <string name="demo_navigation_deeplink_example_pick_image">Pilih Gambar</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Pilih Beberapa File</string>
@@ -1620,6 +1622,10 @@ Maka, lahirlah OneBox.</string>
     <string name="time_days_ago_format">%1$d hari yang lalu</string>
     <string name="privacy_item_camera_title">Izin Kamera</string>
     <string name="blessing_wall">Dinding Berkah</string>
+    <string name="poem">Puisi Tiongkok</string>
+    <string name="poem_sub">Sebuah puisi sehari · Wawasan AI</string>
+    <string name="poem_search">Cari Puisi</string>
+    <string name="poem_history">Riwayat Puisi</string>
     <string name="blessing_wall_sub">Satu ketukan harian · Keberuntungan menyertai</string>
     <string name="habit_tracker">Pelacak Kebiasaan</string>
     <string name="habit_tracker_description">Check-in kebiasaan harian dan statistik</string>

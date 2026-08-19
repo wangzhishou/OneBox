@@ -1568,6 +1568,14 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("DshClient")
+    data object DshClient : Screen(
+        id = 1096,
+        title = com.shifenmiao.core.R.string.dsh_client,
+        subtitle = com.shifenmiao.core.R.string.dsh_client_description,
+    )
+
+    @Serializable
     @SerialName("Compass")
     data object Compass : Screen(
         id = 1080,
@@ -1961,6 +1969,40 @@ sealed class Screen(
     data object BlessingWallRecord : Screen(
         id = 1091,
         title = 0,
+        subtitle = 0,
+    )
+
+    @Serializable
+    @SerialName("Poem")
+    data class Poem(
+        /**
+         * 诗词 id；非空时直达该诗词详情（从本地库加载），null 时随机取一首。
+         */
+        val poemId: Long? = null,
+    ) : Screen(
+        id = 1093,
+        title = com.shifenmiao.core.R.string.poem,
+        subtitle = com.shifenmiao.core.R.string.poem_sub,
+    )
+
+    @Serializable
+    @SerialName("PoemSearch")
+    data class PoemSearch(
+        /**
+         * 初始搜索关键词；非空时进入页面即自动搜索。
+         */
+        val initialQuery: String? = null,
+    ) : Screen(
+        id = 1094,
+        title = com.shifenmiao.core.R.string.poem_search,
+        subtitle = 0,
+    )
+
+    @Serializable
+    @SerialName("PoemHistory")
+    data object PoemHistory : Screen(
+        id = 1095,
+        title = com.shifenmiao.core.R.string.poem_history,
         subtitle = 0,
     )
 

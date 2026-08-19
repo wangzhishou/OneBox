@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Çin Şiiri</string>
+    <string name="poem_latest">En yeni</string>
+    <string name="poem_generate">Yeni Şiir</string>
+    <string name="poem_generate_random">Rastgele Şiir</string>
+    <string name="poem_generating_pinyin">Pinyin oluşturuluyor…</string>
+    <string name="poem_search">Ara</string>
+    <string name="poem_history">Geçmiş</string>
+    <string name="poem_ai_insight">YZ Yorumu</string>
+    <string name="poem_favorite">Favori</string>
+    <string name="poem_favorited">Favorilere eklendi</string>
+    <string name="poem_retry">Tekrar dene</string>
+    <string name="poem_load_failed">Yüklenemedi. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="poem_generating_insight">Yorum oluşturuluyor…</string>
+    <string name="poem_generating_translation">Çeviri oluşturuluyor…</string>
+    <string name="poem_insight_title">Şiirsel Yorum</string>
+    <string name="poem_translation_title">Modern Çeviri</string>
+    <string name="poem_regenerate">Yeniden oluştur</string>
+    <string name="poem_insight_empty_hint">Bir yorum oluşturmak ve dizelerin derin anlamını anlamak için dokunun</string>
+    <string name="poem_translation_empty_hint">Modern bir çeviri oluşturmak ve dizelerin bugünkü anlamını anlamak için dokunun</string>
+    <string name="poem_generate_click">Oluşturmak için dokunun</string>
+    <string name="poem_history_title">Geçmiş</string>
+    <string name="poem_clear_history">Temizle</string>
+    <string name="poem_clear_history_confirm">Tüm geçmiş temizlensin mi? Favori şiirler korunur.</string>
+    <string name="poem_confirm">Onayla</string>
+    <string name="poem_cancel">İptal</string>
+    <string name="poem_empty_title">Henüz şiir oluşturulmadı</string>
+    <string name="poem_empty_subtitle">Başlamak için aşağıdaki düğmeye dokunun</string>
+    <string name="poem_search_hint">Dize, şair veya anahtar kelime ara</string>
+    <string name="poem_filter_dynasty">Hanedan</string>
+    <string name="poem_filter_type">Tür</string>
+    <string name="poem_filter_author">Şair</string>
+    <string name="poem_filter_all">Tümü</string>
+    <string name="poem_search_results">Arama Sonuçları</string>
+    <string name="poem_result_count">%1$d şiir</string>
+    <string name="poem_search_empty">Sonuç bulunamadı</string>
+    <string name="poem_history_empty">Henüz geçmiş yok</string>
+    <string name="poem_favorites_only">Yalnızca favoriler</string>
+    <string name="poem_delete">Sil</string>
+    <string name="poem_back_to_list">Listeye dön</string>
+</resources>

@@ -32,6 +32,8 @@
     <string name="demo_navigation_deeplink_example_theme_settings">主题设置</string>
     <string name="demo_navigation_deeplink_example_feedback">反馈列表</string>
     <string name="demo_navigation_deeplink_example_create_feedback">提交反馈</string>
+    <string name="demo_navigation_deeplink_example_poem">打开中国古诗词(指定诗词)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">按关键词搜索诗词</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">打开文件选择器</string>
     <string name="demo_navigation_deeplink_example_pick_image">选择图片</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">选择多个文件</string>
@@ -1214,6 +1216,10 @@
     <string name="speed_test">网络测速</string>
     <string name="speed_test_description">检测当前网络下载速度与延迟，保存历史记录</string>
 
+    <!-- DSH 客户端 -->
+    <string name="dsh_client">DSH 客户端</string>
+    <string name="dsh_client_description">连接 DeepSeek Harness 主机，进行 Agent 对话</string>
+
     <!-- Unit Converter -->
     <string name="unit_converter">单位换算</string>
     <string name="unit_converter_description">长度、质量、温度、面积、体积等16大类单位互换</string>
@@ -1809,5 +1815,9 @@
     <string name="time_days_ago_format">%1$d 天前</string>
     <string name="privacy_item_camera_title">相机权限</string>
     <string name="blessing_wall">祈福墙</string>
+    <string name="poem">中国古诗词</string>
+    <string name="poem_sub">每日一诗 · AI 解读</string>
+    <string name="poem_search">诗词搜索</string>
+    <string name="poem_history">诗词历史</string>
     <string name="blessing_wall_sub">每日一点 · 好运相伴</string>
 </resources>

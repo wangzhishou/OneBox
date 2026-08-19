@@ -28,6 +28,8 @@
     <string name="demo_navigation_deeplink_example_theme_settings">테마 설정</string>
     <string name="demo_navigation_deeplink_example_feedback">피드백 목록</string>
     <string name="demo_navigation_deeplink_example_create_feedback">피드백 제출</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">파일 선택기 열기</string>
     <string name="demo_navigation_deeplink_example_pick_image">이미지 선택</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">여러 파일 선택</string>
@@ -1620,6 +1622,10 @@
     <string name="time_days_ago_format">%1$d일 전</string>
     <string name="privacy_item_camera_title">카메라 권한</string>
     <string name="blessing_wall">축복의 벽</string>
+    <string name="poem">중국 고전 시가</string>
+    <string name="poem_sub">하루 한 편의 시 · AI 해설</string>
+    <string name="poem_search">시 검색</string>
+    <string name="poem_history">시 기록</string>
     <string name="blessing_wall_sub">매일 한 번의 탭 · 행운이 따릅니다</string>
     <string name="habit_tracker">습관 트래커</string>
     <string name="habit_tracker_description">매일 습관 체크인 및 통계</string>

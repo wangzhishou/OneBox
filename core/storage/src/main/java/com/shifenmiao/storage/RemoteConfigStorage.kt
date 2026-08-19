@@ -17,7 +17,8 @@ object RemoteConfigStorage {
     // 升级 key：RemoteConfig 新增中间字段后，旧的 Parcelable 缓存格式不兼容，
     // 继续使用旧缓存会导致字段错位/列表中出现 null。改为新 key 后首次读取会回退到默认 RemoteConfig。
     // v2: 新增 aiImageProcessPoints（旧缓存解码会让该字段读到错位垃圾值）
-    private const val KEY_REMOTE_CONFIG = "one_remote_config_v2"
+    // v3: 新增 poemApiUrl 字段
+    private const val KEY_REMOTE_CONFIG = "one_remote_config_v3"
 
     /**
      * 远程配置写入事件。replay=1 让新订阅者立刻收到"最近一次"事件以兜底

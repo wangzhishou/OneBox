@@ -74,6 +74,12 @@ import com.wanbaohe.a2ui.A2uiScreen
 import com.wanbaohe.a2ui.viewModel.A2uiComponent
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
 import com.wanbaohe.blessingwall.component.BlessingWallComponent
+import com.wanbaohe.poem.component.PoemComponent
+import com.wanbaohe.poem.component.PoemHistoryComponent
+import com.wanbaohe.poem.component.PoemSearchComponent
+import com.wanbaohe.poem.screen.PoemHistoryScreen
+import com.wanbaohe.poem.screen.PoemScreen
+import com.wanbaohe.poem.screen.PoemSearchScreen
 import com.wanbaohe.blessingwall.screen.BlessingRecordScreen
 import com.wanbaohe.blessingwall.screen.BlessingWallScreen
 import com.shifenmiao.marquee.screen.MarqueeScreen
@@ -245,6 +251,8 @@ import com.wanbaohe.profile.screen.VipLevelScreen
 import com.wanbaohe.profile.viewmodel.PayComponent
 import com.wanbaohe.schedule.component.ScheduleComponent
 import com.wanbaohe.schedule.screen.ScheduleScreen
+import com.wanbaohe.dsh.component.DshRootComponent
+import com.wanbaohe.dsh.screen.DshRootScreen
 import com.wanbaohe.speedtest.component.SpeedTestComponent
 import com.wanbaohe.speedtest.screen.SpeedTestScreen
 import com.wanbaohe.setting.router.SettingRouterScreen
@@ -1017,6 +1025,33 @@ sealed interface NavigationChild {
         }
     }
 
+    class Poem(
+        private val component: PoemComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            PoemScreen(component = component)
+        }
+    }
+
+    class PoemSearch(
+        private val component: PoemSearchComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            PoemSearchScreen(component = component)
+        }
+    }
+
+    class PoemHistory(
+        private val component: PoemHistoryComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            PoemHistoryScreen(component = component)
+        }
+    }
+
     class Bookkeeping(
         private val component: BookkeepingRouterComponent
     ) : NavigationChild {
@@ -1194,6 +1229,15 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             SpeedTestScreen(component = speedTestComponent)
+        }
+    }
+
+    class DshClient(
+        val dshRootComponent: DshRootComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            DshRootScreen(component = dshRootComponent)
         }
     }
 

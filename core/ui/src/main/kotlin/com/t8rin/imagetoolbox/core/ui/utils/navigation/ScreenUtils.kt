@@ -59,6 +59,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioCoverExtractor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBase64Tools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlessingWall
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlog
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookkeeping
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraWatermark
@@ -116,6 +117,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSchedule
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSurvive30s
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSvgMaker
@@ -321,6 +323,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.DocConvertDocument -> "DocConvertDocument"
     is Screen.Altitude -> "Altitude"
     is Screen.SpeedTest -> "SpeedTest"
+    is Screen.DshClient -> "DshClient"
     is Screen.UnitConverter -> "UnitConverter"
     is Screen.Compass -> "Compass"
     is Screen.DeadPixelTest -> "DeadPixelTest"
@@ -345,6 +348,9 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.A2UI -> "A2UI"
     is Screen.BlessingWall -> "BlessingWall"
     is Screen.BlessingWallRecord -> "BlessingWallRecord"
+    is Screen.Poem -> "Poem"
+    is Screen.PoemSearch -> "PoemSearch"
+    is Screen.PoemHistory -> "PoemHistory"
     Main -> ""
     else -> ""
 }
@@ -449,6 +455,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.AIHistoryCenter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory
     is Screen.Altitude -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAltitude
     is Screen.SpeedTest -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSpeedTest
+    is Screen.DshClient -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRobot
     is Screen.UnitConverter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUnitConverter
     is Screen.LoanCalculator -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLoanCalculator
     is Screen.DiceRoller -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDiceRoller
@@ -471,6 +478,10 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.A2UI -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic
     is Screen.BlessingWall -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall
     is Screen.BlessingWallRecord -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall
+    // TODO(poem): 占位图标,待定制 LinePoem 后替换
+    is Screen.Poem -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
+    is Screen.PoemSearch -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
+    is Screen.PoemHistory -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
     else -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGpsNotFixed
 }
 
@@ -705,6 +716,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.FileExplorer(),
                     Screen.Altitude,
                     Screen.SpeedTest,
+                    Screen.DshClient,
                     Screen.UnitConverter(),
                     Screen.LoanCalculator,
                     Screen.DiceRoller,
@@ -721,6 +733,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.XiangqiRouter(),
                     Screen.PasswordVault(),
                     Screen.BlessingWall(),
+                    Screen.Poem(),
                 ),
                 title = R.string.tools,
                 selectedIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Toolbox,
@@ -733,5 +746,5 @@ internal object ScreenConstantsImpl : ScreenConstants {
         typedEntries.flatMap { it.entries }.sortedBy { it.id }
     }
 
-    override val FEATURES_COUNT = 78
+    override val FEATURES_COUNT = 79
 }

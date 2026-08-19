@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Poesia chinesa</string>
+    <string name="poem_latest">Mais recente</string>
+    <string name="poem_generate">Novo poema</string>
+    <string name="poem_generate_random">Poema aleatório</string>
+    <string name="poem_generating_pinyin">Gerando pinyin…</string>
+    <string name="poem_search">Buscar</string>
+    <string name="poem_history">Histórico</string>
+    <string name="poem_ai_insight">Interpretação de IA</string>
+    <string name="poem_favorite">Favorito</string>
+    <string name="poem_favorited">Favoritado</string>
+    <string name="poem_retry">Tentar novamente</string>
+    <string name="poem_load_failed">Falha ao carregar. Tente novamente mais tarde.</string>
+    <string name="poem_generating_insight">Gerando interpretação…</string>
+    <string name="poem_generating_translation">Gerando tradução…</string>
+    <string name="poem_insight_title">Interpretação poética</string>
+    <string name="poem_translation_title">Tradução moderna</string>
+    <string name="poem_regenerate">Regenerar</string>
+    <string name="poem_insight_empty_hint">Toque para gerar uma interpretação e entender o significado profundo dos versos</string>
+    <string name="poem_translation_empty_hint">Toque para gerar uma tradução moderna e entender o que os versos significam hoje</string>
+    <string name="poem_generate_click">Toque para gerar</string>
+    <string name="poem_history_title">Histórico</string>
+    <string name="poem_clear_history">Limpar</string>
+    <string name="poem_clear_history_confirm">Limpar todo o histórico? Os poemas favoritos serão mantidos.</string>
+    <string name="poem_confirm">Confirmar</string>
+    <string name="poem_cancel">Cancelar</string>
+    <string name="poem_empty_title">Nenhum poema gerado ainda</string>
+    <string name="poem_empty_subtitle">Toque no botão abaixo para começar</string>
+    <string name="poem_search_hint">Buscar versos, poetas ou palavras-chave</string>
+    <string name="poem_filter_dynasty">Dinastia</string>
+    <string name="poem_filter_type">Gênero</string>
+    <string name="poem_filter_author">Poeta</string>
+    <string name="poem_filter_all">Todos</string>
+    <string name="poem_search_results">Resultados da busca</string>
+    <string name="poem_result_count">%1$d poemas</string>
+    <string name="poem_search_empty">Nenhum resultado encontrado</string>
+    <string name="poem_history_empty">Ainda não há histórico</string>
+    <string name="poem_favorites_only">Somente favoritos</string>
+    <string name="poem_delete">Excluir</string>
+    <string name="poem_back_to_list">Voltar à lista</string>
+</resources>

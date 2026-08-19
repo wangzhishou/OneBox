@@ -31,6 +31,8 @@ And so, OneBox was born.]]></string>
     <string name="demo_navigation_deeplink_example_theme_settings">Theme Settings</string>
     <string name="demo_navigation_deeplink_example_feedback">Feedback List</string>
     <string name="demo_navigation_deeplink_example_create_feedback">Submit Feedback</string>
+    <string name="demo_navigation_deeplink_example_poem">Open Chinese Poetry (specific poem)</string>
+    <string name="demo_navigation_deeplink_example_poem_search">Search poetry by keyword</string>
     <string name="demo_navigation_deeplink_example_open_file_picker">Open File Picker</string>
     <string name="demo_navigation_deeplink_example_pick_image">Pick Image</string>
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Pick Multiple Files</string>
@@ -1153,6 +1155,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="speed_test">Speed Test</string>
     <string name="speed_test_description">Test network download speed and latency, save history.</string>
 
+    <!-- DSH Client -->
+    <string name="dsh_client">DSH Client</string>
+    <string name="dsh_client_description">Connect to a DeepSeek Harness host for agent conversations.</string>
+
     <!-- Unit Converter -->
     <string name="unit_converter">Unit Converter</string>
     <string name="unit_converter_description">Convert between 16 categories: length, weight, temperature, area, volume, and more.</string>
@@ -1830,6 +1836,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="time_days_ago_format">%1$d days ago</string>
     <string name="privacy_item_camera_title">Camera Permission</string>
     <string name="blessing_wall">Blessing Wall</string>
+    <string name="poem">Chinese Poetry</string>
+    <string name="poem_sub">A poem a day · AI insight</string>
+    <string name="poem_search">Poetry Search</string>
+    <string name="poem_history">Poetry History</string>
     <string name="blessing_wall_sub">A daily tap · Good luck follows</string>
 
 </resources>

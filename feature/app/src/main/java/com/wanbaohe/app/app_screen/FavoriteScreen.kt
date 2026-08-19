@@ -95,6 +95,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiDuelChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAudioFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlog
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookkeeping
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
@@ -908,6 +909,7 @@ private fun recordSectionTheme(category: ActivityCategory): SectionTheme = when 
     ActivityCategory.XIANGQI -> SectionTheme.SECONDARY
     ActivityCategory.TELEPROMPTER -> SectionTheme.TERTIARY
     ActivityCategory.HABIT -> SectionTheme.PRIMARY
+    ActivityCategory.POEM -> SectionTheme.SECONDARY
     ActivityCategory.OTHER -> SectionTheme.SURFACE
 }
 
@@ -927,6 +929,7 @@ private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (
     ActivityCategory.XIANGQI -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineXiangqi
     ActivityCategory.TELEPROMPTER -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTeleprompter
     ActivityCategory.HABIT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckCircleOutline
+    ActivityCategory.POEM -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
     ActivityCategory.OTHER -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory
 }
 

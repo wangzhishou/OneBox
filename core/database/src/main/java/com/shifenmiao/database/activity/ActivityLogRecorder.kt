@@ -288,6 +288,57 @@ class ActivityLogRecorder @Inject constructor(
         )
     }
 
+    // ── 中国古诗词 ──────────────────────────────────
+
+    /**
+     * 记录一次古诗词操作。每次写入都是独立日志（审计场景不去重）。
+     *
+     * @param entityId      关联实体 ID（诗词 id / "*" 表示批量）
+     * @param entityType    "Poem"
+     * @param actorType     USER / AGENT / SYSTEM
+     * @param actionType    CREATE / UPDATE / DELETE / FAVORITE / UNFAVORITE
+     * @param source        触发源（UI 路径 / AgentTool 名）
+     * @param title         标题（如 "收藏《静夜思》"）
+     * @param description   详细描述
+     * @param snapshot      实体 JSON 快照（可选）
+     * @param screenRoute   跳转的 Screen.id
+     */
+    suspend fun recordPoem(
+        entityId: String,
+        entityType: String = "Poem",
+        actorType: String,
+        actionType: String,
+        source: String,
+        title: String,
+        description: String? = null,
+        snapshot: String? = null,
+        screenRoute: String? = null,
+        timestamp: Date = Date()
+    ) {
+        val payload = JSONObject().apply {
+            put("entityId", entityId)
+            put("entityType", entityType)
+            put("actorType", actorType)
+            put("actionType", actionType)
+            put("source", source)
+            if (snapshot != null) put("snapshot", snapshot)
+        }.toString()
+
+        repository.record(
+            ActivityLogEntry(
+                category = ActivityCategory.POEM,
+                title = title,
+                appTitle = "中国古诗词",
+                description = description ?: title,
+                screenRoute = screenRoute ?: "",
+                payload = payload,
+                // 每次都唯一,避免同一 entityId 的旧日志被覆盖
+                dedupKey = "poem_${timestamp.time}_${java.util.UUID.randomUUID()}",
+                createdAt = timestamp
+            )
+        )
+    }
+
     // ── 待办清单 ────────────────────────────────────
 
     /**

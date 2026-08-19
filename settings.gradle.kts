@@ -157,6 +157,7 @@ include(":feature:teleprompter")
 include(":feature:survive30s")
 include(":feature:visual-automation")
 include(":feature:password-vault")
+include(":feature:poem")
 
 include(":core:a2ui")
 include(":core:settings")

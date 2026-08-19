@@ -388,6 +388,44 @@ object AppNavigationRegistry {
                     }
                     Screen.PasswordVault(type = vaultType)
                 }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "poem",
+                canonicalName = "screen.poem",
+                title = "中国古诗词",
+                description = "打开中国古诗词，随机赏诗、AI 解读，支持直达指定诗词",
+                aliases = listOf(
+                    "poem", "poetry", "gushi", "gushici",
+                    "古诗", "古诗词", "诗词", "中国古诗词"
+                ),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "poem"
+                ),
+                screenBuilder = { params ->
+                    val poemId = params["poem_id"]?.toLongOrNull()
+                        ?: params["poemId"]?.toLongOrNull()
+                        ?: params["id"]?.toLongOrNull()
+                    Screen.Poem(poemId = poemId)
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "poem_search",
+                canonicalName = "screen.poem_search",
+                title = "诗词搜索",
+                description = "打开诗词搜索，按关键词检索中国古诗词",
+                aliases = listOf("poem_search", "search_poem", "poetry_search", "诗词搜索"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "poem_search"
+                ),
+                screenBuilder = { params ->
+                    Screen.PoemSearch(
+                        initialQuery = params["q"] ?: params["query"]
+                    )
+                }
             )
         )
 

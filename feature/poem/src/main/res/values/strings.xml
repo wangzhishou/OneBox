@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Chinese Poetry</string>
+    <string name="poem_latest">Latest</string>
+    <string name="poem_generate">New Poem</string>
+    <string name="poem_generate_random">Random Poem</string>
+    <string name="poem_generating_pinyin">Generating pinyin…</string>
+    <string name="poem_search">Search</string>
+    <string name="poem_history">History</string>
+    <string name="poem_ai_insight">AI Insight</string>
+    <string name="poem_favorite">Favorite</string>
+    <string name="poem_favorited">Favorited</string>
+    <string name="poem_retry">Retry</string>
+    <string name="poem_load_failed">Failed to load. Please try again later.</string>
+    <string name="poem_generating_insight">Generating insight…</string>
+    <string name="poem_generating_translation">Generating translation…</string>
+    <string name="poem_insight_title">Poetic Insight</string>
+    <string name="poem_translation_title">Modern Translation</string>
+    <string name="poem_regenerate">Regenerate</string>
+    <string name="poem_insight_empty_hint">Tap to generate an insight and understand the deeper meaning of the verses</string>
+    <string name="poem_translation_empty_hint">Tap to generate a modern translation and understand what the verses mean today</string>
+    <string name="poem_generate_click">Tap to Generate</string>
+    <string name="poem_history_title">History</string>
+    <string name="poem_clear_history">Clear</string>
+    <string name="poem_clear_history_confirm">Clear all history? Favorited poems will be kept.</string>
+    <string name="poem_confirm">Confirm</string>
+    <string name="poem_cancel">Cancel</string>
+    <string name="poem_empty_title">No poems generated yet</string>
+    <string name="poem_empty_subtitle">Tap the button below to start</string>
+    <string name="poem_search_hint">Search verses, poets or keywords</string>
+    <string name="poem_filter_dynasty">Dynasty</string>
+    <string name="poem_filter_type">Genre</string>
+    <string name="poem_filter_author">Poet</string>
+    <string name="poem_filter_all">All</string>
+    <string name="poem_search_results">Search Results</string>
+    <string name="poem_result_count">%1$d poems</string>
+    <string name="poem_search_empty">No results found</string>
+    <string name="poem_history_empty">No history yet</string>
+    <string name="poem_favorites_only">Favorites only</string>
+    <string name="poem_delete">Delete</string>
+    <string name="poem_back_to_list">Back to list</string>
+</resources>
