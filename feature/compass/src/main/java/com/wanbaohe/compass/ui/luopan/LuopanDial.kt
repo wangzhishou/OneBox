@@ -72,7 +72,8 @@ private const val POLE_FONT = 0.046f
  * 盘面 surfaceContainerLow、刻度 outline、分环线 outlineVariant、
  * 主文字 onSurface、次要文字 onSurfaceVariant、朱红元素（0°/准线/指针/南）用 error。
  * 物理约定与 [com.wanbaohe.compass.ui.CompassDial] 一致 —— 全部圈层随 [-heading] 旋转，
- * 12 点红色准线即当前朝向读数位置，天池指针固定指向准线。
+ * 12 点红色准线即当前朝向读数位置；天池磁针画在盘面坐标系中（与圈层同转），
+ * 相对真实方位静止：朱红针尖始终指南，南/北字样按真实方位定位、字形保持正立。
  *
  * 圈层（外→内）：1° 刻度环 → 周天度数 → 二十四山 → 二十八宿 → 九星 → 八卦 → 天池。
  * 圈层数据见 LuopanRings.kt，新增圈层只需在那里加数据并在此加一段绘制。
@@ -183,9 +184,9 @@ fun LuopanDial(
         textMeasurer.measure(text = "北", style = poleTextStyle.copy(color = textColor))
     }
 
-    // 天池指针 Path 缓存：仅在表盘像素尺寸变化时重建
-    val needleNorth = remember(canvasSize) { buildNeedlePath(canvasSize, pointingUp = true) }
-    val needleSouth = remember(canvasSize) { buildNeedlePath(canvasSize, pointingUp = false) }
+    // 天池磁针 Path 缓存：盘面坐标系（上 = 0° = 北），仅在表盘像素尺寸变化时重建
+    val needleNorthEnd = remember(canvasSize) { buildNeedlePath(canvasSize, pointingUp = true) }
+    val needleSouthEnd = remember(canvasSize) { buildNeedlePath(canvasSize, pointingUp = false) }
 
     Canvas(modifier = modifier.onSizeChanged { canvasSize = it }) {
         // 绘制阶段读取：角度变化仅触发重绘
@@ -209,6 +210,10 @@ fun LuopanDial(
             drawMansionRing(cx, cy, radius, mansionLayouts)
             drawStarRing(cx, cy, radius, starLayouts)
             drawTrigramRing(cx, cy, radius, trigramNameLayouts, textColor)
+            // 天池磁针：画在盘面坐标系中（随 -heading 同转）= 相对真实方位静止，
+            // 朱红针尖始终指向真实南（180°），针尾朝北（0°）
+            drawPath(needleSouthEnd, accentColor)
+            drawPath(needleNorthEnd, subTextColor)
             // 分环细线
             listOf(
                 TICK_LINE_IN, MOUNTAIN_LINE_OUT, MOUNTAIN_LINE_IN,
@@ -222,16 +227,17 @@ fun LuopanDial(
             }
         }
 
-        // ── 6. 天池（固定不转）：边界 + 指针 + 南/北 + 中心点 ─────────────
+        // ── 6. 天池：边界 + 中心点（位置与旋转无关） ───────────────────────
         drawCircle(
             color = lineColor, radius = radius * TIANCHI, center = Offset(cx, cy),
             style = Stroke(width = 1.dp.toPx())
         )
-        drawPath(needleNorth, accentColor)
-        drawPath(needleSouth, subTextColor)
-        southLayout?.let { drawRadialText(it, cx, cy, radius * POLE_TEXT) }
-        northLayout?.let { drawRadialText(it, cx, cy, -radius * POLE_TEXT) }
         drawCircle(color = textColor, radius = 4.dp.toPx(), center = Offset(cx, cy))
+
+        // ── 6.1 南/北字样：盘面上 α 方位旋转后出现在屏幕角 (α - heading)，
+        //    南(180°)/北(0°) 按此定位到真实方位，字形保持正立 ─────────────
+        southLayout?.let { drawPoleText(it, cx, cy, radius * POLE_TEXT, 180f - degrees) }
+        northLayout?.let { drawPoleText(it, cx, cy, radius * POLE_TEXT, -degrees) }
 
         // ── 7. 12 点读数准线（固定） ─────────────────────────────────────
         drawLine(
@@ -252,6 +258,19 @@ private fun DrawScope.drawRadialText(
     drawText(
         textLayoutResult = layout,
         topLeft = Offset(cx - layout.size.width / 2f, cy - offsetR - layout.size.height / 2f)
+    )
+}
+
+/** 在屏幕钟点角 [screenAngle]（自 12 点顺时针，度）的圆周位置上画文字，字形保持正立 */
+private fun DrawScope.drawPoleText(
+    layout: TextLayoutResult, cx: Float, cy: Float, offsetR: Float, screenAngle: Float
+) {
+    val angleRad = Math.toRadians(screenAngle.toDouble())
+    val tx = cx + (offsetR * sin(angleRad)).toFloat()
+    val ty = cy - (offsetR * cos(angleRad)).toFloat()
+    drawText(
+        textLayoutResult = layout,
+        topLeft = Offset(tx - layout.size.width / 2f, ty - layout.size.height / 2f)
     )
 }
 
