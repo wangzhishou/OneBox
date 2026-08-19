@@ -38,6 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -45,6 +46,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -584,11 +587,27 @@ private fun CollapsibleTabSection(
             )
             .padding(bottom = 0.dp)
     ) {
-        // Tab 标题栏 - 左对齐,可横向滚动(tab 较多)
+        // Tab 标题栏 - 左对齐,可横向滚动(tab 较多);滑动 pager 时自动滚动到选中 tab 可见
+        val tabScrollState = rememberScrollState()
+        // 记录每个 tab 在 Row 内容坐标系中的位置与宽度,用于计算滚动目标
+        val tabBounds = remember { mutableStateMapOf<Int, Pair<Int, Int>>() }
+        val selectedTabBound = tabBounds[pagerState.currentPage]
+        LaunchedEffect(pagerState.currentPage, selectedTabBound, tabScrollState.viewportSize) {
+            val (start, width) = selectedTabBound ?: return@LaunchedEffect
+            val viewport = tabScrollState.viewportSize
+            if (viewport <= 0) return@LaunchedEffect
+            // 选中 tab 被遮挡时,滚动到刚好完全可见(已可见则不动,避免跳动)
+            val target = when {
+                start < tabScrollState.value -> start
+                start + width > tabScrollState.value + viewport -> start + width - viewport
+                else -> null
+            }
+            target?.let { tabScrollState.animateScrollTo(it.coerceAtLeast(0)) }
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
+                .horizontalScroll(tabScrollState),
             horizontalArrangement = Arrangement.Start
         ) {
             tabTitles.forEachIndexed { index, title ->
@@ -599,6 +618,10 @@ private fun CollapsibleTabSection(
                         scope.launch {
                             pagerState.animateScrollToPage(index)
                         }
+                    },
+                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                        tabBounds[index] =
+                            coordinates.positionInParent().x.toInt() to coordinates.size.width
                     },
                     selectedTextStyle = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold
@@ -618,11 +641,10 @@ private fun CollapsibleTabSection(
             label = "tabContentHeight"
         )
 
-        // 内容区域(Glass 容器)
+        // 内容区域(Glass 容器,与上方 tab 标题栏同一边距,不再额外内缩)
         GlassSurface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.dimens.spaceNormal)
                 .height(contentHeight),
             shape = if (pagerState.currentPage == PAGE_IMAGES) {
                 MaterialTheme.shapes.medium.copy(
