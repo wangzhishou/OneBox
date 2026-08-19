@@ -17,14 +17,20 @@
 
 package com.t8rin.imagetoolbox.color_tools.presentation.components
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,9 +38,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
@@ -45,7 +54,8 @@ import com.smarttoolfactory.colorpicker.util.HexVisualTransformation
 import com.smarttoolfactory.colorpicker.util.hexRegexSingleChar
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
-import com.t8rin.imagetoolbox.core.ui.widget.text.RoundedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldContainer
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import kotlin.math.roundToInt
 import android.graphics.Color as AndroidColor
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
@@ -201,32 +211,58 @@ private fun ColorEditableField(
     onCopy: (String) -> Unit,
     modifier: Modifier
 ) {
-    RoundedTextField(
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused by interactionSource.collectIsFocusedAsState()
+
+    GlassTextFieldContainer(
         modifier = modifier,
-        value = value,
-        visualTransformation = visualTransformation,
-        onValueChange = onValueChange,
-        onLoseFocusTransformation = {
-            onLoseFocus()
-            this
-        },
-        label = {
-            Text(label)
-        },
-        singleLine = true,
-        endIcon = {
-            EnhancedIconButton(
-                onClick = { onCopy(value) },
-                forceMinimumInteractiveComponentSize = false,
-                modifier = Modifier.size(36.dp)
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                    contentDescription = null
-                )
-            }
+        isFocused = isFocused,
+        shape = ShapeDefaults.small,
+        borderWidth = 0.dp,
+        contentPadding = PaddingValues(
+            start = 16.dp,
+            top = 6.dp,
+            end = 4.dp,
+            bottom = 6.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onFocusChanged {
+                        if (!it.isFocused) onLoseFocus()
+                    },
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
+                    color = MaterialTheme.colorScheme.onSurface
+                ),
+                singleLine = true,
+                visualTransformation = visualTransformation,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                interactionSource = interactionSource,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+            )
         }
-    )
+        EnhancedIconButton(
+            onClick = { onCopy(value) },
+            forceMinimumInteractiveComponentSize = false,
+            modifier = Modifier.size(36.dp)
+        ) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                contentDescription = null
+            )
+        }
+    }
 }
 
 fun Color.toHex(): String {

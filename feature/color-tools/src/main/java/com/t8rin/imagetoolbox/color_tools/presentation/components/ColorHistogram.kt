@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,9 +37,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ImageSelector
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
 import com.t8rin.imagetoolbox.core.ui.widget.image.HistogramChart
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.other.ExpandableItem
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineAreaChart
 
 @Composable
 internal fun ColorHistogram() {
@@ -48,69 +44,52 @@ internal fun ColorHistogram() {
         mutableStateOf<Uri?>(null)
     }
 
-    ExpandableItem(
-        visibleContent = {
-            TitleItem(
-                text = stringResource(R.string.histogram),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAreaChart
+    Column {
+        ImageSelector(
+            value = imageUri,
+            onValueChange = {
+                imageUri = it
+            },
+            subtitle = stringResource(R.string.image_for_histogram),
+            shape = ShapeDefaults.default
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            HistogramChart(
+                model = imageUri,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .glassRegular(shape = ShapeDefaults.pressed),
+                initialType = HistogramType.RGB,
+                onSwapType = null,
+                linesThickness = 1.dp,
+                bordersShape = ShapeDefaults.pressed
             )
-        },
-        expandableContent = {
-            Column(
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 8.dp
-                )
-            ) {
-                ImageSelector(
-                    value = imageUri,
-                    onValueChange = {
-                        imageUri = it
-                    },
-                    subtitle = stringResource(R.string.image_for_histogram),
-                    shape = ShapeDefaults.default
-                )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    HistogramChart(
-                        model = imageUri,
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .glassRegular(shape = ShapeDefaults.pressed),
-                        initialType = HistogramType.RGB,
-                        onSwapType = null,
-                        linesThickness = 1.dp,
-                        bordersShape = ShapeDefaults.pressed
-                    )
-                    HistogramChart(
-                        model = imageUri,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .glassRegular(shape = ShapeDefaults.pressed),
-                        initialType = HistogramType.Brightness,
-                        onSwapType = null,
-                        linesThickness = 1.dp,
-                        bordersShape = ShapeDefaults.pressed
-                    )
-                    HistogramChart(
-                        model = imageUri,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .glassRegular(shape = ShapeDefaults.pressed),
-                        initialType = HistogramType.Camera,
-                        onSwapType = null,
-                        linesThickness = 1.dp,
-                        bordersShape = ShapeDefaults.pressed
-                    )
-                }
-            }
-        },
-        initialState = false
-    )
+            HistogramChart(
+                model = imageUri,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .glassRegular(shape = ShapeDefaults.pressed),
+                initialType = HistogramType.Brightness,
+                onSwapType = null,
+                linesThickness = 1.dp,
+                bordersShape = ShapeDefaults.pressed
+            )
+            HistogramChart(
+                model = imageUri,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .glassRegular(shape = ShapeDefaults.pressed),
+                initialType = HistogramType.Camera,
+                onSwapType = null,
+                linesThickness = 1.dp,
+                bordersShape = ShapeDefaults.pressed
+            )
+        }
+    }
 }

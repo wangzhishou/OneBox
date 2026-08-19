@@ -55,17 +55,12 @@ import com.t8rin.imagetoolbox.core.ui.theme.inverse
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
 import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.ColorRowSelector
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsClickable
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.other.ExpandableItem
 import com.t8rin.imagetoolbox.core.ui.widget.saver.ColorSaver
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
-import kotlin.math.roundToInt
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlender
 
 @Composable
 internal fun ColorMixing(
@@ -90,127 +85,104 @@ internal fun ColorMixing(
         }
     }
 
-    ExpandableItem(
-        visibleContent = {
-            TitleItem(
-                text = stringResource(R.string.color_mixing),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlender
-            )
-        },
-        expandableContent = {
-            Column(
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 8.dp
+    Column {
+        ColorRowSelector(
+            value = colorToMix,
+            onValueChange = { colorToMix = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .flatGlassContainer(
+                    shape = ShapeDefaults.large
                 ),
-            ) {
-                ColorRowSelector(
-                    value = colorToMix,
-                    onValueChange = { colorToMix = it },
+            title = stringResource(R.string.color_to_mix)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        VariationSlider(
+            value = mixingVariation,
+            onValueChange = { mixingVariation = it }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            mixedColors.forEachIndexed { index, color ->
+                val boxColor by animateColorAsState(color)
+                val contentColor = boxColor.inverse(
+                    fraction = { cond ->
+                        if (cond) 0.8f
+                        else 0.5f
+                    },
+                    darkMode = boxColor.luminance() < 0.3f
+                )
+                Box(
                     modifier = Modifier
+                        .heightIn(min = 100.dp)
                         .fillMaxWidth()
-                        .flatGlassContainer(
-                            shape = ShapeDefaults.top
-                        ),
-                    title = stringResource(R.string.color_to_mix)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                EnhancedSliderItem(
-                    value = mixingVariation,
-                    title = stringResource(R.string.variation),
-                    valueRange = 2f..15f,
-                    onValueChange = { mixingVariation = it.roundToInt() },
-                    internalStateTransformation = { it.roundToInt() },
-                    shape = ShapeDefaults.bottom,
-                    behaveAsContainer = true,
-                    steps = 12
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    mixedColors.forEachIndexed { index, color ->
-                        val boxColor by animateColorAsState(color)
-                        val contentColor = boxColor.inverse(
-                            fraction = { cond ->
-                                if (cond) 0.8f
-                                else 0.5f
-                            },
-                            darkMode = boxColor.luminance() < 0.3f
+                        .clip(
+                            ShapeDefaults.byIndex(
+                                index = index,
+                                size = mixedColors.size
+                            )
                         )
-                        Box(
-                            modifier = Modifier
-                                .heightIn(min = 100.dp)
-                                .fillMaxWidth()
-                                .clip(
-                                    ShapeDefaults.byIndex(
-                                        index = index,
-                                        size = mixedColors.size
-                                    )
-                                )
-                                .transparencyChecker()
-                                .background(boxColor)
-                                .hapticsClickable {
-                                    Clipboard.copy(
-                                        text = getFormattedColor(color),
-                                        message = R.string.color_copied
-                                    )
-                                }
-                        ) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                                contentDescription = stringResource(R.string.copy),
-                                tint = contentColor,
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .padding(4.dp)
-                                    .size(28.dp)
-                                    .background(
-                                        color = boxColor.copy(alpha = 1f),
-                                        shape = ShapeDefaults.mini
-                                    )
-                                    .padding(2.dp)
-                            )
-
-                            Text(
-                                text = color.toHex(),
-                                color = contentColor,
-                                modifier = Modifier
-                                    .align(Alignment.BottomStart)
-                                    .padding(4.dp)
-                                    .background(
-                                        color = boxColor.copy(alpha = 1f),
-                                        shape = ShapeDefaults.mini
-                                    )
-                                    .padding(horizontal = 4.dp),
-                                fontSize = 12.sp
-                            )
-
-                            Text(
-                                text = remember(color) {
-                                    derivedStateOf {
-                                        ColorNameParser.parseColorName(color)
-                                    }
-                                }.value,
-                                color = contentColor,
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .padding(4.dp)
-                                    .background(
-                                        color = boxColor.copy(alpha = 1f),
-                                        shape = ShapeDefaults.mini
-                                    )
-                                    .padding(horizontal = 4.dp),
-                                fontSize = 12.sp
+                        .transparencyChecker()
+                        .background(boxColor)
+                        .hapticsClickable {
+                            Clipboard.copy(
+                                text = getFormattedColor(color),
+                                message = R.string.color_copied
                             )
                         }
-                    }
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                        contentDescription = stringResource(R.string.copy),
+                        tint = contentColor,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp)
+                            .size(28.dp)
+                            .background(
+                                color = boxColor.copy(alpha = 1f),
+                                shape = ShapeDefaults.mini
+                            )
+                            .padding(2.dp)
+                    )
+
+                    Text(
+                        text = color.toHex(),
+                        color = contentColor,
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(4.dp)
+                            .background(
+                                color = boxColor.copy(alpha = 1f),
+                                shape = ShapeDefaults.mini
+                            )
+                            .padding(horizontal = 4.dp),
+                        fontSize = 12.sp
+                    )
+
+                    Text(
+                        text = remember(color) {
+                            derivedStateOf {
+                                ColorNameParser.parseColorName(color)
+                            }
+                        }.value,
+                        color = contentColor,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(4.dp)
+                            .background(
+                                color = boxColor.copy(alpha = 1f),
+                                shape = ShapeDefaults.mini
+                            )
+                            .padding(horizontal = 4.dp),
+                        fontSize = 12.sp
+                    )
                 }
             }
-        },
-        initialState = false
-    )
+        }
+    }
 }

@@ -50,17 +50,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.core.resources.icons.Swatch
 import com.t8rin.imagetoolbox.core.ui.theme.inverse
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsClickable
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.other.ExpandableItem
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
-import kotlin.math.roundToInt
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 
 @Composable
@@ -99,110 +94,88 @@ internal fun ColorShading(
         }
     }
 
-    ExpandableItem(
-        visibleContent = {
-            TitleItem(
-                text = stringResource(R.string.color_shading),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Swatch
-            )
-        },
-        expandableContent = {
-            Column(
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 8.dp
-                ),
-            ) {
-                EnhancedSliderItem(
-                    value = shadingVariation,
-                    title = stringResource(R.string.variation),
-                    valueRange = 2f..15f,
-                    onValueChange = { shadingVariation = it.roundToInt() },
-                    internalStateTransformation = { it.roundToInt() },
-                    behaveAsContainer = true,
-                    steps = 12
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+    Column {
+        VariationSlider(
+            value = shadingVariation,
+            onValueChange = { shadingVariation = it }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            listOf(
+                tints to R.string.tints,
+                tones to R.string.tones,
+                shades to R.string.shades
+            ).forEach { (data, title) ->
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    listOf(
-                        tints to R.string.tints,
-                        tones to R.string.tones,
-                        shades to R.string.shades
-                    ).forEach { (data, title) ->
-                        Column(
-                            modifier = Modifier.weight(1f),
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(text = stringResource(title))
-                            data.forEachIndexed { index, color ->
-                                val boxColor by animateColorAsState(color)
-                                val contentColor = boxColor.inverse(
-                                    fraction = { cond ->
-                                        if (cond) 0.8f
-                                        else 0.5f
-                                    },
-                                    darkMode = boxColor.luminance() < 0.3f
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .heightIn(min = 100.dp)
-                                        .fillMaxWidth()
-                                        .clip(
-                                            ShapeDefaults.byIndex(
-                                                index = index,
-                                                size = data.size
-                                            )
-                                        )
-                                        .transparencyChecker()
-                                        .background(boxColor)
-                                        .hapticsClickable {
-                                            Clipboard.copy(
-                                                text = getFormattedColor(color),
-                                                message = R.string.color_copied
-                                            )
-                                        }
-                                ) {
-                                    Icon(
-                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                                        contentDescription = stringResource(R.string.copy),
-                                        tint = contentColor,
-                                        modifier = Modifier
-                                            .align(Alignment.TopEnd)
-                                            .padding(4.dp)
-                                            .size(28.dp)
-                                            .background(
-                                                color = boxColor.copy(alpha = 1f),
-                                                shape = ShapeDefaults.mini
-                                            )
-                                            .padding(2.dp)
+                    Text(text = stringResource(title))
+                    data.forEachIndexed { index, color ->
+                        val boxColor by animateColorAsState(color)
+                        val contentColor = boxColor.inverse(
+                            fraction = { cond ->
+                                if (cond) 0.8f
+                                else 0.5f
+                            },
+                            darkMode = boxColor.luminance() < 0.3f
+                        )
+                        Box(
+                            modifier = Modifier
+                                .heightIn(min = 100.dp)
+                                .fillMaxWidth()
+                                .clip(
+                                    ShapeDefaults.byIndex(
+                                        index = index,
+                                        size = data.size
                                     )
-
-                                    Text(
-                                        text = color.toHex(),
-                                        color = contentColor,
-                                        modifier = Modifier
-                                            .align(Alignment.BottomStart)
-                                            .padding(4.dp)
-                                            .background(
-                                                color = boxColor.copy(alpha = 1f),
-                                                shape = RoundedCornerShape(
-                                                    8.dp
-                                                )
-                                            )
-                                            .padding(horizontal = 4.dp),
-                                        fontSize = 12.sp
+                                )
+                                .transparencyChecker()
+                                .background(boxColor)
+                                .hapticsClickable {
+                                    Clipboard.copy(
+                                        text = getFormattedColor(color),
+                                        message = R.string.color_copied
                                     )
                                 }
-                            }
+                        ) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                                contentDescription = stringResource(R.string.copy),
+                                tint = contentColor,
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(4.dp)
+                                    .size(28.dp)
+                                    .background(
+                                        color = boxColor.copy(alpha = 1f),
+                                        shape = ShapeDefaults.mini
+                                    )
+                                    .padding(2.dp)
+                            )
+
+                            Text(
+                                text = color.toHex(),
+                                color = contentColor,
+                                modifier = Modifier
+                                    .align(Alignment.BottomStart)
+                                    .padding(4.dp)
+                                    .background(
+                                        color = boxColor.copy(alpha = 1f),
+                                        shape = RoundedCornerShape(
+                                            8.dp
+                                        )
+                                    )
+                                    .padding(horizontal = 4.dp),
+                                fontSize = 12.sp
+                            )
                         }
                     }
                 }
             }
-        },
-        initialState = false
-    )
+        }
+    }
 }

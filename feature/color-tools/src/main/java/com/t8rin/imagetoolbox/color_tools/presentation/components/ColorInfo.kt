@@ -55,14 +55,11 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.toHex
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsClickable
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.other.ExpandableItem
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 
 @Composable
 internal fun ColorInfo(
@@ -70,124 +67,107 @@ internal fun ColorInfo(
     onColorChange: (Color) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-    ExpandableItem(
-        visibleContent = {
-            TitleItem(
-                text = stringResource(R.string.color_info),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo
+    Column {
+        val boxColor by animateColorAsState(selectedColor)
+        val contentColor = boxColor.inverse(
+            fraction = { cond ->
+                if (cond) 0.8f
+                else 0.5f
+            },
+            darkMode = boxColor.luminance() < 0.3f
+        )
+        Box(
+            modifier = Modifier
+                .heightIn(min = 80.dp)
+                .fillMaxWidth()
+                .clip(ShapeDefaults.default)
+                .transparencyChecker()
+                .background(boxColor)
+                .hapticsClickable {
+                    Clipboard.copy(
+                        text = getFormattedColor(selectedColor),
+                        message = R.string.color_copied
+                    )
+                }
+        ) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                contentDescription = stringResource(R.string.copy),
+                tint = contentColor,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
+                    .size(28.dp)
+                    .background(
+                        color = boxColor.copy(alpha = 1f),
+                        shape = ShapeDefaults.mini
+                    )
+                    .padding(2.dp)
             )
-        },
-        expandableContent = {
-            Column(
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 8.dp
-                ),
-            ) {
-                val boxColor by animateColorAsState(selectedColor)
-                val contentColor = boxColor.inverse(
-                    fraction = { cond ->
-                        if (cond) 0.8f
-                        else 0.5f
-                    },
-                    darkMode = boxColor.luminance() < 0.3f
-                )
-                Box(
-                    modifier = Modifier
-                        .heightIn(min = 80.dp)
-                        .fillMaxWidth()
-                        .clip(ShapeDefaults.default)
-                        .transparencyChecker()
-                        .background(boxColor)
-                        .hapticsClickable {
-                            Clipboard.copy(
-                                text = getFormattedColor(selectedColor),
-                                message = R.string.color_copied
-                            )
-                        }
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                        contentDescription = stringResource(R.string.copy),
-                        tint = contentColor,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .padding(4.dp)
-                            .size(28.dp)
-                            .background(
-                                color = boxColor.copy(alpha = 1f),
-                                shape = ShapeDefaults.mini
-                            )
-                            .padding(2.dp)
-                    )
 
-                    Text(
-                        text = selectedColor.toHex(),
-                        color = contentColor,
-                        modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(4.dp)
-                            .background(
-                                color = boxColor.copy(alpha = 1f),
-                                shape = ShapeDefaults.mini
-                            )
-                            .padding(horizontal = 4.dp),
-                        fontSize = 12.sp
+            Text(
+                text = selectedColor.toHex(),
+                color = contentColor,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(4.dp)
+                    .background(
+                        color = boxColor.copy(alpha = 1f),
+                        shape = ShapeDefaults.mini
                     )
+                    .padding(horizontal = 4.dp),
+                fontSize = 12.sp
+            )
 
-                    Text(
-                        text = remember(selectedColor) {
-                            derivedStateOf {
-                                ColorNameParser.parseColorName(selectedColor)
-                            }
-                        }.value,
-                        color = contentColor,
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(4.dp)
-                            .background(
-                                color = boxColor.copy(alpha = 1f),
-                                shape = ShapeDefaults.mini
-                            )
-                            .padding(horizontal = 4.dp),
-                        fontSize = 12.sp
-                    )
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                var wasNull by rememberSaveable {
-                    mutableStateOf(false)
-                }
-                var resetJob by remember {
-                    mutableStateOf<Job?>(null)
-                }
-                ColorInfoDisplay(
-                    value = selectedColor,
-                    onValueChange = {
-                        wasNull = it == null
-
-                        onColorChange(it ?: selectedColor)
-                    },
-                    onCopy = {
-                        Clipboard.copy(
-                            text = it,
-                            message = R.string.color_copied
-                        )
-                    },
-                    onLoseFocus = {
-                        resetJob?.cancel()
-                        resetJob = scope.launch {
-                            delay(100.milliseconds)
-                            if (wasNull) {
-                                onColorChange(Color.White)
-                                delay(100.milliseconds)
-                                onColorChange(selectedColor)
-                            }
-                        }
+            Text(
+                text = remember(selectedColor) {
+                    derivedStateOf {
+                        ColorNameParser.parseColorName(selectedColor)
                     }
+                }.value,
+                color = contentColor,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(4.dp)
+                    .background(
+                        color = boxColor.copy(alpha = 1f),
+                        shape = ShapeDefaults.mini
+                    )
+                    .padding(horizontal = 4.dp),
+                fontSize = 12.sp
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        var wasNull by rememberSaveable {
+            mutableStateOf(false)
+        }
+        var resetJob by remember {
+            mutableStateOf<Job?>(null)
+        }
+        ColorInfoDisplay(
+            value = selectedColor,
+            onValueChange = {
+                wasNull = it == null
+
+                onColorChange(it ?: selectedColor)
+            },
+            onCopy = {
+                Clipboard.copy(
+                    text = it,
+                    message = R.string.color_copied
                 )
+            },
+            onLoseFocus = {
+                resetJob?.cancel()
+                resetJob = scope.launch {
+                    delay(100.milliseconds)
+                    if (wasNull) {
+                        onColorChange(Color.White)
+                        delay(100.milliseconds)
+                        onColorChange(selectedColor)
+                    }
+                }
             }
-        },
-        initialState = true
-    )
+        )
+    }
 }

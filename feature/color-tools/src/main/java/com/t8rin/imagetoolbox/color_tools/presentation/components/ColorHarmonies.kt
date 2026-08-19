@@ -61,10 +61,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.hapticsClickable
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.other.ExpandableItem
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineBarChart
 
 @Composable
 internal fun ColorHarmonies(
@@ -79,108 +76,91 @@ internal fun ColorHarmonies(
         }
     }
 
-    ExpandableItem(
-        visibleContent = {
-            TitleItem(
-                text = stringResource(R.string.color_harmonies),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBarChart
-            )
-        },
-        expandableContent = {
-            Column(
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 8.dp
-                ),
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.fillMaxWidth()
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            HarmonyType.entries.forEach {
+                EnhancedChip(
+                    selected = it == selectedHarmony,
+                    onClick = { selectedHarmony = it },
+                    selectedColor = MaterialTheme.colorScheme.secondaryContainer,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    HarmonyType.entries.forEach {
-                        EnhancedChip(
-                            selected = it == selectedHarmony,
-                            onClick = { selectedHarmony = it },
-                            selectedColor = MaterialTheme.colorScheme.secondaryContainer,
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Icon(
-                                imageVector = it.icon(),
-                                contentDescription = null
-                            )
-                        }
-                    }
-                }
-                Spacer(Modifier.height(8.dp))
-                AnimatedContent(
-                    targetState = selectedHarmony,
-                    transitionSpec = {
-                        fadeIn() togetherWith fadeOut()
-                    }
-                ) {
-                    Text(it.title())
-                }
-                Spacer(Modifier.height(8.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    harmonies.forEach { color ->
-                        val boxColor by animateColorAsState(color)
-                        val contentColor = boxColor.inverse(
-                            fraction = { cond ->
-                                if (cond) 0.8f
-                                else 0.5f
-                            },
-                            darkMode = boxColor.luminance() < 0.3f
-                        )
-                        Box(
-                            modifier = Modifier
-                                .heightIn(min = 120.dp)
-                                .weight(1f)
-                                .clip(ShapeDefaults.mini)
-                                .transparencyChecker()
-                                .background(boxColor)
-                                .hapticsClickable {
-                                    Clipboard.copy(
-                                        text = getFormattedColor(color),
-                                        message = R.string.color_copied
-                                    )
-                                }
-                        ) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                                contentDescription = stringResource(R.string.copy),
-                                tint = contentColor,
-                                modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .padding(4.dp)
-                                    .size(28.dp)
-                                    .background(
-                                        color = boxColor.copy(alpha = 1f),
-                                        shape = ShapeDefaults.mini
-                                    )
-                                    .padding(2.dp)
-                            )
-
-                            Text(
-                                text = color.toHex(),
-                                color = contentColor,
-                                modifier = Modifier
-                                    .align(Alignment.BottomStart)
-                                    .padding(4.dp)
-                                    .background(
-                                        color = boxColor.copy(alpha = 1f),
-                                        shape = ShapeDefaults.mini
-                                    )
-                                    .padding(horizontal = 4.dp),
-                                fontSize = 12.sp
-                            )
-                        }
-                    }
+                    Icon(
+                        imageVector = it.icon(),
+                        contentDescription = null
+                    )
                 }
             }
-        },
-        initialState = false
-    )
+        }
+        Spacer(Modifier.height(8.dp))
+        AnimatedContent(
+            targetState = selectedHarmony,
+            transitionSpec = {
+                fadeIn() togetherWith fadeOut()
+            }
+        ) {
+            Text(it.title())
+        }
+        Spacer(Modifier.height(8.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            harmonies.forEach { color ->
+                val boxColor by animateColorAsState(color)
+                val contentColor = boxColor.inverse(
+                    fraction = { cond ->
+                        if (cond) 0.8f
+                        else 0.5f
+                    },
+                    darkMode = boxColor.luminance() < 0.3f
+                )
+                Box(
+                    modifier = Modifier
+                        .heightIn(min = 120.dp)
+                        .weight(1f)
+                        .clip(ShapeDefaults.mini)
+                        .transparencyChecker()
+                        .background(boxColor)
+                        .hapticsClickable {
+                            Clipboard.copy(
+                                text = getFormattedColor(color),
+                                message = R.string.color_copied
+                            )
+                        }
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                        contentDescription = stringResource(R.string.copy),
+                        tint = contentColor,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp)
+                            .size(28.dp)
+                            .background(
+                                color = boxColor.copy(alpha = 1f),
+                                shape = ShapeDefaults.mini
+                            )
+                            .padding(2.dp)
+                    )
+
+                    Text(
+                        text = color.toHex(),
+                        color = contentColor,
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(4.dp)
+                            .background(
+                                color = boxColor.copy(alpha = 1f),
+                                shape = ShapeDefaults.mini
+                            )
+                            .padding(horizontal = 4.dp),
+                        fontSize = 12.sp
+                    )
+                }
+            }
+        }
+    }
 }
