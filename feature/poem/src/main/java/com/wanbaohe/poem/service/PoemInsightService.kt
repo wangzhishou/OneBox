@@ -42,12 +42,14 @@ class PoemInsightService @Inject constructor(
 
     /**
      * 逐字拼音:每句一行,行内每个汉字的拼音用空格分隔,标点不占位。
+     * 走快速模型(短格式化输出,不需要深度推理);
      * 由页面在诗词加载后自动调用;失败/引擎未配置时不落库(UI 无拼音即隐藏)。
      */
     suspend fun generatePinyin(poem: Poem): GenerationResult {
         val result = aiExecutor.execute(
             input = buildInput(poem),
             systemPrompt = PINYIN_SYSTEM_PROMPT,
+            engineMode = AIPromptExecutor.EngineMode.FAST,
         )
         if (!result.isSuccess) {
             return GenerationResult.Failed(result.errorMessage.orEmpty())

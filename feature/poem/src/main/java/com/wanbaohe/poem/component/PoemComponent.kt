@@ -42,10 +42,10 @@ class PoemComponent @AssistedInject internal constructor(
     private val pinyinAttempts = mutableSetOf<Long>()
 
     init {
-        // 历史记录:主页展示前 5 条;无 deeplink 且用户未操作时,自动回填最新一首
+        // 历史记录:全量供滑动翻页与历史弹层;无 deeplink 且用户未操作时,自动回填最新一首
         componentScope.launch {
             poemService.observeHistory().collect { history ->
-                _uiState.update { it.copy(recentHistory = history.take(RECENT_HISTORY_SIZE)) }
+                _uiState.update { it.copy(history = history) }
                 if (!userDrivenSelection && currentPoemId.value == null) {
                     currentPoemId.value = history.firstOrNull()?.id
                 }
@@ -173,9 +173,5 @@ class PoemComponent @AssistedInject internal constructor(
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
         ): PoemComponent
-    }
-
-    private companion object {
-        const val RECENT_HISTORY_SIZE = 5
     }
 }

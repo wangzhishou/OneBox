@@ -1,7 +1,6 @@
 package com.wanbaohe.poem.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,11 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,35 +25,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoStories
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineClear
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.poem.R
 import com.wanbaohe.poem.component.PoemComponent
+import com.wanbaohe.poem.component.PoemUiState
 import com.wanbaohe.poem.model.Poem
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun PoemScreen(component: PoemComponent) {
@@ -113,229 +111,219 @@ fun PoemScreen(component: PoemComponent) {
             }
 
             else -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    PoemCard(poem = poem)
+                val history = uiState.history
+                var showHistory by remember { mutableStateOf(false) }
 
-                    // 随机生成一首:居中弱化
-                    TextButton(
-                        onClick = component::refresh,
-                        enabled = !uiState.isLoading,
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                    ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRestartAlt,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier
-                                .padding(end = 6.dp)
-                                .size(16.dp),
-                        )
-                        Text(
-                            text = stringResource(R.string.poem_generate_random),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+                // 整页横向翻页:每页 = 诗词卡片 + 操作行 + 诗意解读 + 现代翻译
+                PoemPager(
+                    poem = poem,
+                    history = history,
+                    uiState = uiState,
+                    onPageSelected = component::selectPoem,
+                    onRefresh = component::refresh,
+                    onShowHistory = { showHistory = true },
+                    onGenerateInsight = component::generateInsight,
+                    onGenerateTranslation = component::generateTranslation,
+                )
 
-                    PoemAiSection(
-                        title = stringResource(R.string.poem_insight_title),
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook,
-                        content = poem.aiInsight,
-                        isGenerating = uiState.isGeneratingInsight,
-                        generatingText = stringResource(R.string.poem_generating_insight),
-                        error = uiState.insightError,
-                        emptyHint = stringResource(R.string.poem_insight_empty_hint),
-                        onGenerate = component::generateInsight,
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-
-                    PoemAiSection(
-                        title = stringResource(R.string.poem_translation_title),
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoStories,
-                        content = poem.translation,
-                        isGenerating = uiState.isGeneratingTranslation,
-                        generatingText = stringResource(R.string.poem_generating_translation),
-                        error = uiState.translationError,
-                        emptyHint = stringResource(R.string.poem_translation_empty_hint),
-                        onGenerate = component::generateTranslation,
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    )
-
-                    if (uiState.recentHistory.isNotEmpty()) {
-                        PoemHistorySection(
-                            history = uiState.recentHistory,
-                            onSelect = component::selectPoem,
-                            onClear = component::clearHistory,
-                        )
-                    }
-
-                    // 拼音生成中:底部灰色状态提示
-                    if (uiState.isGeneratingPinyin) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier
-                                    .padding(end = 8.dp)
-                                    .size(14.dp),
-                                strokeWidth = 2.dp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                            Text(
-                                text = stringResource(R.string.poem_generating_pinyin),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-
-                    Box(modifier = Modifier.height(8.dp))
-                }
+                PoemHistorySheet(
+                    visible = showHistory,
+                    history = history,
+                    currentPoemId = poem.id,
+                    onSelect = { id ->
+                        component.selectPoem(id)
+                        showHistory = false
+                    },
+                    onClear = component::clearHistory,
+                    onDismiss = { showHistory = false },
+                )
             }
         }
     }
 }
 
-/** 历史记录区:标题行 + 最近 5 条 + 清空(确认弹窗) */
+/**
+ * 整页横向翻页:左右滑动切换上一首/下一首(按历史倒序),
+ * 诗意解读/现代翻译/拼音状态跟随每页自己的诗词数据。
+ * 双向同步:用户滑动翻页 → selectPoem;随机生成/历史点选/deeplink → pager 跟随滚动。
+ * 当前诗词不在历史中(理论上不会发生)时退化为单页。
+ */
 @Composable
-private fun PoemHistorySection(
+private fun PoemPager(
+    poem: Poem,
     history: List<Poem>,
-    onSelect: (Long) -> Unit,
-    onClear: () -> Unit,
+    uiState: PoemUiState,
+    onPageSelected: (Long) -> Unit,
+    onRefresh: () -> Unit,
+    onShowHistory: () -> Unit,
+    onGenerateInsight: () -> Unit,
+    onGenerateTranslation: () -> Unit,
 ) {
-    var showClearConfirm by remember { mutableStateOf(false) }
+    val currentIndex = history.indexOfFirst { it.id == poem.id }
+    if (currentIndex < 0) {
+        PoemDetailPage(
+            poem = poem,
+            isCurrent = true,
+            uiState = uiState,
+            onRefresh = onRefresh,
+            onShowHistory = onShowHistory,
+            onGenerateInsight = onGenerateInsight,
+            onGenerateTranslation = onGenerateTranslation,
+        )
+        return
+    }
 
+    val pagerState = rememberPagerState(
+        initialPage = currentIndex,
+        pageCount = { history.size },
+    )
+    val latestHistory by rememberUpdatedState(history)
+    val latestPoemId by rememberUpdatedState(poem.id)
+
+    // 外部切换(随机生成/历史点选/deeplink)→ pager 跟随;用户滑动中不打扰
+    LaunchedEffect(poem.id) {
+        val index = latestHistory.indexOfFirst { it.id == poem.id }
+        if (index >= 0 && index != pagerState.currentPage && !pagerState.isScrollInProgress) {
+            pagerState.scrollToPage(index)
+        }
+    }
+    // 用户滑动翻页停稳 → 切换当前诗词
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.settledPage }.collect { page ->
+            val pagePoem = latestHistory.getOrNull(page) ?: return@collect
+            if (pagePoem.id != latestPoemId) {
+                onPageSelected(pagePoem.id)
+            }
+        }
+    }
+
+    HorizontalPager(
+        state = pagerState,
+        key = { index -> latestHistory.getOrNull(index)?.id ?: -(index + 1L) },
+        modifier = Modifier.fillMaxSize(),
+    ) { page ->
+        latestHistory.getOrNull(page)?.let { pagePoem ->
+            PoemDetailPage(
+                poem = pagePoem,
+                isCurrent = pagePoem.id == latestPoemId,
+                uiState = uiState,
+                onRefresh = onRefresh,
+                onShowHistory = onShowHistory,
+                onGenerateInsight = onGenerateInsight,
+                onGenerateTranslation = onGenerateTranslation,
+            )
+        }
+    }
+}
+
+/**
+ * 单首诗词整页:卡片 + 「随机生成/历史」操作行 + 诗意解读 + 现代翻译 + 拼音状态。
+ * 生成中与错误状态只对当前页生效(isCurrent),非当前页展示自己已持久化的内容。
+ */
+@Composable
+private fun PoemDetailPage(
+    poem: Poem,
+    isCurrent: Boolean,
+    uiState: PoemUiState,
+    onRefresh: () -> Unit,
+    onShowHistory: () -> Unit,
+    onGenerateInsight: () -> Unit,
+    onGenerateTranslation: () -> Unit,
+) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        PoemCard(poem = poem)
+
+        // 随机生成 + 历史入口:居中弱化一行
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(18.dp),
-            )
-            Text(
-                text = stringResource(R.string.poem_history_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(start = 8.dp),
-            )
-            Row(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.End,
+            TextButton(
+                onClick = onRefresh,
+                enabled = isCurrent && !uiState.isLoading,
             ) {
-                IconButton(onClick = { showClearConfirm = true }) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineClear,
-                        contentDescription = stringResource(R.string.poem_clear_history),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(18.dp),
-                    )
-                }
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRestartAlt,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .padding(end = 6.dp)
+                        .size(16.dp),
+                )
+                Text(
+                    text = stringResource(R.string.poem_generate_random),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            IconButton(onClick = onShowHistory) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
+                    contentDescription = stringResource(R.string.poem_history_title),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(20.dp),
+                )
             }
         }
 
-        history.forEach { poem ->
-            PoemHistoryRow(
-                poem = poem,
-                onClick = { onSelect(poem.id) },
-            )
+        PoemAiSection(
+            title = stringResource(R.string.poem_insight_title),
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook,
+            content = poem.aiInsight,
+            isGenerating = isCurrent && uiState.isGeneratingInsight,
+            generatingText = stringResource(R.string.poem_generating_insight),
+            error = if (isCurrent) uiState.insightError else null,
+            emptyHint = stringResource(R.string.poem_insight_empty_hint),
+            onGenerate = onGenerateInsight,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
+
+        PoemAiSection(
+            title = stringResource(R.string.poem_translation_title),
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoStories,
+            content = poem.translation,
+            isGenerating = isCurrent && uiState.isGeneratingTranslation,
+            generatingText = stringResource(R.string.poem_generating_translation),
+            error = if (isCurrent) uiState.translationError else null,
+            emptyHint = stringResource(R.string.poem_translation_empty_hint),
+            onGenerate = onGenerateTranslation,
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        )
+
+        // 拼音生成中:底部灰色状态提示
+        if (isCurrent && uiState.isGeneratingPinyin) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .size(14.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = stringResource(R.string.poem_generating_pinyin),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
-    }
 
-    if (showClearConfirm) {
-        AlertDialog(
-            onDismissRequest = { showClearConfirm = false },
-            text = {
-                Text(text = stringResource(R.string.poem_clear_history_confirm))
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showClearConfirm = false
-                        onClear()
-                    },
-                ) {
-                    Text(text = stringResource(R.string.poem_confirm))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showClearConfirm = false }) {
-                    Text(text = stringResource(R.string.poem_cancel))
-                }
-            },
-        )
+        Box(modifier = Modifier.height(8.dp))
     }
-}
-
-/** 历史行:首句摘录 | 作者 | 朝代 | 日期,点击回填到卡片 */
-@Composable
-private fun PoemHistoryRow(
-    poem: Poem,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick)
-            .padding(horizontal = 8.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(16.dp),
-        )
-        Text(
-            text = poem.content.firstOrNull().orEmpty(),
-            style = MaterialTheme.typography.bodyLarge,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(start = 8.dp)
-                .weight(1f),
-        )
-        Text(
-            text = listOf(poem.author, poem.dynasty)
-                .filter { it.isNotBlank() }
-                .joinToString(" | "),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            modifier = Modifier.padding(horizontal = 8.dp),
-        )
-        Text(
-            text = formatPoemDate(poem.createdAt),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-    }
-}
-
-/** 「M月d日」(中文)/「MMM d」(其他语言) */
-private fun formatPoemDate(timestamp: Long): String {
-    val locale = Locale.getDefault()
-    val pattern = if (locale.language == Locale.CHINESE.language) "M月d日" else "MMM d"
-    return SimpleDateFormat(pattern, locale).format(Date(timestamp))
 }
 
 /** 空状态:从未生成过诗词 */
