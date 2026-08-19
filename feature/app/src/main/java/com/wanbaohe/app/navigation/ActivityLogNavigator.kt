@@ -40,6 +40,7 @@ object ActivityLogNavigator {
             ActivityCategory.XIANGQI -> resolveXiangqi(payload)
             ActivityCategory.TELEPROMPTER -> resolveTeleprompter(payload)
             ActivityCategory.HABIT -> resolveHabit(payload)
+            ActivityCategory.POEM -> resolvePoem(payload)
             else -> resolveByScreenRoute(entry)
         }
     }
@@ -168,6 +169,18 @@ object ActivityLogNavigator {
                 Screen.HabitTracker(Screen.HabitTracker.Type.Edit(habitId))
 
             else -> Screen.HabitTracker()
+        }
+    }
+
+    // ── 诗词 ────────────────────────────────────────
+
+    private fun resolvePoem(payload: JSONObject?): Screen? {
+        val poemId = payload?.optString("entityId")?.toLongOrNull()
+        val actionType = payload?.optString("actionType").orEmpty()
+        // 已删除的诗词或无有效 id 时回到诗词主页,否则直达对应诗词
+        return when {
+            poemId == null || actionType.equals("DELETE", ignoreCase = true) -> Screen.Poem()
+            else -> Screen.Poem(poemId = poemId)
         }
     }
 
