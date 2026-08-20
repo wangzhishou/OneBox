@@ -38,6 +38,13 @@ Nauunawaan ng AI, isinasagawa, at ibinabalik ang resulta — tuloy-tuloy na dalo
 • Mga assistant sa pagsulat, rewriting, summarizing at translation
 • Custom AI engines at pamamahala ng mga prompt
 
+【DSH client: kontrolin ang AI agent ng computer mo gamit ang phone】
+Nagre-run ng DeepSeek Harness (DSH) sa computer mo? I-scan ang QR code para mag-pair, tapos kontrolin kahit saan:
+• Mag-approve ng tasks, mag-queue ng follow-up, o mag-interrupt — sa biyahe o naka-relax sa sofa
+• Direct connection sa LAN, o end-to-end encrypted na cloud relay — hindi makikita ng server ang mga usapan mo
+• Transparent ang bawat hakbang: reasoning, commands, outputs, tagal, at token stats
+Gumagana kasama ang open-source na onebox-dsh-bridge plugin sa computer mo.
+
 【App na kusang nag-e-evolve】
 Hindi static ang OneBox — may "AI self-evolution system" ito:
 Feedback mula sa mga user → sinusuri ng AI bilang product manager → awtomatikong nag-ge-generate ng code → testing at release.

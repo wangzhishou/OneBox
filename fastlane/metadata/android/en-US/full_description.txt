@@ -38,6 +38,13 @@ The AI understands, acts and reports back — all in one go.
 • Writing, rewriting, summarizing and translation helpers
 • Custom AI engines and prompt management
 
+【DSH client: command your computer's AI agent from your phone】
+Running DeepSeek Harness (DSH) on your computer? Scan a QR code to pair, then command it from anywhere:
+• Approve tasks, queue follow-ups or interrupt — from your commute or your couch
+• LAN direct connection, or an end-to-end encrypted cloud relay — the server can't see your conversations
+• Every step stays transparent: reasoning, commands, outputs, timing and token stats
+Works with the open-source onebox-dsh-bridge plugin on your computer.
+
 【An app that evolves on its own】
 OneBox is not static. It runs an "AI self-evolution system":
 You leave feedback → an AI analyzes it as a product manager → code is generated automatically → tested and shipped.

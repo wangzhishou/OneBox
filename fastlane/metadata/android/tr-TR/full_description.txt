@@ -38,6 +38,13 @@ Yapay zeka anlar, uygular ve sonucu bildirir — hepsi tek seferde.
 • Yazma, yeniden yazma, özetleme ve çeviri yardımcıları
 • Özel yapay zeka motorları ve prompt yönetimi
 
+【DSH istemcisi: bilgisayarınızdaki yapay zeka ajanını telefonunuzdan yönetin】
+Bilgisayarınızda DeepSeek Harness (DSH) mi çalışıyor? QR kodu taratarak eşleştirin ve her yerden yönetin:
+• Görevleri onaylayın, soruları sıraya alın veya yarıda kesin — yolda ya da kanepede
+• LAN doğrudan bağlantı veya uçtan uca şifreli bulut aktarımı — sunucu konuşmalarınızı göremez
+• Her adım şeffaf: akıl yürütme, komutlar, çıktılar, süre ve token istatistikleri
+Bilgisayarınızdaki açık kaynaklı onebox-dsh-bridge eklentisiyle çalışır.
+
 【Kendi Kendine Evrilen Uygulama】
 OneBox statik değildir; bir "AI kendi kendine evrim sistemi"ne sahiptir:
 Kullanıcılar öneri bırakır → AI bunları bir ürün yöneticisi gibi analiz eder → kod otomatik olarak oluşturulur → test edilir ve yayınlanır.

@@ -38,6 +38,13 @@ La IA entiende, ejecuta y responde, todo de una vez.
 • Ayudantes de escritura, reescritura, resumen y traducción
 • Motores de IA personalizados y gestión de prompts
 
+【Cliente DSH: controla el agente de IA de tu ordenador desde el móvil】
+¿Ejecutas DeepSeek Harness (DSH) en tu ordenador? Escanea un código QR para vincularlo y contrólalo desde cualquier lugar:
+• Aprueba tareas, encola preguntas o interrumpe — en el trayecto o desde el sofá
+• Conexión directa por LAN o relevo en la nube cifrado de extremo a extremo — el servidor no puede ver tus conversaciones
+• Cada paso es transparente: razonamiento, comandos, resultados, tiempos y estadísticas de tokens
+Funciona con el plugin de código abierto onebox-dsh-bridge en tu ordenador.
+
 【Una aplicación que evoluciona sola】
 OneBox no es estática: cuenta con un "sistema de autoevolución de IA":
 Los usuarios dejan sugerencias → la IA las analiza como un product manager → genera el código automáticamente → se prueba y se publica.

@@ -38,6 +38,13 @@ AI memahami, mengeksekusi, dan memberikan umpan balik dalam satu alur.
 • Asisten menulis, menulis ulang, meringkas, dan menerjemahkan
 • Mesin AI kustom dan manajemen prompt
 
+【Klien DSH: kendalikan agen AI di komputermu dari ponsel】
+Menjalankan DeepSeek Harness (DSH) di komputer? Pindai kode QR untuk memasangkan, lalu kendalikan dari mana saja:
+• Setujui tugas, antrekan pertanyaan lanjutan, atau menyela — di perjalanan atau di sofa
+• Koneksi langsung LAN, atau relai cloud terenkripsi end-to-end — server tidak bisa melihat percakapanmu
+• Setiap langkah transparan: penalaran, perintah, hasil, durasi, dan statistik token
+Bekerja dengan plugin open-source onebox-dsh-bridge di komputermu.
+
 【Aplikasi yang Berevolusi Sendiri】
 OneBox bukan aplikasi yang statis — ia memiliki "Sistem Evolusi Mandiri AI":
 Saran dari pengguna → AI menganalisis sebagai product manager → kode dibuat secara otomatis → diuji dan dirilis.

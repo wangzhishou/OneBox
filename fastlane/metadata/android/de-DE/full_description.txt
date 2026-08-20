@@ -38,6 +38,13 @@ Die KI versteht, führt aus und gibt Feedback – alles in einem Zug.
 • Helfer zum Schreiben, Umschreiben, Zusammenfassen und Übersetzen
 • Eigene KI-Engines und Prompt-Verwaltung
 
+【DSH-Client: Steuere den KI-Agenten deines Computers vom Handy】
+Läuft DeepSeek Harness (DSH) auf deinem Computer? Scanne einen QR-Code zum Koppeln und steuere ihn von überall:
+• Aufgaben genehmigen, Rückfragen einreihen oder unterbrechen — im Pendelverkehr oder auf dem Sofa
+• Direktverbindung im LAN oder Ende-zu-Ende-verschlüsseltes Cloud-Relay — der Server kann deine Unterhaltungen nicht sehen
+• Jeder Schritt bleibt transparent: Denkprozess, Befehle, Ausgaben, Dauer und Token-Statistiken
+Funktioniert mit dem Open-Source-Plugin onebox-dsh-bridge auf deinem Computer.
+
 【Eine App, die sich selbst weiterentwickelt】
 OneBox ist nicht statisch – es verfügt über ein „KI-Selbstevolutionssystem":
 Nutzer hinterlassen Feedback → die KI analysiert es als Produktmanager → Code wird automatisch generiert → getestet und veröffentlicht.
