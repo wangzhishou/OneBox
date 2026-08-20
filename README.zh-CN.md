@@ -67,6 +67,7 @@ AI 理解、执行、反馈,一气呵成。
 - **图片与媒体工具**：包含裁剪、拼图、滤镜、抠图、格式转换、EXIF 编辑、文档扫描、二维码扫描等多个功能模块。
 - **AI 能力**：提供 AI 对话、Agent 工具调用、AI 图片相关能力，并支持本地/远程 AI 引擎配置。
 - **效率与生活工具**：包含文件浏览、文件传输、Markdown 编辑、记事/待办、日历、记账、单位换算、提词器等模块。
+- **DSH 客户端**：在手机上指挥电脑里运行的 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Agent——扫码配对、端到端加密,支持局域网直连与云端中继。电脑端配合开源插件 [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge) 使用(`dsh plugin add onebox-dsh-bridge`)。
 - **自适应顶层导航**：竖屏使用抽屉 + 底部栏，横屏使用 navigation rail，并由 `feature/app` 统一编排壳层与全局状态。
 
 ## 技术栈

@@ -67,6 +67,7 @@ It understands, acts, and reports back — in one flow.
 - **Image & media tools**: crop, collage, filters, background removal, format conversion, EXIF editing, document scanning, QR scanning, and more.
 - **AI capabilities**: AI chat, agent tool-calling, AI image features, with configurable local/remote AI engines.
 - **Productivity & daily tools**: file browser, file transfer, Markdown editor, notes/to-do, calendar, bookkeeping, unit converter, teleprompter, and more.
+- **DSH client**: drive a [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) agent running on your computer right from your phone — scan-to-pair, end-to-end encrypted, works over LAN or the cloud relay. Computer side: the open-source [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge) plugin (`dsh plugin add onebox-dsh-bridge`).
 - **Adaptive top-level navigation**: drawer + bottom bar in portrait, navigation rail in landscape; the shell and global state are orchestrated by `feature/app`.
 
 ## Tech Stack
