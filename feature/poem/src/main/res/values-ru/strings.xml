@@ -40,5 +40,4 @@
     <string name="poem_history_empty">История пуста</string>
     <string name="poem_favorites_only">Только избранное</string>
     <string name="poem_delete">Удалить</string>
-    <string name="poem_back_to_list">Назад к списку</string>
 </resources>

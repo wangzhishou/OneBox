@@ -40,5 +40,4 @@
     <string name="poem_history_empty">Belum ada riwayat</string>
     <string name="poem_favorites_only">Hanya favorit</string>
     <string name="poem_delete">Hapus</string>
-    <string name="poem_back_to_list">Kembali ke daftar</string>
 </resources>

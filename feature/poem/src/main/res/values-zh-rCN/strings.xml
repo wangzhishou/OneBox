@@ -40,5 +40,4 @@
     <string name="poem_history_empty">暂无历史记录</string>
     <string name="poem_favorites_only">只看收藏</string>
     <string name="poem_delete">删除</string>
-    <string name="poem_back_to_list">返回列表</string>
 </resources>

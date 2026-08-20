@@ -40,5 +40,4 @@
     <string name="poem_history_empty">履歴はまだありません</string>
     <string name="poem_favorites_only">お気に入りのみ</string>
     <string name="poem_delete">削除</string>
-    <string name="poem_back_to_list">リストに戻る</string>
 </resources>

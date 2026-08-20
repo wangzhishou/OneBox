@@ -40,5 +40,4 @@
     <string name="poem_history_empty">अभी कोई इतिहास नहीं</string>
     <string name="poem_favorites_only">केवल पसंदीदा</string>
     <string name="poem_delete">हटाएँ</string>
-    <string name="poem_back_to_list">सूची पर वापस जाएँ</string>
 </resources>

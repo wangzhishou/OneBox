@@ -111,6 +111,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePasswordVault
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdfTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePickColor
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePoem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineProfile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineResizeConvert
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
@@ -350,7 +351,6 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.BlessingWallRecord -> "BlessingWallRecord"
     is Screen.Poem -> "Poem"
     is Screen.PoemSearch -> "PoemSearch"
-    is Screen.PoemHistory -> "PoemHistory"
     Main -> ""
     else -> ""
 }
@@ -478,10 +478,8 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.A2UI -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic
     is Screen.BlessingWall -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall
     is Screen.BlessingWallRecord -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall
-    // TODO(poem): 占位图标,待定制 LinePoem 后替换
-    is Screen.Poem -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
+    is Screen.Poem -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePoem
     is Screen.PoemSearch -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
-    is Screen.PoemHistory -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook
     else -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGpsNotFixed
 }
 

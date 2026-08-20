@@ -40,5 +40,4 @@
     <string name="poem_history_empty">Wala pang kasaysayan</string>
     <string name="poem_favorites_only">Mga paborito lang</string>
     <string name="poem_delete">Burahin</string>
-    <string name="poem_back_to_list">Bumalik sa listahan</string>
 </resources>

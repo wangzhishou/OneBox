@@ -18,7 +18,6 @@ import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
 import com.wanbaohe.blessingwall.component.BlessingWallComponent
 import com.wanbaohe.poem.component.PoemComponent
-import com.wanbaohe.poem.component.PoemHistoryComponent
 import com.wanbaohe.poem.component.PoemSearchComponent
 import com.wanbaohe.bookkeeping.router.screenLogic.BookkeepingRouterComponent
 import com.wanbaohe.habittracker.router.screenLogic.HabitTrackerRouterComponent
@@ -91,5 +90,4 @@ class LifeNavigationFactories @Inject constructor(
     val blessingRecordComponentFactory: BlessingRecordComponent.Factory,
     val poemComponentFactory: PoemComponent.Factory,
     val poemSearchComponentFactory: PoemSearchComponent.Factory,
-    val poemHistoryComponentFactory: PoemHistoryComponent.Factory,
 )

@@ -40,5 +40,4 @@
     <string name="poem_history_empty">Ainda não há histórico</string>
     <string name="poem_favorites_only">Somente favoritos</string>
     <string name="poem_delete">Excluir</string>
-    <string name="poem_back_to_list">Voltar à lista</string>
 </resources>

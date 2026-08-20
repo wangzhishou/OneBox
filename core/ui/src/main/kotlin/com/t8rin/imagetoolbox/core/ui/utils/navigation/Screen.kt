@@ -1998,14 +1998,6 @@ sealed class Screen(
         subtitle = 0,
     )
 
-    @Serializable
-    @SerialName("PoemHistory")
-    data object PoemHistory : Screen(
-        id = 1095,
-        title = com.shifenmiao.core.R.string.poem_history,
-        subtitle = 0,
-    )
-
     companion object : ScreenConstants by ScreenConstantsImpl
 }
 

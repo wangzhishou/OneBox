@@ -1345,14 +1345,6 @@ class ChildProvider @Inject constructor(
             )
         )
 
-        Screen.PoemHistory -> NavigationChild.PoemHistory(
-            lifeFactories.get().poemHistoryComponentFactory(
-                componentContext = componentContext,
-                onGoBack = ::navigateBack,
-                onNavigate = ::navigateTo,
-            )
-        )
-
         else -> throw IllegalArgumentException("Unknown screen: $config")
     }
 }

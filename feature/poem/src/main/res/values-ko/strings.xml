@@ -40,5 +40,4 @@
     <string name="poem_history_empty">기록이 아직 없습니다</string>
     <string name="poem_favorites_only">즐겨찾기만 보기</string>
     <string name="poem_delete">삭제</string>
-    <string name="poem_back_to_list">목록으로 돌아가기</string>
 </resources>

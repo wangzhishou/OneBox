@@ -40,5 +40,4 @@
     <string name="poem_history_empty">Henüz geçmiş yok</string>
     <string name="poem_favorites_only">Yalnızca favoriler</string>
     <string name="poem_delete">Sil</string>
-    <string name="poem_back_to_list">Listeye dön</string>
 </resources>

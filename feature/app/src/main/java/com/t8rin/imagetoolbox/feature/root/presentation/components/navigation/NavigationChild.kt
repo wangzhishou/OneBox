@@ -75,9 +75,7 @@ import com.wanbaohe.a2ui.viewModel.A2uiComponent
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
 import com.wanbaohe.blessingwall.component.BlessingWallComponent
 import com.wanbaohe.poem.component.PoemComponent
-import com.wanbaohe.poem.component.PoemHistoryComponent
 import com.wanbaohe.poem.component.PoemSearchComponent
-import com.wanbaohe.poem.screen.PoemHistoryScreen
 import com.wanbaohe.poem.screen.PoemScreen
 import com.wanbaohe.poem.screen.PoemSearchScreen
 import com.wanbaohe.blessingwall.screen.BlessingRecordScreen
@@ -1040,15 +1038,6 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             PoemSearchScreen(component = component)
-        }
-    }
-
-    class PoemHistory(
-        private val component: PoemHistoryComponent
-    ) : NavigationChild {
-        @Composable
-        override fun Content() {
-            PoemHistoryScreen(component = component)
         }
     }
 
