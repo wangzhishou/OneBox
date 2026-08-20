@@ -32,14 +32,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoStories
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFavorite
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSearchTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.poem.R
 import com.wanbaohe.poem.component.PoemSearchComponent
 import com.wanbaohe.poem.model.Poem
@@ -52,44 +50,6 @@ fun PoemSearchScreen(component: PoemSearchComponent) {
         title = stringResource(R.string.poem_search),
         onGoBack = component.onGoBack,
     ) {
-        val selectedPoem = uiState.selectedPoem
-        if (selectedPoem != null) {
-            // 页内详情态:拼音网格 / 诗意解读 / 现代翻译,复用主页组件
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                GlassTonalButton(onClick = component::closePoem) {
-                    Text(text = stringResource(R.string.poem_back_to_list))
-                }
-                PoemCard(poem = selectedPoem)
-                PoemAiSection(
-                    title = stringResource(R.string.poem_insight_title),
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook,
-                    content = selectedPoem.aiInsight,
-                    isGenerating = uiState.isGeneratingInsight,
-                    generatingText = stringResource(R.string.poem_generating_insight),
-                    error = uiState.insightError,
-                    emptyHint = stringResource(R.string.poem_insight_empty_hint),
-                    onGenerate = component::generateInsight,
-                )
-                PoemAiSection(
-                    title = stringResource(R.string.poem_translation_title),
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAutoStories,
-                    content = selectedPoem.translation,
-                    isGenerating = uiState.isGeneratingTranslation,
-                    generatingText = stringResource(R.string.poem_generating_translation),
-                    error = uiState.translationError,
-                    emptyHint = stringResource(R.string.poem_translation_empty_hint),
-                    onGenerate = component::generateTranslation,
-                )
-            }
-            return@BaseScreen
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

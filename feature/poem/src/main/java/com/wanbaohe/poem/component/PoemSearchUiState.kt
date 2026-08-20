@@ -13,12 +13,6 @@ data class PoemSearchUiState(
     val hasSearched: Boolean = false,
     val isSearching: Boolean = false,
     val error: String? = null,
-    /** 非空时页内展示该诗词详情 */
-    val selectedPoem: Poem? = null,
-    val isGeneratingInsight: Boolean = false,
-    val insightError: String? = null,
-    val isGeneratingTranslation: Boolean = false,
-    val translationError: String? = null,
 ) {
     /** 朝代/体裁/诗人筛选在结果集上本地过滤(搜索接口只支持关键词) */
     val displayedResults: List<Poem>

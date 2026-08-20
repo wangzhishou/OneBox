@@ -5,7 +5,6 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.poem.model.Poem
-import com.wanbaohe.poem.service.PoemInsightService
 import com.wanbaohe.poem.service.PoemService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -21,7 +20,6 @@ class PoemSearchComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
     private val poemService: PoemService,
-    private val insightService: PoemInsightService,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -108,94 +106,24 @@ class PoemSearchComponent @AssistedInject internal constructor(
         }
     }
 
-    /** 点击搜索结果:落库 upsert 后页内展示详情,并自动补拼音(静默失败) */
+    /** 点击搜索结果:落库 upsert(进历史)后直接跳转主页详情页 */
     fun openPoem(poem: Poem) {
-        _uiState.update { it.copy(selectedPoem = poem, insightError = null, translationError = null) }
         componentScope.launch(ioDispatcher) {
             poemService.upsertPoem(poem)
-            if (poem.pinyin.isNullOrBlank()) {
-                insightService.generatePinyin(poem)
-                poemService.getPoem(poem.id)?.let { updated ->
-                    updateSelectedPoem { updated }
-                }
-            }
         }
+        onNavigate(Screen.Poem(poemId = poem.id))
     }
 
-    fun closePoem() {
-        _uiState.update {
-            it.copy(
-                selectedPoem = null,
-                isGeneratingInsight = false,
-                insightError = null,
-                isGeneratingTranslation = false,
-                translationError = null,
-            )
-        }
-    }
-
-    fun generateInsight() {
-        val poem = uiState.value.selectedPoem ?: return
-        if (uiState.value.isGeneratingInsight) return
-        componentScope.launch {
-            _uiState.update { it.copy(isGeneratingInsight = true, insightError = null) }
-            when (val result = insightService.generateInsight(poem)) {
-                is PoemInsightService.GenerationResult.Success -> {
-                    updateSelectedPoem { it.copy(aiInsight = result.content) }
-                    _uiState.update { it.copy(isGeneratingInsight = false) }
-                }
-
-                is PoemInsightService.GenerationResult.Failed -> {
-                    _uiState.update {
-                        it.copy(isGeneratingInsight = false, insightError = result.reason)
-                    }
-                }
-            }
-        }
-    }
-
-    fun generateTranslation() {
-        val poem = uiState.value.selectedPoem ?: return
-        if (uiState.value.isGeneratingTranslation) return
-        componentScope.launch {
-            _uiState.update { it.copy(isGeneratingTranslation = true, translationError = null) }
-            when (val result = insightService.generateTranslation(poem)) {
-                is PoemInsightService.GenerationResult.Success -> {
-                    updateSelectedPoem { it.copy(translation = result.content) }
-                    _uiState.update { it.copy(isGeneratingTranslation = false) }
-                }
-
-                is PoemInsightService.GenerationResult.Failed -> {
-                    _uiState.update {
-                        it.copy(isGeneratingTranslation = false, translationError = result.reason)
-                    }
-                }
-            }
-        }
-    }
-
-    /** 结果卡片/详情上的收藏 toggle,同步结果列表与详情态 */
+    /** 结果卡片上的收藏 toggle */
     fun toggleFavorite(poem: Poem) {
         componentScope.launch {
             poemService.toggleFavorite(poem.id)
             val updated = poem.copy(isFavorite = !poem.isFavorite)
             _uiState.update { state ->
                 state.copy(
-                    selectedPoem = state.selectedPoem?.takeIf { it.id == poem.id }?.let { updated }
-                        ?: state.selectedPoem,
                     results = state.results.map { if (it.id == poem.id) updated else it },
                 )
             }
-        }
-    }
-
-    private fun updateSelectedPoem(transform: (Poem) -> Poem) {
-        _uiState.update { state ->
-            val updated = state.selectedPoem?.let(transform) ?: return@update state
-            state.copy(
-                selectedPoem = updated,
-                results = state.results.map { if (it.id == updated.id) updated else it },
-            )
         }
     }
 
