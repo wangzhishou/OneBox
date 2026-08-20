@@ -1629,4 +1629,6 @@
     <string name="blessing_wall_sub">एक दैनिक टैप · शुभकामनाएँ साथ चलती हैं</string>
     <string name="habit_tracker">आदत ट्रैकर</string>
     <string name="habit_tracker_description">दैनिक आदत चेक-इन और आंकड़े</string>
+    <string name="dsh_client">DSH क्लाइंट</string>
+    <string name="dsh_client_description">एजेंट वार्तालाप के लिए DeepSeek Harness होस्ट से कनेक्ट करें।</string>
 </resources>

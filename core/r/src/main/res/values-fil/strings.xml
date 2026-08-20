@@ -1629,4 +1629,6 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="blessing_wall_sub">Isang araw-araw na tap · Sumusunod ang suwerte</string>
     <string name="habit_tracker">Tagasubaybay ng Gawi</string>
     <string name="habit_tracker_description">Araw-araw na habit check-in at estadistika</string>
+    <string name="dsh_client">DSH Client</string>
+    <string name="dsh_client_description">Kumonekta sa DeepSeek Harness host para sa mga pag-uusap sa agent.</string>
 </resources>

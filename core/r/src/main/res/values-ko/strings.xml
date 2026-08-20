@@ -1629,4 +1629,6 @@
     <string name="blessing_wall_sub">매일 한 번의 탭 · 행운이 따릅니다</string>
     <string name="habit_tracker">습관 트래커</string>
     <string name="habit_tracker_description">매일 습관 체크인 및 통계</string>
+    <string name="dsh_client">DSH 클라이언트</string>
+    <string name="dsh_client_description">DeepSeek Harness 호스트에 연결하여 에이전트와 대화합니다.</string>
 </resources>

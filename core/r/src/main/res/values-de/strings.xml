@@ -1629,4 +1629,6 @@ Und so wurde OneBox geboren.</string>
     <string name="blessing_wall_sub">Ein täglicher Tipp · Gutes Glück folgt</string>
     <string name="habit_tracker">Gewohnheiten-Tracker</string>
     <string name="habit_tracker_description">Tägliche Gewohnheiten einchecken und Statistiken</string>
+    <string name="dsh_client">DSH-Client</string>
+    <string name="dsh_client_description">Mit einem DeepSeek Harness-Host verbinden, um mit Agenten zu chatten.</string>
 </resources>

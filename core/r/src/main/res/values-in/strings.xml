@@ -1629,4 +1629,6 @@ Maka, lahirlah OneBox.</string>
     <string name="blessing_wall_sub">Satu ketukan harian · Keberuntungan menyertai</string>
     <string name="habit_tracker">Pelacak Kebiasaan</string>
     <string name="habit_tracker_description">Check-in kebiasaan harian dan statistik</string>
+    <string name="dsh_client">Klien DSH</string>
+    <string name="dsh_client_description">Hubungkan ke host DeepSeek Harness untuk percakapan agen.</string>
 </resources>

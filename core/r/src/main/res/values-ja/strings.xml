@@ -1629,4 +1629,6 @@
     <string name="blessing_wall_sub">每日一按 · 好运相随</string>
     <string name="habit_tracker">習慣トラッカー</string>
     <string name="habit_tracker_description">毎日の習慣チェックインと統計</string>
+    <string name="dsh_client">DSH クライアント</string>
+    <string name="dsh_client_description">DeepSeek Harness ホストに接続してエージェントと会話します。</string>
 </resources>

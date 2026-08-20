@@ -1629,4 +1629,6 @@ Ve böylece OneBox doğdu.</string>
     <string name="blessing_wall_sub">Günlük bir dokunuş · İyi şans peşinden gelir</string>
     <string name="habit_tracker">Alışkanlık Takibi</string>
     <string name="habit_tracker_description">Günlük alışkanlık işaretlemeleri ve istatistikler</string>
+    <string name="dsh_client">DSH İstemcisi</string>
+    <string name="dsh_client_description">Temsilci sohbetleri için bir DeepSeek Harness ana makinesine bağlanın.</string>
 </resources>
