@@ -1,6 +1,8 @@
 package com.wanbaohe.dsh.screen
 
 import android.text.format.DateFormat
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
@@ -39,6 +42,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -72,8 +78,9 @@ import java.util.Locale
 /**
  * 消息反馈行(对齐 Flutter feedback_row.dart,DSH-PROTOCOL §9 messageFeedback 契约;
  * 协议字段与 web/packages/feedback/message-feedback spec 核对一致):
- * - 👍/👎/备注 常显按钮(触控目标 ≥44dp);乐观更新(点击立即高亮,失败回滚 +
- *   内联报错);已评高亮;再点同一侧 = 撤回(delete);切换另一侧保留已有 note
+ * - 👍/👎/备注 + 复制/存笔记 常显小图标钮(32dp 圆形 ripple 触控区,plain Icon);
+ *   乐观更新(点击立即高亮,失败回滚 + 内联报错);已评高亮;再点同一侧 = 撤回(delete);
+ *   切换另一侧保留已有 note
  * - 备注是评分条目的属性(put 必须带 rating);未评分保存 → 内联提示先评分
  * - CAS:ifVersion 取条目当前 version;version-conflict → 权威条目直接对账
  * - 请求在途禁用;错误内联展示(不弹横幅)
@@ -192,103 +199,75 @@ fun FeedbackRow(
         }
     }
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(top = 8.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             // 复制消息文本(成功短暂变对勾)
-            IconButton(
-                onClick = {
-                    if (messageText.isBlank() || copied) return@IconButton
-                    clipboard.setText(AnnotatedString(messageText))
-                    copied = true
-                },
-                modifier = Modifier.size(44.dp)
+            FeedbackAction(
+                icon = if (copied) Icons.Outlined.Check else Icons.Outlined.ContentCopy,
+                contentDescription = stringResource(R.string.dsh_copy),
+                tint = if (copied) {
+                    AppTheme.colors.getPrimaryColor()
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                }
             ) {
-                Icon(
-                    imageVector = if (copied) {
-                        Icons.Outlined.Check
-                    } else {
-                        Icons.Outlined.ContentCopy
-                    },
-                    contentDescription = stringResource(R.string.dsh_copy),
-                    modifier = Modifier.size(18.dp),
-                    tint = if (copied) {
-                        AppTheme.colors.getPrimaryColor()
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                    }
-                )
+                if (messageText.isBlank() || copied) return@FeedbackAction
+                clipboard.setText(AnnotatedString(messageText))
+                copied = true
             }
             // 存到笔记本:建 NOTE 草稿 → 跳转新建笔记页(AI 聊天同款链路)
-            IconButton(
-                onClick = {
-                    if (messageText.isBlank()) return@IconButton
-                    scope.launch {
-                        val draftId = dataDraftHelper.createDraft(
-                            draftType = ListItemType.NOTE.id,
-                            data = messageText
-                        )
-                        navigator(Screen.CreateNote(draftId = draftId))
-                    }
-                },
-                modifier = Modifier.size(44.dp)
+            FeedbackAction(
+                icon = Icons.Outlined.BookmarkAdd,
+                contentDescription = stringResource(R.string.dsh_feedback_save_note),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.BookmarkAdd,
-                    contentDescription = stringResource(R.string.dsh_feedback_save_note),
-                    modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                )
+                if (messageText.isBlank()) return@FeedbackAction
+                scope.launch {
+                    val draftId = dataDraftHelper.createDraft(
+                        draftType = ListItemType.NOTE.id,
+                        data = messageText
+                    )
+                    navigator(Screen.CreateNote(draftId = draftId))
+                }
             }
             val positiveSelected = item?.rating == FeedbackRatingPositive
-            IconButton(
-                onClick = { rate(FeedbackRatingPositive) },
-                enabled = !busy,
-                modifier = Modifier.size(44.dp)
+            FeedbackAction(
+                icon = if (positiveSelected) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp,
+                contentDescription = stringResource(R.string.dsh_feedback_positive),
+                tint = if (positiveSelected) {
+                    AppTheme.colors.getPrimaryColor()
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                },
+                enabled = !busy
             ) {
-                Icon(
-                    imageVector = if (positiveSelected) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp,
-                    contentDescription = stringResource(R.string.dsh_feedback_positive),
-                    modifier = Modifier.size(18.dp),
-                    tint = if (positiveSelected) {
-                        AppTheme.colors.getPrimaryColor()
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                    }
-                )
+                rate(FeedbackRatingPositive)
             }
             val negativeSelected = item?.rating == FeedbackRatingNegative
-            IconButton(
-                onClick = { rate(FeedbackRatingNegative) },
-                enabled = !busy,
-                modifier = Modifier.size(44.dp)
+            FeedbackAction(
+                icon = if (negativeSelected) Icons.Filled.ThumbDown else Icons.Outlined.ThumbDown,
+                contentDescription = stringResource(R.string.dsh_feedback_negative),
+                tint = if (negativeSelected) {
+                    AppTheme.colors.getPrimaryColor()
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                },
+                enabled = !busy
             ) {
-                Icon(
-                    imageVector = if (negativeSelected) Icons.Filled.ThumbDown else Icons.Outlined.ThumbDown,
-                    contentDescription = stringResource(R.string.dsh_feedback_negative),
-                    modifier = Modifier.size(18.dp),
-                    tint = if (negativeSelected) {
-                        AppTheme.colors.getPrimaryColor()
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                    }
-                )
+                rate(FeedbackRatingNegative)
             }
             val hasNote = !item?.note.isNullOrEmpty()
-            IconButton(
-                onClick = { noteEditorOpen = true },
-                enabled = !busy,
-                modifier = Modifier.size(44.dp)
+            FeedbackAction(
+                icon = Icons.Outlined.Notes,
+                contentDescription = stringResource(R.string.dsh_feedback_note),
+                tint = if (hasNote) {
+                    AppTheme.colors.getPrimaryColor()
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                },
+                enabled = !busy
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Notes,
-                    contentDescription = stringResource(R.string.dsh_feedback_note),
-                    modifier = Modifier.size(18.dp),
-                    tint = if (hasNote) {
-                        AppTheme.colors.getPrimaryColor()
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                    }
-                )
+                noteEditorOpen = true
             }
             // 统计行与图标同一行:右侧「时间 · 用时 · 首 token · tok/s」(空间不足截断)
             val metaText = buildMessageMetaText(messageTime, stats)
@@ -425,6 +404,31 @@ private fun FeedbackNoteSheet(
                 }
             }
         }
+    }
+}
+
+/** 反馈行小图标钮:plain Icon + 32dp 圆形 ripple 触控区(17dp 图标;替代 IconButton 的 48dp 触控 padding) */
+@Composable
+private fun FeedbackAction(
+    icon: ImageVector,
+    contentDescription: String,
+    tint: Color,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .clickable(enabled = enabled, onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = contentDescription,
+            modifier = Modifier.size(17.dp),
+            tint = tint
+        )
     }
 }
 

@@ -1033,10 +1033,12 @@ private fun MessageList(
         }
         map
     }
-    SelectionContainer {
+    // weight(1f) 必须落在 Column 直接子级 SelectionContainer 上,否则列表 wrap 内容、
+    // 输入条在消息少时浮到屏幕中间
+    SelectionContainer(modifier = modifier) {
     LazyColumn(
         state = listState,
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         reverseLayout = true,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(

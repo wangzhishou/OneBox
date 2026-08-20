@@ -62,6 +62,7 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.CloudUiState
@@ -129,8 +130,8 @@ private fun ConnectScreen(component: DshRootComponent, uiState: DshUiState) {
                     imageVector = DshWordmark,
                     contentDescription = null,
                     modifier = Modifier
-                        .width(106.dp)
-                        .height(14.dp),
+                        .width(150.dp)
+                        .height(20.dp),
                     tint = AppTheme.colors.getOnInactiveContainerColor()
                 )
             }
@@ -202,11 +203,19 @@ private fun ConnectScreen(component: DshRootComponent, uiState: DshUiState) {
                     Spacer(Modifier.height(16.dp))
                     HostInfoResult(describe)
                     Spacer(Modifier.height(12.dp))
-                    OutlinedButton(
+                    // primary 玻璃主按钮(玻璃关闭时退化为实色 primary)
+                    GlassButton(
                         onClick = component::enterChat,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        color = AppTheme.colors.getPrimaryColor(),
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerAlpha = 0.7f
                     ) {
-                        Text(stringResource(R.string.dsh_open_chat))
+                        Text(
+                            text = stringResource(R.string.dsh_open_chat),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
                 }
             }
