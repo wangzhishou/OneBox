@@ -1,11 +1,10 @@
 package com.wanbaohe.poem.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -164,8 +163,7 @@ fun PoemSearchScreen(component: PoemSearchComponent) {
     }
 }
 
-/** 筛选组:label + chip 流式布局(首项「全部」,选中态 primary 填充) */
-@OptIn(ExperimentalLayoutApi::class)
+/** 筛选组:label + 固定两行 chip 流,放不下时横向滚动(比 FlowRow 省纵向空间) */
 @Composable
 private fun PoemFilterGroup(
     label: String,
@@ -173,6 +171,22 @@ private fun PoemFilterGroup(
     selected: String?,
     onSelected: (String?) -> Unit,
 ) {
+    // 「全部」打头,与选项一起按奇偶位拆成两行
+    val chips = buildList {
+        add(
+            Triple(
+                stringResource(R.string.poem_filter_all),
+                selected == null,
+                { onSelected(null) },
+            )
+        )
+        options.forEach { option ->
+            add(Triple(option, selected == option, { onSelected(option) }))
+        }
+    }
+    val topRow = chips.filterIndexed { index, _ -> index % 2 == 0 }
+    val bottomRow = chips.filterIndexed { index, _ -> index % 2 == 1 }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -182,22 +196,18 @@ private fun PoemFilterGroup(
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
         )
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            PoemFilterChipItem(
-                text = stringResource(R.string.poem_filter_all),
-                selected = selected == null,
-                onClick = { onSelected(null) },
-            )
-            options.forEach { option ->
-                PoemFilterChipItem(
-                    text = option,
-                    selected = selected == option,
-                    onClick = { onSelected(option) },
-                )
+        Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    topRow.forEach { (text, isSelected, onClick) ->
+                        PoemFilterChipItem(text = text, selected = isSelected, onClick = onClick)
+                    }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    bottomRow.forEach { (text, isSelected, onClick) ->
+                        PoemFilterChipItem(text = text, selected = isSelected, onClick = onClick)
+                    }
+                }
             }
         }
     }

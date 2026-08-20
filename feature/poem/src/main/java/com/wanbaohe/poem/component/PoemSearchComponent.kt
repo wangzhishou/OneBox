@@ -141,10 +141,13 @@ class PoemSearchComponent @AssistedInject internal constructor(
         /** search API 要求关键词至少 3 个字符 */
         private const val MIN_QUERY_LENGTH = 3
 
-        /** 诗人筛选固定列表(不调 /api/authors 全量) */
+        /** 诗人筛选固定列表(不调 /api/authors 全量);固定两行横向滚动展示,可放更多 */
         val FIXED_AUTHORS = listOf(
             "李白", "杜甫", "白居易", "苏轼", "辛弃疾",
             "李清照", "王维", "柳宗元", "陶渊明", "王昌龄",
+            "李商隐", "杜牧", "陆游", "孟浩然", "刘禹锡",
+            "岑参", "李贺", "王勃", "欧阳修", "王安石",
+            "范仲淹", "晏殊", "黄庭坚", "秦观", "岳飞",
         )
     }
 }
