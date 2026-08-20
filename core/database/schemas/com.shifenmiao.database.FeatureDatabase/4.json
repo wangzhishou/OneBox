@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "5dc2f1d576a1165d4b7b42d7de07d5b1",
+    "identityHash": "09f52b4480f022bff1277f04efffb486",
     "entities": [
       {
         "tableName": "marktodo_category",
@@ -2765,7 +2765,7 @@
       },
       {
         "tableName": "poem",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `author` TEXT NOT NULL, `dynasty` TEXT NOT NULL, `type` TEXT NOT NULL, `aiInsight` TEXT, `isFavorite` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `author` TEXT NOT NULL, `dynasty` TEXT NOT NULL, `type` TEXT NOT NULL, `aiInsight` TEXT, `pinyin` TEXT, `translation` TEXT, `isFavorite` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -2806,6 +2806,16 @@
           {
             "fieldPath": "aiInsight",
             "columnName": "aiInsight",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "pinyin",
+            "columnName": "pinyin",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "translation",
+            "columnName": "translation",
             "affinity": "TEXT"
           },
           {
@@ -2851,7 +2861,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5dc2f1d576a1165d4b7b42d7de07d5b1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '09f52b4480f022bff1277f04efffb486')"
     ]
   }
 }

@@ -125,7 +125,7 @@ import java.io.InputStreamReader
         HabitCheckInEntity::class,
         PoemEntity::class,
     ],
-    version = 5,
+    version = 4,
     exportSchema = true
 )
 @TypeConverters(MarkTodoTypeConverters::class)
@@ -281,6 +281,7 @@ abstract class FeatureDatabase : RoomDatabase() {
             }
         }
 
+        // 诗词模块:建表即含 pinyin/translation(v4 未发布过,原 4→5 的加列并入建表)
         private val MIGRATION_3_4 = object : androidx.room.migration.Migration(3, 4) {
             override fun migrate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
                 db.execSQL(
@@ -293,6 +294,8 @@ abstract class FeatureDatabase : RoomDatabase() {
                         `dynasty` TEXT NOT NULL,
                         `type` TEXT NOT NULL,
                         `aiInsight` TEXT,
+                        `pinyin` TEXT,
+                        `translation` TEXT,
                         `isFavorite` INTEGER NOT NULL,
                         `createdAt` INTEGER NOT NULL,
                         PRIMARY KEY(`id`)
@@ -301,13 +304,6 @@ abstract class FeatureDatabase : RoomDatabase() {
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_poem_createdAt` ON `poem` (`createdAt`)")
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_poem_isFavorite` ON `poem` (`isFavorite`)")
-            }
-        }
-
-        private val MIGRATION_4_5 = object : androidx.room.migration.Migration(4, 5) {
-            override fun migrate(db: androidx.sqlite.db.SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE `poem` ADD COLUMN `pinyin` TEXT")
-                db.execSQL("ALTER TABLE `poem` ADD COLUMN `translation` TEXT")
             }
         }
 
@@ -360,7 +356,7 @@ abstract class FeatureDatabase : RoomDatabase() {
                     FeatureDatabase::class.java,
                     currentDbName
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
