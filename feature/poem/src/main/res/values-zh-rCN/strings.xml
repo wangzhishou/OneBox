@@ -3,8 +3,10 @@
     <string name="poem_page_title">中国古诗词</string>
     <string name="poem_latest">最新生成</string>
     <string name="poem_generate">生成一首</string>
-    <string name="poem_generate_random">随机生成一首</string>
+    <string name="poem_generate_random">随机生成</string>
     <string name="poem_generating_pinyin">正在生成拼音…</string>
+    <string name="poem_ai_pinyin">AI 拼音</string>
+    <string name="poem_pinyin_done">拼音已生成</string>
     <string name="poem_search">搜索</string>
     <string name="poem_history">历史</string>
     <string name="poem_ai_insight">AI 解读</string>

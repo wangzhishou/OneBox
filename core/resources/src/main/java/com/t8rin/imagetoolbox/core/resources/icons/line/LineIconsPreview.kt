@@ -348,6 +348,7 @@ private fun LineIconsPreview() {
         "Pisces" to Icons.Outlined.LinePisces,
         "Pix" to Icons.Outlined.LinePix,
         "Place" to Icons.Outlined.LinePlace,
+        "Poem" to Icons.Outlined.LinePoem,
         "Print" to Icons.Outlined.LinePrint,
         "Profile" to Icons.Outlined.LineProfile,
         "Prompt" to Icons.Outlined.LinePrompt,

@@ -3,8 +3,10 @@
     <string name="poem_page_title">Tulang Tsino</string>
     <string name="poem_latest">Pinakabago</string>
     <string name="poem_generate">Bagong Tula</string>
-    <string name="poem_generate_random">Random na Tula</string>
+    <string name="poem_generate_random">Random</string>
     <string name="poem_generating_pinyin">Ginagawa ang pinyin…</string>
+    <string name="poem_ai_pinyin">AI Pinyin</string>
+    <string name="poem_pinyin_done">Handa na ang Pinyin</string>
     <string name="poem_search">Maghanap</string>
     <string name="poem_history">Kasaysayan</string>
     <string name="poem_ai_insight">AI na Interpretasyon</string>

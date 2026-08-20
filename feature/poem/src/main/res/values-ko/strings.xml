@@ -3,8 +3,10 @@
     <string name="poem_page_title">중국 시사</string>
     <string name="poem_latest">최신 생성</string>
     <string name="poem_generate">새 시 생성</string>
-    <string name="poem_generate_random">랜덤 시</string>
+    <string name="poem_generate_random">랜덤</string>
     <string name="poem_generating_pinyin">병음 생성 중…</string>
+    <string name="poem_ai_pinyin">AI 병음</string>
+    <string name="poem_pinyin_done">병음 생성됨</string>
     <string name="poem_search">검색</string>
     <string name="poem_history">기록</string>
     <string name="poem_ai_insight">AI 해설</string>

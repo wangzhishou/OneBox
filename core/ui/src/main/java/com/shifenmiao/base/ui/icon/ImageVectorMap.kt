@@ -15,6 +15,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.t8rin.imagetoolbox.core.resources.icons.DshWhale
 import com.t8rin.imagetoolbox.core.resources.icons.EditAlt
 import com.t8rin.imagetoolbox.core.resources.icons.ImageText
 import com.t8rin.imagetoolbox.core.resources.icons.Language
@@ -89,6 +90,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePaletteTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePasswordVault
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdfTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePickColor
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePoem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineProfile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineResizeConvert
@@ -305,6 +307,7 @@ object IconRegistry {
         "NewApp" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineApp },
         "Calendar" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCalendar },
         "Bookkeeping" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBookkeeping },
+        "DshClient" to { com.t8rin.imagetoolbox.core.resources.Icons.Rounded.DshWhale },
         "Feedback" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlog },
         "Marquee" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarquee },
         "Online" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOnline },
@@ -369,8 +372,7 @@ object IconRegistry {
         "CreateAIChatPrompt" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ChatPlus },
         "PasswordVault" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePasswordVault },
         "BlessingWall" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall },
-        // TODO(poem): 占位图标,待定制 LinePoem 后替换
-        "Poem" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook },
+        "Poem" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePoem },
         // ── 习惯打卡定制图标(键与 HabitIcons 存库 iconKey 的 PascalCase 形式对应)──
         "Waterdrop" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWaterDrop },
         "Sunrise" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSunrise },

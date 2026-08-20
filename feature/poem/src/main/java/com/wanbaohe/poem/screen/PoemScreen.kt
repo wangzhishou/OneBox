@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +46,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoStories
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePoem
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
@@ -124,6 +127,7 @@ fun PoemScreen(component: PoemComponent) {
                     onShowHistory = { showHistory = true },
                     onGenerateInsight = component::generateInsight,
                     onGenerateTranslation = component::generateTranslation,
+                    onGeneratePinyin = component::generatePinyin,
                 )
 
                 PoemHistorySheet(
@@ -158,6 +162,7 @@ private fun PoemPager(
     onShowHistory: () -> Unit,
     onGenerateInsight: () -> Unit,
     onGenerateTranslation: () -> Unit,
+    onGeneratePinyin: () -> Unit,
 ) {
     val currentIndex = history.indexOfFirst { it.id == poem.id }
     if (currentIndex < 0) {
@@ -169,6 +174,7 @@ private fun PoemPager(
             onShowHistory = onShowHistory,
             onGenerateInsight = onGenerateInsight,
             onGenerateTranslation = onGenerateTranslation,
+            onGeneratePinyin = onGeneratePinyin,
         )
         return
     }
@@ -211,13 +217,14 @@ private fun PoemPager(
                 onShowHistory = onShowHistory,
                 onGenerateInsight = onGenerateInsight,
                 onGenerateTranslation = onGenerateTranslation,
+                onGeneratePinyin = onGeneratePinyin,
             )
         }
     }
 }
 
 /**
- * 单首诗词整页:卡片 + 「随机生成/历史」操作行 + 诗意解读 + 现代翻译 + 拼音状态。
+ * 单首诗词整页:卡片 + 「随机生成/历史记录/AI 拼音」操作行 + 诗意解读 + 现代翻译 + 拼音状态。
  * 生成中与错误状态只对当前页生效(isCurrent),非当前页展示自己已持久化的内容。
  */
 @Composable
@@ -229,6 +236,7 @@ private fun PoemDetailPage(
     onShowHistory: () -> Unit,
     onGenerateInsight: () -> Unit,
     onGenerateTranslation: () -> Unit,
+    onGeneratePinyin: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -239,37 +247,33 @@ private fun PoemDetailPage(
     ) {
         PoemCard(poem = poem)
 
-        // 随机生成 + 历史入口:居中弱化一行
+        // 随机生成 + 历史记录 + AI 拼音:居中弱化一行
         Row(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextButton(
-                onClick = onRefresh,
+            PoemActionButton(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRestartAlt,
+                text = stringResource(R.string.poem_generate_random),
                 enabled = isCurrent && !uiState.isLoading,
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRestartAlt,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .padding(end = 6.dp)
-                        .size(16.dp),
-                )
-                Text(
-                    text = stringResource(R.string.poem_generate_random),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            IconButton(onClick = onShowHistory) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                    contentDescription = stringResource(R.string.poem_history_title),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp),
-                )
-            }
+                onClick = onRefresh,
+            )
+            PoemActionButton(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
+                text = stringResource(R.string.poem_history_title),
+                enabled = true,
+                onClick = onShowHistory,
+            )
+            // AI 拼音:已有拼音置灰;生成中不可点;失败后可手动重试
+            val hasPinyin = !poem.pinyin.isNullOrBlank()
+            PoemActionButton(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRecordVoiceOver,
+                text = stringResource(
+                    if (hasPinyin) R.string.poem_pinyin_done else R.string.poem_ai_pinyin
+                ),
+                enabled = isCurrent && !hasPinyin && !uiState.isGeneratingPinyin,
+                onClick = onGeneratePinyin,
+            )
         }
 
         PoemAiSection(
@@ -326,6 +330,34 @@ private fun PoemDetailPage(
     }
 }
 
+/** 操作行小按钮:图标 + 文案,弱化配色,禁用态自动变灰 */
+@Composable
+private fun PoemActionButton(
+    icon: ImageVector,
+    text: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    val contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+    TextButton(
+        onClick = onClick,
+        enabled = enabled,
+        colors = ButtonDefaults.textButtonColors(
+            contentColor = contentColor,
+            disabledContentColor = contentColor.copy(alpha = 0.38f),
+        ),
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier
+                .padding(end = 6.dp)
+                .size(16.dp),
+        )
+        Text(text = text, style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
 /** 空状态:从未生成过诗词 */
 @Composable
 private fun PoemEmptyState(onGenerate: () -> Unit) {
@@ -348,7 +380,7 @@ private fun PoemEmptyState(onGenerate: () -> Unit) {
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook,
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePoem,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(88.dp),

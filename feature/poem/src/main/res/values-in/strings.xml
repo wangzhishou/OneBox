@@ -3,8 +3,10 @@
     <string name="poem_page_title">Puisi Tiongkok</string>
     <string name="poem_latest">Terbaru</string>
     <string name="poem_generate">Puisi Baru</string>
-    <string name="poem_generate_random">Puisi Acak</string>
+    <string name="poem_generate_random">Acak</string>
     <string name="poem_generating_pinyin">Membuat pinyin…</string>
+    <string name="poem_ai_pinyin">Pinyin AI</string>
+    <string name="poem_pinyin_done">Pinyin siap</string>
     <string name="poem_search">Cari</string>
     <string name="poem_history">Riwayat</string>
     <string name="poem_ai_insight">Tafsir AI</string>

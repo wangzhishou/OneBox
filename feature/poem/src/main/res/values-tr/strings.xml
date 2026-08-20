@@ -3,8 +3,10 @@
     <string name="poem_page_title">Çin Şiiri</string>
     <string name="poem_latest">En yeni</string>
     <string name="poem_generate">Yeni Şiir</string>
-    <string name="poem_generate_random">Rastgele Şiir</string>
+    <string name="poem_generate_random">Rastgele</string>
     <string name="poem_generating_pinyin">Pinyin oluşturuluyor…</string>
+    <string name="poem_ai_pinyin">AI Pinyin</string>
+    <string name="poem_pinyin_done">Pinyin hazır</string>
     <string name="poem_search">Ara</string>
     <string name="poem_history">Geçmiş</string>
     <string name="poem_ai_insight">YZ Yorumu</string>

@@ -3,8 +3,10 @@
     <string name="poem_page_title">चीनी कविता</string>
     <string name="poem_latest">नवीनतम</string>
     <string name="poem_generate">नई कविता</string>
-    <string name="poem_generate_random">यादृच्छिक कविता</string>
+    <string name="poem_generate_random">रैंडम</string>
     <string name="poem_generating_pinyin">पिनयिन बनाया जा रहा है…</string>
+    <string name="poem_ai_pinyin">AI पिनयिन</string>
+    <string name="poem_pinyin_done">पिनयिन तैयार</string>
     <string name="poem_search">खोजें</string>
     <string name="poem_history">इतिहास</string>
     <string name="poem_ai_insight">AI व्याख्या</string>

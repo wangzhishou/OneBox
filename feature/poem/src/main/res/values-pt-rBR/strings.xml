@@ -3,8 +3,10 @@
     <string name="poem_page_title">Poesia chinesa</string>
     <string name="poem_latest">Mais recente</string>
     <string name="poem_generate">Novo poema</string>
-    <string name="poem_generate_random">Poema aleatório</string>
+    <string name="poem_generate_random">Aleatório</string>
     <string name="poem_generating_pinyin">Gerando pinyin…</string>
+    <string name="poem_ai_pinyin">Pinyin com IA</string>
+    <string name="poem_pinyin_done">Pinyin pronto</string>
     <string name="poem_search">Buscar</string>
     <string name="poem_history">Histórico</string>
     <string name="poem_ai_insight">Interpretação de IA</string>

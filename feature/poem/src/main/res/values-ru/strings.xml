@@ -3,8 +3,10 @@
     <string name="poem_page_title">Китайская поэзия</string>
     <string name="poem_latest">Новейшее</string>
     <string name="poem_generate">Новое стихотворение</string>
-    <string name="poem_generate_random">Случайное стихотворение</string>
+    <string name="poem_generate_random">Случайно</string>
     <string name="poem_generating_pinyin">Создание пиньиня…</string>
+    <string name="poem_ai_pinyin">ИИ-пиньинь</string>
+    <string name="poem_pinyin_done">Пиньинь готов</string>
     <string name="poem_search">Поиск</string>
     <string name="poem_history">История</string>
     <string name="poem_ai_insight">Интерпретация ИИ</string>

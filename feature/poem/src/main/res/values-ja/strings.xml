@@ -3,8 +3,10 @@
     <string name="poem_page_title">中国の詩詞</string>
     <string name="poem_latest">最新生成</string>
     <string name="poem_generate">新しい詩</string>
-    <string name="poem_generate_random">ランダムな詩</string>
+    <string name="poem_generate_random">ランダム</string>
     <string name="poem_generating_pinyin">拼音を生成中…</string>
+    <string name="poem_ai_pinyin">AI ピンイン</string>
+    <string name="poem_pinyin_done">ピンイン生成済み</string>
     <string name="poem_search">検索</string>
     <string name="poem_history">履歴</string>
     <string name="poem_ai_insight">AI 鑑賞</string>
