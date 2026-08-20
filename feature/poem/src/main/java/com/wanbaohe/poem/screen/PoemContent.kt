@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -226,8 +227,10 @@ private fun TianZiGeText(text: String) {
 
 /**
  * AI 内容区(诗意解读 / 现代翻译共用):
- * 整张 Glass 卡片包裹标题行(icon + 标题,有内容时右侧「重新生成」图标按钮)
+ * 整张卡片包裹标题行(icon + 标题,有内容时右侧「重新生成」图标按钮)
  * 与正文(生成中 / 内容 / 空状态:提示 + 点击生成),配色由调用方给定以区分区块。
+ * 注意:不用 GlassCard——玻璃管线对彩色容器的填充 alpha 封顶 0.30 并叠白色高光,
+ * 夜间模式下混合底色会偏离 containerColor,破坏 container/onContainer 成对对比度,故用实心 Card。
  */
 @Composable
 internal fun PoemAiSection(
@@ -243,7 +246,7 @@ internal fun PoemAiSection(
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
-    GlassCard(
+    Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
