@@ -72,6 +72,17 @@ fun parsePinyinLines(pinyin: String?): List<List<String>> {
         .filter { it.isNotEmpty() }
 }
 
+/**
+ * 已存拼音是否可用于逐字网格:拼音 token 总数须等于全诗字数(与 PoemVerseGrid 的拆分口径一致)。
+ * AI 对杂言/长诗容易对错字数,对齐失败的拼音会被网格整体隐藏,视为「无可用拼音」。
+ */
+fun Poem.isPinyinAligned(): Boolean {
+    val tokens = parsePinyinLines(pinyin).flatten()
+    if (tokens.isEmpty()) return false
+    val charCount = content.sumOf { line -> line.count { it.isLetter() } }
+    return tokens.size == charCount
+}
+
 // ── 诗泉 API DTO ─────────────────────────────────
 
 /** 命名包装:{ "name": "..." } */

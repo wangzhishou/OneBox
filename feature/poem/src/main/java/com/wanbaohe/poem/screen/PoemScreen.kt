@@ -55,6 +55,7 @@ import com.wanbaohe.poem.R
 import com.wanbaohe.poem.component.PoemComponent
 import com.wanbaohe.poem.component.PoemUiState
 import com.wanbaohe.poem.model.Poem
+import com.wanbaohe.poem.model.isPinyinAligned
 
 @Composable
 fun PoemScreen(component: PoemComponent) {
@@ -264,16 +265,31 @@ private fun PoemDetailPage(
                 enabled = true,
                 onClick = onShowHistory,
             )
-            // AI 拼音:已有拼音置灰;生成中不可点;失败后可手动重试
-            val hasPinyin = !poem.pinyin.isNullOrBlank()
+            // AI 拼音:拼音存在但对齐失败视同未生成(可点重试);
+            // 已有可用拼音置灰,旁边保留手动重新生成入口(AI 偶尔对错字数)
+            val pinyinReady = poem.isPinyinAligned()
             PoemActionButton(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRecordVoiceOver,
                 text = stringResource(
-                    if (hasPinyin) R.string.poem_pinyin_done else R.string.poem_ai_pinyin
+                    if (pinyinReady) R.string.poem_pinyin_done else R.string.poem_ai_pinyin
                 ),
-                enabled = isCurrent && !hasPinyin && !uiState.isGeneratingPinyin,
+                enabled = isCurrent && !pinyinReady && !uiState.isGeneratingPinyin,
                 onClick = onGeneratePinyin,
             )
+            if (pinyinReady) {
+                IconButton(
+                    onClick = onGeneratePinyin,
+                    enabled = isCurrent && !uiState.isGeneratingPinyin,
+                    modifier = Modifier.size(32.dp),
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRestartAlt,
+                        contentDescription = stringResource(R.string.poem_regenerate),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+            }
         }
 
         PoemAiSection(

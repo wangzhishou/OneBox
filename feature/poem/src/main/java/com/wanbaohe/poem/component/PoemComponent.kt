@@ -5,6 +5,7 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.poem.model.Poem
+import com.wanbaohe.poem.model.isPinyinAligned
 import com.wanbaohe.poem.service.PoemInsightService
 import com.wanbaohe.poem.service.PoemService
 import dagger.assisted.Assisted
@@ -151,17 +152,19 @@ class PoemComponent @AssistedInject internal constructor(
         onNavigate(Screen.PoemSearch())
     }
 
-    /** 手动触发生成拼音(按钮入口):清除尝试标记强制重试;已有拼音或生成中时忽略 */
+    /** 手动触发生成拼音(按钮入口):无拼音时生成,已有(含对齐失败的)时强制重新生成 */
     fun generatePinyin() {
-        val poem = uiState.value.poem ?: return
-        if (uiState.value.isGeneratingPinyin || !poem.pinyin.isNullOrBlank()) return
-        pinyinAttempts.remove(poem.id)
-        maybeGeneratePinyin(poem)
+        maybeGeneratePinyin(uiState.value.poem, force = true)
     }
 
-    /** 诗词加载后自动补拼音:静默失败,不阻塞卡片展示;生成中置位供底部状态提示;失败允许下次重试 */
-    private fun maybeGeneratePinyin(poem: Poem?) {
-        if (poem == null || !poem.pinyin.isNullOrBlank()) return
+    /**
+     * 生成拼音:静默失败,不阻塞卡片展示;生成中置位供底部状态提示;失败允许下次重试。
+     * 自动流程(force=false)在已有可用拼音时跳过;拼音存在但对齐失败时视为无拼音,允许重新生成。
+     */
+    private fun maybeGeneratePinyin(poem: Poem?, force: Boolean = false) {
+        if (poem == null) return
+        if (!force && poem.isPinyinAligned()) return
+        if (uiState.value.isGeneratingPinyin) return
         if (!pinyinAttempts.add(poem.id)) return
         componentScope.launch {
             _uiState.update { it.copy(isGeneratingPinyin = true) }
