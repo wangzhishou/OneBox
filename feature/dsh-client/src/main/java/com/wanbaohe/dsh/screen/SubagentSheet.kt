@@ -27,7 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -526,7 +526,7 @@ private fun SubagentTranscriptView(
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = input,
                     onValueChange = { input = it },
                     modifier = Modifier.weight(1f),

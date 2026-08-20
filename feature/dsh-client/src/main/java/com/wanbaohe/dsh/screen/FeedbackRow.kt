@@ -1,5 +1,6 @@
 package com.wanbaohe.dsh.screen
 
+import android.text.format.DateFormat
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.BookmarkAdd
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Notes
 import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
@@ -22,7 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -35,12 +39,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shifenmiao.base.provider.LocalDataDraftHelper
+import com.shifenmiao.model.ListItemType
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.dsh.R
+import com.wanbaohe.dsh.screen.node.formatDurationMs
+import com.wanbaohe.dsh.session.ChatNode
 import com.wanbaohe.dsh.session.FeedbackNoteTooLargeException
 import com.wanbaohe.dsh.session.FeedbackStore
 import com.wanbaohe.dsh.session.FeedbackStoreException
@@ -49,29 +63,52 @@ import com.wanbaohe.dsh.wire.model.FeedbackItem
 import com.wanbaohe.dsh.wire.model.FeedbackNoteMaxBytes
 import com.wanbaohe.dsh.wire.model.FeedbackRatingNegative
 import com.wanbaohe.dsh.wire.model.FeedbackRatingPositive
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
- * 消息反馈行(对齐 Flutter feedback_row.dart,DSH-PROTOCOL §9 messageFeedback 契约):
- * - 👍/👎/备注 常显按钮(触控目标 ≥44dp);已评高亮;再点同一侧 = 撤回(delete);
- *   切换另一侧保留已有 note
+ * 消息反馈行(对齐 Flutter feedback_row.dart,DSH-PROTOCOL §9 messageFeedback 契约;
+ * 协议字段与 web/packages/feedback/message-feedback spec 核对一致):
+ * - 👍/👎/备注 常显按钮(触控目标 ≥44dp);乐观更新(点击立即高亮,失败回滚 +
+ *   内联报错);已评高亮;再点同一侧 = 撤回(delete);切换另一侧保留已有 note
  * - 备注是评分条目的属性(put 必须带 rating);未评分保存 → 内联提示先评分
  * - CAS:ifVersion 取条目当前 version;version-conflict → 权威条目直接对账
  * - 请求在途禁用;错误内联展示(不弹横幅)
+ * - 顶部统计行(对齐 web MessageIconActions 的 clock + Ran for/TTFT/tok/s):
+ *   消息完成时间(epoch ms)· 本轮用时 · 首 token 延迟 · 输出速度,
+ *   数据来自 EventNodes 轮末 Stats 节点(turn/end 记账),缺项不展示
  */
 @Composable
 fun FeedbackRow(
     store: FeedbackStore,
     sessionId: String,
     messageId: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    /** 消息纯文本(复制/存笔记用;空串时两个按钮 no-op) */
+    messageText: String = "",
+    messageTime: Double? = null,
+    stats: ChatNode.Stats? = null
 ) {
     val scope = rememberCoroutineScope()
+    val clipboard = LocalClipboardManager.current
+    val dataDraftHelper = LocalDataDraftHelper.current
+    val navigator = LocalOnNavigate.current
     val rateFirstText = stringResource(R.string.dsh_feedback_rate_first)
     var item by remember(messageId) { mutableStateOf(store.itemsFor(sessionId).find(messageId)) }
     var busy by remember(messageId) { mutableStateOf(false) }
     var error by remember(messageId) { mutableStateOf<String?>(null) }
     var noteEditorOpen by remember(messageId) { mutableStateOf(false) }
+    // 复制成功短暂变对勾(web 同款 1s 窗口)
+    var copied by remember(messageId) { mutableStateOf(false) }
+    LaunchedEffect(copied) {
+        if (copied) {
+            delay(1000)
+            copied = false
+        }
+    }
 
     // 变更广播 → 重读本行条目;首挂时拉取整段对话(缓存命中零往返)
     LaunchedEffect(sessionId, messageId) {
@@ -90,7 +127,8 @@ fun FeedbackRow(
         }
     }
 
-    fun runPut(rating: String, note: String?) {
+    /** 乐观更新 + 失败回滚([previous] = 动作前条目,失败时恢复) */
+    fun runPut(rating: String, note: String?, previous: FeedbackItem?) {
         busy = true
         error = null
         scope.launch {
@@ -100,51 +138,107 @@ fun FeedbackRow(
                     messageId,
                     rating,
                     note = note,
-                    ifVersion = item?.version
+                    ifVersion = previous?.version
                 )
             } catch (e: FeedbackVersionConflictException) {
                 // 直接对账:权威条目覆盖本地(并发删除 → 未评)
                 item = e.authoritative
             } catch (e: FeedbackNoteTooLargeException) {
+                item = previous
                 error = e.message
             } catch (e: FeedbackStoreException) {
+                item = previous
                 error = e.message ?: e.code
             } catch (e: Throwable) {
+                item = previous
                 error = e.message
             }
             busy = false
         }
     }
 
-    fun runDelete() {
+    fun runDelete(previous: FeedbackItem?) {
         busy = true
         error = null
         scope.launch {
             try {
-                store.delete(sessionId, messageId, ifVersion = item?.version)
-                item = null
+                store.delete(sessionId, messageId, ifVersion = previous?.version)
             } catch (e: FeedbackStoreException) {
+                item = previous
                 error = e.message ?: e.code
             } catch (e: Throwable) {
+                item = previous
                 error = e.message
             }
             busy = false
         }
     }
 
-    /** 评分:已评同侧 = 撤回;切换另一侧保留已有 note */
+    /** 评分:乐观更新(立即高亮/撤高亮,失败回滚);切换另一侧保留已有 note */
     fun rate(rating: String) {
         if (busy) return
-        val current = item
-        if (current != null && current.rating == rating) {
-            runDelete()
+        val previous = item
+        if (previous != null && previous.rating == rating) {
+            item = null
+            runDelete(previous)
         } else {
-            runPut(rating, note = current?.note)
+            item = FeedbackItem(
+                messageId = messageId,
+                rating = rating,
+                note = previous?.note,
+                version = previous?.version
+            )
+            runPut(rating, note = previous?.note, previous = previous)
         }
     }
 
     Column(modifier = modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            // 复制消息文本(成功短暂变对勾)
+            IconButton(
+                onClick = {
+                    if (messageText.isBlank() || copied) return@IconButton
+                    clipboard.setText(AnnotatedString(messageText))
+                    copied = true
+                },
+                modifier = Modifier.size(44.dp)
+            ) {
+                Icon(
+                    imageVector = if (copied) {
+                        Icons.Outlined.Check
+                    } else {
+                        Icons.Outlined.ContentCopy
+                    },
+                    contentDescription = stringResource(R.string.dsh_copy),
+                    modifier = Modifier.size(18.dp),
+                    tint = if (copied) {
+                        AppTheme.colors.getPrimaryColor()
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                    }
+                )
+            }
+            // 存到笔记本:建 NOTE 草稿 → 跳转新建笔记页(AI 聊天同款链路)
+            IconButton(
+                onClick = {
+                    if (messageText.isBlank()) return@IconButton
+                    scope.launch {
+                        val draftId = dataDraftHelper.createDraft(
+                            draftType = ListItemType.NOTE.id,
+                            data = messageText
+                        )
+                        navigator(Screen.CreateNote(draftId = draftId))
+                    }
+                },
+                modifier = Modifier.size(44.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.BookmarkAdd,
+                    contentDescription = stringResource(R.string.dsh_feedback_save_note),
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                )
+            }
             val positiveSelected = item?.rating == FeedbackRatingPositive
             IconButton(
                 onClick = { rate(FeedbackRatingPositive) },
@@ -158,7 +252,7 @@ fun FeedbackRow(
                     tint = if (positiveSelected) {
                         AppTheme.colors.getPrimaryColor()
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     }
                 )
             }
@@ -175,7 +269,7 @@ fun FeedbackRow(
                     tint = if (negativeSelected) {
                         AppTheme.colors.getPrimaryColor()
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     }
                 )
             }
@@ -192,8 +286,23 @@ fun FeedbackRow(
                     tint = if (hasNote) {
                         AppTheme.colors.getPrimaryColor()
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     }
+                )
+            }
+            // 统计行与图标同一行:右侧「时间 · 用时 · 首 token · tok/s」(空间不足截断)
+            val metaText = buildMessageMetaText(messageTime, stats)
+            if (metaText.isNotEmpty()) {
+                Text(
+                    text = metaText,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 8.dp),
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    textAlign = TextAlign.End,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
@@ -219,7 +328,7 @@ fun FeedbackRow(
                     // 备注是评分条目的属性:未评分先评分
                     error = rateFirstText
                 } else {
-                    runPut(rating, note = note.takeIf { it.isNotEmpty() })
+                    runPut(rating, note = note.takeIf { it.isNotEmpty() }, previous = item)
                 }
             }
         )
@@ -273,7 +382,7 @@ private fun FeedbackNoteSheet(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = note,
                 onValueChange = { value ->
                     // 本地预拒(服务端 maxNoteBytes=8192 同值)
@@ -321,3 +430,30 @@ private fun FeedbackNoteSheet(
 
 private fun List<FeedbackItem>.find(messageId: String): FeedbackItem? =
     firstOrNull { it.messageId == messageId }
+
+/**
+ * 统计行文案(对齐 web MessageIconActions 的 clock + ranFor/TTFT/tok-s):
+ * 消息完成时间(epoch ms,本地化日期格式)· 本轮用时 · 首 token 延迟 · 输出速度;
+ * 缺项跳过,全缺返回空串(不渲染)。
+ */
+@Composable
+private fun buildMessageMetaText(messageTime: Double?, stats: ChatNode.Stats?): String {
+    val parts = ArrayList<String>(4)
+    messageTime?.let { parts.add(formatMessageClock(it)) }
+    stats?.let {
+        parts.add(stringResource(R.string.dsh_msg_meta_run, formatDurationMs(it.runMs)))
+        it.ttftMs?.let { ttft ->
+            parts.add(stringResource(R.string.dsh_msg_meta_ttft, formatDurationMs(ttft)))
+        }
+        it.tokensPerSecond?.let { tps ->
+            parts.add(stringResource(R.string.dsh_stats_tps, String.format(Locale.US, "%.1f", tps)))
+        }
+    }
+    return parts.joinToString(" · ")
+}
+
+/** 消息完成时间(epoch ms)→ 本地化「月日 时分」(zh: 8月19日 12:53;en: Aug 19, 12:53) */
+private fun formatMessageClock(timeEpochMs: Double): String {
+    val pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), "MMMdHHmm")
+    return SimpleDateFormat(pattern, Locale.getDefault()).format(Date(timeEpochMs.toLong()))
+}

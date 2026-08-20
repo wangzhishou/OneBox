@@ -1,22 +1,27 @@
 package com.wanbaohe.dsh.screen
 
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Cloud
 import androidx.compose.material.icons.outlined.CloudQueue
@@ -30,7 +35,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -39,9 +43,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -54,6 +61,8 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.CloudUiState
 import com.wanbaohe.dsh.component.DshPage
@@ -61,6 +70,7 @@ import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.dsh.component.DshUiState
 import com.wanbaohe.dsh.connection.ConnectionPhase
 import com.wanbaohe.dsh.connection.StoredHost
+import com.wanbaohe.dsh.ui.DshWordmark
 import com.wanbaohe.dsh.wire.model.HostInfo
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanQRCode
@@ -82,14 +92,20 @@ fun DshRootScreen(component: DshRootComponent) {
     }
 }
 
+/** 连接页焦点:LAN 直连 / 远程网关 / 云端中继(分焦点 tab,互不干扰) */
+private enum class ConnectTab { Lan, Remote, Cloud }
+
 /**
- * DSH 连接页:LAN 直连(地址输入)+ 远程网关(配对入口,P6)+ 我的电脑(云端中继,P7)
- * + 主机簿(条目区分形态:远程 = 云图标 + 机器名,LAN = 电脑图标 + 纯地址,
- * 云端 = 云端队列图标 + 「我的电脑」)+ 连接状态徽章。
+ * DSH 连接页:分焦点 tab 结构(「连接 DSH」设计方案)。
+ * - LAN 直连:手动地址表单(host:port,纯地址条目无令牌)
+ * - 远程网关:同一套手动地址表单(公网/远程场景文案)+ 网关配对入口(P6)
+ * - 云端中继:扫码认领 / 绑定码 / 我的电脑(P7/P8)
+ * tab 下方共用:连接状态徽章(401 重配入口)、就绪信息与主机簿(按形态过滤)。
  */
 @Composable
 private fun ConnectScreen(component: DshRootComponent, uiState: DshUiState) {
     val phase = uiState.snapshot.phase
+    var selectedTab by rememberSaveable { mutableStateOf(ConnectTab.Lan) }
 
     BaseScreen(
         title = stringResource(R.string.dsh_connect_title),
@@ -99,46 +115,80 @@ private fun ConnectScreen(component: DshRootComponent, uiState: DshUiState) {
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .imePadding()
+                .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
-            // ── LAN 直连(现有形态) ──
-            Text(
-                text = stringResource(R.string.dsh_lan_section),
-                modifier = Modifier.fillMaxWidth(),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.colors.getOnInactiveContainerColor()
+            // 品牌区:DSH 官方 wordmark(点缀,小尺寸)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 14.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = DshWordmark,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(106.dp)
+                        .height(14.dp),
+                    tint = AppTheme.colors.getOnInactiveContainerColor()
+                )
+            }
+            ConnectTabRow(
+                selected = selectedTab,
+                onSelect = { selectedTab = it }
             )
-            Spacer(Modifier.height(8.dp))
-            // 主机地址输入框(可不带 scheme,客户端默认补 http://)
-            OutlinedTextField(
-                value = uiState.address,
-                onValueChange = component::onAddressChange,
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(stringResource(R.string.dsh_host_address_hint)) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri)
-            )
+            Spacer(Modifier.height(20.dp))
 
-            Spacer(Modifier.height(16.dp))
+            when (selectedTab) {
+                ConnectTab.Lan -> ManualAddressTab(
+                    uiState = uiState,
+                    phase = phase,
+                    introRes = R.string.dsh_lan_intro,
+                    helperRes = R.string.dsh_lan_address_helper,
+                    tips = listOf(
+                        R.string.dsh_lan_tip_same_network,
+                        R.string.dsh_lan_tip_port
+                    ),
+                    onAddressChange = component::onAddressChange,
+                    onConnect = component::connect,
+                    onDisconnect = component::disconnect,
+                    onTrouble = { selectedTab = ConnectTab.Cloud }
+                )
 
-            // 连接 / 断开按钮
-            if (phase == ConnectionPhase.Down) {
-                Button(
-                    onClick = component::connect,
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = uiState.address.isNotBlank()
-                ) {
-                    Text(stringResource(R.string.dsh_connect))
+                ConnectTab.Remote -> {
+                    ManualAddressTab(
+                        uiState = uiState,
+                        phase = phase,
+                        introRes = R.string.dsh_remote_intro,
+                        helperRes = R.string.dsh_remote_address_helper,
+                        tips = listOf(R.string.dsh_remote_tip_reachable),
+                        onAddressChange = component::onAddressChange,
+                        onConnect = component::connect,
+                        onDisconnect = component::disconnect,
+                        onTrouble = { selectedTab = ConnectTab.Cloud }
+                    )
+                    // 网关配对(P6):配对成功后条目进主机簿,凭令牌静默连
+                    OutlinedButton(
+                        onClick = { component.openPairing() },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Cloud,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.dsh_open_pairing))
+                    }
                 }
-            } else {
-                OutlinedButton(
-                    onClick = component::disconnect,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.dsh_disconnect))
-                }
+
+                ConnectTab.Cloud -> CloudRelaySection(
+                    cloud = uiState.cloud,
+                    onGenerateCode = component::requestCloudBindCode,
+                    onClaim = component::claimCloudPair,
+                    onConnect = component::connectCloud
+                )
             }
 
             Spacer(Modifier.height(16.dp))
@@ -146,45 +196,10 @@ private fun ConnectScreen(component: DshRootComponent, uiState: DshUiState) {
             // 状态徽章:阶段 + 代际号 + 失败原因(401 附重配入口)
             StatusBadge(uiState = uiState, onReauth = component::reauthenticate)
 
-            Spacer(Modifier.height(24.dp))
-
-            // ── 远程网关(P6 配对形态) ──
-            Text(
-                text = stringResource(R.string.dsh_remote_section),
-                modifier = Modifier.fillMaxWidth(),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.colors.getOnInactiveContainerColor()
-            )
-            Spacer(Modifier.height(8.dp))
-            OutlinedButton(
-                onClick = { component.openPairing() },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Cloud,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(Modifier.width(8.dp))
-                Text(stringResource(R.string.dsh_open_pairing))
-            }
-
-            Spacer(Modifier.height(24.dp))
-
-            // ── 我的电脑(云端中继,P7/P8) ──
-            CloudRelaySection(
-                cloud = uiState.cloud,
-                onGenerateCode = component::requestCloudBindCode,
-                onClaim = component::claimCloudPair,
-                onConnect = component::connectCloud
-            )
-
-            Spacer(Modifier.height(24.dp))
-
             // 就绪后:describe 信息 + 进入聊天页入口(自动进过一次后,退回连接页可再进)
             uiState.snapshot.describe?.let { describe ->
                 if (phase == ConnectionPhase.Ready) {
+                    Spacer(Modifier.height(16.dp))
                     HostInfoResult(describe)
                     Spacer(Modifier.height(12.dp))
                     OutlinedButton(
@@ -193,19 +208,191 @@ private fun ConnectScreen(component: DshRootComponent, uiState: DshUiState) {
                     ) {
                         Text(stringResource(R.string.dsh_open_chat))
                     }
-                    Spacer(Modifier.height(24.dp))
                 }
             }
 
-            // 主机簿:点选即按条目类型连接(LAN 直连 / 有令牌静默连),垃圾桶删除
-            if (uiState.savedHosts.isNotEmpty()) {
+            // 主机簿:按当前 tab 形态过滤;点选即按条目类型连接,垃圾桶删除
+            val tabHosts = when (selectedTab) {
+                ConnectTab.Lan -> uiState.savedHosts.filter { !it.isCloud && !it.isRemote }
+                ConnectTab.Remote -> uiState.savedHosts.filter { it.isRemote && !it.isCloud }
+                ConnectTab.Cloud -> uiState.savedHosts.filter { it.isCloud }
+            }
+            if (tabHosts.isNotEmpty()) {
+                Spacer(Modifier.height(24.dp))
                 SavedHostList(
-                    hosts = uiState.savedHosts,
+                    hosts = tabHosts,
                     onSelect = component::onSelectHost,
                     onRemove = component::onRemoveHost
                 )
             }
         }
+    }
+}
+
+/** 分焦点 tab 行:三段等宽,选中态 primary 圆角 pill */
+@Composable
+private fun ConnectTabRow(selected: ConnectTab, onSelect: (ConnectTab) -> Unit) {
+    val tabs = listOf(
+        ConnectTab.Lan to R.string.dsh_lan_section,
+        ConnectTab.Remote to R.string.dsh_remote_section,
+        ConnectTab.Cloud to R.string.dsh_tab_cloud
+    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(24.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            .padding(4.dp)
+    ) {
+        tabs.forEach { (tab, labelRes) ->
+            val isSelected = tab == selected
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(
+                        if (isSelected) {
+                            AppTheme.colors.getPrimaryColor().copy(alpha = 0.15f)
+                        } else {
+                            Color.Transparent
+                        }
+                    )
+                    .clickable { onSelect(tab) }
+                    .padding(vertical = 8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(labelRes),
+                    fontSize = 14.sp,
+                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (isSelected) {
+                        AppTheme.colors.getPrimaryColor()
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 手动地址表单(LAN 直连 / 远程网关共用,连接路径一致):
+ * 说明标题 +「主机地址」Glass 输入框(电脑 leadingIcon、清除 trailingIcon、辅助说明)
+ * + 大号主按钮 + 连接提示 bullet 列表 +「无法连接?」链接。
+ */
+@Composable
+private fun ManualAddressTab(
+    uiState: DshUiState,
+    phase: ConnectionPhase,
+    introRes: Int,
+    helperRes: Int,
+    tips: List<Int>,
+    onAddressChange: (String) -> Unit,
+    onConnect: () -> Unit,
+    onDisconnect: () -> Unit,
+    onTrouble: () -> Unit
+) {
+    Text(
+        text = stringResource(introRes),
+        fontSize = 16.sp,
+        fontWeight = FontWeight.SemiBold
+    )
+    Spacer(Modifier.height(20.dp))
+    Text(
+        text = stringResource(R.string.dsh_host_address_label),
+        fontSize = 13.sp,
+        color = AppTheme.colors.getOnInactiveContainerColor()
+    )
+    Spacer(Modifier.height(6.dp))
+    // 主机地址输入框(可不带 scheme,客户端默认补 http://)
+    GlassOutlinedTextField(
+        value = uiState.address,
+        onValueChange = onAddressChange,
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text(stringResource(R.string.dsh_host_address_hint)) },
+        supportingText = { Text(stringResource(helperRes)) },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Computer,
+                contentDescription = null,
+                tint = AppTheme.colors.getPrimaryColor()
+            )
+        },
+        trailingIcon = {
+            if (uiState.address.isNotEmpty()) {
+                IconButton(onClick = { onAddressChange("") }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.dsh_clear_input),
+                        tint = AppTheme.colors.getOnInactiveContainerColor()
+                    )
+                }
+            }
+        },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri)
+    )
+
+    Spacer(Modifier.height(12.dp))
+
+    // 连接 / 断开按钮
+    if (phase == ConnectionPhase.Down) {
+        EnhancedButton(
+            onClick = onConnect,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = uiState.address.isNotBlank()
+        ) {
+            Text(
+                text = stringResource(R.string.dsh_connect),
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    } else {
+        OutlinedButton(
+            onClick = onDisconnect,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(stringResource(R.string.dsh_disconnect))
+        }
+    }
+
+    Spacer(Modifier.height(20.dp))
+    Text(
+        text = stringResource(R.string.dsh_connect_tips),
+        fontSize = 14.sp,
+        fontWeight = FontWeight.SemiBold
+    )
+    Spacer(Modifier.height(8.dp))
+    tips.forEach { tipRes ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Text(
+                text = "•",
+                fontSize = 13.sp,
+                color = AppTheme.colors.getPrimaryColor()
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = stringResource(tipRes),
+                fontSize = 13.sp,
+                color = AppTheme.colors.getOnInactiveContainerColor()
+            )
+        }
+    }
+
+    Spacer(Modifier.height(8.dp))
+    TextButton(onClick = onTrouble) {
+        Text(
+            text = stringResource(R.string.dsh_connect_trouble),
+            fontSize = 13.sp,
+            color = AppTheme.colors.getPrimaryColor()
+        )
     }
 }
 

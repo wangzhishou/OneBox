@@ -18,7 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -193,14 +193,14 @@ private fun GoalEditorDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = objective,
                     onValueChange = { objective = it },
                     label = { Text(stringResource(R.string.dsh_goal_objective_hint)) },
                     maxLines = 4,
                     modifier = Modifier.fillMaxWidth()
                 )
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = maxRounds,
                     onValueChange = { input -> maxRounds = input.filter { it.isDigit() } },
                     label = { Text(stringResource(R.string.dsh_goal_max_rounds_hint)) },

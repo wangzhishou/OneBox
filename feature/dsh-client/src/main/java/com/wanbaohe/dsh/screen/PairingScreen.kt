@@ -31,7 +31,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -53,6 +52,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.dsh.connection.PairOffer
@@ -189,7 +190,7 @@ private fun UrlStep(
         color = AppTheme.colors.getOnInactiveContainerColor()
     )
     Spacer(Modifier.height(8.dp))
-    OutlinedTextField(
+    GlassOutlinedTextField(
         value = state.gatewayAddress,
         onValueChange = manager::onGatewayAddressChange,
         modifier = Modifier.fillMaxWidth(),
@@ -284,10 +285,9 @@ private fun WaitingStep(manager: PairingManager, state: PairingUiState) {
         color = AppTheme.colors.getOnInactiveContainerColor()
     )
     Spacer(Modifier.height(16.dp))
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        shape = MaterialTheme.shapes.large,
-        modifier = Modifier.fillMaxWidth()
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large
     ) {
         Column(
             modifier = Modifier.padding(vertical = 20.dp),
@@ -377,10 +377,9 @@ private fun OffersStep(manager: PairingManager, state: PairingUiState) {
 /** 双向亮码核对指引(ADR-0007 防抢注) */
 @Composable
 private fun VerifyGuidance() {
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth()
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(verticalAlignment = Alignment.Top) {
@@ -553,7 +552,7 @@ private fun PasswordLoginDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_password_title)) },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 modifier = Modifier.fillMaxWidth(),
@@ -591,7 +590,7 @@ private fun DeviceNameDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_device_name_title)) },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
                 modifier = Modifier.fillMaxWidth(),

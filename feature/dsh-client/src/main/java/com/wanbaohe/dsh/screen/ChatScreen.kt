@@ -24,13 +24,13 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.outlined.AccountTree
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Settings
@@ -52,17 +53,17 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -79,14 +80,17 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.wanbaohe.dsh.R
@@ -233,10 +237,16 @@ fun ChatScreen(component: DshRootComponent) {
         }
     }
 
+    // 会话抽屉从右侧滑出:外层 RTL 使抽屉锚定 end 侧,抽屉与主内容各自恢复 LTR
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+            // 抽屉在屏幕右侧:圆角应在朝屏幕中间的一侧(此处已恢复 LTR,即 start 边)
+            ModalDrawerSheet(
+                drawerShape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)
+            ) {
                 SessionDrawer(
                     summaries = summaries,
                     workspaces = workspaces,
@@ -267,12 +277,41 @@ fun ChatScreen(component: DshRootComponent) {
                     onDeleteWorkspace = { deleteWorkspaceTarget = it }
                 )
             }
+            }
         }
     ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+        // 顶栏标题:主机名(describe cwd 目录名;缺省回退会话名/页标题)+ 就绪绿色对勾徽章
+        val hostTitle = uiState.snapshot.describe?.cwd
+            ?.substringAfterLast('/')
+            ?.takeIf { it.isNotBlank() }
+            ?: selected?.let { sessionDisplayName(it) }
+            ?: stringResource(R.string.dsh_chat_title)
+        val isReady = uiState.snapshot.phase == ConnectionPhase.Ready
         BaseScreen(
-            title = selected?.let { sessionDisplayName(it) }
-                ?: stringResource(R.string.dsh_chat_title),
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = hostTitle,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (isReady) {
+                        Spacer(Modifier.width(6.dp))
+                        Icon(
+                            imageVector = Icons.Outlined.CheckCircle,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = DshSuccessGreen
+                        )
+                    }
+                }
+            },
             onGoBack = component::backToConnect,
+            // composable title 重载的 showNavigationBarsPadding 默认 false,聊天页显式打开
+            showNavigationBarsPadding = true,
             actions = {
                 if (chatState.exporting) {
                     CircularProgressIndicator(
@@ -482,8 +521,9 @@ fun ChatScreen(component: DshRootComponent) {
                 )
             }
 
-            // 底部输入框(Glass 风格):加号入口(图片/技能/命令)收进 leadingIcon,
-            // mode 切换 + 发送/停止收进 trailingIcon,行为与原独立按钮一致
+            // 底部输入条(Glass 风格):leadingIcon = 加号(图片/技能/命令菜单);
+            // trailingIcon = [运行中停止钮] + 「排队/插话」切换 + primary 发送钮;
+            // 输入框 fillMaxWidth 占满屏宽,框外不再放独立按钮
             var addMenuOpen by remember { mutableStateOf(false) }
             val canSend = (chatState.input.isNotBlank() || chatState.attachments.isNotEmpty()) &&
                 selected != null && !chatState.sending
@@ -548,6 +588,16 @@ fun ChatScreen(component: DshRootComponent) {
                 },
                 trailingIcon = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
+                        // 运行中停止按钮(session.cancel;只中止当前 turn,保留 pending inbox)
+                        if (selected?.running == true) {
+                            IconButton(onClick = component::cancelCurrentTurn) {
+                                Icon(
+                                    imageVector = Icons.Default.Stop,
+                                    contentDescription = stringResource(R.string.dsh_stop_turn),
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        }
                         // 发送模式切换:queue(排队)| steer(插话进运行中轮次;服务端仍可拒)
                         TextButton(
                             onClick = component::togglePromptMode,
@@ -561,37 +611,34 @@ fun ChatScreen(component: DshRootComponent) {
                                         R.string.dsh_mode_queue
                                     }
                                 ),
-                                fontSize = 12.sp
-                            )
-                        }
-                        IconButton(
-                            onClick = component::sendMessage,
-                            enabled = canSend
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Send,
-                                contentDescription = stringResource(R.string.dsh_send),
-                                tint = if (canSend) {
+                                fontSize = 12.sp,
+                                color = if (selected != null) {
                                     AppTheme.colors.getPrimaryColor()
                                 } else {
                                     AppTheme.colors.getOnInactiveContainerColor()
                                 }
                             )
                         }
-                        // 运行中停止按钮(session.cancel;只中止当前 turn,保留 pending inbox)
-                        if (selected?.running == true) {
-                            IconButton(onClick = component::cancelCurrentTurn) {
-                                Icon(
-                                    imageVector = Icons.Default.Stop,
-                                    contentDescription = stringResource(R.string.dsh_stop_turn),
-                                    tint = MaterialTheme.colorScheme.error
-                                )
-                            }
+                        // primary 填充圆角发送按钮
+                        FilledIconButton(
+                            onClick = component::sendMessage,
+                            enabled = canSend,
+                            modifier = Modifier.size(34.dp),
+                            shape = RoundedCornerShape(10.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Send,
+                                contentDescription = stringResource(R.string.dsh_send),
+                                modifier = Modifier.size(16.dp)
+                            )
                         }
+                        Spacer(Modifier.width(4.dp))
                     }
                 }
             )
         }
+        }
+    }
     }
 
     // P4 弹层:模型选择器 / skill 弹层 / 重命名对话框
@@ -785,7 +832,7 @@ private fun RenameSessionDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_rename_title)) },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
                 label = { Text(stringResource(R.string.dsh_rename_hint)) },
@@ -809,19 +856,36 @@ private fun RenameSessionDialog(
     )
 }
 
-/** 顶部连接状态徽章(小字 + 阶段色) */
+/** 顶部连接状态徽章:阶段色圆点 + 文案(就绪 = 绿点「已连接」) */
 @Composable
 private fun ConnectionBadge(uiState: DshUiState) {
     val (textRes, color) = when (uiState.snapshot.phase) {
         ConnectionPhase.Connecting ->
             R.string.dsh_status_connecting to AppTheme.colors.getOnInactiveContainerColor()
         ConnectionPhase.Ready ->
-            R.string.dsh_status_ready to AppTheme.colors.getPrimaryColor()
+            R.string.dsh_status_ready to DshSuccessGreen
         ConnectionPhase.Down ->
             R.string.dsh_status_down to MaterialTheme.colorScheme.error
     }
-    Text(text = stringResource(textRes), color = color, fontSize = 12.sp)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(7.dp)
+                .clip(CircleShape)
+                .background(color)
+        )
+        Spacer(Modifier.width(5.dp))
+        Text(
+            text = stringResource(textRes),
+            color = color,
+            fontSize = 12.sp,
+            maxLines = 1
+        )
+    }
 }
+
+/** 成功绿(在线状态/成功行专用,深浅色主题下同一色值,沿用全仓 0xFF4CAF50 惯例) */
+internal val DshSuccessGreen = androidx.compose.ui.graphics.Color(0xFF4CAF50)
 
 /**
  * 斜杠命令内联面板(输入以 '/' 开头时浮现):命令目录(commands/list)+ 技能合并,
@@ -842,12 +906,11 @@ private fun SlashCommandPanel(
     val items = remember(current, query) {
         filterMenu(current.commands + current.skills, query).take(SlashPanelMaxRows)
     }
-    Column(
+    GlassCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 2.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+            .padding(horizontal = 12.dp, vertical = 2.dp),
+        shape = RoundedCornerShape(10.dp)
     ) {
         if (current.degraded) {
             Text(
@@ -956,11 +1019,26 @@ private fun MessageList(
         listState.animateScrollToItem(0)
     }
     val sessionId = chatState.selectedSessionId
+    // 轮末统计挂到该轮最后一条定稿助手消息(对齐 web:stats 只出现在 turn tail)
+    val statsByMessageKey = remember(nodes) {
+        val map = HashMap<String, ChatNode.Stats>()
+        var lastMessageKey: String? = null
+        for (n in nodes) {
+            if (n is ChatNode.AssistantMessage && !n.streaming && n.messageId != null) {
+                lastMessageKey = n.key
+            } else if (n is ChatNode.Stats) {
+                lastMessageKey?.let { map[it] = n }
+                lastMessageKey = null
+            }
+        }
+        map
+    }
+    SelectionContainer {
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxWidth(),
         reverseLayout = true,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
             horizontal = 16.dp,
             vertical = 12.dp
@@ -978,7 +1056,10 @@ private fun MessageList(
                         store = feedbackStore,
                         sessionId = sessionId,
                         messageId = messageId,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
+                        messageText = (node as ChatNode.AssistantMessage).text,
+                        messageTime = node.time,
+                        stats = statsByMessageKey[node.key]
                     )
                 }
             } else {
@@ -994,6 +1075,7 @@ private fun MessageList(
                 }
             }
         }
+    }
     }
 }
 
@@ -1068,7 +1150,7 @@ private fun SessionDrawer(
                 Text(stringResource(R.string.dsh_new_session))
             }
         }
-        OutlinedTextField(
+        GlassOutlinedTextField(
             value = query,
             onValueChange = { query = it },
             modifier = Modifier.fillMaxWidth(),
@@ -1358,7 +1440,7 @@ private fun CreateWorkspaceDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_workspace_new)) },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = path,
                 onValueChange = { path = it },
                 label = { Text(stringResource(R.string.dsh_workspace_path_hint)) },
@@ -1394,7 +1476,7 @@ private fun RenameWorkspaceDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.dsh_workspace_rename)) },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
                 label = { Text(stringResource(R.string.dsh_workspace_title_hint)) },

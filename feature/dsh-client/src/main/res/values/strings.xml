@@ -118,6 +118,11 @@
     <string name="dsh_tool_input">Input</string>
     <string name="dsh_tool_output">Output</string>
     <string name="dsh_tool_error">Error</string>
+    <string name="dsh_tool_command">Command</string>
+    <string name="dsh_tool_command_output">Command output</string>
+    <string name="dsh_tool_duration">Took %1$s</string>
+    <string name="dsh_copy">Copy</string>
+    <string name="dsh_message_delivered">Delivered</string>
     <string name="dsh_todo_title">Plan</string>
     <string name="dsh_todo_progress">%1$d/%2$d done</string>
     <string name="dsh_compaction_start">Compacting context…</string>
@@ -219,6 +224,8 @@
     <string name="dsh_trajectory_between">Between turns (%1$d)</string>
     <string name="dsh_trajectory_raw_json">Raw event JSON</string>
     <!-- P5b: message feedback -->
+    <string name="dsh_msg_meta_run">Ran for %1$s</string>
+    <string name="dsh_msg_meta_ttft">TTFT %1$s</string>
     <string name="dsh_feedback_positive">Helpful</string>
     <string name="dsh_feedback_negative">Not helpful</string>
     <string name="dsh_feedback_note">Note</string>
@@ -226,13 +233,26 @@
     <string name="dsh_feedback_note_hint">Add a note (optional)</string>
     <string name="dsh_feedback_note_too_large">Note too long (max %1$d chars, note-too-large)</string>
     <string name="dsh_feedback_rate_first">Pick 👍/👎 before saving a note</string>
+    <string name="dsh_feedback_save_note">Save to notebook</string>
     <string name="dsh_feedback_current_positive">Current rating: 👍 helpful</string>
     <string name="dsh_feedback_current_negative">Current rating: 👎 not helpful</string>
     <!-- P5b: deliverables -->
     <string name="dsh_deliverables_more">+%1$d files</string>
-    <!-- P6: connect page — two entry forms -->
+    <!-- P6: connect page — focused tabs -->
     <string name="dsh_lan_section">LAN direct</string>
     <string name="dsh_remote_section">Remote gateway</string>
+    <string name="dsh_tab_cloud">Cloud relay</string>
+    <string name="dsh_lan_intro">Connect to DSH directly over the local network</string>
+    <string name="dsh_host_address_label">Host address</string>
+    <string name="dsh_lan_address_helper">Enter the IP address and port of the device running DSH</string>
+    <string name="dsh_clear_input">Clear</string>
+    <string name="dsh_connect_tips">Connection tips</string>
+    <string name="dsh_lan_tip_same_network">Make sure your device and DSH are on the same LAN</string>
+    <string name="dsh_lan_tip_port">The default port is 3080; enter the correct port if it was changed</string>
+    <string name="dsh_connect_trouble">Can\'t connect?</string>
+    <string name="dsh_remote_intro">Connect to DSH over a public or remote network</string>
+    <string name="dsh_remote_address_helper">Enter the public address or domain and port of DSH</string>
+    <string name="dsh_remote_tip_reachable">Make sure the DSH port is reachable from this network</string>
     <string name="dsh_open_pairing">Pair a remote gateway</string>
     <string name="dsh_reauth">Re-pair / sign in</string>
     <string name="dsh_host_kind_remote">Remote</string>

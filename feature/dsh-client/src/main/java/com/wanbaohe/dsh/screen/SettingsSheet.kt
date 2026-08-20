@@ -23,7 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -409,7 +409,7 @@ private fun TextInputDialog(
         onDismissRequest = onDismiss,
         title = { Text(title) },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = value,
                 onValueChange = { value = it },
                 singleLine = true,

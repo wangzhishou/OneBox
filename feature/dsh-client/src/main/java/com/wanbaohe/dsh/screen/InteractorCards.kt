@@ -23,7 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -368,7 +368,7 @@ private fun QuestionBlock(
             }
         }
         if (multi) {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = custom.orEmpty(),
                 onValueChange = onCustomChange,
                 modifier = Modifier

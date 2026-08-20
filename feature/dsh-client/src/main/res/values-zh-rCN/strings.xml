@@ -25,7 +25,7 @@
     <string name="dsh_sessions">会话列表</string>
     <string name="dsh_new_session">新建会话</string>
     <string name="dsh_no_sessions">暂无会话</string>
-    <string name="dsh_select_session_hint">从左上角菜单选择会话,或新建一个</string>
+    <string name="dsh_select_session_hint">从右上角菜单选择会话,或新建一个</string>
     <string name="dsh_empty_chat">还没有消息,说点什么开始吧</string>
     <string name="dsh_input_hint">输入消息…</string>
     <string name="dsh_send">发送</string>
@@ -118,6 +118,11 @@
     <string name="dsh_tool_input">输入</string>
     <string name="dsh_tool_output">输出</string>
     <string name="dsh_tool_error">错误</string>
+    <string name="dsh_tool_command">命令</string>
+    <string name="dsh_tool_command_output">命令输出</string>
+    <string name="dsh_tool_duration">耗时 %1$s</string>
+    <string name="dsh_copy">复制</string>
+    <string name="dsh_message_delivered">已送达</string>
     <string name="dsh_todo_title">计划</string>
     <string name="dsh_todo_progress">%1$d/%2$d 完成</string>
     <string name="dsh_compaction_start">正在压缩上下文…</string>
@@ -219,6 +224,8 @@
     <string name="dsh_trajectory_between">轮外事件(%1$d)</string>
     <string name="dsh_trajectory_raw_json">原始事件 JSON</string>
     <!-- P5b: 消息反馈 -->
+    <string name="dsh_msg_meta_run">用时 %1$s</string>
+    <string name="dsh_msg_meta_ttft">首 token %1$s</string>
     <string name="dsh_feedback_positive">有帮助</string>
     <string name="dsh_feedback_negative">没帮助</string>
     <string name="dsh_feedback_note">备注</string>
@@ -226,13 +233,26 @@
     <string name="dsh_feedback_note_hint">补充备注(可选)</string>
     <string name="dsh_feedback_note_too_large">备注过长(上限 %1$d 字符,note-too-large)</string>
     <string name="dsh_feedback_rate_first">请先选择 👍/👎 评分再保存备注</string>
+    <string name="dsh_feedback_save_note">存到笔记本</string>
     <string name="dsh_feedback_current_positive">当前评分: 👍 有帮助</string>
     <string name="dsh_feedback_current_negative">当前评分: 👎 没帮助</string>
     <!-- P5b: 产出文件行 -->
     <string name="dsh_deliverables_more">+%1$d 个文件</string>
-    <!-- P6: 连接页 —— 两种形态入口 -->
+    <!-- P6: 连接页 —— 分焦点 tab -->
     <string name="dsh_lan_section">LAN 直连</string>
     <string name="dsh_remote_section">远程网关</string>
+    <string name="dsh_tab_cloud">云端中继</string>
+    <string name="dsh_lan_intro">通过局域网直接连接 DSH</string>
+    <string name="dsh_host_address_label">主机地址</string>
+    <string name="dsh_lan_address_helper">输入 DSH 所在设备的 IP 地址和端口号</string>
+    <string name="dsh_clear_input">清除</string>
+    <string name="dsh_connect_tips">连接提示</string>
+    <string name="dsh_lan_tip_same_network">请确保您的设备与 DSH 在同一局域网内</string>
+    <string name="dsh_lan_tip_port">默认端口为 3080,如已更改请输入正确端口号</string>
+    <string name="dsh_connect_trouble">无法连接?</string>
+    <string name="dsh_remote_intro">通过公网或远程网络连接 DSH</string>
+    <string name="dsh_remote_address_helper">输入 DSH 的公网地址或域名和端口号</string>
+    <string name="dsh_remote_tip_reachable">请确保 DSH 端口在当前网络下可达</string>
     <string name="dsh_open_pairing">配对远程网关</string>
     <string name="dsh_reauth">重新配对 / 登录</string>
     <string name="dsh_host_kind_remote">远程</string>
