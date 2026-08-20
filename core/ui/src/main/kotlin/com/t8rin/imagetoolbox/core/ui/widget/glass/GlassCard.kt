@@ -12,6 +12,8 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -181,5 +183,38 @@ private fun glassTransparentCardColors(colors: CardColors): CardColors = CardDef
     contentColor = colors.contentColor,
     disabledContainerColor = Color.Transparent,
     disabledContentColor = colors.disabledContentColor,
+)
+
+/** 玻璃填充(底+染色两层)对 tint 的近似覆盖率,用于估算混合后的有效底色 */
+private const val TINTED_GLASS_EFFECTIVE_COVERAGE = 0.65f
+
+/** 有效底色亮于此阈值时选用深色文字 */
+private const val TINTED_GLASS_LIGHT_BG_THRESHOLD = 0.4f
+
+/**
+ * 彩色玻璃容器上的可读内容色。
+ *
+ * 玻璃管线会把 tint 以低透明度混合在页面底色上(并叠白色高光),
+ * 直接使用与 tint 成对的 onColor(如 onTertiaryContainer)在部分主题下对比度不足。
+ * 这里按 tint 混合到 surface 后的有效亮度选择深/浅文字色(取自当前主题,不硬编码),
+ * 任何彩色玻璃容器都可用它兜底文字可读性。
+ */
+@Composable
+fun tintedGlassContentColor(tint: Color): Color {
+    val colorScheme = MaterialTheme.colorScheme
+    val isLight = colorScheme.surface.luminance() > 0.5f
+    val effectiveBackground = tint
+        .copy(alpha = TINTED_GLASS_EFFECTIVE_COVERAGE)
+        .compositeOver(colorScheme.surface)
+    val darkText = if (isLight) colorScheme.onSurface else colorScheme.inverseOnSurface
+    val lightText = if (isLight) colorScheme.inverseOnSurface else colorScheme.onSurface
+    return if (effectiveBackground.luminance() > TINTED_GLASS_LIGHT_BG_THRESHOLD) darkText else lightText
+}
+
+/** 彩色玻璃卡片配色:container 用 [tint],内容色按玻璃混合后的有效底色自动计算 */
+@Composable
+fun tintedGlassCardColors(tint: Color): CardColors = CardDefaults.cardColors(
+    containerColor = tint,
+    contentColor = tintedGlassContentColor(tint),
 )
 

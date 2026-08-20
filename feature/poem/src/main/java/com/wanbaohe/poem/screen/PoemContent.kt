@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -45,6 +44,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
 import com.wanbaohe.poem.R
 import com.wanbaohe.poem.model.Poem
 import com.wanbaohe.poem.model.parsePinyinLines
@@ -227,10 +227,10 @@ private fun TianZiGeText(text: String) {
 
 /**
  * AI 内容区(诗意解读 / 现代翻译共用):
- * 整张卡片包裹标题行(icon + 标题,有内容时右侧「重新生成」图标按钮)
+ * 整张 Glass 卡片包裹标题行(icon + 标题,有内容时右侧「重新生成」图标按钮)
  * 与正文(生成中 / 内容 / 空状态:提示 + 点击生成),配色由调用方给定以区分区块。
- * 注意:不用 GlassCard——玻璃管线对彩色容器的填充 alpha 封顶 0.30 并叠白色高光,
- * 夜间模式下混合底色会偏离 containerColor,破坏 container/onContainer 成对对比度,故用实心 Card。
+ * 彩色玻璃底色会拉偏 container/onContainer 的成对对比度(玻璃填充低 alpha 混合页面底色),
+ * 故内容色默认经 [tintedGlassContentColor] 按混合后的有效底色自动选深/浅,保证可读。
  */
 @Composable
 internal fun PoemAiSection(
@@ -244,9 +244,9 @@ internal fun PoemAiSection(
     onGenerate: () -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    contentColor: Color = tintedGlassContentColor(containerColor),
 ) {
-    Card(
+    GlassCard(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = containerColor,

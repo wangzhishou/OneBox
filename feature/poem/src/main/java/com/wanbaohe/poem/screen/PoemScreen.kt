@@ -286,7 +286,6 @@ private fun PoemDetailPage(
             emptyHint = stringResource(R.string.poem_insight_empty_hint),
             onGenerate = onGenerateInsight,
             containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         )
 
         PoemAiSection(
@@ -299,7 +298,6 @@ private fun PoemDetailPage(
             emptyHint = stringResource(R.string.poem_translation_empty_hint),
             onGenerate = onGenerateTranslation,
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
         )
 
         // 拼音生成中:底部灰色状态提示
