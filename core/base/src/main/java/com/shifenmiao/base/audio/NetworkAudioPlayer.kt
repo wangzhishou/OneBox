@@ -71,8 +71,9 @@ class NetworkAudioPlayer @Inject constructor(
 
     /**
      * 播放本地音频文件（用于 TTS 生成的本地缓存文件）。
+     * [onComplete] 播放结束(或被打断释放)时回调。
      */
-    suspend fun playLocalFile(file: File) {
+    suspend fun playLocalFile(file: File, onComplete: () -> Unit = {}) {
         if (!file.exists() || file.length() <= 0L) return
         withContext(Dispatchers.Main) {
             runCatching {
@@ -82,12 +83,21 @@ class NetworkAudioPlayer @Inject constructor(
                     setOnCompletionListener { player ->
                         player.release()
                         if (effectPlayer === player) effectPlayer = null
+                        onComplete()
                     }
                     prepare()
                     start()
                 }
             }.onFailure { it.makeLog("NetworkAudioPlayer") }
         }
+    }
+
+    /** 停止并释放当前短音频/本地文件播放(背景音乐走 [stopBackground]) */
+    fun stopEffect() {
+        runCatching {
+            effectPlayer?.release()
+        }
+        effectPlayer = null
     }
 
     fun stopBackground() {

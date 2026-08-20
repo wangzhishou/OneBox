@@ -7,6 +7,8 @@
     <string name="poem_generating_pinyin">拼音を生成中…</string>
     <string name="poem_ai_pinyin">AI ピンイン</string>
     <string name="poem_pinyin_done">ピンイン生成済み</string>
+    <string name="poem_recite">朗詠</string>
+    <string name="poem_recite_stop">朗詠を停止</string>
     <string name="poem_search">検索</string>
     <string name="poem_history">履歴</string>
     <string name="poem_ai_insight">AI 鑑賞</string>

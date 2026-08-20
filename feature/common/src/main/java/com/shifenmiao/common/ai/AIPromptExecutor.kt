@@ -105,6 +105,7 @@ class AIPromptExecutor @Inject constructor(
         )
 
         return try {
+            val isProxyRoute = AiRequestUrlResolver.shouldUseProxyRequest(engine)
             val response = withContext(ioDispatcher) {
                 val url = AiRequestUrlResolver.resolveRequestUrl(engine)
                 if (AiRequestUrlResolver.shouldUseDirectRequest(engine)) {
@@ -174,6 +175,8 @@ class AIPromptExecutor @Inject constructor(
                 isSuccess = true,
                 engineName = engine.name,
                 modelName = engine.model.name,
+                totalTokens = chunk.usage?.totalTokens ?: 0,
+                isProxyRoute = isProxyRoute,
             )
         } catch (t: Throwable) {
             makeLog { "AIPromptExecutor: Request failed: ${t.message}" }

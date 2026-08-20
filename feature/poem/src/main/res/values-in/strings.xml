@@ -7,6 +7,8 @@
     <string name="poem_generating_pinyin">Membuat pinyin…</string>
     <string name="poem_ai_pinyin">Pinyin AI</string>
     <string name="poem_pinyin_done">Pinyin siap</string>
+    <string name="poem_recite">Deklamasi</string>
+    <string name="poem_recite_stop">Hentikan deklamasi</string>
     <string name="poem_search">Cari</string>
     <string name="poem_history">Riwayat</string>
     <string name="poem_ai_insight">Tafsir AI</string>

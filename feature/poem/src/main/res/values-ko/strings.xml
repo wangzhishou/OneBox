@@ -7,6 +7,8 @@
     <string name="poem_generating_pinyin">병음 생성 중…</string>
     <string name="poem_ai_pinyin">AI 병음</string>
     <string name="poem_pinyin_done">병음 생성됨</string>
+    <string name="poem_recite">낭송</string>
+    <string name="poem_recite_stop">낭송 중지</string>
     <string name="poem_search">검색</string>
     <string name="poem_history">기록</string>
     <string name="poem_ai_insight">AI 해설</string>

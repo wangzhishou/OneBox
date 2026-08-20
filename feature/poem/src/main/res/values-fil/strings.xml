@@ -7,6 +7,8 @@
     <string name="poem_generating_pinyin">Ginagawa ang pinyin…</string>
     <string name="poem_ai_pinyin">AI Pinyin</string>
     <string name="poem_pinyin_done">Handa na ang Pinyin</string>
+    <string name="poem_recite">Deklamasyon</string>
+    <string name="poem_recite_stop">Itigil ang deklamasyon</string>
     <string name="poem_search">Maghanap</string>
     <string name="poem_history">Kasaysayan</string>
     <string name="poem_ai_insight">AI na Interpretasyon</string>

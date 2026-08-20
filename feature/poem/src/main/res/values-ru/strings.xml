@@ -7,6 +7,8 @@
     <string name="poem_generating_pinyin">Создание пиньиня…</string>
     <string name="poem_ai_pinyin">ИИ-пиньинь</string>
     <string name="poem_pinyin_done">Пиньинь готов</string>
+    <string name="poem_recite">Декламировать</string>
+    <string name="poem_recite_stop">Остановить</string>
     <string name="poem_search">Поиск</string>
     <string name="poem_history">История</string>
     <string name="poem_ai_insight">Интерпретация ИИ</string>

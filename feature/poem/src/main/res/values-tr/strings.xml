@@ -7,6 +7,8 @@
     <string name="poem_generating_pinyin">Pinyin oluşturuluyor…</string>
     <string name="poem_ai_pinyin">AI Pinyin</string>
     <string name="poem_pinyin_done">Pinyin hazır</string>
+    <string name="poem_recite">Sesli oku</string>
+    <string name="poem_recite_stop">Okumayı durdur</string>
     <string name="poem_search">Ara</string>
     <string name="poem_history">Geçmiş</string>
     <string name="poem_ai_insight">YZ Yorumu</string>

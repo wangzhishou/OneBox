@@ -25,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.VolumeUp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAddCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoStories
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBook
@@ -50,6 +52,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePoem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStopCircle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.poem.R
 import com.wanbaohe.poem.component.PoemComponent
@@ -61,10 +64,38 @@ import com.wanbaohe.poem.model.isPinyinAligned
 fun PoemScreen(component: PoemComponent) {
     val uiState by component.uiState.collectAsState()
 
+    // 离开页面即停止朗诵,避免音频残留
+    DisposableEffect(Unit) {
+        onDispose { component.stopRecite() }
+    }
+
     BaseScreen(
         title = stringResource(R.string.poem_page_title),
         onGoBack = component.onGoBack,
         actions = {
+            // 诗朗诵:合成中转圈 / 播放中显示停止 / 空闲显示喇叭
+            IconButton(
+                onClick = component::toggleRecite,
+                enabled = uiState.poem != null,
+                colors = AppTheme.colors.iconButtonColors(),
+            ) {
+                when {
+                    uiState.isSynthesizingSpeech -> CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp,
+                    )
+
+                    uiState.isReciting -> Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStopCircle,
+                        contentDescription = stringResource(R.string.poem_recite_stop),
+                    )
+
+                    else -> Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.VolumeUp,
+                        contentDescription = stringResource(R.string.poem_recite),
+                    )
+                }
+            }
             IconButton(
                 onClick = component::navigateToSearch,
                 colors = AppTheme.colors.iconButtonColors(),

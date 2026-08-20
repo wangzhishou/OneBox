@@ -7,6 +7,8 @@
     <string name="poem_generating_pinyin">Pinyin wird erstellt…</string>
     <string name="poem_ai_pinyin">AI-Pinyin</string>
     <string name="poem_pinyin_done">Pinyin fertig</string>
+    <string name="poem_recite">Rezitieren</string>
+    <string name="poem_recite_stop">Rezitation stoppen</string>
     <string name="poem_search">Suchen</string>
     <string name="poem_history">Verlauf</string>
     <string name="poem_ai_insight">KI-Deutung</string>

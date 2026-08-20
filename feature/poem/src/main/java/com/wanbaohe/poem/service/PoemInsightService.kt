@@ -1,6 +1,9 @@
 package com.wanbaohe.poem.service
 
+import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AIPromptResult
+import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.poem.repo.PoemRepository
 import com.t8rin.logger.makeLog
@@ -36,6 +39,7 @@ class PoemInsightService @Inject constructor(
             return GenerationResult.Failed("AI 返回内容为空")
         }
         poemRepository.updateAiInsight(id = poem.id, insight = content)
+        chargePoints(result, buildInput(poem), "诗意解读")
         recordActivity(poem = poem, actionType = "INSIGHT")
         return GenerationResult.Success(content)
     }
@@ -59,6 +63,7 @@ class PoemInsightService @Inject constructor(
             return GenerationResult.Failed("AI 返回内容为空")
         }
         poemRepository.updatePinyin(id = poem.id, pinyin = content)
+        chargePoints(result, buildInput(poem), "拼音标注")
         return GenerationResult.Success(content)
     }
 
@@ -76,6 +81,7 @@ class PoemInsightService @Inject constructor(
             return GenerationResult.Failed("AI 返回内容为空")
         }
         poemRepository.updateTranslation(id = poem.id, translation = content)
+        chargePoints(result, buildInput(poem), "现代翻译")
         recordActivity(poem = poem, actionType = "TRANSLATION")
         return GenerationResult.Success(content)
     }
@@ -90,6 +96,24 @@ class PoemInsightService @Inject constructor(
                 title = poem.title,
                 description = "${poem.author}·${poem.dynasty}",
                 screenRoute = "onebox://screen/poem?poem_id=${poem.id}",
+            )
+        }.onFailure { it.makeLog("PoemInsightService") }
+    }
+
+    /**
+     * 代理路由(我方服务器引擎)按量扣积分;BYOK 直连不扣。
+     * 接口带 usage 时按 totalTokens,否则按输入+输出文本估算。
+     */
+    private fun chargePoints(result: AIPromptResult, input: String, desc: String) {
+        if (!result.isProxyRoute) return
+        val tokens = result.totalTokens.takeIf { it > 0 }
+            ?: (StringUtils.calculateTokens(input) + StringUtils.calculateTokens(result.content))
+        if (tokens <= 0) return
+        runCatching {
+            BaseUtils.consumePoints(
+                degree = BaseUtils.tokenToPoints(tokens),
+                desc = desc,
+                source = result.engineName.ifBlank { "poem" },
             )
         }.onFailure { it.makeLog("PoemInsightService") }
     }

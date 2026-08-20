@@ -1,9 +1,18 @@
 package com.wanbaohe.poem.component
 
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.base.audio.NetworkAudioPlayer
+import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.base.utils.StringUtils
+import com.shifenmiao.common.utils.BaseUtils
+import com.shifenmiao.storage.TokenStorage
+import com.shifenmiao.tts.service.TTSService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.logger.makeLog
+import com.wanbaohe.poem.R
 import com.wanbaohe.poem.model.Poem
 import com.wanbaohe.poem.model.isPinyinAligned
 import com.wanbaohe.poem.service.PoemInsightService
@@ -12,12 +21,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PoemComponent @AssistedInject internal constructor(
@@ -27,6 +38,8 @@ class PoemComponent @AssistedInject internal constructor(
     @Assisted val onNavigate: (Screen) -> Unit,
     private val poemService: PoemService,
     private val insightService: PoemInsightService,
+    private val ttsService: TTSService,
+    private val networkAudioPlayer: NetworkAudioPlayer,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -90,21 +103,23 @@ class PoemComponent @AssistedInject internal constructor(
     fun generateInsight() {
         val poem = uiState.value.poem ?: return
         if (uiState.value.isGeneratingInsight) return
-        componentScope.launch {
-            _uiState.update { it.copy(isGeneratingInsight = true, insightError = null) }
-            when (val result = insightService.generateInsight(poem)) {
-                is PoemInsightService.GenerationResult.Success -> {
-                    _uiState.update {
-                        it.copy(
-                            poem = it.poem?.copy(aiInsight = result.content),
-                            isGeneratingInsight = false,
-                        )
+        withAiGate(source = "poem_insight", poem = poem) {
+            componentScope.launch {
+                _uiState.update { it.copy(isGeneratingInsight = true, insightError = null) }
+                when (val result = insightService.generateInsight(poem)) {
+                    is PoemInsightService.GenerationResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                poem = it.poem?.copy(aiInsight = result.content),
+                                isGeneratingInsight = false,
+                            )
+                        }
                     }
-                }
 
-                is PoemInsightService.GenerationResult.Failed -> {
-                    _uiState.update {
-                        it.copy(isGeneratingInsight = false, insightError = result.reason)
+                    is PoemInsightService.GenerationResult.Failed -> {
+                        _uiState.update {
+                            it.copy(isGeneratingInsight = false, insightError = result.reason)
+                        }
                     }
                 }
             }
@@ -114,21 +129,23 @@ class PoemComponent @AssistedInject internal constructor(
     fun generateTranslation() {
         val poem = uiState.value.poem ?: return
         if (uiState.value.isGeneratingTranslation) return
-        componentScope.launch {
-            _uiState.update { it.copy(isGeneratingTranslation = true, translationError = null) }
-            when (val result = insightService.generateTranslation(poem)) {
-                is PoemInsightService.GenerationResult.Success -> {
-                    _uiState.update {
-                        it.copy(
-                            poem = it.poem?.copy(translation = result.content),
-                            isGeneratingTranslation = false,
-                        )
+        withAiGate(source = "poem_translation", poem = poem) {
+            componentScope.launch {
+                _uiState.update { it.copy(isGeneratingTranslation = true, translationError = null) }
+                when (val result = insightService.generateTranslation(poem)) {
+                    is PoemInsightService.GenerationResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                poem = it.poem?.copy(translation = result.content),
+                                isGeneratingTranslation = false,
+                            )
+                        }
                     }
-                }
 
-                is PoemInsightService.GenerationResult.Failed -> {
-                    _uiState.update {
-                        it.copy(isGeneratingTranslation = false, translationError = result.reason)
+                    is PoemInsightService.GenerationResult.Failed -> {
+                        _uiState.update {
+                            it.copy(isGeneratingTranslation = false, translationError = result.reason)
+                        }
                     }
                 }
             }
@@ -154,15 +171,100 @@ class PoemComponent @AssistedInject internal constructor(
 
     /** 手动触发生成拼音(按钮入口):无拼音时生成,已有(含对齐失败的)时强制重新生成 */
     fun generatePinyin() {
-        maybeGeneratePinyin(uiState.value.poem, force = true)
+        val poem = uiState.value.poem ?: return
+        withAiGate(source = "poem_pinyin", poem = poem) {
+            maybeGeneratePinyin(poem, force = true)
+        }
+    }
+
+    /** 诗朗诵:播放中/合成中再点 = 停止;否则过登录+积分门槛后合成并播放(命中 TTS 缓存免费直播) */
+    fun toggleRecite() {
+        if (uiState.value.isReciting || uiState.value.isSynthesizingSpeech) {
+            stopRecite()
+            return
+        }
+        val poem = uiState.value.poem ?: return
+        withAiGate(source = "poem_recite", poem = poem) { startRecite(poem) }
+    }
+
+    /** 停止朗诵(页面退出时必须调用,避免音频残留播放) */
+    fun stopRecite() {
+        reciteJob?.cancel()
+        reciteJob = null
+        networkAudioPlayer.stopEffect()
+        _uiState.update { it.copy(isReciting = false, isSynthesizingSpeech = false) }
+    }
+
+    private var reciteJob: Job? = null
+
+    private fun startRecite(poem: Poem) {
+        reciteJob?.cancel()
+        reciteJob = componentScope.launch {
+            val text = buildReciteText(poem)
+            val cached = ttsService.getAudioByTextAndTag(text, RECITE_TTS_TAG)
+            if (cached != null) {
+                playReciteFile(File(cached.filePath))
+                return@launch
+            }
+            _uiState.update { it.copy(isSynthesizingSpeech = true) }
+            ttsService.synthesize(text = text, tag = RECITE_TTS_TAG)
+                .onSuccess { file ->
+                    // TTS 接口无 usage 返回,按文本量估扣
+                    val tokens = StringUtils.calculateTokens(text)
+                    if (tokens > 0) {
+                        runCatching {
+                            BaseUtils.consumePoints(
+                                degree = BaseUtils.tokenToPoints(tokens),
+                                desc = "诗朗诵",
+                                source = "poem_recite",
+                            )
+                        }
+                    }
+                    playReciteFile(file)
+                }
+                .onFailure { e ->
+                    e.makeLog("PoemComponent")
+                    _uiState.update { it.copy(isSynthesizingSpeech = false) }
+                    AppToastHost.showFailureToast(R.string.poem_load_failed)
+                }
+        }
+    }
+
+    private suspend fun playReciteFile(file: File) {
+        _uiState.update { it.copy(isSynthesizingSpeech = false, isReciting = true) }
+        networkAudioPlayer.playLocalFile(file) {
+            _uiState.update { state -> state.copy(isReciting = false) }
+        }
+    }
+
+    private fun buildReciteText(poem: Poem): String = buildString {
+        append(poem.title).append('。')
+        append(poem.author).append('。')
+        poem.content.forEach { append(it) }
+    }
+
+    /**
+     * AI 功能统一门槛(规范见 onebox-doc/AGENTS.md「AI 功能登录与积分」):
+     * 未登录 → 公共登录弹窗,登录成功后继续;已登录 → 按内容预估积分闸门,不足提示。
+     */
+    private fun withAiGate(source: String, poem: Poem, action: () -> Unit) {
+        if (!TokenStorage.isLogin()) {
+            ActionUtils.showLogin(source = source) { withAiGate(source, poem, action) }
+            return
+        }
+        val estimatedPoints = BaseUtils.tokenToPoints(
+            StringUtils.calculateTokens(poem.content.joinToString(""))
+        ) * POINTS_ESTIMATE_MARGIN
+        ActionUtils.checkPointsAndDo(point = estimatedPoints, onSuccess = action)
     }
 
     /**
      * 生成拼音:静默失败,不阻塞卡片展示;生成中置位供底部状态提示;失败允许下次重试。
-     * 自动流程(force=false)在已有可用拼音时跳过;拼音存在但对齐失败时视为无拼音,允许重新生成。
+     * 自动流程(force=false)未登录时静默跳过(不弹登录),已有可用拼音时跳过;
+     * 拼音存在但对齐失败时视为无拼音,允许重新生成。
      */
     private fun maybeGeneratePinyin(poem: Poem?, force: Boolean = false) {
-        if (poem == null) return
+        if (poem == null || !TokenStorage.isLogin()) return
         if (!force && poem.isPinyinAligned()) return
         if (uiState.value.isGeneratingPinyin) return
         if (!pinyinAttempts.add(poem.id)) return
@@ -174,6 +276,14 @@ class PoemComponent @AssistedInject internal constructor(
             }
             _uiState.update { it.copy(isGeneratingPinyin = false) }
         }
+    }
+
+    companion object {
+        /** 积分预估余量倍数,与 BaseUtils.canConsumePoints 口径一致 */
+        private const val POINTS_ESTIMATE_MARGIN = 3
+
+        /** 诗朗诵 TTS 缓存分类标签 */
+        private const val RECITE_TTS_TAG = "poem-recite"
     }
 
     @AssistedFactory
