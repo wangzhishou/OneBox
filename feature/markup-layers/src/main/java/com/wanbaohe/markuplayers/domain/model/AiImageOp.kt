@@ -4,7 +4,6 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.shifenmiao.model.imageprocess.ImageProcessOp
 import com.shifenmiao.model.imageprocess.ImageProcessRect
-import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAir
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAspectRatio
@@ -98,12 +97,5 @@ enum class AiImageOp(
 internal fun NormalizedRect.toImageProcessRect() =
     ImageProcessRect(left = left, top = top, right = right, bottom = bottom)
 
-/**
- * AI 图像处理单次积分成本:远程配置(RemoteConfig.aiImageProcessPoints)可动态调整,
- * 未下发时回退默认 [DEFAULT_AI_IMAGE_PROCESS_POINTS]。
- */
-fun aiImageProcessPointsCost(): Int =
-    RemoteConfigStorage.getRemoteConfig().aiImageProcessPoints ?: DEFAULT_AI_IMAGE_PROCESS_POINTS
-
-/** AI 图像处理默认单次积分成本(远程未下发时) */
-private const val DEFAULT_AI_IMAGE_PROCESS_POINTS = 200
+// AI 图像处理单次积分成本函数已下沉至 core/base:
+// com.shifenmiao.base.utils.aiImageProcessPointsCost(供各模块共用)
