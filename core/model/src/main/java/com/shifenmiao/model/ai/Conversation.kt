@@ -51,6 +51,8 @@ data class Conversation(
     val promptId: Int? = null,
     /** 服务端 prompt id；本地创建未推送时为 null。fallback 路径专用，与 promptId 本地表主键解耦。 */
     val promptRemoteId: Int? = null,
+    /** 服务端 prompt 的 Strapi v5 documentId；回查 / 刷新远端 prompt 时优先于 [promptRemoteId]。 */
+    val promptDocumentId: String? = null,
     val lastMessagePreview: String = "",
     val lastUserMessagePreview: String = "",
     val lastActiveAt: Long = Date().time,

@@ -196,11 +196,11 @@ class ItemListComponent @AssistedInject internal constructor(
 
     fun refreshStateFlow(
         listType: ListItemType,
-        chipCategoryId: Int?,
-    ): StateFlow<SyncState> = itemSyncManager.syncStateFlow(listType, chipCategoryId)
+        chipCategoryDocumentId: String?,
+    ): StateFlow<SyncState> = itemSyncManager.syncStateFlow(listType, chipCategoryDocumentId)
 
-    fun refreshData(listType: ListItemType, chipCategoryId: Int?) {
-        itemSyncManager.sync(listType, chipCategoryId)
+    fun refreshData(listType: ListItemType, chipCategoryDocumentId: String?) {
+        itemSyncManager.sync(listType, chipCategoryDocumentId)
     }
 
     /**
@@ -217,7 +217,7 @@ class ItemListComponent @AssistedInject internal constructor(
         chipsFlowCache.getOrPut(listType.id) {
             appDatabase.itemEntityDao()
                 .observeCategoriesUsedByListType(listType.id)
-                .map { rows -> rows.map { ChipFilter(categoryId = it.id, name = it.name) } }
+                .map { rows -> rows.map { ChipFilter(categoryId = it.id, name = it.name, documentId = it.documentId) } }
         }
 
     fun setFavorite(item: ItemEntity) {

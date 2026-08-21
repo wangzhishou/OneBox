@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "9c19f8661bb471fbe073f5bfaf8b9257",
+    "identityHash": "dba20563f7af2dda89e25a81581ca0df",
     "entities": [
       {
         "tableName": "message",
@@ -355,14 +355,14 @@
         },
         "indices": [
           {
-            "name": "index_item_source_remote_id",
+            "name": "index_item_source_document_id",
             "unique": true,
             "columnNames": [
               "source",
-              "remote_id"
+              "document_id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_source_remote_id` ON `${TABLE_NAME}` (`source`, `remote_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_source_document_id` ON `${TABLE_NAME}` (`source`, `document_id`)"
           },
           {
             "name": "index_item_list_type",
@@ -522,7 +522,7 @@
       },
       {
         "tableName": "category",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `can_edit` INTEGER NOT NULL DEFAULT 0, `source` INTEGER NOT NULL DEFAULT 0, `updated_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `document_id` TEXT, `can_edit` INTEGER NOT NULL DEFAULT 0, `source` INTEGER NOT NULL DEFAULT 0, `updated_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -535,6 +535,11 @@
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "documentId",
+            "columnName": "document_id",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "canEdit",
@@ -644,7 +649,7 @@
       },
       {
         "tableName": "item_data",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `kind` TEXT NOT NULL, `data` TEXT, `url` TEXT, `extra` TEXT, `size_bytes` INTEGER NOT NULL DEFAULT 0, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `document_id` TEXT, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `kind` TEXT NOT NULL, `data` TEXT, `url` TEXT, `extra` TEXT, `size_bytes` INTEGER NOT NULL DEFAULT 0, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -656,6 +661,11 @@
             "fieldPath": "remoteId",
             "columnName": "remote_id",
             "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "documentId",
+            "columnName": "document_id",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source",
@@ -719,14 +729,14 @@
         },
         "indices": [
           {
-            "name": "index_item_data_source_remote_id",
+            "name": "index_item_data_source_document_id",
             "unique": true,
             "columnNames": [
               "source",
-              "remote_id"
+              "document_id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_data_source_remote_id` ON `${TABLE_NAME}` (`source`, `remote_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_data_source_document_id` ON `${TABLE_NAME}` (`source`, `document_id`)"
           },
           {
             "name": "index_item_data_kind",
@@ -806,7 +816,7 @@
       },
       {
         "tableName": "item_agent",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `description` TEXT, `header` TEXT, `body` TEXT, `prompt` TEXT, `updated_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `document_id` TEXT, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `description` TEXT, `header` TEXT, `body` TEXT, `prompt` TEXT, `updated_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -818,6 +828,11 @@
             "fieldPath": "remoteId",
             "columnName": "remote_id",
             "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "documentId",
+            "columnName": "document_id",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source",
@@ -867,14 +882,14 @@
         },
         "indices": [
           {
-            "name": "index_item_agent_source_remote_id",
+            "name": "index_item_agent_source_document_id",
             "unique": true,
             "columnNames": [
               "source",
-              "remote_id"
+              "document_id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_agent_source_remote_id` ON `${TABLE_NAME}` (`source`, `remote_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_agent_source_document_id` ON `${TABLE_NAME}` (`source`, `document_id`)"
           }
         ]
       },
@@ -945,7 +960,7 @@
       },
       {
         "tableName": "item_prompt",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `description` TEXT, `prompt` TEXT, `placeholder` TEXT, `templates` TEXT, `updated_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `document_id` TEXT, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `description` TEXT, `prompt` TEXT, `placeholder` TEXT, `templates` TEXT, `updated_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -957,6 +972,11 @@
             "fieldPath": "remoteId",
             "columnName": "remote_id",
             "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "documentId",
+            "columnName": "document_id",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "source",
@@ -1006,14 +1026,14 @@
         },
         "indices": [
           {
-            "name": "index_item_prompt_source_remote_id",
+            "name": "index_item_prompt_source_document_id",
             "unique": true,
             "columnNames": [
               "source",
-              "remote_id"
+              "document_id"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_prompt_source_remote_id` ON `${TABLE_NAME}` (`source`, `remote_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_item_prompt_source_document_id` ON `${TABLE_NAME}` (`source`, `document_id`)"
           }
         ]
       },
@@ -2760,7 +2780,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9c19f8661bb471fbe073f5bfaf8b9257')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dba20563f7af2dda89e25a81581ca0df')"
     ]
   }
 }

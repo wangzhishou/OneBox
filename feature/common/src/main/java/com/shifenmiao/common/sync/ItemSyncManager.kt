@@ -31,7 +31,7 @@ import javax.inject.Singleton
 /**
  * 统一负责条目与分类的增量同步。
  *
- * - 按 [ListItemType] + categoryId 维度记录最后同步时间与同步状态。
+ * - 按 [ListItemType] + 分类 documentId 维度记录最后同步时间与同步状态。
  * - 分类与条目一起同步，保证 chips 与列表一致。
  * - 服务端下架（publishedAt 为空）的数据会被识别为删除并清理本地副本。
  * - 应用启动时的全量同步受 [SyncIntervalPolicy] 控制，避免频繁请求。
@@ -52,20 +52,20 @@ class ItemSyncManager @Inject constructor(
     private val appLaunchSyncCalled = AtomicBoolean(false)
 
     /**
-     * 订阅指定 (listType, categoryId) 的同步状态。
+     * 订阅指定 (listType, categoryDocumentId) 的同步状态。
      */
     fun syncStateFlow(
         listType: ListItemType,
-        categoryId: Int? = null,
+        categoryDocumentId: String? = null,
     ): MutableStateFlow<SyncState> = synchronized(syncStates) {
-        syncStates.getOrPut(SyncKey(listType.id, categoryId)) { MutableStateFlow(SyncState.Idle) }
+        syncStates.getOrPut(SyncKey(listType.id, categoryDocumentId)) { MutableStateFlow(SyncState.Idle) }
     }
 
-    private fun getLock(listType: ListItemType, categoryId: Int?): Mutex = synchronized(syncLocks) {
-        syncLocks.getOrPut(SyncKey(listType.id, categoryId)) { Mutex() }
+    private fun getLock(listType: ListItemType, categoryDocumentId: String?): Mutex = synchronized(syncLocks) {
+        syncLocks.getOrPut(SyncKey(listType.id, categoryDocumentId)) { Mutex() }
     }
 
-    private data class SyncKey(val listType: Int, val categoryId: Int?)
+    private data class SyncKey(val listType: Int, val categoryDocumentId: String?)
 
     private companion object {
         /** 页面进入同步的默认冷却时间：1 天，可被 RemoteConfig 覆盖。 */
@@ -76,18 +76,18 @@ class ItemSyncManager @Inject constructor(
      * 在后台触发指定列表类型的增量同步（会同步一次分类）。
      * 手动刷新场景，强制走网络。
      */
-    fun sync(listType: ListItemType, categoryId: Int? = null) {
+    fun sync(listType: ListItemType, categoryDocumentId: String? = null) {
         scope.launch(ioDispatcher) {
-            syncInternal(listType, categoryId, syncCategories = true, forceRefresh = true)
+            syncInternal(listType, categoryDocumentId, syncCategories = true, forceRefresh = true)
         }
     }
 
     /**
      * 阻塞式同步指定列表类型。
      */
-    suspend fun syncAndAwait(listType: ListItemType, categoryId: Int? = null): Result<Unit> {
+    suspend fun syncAndAwait(listType: ListItemType, categoryDocumentId: String? = null): Result<Unit> {
         return withContext(ioDispatcher) {
-            syncInternal(listType, categoryId, syncCategories = true, forceRefresh = true)
+            syncInternal(listType, categoryDocumentId, syncCategories = true, forceRefresh = true)
         }
     }
 
@@ -134,7 +134,7 @@ class ItemSyncManager @Inject constructor(
         if (now - AppSharedStorage.loadPageEnterSyncAt(listType.id) < getPageEnterCooldownMs()) return
         AppSharedStorage.savePageEnterSyncAt(listType.id, now)
         scope.launch(ioDispatcher) {
-            syncInternal(listType, categoryId = null, syncCategories = false, forceRefresh = true)
+            syncInternal(listType, categoryDocumentId = null, syncCategories = false, forceRefresh = true)
         }
     }
 
@@ -161,19 +161,19 @@ class ItemSyncManager @Inject constructor(
                 ListItemType.PROMPT,
                 ListItemType.AGENT,
             ).forEach { listType ->
-                syncInternal(listType, categoryId = null, syncCategories = false, forceRefresh = forceRefresh).getOrThrow()
+                syncInternal(listType, categoryDocumentId = null, syncCategories = false, forceRefresh = forceRefresh).getOrThrow()
             }
         }
     }
 
     private suspend fun syncInternal(
         listType: ListItemType,
-        categoryId: Int?,
+        categoryDocumentId: String?,
         syncCategories: Boolean,
         forceRefresh: Boolean,
     ): Result<Unit> {
-        val stateFlow = syncStateFlow(listType, categoryId)
-        val lock = getLock(listType, categoryId)
+        val stateFlow = syncStateFlow(listType, categoryDocumentId)
+        val lock = getLock(listType, categoryDocumentId)
         return lock.withLock {
             runCatching {
                 // 隐私政策未同意时阻塞，避免发出网络请求；同意后自动继续。
@@ -184,7 +184,7 @@ class ItemSyncManager @Inject constructor(
                 if (syncCategories) {
                     syncCategories(forceRefresh)
                 }
-                syncItems(listType, categoryId, forceRefresh)
+                syncItems(listType, categoryDocumentId, forceRefresh)
                 stateFlow.value = SyncState.Success
             }.onFailure { error ->
                 if (error is CancellationException) throw error
@@ -225,6 +225,7 @@ class ItemSyncManager @Inject constructor(
                         canEdit = category.canEdit,
                         source = Source.REMOTE,
                         updatedAt = System.currentTimeMillis(),
+                        documentId = category.documentId?.takeIf { it.isNotBlank() },
                     )
                 )
             }
@@ -234,11 +235,11 @@ class ItemSyncManager @Inject constructor(
 
     private suspend fun syncItems(
         listType: ListItemType,
-        categoryId: Int?,
+        categoryDocumentId: String?,
         forceRefresh: Boolean,
     ) {
-        val lastSyncAt = AppSharedStorage.loadItemsLastSyncAt(listType.id, categoryId)
-        val stateFlow = syncStateFlow(listType, categoryId)
+        val lastSyncAt = AppSharedStorage.loadItemsLastSyncAt(listType.id, categoryDocumentId)
+        val stateFlow = syncStateFlow(listType, categoryDocumentId)
         var page = 1
         var totalPage: Int? = null
         var endOfPaginationReached = false
@@ -246,7 +247,7 @@ class ItemSyncManager @Inject constructor(
         while (!endOfPaginationReached) {
             val result = remoteDataSource.syncDataItems(
                 listType = listType.id,
-                categoryId = categoryId,
+                categoryDocumentId = categoryDocumentId,
                 pageNumber = page,
                 updatedAfter = SyncTimeUtils.formatTimestamp(lastSyncAt),
                 pageSize = Constants.PAGE_SIZE,
@@ -261,7 +262,7 @@ class ItemSyncManager @Inject constructor(
             page++
         }
         lastServerTime?.let {
-            AppSharedStorage.saveItemsLastSyncAt(listType.id, categoryId, SyncTimeUtils.parseIsoTime(it))
+            AppSharedStorage.saveItemsLastSyncAt(listType.id, categoryDocumentId, SyncTimeUtils.parseIsoTime(it))
         }
     }
 
@@ -271,7 +272,12 @@ class ItemSyncManager @Inject constructor(
             dataItems.forEach { dataItem ->
                 // 只删除远程条目；本地用户创建的内容（source = LOCAL）不受影响。
                 if (dataItem.publishedAt.isNullOrBlank()) {
-                    appDatabase.itemEntityDao().deleteItemByRemoteId(dataItem.id, Source.REMOTE)
+                    // 同步主键 documentId 优先，空时降级数字 id（Go 下发的 tombstone 两种都带）
+                    appDatabase.itemEntityDao().deleteItemByDocumentId(
+                        documentId = dataItem.documentId,
+                        remoteId = dataItem.id.takeIf { it > 0 },
+                        source = Source.REMOTE,
+                    )
                 } else {
                     // item + categories + agent/prompt/data 资源统一写入，link 由 DAO 内部按 listType 决定。
                     val itemWithRelation = DataBaseUtils.dataItemToItemWithRelation(dataItem)

@@ -10,7 +10,7 @@ import com.shifenmiao.model.Source
  * 统一条目主表（瘦身后）：
  * - 内容数据：title / description / url / miniProgramId / placeholder / icon*
  * - 服务端标记：recommend / vipLevel / isHighlighted / isOnline / isAi
- * - 同步键：source + remoteId
+ * - 同步键：source + documentId（Strapi v5 稳定标识；remoteId 仅作遗留信息保留）
  *
  * 不再持有的字段（已迁出）：
  * - isFavorited / isPinned / pinnedTime / canEdit → [ItemUserState]
@@ -23,7 +23,7 @@ import com.shifenmiao.model.Source
 @Entity(
     tableName = "item",
     indices = [
-        Index(value = ["source", "remote_id"], unique = true),
+        Index(value = ["source", "document_id"], unique = true),
         Index(value = ["list_type"]),
     ]
 )
@@ -50,13 +50,12 @@ data class ItemEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "published_at") val publishedAt: Long? = null,
     /**
-     * Strapi v5 文档级 cuid (24 字符字符串).
+     * Strapi v5 文档级 cuid (24 字符字符串)，本地同步去重主键 (source + document_id 唯一索引)。
      *
-     * 与 [remoteId] (Strapi v4 数字主键) 并存:
-     * - [remoteId] 继续用于本地同步键 (Source + remoteId 唯一索引)
-     * - [documentId] 用于评论 / 关联表等 v5 接口
+     * 与 [remoteId] (数字行 id) 并存: draft-and-publish 重发会换数字 id,
+     * [remoteId] 仅作遗留信息保留; 同步 / 评论 / 关联表等接口统一使用 [documentId]。
      *
-     * v4 时代的数据没有该字段, 保持 null 即可, UI 走降级路径.
+     * v4 时代的数据没有该字段, 保持 null 即可, 同步与 UI 走降级路径。
      */
     @ColumnInfo(name = "document_id") val documentId: String? = null,
     /**

@@ -101,7 +101,7 @@ import java.io.InputStreamReader
         AuthCodeEntity::class,
         BlogArticleEntity::class,
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(Converters::class, SourceTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -157,8 +157,64 @@ abstract class AppDatabase : RoomDatabase() {
          * v3 raw-en 默认系统提示词英文化(原为中文), en 语言库需重刷。
          * v4 raw-en 新增英文 AI 对聊/互动模板, en 语言库需重刷。
          * v5 AI 互聊模板扁平化(删除模式/主题维度), 需重刷覆盖旧的分模式模板。
+         * v6 数据库 v2 迁移重建内容表(同步主键改 document_id), 系统预置 prompt 随表清空需重刷。
          */
-        private const val SYSTEM_PRESET_VERSION = 5
+        private const val SYSTEM_PRESET_VERSION = 6
+
+        /**
+         * v1 → v2：同步主键从 (source, remote_id) 全局切换为 (source, document_id)。
+         *
+         * Strapi v5 draft-and-publish 会让数字行 id 在重发后漂移，按 remoteId 去重失效。
+         * 内容表（item 及其资源/关联表）直接 DROP 重建：启动时版本变化已触发清同步水位
+         * + 全量重拉（见 ItemSyncManager.syncAllOnAppLaunch），内容会自愈重建；
+         * 用户数据表 item_user_state / item_click_stat 保留（死引用经 INNER JOIN 自然隐藏）。
+         * 系统预置 prompt 靠 SYSTEM_PRESET_VERSION 递增重刷。
+         *
+         * 建表 SQL 与实体定义严格一致（取自 Room 生成的 schemas/2.json createSql）。
+         */
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // 先删关联/资源表，最后删主表，避免 FK 引用悬空
+                db.execSQL("DROP TABLE IF EXISTS `item_category`")
+                db.execSQL("DROP TABLE IF EXISTS `item_agent_link`")
+                db.execSQL("DROP TABLE IF EXISTS `item_prompt_link`")
+                db.execSQL("DROP TABLE IF EXISTS `item_data_link`")
+                db.execSQL("DROP TABLE IF EXISTS `item_agent`")
+                db.execSQL("DROP TABLE IF EXISTS `item_prompt`")
+                db.execSQL("DROP TABLE IF EXISTS `item_data`")
+                db.execSQL("DROP TABLE IF EXISTS `category`")
+                db.execSQL("DROP TABLE IF EXISTS `item`")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `source` INTEGER NOT NULL DEFAULT 0, `list_type` INTEGER NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `url` TEXT NOT NULL, `mini_program_id` TEXT NOT NULL, `placeholder` TEXT NOT NULL, `icon_path` TEXT, `icon_name` TEXT, `recommend` INTEGER NOT NULL DEFAULT 0, `vip_level` INTEGER NOT NULL DEFAULT 0, `is_highlighted` INTEGER NOT NULL DEFAULT 0, `is_online` INTEGER NOT NULL DEFAULT 0, `is_ai` INTEGER NOT NULL DEFAULT 0, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, `published_at` INTEGER, `document_id` TEXT, `comment_count` INTEGER)")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_item_source_document_id` ON `item` (`source`, `document_id`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_item_list_type` ON `item` (`list_type`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `category` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `document_id` TEXT, `can_edit` INTEGER NOT NULL DEFAULT 0, `source` INTEGER NOT NULL DEFAULT 0, `updated_at` INTEGER NOT NULL)")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_category_name_source` ON `category` (`name`, `source`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item_agent` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `document_id` TEXT, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `description` TEXT, `header` TEXT, `body` TEXT, `prompt` TEXT, `updated_at` INTEGER NOT NULL)")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_item_agent_source_document_id` ON `item_agent` (`source`, `document_id`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item_prompt` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `document_id` TEXT, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `description` TEXT, `prompt` TEXT, `placeholder` TEXT, `templates` TEXT, `updated_at` INTEGER NOT NULL)")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_item_prompt_source_document_id` ON `item_prompt` (`source`, `document_id`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item_data` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `remote_id` INTEGER, `document_id` TEXT, `source` INTEGER NOT NULL DEFAULT 0, `title` TEXT NOT NULL, `kind` TEXT NOT NULL, `data` TEXT, `url` TEXT, `extra` TEXT, `size_bytes` INTEGER NOT NULL DEFAULT 0, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_item_data_source_document_id` ON `item_data` (`source`, `document_id`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_item_data_kind` ON `item_data` (`kind`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item_category` (`item_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`item_id`, `category_id`), FOREIGN KEY(`item_id`) REFERENCES `item`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`category_id`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_item_category_category_id` ON `item_category` (`category_id`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item_agent_link` (`item_id` INTEGER NOT NULL, `agent_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`item_id`), FOREIGN KEY(`item_id`) REFERENCES `item`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`agent_id`) REFERENCES `item_agent`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_item_agent_link_agent_id` ON `item_agent_link` (`agent_id`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item_prompt_link` (`item_id` INTEGER NOT NULL, `prompt_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`item_id`), FOREIGN KEY(`item_id`) REFERENCES `item`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`prompt_id`) REFERENCES `item_prompt`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_item_prompt_link_prompt_id` ON `item_prompt_link` (`prompt_id`)")
+
+                db.execSQL("CREATE TABLE IF NOT EXISTS `item_data_link` (`item_id` INTEGER NOT NULL, `data_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, PRIMARY KEY(`item_id`), FOREIGN KEY(`item_id`) REFERENCES `item`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`data_id`) REFERENCES `item_data`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_item_data_link_data_id` ON `item_data_link` (`data_id`)")
+            }
+        }
 
         fun loadRawPrompt(context: Context, resId: Int): String =
             context.resources.openRawResource(resId).bufferedReader(Charsets.UTF_8).use { it.readText() }.trim()
@@ -218,6 +274,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     currentDbName
                 )
+                    .addMigrations(MIGRATION_1_2)
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {

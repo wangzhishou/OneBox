@@ -26,7 +26,7 @@ class PromptManager @Inject constructor(
         // 重要：conversation.promptId 语义是 item_prompt.id（资源表主键），不是 item.id。
         // 之前把 promptId 当作 itemId 传给 getPromptRecordByItemId 是错误的本地命中路径。
         val localPromptId = conversation.promptId?.takeIf { it > 0 }
-        val remotePromptId = RemoteId.of(conversation.promptRemoteId)
+        val remotePromptId = RemoteId.of(conversation.promptDocumentId, conversation.promptRemoteId)
 
         if (localPromptId != null) {
             val localRecord = promptRepository.getPromptRecordById(localPromptId)
@@ -58,7 +58,7 @@ class PromptManager @Inject constructor(
 
     private fun PromptRecord.resolveRefreshRemotePromptId(): RemoteId? {
         if (source != Source.REMOTE) return null
-        val remoteId = RemoteId.of(remoteId) ?: return null
+        val remoteId = RemoteId.of(documentId, remoteId) ?: return null
         if (!shouldRefreshRemotePrompt(this)) return null
         return remoteId
     }

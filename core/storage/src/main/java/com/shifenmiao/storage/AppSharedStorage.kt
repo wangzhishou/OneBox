@@ -179,16 +179,16 @@ object AppSharedStorage {
         memoryCache.remove(key)
     }
 
-    fun saveItemsLastSyncAt(listType: Int, categoryId: Int?, timestamp: Long) {
-        val key = "${ITEMS_LAST_SYNC_AT}_${listType}_${categoryId ?: 0}"
+    fun saveItemsLastSyncAt(listType: Int, categoryDocumentId: String?, timestamp: Long) {
+        val key = "${ITEMS_LAST_SYNC_AT}_${listType}_${categoryDocumentId?.takeIf { it.isNotBlank() } ?: "0"}"
         val current = localeMmkv.decodeLong(key, 0L)
         if (timestamp > current) {
             localeMmkv.encode(key, timestamp)
         }
     }
 
-    fun loadItemsLastSyncAt(listType: Int, categoryId: Int?): Long {
-        val key = "${ITEMS_LAST_SYNC_AT}_${listType}_${categoryId ?: 0}"
+    fun loadItemsLastSyncAt(listType: Int, categoryDocumentId: String?): Long {
+        val key = "${ITEMS_LAST_SYNC_AT}_${listType}_${categoryDocumentId?.takeIf { it.isNotBlank() } ?: "0"}"
         return localeMmkv.decodeLong(key, 0L)
     }
 

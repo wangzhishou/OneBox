@@ -17,6 +17,7 @@ class DefaultPromptRepository @Inject constructor(
             PromptRecord(
                 id = entity.id,
                 remoteId = entity.remoteId,
+                documentId = entity.documentId,
                 prompt = DataBaseUtils.promptEntityToPrompt(entity),
                 source = entity.source,
                 updatedAtMillis = entity.updatedAt,
@@ -32,6 +33,7 @@ class DefaultPromptRepository @Inject constructor(
             PromptRecord(
                 id = entity.id,
                 remoteId = entity.remoteId,
+                documentId = entity.documentId,
                 prompt = DataBaseUtils.promptEntityToPrompt(entity),
                 source = entity.source,
                 updatedAtMillis = entity.updatedAt,

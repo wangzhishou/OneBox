@@ -18,6 +18,13 @@ interface PromptDao {
     @Query("SELECT * FROM item_prompt WHERE source = :source AND remote_id = :remoteId LIMIT 1")
     suspend fun getPromptByRemoteId(remoteId: Int, source: Source = Source.REMOTE): PromptEntity?
 
+    @Query("SELECT * FROM item_prompt WHERE source = :source AND document_id = :documentId LIMIT 1")
+    suspend fun getPromptByDocumentId(documentId: String, source: Source = Source.REMOTE): PromptEntity?
+
+    /** 命中老数据（按 remoteId 匹配）后回填 document_id；已有值时不覆盖。 */
+    @Query("UPDATE item_prompt SET document_id = :documentId WHERE id = :id AND (document_id IS NULL OR document_id = '')")
+    suspend fun backfillDocumentIdIfMissing(id: Int, documentId: String)
+
     @Query("SELECT * FROM item_prompt")
     suspend fun getAllPrompts(): List<PromptEntity>
 
@@ -109,11 +116,10 @@ interface PromptDao {
 
     @Transaction
     suspend fun upsertRemotePrompt(promptEntity: PromptEntity): Int {
-        val remoteId = promptEntity.remoteId
-        if (remoteId == null) {
-            return insertPrompt(promptEntity).toInt()
-        }
-        val existing = getPromptByRemoteId(remoteId = remoteId, source = promptEntity.source)
+        // 同步主键 documentId 优先，空时降级 remoteId（防御旧数据）
+        val existing = promptEntity.documentId?.takeIf { it.isNotBlank() }
+            ?.let { getPromptByDocumentId(documentId = it, source = promptEntity.source) }
+            ?: promptEntity.remoteId?.let { getPromptByRemoteId(remoteId = it, source = promptEntity.source) }
         return if (existing != null) {
             // 必须用 UPDATE，不能用 REPLACE：REPLACE 会先删除旧行再插入，
             // 触发 item_prompt_link.prompt_id 的 FK CASCADE，导致 link 被误删。
@@ -126,6 +132,8 @@ interface PromptDao {
                 templates = promptEntity.templates,
                 updateTime = promptEntity.updatedAt,
             )
+            promptEntity.documentId?.takeIf { it.isNotBlank() }
+                ?.let { backfillDocumentIdIfMissing(existing.id, it) }
             existing.id
         } else {
             insertPrompt(promptEntity.copy(id = 0)).toInt()

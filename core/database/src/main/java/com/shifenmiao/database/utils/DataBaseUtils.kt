@@ -24,6 +24,7 @@ object DataBaseUtils {
         return ItemAgentEntity(
             id = if (source == Source.REMOTE) 0 else agent.id,
             remoteId = remoteId.takeIf { source == Source.REMOTE },
+            documentId = agent.documentId?.takeIf { it.isNotBlank() },
             title = agent.title.orEmpty(),
             description = agent.description,
             body = agent.dynamicBody ?: "",
@@ -36,6 +37,7 @@ object DataBaseUtils {
         return Agent(
             id = it.id,
             remoteId = it.remoteId,
+            documentId = it.documentId,
             title = it.title,
             description = it.description,
             dynamicBody = it.body,
@@ -48,6 +50,7 @@ object DataBaseUtils {
         return ChatPrompt(
             id = it.id,
             remoteId = it.remoteId,
+            documentId = it.documentId,
             title = it.title,
             description = it.description,
             prompt = it.prompt,
@@ -65,6 +68,7 @@ object DataBaseUtils {
         return PromptEntity(
             id = if (source == Source.REMOTE) 0 else chatPrompt.id,
             remoteId = remoteId.takeIf { source == Source.REMOTE },
+            documentId = chatPrompt.documentId?.takeIf { it.isNotBlank() },
             title = chatPrompt.title.orEmpty(),
             description = chatPrompt.description,
             prompt = chatPrompt.prompt,
@@ -116,6 +120,7 @@ object DataBaseUtils {
         val url = dataItem.url
         return ItemDataEntity(
             remoteId = dataItem.id.takeIf { it > 0 },
+            documentId = dataItem.documentId?.takeIf { it.isNotBlank() },
             title = dataItem.title.orEmpty().ifBlank { dataItem.description.orEmpty().take(30) },
             kind = kind,
             data = if (kind == ItemDataKind.URL) null else data,
@@ -145,12 +150,14 @@ object DataBaseUtils {
                     canEdit = category.canEdit,
                     source = Source.REMOTE,
                     updatedAt = System.currentTimeMillis(),
+                    documentId = category.documentId?.takeIf { it.isNotBlank() },
                 )
             } ?: emptyList()
         ).apply {
             agent = dataItem.agent?.let { agent ->
                 ItemAgentEntity(
                     remoteId = (agent.remoteId ?: agent.id).takeIf { it > 0 },
+                    documentId = agent.documentId?.takeIf { it.isNotBlank() },
                     title = agent.title.orEmpty(),
                     description = agent.description,
                     header = ModelProvider.provideGson().toJson(agent.header),
@@ -162,6 +169,7 @@ object DataBaseUtils {
             prompt = dataItem.prompt?.let { prompt ->
                 PromptEntity(
                     remoteId = (prompt.remoteId ?: prompt.id).takeIf { it > 0 },
+                    documentId = prompt.documentId?.takeIf { it.isNotBlank() },
                     title = prompt.title.orEmpty(),
                     description = prompt.description,
                     prompt = prompt.prompt,

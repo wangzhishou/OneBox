@@ -178,7 +178,7 @@ class AgentComponent @AssistedInject constructor(
             val aiAgentUpdateInterval = RemoteConfigStorage.getRemoteConfig().aiAgentUpdateInterval
                 ?: Constants.AI_AGENT_UPDATE_INTERVAL
             val localAgentId = _agent.value.id.takeIf { it > 0 }
-            val remoteAgentId = RemoteId.of(_agent.value.remoteId)
+            val remoteAgentId = RemoteId.of(_agent.value.documentId, _agent.value.remoteId)
 
             if (localAgentId != null) {
                 // _agent.value.id 是本地 agent 资源主键，直接查资源行
@@ -190,7 +190,7 @@ class AgentComponent @AssistedInject constructor(
                         if (agentEntity.source == Source.LOCAL) {
                             showSuccessUI()
                         } else {
-                            val entityRemoteId = RemoteId.of(agentEntity.remoteId) ?: remoteAgentId
+                            val entityRemoteId = RemoteId.of(agentEntity.documentId, agentEntity.remoteId) ?: remoteAgentId
                             if (entityRemoteId != null &&
                                 agentEntity.updatedAt + aiAgentUpdateInterval < System.currentTimeMillis()
                             ) {
@@ -202,7 +202,7 @@ class AgentComponent @AssistedInject constructor(
                         }
                         return@launch
                     }
-                    val entityRemoteId = RemoteId.of(agentEntity.remoteId) ?: remoteAgentId
+                    val entityRemoteId = RemoteId.of(agentEntity.documentId, agentEntity.remoteId) ?: remoteAgentId
                     if (entityRemoteId != null) {
                         fetchData(entityRemoteId)
                     } else {
@@ -258,8 +258,10 @@ class AgentComponent @AssistedInject constructor(
         val currentAgent = _agent.value
         componentScope.launch(Dispatchers.IO) {
             val localAgentEntity = appDatabase.agentDao().getAgentById(currentAgent.id)
+            // documentId 是 Strapi v5 稳定定位符，优先带上；数字 id 重发后可能已失效
             val requestAgent = currentAgent.copy(
-                id = localAgentEntity?.remoteId ?: currentAgent.id
+                id = localAgentEntity?.remoteId ?: currentAgent.id,
+                documentId = localAgentEntity?.documentId ?: currentAgent.documentId,
             )
             val response = NetworkUtils.safeApiCall {
                 apiService.updateAgent(requestAgent)

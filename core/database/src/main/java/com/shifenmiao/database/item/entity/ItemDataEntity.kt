@@ -20,7 +20,7 @@ import com.shifenmiao.model.Source
 @Entity(
     tableName = "item_data",
     indices = [
-        Index(value = ["source", "remote_id"], unique = true),
+        Index(value = ["source", "document_id"], unique = true),
         Index(value = ["kind"]),
     ]
 )
@@ -29,6 +29,8 @@ data class ItemDataEntity(
     val id: Int = 0,
 
     @ColumnInfo(name = "remote_id") val remoteId: Int? = null,
+    /** 跟随所属 item 的 Strapi v5 documentId，同步去重主键；数字 [remoteId] 仅作遗留信息。 */
+    @ColumnInfo(name = "document_id") val documentId: String? = null,
     @ColumnInfo(name = "source", defaultValue = "0") val source: Source = Source.REMOTE,
 
     @ColumnInfo(name = "title") val title: String = "",

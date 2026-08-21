@@ -60,11 +60,10 @@ interface ItemAgentDao {
 
     @Transaction
     suspend fun upsertRemoteAgent(agent: ItemAgentEntity): Int {
-        val remoteId = agent.remoteId
-        if (remoteId == null) {
-            return insertAgent(agent).toInt()
-        }
-        val existing = getAgentByRemoteId(remoteId = remoteId, source = agent.source)
+        // 同步主键 documentId 优先，空时降级 remoteId（防御旧数据）
+        val existing = agent.documentId?.takeIf { it.isNotBlank() }
+            ?.let { getAgentByDocumentId(documentId = it, source = agent.source) }
+            ?: agent.remoteId?.let { getAgentByRemoteId(remoteId = it, source = agent.source) }
         return if (existing != null) {
             // 必须用 UPDATE，不能用 REPLACE：REPLACE 会先删除旧行再插入，
             // 触发 item_agent_link.agent_id 的 FK CASCADE，导致 link 被误删。
@@ -77,6 +76,8 @@ interface ItemAgentDao {
                 prompt = agent.prompt,
                 updateTime = agent.updatedAt,
             )
+            agent.documentId?.takeIf { it.isNotBlank() }
+                ?.let { backfillDocumentIdIfMissing(existing.id, it) }
             existing.id
         } else {
             insertAgent(agent.copy(id = 0)).toInt()
@@ -88,6 +89,13 @@ interface ItemAgentDao {
 
     @Query("SELECT * FROM item_agent WHERE source = :source AND remote_id = :remoteId LIMIT 1")
     suspend fun getAgentByRemoteId(remoteId: Int, source: Source = Source.REMOTE): ItemAgentEntity?
+
+    @Query("SELECT * FROM item_agent WHERE source = :source AND document_id = :documentId LIMIT 1")
+    suspend fun getAgentByDocumentId(documentId: String, source: Source = Source.REMOTE): ItemAgentEntity?
+
+    /** 命中老数据（按 remoteId 匹配）后回填 document_id；已有值时不覆盖。 */
+    @Query("UPDATE item_agent SET document_id = :documentId WHERE id = :id AND (document_id IS NULL OR document_id = '')")
+    suspend fun backfillDocumentIdIfMissing(id: Int, documentId: String)
 
     @Query("SELECT * FROM item_agent WHERE source = :source AND title = :title LIMIT 1")
     suspend fun getAgentByTitleAndSource(title: String, source: Source): ItemAgentEntity?

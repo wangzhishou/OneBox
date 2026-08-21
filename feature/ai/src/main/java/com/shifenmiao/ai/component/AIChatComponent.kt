@@ -393,8 +393,10 @@ open class AIChatComponent @AssistedInject internal constructor(
                 return@launch
             }
             val prompt = DataBaseUtils.promptEntityToPrompt(localPromptEntity)
+            // documentId 是 Strapi v5 稳定定位符，优先带上；数字 id 重发后可能已失效
             val requestPrompt = prompt.copy(
-                id = localPromptEntity.remoteId ?: promptId
+                id = localPromptEntity.remoteId ?: promptId,
+                documentId = localPromptEntity.documentId ?: prompt.documentId,
             )
             val response = NetworkUtils.safeApiCall {
                 apiService.updatePrompt(requestPrompt)

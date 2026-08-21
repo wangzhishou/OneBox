@@ -30,6 +30,8 @@ data class HomeTab(
 data class ChipFilter(
     val categoryId: Int?,
     val name: String,
+    /** 分类的 Strapi v5 documentId；同步过滤传它（本地自增 id 不是服务端 id）。 */
+    val documentId: String? = null,
 )
 
 internal val homeTabs: List<HomeTab> = listOf(

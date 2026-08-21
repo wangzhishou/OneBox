@@ -76,13 +76,14 @@ interface ApiService {
      * 增量同步条目。
      * @param updatedAfter ISO8601 时间戳，只拉取 updated_at > updatedAfter 的数据。
      * @param listType 列表类型，对应 list_types.type_id。
-     * @param category 分类 id，0 表示不过滤。
+     * @param category 分类 documentId（Strapi v5 稳定标识），null/空表示不过滤。
+     *   服务端兼容数字 id，但数字 id 重发后会漂移，客户端只应传 documentId。
      */
     @GET("api/items/sync")
     suspend fun fetchItemsSync(
         @Query("updatedAfter") updatedAfter: String?,
         @Query("listType") listType: Int,
-        @Query("category") category: Int? = null,
+        @Query("category") category: String? = null,
         @Query("page") page: Int = 1,
         @Query("pageSize") pageSize: Int = Constants.PAGE_SIZE,
         @Query("vipLevel") vipLevel: Int = TokenStorage.getUserVipLevel(),
@@ -129,9 +130,12 @@ interface ApiService {
     ): Call<List<StrapiImage>>
 
 
+    /**
+     * agent 详情。:id 服务端兼容数字 id 与 documentId，客户端统一传 documentId（空时降级数字 id）。
+     */
     @GET("api/agents/{id}")
     suspend fun fetchAgent(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): Response<AgentItem>
 
     @PUT("api/agents")
@@ -139,9 +143,12 @@ interface ApiService {
         @Body agent: Agent
     ): Response<AgentItem>
 
+    /**
+     * prompt 详情。:id 服务端兼容数字 id 与 documentId，客户端统一传 documentId（空时降级数字 id）。
+     */
     @GET("api/prompts/{id}")
     suspend fun fetchPrompt(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): Response<ChatPromptItem>
 
     @PUT("api/prompts")

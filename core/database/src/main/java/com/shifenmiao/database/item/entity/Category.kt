@@ -22,6 +22,8 @@ data class Category(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo(name = "name") val name: String,
+    /** Strapi v5 文档级 cuid；chip 过滤等服务端定位用，数字 id 重发后会漂移故不存。 */
+    @ColumnInfo(name = "document_id") val documentId: String? = null,
     @ColumnInfo(name = "can_edit", defaultValue = "0") val canEdit: Boolean = false,
     @ColumnInfo(name = "source", defaultValue = "0") val source: Source = Source.REMOTE,
     @ColumnInfo(name = "updated_at") val updatedAt: Long = System.currentTimeMillis(),
@@ -34,5 +36,6 @@ fun Category.toModel(): com.shifenmiao.model.Category {
         canEdit = this.canEdit,
         source = this.source,
         updatedAt = this.updatedAt,
+        documentId = this.documentId,
     )
 }

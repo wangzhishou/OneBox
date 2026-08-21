@@ -15,7 +15,7 @@ class DataItemRemoteDataSourceImpl(
 
     override suspend fun syncDataItems(
         listType: Int,
-        categoryId: Int?,
+        categoryDocumentId: String?,
         pageNumber: Int,
         updatedAfter: String?,
         pageSize: Int,
@@ -25,7 +25,7 @@ class DataItemRemoteDataSourceImpl(
             apiService.fetchItemsSync(
                 updatedAfter = updatedAfter,
                 listType = listType,
-                category = categoryId?.takeIf { it > 0 },
+                category = categoryDocumentId?.takeIf { it.isNotBlank() },
                 page = pageNumber,
                 pageSize = pageSize,
                 forceRefresh = forceRefresh,

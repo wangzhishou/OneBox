@@ -196,6 +196,7 @@ open class AIChatBaseComponent @AssistedInject internal constructor(
             template = result.prompt.templates,
             promptId = localPromptId ?: currentConversation.promptId,
             promptRemoteId = remotePromptId ?: currentConversation.promptRemoteId,
+            promptDocumentId = result.prompt.documentId ?: currentConversation.promptDocumentId,
             entryRefId = if (currentConversation.entryType == AIConversationEntryType.PROMPT && remotePromptId != null) {
                 remotePromptId.toString()
             } else {

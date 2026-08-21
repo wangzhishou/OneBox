@@ -61,6 +61,9 @@ interface ItemEntityDao {
     @Query("SELECT * FROM item WHERE source = :source AND remote_id = :remoteId LIMIT 1")
     suspend fun getItemByRemoteId(remoteId: Int, source: Source = Source.REMOTE): ItemEntity?
 
+    @Query("SELECT * FROM item WHERE source = :source AND document_id = :documentId LIMIT 1")
+    suspend fun getItemByDocumentId(documentId: String, source: Source = Source.REMOTE): ItemEntity?
+
     @Query("SELECT * FROM item WHERE title = :title LIMIT 1")
     suspend fun getItemByTitle(title: String): ItemEntity?
 
@@ -124,8 +127,14 @@ interface ItemEntityDao {
 
     @Transaction
     suspend fun upsertItemFromSync(item: ItemEntity): Int {
-        val remoteId = item.remoteId ?: return insertItem(item.copy(id = 0)).toInt()
-        val existing = getItemByRemoteId(remoteId = remoteId, source = item.source)
+        // 同步主键是 documentId（Strapi v5 稳定标识）；老数据没有 documentId 时降级 remoteId 匹配。
+        val documentId = item.documentId?.takeIf { it.isNotBlank() }
+        val remoteId = item.remoteId
+        val existing = when {
+            documentId != null -> getItemByDocumentId(documentId = documentId, source = item.source)
+            remoteId != null -> getItemByRemoteId(remoteId = remoteId, source = item.source)
+            else -> null
+        }
         return if (existing == null) {
             insertItem(item.copy(id = 0)).toInt()
         } else {
@@ -280,6 +289,7 @@ interface ItemEntityDao {
                 name = category.name,
                 canEdit = category.canEdit,
                 updatedAt = category.updatedAt,
+                documentId = category.documentId,
             )
             existing.id
         } else {
@@ -292,7 +302,8 @@ interface ItemEntityDao {
         UPDATE category SET
             name = :name,
             can_edit = :canEdit,
-            updated_at = :updatedAt
+            updated_at = :updatedAt,
+            document_id = COALESCE(:documentId, document_id)
         WHERE id = :id
         """
     )
@@ -301,6 +312,7 @@ interface ItemEntityDao {
         name: String,
         canEdit: Boolean,
         updatedAt: Long,
+        documentId: String?,
     ): Int
 
     @Update
@@ -320,6 +332,9 @@ interface ItemEntityDao {
     @Query("SELECT * FROM item_agent WHERE source = :source AND remote_id = :remoteId LIMIT 1")
     suspend fun getAgentByRemoteId(remoteId: Int, source: Source = Source.REMOTE): ItemAgentEntity?
 
+    @Query("SELECT * FROM item_agent WHERE source = :source AND document_id = :documentId LIMIT 1")
+    suspend fun getAgentByDocumentId(documentId: String, source: Source = Source.REMOTE): ItemAgentEntity?
+
     @Query("SELECT * FROM item_agent WHERE id = :id LIMIT 1")
     suspend fun getAgentById(id: Int): ItemAgentEntity?
 
@@ -328,6 +343,7 @@ interface ItemEntityDao {
         """
         UPDATE item_agent SET
             remote_id = :remoteId,
+            document_id = :documentId,
             source = :source,
             title = :title,
             description = :description,
@@ -341,6 +357,7 @@ interface ItemEntityDao {
     suspend fun updateAgentFromSync(
         id: Int,
         remoteId: Int?,
+        documentId: String?,
         source: Source,
         title: String,
         description: String?,
@@ -371,6 +388,9 @@ interface ItemEntityDao {
     @Query("SELECT * FROM item_prompt WHERE source = :source AND remote_id = :remoteId LIMIT 1")
     suspend fun getPromptByRemoteId(remoteId: Int, source: Source = Source.REMOTE): PromptEntity?
 
+    @Query("SELECT * FROM item_prompt WHERE source = :source AND document_id = :documentId LIMIT 1")
+    suspend fun getPromptByDocumentId(documentId: String, source: Source = Source.REMOTE): PromptEntity?
+
     @Query("SELECT * FROM item_prompt WHERE id = :id LIMIT 1")
     suspend fun getPromptById(id: Int): PromptEntity?
 
@@ -379,6 +399,7 @@ interface ItemEntityDao {
         """
         UPDATE item_prompt SET
             remote_id = :remoteId,
+            document_id = :documentId,
             source = :source,
             title = :title,
             description = :description,
@@ -392,6 +413,7 @@ interface ItemEntityDao {
     suspend fun updatePromptFromSync(
         id: Int,
         remoteId: Int?,
+        documentId: String?,
         source: Source,
         title: String,
         description: String?,
@@ -426,7 +448,7 @@ interface ItemEntityDao {
      * 2. agent / prompt / data 采用 upsert 语义：
      *    - 新资源非空时，直接 REPLACE 写入并重建 link；资源 id 变化时清理旧孤儿行。
      *    - 新资源为空时保留旧 link，避免上游列表接口未 populate 嵌套资源时误删。
-     *    - 真正的下架/删除由调用方根据 publishedAt 为空走 [deleteItemByRemoteId] 处理。
+     *    - 真正的下架/删除由调用方根据 publishedAt 为空走 [deleteItemByDocumentId] 处理。
      * 3. 写新分类 / 写新资源 / 写新 link。
      */
     @Transaction
@@ -452,11 +474,15 @@ interface ItemEntityDao {
         //    触发 item_agent_link.agent_id 的 FK CASCADE 把 link 一起删掉。
         val oldAgentId = getAgentLinkByItemId(localItemId)
         itemWithCategories.agent?.let { agent ->
-            val existing = agent.remoteId?.let { getAgentByRemoteId(it, agent.source) }
+            // 同步主键 documentId 优先，空时降级 remoteId（防御旧数据）
+            val existing = agent.documentId?.takeIf { it.isNotBlank() }
+                ?.let { getAgentByDocumentId(it, agent.source) }
+                ?: agent.remoteId?.let { getAgentByRemoteId(it, agent.source) }
             val localAgentId = if (existing != null) {
                 updateAgentFromSync(
                     id = existing.id,
                     remoteId = agent.remoteId,
+                    documentId = agent.documentId,
                     source = agent.source,
                     title = agent.title,
                     description = agent.description,
@@ -479,11 +505,15 @@ interface ItemEntityDao {
         // 3) 处理 prompt 资源
         val oldPromptId = getPromptLinkByItemId(localItemId)
         itemWithCategories.prompt?.let { prompt ->
-            val existing = prompt.remoteId?.let { getPromptByRemoteId(it, prompt.source) }
+            // 同步主键 documentId 优先，空时降级 remoteId（防御旧数据）
+            val existing = prompt.documentId?.takeIf { it.isNotBlank() }
+                ?.let { getPromptByDocumentId(it, prompt.source) }
+                ?: prompt.remoteId?.let { getPromptByRemoteId(it, prompt.source) }
             val localPromptId = if (existing != null) {
                 updatePromptFromSync(
                     id = existing.id,
                     remoteId = prompt.remoteId,
+                    documentId = prompt.documentId,
                     source = prompt.source,
                     title = prompt.title,
                     description = prompt.description,
@@ -693,9 +723,18 @@ interface ItemEntityDao {
     @Query("DELETE FROM item WHERE id = :itemId")
     suspend fun deleteItemByItemId(itemId: Int): Int
 
+    /**
+     * 按同步主键删除条目：documentId（Strapi v5 稳定标识）优先，
+     * documentId 为空时降级 remoteId（防御老客户端同步包 / 旧数据）。
+     */
     @Transaction
-    suspend fun deleteItemByRemoteId(remoteId: Int, source: Source = Source.REMOTE) {
-        val item = getItemByRemoteId(remoteId, source) ?: return
+    suspend fun deleteItemByDocumentId(documentId: String?, remoteId: Int? = null, source: Source = Source.REMOTE) {
+        val validDocumentId = documentId?.takeIf { it.isNotBlank() }
+        val item = when {
+            validDocumentId != null -> getItemByDocumentId(validDocumentId, source)
+            remoteId != null -> getItemByRemoteId(remoteId, source)
+            else -> null
+        } ?: return
         deleteItemById(item.id)
     }
 

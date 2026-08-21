@@ -140,6 +140,7 @@ object ItemScreenResolver {
                         conversation = Conversation(
                             promptId = localPromptId,
                             promptRemoteId = remotePromptId,
+                            promptDocumentId = prompt?.documentId,
                             appTitle = item.title,
                             placeholder = item.placeholder,
                             entryType = AIConversationEntryType.PROMPT,
@@ -169,6 +170,7 @@ object ItemScreenResolver {
                         agent = Agent(
                             id = localAgentId ?: 0,
                             remoteId = remoteAgentId,
+                            documentId = agent.documentId,
                             title = item.title,
                             description = item.description,
                             source = agent.source,

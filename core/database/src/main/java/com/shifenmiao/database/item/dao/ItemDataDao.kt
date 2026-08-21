@@ -29,10 +29,13 @@ interface ItemDataDao {
     """)
     fun observeByItemId(itemId: Int): Flow<ItemDataEntity?>
 
-    // ── 同步用：按 remote_id 查 ──
+    // ── 同步用：按 document_id 查（空时降级 remote_id）──
 
     @Query("SELECT * FROM item_data WHERE source = :source AND remote_id = :remoteId LIMIT 1")
     suspend fun getByRemoteId(remoteId: Int, source: Source = Source.REMOTE): ItemDataEntity?
+
+    @Query("SELECT * FROM item_data WHERE source = :source AND document_id = :documentId LIMIT 1")
+    suspend fun getByDocumentId(documentId: String, source: Source = Source.REMOTE): ItemDataEntity?
 
     @Query("SELECT * FROM item_data WHERE id = :id LIMIT 1")
     suspend fun getById(id: Int): ItemDataEntity?
@@ -81,13 +84,15 @@ interface ItemDataDao {
             created_at = :createdAt,
             updated_at = :updatedAt,
             source = :source,
-            remote_id = :remoteId
+            remote_id = :remoteId,
+            document_id = :documentId
         WHERE id = :id
         """
     )
     suspend fun updateFromSync(
         id: Int,
         remoteId: Int?,
+        documentId: String?,
         title: String,
         kind: com.shifenmiao.database.item.entity.ItemDataKind,
         data: String?,
@@ -99,15 +104,13 @@ interface ItemDataDao {
         source: Source,
     ): Int
 
-    /**
-     * 本地写入：插入或更新已有（按 remote_id 命中）。
-     * 返回资源 id。
-     */
+    /** 本地写入：插入或更新已有（documentId 优先、remote_id 降级命中）。返回资源 id。 */
     @Transaction
     suspend fun upsert(entity: ItemDataEntity): Int {
         val inserted = insertIgnore(entity)
         if (inserted != -1L) return inserted.toInt()
-        val existing = entity.remoteId?.let { getByRemoteId(it, entity.source) }
+        val existing = entity.documentId?.takeIf { it.isNotBlank() }?.let { getByDocumentId(it, entity.source) }
+            ?: entity.remoteId?.let { getByRemoteId(it, entity.source) }
             ?: return insertOrReplace(entity).toInt()
         updateContent(
             id = existing.id,
@@ -124,15 +127,16 @@ interface ItemDataDao {
 
     @Transaction
     suspend fun upsertFromSync(entity: ItemDataEntity): Int {
-        val existing = entity.remoteId?.let { remoteId ->
-            getByRemoteId(remoteId = remoteId, source = entity.source)
-        }
+        val existing = entity.documentId?.takeIf { it.isNotBlank() }
+            ?.let { getByDocumentId(documentId = it, source = entity.source) }
+            ?: entity.remoteId?.let { getByRemoteId(remoteId = it, source = entity.source) }
         if (existing == null) {
             return insertOrReplace(entity).toInt()
         }
         updateFromSync(
             id = existing.id,
             remoteId = entity.remoteId,
+            documentId = entity.documentId,
             title = entity.title,
             kind = entity.kind,
             data = entity.data,

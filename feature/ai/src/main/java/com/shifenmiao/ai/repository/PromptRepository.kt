@@ -25,6 +25,8 @@ interface PromptRepository {
 data class PromptRecord(
     val id: Int,
     val remoteId: Int?,
+    /** Strapi v5 documentId；远端回查 / 刷新定位优先于 [remoteId]。 */
+    val documentId: String? = null,
     val prompt: ChatPrompt,
     val source: Source,
     val updatedAtMillis: Long,

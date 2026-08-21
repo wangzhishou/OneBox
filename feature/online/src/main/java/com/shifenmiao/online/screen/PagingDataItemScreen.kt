@@ -94,6 +94,9 @@ fun PagingDataItemScreen(
         }
     }
 
+    // 同步过滤用分类 documentId（本地自增 id 不是服务端 id，仅用于本地分页查询）
+    val selectedChipDocumentId = chips.firstOrNull { it.categoryId == selectedChipId }?.documentId
+
     val flow = remember(listType.id, selectedChipId) {
         itemListComponent.getItemsFlow(listType, selectedChipId)
     }
@@ -124,7 +127,7 @@ fun PagingDataItemScreen(
     val initialLoadInProgress = userRefreshTriggered && isLoading
 
     val refreshState by itemListComponent
-        .refreshStateFlow(listType, selectedChipId)
+        .refreshStateFlow(listType, selectedChipDocumentId)
         .collectAsState()
     val isRefreshing = initialLoadInProgress || refreshState is SyncState.Loading
     val refreshFailedText = stringResource(R.string.ai_refresh_failed)
@@ -190,7 +193,7 @@ fun PagingDataItemScreen(
             onRefresh = {
                 if (ManualRefreshPolicy.canRefresh()) {
                     userRefreshTriggered = true
-                    itemListComponent.refreshData(listType, selectedChipId)
+                    itemListComponent.refreshData(listType, selectedChipDocumentId)
                     ManualRefreshPolicy.markRefreshed()
                 } else {
                     AppToastHost.showToast(refreshCooldownText)
