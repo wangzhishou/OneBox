@@ -22,7 +22,9 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
@@ -328,6 +330,9 @@ private fun EmptyOrErrorState(
                 pagingItems.loadState.mediator?.refresh !is LoadState.Loading -> Box(
             modifier = Modifier
                 .fillMaxSize()
+                // 空态没有可滚子布局,嵌套滚动传不到 PullToRefreshLayout,
+                // 导致下拉刷新手势失效;挂上 verticalScroll 让手势可达
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             contentAlignment = Alignment.Center,
         ) {
