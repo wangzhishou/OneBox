@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">Karamellglanz</string>
     <string name="gradient_style_ethereal">Seidennebel</string>
     <string name="gradient_style_neon_cyber">Cyber-Traum</string>
+    <string name="gradient_style_prism_flow">Prisma-Fluss</string>
     <string name="theme_preview_banner">Vorschau · Ungespeicherte Änderungen</string>
     <string name="theme_mode_editing_user">Bearbeitung · Speichern aktualisiert dieses Design</string>
     <string name="theme_mode_creating_new">Neues Design · Speichern erstellt ein neues Design</string>

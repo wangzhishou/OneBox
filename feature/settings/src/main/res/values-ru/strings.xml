@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">Карамельное сияние</string>
     <string name="gradient_style_ethereal">Шёлковый туман</string>
     <string name="gradient_style_neon_cyber">Кибер-мечта</string>
+    <string name="gradient_style_prism_flow">Призменный поток</string>
     <string name="theme_preview_banner">Предпросмотр · Несохранённые изменения</string>
     <string name="theme_mode_editing_user">Редактирование · Сохранение обновит эту тему</string>
     <string name="theme_mode_creating_new">Новая тема · Сохранение создаст новую тему</string>

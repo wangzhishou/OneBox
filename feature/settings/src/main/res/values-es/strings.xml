@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">Brillo de Caramelo</string>
     <string name="gradient_style_ethereal">Niebla de Seda</string>
     <string name="gradient_style_neon_cyber">Sueño Cibernético</string>
+    <string name="gradient_style_prism_flow">Flujo Prisma</string>
     <string name="theme_preview_banner">Vista previa · Cambios sin guardar</string>
     <string name="theme_mode_editing_user">Editando · Guardar actualizará este tema</string>
     <string name="theme_mode_creating_new">Nuevo tema · Guardar creará un tema nuevo</string>

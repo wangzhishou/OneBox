@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">Karamel Parıltısı</string>
     <string name="gradient_style_ethereal">İpek Sisi</string>
     <string name="gradient_style_neon_cyber">Siber Rüya</string>
+    <string name="gradient_style_prism_flow">Prizma Akışı</string>
     <string name="theme_preview_banner">Önizleniyor · Kaydedilmemiş Değişiklikler</string>
     <string name="theme_mode_editing_user">Düzenleniyor · Kaydetmek bu temayı güncelleyecek</string>
     <string name="theme_mode_creating_new">Yeni Tema · Kaydetmek yeni bir tema oluşturacak</string>

@@ -51,6 +51,7 @@
     <string name="gradient_style_warm_glow">Caramel Glow</string>
     <string name="gradient_style_ethereal">Silk Mist</string>
     <string name="gradient_style_neon_cyber">Cyber Dream</string>
+    <string name="gradient_style_prism_flow">Prism Flow</string>
 
     <!-- Preview status / edit-mode banner -->
     <string name="theme_preview_banner">Previewing · Unsaved Changes</string>

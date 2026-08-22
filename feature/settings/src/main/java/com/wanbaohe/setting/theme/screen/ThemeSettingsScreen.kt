@@ -766,6 +766,7 @@ private fun GradientBackgroundCard(
         GradientBackgroundStyle.WarmGlow to stringResource(R.string.gradient_style_warm_glow),
         GradientBackgroundStyle.Ethereal to stringResource(R.string.gradient_style_ethereal),
         GradientBackgroundStyle.NeonCyber to stringResource(R.string.gradient_style_neon_cyber),
+        GradientBackgroundStyle.PrismFlow to stringResource(R.string.gradient_style_prism_flow),
     )
     val selectedLabel = options.firstOrNull { it.first == gradientStyle }?.second ?: ""
 

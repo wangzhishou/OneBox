@@ -19,6 +19,11 @@ package com.t8rin.imagetoolbox.core.settings.domain.model
  * | WarmGlow    | 焦糖余晖——琥珀 + 珊瑚 + 奶油 + 暖金，黄昏暖光           |
  * | Ethereal    | 丝雾——跟随主题色的极淡渐变，清透宁静                    |
  * | NeonCyber   | 电子梦境——电青 + 紫罗兰 + 荧光绿 + 炽橙，高饱和幻境     |
+ * | PrismFlow   | 流光溢彩——Compose 1.12 MeshGradientPainter 真网格渐变,  |
+ * |             | 青/紫/品红/暖金九顶点双三次插值,色彩流体融合            |
+ *
+ * 渲染路径:Aurora~NeonCyber 与 PrismFlow 走官方 `MeshGradientPainter` 网格渲染
+ * (3×3 网格 + 双三次插值);Classic/Ethereal(跟随主题色)与 StarryNight(局部星点)保留光斑叠加。
  */
 enum class GradientBackgroundStyle(val ordinal2: Int) {
     Classic(0),
@@ -31,7 +36,8 @@ enum class GradientBackgroundStyle(val ordinal2: Int) {
     Lavender(7),
     WarmGlow(8),
     Ethereal(9),
-    NeonCyber(10);
+    NeonCyber(10),
+    PrismFlow(11);
 
     companion object {
         val entries2: List<GradientBackgroundStyle> = values().toList()

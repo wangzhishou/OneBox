@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">キャラメルの輝き</string>
     <string name="gradient_style_ethereal">シルクの霞</string>
     <string name="gradient_style_neon_cyber">サイバードリーム</string>
+    <string name="gradient_style_prism_flow">プリズムフロー</string>
     <string name="theme_preview_banner">プレビュー中・未保存の変更</string>
     <string name="theme_mode_editing_user">編集中・保存するとこのテーマが更新されます</string>
     <string name="theme_mode_creating_new">新規テーマ・保存すると新しいテーマが作成されます</string>

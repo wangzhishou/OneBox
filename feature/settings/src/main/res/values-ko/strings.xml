@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">카라멜 글로우</string>
     <string name="gradient_style_ethereal">실크 미스트</string>
     <string name="gradient_style_neon_cyber">사이버 드림</string>
+    <string name="gradient_style_prism_flow">프리즘 플로우</string>
     <string name="theme_preview_banner">미리보기 · 저장되지 않은 변경 사항</string>
     <string name="theme_mode_editing_user">편집 중 · 저장하면 이 테마가 업데이트됩니다</string>
     <string name="theme_mode_creating_new">새 테마 · 저장하면 새 테마가 생성됩니다</string>

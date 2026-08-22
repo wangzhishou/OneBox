@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">कैरामेल चमक</string>
     <string name="gradient_style_ethereal">रेशम धुंध</string>
     <string name="gradient_style_neon_cyber">साइबर सपना</string>
+    <string name="gradient_style_prism_flow">प्रिज़्म फ़्लो</string>
     <string name="theme_preview_banner">पूर्वावलोकन · असंग्रहीत परिवर्तन</string>
     <string name="theme_mode_editing_user">संपादन · सहेजने पर यह थीम अपडेट होगी</string>
     <string name="theme_mode_creating_new">नई थीम · सहेजने पर नई थीम बनेगी</string>

@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">Caramel Glow</string>
     <string name="gradient_style_ethereal">Silk Mist</string>
     <string name="gradient_style_neon_cyber">Cyber Dream</string>
+    <string name="gradient_style_prism_flow">Prism Flow</string>
     <string name="theme_preview_banner">Preview · Hindi Na-save na Mga Pagbabago</string>
     <string name="theme_mode_editing_user">Pag-edit · Ang pag-save ay mag-a-update sa temang ito</string>
     <string name="theme_mode_creating_new">Bagong Tema · Ang pag-save ay gagawa ng bagong tema</string>

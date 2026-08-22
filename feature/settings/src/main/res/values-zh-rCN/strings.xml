@@ -51,6 +51,7 @@
     <string name="gradient_style_warm_glow">焦糖余晖</string>
     <string name="gradient_style_ethereal">丝雾</string>
     <string name="gradient_style_neon_cyber">电子梦境</string>
+    <string name="gradient_style_prism_flow">流光溢彩</string>
 
     <!-- 预览状态 / 编辑模式标识条 -->
     <string name="theme_preview_banner">预览中 · 未保存更改</string>

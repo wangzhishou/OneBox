@@ -38,6 +38,7 @@
     <string name="gradient_style_warm_glow">Cahaya Karamel</string>
     <string name="gradient_style_ethereal">Kabut Sutra</string>
     <string name="gradient_style_neon_cyber">Mimpi Cyber</string>
+    <string name="gradient_style_prism_flow">Aliran Prisma</string>
     <string name="theme_preview_banner">Pratinjau · Perubahan Belum Disimpan</string>
     <string name="theme_mode_editing_user">Mengedit · Menyimpan akan memperbarui tema ini</string>
     <string name="theme_mode_creating_new">Tema Baru · Menyimpan akan membuat tema baru</string>
