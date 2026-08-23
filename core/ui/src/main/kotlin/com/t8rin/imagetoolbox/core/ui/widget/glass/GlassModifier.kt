@@ -14,12 +14,14 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.LayerOutsets
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.rememberGraphicsLayer
@@ -496,7 +498,21 @@ private fun Modifier.ultraFlatGlassDecoration(
         }
     }
 
-    return clip(shape).drawWithCache {
+    // Liquid Glass:顶部高光经 graphicsLayer + LayerOutsets 溢出组件上边界,
+    // 模拟真实玻璃边缘折光的外溢;非 liquid 模式零开销(不加离屏层)
+    val showOverflowGlow = isLiquidGlass &&
+        colors.rimLightColor.alpha >= MIN_VISIBLE_GLASS_DECORATION_ALPHA
+
+    return then(
+        if (showOverflowGlow) {
+            Modifier.liquidTopGlowOverflow(
+                glowColor = colors.rimLightColor,
+                isLight = isLight,
+            )
+        } else {
+            Modifier
+        }
+    ).clip(shape).drawWithCache {
         val outline: Outline = shape.createOutline(
             size = size,
             layoutDirection = layoutDirection,
@@ -663,6 +679,41 @@ private fun Modifier.ultraFlatGlassDecoration(
         }
     }
 }
+
+/**
+ * Liquid Glass 顶部溢出高光:`graphicsLayer` + [LayerOutsets] 把离屏层绘制边界
+ * 向上/左右各扩出一截,辉光从组件上缘溢出,模拟玻璃边缘折光。
+ * 注意会给元素引入一个离屏层,仅 liquid 模式启用。
+ */
+private fun Modifier.liquidTopGlowOverflow(
+    glowColor: Color,
+    isLight: Boolean,
+): Modifier = this
+    .graphicsLayer {
+        outsets = LayerOutsets(8.dp, 16.dp)
+    }
+    .drawWithCache {
+        val horizontalInset = 8.dp.toPx()
+        val verticalOutset = 16.dp.toPx()
+        val glowAlphaScale = if (isLight) 1.2f else 0.9f
+        val glowBrush = Brush.radialGradient(
+            0.0f to glowColor.copy(alpha = (glowColor.alpha * glowAlphaScale).coerceAtMost(1f)),
+            0.55f to glowColor.copy(alpha = glowColor.alpha * 0.5f),
+            1.0f to Color.Transparent,
+            center = androidx.compose.ui.geometry.Offset(size.width / 2f, -verticalOutset * 0.35f),
+            radius = max(size.width * 0.72f, 1f),
+        )
+        onDrawBehind {
+            drawRect(
+                brush = glowBrush,
+                topLeft = androidx.compose.ui.geometry.Offset(-horizontalInset, -verticalOutset),
+                size = androidx.compose.ui.geometry.Size(
+                    size.width + horizontalInset * 2,
+                    size.height * 0.45f + verticalOutset,
+                ),
+            )
+        }
+    }
 
 @Composable
 private fun Modifier.controlSurfaceDecoration(
