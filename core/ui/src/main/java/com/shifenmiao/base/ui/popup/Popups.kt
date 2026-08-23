@@ -106,7 +106,12 @@ fun MaskedPopup(
     ) {
         Dialog(
             onDismissRequest = onDismissRequest,
-            properties = DialogProperties(usePlatformDefaultWidth = false),
+            // Compose 1.13 窗口模糊:背景内容高斯模糊(API 31+ 生效,低版本忽略)
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false,
+                blurBehindRadius = 14.dp,
+                scrimAlpha = 0.30f,
+            ),
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),

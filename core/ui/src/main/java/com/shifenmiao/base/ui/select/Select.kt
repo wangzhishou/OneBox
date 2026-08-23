@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.shifenmiao.theme.AppTheme
 
 /**
@@ -27,9 +28,19 @@ fun SelectBaseTypeDialog(
     onDismiss: () -> Unit,
     onClick: (String, Int) -> Unit,
 ) {
-    Dialog(onDismissRequest = { onDismiss() }) {
+    // Compose 1.13 窗口模糊:blurBehind 糊整个背景,backgroundBlur 让卡片本身呈磨砂
+    // (均 API 31+ 生效,低版本忽略);卡片半透明才能透出 backgroundBlur
+    Dialog(
+        onDismissRequest = { onDismiss() },
+        properties = DialogProperties(
+            blurBehindRadius = 10.dp,
+            backgroundBlurRadius = 28.dp,
+            scrimAlpha = 0.32f,
+        ),
+    ) {
         Surface(
             shape = AppTheme.shapes.getMediumShape(),
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.82f),
         ) {
             Column(
                 modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
