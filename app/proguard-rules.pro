@@ -106,6 +106,12 @@
 -keep class com.shifenmiao.ai.agent.tool.builtin.**$*Params { *; }
 -keep class com.shifenmiao.ai.agent.tool.builtin.**$*ToolParams { *; }
 
+# Same Gson reflection hazard in feature-module AgentTools (e.g. teleprompter's
+# ManageTeleprompterParams, calendar's LunarCalendarArgs): keep their param/args
+# data classes so release builds can deserialize tool call arguments.
+-keep class com.wanbaohe.**.ai.tool.**$*Params { *; }
+-keep class com.wanbaohe.**.ai.tool.**$*Args { *; }
+
 # Keep top-level data classes deserialized by Gson at runtime.
 # R8's horizontal class merging can merge a public data class (e.g. AgentUserQuestionRequest)
 # with unrelated classes into a synthetic abstract class, breaking gson.fromJson(...::class.java).
