@@ -79,7 +79,9 @@ class FileTransferServer(
 
     override fun stop() {
         ChatWebSocket.removeGlobalMessageListener(globalWsListener)
-        serverScope.launch { kotlin.runCatching { db.close() } }
+        // 注意：db 是进程级共享单例（FeatureDatabase），生命周期由 App 管理，
+        // 这里不能 close——否则服务重启后 getInstanceOrCreate 仍返回已关闭的实例，
+        // 聊天消息持久化会静默失败。
         super.stop()
     }
 
