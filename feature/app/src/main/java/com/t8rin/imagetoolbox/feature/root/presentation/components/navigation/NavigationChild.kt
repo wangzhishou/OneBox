@@ -152,6 +152,8 @@ import com.t8rin.imagetoolbox.feature.load_net_image.presentation.LoadNetImageCo
 import com.t8rin.imagetoolbox.feature.load_net_image.presentation.screenLogic.LoadNetImageComponent
 import com.wanbaohe.markuplayers.presentation.MarkupLayersContent
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
+import com.wanbaohe.textcard.presentation.TextCardContent
+import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import com.t8rin.imagetoolbox.feature.mesh_gradients.presentation.MeshGradientsContent
 import com.t8rin.imagetoolbox.feature.mesh_gradients.presentation.screenLogic.MeshGradientsComponent
 import com.t8rin.imagetoolbox.feature.palette_tools.presentation.PaletteToolsContent
@@ -440,6 +442,11 @@ sealed interface NavigationChild {
     class MarkupLayers(private val component: MarkupLayersComponent) : NavigationChild {
         @Composable
         override fun Content() = MarkupLayersContent(component)
+    }
+
+    class TextCard(private val component: TextCardComponent) : NavigationChild {
+        @Composable
+        override fun Content() = TextCardContent(component)
     }
 
     class Base64Tools(private val component: Base64ToolsComponent) : NavigationChild {

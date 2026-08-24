@@ -80,6 +80,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineLoanCalculator
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarquee
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMeasurement
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinesweeper
@@ -296,6 +297,7 @@ object IconRegistry {
         "NoiseGeneration" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNoiseGeneration },
         "CollageMaker" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCollageMaker },
         "MarkupLayers" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkupLayers },
+        "TextCard" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickyNote },
         "Base64Tools" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBase64Tools },
         "ChecksumTools" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChecksumTools },
         "EditExif" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEditExif },

@@ -833,6 +833,14 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("TextCard")
+    data object TextCard : Screen(
+        id = 1097,
+        title = com.shifenmiao.core.R.string.text_card,
+        subtitle = com.shifenmiao.core.R.string.text_card_sub
+    )
+
+    @Serializable
     @SerialName("Base64Tools")
     data class Base64Tools(
         val uri: Uri? = null

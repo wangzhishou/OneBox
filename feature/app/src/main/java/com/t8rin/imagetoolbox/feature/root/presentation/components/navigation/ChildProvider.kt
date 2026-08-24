@@ -113,6 +113,7 @@ import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.Na
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.LimitResize
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.LoadNetImage
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.MarkupLayers
+import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.TextCard
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.MeshGradients
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.NoiseGeneration
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.PaletteTools
@@ -527,6 +528,14 @@ class ChildProvider @Inject constructor(
             imageFactories.get().markupLayersComponentFactory(
                 componentContext = componentContext,
                 initialUri = config.uri,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo
+            )
+        )
+
+        is Screen.TextCard -> TextCard(
+            imageFactories.get().textCardComponentFactory(
+                componentContext = componentContext,
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo
             )

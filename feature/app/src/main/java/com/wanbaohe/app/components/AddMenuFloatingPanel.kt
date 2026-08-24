@@ -49,6 +49,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
@@ -118,6 +119,7 @@ private fun addMenuItemContentColor(theme: AddMenuItemTheme): Color = when (them
  * @param onNavigateToHabitTracker  导航到习惯打卡
  * @param onNavigateToBlessingWall  导航到祈福墙
  * @param onNavigateToImageCreation 导航到图片创作
+ * @param onNavigateToTextCard 导航到文字卡片
  */
 @Composable
 fun AddMenuFloatingPanel(
@@ -136,6 +138,7 @@ fun AddMenuFloatingPanel(
     onNavigateToHabitTracker: () -> Unit,
     onNavigateToBlessingWall: () -> Unit,
     onNavigateToImageCreation: () -> Unit,
+    onNavigateToTextCard: () -> Unit,
 ) {
     val visibleState = remember { MutableTransitionState(false) }
     visibleState.targetState = expanded
@@ -303,6 +306,14 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToImageCreation()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickyNote,
+                    label = CoreR.string.nav_text_card,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToTextCard()
                     }
                 ),
             )

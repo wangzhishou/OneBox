@@ -1,0 +1,55 @@
+package com.wanbaohe.textcard.domain.render
+
+/**
+ * 卡片排版几何与颜色常量:预览(Compose)与导出(android Canvas)双端共用。
+ * 所有比例为相对画布宽度的比值。
+ */
+object CardLayout {
+
+    /** 内容区四周内边距(相对画布宽) */
+    const val CONTENT_PADDING_RATIO = 0.075f
+
+    /** 标题基础字号(相对画布宽) */
+    const val TITLE_BASE_SIZE_RATIO = 0.075f
+
+    /** 正文基础字号(相对画布宽) */
+    const val BODY_BASE_SIZE_RATIO = 0.032f
+
+    /** 正文基准 top(相对画布宽):文字块可独立拖动,正文不再跟随标题高度流动排布 */
+    const val BODY_BASE_TOP_RATIO = 0.30f
+
+    /** 装饰贴纸边长(相对画布宽) */
+    const val DECORATION_SIZE_RATIO = 0.24f
+
+    /** 装饰贴纸距角落的外边距(相对画布宽) */
+    const val DECORATION_MARGIN_RATIO = 0.05f
+
+    /** 卡片底色(背景层半透明时透出) */
+    const val CARD_BASE_COLOR = 0xFFFFFFFF
+
+    // ---- 纸张纹理 ----
+
+    /** 横线/方格纸线条颜色 */
+    const val PAPER_LINE_COLOR = 0xFFD9DEE8
+
+    /** 横线纸行距(相对画布宽) */
+    const val PAPER_LINE_SPACING_RATIO = 0.055f
+
+    /** 方格纸格距(相对画布宽) */
+    const val PAPER_GRID_SPACING_RATIO = 0.055f
+
+    /** 牛皮纸底色 / 边框色 */
+    const val PAPER_KRAFT_COLOR = 0xFFE3C9A0
+    const val PAPER_KRAFT_EDGE_COLOR = 0xFFC9A777
+
+    /** 信纸底色 / 顶部装饰条色 */
+    const val PAPER_LETTER_COLOR = 0xFFFBF6EC
+    const val PAPER_LETTER_ACCENT_COLOR = 0xFFD98C8C
+
+    /** 彩色纸底色 / 波点色 */
+    const val PAPER_COLORFUL_COLOR = 0xFFFFF3E8
+    const val PAPER_COLORFUL_DOT_COLOR = 0xFFF2C9A8
+
+    /** 纯色纸近似用的边框宽度(相对画布宽) */
+    const val PAPER_EDGE_WIDTH_RATIO = 0.012f
+}

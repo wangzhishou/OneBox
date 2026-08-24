@@ -29,6 +29,7 @@ import com.t8rin.imagetoolbox.feature.libraries_info.presentation.screenLogic.Li
 import com.t8rin.imagetoolbox.feature.limits_resize.presentation.screenLogic.LimitsResizeComponent
 import com.t8rin.imagetoolbox.feature.load_net_image.presentation.screenLogic.LoadNetImageComponent
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
+import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import com.t8rin.imagetoolbox.feature.mesh_gradients.presentation.screenLogic.MeshGradientsComponent
 import com.t8rin.imagetoolbox.feature.palette_tools.presentation.screenLogic.PaletteToolsComponent
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.router.screenLogic.PdfRouterComponent
@@ -96,6 +97,7 @@ class ImageNavigationFactories @Inject constructor(
     val weightResizeComponentFactory: WeightResizeComponent.Factory,
     val zipComponentFactory: ZipComponent.Factory,
     val markupLayersComponentFactory: MarkupLayersComponent.Factory,
+    val textCardComponentFactory: TextCardComponent.Factory,
     val meshGradientsComponentFactory: MeshGradientsComponent.Factory,
     val librariesInfoComponentFactory: LibrariesInfoComponent.Factory,
     val libraryDetailsComponentFactory: LibraryDetailsComponent.Factory,

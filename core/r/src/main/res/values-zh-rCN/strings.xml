@@ -1522,6 +1522,9 @@
     <string name="nav_check_in">打卡</string>
     <string name="nav_blessing">祈福</string>
     <string name="nav_image_creation">图片创作</string>
+    <string name="nav_text_card">文字卡片</string>
+    <string name="text_card">文字卡片</string>
+    <string name="text_card_sub">把文字语录生成精美的分享卡片</string>
 
     <!-- Game 2048 -->
     <string name="game_2048_title">2048</string>

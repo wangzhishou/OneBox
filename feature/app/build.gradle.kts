@@ -64,6 +64,7 @@ dependencies {
     implementation(projects.feature.collageMaker)
     implementation(projects.feature.librariesInfo)
     implementation(projects.feature.markupLayers)
+    implementation(projects.feature.textCard)
     implementation(projects.feature.base64Tools)
     implementation(projects.feature.checksumTools)
     implementation(projects.feature.meshGradients)

@@ -101,6 +101,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineLoadNetImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLoanCalculator
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarquee
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMeasurement
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinesweeper
@@ -200,6 +201,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Search
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Settings
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.SingleEdit
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.SvgMaker
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.TextCard
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.UserInfo
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.WallpapersExport
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.Watermarking
@@ -283,6 +285,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is CollageMaker -> "Collage_Maker"
     is LibrariesInfo -> "Libraries_Info"
     is MarkupLayers -> "Markup_Layers"
+    is TextCard -> "Text_Card"
     is Base64Tools -> "Base64_Tools"
     is ChecksumTools -> "Checksum_Tools"
     is MeshGradients -> "Mesh_Gradients"
@@ -396,6 +399,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is NoiseGeneration -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNoiseGeneration
     is CollageMaker -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCollageMaker
     is MarkupLayers -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkupLayers
+    is TextCard -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickyNote
     is Base64Tools -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBase64Tools
     is ChecksumTools -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChecksumTools
     is EditExif -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEditExif
@@ -672,6 +676,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Filter(),
                     Draw(),
                     MarkupLayers(),
+                    TextCard,
                     CollageMaker(),
                     ImageStitching(),
                     ImageStacking(),

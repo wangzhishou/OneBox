@@ -459,6 +459,10 @@ private fun QuickCreateFloatingPanel(
             onDismiss()
             rootComponent.navigateToNew(Screen.MarkupLayers())
         },
+        onNavigateToTextCard = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.TextCard)
+        },
     )
 }
 
