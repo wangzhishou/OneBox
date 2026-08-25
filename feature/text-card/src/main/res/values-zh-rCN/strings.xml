@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="textcard_title">文字卡片</string>
+    <string name="textcard_title">图文卡片</string>
     <string name="textcard_select_canvas_title">选择画布</string>
-    <string name="textcard_select_canvas_hint">选择合适的画布尺寸，开始创建你的文字卡片</string>
+    <string name="textcard_select_canvas_hint">选择合适的画布尺寸，开始创建你的图文卡片</string>
     <string name="textcard_canvas_xiaohongshu">小红书贴图</string>
     <string name="textcard_canvas_xiaohongshu_desc">适合发布到小红书</string>
     <string name="textcard_canvas_wechat">微信贴图号</string>
@@ -10,6 +10,7 @@
     <string name="textcard_start_create">开始制作</string>
     <string name="textcard_back">返回</string>
     <string name="textcard_save">保存</string>
+    <string name="textcard_tab_basic">基础</string>
     <string name="textcard_tab_background">纸张背景</string>
     <string name="textcard_tab_font">字体</string>
     <string name="textcard_tab_text_style">文字设置</string>
@@ -27,6 +28,7 @@
     <string name="textcard_mesh_edit_hint">拖动控制点调整位置，点按控制点修改颜色</string>
     <string name="textcard_custom_background">自定义背景</string>
     <string name="textcard_pick_from_gallery">从相册选择</string>
+    <string name="textcard_go_image_creation">没有合适的图？去图片创作做一张</string>
     <string name="textcard_background_opacity">背景透明度</string>
     <string name="textcard_font_panel_title">字体</string>
     <string name="textcard_font_default">默认字体</string>
@@ -39,8 +41,11 @@
     <string name="textcard_font_downloaded">已下载</string>
     <string name="textcard_text_settings">文字设置</string>
     <string name="textcard_text_target">当前编辑</string>
-    <string name="textcard_text_title_block">标题</string>
-    <string name="textcard_text_body_block">正文</string>
+    <string name="textcard_add_text">添加文字</string>
+    <string name="textcard_add_decoration">添加装饰</string>
+    <string name="textcard_delete_selected">删除选中元素</string>
+    <string name="textcard_new_block_content">新的文字</string>
+    <string name="textcard_block_fallback">文字</string>
     <string name="textcard_text_size">文字大小</string>
     <string name="textcard_letter_spacing">字间距</string>
     <string name="textcard_line_spacing">行间距</string>

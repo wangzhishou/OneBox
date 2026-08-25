@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -11,9 +12,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -51,23 +55,28 @@ import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import kotlin.math.roundToInt
 
 /**
- * Mesh 渐变编辑弹层(对标 MeshGradientPainter 交互):
- * 画布比例预览上叠加 3×3 控制点——拖动改位置(归一化 0..1)、点选后经
- * [ColorPickerSheet] 改颜色,「完成」一次性回填组件背景。
- * 控制点只在编辑界面显示,画布主页不显示。
+ * Mesh 渐变编辑弹层(对标官方 MeshGradient Explorer):
+ * 画布比例预览上叠加 3×3 控制点(带白边的彩色圆点,拖动改位置/点按改色),
+ * 底部预设色板行(点预设 = 以它为起点继续调),「完成」一次性回填组件背景。
+ * 控制点只在编辑界面显示,画布主页不显示。密度固定 3×3(2×2 patches)。
+ *
+ * [seed] 为进入时的初始网格:背景面板点任意预设色卡都会以该预设为初值进编辑器;
+ * null 时取当前背景渐变,再兜底默认预设。
  */
 @Composable
 fun MeshGradientEditorSheet(
     visible: Boolean,
     component: TextCardComponent,
+    seed: BackgroundSpec.Gradient? = null,
     onDismiss: () -> Unit,
 ) {
     if (!visible) return
 
-    // 编辑工作副本:进入时取当前渐变,无渐变则从默认预设起步
-    var points by remember {
+    // 编辑工作副本:seed > 当前背景渐变 > 默认预设
+    var points by remember(seed) {
         mutableStateOf(
-            (component.background as? BackgroundSpec.Gradient)?.points
+            seed?.points
+                ?: (component.background as? BackgroundSpec.Gradient)?.points
                 ?: GradientPresets.default.points
         )
     }
@@ -105,6 +114,7 @@ fun MeshGradientEditorSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
+                    .navigationBarsPadding()
             ) {
                 Text(
                     text = stringResource(R.string.textcard_mesh_edit_hint),
@@ -134,7 +144,38 @@ fun MeshGradientEditorSheet(
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
-                Row(modifier = Modifier.padding(vertical = 12.dp)) {
+                // 预设色板行:点预设 = 以它为起点继续调
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp)
+                ) {
+                    items(GradientPresets.all.size) { index ->
+                        val preset = GradientPresets.all[index]
+                        val isActive = points == preset.points
+                        Box(
+                            modifier = Modifier
+                                .size(56.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .meshGradient(
+                                    points = preset.toPointPairs(),
+                                    resolutionX = MESH_RESOLUTION,
+                                    resolutionY = MESH_RESOLUTION
+                                )
+                                .border(
+                                    width = if (isActive) 2.dp else 1.dp,
+                                    color = if (isActive) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else MaterialTheme.colorScheme.outlineVariant,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .clickable { points = preset.points }
+                        )
+                    }
+                }
+                // 操作 Bar 钉在最底部
+                Row(modifier = Modifier.padding(bottom = 12.dp)) {
                     ConfirmButton(
                         onClick = {
                             component.updateBackground(BackgroundSpec.Gradient(points))

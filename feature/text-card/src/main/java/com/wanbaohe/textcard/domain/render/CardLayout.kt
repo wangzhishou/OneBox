@@ -18,6 +18,9 @@ object CardLayout {
     /** 正文基准 top(相对画布宽):文字块可独立拖动,正文不再跟随标题高度流动排布 */
     const val BODY_BASE_TOP_RATIO = 0.30f
 
+    /** 新增文字块的基准 top 递增步进(相对画布宽) */
+    const val NEW_BLOCK_STEP_RATIO = 0.12f
+
     /** 装饰贴纸边长(相对画布宽) */
     const val DECORATION_SIZE_RATIO = 0.24f
 

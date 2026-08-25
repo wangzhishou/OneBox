@@ -3,6 +3,7 @@ package com.wanbaohe.textcard.data.font
 import android.content.Context
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
+import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.domain.FontCatalog
 import com.wanbaohe.textcard.domain.model.DownloadableFont
 import com.wanbaohe.textcard.domain.model.DownloadableFonts
@@ -47,44 +48,63 @@ internal class FontDownloadStore @Inject constructor(
         return null
     }
 
+    /**
+     * 下载字体并产出 FontType.File:多镜像按序回退,全部失败才报错
+     * (逐个记录失败 URL 与原因,应对单一 CDN 证书校验失败的环境)。
+     * [onProgress] 回调 0..1 进度(无 Content-Length 时只回调 0 与 1)。
+     */
     override suspend fun download(
         font: DownloadableFont,
         onProgress: (Float) -> Unit,
     ): Result<FontType.File> = withContext(dispatchersHolder.ioDispatcher) {
-        runCatching {
-            onProgress(0f)
-            fontsDir.mkdirs()
-            val target = File(fontsDir, font.fileName)
-            val temp = File(fontsDir, "${font.fileName}.part")
+        var lastFailure: Throwable = IllegalStateException("no mirror available")
+        for (url in font.urls) {
+            val result = downloadFrom(url, font, onProgress)
+            if (result.isSuccess) return@withContext result
+            lastFailure = result.exceptionOrNull() ?: lastFailure
+            lastFailure.makeLog("TextCardFontDownload mirror=$url")
+        }
+        Result.failure(lastFailure)
+    }
 
-            client.newCall(Request.Builder().url(font.url).build()).execute().use { response ->
-                check(response.isSuccessful) { "HTTP ${response.code}" }
-                val body = response.body
-                val total = body.contentLength()
-                body.byteStream().use { input ->
-                    temp.outputStream().use { output ->
-                        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                        var copied = 0L
-                        while (true) {
-                            val read = input.read(buffer)
-                            if (read < 0) break
-                            output.write(buffer, 0, read)
-                            copied += read
-                            if (total > 0) onProgress(copied.toFloat() / total)
-                        }
+    /** 从单个镜像下载:成功则落盘转正并登记清单 */
+    private fun downloadFrom(
+        url: String,
+        font: DownloadableFont,
+        onProgress: (Float) -> Unit,
+    ): Result<FontType.File> = runCatching {
+        onProgress(0f)
+        fontsDir.mkdirs()
+        val target = File(fontsDir, font.fileName)
+        val temp = File(fontsDir, "${font.fileName}.part")
+
+        client.newCall(Request.Builder().url(url).build()).execute().use { response ->
+            check(response.isSuccessful) { "HTTP ${response.code}" }
+            val body = response.body
+            val total = body.contentLength()
+            body.byteStream().use { input ->
+                temp.outputStream().use { output ->
+                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                    var copied = 0L
+                    while (true) {
+                        val read = input.read(buffer)
+                        if (read < 0) break
+                        output.write(buffer, 0, read)
+                        copied += read
+                        if (total > 0) onProgress(copied.toFloat() / total)
                     }
                 }
             }
-            check(temp.length() > 0) { "empty font file" }
-            if (target.exists()) target.delete()
-            check(temp.renameTo(target)) { "rename failed" }
-
-            addDownloadedId(font.id)
-            onProgress(1f)
-            FontType.File(target.absolutePath)
-        }.onFailure {
-            File(fontsDir, "${font.fileName}.part").delete()
         }
+        check(temp.length() > 0) { "empty font file" }
+        if (target.exists()) target.delete()
+        check(temp.renameTo(target)) { "rename failed" }
+
+        addDownloadedId(font.id)
+        onProgress(1f)
+        FontType.File(target.absolutePath)
+    }.onFailure {
+        File(fontsDir, "${font.fileName}.part").delete()
     }
 
     // ---------------- 已下载清单(JSON 文件持久化) ----------------

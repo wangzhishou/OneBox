@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
@@ -31,11 +32,15 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
+import com.wanbaohe.textcard.presentation.editor.panels.BasicPanel
 import com.wanbaohe.textcard.presentation.editor.panels.FontPanel
 import com.wanbaohe.textcard.presentation.editor.panels.LayersPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
@@ -73,8 +78,12 @@ fun TextCardEditorScreen(
     BaseScreen(
         title = stringResource(R.string.textcard_title),
         onGoBack = onBack,
+        // 顶栏透明,透出画布背景,与选择画布页观感一致
+        colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors().copy(
+            containerColor = androidx.compose.ui.graphics.Color.Transparent,
+            scrolledContainerColor = androidx.compose.ui.graphics.Color.Transparent
+        ),
         showNavigationBarsPadding = false,
-        supportGlassEffect = false,
         content = {
             Box(
                 modifier = Modifier
@@ -86,13 +95,19 @@ fun TextCardEditorScreen(
                 component.renderState()?.let { state ->
                     CardCanvasPreview(
                         state = state,
-                        onTextClick = { blockId ->
-                            component.selectTextBlock(blockId)
-                            showTextEditSheet = true
+                        selectedElementId = component.selectedElementId,
+                        onElementTap = { id ->
+                            // 再点已选中的文字块 = 打开编辑弹窗;否则仅选中
+                            if (component.selectedElementId == id &&
+                                component.textBlocks.any { it.id == id }
+                            ) {
+                                showTextEditSheet = true
+                            }
+                            component.selectElement(id)
                         },
-                        onTextDrag = component::updateTextBlockOffset,
+                        onElementTransform = component::setElementTransform,
+                        onCanvasTap = { component.selectElement(null) },
                         onBackgroundDrag = component::updateBackgroundImageOffset,
-                        onDecorationDrag = component::updateDecorationOffset,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -100,9 +115,7 @@ fun TextCardEditorScreen(
 
             EditorBottomBar(
                 component = component,
-                onSaveClick = {
-                    component.saveCard(component::parseSaveResult)
-                }
+                onSaveClick = component::saveCard
             )
         }
     )
@@ -175,15 +188,19 @@ private fun EditorPanelSheet(
                     .heightIn(max = 480.dp)
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp, vertical = 8.dp)
+                    // 内容不被系统导航条遮挡(sheet 自身只在标题+确认栏模式下处理 nav padding)
+                    .navigationBarsPadding()
             ) {
                 when (activePanel) {
+                    EditorPanel.Basic -> BasicPanel(
+                        component = component,
+                        onAddDecoration = onEditDecoration
+                    )
+
                     EditorPanel.Background -> BackgroundPanel(component)
                     EditorPanel.Font -> FontPanel(component)
                     EditorPanel.TextStyle -> TextStylePanel(component)
-                    EditorPanel.Layers -> LayersPanel(
-                        component = component,
-                        onEditDecoration = onEditDecoration
-                    )
+                    EditorPanel.Layers -> LayersPanel(component = component)
 
                     null -> Unit
                 }
@@ -192,32 +209,40 @@ private fun EditorPanelSheet(
     )
 }
 
-/** 底部常驻栏(设计稿 01):4 个面板 Tab + 保存按钮 */
+/** 底部常驻栏(设计稿 01):4 个面板 Tab + 保存按钮,玻璃底栏 */
 @Composable
 private fun EditorBottomBar(
     component: TextCardComponent,
     onSaveClick: () -> Unit,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    GlassSurface(
+        style = GlassStyle.Regular,
+        shape = RoundedCornerShape(24.dp),
         modifier = Modifier
             .fillMaxWidth()
             .navigationBarsPadding()
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
-        EditorPanel.entries.forEach { panel ->
-            BottomTab(
-                panel = panel,
-                active = component.activePanel == panel,
-                onClick = { component.togglePanel(panel) },
-                modifier = Modifier.weight(1f)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 6.dp)
+        ) {
+            EditorPanel.entries.forEach { panel ->
+                BottomTab(
+                    panel = panel,
+                    active = component.activePanel == panel,
+                    onClick = { component.togglePanel(panel) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+            ConfirmButton(
+                text = stringResource(R.string.textcard_save),
+                onClick = onSaveClick,
+                modifier = Modifier.padding(start = 8.dp)
             )
         }
-        ConfirmButton(
-            text = stringResource(R.string.textcard_save),
-            onClick = onSaveClick,
-            modifier = Modifier.padding(start = 8.dp)
-        )
     }
 }
 
@@ -252,6 +277,7 @@ private fun BottomTab(
 }
 
 private fun EditorPanel.icon(): ImageVector = when (this) {
+    EditorPanel.Basic -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineContentCut
     EditorPanel.Background -> MaterialIcons.Outlined.CropSquare
     EditorPanel.Font -> MaterialIcons.Outlined.TextFields
     EditorPanel.TextStyle -> MaterialIcons.Outlined.Tune
@@ -259,6 +285,7 @@ private fun EditorPanel.icon(): ImageVector = when (this) {
 }
 
 private fun EditorPanel.labelRes(): Int = when (this) {
+    EditorPanel.Basic -> R.string.textcard_tab_basic
     EditorPanel.Background -> R.string.textcard_tab_background
     EditorPanel.Font -> R.string.textcard_tab_font
     EditorPanel.TextStyle -> R.string.textcard_tab_text_style

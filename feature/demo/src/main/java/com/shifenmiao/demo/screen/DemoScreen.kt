@@ -744,7 +744,7 @@ private data class DemoNavigationEntry(
 )
 
 private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
-    DemoNavigationEntry("文字卡片", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickyNote) { Screen.TextCard },
+    DemoNavigationEntry("图文卡片", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickyNote) { Screen.TextCard },
     DemoNavigationEntry("远程存储", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudStorage) { Screen.CloudStorage() },
     DemoNavigationEntry("海拔仪", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAltitude) { Screen.Altitude },
     DemoNavigationEntry("网络测速", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSpeedTest) { Screen.SpeedTest },

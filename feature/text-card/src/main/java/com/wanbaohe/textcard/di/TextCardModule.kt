@@ -1,9 +1,11 @@
 package com.wanbaohe.textcard.di
 
 import com.wanbaohe.textcard.data.font.FontDownloadStore
+import com.wanbaohe.textcard.data.paper.RemotePaperRepository
 import com.wanbaohe.textcard.data.render.AndroidTextCardExportRenderer
 import com.wanbaohe.textcard.domain.FontCatalog
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
+import com.wanbaohe.textcard.domain.TextCardPaperRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,4 +24,9 @@ internal interface TextCardModule {
     fun fontCatalog(
         impl: FontDownloadStore
     ): FontCatalog
+
+    @Binds
+    fun paperRepository(
+        impl: RemotePaperRepository
+    ): TextCardPaperRepository
 }

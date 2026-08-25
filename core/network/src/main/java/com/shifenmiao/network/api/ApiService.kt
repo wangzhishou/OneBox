@@ -20,6 +20,7 @@ import com.shifenmiao.network.model.comment.CreateCommentRequest
 import com.shifenmiao.network.model.comment.UpdateCommentRequest
 import com.shifenmiao.model.common.AnnouncementItem
 import com.shifenmiao.model.common.DataList
+import com.shifenmiao.network.model.textcard.TextCardPaperListResponse
 import com.shifenmiao.model.common.DataObject
 import com.shifenmiao.model.common.Status
 import com.shifenmiao.model.moderation.SensitiveWordCheckRequest
@@ -183,6 +184,10 @@ interface ApiService {
     suspend fun checkUpdate(
         @Query("filters[versionCode][\$gt]") versionCode: Int = 100
     ): Response<UpdateLogs>
+
+    /** 图文卡片远程纸张背景(Strapi text-card-paper,按 sort 升序) */
+    @GET("api/text-card-papers?populate=image&sort=sort:asc")
+    suspend fun fetchTextCardPapers(): Response<TextCardPaperListResponse>
 
     @GET("api/categories")
     suspend fun fetchCategories(

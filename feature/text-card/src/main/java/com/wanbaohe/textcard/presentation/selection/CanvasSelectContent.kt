@@ -1,7 +1,6 @@
 package com.wanbaohe.textcard.presentation.selection
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,11 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CanvasSpec
+import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.GradientPresets
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.presentation.editor.CardCanvasPreview
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 
@@ -89,19 +91,23 @@ private fun CanvasCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    GlassCard(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(
+            width = if (selected) 2.dp else 1.dp,
+            color = if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else MaterialTheme.colorScheme.outlineVariant
+        ),
         modifier = modifier
-            .border(
-                width = if (selected) 2.dp else 1.dp,
-                color = if (selected) {
-                    MaterialTheme.colorScheme.primary
-                } else MaterialTheme.colorScheme.outlineVariant,
-                shape = RoundedCornerShape(20.dp)
-            )
-            .clickable(onClick = onClick)
-            .padding(16.dp)
     ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
         Text(
             text = stringResource(spec.titleRes),
             style = MaterialTheme.typography.titleMedium,
@@ -114,19 +120,28 @@ private fun CanvasCard(
             modifier = Modifier.padding(top = 4.dp, bottom = 12.dp)
         )
         // mini 预览:默认渐变 + 默认文案,与进入编辑后的初始卡片一致
+        val previewBlocks = listOf(
+            TextBlock(
+                content = stringResource(R.string.textcard_default_title),
+                baseSizeRatio = CardLayout.TITLE_BASE_SIZE_RATIO,
+                baseTopRatio = CardLayout.CONTENT_PADDING_RATIO,
+                isBold = true
+            ),
+            TextBlock(
+                content = stringResource(R.string.textcard_default_body),
+                baseSizeRatio = CardLayout.BODY_BASE_SIZE_RATIO,
+                baseTopRatio = CardLayout.BODY_BASE_TOP_RATIO
+            )
+        )
         CardCanvasPreview(
             state = TextCardRenderState(
                 canvas = spec,
                 background = GradientPresets.default,
-                title = TextBlock(
-                    content = stringResource(R.string.textcard_default_title),
-                    isBold = true
-                ),
-                body = TextBlock(
-                    content = stringResource(R.string.textcard_default_body)
-                )
+                textBlocks = previewBlocks,
+                layers = previewBlocks.map {
+                    ElementLayer(it.id, ElementLayer.Kind.Text)
+                }
             ),
-            onTextClick = {},
             cornerRadius = 12.dp,
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,5 +153,6 @@ private fun CanvasCard(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 12.dp)
         )
+        }
     }
 }

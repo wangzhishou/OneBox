@@ -19,8 +19,10 @@ import com.t8rin.imagetoolbox.core.utils.toTypeface
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
+import com.wanbaohe.textcard.domain.model.DecorationSpec
+import com.wanbaohe.textcard.domain.model.ElementLayer
+import com.wanbaohe.textcard.domain.model.ElementTransform
 import com.wanbaohe.textcard.domain.model.TextBlock
-import com.wanbaohe.textcard.domain.model.TextCardLayer
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
@@ -30,8 +32,10 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 /**
- * 文字卡片导出:Bitmap.createBitmap(画布规格) → 依次按图层 z 序画
- * 背景(纹理/渐变/图片居中裁剪,整体乘 backgroundOpacity alpha)→ 文字(StaticLayout)→ 装饰(SVG 解码)。
+ * 图文卡片导出:Bitmap.createBitmap(画布规格) → 背景(纹理/mesh 渐变/图片居中裁剪,
+ * 整体乘 backgroundOpacity alpha,钉在最底)→ 按元素图层 z 序逐层画文字(StaticLayout)/
+ * 装饰(SVG 解码),每层套用 offset + scale + rotation 变换(translate→rotate→scale,
+ * 同 markup-layers LayerExportDispatcher 的顺序,绕内容中心)。
  * 几何/颜色常量与预览 Compose 侧共用 [CardLayout]。
  */
 class AndroidTextCardExportRenderer @Inject internal constructor(
@@ -46,11 +50,18 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         val canvas = Canvas(bitmap)
         canvas.drawColor(CardLayout.CARD_BASE_COLOR.toInt())
 
+        if (state.backgroundVisible) {
+            drawBackground(canvas, state, width, height)
+        }
         state.visibleLayers.forEach { layer ->
-            when (layer) {
-                is TextCardLayer.Background -> drawBackground(canvas, state, width, height)
-                is TextCardLayer.Text -> drawTextBlocks(canvas, state, width, height)
-                is TextCardLayer.Decoration -> drawDecoration(canvas, state, width, height)
+            when (layer.kind) {
+                ElementLayer.Kind.Text -> state.blockOf(layer.elementId)?.let { block ->
+                    drawTextBlock(canvas, block, width, height)
+                }
+
+                ElementLayer.Kind.Decoration -> state.decorationOf(layer.elementId)?.let {
+                    drawDecoration(canvas, it, width, height)
+                }
             }
         }
         return bitmap
@@ -148,53 +159,32 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
 
     // ---------------- 文字层 ----------------
 
-    /** 两个文字块独立定位:基准位置 + 用户拖动的归一化偏移,与预览侧一致 */
-    private fun drawTextBlocks(
-        canvas: Canvas,
-        state: TextCardRenderState,
-        width: Int,
-        height: Int,
-    ) {
-        val padding = width * CardLayout.CONTENT_PADDING_RATIO
-        val contentWidth = (width - padding * 2).toInt().coerceAtLeast(1)
-
-        drawTextBlock(
-            canvas = canvas,
-            block = state.title,
-            baseSize = width * CardLayout.TITLE_BASE_SIZE_RATIO,
-            left = padding + state.title.offsetX * width,
-            top = padding + state.title.offsetY * height,
-            width = contentWidth
-        )
-        drawTextBlock(
-            canvas = canvas,
-            block = state.body,
-            baseSize = width * CardLayout.BODY_BASE_SIZE_RATIO,
-            left = padding + state.body.offsetX * width,
-            top = width * CardLayout.BODY_BASE_TOP_RATIO + state.body.offsetY * height,
-            width = contentWidth
-        )
-    }
-
-    /** 绘制单个文字块,返回块高度。StaticLayout 用法照搬 markup-layers。 */
+    /**
+     * 绘制单个文字块:基准位置(baseTopRatio)+ 归一化偏移,再绕内容中心
+     * 套 scale/rotation(translate→rotate→scale,同 LayerExportDispatcher 顺序)。
+     * StaticLayout 用法照搬 markup-layers。
+     */
     private fun drawTextBlock(
         canvas: Canvas,
         block: TextBlock,
-        baseSize: Float,
-        left: Float,
-        top: Float,
         width: Int,
-    ): Float {
-        if (block.content.isBlank()) return 0f
+        height: Int,
+    ) {
+        if (block.content.isBlank()) return
+
+        val padding = width * CardLayout.CONTENT_PADDING_RATIO
+        val contentWidth = (width - padding * 2).toInt().coerceAtLeast(1)
+        val left = padding + block.offsetX * width
+        val top = width * block.baseTopRatio + block.offsetY * height
 
         val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = block.color.toInt()
-            textSize = baseSize * block.sizeScale
+            textSize = width * block.baseSizeRatio * block.sizeScale
             typeface = resolveTypeface(block)
             letterSpacing = block.letterSpacingEm
         }
         val layout = StaticLayout.Builder
-            .obtain(block.content, 0, block.content.length, paint, width)
+            .obtain(block.content, 0, block.content.length, paint, contentWidth)
             .setAlignment(block.alignment.toLayoutAlignment())
             .setLineSpacing(0f, block.lineSpacingMultiplier)
             .setIncludePad(false)
@@ -202,9 +192,24 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
 
         canvas.save()
         canvas.translate(left, top)
+        canvas.applyElementTransform(block, contentWidth.toFloat(), layout.height.toFloat())
         layout.draw(canvas)
         canvas.restore()
-        return layout.height.toFloat()
+    }
+
+    /** 绕内容中心应用 scale/rotation(预览侧 graphicsLayer transformOrigin=Center 等价) */
+    private fun Canvas.applyElementTransform(
+        transform: ElementTransform,
+        contentWidth: Float,
+        contentHeight: Float,
+    ) {
+        if (transform.rotation == 0f && transform.scale == 1f) return
+        val centerX = contentWidth / 2f
+        val centerY = contentHeight / 2f
+        translate(centerX, centerY)
+        if (transform.rotation != 0f) rotate(transform.rotation)
+        if (transform.scale != 1f) scale(transform.scale, transform.scale)
+        translate(-centerX, -centerY)
     }
 
     /** 粗斜处理与 markup-layers TextLayerExportRenderer 一致:Typeface.create(base, style) */
@@ -224,14 +229,14 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
 
     // ---------------- 装饰层 ----------------
 
+    /** 单个装饰贴纸:SVG 解码后按 offset 定位,绕中心套 scale/rotation */
     private fun drawDecoration(
         canvas: Canvas,
-        state: TextCardRenderState,
+        decoration: DecorationSpec,
         width: Int,
         height: Int,
     ) {
-        val emojiIndex = state.decoration.emojiIndex ?: return
-        val assetPath = EmojiAssets.pathAt(emojiIndex, context) ?: return
+        val assetPath = EmojiAssets.pathAt(decoration.emojiIndex, context) ?: return
         val size = width * CardLayout.DECORATION_SIZE_RATIO
 
         // render 非挂起安全:decode 走 runBlocking,调用方(组件)已在 IO 线程
@@ -242,14 +247,18 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
             )
         } ?: return
 
-        val left = state.decoration.offsetX * width
-        val top = state.decoration.offsetY * height
+        val left = decoration.offsetX * width
+        val top = decoration.offsetY * height
+        canvas.save()
+        canvas.translate(left, top)
+        canvas.applyElementTransform(decoration, size, size)
         canvas.drawBitmap(
             bitmap,
             null,
-            RectF(left, top, left + size, top + size),
+            RectF(0f, 0f, size, size),
             Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
         )
+        canvas.restore()
     }
 }
 

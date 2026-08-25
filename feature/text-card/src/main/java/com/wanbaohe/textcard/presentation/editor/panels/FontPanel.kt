@@ -37,7 +37,7 @@ import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 @Composable
 fun FontPanel(component: TextCardComponent) {
     val settingsState = LocalSettingsState.current
-    val currentFont = component.title.font
+    val currentFont = component.textBlocks.firstOrNull()?.font
 
     PanelTitle(R.string.textcard_font_panel_title)
 

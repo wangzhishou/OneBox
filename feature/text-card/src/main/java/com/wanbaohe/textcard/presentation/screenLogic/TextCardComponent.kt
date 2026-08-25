@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.interfaces.logging.ImageSaveLogger
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
@@ -13,25 +14,30 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.FontCatalog
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
+import com.wanbaohe.textcard.domain.TextCardPaperRepository
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.CanvasSpec
 import com.wanbaohe.textcard.domain.model.DecorationSpec
 import com.wanbaohe.textcard.domain.model.DownloadableFont
+import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.GradientPresets
+import com.wanbaohe.textcard.domain.model.RemotePaper
 import com.wanbaohe.textcard.domain.model.TextBlock
-import com.wanbaohe.textcard.domain.model.TextBlockId
-import com.wanbaohe.textcard.domain.model.TextCardLayer
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.render.CardLayout
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -41,7 +47,7 @@ import kotlinx.coroutines.withContext
 
 /** 底部编辑面板 */
 enum class EditorPanel {
-    Background, Font, TextStyle, Layers
+    Basic, Background, Font, TextStyle, Layers
 }
 
 /** 字体行的下载状态 */
@@ -67,6 +73,8 @@ class TextCardComponent @AssistedInject internal constructor(
     private val imageCompressor: ImageCompressor<Bitmap>,
     private val exportRenderer: TextCardExportRenderer,
     private val fontCatalog: FontCatalog,
+    private val paperRepository: TextCardPaperRepository,
+    private val imageSaveLogger: ImageSaveLogger,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     // ---------------- 画布与卡片状态 ----------------
@@ -84,30 +92,50 @@ class TextCardComponent @AssistedInject internal constructor(
     private val _backgroundOpacity: MutableState<Float> = mutableStateOf(1f)
     val backgroundOpacity: Float by _backgroundOpacity
 
-    private val _title: MutableState<TextBlock> = mutableStateOf(
-        TextBlock(content = appContext.getString(R.string.textcard_default_title), isBold = true)
+    /** 文字块列表(任意多条;默认标题 + 正文两块),列表顺序即绘制顺序 */
+    private val _textBlocks: MutableState<List<TextBlock>> = mutableStateOf(
+        listOf(
+            TextBlock(
+                content = appContext.getString(R.string.textcard_default_title),
+                baseSizeRatio = CardLayout.TITLE_BASE_SIZE_RATIO,
+                baseTopRatio = CardLayout.CONTENT_PADDING_RATIO,
+                isBold = true
+            ),
+            TextBlock(
+                content = appContext.getString(R.string.textcard_default_body),
+                baseSizeRatio = CardLayout.BODY_BASE_SIZE_RATIO,
+                baseTopRatio = CardLayout.BODY_BASE_TOP_RATIO
+            )
+        )
     )
-    val title: TextBlock by _title
+    val textBlocks: List<TextBlock> by _textBlocks
 
-    private val _body: MutableState<TextBlock> = mutableStateOf(
-        TextBlock(content = appContext.getString(R.string.textcard_default_body))
-    )
-    val body: TextBlock by _body
+    /** 装饰贴纸列表(支持多个;每个装饰一个图层) */
+    private val _decorations: MutableState<List<DecorationSpec>> = mutableStateOf(emptyList())
+    val decorations: List<DecorationSpec> by _decorations
 
-    private val _decoration: MutableState<DecorationSpec> = mutableStateOf(DecorationSpec())
-    val decoration: DecorationSpec by _decoration
+    /** 元素图层(文字块/装饰,列表顺序即 z 序、底层在前);背景钉在最底不进列表 */
+    private val _elementLayers: MutableState<List<ElementLayer>> =
+        mutableStateOf(
+            _textBlocks.value.map { ElementLayer(elementId = it.id, kind = ElementLayer.Kind.Text) }
+        )
+    val elementLayers: List<ElementLayer> by _elementLayers
 
-    /** 固定三层,列表顺序即 z 序(底层在前) */
-    private val _layers: MutableState<List<TextCardLayer>> =
-        mutableStateOf(TextCardLayer.defaultOrder())
-    val layers: List<TextCardLayer> by _layers
+    /** 背景层显隐(钉在最底,不参与排序) */
+    private val _backgroundVisible: MutableState<Boolean> = mutableStateOf(true)
+    val backgroundVisible: Boolean by _backgroundVisible
 
     private val _activePanel: MutableState<EditorPanel?> = mutableStateOf(null)
     val activePanel: EditorPanel? by _activePanel
 
-    /** 文字设置面板作用的文本块 */
-    private val _selectedTextBlock: MutableState<TextBlockId> = mutableStateOf(TextBlockId.Title)
-    val selectedTextBlock: TextBlockId by _selectedTextBlock
+    /** 文字设置面板作用的文本块 id */
+    private val _selectedTextBlockId: MutableState<String> =
+        mutableStateOf(_textBlocks.value.first().id)
+    val selectedTextBlockId: String by _selectedTextBlockId
+
+    /** 画布当前选中的元素 id(文字块或装饰),null = 未选中 */
+    private val _selectedElementId: MutableState<String?> = mutableStateOf(null)
+    val selectedElementId: String? by _selectedElementId
 
     private val _isSaving: MutableState<Boolean> = mutableStateOf(false)
     val isSaving: Boolean by _isSaving
@@ -122,10 +150,10 @@ class TextCardComponent @AssistedInject internal constructor(
         _pendingCanvas.value = spec
     }
 
-    /** 「开始制作」:进入编辑页,装饰位置按画布规格初始化(默认右下角) */
+    /** 「开始制作」:进入编辑页;拉取远程纸张(失败静默降级) */
     fun startEditing() {
         _canvas.value = _pendingCanvas.value
-        _decoration.value = DecorationSpec.defaultFor(_pendingCanvas.value)
+        loadRemotePapers()
         registerChanges()
     }
 
@@ -133,6 +161,7 @@ class TextCardComponent @AssistedInject internal constructor(
     fun backToSelection() {
         _canvas.value = null
         _activePanel.value = null
+        _selectedElementId.value = null
     }
 
     override fun resetState() = onGoBack()
@@ -150,37 +179,48 @@ class TextCardComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    // ---------------- 文字 ----------------
+    // ---------------- 文字(任意多块,按 id 寻址) ----------------
 
-    fun selectTextBlock(id: TextBlockId) {
-        _selectedTextBlock.value = id
+    fun selectTextBlock(id: String) {
+        if (_textBlocks.value.none { it.id == id }) return
+        _selectedTextBlockId.value = id
     }
 
-    fun updateTextBlock(id: TextBlockId, transform: (TextBlock) -> TextBlock) {
-        when (id) {
-            TextBlockId.Title -> _title.update(transform)
-            TextBlockId.Body -> _body.update(transform)
-        }
+    fun selectedTextBlock(): TextBlock? =
+        _textBlocks.value.find { it.id == _selectedTextBlockId.value }
+            ?: _textBlocks.value.firstOrNull()
+
+    fun updateTextBlock(id: String, transform: (TextBlock) -> TextBlock) {
+        if (_textBlocks.value.none { it.id == id }) return
+        _textBlocks.update { list -> list.map { if (it.id == id) transform(it) else it } }
         registerChanges()
     }
 
-    /** 画布内拖动文字块:dx/dy 为归一化增量(X 相对画布宽、Y 相对画布高) */
-    fun updateTextBlockOffset(id: TextBlockId, dx: Float, dy: Float) {
-        when (id) {
-            TextBlockId.Title -> _title.update {
-                it.copy(
-                    offsetX = (it.offsetX + dx).coerceIn(-1f, 1f),
-                    offsetY = (it.offsetY + dy).coerceIn(-1f, 1f)
-                )
-            }
+    /** 新增文字块:正文样式,默认排在现有最后一块基准往下,同步建图层 */
+    fun addTextBlock() {
+        val last = _textBlocks.value.lastOrNull()
+        val block = TextBlock(
+            content = appContext.getString(R.string.textcard_new_block_content),
+            baseSizeRatio = CardLayout.BODY_BASE_SIZE_RATIO,
+            baseTopRatio = ((last?.baseTopRatio ?: CardLayout.BODY_BASE_TOP_RATIO) +
+                CardLayout.NEW_BLOCK_STEP_RATIO).coerceAtMost(0.9f)
+        )
+        _textBlocks.update { it + block }
+        _elementLayers.update { it + ElementLayer(block.id, ElementLayer.Kind.Text) }
+        _selectedTextBlockId.value = block.id
+        _selectedElementId.value = block.id
+        registerChanges()
+    }
 
-            TextBlockId.Body -> _body.update {
-                it.copy(
-                    offsetX = (it.offsetX + dx).coerceIn(-1f, 1f),
-                    offsetY = (it.offsetY + dy).coerceIn(-1f, 1f)
-                )
-            }
+    /** 删除文字块:至少保留一块,同步移除图层 */
+    fun removeTextBlock(id: String) {
+        if (_textBlocks.value.size <= 1) return
+        _textBlocks.update { list -> list.filterNot { it.id == id } }
+        _elementLayers.update { list -> list.filterNot { it.elementId == id } }
+        if (_selectedTextBlockId.value == id) {
+            _selectedTextBlockId.value = _textBlocks.value.first().id
         }
+        if (_selectedElementId.value == id) _selectedElementId.value = null
         registerChanges()
     }
 
@@ -194,60 +234,128 @@ class TextCardComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    /** 字体选择作用于整张卡片(标题 + 正文) */
+    /** 字体选择作用于整张卡片(全部文字块) */
     fun applyFont(font: FontType?) {
-        _title.update { it.copy(font = font) }
-        _body.update { it.copy(font = font) }
+        _textBlocks.update { list -> list.map { it.copy(font = font) } }
         registerChanges()
+    }
+
+    // ---------------- 元素选中与变换(文字块/装饰通用) ----------------
+
+    /** 画布点按元素=选中;点空白传 null 取消选中。选中文字块时同步为样式面板目标 */
+    fun selectElement(id: String?) {
+        _selectedElementId.value = id
+        if (id != null && _textBlocks.value.any { it.id == id }) {
+            _selectedTextBlockId.value = id
+        }
+    }
+
+    /**
+     * 应用手势后的元素变换(绝对值,预览侧已完成 pan 的缩放/旋转换算与归一化)。
+     * 锁定图层忽略。
+     */
+    fun setElementTransform(
+        id: String,
+        offsetX: Float,
+        offsetY: Float,
+        scale: Float,
+        rotation: Float,
+    ) {
+        val layer = _elementLayers.value.find { it.elementId == id }
+        if (layer?.locked == true) return
+        val safeScale = scale.coerceIn(0.2f, 5f)
+        when {
+            _textBlocks.value.any { it.id == id } -> updateTextBlock(id) {
+                it.copy(
+                    offsetX = offsetX.coerceIn(-1f, 1f),
+                    offsetY = offsetY.coerceIn(-1f, 1f),
+                    scale = safeScale,
+                    rotation = rotation
+                )
+            }
+
+            _decorations.value.any { it.id == id } -> {
+                _decorations.update { list ->
+                    list.map {
+                        if (it.id == id) {
+                            it.copy(
+                                offsetX = offsetX.coerceIn(-0.5f, 1f),
+                                offsetY = offsetY.coerceIn(-0.5f, 1f),
+                                scale = safeScale,
+                                rotation = rotation
+                            )
+                        } else it
+                    }
+                }
+                registerChanges()
+            }
+        }
+    }
+
+    /** 删除选中元素(文字块至少保留一块,装饰不限),同步移除图层 */
+    fun removeElement(id: String) {
+        when {
+            _textBlocks.value.any { it.id == id } -> removeTextBlock(id)
+            _decorations.value.any { it.id == id } -> {
+                _decorations.update { list -> list.filterNot { it.id == id } }
+                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
+                if (_selectedElementId.value == id) _selectedElementId.value = null
+                registerChanges()
+            }
+        }
     }
 
     // ---------------- 装饰 ----------------
 
-    fun updateDecoration(spec: DecorationSpec) {
-        if (spec == _decoration.value) return
-        _decoration.value = spec
+    /** 添加装饰:默认落右下角,置顶(图层列表尾部)并选中 */
+    fun addDecoration(emojiIndex: Int) {
+        val canvas = _canvas.value ?: return
+        val decoration = DecorationSpec.defaultPositionFor(canvas, emojiIndex)
+        _decorations.update { it + decoration }
+        _elementLayers.update { it + ElementLayer(decoration.id, ElementLayer.Kind.Decoration) }
+        _selectedElementId.value = decoration.id
         registerChanges()
     }
 
-    /** 画布内拖动装饰贴纸:dx/dy 为归一化增量(X 相对画布宽、Y 相对画布高) */
-    fun updateDecorationOffset(dx: Float, dy: Float) {
-        if (_decoration.value.emojiIndex == null) return
-        _decoration.update {
-            it.copy(
-                offsetX = (it.offsetX + dx).coerceIn(-0.5f, 1f),
-                offsetY = (it.offsetY + dy).coerceIn(-0.5f, 1f)
-            )
+    /** 清空所有装饰(装饰选择 Sheet 的「无」) */
+    fun clearDecorations() {
+        if (_decorations.value.isEmpty()) return
+        val ids = _decorations.value.map { it.id }.toSet()
+        _decorations.value = emptyList()
+        _elementLayers.update { list -> list.filterNot { it.elementId in ids } }
+        if (_selectedElementId.value in ids) _selectedElementId.value = null
+        registerChanges()
+    }
+
+    // ---------------- 图层(元素层,背景钉最底另算) ----------------
+
+    fun toggleBackgroundVisible() {
+        _backgroundVisible.update { !it }
+        registerChanges()
+    }
+
+    fun toggleLayerVisible(elementId: String) {
+        updateElementLayer(elementId) {
+            if (it.locked) it else it.copy(visible = !it.visible)
+        }
+    }
+
+    fun toggleLayerLocked(elementId: String) {
+        updateElementLayer(elementId) { it.copy(locked = !it.locked) }
+    }
+
+    private fun updateElementLayer(elementId: String, transform: (ElementLayer) -> ElementLayer) {
+        if (_elementLayers.value.none { it.elementId == elementId }) return
+        _elementLayers.update { list ->
+            list.map { if (it.elementId == elementId) transform(it) else it }
         }
         registerChanges()
     }
 
-    // ---------------- 图层(固定三层) ----------------
-
-    fun toggleLayerVisible(index: Int) {
-        val layer = _layers.value.getOrNull(index) ?: return
-        if (layer.locked) return
-        _layers.update { list ->
-            list.mapIndexed { i, item ->
-                if (i == index) item.copyState(visible = !item.visible, locked = item.locked) else item
-            }
-        }
-        registerChanges()
-    }
-
-    fun toggleLayerLocked(index: Int) {
-        val layer = _layers.value.getOrNull(index) ?: return
-        _layers.update { list ->
-            list.mapIndexed { i, item ->
-                if (i == index) item.copyState(visible = item.visible, locked = !item.locked) else item
-            }
-        }
-        registerChanges()
-    }
-
-    /** 拖拽排序提交:参数为完整新 z 序(底层在前) */
-    fun reorderLayers(newOrder: List<TextCardLayer>) {
-        if (newOrder == _layers.value || newOrder.size != _layers.value.size) return
-        _layers.value = newOrder
+    /** 拖拽排序提交:参数为完整新 z 序(底层在前,仅文字/装饰层) */
+    fun reorderLayers(newOrder: List<ElementLayer>) {
+        if (newOrder == _elementLayers.value || newOrder.size != _elementLayers.value.size) return
+        _elementLayers.value = newOrder
         registerChanges()
     }
 
@@ -302,6 +410,21 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
+    // ---------------- 远程纸张(Strapi 可配,失败/无网静默降级) ----------------
+
+    /** 已就绪(图片已下载到本地)的远程纸张,追加在纸张列表尾部 */
+    private val _remotePapers: MutableState<List<RemotePaper>> = mutableStateOf(emptyList())
+    val remotePapers: List<RemotePaper> by _remotePapers
+
+    private var papersJob: Job? by smartJob()
+
+    fun loadRemotePapers() {
+        if (papersJob != null || _remotePapers.value.isNotEmpty()) return
+        papersJob = componentScope.launch {
+            _remotePapers.value = paperRepository.loadLocalPapers()
+        }
+    }
+
     // ---------------- 渲染与保存 ----------------
 
     fun renderState(): TextCardRenderState? {
@@ -310,15 +433,19 @@ class TextCardComponent @AssistedInject internal constructor(
             canvas = spec,
             background = _background.value,
             backgroundOpacity = _backgroundOpacity.value,
-            title = _title.value,
-            body = _body.value,
-            decoration = _decoration.value,
-            layers = _layers.value
+            backgroundVisible = _backgroundVisible.value,
+            textBlocks = _textBlocks.value,
+            decorations = _decorations.value,
+            layers = _elementLayers.value
         )
     }
 
-    /** 保存:离屏重绘 1080 宽 PNG,经 FileController 落盘(模板见 id-photo) */
-    fun saveCard(onComplete: (SaveResult) -> Unit) {
+    /**
+     * 保存:离屏重绘 1080 宽 PNG,经 FileController 落盘(模板见 id-photo)。
+     * 结果处理不走 parseSaveResult:其内部异步读当前页面名,保存后切页会把
+     * 活动记录标成别的页面;这里同步显式记录为本页面(图文卡片)。
+     */
+    fun saveCard() {
         val state = renderState() ?: return
         if (_isSaving.value) return
         savingJob = componentScope.launch {
@@ -349,8 +476,53 @@ class TextCardComponent @AssistedInject internal constructor(
                 ).onSuccess { success -> registerSave(success) }
             }.getOrElse { SaveResult.Error.Exception(it) }
 
+            handleSaveResult(result)
             _isSaving.value = false
-            onComplete(result)
+        }
+    }
+
+    /** parseSaveResult 的等价行为 + 显式 ActivityLog(页面名固定为图文卡片) */
+    private suspend fun handleSaveResult(result: SaveResult) {
+        when (result) {
+            is SaveResult.Success -> {
+                result.message?.let {
+                    AppToastHost.showToast(
+                        message = it,
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+                        duration = ToastDuration.Long
+                    )
+                }
+                AppToastHost.showConfetti()
+                runCatching {
+                    imageSaveLogger.recordImageSave(
+                        screenId = Screen.TextCard.id.toString(),
+                        screenName = appContext.getString(
+                            com.shifenmiao.core.R.string.text_card
+                        ),
+                        description = result.message.orEmpty(),
+                        fileUri = result.fileUri.orEmpty(),
+                        fileName = result.fileName.orEmpty(),
+                        savePath = result.savingPath.orEmpty()
+                    )
+                }.onFailure { it.makeLog("TextCardSaveLog") }
+            }
+
+            is SaveResult.Skipped -> AppToastHost.showToast(
+                message = appContext.getString(
+                    com.t8rin.imagetoolbox.core.resources.R.string.skipped_saving
+                ),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
+                duration = ToastDuration.Short
+            )
+
+            is SaveResult.Error.Exception -> {
+                result.throwable.makeLog("TextCardSave")
+                AppToastHost.showFailureToast(throwable = result.throwable)
+            }
+
+            SaveResult.Error.MissingPermissions -> {
+                AppToastHost.showToast(AppToastHost.PERMISSION)
+            }
         }
     }
 

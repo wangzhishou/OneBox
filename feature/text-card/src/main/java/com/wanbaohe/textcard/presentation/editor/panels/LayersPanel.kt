@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.longPress
@@ -36,13 +37,14 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
-import com.wanbaohe.textcard.domain.model.TextCardLayer
+import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DragHandle
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.LockOpen
@@ -51,18 +53,17 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 
 /**
- * 图层面板(设计稿 05):固定三层(背景/文字/装饰),显示顺序顶层在上;
- * 行 = 缩略图标 + 名称 + 眼睛 + 锁 + 拖拽手柄(长按拖拽排序,松手一次性提交新 z 序)。
- * 点装饰行打开装饰选择 Sheet。
+ * 图层面板(设计稿 05 演进):每个元素一层——文字块/装饰可排序(长按拖拽)、
+ * 显隐(眼睛)、锁定、删除(文字至少保留一块);背景钉在最底,仅显隐。
+ * 显示顺序顶层在上(列表倒序),松手一次性提交新 z 序。
  */
 @Composable
 fun LayersPanel(
     component: TextCardComponent,
-    onEditDecoration: () -> Unit,
 ) {
     PanelTitle(R.string.textcard_layers_title)
 
-    val layers = component.layers
+    val layers = component.elementLayers
     // 显示倒序(顶层在上),提交时反转回 z 序
     var displayList by remember(layers) { mutableStateOf(layers.asReversed()) }
     val listState = rememberLazyListState()
@@ -82,31 +83,20 @@ fun LayersPanel(
         state = listState,
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(max = 280.dp)
+            .heightIn(max = 320.dp)
     ) {
         itemsIndexed(
             items = displayList,
-            key = { _, layer -> layer.nameRes }
+            key = { _, layer -> layer.elementId }
         ) { _, layer ->
             ReorderableItem(
                 state = reorderState,
-                key = layer.nameRes,
+                key = layer.elementId,
                 enabled = !layer.locked
             ) { _ ->
-                LayerRow(
+                ElementLayerRow(
                     layer = layer,
                     component = component,
-                    onToggleVisible = {
-                        val index = layers.indexOf(layer)
-                        if (index >= 0) component.toggleLayerVisible(index)
-                    },
-                    onToggleLocked = {
-                        val index = layers.indexOf(layer)
-                        if (index >= 0) component.toggleLayerLocked(index)
-                    },
-                    onClick = {
-                        if (layer is TextCardLayer.Decoration) onEditDecoration()
-                    },
                     dragModifier = if (layer.locked) {
                         Modifier
                     } else {
@@ -120,18 +110,23 @@ fun LayersPanel(
                 )
             }
         }
+        // 背景层钉在列表底部(最底层),仅显隐,不参与排序
+        item(key = "background") {
+            BackgroundLayerRow(component = component)
+        }
     }
 }
 
 @Composable
-private fun LayerRow(
-    layer: TextCardLayer,
+private fun ElementLayerRow(
+    layer: ElementLayer,
     component: TextCardComponent,
-    onToggleVisible: () -> Unit,
-    onToggleLocked: () -> Unit,
-    onClick: () -> Unit,
     dragModifier: Modifier,
 ) {
+    val canDelete = when (layer.kind) {
+        ElementLayer.Kind.Text -> component.textBlocks.size > 1
+        ElementLayer.Kind.Decoration -> true
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -141,13 +136,17 @@ private fun LayerRow(
                 shape = ShapeDefaults.large,
                 resultPadding = 0.dp
             )
-            .clickable(onClick = onClick)
+            .clickable(enabled = !layer.locked) {
+                component.selectElement(layer.elementId)
+            }
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         LayerThumb(layer = layer, component = component)
         Text(
-            text = stringResource(layer.nameRes),
+            text = layerName(layer, component),
             style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 12.dp)
@@ -158,7 +157,7 @@ private fun LayerRow(
             } else MaterialIcons.Outlined.VisibilityOff,
             contentDescription = stringResource(R.string.textcard_layer_toggle_visible),
             enabled = !layer.locked,
-            onClick = onToggleVisible
+            onClick = { component.toggleLayerVisible(layer.elementId) }
         )
         LayerAction(
             icon = if (layer.locked) {
@@ -166,7 +165,13 @@ private fun LayerRow(
             } else MaterialIcons.Outlined.LockOpen,
             contentDescription = stringResource(R.string.textcard_layer_toggle_locked),
             enabled = true,
-            onClick = onToggleLocked
+            onClick = { component.toggleLayerLocked(layer.elementId) }
+        )
+        LayerAction(
+            icon = MaterialIcons.Outlined.Delete,
+            contentDescription = stringResource(R.string.textcard_delete_selected),
+            enabled = canDelete && !layer.locked,
+            onClick = { component.removeElement(layer.elementId) }
         )
         Icon(
             imageVector = MaterialIcons.Outlined.DragHandle,
@@ -181,21 +186,39 @@ private fun LayerRow(
     }
 }
 
-/** 图层缩略图标:背景=当前背景 mini 预览,文字=T 图标,装饰=当前 emoji */
+/** 元素层名称:文字块取内容首行前几个字,装饰用通用名 */
 @Composable
-private fun LayerThumb(
-    layer: TextCardLayer,
-    component: TextCardComponent,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
+private fun layerName(layer: ElementLayer, component: TextCardComponent): String =
+    when (layer.kind) {
+        ElementLayer.Kind.Text -> {
+            val block = component.textBlocks.find { it.id == layer.elementId }
+            block?.content?.lineSequence()?.firstOrNull()?.take(6)
+                ?.ifEmpty { null }
+                ?: stringResource(R.string.textcard_layer_text)
+        }
+
+        ElementLayer.Kind.Decoration -> stringResource(R.string.textcard_layer_decoration)
+    }
+
+/** 背景层行:当前背景 mini 预览 + 眼睛,钉在列表底部不可排序/删除 */
+@Composable
+private fun BackgroundLayerRow(component: TextCardComponent) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .size(36.dp)
-            .clip(ShapeDefaults.small)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .container(shape = ShapeDefaults.large, resultPadding = 0.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
-        when (layer) {
-            is TextCardLayer.Background -> when (val bg = component.background) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(36.dp)
+                .clip(ShapeDefaults.small)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
+        ) {
+            when (val bg = component.background) {
                 is BackgroundSpec.Gradient -> Box(
                     modifier = Modifier
                         .size(36.dp)
@@ -216,16 +239,50 @@ private fun LayerThumb(
 
                 else -> Unit
             }
+        }
+        Text(
+            text = stringResource(R.string.textcard_layer_background),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 12.dp)
+        )
+        LayerAction(
+            icon = if (component.backgroundVisible) {
+                MaterialIcons.Outlined.Visibility
+            } else MaterialIcons.Outlined.VisibilityOff,
+            contentDescription = stringResource(R.string.textcard_layer_toggle_visible),
+            enabled = true,
+            onClick = component::toggleBackgroundVisible
+        )
+    }
+}
 
-            is TextCardLayer.Text -> Icon(
+/** 图层缩略图标:文字=T 图标,装饰=对应 emoji 贴纸 */
+@Composable
+private fun LayerThumb(
+    layer: ElementLayer,
+    component: TextCardComponent,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(36.dp)
+            .clip(ShapeDefaults.small)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
+    ) {
+        when (layer.kind) {
+            ElementLayer.Kind.Text -> Icon(
                 imageVector = MaterialIcons.Outlined.TextFields,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            is TextCardLayer.Decoration -> {
+            ElementLayer.Kind.Decoration -> {
                 val emojis = Emoji.allIcons()
-                val uri = emojis.getOrNull(component.decoration.emojiIndex ?: -1)
+                val decoration = component.decorations.find { it.id == layer.elementId }
+                val uri = emojis.getOrNull(decoration?.emojiIndex ?: -1)
                 if (uri != null) {
                     Picture(
                         model = uri,

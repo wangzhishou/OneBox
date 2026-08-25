@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
@@ -44,6 +49,7 @@ import com.wanbaohe.textcard.presentation.editor.drawPaperTexture
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import kotlin.math.roundToInt
 import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CheckCircle
@@ -54,7 +60,9 @@ import androidx.compose.material.icons.outlined.CheckCircle
 @Composable
 fun BackgroundPanel(component: TextCardComponent) {
     val background = component.background
-    // 自定义 mesh 渐变编辑弹层
+    // mesh 渐变编辑弹层的初始网格:点预设色卡 = 以该预设为初值进编辑器;
+    // 自定义入口 = 以当前背景渐变(或默认预设)起步
+    var meshEditorSeed by remember { mutableStateOf<BackgroundSpec.Gradient?>(null) }
     var showMeshEditor by remember { mutableStateOf(false) }
 
     val imagePicker = rememberImagePicker { uri: Uri ->
@@ -62,53 +70,54 @@ fun BackgroundPanel(component: TextCardComponent) {
     }
 
     PanelTitle(R.string.textcard_paper_background)
-    Row(
+    // 纸张横向滑动列表:内置纸张在前,远程(Strapi)已就绪纸张追加在尾部
+    LazyRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
-        PaperCell(
-            label = stringResource(R.string.textcard_paper_none),
-            selected = background is BackgroundSpec.None,
-            onClick = { component.updateBackground(BackgroundSpec.None) },
-            modifier = Modifier.weight(1f)
-        ) {
-            Icon(
-                imageVector = MaterialIcons.Outlined.Block,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        item(key = "none") {
+            PaperCell(
+                label = stringResource(R.string.textcard_paper_none),
+                selected = background is BackgroundSpec.None,
+                onClick = { component.updateBackground(BackgroundSpec.None) }
+            ) {
+                Icon(
+                    imageVector = MaterialIcons.Outlined.Block,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
-        PaperCell(
-            label = stringResource(PaperKind.Lined.labelRes),
-            selected = background == BackgroundSpec.Paper(PaperKind.Lined),
-            onClick = { component.updateBackground(BackgroundSpec.Paper(PaperKind.Lined)) },
-            modifier = Modifier.weight(1f)
-        ) {
-            Canvas(modifier = Modifier.fillMaxSize()) { drawPaperTexture(PaperKind.Lined) }
-        }
-        PaperCell(
-            label = stringResource(PaperKind.Grid.labelRes),
-            selected = background == BackgroundSpec.Paper(PaperKind.Grid),
-            onClick = { component.updateBackground(BackgroundSpec.Paper(PaperKind.Grid)) },
-            modifier = Modifier.weight(1f)
-        ) {
-            Canvas(modifier = Modifier.fillMaxSize()) { drawPaperTexture(PaperKind.Grid) }
-        }
-    }
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp)
-    ) {
-        PaperKind.entries.drop(2).forEach { kind ->
+        items(
+            items = PaperKind.entries,
+            key = { "builtin_$it" }
+        ) { kind ->
             PaperCell(
                 label = stringResource(kind.labelRes),
                 selected = background == BackgroundSpec.Paper(kind),
-                onClick = { component.updateBackground(BackgroundSpec.Paper(kind)) },
-                modifier = Modifier.weight(1f)
+                onClick = { component.updateBackground(BackgroundSpec.Paper(kind)) }
             ) {
                 Canvas(modifier = Modifier.fillMaxSize()) { drawPaperTexture(kind) }
+            }
+        }
+        items(
+            items = component.remotePapers,
+            key = { "remote_${it.localPath}" }
+        ) { paper ->
+            PaperCell(
+                label = paper.title,
+                selected = (background as? BackgroundSpec.Image)?.uri == paper.localPath,
+                onClick = {
+                    component.updateBackground(BackgroundSpec.Image(paper.localPath))
+                }
+            ) {
+                Picture(
+                    model = paper.localPath,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    showTransparencyChecker = false,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }
@@ -124,7 +133,10 @@ fun BackgroundPanel(component: TextCardComponent) {
         GradientPresets.all.forEach { preset ->
             SelectableCell(
                 selected = background == preset,
-                onClick = { component.updateBackground(preset) },
+                onClick = {
+                    meshEditorSeed = preset
+                    showMeshEditor = true
+                },
                 modifier = Modifier.weight(1f)
             ) {
                 Box(
@@ -138,10 +150,13 @@ fun BackgroundPanel(component: TextCardComponent) {
                 )
             }
         }
-        // 自定义渐变:打开 mesh 编辑弹层(拖动控制点 + 逐点取色)
+        // 自定义渐变:打开 mesh 编辑弹层(以当前背景渐变为初值)
         SelectableCell(
             selected = background is BackgroundSpec.Gradient && background !in GradientPresets.all,
-            onClick = { showMeshEditor = true },
+            onClick = {
+                meshEditorSeed = null
+                showMeshEditor = true
+            },
             modifier = Modifier.weight(1f)
         ) {
             Column(
@@ -183,6 +198,7 @@ fun BackgroundPanel(component: TextCardComponent) {
                     model = background.uri,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
+                    showTransparencyChecker = false,
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
@@ -199,6 +215,27 @@ fun BackgroundPanel(component: TextCardComponent) {
             }
         }
     }
+    // 引导去图片创作做底图
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+            .clickable { component.onNavigate(Screen.MarkupLayers()) }
+    ) {
+        Icon(
+            imageVector = MaterialIcons.AutoMirrored.Outlined.ArrowForward,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(16.dp)
+        )
+        Text(
+            text = stringResource(R.string.textcard_go_image_creation),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(start = 4.dp)
+        )
+    }
 
     EnhancedSliderItem(
         value = component.backgroundOpacity,
@@ -213,6 +250,7 @@ fun BackgroundPanel(component: TextCardComponent) {
     MeshGradientEditorSheet(
         visible = showMeshEditor,
         component = component,
+        seed = meshEditorSeed,
         onDismiss = { showMeshEditor = false }
     )
 }
@@ -229,16 +267,18 @@ internal fun PanelTitle(
     )
 }
 
-/** 纸张单元格:4:3 预览 + 底部名称 */
+/** 纸张单元格:96dp 宽 4:3 预览 + 底部名称(横向列表项) */
 @Composable
 private fun PaperCell(
     label: String,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.width(96.dp)
+    ) {
         SelectableCell(
             selected = selected,
             onClick = onClick,
@@ -252,6 +292,8 @@ private fun PaperCell(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 4.dp)
         )
     }

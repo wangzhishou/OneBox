@@ -32,7 +32,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
-import com.wanbaohe.textcard.domain.model.TextBlockId
+import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import kotlin.math.roundToInt
 import androidx.compose.material.icons.Icons as MaterialIcons
@@ -43,31 +43,37 @@ import androidx.compose.material.icons.outlined.FormatAlignJustify
 import androidx.compose.material.icons.outlined.FormatBold
 import androidx.compose.material.icons.outlined.FormatItalic
 
+/** 文本块标签:内容首行前 6 个字符,空内容兜底「文字 N」 */
+@Composable
+private fun TextBlock.displayLabel(): String {
+    val firstLine = content.lineSequence().firstOrNull()?.take(6).orEmpty()
+    return firstLine.ifEmpty { stringResource(R.string.textcard_block_fallback) }
+}
+
 /**
- * 文字设置面板(设计稿 04):作用于当前选中文本块(标题/正文)的
+ * 文字设置面板(设计稿 04):作用于当前选中文本块(任意多块,按 id)的
  * 字号/字间距/行间距滑杆 + 对齐分段 + 粗/斜开关 + 文字颜色;另含背景透明度。
+ * 顶部「添加文字块」入口新增正文样式块。
  */
 @Composable
 fun TextStylePanel(component: TextCardComponent) {
-    val blockId = component.selectedTextBlock
-    val block = when (blockId) {
-        TextBlockId.Title -> component.title
-        TextBlockId.Body -> component.body
-    }
+    val blocks = component.textBlocks
+    val block = component.selectedTextBlock() ?: return
+    val blockId = block.id
     var showTextColorPicker by remember { mutableStateOf(false) }
 
     PanelTitle(R.string.textcard_text_settings)
 
+    // 文本块切换(标题/正文/新增块,按首行内容截断做标签);增删统一走「基础」面板与图层面板
+    val labels = blocks.map { it.displayLabel() }
     EnhancedButtonGroup(
-        items = listOf(
-            stringResource(R.string.textcard_text_title_block),
-            stringResource(R.string.textcard_text_body_block)
-        ),
-        selectedIndex = if (blockId == TextBlockId.Title) 0 else 1,
-        onIndexChange = {
-            component.selectTextBlock(if (it == 0) TextBlockId.Title else TextBlockId.Body)
+        items = labels,
+        selectedIndex = blocks.indexOfFirst { it.id == blockId }.coerceAtLeast(0),
+        onIndexChange = { index ->
+            blocks.getOrNull(index)?.let { component.selectTextBlock(it.id) }
         },
-        title = stringResource(R.string.textcard_text_target)
+        title = stringResource(R.string.textcard_text_target),
+        modifier = Modifier.padding(top = 8.dp)
     )
 
     EnhancedSliderItem(

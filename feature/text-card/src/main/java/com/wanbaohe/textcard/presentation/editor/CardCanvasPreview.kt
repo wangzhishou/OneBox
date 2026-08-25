@@ -2,8 +2,9 @@ package com.wanbaohe.textcard.presentation.editor
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
@@ -16,10 +17,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -38,31 +44,37 @@ import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
+import com.wanbaohe.textcard.domain.model.DecorationSpec
+import com.wanbaohe.textcard.domain.model.ElementLayer
+import com.wanbaohe.textcard.domain.model.ElementTransform
 import com.wanbaohe.textcard.domain.model.TextBlock
-import com.wanbaohe.textcard.domain.model.TextBlockId
-import com.wanbaohe.textcard.domain.model.TextCardLayer
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
+import kotlin.math.cos
 import kotlin.math.roundToInt
+import kotlin.math.sin
 
 /**
- * 卡片画布预览(Compose):与导出渲染器共用 [CardLayout] 几何/颜色常量,
- * 按图层 z 序叠 背景 → 文字 → 装饰。点按标题/正文回调 [onTextClick] 弹出编辑;
- * 文字块支持单指拖动([onTextDrag],dx/dy 已按预览画布像素归一化,天然处理 fit 缩放);
- * 装饰贴纸同样画布内拖动([onDecorationDrag]);
- * 背景为相册图时空白处拖动调整图片位置([onBackgroundDrag])。
+ * 卡片画布预览(Compose):与导出渲染器共用 [CardLayout] 几何/颜色常量。
+ * 渲染顺序:背景(钉最底,可经 [onBackgroundDrag] 拖动相册图/点按取消选中)
+ * → 按元素图层 z 序逐层画文字块/装饰贴纸。
+ * 元素手势(参照 markup-layers EditBox):点按=选中([onElementTap],选中态画边框),
+ * 选中后单指拖动 + 双指缩放/旋转(detectTransformGestures,
+ * pan 乘缩放并按当前旋转角转回画布坐标系后归一化,fit 缩放天然抵消);
+ * [onElementTransform] 回调绝对值(offsetX/offsetY/scale/rotation)。
  */
 @Composable
 fun CardCanvasPreview(
     state: TextCardRenderState,
-    onTextClick: (TextBlockId) -> Unit,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 20.dp,
-    onTextDrag: (TextBlockId, Float, Float) -> Unit = { _, _, _ -> },
+    onElementTap: (String) -> Unit = {},
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit = { _, _, _, _, _ -> },
+    selectedElementId: String? = null,
+    onCanvasTap: () -> Unit = {},
     onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
-    onDecorationDrag: (Float, Float) -> Unit = { _, _ -> },
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -72,56 +84,42 @@ fun CardCanvasPreview(
     ) {
         val canvasWidthPx = constraints.maxWidth.toFloat()
         val canvasHeightPx = constraints.maxHeight.toFloat()
-        val density = LocalDensity.current
-        val emojis = Emoji.allIcons()
+
+        if (state.backgroundVisible) {
+            BackgroundLayerContent(
+                state = state,
+                canvasWidthPx = canvasWidthPx,
+                canvasHeightPx = canvasHeightPx,
+                onBackgroundDrag = onBackgroundDrag,
+                onCanvasTap = onCanvasTap,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         state.visibleLayers.forEach { layer ->
-            when (layer) {
-                is TextCardLayer.Background -> BackgroundLayerContent(
-                    state = state,
-                    canvasWidthPx = canvasWidthPx,
-                    canvasHeightPx = canvasHeightPx,
-                    onBackgroundDrag = onBackgroundDrag,
-                    modifier = Modifier.fillMaxSize()
-                )
+            when (layer.kind) {
+                ElementLayer.Kind.Text -> state.blockOf(layer.elementId)?.let { block ->
+                    key(block.id) {
+                        CardTextElement(
+                            block = block,
+                            isSelected = selectedElementId == block.id && !layer.locked,
+                            canvasWidthPx = canvasWidthPx,
+                            canvasHeightPx = canvasHeightPx,
+                            onElementTap = onElementTap,
+                            onElementTransform = onElementTransform
+                        )
+                    }
+                }
 
-                is TextCardLayer.Text -> TextLayerContent(
-                    state = state,
-                    canvasWidthPx = canvasWidthPx,
-                    canvasHeightPx = canvasHeightPx,
-                    onTextClick = onTextClick,
-                    onTextDrag = onTextDrag,
-                    modifier = Modifier.fillMaxSize()
-                )
-
-                is TextCardLayer.Decoration -> {
-                    val emojiIndex = state.decoration.emojiIndex
-                    val uri = emojis.getOrNull(emojiIndex ?: -1)
-                    if (uri != null) {
-                        val sizePx = canvasWidthPx * CardLayout.DECORATION_SIZE_RATIO
-                        val x = state.decoration.offsetX * canvasWidthPx
-                        val y = state.decoration.offsetY * canvasHeightPx
-                        Picture(
-                            model = uri,
-                            contentDescription = null,
-                            contentScale = ContentScale.Fit,
-                            // 装饰为透明底贴纸,不画棋盘格
-                            showTransparencyChecker = false,
-                            modifier = Modifier
-                                .offset {
-                                    IntOffset(x.roundToInt(), y.roundToInt())
-                                }
-                                .size(with(density) { sizePx.toDp() })
-                                // 画布内自由拖动(与文字块同优先级,各自命中区域)
-                                .pointerInput(canvasWidthPx, canvasHeightPx) {
-                                    detectDragGestures { change, dragAmount ->
-                                        change.consume()
-                                        onDecorationDrag(
-                                            dragAmount.x / canvasWidthPx,
-                                            dragAmount.y / canvasHeightPx
-                                        )
-                                    }
-                                }
+                ElementLayer.Kind.Decoration -> state.decorationOf(layer.elementId)?.let {
+                    key(it.id) {
+                        CardDecorationElement(
+                            decoration = it,
+                            isSelected = selectedElementId == it.id && !layer.locked,
+                            canvasWidthPx = canvasWidthPx,
+                            canvasHeightPx = canvasHeightPx,
+                            onElementTap = onElementTap,
+                            onElementTransform = onElementTransform
                         )
                     }
                 }
@@ -136,6 +134,7 @@ private fun BackgroundLayerContent(
     canvasWidthPx: Float,
     canvasHeightPx: Float,
     onBackgroundDrag: (Float, Float) -> Unit,
+    onCanvasTap: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isImageBackground = state.background is BackgroundSpec.Image
@@ -143,12 +142,14 @@ private fun BackgroundLayerContent(
         modifier = modifier
             .background(Color(CardLayout.CARD_BASE_COLOR))
             .graphicsLayer { alpha = state.backgroundOpacity.coerceIn(0f, 1f) }
-            // 背景图拖动:铺满画布的最底层手势;文字块自身手势消费后这里自动取消
+            // 点按空白=取消元素选中;背景为相册图时空白处拖动调整图片位置
+            .pointerInput(canvasWidthPx, canvasHeightPx) {
+                detectTapGestures { onCanvasTap() }
+            }
             .pointerInput(isImageBackground, canvasWidthPx, canvasHeightPx) {
                 if (!isImageBackground) return@pointerInput
-                detectDragGestures { change, dragAmount ->
-                    change.consume()
-                    onBackgroundDrag(dragAmount.x / canvasWidthPx, dragAmount.y / canvasHeightPx)
+                detectTransformGestures { _, pan, _, _ ->
+                    onBackgroundDrag(pan.x / canvasWidthPx, pan.y / canvasHeightPx)
                 }
             }
     ) {
@@ -186,90 +187,145 @@ private fun BackgroundLayerContent(
     }
 }
 
-/** 渐变 Brush 已移除:渐变背景统一走 meshGradient(见 BackgroundLayerContent) */
-
+/**
+ * 元素容器:offset 定位 + 选中后 transform 手势 + 选中边框。
+ * detectTransformGestures 的 pan 在元素本地(已变换)坐标系,乘新缩放并按
+ * 新旋转角转回画布坐标系再归一化(同 markup-layers LayerTransform.applyGesture)。
+ */
 @Composable
-private fun TextLayerContent(
-    state: TextCardRenderState,
+private fun ElementBox(
+    elementId: String,
+    transform: ElementTransform,
+    leftPx: Float,
+    topPx: Float,
+    isSelected: Boolean,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
-    onTextClick: (TextBlockId) -> Unit,
-    onTextDrag: (TextBlockId, Float, Float) -> Unit,
-    modifier: Modifier = Modifier,
+    onElementTap: (String) -> Unit,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    width: Dp? = null,
+    content: @Composable () -> Unit,
 ) {
+    // 手势回调以「最新状态 + 本次增量」算绝对值:pointerInput 协程不随重组重启,
+    // 必须经 rememberUpdatedState 取最新 transform,否则每次事件都从旧基准叠加,表现为拖不动
+    val currentTransform by rememberUpdatedState(transform)
+    Box(
+        modifier = Modifier
+            .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
+            .then(if (width != null) Modifier.width(width) else Modifier)
+            .graphicsLayer {
+                scaleX = transform.scale
+                scaleY = transform.scale
+                rotationZ = transform.rotation
+                transformOrigin = TransformOrigin.Center
+            }
+            .border(
+                width = if (isSelected) 1.5.dp else 0.dp,
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.primary
+                } else Color.Transparent,
+                shape = RoundedCornerShape(4.dp)
+            )
+            // 选中态接管 transform 手势;点按(选中/再点编辑)由独立 tap 检测器承担,
+            // 拖动消费位移后 tap 自动取消
+            .pointerInput(elementId, isSelected, canvasWidthPx, canvasHeightPx) {
+                if (!isSelected) return@pointerInput
+                detectTransformGestures { _, pan, zoom, rotation ->
+                    val base = currentTransform
+                    val newScale = (base.scale * zoom).coerceIn(0.2f, 5f)
+                    val newRotation = base.rotation + rotation
+                    val panInCanvas = (pan * newScale).rotateBy(newRotation)
+                    onElementTransform(
+                        elementId,
+                        base.offsetX + panInCanvas.x / canvasWidthPx,
+                        base.offsetY + panInCanvas.y / canvasHeightPx,
+                        newScale,
+                        newRotation
+                    )
+                }
+            }
+            .pointerInput(elementId) {
+                detectTapGestures { onElementTap(elementId) }
+            }
+    ) {
+        content()
+    }
+}
+
+/** 文字块元素 */
+@Composable
+private fun CardTextElement(
+    block: TextBlock,
+    isSelected: Boolean,
+    canvasWidthPx: Float,
+    canvasHeightPx: Float,
+    onElementTap: (String) -> Unit,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+) {
+    if (block.content.isBlank()) return
     val density = LocalDensity.current
     val paddingPx = canvasWidthPx * CardLayout.CONTENT_PADDING_RATIO
-    val contentWidthDp = with(density) { (canvasWidthPx - paddingPx * 2).toDp() }
-
-    Box(modifier = modifier) {
-        DraggableCardText(
-            block = state.title,
-            blockId = TextBlockId.Title,
-            baseSizePx = canvasWidthPx * CardLayout.TITLE_BASE_SIZE_RATIO,
-            leftPx = paddingPx + state.title.offsetX * canvasWidthPx,
-            topPx = paddingPx + state.title.offsetY * canvasHeightPx,
-            width = contentWidthDp,
-            canvasWidthPx = canvasWidthPx,
-            canvasHeightPx = canvasHeightPx,
-            onTextClick = onTextClick,
-            onTextDrag = onTextDrag
-        )
-        DraggableCardText(
-            block = state.body,
-            blockId = TextBlockId.Body,
-            baseSizePx = canvasWidthPx * CardLayout.BODY_BASE_SIZE_RATIO,
-            leftPx = paddingPx + state.body.offsetX * canvasWidthPx,
-            topPx = canvasWidthPx * CardLayout.BODY_BASE_TOP_RATIO +
-                state.body.offsetY * canvasHeightPx,
-            width = contentWidthDp,
-            canvasWidthPx = canvasWidthPx,
-            canvasHeightPx = canvasHeightPx,
-            onTextClick = onTextClick,
-            onTextDrag = onTextDrag
+    ElementBox(
+        elementId = block.id,
+        transform = block,
+        leftPx = paddingPx + block.offsetX * canvasWidthPx,
+        topPx = canvasWidthPx * block.baseTopRatio + block.offsetY * canvasHeightPx,
+        isSelected = isSelected,
+        canvasWidthPx = canvasWidthPx,
+        canvasHeightPx = canvasHeightPx,
+        onElementTap = onElementTap,
+        onElementTransform = onElementTransform,
+        width = with(density) { (canvasWidthPx - paddingPx * 2).toDp() }
+    ) {
+        CardText(
+            block = block,
+            baseSizePx = canvasWidthPx * block.baseSizeRatio,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
-/**
- * 可拖动的文字块:绝对定位于基准位置 + 归一化偏移(与导出侧一致),
- * 单指拖动回调归一化增量(dx/画布宽、dy/画布高,fit 缩放天然抵消),点按弹出编辑。
- */
+/** 装饰贴纸元素:透明底,不画棋盘格 */
 @Composable
-private fun DraggableCardText(
-    block: TextBlock,
-    blockId: TextBlockId,
-    baseSizePx: Float,
-    leftPx: Float,
-    topPx: Float,
-    width: Dp,
+private fun CardDecorationElement(
+    decoration: DecorationSpec,
+    isSelected: Boolean,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
-    onTextClick: (TextBlockId) -> Unit,
-    onTextDrag: (TextBlockId, Float, Float) -> Unit,
+    onElementTap: (String) -> Unit,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
 ) {
-    if (block.content.isBlank()) return
-    Box(
-        modifier = Modifier
-            .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
-            .width(width)
-            .pointerInput(blockId, canvasWidthPx, canvasHeightPx) {
-                detectDragGestures { change, dragAmount ->
-                    change.consume()
-                    onTextDrag(
-                        blockId,
-                        dragAmount.x / canvasWidthPx,
-                        dragAmount.y / canvasHeightPx
-                    )
-                }
-            }
-            .clickable(onClick = { onTextClick(blockId) })
+    val emojis = Emoji.allIcons()
+    val uri = emojis.getOrNull(decoration.emojiIndex) ?: return
+    val density = LocalDensity.current
+    val sizePx = canvasWidthPx * CardLayout.DECORATION_SIZE_RATIO
+    ElementBox(
+        elementId = decoration.id,
+        transform = decoration,
+        leftPx = decoration.offsetX * canvasWidthPx,
+        topPx = decoration.offsetY * canvasHeightPx,
+        isSelected = isSelected,
+        canvasWidthPx = canvasWidthPx,
+        canvasHeightPx = canvasHeightPx,
+        onElementTap = onElementTap,
+        onElementTransform = onElementTransform
     ) {
-        CardText(
-            block = block,
-            baseSizePx = baseSizePx,
-            modifier = Modifier.fillMaxWidth()
+        Picture(
+            model = uri,
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            showTransparencyChecker = false,
+            modifier = Modifier.size(with(density) { sizePx.toDp() })
         )
     }
+}
+
+private fun Offset.rotateBy(degrees: Float): Offset {
+    val radians = Math.toRadians(degrees.toDouble())
+    return Offset(
+        x = (x * cos(radians) - y * sin(radians)).toFloat(),
+        y = (x * sin(radians) + y * cos(radians)).toFloat()
+    )
 }
 
 /** 单个文字块预览:字号 px→sp 等比缩放,letterSpacing(em)/行距倍率/对齐/粗斜与导出侧一致 */

@@ -10,6 +10,7 @@
     <string name="textcard_start_create">Start Creating</string>
     <string name="textcard_back">Back</string>
     <string name="textcard_save">Save</string>
+    <string name="textcard_tab_basic">Basic</string>
     <string name="textcard_tab_background">Paper</string>
     <string name="textcard_tab_font">Font</string>
     <string name="textcard_tab_text_style">Text Style</string>
@@ -27,6 +28,7 @@
     <string name="textcard_mesh_edit_hint">Drag control points to move them; tap a point to change its color</string>
     <string name="textcard_custom_background">Custom Background</string>
     <string name="textcard_pick_from_gallery">Pick from gallery</string>
+    <string name="textcard_go_image_creation">No suitable image? Create one in Image Creation</string>
     <string name="textcard_background_opacity">Background Opacity</string>
     <string name="textcard_font_panel_title">Font</string>
     <string name="textcard_font_default">Default Font</string>
@@ -39,8 +41,11 @@
     <string name="textcard_font_downloaded">Downloaded</string>
     <string name="textcard_text_settings">Text Settings</string>
     <string name="textcard_text_target">Editing</string>
-    <string name="textcard_text_title_block">Title</string>
-    <string name="textcard_text_body_block">Body</string>
+    <string name="textcard_add_text">Add text</string>
+    <string name="textcard_add_decoration">Add decoration</string>
+    <string name="textcard_delete_selected">Delete selected</string>
+    <string name="textcard_new_block_content">New text</string>
+    <string name="textcard_block_fallback">Text</string>
     <string name="textcard_text_size">Text Size</string>
     <string name="textcard_letter_spacing">Letter Spacing</string>
     <string name="textcard_line_spacing">Line Spacing</string>
