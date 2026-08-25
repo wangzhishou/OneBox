@@ -1,7 +1,6 @@
 package com.wanbaohe.textcard.presentation.editor
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,8 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 
@@ -36,7 +35,7 @@ fun TextEditSheet(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.textcard_edit_text_title)) },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = content,
                 onValueChange = { content = it },
                 label = { Text(stringResource(R.string.textcard_edit_title_hint)) },

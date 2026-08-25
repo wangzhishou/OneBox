@@ -179,6 +179,10 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
 
         val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = block.color.toInt()
+            // 元素级不透明度:与颜色自身 alpha 叠乘
+            alpha = (block.alpha.coerceIn(0f, 1f) * 255).toInt().let { elementAlpha ->
+                (android.graphics.Color.alpha(block.color.toInt()) * elementAlpha / 255)
+            }
             textSize = width * block.baseSizeRatio * block.sizeScale
             typeface = resolveTypeface(block)
             letterSpacing = block.letterSpacingEm
@@ -256,7 +260,9 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
             bitmap,
             null,
             RectF(0f, 0f, size, size),
-            Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+            Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG).apply {
+                alpha = (decoration.alpha.coerceIn(0f, 1f) * 255).toInt()
+            }
         )
         canvas.restore()
     }

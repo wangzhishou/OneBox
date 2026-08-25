@@ -24,6 +24,7 @@ interface ElementTransform {
  * @param offsetY 相对基准位置的归一化垂直偏移(相对画布高)
  * @param scale 手势整体缩放(绕内容中心)
  * @param rotation 手势旋转(度,绕内容中心)
+ * @param alpha 元素级不透明度(0..1),与颜色自身 alpha 叠乘
  */
 data class TextBlock(
     val id: String = UUID.randomUUID().toString(),
@@ -38,6 +39,7 @@ data class TextBlock(
     val isBold: Boolean = false,
     val isItalic: Boolean = false,
     val color: Long = 0xFF1A1A1A,
+    val alpha: Float = 1f,
     override val offsetX: Float = 0f,
     override val offsetY: Float = 0f,
     override val scale: Float = 1f,
@@ -51,10 +53,12 @@ enum class CardTextAlignment {
 /**
  * 装饰贴纸(支持多个;每个装饰一个图层,可独立拖动/缩放/旋转)。
  * offsetX/offsetY 为贴纸左上角的归一化坐标(X 相对画布宽、Y 相对画布高)。
+ * alpha 为元素级不透明度(0..1)。
  */
 data class DecorationSpec(
     val id: String = UUID.randomUUID().toString(),
     val emojiIndex: Int,
+    val alpha: Float = 1f,
     override val offsetX: Float = 0f,
     override val offsetY: Float = 0f,
     override val scale: Float = 1f,

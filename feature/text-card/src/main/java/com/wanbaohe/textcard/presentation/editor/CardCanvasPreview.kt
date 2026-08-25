@@ -3,6 +3,7 @@ package com.wanbaohe.textcard.presentation.editor
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
@@ -13,13 +14,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -30,6 +34,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,9 +44,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
+import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
+import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.DecorationSpec
@@ -72,6 +79,7 @@ fun CardCanvasPreview(
     cornerRadius: Dp = 20.dp,
     onElementTap: (String) -> Unit = {},
     onElementTransform: (String, Float, Float, Float, Float) -> Unit = { _, _, _, _, _ -> },
+    onElementDelete: (String) -> Unit = {},
     selectedElementId: String? = null,
     onCanvasTap: () -> Unit = {},
     onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
@@ -103,10 +111,13 @@ fun CardCanvasPreview(
                         CardTextElement(
                             block = block,
                             isSelected = selectedElementId == block.id && !layer.locked,
+                            // 文字块至少保留一块,最后一块不出删除按钮
+                            canDelete = state.textBlocks.size > 1,
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform
+                            onElementTransform = onElementTransform,
+                            onElementDelete = onElementDelete
                         )
                     }
                 }
@@ -116,10 +127,12 @@ fun CardCanvasPreview(
                         CardDecorationElement(
                             decoration = it,
                             isSelected = selectedElementId == it.id && !layer.locked,
+                            canDelete = true,
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform
+                            onElementTransform = onElementTransform,
+                            onElementDelete = onElementDelete
                         )
                     }
                 }
@@ -203,6 +216,7 @@ private fun ElementBox(
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onDelete: (() -> Unit)? = null,
     width: Dp? = null,
     content: @Composable () -> Unit,
 ) {
@@ -249,6 +263,27 @@ private fun ElementBox(
             }
     ) {
         content()
+        // 删除按钮:选中框外侧右上角(offset 越出边框,不占用布局);
+        // 独立 clickable,事件在子级被消费,不会触发元素的拖动/点选手势
+        if (isSelected && onDelete != null) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .offset(x = 12.dp, y = (-12).dp)
+                    .size(24.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.error)
+                    .clickable(onClick = onDelete)
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
+                    contentDescription = stringResource(R.string.textcard_delete_selected),
+                    tint = MaterialTheme.colorScheme.onError,
+                    modifier = Modifier.size(14.dp)
+                )
+            }
+        }
     }
 }
 
@@ -257,10 +292,12 @@ private fun ElementBox(
 private fun CardTextElement(
     block: TextBlock,
     isSelected: Boolean,
+    canDelete: Boolean,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onElementDelete: (String) -> Unit,
 ) {
     if (block.content.isBlank()) return
     val density = LocalDensity.current
@@ -275,6 +312,9 @@ private fun CardTextElement(
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
         onElementTransform = onElementTransform,
+        onDelete = if (canDelete) {
+            { onElementDelete(block.id) }
+        } else null,
         width = with(density) { (canvasWidthPx - paddingPx * 2).toDp() }
     ) {
         CardText(
@@ -290,10 +330,12 @@ private fun CardTextElement(
 private fun CardDecorationElement(
     decoration: DecorationSpec,
     isSelected: Boolean,
+    canDelete: Boolean,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onElementDelete: (String) -> Unit,
 ) {
     val emojis = Emoji.allIcons()
     val uri = emojis.getOrNull(decoration.emojiIndex) ?: return
@@ -308,14 +350,19 @@ private fun CardDecorationElement(
         canvasWidthPx = canvasWidthPx,
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
-        onElementTransform = onElementTransform
+        onElementTransform = onElementTransform,
+        onDelete = if (canDelete) {
+            { onElementDelete(decoration.id) }
+        } else null
     ) {
         Picture(
             model = uri,
             contentDescription = null,
             contentScale = ContentScale.Fit,
             showTransparencyChecker = false,
-            modifier = Modifier.size(with(density) { sizePx.toDp() })
+            modifier = Modifier
+                .size(with(density) { sizePx.toDp() })
+                .graphicsLayer { alpha = decoration.alpha.coerceIn(0f, 1f) }
         )
     }
 }
@@ -354,6 +401,6 @@ private fun CardText(
             CardTextAlignment.Right -> TextAlign.End
             CardTextAlignment.Justify -> TextAlign.Justify
         },
-        modifier = modifier
+        modifier = modifier.graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
     )
 }

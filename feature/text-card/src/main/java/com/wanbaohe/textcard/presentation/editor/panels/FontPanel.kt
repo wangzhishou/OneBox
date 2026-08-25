@@ -32,20 +32,33 @@ import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 /**
  * 字体面板(设计稿 03):默认字体 + 用户已导入字体(SettingsState.customFonts)
  * + 内置可下载清单(未下载/下载中/已下载三态)。
- * 选中即作用于整张卡片(标题 + 正文)。
+ * 字体只作用于画布当前选中的文字块;未选中文字块时显示提示并禁用选择。
  */
 @Composable
 fun FontPanel(component: TextCardComponent) {
     val settingsState = LocalSettingsState.current
-    val currentFont = component.textBlocks.firstOrNull()?.font
+    val target = component.selectedFontTarget()
+    val currentFont = target?.font
+    val enabled = target != null
 
     PanelTitle(R.string.textcard_font_panel_title)
+
+    if (!enabled) {
+        // 兜底:未在画布上选中文字块时提示先选中
+        Text(
+            text = stringResource(R.string.textcard_font_select_target_hint),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+    }
 
     // 默认字体
     FontRow(
         name = stringResource(R.string.textcard_font_default),
         fontType = null,
-        selected = currentFont == null,
+        selected = currentFont == null && enabled,
+        enabled = enabled,
         onClick = { component.applyFont(null) }
     )
 
@@ -56,6 +69,7 @@ fun FontPanel(component: TextCardComponent) {
             name = custom.name ?: custom.filePath.substringAfterLast('/'),
             fontType = fontType,
             selected = currentFont == fontType,
+            enabled = enabled,
             onClick = { component.applyFont(fontType) }
         )
     }
@@ -70,6 +84,7 @@ fun FontPanel(component: TextCardComponent) {
             // 已下载的字体直接用文件字体做预览,与选中后的卡片渲染一致
             fontType = fontType,
             selected = fontType != null && fontType == currentFont,
+            enabled = enabled,
             onClick = {
                 when (state) {
                     FontDownloadState.Downloaded -> fontType?.let(component::applyFont)
@@ -86,19 +101,22 @@ private fun FontRow(
     name: String,
     fontType: FontType?,
     selected: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
     trailing: (@Composable () -> Unit)? = null,
 ) {
+    val contentAlpha = if (enabled) 1f else 0.4f
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(enabled = enabled, onClick = onClick)
             .padding(vertical = 12.dp)
     ) {
         Text(
             text = name,
             style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = contentAlpha),
             modifier = Modifier.weight(1f)
         )
         Text(
@@ -107,7 +125,7 @@ private fun FontRow(
             fontSize = 16.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = contentAlpha),
             modifier = Modifier
                 .weight(1.4f)
                 .padding(horizontal = 8.dp)
@@ -126,12 +144,14 @@ private fun DownloadableFontRow(
     state: FontDownloadState,
     fontType: FontType?,
     selected: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
 ) {
     FontRow(
         name = stringResource(font.nameRes) + " · ${font.approxSizeMb}MB",
         fontType = fontType,
         selected = selected,
+        enabled = enabled,
         onClick = onClick
     ) {
         when (state) {

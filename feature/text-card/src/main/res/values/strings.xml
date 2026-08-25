@@ -25,7 +25,7 @@
     <string name="textcard_gradient">Gradient</string>
     <string name="textcard_custom">Custom</string>
     <string name="textcard_mesh_edit_title">Edit Gradient</string>
-    <string name="textcard_mesh_edit_hint">Drag control points to move them; tap a point to change its color</string>
+    <string name="textcard_mesh_edit_hint">Drag control points to move them; tap to select a point, then change its color below</string>
     <string name="textcard_custom_background">Custom Background</string>
     <string name="textcard_pick_from_gallery">Pick from gallery</string>
     <string name="textcard_go_image_creation">No suitable image? Create one in Image Creation</string>
@@ -39,6 +39,7 @@
     <string name="textcard_font_download">Download</string>
     <string name="textcard_font_download_failed">Font download failed, tap to retry</string>
     <string name="textcard_font_downloaded">Downloaded</string>
+    <string name="textcard_font_select_target_hint">Select a text block on the canvas first, then pick a font for it</string>
     <string name="textcard_text_settings">Text Settings</string>
     <string name="textcard_text_target">Editing</string>
     <string name="textcard_add_text">Add text</string>
@@ -49,6 +50,7 @@
     <string name="textcard_text_size">Text Size</string>
     <string name="textcard_letter_spacing">Letter Spacing</string>
     <string name="textcard_line_spacing">Line Spacing</string>
+    <string name="textcard_opacity">Opacity</string>
     <string name="textcard_alignment">Alignment</string>
     <string name="textcard_align_left">Left</string>
     <string name="textcard_align_center">Center</string>

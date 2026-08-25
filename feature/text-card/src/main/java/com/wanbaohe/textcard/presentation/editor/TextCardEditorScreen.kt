@@ -1,10 +1,7 @@
 package com.wanbaohe.textcard.presentation.editor
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -12,7 +9,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
@@ -29,15 +25,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavCenterAction
+import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
+import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
 import com.wanbaohe.textcard.presentation.editor.panels.BasicPanel
@@ -53,7 +50,8 @@ import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.Tune
 
 /**
- * 编辑首页(设计稿 01):画布预览 + 底部常驻栏(4 个面板 Tab + 保存按钮)。
+ * 编辑首页(设计稿 01):画布预览 + 底部常驻栏(面板 Tab + 居中保存按钮,
+ * 复用全局 BottomNavigationBar)。
  * Tab 点击后以 [EnhancedModalBottomSheet] 弹出对应面板(标题栏 + 关闭按钮,
  * 模式参考 DemoScreen);点画布文字弹出 [TextEditSheet],文字块/自定义背景图
  * 支持画布内拖动(手势在 [CardCanvasPreview] 内)。
@@ -106,6 +104,7 @@ fun TextCardEditorScreen(
                             component.selectElement(id)
                         },
                         onElementTransform = component::setElementTransform,
+                        onElementDelete = component::removeElement,
                         onCanvasTap = { component.selectElement(null) },
                         onBackgroundDrag = component::updateBackgroundImageOffset,
                         modifier = Modifier.fillMaxWidth()
@@ -185,11 +184,12 @@ private fun EditorPanelSheet(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    // 导航栏留白挂在滚动区外侧(同 markup-layers 各 Sheet 的成熟用法):
+                    // 滚动视口整体抬到手势条上方,内容滚到任意位置都不会被遮挡
+                    .navigationBarsPadding()
                     .heightIn(max = 480.dp)
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp, vertical = 8.dp)
-                    // 内容不被系统导航条遮挡(sheet 自身只在标题+确认栏模式下处理 nav padding)
-                    .navigationBarsPadding()
             ) {
                 when (activePanel) {
                     EditorPanel.Basic -> BasicPanel(
@@ -209,71 +209,35 @@ private fun EditorPanelSheet(
     )
 }
 
-/** 底部常驻栏(设计稿 01):4 个面板 Tab + 保存按钮,玻璃底栏 */
+/** 底部常驻栏(设计稿 01):面板 Tab + 居中保存按钮,复用全局共用的 BottomNavigationBar */
 @Composable
 private fun EditorBottomBar(
     component: TextCardComponent,
     onSaveClick: () -> Unit,
 ) {
-    GlassSurface(
-        style = GlassStyle.Regular,
-        shape = RoundedCornerShape(24.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 6.dp)
-        ) {
-            EditorPanel.entries.forEach { panel ->
-                BottomTab(
-                    panel = panel,
-                    active = component.activePanel == panel,
-                    onClick = { component.togglePanel(panel) },
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            ConfirmButton(
-                text = stringResource(R.string.textcard_save),
-                onClick = onSaveClick,
-                modifier = Modifier.padding(start = 8.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun BottomTab(
-    panel: EditorPanel,
-    active: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val color = if (active) {
-        MaterialTheme.colorScheme.primary
-    } else MaterialTheme.colorScheme.onSurfaceVariant
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .clickable(onClick = onClick)
-            .padding(vertical = 4.dp)
-    ) {
-        Icon(
-            imageVector = panel.icon(),
-            contentDescription = stringResource(panel.labelRes()),
-            tint = color
-        )
-        Text(
-            text = stringResource(panel.labelRes()),
-            style = MaterialTheme.typography.labelSmall,
-            color = color
+    val items = EditorPanel.entries.map { panel ->
+        BottomNavItem(
+            id = panel.name,
+            label = stringResource(panel.labelRes()),
+            icon = panel.icon(),
+            contentDescription = stringResource(panel.labelRes())
         )
     }
+    BottomNavigationBar(
+        items = items,
+        selectedItemId = component.activePanel?.name,
+        onItemClick = { item ->
+            EditorPanel.entries.firstOrNull { it.name == item.id }
+                ?.let(component::togglePanel)
+        },
+        centerAction = BottomNavCenterAction(
+            label = "",
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+            contentDescription = stringResource(R.string.textcard_save)
+        ),
+        onCenterActionClick = onSaveClick,
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 private fun EditorPanel.icon(): ImageVector = when (this) {

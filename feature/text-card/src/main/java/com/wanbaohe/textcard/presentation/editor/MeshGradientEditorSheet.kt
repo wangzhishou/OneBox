@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.resources.icons.Close
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorPickerSheet
+import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
 import com.wanbaohe.textcard.R
@@ -56,7 +56,8 @@ import kotlin.math.roundToInt
 
 /**
  * Mesh 渐变编辑弹层(对标官方 MeshGradient Explorer):
- * 画布比例预览上叠加 3×3 控制点(带白边的彩色圆点,拖动改位置/点按改色),
+ * 画布比例预览上叠加 3×3 控制点(带白边的彩色圆点,拖动改位置、点按选中),
+ * 选中点在下方颜色行(ColorSelectionRow,与图片创作一致)改色;
  * 底部预设色板行(点预设 = 以它为起点继续调),「完成」一次性回填组件背景。
  * 控制点只在编辑界面显示,画布主页不显示。密度固定 3×3(2×2 patches)。
  *
@@ -81,7 +82,6 @@ fun MeshGradientEditorSheet(
         )
     }
     var selectedPoint by remember { mutableStateOf<Pair<Int, Int>?>(null) }
-    var showColorPicker by remember { mutableStateOf(false) }
     val canvas = component.canvas ?: CanvasSpec.Xiaohongshu
 
     EnhancedModalBottomSheet(
@@ -113,8 +113,9 @@ fun MeshGradientEditorSheet(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    // 导航栏留白挂在内容根上(同 markup-layers 各 Sheet 的成熟用法)
                     .navigationBarsPadding()
+                    .padding(horizontal = 16.dp)
             ) {
                 Text(
                     text = stringResource(R.string.textcard_mesh_edit_hint),
@@ -128,7 +129,6 @@ fun MeshGradientEditorSheet(
                     selectedPoint = selectedPoint,
                     onPointSelect = { row, col ->
                         selectedPoint = row to col
-                        showColorPicker = true
                     },
                     onPointMove = { row, col, dx, dy ->
                         points = points.mapIndexed { r, rowPoints ->
@@ -144,6 +144,24 @@ fun MeshGradientEditorSheet(
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
+                // 选中控制点后用颜色行改色(与图片创作一致的横向滚动色板,首项自定义取色)
+                selectedPoint?.let { editing ->
+                    ColorSelectionRow(
+                        value = Color(points[editing.first][editing.second].argb),
+                        onValueChange = { color ->
+                            points = points.mapIndexed { r, rowPoints ->
+                                rowPoints.mapIndexed { c, point ->
+                                    if (r == editing.first && c == editing.second) {
+                                        point.copy(
+                                            argb = color.toArgb().toLong() and 0xFFFF_FFFFL
+                                        )
+                                    } else point
+                                }
+                            }
+                        },
+                        allowAlpha = false
+                    )
+                }
                 // 预设色板行:点预设 = 以它为起点继续调
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -186,29 +204,9 @@ fun MeshGradientEditorSheet(
             }
         }
     )
-
-    val editing = selectedPoint
-    if (editing != null) {
-        ColorPickerSheet(
-            visible = showColorPicker,
-            onDismiss = { showColorPicker = false },
-            color = Color(points[editing.first][editing.second].argb),
-            onColorSelected = { color ->
-                points = points.mapIndexed { r, rowPoints ->
-                    rowPoints.mapIndexed { c, point ->
-                        if (r == editing.first && c == editing.second) {
-                            point.copy(argb = color.toArgb().toLong() and 0xFFFF_FFFFL)
-                        } else point
-                    }
-                }
-                showColorPicker = false
-            },
-            allowAlpha = false
-        )
-    }
 }
 
-/** mesh 预览 + 控制点覆盖层:拖动改变归一化位置,点按进入取色 */
+/** mesh 预览 + 控制点覆盖层:拖动改变归一化位置,点按选中(在下方颜色行改色) */
 @Composable
 private fun MeshEditCanvas(
     points: List<List<MeshPoint>>,

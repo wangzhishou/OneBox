@@ -1,35 +1,22 @@
 package com.wanbaohe.textcard.presentation.editor.panels
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorPickerSheet
+import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButtonGroup
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.TextBlock
@@ -52,7 +39,7 @@ private fun TextBlock.displayLabel(): String {
 
 /**
  * 文字设置面板(设计稿 04):作用于当前选中文本块(任意多块,按 id)的
- * 字号/字间距/行间距滑杆 + 对齐分段 + 粗/斜开关 + 文字颜色;另含背景透明度。
+ * 字号/字间距/行间距/元素不透明度滑杆 + 对齐分段 + 粗/斜开关 + 文字颜色。
  * 顶部「添加文字块」入口新增正文样式块。
  */
 @Composable
@@ -60,7 +47,6 @@ fun TextStylePanel(component: TextCardComponent) {
     val blocks = component.textBlocks
     val block = component.selectedTextBlock() ?: return
     val blockId = block.id
-    var showTextColorPicker by remember { mutableStateOf(false) }
 
     PanelTitle(R.string.textcard_text_settings)
 
@@ -104,33 +90,33 @@ fun TextStylePanel(component: TextCardComponent) {
         },
         internalStateTransformation = { ((it - 1f) * 40).roundToInt() }
     )
+    // 元素级不透明度:每个文字块独立(背景透明度在「纸张背景」面板)
     EnhancedSliderItem(
-        value = component.backgroundOpacity,
-        title = stringResource(R.string.textcard_background_opacity),
+        value = block.alpha,
+        title = stringResource(R.string.textcard_opacity),
         valueRange = 0f..1f,
-        onValueChange = component::updateBackgroundOpacity,
+        onValueChange = { value ->
+            component.updateTextBlock(blockId) { it.copy(alpha = value) }
+        },
         internalStateTransformation = { (it * 100).roundToInt() },
         valueSuffix = "%"
     )
 
     // 对齐分段(设计稿 04 的四个图标按钮)
-    val alignments = CardTextAlignment.entries
     Text(
         text = stringResource(R.string.textcard_alignment),
         style = MaterialTheme.typography.titleSmall,
         modifier = Modifier.padding(top = 8.dp)
     )
-    EnhancedButtonGroup(
-        itemCount = alignments.size,
-        selectedIndex = alignments.indexOf(block.alignment),
-        onIndexChange = { index ->
-            component.updateTextBlock(blockId) {
-                it.copy(alignment = alignments[index])
-            }
+    GlassSegmentedButtonRow(
+        options = CardTextAlignment.entries,
+        selectedOption = block.alignment,
+        onOptionSelected = { alignment ->
+            component.updateTextBlock(blockId) { it.copy(alignment = alignment) }
         },
-        itemContent = { index ->
+        label = { alignment ->
             Icon(
-                imageVector = when (alignments[index]) {
+                imageVector = when (alignment) {
                     CardTextAlignment.Left -> MaterialIcons.AutoMirrored.Outlined.FormatAlignLeft
                     CardTextAlignment.Center -> MaterialIcons.Outlined.FormatAlignCenter
                     CardTextAlignment.Right -> MaterialIcons.AutoMirrored.Outlined.FormatAlignRight
@@ -141,7 +127,7 @@ fun TextStylePanel(component: TextCardComponent) {
         }
     )
 
-    // 字体样式:加粗 / 斜体开关 + 文字颜色
+    // 字体样式:加粗 / 斜体开关
     Text(
         text = stringResource(R.string.textcard_font_style),
         style = MaterialTheme.typography.titleSmall,
@@ -158,7 +144,7 @@ fun TextStylePanel(component: TextCardComponent) {
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.weight(1f)
         )
-        EnhancedSwitch(
+        GlassSwitch(
             checked = block.isBold,
             onCheckedChange = { checked ->
                 component.updateTextBlock(blockId) { it.copy(isBold = checked) }
@@ -174,49 +160,26 @@ fun TextStylePanel(component: TextCardComponent) {
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.weight(1f)
         )
-        EnhancedSwitch(
+        GlassSwitch(
             checked = block.isItalic,
             onCheckedChange = { checked ->
                 component.updateTextBlock(blockId) { it.copy(isItalic = checked) }
             }
         )
     }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 4.dp)
-            .container(shape = ShapeDefaults.large)
-            .clickable(onClick = { showTextColorPicker = true })
-            .padding(horizontal = 16.dp, vertical = 10.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.textcard_text_color),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f)
-        )
-        Box(
-            modifier = Modifier
-                .size(24.dp)
-                .clip(RoundedCornerShape(6.dp))
-                .background(Color(block.color))
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                    shape = RoundedCornerShape(6.dp)
-                )
-        )
-    }
 
-    ColorPickerSheet(
-        visible = showTextColorPicker,
-        onDismiss = { showTextColorPicker = false },
-        color = Color(block.color),
-        onColorSelected = { color ->
+    // 文字颜色:与图片创作一致的横向滚动色板(首项支持自定义取色)
+    Text(
+        text = stringResource(R.string.textcard_text_color),
+        style = MaterialTheme.typography.titleSmall,
+        modifier = Modifier.padding(top = 12.dp)
+    )
+    ColorSelectionRow(
+        value = Color(block.color),
+        onValueChange = { color ->
             component.updateTextBlock(blockId) {
                 it.copy(color = color.toArgb().toLong() and 0xFFFF_FFFFL)
             }
-            showTextColorPicker = false
         },
         allowAlpha = false
     )

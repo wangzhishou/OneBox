@@ -234,10 +234,14 @@ class TextCardComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    /** 字体选择作用于整张卡片(全部文字块) */
+    /** 字体面板作用目标:画布当前选中的文字块(未选中或选中的是装饰则为 null) */
+    fun selectedFontTarget(): TextBlock? =
+        _textBlocks.value.find { it.id == _selectedElementId.value }
+
+    /** 字体只作用于画布当前选中的文字块;未选中时 no-op(面板侧给出提示) */
     fun applyFont(font: FontType?) {
-        _textBlocks.update { list -> list.map { it.copy(font = font) } }
-        registerChanges()
+        val target = selectedFontTarget() ?: return
+        updateTextBlock(target.id) { it.copy(font = font) }
     }
 
     // ---------------- 元素选中与变换(文字块/装饰通用) ----------------
@@ -401,6 +405,7 @@ class TextCardComponent @AssistedInject internal constructor(
             }
             result.onSuccess { fontType ->
                 _fontDownloadStates.update { it + (font.id to FontDownloadState.Downloaded) }
+                // 下载完成即尝试应用到当前选中文字块;无选中时 no-op,用户再点该行应用
                 applyFont(fontType)
             }.onFailure { failure ->
                 failure.makeLog("TextCardFontDownload")
