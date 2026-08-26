@@ -1,23 +1,26 @@
 package com.wanbaohe.textcard.presentation.selection
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,8 +39,10 @@ import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowForwardIos
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBorderColor
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CanvasSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
@@ -77,6 +82,7 @@ fun CanvasSelectContent(
                         .align(Alignment.CenterHorizontally)
                         .padding(vertical = 16.dp)
                 )
+                // 双列布局:两张内置卡片占第一行,自定义卡片占第二行左列
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
@@ -91,11 +97,20 @@ fun CanvasSelectContent(
                             modifier = Modifier.weight(1f)
                         )
                     }
+                }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 16.dp)
+                ) {
                     CustomCanvasCard(
                         component = component,
                         onEditRequest = { showCustomSizeDialog = true },
                         modifier = Modifier.weight(1f)
                     )
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
             PrimaryButton(
@@ -236,6 +251,7 @@ private fun CustomCanvasCard(
         ),
         modifier = modifier
     ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -313,6 +329,26 @@ private fun CustomCanvasCard(
                 }
             }
         }
+        // 右上角编辑角标:显著提示点击可编辑尺寸
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(10.dp)
+                .size(28.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = CircleShape
+                )
+        ) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBorderColor,
+                contentDescription = stringResource(R.string.textcard_custom_size_title),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(14.dp)
+            )
+        }
+        }
     }
 }
 
@@ -336,7 +372,7 @@ private fun CustomSizeDialog(
         title = { Text(stringResource(R.string.textcard_custom_size_title)) },
         text = {
             Column {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = widthText,
                     onValueChange = { value ->
                         widthText = value.filter { it.isDigit() }.take(4)
@@ -346,7 +382,7 @@ private fun CustomSizeDialog(
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = heightText,
                     onValueChange = { value ->
                         heightText = value.filter { it.isDigit() }.take(4)
