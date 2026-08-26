@@ -1644,4 +1644,7 @@ Ve böylece OneBox doğdu.</string>
     <string name="habit_tracker_description">Günlük alışkanlık işaretlemeleri ve istatistikler</string>
     <string name="dsh_client">DSH İstemcisi</string>
     <string name="dsh_client_description">Temsilci sohbetleri için bir DeepSeek Harness ana makinesine bağlanın.</string>
+    <string name="nav_text_card">Metin Kartı</string>
+    <string name="text_card">Metin Kartı</string>
+    <string name="text_card_sub">Alıntıları paylaşılabilir güzel kartlara dönüştür</string>
 </resources>

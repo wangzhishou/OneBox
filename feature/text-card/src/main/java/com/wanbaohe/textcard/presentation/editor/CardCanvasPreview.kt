@@ -16,27 +16,42 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -81,6 +96,9 @@ fun CardCanvasPreview(
     onElementTransform: (String, Float, Float, Float, Float) -> Unit = { _, _, _, _, _ -> },
     onElementDelete: (String) -> Unit = {},
     selectedElementId: String? = null,
+    editingTextBlockId: String? = null,
+    onTextChange: (String, String) -> Unit = { _, _ -> },
+    onTextEditCommit: () -> Unit = {},
     onCanvasTap: () -> Unit = {},
     onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
 ) {
@@ -111,13 +129,16 @@ fun CardCanvasPreview(
                         CardTextElement(
                             block = block,
                             isSelected = selectedElementId == block.id && !layer.locked,
+                            isEditing = editingTextBlockId == block.id,
                             // 文字块至少保留一块,最后一块不出删除按钮
                             canDelete = state.textBlocks.size > 1,
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
                             onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete
+                            onElementDelete = onElementDelete,
+                            onTextChange = onTextChange,
+                            onTextEditCommit = onTextEditCommit
                         )
                     }
                 }
@@ -204,6 +225,7 @@ private fun BackgroundLayerContent(
  * 元素容器:offset 定位 + 选中后 transform 手势 + 选中边框。
  * detectTransformGestures 的 pan 在元素本地(已变换)坐标系,乘新缩放并按
  * 新旋转角转回画布坐标系再归一化(同 markup-layers LayerTransform.applyGesture)。
+ * [gesturesEnabled]=false(就地编辑态)时手势全部关闭,避免与文本选择/光标冲突。
  */
 @Composable
 private fun ElementBox(
@@ -217,6 +239,7 @@ private fun ElementBox(
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
     onDelete: (() -> Unit)? = null,
+    gesturesEnabled: Boolean = true,
     width: Dp? = null,
     content: @Composable () -> Unit,
 ) {
@@ -242,8 +265,8 @@ private fun ElementBox(
             )
             // 选中态接管 transform 手势;点按(选中/再点编辑)由独立 tap 检测器承担,
             // 拖动消费位移后 tap 自动取消
-            .pointerInput(elementId, isSelected, canvasWidthPx, canvasHeightPx) {
-                if (!isSelected) return@pointerInput
+            .pointerInput(elementId, isSelected, gesturesEnabled, canvasWidthPx, canvasHeightPx) {
+                if (!isSelected || !gesturesEnabled) return@pointerInput
                 detectTransformGestures { _, pan, zoom, rotation ->
                     val base = currentTransform
                     val newScale = (base.scale * zoom).coerceIn(0.2f, 5f)
@@ -258,9 +281,13 @@ private fun ElementBox(
                     )
                 }
             }
-            .pointerInput(elementId) {
-                detectTapGestures { onElementTap(elementId) }
-            }
+            .then(
+                if (gesturesEnabled) {
+                    Modifier.pointerInput(elementId) {
+                        detectTapGestures { onElementTap(elementId) }
+                    }
+                } else Modifier
+            )
     ) {
         content()
         // 删除按钮:选中框外侧右上角(offset 越出边框,不占用布局);
@@ -287,17 +314,20 @@ private fun ElementBox(
     }
 }
 
-/** 文字块元素 */
+/** 文字块元素:编辑态就地渲染 BasicTextField(原位同尺寸同样式),手势关闭 */
 @Composable
 private fun CardTextElement(
     block: TextBlock,
     isSelected: Boolean,
+    isEditing: Boolean,
     canDelete: Boolean,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
     onElementDelete: (String) -> Unit,
+    onTextChange: (String, String) -> Unit,
+    onTextEditCommit: () -> Unit,
 ) {
     if (block.content.isBlank()) return
     val density = LocalDensity.current
@@ -312,17 +342,65 @@ private fun CardTextElement(
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
         onElementTransform = onElementTransform,
-        onDelete = if (canDelete) {
+        onDelete = if (canDelete && !isEditing) {
             { onElementDelete(block.id) }
         } else null,
+        gesturesEnabled = !isEditing,
         width = with(density) { (canvasWidthPx - paddingPx * 2).toDp() }
     ) {
-        CardText(
-            block = block,
-            baseSizePx = canvasWidthPx * block.baseSizeRatio,
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (isEditing) {
+            InPlaceTextEditor(
+                block = block,
+                baseSizePx = canvasWidthPx * block.baseSizeRatio,
+                onTextChange = { onTextChange(block.id, it) },
+                onCommit = onTextEditCommit,
+                modifier = Modifier.fillMaxWidth()
+            )
+        } else {
+            CardText(
+                block = block,
+                baseSizePx = canvasWidthPx * block.baseSizeRatio,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
+}
+
+/**
+ * 就地文字编辑:原位同样式 BasicTextField(背景透明无装饰线),
+ * 进入时自动聚焦弹键盘、光标落末尾;内容实时经 [onTextChange] 写回组件。
+ */
+@Composable
+private fun InPlaceTextEditor(
+    block: TextBlock,
+    baseSizePx: Float,
+    onTextChange: (String) -> Unit,
+    onCommit: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var fieldValue by remember(block.id) {
+        mutableStateOf(TextFieldValue(block.content, TextRange(block.content.length)))
+    }
+    LaunchedEffect(block.id) {
+        focusRequester.requestFocus()
+        keyboardController?.show()
+    }
+    BasicTextField(
+        value = fieldValue,
+        onValueChange = { value ->
+            fieldValue = value
+            onTextChange(value.text)
+        },
+        textStyle = cardTextStyle(block, baseSizePx),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { onCommit() }),
+        modifier = modifier
+            .graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
+            .focusRequester(focusRequester)
+    )
 }
 
 /** 装饰贴纸元素:透明底,不画棋盘格 */
@@ -383,16 +461,27 @@ private fun CardText(
     modifier: Modifier = Modifier,
 ) {
     if (block.content.isBlank()) return
-    val density = LocalDensity.current
-    val fontSize = with(density) { (baseSizePx * block.sizeScale).toSp() }
-    val fontFamily = block.font.toUiFont().fontFamily
     Text(
         text = block.content,
+        style = cardTextStyle(block, baseSizePx),
+        modifier = modifier.graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
+    )
+}
+
+/** 文字块统一样式:CardText 与就地编辑器共用,保证编辑态与渲染态观感一致 */
+@Composable
+private fun cardTextStyle(
+    block: TextBlock,
+    baseSizePx: Float,
+): TextStyle {
+    val density = LocalDensity.current
+    val fontSize = with(density) { (baseSizePx * block.sizeScale).toSp() }
+    return TextStyle(
         color = Color(block.color),
         fontSize = fontSize,
         lineHeight = (fontSize.value * block.lineSpacingMultiplier).sp,
         letterSpacing = block.letterSpacingEm.em,
-        fontFamily = fontFamily,
+        fontFamily = block.font.toUiFont().fontFamily,
         fontWeight = if (block.isBold) FontWeight.Bold else FontWeight.Normal,
         fontStyle = if (block.isItalic) FontStyle.Italic else FontStyle.Normal,
         textAlign = when (block.alignment) {
@@ -400,7 +489,6 @@ private fun CardText(
             CardTextAlignment.Center -> TextAlign.Center
             CardTextAlignment.Right -> TextAlign.End
             CardTextAlignment.Justify -> TextAlign.Justify
-        },
-        modifier = modifier.graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
+        }
     )
 }

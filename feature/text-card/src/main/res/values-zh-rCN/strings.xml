@@ -46,6 +46,7 @@
     <string name="textcard_add_decoration">添加装饰</string>
     <string name="textcard_delete_selected">删除选中元素</string>
     <string name="textcard_new_block_content">新的文字</string>
+    <string name="textcard_empty_text_hint">点击输入文字</string>
     <string name="textcard_block_fallback">文字</string>
     <string name="textcard_text_size">文字大小</string>
     <string name="textcard_letter_spacing">字间距</string>

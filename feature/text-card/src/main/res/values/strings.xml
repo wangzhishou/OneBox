@@ -46,6 +46,7 @@
     <string name="textcard_add_decoration">Add decoration</string>
     <string name="textcard_delete_selected">Delete selected</string>
     <string name="textcard_new_block_content">New text</string>
+    <string name="textcard_empty_text_hint">Tap to enter text</string>
     <string name="textcard_block_fallback">Text</string>
     <string name="textcard_text_size">Text Size</string>
     <string name="textcard_letter_spacing">Letter Spacing</string>

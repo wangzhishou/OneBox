@@ -1644,4 +1644,7 @@
     <string name="habit_tracker_description">दैनिक आदत चेक-इन और आंकड़े</string>
     <string name="dsh_client">DSH क्लाइंट</string>
     <string name="dsh_client_description">एजेंट वार्तालाप के लिए DeepSeek Harness होस्ट से कनेक्ट करें।</string>
+    <string name="nav_text_card">टेक्स्ट कार्ड</string>
+    <string name="text_card">टेक्स्ट कार्ड</string>
+    <string name="text_card_sub">कोट्स को सुंदर साझा कार्ड में बदलें</string>
 </resources>

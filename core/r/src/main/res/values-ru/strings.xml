@@ -1644,4 +1644,7 @@
     <string name="habit_tracker_description">Ежедневные отметки привычек и статистика</string>
     <string name="dsh_client">Клиент DSH</string>
     <string name="dsh_client_description">Подключайтесь к хосту DeepSeek Harness для диалогов с агентом.</string>
+    <string name="nav_text_card">Текстовая карточка</string>
+    <string name="text_card">Текстовая карточка</string>
+    <string name="text_card_sub">Превращайте цитаты в красивые карточки для публикации</string>
 </resources>

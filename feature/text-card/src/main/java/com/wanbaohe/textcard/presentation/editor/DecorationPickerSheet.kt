@@ -48,7 +48,11 @@ fun DecorationPickerSheet(
         visible = true,
         onDismiss = { onDismiss() },
         title = {
-            Text(text = stringResource(R.string.textcard_decoration_title))
+            Text(
+                text = stringResource(R.string.textcard_decoration_title),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
         },
         sheetContent = {
             Column(

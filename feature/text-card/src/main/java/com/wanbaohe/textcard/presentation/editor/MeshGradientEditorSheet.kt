@@ -101,8 +101,8 @@ fun MeshGradientEditorSheet(
                 title = {
                     Text(
                         text = stringResource(R.string.textcard_mesh_edit_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             )

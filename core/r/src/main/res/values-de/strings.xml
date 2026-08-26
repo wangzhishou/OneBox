@@ -1644,4 +1644,7 @@ Und so wurde OneBox geboren.</string>
     <string name="habit_tracker_description">Tägliche Gewohnheiten einchecken und Statistiken</string>
     <string name="dsh_client">DSH-Client</string>
     <string name="dsh_client_description">Mit einem DeepSeek Harness-Host verbinden, um mit Agenten zu chatten.</string>
+    <string name="nav_text_card">Textkarte</string>
+    <string name="text_card">Textkarte</string>
+    <string name="text_card_sub">Verwandle Zitate in wunderschöne, teilbare Karten</string>
 </resources>

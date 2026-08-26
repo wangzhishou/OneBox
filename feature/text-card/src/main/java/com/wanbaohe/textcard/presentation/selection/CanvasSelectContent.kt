@@ -1,26 +1,32 @@
 package com.wanbaohe.textcard.presentation.selection
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.button.ConfirmButton
+import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowForwardIos
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CanvasSpec
@@ -73,9 +79,17 @@ fun CanvasSelectContent(
                     }
                 }
             }
-            ConfirmButton(
+            PrimaryButton(
                 text = stringResource(R.string.textcard_start_create),
                 onClick = component::startEditing,
+                icon = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArrowForwardIos,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.width(16.dp)
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 16.dp)
@@ -119,7 +133,8 @@ private fun CanvasCard(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp, bottom = 12.dp)
         )
-        // mini 预览:默认渐变 + 默认文案,与进入编辑后的初始卡片一致
+        // mini 预览:默认渐变 + 默认文案,与进入编辑后的初始卡片一致;
+        // 内层预览自带点按手势,盖一层透明拦截,让整卡(含预览区)统一响应选中
         val previewBlocks = listOf(
             TextBlock(
                 content = stringResource(R.string.textcard_default_title),
@@ -133,20 +148,29 @@ private fun CanvasCard(
                 baseTopRatio = CardLayout.BODY_BASE_TOP_RATIO
             )
         )
-        CardCanvasPreview(
-            state = TextCardRenderState(
-                canvas = spec,
-                background = GradientPresets.default,
-                textBlocks = previewBlocks,
-                layers = previewBlocks.map {
-                    ElementLayer(it.id, ElementLayer.Kind.Text)
-                }
-            ),
-            cornerRadius = 12.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(spec.aspectRatio)
-        )
+        Box {
+            CardCanvasPreview(
+                state = TextCardRenderState(
+                    canvas = spec,
+                    background = GradientPresets.default,
+                    textBlocks = previewBlocks,
+                    layers = previewBlocks.map {
+                        ElementLayer(it.id, ElementLayer.Kind.Text)
+                    }
+                ),
+                cornerRadius = 12.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(spec.aspectRatio)
+            )
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .pointerInput(Unit) {
+                        detectTapGestures { onClick() }
+                    }
+            )
+        }
         Text(
             text = spec.ratioLabel,
             style = MaterialTheme.typography.labelMedium,

@@ -1,6 +1,9 @@
 package com.wanbaohe.textcard.presentation.editor.panels
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +20,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButtonGroup
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.TextBlock
@@ -38,9 +43,9 @@ private fun TextBlock.displayLabel(): String {
 }
 
 /**
- * 文字设置面板(设计稿 04):作用于当前选中文本块(任意多块,按 id)的
- * 字号/字间距/行间距/元素不透明度滑杆 + 对齐分段 + 粗/斜开关 + 文字颜色。
- * 顶部「添加文字块」入口新增正文样式块。
+ * 文字设置面板(设计稿 04):作用于当前选中文本块(任意多块,按 id)。
+ * 顺序按常用优先:文本块切换 → 字号 → 行距 → 字间距 → 对齐 → 加粗/斜体 → 不透明度 → 文字颜色;
+ * 各分区统一 container() 包裹与 8dp 间距。
  */
 @Composable
 fun TextStylePanel(component: TextCardComponent) {
@@ -50,137 +55,159 @@ fun TextStylePanel(component: TextCardComponent) {
 
     PanelTitle(R.string.textcard_text_settings)
 
-    // 文本块切换(标题/正文/新增块,按首行内容截断做标签);增删统一走「基础」面板与图层面板
-    val labels = blocks.map { it.displayLabel() }
-    EnhancedButtonGroup(
-        items = labels,
-        selectedIndex = blocks.indexOfFirst { it.id == blockId }.coerceAtLeast(0),
-        onIndexChange = { index ->
-            blocks.getOrNull(index)?.let { component.selectTextBlock(it.id) }
-        },
-        title = stringResource(R.string.textcard_text_target),
-        modifier = Modifier.padding(top = 8.dp)
-    )
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // 文本块切换(标题/正文/新增块,按首行内容截断做标签);增删统一走「基础」面板与图层面板
+        val labels = blocks.map { it.displayLabel() }
+        EnhancedButtonGroup(
+            items = labels,
+            selectedIndex = blocks.indexOfFirst { it.id == blockId }.coerceAtLeast(0),
+            onIndexChange = { index ->
+                blocks.getOrNull(index)?.let { component.selectTextBlock(it.id) }
+            },
+            title = stringResource(R.string.textcard_text_target)
+        )
 
-    EnhancedSliderItem(
-        value = block.sizeScale,
-        title = stringResource(R.string.textcard_text_size),
-        valueRange = 0.5f..2f,
-        onValueChange = { value ->
-            component.updateTextBlock(blockId) { it.copy(sizeScale = value) }
-        },
-        internalStateTransformation = { (it * 36).roundToInt() },
-        modifier = Modifier.padding(top = 4.dp)
-    )
-    EnhancedSliderItem(
-        value = block.letterSpacingEm,
-        title = stringResource(R.string.textcard_letter_spacing),
-        valueRange = 0f..0.2f,
-        onValueChange = { value ->
-            component.updateTextBlock(blockId) { it.copy(letterSpacingEm = value) }
-        },
-        internalStateTransformation = { (it * 50).roundToInt() }
-    )
-    EnhancedSliderItem(
-        value = block.lineSpacingMultiplier,
-        title = stringResource(R.string.textcard_line_spacing),
-        valueRange = 1f..2f,
-        onValueChange = { value ->
-            component.updateTextBlock(blockId) { it.copy(lineSpacingMultiplier = value) }
-        },
-        internalStateTransformation = { ((it - 1f) * 40).roundToInt() }
-    )
-    // 元素级不透明度:每个文字块独立(背景透明度在「纸张背景」面板)
-    EnhancedSliderItem(
-        value = block.alpha,
-        title = stringResource(R.string.textcard_opacity),
-        valueRange = 0f..1f,
-        onValueChange = { value ->
-            component.updateTextBlock(blockId) { it.copy(alpha = value) }
-        },
-        internalStateTransformation = { (it * 100).roundToInt() },
-        valueSuffix = "%"
-    )
+        EnhancedSliderItem(
+            value = block.sizeScale,
+            title = stringResource(R.string.textcard_text_size),
+            valueRange = 0.5f..2f,
+            onValueChange = { value ->
+                component.updateTextBlock(blockId) { it.copy(sizeScale = value) }
+            },
+            internalStateTransformation = { (it * 36).roundToInt() }
+        )
+        EnhancedSliderItem(
+            value = block.lineSpacingMultiplier,
+            title = stringResource(R.string.textcard_line_spacing),
+            valueRange = 1f..2f,
+            onValueChange = { value ->
+                component.updateTextBlock(blockId) { it.copy(lineSpacingMultiplier = value) }
+            },
+            internalStateTransformation = { ((it - 1f) * 40).roundToInt() }
+        )
+        EnhancedSliderItem(
+            value = block.letterSpacingEm,
+            title = stringResource(R.string.textcard_letter_spacing),
+            valueRange = 0f..0.2f,
+            onValueChange = { value ->
+                component.updateTextBlock(blockId) { it.copy(letterSpacingEm = value) }
+            },
+            internalStateTransformation = { (it * 50).roundToInt() }
+        )
 
-    // 对齐分段(设计稿 04 的四个图标按钮)
-    Text(
-        text = stringResource(R.string.textcard_alignment),
-        style = MaterialTheme.typography.titleSmall,
-        modifier = Modifier.padding(top = 8.dp)
-    )
-    GlassSegmentedButtonRow(
-        options = CardTextAlignment.entries,
-        selectedOption = block.alignment,
-        onOptionSelected = { alignment ->
-            component.updateTextBlock(blockId) { it.copy(alignment = alignment) }
-        },
-        label = { alignment ->
-            Icon(
-                imageVector = when (alignment) {
-                    CardTextAlignment.Left -> MaterialIcons.AutoMirrored.Outlined.FormatAlignLeft
-                    CardTextAlignment.Center -> MaterialIcons.Outlined.FormatAlignCenter
-                    CardTextAlignment.Right -> MaterialIcons.AutoMirrored.Outlined.FormatAlignRight
-                    CardTextAlignment.Justify -> MaterialIcons.Outlined.FormatAlignJustify
+        // 对齐分段(设计稿 04 的四个图标按钮)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .container(shape = ShapeDefaults.default)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.textcard_alignment),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            GlassSegmentedButtonRow(
+                options = CardTextAlignment.entries,
+                selectedOption = block.alignment,
+                onOptionSelected = { alignment ->
+                    component.updateTextBlock(blockId) { it.copy(alignment = alignment) }
                 },
-                contentDescription = null
+                label = { alignment ->
+                    Icon(
+                        imageVector = when (alignment) {
+                            CardTextAlignment.Left -> MaterialIcons.AutoMirrored.Outlined.FormatAlignLeft
+                            CardTextAlignment.Center -> MaterialIcons.Outlined.FormatAlignCenter
+                            CardTextAlignment.Right -> MaterialIcons.AutoMirrored.Outlined.FormatAlignRight
+                            CardTextAlignment.Justify -> MaterialIcons.Outlined.FormatAlignJustify
+                        },
+                        contentDescription = null
+                    )
+                }
             )
         }
-    )
 
-    // 字体样式:加粗 / 斜体开关
-    Text(
-        text = stringResource(R.string.textcard_font_style),
-        style = MaterialTheme.typography.titleSmall,
-        modifier = Modifier.padding(top = 12.dp, bottom = 4.dp)
-    )
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = MaterialIcons.Outlined.FormatBold,
-            contentDescription = null,
-            modifier = Modifier.padding(end = 4.dp)
-        )
-        Text(
-            text = stringResource(R.string.textcard_bold),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f)
-        )
-        GlassSwitch(
-            checked = block.isBold,
-            onCheckedChange = { checked ->
-                component.updateTextBlock(blockId) { it.copy(isBold = checked) }
+        // 字体样式:加粗 / 斜体开关
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .container(shape = ShapeDefaults.default)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.textcard_font_style),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = MaterialIcons.Outlined.FormatBold,
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+                Text(
+                    text = stringResource(R.string.textcard_bold),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.weight(1f)
+                )
+                GlassSwitch(
+                    checked = block.isBold,
+                    onCheckedChange = { checked ->
+                        component.updateTextBlock(blockId) { it.copy(isBold = checked) }
+                    }
+                )
+                Icon(
+                    imageVector = MaterialIcons.Outlined.FormatItalic,
+                    contentDescription = null,
+                    modifier = Modifier.padding(start = 16.dp, end = 4.dp)
+                )
+                Text(
+                    text = stringResource(R.string.textcard_italic),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.weight(1f)
+                )
+                GlassSwitch(
+                    checked = block.isItalic,
+                    onCheckedChange = { checked ->
+                        component.updateTextBlock(blockId) { it.copy(isItalic = checked) }
+                    }
+                )
             }
+        }
+
+        // 元素级不透明度:每个文字块独立(背景透明度在「纸张背景」面板)
+        EnhancedSliderItem(
+            value = block.alpha,
+            title = stringResource(R.string.textcard_opacity),
+            valueRange = 0f..1f,
+            onValueChange = { value ->
+                component.updateTextBlock(blockId) { it.copy(alpha = value) }
+            },
+            internalStateTransformation = { (it * 100).roundToInt() },
+            valueSuffix = "%"
         )
-        Icon(
-            imageVector = MaterialIcons.Outlined.FormatItalic,
-            contentDescription = null,
-            modifier = Modifier.padding(start = 16.dp, end = 4.dp)
-        )
-        Text(
-            text = stringResource(R.string.textcard_italic),
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f)
-        )
-        GlassSwitch(
-            checked = block.isItalic,
-            onCheckedChange = { checked ->
-                component.updateTextBlock(blockId) { it.copy(isItalic = checked) }
-            }
-        )
+
+        // 文字颜色:与图片创作一致的横向滚动色板(首项支持自定义取色)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .container(shape = ShapeDefaults.default)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.textcard_text_color),
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            ColorSelectionRow(
+                value = Color(block.color),
+                onValueChange = { color ->
+                    component.updateTextBlock(blockId) {
+                        it.copy(color = color.toArgb().toLong() and 0xFFFF_FFFFL)
+                    }
+                },
+                allowAlpha = false
+            )
+        }
     }
-
-    // 文字颜色:与图片创作一致的横向滚动色板(首项支持自定义取色)
-    Text(
-        text = stringResource(R.string.textcard_text_color),
-        style = MaterialTheme.typography.titleSmall,
-        modifier = Modifier.padding(top = 12.dp)
-    )
-    ColorSelectionRow(
-        value = Color(block.color),
-        onValueChange = { color ->
-            component.updateTextBlock(blockId) {
-                it.copy(color = color.toArgb().toLong() and 0xFFFF_FFFFL)
-            }
-        },
-        allowAlpha = false
-    )
 }

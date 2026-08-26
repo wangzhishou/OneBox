@@ -1,14 +1,24 @@
 package com.wanbaohe.textcard.presentation.editor
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
@@ -22,9 +32,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
@@ -32,9 +45,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavCenterAction
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
+import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
 import com.wanbaohe.textcard.presentation.editor.panels.BasicPanel
@@ -50,17 +62,17 @@ import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.Tune
 
 /**
- * 编辑首页(设计稿 01):画布预览 + 底部常驻栏(面板 Tab + 居中保存按钮,
- * 复用全局 BottomNavigationBar)。
+ * 编辑首页(设计稿 01):画布预览 + 底部常驻栏(面板 Tab + 保存按钮,
+ * 结构对齐图片创作 EditorBottomBar:玻璃容器 + Tab 区窄屏横滑 + 保存固定右端)。
  * Tab 点击后以 [EnhancedModalBottomSheet] 弹出对应面板(标题栏 + 关闭按钮,
- * 模式参考 DemoScreen);点画布文字弹出 [TextEditSheet],文字块/自定义背景图
- * 支持画布内拖动(手势在 [CardCanvasPreview] 内)。
+ * 模式参考 DemoScreen);文字块就地编辑:点选 → 再点进入编辑态(自动弹键盘),
+ * 点空白/返回键/完成键提交退出;元素选中后支持拖动/缩放/旋转(手势在
+ * [CardCanvasPreview] 内)。
  */
 @Composable
 fun TextCardEditorScreen(
     component: TextCardComponent,
 ) {
-    var showTextEditSheet by rememberSaveable { mutableStateOf(false) }
     var showDecorationSheet by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -83,6 +95,10 @@ fun TextCardEditorScreen(
         ),
         showNavigationBarsPadding = false,
         content = {
+            // 就地编辑态下返回键 = 提交退出编辑(优先于页面返回)
+            BackHandler(enabled = component.editingTextBlockId != null) {
+                component.endTextEdit()
+            }
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -94,18 +110,34 @@ fun TextCardEditorScreen(
                     CardCanvasPreview(
                         state = state,
                         selectedElementId = component.selectedElementId,
+                        editingTextBlockId = component.editingTextBlockId,
                         onElementTap = { id ->
-                            // 再点已选中的文字块 = 打开编辑弹窗;否则仅选中
-                            if (component.selectedElementId == id &&
+                            // 编辑别的块时点其他元素 = 先提交当前编辑
+                            val editingId = component.editingTextBlockId
+                            if (editingId != null && editingId != id) {
+                                component.endTextEdit()
+                            }
+                            // 再点已选中的文字块 = 进入就地编辑;否则仅选中
+                            if (component.editingTextBlockId == null &&
+                                component.selectedElementId == id &&
                                 component.textBlocks.any { it.id == id }
                             ) {
-                                showTextEditSheet = true
+                                component.beginTextEdit(id)
+                            } else {
+                                component.selectElement(id)
                             }
-                            component.selectElement(id)
                         },
                         onElementTransform = component::setElementTransform,
                         onElementDelete = component::removeElement,
-                        onCanvasTap = { component.selectElement(null) },
+                        onTextChange = { id, text ->
+                            component.updateTextBlock(id) { it.copy(content = text) }
+                        },
+                        onTextEditCommit = component::endTextEdit,
+                        onCanvasTap = {
+                            // 编辑中点空白 = 提交并退出编辑态
+                            component.endTextEdit()
+                            component.selectElement(null)
+                        },
                         onBackgroundDrag = component::updateBackgroundImageOffset,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -122,12 +154,6 @@ fun TextCardEditorScreen(
     EditorPanelSheet(
         component = component,
         onEditDecoration = { showDecorationSheet = true }
-    )
-
-    TextEditSheet(
-        visible = showTextEditSheet,
-        component = component,
-        onDismiss = { showTextEditSheet = false }
     )
 
     DecorationPickerSheet(
@@ -173,8 +199,8 @@ private fun EditorPanelSheet(
                 title = {
                     Text(
                         text = activePanel?.let { stringResource(it.labelRes()) }.orEmpty(),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             )
@@ -209,35 +235,95 @@ private fun EditorPanelSheet(
     )
 }
 
-/** 底部常驻栏(设计稿 01):面板 Tab + 居中保存按钮,复用全局共用的 BottomNavigationBar */
+/**
+ * 底部常驻栏(对齐图片创作 EditorBottomBar):玻璃容器(顶部圆角)+
+ * Tab 区窄屏横滑/宽屏均分 + 「保存」固定右端。
+ */
 @Composable
 private fun EditorBottomBar(
     component: TextCardComponent,
     onSaveClick: () -> Unit,
 ) {
-    val items = EditorPanel.entries.map { panel ->
-        BottomNavItem(
-            id = panel.name,
-            label = stringResource(panel.labelRes()),
-            icon = panel.icon(),
-            contentDescription = stringResource(panel.labelRes())
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+            .navigationBarsPadding()
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+    ) {
+        BoxWithConstraints(modifier = Modifier.weight(1f)) {
+            val tabs = EditorPanel.entries
+            // 每项规定最小宽度:放得下就均分填满,放不下收窄到最小宽度并可横滑
+            val itemWidth = maxOf(TAB_ITEM_MIN_WIDTH, maxWidth / tabs.size)
+            Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                tabs.forEach { panel ->
+                    BottomTab(
+                        panel = panel,
+                        active = component.activePanel == panel,
+                        onClick = { component.togglePanel(panel) },
+                        modifier = Modifier.width(itemWidth)
+                    )
+                }
+            }
+        }
+        Spacer(Modifier.width(8.dp))
+        // 「保存」固定右端:实心主按钮 + 保存图标(同 ConfirmButton 样式,图标换 LineSave)
+        PrimaryButton(
+            text = stringResource(R.string.textcard_save),
+            onClick = onSaveClick,
+            icon = {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.width(16.dp)
+                )
+            }
         )
     }
-    BottomNavigationBar(
-        items = items,
-        selectedItemId = component.activePanel?.name,
-        onItemClick = { item ->
-            EditorPanel.entries.firstOrNull { it.name == item.id }
-                ?.let(component::togglePanel)
-        },
-        centerAction = BottomNavCenterAction(
-            label = "",
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
-            contentDescription = stringResource(R.string.textcard_save)
-        ),
-        onCenterActionClick = onSaveClick,
-        modifier = Modifier.fillMaxWidth()
-    )
+}
+
+/** 底部 Tab 单项的最小宽度,窄屏低于该宽度时 Tab 区进入横滑 */
+private val TAB_ITEM_MIN_WIDTH = 64.dp
+
+/** Tab 单项:图标 + 小字 + 选中态着色(参考 markup-layers EditorToolItem) */
+@Composable
+private fun BottomTab(
+    panel: EditorPanel,
+    active: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val contentColor = if (active) {
+        MaterialTheme.colorScheme.primary
+    } else MaterialTheme.colorScheme.onSurfaceVariant
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .clip(ShapeDefaults.default)
+            .background(
+                if (active) {
+                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                } else Color.Transparent
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 4.dp, vertical = 6.dp)
+    ) {
+        Icon(
+            imageVector = panel.icon(),
+            contentDescription = stringResource(panel.labelRes()),
+            tint = contentColor,
+            modifier = Modifier.size(22.dp)
+        )
+        Spacer(Modifier.height(2.dp))
+        Text(
+            text = stringResource(panel.labelRes()),
+            style = MaterialTheme.typography.labelSmall,
+            color = contentColor,
+            maxLines = 1
+        )
+    }
 }
 
 private fun EditorPanel.icon(): ImageVector = when (this) {

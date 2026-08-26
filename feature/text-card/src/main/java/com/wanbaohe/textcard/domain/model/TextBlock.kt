@@ -65,13 +65,13 @@ data class DecorationSpec(
     override val rotation: Float = 0f,
 ) : ElementTransform {
     companion object {
-        /** 新装饰默认落在右下角(按画布比例换算归一化 top-left) */
+        /** 新装饰默认落左上角(留 DECORATION_MARGIN_RATIO 边距,不贴边) */
         fun defaultPositionFor(canvas: CanvasSpec, emojiIndex: Int): DecorationSpec {
-            val fraction = CardLayout.DECORATION_SIZE_RATIO + CardLayout.DECORATION_MARGIN_RATIO
+            val margin = CardLayout.DECORATION_MARGIN_RATIO
             return DecorationSpec(
                 emojiIndex = emojiIndex,
-                offsetX = 1f - fraction,
-                offsetY = 1f - fraction * canvas.aspectRatio
+                offsetX = margin,
+                offsetY = margin * canvas.aspectRatio
             )
         }
     }

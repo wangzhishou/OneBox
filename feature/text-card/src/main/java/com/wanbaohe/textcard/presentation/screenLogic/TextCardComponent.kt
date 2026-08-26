@@ -137,6 +137,10 @@ class TextCardComponent @AssistedInject internal constructor(
     private val _selectedElementId: MutableState<String?> = mutableStateOf(null)
     val selectedElementId: String? by _selectedElementId
 
+    /** 就地编辑中的文字块 id,null = 非编辑态(编辑内容实时写回对应块) */
+    private val _editingTextBlockId: MutableState<String?> = mutableStateOf(null)
+    val editingTextBlockId: String? by _editingTextBlockId
+
     private val _isSaving: MutableState<Boolean> = mutableStateOf(false)
     val isSaving: Boolean by _isSaving
 
@@ -162,6 +166,7 @@ class TextCardComponent @AssistedInject internal constructor(
         _canvas.value = null
         _activePanel.value = null
         _selectedElementId.value = null
+        _editingTextBlockId.value = null
     }
 
     override fun resetState() = onGoBack()
@@ -221,6 +226,7 @@ class TextCardComponent @AssistedInject internal constructor(
             _selectedTextBlockId.value = _textBlocks.value.first().id
         }
         if (_selectedElementId.value == id) _selectedElementId.value = null
+        if (_editingTextBlockId.value == id) _editingTextBlockId.value = null
         registerChanges()
     }
 
@@ -252,6 +258,30 @@ class TextCardComponent @AssistedInject internal constructor(
         if (id != null && _textBlocks.value.any { it.id == id }) {
             _selectedTextBlockId.value = id
         }
+    }
+
+    /** 进入就地编辑态(再次点已选中的文字块):选中并标记编辑中 */
+    fun beginTextEdit(id: String) {
+        if (_textBlocks.value.none { it.id == id }) return
+        selectElement(id)
+        _editingTextBlockId.value = id
+    }
+
+    /**
+     * 提交并退出就地编辑:trim 内容,空内容置占位提示文案(不删块)。
+     * 编辑中内容实时写回,这里只做收尾。
+     */
+    fun endTextEdit() {
+        val id = _editingTextBlockId.value ?: return
+        updateTextBlock(id) { block ->
+            val trimmed = block.content.trim()
+            if (trimmed.isEmpty()) {
+                block.copy(content = appContext.getString(R.string.textcard_empty_text_hint))
+            } else {
+                block.copy(content = trimmed)
+            }
+        }
+        _editingTextBlockId.value = null
     }
 
     /**

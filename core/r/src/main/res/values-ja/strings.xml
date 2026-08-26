@@ -1644,4 +1644,7 @@
     <string name="habit_tracker_description">毎日の習慣チェックインと統計</string>
     <string name="dsh_client">DSH クライアント</string>
     <string name="dsh_client_description">DeepSeek Harness ホストに接続してエージェントと会話します。</string>
+    <string name="nav_text_card">テキストカード</string>
+    <string name="text_card">テキストカード</string>
+    <string name="text_card_sub">言葉を美しいシェアカードに変換</string>
 </resources>

@@ -1644,4 +1644,7 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="habit_tracker_description">Araw-araw na habit check-in at estadistika</string>
     <string name="dsh_client">DSH Client</string>
     <string name="dsh_client_description">Kumonekta sa DeepSeek Harness host para sa mga pag-uusap sa agent.</string>
+    <string name="nav_text_card">Kard ng Teksto</string>
+    <string name="text_card">Kard ng Teksto</string>
+    <string name="text_card_sub">Gawing magagandang shareable card ang mga quote</string>
 </resources>
