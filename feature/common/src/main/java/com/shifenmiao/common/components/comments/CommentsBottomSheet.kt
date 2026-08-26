@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
@@ -187,6 +188,7 @@ private fun CommentsSheetContent(
             isLoading = isLoading,
             hasMore = hasMore,
             errorMessage = errorMessage,
+            isLoggedIn = isLoggedIn,
             isAdmin = isAdmin,
             isMutating = isMutating,
             onLoadMore = component::loadMore,
@@ -260,6 +262,7 @@ private fun CommentsList(
     isLoading: Boolean,
     hasMore: Boolean,
     errorMessage: String?,
+    isLoggedIn: Boolean,
     isAdmin: Boolean,
     isMutating: Boolean,
     onLoadMore: () -> Unit,
@@ -296,19 +299,24 @@ private fun CommentsList(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-    } else if (comments.isEmpty()) {
+    } else if (comments.isEmpty() && errorMessage != null) {
         Box(
             modifier = modifier.fillMaxSize()
                 .padding(32.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = errorMessage
-                    ?: AppContext.getString(com.shifenmiao.core.R.string.comment_empty),
+                text = errorMessage,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
             )
         }
+    } else if (comments.isEmpty()) {
+        EmptyFeedbackState(
+            isLoggedIn = isLoggedIn,
+            modifier = modifier,
+        )
     } else {
         LazyColumn(
             state = listState,
@@ -375,6 +383,91 @@ private fun CommentsList(
                 modifier = Modifier.size(24.dp),
                 color = MaterialTheme.colorScheme.primary,
                 strokeWidth = 2.dp,
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyFeedbackState(
+    isLoggedIn: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val context = AppContext.getContext()
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 28.dp, vertical = 20.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(24.dp))
+                .glassBackground(
+                    style = GlassStyle.Thin,
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.28f),
+                    shape = RoundedCornerShape(24.dp),
+                )
+                .padding(horizontal = 24.dp, vertical = 28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(52.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.AutoAwesome,
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp),
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = context.getString(com.shifenmiao.core.R.string.comment_empty_eyebrow),
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = context.getString(com.shifenmiao.core.R.string.comment_empty_title),
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = context.getString(com.shifenmiao.core.R.string.comment_empty_description),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                lineHeight = 21.sp,
+            )
+            Spacer(modifier = Modifier.height(14.dp))
+            Text(
+                text = context.getString(com.shifenmiao.core.R.string.comment_empty_topics),
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(18.dp))
+            Text(
+                text = context.getString(
+                    if (isLoggedIn) {
+                        com.shifenmiao.core.R.string.comment_empty_cta
+                    } else {
+                        com.shifenmiao.core.R.string.comment_empty_login_cta
+                    },
+                ),
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
             )
         }
     }

@@ -1740,7 +1740,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="comment">Comment</string>
     <string name="comments_title">Comments</string>
     <string name="comments_count_format">%1$d comments</string>
-    <string name="comment_hint">Write a comment…</string>
+    <string name="comment_hint">Tell AI about a problem or feature you want…</string>
     <string name="reply_hint">Reply to %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
     <string name="comment_too_long_format">Comments cannot exceed %1$d characters</string>
@@ -1775,7 +1775,13 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="comment_image_upload_failed">Image upload failed. Please try again.</string>
     <string name="comment_text_audit_failed">Text moderation service error. Please try again.</string>
     <string name="comment_text_blocked">Your comment violates our policy. Please revise and try again.</string>
-    <string name="login_to_comment">Log in to comment</string>
+    <string name="login_to_comment">Log in and tell AI what you want</string>
+    <string name="comment_empty_eyebrow">② It evolves with you</string>
+    <string name="comment_empty_title">Your idea could shape the next update</string>
+    <string name="comment_empty_description">AI reviews every piece of feedback like a product manager—analyzing the need and drafting a solution. Approved ideas enter development and may be built by AI in the next update.</string>
+    <string name="comment_empty_topics">Report issues · Request features · Share experiences</string>
+    <string name="comment_empty_cta">Don’t hold back—tell us what you want ↓</string>
+    <string name="comment_empty_login_cta">Log in and tell AI what you want</string>
 
     <!-- Deeplink demos (Home tab) -->
     <string name="demo_navigation_deeplink_section_home_tab">Home tab deeplinks</string>
