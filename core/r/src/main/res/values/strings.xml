@@ -370,6 +370,7 @@ And so, OneBox was born.]]></string>
 
 
     <string name="copy_errors">Copy Error</string>
+    <string name="crash_report_issue">Report Issue</string>
     <string name="buy_coffee">Support the Developer</string>
     <string name="buy_coffee_description">Donate points to the developer</string>
     <string name="donate_description">Most features in OneBox are free. Supporting the developer earns you points, which help cover AI compute and server costs while encouraging innovation.</string>
@@ -777,6 +778,7 @@ And so, OneBox was born.]]></string>
     <string name="profile_item_ai_usage">Usage</string>
     <string name="profile_item_ai_reply_style">System Prompts</string>
     <string name="profile_item_tts_settings">Voice Synthesis</string>
+    <string name="profile_item_image_generation_settings">Image Generation &amp; Editing</string>
     <string name="exporting">Exporting data…</string>
     <string name="import_success">Imported %s item(s)!</string>
     <string name="export_success">"Exported %1$s item(s) to %2$s"</string>

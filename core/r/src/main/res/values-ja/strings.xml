@@ -312,6 +312,7 @@
     <string name="ai_answer">回答</string>
     <string name="ai_chat_delete_message">データを安全に保つため、削除を確認してください。</string>
     <string name="copy_errors">コピーエラー</string>
+    <string name="crash_report_issue">問題を報告</string>
     <string name="buy_coffee">開発者を支援</string>
     <string name="buy_coffee_description">開発者にポイントを寄付</string>
     <string name="donate_description">OneBoxのほとんどの機能は無料です。開発者を支援するとポイントがもらえ、AI計算やサーバー費用の負担を軽減し、革新を促進します。</string>

@@ -312,6 +312,7 @@ E assim, o OneBox nasceu.</string>
     <string name="ai_answer">Resposta</string>
     <string name="ai_chat_delete_message">Confirme a exclusão para manter seus dados seguros.</string>
     <string name="copy_errors">Erro de cópia</string>
+    <string name="crash_report_issue">Relatar Problema</string>
     <string name="buy_coffee">Apoie o desenvolvedor</string>
     <string name="buy_coffee_description">Doe pontos para o desenvolvedor</string>
     <string name="donate_description">A maioria dos recursos do OneBox é gratuita. Apoiar o desenvolvedor concede pontos, que ajudam a cobrir os custos de computação de IA e servidores, incentivando a inovação.</string>

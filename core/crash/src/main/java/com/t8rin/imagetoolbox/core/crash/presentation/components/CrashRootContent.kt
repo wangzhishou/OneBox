@@ -18,6 +18,7 @@
 package com.t8rin.imagetoolbox.core.crash.presentation.components
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -59,6 +60,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.wechat.Wechat
 import com.t8rin.imagetoolbox.core.crash.presentation.screenLogic.CrashComponent
 import com.t8rin.imagetoolbox.core.resources.R
@@ -74,7 +76,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.alertDialogBorder
 import com.t8rin.imagetoolbox.core.ui.widget.other.ExpandableItem
 import com.t8rin.imagetoolbox.core.ui.widget.text.AutoSizeText
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.t8rin.imagetoolbox.core.resources.icons.Github
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBugReport
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 
@@ -160,8 +162,13 @@ internal fun CrashRootContent(component: CrashComponent) {
                             .requiredHeight(56.dp),
                         onClick = {
                             copyCrashInfo()
-                            if (Wechat.isEnabled) {
-                                Wechat.launchCustomerService()
+                            runCatching {
+                                context.startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(UrlConstants.GITHUB_ISSUES)
+                                    )
+                                )
                             }
                         },
                         colors = ButtonColors(
@@ -172,13 +179,13 @@ internal fun CrashRootContent(component: CrashComponent) {
                         )
                     ) {
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Github,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = stringResource(id = com.shifenmiao.core.R.string.profile_item_wechat_service),
+                            text = stringResource(id = com.shifenmiao.core.R.string.crash_report_issue),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )

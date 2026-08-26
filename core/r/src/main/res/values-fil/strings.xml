@@ -312,6 +312,7 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="ai_answer">Sagot</string>
     <string name="ai_chat_delete_message">Kumpirmahin ang pagtanggal upang mapanatiling ligtas ang iyong data.</string>
     <string name="copy_errors">Error sa Pagkopya</string>
+    <string name="crash_report_issue">Iulat ang Problema</string>
     <string name="buy_coffee">Suportahan ang Developer</string>
     <string name="buy_coffee_description">Mag-donate ng mga puntos sa developer</string>
     <string name="donate_description">Karamihan sa mga tampok sa OneBox ay libre. Ang pagsuporta sa developer ay nagbibigay sa iyo ng mga puntos, na tumutulong sa pagbabayad para sa AI compute at mga gastos sa server habang hinihikayat ang inobasyon.</string>

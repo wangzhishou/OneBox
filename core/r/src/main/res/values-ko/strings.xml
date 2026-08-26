@@ -312,6 +312,7 @@
     <string name="ai_answer">답변</string>
     <string name="ai_chat_delete_message">데이터 안전을 위해 삭제를 확인하세요.</string>
     <string name="copy_errors">복사 오류</string>
+    <string name="crash_report_issue">문제 신고</string>
     <string name="buy_coffee">개발자 지원하기</string>
     <string name="buy_coffee_description">개발자에게 포인트 기부</string>
     <string name="donate_description">OneBox의 대부분 기능은 무료입니다. 개발자를 지원하면 포인트를 받게 되며, 이는 AI 컴퓨팅 및 서버 비용을 충당하고 혁신을 장려하는 데 도움이 됩니다.</string>

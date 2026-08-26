@@ -312,6 +312,7 @@ Ve böylece OneBox doğdu.</string>
     <string name="ai_answer">Cevap</string>
     <string name="ai_chat_delete_message">Verilerinizi korumak için silmeyi onaylayın.</string>
     <string name="copy_errors">Kopyalama Hatası</string>
+    <string name="crash_report_issue">Sorun Bildir</string>
     <string name="buy_coffee">Geliştiriciyi Destekle</string>
     <string name="buy_coffee_description">Geliştiriciye puan bağışla</string>
     <string name="donate_description">OneBox\'taki çoğu özellik ücretsizdir. Geliştiriciyi desteklemek size puan kazandırır; bu puanlar yapay zeka hesaplama ve sunucu maliyetlerini karşılamaya yardımcı olurken yeniliği teşvik eder.</string>

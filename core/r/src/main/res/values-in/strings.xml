@@ -312,6 +312,7 @@ Maka, lahirlah OneBox.</string>
     <string name="ai_answer">Jawaban</string>
     <string name="ai_chat_delete_message">Konfirmasi penghapusan untuk menjaga keamanan data Anda.</string>
     <string name="copy_errors">Salin Kesalahan</string>
+    <string name="crash_report_issue">Laporkan Masalah</string>
     <string name="buy_coffee">Dukung Pengembang</string>
     <string name="buy_coffee_description">Donasikan poin kepada pengembang</string>
     <string name="donate_description">Sebagian besar fitur di OneBox gratis. Mendukung pengembang memberi Anda poin, yang membantu menutupi biaya komputasi AI dan server sambil mendorong inovasi.</string>

@@ -312,6 +312,7 @@ Und so wurde OneBox geboren.</string>
     <string name="ai_answer">Antwort</string>
     <string name="ai_chat_delete_message">Löschung bestätigen, um Ihre Daten zu schützen.</string>
     <string name="copy_errors">Kopierfehler</string>
+    <string name="crash_report_issue">Problem Melden</string>
     <string name="buy_coffee">Entwickler unterstützen</string>
     <string name="buy_coffee_description">Punkte an den Entwickler spenden</string>
     <string name="donate_description">Die meisten Funktionen in OneBox sind kostenlos. Die Unterstützung des Entwicklers bringt Ihnen Punkte, die helfen, KI-Rechen- und Serverkosten zu decken und Innovationen zu fördern.</string>

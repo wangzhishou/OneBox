@@ -312,6 +312,7 @@
     <string name="ai_answer">Ответ</string>
     <string name="ai_chat_delete_message">Подтвердите удаление, чтобы сохранить ваши данные в безопасности.</string>
     <string name="copy_errors">Ошибка копирования</string>
+    <string name="crash_report_issue">Сообщить о Проблеме</string>
     <string name="buy_coffee">Поддержать разработчика</string>
     <string name="buy_coffee_description">Пожертвовать баллы разработчику</string>
     <string name="donate_description">Большинство функций OneBox бесплатны. Поддержка разработчика приносит вам баллы, которые помогают покрыть расходы на ИИ-вычисления и серверы, а также стимулируют инновации.</string>

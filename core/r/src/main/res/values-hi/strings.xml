@@ -312,6 +312,7 @@
     <string name="ai_answer">उत्तर</string>
     <string name="ai_chat_delete_message">अपने डेटा को सुरक्षित रखने के लिए हटाने की पुष्टि करें।</string>
     <string name="copy_errors">कॉपी त्रुटि</string>
+    <string name="crash_report_issue">समस्या बताएं</string>
     <string name="buy_coffee">डेवलपर का समर्थन करें</string>
     <string name="buy_coffee_description">डेवलपर को अंक दान करें</string>
     <string name="donate_description">OneBox की अधिकांश सुविधाएँ मुफ्त हैं। डेवलपर का समर्थन करने से आपको अंक मिलते हैं, जो AI कंप्यूट और सर्वर लागत को कवर करने में मदद करते हैं और नवाचार को प्रोत्साहित करते हैं।</string>

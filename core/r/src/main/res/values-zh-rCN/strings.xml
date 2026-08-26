@@ -397,6 +397,7 @@
 
 
     <string name="copy_errors">复制错误</string>
+    <string name="crash_report_issue">问题反馈</string>
     <string name="buy_coffee">支持作者</string>
     <string name="buy_coffee_description">打赏作者，积分</string>
     <string name="donate_description">「%s」提供的功能服务尽可能免费，赞赏开发者可获积分，鼓励创新。积分用于抵扣算力和服务器消耗。</string>
@@ -814,6 +815,7 @@
     <string name="profile_item_ai_usage">用量统计</string>
     <string name="profile_item_ai_reply_style">系统提示词</string>
     <string name="profile_item_tts_settings">语音合成</string>
+    <string name="profile_item_image_generation_settings">图片生成与编辑</string>
     <string name="exporting">正在导出数据</string>
     <string name="import_success">已导入 %s 条数据!</string>
     <string name="export_success">"已导出 %1$s 条数据保存文件到 %2$s "</string>
