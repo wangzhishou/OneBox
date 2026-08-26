@@ -62,6 +62,7 @@ import com.t8rin.imagetoolbox.core.settings.domain.model.DownloadableFont
 import com.t8rin.imagetoolbox.core.settings.presentation.model.UiFontFamily
 import com.t8rin.imagetoolbox.core.ui.theme.takeColorFromScheme
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
+import com.t8rin.imagetoolbox.core.ui.utils.provider.SafeLocalContainerColor
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedBottomSheetDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
@@ -343,6 +344,9 @@ private fun DownloadableFontRow(
     PreferenceRow(
         title = stringResource(font.nameRes),
         subtitle = stringResource(R.string.font_preview_text) + " · ${font.approxSizeMb}MB",
+        // 与 FontItem(FontSelectionItem)一致的卡片样式:圆角容器 + surfaceContainerLow 底色
+        color = SafeLocalContainerColor,
+        shape = ShapeDefaults.default,
         onClick = when (state) {
             FontDownloadUiState.Downloaded -> {
                 {

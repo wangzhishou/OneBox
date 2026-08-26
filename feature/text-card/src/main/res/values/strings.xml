@@ -7,6 +7,11 @@
     <string name="textcard_canvas_xiaohongshu_desc">Best for Xiaohongshu posts</string>
     <string name="textcard_canvas_wechat">WeChat Article</string>
     <string name="textcard_canvas_wechat_desc">Best for WeChat official accounts</string>
+    <string name="textcard_canvas_custom">Custom Size</string>
+    <string name="textcard_canvas_custom_desc">Enter custom width × height</string>
+    <string name="textcard_custom_size_title">Custom Canvas Size</string>
+    <string name="textcard_canvas_width">Width (px)</string>
+    <string name="textcard_canvas_height">Height (px)</string>
     <string name="textcard_start_create">Start Creating</string>
     <string name="textcard_back">Back</string>
     <string name="textcard_save">Save</string>

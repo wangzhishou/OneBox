@@ -25,6 +25,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.R
+import com.wanbaohe.textcard.domain.CustomCanvasStore
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
@@ -64,6 +65,7 @@ class TextCardComponent @AssistedInject internal constructor(
     private val imageCompressor: ImageCompressor<Bitmap>,
     private val exportRenderer: TextCardExportRenderer,
     private val paperRepository: TextCardPaperRepository,
+    private val customCanvasStore: CustomCanvasStore,
     private val imageSaveLogger: ImageSaveLogger,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -75,6 +77,13 @@ class TextCardComponent @AssistedInject internal constructor(
     /** 选择画布页中选中的规格(未开始制作前) */
     private val _pendingCanvas: MutableState<CanvasSpec> = mutableStateOf(CanvasSpec.Xiaohongshu)
     val pendingCanvas: CanvasSpec by _pendingCanvas
+
+    /** 上次自定义画布尺寸(持久化记忆,null = 从未自定义) */
+    private val _lastCustomCanvas: MutableState<CanvasSpec.Custom?> =
+        mutableStateOf(customCanvasStore.lastCustom()?.let { (w, h) ->
+            CanvasSpec.Custom(w, h)
+        })
+    val lastCustomCanvas: CanvasSpec.Custom? by _lastCustomCanvas
 
     private val _background: MutableState<BackgroundSpec> = mutableStateOf(GradientPresets.default)
     val background: BackgroundSpec by _background
@@ -145,6 +154,16 @@ class TextCardComponent @AssistedInject internal constructor(
 
     fun selectPendingCanvas(spec: CanvasSpec) {
         _pendingCanvas.value = spec
+    }
+
+    /** 自定义画布确认:钳制 256..4096,持久化并选中该规格 */
+    fun selectCustomCanvas(width: Int, height: Int) {
+        val safeWidth = width.coerceIn(256, 4096)
+        val safeHeight = height.coerceIn(256, 4096)
+        val custom = CanvasSpec.Custom(safeWidth, safeHeight)
+        customCanvasStore.saveLastCustom(safeWidth, safeHeight)
+        _lastCustomCanvas.value = custom
+        _pendingCanvas.value = custom
     }
 
     /** 「开始制作」:进入编辑页;拉取远程纸张(失败静默降级) */
@@ -433,7 +452,8 @@ class TextCardComponent @AssistedInject internal constructor(
      * 活动记录标成别的页面;这里同步显式记录为本页面(图文卡片)。
      */
     fun saveCard() {
-        val state = renderState() ?: return
+        // 导出长边超上限(2048)时等比缩小渲染,防 OOM;预览仍按原规格
+        val state = renderState()?.let { it.copy(canvas = it.canvas.exportScaled()) } ?: return
         if (_isSaving.value) return
         savingJob = componentScope.launch {
             _isSaving.value = true

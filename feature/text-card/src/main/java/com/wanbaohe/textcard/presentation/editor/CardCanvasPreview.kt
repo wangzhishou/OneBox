@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -34,15 +36,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -55,6 +62,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -74,6 +82,7 @@ import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -222,10 +231,11 @@ private fun BackgroundLayerContent(
 }
 
 /**
- * 元素容器:offset 定位 + 选中后 transform 手势 + 选中边框。
+ * 元素容器:offset 定位 + 选中后 transform 手势 + 虚线选中框与拖拽手柄。
  * detectTransformGestures 的 pan 在元素本地(已变换)坐标系,乘新缩放并按
  * 新旋转角转回画布坐标系再归一化(同 markup-layers LayerTransform.applyGesture)。
- * [gesturesEnabled]=false(就地编辑态)时手势全部关闭,避免与文本选择/光标冲突。
+ * [gesturesEnabled]=false(就地编辑态)时手势与手柄全部关闭,避免与文本选择/光标冲突,
+ * 编辑态虚线框弱化显示。
  */
 @Composable
 private fun ElementBox(
@@ -246,22 +256,28 @@ private fun ElementBox(
     // 手势回调以「最新状态 + 本次增量」算绝对值:pointerInput 协程不随重组重启,
     // 必须经 rememberUpdatedState 取最新 transform,否则每次事件都从旧基准叠加,表现为拖不动
     val currentTransform by rememberUpdatedState(transform)
+    var boxSizePx by remember { mutableStateOf(IntSize.Zero) }
     Box(
         modifier = Modifier
             .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
             .then(if (width != null) Modifier.width(width) else Modifier)
+            .onSizeChanged { boxSizePx = it }
             .graphicsLayer {
                 scaleX = transform.scale
                 scaleY = transform.scale
                 rotationZ = transform.rotation
                 transformOrigin = TransformOrigin.Center
             }
-            .border(
-                width = if (isSelected) 1.5.dp else 0.dp,
-                color = if (isSelected) {
-                    MaterialTheme.colorScheme.primary
-                } else Color.Transparent,
-                shape = RoundedCornerShape(4.dp)
+            .then(
+                if (isSelected) {
+                    Modifier.dashedBorder(
+                        width = 1.5.dp,
+                        color = MaterialTheme.colorScheme.primary.copy(
+                            alpha = if (gesturesEnabled) 1f else 0.4f
+                        ),
+                        cornerRadius = 4.dp
+                    )
+                } else Modifier
             )
             // 选中态接管 transform 手势;点按(选中/再点编辑)由独立 tap 检测器承担,
             // 拖动消费位移后 tap 自动取消
@@ -290,7 +306,7 @@ private fun ElementBox(
             )
     ) {
         content()
-        // 删除按钮:选中框外侧右上角(offset 越出边框,不占用布局);
+        // 删除按钮:选中框外侧右上角 X(offset 越出边框,不占用布局);
         // 独立 clickable,事件在子级被消费,不会触发元素的拖动/点选手势
         if (isSelected && onDelete != null) {
             Box(
@@ -311,7 +327,200 @@ private fun ElementBox(
                 )
             }
         }
+        // 选中框手柄:四角圆形拖拽手柄(拖角=缩放)+ 顶部中心旋转手柄;
+        // 手柄随元素一起被 graphicsLayer 变换(旋转/缩放时跟随元素)
+        if (isSelected && gesturesEnabled && boxSizePx != IntSize.Zero) {
+            SelectionHandles(
+                elementId = elementId,
+                sizePx = boxSizePx,
+                transformProvider = { currentTransform },
+                onElementTransform = onElementTransform
+            )
+        }
     }
+}
+
+private val HANDLE_SIZE = 36.dp
+
+/** 四角缩放手柄 + 顶部中心旋转手柄(全部在元素本地坐标系计算,与当前旋转/缩放无关) */
+@Composable
+private fun androidx.compose.foundation.layout.BoxScope.SelectionHandles(
+    elementId: String,
+    sizePx: IntSize,
+    transformProvider: () -> ElementTransform,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+) {
+    val density = LocalDensity.current
+    val handlePx = with(density) { HANDLE_SIZE.toPx() }
+    val center = Offset(sizePx.width / 2f, sizePx.height / 2f)
+
+    // 四角:handle 中心 = 角点
+    val corners = listOf(
+        Triple(Alignment.TopStart, Offset(0f, 0f), IntOffset(-1, -1)),
+        Triple(Alignment.TopEnd, Offset(sizePx.width.toFloat(), 0f), IntOffset(1, -1)),
+        Triple(Alignment.BottomStart, Offset(0f, sizePx.height.toFloat()), IntOffset(-1, 1)),
+        Triple(Alignment.BottomEnd, Offset(sizePx.width.toFloat(), sizePx.height.toFloat()), IntOffset(1, 1)),
+    )
+    corners.forEach { (alignment, corner, offsetSign) ->
+        ScaleHandle(
+            alignment = alignment,
+            cornerInElement = corner,
+            offsetSign = offsetSign,
+            handlePx = handlePx,
+            elementCenter = center,
+            elementId = elementId,
+            transformProvider = transformProvider,
+            onElementTransform = onElementTransform
+        )
+    }
+
+    // 顶部中心旋转手柄(handle 中心在 (w/2, -H/2),即顶边中点上方)
+    RotationHandle(
+        handlePx = handlePx,
+        elementCenter = center,
+        elementId = elementId,
+        transformProvider = transformProvider,
+        onElementTransform = onElementTransform
+    )
+}
+
+/** 手柄视觉:白边主色小圆点(热区 36dp,视觉 16dp) */
+@Composable
+private fun HandleDot() {
+    Box(
+        modifier = Modifier
+            .size(16.dp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.primary)
+            .border(2.dp, Color.White, CircleShape)
+    )
+}
+
+/** 拖角缩放:触点与元素中心的距离比 × 起始缩放 */
+@Composable
+private fun androidx.compose.foundation.layout.BoxScope.ScaleHandle(
+    alignment: Alignment,
+    cornerInElement: Offset,
+    offsetSign: IntOffset,
+    handlePx: Float,
+    elementCenter: Offset,
+    elementId: String,
+    transformProvider: () -> ElementTransform,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .align(alignment)
+            .offset {
+                IntOffset(
+                    x = (offsetSign.x * handlePx / 2).roundToInt(),
+                    y = (offsetSign.y * handlePx / 2).roundToInt()
+                )
+            }
+            .size(HANDLE_SIZE)
+            .pointerInput(elementId, cornerInElement, elementCenter) {
+                val half = handlePx / 2
+                // 手势期起点(每次手势 onDragStart 重置,不跨手势共享)
+                var startDist = 1f
+                var startScale = 1f
+                detectDragGestures(
+                    onDragStart = { downOffset ->
+                        val startPoint = cornerInElement - Offset(half, half) + downOffset
+                        startDist = (startPoint - elementCenter).getDistance().coerceAtLeast(1f)
+                        startScale = transformProvider().scale
+                    },
+                    onDrag = { change, _ ->
+                        change.consume()
+                        val point = cornerInElement - Offset(half, half) + change.position
+                        val factor = (point - elementCenter).getDistance() / startDist
+                        val t = transformProvider()
+                        onElementTransform(
+                            elementId,
+                            t.offsetX,
+                            t.offsetY,
+                            (startScale * factor).coerceIn(0.2f, 5f),
+                            t.rotation
+                        )
+                    }
+                )
+            }
+    ) {
+        HandleDot()
+    }
+}
+
+/** 顶部中心旋转手柄:触点绕元素中心的角度增量 */
+@Composable
+private fun androidx.compose.foundation.layout.BoxScope.RotationHandle(
+    handlePx: Float,
+    elementCenter: Offset,
+    elementId: String,
+    transformProvider: () -> ElementTransform,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+) {
+    // handle 中心:元素顶边中点正上方半个手柄位
+    val handleCenter = Offset(elementCenter.x, -handlePx / 2)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .align(Alignment.TopCenter)
+            .offset(y = -HANDLE_SIZE)
+            .size(HANDLE_SIZE)
+            .pointerInput(elementId, elementCenter) {
+                val half = handlePx / 2
+                // 手势期起点(每次手势 onDragStart 重置,不跨手势共享)
+                var startAngle = 0f
+                var startRotation = 0f
+                detectDragGestures(
+                    onDragStart = { downOffset ->
+                        val startPoint = handleCenter - Offset(half, half) + downOffset
+                        startAngle = atan2(
+                            startPoint.y - elementCenter.y,
+                            startPoint.x - elementCenter.x
+                        )
+                        startRotation = transformProvider().rotation
+                    },
+                    onDrag = { change, _ ->
+                        change.consume()
+                        val point = handleCenter - Offset(half, half) + change.position
+                        val angle = atan2(
+                            point.y - elementCenter.y,
+                            point.x - elementCenter.x
+                        )
+                        val t = transformProvider()
+                        onElementTransform(
+                            elementId,
+                            t.offsetX,
+                            t.offsetY,
+                            t.scale,
+                            startRotation + Math.toDegrees((angle - startAngle).toDouble()).toFloat()
+                        )
+                    }
+                )
+            }
+    ) {
+        HandleDot()
+    }
+}
+
+/** 选中态虚线圆角边框 */
+private fun Modifier.dashedBorder(
+    width: Dp,
+    color: Color,
+    cornerRadius: Dp,
+): Modifier = drawBehind {
+    val strokeWidth = width.toPx()
+    drawRoundRect(
+        color = color,
+        cornerRadius = CornerRadius(cornerRadius.toPx()),
+        style = Stroke(
+            width = strokeWidth,
+            pathEffect = PathEffect.dashPathEffect(
+                intervals = floatArrayOf(6.dp.toPx(), 4.dp.toPx())
+            )
+        )
+    )
 }
 
 /** 文字块元素:编辑态就地渲染 BasicTextField(原位同尺寸同样式),手势关闭 */
@@ -399,6 +608,8 @@ private fun InPlaceTextEditor(
         keyboardActions = KeyboardActions(onDone = { onCommit() }),
         modifier = modifier
             .graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
+            // 编辑态输入框内留白,避免文字贴着虚线框
+            .padding(horizontal = 8.dp, vertical = 4.dp)
             .focusRequester(focusRequester)
     )
 }

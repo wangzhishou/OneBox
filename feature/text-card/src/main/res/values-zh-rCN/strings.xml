@@ -7,6 +7,11 @@
     <string name="textcard_canvas_xiaohongshu_desc">适合发布到小红书</string>
     <string name="textcard_canvas_wechat">微信贴图号</string>
     <string name="textcard_canvas_wechat_desc">适合微信公众号配图</string>
+    <string name="textcard_canvas_custom">自定义尺寸</string>
+    <string name="textcard_canvas_custom_desc">输入自定义宽高（px）</string>
+    <string name="textcard_custom_size_title">自定义画布尺寸</string>
+    <string name="textcard_canvas_width">宽 (px)</string>
+    <string name="textcard_canvas_height">高 (px)</string>
     <string name="textcard_start_create">开始制作</string>
     <string name="textcard_back">返回</string>
     <string name="textcard_save">保存</string>

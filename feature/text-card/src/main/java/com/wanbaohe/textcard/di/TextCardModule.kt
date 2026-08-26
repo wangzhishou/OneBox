@@ -1,7 +1,9 @@
 package com.wanbaohe.textcard.di
 
+import com.wanbaohe.textcard.data.canvas.PrefsCustomCanvasStore
 import com.wanbaohe.textcard.data.paper.RemotePaperRepository
 import com.wanbaohe.textcard.data.render.AndroidTextCardExportRenderer
+import com.wanbaohe.textcard.domain.CustomCanvasStore
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
 import dagger.Binds
@@ -22,4 +24,9 @@ internal interface TextCardModule {
     fun paperRepository(
         impl: RemotePaperRepository
     ): TextCardPaperRepository
+
+    @Binds
+    fun customCanvasStore(
+        impl: PrefsCustomCanvasStore
+    ): CustomCanvasStore
 }
