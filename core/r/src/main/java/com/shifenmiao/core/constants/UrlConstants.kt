@@ -88,6 +88,7 @@ object UrlConstants {
     const val BEI_AN_DEEPSEEK_NUMBER = UrlConstantsFlavor.BEI_AN_DEEPSEEK_NUMBER
 
     const val ALIBABA_AI_PROXY_PATH = "openai/alibaba/v1/chat/completions"
+    const val ALIBABA_QWEN_IMAGE_PROXY_PATH = "ai/alibaba/qwen-image/v1/generation"
     const val KIM_AI_PROXY_PATH = "openai/kimi/v1/chat/completions"
     const val DOU_BAO_AI_PROXY_PATH = "/openai/doubao/v1/chat/completions"
     const val XIAOMI_AI_PROXY_PATH = "/openai/xiaomi/v1/chat/completions"
@@ -104,6 +105,8 @@ object UrlConstants {
      */
     const val Q_WEN_AI_BASE_URL = "https://dashscope.aliyuncs.com/"
     const val Q_WEN_AI_TEXT_COMPLETIONS_ENDPOINT = "compatible-mode/v1/chat/completions"
+    const val Q_WEN_IMAGE_GENERATION_ENDPOINT =
+        "api/v1/services/aigc/multimodal-generation/generation"
 
     /**
      * Open AI
