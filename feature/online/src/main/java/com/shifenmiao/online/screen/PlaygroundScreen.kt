@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifenmiao.base.components.ErrorBox
@@ -36,8 +37,10 @@ import com.shifenmiao.online.component.PlaygroundComponent
 import com.shifenmiao.online.ui.PlaygroundCard
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrCompactWidthLayoutAsState
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalWindowSizeClass
 
 @Composable
 fun PlaygroundScreen(
@@ -194,8 +197,15 @@ private fun PlaygroundGrid(
     }
 }
 
-private fun playgroundGridColumns(isGrid: Boolean) = if (isGrid) {
-    StaggeredGridCells.Adaptive(minSize = 160.dp)
-} else {
-    StaggeredGridCells.Adaptive(minSize = 300.dp)
+@Composable
+private fun playgroundGridColumns(isGrid: Boolean): StaggeredGridCells {
+    val isPortraitOrCompact by isPortraitOrCompactWidthLayoutAsState()
+    val isCompact = LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact
+
+    return when {
+        !isGrid -> StaggeredGridCells.Adaptive(minSize = 300.dp)
+        isCompact -> StaggeredGridCells.Fixed(count = 2)
+        isPortraitOrCompact -> StaggeredGridCells.Adaptive(minSize = 300.dp)
+        else -> StaggeredGridCells.Adaptive(minSize = 260.dp)
+    }
 }

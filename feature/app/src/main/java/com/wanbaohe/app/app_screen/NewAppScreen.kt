@@ -46,7 +46,7 @@ fun NewAppScreen(
         HomeContent(
             itemListComponent = itemListComponent,
             playgroundComponent = playgroundComponent,
-            onGoBack = appComponent.onGoBack,
+            onAiCreate = appComponent::showAIChat,
             initialTab = initialTab,
         )
     }

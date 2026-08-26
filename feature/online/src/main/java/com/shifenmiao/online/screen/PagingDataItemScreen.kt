@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,15 +21,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -52,13 +48,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.shifenmiao.base.pullrefresh.PullToRefreshLayout
 import com.shifenmiao.base.pullrefresh.rememberPullToRefreshStateOnTime
 import com.shifenmiao.base.ui.DeleteConfirmDialog
-import com.shifenmiao.base.ui.card.PlaceholderCard
 import com.shifenmiao.base.utils.DateUtils.convertElapsedTimeIntoText
 import com.shifenmiao.common.components.LoadingNextPageItem
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.shifenmiao.common.components.comments.CommentsHost
 import com.shifenmiao.common.handle.HandleEvent
-import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.sync.ManualRefreshPolicy
 import com.shifenmiao.common.sync.SyncState
@@ -67,13 +61,17 @@ import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.reorderable.ReorderableType
 import com.shifenmiao.online.component.ItemListComponent
+import com.shifenmiao.online.ui.CreateChoiceCard
+import com.shifenmiao.online.ui.HomeEmptyState
 import com.shifenmiao.online.ui.VerticalStaggeredCard
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrCompactWidthLayoutAsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalWindowSizeClass
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -84,7 +82,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineLabel
 fun PagingDataItemScreen(
     modifier: Modifier,
     itemListComponent: ItemListComponent,
-    listType: ListItemType
+    listType: ListItemType,
+    onAiCreate: () -> Unit,
 ) {
     val chips by itemListComponent.observeChips(listType).collectAsState(initial = emptyList())
     var selectedChipId by rememberSaveable(listType.id) { mutableStateOf<Int?>(null) }
@@ -206,7 +205,11 @@ fun PagingDataItemScreen(
             when {
                 pagingItems.itemCount == 0 -> EmptyOrErrorState(
                     pagingItems = pagingItems,
-                    onCreate = { onNavigator(createScreen) },
+                    listType = listType,
+                    isFiltered = selectedChipId != null,
+                    onClearFilter = ::onCloseChips,
+                    onManualCreate = { onNavigator(createScreen) },
+                    onAiCreate = onAiCreate,
                 )
 
                 else -> ItemGrid(
@@ -215,7 +218,8 @@ fun PagingDataItemScreen(
                     isGrid = isGrid,
                     listType = listType,
                     onCategoryBadgeTap = ::onCategoryBadgeTap,
-                    createScreen = createScreen,
+                    onManualCreate = { onNavigator(createScreen) },
+                    onAiCreate = onAiCreate,
                 )
             }
         }
@@ -319,7 +323,11 @@ private fun createScreenForListType(listType: ListItemType): Screen = when (list
 @Composable
 private fun EmptyOrErrorState(
     pagingItems: LazyPagingItems<ItemWithCategoriesAndStats>,
-    onCreate: () -> Unit,
+    listType: ListItemType,
+    isFiltered: Boolean,
+    onClearFilter: () -> Unit,
+    onManualCreate: () -> Unit,
+    onAiCreate: () -> Unit,
 ) {
     when {
         // 同步/加载失败时用本地数据兜底，不弹错误提示，让用户无感知。
@@ -327,26 +335,13 @@ private fun EmptyOrErrorState(
         pagingItems.loadState.refresh is LoadState.Error ||
                 pagingItems.loadState.refresh is LoadState.NotLoading &&
                 pagingItems.itemCount == 0 &&
-                pagingItems.loadState.mediator?.refresh !is LoadState.Loading -> Box(
-            modifier = Modifier
-                .fillMaxSize()
-                // 空态没有可滚子布局,嵌套滚动传不到 PullToRefreshLayout,
-                // 导致下拉刷新手势失效;挂上 verticalScroll 让手势可达
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Box(
-                modifier = Modifier.size(width = 200.dp, height = 240.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                PlaceholderCard(
-                    onClick = onCreate,
-                    title = stringResource(R.string.placeholder_empty_title),
-                    description = stringResource(R.string.placeholder_empty_action),
-                )
-            }
-        }
+                pagingItems.loadState.mediator?.refresh !is LoadState.Loading -> HomeEmptyState(
+            listType = listType,
+            isFiltered = isFiltered,
+            onClearFilter = onClearFilter,
+            onManualCreate = onManualCreate,
+            onAiCreate = onAiCreate,
+        )
 
         else -> SkeletonItemGrid(isGrid = LocalSettingsState.current.groupOptionsByTypes)
     }
@@ -398,7 +393,8 @@ private fun ItemGrid(
     isGrid: Boolean,
     listType: ListItemType,
     onCategoryBadgeTap: (Int?) -> Unit,
-    createScreen: Screen,
+    onManualCreate: () -> Unit,
+    onAiCreate: () -> Unit,
 ) {
     val onNavigator = LocalOnNavigate.current
     val context = LocalContext.current
@@ -483,8 +479,12 @@ private fun ItemGrid(
                 LoadingNextPageItem(modifier = Modifier)
             }
         }
-        item(key = "append_placeholder_card") {
-            PlaceholderCard(onClick = { onNavigator(createScreen) })
+        item(key = "append_create_choice_card") {
+            CreateChoiceCard(
+                listType = listType,
+                onManualCreate = onManualCreate,
+                onAiCreate = onAiCreate,
+            )
         }
     }
 
@@ -501,11 +501,19 @@ private fun uidFor(listType: ListItemType): String = when (listType) {
     else -> "api::item-list.item-list"
 }
 
-private fun gridColumns(isGrid: Boolean) = if (isGrid) {
-    StaggeredGridCells.Adaptive(minSize = 150.dp)
-} else {
-    StaggeredGridCells.Adaptive(minSize = 280.dp)
+@Composable
+private fun gridColumns(isGrid: Boolean): StaggeredGridCells {
+    val isPortraitOrCompact by isPortraitOrCompactWidthLayoutAsState()
+    val isCompact = LocalWindowSizeClass.current.widthSizeClass == WindowWidthSizeClass.Compact
+
+    return when {
+        !isGrid -> StaggeredGridCells.Adaptive(minSize = 280.dp)
+        isCompact -> StaggeredGridCells.Fixed(count = 2)
+        isPortraitOrCompact -> StaggeredGridCells.Adaptive(minSize = 280.dp)
+        else -> StaggeredGridCells.Adaptive(minSize = 240.dp)
+    }
 }
+
 
 @Composable
 private fun gridContentPadding() = PaddingValues(

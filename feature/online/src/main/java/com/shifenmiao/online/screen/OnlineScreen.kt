@@ -17,7 +17,7 @@ import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 fun HomeContent(
     itemListComponent: ItemListComponent,
     playgroundComponent: PlaygroundComponent,
-    onGoBack: () -> Unit = {},
+    onAiCreate: () -> Unit = {},
     initialTab: HomeTabKey? = null,
 ) {
     val pagerState = rememberPagerState(
@@ -41,21 +41,21 @@ fun HomeContent(
         verticalAlignment = androidx.compose.ui.Alignment.Top,
         modifier = Modifier.fillMaxSize(),
         state = pagerState,
-        // 默认 Pager 会预合成相邻的 page。HomeContent 4 个 tab，
-        // 首屏只显示 home tab，其他 3 个 tab 不该被合成。
-        // 加这一行让 Pager 只合成当前可见 tab，首屏合成成本从 ~4x 降到 1x。
+        // 默认 Pager 会预合成相邻页面；这里只合成当前可见的 6 个分类之一。
         beyondViewportPageCount = 0,
     ) { index ->
         when (val kind = homeTabs[index].kind) {
             HomeTabKind.Text -> PagingDataItemScreen(
                 modifier = Modifier.fillMaxSize(),
                 itemListComponent = itemListComponent,
-                listType = ListItemType.NOTE
+                listType = ListItemType.NOTE,
+                onAiCreate = onAiCreate,
             )
             is HomeTabKind.ListByType -> PagingDataItemScreen(
                 modifier = Modifier.fillMaxSize(),
                 itemListComponent = itemListComponent,
-                listType = kind.listType
+                listType = kind.listType,
+                onAiCreate = onAiCreate,
             )
             is HomeTabKind.Blog -> PlaygroundScreen(
                 playgroundComponent = playgroundComponent,
