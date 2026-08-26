@@ -18,6 +18,8 @@ interface ElementTransform {
  * @param id 稳定 id,图层/选中/编辑/拖动都按它寻址
  * @param baseTopRatio 基准 top(相对画布宽),新块在上一块基础上递增
  * @param sizeScale 字号缩放倍率,作用于块的基础字号比例 [baseSizeRatio](与手势 scale 叠乘)
+ * @param widthRatio 文字框宽(相对画布宽),文字在框内折行;拖框手柄改它,字号不变
+ * @param heightRatio 文字框最小高(相对画布高),0 = 随内容自适应;实际框高 = max(内容高, 设定高)
  * @param letterSpacingEm 字间距(em),直接给 TextPaint.letterSpacing / Compose letterSpacing
  * @param lineSpacingMultiplier 行距倍率,StaticLayout setLineSpacing 的 multiplier
  * @param offsetX 相对基准位置的归一化水平偏移(相对画布宽)
@@ -33,6 +35,8 @@ data class TextBlock(
     val baseTopRatio: Float = CardLayout.BODY_BASE_TOP_RATIO,
     val font: FontType? = null,
     val sizeScale: Float = 1f,
+    val widthRatio: Float = CardLayout.DEFAULT_TEXT_WIDTH_RATIO,
+    val heightRatio: Float = 0f,
     val letterSpacingEm: Float = 0f,
     val lineSpacingMultiplier: Float = 1.2f,
     val alignment: CardTextAlignment = CardTextAlignment.Left,

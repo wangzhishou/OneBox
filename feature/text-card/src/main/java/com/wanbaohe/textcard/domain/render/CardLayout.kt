@@ -27,6 +27,17 @@ object CardLayout {
     /** 装饰贴纸距角落的外边距(相对画布宽) */
     const val DECORATION_MARGIN_RATIO = 0.05f
 
+    // ---- 文字框尺寸 ----
+
+    /** 文字块默认框宽(相对画布宽):内容区宽 */
+    const val DEFAULT_TEXT_WIDTH_RATIO = 1f - CONTENT_PADDING_RATIO * 2
+
+    /** 文字块最小框宽(相对画布宽),拖拽手柄时下限 */
+    const val MIN_TEXT_WIDTH_RATIO = 0.2f
+
+    /** 文字块最小框高(相对画布高),拖拽手柄时下限;实际框高 = max(内容高, 设定高) */
+    const val MIN_TEXT_HEIGHT_RATIO = 0.04f
+
     /** 卡片底色(背景层半透明时透出) */
     const val CARD_BASE_COLOR = 0xFFFFFFFF
 

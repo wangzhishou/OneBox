@@ -173,7 +173,8 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         if (block.content.isBlank()) return
 
         val padding = width * CardLayout.CONTENT_PADDING_RATIO
-        val contentWidth = (width - padding * 2).toInt().coerceAtLeast(1)
+        // 框宽 = widthRatio·画布宽(文字在框内折行),与预览侧 CardTextElement 一致
+        val contentWidth = (width * block.widthRatio).toInt().coerceAtLeast(1)
         val left = padding + block.offsetX * width
         val top = width * block.baseTopRatio + block.offsetY * height
 
@@ -194,9 +195,14 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
             .setIncludePad(false)
             .build()
 
+        // 变换中心 = 框中心:框高 = max(内容高, 设定最小高),与预览 heightIn(min) 一致
+        val boxHeight = maxOf(
+            layout.height.toFloat(),
+            block.heightRatio * height
+        )
         canvas.save()
         canvas.translate(left, top)
-        canvas.applyElementTransform(block, contentWidth.toFloat(), layout.height.toFloat())
+        canvas.applyElementTransform(block, contentWidth.toFloat(), boxHeight)
         layout.draw(canvas)
         canvas.restore()
     }

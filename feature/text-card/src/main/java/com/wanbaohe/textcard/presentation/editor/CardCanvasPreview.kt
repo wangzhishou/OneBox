@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -104,6 +105,7 @@ fun CardCanvasPreview(
     onElementTap: (String) -> Unit = {},
     onElementTransform: (String, Float, Float, Float, Float) -> Unit = { _, _, _, _, _ -> },
     onElementDelete: (String) -> Unit = {},
+    onTextBoxResize: (String, Float, Float, Float, Float) -> Unit = { _, _, _, _, _ -> },
     selectedElementId: String? = null,
     editingTextBlockId: String? = null,
     onTextChange: (String, String) -> Unit = { _, _ -> },
@@ -146,6 +148,7 @@ fun CardCanvasPreview(
                             onElementTap = onElementTap,
                             onElementTransform = onElementTransform,
                             onElementDelete = onElementDelete,
+                            onTextBoxResize = onTextBoxResize,
                             onTextChange = onTextChange,
                             onTextEditCommit = onTextEditCommit
                         )
@@ -236,6 +239,8 @@ private fun BackgroundLayerContent(
  * 新旋转角转回画布坐标系再归一化(同 markup-layers LayerTransform.applyGesture)。
  * [gesturesEnabled]=false(就地编辑态)时手势与手柄全部关闭,避免与文本选择/光标冲突,
  * 编辑态虚线框弱化显示。
+ * [resizeConfig] 非空(文字块)= 8 向框尺寸手柄(改框宽/高,文字重排,字号不变),
+ * 删除按钮经 [deleteAtBottom] 挪到底部居中独立位;为空(装饰)= 四角缩放手柄 + 右上删除。
  */
 @Composable
 private fun ElementBox(
@@ -249,18 +254,24 @@ private fun ElementBox(
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
     onDelete: (() -> Unit)? = null,
+    deleteAtBottom: Boolean = false,
     gesturesEnabled: Boolean = true,
     width: Dp? = null,
+    minHeight: Dp? = null,
+    resizeConfig: BoxResizeConfig? = null,
     content: @Composable () -> Unit,
 ) {
     // 手势回调以「最新状态 + 本次增量」算绝对值:pointerInput 协程不随重组重启,
     // 必须经 rememberUpdatedState 取最新 transform,否则每次事件都从旧基准叠加,表现为拖不动
     val currentTransform by rememberUpdatedState(transform)
+    val currentLeftPx by rememberUpdatedState(leftPx)
+    val currentTopPx by rememberUpdatedState(topPx)
     var boxSizePx by remember { mutableStateOf(IntSize.Zero) }
     Box(
         modifier = Modifier
             .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
             .then(if (width != null) Modifier.width(width) else Modifier)
+            .then(if (minHeight != null) Modifier.heightIn(min = minHeight) else Modifier)
             .onSizeChanged { boxSizePx = it }
             .graphicsLayer {
                 scaleX = transform.scale
@@ -306,14 +317,17 @@ private fun ElementBox(
             )
     ) {
         content()
-        // 删除按钮:选中框外侧右上角 X(offset 越出边框,不占用布局);
-        // 独立 clickable,事件在子级被消费,不会触发元素的拖动/点选手势
+        // 删除按钮:独立 clickable,事件在子级被消费,不会触发元素的拖动/点选手势。
+        // 装饰:选中框外侧右上角 X;文字块:底部居中独立位(避开 8 向尺寸手柄)
         if (isSelected && onDelete != null) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .offset(x = 12.dp, y = (-12).dp)
+                    .align(if (deleteAtBottom) Alignment.BottomCenter else Alignment.TopEnd)
+                    .offset(
+                        x = if (deleteAtBottom) 0.dp else 12.dp,
+                        y = if (deleteAtBottom) 40.dp else (-12).dp
+                    )
                     .size(24.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.error)
@@ -327,18 +341,44 @@ private fun ElementBox(
                 )
             }
         }
-        // 选中框手柄:四角圆形拖拽手柄(拖角=缩放)+ 顶部中心旋转手柄;
-        // 手柄随元素一起被 graphicsLayer 变换(旋转/缩放时跟随元素)
+        // 选中框手柄:文字块 = 8 向框尺寸手柄;装饰 = 四角圆形缩放手柄。
+        // 两者都有顶部中心旋转手柄;手柄随元素一起被 graphicsLayer 变换(旋转/缩放时跟随元素)
         if (isSelected && gesturesEnabled && boxSizePx != IntSize.Zero) {
-            SelectionHandles(
-                elementId = elementId,
-                sizePx = boxSizePx,
-                transformProvider = { currentTransform },
-                onElementTransform = onElementTransform
-            )
+            if (resizeConfig != null) {
+                BoxResizeHandles(
+                    sizeProvider = { boxSizePx },
+                    leftProvider = { currentLeftPx },
+                    topProvider = { currentTopPx },
+                    transformProvider = { currentTransform },
+                    config = resizeConfig
+                )
+                RotationHandle(
+                    handlePx = with(LocalDensity.current) { HANDLE_SIZE.toPx() },
+                    elementCenter = Offset(boxSizePx.width / 2f, boxSizePx.height / 2f),
+                    elementId = elementId,
+                    transformProvider = { currentTransform },
+                    onElementTransform = onElementTransform
+                )
+            } else {
+                SelectionHandles(
+                    elementId = elementId,
+                    sizePx = boxSizePx,
+                    transformProvider = { currentTransform },
+                    onElementTransform = onElementTransform
+                )
+            }
         }
     }
 }
+
+/** 文字框尺寸手柄配置:阈值均 px;onResize 回报新框宽高与锚点补偿后的 left/top(均 px) */
+private class BoxResizeConfig(
+    val minWidthPx: Float,
+    val maxWidthPx: Float,
+    val minHeightPx: Float,
+    val maxHeightPx: Float,
+    val onResize: (widthPx: Float, heightPx: Float, leftPx: Float, topPx: Float) -> Unit,
+)
 
 private val HANDLE_SIZE = 36.dp
 
@@ -450,8 +490,126 @@ private fun androidx.compose.foundation.layout.BoxScope.ScaleHandle(
     }
 }
 
-/** 顶部中心旋转手柄:触点绕元素中心的角度增量 */
+/** 手柄规格:alignment=贴位,offsetSign=中心越边方向,edgeX/edgeY=-1 拖左/顶边、0 该轴不动、1 拖右/底边 */
+private data class HandleSpec(
+    val alignment: Alignment,
+    val offsetSign: IntOffset,
+    val edgeX: Int,
+    val edgeY: Int,
+)
+
+/** 文字框 8 向尺寸手柄(四角 + 四边中点):拖手柄改框宽/高,文字重排,字号不变 */
 @Composable
+private fun androidx.compose.foundation.layout.BoxScope.BoxResizeHandles(
+    sizeProvider: () -> IntSize,
+    leftProvider: () -> Float,
+    topProvider: () -> Float,
+    transformProvider: () -> ElementTransform,
+    config: BoxResizeConfig,
+) {
+    val density = LocalDensity.current
+    val handlePx = with(density) { HANDLE_SIZE.toPx() }
+    val specs = listOf(
+        HandleSpec(Alignment.TopStart, IntOffset(-1, -1), edgeX = -1, edgeY = -1),
+        HandleSpec(Alignment.TopEnd, IntOffset(1, -1), edgeX = 1, edgeY = -1),
+        HandleSpec(Alignment.BottomStart, IntOffset(-1, 1), edgeX = -1, edgeY = 1),
+        HandleSpec(Alignment.BottomEnd, IntOffset(1, 1), edgeX = 1, edgeY = 1),
+        HandleSpec(Alignment.CenterStart, IntOffset(-1, 0), edgeX = -1, edgeY = 0),
+        HandleSpec(Alignment.CenterEnd, IntOffset(1, 0), edgeX = 1, edgeY = 0),
+        HandleSpec(Alignment.TopCenter, IntOffset(0, -1), edgeX = 0, edgeY = -1),
+        HandleSpec(Alignment.BottomCenter, IntOffset(0, 1), edgeX = 0, edgeY = 1),
+    )
+    specs.forEach { spec ->
+        ResizeHandle(
+            spec = spec,
+            handlePx = handlePx,
+            sizeProvider = sizeProvider,
+            leftProvider = leftProvider,
+            topProvider = topProvider,
+            transformProvider = transformProvider,
+            config = config
+        )
+    }
+}
+
+/**
+ * 单方向尺寸手柄:拖动改框宽/高,字号不变;对侧边为视觉锚点,旋转/缩放下
+ * 经锚点补偿保持锚点不动。补偿公式:dw=startW−w',dh=startH−h',
+ * shift = (dw/2, dh/2) + R(θ)·s·((ax−½)dw, (ay−½)dh),ax/ay 为锚点比例(0/½/1)。
+ */
+@Composable
+private fun androidx.compose.foundation.layout.BoxScope.ResizeHandle(
+    spec: HandleSpec,
+    handlePx: Float,
+    sizeProvider: () -> IntSize,
+    leftProvider: () -> Float,
+    topProvider: () -> Float,
+    transformProvider: () -> ElementTransform,
+    config: BoxResizeConfig,
+) {
+    // 锚点比例:拖右边锚左边(ax=0)、拖左边锚右边(ax=1)、不动轴锚中心(½)
+    val anchorX = (1 - spec.edgeX) / 2f
+    val anchorY = (1 - spec.edgeY) / 2f
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .align(spec.alignment)
+            .offset {
+                IntOffset(
+                    x = (spec.offsetSign.x * handlePx / 2).roundToInt(),
+                    y = (spec.offsetSign.y * handlePx / 2).roundToInt()
+                )
+            }
+            .size(HANDLE_SIZE)
+            .pointerInput(spec) {
+                // 手势期起点(每次手势 onDragStart 重置,不跨手势共享)
+                var drag = Offset.Zero
+                var startW = 0f
+                var startH = 0f
+                var startLeft = 0f
+                var startTop = 0f
+                var startScale = 1f
+                var startRotation = 0f
+                detectDragGestures(
+                    onDragStart = {
+                        drag = Offset.Zero
+                        val size = sizeProvider()
+                        startW = size.width.toFloat()
+                        startH = size.height.toFloat()
+                        startLeft = leftProvider()
+                        startTop = topProvider()
+                        startScale = transformProvider().scale
+                        startRotation = transformProvider().rotation
+                    },
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+                        drag += dragAmount
+                        val newW = (startW + spec.edgeX * drag.x)
+                            .coerceIn(config.minWidthPx, config.maxWidthPx)
+                        val newH = (startH + spec.edgeY * drag.y)
+                            .coerceIn(config.minHeightPx, config.maxHeightPx)
+                        val dw = startW - newW
+                        val dh = startH - newH
+                        val radians = Math.toRadians(startRotation.toDouble())
+                        val scaledCos = cos(radians).toFloat() * startScale
+                        val scaledSin = sin(radians).toFloat() * startScale
+                        val anchorDw = (anchorX - 0.5f) * dw
+                        val anchorDh = (anchorY - 0.5f) * dh
+                        config.onResize(
+                            newW,
+                            newH,
+                            startLeft + dw / 2 + (anchorDw * scaledCos - anchorDh * scaledSin),
+                            startTop + dh / 2 + (anchorDw * scaledSin + anchorDh * scaledCos)
+                        )
+                    }
+                )
+            }
+    ) {
+        HandleDot()
+    }
+}
+
+/** 顶部中心旋转手柄:触点绕元素中心的角度增量 */@Composable
 private fun androidx.compose.foundation.layout.BoxScope.RotationHandle(
     handlePx: Float,
     elementCenter: Offset,
@@ -523,7 +681,9 @@ private fun Modifier.dashedBorder(
     )
 }
 
-/** 文字块元素:编辑态就地渲染 BasicTextField(原位同尺寸同样式),手势关闭 */
+/** 文字块元素:编辑态就地渲染 BasicTextField(原位同尺寸同样式),手势关闭。
+ * 框宽 = widthRatio·画布宽(文字在框内折行),框高 = max(内容高, heightRatio·画布高);
+ * 8 向尺寸手柄经 [onTextBoxResize] 回报新框尺寸与锚点补偿后的位置。 */
 @Composable
 private fun CardTextElement(
     block: TextBlock,
@@ -535,27 +695,49 @@ private fun CardTextElement(
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
     onElementDelete: (String) -> Unit,
+    onTextBoxResize: (String, Float, Float, Float, Float) -> Unit,
     onTextChange: (String, String) -> Unit,
     onTextEditCommit: () -> Unit,
 ) {
     if (block.content.isBlank()) return
     val density = LocalDensity.current
     val paddingPx = canvasWidthPx * CardLayout.CONTENT_PADDING_RATIO
+    val baseTopPx = canvasWidthPx * block.baseTopRatio
     ElementBox(
         elementId = block.id,
         transform = block,
         leftPx = paddingPx + block.offsetX * canvasWidthPx,
-        topPx = canvasWidthPx * block.baseTopRatio + block.offsetY * canvasHeightPx,
+        topPx = baseTopPx + block.offsetY * canvasHeightPx,
         isSelected = isSelected,
         canvasWidthPx = canvasWidthPx,
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
         onElementTransform = onElementTransform,
-        onDelete = if (canDelete && !isEditing) {
+        // 编辑态也保留删除(底部居中独立位,打字时不会被误触区覆盖)
+        onDelete = if (canDelete) {
             { onElementDelete(block.id) }
         } else null,
+        deleteAtBottom = true,
         gesturesEnabled = !isEditing,
-        width = with(density) { (canvasWidthPx - paddingPx * 2).toDp() }
+        width = with(density) { (canvasWidthPx * block.widthRatio).toDp() },
+        minHeight = if (block.heightRatio > 0f) {
+            with(density) { (canvasHeightPx * block.heightRatio).toDp() }
+        } else null,
+        resizeConfig = BoxResizeConfig(
+            minWidthPx = canvasWidthPx * CardLayout.MIN_TEXT_WIDTH_RATIO,
+            maxWidthPx = canvasWidthPx,
+            minHeightPx = canvasHeightPx * CardLayout.MIN_TEXT_HEIGHT_RATIO,
+            maxHeightPx = canvasHeightPx,
+            onResize = { newWPx, newHPx, newLeftPx, newTopPx ->
+                onTextBoxResize(
+                    block.id,
+                    newWPx / canvasWidthPx,
+                    newHPx / canvasHeightPx,
+                    (newLeftPx - paddingPx) / canvasWidthPx,
+                    (newTopPx - baseTopPx) / canvasHeightPx
+                )
+            }
+        )
     ) {
         if (isEditing) {
             InPlaceTextEditor(

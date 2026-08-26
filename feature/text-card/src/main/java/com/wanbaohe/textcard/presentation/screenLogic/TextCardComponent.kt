@@ -339,6 +339,28 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
+    /**
+     * 文字框尺寸调整(拖 8 向手柄):框宽/最小框高 + 锚点补偿后的位置偏移,绝对值。
+     * 只改框尺寸不改字号,文字在新框宽内折行;锁定图层忽略。
+     */
+    fun setTextBlockBounds(
+        id: String,
+        widthRatio: Float,
+        heightRatio: Float,
+        offsetX: Float,
+        offsetY: Float,
+    ) {
+        if (_elementLayers.value.find { it.elementId == id }?.locked == true) return
+        updateTextBlock(id) {
+            it.copy(
+                widthRatio = widthRatio.coerceIn(CardLayout.MIN_TEXT_WIDTH_RATIO, 1f),
+                heightRatio = heightRatio.coerceIn(0f, 1f),
+                offsetX = offsetX.coerceIn(-1f, 1f),
+                offsetY = offsetY.coerceIn(-1f, 1f)
+            )
+        }
+    }
+
     /** 删除选中元素(文字块至少保留一块,装饰不限),同步移除图层 */
     fun removeElement(id: String) {
         when {

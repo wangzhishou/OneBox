@@ -127,6 +127,7 @@ fun TextCardEditorScreen(
                         },
                         onElementTransform = component::setElementTransform,
                         onElementDelete = component::removeElement,
+                        onTextBoxResize = component::setTextBlockBounds,
                         onTextChange = { id, text ->
                             component.updateTextBlock(id) { it.copy(content = text) }
                         },
