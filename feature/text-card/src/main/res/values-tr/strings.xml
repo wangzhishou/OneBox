@@ -11,9 +11,7 @@
     <string name="textcard_back">Geri</string>
     <string name="textcard_save">Kaydet</string>
     <string name="textcard_tab_basic">Temel</string>
-    <string name="textcard_tab_background">Kağıt</string>
-    <string name="textcard_tab_font">Yazı Tipi</string>
-    <string name="textcard_tab_text_style">Metin Stili</string>
+    <string name="textcard_tab_background">Kağıt</string>    <string name="textcard_tab_text_style">Metin Stili</string>
     <string name="textcard_tab_layers">Katmanlar</string>
     <string name="textcard_paper_background">Kağıt Arka Planı</string>
     <string name="textcard_paper_none">Yok</string>
@@ -28,19 +26,8 @@
     <string name="textcard_mesh_edit_hint">Kontrol noktalarını sürükleyerek taşı; bir noktayı seçmek için dokun, ardından aşağıdan rengini değiştir</string>
     <string name="textcard_custom_background">Özel Arka Plan</string>
     <string name="textcard_pick_from_gallery">Galeriden seç</string>
-    <string name="textcard_go_image_creation">Uygun görsel yok mu? Görsel Oluşturma'da bir tane yap</string>
-    <string name="textcard_background_opacity">Arka Plan Saydamlığı</string>
-    <string name="textcard_font_panel_title">Yazı Tipi</string>
-    <string name="textcard_font_default">Varsayılan Yazı Tipi</string>
-    <string name="textcard_font_preview">Hayatı kaydet, güzelliği keşfet</string>
-    <string name="textcard_font_noto_sans">Noto Sans SC</string>
-    <string name="textcard_font_noto_serif">Noto Serif SC</string>
-    <string name="textcard_font_lxgw">LXGW WenKai</string>
-    <string name="textcard_font_download">İndir</string>
-    <string name="textcard_font_download_failed">Yazı tipi indirilemedi, yeniden denemek için dokun</string>
-    <string name="textcard_font_downloaded">İndirildi</string>
-    <string name="textcard_font_select_target_hint">Önce tuvalde bir metin bloğu seç, sonra onun için bir yazı tipi belirle</string>
-    <string name="textcard_text_settings">Metin Ayarları</string>
+    <string name="textcard_go_image_creation">Uygun görsel yok mu? Görsel Oluşturma\'da bir tane yap</string>
+    <string name="textcard_background_opacity">Arka Plan Saydamlığı</string>    <string name="textcard_text_settings">Metin Ayarları</string>
     <string name="textcard_text_target">Düzenleniyor</string>
     <string name="textcard_add_text">Metin ekle</string>
     <string name="textcard_add_decoration">Süsleme ekle</string>

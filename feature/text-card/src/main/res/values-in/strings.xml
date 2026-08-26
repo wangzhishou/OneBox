@@ -11,9 +11,7 @@
     <string name="textcard_back">Kembali</string>
     <string name="textcard_save">Simpan</string>
     <string name="textcard_tab_basic">Dasar</string>
-    <string name="textcard_tab_background">Kertas</string>
-    <string name="textcard_tab_font">Font</string>
-    <string name="textcard_tab_text_style">Gaya Teks</string>
+    <string name="textcard_tab_background">Kertas</string>    <string name="textcard_tab_text_style">Gaya Teks</string>
     <string name="textcard_tab_layers">Lapisan</string>
     <string name="textcard_paper_background">Latar Kertas</string>
     <string name="textcard_paper_none">Tidak ada</string>
@@ -29,18 +27,7 @@
     <string name="textcard_custom_background">Latar Kustom</string>
     <string name="textcard_pick_from_gallery">Pilih dari galeri</string>
     <string name="textcard_go_image_creation">Tidak ada gambar yang cocok? Buat satu di Kreasi Gambar</string>
-    <string name="textcard_background_opacity">Opasitas Latar</string>
-    <string name="textcard_font_panel_title">Font</string>
-    <string name="textcard_font_default">Font Default</string>
-    <string name="textcard_font_preview">Merekam hidup, menemukan keindahan</string>
-    <string name="textcard_font_noto_sans">Noto Sans SC</string>
-    <string name="textcard_font_noto_serif">Noto Serif SC</string>
-    <string name="textcard_font_lxgw">LXGW WenKai</string>
-    <string name="textcard_font_download">Unduh</string>
-    <string name="textcard_font_download_failed">Gagal mengunduh font, ketuk untuk coba lagi</string>
-    <string name="textcard_font_downloaded">Terunduh</string>
-    <string name="textcard_font_select_target_hint">Pilih blok teks di kanvas terlebih dahulu, lalu pilih font untuknya</string>
-    <string name="textcard_text_settings">Pengaturan Teks</string>
+    <string name="textcard_background_opacity">Opasitas Latar</string>    <string name="textcard_text_settings">Pengaturan Teks</string>
     <string name="textcard_text_target">Mengedit</string>
     <string name="textcard_add_text">Tambah teks</string>
     <string name="textcard_add_decoration">Tambah dekorasi</string>

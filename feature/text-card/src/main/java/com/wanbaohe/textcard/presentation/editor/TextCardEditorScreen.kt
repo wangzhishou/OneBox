@@ -50,7 +50,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
 import com.wanbaohe.textcard.presentation.editor.panels.BasicPanel
-import com.wanbaohe.textcard.presentation.editor.panels.FontPanel
 import com.wanbaohe.textcard.presentation.editor.panels.LayersPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
 import com.wanbaohe.textcard.presentation.screenLogic.EditorPanel
@@ -58,7 +57,6 @@ import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.CropSquare
 import androidx.compose.material.icons.outlined.Layers
-import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.Tune
 
 /**
@@ -224,7 +222,6 @@ private fun EditorPanelSheet(
                     )
 
                     EditorPanel.Background -> BackgroundPanel(component)
-                    EditorPanel.Font -> FontPanel(component)
                     EditorPanel.TextStyle -> TextStylePanel(component)
                     EditorPanel.Layers -> LayersPanel(component = component)
 
@@ -329,7 +326,6 @@ private fun BottomTab(
 private fun EditorPanel.icon(): ImageVector = when (this) {
     EditorPanel.Basic -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineContentCut
     EditorPanel.Background -> MaterialIcons.Outlined.CropSquare
-    EditorPanel.Font -> MaterialIcons.Outlined.TextFields
     EditorPanel.TextStyle -> MaterialIcons.Outlined.Tune
     EditorPanel.Layers -> MaterialIcons.Outlined.Layers
 }
@@ -337,7 +333,6 @@ private fun EditorPanel.icon(): ImageVector = when (this) {
 private fun EditorPanel.labelRes(): Int = when (this) {
     EditorPanel.Basic -> R.string.textcard_tab_basic
     EditorPanel.Background -> R.string.textcard_tab_background
-    EditorPanel.Font -> R.string.textcard_tab_font
     EditorPanel.TextStyle -> R.string.textcard_tab_text_style
     EditorPanel.Layers -> R.string.textcard_tab_layers
 }

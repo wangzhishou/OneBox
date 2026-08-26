@@ -66,7 +66,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
 import com.t8rin.imagetoolbox.core.ui.widget.theme.ThemePresetSelector
-import com.t8rin.imagetoolbox.feature.settings.presentation.components.additional.PickFontFamilySheet
+import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.PickFontFamilySheet
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
 import com.wanbaohe.setting.display.component.DisplaySettingsComponent
 import kotlinx.coroutines.launch

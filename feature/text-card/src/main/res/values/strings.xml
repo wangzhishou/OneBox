@@ -11,9 +11,7 @@
     <string name="textcard_back">Back</string>
     <string name="textcard_save">Save</string>
     <string name="textcard_tab_basic">Basic</string>
-    <string name="textcard_tab_background">Paper</string>
-    <string name="textcard_tab_font">Font</string>
-    <string name="textcard_tab_text_style">Text Style</string>
+    <string name="textcard_tab_background">Paper</string>    <string name="textcard_tab_text_style">Text Style</string>
     <string name="textcard_tab_layers">Layers</string>
     <string name="textcard_paper_background">Paper Background</string>
     <string name="textcard_paper_none">None</string>
@@ -29,18 +27,7 @@
     <string name="textcard_custom_background">Custom Background</string>
     <string name="textcard_pick_from_gallery">Pick from gallery</string>
     <string name="textcard_go_image_creation">No suitable image? Create one in Image Creation</string>
-    <string name="textcard_background_opacity">Background Opacity</string>
-    <string name="textcard_font_panel_title">Font</string>
-    <string name="textcard_font_default">Default Font</string>
-    <string name="textcard_font_preview">Record life, discover beauty</string>
-    <string name="textcard_font_noto_sans">Noto Sans SC</string>
-    <string name="textcard_font_noto_serif">Noto Serif SC</string>
-    <string name="textcard_font_lxgw">LXGW WenKai</string>
-    <string name="textcard_font_download">Download</string>
-    <string name="textcard_font_download_failed">Font download failed, tap to retry</string>
-    <string name="textcard_font_downloaded">Downloaded</string>
-    <string name="textcard_font_select_target_hint">Select a text block on the canvas first, then pick a font for it</string>
-    <string name="textcard_text_settings">Text Settings</string>
+    <string name="textcard_background_opacity">Background Opacity</string>    <string name="textcard_text_settings">Text Settings</string>
     <string name="textcard_text_target">Editing</string>
     <string name="textcard_add_text">Add text</string>
     <string name="textcard_add_decoration">Add decoration</string>

@@ -1,11 +1,11 @@
-package com.wanbaohe.textcard.domain.model
+package com.t8rin.imagetoolbox.core.settings.domain.model
 
 import androidx.annotation.StringRes
-import com.wanbaohe.textcard.R
+import com.t8rin.imagetoolbox.core.resources.R
 
 /**
- * 内置可下载字体清单。urls 为多镜像按序回退(jsDelivr 优先,GitHub 系兜底),
- * 应对部分环境(如模拟器)对单一 CDN 的证书校验失败。
+ * 全局可下载字体清单(自 feature/text-card 上移)。urls 为多镜像按序回退
+ * (jsDelivr 优先,GitHub 系兜底),应对部分环境(如模拟器)对单一 CDN 的证书校验失败。
  * 中文字体体积大,展示 [approxSizeMb] 提示用户;不预打包任何字体文件。
  *
  * 镜像可达性(2026-08-25 curl 实测,代理/无代理两环境均 GET+Range 验证):
@@ -28,7 +28,7 @@ object DownloadableFonts {
     val all: List<DownloadableFont> = listOf(
         DownloadableFont(
             id = "noto_sans_sc",
-            nameRes = R.string.textcard_font_noto_sans,
+            nameRes = R.string.font_noto_sans,
             urls = listOf(
                 "https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
                 "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf"
@@ -38,7 +38,7 @@ object DownloadableFonts {
         ),
         DownloadableFont(
             id = "noto_serif_sc",
-            nameRes = R.string.textcard_font_noto_serif,
+            nameRes = R.string.font_noto_serif,
             urls = listOf(
                 "https://cdn.jsdelivr.net/npm/@expo-google-fonts/noto-serif-sc@0.4.3/400Regular/NotoSerifSC_400Regular.ttf",
                 "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Regular.otf"
@@ -48,7 +48,7 @@ object DownloadableFonts {
         ),
         DownloadableFont(
             id = "lxgw_wenkai",
-            nameRes = R.string.textcard_font_lxgw,
+            nameRes = R.string.font_lxgw,
             urls = listOf(
                 "https://github.com/lxgw/LxgwWenKai/releases/latest/download/LXGWWenKai-Regular.ttf"
             ),

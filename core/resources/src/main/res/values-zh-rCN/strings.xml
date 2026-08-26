@@ -1578,6 +1578,14 @@
     <string name="collection_mesh_gradients_sub">查看网格渐变在线收藏</string>
     <string name="import_font">导入字体（TTF/OTF）</string>
     <string name="imported_fonts">已导入的字体</string>
+    <string name="downloadable_fonts">可下载字体</string>
+    <string name="font_preview_text">记录生活，发现美好</string>
+    <string name="font_download">下载</string>
+    <string name="font_downloaded">已下载</string>
+    <string name="font_download_failed">字体下载失败，点击重试</string>
+    <string name="font_noto_sans">思源黑体</string>
+    <string name="font_noto_serif">思源宋体</string>
+    <string name="font_lxgw">霞鹜文楷体</string>
     <string name="wrong_font">只有 TTF 字体可以被导入</string>
     <string name="export_fonts">导出字体</string>
     <string name="filename_is_not_set">未设置文件名</string>

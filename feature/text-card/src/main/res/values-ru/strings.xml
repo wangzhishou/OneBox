@@ -11,9 +11,7 @@
     <string name="textcard_back">Назад</string>
     <string name="textcard_save">Сохранить</string>
     <string name="textcard_tab_basic">Основное</string>
-    <string name="textcard_tab_background">Бумага</string>
-    <string name="textcard_tab_font">Шрифт</string>
-    <string name="textcard_tab_text_style">Стиль текста</string>
+    <string name="textcard_tab_background">Бумага</string>    <string name="textcard_tab_text_style">Стиль текста</string>
     <string name="textcard_tab_layers">Слои</string>
     <string name="textcard_paper_background">Фон бумаги</string>
     <string name="textcard_paper_none">Нет</string>
@@ -29,18 +27,7 @@
     <string name="textcard_custom_background">Свой фон</string>
     <string name="textcard_pick_from_gallery">Выбрать из галереи</string>
     <string name="textcard_go_image_creation">Нет подходящего изображения? Создайте его в «Создании изображений»</string>
-    <string name="textcard_background_opacity">Непрозрачность фона</string>
-    <string name="textcard_font_panel_title">Шрифт</string>
-    <string name="textcard_font_default">Шрифт по умолчанию</string>
-    <string name="textcard_font_preview">Записывай жизнь, находи красоту</string>
-    <string name="textcard_font_noto_sans">Noto Sans SC</string>
-    <string name="textcard_font_noto_serif">Noto Serif SC</string>
-    <string name="textcard_font_lxgw">LXGW WenKai</string>
-    <string name="textcard_font_download">Скачать</string>
-    <string name="textcard_font_download_failed">Не удалось скачать шрифт, нажмите для повтора</string>
-    <string name="textcard_font_downloaded">Скачан</string>
-    <string name="textcard_font_select_target_hint">Сначала выберите текстовый блок на холсте, затем выберите для него шрифт</string>
-    <string name="textcard_text_settings">Настройки текста</string>
+    <string name="textcard_background_opacity">Непрозрачность фона</string>    <string name="textcard_text_settings">Настройки текста</string>
     <string name="textcard_text_target">Редактирование</string>
     <string name="textcard_add_text">Добавить текст</string>
     <string name="textcard_add_decoration">Добавить украшение</string>

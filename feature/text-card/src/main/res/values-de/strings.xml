@@ -11,9 +11,7 @@
     <string name="textcard_back">Zurück</string>
     <string name="textcard_save">Speichern</string>
     <string name="textcard_tab_basic">Basis</string>
-    <string name="textcard_tab_background">Papier</string>
-    <string name="textcard_tab_font">Schriftart</string>
-    <string name="textcard_tab_text_style">Textstil</string>
+    <string name="textcard_tab_background">Papier</string>    <string name="textcard_tab_text_style">Textstil</string>
     <string name="textcard_tab_layers">Ebenen</string>
     <string name="textcard_paper_background">Papierhintergrund</string>
     <string name="textcard_paper_none">Kein</string>
@@ -29,18 +27,7 @@
     <string name="textcard_custom_background">Eigener Hintergrund</string>
     <string name="textcard_pick_from_gallery">Aus Galerie wählen</string>
     <string name="textcard_go_image_creation">Kein passendes Bild? Erstelle eins in „Bildgestaltung“</string>
-    <string name="textcard_background_opacity">Hintergrund-Deckkraft</string>
-    <string name="textcard_font_panel_title">Schriftart</string>
-    <string name="textcard_font_default">Standardschrift</string>
-    <string name="textcard_font_preview">Das Leben festhalten, Schönes entdecken</string>
-    <string name="textcard_font_noto_sans">Noto Sans SC</string>
-    <string name="textcard_font_noto_serif">Noto Serif SC</string>
-    <string name="textcard_font_lxgw">LXGW WenKai</string>
-    <string name="textcard_font_download">Herunterladen</string>
-    <string name="textcard_font_download_failed">Schriftart-Download fehlgeschlagen, zum Wiederholen tippen</string>
-    <string name="textcard_font_downloaded">Heruntergeladen</string>
-    <string name="textcard_font_select_target_hint">Wähle zuerst einen Textblock auf der Leinwand und dann eine Schriftart dafür</string>
-    <string name="textcard_text_settings">Texteinstellungen</string>
+    <string name="textcard_background_opacity">Hintergrund-Deckkraft</string>    <string name="textcard_text_settings">Texteinstellungen</string>
     <string name="textcard_text_target">Bearbeitung</string>
     <string name="textcard_add_text">Text hinzufügen</string>
     <string name="textcard_add_decoration">Dekoration hinzufügen</string>

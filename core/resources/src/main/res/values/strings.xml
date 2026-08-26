@@ -1578,6 +1578,14 @@
     <string name="collection_mesh_gradients_sub">Browse the online mesh gradient collection</string>
     <string name="import_font">Import font (TTF/OTF)</string>
     <string name="imported_fonts">Imported fonts</string>
+    <string name="downloadable_fonts">Downloadable fonts</string>
+    <string name="font_preview_text">Record life, discover beauty</string>
+    <string name="font_download">Download</string>
+    <string name="font_downloaded">Downloaded</string>
+    <string name="font_download_failed">Font download failed, tap to retry</string>
+    <string name="font_noto_sans">Noto Sans SC</string>
+    <string name="font_noto_serif">Noto Serif SC</string>
+    <string name="font_lxgw">LXGW WenKai</string>
     <string name="wrong_font">Only TTF fonts can be imported</string>
     <string name="export_fonts">Export fonts</string>
     <string name="filename_is_not_set">Filename is not set</string>

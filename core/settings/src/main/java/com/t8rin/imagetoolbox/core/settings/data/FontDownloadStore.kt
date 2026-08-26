@@ -1,12 +1,12 @@
-package com.wanbaohe.textcard.data.font
+package com.t8rin.imagetoolbox.core.settings.data
 
 import android.content.Context
+import android.util.Log
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.t8rin.imagetoolbox.core.settings.domain.FontCatalog
+import com.t8rin.imagetoolbox.core.settings.domain.model.DownloadableFont
+import com.t8rin.imagetoolbox.core.settings.domain.model.DownloadableFonts
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
-import com.t8rin.logger.makeLog
-import com.wanbaohe.textcard.domain.FontCatalog
-import com.wanbaohe.textcard.domain.model.DownloadableFont
-import com.wanbaohe.textcard.domain.model.DownloadableFonts
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -18,7 +18,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * FontCatalog 实现:下载到 filesDir/textcard/fonts/,已下载清单持久化为 JSON 文件。
+ * FontCatalog 实现:下载到 filesDir/fonts/downloaded/,已下载清单持久化为 JSON 文件。
+ * 首次访问时把旧目录 filesDir/textcard/fonts/(feature/text-card 时代)的文件一次性迁入,
+ * 避免已下载用户重下。
  *
  * 下载器为独立最小 OkHttpClient(不挂 core/network 的鉴权拦截器):
  * 字体地址是第三方公共 CDN,绝不能把 App 登录 token 带过去。
@@ -29,13 +31,36 @@ internal class FontDownloadStore @Inject constructor(
     private val dispatchersHolder: DispatchersHolder,
 ) : FontCatalog {
 
-    private val fontsDir = File(context.filesDir, "textcard/fonts")
+    private val fontsDir = File(context.filesDir, "fonts/downloaded")
+    private val legacyFontsDir = File(context.filesDir, "textcard/fonts")
     private val indexFile = File(fontsDir, "downloaded.json")
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .build()
+
+    init {
+        migrateLegacyDir()
+    }
+
+    /** 一次性迁移旧下载目录(整体 rename 优先,失败退化为逐文件 copy) */
+    private fun migrateLegacyDir() {
+        if (!legacyFontsDir.isDirectory) return
+        runCatching {
+            fontsDir.mkdirs()
+            legacyFontsDir.listFiles()?.forEach { file ->
+                val target = File(fontsDir, file.name)
+                if (!target.exists()) {
+                    if (!file.renameTo(target)) {
+                        file.copyTo(target, overwrite = false)
+                        file.delete()
+                    }
+                }
+            }
+            legacyFontsDir.delete()
+        }.onFailure { Log.w("FontDownloadStore", "legacy dir migration failed", it) }
+    }
 
     override val fonts: List<DownloadableFont> = DownloadableFonts.all
 
@@ -62,7 +87,7 @@ internal class FontDownloadStore @Inject constructor(
             val result = downloadFrom(url, font, onProgress)
             if (result.isSuccess) return@withContext result
             lastFailure = result.exceptionOrNull() ?: lastFailure
-            lastFailure.makeLog("TextCardFontDownload mirror=$url")
+            Log.w("FontDownloadStore", "mirror failed: $url", lastFailure)
         }
         Result.failure(lastFailure)
     }

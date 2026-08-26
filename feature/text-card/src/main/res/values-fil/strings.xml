@@ -11,9 +11,7 @@
     <string name="textcard_back">Bumalik</string>
     <string name="textcard_save">I-save</string>
     <string name="textcard_tab_basic">Pangunahan</string>
-    <string name="textcard_tab_background">Papel</string>
-    <string name="textcard_tab_font">Font</string>
-    <string name="textcard_tab_text_style">Estilo ng Teksto</string>
+    <string name="textcard_tab_background">Papel</string>    <string name="textcard_tab_text_style">Estilo ng Teksto</string>
     <string name="textcard_tab_layers">Mga Layer</string>
     <string name="textcard_paper_background">Background na Papel</string>
     <string name="textcard_paper_none">Wala</string>
@@ -29,18 +27,7 @@
     <string name="textcard_custom_background">Custom na Background</string>
     <string name="textcard_pick_from_gallery">Pumili mula sa gallery</string>
     <string name="textcard_go_image_creation">Walang angkop na larawan? Gumawa ng isa sa Image Creation</string>
-    <string name="textcard_background_opacity">Opacity ng Background</string>
-    <string name="textcard_font_panel_title">Font</string>
-    <string name="textcard_font_default">Default na Font</string>
-    <string name="textcard_font_preview">Itala ang buhay, tuklasin ang ganda</string>
-    <string name="textcard_font_noto_sans">Noto Sans SC</string>
-    <string name="textcard_font_noto_serif">Noto Serif SC</string>
-    <string name="textcard_font_lxgw">LXGW WenKai</string>
-    <string name="textcard_font_download">I-download</string>
-    <string name="textcard_font_download_failed">Nabigo ang pag-download ng font, i-tap para subukan ulit</string>
-    <string name="textcard_font_downloaded">Na-download</string>
-    <string name="textcard_font_select_target_hint">Pumili muna ng text block sa canvas, pagkatapos ay pumili ng font para dito</string>
-    <string name="textcard_text_settings">Mga Setting ng Teksto</string>
+    <string name="textcard_background_opacity">Opacity ng Background</string>    <string name="textcard_text_settings">Mga Setting ng Teksto</string>
     <string name="textcard_text_target">Nag-e-edit</string>
     <string name="textcard_add_text">Magdagdag ng teksto</string>
     <string name="textcard_add_decoration">Magdagdag ng dekorasyon</string>

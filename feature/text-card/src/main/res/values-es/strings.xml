@@ -11,9 +11,7 @@
     <string name="textcard_back">Atrás</string>
     <string name="textcard_save">Guardar</string>
     <string name="textcard_tab_basic">Básico</string>
-    <string name="textcard_tab_background">Papel</string>
-    <string name="textcard_tab_font">Fuente</string>
-    <string name="textcard_tab_text_style">Estilo de texto</string>
+    <string name="textcard_tab_background">Papel</string>    <string name="textcard_tab_text_style">Estilo de texto</string>
     <string name="textcard_tab_layers">Capas</string>
     <string name="textcard_paper_background">Fondo de papel</string>
     <string name="textcard_paper_none">Ninguno</string>
@@ -29,18 +27,7 @@
     <string name="textcard_custom_background">Fondo personalizado</string>
     <string name="textcard_pick_from_gallery">Elegir de la galería</string>
     <string name="textcard_go_image_creation">¿No tienes una imagen adecuada? Crea una en Creación de imágenes</string>
-    <string name="textcard_background_opacity">Opacidad del fondo</string>
-    <string name="textcard_font_panel_title">Fuente</string>
-    <string name="textcard_font_default">Fuente predeterminada</string>
-    <string name="textcard_font_preview">Registra la vida, descubre la belleza</string>
-    <string name="textcard_font_noto_sans">Noto Sans SC</string>
-    <string name="textcard_font_noto_serif">Noto Serif SC</string>
-    <string name="textcard_font_lxgw">LXGW WenKai</string>
-    <string name="textcard_font_download">Descargar</string>
-    <string name="textcard_font_download_failed">Error al descargar la fuente, toca para reintentar</string>
-    <string name="textcard_font_downloaded">Descargada</string>
-    <string name="textcard_font_select_target_hint">Selecciona primero un bloque de texto en el lienzo y luego elige una fuente para él</string>
-    <string name="textcard_text_settings">Ajustes de texto</string>
+    <string name="textcard_background_opacity">Opacidad del fondo</string>    <string name="textcard_text_settings">Ajustes de texto</string>
     <string name="textcard_text_target">Editando</string>
     <string name="textcard_add_text">Añadir texto</string>
     <string name="textcard_add_decoration">Añadir decoración</string>

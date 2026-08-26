@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.datastore.preferences.android)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.coil)
+    implementation(libs.com.squareup.okhttp3.okhttp)
 
     implementation(projects.libs.dynamicTheme)
     implementation(projects.core.domain)

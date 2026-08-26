@@ -25,13 +25,11 @@ import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.R
-import com.wanbaohe.textcard.domain.FontCatalog
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.CanvasSpec
 import com.wanbaohe.textcard.domain.model.DecorationSpec
-import com.wanbaohe.textcard.domain.model.DownloadableFont
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.GradientPresets
 import com.wanbaohe.textcard.domain.model.RemotePaper
@@ -47,14 +45,7 @@ import kotlinx.coroutines.withContext
 
 /** 底部编辑面板 */
 enum class EditorPanel {
-    Basic, Background, Font, TextStyle, Layers
-}
-
-/** 字体行的下载状态 */
-sealed interface FontDownloadState {
-    data object NotDownloaded : FontDownloadState
-    data class Downloading(val progress: Float) : FontDownloadState
-    data object Downloaded : FontDownloadState
+    Basic, Background, TextStyle, Layers
 }
 
 /**
@@ -62,7 +53,7 @@ sealed interface FontDownloadState {
  *
  * [canvas] 为 null 时显示选择画布页,非空时进入编辑页(单 Component 双页面,
  * 同 markup-layers 的 hasImage 模式)。离散修改直接 set,不建历史栈(范围裁剪:
- * 不做撤销/重做)。
+ * 不做撤销/重做)。字体选择走全局共享的 PickFontFamilySheet(core/ui)。
  */
 class TextCardComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -72,7 +63,6 @@ class TextCardComponent @AssistedInject internal constructor(
     private val fileController: FileController,
     private val imageCompressor: ImageCompressor<Bitmap>,
     private val exportRenderer: TextCardExportRenderer,
-    private val fontCatalog: FontCatalog,
     private val paperRepository: TextCardPaperRepository,
     private val imageSaveLogger: ImageSaveLogger,
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -128,7 +118,10 @@ class TextCardComponent @AssistedInject internal constructor(
     private val _activePanel: MutableState<EditorPanel?> = mutableStateOf(null)
     val activePanel: EditorPanel? by _activePanel
 
-    /** 文字设置面板作用的文本块 id */
+    /**
+     * 「当前选中文字块」单一事实源:画布点选(selectElement 同步)、面板按钮组
+     * 切换(selectTextBlock 同步)、字体应用目标(selectedFontTarget)全部读写它。
+     */
     private val _selectedTextBlockId: MutableState<String> =
         mutableStateOf(_textBlocks.value.first().id)
     val selectedTextBlockId: String by _selectedTextBlockId
@@ -186,9 +179,11 @@ class TextCardComponent @AssistedInject internal constructor(
 
     // ---------------- 文字(任意多块,按 id 寻址) ----------------
 
+    /** 面板按钮组切换选中块:与画布元素选中同步(选中框高亮同一块) */
     fun selectTextBlock(id: String) {
         if (_textBlocks.value.none { it.id == id }) return
         _selectedTextBlockId.value = id
+        _selectedElementId.value = id
     }
 
     fun selectedTextBlock(): TextBlock? =
@@ -240,11 +235,10 @@ class TextCardComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    /** 字体面板作用目标:画布当前选中的文字块(未选中或选中的是装饰则为 null) */
-    fun selectedFontTarget(): TextBlock? =
-        _textBlocks.value.find { it.id == _selectedElementId.value }
+    /** 字体应用目标:当前选中文字块(面板切换与画布点选都汇聚到它) */
+    fun selectedFontTarget(): TextBlock? = selectedTextBlock()
 
-    /** 字体只作用于画布当前选中的文字块;未选中时 no-op(面板侧给出提示) */
+    /** 字体作用于当前选中文字块 */
     fun applyFont(font: FontType?) {
         val target = selectedFontTarget() ?: return
         updateTextBlock(target.id) { it.copy(font = font) }
@@ -401,48 +395,6 @@ class TextCardComponent @AssistedInject internal constructor(
 
     fun setActivePanel(panel: EditorPanel?) {
         _activePanel.value = panel
-    }
-
-    // ---------------- 字体下载 ----------------
-
-    val downloadableFonts: List<DownloadableFont> get() = fontCatalog.fonts
-
-    private val _fontDownloadStates: MutableState<Map<String, FontDownloadState>> =
-        mutableStateOf(emptyMap())
-    val fontDownloadStates: Map<String, FontDownloadState> by _fontDownloadStates
-
-    private var fontDownloadJob: Job? by smartJob()
-
-    /** 字体行三态:优先内存中的下载态,其次落盘清单 */
-    fun fontState(font: DownloadableFont): FontDownloadState =
-        _fontDownloadStates.value[font.id]
-            ?: if (fontCatalog.downloadedFont(font) != null) {
-                FontDownloadState.Downloaded
-            } else FontDownloadState.NotDownloaded
-
-    /** 已下载字体的 FontType.File(供选中时应用) */
-    fun downloadedFontType(font: DownloadableFont): FontType.File? =
-        fontCatalog.downloadedFont(font)
-
-    fun downloadFont(font: DownloadableFont) {
-        if (_fontDownloadStates.value[font.id] is FontDownloadState.Downloading) return
-        fontDownloadJob = componentScope.launch {
-            _fontDownloadStates.update { it + (font.id to FontDownloadState.Downloading(0f)) }
-            val result = fontCatalog.download(font) { progress ->
-                _fontDownloadStates.update {
-                    it + (font.id to FontDownloadState.Downloading(progress))
-                }
-            }
-            result.onSuccess { fontType ->
-                _fontDownloadStates.update { it + (font.id to FontDownloadState.Downloaded) }
-                // 下载完成即尝试应用到当前选中文字块;无选中时 no-op,用户再点该行应用
-                applyFont(fontType)
-            }.onFailure { failure ->
-                failure.makeLog("TextCardFontDownload")
-                _fontDownloadStates.update { it + (font.id to FontDownloadState.NotDownloaded) }
-                AppToastHost.showFailureToast(R.string.textcard_font_download_failed)
-            }
-        }
     }
 
     // ---------------- 远程纸张(Strapi 可配,失败/无网静默降级) ----------------
