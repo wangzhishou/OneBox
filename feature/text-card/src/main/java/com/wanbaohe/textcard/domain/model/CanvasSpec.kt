@@ -58,7 +58,12 @@ sealed class CanvasSpec(
     }
 
     companion object {
-        /** 内置平台规格(自定义规格单独入口) */
-        val builtIn: List<CanvasSpec> = listOf(Xiaohongshu, WeChat)
+        /**
+         * 内置平台规格(自定义规格单独入口)。
+         * 必须 lazy:直接初始化会在「首个被触发的子类是 Xiaohongshu」时
+         * 因类初始化循环(父类 clinit 读取尚在初始化中的子类静态字段)
+         * 读到 null。
+         */
+        val builtIn: List<CanvasSpec> by lazy { listOf(Xiaohongshu, WeChat) }
     }
 }
