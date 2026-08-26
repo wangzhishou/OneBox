@@ -55,6 +55,12 @@ interface SaveResultHandler {
     fun parseFileSaveResult(saveResult: SaveResult)
 
     fun parseSaveResults(results: List<SaveResult>)
+
+    /**
+     * 把保存成功消息里的文件名/保存路径替换为可点击链接(dir:// 与文件 URI),
+     * 供手动记录 ActivityLog 的场景复用(不经过 [parseSaveResult] 时)。
+     */
+    fun linkifiedSaveMessage(saveResult: SaveResult.Success): String?
 }
 
 internal object SaveResultHandlerImpl : SaveResultHandler {
@@ -259,35 +265,41 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
         }
     }
 
+    override fun linkifiedSaveMessage(
+        saveResult: SaveResult.Success
+    ): String? {
+        val message = saveResult.message
+        if (message.isNullOrEmpty()) return message
+        return runCatching {
+            val fileName = saveResult.fileName
+            val savingPath = saveResult.savingPath
+            val fileUri = saveResult.fileUri
+
+            val map = buildMap<String?, String?> {
+                // folderUri: 优先 treeUri（SAF 授权的目录 URI），否则从 fileUri 反推父目录 URI
+                val folderUri = saveResult.treeUri
+                    ?: fileUri?.let { deriveFolderUri(it) }
+                // 先替换 savingPath（较长字符串），再替换 fileName，避免包含关系导致匹配失败
+                if (!savingPath.isNullOrEmpty() && !folderUri.isNullOrEmpty() && message.contains(savingPath)) {
+                    put(savingPath, "dir://$folderUri")
+                }
+                if (!fileName.isNullOrEmpty() && !fileUri.isNullOrEmpty() && message.contains(fileName)) {
+                    put(fileName, fileUri)
+                }
+            }
+            if (map.isNotEmpty()) {
+                LinkUtils.replaceWithLinks(message, map)
+            } else {
+                message
+            }
+        }.getOrDefault(message)
+    }
+
     internal fun updateSaveResult(
         saveResult: SaveResult.Success?
     ) {
-        val message = saveResult?.message
-        if (!message.isNullOrEmpty()) {
-            val replaceMessage = runCatching {
-                val fileName = saveResult.fileName
-                val savingPath = saveResult.savingPath
-                val fileUri = saveResult.fileUri
-
-                val map = buildMap<String?, String?> {
-                    // folderUri: 优先 treeUri（SAF 授权的目录 URI），否则从 fileUri 反推父目录 URI
-                    val folderUri = saveResult.treeUri
-                        ?: fileUri?.let { deriveFolderUri(it) }
-                    // 先替换 savingPath（较长字符串），再替换 fileName，避免包含关系导致匹配失败
-                    if (!savingPath.isNullOrEmpty() && !folderUri.isNullOrEmpty() && message.contains(savingPath)) {
-                        put(savingPath, "dir://$folderUri")
-                    }
-                    if (!fileName.isNullOrEmpty() && !fileUri.isNullOrEmpty() && message.contains(fileName)) {
-                        put(fileName, fileUri)
-                    }
-                }
-                if (map.isNotEmpty()) {
-                    LinkUtils.replaceWithLinks(message, map)
-                } else {
-                    message
-                }
-            }.getOrDefault(message)
-
+        val replaceMessage = saveResult?.let { linkifiedSaveMessage(it) }
+        if (!replaceMessage.isNullOrEmpty() && saveResult != null) {
             val recorder = runCatching {
                 EntryPointAccessors.fromApplication(
                     AppContext.getContext(),

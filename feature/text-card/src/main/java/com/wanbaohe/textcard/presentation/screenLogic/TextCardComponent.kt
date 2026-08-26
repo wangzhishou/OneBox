@@ -486,7 +486,7 @@ class TextCardComponent @AssistedInject internal constructor(
                         screenName = appContext.getString(
                             com.shifenmiao.core.R.string.text_card
                         ),
-                        description = result.message.orEmpty(),
+                        description = linkifiedSaveMessage(result).orEmpty(),
                         fileUri = result.fileUri.orEmpty(),
                         fileName = result.fileName.orEmpty(),
                         savePath = result.savingPath.orEmpty()
