@@ -1,4 +1,4 @@
-package com.wanbaohe.markuplayers.presentation.tools.sticker
+package com.t8rin.imagetoolbox.core.ui.widget.editor
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCelebration
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmojiFace
@@ -51,24 +52,19 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
-import com.wanbaohe.markuplayers.R
-import com.wanbaohe.markuplayers.domain.model.LayerType
-import com.wanbaohe.markuplayers.domain.model.MarkupLayer
-import com.wanbaohe.markuplayers.domain.model.StickerSource
-import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 
 /**
- * 贴纸素材面板(设计稿「贴纸贴图素材面板」):
+ * 贴纸素材共享弹层(自 markup-layers 上移 core/ui,参数化确认动作):
  * 顶部分类 Tab(可横滑)+ 5 列素材网格。
  * 「表情」走 core emoji 表;装饰/边框/潮流动态列出 assets/stickers/<dir> 下的
  * 内置 SVG(新增素材免改代码);「AI 生成贴纸」为带 NEW 角标的占位。
- * 点击素材即创建居中贴纸图层(addLayer 默认选中)并关闭面板。
+ * 宿主在 [onStickerClick] 里落地各自的图层/元素模型。
  */
 @Composable
 fun StickerToolSheet(
     visible: Boolean,
-    component: MarkupLayersComponent,
     onDismiss: () -> Unit,
+    onStickerClick: (StickerSource) -> Unit,
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
@@ -76,7 +72,7 @@ fun StickerToolSheet(
         sheetContent = {
             StickerPanel(
                 onStickerClick = { source ->
-                    component.addLayer(MarkupLayer(type = LayerType.Sticker(source)))
+                    onStickerClick(source)
                     onDismiss()
                 }
             )
@@ -101,7 +97,7 @@ private fun StickerPanel(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(
-            text = stringResource(R.string.markup_sticker_title),
+            text = stringResource(R.string.sticker_panel_title),
             style = MaterialTheme.typography.titleMedium
         )
         CategoryTabRow(
@@ -159,7 +155,7 @@ private fun CategoryTabRow(
 @Composable
 private fun NewBadge() {
     Text(
-        text = stringResource(R.string.markup_sticker_new_badge),
+        text = stringResource(R.string.sticker_new_badge),
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onTertiary,
         modifier = Modifier
@@ -207,7 +203,7 @@ private fun AssetStickerGrid(
             ?: emptyList()
     }
     if (paths.isEmpty()) {
-        EmptyContent(text = stringResource(R.string.markup_sticker_empty))
+        EmptyContent(text = stringResource(R.string.sticker_empty))
         return
     }
     LazyVerticalGrid(
@@ -255,7 +251,7 @@ private fun StickerCell(
 @Composable
 private fun AiPlaceholderContent() {
     EmptyContent(
-        text = stringResource(R.string.markup_coming_soon),
+        text = stringResource(R.string.coming_soon),
         icon = Icons.Outlined.LineRobot
     )
 }
@@ -307,31 +303,31 @@ private enum class StickerCategory(
         assetDir = null,
         isAiPlaceholder = false,
         icon = Icons.Outlined.LineEmojiFace,
-        labelRes = R.string.markup_sticker_category_emoji
+        labelRes = R.string.sticker_category_emoji
     ),
     Decor(
         assetDir = "decor",
         isAiPlaceholder = false,
         icon = Icons.Outlined.LineCelebration,
-        labelRes = R.string.markup_sticker_category_decor
+        labelRes = R.string.sticker_category_decor
     ),
     Frame(
         assetDir = "frame",
         isAiPlaceholder = false,
         icon = Icons.Outlined.LineFilterFrames,
-        labelRes = R.string.markup_sticker_category_frame
+        labelRes = R.string.sticker_category_frame
     ),
     Trend(
         assetDir = "trend",
         isAiPlaceholder = false,
         icon = Icons.Outlined.LineTrendingUp,
-        labelRes = R.string.markup_sticker_category_trend
+        labelRes = R.string.sticker_category_trend
     ),
     AiGenerated(
         assetDir = null,
         isAiPlaceholder = true,
         icon = Icons.Outlined.LineRobot,
-        labelRes = R.string.markup_sticker_category_ai,
+        labelRes = R.string.sticker_category_ai,
         newBadge = true
     ),
 }

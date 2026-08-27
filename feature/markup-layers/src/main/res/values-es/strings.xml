@@ -28,7 +28,6 @@
     <string name="markup_menu_save_exif">Guardar Exif</string>
     <string name="markup_menu_clear_filter">Quitar filtro</string>
     <string name="markup_menu_immersive_preview">Vista previa inmersiva</string>
-    <string name="markup_coming_soon">Próximamente</string>
     <string name="markup_canvas_background">Fondo del lienzo</string>
     <string name="markup_canvas_bg_default">Predeterminado</string>
     <string name="markup_canvas_bg_solid">Color sólido</string>
@@ -112,14 +111,6 @@
     <string name="markup_recent_projects">Proyectos recientes</string>
     <string name="markup_recent_projects_empty">No hay proyectos recientes</string>
 
-    <string name="markup_sticker_title">Stickers</string>
-    <string name="markup_sticker_category_emoji">Emoji</string>
-    <string name="markup_sticker_category_decor">Decoración</string>
-    <string name="markup_sticker_category_frame">Marcos</string>
-    <string name="markup_sticker_category_trend">Tendencias</string>
-    <string name="markup_sticker_category_ai">Sticker IA</string>
-    <string name="markup_sticker_new_badge">NUEVO</string>
-    <string name="markup_sticker_empty">Aún no hay stickers en esta categoría</string>
 
     <string name="markup_shape_basic_shapes">Formas básicas</string>
     <string name="markup_shape_kind_rectangle">Rectángulo</string>
@@ -214,4 +205,5 @@
     <string name="markup_ai_generate_empty">Introduce una descripción de la imagen</string>
     <string name="markup_ai_edit_current">Actual</string>
     <string name="markup_ai_edit_history">Historial</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

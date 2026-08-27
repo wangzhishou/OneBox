@@ -4,6 +4,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
@@ -39,12 +41,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -79,18 +90,29 @@ import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.ErrorOutline
+import com.wanbaohe.textcard.domain.model.CardDrawStroke
+import com.wanbaohe.textcard.domain.model.CardShapeKind
+import com.wanbaohe.textcard.domain.model.CardStrokePoint
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
+import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_COLOR
+import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_WIDTH_RATIO
 import com.wanbaohe.textcard.domain.model.DecorationSpec
+import com.wanbaohe.textcard.domain.model.DrawElementSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.ElementTransform
 import com.wanbaohe.textcard.domain.model.ImageElementSpec
 import com.wanbaohe.textcard.domain.model.ImageElementStatus
+import com.wanbaohe.textcard.domain.model.ShapeElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.model.contentBounds
 import com.wanbaohe.textcard.domain.render.CardLayout
+import com.wanbaohe.textcard.domain.render.CardShapeGeometry
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
+import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
@@ -118,6 +140,11 @@ fun CardCanvasPreview(
     onTextEditCommit: () -> Unit = {},
     onCanvasTap: () -> Unit = {},
     onBackgroundDrag: (Float, Float) -> Unit = { _, _ -> },
+    isDrawing: Boolean = false,
+    drawSessionStrokes: List<CardDrawStroke> = emptyList(),
+    drawBrushColorArgb: Long = DEFAULT_DRAW_COLOR,
+    drawBrushWidthRatio: Float = DEFAULT_DRAW_WIDTH_RATIO,
+    onDrawStroke: (List<CardStrokePoint>) -> Unit = {},
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -166,12 +193,10 @@ fun CardCanvasPreview(
                         CardDecorationElement(
                             decoration = it,
                             isSelected = selectedElementId == it.id && !layer.locked,
-                            canDelete = true,
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete
+                            onElementTransform = onElementTransform
                         )
                     }
                 }
@@ -184,12 +209,47 @@ fun CardCanvasPreview(
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform,
-                            onElementDelete = onElementDelete
+                            onElementTransform = onElementTransform
+                        )
+                    }
+                }
+
+                ElementLayer.Kind.Shape -> state.shapeElementOf(layer.elementId)?.let {
+                    key(it.id) {
+                        CardShapeElement(
+                            element = it,
+                            isSelected = selectedElementId == it.id && !layer.locked,
+                            canvasWidthPx = canvasWidthPx,
+                            canvasHeightPx = canvasHeightPx,
+                            onElementTap = onElementTap,
+                            onElementTransform = onElementTransform
+                        )
+                    }
+                }
+
+                ElementLayer.Kind.Draw -> state.drawElementOf(layer.elementId)?.let {
+                    key(it.id) {
+                        CardDrawElement(
+                            element = it,
+                            isSelected = selectedElementId == it.id && !layer.locked,
+                            canvasWidthPx = canvasWidthPx,
+                            canvasHeightPx = canvasHeightPx,
+                            onElementTap = onElementTap,
+                            onElementTransform = onElementTransform
                         )
                     }
                 }
             }
+        }
+
+        // 绘制模式:会话笔画采集层置顶(含进行中笔画实时预览,跟随当前画笔设置)
+        if (isDrawing) {
+            DrawCaptureOverlay(
+                sessionStrokes = drawSessionStrokes,
+                brushColorArgb = drawBrushColorArgb,
+                brushWidthRatio = drawBrushWidthRatio,
+                onStroke = onDrawStroke
+            )
         }
     }
 }
@@ -575,15 +635,16 @@ private fun InPlaceTextEditor(
 private fun CardDecorationElement(
     decoration: DecorationSpec,
     isSelected: Boolean,
-    canDelete: Boolean,
     canvasWidthPx: Float,
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onElementDelete: (String) -> Unit,
 ) {
     val emojis = Emoji.allIcons()
-    val uri = emojis.getOrNull(decoration.emojiIndex) ?: return
+    // 素材贴纸(assets SVG)优先,否则 emoji 下标
+    val model = decoration.assetPath?.let { "file:///android_asset/$it" }
+        ?: decoration.emojiIndex?.let { emojis.getOrNull(it) }
+        ?: return
     val density = LocalDensity.current
     val sizePx = canvasWidthPx * CardLayout.DECORATION_SIZE_RATIO
     ElementBox(
@@ -595,13 +656,10 @@ private fun CardDecorationElement(
         canvasWidthPx = canvasWidthPx,
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
-        onElementTransform = onElementTransform,
-        onDelete = if (canDelete) {
-            { onElementDelete(decoration.id) }
-        } else null
+        onElementTransform = onElementTransform
     ) {
         Picture(
-            model = uri,
+            model = model,
             contentDescription = null,
             contentScale = ContentScale.Fit,
             showTransparencyChecker = false,
@@ -622,7 +680,6 @@ private fun CardImageElement(
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-    onElementDelete: (String) -> Unit,
 ) {
     val density = LocalDensity.current
     val sizePx = canvasWidthPx * CardLayout.IMAGE_ELEMENT_SIZE_RATIO
@@ -642,8 +699,7 @@ private fun CardImageElement(
         canvasWidthPx = canvasWidthPx,
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
-        onElementTransform = onElementTransform,
-        onDelete = { onElementDelete(element.id) }
+        onElementTransform = onElementTransform
     ) {
         val boxModifier = Modifier
             .size(width = widthDp, height = heightDp)
@@ -750,3 +806,249 @@ private fun cardTextStyle(
         }
     )
 }
+
+/** 形状元素(对照图片创作形状工具):外接框内绘制,选中走共享 chrome 手柄 */
+@Composable
+private fun CardShapeElement(
+    element: ShapeElementSpec,
+    isSelected: Boolean,
+    canvasWidthPx: Float,
+    canvasHeightPx: Float,
+    onElementTap: (String) -> Unit,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+) {
+    val density = LocalDensity.current
+    ElementBox(
+        elementId = element.id,
+        transform = element,
+        leftPx = element.offsetX * canvasWidthPx,
+        topPx = element.offsetY * canvasHeightPx,
+        isSelected = isSelected,
+        canvasWidthPx = canvasWidthPx,
+        canvasHeightPx = canvasHeightPx,
+        onElementTap = onElementTap,
+        onElementTransform = onElementTransform,
+        width = with(density) { (element.widthRatio * canvasWidthPx).toDp() }
+    ) {
+        Canvas(
+            modifier = Modifier
+                .size(
+                    width = with(density) { (element.widthRatio * canvasWidthPx).toDp() },
+                    height = with(density) { (element.heightRatio * canvasHeightPx).toDp() }
+                )
+                .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
+        ) {
+            drawCardShapeContent(element, canvasWidthPx)
+        }
+    }
+}
+
+/** 形状内容绘制(自 markup-layers drawShapeContent 移植):外接框 = 当前 DrawScope size */
+private fun DrawScope.drawCardShapeContent(
+    spec: ShapeElementSpec,
+    canvasWidthPx: Float,
+) {
+    val color = Color(spec.colorArgb)
+    val stroke = Stroke(width = (spec.strokeWidthRatio * canvasWidthPx).coerceAtLeast(1f))
+    when (spec.kind) {
+        CardShapeKind.Rectangle -> {
+            val radius = (spec.cornerRadiusRatio * canvasWidthPx)
+                .coerceIn(0f, min(size.width, size.height) / 2f)
+            drawRoundRect(
+                color = color,
+                topLeft = Offset.Zero,
+                size = size,
+                cornerRadius = CornerRadius(radius),
+                style = if (spec.filled) Fill else stroke
+            )
+        }
+
+        CardShapeKind.Circle -> {
+            // 圆形始终为正圆:直径取外接框短边,居中
+            val diameter = min(size.width, size.height)
+            drawOval(
+                color = color,
+                topLeft = Offset(
+                    (size.width - diameter) / 2f,
+                    (size.height - diameter) / 2f
+                ),
+                size = Size(diameter, diameter),
+                style = if (spec.filled) Fill else stroke
+            )
+        }
+
+        CardShapeKind.Line -> {
+            // 线条无填充概念,始终按描边绘制(圆头横线,与外接框同宽)
+            drawLine(
+                color = color,
+                start = Offset(0f, size.height / 2f),
+                end = Offset(size.width, size.height / 2f),
+                strokeWidth = stroke.width,
+                cap = StrokeCap.Round
+            )
+        }
+
+        CardShapeKind.Triangle, CardShapeKind.Arrow, CardShapeKind.Star -> {
+            val path = Path().apply {
+                CardShapeGeometry.polygonPoints(spec.kind, size.width, size.height)
+                    .forEachIndexed { index, (x, y) ->
+                        if (index == 0) moveTo(x, y) else lineTo(x, y)
+                    }
+                close()
+            }
+            drawPath(
+                path = path,
+                color = color,
+                style = if (spec.filled) Fill else stroke
+            )
+        }
+    }
+}
+
+/** 画笔元素:外接框 = 笔画包围盒(选中 chrome 贴着笔迹,不再铺满画布被裁掉) */
+@Composable
+private fun CardDrawElement(
+    element: DrawElementSpec,
+    isSelected: Boolean,
+    canvasWidthPx: Float,
+    canvasHeightPx: Float,
+    onElementTap: (String) -> Unit,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+) {
+    val bounds = element.contentBounds() ?: return
+    val density = LocalDensity.current
+    ElementBox(
+        elementId = element.id,
+        transform = element,
+        leftPx = (element.offsetX + bounds.left) * canvasWidthPx,
+        topPx = (element.offsetY + bounds.top) * canvasHeightPx,
+        isSelected = isSelected,
+        canvasWidthPx = canvasWidthPx,
+        canvasHeightPx = canvasHeightPx,
+        onElementTap = onElementTap,
+        onElementTransform = onElementTransform,
+        width = with(density) { (bounds.width * canvasWidthPx).toDp() }
+    ) {
+        Canvas(
+            modifier = Modifier
+                .size(
+                    width = with(density) { (bounds.width * canvasWidthPx).toDp() },
+                    height = with(density) { (bounds.height * canvasHeightPx).toDp() }
+                )
+                .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
+        ) {
+            element.strokes.forEach { stroke ->
+                drawCardStroke(
+                    stroke = stroke,
+                    canvasWidth = canvasWidthPx,
+                    canvasHeight = canvasHeightPx,
+                    offsetX = bounds.left,
+                    offsetY = bounds.top
+                )
+            }
+        }
+    }
+}
+
+/** 单笔画绘制:采样点连成圆头圆接折线(可带包围盒偏移);单点退化为圆点 */
+private fun DrawScope.drawCardStroke(
+    stroke: CardDrawStroke,
+    canvasWidth: Float,
+    canvasHeight: Float,
+    offsetX: Float = 0f,
+    offsetY: Float = 0f,
+) {
+    val strokeWidth = (stroke.widthRatio * canvasWidth).coerceAtLeast(1f)
+    val color = Color(stroke.colorArgb)
+    if (stroke.points.size == 1) {
+        val p = stroke.points.first()
+        drawCircle(
+            color = color,
+            radius = strokeWidth / 2f,
+            center = Offset((p.x - offsetX) * canvasWidth, (p.y - offsetY) * canvasHeight)
+        )
+        return
+    }
+    val path = Path()
+    stroke.points.forEachIndexed { index, point ->
+        val x = (point.x - offsetX) * canvasWidth
+        val y = (point.y - offsetY) * canvasHeight
+        if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+    }
+    drawPath(
+        path = path,
+        color = color,
+        style = Stroke(
+            width = strokeWidth,
+            cap = StrokeCap.Round,
+            join = StrokeJoin.Round
+        )
+    )
+}
+
+/**
+ * 绘制采集层(绘制模式置顶):会话已完成笔画 + 进行中笔画实时预览;
+ * 手势移植自 markup-layers DrawOverlay(收笔结算为会话笔画,第二指落下即收笔)。
+ */
+@Composable
+private fun androidx.compose.foundation.layout.BoxWithConstraintsScope.DrawCaptureOverlay(
+    sessionStrokes: List<CardDrawStroke>,
+    brushColorArgb: Long,
+    brushWidthRatio: Float,
+    onStroke: (List<CardStrokePoint>) -> Unit,
+) {
+    val canvasWidthPx = constraints.maxWidth.toFloat()
+    val canvasHeightPx = constraints.maxHeight.toFloat()
+    var currentPoints by remember { mutableStateOf<List<CardStrokePoint>>(emptyList()) }
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(canvasWidthPx, canvasHeightPx) {
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false)
+                    if (down.isConsumed) return@awaitEachGesture
+                    currentPoints = listOf(
+                        CardStrokePoint(
+                            down.position.x / canvasWidthPx,
+                            down.position.y / canvasHeightPx
+                        )
+                    )
+                    try {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            if (event.changes.count { it.pressed } > 1) break
+                            val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                            if (!change.pressed) break
+                            if (change.positionChanged()) {
+                                currentPoints = currentPoints + CardStrokePoint(
+                                    change.position.x / canvasWidthPx,
+                                    change.position.y / canvasHeightPx
+                                )
+                                change.consume()
+                            }
+                        }
+                    } finally {
+                        // 手势被取消(如模式切换)也要收笔结算,避免进行中的笔画残留
+                        val points = currentPoints
+                        currentPoints = emptyList()
+                        if (points.isNotEmpty()) onStroke(points)
+                    }
+                }
+            }
+    ) {
+        sessionStrokes.forEach { drawCardStroke(it, size.width, size.height) }
+        if (currentPoints.isNotEmpty()) {
+            drawCardStroke(
+                CardDrawStroke(
+                    points = currentPoints,
+                    colorArgb = brushColorArgb,
+                    widthRatio = brushWidthRatio
+                ),
+                size.width,
+                size.height
+            )
+        }
+    }
+}
+
+

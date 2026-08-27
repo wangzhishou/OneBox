@@ -105,7 +105,8 @@ private val HANDLE_SPECS = listOf(
     HandleSpec(Alignment.BottomCenter, IntOffset(0, 1), edgeX = 0, edgeY = 1),
 )
 
-/** 8 向框尺寸手柄(四角 + 四边中点):拖手柄改框宽/高,内容重排,宿主自定字号策略 */
+/** 8 向框尺寸手柄(四角 + 四边中点):拖手柄改框宽/高,内容重排,宿主自定字号策略。
+ * 边中点手柄在对应轴太短时隐藏(否则大面积热区遮住本体拖动,本体拖不动) */
 @Composable
 fun BoxScope.BoxResizeHandles(
     sizeProvider: () -> IntSize,
@@ -118,7 +119,16 @@ fun BoxScope.BoxResizeHandles(
 ) {
     val density = LocalDensity.current
     val handlePx = with(density) { HANDLE_SIZE.toPx() }
-    HANDLE_SPECS.forEach { spec ->
+    // 对应轴长度 < 3 倍热区时,该轴的边中点手柄会让本体几乎无处可拖
+    val minAxisPx = handlePx * 3
+    val size = sizeProvider()
+    HANDLE_SPECS.filter { spec ->
+        when {
+            spec.edgeX != 0 && spec.edgeY == 0 -> size.width >= minAxisPx
+            spec.edgeX == 0 && spec.edgeY != 0 -> size.height >= minAxisPx
+            else -> true
+        }
+    }.forEach { spec ->
         ResizeHandle(
             spec = spec,
             handlePx = handlePx,

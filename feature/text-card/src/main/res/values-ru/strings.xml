@@ -10,7 +10,7 @@
     <string name="textcard_start_create">Начать создание</string>
     <string name="textcard_back">Назад</string>
     <string name="textcard_save">Сохранить</string>
-    <string name="textcard_tab_basic">Основное</string>
+    <string name="textcard_tab_basic">Основные инструменты</string>
     <string name="textcard_tab_background">Бумага</string>    <string name="textcard_tab_text_style">Стиль текста</string>
     <string name="textcard_tab_layers">Слои</string>
     <string name="textcard_paper_background">Фон бумаги</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">Нет подходящего изображения? Создайте его в «Создании изображений»</string>
     <string name="textcard_background_opacity">Непрозрачность фона</string>    <string name="textcard_text_settings">Настройки текста</string>
     <string name="textcard_text_target">Редактирование</string>
-    <string name="textcard_add_text">Добавить текст</string>
-    <string name="textcard_add_decoration">Добавить украшение</string>
-    <string name="textcard_delete_selected">Удалить выбранное</string>
+    <string name="textcard_add_text">Текст</string>
+    <string name="textcard_add_decoration">Стикер</string>
+    <string name="textcard_delete_selected">Удалить</string>
     <string name="textcard_new_block_content">Новый текст</string>
     <string name="textcard_empty_text_hint">Нажмите, чтобы ввести текст</string>
     <string name="textcard_block_fallback">Текст</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">История</string>
     <string name="textcard_edit_image_current">Текущее</string>
     <string name="textcard_layer_reset_position">Сбросить позицию</string>
+    <string name="textcard_add_shape">Фигура</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">Рисовать</string>
+    <string name="textcard_draw_done">Готово</string>
+    <string name="textcard_layer_shape">Фигура</string>
+    <string name="textcard_shape_rect">Прямоугольник</string>
+    <string name="textcard_shape_circle">Круг</string>
+    <string name="textcard_shape_triangle">Треугольник</string>
+    <string name="textcard_shape_arrow">Стрелка</string>
+    <string name="textcard_shape_line">Линия</string>
+    <string name="textcard_shape_star">Звезда</string>
+    <string name="textcard_shape_filled">Заливка</string>
+    <string name="textcard_draw_width">Толщина штриха</string>
 </resources>

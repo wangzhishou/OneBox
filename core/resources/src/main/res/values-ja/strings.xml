@@ -1930,4 +1930,13 @@
     <string name="pages_short">ページ</string>
     <string name="blessing_wall">祝福の壁</string>
     <string name="blessing_wall_sub">毎日のタップ・幸運が続きます</string>
+    <string name="sticker_panel_title">ステッカー</string>
+    <string name="sticker_category_emoji">絵文字</string>
+    <string name="sticker_category_decor">装飾</string>
+    <string name="sticker_category_frame">フレーム</string>
+    <string name="sticker_category_trend">トレンド</string>
+    <string name="sticker_category_ai">AI ステッカー</string>
+    <string name="sticker_new_badge">NEW</string>
+    <string name="sticker_empty">このカテゴリにはまだステッカーがありません</string>
+    <string name="coming_soon">近日公開</string>
 </resources>

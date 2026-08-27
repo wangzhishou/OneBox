@@ -1929,4 +1929,13 @@
     <string name="pages_short">페이지</string>
     <string name="blessing_wall">축복의 벽</string>
     <string name="blessing_wall_sub">매일 탭 · 행운이 따릅니다</string>
+    <string name="sticker_panel_title">스티커</string>
+    <string name="sticker_category_emoji">이모티콘</string>
+    <string name="sticker_category_decor">장식</string>
+    <string name="sticker_category_frame">프레임</string>
+    <string name="sticker_category_trend">트렌드</string>
+    <string name="sticker_category_ai">AI 스티커</string>
+    <string name="sticker_new_badge">NEW</string>
+    <string name="sticker_empty">이 카테고리에는 아직 스티커가 없습니다</string>
+    <string name="coming_soon">곧 제공 예정</string>
 </resources>

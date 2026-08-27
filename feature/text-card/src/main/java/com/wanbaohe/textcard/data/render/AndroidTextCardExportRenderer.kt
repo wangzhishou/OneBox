@@ -18,15 +18,20 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.drawMeshGradient
 import com.t8rin.imagetoolbox.core.utils.toTypeface
 import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
+import com.wanbaohe.textcard.domain.model.CardShapeKind
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.DecorationSpec
+import com.wanbaohe.textcard.domain.model.DrawElementSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.ElementTransform
 import com.wanbaohe.textcard.domain.model.ImageElementSpec
 import com.wanbaohe.textcard.domain.model.ImageElementStatus
+import com.wanbaohe.textcard.domain.model.ShapeElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
+import com.wanbaohe.textcard.domain.model.contentBounds
 import com.wanbaohe.textcard.domain.render.CardLayout
+import com.wanbaohe.textcard.domain.render.CardShapeGeometry
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -67,6 +72,14 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
 
                 ElementLayer.Kind.Image -> state.imageElementOf(layer.elementId)?.let {
                     drawImageElement(canvas, it, width, height)
+                }
+
+                ElementLayer.Kind.Shape -> state.shapeElementOf(layer.elementId)?.let {
+                    drawShapeElement(canvas, it, width, height)
+                }
+
+                ElementLayer.Kind.Draw -> state.drawElementOf(layer.elementId)?.let {
+                    drawDrawElement(canvas, it, width, height)
                 }
             }
         }
@@ -325,7 +338,10 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         width: Int,
         height: Int,
     ) {
-        val assetPath = EmojiAssets.pathAt(decoration.emojiIndex, context) ?: return
+        // 素材贴纸(assets SVG)优先,否则 emoji 下标换算 assets 路径
+        val assetPath = decoration.assetPath
+            ?: decoration.emojiIndex?.let { EmojiAssets.pathAt(it, context) }
+            ?: return
         val size = width * CardLayout.DECORATION_SIZE_RATIO
 
         // render 非挂起安全:decode 走 runBlocking,调用方(组件)已在 IO 线程
@@ -349,6 +365,120 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
                 alpha = (decoration.alpha.coerceIn(0f, 1f) * 255).toInt()
             }
         )
+        canvas.restore()
+    }
+
+    // ---------------- 形状元素(几何与预览侧 CardShapeGeometry 共用) ----------------
+
+    /** 单个形状:外接框 offset 定位,绕中心套 scale/rotation */
+    private fun drawShapeElement(
+        canvas: Canvas,
+        element: ShapeElementSpec,
+        width: Int,
+        height: Int,
+    ) {
+        val boxWidth = element.widthRatio * width
+        val boxHeight = element.heightRatio * height
+        canvas.save()
+        canvas.translate(element.offsetX * width, element.offsetY * height)
+        canvas.applyElementTransform(element, boxWidth, boxHeight)
+
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = element.colorArgb.toInt()
+            alpha = (element.alpha.coerceIn(0f, 1f) * 255).toInt()
+        }
+        val strokeWidth = (element.strokeWidthRatio * width).coerceAtLeast(1f)
+        when (element.kind) {
+            CardShapeKind.Rectangle -> {
+                val radius = (element.cornerRadiusRatio * width)
+                    .coerceIn(0f, minOf(boxWidth, boxHeight) / 2f)
+                paint.style = if (element.filled) Paint.Style.FILL else Paint.Style.STROKE
+                paint.strokeWidth = strokeWidth
+                canvas.drawRoundRect(RectF(0f, 0f, boxWidth, boxHeight), radius, radius, paint)
+            }
+
+            CardShapeKind.Circle -> {
+                // 正圆:直径取外接框短边,居中(与预览一致)
+                val diameter = minOf(boxWidth, boxHeight)
+                paint.style = if (element.filled) Paint.Style.FILL else Paint.Style.STROKE
+                paint.strokeWidth = strokeWidth
+                canvas.drawOval(
+                    RectF(
+                        (boxWidth - diameter) / 2f,
+                        (boxHeight - diameter) / 2f,
+                        (boxWidth + diameter) / 2f,
+                        (boxHeight + diameter) / 2f
+                    ),
+                    paint
+                )
+            }
+
+            CardShapeKind.Line -> {
+                // 线条无填充概念,圆头横线与外接框同宽(与预览一致)
+                paint.style = Paint.Style.STROKE
+                paint.strokeWidth = strokeWidth
+                paint.strokeCap = Paint.Cap.ROUND
+                canvas.drawLine(0f, boxHeight / 2f, boxWidth, boxHeight / 2f, paint)
+            }
+
+            CardShapeKind.Triangle, CardShapeKind.Arrow, CardShapeKind.Star -> {
+                val path = android.graphics.Path()
+                CardShapeGeometry.polygonPoints(element.kind, boxWidth, boxHeight)
+                    .forEachIndexed { index, (x, y) ->
+                        if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                    }
+                path.close()
+                paint.style = if (element.filled) Paint.Style.FILL else Paint.Style.STROKE
+                paint.strokeWidth = strokeWidth
+                paint.strokeJoin = Paint.Join.ROUND
+                canvas.drawPath(path, paint)
+            }
+        }
+        canvas.restore()
+    }
+
+    // ---------------- 画笔元素 ----------------
+
+    /** 画笔元素:外接框 = 笔画包围盒(与预览 chrome 一致),逐笔画圆头圆接折线 */
+    private fun drawDrawElement(
+        canvas: Canvas,
+        element: DrawElementSpec,
+        width: Int,
+        height: Int,
+    ) {
+        val bounds = element.contentBounds() ?: return
+        canvas.save()
+        canvas.translate(
+            (element.offsetX + bounds.left) * width,
+            (element.offsetY + bounds.top) * height
+        )
+        canvas.applyElementTransform(element, bounds.width * width, bounds.height * height)
+        element.strokes.forEach { stroke ->
+            val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = stroke.colorArgb.toInt()
+                alpha = (element.alpha.coerceIn(0f, 1f) * 255).toInt()
+                style = Paint.Style.STROKE
+                strokeWidth = (stroke.widthRatio * width).coerceAtLeast(1f)
+                strokeCap = Paint.Cap.ROUND
+                strokeJoin = Paint.Join.ROUND
+            }
+            if (stroke.points.size == 1) {
+                val p = stroke.points.first()
+                canvas.drawPoint(
+                    (p.x - bounds.left) * width,
+                    (p.y - bounds.top) * height,
+                    paint
+                )
+            } else {
+                val path = android.graphics.Path()
+                stroke.points.forEachIndexed { index, point ->
+                    val x = (point.x - bounds.left) * width
+                    val y = (point.y - bounds.top) * height
+                    if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                }
+                canvas.drawPath(path, paint)
+            }
+        }
         canvas.restore()
     }
 }

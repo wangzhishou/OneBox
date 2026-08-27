@@ -28,7 +28,6 @@
     <string name="markup_menu_save_exif">Exif bilgisini kaydet</string>
     <string name="markup_menu_clear_filter">Filtreyi temizle</string>
     <string name="markup_menu_immersive_preview">Tam ekran önizleme</string>
-    <string name="markup_coming_soon">Çok yakında</string>
     <string name="markup_canvas_background">Tuval arka planı</string>
     <string name="markup_canvas_bg_default">Varsayılan</string>
     <string name="markup_canvas_bg_solid">Düz renk</string>
@@ -112,14 +111,6 @@
     <string name="markup_recent_projects">Son projeler</string>
     <string name="markup_recent_projects_empty">Son proje yok</string>
 
-    <string name="markup_sticker_title">Çıkartmalar</string>
-    <string name="markup_sticker_category_emoji">Emoji</string>
-    <string name="markup_sticker_category_decor">Süsleme</string>
-    <string name="markup_sticker_category_frame">Çerçeveler</string>
-    <string name="markup_sticker_category_trend">Trend</string>
-    <string name="markup_sticker_category_ai">AI Çıkartması</string>
-    <string name="markup_sticker_new_badge">YENİ</string>
-    <string name="markup_sticker_empty">Bu kategoride henüz çıkartma yok</string>
 
     <string name="markup_shape_basic_shapes">Temel şekiller</string>
     <string name="markup_shape_kind_rectangle">Dikdörtgen</string>
@@ -214,4 +205,5 @@
     <string name="markup_ai_generate_empty">Lütfen bir görsel açıklaması girin</string>
     <string name="markup_ai_edit_current">Mevcut</string>
     <string name="markup_ai_edit_history">Geçmiş</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

@@ -9,7 +9,7 @@ import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
-import com.wanbaohe.markuplayers.domain.model.StickerSource
+import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import kotlin.reflect.KClass
 
 /** 贴纸基础尺寸:预览画布宽度的 25%(导出侧同比例 × 原图宽) */

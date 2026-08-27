@@ -10,7 +10,7 @@
     <string name="textcard_start_create">Simulan ang Paggawa</string>
     <string name="textcard_back">Bumalik</string>
     <string name="textcard_save">I-save</string>
-    <string name="textcard_tab_basic">Pangunahan</string>
+    <string name="textcard_tab_basic">Mga Pangunahing Tool</string>
     <string name="textcard_tab_background">Papel</string>    <string name="textcard_tab_text_style">Estilo ng Teksto</string>
     <string name="textcard_tab_layers">Mga Layer</string>
     <string name="textcard_paper_background">Background na Papel</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">Walang angkop na larawan? Gumawa ng isa sa Image Creation</string>
     <string name="textcard_background_opacity">Opacity ng Background</string>    <string name="textcard_text_settings">Mga Setting ng Teksto</string>
     <string name="textcard_text_target">Nag-e-edit</string>
-    <string name="textcard_add_text">Magdagdag ng teksto</string>
-    <string name="textcard_add_decoration">Magdagdag ng dekorasyon</string>
-    <string name="textcard_delete_selected">Burahin ang napili</string>
+    <string name="textcard_add_text">Teksto</string>
+    <string name="textcard_add_decoration">Sticker</string>
+    <string name="textcard_delete_selected">Burahin</string>
     <string name="textcard_new_block_content">Bagong teksto</string>
     <string name="textcard_empty_text_hint">I-tap para maglagay ng teksto</string>
     <string name="textcard_block_fallback">Teksto</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">Kasaysayan</string>
     <string name="textcard_edit_image_current">Kasalukuyan</string>
     <string name="textcard_layer_reset_position">I-reset ang posisyon</string>
+    <string name="textcard_add_shape">Hugis</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">Gumuhit</string>
+    <string name="textcard_draw_done">Tapos</string>
+    <string name="textcard_layer_shape">Hugis</string>
+    <string name="textcard_shape_rect">Parihaba</string>
+    <string name="textcard_shape_circle">Bilog</string>
+    <string name="textcard_shape_triangle">Tatsulok</string>
+    <string name="textcard_shape_arrow">Pana</string>
+    <string name="textcard_shape_line">Linya</string>
+    <string name="textcard_shape_star">Bituin</string>
+    <string name="textcard_shape_filled">Punong</string>
+    <string name="textcard_draw_width">Kapal ng guhit</string>
 </resources>

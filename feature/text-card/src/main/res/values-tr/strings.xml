@@ -10,7 +10,7 @@
     <string name="textcard_start_create">Oluşturmaya Başla</string>
     <string name="textcard_back">Geri</string>
     <string name="textcard_save">Kaydet</string>
-    <string name="textcard_tab_basic">Temel</string>
+    <string name="textcard_tab_basic">Temel Araçlar</string>
     <string name="textcard_tab_background">Kağıt</string>    <string name="textcard_tab_text_style">Metin Stili</string>
     <string name="textcard_tab_layers">Katmanlar</string>
     <string name="textcard_paper_background">Kağıt Arka Planı</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">Uygun görsel yok mu? Görsel Oluşturma\'da bir tane yap</string>
     <string name="textcard_background_opacity">Arka Plan Saydamlığı</string>    <string name="textcard_text_settings">Metin Ayarları</string>
     <string name="textcard_text_target">Düzenleniyor</string>
-    <string name="textcard_add_text">Metin ekle</string>
-    <string name="textcard_add_decoration">Süsleme ekle</string>
-    <string name="textcard_delete_selected">Seçileni sil</string>
+    <string name="textcard_add_text">Metin</string>
+    <string name="textcard_add_decoration">Çıkartma</string>
+    <string name="textcard_delete_selected">Sil</string>
     <string name="textcard_new_block_content">Yeni metin</string>
     <string name="textcard_empty_text_hint">Metin girmek için dokun</string>
     <string name="textcard_block_fallback">Metin</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">Geçmiş</string>
     <string name="textcard_edit_image_current">Mevcut</string>
     <string name="textcard_layer_reset_position">Konumu sıfırla</string>
+    <string name="textcard_add_shape">Şekil</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">Çiz</string>
+    <string name="textcard_draw_done">Bitti</string>
+    <string name="textcard_layer_shape">Şekil</string>
+    <string name="textcard_shape_rect">Dikdörtgen</string>
+    <string name="textcard_shape_circle">Daire</string>
+    <string name="textcard_shape_triangle">Üçgen</string>
+    <string name="textcard_shape_arrow">Ok</string>
+    <string name="textcard_shape_line">Çizgi</string>
+    <string name="textcard_shape_star">Yıldız</string>
+    <string name="textcard_shape_filled">Dolu</string>
+    <string name="textcard_draw_width">Fırça kalınlığı</string>
 </resources>

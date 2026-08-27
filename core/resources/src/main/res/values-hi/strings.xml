@@ -1931,4 +1931,13 @@
     <string name="pages_short">पृष्ठ</string>
     <string name="blessing_wall">आशीर्वाद दीवार</string>
     <string name="blessing_wall_sub">दैनिक टैप · शुभकामनाएँ साथ चलती हैं</string>
+    <string name="sticker_panel_title">स्टिकर</string>
+    <string name="sticker_category_emoji">इमोजी</string>
+    <string name="sticker_category_decor">डेकोर</string>
+    <string name="sticker_category_frame">फ़्रेम</string>
+    <string name="sticker_category_trend">ट्रेंड</string>
+    <string name="sticker_category_ai">AI स्टिकर</string>
+    <string name="sticker_new_badge">NEW</string>
+    <string name="sticker_empty">इस श्रेणी में अभी कोई स्टिकर नहीं</string>
+    <string name="coming_soon">जल्द आ रहा है</string>
 </resources>

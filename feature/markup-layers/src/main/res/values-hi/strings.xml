@@ -31,7 +31,6 @@
     <string name="markup_menu_save_exif">Exif सेव करें</string>
     <string name="markup_menu_clear_filter">फ़िल्टर हटाएं</string>
     <string name="markup_menu_immersive_preview">इमर्सिव प्रीव्यू</string>
-    <string name="markup_coming_soon">जल्द आ रहा है</string>
     <string name="markup_canvas_background">कैनवस बैकग्राउंड</string>
     <string name="markup_canvas_bg_default">डिफ़ॉल्ट</string>
     <string name="markup_canvas_bg_solid">ठोस रंग</string>
@@ -124,14 +123,6 @@
     <string name="markup_recent_projects_empty">कोई हालिया प्रोजेक्ट नहीं</string>
 
     <!-- 贴纸工具 -->
-    <string name="markup_sticker_title">स्टिकर</string>
-    <string name="markup_sticker_category_emoji">इमोजी</string>
-    <string name="markup_sticker_category_decor">डेकोर</string>
-    <string name="markup_sticker_category_frame">फ़्रेम</string>
-    <string name="markup_sticker_category_trend">ट्रेंड</string>
-    <string name="markup_sticker_category_ai">AI स्टिकर</string>
-    <string name="markup_sticker_new_badge">NEW</string>
-    <string name="markup_sticker_empty">इस श्रेणी में अभी कोई स्टिकर नहीं</string>
 
     <!-- 形状工具 -->
     <string name="markup_shape_basic_shapes">बेसिक शेप</string>
@@ -230,4 +221,5 @@
     <string name="markup_ai_generate_empty">कृपया छवि का विवरण दर्ज करें</string>
     <string name="markup_ai_edit_current">वर्तमान</string>
     <string name="markup_ai_edit_history">इतिहास</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

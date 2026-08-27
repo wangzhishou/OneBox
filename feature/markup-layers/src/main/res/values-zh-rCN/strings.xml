@@ -31,7 +31,6 @@
     <string name="markup_menu_save_exif">保存 Exif 信息</string>
     <string name="markup_menu_clear_filter">清除滤镜</string>
     <string name="markup_menu_immersive_preview">沉浸预览</string>
-    <string name="markup_coming_soon">敬请期待</string>
     <string name="markup_canvas_background">画布背景</string>
     <string name="markup_canvas_bg_default">默认</string>
     <string name="markup_canvas_bg_solid">纯色</string>
@@ -123,14 +122,6 @@
     <string name="markup_recent_projects_empty">暂无最近项目</string>
 
     <!-- 贴纸工具 -->
-    <string name="markup_sticker_title">贴纸素材</string>
-    <string name="markup_sticker_category_emoji">表情</string>
-    <string name="markup_sticker_category_decor">装饰</string>
-    <string name="markup_sticker_category_frame">边框</string>
-    <string name="markup_sticker_category_trend">潮流</string>
-    <string name="markup_sticker_category_ai">AI 生成贴纸</string>
-    <string name="markup_sticker_new_badge">NEW</string>
-    <string name="markup_sticker_empty">该分类暂无贴纸素材</string>
 
     <!-- 形状工具 -->
     <string name="markup_shape_basic_shapes">基础形状</string>
@@ -229,4 +220,5 @@
     <string name="markup_ai_generate_empty">请输入图片描述</string>
     <string name="markup_ai_edit_current">当前</string>
     <string name="markup_ai_edit_history">历史版本</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

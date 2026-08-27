@@ -1931,4 +1931,13 @@
     <string name="pages_short">Halaman</string>
     <string name="blessing_wall">Dinding Berkah</string>
     <string name="blessing_wall_sub">Ketukan harian · Keberuntungan menyertai</string>
+    <string name="sticker_panel_title">Stiker</string>
+    <string name="sticker_category_emoji">Emoji</string>
+    <string name="sticker_category_decor">Dekorasi</string>
+    <string name="sticker_category_frame">Bingkai</string>
+    <string name="sticker_category_trend">Tren</string>
+    <string name="sticker_category_ai">Stiker AI</string>
+    <string name="sticker_new_badge">BARU</string>
+    <string name="sticker_empty">Belum ada stiker di kategori ini</string>
+    <string name="coming_soon">Segera hadir</string>
 </resources>

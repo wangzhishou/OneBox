@@ -15,7 +15,7 @@
     <string name="textcard_start_create">Start Creating</string>
     <string name="textcard_back">Back</string>
     <string name="textcard_save">Save</string>
-    <string name="textcard_tab_basic">Basic</string>
+    <string name="textcard_tab_basic">Basic Tools</string>
     <string name="textcard_tab_background">Paper</string>    <string name="textcard_tab_text_style">Text Style</string>
     <string name="textcard_tab_layers">Layers</string>
     <string name="textcard_paper_background">Paper Background</string>
@@ -34,9 +34,9 @@
     <string name="textcard_go_image_creation">No suitable image? Create one in Image Creation</string>
     <string name="textcard_background_opacity">Background Opacity</string>    <string name="textcard_text_settings">Text Settings</string>
     <string name="textcard_text_target">Editing</string>
-    <string name="textcard_add_text">Add text</string>
-    <string name="textcard_add_decoration">Add decoration</string>
-    <string name="textcard_delete_selected">Delete selected</string>
+    <string name="textcard_add_text">Text</string>
+    <string name="textcard_add_decoration">Sticker</string>
+    <string name="textcard_delete_selected">Delete</string>
     <string name="textcard_new_block_content">New text</string>
     <string name="textcard_empty_text_hint">Tap to enter text</string>
     <string name="textcard_block_fallback">Text</string>
@@ -81,4 +81,17 @@
     <string name="textcard_edit_image_history">History</string>
     <string name="textcard_edit_image_current">Current</string>
     <string name="textcard_layer_reset_position">Reset position</string>
+    <string name="textcard_add_shape">Shape</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">Draw</string>
+    <string name="textcard_draw_done">Done</string>
+    <string name="textcard_layer_shape">Shape</string>
+    <string name="textcard_shape_rect">Rectangle</string>
+    <string name="textcard_shape_circle">Circle</string>
+    <string name="textcard_shape_triangle">Triangle</string>
+    <string name="textcard_shape_arrow">Arrow</string>
+    <string name="textcard_shape_line">Line</string>
+    <string name="textcard_shape_star">Star</string>
+    <string name="textcard_shape_filled">Filled</string>
+    <string name="textcard_draw_width">Stroke width</string>
 </resources>

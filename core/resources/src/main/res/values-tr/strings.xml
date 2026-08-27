@@ -1930,4 +1930,13 @@
     <string name="pages_short">Sayfalar</string>
     <string name="blessing_wall">Bereket Duvarı</string>
     <string name="blessing_wall_sub">Günlük dokunuş · İyi şans peşini bırakmaz</string>
+    <string name="sticker_panel_title">Çıkartmalar</string>
+    <string name="sticker_category_emoji">Emoji</string>
+    <string name="sticker_category_decor">Süsleme</string>
+    <string name="sticker_category_frame">Çerçeveler</string>
+    <string name="sticker_category_trend">Trend</string>
+    <string name="sticker_category_ai">AI Çıkartması</string>
+    <string name="sticker_new_badge">YENİ</string>
+    <string name="sticker_empty">Bu kategoride henüz çıkartma yok</string>
+    <string name="coming_soon">Çok yakında</string>
 </resources>

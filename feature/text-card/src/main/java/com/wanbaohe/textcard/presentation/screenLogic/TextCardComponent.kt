@@ -26,6 +26,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.logger.makeLog
@@ -35,12 +36,19 @@ import com.wanbaohe.textcard.domain.TextCardExportRenderer
 import com.wanbaohe.textcard.domain.TextCardPaperRepository
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.CanvasSpec
+import com.wanbaohe.textcard.domain.model.CardDrawStroke
+import com.wanbaohe.textcard.domain.model.CardShapeKind
+import com.wanbaohe.textcard.domain.model.CardStrokePoint
+import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_COLOR
+import com.wanbaohe.textcard.domain.model.DEFAULT_DRAW_WIDTH_RATIO
 import com.wanbaohe.textcard.domain.model.DecorationSpec
+import com.wanbaohe.textcard.domain.model.DrawElementSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.GradientPresets
 import com.wanbaohe.textcard.domain.model.ImageElementSpec
 import com.wanbaohe.textcard.domain.model.ImageElementStatus
 import com.wanbaohe.textcard.domain.model.RemotePaper
+import com.wanbaohe.textcard.domain.model.ShapeElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
@@ -127,6 +135,14 @@ class TextCardComponent @AssistedInject internal constructor(
     /** AI 生成图片元素列表(支持多个;每个图片一个图层) */
     private val _imageElements: MutableState<List<ImageElementSpec>> = mutableStateOf(emptyList())
     val imageElements: List<ImageElementSpec> by _imageElements
+
+    /** 形状元素列表(对照图片创作形状工具,每个一个图层) */
+    private val _shapeElements: MutableState<List<ShapeElementSpec>> = mutableStateOf(emptyList())
+    val shapeElements: List<ShapeElementSpec> by _shapeElements
+
+    /** 画笔元素列表(每个绘制会话一个图层) */
+    private val _drawElements: MutableState<List<DrawElementSpec>> = mutableStateOf(emptyList())
+    val drawElements: List<DrawElementSpec> by _drawElements
 
     /** AI 生图进行中(生成图片图层弹窗的 loading) */
     private val _isGeneratingImage: MutableState<Boolean> = mutableStateOf(false)
@@ -376,6 +392,38 @@ class TextCardComponent @AssistedInject internal constructor(
                 }
                 registerChanges()
             }
+
+            _shapeElements.value.any { it.id == id } -> {
+                _shapeElements.update { list ->
+                    list.map {
+                        if (it.id == id) {
+                            it.copy(
+                                offsetX = offsetX.coerceIn(-0.5f, 1f),
+                                offsetY = offsetY.coerceIn(-0.5f, 1f),
+                                scale = safeScale,
+                                rotation = rotation
+                            )
+                        } else it
+                    }
+                }
+                registerChanges()
+            }
+
+            _drawElements.value.any { it.id == id } -> {
+                _drawElements.update { list ->
+                    list.map {
+                        if (it.id == id) {
+                            it.copy(
+                                offsetX = offsetX.coerceIn(-0.5f, 1f),
+                                offsetY = offsetY.coerceIn(-0.5f, 1f),
+                                scale = safeScale,
+                                rotation = rotation
+                            )
+                        } else it
+                    }
+                }
+                registerChanges()
+            }
         }
     }
 
@@ -401,7 +449,7 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
-    /** 删除选中元素(文字块至少保留一块,装饰/图片不限),同步移除图层 */
+    /** 删除选中元素(文字块至少保留一块,装饰/图片/形状/画笔不限),同步移除图层 */
     fun removeElement(id: String) {
         when {
             _textBlocks.value.any { it.id == id } -> removeTextBlock(id)
@@ -418,15 +466,117 @@ class TextCardComponent @AssistedInject internal constructor(
                 if (_selectedElementId.value == id) _selectedElementId.value = null
                 registerChanges()
             }
+
+            _shapeElements.value.any { it.id == id } -> {
+                _shapeElements.update { list -> list.filterNot { it.id == id } }
+                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
+                if (_selectedElementId.value == id) _selectedElementId.value = null
+                registerChanges()
+            }
+
+            _drawElements.value.any { it.id == id } -> {
+                _drawElements.update { list -> list.filterNot { it.id == id } }
+                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
+                if (_selectedElementId.value == id) _selectedElementId.value = null
+                registerChanges()
+            }
         }
+    }
+
+    // ---------------- 形状(对照图片创作形状工具) ----------------
+
+    /** 添加形状元素:按种类的默认参数落画布中心,置顶并选中 */
+    fun addShapeElement(kind: CardShapeKind, colorArgb: Long, filled: Boolean) {
+        val element = ShapeElementSpec.defaultFor(kind).copy(
+            colorArgb = colorArgb,
+            filled = if (kind == CardShapeKind.Line) false else filled
+        )
+        _shapeElements.update { it + element }
+        _elementLayers.update { it + ElementLayer(element.id, ElementLayer.Kind.Shape) }
+        _selectedElementId.value = element.id
+        registerChanges()
+    }
+
+    // ---------------- 画笔 ----------------
+
+    /** 画布绘制模式:true 时画布叠加采集层,底部换取消/完成操作条 */
+    private val _isDrawing: MutableState<Boolean> = mutableStateOf(false)
+    val isDrawing: Boolean by _isDrawing
+
+    /** 本次绘制会话已完成的笔画(画布实时预览用) */
+    private val _drawStrokes: MutableState<List<CardDrawStroke>> = mutableStateOf(emptyList())
+    val drawStrokes: List<CardDrawStroke> by _drawStrokes
+
+    /** 当前画笔颜色/粗细(绘制态可调,默认与图片创作画笔一致) */
+    private val _drawBrushColor: MutableState<Long> = mutableStateOf(DEFAULT_DRAW_COLOR)
+    val drawBrushColor: Long by _drawBrushColor
+
+    private val _drawBrushWidthRatio: MutableState<Float> =
+        mutableStateOf(DEFAULT_DRAW_WIDTH_RATIO)
+    val drawBrushWidthRatio: Float by _drawBrushWidthRatio
+
+    fun updateDrawBrushColor(colorArgb: Long) {
+        _drawBrushColor.value = colorArgb
+    }
+
+    fun updateDrawBrushWidth(widthRatio: Float) {
+        _drawBrushWidthRatio.value = widthRatio.coerceIn(0.004f, 0.04f)
+    }
+
+    /** 侧栏「画笔」:进入绘制态(清空上次会话残留),取消元素选中避免手势冲突 */
+    fun startDrawMode() {
+        _isDrawing.value = true
+        _drawStrokes.value = emptyList()
+        _selectedElementId.value = null
+    }
+
+    /** 收笔一笔:追加到本次会话(用当前画笔颜色/粗细) */
+    fun addSessionStroke(points: List<CardStrokePoint>) {
+        if (points.isEmpty()) return
+        _drawStrokes.update {
+            it + CardDrawStroke(
+                points = points,
+                colorArgb = _drawBrushColor.value,
+                widthRatio = _drawBrushWidthRatio.value
+            )
+        }
+    }
+
+    /** 「完成」:会话笔画落成画笔图层元素并选中,退出绘制态 */
+    fun finishDrawMode() {
+        val strokes = _drawStrokes.value
+        if (strokes.isNotEmpty()) {
+            val element = DrawElementSpec(strokes = strokes)
+            _drawElements.update { it + element }
+            _elementLayers.update { it + ElementLayer(element.id, ElementLayer.Kind.Draw) }
+            _selectedElementId.value = element.id
+            registerChanges()
+        }
+        _isDrawing.value = false
+        _drawStrokes.value = emptyList()
+    }
+
+    /** 「取消」:丢弃本次会话,退出绘制态 */
+    fun cancelDrawMode() {
+        _isDrawing.value = false
+        _drawStrokes.value = emptyList()
     }
 
     // ---------------- 装饰 ----------------
 
-    /** 添加装饰:默认落右下角,置顶(图层列表尾部)并选中 */
-    fun addDecoration(emojiIndex: Int) {
+    /** 共享贴纸面板的确认动作:emoji(下标)或素材贴纸(assets 路径),默认落左上角,置顶并选中 */
+    fun addStickerDecoration(source: StickerSource) {
         val canvas = _canvas.value ?: return
-        val decoration = DecorationSpec.defaultPositionFor(canvas, emojiIndex)
+        val decoration = when (source) {
+            is StickerSource.Emoji ->
+                DecorationSpec.defaultPositionFor(canvas, source.emojiIndex)
+
+            is StickerSource.Asset ->
+                DecorationSpec.defaultPositionFor(canvas, 0).copy(
+                    emojiIndex = null,
+                    assetPath = source.path
+                )
+        }
         _decorations.update { it + decoration }
         _elementLayers.update { it + ElementLayer(decoration.id, ElementLayer.Kind.Decoration) }
         _selectedElementId.value = decoration.id
@@ -602,7 +752,9 @@ class TextCardComponent @AssistedInject internal constructor(
 
             _decorations.value.any { it.id == id } -> {
                 val initial = _decorations.value.first { it.id == id }.let { decoration ->
-                    canvas?.let { DecorationSpec.defaultPositionFor(it, decoration.emojiIndex) }
+                    canvas?.let {
+                        DecorationSpec.defaultPositionFor(it, decoration.emojiIndex ?: 0)
+                    }
                 }
                 _decorations.update { list ->
                     list.map {
@@ -709,6 +861,8 @@ class TextCardComponent @AssistedInject internal constructor(
             textBlocks = _textBlocks.value,
             decorations = _decorations.value,
             imageElements = _imageElements.value,
+            shapeElements = _shapeElements.value,
+            drawElements = _drawElements.value,
             layers = _elementLayers.value
         )
     }

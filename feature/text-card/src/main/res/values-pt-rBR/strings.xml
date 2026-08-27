@@ -10,7 +10,7 @@
     <string name="textcard_start_create">Começar a criar</string>
     <string name="textcard_back">Voltar</string>
     <string name="textcard_save">Salvar</string>
-    <string name="textcard_tab_basic">Básico</string>
+    <string name="textcard_tab_basic">Ferramentas básicas</string>
     <string name="textcard_tab_background">Papel</string>    <string name="textcard_tab_text_style">Estilo do texto</string>
     <string name="textcard_tab_layers">Camadas</string>
     <string name="textcard_paper_background">Fundo de papel</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">Não tem uma imagem adequada? Crie uma em Criação de imagem</string>
     <string name="textcard_background_opacity">Opacidade do fundo</string>    <string name="textcard_text_settings">Configurações de texto</string>
     <string name="textcard_text_target">Editando</string>
-    <string name="textcard_add_text">Adicionar texto</string>
-    <string name="textcard_add_decoration">Adicionar decoração</string>
-    <string name="textcard_delete_selected">Excluir selecionado</string>
+    <string name="textcard_add_text">Texto</string>
+    <string name="textcard_add_decoration">Adesivo</string>
+    <string name="textcard_delete_selected">Excluir</string>
     <string name="textcard_new_block_content">Novo texto</string>
     <string name="textcard_empty_text_hint">Toque para digitar</string>
     <string name="textcard_block_fallback">Texto</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">Histórico</string>
     <string name="textcard_edit_image_current">Atual</string>
     <string name="textcard_layer_reset_position">Redefinir posição</string>
+    <string name="textcard_add_shape">Forma</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">Desenhar</string>
+    <string name="textcard_draw_done">Concluir</string>
+    <string name="textcard_layer_shape">Forma</string>
+    <string name="textcard_shape_rect">Retângulo</string>
+    <string name="textcard_shape_circle">Círculo</string>
+    <string name="textcard_shape_triangle">Triângulo</string>
+    <string name="textcard_shape_arrow">Seta</string>
+    <string name="textcard_shape_line">Linha</string>
+    <string name="textcard_shape_star">Estrela</string>
+    <string name="textcard_shape_filled">Preenchido</string>
+    <string name="textcard_draw_width">Espessura do traço</string>
 </resources>

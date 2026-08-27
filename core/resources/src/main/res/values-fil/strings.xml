@@ -1931,4 +1931,13 @@
     <string name="pages_short">Mga Pahina</string>
     <string name="blessing_wall">Pader ng Pagpapala</string>
     <string name="blessing_wall_sub">Isang araw-araw na tap · Sumusunod ang suwerte</string>
+    <string name="sticker_panel_title">Mga sticker</string>
+    <string name="sticker_category_emoji">Emoji</string>
+    <string name="sticker_category_decor">Dekorasyon</string>
+    <string name="sticker_category_frame">Mga frame</string>
+    <string name="sticker_category_trend">Trend</string>
+    <string name="sticker_category_ai">AI Sticker</string>
+    <string name="sticker_new_badge">NEW</string>
+    <string name="sticker_empty">Wala pang sticker sa kategoryang ito</string>
+    <string name="coming_soon">Malapit na</string>
 </resources>

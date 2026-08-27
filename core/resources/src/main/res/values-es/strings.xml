@@ -1931,4 +1931,13 @@
     <string name="pages_short">Páginas</string>
     <string name="blessing_wall">Muro de Bendiciones</string>
     <string name="blessing_wall_sub">Un toque diario · La buena suerte te sigue</string>
+    <string name="sticker_panel_title">Stickers</string>
+    <string name="sticker_category_emoji">Emoji</string>
+    <string name="sticker_category_decor">Decoración</string>
+    <string name="sticker_category_frame">Marcos</string>
+    <string name="sticker_category_trend">Tendencias</string>
+    <string name="sticker_category_ai">Sticker IA</string>
+    <string name="sticker_new_badge">NUEVO</string>
+    <string name="sticker_empty">Aún no hay stickers en esta categoría</string>
+    <string name="coming_soon">Próximamente</string>
 </resources>

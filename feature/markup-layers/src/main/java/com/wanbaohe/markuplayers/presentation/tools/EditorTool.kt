@@ -95,7 +95,7 @@ object EditorTools {
         // AI 生成图片:侧栏入口,开共享 AiGenerateImageSheet(文生图;选中图片图层时图生图)
         EditorTool(
             id = ID_AI_GENERATE,
-            titleRes = R.string.markup_ai_generate_title,
+            titleRes = R.string.markup_rail_ai,
             icon = MaterialIcons.Outlined.AutoAwesome,
             placement = EditorTool.Placement.SideBar,
             mode = EditorTool.Mode.Sheet

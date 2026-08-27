@@ -1,8 +1,8 @@
-package com.wanbaohe.markuplayers.domain.model
+package com.t8rin.imagetoolbox.core.ui.widget.editor
 
 /**
- * 贴纸来源。素材路径相对 assets(如 stickers/emoji/xxx.png),
- * emoji 沿用 core/resources/emoji 的矢量图。
+ * 贴纸来源(自 markup-layers 上移 core/ui,贴纸选择面板跨模块共用)。
+ * 素材路径相对 assets(如 stickers/decor/flower.svg),emoji 沿用 core/resources/emoji 的矢量图。
  */
 sealed interface StickerSource {
 

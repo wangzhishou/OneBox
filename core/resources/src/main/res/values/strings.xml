@@ -1959,4 +1959,13 @@
     <string name="pages_short">Pages</string>
     <string name="blessing_wall">Blessing Wall</string>
     <string name="blessing_wall_sub">A daily tap · Good luck follows</string>
+    <string name="sticker_panel_title">Stickers</string>
+    <string name="sticker_category_emoji">Emoji</string>
+    <string name="sticker_category_decor">Decor</string>
+    <string name="sticker_category_frame">Frames</string>
+    <string name="sticker_category_trend">Trend</string>
+    <string name="sticker_category_ai">AI Sticker</string>
+    <string name="sticker_new_badge">NEW</string>
+    <string name="sticker_empty">No stickers in this category yet</string>
+    <string name="coming_soon">Coming soon</string>
 </resources>

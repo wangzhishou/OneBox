@@ -128,7 +128,8 @@ import com.wanbaohe.markuplayers.presentation.tools.ai.AiToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.crop.CropToolScreen
 import com.wanbaohe.markuplayers.presentation.tools.filter.FilterPanel
 import com.wanbaohe.markuplayers.presentation.tools.shape.ShapeToolSheet
-import com.wanbaohe.markuplayers.presentation.tools.sticker.StickerToolSheet
+import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerToolSheet
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -356,8 +357,10 @@ fun EditorScaffold(
 
     StickerToolSheet(
         visible = showStickerSheet,
-        component = component,
-        onDismiss = { showStickerSheet = false }
+        onDismiss = { showStickerSheet = false },
+        onStickerClick = { source ->
+            component.addLayer(MarkupLayer(type = LayerType.Sticker(source)))
+        }
     )
 
     LayersSheet(

@@ -28,7 +28,6 @@
     <string name="markup_menu_save_exif">Exif 정보 저장</string>
     <string name="markup_menu_clear_filter">필터 지우기</string>
     <string name="markup_menu_immersive_preview">몰입형 미리보기</string>
-    <string name="markup_coming_soon">곧 제공 예정</string>
     <string name="markup_canvas_background">캔버스 배경</string>
     <string name="markup_canvas_bg_default">기본값</string>
     <string name="markup_canvas_bg_solid">단색</string>
@@ -112,14 +111,6 @@
     <string name="markup_recent_projects">최근 프로젝트</string>
     <string name="markup_recent_projects_empty">최근 프로젝트 없음</string>
 
-    <string name="markup_sticker_title">스티커</string>
-    <string name="markup_sticker_category_emoji">이모티콘</string>
-    <string name="markup_sticker_category_decor">장식</string>
-    <string name="markup_sticker_category_frame">프레임</string>
-    <string name="markup_sticker_category_trend">트렌드</string>
-    <string name="markup_sticker_category_ai">AI 스티커</string>
-    <string name="markup_sticker_new_badge">NEW</string>
-    <string name="markup_sticker_empty">이 카테고리에는 아직 스티커가 없습니다</string>
 
     <string name="markup_shape_basic_shapes">기본 도형</string>
     <string name="markup_shape_kind_rectangle">사각형</string>
@@ -214,4 +205,5 @@
     <string name="markup_ai_generate_empty">이미지 설명을 입력해 주세요</string>
     <string name="markup_ai_edit_current">현재</string>
     <string name="markup_ai_edit_history">기록</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

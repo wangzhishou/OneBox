@@ -31,7 +31,6 @@
     <string name="markup_menu_save_exif">I-save ang Exif</string>
     <string name="markup_menu_clear_filter">Alisin ang filter</string>
     <string name="markup_menu_immersive_preview">Immersive na preview</string>
-    <string name="markup_coming_soon">Malapit na</string>
     <string name="markup_canvas_background">Background ng canvas</string>
     <string name="markup_canvas_bg_default">Default</string>
     <string name="markup_canvas_bg_solid">Solidong kulay</string>
@@ -124,14 +123,6 @@
     <string name="markup_recent_projects_empty">Walang mga kamakailang proyekto</string>
 
     <!-- 贴纸工具 -->
-    <string name="markup_sticker_title">Mga sticker</string>
-    <string name="markup_sticker_category_emoji">Emoji</string>
-    <string name="markup_sticker_category_decor">Dekorasyon</string>
-    <string name="markup_sticker_category_frame">Mga frame</string>
-    <string name="markup_sticker_category_trend">Trend</string>
-    <string name="markup_sticker_category_ai">AI Sticker</string>
-    <string name="markup_sticker_new_badge">NEW</string>
-    <string name="markup_sticker_empty">Wala pang sticker sa kategoryang ito</string>
 
     <!-- 形状工具 -->
     <string name="markup_shape_basic_shapes">Mga pangunahing hugis</string>
@@ -230,4 +221,5 @@
     <string name="markup_ai_generate_empty">Maglagay ng paglalarawan ng larawan</string>
     <string name="markup_ai_edit_current">Kasalukuyan</string>
     <string name="markup_ai_edit_history">Kasaysayan</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

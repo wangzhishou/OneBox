@@ -10,7 +10,7 @@
     <string name="textcard_start_create">Empezar a crear</string>
     <string name="textcard_back">Atrás</string>
     <string name="textcard_save">Guardar</string>
-    <string name="textcard_tab_basic">Básico</string>
+    <string name="textcard_tab_basic">Herramientas básicas</string>
     <string name="textcard_tab_background">Papel</string>    <string name="textcard_tab_text_style">Estilo de texto</string>
     <string name="textcard_tab_layers">Capas</string>
     <string name="textcard_paper_background">Fondo de papel</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">¿No tienes una imagen adecuada? Crea una en Creación de imágenes</string>
     <string name="textcard_background_opacity">Opacidad del fondo</string>    <string name="textcard_text_settings">Ajustes de texto</string>
     <string name="textcard_text_target">Editando</string>
-    <string name="textcard_add_text">Añadir texto</string>
-    <string name="textcard_add_decoration">Añadir decoración</string>
-    <string name="textcard_delete_selected">Eliminar selección</string>
+    <string name="textcard_add_text">Texto</string>
+    <string name="textcard_add_decoration">Sticker</string>
+    <string name="textcard_delete_selected">Eliminar</string>
     <string name="textcard_new_block_content">Texto nuevo</string>
     <string name="textcard_empty_text_hint">Toca para escribir</string>
     <string name="textcard_block_fallback">Texto</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">Historial</string>
     <string name="textcard_edit_image_current">Actual</string>
     <string name="textcard_layer_reset_position">Restablecer posición</string>
+    <string name="textcard_add_shape">Forma</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">Dibujar</string>
+    <string name="textcard_draw_done">Listo</string>
+    <string name="textcard_layer_shape">Forma</string>
+    <string name="textcard_shape_rect">Rectángulo</string>
+    <string name="textcard_shape_circle">Círculo</string>
+    <string name="textcard_shape_triangle">Triángulo</string>
+    <string name="textcard_shape_arrow">Flecha</string>
+    <string name="textcard_shape_line">Línea</string>
+    <string name="textcard_shape_star">Estrella</string>
+    <string name="textcard_shape_filled">Relleno</string>
+    <string name="textcard_draw_width">Grosor del trazo</string>
 </resources>

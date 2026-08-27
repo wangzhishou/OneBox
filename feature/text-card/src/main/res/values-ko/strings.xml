@@ -10,7 +10,7 @@
     <string name="textcard_start_create">만들기 시작</string>
     <string name="textcard_back">뒤로</string>
     <string name="textcard_save">저장</string>
-    <string name="textcard_tab_basic">기본</string>
+    <string name="textcard_tab_basic">기본 도구</string>
     <string name="textcard_tab_background">용지</string>    <string name="textcard_tab_text_style">텍스트 스타일</string>
     <string name="textcard_tab_layers">레이어</string>
     <string name="textcard_paper_background">용지 배경</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">적합한 이미지가 없나요? 이미지 만들기에서 만들어 보세요</string>
     <string name="textcard_background_opacity">배경 불투명도</string>    <string name="textcard_text_settings">텍스트 설정</string>
     <string name="textcard_text_target">편집 중</string>
-    <string name="textcard_add_text">텍스트 추가</string>
-    <string name="textcard_add_decoration">장식 추가</string>
-    <string name="textcard_delete_selected">선택 항목 삭제</string>
+    <string name="textcard_add_text">텍스트</string>
+    <string name="textcard_add_decoration">스티커</string>
+    <string name="textcard_delete_selected">삭제</string>
     <string name="textcard_new_block_content">새 텍스트</string>
     <string name="textcard_empty_text_hint">탭하여 텍스트 입력</string>
     <string name="textcard_block_fallback">텍스트</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">기록</string>
     <string name="textcard_edit_image_current">현재</string>
     <string name="textcard_layer_reset_position">위치 초기화</string>
+    <string name="textcard_add_shape">도형</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">그리기</string>
+    <string name="textcard_draw_done">완료</string>
+    <string name="textcard_layer_shape">도형</string>
+    <string name="textcard_shape_rect">사각형</string>
+    <string name="textcard_shape_circle">원</string>
+    <string name="textcard_shape_triangle">삼각형</string>
+    <string name="textcard_shape_arrow">화살표</string>
+    <string name="textcard_shape_line">선</string>
+    <string name="textcard_shape_star">별</string>
+    <string name="textcard_shape_filled">채우기</string>
+    <string name="textcard_draw_width">선 굵기</string>
 </resources>

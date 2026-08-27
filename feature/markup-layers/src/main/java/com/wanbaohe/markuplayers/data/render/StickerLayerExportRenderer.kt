@@ -8,7 +8,7 @@ import android.graphics.RectF
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
-import com.wanbaohe.markuplayers.domain.model.StickerSource
+import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import com.wanbaohe.markuplayers.domain.render.LayerExportRenderer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking

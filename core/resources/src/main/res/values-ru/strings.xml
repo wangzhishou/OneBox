@@ -1931,4 +1931,13 @@
     <string name="pages_short">Страницы</string>
     <string name="blessing_wall">Стена благословений</string>
     <string name="blessing_wall_sub">Ежедневное касание · Удача следует за вами</string>
+    <string name="sticker_panel_title">Стикеры</string>
+    <string name="sticker_category_emoji">Эмодзи</string>
+    <string name="sticker_category_decor">Декор</string>
+    <string name="sticker_category_frame">Рамки</string>
+    <string name="sticker_category_trend">Тренды</string>
+    <string name="sticker_category_ai">AI-стикеры</string>
+    <string name="sticker_new_badge">NEW</string>
+    <string name="sticker_empty">В этой категории пока нет стикеров</string>
+    <string name="coming_soon">Скоро</string>
 </resources>

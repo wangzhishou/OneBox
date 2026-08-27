@@ -28,7 +28,6 @@
     <string name="markup_menu_save_exif">Сохранить Exif</string>
     <string name="markup_menu_clear_filter">Сбросить фильтр</string>
     <string name="markup_menu_immersive_preview">Полноэкранный просмотр</string>
-    <string name="markup_coming_soon">Скоро</string>
     <string name="markup_canvas_background">Фон холста</string>
     <string name="markup_canvas_bg_default">По умолчанию</string>
     <string name="markup_canvas_bg_solid">Сплошной цвет</string>
@@ -112,14 +111,6 @@
     <string name="markup_recent_projects">Недавние проекты</string>
     <string name="markup_recent_projects_empty">Нет недавних проектов</string>
 
-    <string name="markup_sticker_title">Стикеры</string>
-    <string name="markup_sticker_category_emoji">Эмодзи</string>
-    <string name="markup_sticker_category_decor">Декор</string>
-    <string name="markup_sticker_category_frame">Рамки</string>
-    <string name="markup_sticker_category_trend">Тренды</string>
-    <string name="markup_sticker_category_ai">AI-стикеры</string>
-    <string name="markup_sticker_new_badge">NEW</string>
-    <string name="markup_sticker_empty">В этой категории пока нет стикеров</string>
 
     <string name="markup_shape_basic_shapes">Базовые фигуры</string>
     <string name="markup_shape_kind_rectangle">Прямоугольник</string>
@@ -214,4 +205,5 @@
     <string name="markup_ai_generate_empty">Введите описание изображения</string>
     <string name="markup_ai_edit_current">Текущее</string>
     <string name="markup_ai_edit_history">История</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

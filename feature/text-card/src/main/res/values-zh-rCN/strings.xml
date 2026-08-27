@@ -15,7 +15,7 @@
     <string name="textcard_start_create">开始制作</string>
     <string name="textcard_back">返回</string>
     <string name="textcard_save">保存</string>
-    <string name="textcard_tab_basic">基础</string>
+    <string name="textcard_tab_basic">基础工具</string>
     <string name="textcard_tab_background">纸张背景</string>    <string name="textcard_tab_text_style">文字设置</string>
     <string name="textcard_tab_layers">图层</string>
     <string name="textcard_paper_background">纸张背景</string>
@@ -34,9 +34,9 @@
     <string name="textcard_go_image_creation">没有合适的图？去图片创作做一张</string>
     <string name="textcard_background_opacity">背景透明度</string>    <string name="textcard_text_settings">文字设置</string>
     <string name="textcard_text_target">当前编辑</string>
-    <string name="textcard_add_text">添加文字</string>
-    <string name="textcard_add_decoration">添加装饰</string>
-    <string name="textcard_delete_selected">删除选中元素</string>
+    <string name="textcard_add_text">文字</string>
+    <string name="textcard_add_decoration">贴纸</string>
+    <string name="textcard_delete_selected">删除</string>
     <string name="textcard_new_block_content">新的文字</string>
     <string name="textcard_empty_text_hint">点击输入文字</string>
     <string name="textcard_block_fallback">文字</string>
@@ -81,4 +81,17 @@
     <string name="textcard_edit_image_history">历史版本</string>
     <string name="textcard_edit_image_current">当前</string>
     <string name="textcard_layer_reset_position">重置位置</string>
+    <string name="textcard_add_shape">形状</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">画笔</string>
+    <string name="textcard_draw_done">完成</string>
+    <string name="textcard_layer_shape">形状</string>
+    <string name="textcard_shape_rect">矩形</string>
+    <string name="textcard_shape_circle">圆形</string>
+    <string name="textcard_shape_triangle">三角形</string>
+    <string name="textcard_shape_arrow">箭头</string>
+    <string name="textcard_shape_line">线条</string>
+    <string name="textcard_shape_star">星形</string>
+    <string name="textcard_shape_filled">填充</string>
+    <string name="textcard_draw_width">粗细</string>
 </resources>

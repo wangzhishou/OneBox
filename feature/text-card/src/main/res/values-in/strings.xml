@@ -10,7 +10,7 @@
     <string name="textcard_start_create">Mulai Membuat</string>
     <string name="textcard_back">Kembali</string>
     <string name="textcard_save">Simpan</string>
-    <string name="textcard_tab_basic">Dasar</string>
+    <string name="textcard_tab_basic">Alat Dasar</string>
     <string name="textcard_tab_background">Kertas</string>    <string name="textcard_tab_text_style">Gaya Teks</string>
     <string name="textcard_tab_layers">Lapisan</string>
     <string name="textcard_paper_background">Latar Kertas</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">Tidak ada gambar yang cocok? Buat satu di Kreasi Gambar</string>
     <string name="textcard_background_opacity">Opasitas Latar</string>    <string name="textcard_text_settings">Pengaturan Teks</string>
     <string name="textcard_text_target">Mengedit</string>
-    <string name="textcard_add_text">Tambah teks</string>
-    <string name="textcard_add_decoration">Tambah dekorasi</string>
-    <string name="textcard_delete_selected">Hapus yang dipilih</string>
+    <string name="textcard_add_text">Teks</string>
+    <string name="textcard_add_decoration">Stiker</string>
+    <string name="textcard_delete_selected">Hapus</string>
     <string name="textcard_new_block_content">Teks baru</string>
     <string name="textcard_empty_text_hint">Ketuk untuk memasukkan teks</string>
     <string name="textcard_block_fallback">Teks</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">Riwayat</string>
     <string name="textcard_edit_image_current">Saat ini</string>
     <string name="textcard_layer_reset_position">Reset posisi</string>
+    <string name="textcard_add_shape">Bentuk</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">Gambar</string>
+    <string name="textcard_draw_done">Selesai</string>
+    <string name="textcard_layer_shape">Bentuk</string>
+    <string name="textcard_shape_rect">Persegi</string>
+    <string name="textcard_shape_circle">Lingkaran</string>
+    <string name="textcard_shape_triangle">Segitiga</string>
+    <string name="textcard_shape_arrow">Panah</string>
+    <string name="textcard_shape_line">Garis</string>
+    <string name="textcard_shape_star">Bintang</string>
+    <string name="textcard_shape_filled">Terisi</string>
+    <string name="textcard_draw_width">Ketebalan goresan</string>
 </resources>

@@ -31,7 +31,6 @@
     <string name="markup_menu_save_exif">Salvar Exif</string>
     <string name="markup_menu_clear_filter">Limpar filtro</string>
     <string name="markup_menu_immersive_preview">Prévia imersiva</string>
-    <string name="markup_coming_soon">Em breve</string>
     <string name="markup_canvas_background">Plano de fundo da tela</string>
     <string name="markup_canvas_bg_default">Padrão</string>
     <string name="markup_canvas_bg_solid">Cor sólida</string>
@@ -124,14 +123,6 @@
     <string name="markup_recent_projects_empty">Nenhum projeto recente</string>
 
     <!-- 贴纸工具 -->
-    <string name="markup_sticker_title">Adesivos</string>
-    <string name="markup_sticker_category_emoji">Emoji</string>
-    <string name="markup_sticker_category_decor">Decoração</string>
-    <string name="markup_sticker_category_frame">Molduras</string>
-    <string name="markup_sticker_category_trend">Tendências</string>
-    <string name="markup_sticker_category_ai">Adesivo de IA</string>
-    <string name="markup_sticker_new_badge">NOVO</string>
-    <string name="markup_sticker_empty">Ainda não há adesivos nesta categoria</string>
 
     <!-- 形状工具 -->
     <string name="markup_shape_basic_shapes">Formas básicas</string>
@@ -230,4 +221,5 @@
     <string name="markup_ai_generate_empty">Insira uma descrição da imagem</string>
     <string name="markup_ai_edit_current">Atual</string>
     <string name="markup_ai_edit_history">Histórico</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

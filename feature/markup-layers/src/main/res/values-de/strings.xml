@@ -31,7 +31,6 @@
     <string name="markup_menu_save_exif">Exif speichern</string>
     <string name="markup_menu_clear_filter">Filter entfernen</string>
     <string name="markup_menu_immersive_preview">Immersive Vorschau</string>
-    <string name="markup_coming_soon">Demnächst verfügbar</string>
     <string name="markup_canvas_background">Leinwandhintergrund</string>
     <string name="markup_canvas_bg_default">Standard</string>
     <string name="markup_canvas_bg_solid">Volltonfarbe</string>
@@ -124,14 +123,6 @@
     <string name="markup_recent_projects_empty">Keine letzten Projekte</string>
 
     <!-- 贴纸工具 -->
-    <string name="markup_sticker_title">Sticker</string>
-    <string name="markup_sticker_category_emoji">Emoji</string>
-    <string name="markup_sticker_category_decor">Deko</string>
-    <string name="markup_sticker_category_frame">Rahmen</string>
-    <string name="markup_sticker_category_trend">Trend</string>
-    <string name="markup_sticker_category_ai">AI-Sticker</string>
-    <string name="markup_sticker_new_badge">NEU</string>
-    <string name="markup_sticker_empty">Noch keine Sticker in dieser Kategorie</string>
 
     <!-- 形状工具 -->
     <string name="markup_shape_basic_shapes">Grundformen</string>
@@ -230,4 +221,5 @@
     <string name="markup_ai_generate_empty">Bitte eine Bildbeschreibung eingeben</string>
     <string name="markup_ai_edit_current">Aktuell</string>
     <string name="markup_ai_edit_history">Verlauf</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

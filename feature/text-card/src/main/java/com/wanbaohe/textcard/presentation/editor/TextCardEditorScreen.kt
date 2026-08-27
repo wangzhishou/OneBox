@@ -34,23 +34,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.base.ui.button.CancelButton
+import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.t8rin.imagetoolbox.core.resources.icons.FreeDraw
+import com.t8rin.imagetoolbox.core.resources.icons.Star
+import com.t8rin.imagetoolbox.core.resources.icons.TextFields
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickerEmoji
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
+import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorRailTool
 import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorToolRail
+import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerToolSheet
 import com.t8rin.imagetoolbox.core.ui.widget.editor.VerticalDraggable
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSliderItem
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
+import kotlin.math.roundToInt
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
 import com.wanbaohe.textcard.presentation.editor.panels.LayersPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
@@ -78,6 +90,7 @@ fun TextCardEditorScreen(
     component: TextCardComponent,
 ) {
     var showDecorationSheet by rememberSaveable { mutableStateOf(false) }
+    var showShapeSheet by rememberSaveable { mutableStateOf(false) }
     var showGenerateImageSheet by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -103,6 +116,10 @@ fun TextCardEditorScreen(
             // 就地编辑态下返回键 = 提交退出编辑(优先于页面返回)
             BackHandler(enabled = component.editingTextBlockId != null) {
                 component.endTextEdit()
+            }
+            // 绘制态下返回键 = 取消绘制
+            BackHandler(enabled = component.isDrawing) {
+                component.cancelDrawMode()
             }
             BoxWithConstraints(
                 modifier = Modifier
@@ -145,6 +162,11 @@ fun TextCardEditorScreen(
                             component.selectElement(null)
                         },
                         onBackgroundDrag = component::updateBackgroundImageOffset,
+                        isDrawing = component.isDrawing,
+                        drawSessionStrokes = component.drawStrokes,
+                        drawBrushColorArgb = component.drawBrushColor,
+                        drawBrushWidthRatio = component.drawBrushWidthRatio,
+                        onDrawStroke = component::addSessionStroke,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -167,6 +189,8 @@ fun TextCardEditorScreen(
                                 when (tool.id) {
                                     RAIL_ADD_TEXT -> component.addTextBlock()
                                     RAIL_ADD_DECORATION -> showDecorationSheet = true
+                                    RAIL_ADD_SHAPE -> showShapeSheet = true
+                                    RAIL_DRAW -> component.startDrawMode()
                                     RAIL_AI_GENERATE -> showGenerateImageSheet = true
                                     RAIL_DELETE -> component.selectedElementId
                                         ?.let(component::removeElement)
@@ -177,19 +201,35 @@ fun TextCardEditorScreen(
                 }
             }
 
-            EditorBottomBar(
-                component = component,
-                onSaveClick = component::saveCard
-            )
+            // 绘制模式:底部 Tab 栏换成取消/完成操作条(对齐图片创作)
+            if (component.isDrawing) {
+                DrawModeActionBar(
+                    component = component,
+                    onCancel = component::cancelDrawMode,
+                    onConfirm = component::finishDrawMode
+                )
+            } else {
+                EditorBottomBar(
+                    component = component,
+                    onSaveClick = component::saveCard
+                )
+            }
         }
     )
 
     EditorPanelSheet(component = component)
 
-    DecorationPickerSheet(
+    // 贴纸共享弹层(与图片创作同款):emoji + assets/stickers 素材,确认落装饰元素
+    StickerToolSheet(
         visible = showDecorationSheet,
+        onDismiss = { showDecorationSheet = false },
+        onStickerClick = component::addStickerDecoration
+    )
+
+    ShapePickerSheet(
+        visible = showShapeSheet,
         component = component,
-        onDismiss = { showDecorationSheet = false }
+        onDismiss = { showShapeSheet = false }
     )
 
     GenerateImageSheet(
@@ -375,26 +415,38 @@ private fun EditorPanel.labelRes(): Int = when (this) {
 
 private const val RAIL_ADD_TEXT = "add_text"
 private const val RAIL_ADD_DECORATION = "add_decoration"
+private const val RAIL_ADD_SHAPE = "add_shape"
+private const val RAIL_DRAW = "draw"
 private const val RAIL_AI_GENERATE = "ai_generate"
 private const val RAIL_DELETE = "delete_selected"
 
-/** 「基础」侧栏项(与图片创作侧栏同款):添加文字/添加装饰/AI 生成图片/删除选中 */
+/** 「基础」侧栏项(与图片创作侧栏同款),固定顺序:文字、贴纸、形状、画笔、AI、删除 */
 @Composable
 private fun basicRailTools(component: TextCardComponent): List<EditorRailTool> = listOf(
     EditorRailTool(
         id = RAIL_ADD_TEXT,
-        icon = MaterialIcons.Outlined.Add,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.TextFields,
         label = stringResource(R.string.textcard_add_text)
     ),
     EditorRailTool(
         id = RAIL_ADD_DECORATION,
-        icon = MaterialIcons.Outlined.EmojiEmotions,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickerEmoji,
         label = stringResource(R.string.textcard_add_decoration)
+    ),
+    EditorRailTool(
+        id = RAIL_ADD_SHAPE,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Star,
+        label = stringResource(R.string.textcard_add_shape)
+    ),
+    EditorRailTool(
+        id = RAIL_DRAW,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.FreeDraw,
+        label = stringResource(R.string.textcard_draw)
     ),
     EditorRailTool(
         id = RAIL_AI_GENERATE,
         icon = MaterialIcons.Outlined.AutoAwesome,
-        label = stringResource(R.string.textcard_add_image_layer)
+        label = stringResource(R.string.textcard_rail_ai)
     ),
     EditorRailTool(
         id = RAIL_DELETE,
@@ -403,3 +455,49 @@ private fun basicRailTools(component: TextCardComponent): List<EditorRailTool> =
         enabled = component.selectedElementId != null
     )
 )
+
+/**
+ * 绘制模式底部操作条(对齐图片创作):画笔设置(颜色色板 + 粗细滑杆)
+ * + 左「取消」丢弃退出,右「完成」落成画笔图层。
+ */
+@Composable
+private fun DrawModeActionBar(
+    component: TextCardComponent,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassDense(shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+            .navigationBarsPadding()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        // 画笔设置(复用图片创作画笔的最小选项集:颜色 + 粗细)
+        ColorSelectionRow(
+            value = Color(component.drawBrushColor),
+            onValueChange = { component.updateDrawBrushColor(it.toArgb().toLong() and 0xFFFF_FFFFL) },
+            allowAlpha = false
+        )
+        EnhancedSliderItem(
+            value = component.drawBrushWidthRatio,
+            title = stringResource(R.string.textcard_draw_width),
+            valueRange = 0.004f..0.04f,
+            onValueChange = component::updateDrawBrushWidth,
+            internalStateTransformation = { (it * 1000).roundToInt() }
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            CancelButton(
+                onClick = onCancel
+            )
+            Spacer(Modifier.weight(1f))
+            ConfirmButton(
+                text = stringResource(R.string.textcard_draw_done),
+                onClick = onConfirm
+            )
+        }
+    }
+}

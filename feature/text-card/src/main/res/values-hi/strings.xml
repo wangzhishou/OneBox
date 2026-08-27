@@ -10,7 +10,7 @@
     <string name="textcard_start_create">बनाना शुरू करें</string>
     <string name="textcard_back">वापस</string>
     <string name="textcard_save">सहेजें</string>
-    <string name="textcard_tab_basic">बुनियादी</string>
+    <string name="textcard_tab_basic">बुनियादी टूल</string>
     <string name="textcard_tab_background">कागज़</string>    <string name="textcard_tab_text_style">टेक्स्ट स्टाइल</string>
     <string name="textcard_tab_layers">लेयर</string>
     <string name="textcard_paper_background">कागज़ की पृष्ठभूमि</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">कोई उपयुक्त छवि नहीं? इमेज क्रिएशन में एक बनाएं</string>
     <string name="textcard_background_opacity">पृष्ठभूमि अपारदर्शिता</string>    <string name="textcard_text_settings">टेक्स्ट सेटिंग</string>
     <string name="textcard_text_target">संपादन</string>
-    <string name="textcard_add_text">टेक्स्ट जोड़ें</string>
-    <string name="textcard_add_decoration">सजावट जोड़ें</string>
-    <string name="textcard_delete_selected">चयनित हटाएं</string>
+    <string name="textcard_add_text">टेक्स्ट</string>
+    <string name="textcard_add_decoration">स्टिकर</string>
+    <string name="textcard_delete_selected">हटाएं</string>
     <string name="textcard_new_block_content">नया टेक्स्ट</string>
     <string name="textcard_empty_text_hint">टेक्स्ट दर्ज करने के लिए टैप करें</string>
     <string name="textcard_block_fallback">टेक्स्ट</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">इतिहास</string>
     <string name="textcard_edit_image_current">वर्तमान</string>
     <string name="textcard_layer_reset_position">स्थिति रीसेट करें</string>
+    <string name="textcard_add_shape">आकार</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">ड्रा</string>
+    <string name="textcard_draw_done">हो गया</string>
+    <string name="textcard_layer_shape">आकार</string>
+    <string name="textcard_shape_rect">आयत</string>
+    <string name="textcard_shape_circle">वृत्त</string>
+    <string name="textcard_shape_triangle">त्रिभुज</string>
+    <string name="textcard_shape_arrow">तीर</string>
+    <string name="textcard_shape_line">रेखा</string>
+    <string name="textcard_shape_star">तारा</string>
+    <string name="textcard_shape_filled">भरा हुआ</string>
+    <string name="textcard_draw_width">स्ट्रोक चौड़ाई</string>
 </resources>

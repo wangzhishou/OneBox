@@ -1,6 +1,7 @@
 package com.wanbaohe.markuplayers.presentation.render
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.model.ShapeGeometry
@@ -39,10 +41,14 @@ object ShapeLayerPreviewRenderer : LayerPreviewRenderer {
         val spec = (layer.type as? LayerType.Shape)?.spec ?: return
         val density = LocalDensity.current
         Canvas(
-            modifier = Modifier.size(
-                width = with(density) { (spec.widthRatio * canvasWidthPx).toDp() },
-                height = with(density) { (spec.heightRatio * canvasHeightPx).toDp() }
-            )
+            modifier = Modifier
+                // 命中区域外扩:描边类/细长形状(线条等)只有边缘可点,扩 12dp 白边让包围盒可点;
+                // 画布居中,图形视觉位置不变,导出不受影响(命中区域仅预览侧)
+                .padding(12.dp)
+                .size(
+                    width = with(density) { (spec.widthRatio * canvasWidthPx).toDp() },
+                    height = with(density) { (spec.heightRatio * canvasHeightPx).toDp() }
+                )
         ) {
             drawShapeContent(
                 spec = spec,

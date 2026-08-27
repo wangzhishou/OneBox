@@ -29,6 +29,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
+import com.t8rin.imagetoolbox.core.resources.icons.FreeDraw
+import com.t8rin.imagetoolbox.core.resources.icons.Star
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.longPress
@@ -131,6 +133,8 @@ private fun ElementLayerRow(
         ElementLayer.Kind.Text -> component.textBlocks.size > 1
         ElementLayer.Kind.Decoration -> true
         ElementLayer.Kind.Image -> true
+        ElementLayer.Kind.Shape -> true
+        ElementLayer.Kind.Draw -> true
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -198,7 +202,7 @@ private fun ElementLayerRow(
     }
 }
 
-/** 元素层名称:文字块取内容首行前几个字,装饰用通用名 */
+/** 元素层名称:文字块取内容首行前几个字,装饰/图片/形状/画笔用通用名 */
 @Composable
 private fun layerName(layer: ElementLayer, component: TextCardComponent): String =
     when (layer.kind) {
@@ -211,6 +215,8 @@ private fun layerName(layer: ElementLayer, component: TextCardComponent): String
 
         ElementLayer.Kind.Decoration -> stringResource(R.string.textcard_layer_decoration)
         ElementLayer.Kind.Image -> stringResource(R.string.textcard_layer_image)
+        ElementLayer.Kind.Shape -> stringResource(R.string.textcard_layer_shape)
+        ElementLayer.Kind.Draw -> stringResource(R.string.textcard_draw)
     }
 
 /** 背景层行:当前背景 mini 预览 + 眼睛,钉在列表底部不可排序/删除 */
@@ -272,7 +278,7 @@ private fun BackgroundLayerRow(component: TextCardComponent) {
     }
 }
 
-/** 图层缩略图标:文字=T 图标,装饰=对应 emoji 贴纸 */
+/** 图层缩略图标:文字=T 图标,装饰=对应 emoji 贴纸,图片=内容缩略图,形状/画笔=类型图标 */
 @Composable
 private fun LayerThumb(
     layer: ElementLayer,
@@ -295,10 +301,11 @@ private fun LayerThumb(
             ElementLayer.Kind.Decoration -> {
                 val emojis = Emoji.allIcons()
                 val decoration = component.decorations.find { it.id == layer.elementId }
-                val uri = emojis.getOrNull(decoration?.emojiIndex ?: -1)
-                if (uri != null) {
+                val model = decoration?.assetPath?.let { "file:///android_asset/$it" }
+                    ?: emojis.getOrNull(decoration?.emojiIndex ?: -1)
+                if (model != null) {
                     Picture(
-                        model = uri,
+                        model = model,
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         showTransparencyChecker = false,
@@ -331,6 +338,18 @@ private fun LayerThumb(
                     null -> Unit
                 }
             }
+
+            ElementLayer.Kind.Shape -> Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Star,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            ElementLayer.Kind.Draw -> Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.FreeDraw,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

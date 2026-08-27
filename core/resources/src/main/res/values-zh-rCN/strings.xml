@@ -1959,4 +1959,13 @@
     <string name="pages_short">页数</string>
     <string name="blessing_wall">祈福墙</string>
     <string name="blessing_wall_sub">每日一点 · 好运相伴</string>
+    <string name="sticker_panel_title">贴纸素材</string>
+    <string name="sticker_category_emoji">表情</string>
+    <string name="sticker_category_decor">装饰</string>
+    <string name="sticker_category_frame">边框</string>
+    <string name="sticker_category_trend">潮流</string>
+    <string name="sticker_category_ai">AI 生成贴纸</string>
+    <string name="sticker_new_badge">NEW</string>
+    <string name="sticker_empty">该分类暂无贴纸素材</string>
+    <string name="coming_soon">敬请期待</string>
 </resources>

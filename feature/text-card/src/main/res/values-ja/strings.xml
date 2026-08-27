@@ -10,7 +10,7 @@
     <string name="textcard_start_create">作成を開始</string>
     <string name="textcard_back">戻る</string>
     <string name="textcard_save">保存</string>
-    <string name="textcard_tab_basic">基本</string>
+    <string name="textcard_tab_basic">基本ツール</string>
     <string name="textcard_tab_background">用紙</string>    <string name="textcard_tab_text_style">文字設定</string>
     <string name="textcard_tab_layers">レイヤー</string>
     <string name="textcard_paper_background">用紙の背景</string>
@@ -29,9 +29,9 @@
     <string name="textcard_go_image_creation">適切な画像がない場合は、画像作成で作りましょう</string>
     <string name="textcard_background_opacity">背景の不透明度</string>    <string name="textcard_text_settings">文字設定</string>
     <string name="textcard_text_target">編集中</string>
-    <string name="textcard_add_text">テキストを追加</string>
-    <string name="textcard_add_decoration">デコレーションを追加</string>
-    <string name="textcard_delete_selected">選択中を削除</string>
+    <string name="textcard_add_text">テキスト</string>
+    <string name="textcard_add_decoration">ステッカー</string>
+    <string name="textcard_delete_selected">削除</string>
     <string name="textcard_new_block_content">新しいテキスト</string>
     <string name="textcard_empty_text_hint">タップして文字を入力</string>
     <string name="textcard_block_fallback">テキスト</string>
@@ -76,4 +76,17 @@
     <string name="textcard_edit_image_history">履歴</string>
     <string name="textcard_edit_image_current">現在</string>
     <string name="textcard_layer_reset_position">位置をリセット</string>
+    <string name="textcard_add_shape">図形</string>
+    <string name="textcard_rail_ai">AI</string>
+    <string name="textcard_draw">描画</string>
+    <string name="textcard_draw_done">完了</string>
+    <string name="textcard_layer_shape">図形</string>
+    <string name="textcard_shape_rect">四角形</string>
+    <string name="textcard_shape_circle">円</string>
+    <string name="textcard_shape_triangle">三角形</string>
+    <string name="textcard_shape_arrow">矢印</string>
+    <string name="textcard_shape_line">直線</string>
+    <string name="textcard_shape_star">星</string>
+    <string name="textcard_shape_filled">塗りつぶし</string>
+    <string name="textcard_draw_width">線の太さ</string>
 </resources>

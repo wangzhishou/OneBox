@@ -1931,4 +1931,13 @@
     <string name="pages_short">Páginas</string>
     <string name="blessing_wall">Mural de Bênçãos</string>
     <string name="blessing_wall_sub">Um toque diário · Boa sorte acompanha</string>
+    <string name="sticker_panel_title">Adesivos</string>
+    <string name="sticker_category_emoji">Emoji</string>
+    <string name="sticker_category_decor">Decoração</string>
+    <string name="sticker_category_frame">Molduras</string>
+    <string name="sticker_category_trend">Tendências</string>
+    <string name="sticker_category_ai">Adesivo de IA</string>
+    <string name="sticker_new_badge">NOVO</string>
+    <string name="sticker_empty">Ainda não há adesivos nesta categoria</string>
+    <string name="coming_soon">Em breve</string>
 </resources>

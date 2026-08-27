@@ -56,12 +56,16 @@ enum class CardTextAlignment {
 
 /**
  * 装饰贴纸(支持多个;每个装饰一个图层,可独立拖动/缩放/旋转)。
+ * 来源:emoji(core emoji 表下标)或素材贴纸(assetPath,assets/stickers/ 下的 SVG,
+ * 与图片创作共享 StickerSource 落地);两者恰有一个非空。
  * offsetX/offsetY 为贴纸左上角的归一化坐标(X 相对画布宽、Y 相对画布高)。
  * alpha 为元素级不透明度(0..1)。
  */
 data class DecorationSpec(
     val id: String = UUID.randomUUID().toString(),
-    val emojiIndex: Int,
+    val emojiIndex: Int? = null,
+    /** 素材贴纸:assets 内相对路径(如 stickers/decor/flower.svg) */
+    val assetPath: String? = null,
     val alpha: Float = 1f,
     override val offsetX: Float = 0f,
     override val offsetY: Float = 0f,

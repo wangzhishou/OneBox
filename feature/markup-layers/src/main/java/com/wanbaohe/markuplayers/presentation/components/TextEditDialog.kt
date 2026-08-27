@@ -1,5 +1,7 @@
 package com.wanbaohe.markuplayers.presentation.components
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -8,7 +10,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -19,12 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -34,6 +31,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +43,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -52,25 +52,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.domain.model.Outline
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
+import com.t8rin.imagetoolbox.core.settings.domain.model.DomainFontFamily
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
-import com.t8rin.imagetoolbox.core.settings.presentation.model.UiFontFamily
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsManager
 import com.t8rin.imagetoolbox.core.ui.theme.ProvideTypography
+import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
+import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.PickFontFamilySheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 import com.t8rin.imagetoolbox.core.resources.R as CoreR
 
@@ -110,8 +118,12 @@ internal fun TextEditDialog(
         }
     }
 
+    // 字体行点击 → 全局共享字体选择器(能下载/能导入);弹层期间隐藏 Dialog,
+    // 关闭后恢复(会话状态在组件里,不丢)
+    var showFontSheet by rememberSaveable { mutableStateOf(false) }
+
     EnhancedAlertDialog(
-        visible = true,
+        visible = !showFontSheet,
         onDismissRequest = onCancel,
         // 键盘弹出时整体上移,输入框不被遮挡
         modifier = Modifier.imePadding(),
@@ -127,7 +139,8 @@ internal fun TextEditDialog(
         text = {
             TextEditContent(
                 text = text,
-                onTextChange = updateText
+                onTextChange = updateText,
+                onPickFont = { showFontSheet = true }
             )
         },
         dismissButton = {
@@ -143,6 +156,13 @@ internal fun TextEditDialog(
             )
         }
     )
+
+    TextEditFontSheet(
+        visible = showFontSheet,
+        text = text,
+        updateText = updateText,
+        onDismiss = { showFontSheet = false }
+    )
 }
 
 /** Dialog 正文:输入框(自动聚焦)+ 可滚动样式区 */
@@ -150,6 +170,7 @@ internal fun TextEditDialog(
 private fun TextEditContent(
     text: LayerType.Text,
     onTextChange: ((LayerType.Text) -> LayerType.Text) -> Unit,
+    onPickFont: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -173,7 +194,7 @@ private fun TextEditContent(
         ) {
             FontRow(
                 selectedFont = text.font,
-                onFontChange = { font -> onTextChange { it.copy(font = font) } }
+                onPickFont = onPickFont
             )
 
             TextSliderRow(
@@ -250,69 +271,102 @@ private fun TextEditContent(
     LaunchedEffect(Unit) { focusRequester.requestFocus() }
 }
 
-/** 字体行:常用字体 chips 横排(可滑动),末尾下拉展示全部字体 */
+/** 字体行:当前字体名(该字体渲染),点击打开全局共享字体选择器(能下载/能导入) */
 @Composable
 private fun FontRow(
     selectedFont: FontType?,
-    onFontChange: (FontType?) -> Unit,
+    onPickFont: () -> Unit,
 ) {
-    val fonts = UiFontFamily.entries
     val selected = selectedFont.toUiFont()
-    var menuExpanded by remember { mutableStateOf(false) }
     SettingRow(label = stringResource(R.string.markup_text_font)) {
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .clip(ShapeDefaults.default)
+                .clickable(onClick = onPickFont)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
-            items(fonts) { font ->
-                ProvideTypography(font) {
-                    EnhancedChip(
-                        selected = font == selected,
-                        onClick = { onFontChange(font.type) },
-                        selectedColor = MaterialTheme.colorScheme.secondary,
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
-                        modifier = Modifier.height(36.dp)
-                    ) {
-                        Text(
-                            text = font.name ?: stringResource(CoreR.string.system),
-                            maxLines = 1
-                        )
-                    }
-                }
-            }
-        }
-        Box {
-            EnhancedIconButton(onClick = { menuExpanded = true }) {
-                Icon(
-                    imageVector = Icons.Outlined.LineKeyboardArrowDown,
-                    contentDescription = stringResource(R.string.markup_text_more_fonts)
+            ProvideTypography(selected) {
+                Text(
+                    text = selected.name ?: stringResource(CoreR.string.system),
+                    maxLines = 1,
+                    modifier = Modifier.weight(1f)
                 )
             }
-            DropdownMenu(
-                expanded = menuExpanded,
-                onDismissRequest = { menuExpanded = false }
-            ) {
-                fonts.forEach { font ->
-                    DropdownMenuItem(
-                        text = {
-                            ProvideTypography(font) {
-                                Text(
-                                    text = font.name
-                                        ?: stringResource(CoreR.string.system),
-                                    maxLines = 1
-                                )
-                            }
-                        },
-                        onClick = {
-                            onFontChange(font.type)
-                            menuExpanded = false
+            Icon(
+                imageVector = Icons.Outlined.LineKeyboardArrowDown,
+                contentDescription = stringResource(R.string.markup_text_more_fonts)
+            )
+        }
+    }
+}
+
+/** 字体选择:共享 PickFontFamilySheet(core/ui),选中/导入/移除/导出经 SettingsManager 落地 */
+@Composable
+private fun TextEditFontSheet(
+    visible: Boolean,
+    text: LayerType.Text,
+    updateText: ((LayerType.Text) -> LayerType.Text) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val settingsManager = LocalSettingsManager.current
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val exportFontsLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/zip"),
+        onResult = { uri ->
+            uri ?: return@rememberLauncherForActivityResult
+            scope.launch {
+                runCatching {
+                    val cache = settingsManager.createCustomFontsExport() ?: return@runCatching
+                    context.contentResolver.openInputStream(cache.toUri())?.use { input ->
+                        context.contentResolver.openOutputStream(uri)?.use { output ->
+                            input.copyTo(output)
                         }
+                    }
+                }.onFailure { it.makeLog("MarkupExportFonts") }
+            }
+        }
+    )
+    PickFontFamilySheet(
+        visible = visible,
+        onDismiss = onDismiss,
+        onFontSelected = { font ->
+            updateText { it.copy(font = font.type) }
+            onDismiss()
+        },
+        onAddFont = { uri ->
+            scope.launch {
+                val imported = settingsManager.importCustomFont(uri.toString())
+                if (imported != null) {
+                    updateText { it.copy(font = FontType.File(imported.filePath)) }
+                    AppToastHost.showConfetti()
+                } else {
+                    AppToastHost.showToast(
+                        message = context.getString(CoreR.string.wrong_font),
+                        icon = Icons.Outlined.LineText
                     )
                 }
             }
+        },
+        onRemoveFont = { font ->
+            scope.launch {
+                settingsManager.removeCustomFont(font.asDomain() as DomainFontFamily.Custom)
+            }
+        },
+        onExportFonts = {
+            runCatching {
+                val timeStamp = SimpleDateFormat(
+                    "yyyy-MM-dd_HH-mm-ss",
+                    Locale.getDefault()
+                ).format(Date())
+                exportFontsLauncher.launch("FONTS_EXPORT_$timeStamp.zip")
+            }.onFailure {
+                AppToastHost.showActivateFilesToast()
+            }
         }
-    }
+    )
 }
 
 /** 对齐行:左/居中/右/两端 4 分段按钮(图标为手绘对齐线段) */

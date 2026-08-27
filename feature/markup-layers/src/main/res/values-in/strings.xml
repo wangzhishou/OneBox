@@ -28,7 +28,6 @@
     <string name="markup_menu_save_exif">Simpan Exif</string>
     <string name="markup_menu_clear_filter">Hapus filter</string>
     <string name="markup_menu_immersive_preview">Pratinjau imersif</string>
-    <string name="markup_coming_soon">Segera hadir</string>
     <string name="markup_canvas_background">Latar belakang kanvas</string>
     <string name="markup_canvas_bg_default">Default</string>
     <string name="markup_canvas_bg_solid">Warna solid</string>
@@ -112,14 +111,6 @@
     <string name="markup_recent_projects">Proyek terbaru</string>
     <string name="markup_recent_projects_empty">Belum ada proyek terbaru</string>
 
-    <string name="markup_sticker_title">Stiker</string>
-    <string name="markup_sticker_category_emoji">Emoji</string>
-    <string name="markup_sticker_category_decor">Dekorasi</string>
-    <string name="markup_sticker_category_frame">Bingkai</string>
-    <string name="markup_sticker_category_trend">Tren</string>
-    <string name="markup_sticker_category_ai">Stiker AI</string>
-    <string name="markup_sticker_new_badge">BARU</string>
-    <string name="markup_sticker_empty">Belum ada stiker di kategori ini</string>
 
     <string name="markup_shape_basic_shapes">Bentuk dasar</string>
     <string name="markup_shape_kind_rectangle">Persegi panjang</string>
@@ -214,4 +205,5 @@
     <string name="markup_ai_generate_empty">Masukkan deskripsi gambar</string>
     <string name="markup_ai_edit_current">Saat ini</string>
     <string name="markup_ai_edit_history">Riwayat</string>
+    <string name="markup_rail_ai">AI</string>
 </resources>

@@ -1931,4 +1931,13 @@
     <string name="pages_short">Seiten</string>
     <string name="blessing_wall">Segenswand</string>
     <string name="blessing_wall_sub">Ein tägliches Tippen · Glück folgt</string>
+    <string name="sticker_panel_title">Sticker</string>
+    <string name="sticker_category_emoji">Emoji</string>
+    <string name="sticker_category_decor">Deko</string>
+    <string name="sticker_category_frame">Rahmen</string>
+    <string name="sticker_category_trend">Trend</string>
+    <string name="sticker_category_ai">AI-Sticker</string>
+    <string name="sticker_new_badge">NEU</string>
+    <string name="sticker_empty">Noch keine Sticker in dieser Kategorie</string>
+    <string name="coming_soon">Demnächst verfügbar</string>
 </resources>
