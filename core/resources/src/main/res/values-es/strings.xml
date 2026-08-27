@@ -1940,4 +1940,9 @@
     <string name="sticker_new_badge">NUEVO</string>
     <string name="sticker_empty">Aún no hay stickers en esta categoría</string>
     <string name="coming_soon">Próximamente</string>
+    <string name="sticker_ai_prompt_hint">Describe la pegatina, p. ej.: un gato con gafas de sol</string>
+    <string name="sticker_ai_generate_action">Generar pegatina</string>
+    <string name="sticker_ai_points_hint">Cada generación cuesta %1$d puntos</string>
+    <string name="sticker_ai_empty">Describe primero la pegatina</string>
+    <string name="sticker_ai_generating">Generando…</string>
 </resources>

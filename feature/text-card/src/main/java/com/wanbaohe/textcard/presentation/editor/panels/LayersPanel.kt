@@ -45,6 +45,7 @@ import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.ImageElementStatus
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
+import java.io.File
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -301,7 +302,8 @@ private fun LayerThumb(
             ElementLayer.Kind.Decoration -> {
                 val emojis = Emoji.allIcons()
                 val decoration = component.decorations.find { it.id == layer.elementId }
-                val model = decoration?.assetPath?.let { "file:///android_asset/$it" }
+                val model = decoration?.imagePath?.let(::File)
+                    ?: decoration?.assetPath?.let { "file:///android_asset/$it" }
                     ?: emojis.getOrNull(decoration?.emojiIndex ?: -1)
                 if (model != null) {
                     Picture(

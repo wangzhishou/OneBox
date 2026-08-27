@@ -148,6 +148,10 @@ class TextCardComponent @AssistedInject internal constructor(
     private val _isGeneratingImage: MutableState<Boolean> = mutableStateOf(false)
     val isGeneratingImage: Boolean by _isGeneratingImage
 
+    /** AI 生成贴纸进行中(共享贴纸弹层 AI tab 的 loading) */
+    private val _isGeneratingSticker: MutableState<Boolean> = mutableStateOf(false)
+    val isGeneratingSticker: Boolean by _isGeneratingSticker
+
     /** 元素图层(文字块/装饰,列表顺序即 z 序、底层在前);背景钉在最底不进列表 */
     private val _elementLayers: MutableState<List<ElementLayer>> =
         mutableStateOf(
@@ -564,7 +568,7 @@ class TextCardComponent @AssistedInject internal constructor(
 
     // ---------------- 装饰 ----------------
 
-    /** 共享贴纸面板的确认动作:emoji(下标)或素材贴纸(assets 路径),默认落左上角,置顶并选中 */
+    /** 共享贴纸面板的确认动作:emoji(下标)/素材贴纸(assets 路径)/AI 生成(本地文件),默认落左上角,置顶并选中 */
     fun addStickerDecoration(source: StickerSource) {
         val canvas = _canvas.value ?: return
         val decoration = when (source) {
@@ -575,6 +579,12 @@ class TextCardComponent @AssistedInject internal constructor(
                 DecorationSpec.defaultPositionFor(canvas, 0).copy(
                     emojiIndex = null,
                     assetPath = source.path
+                )
+
+            is StickerSource.Generated ->
+                DecorationSpec.defaultPositionFor(canvas, 0).copy(
+                    emojiIndex = null,
+                    imagePath = source.path
                 )
         }
         _decorations.update { it + decoration }
@@ -716,6 +726,48 @@ class TextCardComponent @AssistedInject internal constructor(
                 uri = uri,
                 historyUris = element.historyUris - uri + element.uri
             )
+        }
+    }
+
+    // ---------------- AI 生成贴纸(共享贴纸弹层 AI tab) ----------------
+
+    private var generateStickerJob: Job? by smartJob {
+        _isGeneratingSticker.update { false }
+    }
+
+    /**
+     * AI 生成贴纸:文生图(提示词追加贴纸风格描述,正方形输出),成功落装饰元素
+     *(与素材贴纸同等待遇:选中/拖动/缩放/图层面板/导出),[onSuccess] 供弹层关闭。
+     * 登录与积分预检由调用方(UI 层 ActionUtils.ensureLoginAndCheckPoints)完成;
+     * 仅非缓存结果(!fromCache)扣积分,失败 toast 不扣。
+     */
+    fun generateSticker(prompt: String, onSuccess: () -> Unit = {}) {
+        val trimmed = prompt.trim()
+        if (trimmed.isEmpty() || _isGeneratingSticker.value) return
+        generateStickerJob = componentScope.launch {
+            _isGeneratingSticker.value = true
+            imageGenerationLoader.load(
+                ImageGenerationRequest(
+                    prompt = "$trimmed, $STICKER_PROMPT_STYLE_SUFFIX",
+                    outputSize = STICKER_OUTPUT_SIZE
+                )
+            ).onSuccess { image ->
+                addStickerDecoration(StickerSource.Generated(image.file.absolutePath))
+                if (!image.fromCache) {
+                    BaseUtils.consumePoints(
+                        degree = aiImageProcessPointsCost(),
+                        desc = appContext.getString(
+                            com.t8rin.imagetoolbox.core.resources.R.string.sticker_category_ai
+                        ),
+                        source = AI_IMAGE_POINTS_SOURCE,
+                        showToast = true
+                    )
+                }
+                onSuccess()
+            }.onFailure { error ->
+                AppToastHost.showFailureToast(throwable = error)
+            }
+            _isGeneratingSticker.value = false
         }
     }
 
@@ -970,3 +1022,9 @@ class TextCardComponent @AssistedInject internal constructor(
 
 /** AI 生成图片积分消耗/预检的来源标识 */
 internal const val AI_IMAGE_POINTS_SOURCE = "text_card_ai"
+
+/** AI 生成贴纸:提示词追加的贴纸风格描述(文生图模型对英文风格词更稳定) */
+private const val STICKER_PROMPT_STYLE_SUFFIX = "sticker style, clean simple solid background"
+
+/** AI 生成贴纸输出尺寸(正方形,服务商像素限制内的固定值) */
+private const val STICKER_OUTPUT_SIZE = "1024*1024"

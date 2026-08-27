@@ -1940,4 +1940,9 @@
     <string name="sticker_new_badge">NEU</string>
     <string name="sticker_empty">Noch keine Sticker in dieser Kategorie</string>
     <string name="coming_soon">Demnächst verfügbar</string>
+    <string name="sticker_ai_prompt_hint">Beschreibe den Sticker, z. B. eine Katze mit Sonnenbrille</string>
+    <string name="sticker_ai_generate_action">Sticker generieren</string>
+    <string name="sticker_ai_points_hint">Jede Generierung kostet %1$d Punkte</string>
+    <string name="sticker_ai_empty">Beschreibe zuerst den Sticker</string>
+    <string name="sticker_ai_generating">Wird generiert…</string>
 </resources>

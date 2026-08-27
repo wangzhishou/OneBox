@@ -10,12 +10,13 @@ import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import java.io.File
 import kotlin.reflect.KClass
 
 /** 贴纸基础尺寸:预览画布宽度的 25%(导出侧同比例 × 原图宽) */
 internal const val STICKER_BASE_WIDTH_RATIO = 0.25f
 
-/** 贴纸图层预览:emoji 走 core emoji 表(assets SVG),Asset 读 assets 位图 */
+/** 贴纸图层预览:emoji 走 core emoji 表(assets SVG),Asset 读 assets 素材,Generated 读本地文件 */
 object StickerLayerPreviewRenderer : LayerPreviewRenderer {
 
     override val supportedType: KClass<out LayerType> = LayerType.Sticker::class
@@ -33,6 +34,7 @@ object StickerLayerPreviewRenderer : LayerPreviewRenderer {
         val model: Any = when (val source = type.source) {
             is StickerSource.Emoji -> Emoji.allIcons().getOrNull(source.emojiIndex) ?: return
             is StickerSource.Asset -> "file:///android_asset/${source.path}"
+            is StickerSource.Generated -> File(source.path)
         }
         Picture(
             model = model,

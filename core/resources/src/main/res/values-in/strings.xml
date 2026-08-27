@@ -1940,4 +1940,9 @@
     <string name="sticker_new_badge">BARU</string>
     <string name="sticker_empty">Belum ada stiker di kategori ini</string>
     <string name="coming_soon">Segera hadir</string>
+    <string name="sticker_ai_prompt_hint">Deskripsikan stiker, mis.: kucing berkacamata hitam</string>
+    <string name="sticker_ai_generate_action">Buat stiker</string>
+    <string name="sticker_ai_points_hint">Setiap pembuatan memakan %1$d poin</string>
+    <string name="sticker_ai_empty">Deskripsikan stiker dulu</string>
+    <string name="sticker_ai_generating">Membuat…</string>
 </resources>

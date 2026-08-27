@@ -12,11 +12,13 @@ import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import com.wanbaohe.markuplayers.domain.render.LayerExportRenderer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
 /**
- * 贴纸图层导出:emoji 下标换算为 assets SVG 路径后经 coil 解码绘制。
+ * 贴纸图层导出:emoji 下标换算为 assets SVG 路径、素材贴纸取 assets 路径、
+ * AI 生成贴纸读本地文件,统一经 coil 解码绘制。
  * 基础尺寸 = 原图宽 × [STICKER_EXPORT_BASE_RATIO](与预览侧 0.25 × 画布宽一致)。
  */
 class StickerLayerExportRenderer @Inject constructor(
@@ -33,16 +35,21 @@ class StickerLayerExportRenderer @Inject constructor(
         imageHeight: Int,
     ) {
         val type = layer.type as? LayerType.Sticker ?: return
-        val assetPath = when (val source = type.source) {
+        // emoji/素材贴纸走 assets;AI 生成贴纸读本地文件
+        val data: Any = when (val source = type.source) {
             is StickerSource.Emoji -> EmojiAssets.pathAt(source.emojiIndex, context)
-            is StickerSource.Asset -> source.path
-        } ?: return
+                ?.let { "file:///android_asset/$it" }
+                ?: return
+
+            is StickerSource.Asset -> "file:///android_asset/${source.path}"
+            is StickerSource.Generated -> File(source.path)
+        }
 
         val baseSize = imageWidth * STICKER_EXPORT_BASE_RATIO
         // draw 非挂起函数,解码走 runBlocking;调用方(applier)已在 IO 线程
         val bitmap = runBlocking {
             imageGetter.getImage(
-                data = "file:///android_asset/$assetPath",
+                data = data,
                 size = baseSize.toInt().coerceAtLeast(1)
             )
         } ?: return

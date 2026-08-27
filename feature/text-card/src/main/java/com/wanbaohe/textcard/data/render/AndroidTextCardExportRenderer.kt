@@ -36,6 +36,7 @@ import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -331,23 +332,28 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         canvas.restore()
     }
 
-    /** 单个装饰贴纸:SVG 解码后按 offset 定位,绕中心套 scale/rotation */
+    /** 单个装饰贴纸:SVG/生成图解码后按 offset 定位,绕中心套 scale/rotation */
     private fun drawDecoration(
         canvas: Canvas,
         decoration: DecorationSpec,
         width: Int,
         height: Int,
     ) {
-        // 素材贴纸(assets SVG)优先,否则 emoji 下标换算 assets 路径
-        val assetPath = decoration.assetPath
-            ?: decoration.emojiIndex?.let { EmojiAssets.pathAt(it, context) }
-            ?: return
+        // AI 生成贴纸(本地文件)> 素材贴纸(assets SVG)> emoji 下标换算 assets 路径
+        val data: Any = when {
+            decoration.imagePath != null -> File(decoration.imagePath)
+            decoration.assetPath != null -> "file:///android_asset/${decoration.assetPath}"
+            else -> decoration.emojiIndex
+                ?.let { EmojiAssets.pathAt(it, context) }
+                ?.let { "file:///android_asset/$it" }
+                ?: return
+        }
         val size = width * CardLayout.DECORATION_SIZE_RATIO
 
         // render 非挂起安全:decode 走 runBlocking,调用方(组件)已在 IO 线程
         val bitmap = runBlocking {
             imageGetter.getImage(
-                data = "file:///android_asset/$assetPath",
+                data = data,
                 size = size.toInt().coerceAtLeast(1)
             )
         } ?: return

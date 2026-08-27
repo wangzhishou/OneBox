@@ -43,6 +43,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
+import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import com.t8rin.imagetoolbox.core.utils.filename
@@ -706,6 +707,61 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 )
             }
             _isAiProcessing.value = false
+        }
+    }
+
+    // ---------------- AI 生成贴纸(共享贴纸弹层 AI tab) ----------------
+
+    /** AI 生成贴纸进行中(弹层内 loading;不复用 isAiProcessing,避免触发全屏 LoadingDialog) */
+    private val _isGeneratingSticker: MutableState<Boolean> = mutableStateOf(false)
+    val isGeneratingSticker: Boolean by _isGeneratingSticker
+
+    private var generateStickerJob: Job? by smartJob {
+        _isGeneratingSticker.update { false }
+    }
+
+    /**
+     * AI 生成贴纸:文生图(提示词追加贴纸风格描述,正方形输出),成功落 Sticker 图层
+     *(addLayer 自动进 undo 历史),[onSuccess] 供弹层关闭。
+     * 登录与积分预检由调用方(UI 层 ActionUtils.ensureLoginAndCheckPoints)完成;
+     * 仅非缓存结果(!fromCache)扣积分,失败/取消不扣。
+     */
+    fun generateSticker(prompt: String, onSuccess: () -> Unit = {}) {
+        val trimmed = prompt.trim()
+        if (trimmed.isEmpty() || _isGeneratingSticker.value) return
+        generateStickerJob = componentScope.launch {
+            _isGeneratingSticker.value = true
+            imageGenerationLoader.load(
+                ImageGenerationRequest(
+                    prompt = "$trimmed, $STICKER_PROMPT_STYLE_SUFFIX",
+                    outputSize = STICKER_OUTPUT_SIZE
+                )
+            ).onSuccess { image ->
+                addLayer(
+                    MarkupLayer(
+                        type = LayerType.Sticker(StickerSource.Generated(image.file.absolutePath))
+                    )
+                )
+                if (!image.fromCache) {
+                    BaseUtils.consumePoints(
+                        degree = aiImageProcessPointsCost(),
+                        desc = appContext.getString(
+                            com.t8rin.imagetoolbox.core.resources.R.string.sticker_category_ai
+                        ),
+                        source = AI_POINTS_SOURCE,
+                        showToast = true
+                    )
+                }
+                onSuccess()
+            }.onFailure { failure ->
+                if (failure is CancellationException) throw failure
+                failure.makeLog(LOG_TAG)
+                AppToastHost.showFailureToast(
+                    failure.message?.takeIf { it.isNotBlank() }
+                        ?: appContext.getString(R.string.markup_ai_process_failed)
+                )
+            }
+            _isGeneratingSticker.value = false
         }
     }
 
@@ -1434,3 +1490,9 @@ private const val LOG_TAG = "MarkupBaseTransform"
 
 /** AI 图像处理积分消耗/预检的来源标识 */
 private const val AI_POINTS_SOURCE = "markup_ai"
+
+/** AI 生成贴纸:提示词追加的贴纸风格描述(文生图模型对英文风格词更稳定) */
+private const val STICKER_PROMPT_STYLE_SUFFIX = "sticker style, clean simple solid background"
+
+/** AI 生成贴纸输出尺寸(正方形,服务商像素限制内的固定值) */
+private const val STICKER_OUTPUT_SIZE = "1024*1024"

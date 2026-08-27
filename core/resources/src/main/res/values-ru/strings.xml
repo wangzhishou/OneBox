@@ -1940,4 +1940,9 @@
     <string name="sticker_new_badge">NEW</string>
     <string name="sticker_empty">В этой категории пока нет стикеров</string>
     <string name="coming_soon">Скоро</string>
+    <string name="sticker_ai_prompt_hint">Опишите стикер, например: кот в солнцезащитных очках</string>
+    <string name="sticker_ai_generate_action">Создать стикер</string>
+    <string name="sticker_ai_points_hint">Каждая генерация стоит %1$d баллов</string>
+    <string name="sticker_ai_empty">Сначала опишите стикер</string>
+    <string name="sticker_ai_generating">Создание…</string>
 </resources>

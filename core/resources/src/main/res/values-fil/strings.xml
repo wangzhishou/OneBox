@@ -1940,4 +1940,9 @@
     <string name="sticker_new_badge">NEW</string>
     <string name="sticker_empty">Wala pang sticker sa kategoryang ito</string>
     <string name="coming_soon">Malapit na</string>
+    <string name="sticker_ai_prompt_hint">Ilarawan ang sticker, hal.: pusang naka-sunglasses</string>
+    <string name="sticker_ai_generate_action">Gumawa ng sticker</string>
+    <string name="sticker_ai_points_hint">Ang bawat paggawa ay nagkakahalaga ng %1$d puntos</string>
+    <string name="sticker_ai_empty">Ilarawan muna ang sticker</string>
+    <string name="sticker_ai_generating">Ginagawa…</string>
 </resources>

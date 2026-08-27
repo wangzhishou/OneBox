@@ -1968,4 +1968,9 @@
     <string name="sticker_new_badge">NEW</string>
     <string name="sticker_empty">No stickers in this category yet</string>
     <string name="coming_soon">Coming soon</string>
+    <string name="sticker_ai_prompt_hint">Describe the sticker, e.g. a cat wearing sunglasses</string>
+    <string name="sticker_ai_generate_action">Generate</string>
+    <string name="sticker_ai_points_hint">Each generation costs %1$d points</string>
+    <string name="sticker_ai_empty">Describe the sticker first</string>
+    <string name="sticker_ai_generating">Generating…</string>
 </resources>

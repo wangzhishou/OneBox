@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -46,18 +47,25 @@ import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCelebration
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmojiFace
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterFrames
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTrendingUp
+import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
+import com.t8rin.imagetoolbox.core.ui.widget.system.OnePrimaryButton
 
 /**
  * 贴纸素材共享弹层(自 markup-layers 上移 core/ui,参数化确认动作):
  * 顶部分类 Tab(可横滑)+ 5 列素材网格。
  * 「表情」走 core emoji 表;装饰/边框/潮流动态列出 assets/stickers/<dir> 下的
- * 内置 SVG(新增素材免改代码);「AI 生成贴纸」为带 NEW 角标的占位。
+ * 内置 SVG(新增素材免改代码);「AI 生成贴纸」由宿主经 [aiGeneration] 注入
+ * 生成逻辑(登录/积分预检在宿主 onGenerate 外包,本组件不引 core/base),
+ * 未注入时保留 coming soon 占位。
  * 宿主在 [onStickerClick] 里落地各自的图层/元素模型。
  */
 @Composable
@@ -65,6 +73,7 @@ fun StickerToolSheet(
     visible: Boolean,
     onDismiss: () -> Unit,
     onStickerClick: (StickerSource) -> Unit,
+    aiGeneration: AiStickerGeneration? = null,
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
@@ -74,15 +83,24 @@ fun StickerToolSheet(
                 onStickerClick = { source ->
                     onStickerClick(source)
                     onDismiss()
-                }
+                },
+                aiGeneration = aiGeneration
             )
         }
     )
 }
 
+/** AI 生成贴纸的宿主注入:生成中态、单次积分成本与生成动作(预检由宿主外包) */
+class AiStickerGeneration(
+    val isGenerating: Boolean,
+    val pointsCost: Int,
+    val onGenerate: (prompt: String) -> Unit,
+)
+
 @Composable
 private fun StickerPanel(
     onStickerClick: (StickerSource) -> Unit,
+    aiGeneration: AiStickerGeneration?,
 ) {
     var category by rememberSaveable { mutableStateOf(StickerCategory.Emoji.name) }
     // 兜底:枚举改名/重构后恢复出的旧值不再存在时回退到默认分类,避免 valueOf 抛异常
@@ -105,7 +123,9 @@ private fun StickerPanel(
             onSelect = { category = it.name }
         )
         when {
-            currentCategory.isAiPlaceholder -> AiPlaceholderContent()
+            currentCategory.isAiPlaceholder -> if (aiGeneration != null) {
+                AiStickerContent(aiGeneration)
+            } else AiPlaceholderContent()
             currentCategory.assetDir != null -> AssetStickerGrid(
                 assetDir = currentCategory.assetDir,
                 onStickerClick = onStickerClick
@@ -248,6 +268,79 @@ private fun StickerCell(
     }
 }
 
+/**
+ * AI 生成贴纸页:描述输入 + 生成按钮 + 积分说明;生成中按钮禁用并显示转圈。
+ * 空描述 toast 内部处理,不回调;预检/扣费/落地全在宿主 [AiStickerGeneration.onGenerate] 链路。
+ */
+@Composable
+private fun AiStickerContent(
+    aiGeneration: AiStickerGeneration,
+) {
+    var prompt by rememberSaveable { mutableStateOf("") }
+    val emptyHint = stringResource(R.string.sticker_ai_empty)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(STICKER_GRID_HEIGHT)
+    ) {
+        GlassOutlinedTextField(
+            value = prompt,
+            onValueChange = { prompt = it },
+            placeholder = { Text(stringResource(R.string.sticker_ai_prompt_hint)) },
+            minLines = 2,
+            maxLines = 4,
+            modifier = Modifier.fillMaxWidth()
+        )
+        OnePrimaryButton(
+            text = stringResource(R.string.sticker_ai_generate_action),
+            onClick = {
+                val trimmed = prompt.trim()
+                if (trimmed.isEmpty()) {
+                    // 空描述直接提示,不进宿主预检
+                    AppToastHost.showToast(
+                        message = emptyHint,
+                        icon = Icons.Outlined.LineInfo,
+                        duration = ToastDuration.Short
+                    )
+                    return@OnePrimaryButton
+                }
+                aiGeneration.onGenerate(trimmed)
+            },
+            enabled = !aiGeneration.isGenerating,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+        )
+        if (aiGeneration.isGenerating) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 10.dp)
+            ) {
+                CircularProgressIndicator(
+                    strokeWidth = 2.dp,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.sticker_ai_generating),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        Text(
+            text = stringResource(R.string.sticker_ai_points_hint, aiGeneration.pointsCost),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 8.dp)
+        )
+    }
+}
+
 @Composable
 private fun AiPlaceholderContent() {
     EmptyContent(
@@ -290,7 +383,8 @@ private val STICKER_GRID_HEIGHT = 340.dp
 
 /**
  * 贴纸分类。assetDir 非空 = assets/stickers 下的内置素材目录;
- * [isAiPlaceholder] 为 AI 生成贴纸占位;其余(core emoji)走 [Emoji] 表。
+ * [isAiPlaceholder] 为 AI 生成贴纸(内容由宿主注入,未注入时显示占位);
+ * 其余(core emoji)走 [Emoji] 表。
  */
 private enum class StickerCategory(
     val assetDir: String?,

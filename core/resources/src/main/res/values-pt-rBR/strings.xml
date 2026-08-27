@@ -1940,4 +1940,9 @@
     <string name="sticker_new_badge">NOVO</string>
     <string name="sticker_empty">Ainda não há adesivos nesta categoria</string>
     <string name="coming_soon">Em breve</string>
+    <string name="sticker_ai_prompt_hint">Descreva o adesivo, ex.: um gato de óculos escuros</string>
+    <string name="sticker_ai_generate_action">Gerar adesivo</string>
+    <string name="sticker_ai_points_hint">Cada geração custa %1$d pontos</string>
+    <string name="sticker_ai_empty">Descreva o adesivo primeiro</string>
+    <string name="sticker_ai_generating">Gerando…</string>
 </resources>

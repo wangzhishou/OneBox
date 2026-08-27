@@ -1940,4 +1940,9 @@
     <string name="sticker_new_badge">NEW</string>
     <string name="sticker_empty">इस श्रेणी में अभी कोई स्टिकर नहीं</string>
     <string name="coming_soon">जल्द आ रहा है</string>
+    <string name="sticker_ai_prompt_hint">स्टिकर का वर्णन करें, जैसे: धूप का चश्मा पहनी एक बिल्ली</string>
+    <string name="sticker_ai_generate_action">स्टिकर बनाएं</string>
+    <string name="sticker_ai_points_hint">हर बार बनाने पर %1$d पॉइंट लगेंगे</string>
+    <string name="sticker_ai_empty">पहले स्टिकर का वर्णन करें</string>
+    <string name="sticker_ai_generating">बनाया जा रहा है…</string>
 </resources>

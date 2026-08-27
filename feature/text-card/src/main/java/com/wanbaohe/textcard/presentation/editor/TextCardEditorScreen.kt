@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.base.ui.button.PrimaryButton
+import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.base.utils.aiImageProcessPointsCost
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.FreeDraw
@@ -53,6 +55,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
+import com.t8rin.imagetoolbox.core.ui.widget.editor.AiStickerGeneration
 import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorRailTool
 import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorToolRail
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerToolSheet
@@ -66,6 +69,7 @@ import kotlin.math.roundToInt
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
 import com.wanbaohe.textcard.presentation.editor.panels.LayersPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
+import com.wanbaohe.textcard.presentation.screenLogic.AI_IMAGE_POINTS_SOURCE
 import com.wanbaohe.textcard.presentation.screenLogic.EditorPanel
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import androidx.compose.material.icons.Icons as MaterialIcons
@@ -219,11 +223,27 @@ fun TextCardEditorScreen(
 
     EditorPanelSheet(component = component)
 
-    // 贴纸共享弹层(与图片创作同款):emoji + assets/stickers 素材,确认落装饰元素
+    // 贴纸共享弹层(与图片创作同款):emoji + assets/stickers 素材,确认落装饰元素;
+    // AI 生成贴纸 tab 由宿主注入(登录+积分预检通过后组件生成,成功落装饰元素并关弹层)
     StickerToolSheet(
         visible = showDecorationSheet,
         onDismiss = { showDecorationSheet = false },
-        onStickerClick = component::addStickerDecoration
+        onStickerClick = component::addStickerDecoration,
+        aiGeneration = AiStickerGeneration(
+            isGenerating = component.isGeneratingSticker,
+            pointsCost = aiImageProcessPointsCost(),
+            onGenerate = { prompt ->
+                ActionUtils.ensureLoginAndCheckPoints(
+                    source = AI_IMAGE_POINTS_SOURCE,
+                    point = aiImageProcessPointsCost()
+                ) {
+                    component.generateSticker(
+                        prompt = prompt,
+                        onSuccess = { showDecorationSheet = false }
+                    )
+                }
+            }
+        )
     )
 
     ShapePickerSheet(

@@ -110,6 +110,7 @@ import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.CardShapeGeometry
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
+import java.io.File
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.min
@@ -641,8 +642,9 @@ private fun CardDecorationElement(
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
 ) {
     val emojis = Emoji.allIcons()
-    // 素材贴纸(assets SVG)优先,否则 emoji 下标
-    val model = decoration.assetPath?.let { "file:///android_asset/$it" }
+    // AI 生成贴纸(本地文件)> 素材贴纸(assets SVG)> emoji 下标
+    val model = decoration.imagePath?.let(::File)
+        ?: decoration.assetPath?.let { "file:///android_asset/$it" }
         ?: decoration.emojiIndex?.let { emojis.getOrNull(it) }
         ?: return
     val density = LocalDensity.current

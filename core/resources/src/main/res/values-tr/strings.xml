@@ -1939,4 +1939,9 @@
     <string name="sticker_new_badge">YENİ</string>
     <string name="sticker_empty">Bu kategoride henüz çıkartma yok</string>
     <string name="coming_soon">Çok yakında</string>
+    <string name="sticker_ai_prompt_hint">Çıkartmayı tarif edin, örn.: güneş gözlüklü bir kedi</string>
+    <string name="sticker_ai_generate_action">Çıkartma oluştur</string>
+    <string name="sticker_ai_points_hint">Her oluşturma %1$d puan harcar</string>
+    <string name="sticker_ai_empty">Önce çıkartmayı tarif edin</string>
+    <string name="sticker_ai_generating">Oluşturuluyor…</string>
 </resources>

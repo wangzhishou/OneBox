@@ -1939,4 +1939,9 @@
     <string name="sticker_new_badge">NEW</string>
     <string name="sticker_empty">このカテゴリにはまだステッカーがありません</string>
     <string name="coming_soon">近日公開</string>
+    <string name="sticker_ai_prompt_hint">ステッカーを説明してください。例:サングラスをかけた猫</string>
+    <string name="sticker_ai_generate_action">ステッカーを生成</string>
+    <string name="sticker_ai_points_hint">生成ごとに %1$d ポイントを消費します</string>
+    <string name="sticker_ai_empty">先にステッカーの内容を説明してください</string>
+    <string name="sticker_ai_generating">生成中…</string>
 </resources>

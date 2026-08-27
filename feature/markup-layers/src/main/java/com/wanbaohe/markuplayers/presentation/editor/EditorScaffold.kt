@@ -92,6 +92,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiEditImage
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiGenerateImageSheet
+import com.t8rin.imagetoolbox.core.ui.widget.editor.AiStickerGeneration
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
@@ -355,12 +356,29 @@ fun EditorScaffold(
         }
     )
 
+    // 贴纸共享弹层:AI 生成贴纸 tab 由宿主注入(登录+积分预检通过后组件生成,
+    // 成功落 Sticker 图层并关弹层)
     StickerToolSheet(
         visible = showStickerSheet,
         onDismiss = { showStickerSheet = false },
         onStickerClick = { source ->
             component.addLayer(MarkupLayer(type = LayerType.Sticker(source)))
-        }
+        },
+        aiGeneration = AiStickerGeneration(
+            isGenerating = component.isGeneratingSticker,
+            pointsCost = aiImageProcessPointsCost(),
+            onGenerate = { prompt ->
+                ActionUtils.ensureLoginAndCheckPoints(
+                    source = AI_POINTS_SOURCE,
+                    point = aiImageProcessPointsCost()
+                ) {
+                    component.generateSticker(
+                        prompt = prompt,
+                        onSuccess = { showStickerSheet = false }
+                    )
+                }
+            }
+        )
     )
 
     LayersSheet(
