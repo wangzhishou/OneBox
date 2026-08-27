@@ -36,4 +36,5 @@ dependencies {
     implementation(projects.feature.markdownEdit)
     implementation(projects.feature.webview)
     implementation(projects.core.tts)
+    implementation(projects.core.imageGeneration)
 }

@@ -12,5 +12,6 @@ sealed class SettingsRoute {
     data object DisplaySettings : SettingsRoute()
     data object EasterEgg : SettingsRoute()
     data object TTSSettings : SettingsRoute()
+    data object ImageGenerationSettings : SettingsRoute()
     data object AuthCodeSettings : SettingsRoute()
 }

@@ -9,6 +9,7 @@ import com.wanbaohe.setting.ai.screen.AIWorkingModelSettingsScreen
 import com.wanbaohe.setting.authcode.screen.AuthCodeSettingsScreen
 import com.wanbaohe.setting.display.screen.DisplaySettingsScreen
 import com.wanbaohe.setting.easter.screen.EasterEggScreen
+import com.wanbaohe.setting.image.screen.ImageGenerationSettingsScreen
 import com.wanbaohe.setting.prompt.screen.SystemPromptDetailScreen
 import com.wanbaohe.setting.prompt.screen.SystemPromptManagementScreen
 import com.wanbaohe.setting.router.screenLogic.SettingRouterComponent
@@ -32,6 +33,10 @@ fun SettingRouterScreen(component: SettingRouterComponent) {
             child.ttsService,
             child.networkAudioPlayer,
             child.onGoBack,
+        )
+        is SettingRouterComponent.SettingChild.ImageGenerationSettings -> ImageGenerationSettingsScreen(
+            manager = child.manager,
+            onGoBack = child.onGoBack,
         )
         is SettingRouterComponent.SettingChild.AuthCodeSettings -> AuthCodeSettingsScreen(child.component)
     }

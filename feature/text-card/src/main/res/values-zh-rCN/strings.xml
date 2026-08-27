@@ -67,4 +67,10 @@
     <string name="textcard_default_title">每一天，\n都是新的开始</string>
     <string name="textcard_default_body">不念过去，不畏将来，\n用心感受当下的美好，\n生活会回馈给你温柔与惊喜。</string>
     <string name="textcard_save_failed">保存失败</string>
+    <string name="textcard_add_image_layer">AI 生成图片</string>
+    <string name="textcard_generate_image_hint">描述想要生成的图片,如:一只在月球上弹吉他的猫</string>
+    <string name="textcard_generate_image_action">生成</string>
+    <string name="textcard_generate_image_empty">请输入图片描述</string>
+    <string name="textcard_layer_image">图片</string>
+    <string name="textcard_generate_points_hint">每次生成消耗 %1$d 积分</string>
 </resources>

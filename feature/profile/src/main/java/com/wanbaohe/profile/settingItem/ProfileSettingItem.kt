@@ -148,6 +148,19 @@ fun ProfileSettingItem(
             )
         }
 
+        ProfileSetting.ImageGenerationSettings -> {
+            BaseSettingItem(
+                modifier,
+                settingsComponent = settingsComponent,
+                setting = setting,
+                themeIndex = themeIndex,
+                onclick = {
+                    onNavigate(Screen.ImageGenerationSettings)
+                },
+                appComponent = appComponent
+            )
+        }
+
         ProfileSetting.SystemPromptManagement -> {
             BaseSettingItem(
                 modifier,

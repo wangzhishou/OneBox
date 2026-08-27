@@ -1267,6 +1267,16 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        Screen.ImageGenerationSettings -> NavigationChild.SettingsRouter(
+            lifeFactories.get().settingRouterComponentFactory(
+                componentContext = componentContext,
+                route = com.wanbaohe.setting.router.SettingsRoute.ImageGenerationSettings,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+                appComponent = null,
+            )
+        )
+
         Screen.AuthCodeSettings -> NavigationChild.SettingsRouter(
             lifeFactories.get().settingRouterComponentFactory(
                 componentContext = componentContext,

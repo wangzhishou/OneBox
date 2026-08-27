@@ -5,6 +5,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
+import com.shifenmiao.base.utils.aiImageProcessPointsCost
+import com.shifenmiao.common.utils.BaseUtils
+import com.shifenmiao.imagegeneration.loader.ImageGenerationLoader
 import com.shifenmiao.interfaces.logging.ImageSaveLogger
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
@@ -33,6 +36,7 @@ import com.wanbaohe.textcard.domain.model.CanvasSpec
 import com.wanbaohe.textcard.domain.model.DecorationSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.GradientPresets
+import com.wanbaohe.textcard.domain.model.ImageElementSpec
 import com.wanbaohe.textcard.domain.model.RemotePaper
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
@@ -67,6 +71,7 @@ class TextCardComponent @AssistedInject internal constructor(
     private val paperRepository: TextCardPaperRepository,
     private val customCanvasStore: CustomCanvasStore,
     private val imageSaveLogger: ImageSaveLogger,
+    private val imageGenerationLoader: ImageGenerationLoader,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     // ---------------- 画布与卡片状态 ----------------
@@ -112,6 +117,14 @@ class TextCardComponent @AssistedInject internal constructor(
     /** 装饰贴纸列表(支持多个;每个装饰一个图层) */
     private val _decorations: MutableState<List<DecorationSpec>> = mutableStateOf(emptyList())
     val decorations: List<DecorationSpec> by _decorations
+
+    /** AI 生成图片元素列表(支持多个;每个图片一个图层) */
+    private val _imageElements: MutableState<List<ImageElementSpec>> = mutableStateOf(emptyList())
+    val imageElements: List<ImageElementSpec> by _imageElements
+
+    /** AI 生图进行中(生成图片图层弹窗的 loading) */
+    private val _isGeneratingImage: MutableState<Boolean> = mutableStateOf(false)
+    val isGeneratingImage: Boolean by _isGeneratingImage
 
     /** 元素图层(文字块/装饰,列表顺序即 z 序、底层在前);背景钉在最底不进列表 */
     private val _elementLayers: MutableState<List<ElementLayer>> =
@@ -336,6 +349,22 @@ class TextCardComponent @AssistedInject internal constructor(
                 }
                 registerChanges()
             }
+
+            _imageElements.value.any { it.id == id } -> {
+                _imageElements.update { list ->
+                    list.map {
+                        if (it.id == id) {
+                            it.copy(
+                                offsetX = offsetX.coerceIn(-0.5f, 1f),
+                                offsetY = offsetY.coerceIn(-0.5f, 1f),
+                                scale = safeScale,
+                                rotation = rotation
+                            )
+                        } else it
+                    }
+                }
+                registerChanges()
+            }
         }
     }
 
@@ -361,12 +390,19 @@ class TextCardComponent @AssistedInject internal constructor(
         }
     }
 
-    /** 删除选中元素(文字块至少保留一块,装饰不限),同步移除图层 */
+    /** 删除选中元素(文字块至少保留一块,装饰/图片不限),同步移除图层 */
     fun removeElement(id: String) {
         when {
             _textBlocks.value.any { it.id == id } -> removeTextBlock(id)
             _decorations.value.any { it.id == id } -> {
                 _decorations.update { list -> list.filterNot { it.id == id } }
+                _elementLayers.update { list -> list.filterNot { it.elementId == id } }
+                if (_selectedElementId.value == id) _selectedElementId.value = null
+                registerChanges()
+            }
+
+            _imageElements.value.any { it.id == id } -> {
+                _imageElements.update { list -> list.filterNot { it.id == id } }
                 _elementLayers.update { list -> list.filterNot { it.elementId == id } }
                 if (_selectedElementId.value == id) _selectedElementId.value = null
                 registerChanges()
@@ -393,6 +429,62 @@ class TextCardComponent @AssistedInject internal constructor(
         _decorations.value = emptyList()
         _elementLayers.update { list -> list.filterNot { it.elementId in ids } }
         if (_selectedElementId.value in ids) _selectedElementId.value = null
+        registerChanges()
+    }
+
+    // ---------------- AI 生成图片图层(core:image-generation) ----------------
+
+    private var generateImageJob: Job? by smartJob {
+        _isGeneratingImage.update { false }
+    }
+
+    /**
+     * 生成图片图层:走 image-generation 的活动配置(默认代理通道,无需用户配置),
+     * 成功取首图新增为图片元素并选中;失败 toast 展示原因。[onSuccess] 供弹窗自关。
+     */
+    fun generateImageLayer(prompt: String, onSuccess: () -> Unit = {}) {
+        val trimmed = prompt.trim()
+        if (trimmed.isEmpty()) {
+            AppToastHost.showToast(
+                message = appContext.getString(R.string.textcard_generate_image_empty),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
+                duration = ToastDuration.Short
+            )
+            return
+        }
+        if (_isGeneratingImage.value) return
+        generateImageJob = componentScope.launch {
+            _isGeneratingImage.value = true
+            imageGenerationLoader.load(trimmed)
+                .onSuccess { image ->
+                    addImageElement(image.file.absolutePath)
+                    // 仅真实生成成功扣积分；复用本地缓存不重复扣费。
+                    if (!image.fromCache) {
+                        BaseUtils.consumePoints(
+                            degree = aiImageProcessPointsCost(),
+                            desc = appContext.getString(R.string.textcard_add_image_layer),
+                            source = AI_IMAGE_POINTS_SOURCE,
+                            showToast = true
+                        )
+                    }
+                    onSuccess()
+                }
+                .onFailure { AppToastHost.showFailureToast(throwable = it) }
+            _isGeneratingImage.value = false
+        }
+    }
+
+    fun cancelGeneratingImage() {
+        generateImageJob = null
+    }
+
+    /** 新增图片元素:默认落画布中心,置顶(图层列表尾部)并选中 */
+    private fun addImageElement(uri: String) {
+        val canvas = _canvas.value ?: return
+        val element = ImageElementSpec.defaultPositionFor(canvas, uri)
+        _imageElements.update { it + element }
+        _elementLayers.update { it + ElementLayer(element.id, ElementLayer.Kind.Image) }
+        _selectedElementId.value = element.id
         registerChanges()
     }
 
@@ -464,6 +556,7 @@ class TextCardComponent @AssistedInject internal constructor(
             backgroundVisible = _backgroundVisible.value,
             textBlocks = _textBlocks.value,
             decorations = _decorations.value,
+            imageElements = _imageElements.value,
             layers = _elementLayers.value
         )
     }
@@ -568,3 +661,6 @@ class TextCardComponent @AssistedInject internal constructor(
         ): TextCardComponent
     }
 }
+
+/** AI 生成图片积分消耗/预检的来源标识 */
+internal const val AI_IMAGE_POINTS_SOURCE = "text_card_ai"

@@ -15,6 +15,7 @@ dependencies {
     api(project(":core:model"))
     api(project(":core:theme"))
     api(projects.core.network)
+    api(projects.core.imageGeneration)
     api(projects.feature.common)
     api(projects.feature.wechat)
     api(libs.org.greenrebot.eventbus)

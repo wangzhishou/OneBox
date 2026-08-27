@@ -62,4 +62,10 @@
     <string name="textcard_default_title">Setiap hari\nadalah awal yang baru</string>
     <string name="textcard_default_body">Hiduplah saat ini,\nrasakan keindahan di sekitarmu,\ndan hidup akan membalasmu dengan lembut.</string>
     <string name="textcard_save_failed">Gagal menyimpan</string>
+    <string name="textcard_add_image_layer">Buat Gambar (AI)</string>
+    <string name="textcard_generate_image_hint">Deskripsikan gambar, mis. kucing bermain gitar di bulan</string>
+    <string name="textcard_generate_image_action">Buat</string>
+    <string name="textcard_generate_image_empty">Masukkan deskripsi gambar</string>
+    <string name="textcard_layer_image">Gambar</string>
+    <string name="textcard_generate_points_hint">%1$d poin per pembuatan</string>
 </resources>

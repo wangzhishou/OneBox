@@ -62,4 +62,10 @@
     <string name="textcard_default_title">Cada día\nes un nuevo comienzo</string>
     <string name="textcard_default_body">Vive el momento,\nsiente la belleza que te rodea,\ny la vida te recompensará con dulzura.</string>
     <string name="textcard_save_failed">Error al guardar</string>
+    <string name="textcard_add_image_layer">Generar imagen con IA</string>
+    <string name="textcard_generate_image_hint">Describe la imagen, p. ej., un gato tocando la guitarra en la luna</string>
+    <string name="textcard_generate_image_action">Generar</string>
+    <string name="textcard_generate_image_empty">Introduce una descripción de la imagen</string>
+    <string name="textcard_layer_image">Imagen</string>
+    <string name="textcard_generate_points_hint">%1$d puntos por generación</string>
 </resources>

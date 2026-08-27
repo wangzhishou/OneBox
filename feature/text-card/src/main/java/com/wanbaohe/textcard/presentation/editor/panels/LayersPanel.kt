@@ -126,6 +126,7 @@ private fun ElementLayerRow(
     val canDelete = when (layer.kind) {
         ElementLayer.Kind.Text -> component.textBlocks.size > 1
         ElementLayer.Kind.Decoration -> true
+        ElementLayer.Kind.Image -> true
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -198,6 +199,7 @@ private fun layerName(layer: ElementLayer, component: TextCardComponent): String
         }
 
         ElementLayer.Kind.Decoration -> stringResource(R.string.textcard_layer_decoration)
+        ElementLayer.Kind.Image -> stringResource(R.string.textcard_layer_image)
     }
 
 /** 背景层行:当前背景 mini 预览 + 眼睛,钉在列表底部不可排序/删除 */
@@ -290,6 +292,19 @@ private fun LayerThumb(
                         contentScale = ContentScale.Fit,
                         showTransparencyChecker = false,
                         modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+
+            ElementLayer.Kind.Image -> {
+                val element = component.imageElements.find { it.id == layer.elementId }
+                if (element != null) {
+                    Picture(
+                        model = element.uri,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        showTransparencyChecker = false,
+                        modifier = Modifier.size(36.dp)
                     )
                 }
             }

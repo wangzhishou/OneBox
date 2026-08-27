@@ -72,6 +72,7 @@ fun TextCardEditorScreen(
     component: TextCardComponent,
 ) {
     var showDecorationSheet by rememberSaveable { mutableStateOf(false) }
+    var showGenerateImageSheet by rememberSaveable { mutableStateOf(false) }
     var showExitDialog by rememberSaveable { mutableStateOf(false) }
 
     // 编辑页返回(顶栏 + 系统返回键/手势):有未保存变更先弹退出确认,选择页不拦截
@@ -152,13 +153,20 @@ fun TextCardEditorScreen(
 
     EditorPanelSheet(
         component = component,
-        onEditDecoration = { showDecorationSheet = true }
+        onEditDecoration = { showDecorationSheet = true },
+        onGenerateImage = { showGenerateImageSheet = true }
     )
 
     DecorationPickerSheet(
         visible = showDecorationSheet,
         component = component,
         onDismiss = { showDecorationSheet = false }
+    )
+
+    GenerateImageSheet(
+        visible = showGenerateImageSheet,
+        component = component,
+        onDismiss = { showGenerateImageSheet = false }
     )
 
     ExitWithoutSavingDialog(
@@ -172,6 +180,12 @@ fun TextCardEditorScreen(
         onCancelLoading = component::cancelSaving,
         canCancel = true
     )
+
+    LoadingDialog(
+        visible = component.isGeneratingImage,
+        onCancelLoading = component::cancelGeneratingImage,
+        canCancel = true
+    )
 }
 
 /** 面板底部弹层:标题栏(居中标题 + 关闭按钮) + 对应面板内容 */
@@ -179,6 +193,7 @@ fun TextCardEditorScreen(
 private fun EditorPanelSheet(
     component: TextCardComponent,
     onEditDecoration: () -> Unit,
+    onGenerateImage: () -> Unit,
 ) {
     val activePanel = component.activePanel
     EnhancedModalBottomSheet(
@@ -219,7 +234,8 @@ private fun EditorPanelSheet(
                 when (activePanel) {
                     EditorPanel.Basic -> BasicPanel(
                         component = component,
-                        onAddDecoration = onEditDecoration
+                        onAddDecoration = onEditDecoration,
+                        onGenerateImage = onGenerateImage
                     )
 
                     EditorPanel.Background -> BackgroundPanel(component)

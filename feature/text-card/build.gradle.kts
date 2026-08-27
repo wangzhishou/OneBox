@@ -9,5 +9,6 @@ android.namespace = "com.wanbaohe.textcard"
 
 dependencies {
     implementation(projects.core.network)
+    implementation(projects.core.imageGeneration)
     implementation(projects.feature.common)
 }

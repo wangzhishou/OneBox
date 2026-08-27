@@ -80,3 +80,30 @@ data class DecorationSpec(
         }
     }
 }
+
+/**
+ * AI 生成图片元素(支持多个;每个一个图层,可独立拖动/缩放/旋转,同装饰)。
+ * offsetX/offsetY 为元素左上角的归一化坐标(X 相对画布宽、Y 相对画布高),
+ * 图片在 IMAGE_ELEMENT_SIZE_RATIO 正方形框内 fit 居中。
+ */
+data class ImageElementSpec(
+    val id: String = UUID.randomUUID().toString(),
+    val uri: String,
+    val alpha: Float = 1f,
+    override val offsetX: Float = 0f,
+    override val offsetY: Float = 0f,
+    override val scale: Float = 1f,
+    override val rotation: Float = 0f,
+) : ElementTransform {
+    companion object {
+        /** 新图片元素默认落画布中心 */
+        fun defaultPositionFor(canvas: CanvasSpec, uri: String): ImageElementSpec {
+            val size = CardLayout.IMAGE_ELEMENT_SIZE_RATIO
+            return ImageElementSpec(
+                uri = uri,
+                offsetX = 0.5f - size / 2,
+                offsetY = 0.5f - size * canvas.aspectRatio / 2
+            )
+        }
+    }
+}

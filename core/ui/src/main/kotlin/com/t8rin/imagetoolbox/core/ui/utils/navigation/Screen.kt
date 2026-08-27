@@ -1888,6 +1888,14 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("ImageGenerationSettings")
+    data object ImageGenerationSettings : Screen(
+        id = -26,
+        title = com.shifenmiao.core.R.string.profile_item_image_generation_settings,
+        subtitle = 0,
+    )
+
+    @Serializable
     @SerialName("SystemPromptDetail")
     data class SystemPromptDetail(
         val promptId: Int,

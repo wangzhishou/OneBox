@@ -22,6 +22,7 @@ import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.DecorationSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.ElementTransform
+import com.wanbaohe.textcard.domain.model.ImageElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
@@ -34,8 +35,8 @@ import javax.inject.Inject
 /**
  * 图文卡片导出:Bitmap.createBitmap(画布规格) → 背景(纹理/mesh 渐变/图片居中裁剪,
  * 整体乘 backgroundOpacity alpha,钉在最底)→ 按元素图层 z 序逐层画文字(StaticLayout)/
- * 装饰(SVG 解码),每层套用 offset + scale + rotation 变换(translate→rotate→scale,
- * 同 markup-layers LayerExportDispatcher 的顺序,绕内容中心)。
+ * 装饰(SVG 解码)/AI 图片(fit 居中),每层套用 offset + scale + rotation 变换
+ * (translate→rotate→scale,同 markup-layers LayerExportDispatcher 的顺序,绕内容中心)。
  * 几何/颜色常量与预览 Compose 侧共用 [CardLayout]。
  */
 class AndroidTextCardExportRenderer @Inject internal constructor(
@@ -61,6 +62,10 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
 
                 ElementLayer.Kind.Decoration -> state.decorationOf(layer.elementId)?.let {
                     drawDecoration(canvas, it, width, height)
+                }
+
+                ElementLayer.Kind.Image -> state.imageElementOf(layer.elementId)?.let {
+                    drawImageElement(canvas, it, width, height)
                 }
             }
         }
@@ -238,6 +243,48 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
     }
 
     // ---------------- 装饰层 ----------------
+
+    /**
+     * 单个 AI 图片元素:加载后 fit 居中进 IMAGE_ELEMENT_SIZE_RATIO 正方形框
+     * (与预览 Picture ContentScale.Fit 一致),绕框中心套 scale/rotation。
+     * 加载失败(URL 过期/无网)静默跳过,不阻断整体导出。
+     */
+    private fun drawImageElement(
+        canvas: Canvas,
+        element: ImageElementSpec,
+        width: Int,
+        height: Int,
+    ) {
+        val size = width * CardLayout.IMAGE_ELEMENT_SIZE_RATIO
+        val bitmap = runBlocking {
+            imageGetter.getImage(
+                data = element.uri,
+                size = size.toInt().coerceAtLeast(1)
+            )
+        } ?: return
+
+        // fit 居中:保持比例放进正方形框
+        val fitScale = minOf(size / bitmap.width, size / bitmap.height)
+        val drawWidth = bitmap.width * fitScale
+        val drawHeight = bitmap.height * fitScale
+        val imageLeft = (size - drawWidth) / 2f
+        val imageTop = (size - drawHeight) / 2f
+
+        val left = element.offsetX * width
+        val top = element.offsetY * height
+        canvas.save()
+        canvas.translate(left, top)
+        canvas.applyElementTransform(element, size, size)
+        canvas.drawBitmap(
+            bitmap,
+            null,
+            RectF(imageLeft, imageTop, imageLeft + drawWidth, imageTop + drawHeight),
+            Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG).apply {
+                alpha = (element.alpha.coerceIn(0f, 1f) * 255).toInt()
+            }
+        )
+        canvas.restore()
+    }
 
     /** 单个装饰贴纸:SVG 解码后按 offset 定位,绕中心套 scale/rotation */
     private fun drawDecoration(

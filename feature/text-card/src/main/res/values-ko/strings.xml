@@ -62,4 +62,10 @@
     <string name="textcard_default_title">매일이\n새로운 시작입니다</string>
     <string name="textcard_default_body">지금 이 순간을 살고,\n주변의 아름다움을 느껴보세요.\n삶은 부드럽게 보답할 거예요.</string>
     <string name="textcard_save_failed">저장 실패</string>
+    <string name="textcard_add_image_layer">AI로 이미지 생성</string>
+    <string name="textcard_generate_image_hint">생성할 이미지를 설명하세요. 예: 달에서 기타를 치는 고양이</string>
+    <string name="textcard_generate_image_action">생성</string>
+    <string name="textcard_generate_image_empty">이미지 설명을 입력해 주세요</string>
+    <string name="textcard_layer_image">이미지</string>
+    <string name="textcard_generate_points_hint">생성 시 %1$d 포인트 차감</string>
 </resources>

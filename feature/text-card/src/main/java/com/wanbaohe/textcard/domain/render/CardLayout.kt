@@ -27,6 +27,9 @@ object CardLayout {
     /** 装饰贴纸距角落的外边距(相对画布宽) */
     const val DECORATION_MARGIN_RATIO = 0.05f
 
+    /** AI 生成图片元素边长(相对画布宽),图片在该正方形框内 fit 居中 */
+    const val IMAGE_ELEMENT_SIZE_RATIO = 0.4f
+
     // ---- 文字框尺寸 ----
 
     /** 文字块默认框宽(相对画布宽):内容区宽 */

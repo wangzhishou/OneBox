@@ -62,4 +62,10 @@
     <string name="textcard_default_title">毎日が、\n新しい始まり</string>
     <string name="textcard_default_body">今を大切に生き、\nまわりの美しさを感じよう。\n人生はやさしく報いてくれる。</string>
     <string name="textcard_save_failed">保存に失敗しました</string>
+    <string name="textcard_add_image_layer">AI で画像生成</string>
+    <string name="textcard_generate_image_hint">生成したい画像を説明してください。例:月でギターを弾く猫</string>
+    <string name="textcard_generate_image_action">生成</string>
+    <string name="textcard_generate_image_empty">画像の説明を入力してください</string>
+    <string name="textcard_layer_image">画像</string>
+    <string name="textcard_generate_points_hint">生成ごとに %1$d ポイント消費</string>
 </resources>

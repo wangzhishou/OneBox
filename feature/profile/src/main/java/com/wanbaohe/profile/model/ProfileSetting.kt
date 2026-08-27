@@ -74,6 +74,7 @@ sealed class ProfileSetting(
             AIModelWorkSettings,
             AITokenUsage,
             TTSSettings,
+            ImageGenerationSettings,
             AIFeatureSettings,
             SystemPromptManagement
         )
@@ -205,6 +206,12 @@ sealed class ProfileSetting(
         id = 18,
         title = R.string.profile_item_tts_settings,
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMic
+    )
+
+    data object ImageGenerationSettings : ProfileSetting(
+        id = 25,
+        title = R.string.profile_item_image_generation_settings,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures
     )
 
     data object SystemPromptManagement : ProfileSetting(

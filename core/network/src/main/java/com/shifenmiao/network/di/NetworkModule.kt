@@ -12,7 +12,6 @@ import com.shifenmiao.network.api.DocConvertApiService
 import com.shifenmiao.network.api.OpenAICompatibleService
 import com.shifenmiao.network.api.OpenAIWithApiKeyService
 import com.shifenmiao.network.api.OwnProxyAIService
-import com.shifenmiao.network.api.QwenImageService
 import com.shifenmiao.network.downloader.HtmlDownloader
 import com.shifenmiao.network.downloader.OkHttpHtmlDownloader
 import com.shifenmiao.network.interceptor.AuthInterceptor
@@ -128,33 +127,6 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    @Named("QwenImageOkHttpClient")
-    fun provideQwenImageOkHttpClient(): OkHttpClient {
-        val appVersion = BuildConfig.VersionName
-            .takeUnless { it.isBlank() || it.equals("null", ignoreCase = true) }
-            ?: BuildConfig.VersionCode
-
-        // 不安装 AuthInterceptor：百炼 Token 由请求显式传入，避免泄露 App 登录凭证。
-        return OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.MINUTES)
-            .writeTimeout(2, TimeUnit.MINUTES)
-            .callTimeout(0, TimeUnit.MILLISECONDS)
-            .retryOnConnectionFailure(true)
-            .addInterceptor { chain ->
-                chain.proceed(
-                    chain.request().newBuilder()
-                        .header("User-Agent", "OneBox/$appVersion (Android ${android.os.Build.VERSION.SDK_INT})")
-                        .build()
-                )
-            }
-            .addInterceptor(ErrorHandlingInterceptor())
-            .addInterceptor(NetworkBuilder.provideHttpLoggingInterceptor())
-            .build()
-    }
-
-    @Singleton
-    @Provides
     @Named("DefaultRetrofit")
     fun provideDefaultRetrofit(@Named("DefaultOkHttpClient") okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -176,50 +148,6 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
     }
-
-    @Singleton
-    @Provides
-    @Named("QwenImageRetrofit")
-    fun provideQwenImageRetrofit(
-        @Named("QwenImageOkHttpClient") okHttpClient: OkHttpClient
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(UrlConstants.Q_WEN_AI_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(ModelProvider.provideGson()))
-        .client(okHttpClient)
-        .build()
-
-    @Singleton
-    @Provides
-    @Named("ProxyQwenImageOkHttpClient")
-    fun provideProxyQwenImageOkHttpClient(
-        @Named("DynamicBaseUrlInterceptor") dynamicBaseUrlInterceptor: DynamicBaseUrlInterceptor
-    ): OkHttpClient {
-        // 代理路由需要 AuthInterceptor 携带 App 登录凭证；生图可能耗时数分钟，
-        // 因此使用与直连路由对齐的长超时配置。
-        return OkHttpClient.Builder()
-            .addInterceptor(dynamicBaseUrlInterceptor)
-            .addInterceptor(AuthInterceptor())
-            .addInterceptor(GlobalParamsInterceptor())
-            .addInterceptor(UnauthorizedInterceptor())
-            .addInterceptor(ErrorHandlingInterceptor())
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.MINUTES)
-            .writeTimeout(2, TimeUnit.MINUTES)
-            .callTimeout(0, TimeUnit.MILLISECONDS)
-            .addInterceptor(NetworkBuilder.provideHttpLoggingInterceptor())
-            .build()
-    }
-
-    @Singleton
-    @Provides
-    @Named("ProxyQwenImageRetrofit")
-    fun provideProxyQwenImageRetrofit(
-        @Named("ProxyQwenImageOkHttpClient") okHttpClient: OkHttpClient
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(NetworkBuilder.getBaseUrl())
-        .addConverterFactory(GsonConverterFactory.create(ModelProvider.provideGson()))
-        .client(okHttpClient)
-        .build()
 
     @Singleton
     @Provides
@@ -271,18 +199,5 @@ object NetworkModule {
         @Named("OpenAICompatibleRetrofit") retrofit: Retrofit
     ): AnthropicCompatibleService = retrofit.create(AnthropicCompatibleService::class.java)
 
-    @Provides
-    @Singleton
-    @Named("DirectQwenImageService")
-    fun provideDirectQwenImageService(
-        @Named("QwenImageRetrofit") retrofit: Retrofit
-    ): QwenImageService = retrofit.create(QwenImageService::class.java)
-
-    @Provides
-    @Singleton
-    @Named("ProxyQwenImageService")
-    fun provideProxyQwenImageService(
-        @Named("ProxyQwenImageRetrofit") retrofit: Retrofit
-    ): QwenImageService = retrofit.create(QwenImageService::class.java)
 
 }

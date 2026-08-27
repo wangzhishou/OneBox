@@ -62,4 +62,10 @@
     <string name="textcard_default_title">हर दिन\nएक नई शुरुआत है</string>
     <string name="textcard_default_body">पल-पल जियो,\nआसपास की सुंदरता महसूस करो,\nऔर जीवन तुम्हें प्यार से इनाम देगा।</string>
     <string name="textcard_save_failed">सहेजना विफल</string>
+    <string name="textcard_add_image_layer">AI से छवि बनाएं</string>
+    <string name="textcard_generate_image_hint">छवि का वर्णन करें, जैसे चंद्रमा पर गिटार बजाती एक बिल्ली</string>
+    <string name="textcard_generate_image_action">बनाएं</string>
+    <string name="textcard_generate_image_empty">कृपया छवि का विवरण दर्ज करें</string>
+    <string name="textcard_layer_image">छवि</string>
+    <string name="textcard_generate_points_hint">प्रत्येक जेनरेशन पर %1$d पॉइंट</string>
 </resources>

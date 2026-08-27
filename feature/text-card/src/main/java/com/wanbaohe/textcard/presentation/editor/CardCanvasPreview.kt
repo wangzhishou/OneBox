@@ -78,6 +78,7 @@ import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.DecorationSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.ElementTransform
+import com.wanbaohe.textcard.domain.model.ImageElementSpec
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
@@ -161,6 +162,20 @@ fun CardCanvasPreview(
                             decoration = it,
                             isSelected = selectedElementId == it.id && !layer.locked,
                             canDelete = true,
+                            canvasWidthPx = canvasWidthPx,
+                            canvasHeightPx = canvasHeightPx,
+                            onElementTap = onElementTap,
+                            onElementTransform = onElementTransform,
+                            onElementDelete = onElementDelete
+                        )
+                    }
+                }
+
+                ElementLayer.Kind.Image -> state.imageElementOf(layer.elementId)?.let {
+                    key(it.id) {
+                        CardImageElement(
+                            element = it,
+                            isSelected = selectedElementId == it.id && !layer.locked,
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
@@ -838,8 +853,44 @@ private fun CardDecorationElement(
     }
 }
 
-private fun Offset.rotateBy(degrees: Float): Offset {
-    val radians = Math.toRadians(degrees.toDouble())
+/** AI 生成图片元素:正方形框内 fit 居中,透明底不画棋盘格(变换/删除交互同装饰) */
+@Composable
+private fun CardImageElement(
+    element: ImageElementSpec,
+    isSelected: Boolean,
+    canvasWidthPx: Float,
+    canvasHeightPx: Float,
+    onElementTap: (String) -> Unit,
+    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onElementDelete: (String) -> Unit,
+) {
+    val density = LocalDensity.current
+    val sizePx = canvasWidthPx * CardLayout.IMAGE_ELEMENT_SIZE_RATIO
+    ElementBox(
+        elementId = element.id,
+        transform = element,
+        leftPx = element.offsetX * canvasWidthPx,
+        topPx = element.offsetY * canvasHeightPx,
+        isSelected = isSelected,
+        canvasWidthPx = canvasWidthPx,
+        canvasHeightPx = canvasHeightPx,
+        onElementTap = onElementTap,
+        onElementTransform = onElementTransform,
+        onDelete = { onElementDelete(element.id) }
+    ) {
+        Picture(
+            model = element.uri,
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            showTransparencyChecker = false,
+            modifier = Modifier
+                .size(with(density) { sizePx.toDp() })
+                .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
+        )
+    }
+}
+
+private fun Offset.rotateBy(degrees: Float): Offset {    val radians = Math.toRadians(degrees.toDouble())
     return Offset(
         x = (x * cos(radians) - y * sin(radians)).toFloat(),
         y = (x * sin(radians) + y * cos(radians)).toFloat()

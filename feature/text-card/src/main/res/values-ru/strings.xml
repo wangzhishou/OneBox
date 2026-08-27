@@ -62,4 +62,10 @@
     <string name="textcard_default_title">Каждый день —\nэто новое начало</string>
     <string name="textcard_default_body">Живи настоящим,\nчувствуй красоту вокруг,\nи жизнь ответит тебе добром.</string>
     <string name="textcard_save_failed">Не удалось сохранить</string>
+    <string name="textcard_add_image_layer">Создать изображение (ИИ)</string>
+    <string name="textcard_generate_image_hint">Опишите изображение, например кот, играющий на гитаре на Луне</string>
+    <string name="textcard_generate_image_action">Создать</string>
+    <string name="textcard_generate_image_empty">Введите описание изображения</string>
+    <string name="textcard_layer_image">Изображение</string>
+    <string name="textcard_generate_points_hint">%1$d баллов за генерацию</string>
 </resources>

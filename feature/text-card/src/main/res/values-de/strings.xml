@@ -62,4 +62,10 @@
     <string name="textcard_default_title">Jeder Tag\nist ein neuer Anfang</string>
     <string name="textcard_default_body">Lebe im Moment,\nspüre die Schönheit um dich,\nund das Leben belohnt dich sanft.</string>
     <string name="textcard_save_failed">Speichern fehlgeschlagen</string>
+    <string name="textcard_add_image_layer">Bild mit KI generieren</string>
+    <string name="textcard_generate_image_hint">Beschreibe das Bild, z. B. eine Katze, die auf dem Mond Gitarre spielt</string>
+    <string name="textcard_generate_image_action">Generieren</string>
+    <string name="textcard_generate_image_empty">Bitte eine Bildbeschreibung eingeben</string>
+    <string name="textcard_layer_image">Bild</string>
+    <string name="textcard_generate_points_hint">%1$d Punkte pro Generierung</string>
 </resources>

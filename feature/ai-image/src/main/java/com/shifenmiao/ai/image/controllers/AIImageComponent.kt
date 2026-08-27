@@ -8,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.ai.image.components.model.BackgroundBehavior
-import com.shifenmiao.network.api.ApiService
+import com.shifenmiao.imagegeneration.model.ImageGenerationRequest
+import com.shifenmiao.imagegeneration.model.ImageGenerationResult
+import com.shifenmiao.imagegeneration.service.ImageGenerationManager
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
@@ -27,7 +29,7 @@ import kotlinx.coroutines.withContext
 
 class AIImageComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
-    private val apiService: ApiService,
+    private val imageGenerationManager: ImageGenerationManager,
     defaultDispatchersHolder: DispatchersHolder,
     private val fileController: FileController,
     private val imageCompressor: ImageCompressor<Bitmap>,
@@ -56,6 +58,16 @@ class AIImageComponent @AssistedInject internal constructor(
     private var savingJob: Job? by smartJob {
         _isSaving.update { false }
     }
+
+    suspend fun generateImage(
+        prompt: String,
+        inputImages: List<String> = emptyList(),
+    ): Result<ImageGenerationResult> = imageGenerationManager.generate(
+        ImageGenerationRequest(
+            prompt = prompt,
+            inputImages = inputImages,
+        )
+    )
 
     private suspend fun getDrawingBitmap(): Bitmap? = withContext(defaultDispatcher) {
         null //TODO

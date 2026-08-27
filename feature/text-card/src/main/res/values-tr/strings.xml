@@ -62,4 +62,10 @@
     <string name="textcard_default_title">Her gün\nyeni bir başlangıçtır</string>
     <string name="textcard_default_body">Anı yaşa,\netrafındaki güzelliği hisset,\nhayat sana nazikçe karşılık verecek.</string>
     <string name="textcard_save_failed">Kaydetme başarısız</string>
+    <string name="textcard_add_image_layer">YZ ile görsel oluştur</string>
+    <string name="textcard_generate_image_hint">Görseli tarif edin, örn. Ay\'da gitar çalan bir kedi</string>
+    <string name="textcard_generate_image_action">Oluştur</string>
+    <string name="textcard_generate_image_empty">Lütfen bir görsel açıklaması girin</string>
+    <string name="textcard_layer_image">Görsel</string>
+    <string name="textcard_generate_points_hint">Oluşturma başına %1$d puan</string>
 </resources>

@@ -19,6 +19,7 @@ import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EmojiEmotions
 
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.outlined.EmojiEmotions
 fun BasicPanel(
     component: TextCardComponent,
     onAddDecoration: () -> Unit,
+    onGenerateImage: () -> Unit,
 ) {
     PanelTitle(R.string.textcard_tab_basic)
 
@@ -44,6 +46,12 @@ fun BasicPanel(
         label = stringResource(R.string.textcard_add_decoration),
         enabled = true,
         onClick = onAddDecoration
+    )
+    BasicActionRow(
+        icon = MaterialIcons.Outlined.AutoAwesome,
+        label = stringResource(R.string.textcard_add_image_layer),
+        enabled = true,
+        onClick = onGenerateImage
     )
     BasicActionRow(
         icon = MaterialIcons.Outlined.Delete,

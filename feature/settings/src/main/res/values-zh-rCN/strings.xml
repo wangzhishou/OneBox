@@ -292,6 +292,34 @@
     <string name="tts_settings_provider_openai">OpenAI 兼容</string>
     <string name="tts_settings_provider_mimo">小米 MiMo</string>
 
+    <string name="image_settings_configs_section">图片服务</string>
+    <string name="image_settings_detail_section">服务配置</string>
+    <string name="image_settings_direct_section">直连配置</string>
+    <string name="image_settings_model_section">模型配置</string>
+    <string name="image_settings_proxy_section">后端代理</string>
+    <string name="image_settings_no_config">暂未配置图片服务</string>
+    <string name="image_settings_provider_unavailable">服务插件“%1$s”当前不可用，你可以删除这条已保存配置。</string>
+    <string name="image_settings_add_provider">添加服务配置</string>
+    <string name="image_settings_active_badge">当前使用</string>
+    <string name="image_settings_capability_generation">图片生成</string>
+    <string name="image_settings_capability_editing">图片编辑</string>
+    <string name="image_settings_name_label">配置名称</string>
+    <string name="image_settings_enabled_label">启用</string>
+    <string name="image_settings_base_url_label">服务商基础地址</string>
+    <string name="image_settings_token_label">服务商 API Token</string>
+    <string name="image_settings_show_token">显示</string>
+    <string name="image_settings_hide_token">隐藏</string>
+    <string name="image_settings_route_hint">填写服务商 Token 时直连官方接口；未填写时使用后端代理。</string>
+    <string name="image_settings_model_label">模型</string>
+    <string name="image_settings_proxy_url_label">代理基础地址</string>
+    <string name="image_settings_proxy_path_label">代理路径</string>
+    <string name="image_settings_save_action">保存</string>
+    <string name="image_settings_set_active_action">设为当前</string>
+    <string name="image_settings_delete_action">删除配置</string>
+    <string name="image_settings_save_success">图片服务配置已保存</string>
+    <string name="image_settings_active_success">当前图片服务已更新</string>
+    <string name="image_settings_delete_success">图片服务配置已删除</string>
+
     <!-- 密码保护设置页 -->
     <string name="auth_code_settings_title">密码保护</string>
     <string name="auth_code_settings_subtitle">用于敏感操作前验证身份</string>

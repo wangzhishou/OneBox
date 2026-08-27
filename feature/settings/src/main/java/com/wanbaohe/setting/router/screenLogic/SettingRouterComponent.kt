@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.shifenmiao.common.logic.AppComponent
+import com.shifenmiao.imagegeneration.service.ImageGenerationManager
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -42,6 +43,7 @@ class SettingRouterComponent @AssistedInject internal constructor(
     private val easterEggComponentFactory: EasterEggComponent.Factory,
     private val authCodeSettingsComponentFactory: AuthCodeSettingsComponent.Factory,
     private val ttsService: TTSService,
+    private val imageGenerationManager: ImageGenerationManager,
     private val networkAudioPlayer: NetworkAudioPlayer,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -133,6 +135,11 @@ class SettingRouterComponent @AssistedInject internal constructor(
             onGoBack = onGoBack,
         )
 
+        is SettingsRoute.ImageGenerationSettings -> SettingChild.ImageGenerationSettings(
+            manager = imageGenerationManager,
+            onGoBack = onGoBack,
+        )
+
         is SettingsRoute.AuthCodeSettings -> SettingChild.AuthCodeSettings(
             authCodeSettingsComponentFactory(
                 componentContext = componentContext.childContext("auth_code_settings"),
@@ -155,6 +162,10 @@ class SettingRouterComponent @AssistedInject internal constructor(
         class TTSSettings(
             val ttsService: TTSService,
             val networkAudioPlayer: NetworkAudioPlayer,
+            val onGoBack: () -> Unit,
+        ) : SettingChild
+        class ImageGenerationSettings(
+            val manager: ImageGenerationManager,
             val onGoBack: () -> Unit,
         ) : SettingChild
         class AuthCodeSettings(val component: AuthCodeSettingsComponent) : SettingChild
