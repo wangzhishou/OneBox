@@ -205,4 +205,13 @@
     <string name="markup_export_share_after_sub">Kaydettikten sonra paylaşım panelini aç</string>
     <string name="markup_export_failed_no_image">Dışa aktarılacak görsel yok</string>
     <string name="markup_cancel">İptal</string>
+    <string name="markup_ai_generate_title">YZ ile görsel oluştur</string>
+    <string name="markup_ai_edit_image_title">Görseli YZ ile düzenle</string>
+    <string name="markup_ai_generate_hint">Görseli tarif edin, örn. Ay\'da gitar çalan bir kedi</string>
+    <string name="markup_ai_edit_image_hint">Düzenlemeyi tarif edin, örn. arka planı yıldızlı gökyüzüyle değiştirin</string>
+    <string name="markup_ai_generate_action">Oluştur</string>
+    <string name="markup_ai_generate_points_hint">Oluşturma başına %1$d puan</string>
+    <string name="markup_ai_generate_empty">Lütfen bir görsel açıklaması girin</string>
+    <string name="markup_ai_edit_current">Mevcut</string>
+    <string name="markup_ai_edit_history">Geçmiş</string>
 </resources>

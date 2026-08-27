@@ -28,6 +28,8 @@ sealed interface LayerType {
         val alignment: TextAlignment = TextAlignment.Left,
         val lineHeight: Float = 1.2f,
         val letterSpacingEm: Float = 0f,
+        /** 框宽(相对底图宽);null = 现状自适应(按最长行实测宽),非 null 时文字在框内折行 */
+        val widthRatio: Float? = null,
     ) : LayerType {
         enum class Decoration {
             Bold, Italic, Underline, LineThrough

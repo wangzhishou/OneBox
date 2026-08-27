@@ -221,4 +221,13 @@
     <string name="markup_export_share_after_sub">Abrir painel de compartilhamento após salvar</string>
     <string name="markup_export_failed_no_image">Nenhuma imagem para exportar</string>
     <string name="markup_cancel">Cancelar</string>
+    <string name="markup_ai_generate_title">Gerar imagem (IA)</string>
+    <string name="markup_ai_edit_image_title">Editar imagem (IA)</string>
+    <string name="markup_ai_generate_hint">Descreva a imagem, ex.: um gato tocando guitarra na lua</string>
+    <string name="markup_ai_edit_image_hint">Descreva a edição, ex.: trocar o fundo por um céu estrelado</string>
+    <string name="markup_ai_generate_action">Gerar</string>
+    <string name="markup_ai_generate_points_hint">%1$d pontos por geração</string>
+    <string name="markup_ai_generate_empty">Insira uma descrição da imagem</string>
+    <string name="markup_ai_edit_current">Atual</string>
+    <string name="markup_ai_edit_history">Histórico</string>
 </resources>

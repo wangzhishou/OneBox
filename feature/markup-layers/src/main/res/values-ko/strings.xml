@@ -205,4 +205,13 @@
     <string name="markup_export_share_after_sub">저장 후 공유 패널 열기</string>
     <string name="markup_export_failed_no_image">보낼 이미지가 없습니다</string>
     <string name="markup_cancel">취소</string>
+    <string name="markup_ai_generate_title">AI로 이미지 생성</string>
+    <string name="markup_ai_edit_image_title">AI로 이미지 편집</string>
+    <string name="markup_ai_generate_hint">생성할 이미지를 설명하세요. 예: 달에서 기타를 치는 고양이</string>
+    <string name="markup_ai_edit_image_hint">편집 내용을 설명하세요. 예: 배경을 별이 빛나는 하늘로 바꾸기</string>
+    <string name="markup_ai_generate_action">생성</string>
+    <string name="markup_ai_generate_points_hint">생성 시 %1$d 포인트 차감</string>
+    <string name="markup_ai_generate_empty">이미지 설명을 입력해 주세요</string>
+    <string name="markup_ai_edit_current">현재</string>
+    <string name="markup_ai_edit_history">기록</string>
 </resources>

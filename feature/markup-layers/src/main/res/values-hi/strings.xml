@@ -221,4 +221,13 @@
     <string name="markup_export_share_after_sub">सेव करने के बाद शेयर पैनल खोलें</string>
     <string name="markup_export_failed_no_image">एक्सपोर्ट करने के लिए कोई इमेज नहीं</string>
     <string name="markup_cancel">रद्द करें</string>
+    <string name="markup_ai_generate_title">AI से छवि बनाएं</string>
+    <string name="markup_ai_edit_image_title">AI से छवि संपादित करें</string>
+    <string name="markup_ai_generate_hint">छवि का वर्णन करें, जैसे चंद्रमा पर गिटार बजाती एक बिल्ली</string>
+    <string name="markup_ai_edit_image_hint">संपादन का वर्णन करें, जैसे पृष्ठभूमि को तारों भरे आसमान से बदलें</string>
+    <string name="markup_ai_generate_action">बनाएं</string>
+    <string name="markup_ai_generate_points_hint">प्रत्येक जेनरेशन पर %1$d पॉइंट</string>
+    <string name="markup_ai_generate_empty">कृपया छवि का विवरण दर्ज करें</string>
+    <string name="markup_ai_edit_current">वर्तमान</string>
+    <string name="markup_ai_edit_history">इतिहास</string>
 </resources>

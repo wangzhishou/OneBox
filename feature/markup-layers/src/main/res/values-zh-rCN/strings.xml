@@ -220,4 +220,13 @@
     <string name="markup_export_share_after_sub">保存后打开分享面板</string>
     <string name="markup_export_failed_no_image">没有可导出的图片</string>
     <string name="markup_cancel">取消</string>
+    <string name="markup_ai_generate_title">AI 生成图片</string>
+    <string name="markup_ai_edit_image_title">AI 编辑图片</string>
+    <string name="markup_ai_generate_hint">描述想要生成的图片,如:一只在月球上弹吉他的猫</string>
+    <string name="markup_ai_edit_image_hint">描述想要的修改,如:把背景换成星空</string>
+    <string name="markup_ai_generate_action">生成</string>
+    <string name="markup_ai_generate_points_hint">每次生成消耗 %1$d 积分</string>
+    <string name="markup_ai_generate_empty">请输入图片描述</string>
+    <string name="markup_ai_edit_current">当前</string>
+    <string name="markup_ai_edit_history">历史版本</string>
 </resources>

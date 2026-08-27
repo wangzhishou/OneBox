@@ -8,6 +8,7 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.net.Uri
+import android.util.Base64
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +20,8 @@ import com.shifenmiao.common.recent.RecentAccessRepository
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.shifenmiao.network.repository.BaiduImageProcessRepository
+import com.shifenmiao.imagegeneration.loader.ImageGenerationLoader
+import com.shifenmiao.imagegeneration.model.ImageGenerationRequest
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
@@ -47,6 +50,7 @@ import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.MarkupLayersApplier
 import com.wanbaohe.markuplayers.domain.history.LayerHistory
+import com.shifenmiao.base.utils.aiImageProcessPointsCost
 import com.wanbaohe.markuplayers.domain.model.AiImageOp
 import com.wanbaohe.markuplayers.domain.model.LayerBaseRemap
 import com.wanbaohe.markuplayers.domain.model.LayerBlendMode
@@ -70,7 +74,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
 /**
  * 图层创作页面组件。
@@ -93,6 +99,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val shareProvider: ImageShareProvider<Bitmap>,
     private val markupLayersApplier: MarkupLayersApplier<Bitmap>,
     private val imageProcessRepository: BaiduImageProcessRepository,
+    private val imageGenerationLoader: ImageGenerationLoader,
     private val filterProvider: FilterProvider<Bitmap>,
     private val recentAccessRepository: RecentAccessRepository,
     addFiltersSheetComponentFactory: AddFiltersSheetComponent.Factory,
@@ -633,6 +640,94 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         _isAiProcessing.value = false
     }
 
+    // ---------------- AI 生成图片(文生图;选中图片图层时图生图编辑) ----------------
+
+    /**
+     * AI 生成图片:登录与积分预检由调用方(UI 层)完成;复用 [isAiProcessing]
+     * 防二次并驱动 LoadingDialog(不做占位图层)。
+     * 新建:成功 addLayer(Image 图层,自动进 undo 历史);编辑:选中 Image 图层的
+     * imageData 转 base64 data URI 作输入图,成功 updateLayer 换图(undo 即回退)。
+     * 仅非缓存结果(!fromCache)扣积分,失败/取消不扣。
+     */
+    fun generateImageLayer(prompt: String) {
+        val trimmed = prompt.trim()
+        if (trimmed.isEmpty() || _isAiProcessing.value) return
+        aiProcessJob = componentScope.launch {
+            _isAiProcessing.value = true
+            val editLayer = _layers.value.firstOrNull {
+                it.id == _selectedLayerId.value && it.type is LayerType.Image
+            }
+            // 编辑模式:本地图片读成 base64 data URI 作为输入图(服务商不接受本地路径)
+            val inputImages = if (editLayer != null) {
+                val path = (editLayer.type as LayerType.Image).imageData.toString()
+                runCatching {
+                    withContext(defaultDispatcher) { encodeImageAsDataUri(path) }
+                }.getOrNull()?.let(::listOf) ?: run {
+                    AppToastHost.showFailureToast(R.string.markup_ai_process_failed)
+                    _isAiProcessing.value = false
+                    return@launch
+                }
+            } else emptyList()
+
+            val (sourceWidth, sourceHeight) = _sourceSize.value
+                ?.let { it.width to it.height }
+                ?: _bitmap.value?.let { it.width to it.height }
+                ?: (1080 to 1080)
+
+            imageGenerationLoader.load(
+                ImageGenerationRequest(
+                    prompt = trimmed,
+                    inputImages = inputImages,
+                    outputSize = qwenOutputSize(sourceWidth, sourceHeight)
+                )
+            ).onSuccess { image ->
+                val path = image.file.absolutePath
+                if (editLayer != null) {
+                    updateLayer(editLayer.id) { layer ->
+                        layer.copy(type = LayerType.Image(imageData = path))
+                    }
+                } else {
+                    addLayer(MarkupLayer(type = LayerType.Image(imageData = path)))
+                }
+                if (!image.fromCache) {
+                    BaseUtils.consumePoints(
+                        degree = aiImageProcessPointsCost(),
+                        desc = appContext.getString(R.string.markup_ai_generate_title),
+                        source = AI_POINTS_SOURCE,
+                        showToast = true
+                    )
+                }
+            }.onFailure { failure ->
+                if (failure is CancellationException) throw failure
+                failure.makeLog(LOG_TAG)
+                AppToastHost.showFailureToast(
+                    failure.message?.takeIf { it.isNotBlank() }
+                        ?: appContext.getString(R.string.markup_ai_process_failed)
+                )
+            }
+            _isAiProcessing.value = false
+        }
+    }
+
+    /** 本地图片文件 → base64 data URI(图生图输入) */
+    private fun encodeImageAsDataUri(path: String): String {
+        val file = File(path)
+        val mime = when (file.extension.lowercase()) {
+            "jpg", "jpeg" -> "image/jpeg"
+            "webp" -> "image/webp"
+            else -> "image/png"
+        }
+        return "data:$mime;base64," + Base64.encodeToString(file.readBytes(), Base64.NO_WRAP)
+    }
+
+    /** 生成输出尺寸(服务商限制:像素总数 ≤ 2048²、宽高比 ≤ 8:1),按底图等比收窄 */
+    private fun qwenOutputSize(width: Int, height: Int): String {
+        val maxPixels = 2048.0 * 2048.0
+        val pixels = width.toDouble() * height
+        val scale = if (pixels > maxPixels) sqrt(maxPixels / pixels) else 1.0
+        return "${(width * scale).roundToInt()}*${(height * scale).roundToInt()}"
+    }
+
     // ---------------- 图层操作(修改前一律先记快照) ----------------
 
     fun addLayer(layer: MarkupLayer) {
@@ -726,6 +821,24 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 if (it.id == id) {
                     it.copy(transform = it.transform.copy(alpha = alpha.coerceIn(0f, 1f)))
                 } else it
+            }
+        }
+        registerChanges()
+    }
+
+    /** 文字层框尺寸拖动手势中间帧:直接改 widthRatio 不入历史(快照已在 [beginLayerTransformChange] 记录) */
+    fun updateTextWidthRatioTransient(
+        id: String,
+        widthRatio: Float
+    ) {
+        if (_layers.value.none { it.id == id }) return
+        _layers.update { list ->
+            list.map { layer ->
+                if (layer.id == id && layer.type is LayerType.Text) {
+                    layer.copy(
+                        type = layer.type.copy(widthRatio = widthRatio.coerceIn(0.05f, 1f))
+                    )
+                } else layer
             }
         }
         registerChanges()

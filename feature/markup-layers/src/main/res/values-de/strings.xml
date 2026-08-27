@@ -221,4 +221,13 @@
     <string name="markup_export_share_after_sub">Teilen-Panel nach dem Speichern öffnen</string>
     <string name="markup_export_failed_no_image">Kein Bild zum Exportieren</string>
     <string name="markup_cancel">Abbrechen</string>
+    <string name="markup_ai_generate_title">Bild mit KI generieren</string>
+    <string name="markup_ai_edit_image_title">Bild mit KI bearbeiten</string>
+    <string name="markup_ai_generate_hint">Beschreibe das Bild, z. B. eine Katze, die auf dem Mond Gitarre spielt</string>
+    <string name="markup_ai_edit_image_hint">Beschreibe die Änderung, z. B. ersetze den Hintergrund durch einen Sternenhimmel</string>
+    <string name="markup_ai_generate_action">Generieren</string>
+    <string name="markup_ai_generate_points_hint">%1$d Punkte pro Generierung</string>
+    <string name="markup_ai_generate_empty">Bitte eine Bildbeschreibung eingeben</string>
+    <string name="markup_ai_edit_current">Aktuell</string>
+    <string name="markup_ai_edit_history">Verlauf</string>
 </resources>

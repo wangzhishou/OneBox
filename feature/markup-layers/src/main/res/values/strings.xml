@@ -221,4 +221,13 @@
     <string name="markup_export_share_after_sub">Open share panel after saving</string>
     <string name="markup_export_failed_no_image">No image to export</string>
     <string name="markup_cancel">Cancel</string>
+    <string name="markup_ai_generate_title">Generate Image (AI)</string>
+    <string name="markup_ai_edit_image_title">Edit Image (AI)</string>
+    <string name="markup_ai_generate_hint">Describe the image, e.g. a cat playing guitar on the moon</string>
+    <string name="markup_ai_edit_image_hint">Describe the edit, e.g. replace the background with a starry sky</string>
+    <string name="markup_ai_generate_action">Generate</string>
+    <string name="markup_ai_generate_points_hint">%1$d points per generation</string>
+    <string name="markup_ai_generate_empty">Please enter an image description</string>
+    <string name="markup_ai_edit_current">Current</string>
+    <string name="markup_ai_edit_history">History</string>
 </resources>

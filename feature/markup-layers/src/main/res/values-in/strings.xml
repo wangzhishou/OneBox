@@ -205,4 +205,13 @@
     <string name="markup_export_share_after_sub">Buka panel berbagi setelah menyimpan</string>
     <string name="markup_export_failed_no_image">Tidak ada gambar untuk diekspor</string>
     <string name="markup_cancel">Batal</string>
+    <string name="markup_ai_generate_title">Buat Gambar (AI)</string>
+    <string name="markup_ai_edit_image_title">Edit Gambar (AI)</string>
+    <string name="markup_ai_generate_hint">Deskripsikan gambar, mis. kucing bermain gitar di bulan</string>
+    <string name="markup_ai_edit_image_hint">Deskripsikan editnya, mis. ganti latar dengan langit berbintang</string>
+    <string name="markup_ai_generate_action">Buat</string>
+    <string name="markup_ai_generate_points_hint">%1$d poin per pembuatan</string>
+    <string name="markup_ai_generate_empty">Masukkan deskripsi gambar</string>
+    <string name="markup_ai_edit_current">Saat ini</string>
+    <string name="markup_ai_edit_history">Riwayat</string>
 </resources>

@@ -15,6 +15,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickerEmoji
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.wanbaohe.markuplayers.R
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.AutoAwesome
 
 /** 编辑器工具。新增工具:在这里登记一行,再在 EditorScaffold 挂对应行为 */
 data class EditorTool(
@@ -43,6 +45,7 @@ object EditorTools {
     const val ID_FILTER = "filter"
     const val ID_ADJUST = "adjust"
     const val ID_AI = "ai"
+    const val ID_AI_GENERATE = "ai_generate"
     const val ID_LAYERS = "layers"
 
     val all: List<EditorTool> = listOf(
@@ -88,6 +91,14 @@ object EditorTools {
             icon = Icons.Outlined.LineCrop,
             placement = EditorTool.Placement.SideBar,
             mode = EditorTool.Mode.FullScreen
+        ),
+        // AI 生成图片:侧栏入口,开共享 AiGenerateImageSheet(文生图;选中图片图层时图生图)
+        EditorTool(
+            id = ID_AI_GENERATE,
+            titleRes = R.string.markup_ai_generate_title,
+            icon = MaterialIcons.Outlined.AutoAwesome,
+            placement = EditorTool.Placement.SideBar,
+            mode = EditorTool.Mode.Sheet
         ),
         // 「基础工具」Tab:左侧工具栏的显隐开关(侧栏承载选择/画笔/文字/贴纸/形状/裁剪)
         EditorTool(

@@ -31,8 +31,13 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
+import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeHandles
+import com.t8rin.imagetoolbox.core.ui.widget.editor.HANDLE_SIZE
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
 import kotlin.math.abs
 import kotlin.math.cos
@@ -48,6 +53,10 @@ import kotlin.math.sin
  * 与导出侧 Canvas.translate(center)→rotate→scale 的变换顺序完全同构,所见即所得。
  * 手势期间只更新本地状态保持流畅,全部手指抬起后经 [onTransformEnd] 一次性提交。
  *
+ * 文字层(且未锁定、已选中)可经 [resizeConfig] 挂 8 向框尺寸手柄
+ * (共享 chrome,core/ui widget/editor):拖边/角改框宽,文字重排,字号不变;
+ * 手柄 onDragStart 经 BoxResizeConfig.onGestureStart 回调(宿主在这里记 undo 快照)。
+ *
  * @param tapSelectable 是否响应点选手势。铺满画布的图层(如画笔)应传 false,
  * 否则会拦截画布的「点空白取消选择」
  */
@@ -60,6 +69,7 @@ fun BoxWithConstraintsScope.EditBox(
     modifier: Modifier = Modifier,
     onEditRequest: (() -> Unit)? = null,
     tapSelectable: Boolean = true,
+    resizeConfig: BoxResizeConfig? = null,
     content: @Composable BoxScope.() -> Unit,
 ) {
     if (!transform.visible) return
@@ -68,12 +78,14 @@ fun BoxWithConstraintsScope.EditBox(
     val canvasHeight = constraints.maxHeight.toFloat()
 
     var localTransform by remember(transform) { mutableStateOf(transform) }
+    var boxSizePx by remember { mutableStateOf(IntSize.Zero) }
 
     val canTransform = isSelected && !transform.locked
 
     Box(
         modifier = modifier
             .align(Alignment.Center)
+            .onSizeChanged { boxSizePx = it }
             .graphicsLayer {
                 scaleX = localTransform.scale
                 scaleY = localTransform.scale
@@ -151,6 +163,24 @@ fun BoxWithConstraintsScope.EditBox(
             scale = localTransform.scale,
             modifier = Modifier.matchParentSize()
         )
+        // 文字层 8 向框尺寸手柄(共享 chrome,仅选中未锁定时出现):
+        // 手柄随图层一起被 graphicsLayer 变换(旋转/缩放时跟随图层);
+        // 手势开始经 onResizeGestureStart 记 undo 快照
+        if (resizeConfig != null && canTransform && boxSizePx != IntSize.Zero) {
+            BoxResizeHandles(
+                sizeProvider = { boxSizePx },
+                leftProvider = {
+                    localTransform.centerX * canvasWidth - boxSizePx.width / 2f
+                },
+                topProvider = {
+                    localTransform.centerY * canvasHeight - boxSizePx.height / 2f
+                },
+                inverseScale = 1f / localTransform.scale.coerceIn(0.1f, 10f),
+                config = resizeConfig,
+                rotationProvider = { localTransform.rotation },
+                scaleProvider = { localTransform.scale }
+            )
+        }
     }
 }
 

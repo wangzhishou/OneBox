@@ -90,6 +90,8 @@ import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.t8rin.imagetoolbox.core.ui.widget.editor.AiEditImage
+import com.t8rin.imagetoolbox.core.ui.widget.editor.AiGenerateImageSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
@@ -98,6 +100,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.tappable
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
+import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.model.NormalizedRect
@@ -159,6 +162,8 @@ fun EditorScaffold(
     var showShapeSheet by rememberSaveable { mutableStateOf(false) }
     var showFullFilterSheet by rememberSaveable { mutableStateOf(false) }
     var showCanvasBackgroundSheet by rememberSaveable { mutableStateOf(false) }
+    // AI 生成图片弹层(共享 AiGenerateImageSheet,宿主薄壳负责预检)
+    var showAiGenerateSheet by rememberSaveable { mutableStateOf(false) }
     // 图像修复框选模式:true 时画布叠加框选层(矩形相对底图归一化),底部换成取消/确认操作条
     var aiRectSelect by rememberSaveable { mutableStateOf(false) }
     var aiRect by remember { mutableStateOf(DEFAULT_AI_RECT) }
@@ -190,6 +195,7 @@ fun EditorScaffold(
                     EditorTools.ID_DRAW -> component.selectLayer(null)
                     EditorTools.ID_STICKER -> showStickerSheet = true
                     EditorTools.ID_SHAPE -> showShapeSheet = true
+                    EditorTools.ID_AI_GENERATE -> showAiGenerateSheet = true
                     // FullScreen 工具(裁剪)由 activeToolId 驱动,下方直接切换全屏页
                 }
             }
@@ -428,6 +434,45 @@ fun EditorScaffold(
                 }
             }
         }
+    )
+
+    // AI 生成图片(共享 core/ui AiGenerateImageSheet;宿主薄壳负责登录+积分预检):
+    // 选中图片图层时图生图编辑(成功后换图,回退走现有 undo 体系,不另建历史)
+    val aiEditTarget = component.layers.firstOrNull {
+        it.id == component.selectedLayerId && it.type is LayerType.Image
+    }
+    AiGenerateImageSheet(
+        visible = showAiGenerateSheet,
+        title = stringResource(R.string.markup_ai_generate_title),
+        editTitle = stringResource(R.string.markup_ai_edit_image_title),
+        promptHint = stringResource(R.string.markup_ai_generate_hint),
+        editPromptHint = stringResource(R.string.markup_ai_edit_image_hint),
+        generateLabel = stringResource(R.string.markup_ai_generate_action),
+        pointsHint = stringResource(
+            R.string.markup_ai_generate_points_hint,
+            aiImageProcessPointsCost()
+        ),
+        emptyHint = stringResource(R.string.markup_ai_generate_empty),
+        currentLabel = stringResource(R.string.markup_ai_edit_current),
+        historyLabel = stringResource(R.string.markup_ai_edit_history),
+        isGenerating = component.isAiProcessing,
+        editImage = aiEditTarget?.let { layer ->
+            AiEditImage(
+                uri = (layer.type as LayerType.Image).imageData.toString(),
+                historyUris = emptyList(),
+                onRevert = {}
+            )
+        },
+        onGenerate = { prompt ->
+            ActionUtils.ensureLoginAndCheckPoints(
+                source = AI_POINTS_SOURCE,
+                point = aiImageProcessPointsCost()
+            ) {
+                component.generateImageLayer(prompt)
+                showAiGenerateSheet = false
+            }
+        },
+        onDismiss = { showAiGenerateSheet = false }
     )
 
     CanvasBackgroundSheet(
@@ -749,7 +794,8 @@ private fun EditorCanvas(
                                 val layerCanvasHeight = constraints.maxHeight.toFloat()
                                 liveLayers.forEach { layer ->
                                     key(layer.id) {
-                                        val onEditRequest = (layer.type as? LayerType.Text)
+                                        val textType = layer.type as? LayerType.Text
+                                        val onEditRequest = textType
                                             ?.let { { onEditTextLayer(layer.id) } }
                                         EditBox(
                                             transform = layer.transform,
@@ -760,7 +806,35 @@ private fun EditorCanvas(
                                                 component.updateLayerTransform(layer.id, newTransform)
                                             },
                                             // 绘制/框选模式下图层不响应手势(纯静态渲染)
-                                            tapSelectable = !drawMode && !aiRectSelect && layer.type !is LayerType.Draw
+                                            tapSelectable = !drawMode && !aiRectSelect && layer.type !is LayerType.Draw,
+                                            // 文字层:8 向框尺寸手柄(拖边/角改框宽,文字重排,字号不变);
+                                            // 手势开始记 undo 快照,中间帧 transient(手势结束即一次 undo)
+                                            resizeConfig = textType?.let {
+                                                BoxResizeConfig(
+                                                    minWidthPx = layerCanvasWidth * 0.1f,
+                                                    maxWidthPx = layerCanvasWidth,
+                                                    minHeightPx = 1f,
+                                                    maxHeightPx = layerCanvasHeight * 2f,
+                                                    onResize = { newW, newH, newLeft, newTop ->
+                                                        component.updateTextWidthRatioTransient(
+                                                            layer.id,
+                                                            newW / layerCanvasWidth
+                                                        )
+                                                        component.updateLayerTransformTransient(
+                                                            layer.id,
+                                                            layer.transform.copy(
+                                                                centerX = ((newLeft + newW / 2) / layerCanvasWidth)
+                                                                    .coerceIn(0f, 1f),
+                                                                centerY = ((newTop + newH / 2) / layerCanvasHeight)
+                                                                    .coerceIn(0f, 1f)
+                                                            )
+                                                        )
+                                                    },
+                                                    onGestureStart = {
+                                                        component.beginLayerTransformChange()
+                                                    }
+                                                )
+                                            }
                                         ) {
                                             LayerPreviewRenderers.Content(
                                                 layer = layer,

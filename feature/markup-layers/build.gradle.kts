@@ -28,5 +28,6 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.filters)
     implementation(projects.core.database)
+    implementation(projects.core.imageGeneration)
     implementation(projects.feature.common)
 }

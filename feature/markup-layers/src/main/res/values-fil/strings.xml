@@ -221,4 +221,13 @@
     <string name="markup_export_share_after_sub">Buksan ang share panel pagkatapos i-save</string>
     <string name="markup_export_failed_no_image">Walang larawang puwedeng i-export</string>
     <string name="markup_cancel">Kanselahin</string>
+    <string name="markup_ai_generate_title">Bumuo ng Larawan (AI)</string>
+    <string name="markup_ai_edit_image_title">I-edit ang Larawan (AI)</string>
+    <string name="markup_ai_generate_hint">Ilarawan ang larawan, hal. pusang nag-gitara sa buwan</string>
+    <string name="markup_ai_edit_image_hint">Ilarawan ang edit, hal. palitan ang background ng starry sky</string>
+    <string name="markup_ai_generate_action">Gawin</string>
+    <string name="markup_ai_generate_points_hint">%1$d puntos bawat generate</string>
+    <string name="markup_ai_generate_empty">Maglagay ng paglalarawan ng larawan</string>
+    <string name="markup_ai_edit_current">Kasalukuyan</string>
+    <string name="markup_ai_edit_history">Kasaysayan</string>
 </resources>

@@ -205,4 +205,13 @@
     <string name="markup_export_share_after_sub">保存後に共有パネルを開く</string>
     <string name="markup_export_failed_no_image">書き出せる画像がありません</string>
     <string name="markup_cancel">キャンセル</string>
+    <string name="markup_ai_generate_title">AI で画像生成</string>
+    <string name="markup_ai_edit_image_title">AI で画像を編集</string>
+    <string name="markup_ai_generate_hint">生成したい画像を説明してください。例:月でギターを弾く猫</string>
+    <string name="markup_ai_edit_image_hint">編集内容を説明してください。例:背景を星空に変える</string>
+    <string name="markup_ai_generate_action">生成</string>
+    <string name="markup_ai_generate_points_hint">生成ごとに %1$d ポイント消費</string>
+    <string name="markup_ai_generate_empty">画像の説明を入力してください</string>
+    <string name="markup_ai_edit_current">現在</string>
+    <string name="markup_ai_edit_history">履歴</string>
 </resources>

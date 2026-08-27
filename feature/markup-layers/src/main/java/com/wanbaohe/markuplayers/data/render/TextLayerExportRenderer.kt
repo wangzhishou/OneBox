@@ -50,8 +50,11 @@ class TextLayerExportRenderer @Inject constructor(
             }
         }
 
-        // 以最长行的实测宽度作为布局宽,保证内容块紧贴文字(居中以内容为准)
-        val contentWidth = type.text.split('\n')
+        // 以最长行的实测宽度作为布局宽,保证内容块紧贴文字(居中以内容为准);
+        // 有 widthRatio 时按框宽折行(拖边/角改框,文字重排,字号不变)
+        val contentWidth = type.widthRatio?.let {
+            (it * imageWidth).roundToInt().coerceIn(1, imageWidth)
+        } ?: type.text.split('\n')
             .maxOf { paint.measureText(it) }
             .roundToInt()
             .coerceAtLeast(1)

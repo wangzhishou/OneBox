@@ -205,4 +205,13 @@
     <string name="markup_export_share_after_sub">Открыть панель «Поделиться» после сохранения</string>
     <string name="markup_export_failed_no_image">Нет изображения для экспорта</string>
     <string name="markup_cancel">Отмена</string>
+    <string name="markup_ai_generate_title">Создать изображение (ИИ)</string>
+    <string name="markup_ai_edit_image_title">Редактировать изображение (ИИ)</string>
+    <string name="markup_ai_generate_hint">Опишите изображение, например кот, играющий на гитаре на Луне</string>
+    <string name="markup_ai_edit_image_hint">Опишите правку, например заменить фон на звёздное небо</string>
+    <string name="markup_ai_generate_action">Создать</string>
+    <string name="markup_ai_generate_points_hint">%1$d баллов за генерацию</string>
+    <string name="markup_ai_generate_empty">Введите описание изображения</string>
+    <string name="markup_ai_edit_current">Текущее</string>
+    <string name="markup_ai_edit_history">История</string>
 </resources>
