@@ -194,7 +194,12 @@ class TextCardComponent @AssistedInject internal constructor(
         _editingTextBlockId.value = null
     }
 
-    override fun resetState() = onGoBack()
+    /**
+     * 页面被压在栈内(如跳转图片创作)时组合销毁,1.5s 后 BaseComponent 回调这里。
+     * 绝不能回退导航——navigateBack 弹的是栈顶(被跳转的页面会被立刻误弹回去)。
+     * 组件实例仍在栈中,状态保留,返回时原样继续编辑。
+     */
+    override fun resetState() = Unit
 
     // ---------------- 背景 ----------------
 

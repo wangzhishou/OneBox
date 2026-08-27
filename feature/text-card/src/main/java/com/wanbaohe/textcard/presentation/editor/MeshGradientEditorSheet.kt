@@ -192,8 +192,13 @@ fun MeshGradientEditorSheet(
                         )
                     }
                 }
-                // 操作 Bar 钉在最底部
-                Row(modifier = Modifier.padding(bottom = 12.dp)) {
+                // 操作 Bar 钉在最底部:右对齐 + 上下留白
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp)
+                ) {
                     ConfirmButton(
                         onClick = {
                             component.updateBackground(BackgroundSpec.Gradient(points))

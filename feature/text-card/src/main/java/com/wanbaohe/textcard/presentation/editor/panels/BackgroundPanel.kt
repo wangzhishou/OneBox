@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
@@ -49,8 +50,8 @@ import com.wanbaohe.textcard.presentation.editor.drawPaperTexture
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import kotlin.math.roundToInt
 import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CheckCircle
 
@@ -182,16 +183,15 @@ fun BackgroundPanel(component: TextCardComponent) {
         titleRes = R.string.textcard_custom_background,
         modifier = Modifier.padding(top = 16.dp)
     )
-    SelectableCell(
-        selected = background is BackgroundSpec.Image,
-        onClick = { imagePicker.pickImage() },
-        modifier = Modifier
-            .fillMaxWidth(0.32f)
+    // 自定义背景:相册选择 + 图片创作引导,与纸张项同款小卡(96dp 框 + 下方名称)
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+        PaperCell(
+            label = stringResource(R.string.textcard_pick_from_gallery),
+            selected = background is BackgroundSpec.Image,
+            onClick = { imagePicker.pickImage() }
         ) {
             if (background is BackgroundSpec.Image) {
                 Picture(
@@ -207,34 +207,21 @@ fun BackgroundPanel(component: TextCardComponent) {
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Text(
-                    text = stringResource(R.string.textcard_pick_from_gallery),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             }
         }
-    }
-    // 引导去图片创作做底图
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
-            .clickable { component.onNavigate(Screen.MarkupLayers()) }
-    ) {
-        Icon(
-            imageVector = MaterialIcons.AutoMirrored.Outlined.ArrowForward,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(16.dp)
-        )
-        Text(
-            text = stringResource(R.string.textcard_go_image_creation),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 4.dp)
-        )
+        // 引导去图片创作做底图(同名小卡,文案两行打全)
+        PaperCell(
+            label = stringResource(R.string.textcard_go_image_creation),
+            selected = false,
+            onClick = { component.onNavigate(Screen.MarkupLayers()) },
+            labelMaxLines = 2
+        ) {
+            Icon(
+                imageVector = MaterialIcons.Outlined.AutoAwesome,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 
     EnhancedSliderItem(
@@ -273,6 +260,7 @@ private fun PaperCell(
     label: String,
     selected: Boolean,
     onClick: () -> Unit,
+    labelMaxLines: Int = 1,
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -292,8 +280,9 @@ private fun PaperCell(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
+            maxLines = labelMaxLines,
             overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 4.dp)
         )
     }
