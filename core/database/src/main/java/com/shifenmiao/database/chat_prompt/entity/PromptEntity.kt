@@ -47,6 +47,8 @@ data class PromptEntity(
         const val SYSTEM_PROMPT_KEY_BAZI = "system_bazi"
         /** 系统预置标识：中国象棋走子提示词 */
         const val SYSTEM_PROMPT_KEY_XIANGQI_MOVE = "system_xiangqi_move"
+        /** 系统预置标识：易经卜卦解读提示词 */
+        const val SYSTEM_PROMPT_KEY_ICHING_INTERPRETATION = "system_iching_interpretation"
         /** 系统预置标识：ASK 仅问答模式执行协议 */
         const val SYSTEM_PROMPT_KEY_WORKING_MODE_ASK = "system_working_mode_ask"
         /** 系统预置标识：PLAN 仅规划模式执行协议 */

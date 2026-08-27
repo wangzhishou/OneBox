@@ -11,6 +11,8 @@
     <string name="sys_prompt_bazi_desc">用于八字命盘解析的系统预置提示词</string>
     <string name="sys_prompt_xiangqi_title">中国象棋走子系统提示词</string>
     <string name="sys_prompt_xiangqi_desc">用于中国象棋 LLM 人机对弈的系统预置提示词</string>
+    <string name="sys_prompt_iching_title">易经六爻解读系统提示词</string>
+    <string name="sys_prompt_iching_desc">用于结合所问事项、卦象和动爻生成针对性解读</string>
     <string name="sys_prompt_mode_ask_title">ASK 仅问答模式执行协议</string>
     <string name="sys_prompt_mode_ask_desc">Ask 模式下的执行协议提示词</string>
     <string name="sys_prompt_mode_plan_title">PLAN 仅规划模式执行协议</string>

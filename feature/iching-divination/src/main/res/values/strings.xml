@@ -1,0 +1,34 @@
+<resources>
+    <string name="iching_cast_title">Cast a Hexagram</string>
+    <string name="iching_casting_title">Casting</string>
+    <string name="iching_result_title">Primary Hexagram</string>
+    <string name="iching_ai_title">AI Interpretation</string>
+    <string name="iching_question_label">What would you like to ask?</string>
+    <string name="iching_question_hint">For example: career, relationships, or finances…</string>
+    <string name="iching_cast_button">Shake to cast</string>
+    <string name="iching_casting_hint">Gently shake your phone or wait for a random line</string>
+    <string name="iching_casting_progress">%1$d/6</string>
+    <string name="iching_casting_status">Casting a line…</string>
+    <string name="iching_retry">Try again</string>
+    <string name="iching_view_ai">View AI interpretation</string>
+    <string name="iching_upper_trigram">Upper: %1$s</string>
+    <string name="iching_lower_trigram">Lower: %1$s</string>
+    <string name="iching_hexagram_number">Hexagram %1$d</string>
+    <string name="iching_changed_hexagram">Changed hexagram</string>
+    <string name="iching_changing_lines">Changing lines: %1$s</string>
+    <string name="iching_no_changing_lines">No changing lines</string>
+    <string name="iching_new_cast">New cast</string>
+    <string name="iching_ai_loading">Reading the hexagram…</string>
+    <string name="iching_ai_error">Unable to generate an interpretation</string>
+    <string name="iching_ai_retry">Retry</string>
+    <string name="iching_disclaimer">For cultural reference and personal reflection only.</string>
+    <string name="iching_history_title">Casting history</string>
+    <string name="iching_history_empty">No casting records yet</string>
+    <string name="iching_history_no_question">No question specified</string>
+    <string name="iching_history_delete">Delete this record</string>
+    <string name="iching_history_clear">Clear history</string>
+    <string name="iching_history_clear_confirm">Delete all casting records? This cannot be undone.</string>
+    <string name="iching_confirm">Delete</string>
+    <string name="iching_cancel">Cancel</string>
+</resources>
+

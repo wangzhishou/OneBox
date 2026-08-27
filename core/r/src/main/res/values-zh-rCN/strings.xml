@@ -1273,6 +1273,12 @@
     <string name="dice_roller_title">投骰子</string>
     <string name="dice_roller_description">桌游骰子 D4/D6/D8/D10/D12/D20</string>
 
+    <!-- I Ching Divination -->
+    <string name="iching_divination_title">易经六爻</string>
+    <string name="iching_divination_description">摇一摇生成六爻卦象，查看本卦、变卦与 AI 解读</string>
+    <string name="iching_history_title">起卦记录</string>
+    <string name="iching_history_description">查看已保存的所问事项、卦象、动爻和 AI 解读</string>
+
     <!-- Teleprompter -->
     <string name="teleprompter_title">提词器</string>
     <string name="teleprompter_description">专业提词器，文稿管理与平滑滚动播放</string>

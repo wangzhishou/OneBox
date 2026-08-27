@@ -98,6 +98,7 @@ dependencies {
     implementation(projects.feature.schedule)
     implementation(projects.feature.deadPixelTest)
     implementation(projects.feature.diceRoller)
+    implementation(projects.feature.ichingDivination)
     implementation(projects.feature.game2048)
     implementation(projects.feature.xiangqi)
     implementation(projects.feature.teleprompter)

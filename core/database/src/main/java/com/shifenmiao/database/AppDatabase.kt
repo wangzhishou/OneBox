@@ -158,8 +158,9 @@ abstract class AppDatabase : RoomDatabase() {
          * v4 raw-en 新增英文 AI 对聊/互动模板, en 语言库需重刷。
          * v5 AI 互聊模板扁平化(删除模式/主题维度), 需重刷覆盖旧的分模式模板。
          * v6 数据库 v2 迁移重建内容表(同步主键改 document_id), 系统预置 prompt 随表清空需重刷。
+         * v7 新增易经卜卦解读系统提示词。
          */
-        private const val SYSTEM_PRESET_VERSION = 6
+        private const val SYSTEM_PRESET_VERSION = 7
 
         /**
          * v1 → v2：同步主键从 (source, remote_id) 全局切换为 (source, document_id)。
@@ -386,6 +387,14 @@ abstract class AppDatabase : RoomDatabase() {
                                 displayTitle = ctx.getString(R.string.sys_prompt_xiangqi_title),
                                 description = ctx.getString(R.string.sys_prompt_xiangqi_desc),
                                 promptText = loadRawPrompt(ctx, R.raw.prompt_xiangqi_move)
+                            )
+                            upsertSystemPreset(
+                                db = db,
+                                now = now,
+                                systemKey = PromptEntity.SYSTEM_PROMPT_KEY_ICHING_INTERPRETATION,
+                                displayTitle = ctx.getString(R.string.sys_prompt_iching_title),
+                                description = ctx.getString(R.string.sys_prompt_iching_desc),
+                                promptText = loadRawPrompt(ctx, R.raw.prompt_iching_interpretation)
                             )
                             upsertSystemPreset(
                                 db = db,

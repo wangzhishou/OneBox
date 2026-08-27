@@ -1664,6 +1664,24 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("IChingDivination")
+    data class IChingDivination(
+        val recordId: String? = null,
+    ) : Screen(
+        id = 1098,
+        title = com.shifenmiao.core.R.string.iching_divination_title,
+        subtitle = com.shifenmiao.core.R.string.iching_divination_description,
+    )
+
+    @Serializable
+    @SerialName("IChingHistory")
+    data object IChingHistory : Screen(
+        id = 1099,
+        title = com.shifenmiao.core.R.string.iching_history_title,
+        subtitle = com.shifenmiao.core.R.string.iching_history_description,
+    )
+
+    @Serializable
     @SerialName("Teleprompter")
     data class Teleprompter(
         val type: Type? = null

@@ -1212,6 +1212,12 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="dice_roller_title">Dice Roller</string>
     <string name="dice_roller_description">Tabletop dice D4/D6/D8/D10/D12/D20</string>
 
+    <!-- I Ching Divination -->
+    <string name="iching_divination_title">I Ching Divination</string>
+    <string name="iching_divination_description">Cast six lines by shaking your phone and explore the hexagram with AI</string>
+    <string name="iching_history_title">I Ching History</string>
+    <string name="iching_history_description">Review saved questions, hexagrams, changing lines, and AI interpretations</string>
+
     <!-- Teleprompter -->
     <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_description">Professional teleprompter with script management and smooth scrolling.</string>

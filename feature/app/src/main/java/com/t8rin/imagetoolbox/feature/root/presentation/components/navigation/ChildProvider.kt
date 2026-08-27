@@ -1162,6 +1162,25 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        is Screen.IChingDivination -> NavigationChild.IChingDivination(
+            component = lifeFactories.get().iChingDivinationComponentFactory(
+                componentContext = componentContext,
+                initialRecordId = config.recordId,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo
+            )
+        )
+
+        Screen.IChingHistory -> NavigationChild.IChingHistory(
+            component = lifeFactories.get().iChingHistoryComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
+                onOpenRecord = { recordId ->
+                    navigateTo(Screen.IChingDivination(recordId = recordId))
+                }
+            )
+        )
+
         is Screen.Game2048 -> NavigationChild.Game2048(
             game2048Component = lifeFactories.get().game2048ComponentFactory(
                 componentContext = componentContext,

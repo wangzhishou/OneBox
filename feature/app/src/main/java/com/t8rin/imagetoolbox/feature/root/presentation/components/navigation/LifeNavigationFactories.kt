@@ -28,6 +28,8 @@ import com.wanbaohe.compass.component.CompassComponent
 import com.wanbaohe.measurement.component.MeasurementComponent
 import com.wanbaohe.deadpixeltest.component.DeadPixelTestComponent
 import com.wanbaohe.diceroller.component.DiceRollerComponent
+import com.wanbaohe.iching.component.IChingDivinationComponent
+import com.wanbaohe.iching.component.IChingHistoryComponent
 import com.wanbaohe.game2048.component.Game2048Component
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.wanbaohe.idphoto.presentation.screenLogic.IdPhotoComponent
@@ -64,6 +66,8 @@ class LifeNavigationFactories @Inject constructor(
     val markTodoRouterComponentFactory: MarkTodoRouterComponent.Factory,
     val unitConverterComponentFactory: UnitConverterComponent.Factory,
     val diceRollerComponentFactory: DiceRollerComponent.Factory,
+    val iChingDivinationComponentFactory: IChingDivinationComponent.Factory,
+    val iChingHistoryComponentFactory: IChingHistoryComponent.Factory,
     val game2048ComponentFactory: Game2048Component.Factory,
     val xiangqiRouterComponentFactory: XiangqiRouterComponent.Factory,
     val deadPixelTestComponentFactory: DeadPixelTestComponent.Factory,

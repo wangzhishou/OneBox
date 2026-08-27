@@ -222,6 +222,10 @@ import com.wanbaohe.decisionwheel.component.DecisionWheelComponent
 import com.wanbaohe.decisionwheel.screen.DecisionWheelScreen
 import com.wanbaohe.diceroller.component.DiceRollerComponent
 import com.wanbaohe.diceroller.screen.DiceRollerScreen
+import com.wanbaohe.iching.component.IChingDivinationComponent
+import com.wanbaohe.iching.component.IChingHistoryComponent
+import com.wanbaohe.iching.screen.IChingDivinationScreen
+import com.wanbaohe.iching.screen.IChingHistoryScreen
 import com.wanbaohe.file.browser.screen.FileBrowserScreen
 import com.wanbaohe.file.browser.screenLogic.FileBrowserComponent
 import com.wanbaohe.file_transfer.screen.FileTransferScreen
@@ -1288,6 +1292,24 @@ sealed interface NavigationChild {
         @Composable
         override fun Content() {
             DiceRollerScreen(component = diceRollerComponent)
+        }
+    }
+
+    class IChingDivination(
+        val component: IChingDivinationComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            IChingDivinationScreen(component = component)
+        }
+    }
+
+    class IChingHistory(
+        val component: IChingHistoryComponent
+    ) : NavigationChild {
+        @Composable
+        override fun Content() {
+            IChingHistoryScreen(component = component)
         }
     }
 

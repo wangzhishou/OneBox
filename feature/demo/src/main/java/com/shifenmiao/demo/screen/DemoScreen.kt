@@ -764,6 +764,7 @@ private fun demoNavigationEntries(): List<DemoNavigationEntry> = listOf(
     DemoNavigationEntry("习惯打卡", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckCircleOutline) { Screen.HabitTracker() },
     DemoNavigationEntry("贷款计算器", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccountBalance) { Screen.LoanCalculator },
     DemoNavigationEntry("投骰子", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino) { Screen.DiceRoller },
+    DemoNavigationEntry(getString(R.string.iching_divination_title), com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic) { Screen.IChingDivination() },
     DemoNavigationEntry("2048", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGrid4x4) { Screen.Game2048 },
     DemoNavigationEntry("扫雷", com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino) { Screen.Minesweeper },
     DemoNavigationEntry(

@@ -11,6 +11,8 @@
     <string name="sys_prompt_bazi_desc">Built-in system prompt for BaZi (Four Pillars) chart analysis</string>
     <string name="sys_prompt_xiangqi_title">Xiangqi Move System Prompt</string>
     <string name="sys_prompt_xiangqi_desc">Built-in system prompt for LLM Xiangqi (Chinese chess) matches</string>
+    <string name="sys_prompt_iching_title">I Ching Interpretation System Prompt</string>
+    <string name="sys_prompt_iching_desc">System instructions used to interpret a question, hexagram, and changing lines</string>
     <string name="sys_prompt_mode_ask_title">ASK Q&amp;A-Only Mode Protocol</string>
     <string name="sys_prompt_mode_ask_desc">Execution protocol prompt for Ask mode</string>
     <string name="sys_prompt_mode_plan_title">PLAN Planning-Only Mode Protocol</string>

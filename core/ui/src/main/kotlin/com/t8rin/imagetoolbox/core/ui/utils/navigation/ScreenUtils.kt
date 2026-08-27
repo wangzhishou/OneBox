@@ -334,6 +334,8 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.Bookkeeping -> "Bookkeeping"
     is Screen.HabitTracker -> "HabitTracker"
     is Screen.DiceRoller -> "DiceRoller"
+    is Screen.IChingDivination -> "IChingDivination"
+    is Screen.IChingHistory -> "IChingHistory"
     is Screen.Teleprompter -> "Teleprompter"
     is Screen.CreateAIAgent -> "CreateAIAgent"
     is Screen.CreateAIChatPrompt -> "CreateAIChatPrompt"
@@ -463,6 +465,8 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.UnitConverter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUnitConverter
     is Screen.LoanCalculator -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLoanCalculator
     is Screen.DiceRoller -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDiceRoller
+    is Screen.IChingDivination -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic
+    is Screen.IChingHistory -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory
     is Screen.Game2048 -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGame2048
     is Screen.XiangqiRouter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineXiangqi
     is Screen.Survive30s -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSurvive30s
@@ -723,6 +727,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.UnitConverter(),
                     Screen.LoanCalculator,
                     Screen.DiceRoller,
+                    Screen.IChingDivination(),
                     Screen.Game2048,
                     Screen.Survive30s,
                     Screen.WebBrowser(),
@@ -749,5 +754,5 @@ internal object ScreenConstantsImpl : ScreenConstants {
         typedEntries.flatMap { it.entries }.sortedBy { it.id }
     }
 
-    override val FEATURES_COUNT = 79
+    override val FEATURES_COUNT = 80
 }
