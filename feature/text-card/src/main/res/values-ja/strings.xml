@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">生成中…</string>
     <string name="textcard_image_layer_error">生成失敗</string>
     <string name="textcard_generate_image_running">画像を生成しています。しばらくお待ちください</string>
+    <string name="textcard_edit_image_title">AI で画像を編集</string>
+    <string name="textcard_edit_image_hint">編集内容を説明してください。例:背景を星空に変える</string>
+    <string name="textcard_edit_image_history">履歴</string>
+    <string name="textcard_edit_image_current">現在</string>
+    <string name="textcard_layer_reset_position">位置をリセット</string>
 </resources>

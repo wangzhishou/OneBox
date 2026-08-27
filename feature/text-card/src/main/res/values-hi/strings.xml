@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">बन रहा है…</string>
     <string name="textcard_image_layer_error">विफल</string>
     <string name="textcard_generate_image_running">एक छवि बन रही है, कृपया प्रतीक्षा करें</string>
+    <string name="textcard_edit_image_title">AI से छवि संपादित करें</string>
+    <string name="textcard_edit_image_hint">संपादन का वर्णन करें, जैसे पृष्ठभूमि को तारों भरे आसमान से बदलें</string>
+    <string name="textcard_edit_image_history">इतिहास</string>
+    <string name="textcard_edit_image_current">वर्तमान</string>
+    <string name="textcard_layer_reset_position">स्थिति रीसेट करें</string>
 </resources>

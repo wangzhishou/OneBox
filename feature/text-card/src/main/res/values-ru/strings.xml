@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">Создаётся…</string>
     <string name="textcard_image_layer_error">Не удалось</string>
     <string name="textcard_generate_image_running">Изображение генерируется, подождите</string>
+    <string name="textcard_edit_image_title">Редактировать изображение (ИИ)</string>
+    <string name="textcard_edit_image_hint">Опишите правку, например заменить фон на звёздное небо</string>
+    <string name="textcard_edit_image_history">История</string>
+    <string name="textcard_edit_image_current">Текущее</string>
+    <string name="textcard_layer_reset_position">Сбросить позицию</string>
 </resources>

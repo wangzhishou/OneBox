@@ -76,4 +76,9 @@
     <string name="textcard_image_layer_loading">Generating…</string>
     <string name="textcard_image_layer_error">Failed</string>
     <string name="textcard_generate_image_running">An image is being generated, please wait</string>
+    <string name="textcard_edit_image_title">Edit Image (AI)</string>
+    <string name="textcard_edit_image_hint">Describe the edit, e.g. replace the background with a starry sky</string>
+    <string name="textcard_edit_image_history">History</string>
+    <string name="textcard_edit_image_current">Current</string>
+    <string name="textcard_layer_reset_position">Reset position</string>
 </resources>

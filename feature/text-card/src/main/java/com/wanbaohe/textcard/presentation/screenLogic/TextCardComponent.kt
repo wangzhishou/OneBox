@@ -1,6 +1,7 @@
 package com.wanbaohe.textcard.presentation.screenLogic
 
 import android.graphics.Bitmap
+import android.util.Base64
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +9,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.base.utils.aiImageProcessPointsCost
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.imagegeneration.loader.ImageGenerationLoader
+import com.shifenmiao.imagegeneration.model.ImageGenerationRequest
 import com.shifenmiao.interfaces.logging.ImageSaveLogger
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
@@ -48,6 +50,9 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
 /** 底部编辑面板 */
 enum class EditorPanel {
@@ -444,12 +449,20 @@ class TextCardComponent @AssistedInject internal constructor(
         _isGeneratingImage.update { false }
     }
 
+    /** 当前选中的 Ready 图片元素(非空时,生成弹层为「AI 编辑图片」图生图模式) */
+    fun selectedReadyImageElement(): ImageElementSpec? = _imageElements.value
+        .firstOrNull { it.id == _selectedElementId.value && it.status == ImageElementStatus.Ready }
+
     /**
-     * 生成图片图层:先就地加一个 Loading 占位图层(居中、置顶并选中)再异步生成,
-     * [onStarted] 在占位落地后回调(弹窗据此立即关闭,不阻塞用户其它操作);
-     * 成功把占位图层换成本地缓存图(仅真实生成扣积分,复用缓存不重复扣);
-     * 失败把占位图层标为 Error(错误画在图层上)并 toast 原因。
-     * 生成中重复调用 toast 提示并忽略(单任务,不允许并发二次生成)。
+     * 生成图片图层:先落 Loading 占位再异步生成,[onStarted] 在占位落地后回调
+     * (弹窗据此立即关闭,不阻塞用户其它操作);生成中重复调用 toast 提示并忽略。
+     *
+     * 两种模式:
+     * - 新建(无选中图片):占位铺满画布、图层垫底(背景之上文字之下,不挡文字),
+     *   按画布尺寸指定 outputSize;成功换图,失败标 Error(可删)。
+     * - 编辑(选中 Ready 图片):原图保留转 Loading(预览叠加转圈),图生图;
+     *   成功换图并把旧图压入 historyUris,失败恢复 Ready 原图不动。
+     * 仅真实生成成功扣积分,复用本地缓存(fromCache)不重复扣。
      */
     fun generateImageLayer(prompt: String, onStarted: () -> Unit = {}) {
         val trimmed = prompt.trim()
@@ -470,48 +483,154 @@ class TextCardComponent @AssistedInject internal constructor(
             return
         }
         val canvas = _canvas.value ?: return
-        // Loading 占位图层:立即上屏,用户不必守着等待
-        val placeholder = ImageElementSpec
-            .defaultPositionFor(canvas, uri = "")
-            .copy(status = ImageElementStatus.Loading)
-        _imageElements.update { it + placeholder }
-        _elementLayers.update { it + ElementLayer(placeholder.id, ElementLayer.Kind.Image) }
-        _selectedElementId.value = placeholder.id
-        registerChanges()
+        val editTarget = selectedReadyImageElement()
+        val outputSize = canvas.qwenOutputSize()
+
+        // 占位落地:新建 = 铺满画布的 Loading 图层垫底;编辑 = 原图转 Loading
+        val placeholder = if (editTarget == null) {
+            ImageElementSpec.fullCanvas(uri = "", status = ImageElementStatus.Loading)
+        } else null
+        if (placeholder != null) {
+            _imageElements.update { it + placeholder }
+            _elementLayers.update {
+                listOf(ElementLayer(placeholder.id, ElementLayer.Kind.Image)) + it
+            }
+            _selectedElementId.value = placeholder.id
+            registerChanges()
+        } else if (editTarget != null) {
+            updateImageElement(editTarget.id) { it.copy(status = ImageElementStatus.Loading) }
+        }
         onStarted()
+        val pendingId = placeholder?.id ?: editTarget?.id ?: return
 
         generateImageJob = componentScope.launch {
             _isGeneratingImage.value = true
-            imageGenerationLoader.load(trimmed)
-                .onSuccess { image ->
-                    updateImageElement(placeholder.id) {
-                        it.copy(
-                            uri = image.file.absolutePath,
-                            status = ImageElementStatus.Ready
-                        )
-                    }
-                    // 仅真实生成成功扣积分;复用本地缓存不重复扣费
-                    if (!image.fromCache) {
-                        BaseUtils.consumePoints(
-                            degree = aiImageProcessPointsCost(),
-                            desc = appContext.getString(R.string.textcard_add_image_layer),
-                            source = AI_IMAGE_POINTS_SOURCE,
-                            showToast = true
-                        )
-                    }
-                }
-                .onFailure { error ->
-                    updateImageElement(placeholder.id) {
-                        it.copy(status = ImageElementStatus.Error)
-                    }
+            // 编辑模式:本地图片读成 base64 data URI 作为输入图(服务商不接受本地路径)
+            val inputImages = if (editTarget != null) {
+                runCatching {
+                    listOf(withContext(defaultDispatcher) { encodeImageAsDataUri(editTarget.uri) })
+                }.getOrElse { error ->
+                    updateImageElement(pendingId) { it.copy(status = ImageElementStatus.Ready) }
                     AppToastHost.showFailureToast(throwable = error)
+                    _isGeneratingImage.value = false
+                    return@launch
                 }
+            } else emptyList()
+
+            imageGenerationLoader.load(
+                ImageGenerationRequest(
+                    prompt = trimmed,
+                    inputImages = inputImages,
+                    outputSize = outputSize
+                )
+            ).onSuccess { image ->
+                updateImageElement(pendingId) {
+                    it.copy(
+                        uri = image.file.absolutePath,
+                        status = ImageElementStatus.Ready,
+                        // 编辑模式:旧图压入历史,可在弹层里回退
+                        historyUris = if (editTarget != null) it.historyUris + it.uri
+                        else it.historyUris
+                    )
+                }
+                if (!image.fromCache) {
+                    BaseUtils.consumePoints(
+                        degree = aiImageProcessPointsCost(),
+                        desc = appContext.getString(R.string.textcard_add_image_layer),
+                        source = AI_IMAGE_POINTS_SOURCE,
+                        showToast = true
+                    )
+                }
+            }.onFailure { error ->
+                updateImageElement(pendingId) {
+                    // 新建失败标 Error;编辑失败恢复原图
+                    it.copy(
+                        status = if (editTarget == null) {
+                            ImageElementStatus.Error
+                        } else ImageElementStatus.Ready
+                    )
+                }
+                AppToastHost.showFailureToast(throwable = error)
+            }
             _isGeneratingImage.value = false
         }
     }
 
+    /** AI 编辑历史回退:把历史版本换回当前图,当前图进历史尾部 */
+    fun revertImageElement(id: String, uri: String) {
+        updateImageElement(id) { element ->
+            if (uri == element.uri || uri !in element.historyUris) {
+                return@updateImageElement element
+            }
+            element.copy(
+                uri = uri,
+                historyUris = element.historyUris - uri + element.uri
+            )
+        }
+    }
+
+    /** 本地图片文件 → base64 data URI(图生图输入) */
+    private fun encodeImageAsDataUri(path: String): String {
+        val file = File(path)
+        val mime = when (file.extension.lowercase()) {
+            "jpg", "jpeg" -> "image/jpeg"
+            "webp" -> "image/webp"
+            else -> "image/png"
+        }
+        return "data:$mime;base64," + Base64.encodeToString(file.readBytes(), Base64.NO_WRAP)
+    }
+
+    /** 生成输出尺寸(服务商限制:像素总数 512²..2048²、宽高比 ≤ 8:1),按画布等比收窄 */
+    private fun CanvasSpec.qwenOutputSize(): String {
+        val maxPixels = 2048.0 * 2048.0
+        val pixels = width.toDouble() * height
+        val scale = if (pixels > maxPixels) sqrt(maxPixels / pixels) else 1.0
+        return "${(width * scale).roundToInt()}*${(height * scale).roundToInt()}"
+    }
+
     fun cancelGeneratingImage() {
         generateImageJob = null
+    }
+
+    /** 重置元素变换到初始位置(文字回基准位、装饰回左上角、图片回铺满/居中;文字框尺寸不动) */
+    fun resetElementTransform(id: String) {
+        val canvas = _canvas.value
+        when {
+            _textBlocks.value.any { it.id == id } -> updateTextBlock(id) {
+                it.copy(offsetX = 0f, offsetY = 0f, scale = 1f, rotation = 0f)
+            }
+
+            _decorations.value.any { it.id == id } -> {
+                val initial = _decorations.value.first { it.id == id }.let { decoration ->
+                    canvas?.let { DecorationSpec.defaultPositionFor(it, decoration.emojiIndex) }
+                }
+                _decorations.update { list ->
+                    list.map {
+                        if (it.id == id) {
+                            it.copy(
+                                offsetX = initial?.offsetX ?: it.offsetX,
+                                offsetY = initial?.offsetY ?: it.offsetY,
+                                scale = 1f,
+                                rotation = 0f
+                            )
+                        } else it
+                    }
+                }
+                registerChanges()
+            }
+
+            _imageElements.value.any { it.id == id } -> updateImageElement(id) { element ->
+                val initial = canvas?.let {
+                    ImageElementSpec.defaultPositionFor(it, element.uri)
+                }
+                element.copy(
+                    offsetX = if (element.fullCanvas) 0f else initial?.offsetX ?: element.offsetX,
+                    offsetY = if (element.fullCanvas) 0f else initial?.offsetY ?: element.offsetY,
+                    scale = 1f,
+                    rotation = 0f
+                )
+            }
+        }
     }
 
     /** 按 id 更新图片元素(占位图层状态机:Loading → Ready/Error) */

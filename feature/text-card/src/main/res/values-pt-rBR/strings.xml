@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">Gerando…</string>
     <string name="textcard_image_layer_error">Falhou</string>
     <string name="textcard_generate_image_running">Uma imagem está sendo gerada, aguarde</string>
+    <string name="textcard_edit_image_title">Editar imagem (IA)</string>
+    <string name="textcard_edit_image_hint">Descreva a edição, ex.: trocar o fundo por um céu estrelado</string>
+    <string name="textcard_edit_image_history">Histórico</string>
+    <string name="textcard_edit_image_current">Atual</string>
+    <string name="textcard_layer_reset_position">Redefinir posição</string>
 </resources>

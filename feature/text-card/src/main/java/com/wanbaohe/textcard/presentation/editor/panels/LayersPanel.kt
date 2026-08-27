@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRestartAlt
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.longPress
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.press
@@ -170,6 +171,13 @@ private fun ElementLayerRow(
             contentDescription = stringResource(R.string.textcard_layer_toggle_locked),
             enabled = true,
             onClick = { component.toggleLayerLocked(layer.elementId) }
+        )
+        // 重置位置:误拖出可视区域时一键回初始位置(文字回基准位/装饰回角落/图片回铺满)
+        LayerAction(
+            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRestartAlt,
+            contentDescription = stringResource(R.string.textcard_layer_reset_position),
+            enabled = !layer.locked,
+            onClick = { component.resetElementTransform(layer.elementId) }
         )
         LayerAction(
             icon = MaterialIcons.Outlined.Delete,

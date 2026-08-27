@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">Oluşturuluyor…</string>
     <string name="textcard_image_layer_error">Başarısız</string>
     <string name="textcard_generate_image_running">Bir görsel oluşturuluyor, lütfen bekleyin</string>
+    <string name="textcard_edit_image_title">Görseli YZ ile düzenle</string>
+    <string name="textcard_edit_image_hint">Düzenlemeyi tarif edin, örn. arka planı yıldızlı gökyüzüyle değiştirin</string>
+    <string name="textcard_edit_image_history">Geçmiş</string>
+    <string name="textcard_edit_image_current">Mevcut</string>
+    <string name="textcard_layer_reset_position">Konumu sıfırla</string>
 </resources>

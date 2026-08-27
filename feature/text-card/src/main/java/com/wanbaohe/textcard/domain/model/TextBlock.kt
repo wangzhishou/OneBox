@@ -94,6 +94,10 @@ data class ImageElementSpec(
     val id: String = UUID.randomUUID().toString(),
     val uri: String,
     val status: ImageElementStatus = ImageElementStatus.Ready,
+    /** true = 元素铺满整张画布(生成背景图场景),图层垫底于文字之下 */
+    val fullCanvas: Boolean = false,
+    /** AI 编辑历史:历次编辑前的图片本地路径(旧→新) */
+    val historyUris: List<String> = emptyList(),
     val alpha: Float = 1f,
     override val offsetX: Float = 0f,
     override val offsetY: Float = 0f,
@@ -110,6 +114,10 @@ data class ImageElementSpec(
                 offsetY = 0.5f - size * canvas.aspectRatio / 2
             )
         }
+
+        /** 铺满画布的图片元素(占位/生成背景图用),offset 0 起点 */
+        fun fullCanvas(uri: String, status: ImageElementStatus): ImageElementSpec =
+            ImageElementSpec(uri = uri, status = status, fullCanvas = true)
     }
 }
 

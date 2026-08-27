@@ -76,4 +76,9 @@
     <string name="textcard_image_layer_loading">生成中…</string>
     <string name="textcard_image_layer_error">生成失败</string>
     <string name="textcard_generate_image_running">图片正在生成中,请稍候</string>
+    <string name="textcard_edit_image_title">AI 编辑图片</string>
+    <string name="textcard_edit_image_hint">描述想要的修改,如:把背景换成星空</string>
+    <string name="textcard_edit_image_history">历史版本</string>
+    <string name="textcard_edit_image_current">当前</string>
+    <string name="textcard_layer_reset_position">重置位置</string>
 </resources>

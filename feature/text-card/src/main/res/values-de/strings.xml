@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">Wird generiert…</string>
     <string name="textcard_image_layer_error">Fehlgeschlagen</string>
     <string name="textcard_generate_image_running">Ein Bild wird gerade generiert, bitte warten</string>
+    <string name="textcard_edit_image_title">Bild mit KI bearbeiten</string>
+    <string name="textcard_edit_image_hint">Beschreibe die Änderung, z. B. ersetze den Hintergrund durch einen Sternenhimmel</string>
+    <string name="textcard_edit_image_history">Verlauf</string>
+    <string name="textcard_edit_image_current">Aktuell</string>
+    <string name="textcard_layer_reset_position">Position zurücksetzen</string>
 </resources>

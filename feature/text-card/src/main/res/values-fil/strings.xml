@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">Ginagawa…</string>
     <string name="textcard_image_layer_error">Nabigo</string>
     <string name="textcard_generate_image_running">May larawan pa ring ginagawa, hintayin muna</string>
+    <string name="textcard_edit_image_title">I-edit ang Larawan (AI)</string>
+    <string name="textcard_edit_image_hint">Ilarawan ang edit, hal. palitan ang background ng starry sky</string>
+    <string name="textcard_edit_image_history">Kasaysayan</string>
+    <string name="textcard_edit_image_current">Kasalukuyan</string>
+    <string name="textcard_layer_reset_position">I-reset ang posisyon</string>
 </resources>

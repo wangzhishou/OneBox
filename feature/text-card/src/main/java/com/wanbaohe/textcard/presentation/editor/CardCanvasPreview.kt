@@ -287,6 +287,10 @@ private fun ElementBox(
     val currentLeftPx by rememberUpdatedState(leftPx)
     val currentTopPx by rememberUpdatedState(topPx)
     var boxSizePx by remember { mutableStateOf(IntSize.Zero) }
+    // 选中框 chrome(虚线框/手柄圆点/删除钮)反缩放:元素被双指放大时,
+    // 这些操作件的视觉尺寸保持恒定,不随元素一起变大(拖动手势数学不受影响:
+    // 热区仍在元素本地坐标系,仅圆点视觉反缩放)
+    val inverseChromeScale = 1f / transform.scale.coerceIn(0.2f, 5f)
     Box(
         modifier = Modifier
             .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
@@ -306,7 +310,8 @@ private fun ElementBox(
                         color = MaterialTheme.colorScheme.primary.copy(
                             alpha = if (gesturesEnabled) 1f else 0.4f
                         ),
-                        cornerRadius = 4.dp
+                        cornerRadius = 4.dp,
+                        inverseScale = inverseChromeScale
                     )
                 } else Modifier
             )
@@ -348,6 +353,10 @@ private fun ElementBox(
                         x = if (deleteAtBottom) 0.dp else 12.dp,
                         y = if (deleteAtBottom) 40.dp else (-12).dp
                     )
+                    .graphicsLayer {
+                        scaleX = inverseChromeScale
+                        scaleY = inverseChromeScale
+                    }
                     .size(24.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.error)
@@ -370,6 +379,7 @@ private fun ElementBox(
                     leftProvider = { currentLeftPx },
                     topProvider = { currentTopPx },
                     transformProvider = { currentTransform },
+                    inverseScale = inverseChromeScale,
                     config = resizeConfig
                 )
                 RotationHandle(
@@ -377,6 +387,7 @@ private fun ElementBox(
                     elementCenter = Offset(boxSizePx.width / 2f, boxSizePx.height / 2f),
                     elementId = elementId,
                     transformProvider = { currentTransform },
+                    inverseScale = inverseChromeScale,
                     onElementTransform = onElementTransform
                 )
             } else {
@@ -384,6 +395,7 @@ private fun ElementBox(
                     elementId = elementId,
                     sizePx = boxSizePx,
                     transformProvider = { currentTransform },
+                    inverseScale = inverseChromeScale,
                     onElementTransform = onElementTransform
                 )
             }
@@ -408,6 +420,7 @@ private fun androidx.compose.foundation.layout.BoxScope.SelectionHandles(
     elementId: String,
     sizePx: IntSize,
     transformProvider: () -> ElementTransform,
+    inverseScale: Float,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -430,6 +443,7 @@ private fun androidx.compose.foundation.layout.BoxScope.SelectionHandles(
             elementCenter = center,
             elementId = elementId,
             transformProvider = transformProvider,
+            inverseScale = inverseScale,
             onElementTransform = onElementTransform
         )
     }
@@ -440,15 +454,20 @@ private fun androidx.compose.foundation.layout.BoxScope.SelectionHandles(
         elementCenter = center,
         elementId = elementId,
         transformProvider = transformProvider,
+        inverseScale = inverseScale,
         onElementTransform = onElementTransform
     )
 }
 
-/** 手柄视觉:白边主色小圆点(热区 36dp,视觉 16dp) */
+/** 手柄视觉:白边主色小圆点(热区 36dp,视觉 16dp;inverseScale 反缩放保持视觉恒定) */
 @Composable
-private fun HandleDot() {
+private fun HandleDot(inverseScale: Float = 1f) {
     Box(
         modifier = Modifier
+            .graphicsLayer {
+                scaleX = inverseScale
+                scaleY = inverseScale
+            }
             .size(16.dp)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.primary)
@@ -466,6 +485,7 @@ private fun androidx.compose.foundation.layout.BoxScope.ScaleHandle(
     elementCenter: Offset,
     elementId: String,
     transformProvider: () -> ElementTransform,
+    inverseScale: Float,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
 ) {
     Box(
@@ -506,7 +526,7 @@ private fun androidx.compose.foundation.layout.BoxScope.ScaleHandle(
                 )
             }
     ) {
-        HandleDot()
+        HandleDot(inverseScale)
     }
 }
 
@@ -525,6 +545,7 @@ private fun androidx.compose.foundation.layout.BoxScope.BoxResizeHandles(
     leftProvider: () -> Float,
     topProvider: () -> Float,
     transformProvider: () -> ElementTransform,
+    inverseScale: Float,
     config: BoxResizeConfig,
 ) {
     val density = LocalDensity.current
@@ -547,6 +568,7 @@ private fun androidx.compose.foundation.layout.BoxScope.BoxResizeHandles(
             leftProvider = leftProvider,
             topProvider = topProvider,
             transformProvider = transformProvider,
+            inverseScale = inverseScale,
             config = config
         )
     }
@@ -565,6 +587,7 @@ private fun androidx.compose.foundation.layout.BoxScope.ResizeHandle(
     leftProvider: () -> Float,
     topProvider: () -> Float,
     transformProvider: () -> ElementTransform,
+    inverseScale: Float,
     config: BoxResizeConfig,
 ) {
     // 锚点比例:拖右边锚左边(ax=0)、拖左边锚右边(ax=1)、不动轴锚中心(½)
@@ -625,16 +648,18 @@ private fun androidx.compose.foundation.layout.BoxScope.ResizeHandle(
                 )
             }
     ) {
-        HandleDot()
+        HandleDot(inverseScale)
     }
 }
 
-/** 顶部中心旋转手柄:触点绕元素中心的角度增量 */@Composable
+/** 顶部中心旋转手柄:触点绕元素中心的角度增量 */
+@Composable
 private fun androidx.compose.foundation.layout.BoxScope.RotationHandle(
     handlePx: Float,
     elementCenter: Offset,
     elementId: String,
     transformProvider: () -> ElementTransform,
+    inverseScale: Float,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
 ) {
     // handle 中心:元素顶边中点正上方半个手柄位
@@ -678,24 +703,25 @@ private fun androidx.compose.foundation.layout.BoxScope.RotationHandle(
                 )
             }
     ) {
-        HandleDot()
+        HandleDot(inverseScale)
     }
 }
 
-/** 选中态虚线圆角边框 */
+/** 选中态虚线圆角边框;inverseScale 抵消元素缩放,线宽/虚线间隔视觉恒定 */
 private fun Modifier.dashedBorder(
     width: Dp,
     color: Color,
     cornerRadius: Dp,
+    inverseScale: Float = 1f,
 ): Modifier = drawBehind {
-    val strokeWidth = width.toPx()
+    val strokeWidth = width.toPx() * inverseScale
     drawRoundRect(
         color = color,
         cornerRadius = CornerRadius(cornerRadius.toPx()),
         style = Stroke(
             width = strokeWidth,
             pathEffect = PathEffect.dashPathEffect(
-                intervals = floatArrayOf(6.dp.toPx(), 4.dp.toPx())
+                intervals = floatArrayOf(6.dp.toPx() * inverseScale, 4.dp.toPx() * inverseScale)
             )
         )
     )
@@ -858,7 +884,8 @@ private fun CardDecorationElement(
     }
 }
 
-/** AI 生成图片元素:正方形框内 fit 居中,透明底不画棋盘格(变换/删除交互同装饰) */
+/** AI 生成图片元素:fullCanvas 铺满画布(Crop),否则正方形框 fit 居中;
+ * Loading 占位(编辑态叠加原图 + 转圈)/Error 错误态直接画在框内,均可选中/拖动/删除 */
 @Composable
 private fun CardImageElement(
     element: ImageElementSpec,
@@ -871,6 +898,13 @@ private fun CardImageElement(
 ) {
     val density = LocalDensity.current
     val sizePx = canvasWidthPx * CardLayout.IMAGE_ELEMENT_SIZE_RATIO
+    val widthDp = with(density) {
+        (if (element.fullCanvas) canvasWidthPx else sizePx).toDp()
+    }
+    val heightDp = with(density) {
+        (if (element.fullCanvas) canvasHeightPx else sizePx).toDp()
+    }
+    val contentScale = if (element.fullCanvas) ContentScale.Crop else ContentScale.Fit
     ElementBox(
         elementId = element.id,
         transform = element,
@@ -884,24 +918,35 @@ private fun CardImageElement(
         onDelete = { onElementDelete(element.id) }
     ) {
         val boxModifier = Modifier
-            .size(with(density) { sizePx.toDp() })
+            .size(width = widthDp, height = heightDp)
             .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
         when (element.status) {
             ImageElementStatus.Ready -> Picture(
                 model = element.uri,
                 contentDescription = null,
-                contentScale = ContentScale.Fit,
+                contentScale = contentScale,
                 showTransparencyChecker = false,
                 modifier = boxModifier
             )
 
-            // Loading/Error 占位:圆角浅底容器 + 居中状态内容,仍可选中/拖动/删除
+            // Loading/Error 占位:圆角浅底容器 + 居中状态内容;编辑再生成时垫底显示原图
             ImageElementStatus.Loading, ImageElementStatus.Error -> Box(
                 contentAlignment = Alignment.Center,
                 modifier = boxModifier
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(if (element.fullCanvas) 0.dp else 12.dp))
                     .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             ) {
+                if (element.status == ImageElementStatus.Loading && element.uri.isNotBlank()) {
+                    Picture(
+                        model = element.uri,
+                        contentDescription = null,
+                        contentScale = contentScale,
+                        showTransparencyChecker = false,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .graphicsLayer { alpha = 0.45f }
+                    )
+                }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     if (element.status == ImageElementStatus.Loading) {
                         EnhancedLoadingIndicator(modifier = Modifier.size(36.dp))

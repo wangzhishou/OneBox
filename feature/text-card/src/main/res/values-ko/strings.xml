@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">생성 중…</string>
     <string name="textcard_image_layer_error">생성 실패</string>
     <string name="textcard_generate_image_running">이미지를 생성하는 중입니다. 잠시만 기다려 주세요</string>
+    <string name="textcard_edit_image_title">AI로 이미지 편집</string>
+    <string name="textcard_edit_image_hint">편집 내용을 설명하세요. 예: 배경을 별이 빛나는 하늘로 바꾸기</string>
+    <string name="textcard_edit_image_history">기록</string>
+    <string name="textcard_edit_image_current">현재</string>
+    <string name="textcard_layer_reset_position">위치 초기화</string>
 </resources>

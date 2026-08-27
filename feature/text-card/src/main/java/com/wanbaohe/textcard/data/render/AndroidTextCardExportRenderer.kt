@@ -246,10 +246,10 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
     // ---------------- 装饰层 ----------------
 
     /**
-     * 单个 AI 图片元素:加载后 fit 居中进 IMAGE_ELEMENT_SIZE_RATIO 正方形框
-     * (与预览 Picture ContentScale.Fit 一致),绕框中心套 scale/rotation。
+     * 单个 AI 图片元素:fullCanvas = cover 铺满整张画布(与预览 ContentScale.Crop 一致,
+     * 绕画布中心变换);否则 fit 居中进 IMAGE_ELEMENT_SIZE_RATIO 正方形框(绕框中心)。
      * 仅导出 Ready 图层(Loading/Error 是编辑态占位,不进成图);
-     * 加载失败(URL 过期/无网)静默跳过,不阻断整体导出。
+     * 加载失败静默跳过,不阻断整体导出。
      */
     private fun drawImageElement(
         canvas: Canvas,
@@ -262,9 +262,40 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         val bitmap = runBlocking {
             imageGetter.getImage(
                 data = element.uri,
-                size = size.toInt().coerceAtLeast(1)
+                size = if (element.fullCanvas) {
+                    maxOf(width, height)
+                } else size.toInt().coerceAtLeast(1)
             )
         } ?: return
+
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG).apply {
+            alpha = (element.alpha.coerceIn(0f, 1f) * 255).toInt()
+        }
+        if (element.fullCanvas) {
+            // cover:等比放大到铺满,居中裁掉超出部分
+            val coverScale = maxOf(
+                width / bitmap.width.toFloat(),
+                height / bitmap.height.toFloat()
+            )
+            val drawWidth = bitmap.width * coverScale
+            val drawHeight = bitmap.height * coverScale
+            canvas.save()
+            canvas.translate(element.offsetX * width, element.offsetY * height)
+            canvas.applyElementTransform(element, width.toFloat(), height.toFloat())
+            canvas.drawBitmap(
+                bitmap,
+                null,
+                RectF(
+                    (width - drawWidth) / 2f,
+                    (height - drawHeight) / 2f,
+                    (width + drawWidth) / 2f,
+                    (height + drawHeight) / 2f
+                ),
+                paint
+            )
+            canvas.restore()
+            return
+        }
 
         // fit 居中:保持比例放进正方形框
         val fitScale = minOf(size / bitmap.width, size / bitmap.height)
@@ -282,9 +313,7 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
             bitmap,
             null,
             RectF(imageLeft, imageTop, imageLeft + drawWidth, imageTop + drawHeight),
-            Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG).apply {
-                alpha = (element.alpha.coerceIn(0f, 1f) * 255).toInt()
-            }
+            paint
         )
         canvas.restore()
     }

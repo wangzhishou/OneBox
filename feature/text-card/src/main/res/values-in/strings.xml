@@ -71,4 +71,9 @@
     <string name="textcard_image_layer_loading">Membuat…</string>
     <string name="textcard_image_layer_error">Gagal</string>
     <string name="textcard_generate_image_running">Gambar sedang dibuat, mohon tunggu</string>
+    <string name="textcard_edit_image_title">Edit Gambar (AI)</string>
+    <string name="textcard_edit_image_hint">Deskripsikan editnya, mis. ganti latar dengan langit berbintang</string>
+    <string name="textcard_edit_image_history">Riwayat</string>
+    <string name="textcard_edit_image_current">Saat ini</string>
+    <string name="textcard_layer_reset_position">Reset posisi</string>
 </resources>
