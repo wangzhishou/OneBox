@@ -37,6 +37,7 @@ import com.wanbaohe.textcard.domain.model.DecorationSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.GradientPresets
 import com.wanbaohe.textcard.domain.model.ImageElementSpec
+import com.wanbaohe.textcard.domain.model.ImageElementStatus
 import com.wanbaohe.textcard.domain.model.RemotePaper
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
@@ -444,10 +445,13 @@ class TextCardComponent @AssistedInject internal constructor(
     }
 
     /**
-     * 生成图片图层:走 image-generation 的活动配置(默认代理通道,无需用户配置),
-     * 成功取首图新增为图片元素并选中;失败 toast 展示原因。[onSuccess] 供弹窗自关。
+     * 生成图片图层:先就地加一个 Loading 占位图层(居中、置顶并选中)再异步生成,
+     * [onStarted] 在占位落地后回调(弹窗据此立即关闭,不阻塞用户其它操作);
+     * 成功把占位图层换成本地缓存图(仅真实生成扣积分,复用缓存不重复扣);
+     * 失败把占位图层标为 Error(错误画在图层上)并 toast 原因。
+     * 生成中重复调用 toast 提示并忽略(单任务,不允许并发二次生成)。
      */
-    fun generateImageLayer(prompt: String, onSuccess: () -> Unit = {}) {
+    fun generateImageLayer(prompt: String, onStarted: () -> Unit = {}) {
         val trimmed = prompt.trim()
         if (trimmed.isEmpty()) {
             AppToastHost.showToast(
@@ -457,13 +461,36 @@ class TextCardComponent @AssistedInject internal constructor(
             )
             return
         }
-        if (_isGeneratingImage.value) return
+        if (_isGeneratingImage.value) {
+            AppToastHost.showToast(
+                message = appContext.getString(R.string.textcard_generate_image_running),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineInfo,
+                duration = ToastDuration.Short
+            )
+            return
+        }
+        val canvas = _canvas.value ?: return
+        // Loading 占位图层:立即上屏,用户不必守着等待
+        val placeholder = ImageElementSpec
+            .defaultPositionFor(canvas, uri = "")
+            .copy(status = ImageElementStatus.Loading)
+        _imageElements.update { it + placeholder }
+        _elementLayers.update { it + ElementLayer(placeholder.id, ElementLayer.Kind.Image) }
+        _selectedElementId.value = placeholder.id
+        registerChanges()
+        onStarted()
+
         generateImageJob = componentScope.launch {
             _isGeneratingImage.value = true
             imageGenerationLoader.load(trimmed)
                 .onSuccess { image ->
-                    addImageElement(image.file.absolutePath)
-                    // 仅真实生成成功扣积分；复用本地缓存不重复扣费。
+                    updateImageElement(placeholder.id) {
+                        it.copy(
+                            uri = image.file.absolutePath,
+                            status = ImageElementStatus.Ready
+                        )
+                    }
+                    // 仅真实生成成功扣积分;复用本地缓存不重复扣费
                     if (!image.fromCache) {
                         BaseUtils.consumePoints(
                             degree = aiImageProcessPointsCost(),
@@ -472,9 +499,13 @@ class TextCardComponent @AssistedInject internal constructor(
                             showToast = true
                         )
                     }
-                    onSuccess()
                 }
-                .onFailure { AppToastHost.showFailureToast(throwable = it) }
+                .onFailure { error ->
+                    updateImageElement(placeholder.id) {
+                        it.copy(status = ImageElementStatus.Error)
+                    }
+                    AppToastHost.showFailureToast(throwable = error)
+                }
             _isGeneratingImage.value = false
         }
     }
@@ -483,13 +514,10 @@ class TextCardComponent @AssistedInject internal constructor(
         generateImageJob = null
     }
 
-    /** 新增图片元素:默认落画布中心,置顶(图层列表尾部)并选中 */
-    private fun addImageElement(uri: String) {
-        val canvas = _canvas.value ?: return
-        val element = ImageElementSpec.defaultPositionFor(canvas, uri)
-        _imageElements.update { it + element }
-        _elementLayers.update { it + ElementLayer(element.id, ElementLayer.Kind.Image) }
-        _selectedElementId.value = element.id
+    /** 按 id 更新图片元素(占位图层状态机:Loading → Ready/Error) */
+    private fun updateImageElement(id: String, transform: (ImageElementSpec) -> ImageElementSpec) {
+        if (_imageElements.value.none { it.id == id }) return
+        _imageElements.update { list -> list.map { if (it.id == id) transform(it) else it } }
         registerChanges()
     }
 

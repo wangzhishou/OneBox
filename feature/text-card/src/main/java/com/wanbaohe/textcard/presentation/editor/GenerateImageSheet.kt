@@ -36,8 +36,9 @@ import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 
 /**
  * AI 生成图片 Sheet(走 core:image-generation 的活动配置,默认代理通道):
- * 输入描述 → 生成 → 成功后新增为图片图层并关弹层;生成中按钮禁用,
- * 全屏 LoadingDialog 由编辑页统一挂(可取消)。
+ * 输入描述 → 生成 → 预检通过后画布立即落一个 Loading 占位图层并关闭弹层,
+ * 不阻塞其它操作;生成中再次打开本弹层,生成按钮保持禁用。
+ * 结果(成功换图/失败标错)由组件写回占位图层。
  */
 @Composable
 fun GenerateImageSheet(
@@ -103,12 +104,12 @@ fun GenerateImageSheet(
                             return@PrimaryButton
                         }
                         // 登录 + 积分预检(同 markup-layers AI 能力):通过后才真正生成;
-                        // 积分在生成成功后由组件扣除,失败不扣
+                        // 占位图层落地即关弹窗(onStarted),积分在生成成功后由组件扣除
                         ActionUtils.ensureLoginAndCheckPoints(
                             source = AI_IMAGE_POINTS_SOURCE,
                             point = aiImageProcessPointsCost()
                         ) {
-                            component.generateImageLayer(prompt, onSuccess = onDismiss)
+                            component.generateImageLayer(prompt, onStarted = onDismiss)
                         }
                     },
                     enable = !component.isGeneratingImage,

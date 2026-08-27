@@ -180,12 +180,6 @@ fun TextCardEditorScreen(
         onCancelLoading = component::cancelSaving,
         canCancel = true
     )
-
-    LoadingDialog(
-        visible = component.isGeneratingImage,
-        onCancelLoading = component::cancelGeneratingImage,
-        canCancel = true
-    )
 }
 
 /** 面板底部弹层:标题栏(居中标题 + 关闭按钮) + 对应面板内容 */

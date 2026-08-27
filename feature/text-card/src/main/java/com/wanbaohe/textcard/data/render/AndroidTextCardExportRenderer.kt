@@ -23,6 +23,7 @@ import com.wanbaohe.textcard.domain.model.DecorationSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.ElementTransform
 import com.wanbaohe.textcard.domain.model.ImageElementSpec
+import com.wanbaohe.textcard.domain.model.ImageElementStatus
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
@@ -247,6 +248,7 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
     /**
      * 单个 AI 图片元素:加载后 fit 居中进 IMAGE_ELEMENT_SIZE_RATIO 正方形框
      * (与预览 Picture ContentScale.Fit 一致),绕框中心套 scale/rotation。
+     * 仅导出 Ready 图层(Loading/Error 是编辑态占位,不进成图);
      * 加载失败(URL 过期/无网)静默跳过,不阻断整体导出。
      */
     private fun drawImageElement(
@@ -255,6 +257,7 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         width: Int,
         height: Int,
     ) {
+        if (element.status != ImageElementStatus.Ready || element.uri.isBlank()) return
         val size = width * CardLayout.IMAGE_ELEMENT_SIZE_RATIO
         val bitmap = runBlocking {
             imageGetter.getImage(

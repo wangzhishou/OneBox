@@ -73,4 +73,7 @@
     <string name="textcard_generate_image_empty">请输入图片描述</string>
     <string name="textcard_layer_image">图片</string>
     <string name="textcard_generate_points_hint">每次生成消耗 %1$d 积分</string>
+    <string name="textcard_image_layer_loading">生成中…</string>
+    <string name="textcard_image_layer_error">生成失败</string>
+    <string name="textcard_generate_image_running">图片正在生成中,请稍候</string>
 </resources>

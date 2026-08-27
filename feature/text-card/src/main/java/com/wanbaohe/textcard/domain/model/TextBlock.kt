@@ -85,10 +85,15 @@ data class DecorationSpec(
  * AI 生成图片元素(支持多个;每个一个图层,可独立拖动/缩放/旋转,同装饰)。
  * offsetX/offsetY 为元素左上角的归一化坐标(X 相对画布宽、Y 相对画布高),
  * 图片在 IMAGE_ELEMENT_SIZE_RATIO 正方形框内 fit 居中。
+ *
+ * 生成是异步的:发起时先加 [ImageElementStatus.Loading] 占位图层(uri 为空),
+ * 用户可继续其它操作;成功回填 uri 转 [ImageElementStatus.Ready],失败转
+ * [ImageElementStatus.Error](错误态直接画在图层上,可删除)。导出只画 Ready。
  */
 data class ImageElementSpec(
     val id: String = UUID.randomUUID().toString(),
     val uri: String,
+    val status: ImageElementStatus = ImageElementStatus.Ready,
     val alpha: Float = 1f,
     override val offsetX: Float = 0f,
     override val offsetY: Float = 0f,
@@ -106,4 +111,8 @@ data class ImageElementSpec(
             )
         }
     }
+}
+
+enum class ImageElementStatus {
+    Loading, Ready, Error
 }

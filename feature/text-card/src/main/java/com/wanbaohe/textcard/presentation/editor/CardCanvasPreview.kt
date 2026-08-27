@@ -9,6 +9,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -70,15 +71,19 @@ import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.ErrorOutline
 import com.wanbaohe.textcard.domain.model.CardTextAlignment
 import com.wanbaohe.textcard.domain.model.DecorationSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
 import com.wanbaohe.textcard.domain.model.ElementTransform
 import com.wanbaohe.textcard.domain.model.ImageElementSpec
+import com.wanbaohe.textcard.domain.model.ImageElementStatus
 import com.wanbaohe.textcard.domain.model.TextBlock
 import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
@@ -878,19 +883,55 @@ private fun CardImageElement(
         onElementTransform = onElementTransform,
         onDelete = { onElementDelete(element.id) }
     ) {
-        Picture(
-            model = element.uri,
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            showTransparencyChecker = false,
-            modifier = Modifier
-                .size(with(density) { sizePx.toDp() })
-                .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
-        )
+        val boxModifier = Modifier
+            .size(with(density) { sizePx.toDp() })
+            .graphicsLayer { alpha = element.alpha.coerceIn(0f, 1f) }
+        when (element.status) {
+            ImageElementStatus.Ready -> Picture(
+                model = element.uri,
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                showTransparencyChecker = false,
+                modifier = boxModifier
+            )
+
+            // Loading/Error 占位:圆角浅底容器 + 居中状态内容,仍可选中/拖动/删除
+            ImageElementStatus.Loading, ImageElementStatus.Error -> Box(
+                contentAlignment = Alignment.Center,
+                modifier = boxModifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (element.status == ImageElementStatus.Loading) {
+                        EnhancedLoadingIndicator(modifier = Modifier.size(36.dp))
+                        Text(
+                            text = stringResource(R.string.textcard_image_layer_loading),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 6.dp)
+                        )
+                    } else {
+                        Icon(
+                            imageVector = MaterialIcons.Outlined.ErrorOutline,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                        Text(
+                            text = stringResource(R.string.textcard_image_layer_error),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(top = 6.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
-private fun Offset.rotateBy(degrees: Float): Offset {    val radians = Math.toRadians(degrees.toDouble())
+private fun Offset.rotateBy(degrees: Float): Offset {
+    val radians = Math.toRadians(degrees.toDouble())
     return Offset(
         x = (x * cos(radians) - y * sin(radians)).toFloat(),
         y = (x * sin(radians) + y * cos(radians)).toFloat()

@@ -68,4 +68,7 @@
     <string name="textcard_generate_image_empty">Introduce una descripción de la imagen</string>
     <string name="textcard_layer_image">Imagen</string>
     <string name="textcard_generate_points_hint">%1$d puntos por generación</string>
+    <string name="textcard_image_layer_loading">Generando…</string>
+    <string name="textcard_image_layer_error">Falló</string>
+    <string name="textcard_generate_image_running">Se está generando una imagen, espera</string>
 </resources>

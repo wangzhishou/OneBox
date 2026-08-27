@@ -68,4 +68,7 @@
     <string name="textcard_generate_image_empty">Maglagay ng paglalarawan ng larawan</string>
     <string name="textcard_layer_image">Larawan</string>
     <string name="textcard_generate_points_hint">%1$d puntos bawat generate</string>
+    <string name="textcard_image_layer_loading">Ginagawa…</string>
+    <string name="textcard_image_layer_error">Nabigo</string>
+    <string name="textcard_generate_image_running">May larawan pa ring ginagawa, hintayin muna</string>
 </resources>

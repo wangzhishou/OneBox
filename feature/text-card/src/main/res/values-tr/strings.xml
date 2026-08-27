@@ -68,4 +68,7 @@
     <string name="textcard_generate_image_empty">Lütfen bir görsel açıklaması girin</string>
     <string name="textcard_layer_image">Görsel</string>
     <string name="textcard_generate_points_hint">Oluşturma başına %1$d puan</string>
+    <string name="textcard_image_layer_loading">Oluşturuluyor…</string>
+    <string name="textcard_image_layer_error">Başarısız</string>
+    <string name="textcard_generate_image_running">Bir görsel oluşturuluyor, lütfen bekleyin</string>
 </resources>

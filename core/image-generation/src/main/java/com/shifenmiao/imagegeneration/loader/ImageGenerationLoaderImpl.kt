@@ -6,8 +6,10 @@ import com.shifenmiao.imagegeneration.model.ImageProviderConfig
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
@@ -78,18 +80,22 @@ class ImageGenerationLoaderImpl private constructor(
         }
     }
 
+    /**
+     * 生成 + 下载全程切到 IO 线程:download 里是 OkHttp 同步 execute,
+     * 调用方(如组件 componentScope)多在主线程,不切线程会 NetworkOnMainThreadException。
+     */
     private suspend fun loadLocked(
         config: ImageProviderConfig,
         request: ImageGenerationRequest,
         cacheKey: String,
         forceRefresh: Boolean,
-    ): Result<CachedGeneratedImage> {
+    ): Result<CachedGeneratedImage> = withContext(Dispatchers.IO) {
         val existing = findCachedFile(cacheKey)
         if (!forceRefresh && existing != null) {
-            return Result.success(CachedGeneratedImage(existing, cacheKey, fromCache = true))
+            return@withContext Result.success(CachedGeneratedImage(existing, cacheKey, fromCache = true))
         }
 
-        return try {
+        return@withContext try {
             val generation = manager.generateWithConfig(config, request).getOrThrow()
             val imageUrl = generation.images.firstOrNull()?.url
                 ?.takeIf(String::isNotBlank)

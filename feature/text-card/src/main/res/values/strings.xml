@@ -73,4 +73,7 @@
     <string name="textcard_generate_image_empty">Please enter an image description</string>
     <string name="textcard_layer_image">Image</string>
     <string name="textcard_generate_points_hint">%1$d points per generation</string>
+    <string name="textcard_image_layer_loading">Generating…</string>
+    <string name="textcard_image_layer_error">Failed</string>
+    <string name="textcard_generate_image_running">An image is being generated, please wait</string>
 </resources>

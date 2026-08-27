@@ -68,4 +68,7 @@
     <string name="textcard_generate_image_empty">Введите описание изображения</string>
     <string name="textcard_layer_image">Изображение</string>
     <string name="textcard_generate_points_hint">%1$d баллов за генерацию</string>
+    <string name="textcard_image_layer_loading">Создаётся…</string>
+    <string name="textcard_image_layer_error">Не удалось</string>
+    <string name="textcard_generate_image_running">Изображение генерируется, подождите</string>
 </resources>

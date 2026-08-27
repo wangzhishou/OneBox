@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.longPress
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.press
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
@@ -38,6 +39,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
+import com.wanbaohe.textcard.domain.model.ImageElementStatus
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
@@ -46,6 +48,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DragHandle
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.LockOpen
 import androidx.compose.material.icons.outlined.TextFields
@@ -298,14 +301,26 @@ private fun LayerThumb(
 
             ElementLayer.Kind.Image -> {
                 val element = component.imageElements.find { it.id == layer.elementId }
-                if (element != null) {
-                    Picture(
+                when (element?.status) {
+                    ImageElementStatus.Ready -> Picture(
                         model = element.uri,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         showTransparencyChecker = false,
                         modifier = Modifier.size(36.dp)
                     )
+
+                    ImageElementStatus.Loading -> EnhancedLoadingIndicator(
+                        modifier = Modifier.size(20.dp)
+                    )
+
+                    ImageElementStatus.Error -> Icon(
+                        imageVector = MaterialIcons.Outlined.ErrorOutline,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error
+                    )
+
+                    null -> Unit
                 }
             }
         }
