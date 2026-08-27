@@ -44,18 +44,24 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentCut
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
+import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorRailTool
+import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorToolRail
+import com.t8rin.imagetoolbox.core.ui.widget.editor.VerticalDraggable
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.presentation.editor.panels.BackgroundPanel
-import com.wanbaohe.textcard.presentation.editor.panels.BasicPanel
 import com.wanbaohe.textcard.presentation.editor.panels.LayersPanel
 import com.wanbaohe.textcard.presentation.editor.panels.TextStylePanel
 import com.wanbaohe.textcard.presentation.screenLogic.EditorPanel
 import com.wanbaohe.textcard.presentation.screenLogic.TextCardComponent
 import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CropSquare
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.EmojiEmotions
 import androidx.compose.material.icons.outlined.Layers
 import androidx.compose.material.icons.outlined.Tune
 
@@ -98,7 +104,7 @@ fun TextCardEditorScreen(
             BackHandler(enabled = component.editingTextBlockId != null) {
                 component.endTextEdit()
             }
-            Box(
+            BoxWithConstraints(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
@@ -142,6 +148,33 @@ fun TextCardEditorScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+
+                // 「基础」Tab = 左侧浮动工具竖栏开关(图片创作式):
+                // 添加文字 / 添加装饰 / AI 生成图片 / 删除选中;可垂直拖动
+                val railVisible = component.activePanel == EditorPanel.Basic
+                androidx.compose.animation.AnimatedVisibility(
+                    visible = railVisible,
+                    modifier = Modifier.align(Alignment.CenterStart)
+                ) {
+                    VerticalDraggable(
+                        containerHeightPx = constraints.maxHeight.toFloat(),
+                        consumeTap = true
+                    ) {
+                        EditorToolRail(
+                            tools = basicRailTools(component),
+                            activeId = null,
+                            onToolClick = { tool ->
+                                when (tool.id) {
+                                    RAIL_ADD_TEXT -> component.addTextBlock()
+                                    RAIL_ADD_DECORATION -> showDecorationSheet = true
+                                    RAIL_AI_GENERATE -> showGenerateImageSheet = true
+                                    RAIL_DELETE -> component.selectedElementId
+                                        ?.let(component::removeElement)
+                                }
+                            }
+                        )
+                    }
+                }
             }
 
             EditorBottomBar(
@@ -151,11 +184,7 @@ fun TextCardEditorScreen(
         }
     )
 
-    EditorPanelSheet(
-        component = component,
-        onEditDecoration = { showDecorationSheet = true },
-        onGenerateImage = { showGenerateImageSheet = true }
-    )
+    EditorPanelSheet(component = component)
 
     DecorationPickerSheet(
         visible = showDecorationSheet,
@@ -182,16 +211,15 @@ fun TextCardEditorScreen(
     )
 }
 
-/** 面板底部弹层:标题栏(居中标题 + 关闭按钮) + 对应面板内容 */
+/** 面板底部弹层:标题栏(居中标题 + 关闭按钮) + 对应面板内容。
+ * 「基础」Tab 不走弹层(左侧浮动工具竖栏,见编辑页画布区)。 */
 @Composable
 private fun EditorPanelSheet(
     component: TextCardComponent,
-    onEditDecoration: () -> Unit,
-    onGenerateImage: () -> Unit,
 ) {
     val activePanel = component.activePanel
     EnhancedModalBottomSheet(
-        visible = activePanel != null,
+        visible = activePanel != null && activePanel != EditorPanel.Basic,
         dragHandle = {
             CenterAlignedTopAppBar(
                 windowInsets = WindowInsets(0, 0, 0, 0),
@@ -226,17 +254,12 @@ private fun EditorPanelSheet(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 when (activePanel) {
-                    EditorPanel.Basic -> BasicPanel(
-                        component = component,
-                        onAddDecoration = onEditDecoration,
-                        onGenerateImage = onGenerateImage
-                    )
-
                     EditorPanel.Background -> BackgroundPanel(component)
                     EditorPanel.TextStyle -> TextStylePanel(component)
                     EditorPanel.Layers -> LayersPanel(component = component)
 
-                    null -> Unit
+                    // Basic 走左侧浮动工具竖栏,不进弹层
+                    else -> Unit
                 }
             }
         }
@@ -347,3 +370,36 @@ private fun EditorPanel.labelRes(): Int = when (this) {
     EditorPanel.TextStyle -> R.string.textcard_tab_text_style
     EditorPanel.Layers -> R.string.textcard_tab_layers
 }
+
+// ---------------- 「基础」侧栏 ----------------
+
+private const val RAIL_ADD_TEXT = "add_text"
+private const val RAIL_ADD_DECORATION = "add_decoration"
+private const val RAIL_AI_GENERATE = "ai_generate"
+private const val RAIL_DELETE = "delete_selected"
+
+/** 「基础」侧栏项(与图片创作侧栏同款):添加文字/添加装饰/AI 生成图片/删除选中 */
+@Composable
+private fun basicRailTools(component: TextCardComponent): List<EditorRailTool> = listOf(
+    EditorRailTool(
+        id = RAIL_ADD_TEXT,
+        icon = MaterialIcons.Outlined.Add,
+        label = stringResource(R.string.textcard_add_text)
+    ),
+    EditorRailTool(
+        id = RAIL_ADD_DECORATION,
+        icon = MaterialIcons.Outlined.EmojiEmotions,
+        label = stringResource(R.string.textcard_add_decoration)
+    ),
+    EditorRailTool(
+        id = RAIL_AI_GENERATE,
+        icon = MaterialIcons.Outlined.AutoAwesome,
+        label = stringResource(R.string.textcard_add_image_layer)
+    ),
+    EditorRailTool(
+        id = RAIL_DELETE,
+        icon = MaterialIcons.Outlined.Delete,
+        label = stringResource(R.string.textcard_delete_selected),
+        enabled = component.selectedElementId != null
+    )
+)

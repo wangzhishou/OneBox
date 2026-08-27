@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
@@ -38,16 +37,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -71,6 +66,12 @@ import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
+import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
+import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeHandles
+import com.t8rin.imagetoolbox.core.ui.widget.editor.HANDLE_SIZE
+import com.t8rin.imagetoolbox.core.ui.widget.editor.RotationHandle
+import com.t8rin.imagetoolbox.core.ui.widget.editor.ScaleHandle
+import com.t8rin.imagetoolbox.core.ui.widget.editor.dashedSelectionBorder
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
@@ -89,7 +90,6 @@ import com.wanbaohe.textcard.domain.model.TextCardRenderState
 import com.wanbaohe.textcard.domain.render.CardLayout
 import com.wanbaohe.textcard.domain.render.MESH_RESOLUTION
 import com.wanbaohe.textcard.domain.render.toPointPairs
-import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -305,7 +305,7 @@ private fun ElementBox(
             }
             .then(
                 if (isSelected) {
-                    Modifier.dashedBorder(
+                    Modifier.dashedSelectionBorder(
                         width = 1.5.dp,
                         color = MaterialTheme.colorScheme.primary.copy(
                             alpha = if (gesturesEnabled) 1f else 0.4f
@@ -378,20 +378,23 @@ private fun ElementBox(
                     sizeProvider = { boxSizePx },
                     leftProvider = { currentLeftPx },
                     topProvider = { currentTopPx },
-                    transformProvider = { currentTransform },
                     inverseScale = inverseChromeScale,
-                    config = resizeConfig
+                    config = resizeConfig,
+                    rotationProvider = { currentTransform.rotation },
+                    scaleProvider = { currentTransform.scale }
                 )
                 RotationHandle(
                     handlePx = with(LocalDensity.current) { HANDLE_SIZE.toPx() },
                     elementCenter = Offset(boxSizePx.width / 2f, boxSizePx.height / 2f),
-                    elementId = elementId,
-                    transformProvider = { currentTransform },
                     inverseScale = inverseChromeScale,
-                    onElementTransform = onElementTransform
+                    rotationProvider = { currentTransform.rotation },
+                    onRotation = { newRotation ->
+                        val t = currentTransform
+                        onElementTransform(elementId, t.offsetX, t.offsetY, t.scale, newRotation)
+                    }
                 )
             } else {
-                SelectionHandles(
+                CornerScaleHandles(
                     elementId = elementId,
                     sizePx = boxSizePx,
                     transformProvider = { currentTransform },
@@ -403,20 +406,9 @@ private fun ElementBox(
     }
 }
 
-/** 文字框尺寸手柄配置:阈值均 px;onResize 回报新框宽高与锚点补偿后的 left/top(均 px) */
-private class BoxResizeConfig(
-    val minWidthPx: Float,
-    val maxWidthPx: Float,
-    val minHeightPx: Float,
-    val maxHeightPx: Float,
-    val onResize: (widthPx: Float, heightPx: Float, leftPx: Float, topPx: Float) -> Unit,
-)
-
-private val HANDLE_SIZE = 36.dp
-
-/** 四角缩放手柄 + 顶部中心旋转手柄(全部在元素本地坐标系计算,与当前旋转/缩放无关) */
+/** 四角缩放手柄 + 顶部中心旋转手柄(装饰元素):共享 chrome + 本模块 5 元组回调适配 */
 @Composable
-private fun androidx.compose.foundation.layout.BoxScope.SelectionHandles(
+private fun androidx.compose.foundation.layout.BoxScope.CornerScaleHandles(
     elementId: String,
     sizePx: IntSize,
     transformProvider: () -> ElementTransform,
@@ -441,10 +433,12 @@ private fun androidx.compose.foundation.layout.BoxScope.SelectionHandles(
             offsetSign = offsetSign,
             handlePx = handlePx,
             elementCenter = center,
-            elementId = elementId,
-            transformProvider = transformProvider,
             inverseScale = inverseScale,
-            onElementTransform = onElementTransform
+            scaleProvider = { transformProvider().scale },
+            onScale = { newScale ->
+                val t = transformProvider()
+                onElementTransform(elementId, t.offsetX, t.offsetY, newScale, t.rotation)
+            }
         )
     }
 
@@ -452,278 +446,12 @@ private fun androidx.compose.foundation.layout.BoxScope.SelectionHandles(
     RotationHandle(
         handlePx = handlePx,
         elementCenter = center,
-        elementId = elementId,
-        transformProvider = transformProvider,
         inverseScale = inverseScale,
-        onElementTransform = onElementTransform
-    )
-}
-
-/** 手柄视觉:白边主色小圆点(热区 36dp,视觉 16dp;inverseScale 反缩放保持视觉恒定) */
-@Composable
-private fun HandleDot(inverseScale: Float = 1f) {
-    Box(
-        modifier = Modifier
-            .graphicsLayer {
-                scaleX = inverseScale
-                scaleY = inverseScale
-            }
-            .size(16.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary)
-            .border(2.dp, Color.White, CircleShape)
-    )
-}
-
-/** 拖角缩放:触点与元素中心的距离比 × 起始缩放 */
-@Composable
-private fun androidx.compose.foundation.layout.BoxScope.ScaleHandle(
-    alignment: Alignment,
-    cornerInElement: Offset,
-    offsetSign: IntOffset,
-    handlePx: Float,
-    elementCenter: Offset,
-    elementId: String,
-    transformProvider: () -> ElementTransform,
-    inverseScale: Float,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .align(alignment)
-            .offset {
-                IntOffset(
-                    x = (offsetSign.x * handlePx / 2).roundToInt(),
-                    y = (offsetSign.y * handlePx / 2).roundToInt()
-                )
-            }
-            .size(HANDLE_SIZE)
-            .pointerInput(elementId, cornerInElement, elementCenter) {
-                val half = handlePx / 2
-                // 手势期起点(每次手势 onDragStart 重置,不跨手势共享)
-                var startDist = 1f
-                var startScale = 1f
-                detectDragGestures(
-                    onDragStart = { downOffset ->
-                        val startPoint = cornerInElement - Offset(half, half) + downOffset
-                        startDist = (startPoint - elementCenter).getDistance().coerceAtLeast(1f)
-                        startScale = transformProvider().scale
-                    },
-                    onDrag = { change, _ ->
-                        change.consume()
-                        val point = cornerInElement - Offset(half, half) + change.position
-                        val factor = (point - elementCenter).getDistance() / startDist
-                        val t = transformProvider()
-                        onElementTransform(
-                            elementId,
-                            t.offsetX,
-                            t.offsetY,
-                            (startScale * factor).coerceIn(0.2f, 5f),
-                            t.rotation
-                        )
-                    }
-                )
-            }
-    ) {
-        HandleDot(inverseScale)
-    }
-}
-
-/** 手柄规格:alignment=贴位,offsetSign=中心越边方向,edgeX/edgeY=-1 拖左/顶边、0 该轴不动、1 拖右/底边 */
-private data class HandleSpec(
-    val alignment: Alignment,
-    val offsetSign: IntOffset,
-    val edgeX: Int,
-    val edgeY: Int,
-)
-
-/** 文字框 8 向尺寸手柄(四角 + 四边中点):拖手柄改框宽/高,文字重排,字号不变 */
-@Composable
-private fun androidx.compose.foundation.layout.BoxScope.BoxResizeHandles(
-    sizeProvider: () -> IntSize,
-    leftProvider: () -> Float,
-    topProvider: () -> Float,
-    transformProvider: () -> ElementTransform,
-    inverseScale: Float,
-    config: BoxResizeConfig,
-) {
-    val density = LocalDensity.current
-    val handlePx = with(density) { HANDLE_SIZE.toPx() }
-    val specs = listOf(
-        HandleSpec(Alignment.TopStart, IntOffset(-1, -1), edgeX = -1, edgeY = -1),
-        HandleSpec(Alignment.TopEnd, IntOffset(1, -1), edgeX = 1, edgeY = -1),
-        HandleSpec(Alignment.BottomStart, IntOffset(-1, 1), edgeX = -1, edgeY = 1),
-        HandleSpec(Alignment.BottomEnd, IntOffset(1, 1), edgeX = 1, edgeY = 1),
-        HandleSpec(Alignment.CenterStart, IntOffset(-1, 0), edgeX = -1, edgeY = 0),
-        HandleSpec(Alignment.CenterEnd, IntOffset(1, 0), edgeX = 1, edgeY = 0),
-        HandleSpec(Alignment.TopCenter, IntOffset(0, -1), edgeX = 0, edgeY = -1),
-        HandleSpec(Alignment.BottomCenter, IntOffset(0, 1), edgeX = 0, edgeY = 1),
-    )
-    specs.forEach { spec ->
-        ResizeHandle(
-            spec = spec,
-            handlePx = handlePx,
-            sizeProvider = sizeProvider,
-            leftProvider = leftProvider,
-            topProvider = topProvider,
-            transformProvider = transformProvider,
-            inverseScale = inverseScale,
-            config = config
-        )
-    }
-}
-
-/**
- * 单方向尺寸手柄:拖动改框宽/高,字号不变;对侧边为视觉锚点,旋转/缩放下
- * 经锚点补偿保持锚点不动。补偿公式:dw=startW−w',dh=startH−h',
- * shift = (dw/2, dh/2) + R(θ)·s·((ax−½)dw, (ay−½)dh),ax/ay 为锚点比例(0/½/1)。
- */
-@Composable
-private fun androidx.compose.foundation.layout.BoxScope.ResizeHandle(
-    spec: HandleSpec,
-    handlePx: Float,
-    sizeProvider: () -> IntSize,
-    leftProvider: () -> Float,
-    topProvider: () -> Float,
-    transformProvider: () -> ElementTransform,
-    inverseScale: Float,
-    config: BoxResizeConfig,
-) {
-    // 锚点比例:拖右边锚左边(ax=0)、拖左边锚右边(ax=1)、不动轴锚中心(½)
-    val anchorX = (1 - spec.edgeX) / 2f
-    val anchorY = (1 - spec.edgeY) / 2f
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .align(spec.alignment)
-            .offset {
-                IntOffset(
-                    x = (spec.offsetSign.x * handlePx / 2).roundToInt(),
-                    y = (spec.offsetSign.y * handlePx / 2).roundToInt()
-                )
-            }
-            .size(HANDLE_SIZE)
-            .pointerInput(spec) {
-                // 手势期起点(每次手势 onDragStart 重置,不跨手势共享)
-                var drag = Offset.Zero
-                var startW = 0f
-                var startH = 0f
-                var startLeft = 0f
-                var startTop = 0f
-                var startScale = 1f
-                var startRotation = 0f
-                detectDragGestures(
-                    onDragStart = {
-                        drag = Offset.Zero
-                        val size = sizeProvider()
-                        startW = size.width.toFloat()
-                        startH = size.height.toFloat()
-                        startLeft = leftProvider()
-                        startTop = topProvider()
-                        startScale = transformProvider().scale
-                        startRotation = transformProvider().rotation
-                    },
-                    onDrag = { change, dragAmount ->
-                        change.consume()
-                        drag += dragAmount
-                        val newW = (startW + spec.edgeX * drag.x)
-                            .coerceIn(config.minWidthPx, config.maxWidthPx)
-                        val newH = (startH + spec.edgeY * drag.y)
-                            .coerceIn(config.minHeightPx, config.maxHeightPx)
-                        val dw = startW - newW
-                        val dh = startH - newH
-                        val radians = Math.toRadians(startRotation.toDouble())
-                        val scaledCos = cos(radians).toFloat() * startScale
-                        val scaledSin = sin(radians).toFloat() * startScale
-                        val anchorDw = (anchorX - 0.5f) * dw
-                        val anchorDh = (anchorY - 0.5f) * dh
-                        config.onResize(
-                            newW,
-                            newH,
-                            startLeft + dw / 2 + (anchorDw * scaledCos - anchorDh * scaledSin),
-                            startTop + dh / 2 + (anchorDw * scaledSin + anchorDh * scaledCos)
-                        )
-                    }
-                )
-            }
-    ) {
-        HandleDot(inverseScale)
-    }
-}
-
-/** 顶部中心旋转手柄:触点绕元素中心的角度增量 */
-@Composable
-private fun androidx.compose.foundation.layout.BoxScope.RotationHandle(
-    handlePx: Float,
-    elementCenter: Offset,
-    elementId: String,
-    transformProvider: () -> ElementTransform,
-    inverseScale: Float,
-    onElementTransform: (String, Float, Float, Float, Float) -> Unit,
-) {
-    // handle 中心:元素顶边中点正上方半个手柄位
-    val handleCenter = Offset(elementCenter.x, -handlePx / 2)
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .align(Alignment.TopCenter)
-            .offset(y = -HANDLE_SIZE)
-            .size(HANDLE_SIZE)
-            .pointerInput(elementId, elementCenter) {
-                val half = handlePx / 2
-                // 手势期起点(每次手势 onDragStart 重置,不跨手势共享)
-                var startAngle = 0f
-                var startRotation = 0f
-                detectDragGestures(
-                    onDragStart = { downOffset ->
-                        val startPoint = handleCenter - Offset(half, half) + downOffset
-                        startAngle = atan2(
-                            startPoint.y - elementCenter.y,
-                            startPoint.x - elementCenter.x
-                        )
-                        startRotation = transformProvider().rotation
-                    },
-                    onDrag = { change, _ ->
-                        change.consume()
-                        val point = handleCenter - Offset(half, half) + change.position
-                        val angle = atan2(
-                            point.y - elementCenter.y,
-                            point.x - elementCenter.x
-                        )
-                        val t = transformProvider()
-                        onElementTransform(
-                            elementId,
-                            t.offsetX,
-                            t.offsetY,
-                            t.scale,
-                            startRotation + Math.toDegrees((angle - startAngle).toDouble()).toFloat()
-                        )
-                    }
-                )
-            }
-    ) {
-        HandleDot(inverseScale)
-    }
-}
-
-/** 选中态虚线圆角边框;inverseScale 抵消元素缩放,线宽/虚线间隔视觉恒定 */
-private fun Modifier.dashedBorder(
-    width: Dp,
-    color: Color,
-    cornerRadius: Dp,
-    inverseScale: Float = 1f,
-): Modifier = drawBehind {
-    val strokeWidth = width.toPx() * inverseScale
-    drawRoundRect(
-        color = color,
-        cornerRadius = CornerRadius(cornerRadius.toPx()),
-        style = Stroke(
-            width = strokeWidth,
-            pathEffect = PathEffect.dashPathEffect(
-                intervals = floatArrayOf(6.dp.toPx() * inverseScale, 4.dp.toPx() * inverseScale)
-            )
-        )
+        rotationProvider = { transformProvider().rotation },
+        onRotation = { newRotation ->
+            val t = transformProvider()
+            onElementTransform(elementId, t.offsetX, t.offsetY, t.scale, newRotation)
+        }
     )
 }
 
