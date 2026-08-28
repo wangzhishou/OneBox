@@ -1649,4 +1649,8 @@
     <string name="text_card">텍스트 카드</string>
     <string name="text_card_sub">문구를 아름다운 공유 카드로 만들어 보세요</string>
     <string name="profile_item_image_generation_settings">이미지 생성 및 편집</string>
+    <string name="profile_item_open_source">오픈 소스 프로젝트</string>
+    <string name="profile_item_open_source_sub">소스 코드 보기 — Star와 피드백 환영</string>
+    <string name="profile_item_open_source_latest">최신 버전을 사용 중입니다</string>
+    <string name="profile_item_open_source_update">새 버전 %1$s 사용 가능</string>
 </resources>

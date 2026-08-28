@@ -1649,4 +1649,8 @@ Maka, lahirlah OneBox.</string>
     <string name="text_card">Kartu Teks</string>
     <string name="text_card_sub">Ubah kutipan menjadi kartu indah yang siap dibagikan</string>
     <string name="profile_item_image_generation_settings">Pembuatan &amp; Pengeditan Gambar</string>
+    <string name="profile_item_open_source">Proyek Sumber Terbuka</string>
+    <string name="profile_item_open_source_sub">Lihat kode sumber — Star &amp; masukan sangat diterima</string>
+    <string name="profile_item_open_source_latest">Anda sudah menggunakan versi terbaru</string>
+    <string name="profile_item_open_source_update">Versi baru %1$s tersedia</string>
 </resources>

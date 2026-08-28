@@ -74,9 +74,14 @@ object UrlConstants {
     const val WECHAT_CUSTOMER_SERVICE = UrlConstantsFlavor.WECHAT_CUSTOMER_SERVICE
 
     /**
+     * GitHub 开源仓库地址(公开开源项目,所有渠道一致)
+     */
+    const val GITHUB_REPO = "https://github.com/wangzhishou/OneBox"
+
+    /**
      * GitHub Issues 问题反馈地址(公开开源仓库,所有渠道一致)
      */
-    const val GITHUB_ISSUES = "https://github.com/wangzhishou/OneBox/issues"
+    const val GITHUB_ISSUES = "$GITHUB_REPO/issues"
 
     /** 是否显示备案号/备案查询入口，按渠道隔离（国内 true / google false） */
     const val SHOW_BEI_AN_ENTRY = UrlConstantsFlavor.SHOW_BEI_AN_ENTRY

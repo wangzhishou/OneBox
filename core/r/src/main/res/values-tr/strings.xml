@@ -1649,4 +1649,8 @@ Ve böylece OneBox doğdu.</string>
     <string name="text_card">Metin Kartı</string>
     <string name="text_card_sub">Alıntıları paylaşılabilir güzel kartlara dönüştür</string>
     <string name="profile_item_image_generation_settings">Görsel Oluşturma ve Düzenleme</string>
+    <string name="profile_item_open_source">Açık Kaynak Projesi</string>
+    <string name="profile_item_open_source_sub">Kaynak koduna göz atın — yıldız ve geri bildirim bekliyoruz</string>
+    <string name="profile_item_open_source_latest">En yeni sürümü kullanıyorsunuz</string>
+    <string name="profile_item_open_source_update">Yeni sürüm %1$s mevcut</string>
 </resources>

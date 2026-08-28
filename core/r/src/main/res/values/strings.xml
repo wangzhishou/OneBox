@@ -476,6 +476,16 @@ And so, OneBox was born.]]></string>
     <string name="button_copy_wechat_public_account">Copy Official Account</string>
     <string name="or">Other Login Methods</string>
     <string name="profile_user_info_nickname">Nickname</string>
+    <string name="profile_change_nickname">Change Nickname</string>
+    <string name="profile_nickname_rule">2-20 characters. Only letters, digits, spaces and _ - · are allowed.</string>
+    <string name="profile_nickname_updated">Nickname updated</string>
+    <string name="profile_change_password">Change Password</string>
+    <string name="profile_new_password">New Password</string>
+    <string name="profile_confirm_new_password">Confirm New Password</string>
+    <string name="profile_password_min_length">Password must be at least 6 characters</string>
+    <string name="profile_password_mismatch">Passwords do not match</string>
+    <string name="profile_password_changed">Password changed successfully</string>
+    <string name="profile_code_send_to">Verification code will be sent to %s</string>
     <string name="default_user_nickname">OneBoxer</string>
     <string name="profile_item_show_points_tip">Points Usage Tips</string>
     <string name="no_points">Not enough points. Invite friends to earn free points.</string>
@@ -1871,5 +1881,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="poem_search">Poetry Search</string>
     <string name="poem_history">Poetry History</string>
     <string name="blessing_wall_sub">A daily tap · Good luck follows</string>
+
+    <string name="profile_item_open_source">Open Source Project</string>
+    <string name="profile_item_open_source_sub">View the source code — stars &amp; feedback welcome</string>
+    <string name="profile_item_open_source_latest">You\'re on the latest version</string>
+    <string name="profile_item_open_source_update">New version %1$s available</string>
 
 </resources>

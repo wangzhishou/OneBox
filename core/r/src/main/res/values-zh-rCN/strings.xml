@@ -503,6 +503,16 @@
     <string name="button_copy_wechat_public_account">复制公众号</string>
     <string name="or">其它第三方登录</string>
     <string name="profile_user_info_nickname">昵称</string>
+    <string name="profile_change_nickname">修改昵称</string>
+    <string name="profile_nickname_rule">2~20 个字符，仅支持中英文、数字、空格以及 _ - ·</string>
+    <string name="profile_nickname_updated">昵称已更新</string>
+    <string name="profile_change_password">修改密码</string>
+    <string name="profile_new_password">新密码</string>
+    <string name="profile_confirm_new_password">确认新密码</string>
+    <string name="profile_password_min_length">密码至少 6 位</string>
+    <string name="profile_password_mismatch">两次输入的密码不一致</string>
+    <string name="profile_password_changed">密码修改成功</string>
+    <string name="profile_code_send_to">验证码将发送至 %s</string>
     <string name="default_user_nickname">万宝子</string>
     <string name="profile_item_show_points_tip">积分消费提示</string>
     <string name="no_points">预估积分不足，邀请好友可以免费获得积分。</string>
@@ -1850,4 +1860,8 @@
     <string name="poem_search">诗词搜索</string>
     <string name="poem_history">诗词历史</string>
     <string name="blessing_wall_sub">每日一点 · 好运相伴</string>
+    <string name="profile_item_open_source">开源项目</string>
+    <string name="profile_item_open_source_sub">查看源码，欢迎 Star 与反馈</string>
+    <string name="profile_item_open_source_latest">当前已是最新版本</string>
+    <string name="profile_item_open_source_update">发现新版本 %1$s</string>
 </resources>

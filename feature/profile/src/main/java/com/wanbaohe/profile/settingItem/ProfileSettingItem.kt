@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,6 +26,8 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.WeChatConfirmDialog
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants
+import com.shifenmiao.core.constants.UrlConstants
+import com.shifenmiao.network.update.OpenSourceReleaseEntryPoint
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.di.WebViewEntryPoint
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -469,6 +472,39 @@ fun ProfileSettingItem(
                 themeIndex = themeIndex,
                 onclick = {
                     appComponent.jumpToAppStoreDetailUpdate()
+                },
+                settingsComponent = settingsComponent
+            )
+        }
+
+        ProfileSetting.OpenSource -> {
+            val checker = remember {
+                EntryPointAccessors.fromApplication(
+                    context = context.applicationContext,
+                    entryPoint = OpenSourceReleaseEntryPoint::class.java,
+                ).openSourceReleaseChecker()
+            }
+            LaunchedEffect(Unit) {
+                // 后台静默检查开源版本(内存缓存 6 小时);
+                // 国内访问不到 GitHub 时静默失败,不影响任何功能
+                runCatching {
+                    @Suppress("DEPRECATION")
+                    val versionName = context.packageManager
+                        .getPackageInfo(context.packageName, 0).versionName
+                    checker.checkLatest(currentVersion = versionName.orEmpty())
+                }
+            }
+            BaseSettingItem(
+                modifier,
+                setting = setting,
+                themeIndex = themeIndex,
+                onclick = {
+                    runCatching {
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, UrlConstants.GITHUB_REPO.toUri())
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        )
+                    }
                 },
                 settingsComponent = settingsComponent
             )

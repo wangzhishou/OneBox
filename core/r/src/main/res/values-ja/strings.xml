@@ -1649,4 +1649,8 @@
     <string name="text_card">テキストカード</string>
     <string name="text_card_sub">言葉を美しいシェアカードに変換</string>
     <string name="profile_item_image_generation_settings">画像生成と編集</string>
+    <string name="profile_item_open_source">オープンソースプロジェクト</string>
+    <string name="profile_item_open_source_sub">ソースコードを公開中、Star・フィードバック歓迎</string>
+    <string name="profile_item_open_source_latest">最新バージョンを利用中です</string>
+    <string name="profile_item_open_source_update">新バージョン %1$s があります</string>
 </resources>

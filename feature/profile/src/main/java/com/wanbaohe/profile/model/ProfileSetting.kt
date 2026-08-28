@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.MiniEdit
+import com.t8rin.imagetoolbox.core.resources.icons.Github
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClearCache
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDonate
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
@@ -85,6 +86,7 @@ sealed class ProfileSetting(
         settingsList = listOf(
             AboutUsSetting,
             UpdateSetting,
+            OpenSource,
             RateAppSetting,
             ShareAppSetting
         )
@@ -151,6 +153,14 @@ sealed class ProfileSetting(
         id = 11,
         title = R.string.profile_item_check_update,
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSync
+    )
+
+    data object OpenSource : ProfileSetting(
+        id = 26,
+        title = R.string.profile_item_open_source,
+        subtitle = R.string.profile_item_open_source_sub,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Github,
+        trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew
     )
 
     data object ShareAppSetting : ProfileSetting(

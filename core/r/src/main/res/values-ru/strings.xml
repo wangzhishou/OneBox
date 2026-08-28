@@ -1649,4 +1649,8 @@
     <string name="text_card">Текстовая карточка</string>
     <string name="text_card_sub">Превращайте цитаты в красивые карточки для публикации</string>
     <string name="profile_item_image_generation_settings">Генерация и редактирование изображений</string>
+    <string name="profile_item_open_source">Проект с открытым кодом</string>
+    <string name="profile_item_open_source_sub">Исходный код открыт — звёзды и отзывы приветствуются</string>
+    <string name="profile_item_open_source_latest">У вас последняя версия</string>
+    <string name="profile_item_open_source_update">Доступна новая версия %1$s</string>
 </resources>

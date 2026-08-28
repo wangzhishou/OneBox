@@ -6,6 +6,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -17,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.collectAsState
 import com.shifenmiao.common.logic.AppComponent
+import com.shifenmiao.network.update.OpenSourceReleaseEntryPoint
 import com.t8rin.imagetoolbox.core.resources.R
+import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.getCurrentLocaleString
 import com.t8rin.imagetoolbox.core.ui.utils.helper.toUiPath
@@ -25,6 +28,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxThemedIconBadge
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
 import com.wanbaohe.profile.model.ProfileSetting
+import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun BaseSettingItem(
@@ -82,6 +86,22 @@ fun BaseSettingItem(
                 }
                 "$provider · ${it.model} · ${it.defaultVoice}"
             } ?: ""
+        }
+
+        ProfileSetting.OpenSource -> {
+            val release = remember {
+                EntryPointAccessors.fromApplication(
+                    context = context.applicationContext,
+                    entryPoint = OpenSourceReleaseEntryPoint::class.java,
+                ).openSourceReleaseChecker()
+            }.latestRelease.collectAsState().value
+            release?.let {
+                subtitle = if (it.isNewer) {
+                    stringResource(CoreR.string.profile_item_open_source_update, it.tag)
+                } else {
+                    stringResource(CoreR.string.profile_item_open_source_latest)
+                }
+            }
         }
 
         else -> {

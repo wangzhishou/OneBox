@@ -1649,4 +1649,8 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="text_card">Kard ng Teksto</string>
     <string name="text_card_sub">Gawing magagandang shareable card ang mga quote</string>
     <string name="profile_item_image_generation_settings">Pagbuo at Pag-edit ng Larawan</string>
+    <string name="profile_item_open_source">Open Source na Proyekto</string>
+    <string name="profile_item_open_source_sub">Tingnan ang source code — welcome ang Star at feedback</string>
+    <string name="profile_item_open_source_latest">Pinakabagong bersyon na ang gamit mo</string>
+    <string name="profile_item_open_source_update">May bagong bersyong %1$s</string>
 </resources>

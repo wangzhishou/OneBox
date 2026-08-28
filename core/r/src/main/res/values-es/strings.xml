@@ -1649,4 +1649,8 @@ Y así nació OneBox.</string>
     <string name="text_card">Tarjeta de texto</string>
     <string name="text_card_sub">Convierte citas en hermosas tarjetas para compartir</string>
     <string name="profile_item_image_generation_settings">Generación y edición de imágenes</string>
+    <string name="profile_item_open_source">Proyecto de código abierto</string>
+    <string name="profile_item_open_source_sub">Ver el código fuente: estrellas y comentarios bienvenidos</string>
+    <string name="profile_item_open_source_latest">Ya tienes la última versión</string>
+    <string name="profile_item_open_source_update">Nueva versión %1$s disponible</string>
 </resources>
