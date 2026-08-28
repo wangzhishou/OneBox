@@ -75,6 +75,8 @@
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.shifenmiao.network.model.** { <fields>; }
+# TTS 响应模型仅作为 Retrofit 泛型参数出现,R8 full mode 会把整个类 shrink 掉,必须用强 keep
+-keep class com.shifenmiao.model.tts.** { *; }
 -keepclassmembers class com.shifenmiao.model.** { <fields>; }
 -keepclassmembers class com.shifenmiao.ai.model.** { <fields>; }
 -keepclassmembers @kotlinx.serialization.Serializable class ** {
