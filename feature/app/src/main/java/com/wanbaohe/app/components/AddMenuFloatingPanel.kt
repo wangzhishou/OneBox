@@ -49,7 +49,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
@@ -309,7 +309,7 @@ fun AddMenuFloatingPanel(
                     }
                 ),
                 AddMenuItem(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickyNote,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTextCard,
                     label = CoreR.string.nav_text_card,
                     onClick = {
                         onDismiss()

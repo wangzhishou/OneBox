@@ -101,7 +101,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineLoadNetImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLoanCalculator
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStickyNote
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarquee
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMeasurement
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMinesweeper
@@ -402,7 +402,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is NoiseGeneration -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNoiseGeneration
     is CollageMaker -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCollageMaker
     is MarkupLayers -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkupLayers
-    is TextCard -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStickyNote
+    is TextCard -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTextCard
     is Base64Tools -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBase64Tools
     is ChecksumTools -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChecksumTools
     is EditExif -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEditExif
