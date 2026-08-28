@@ -479,12 +479,15 @@ private fun ItemGrid(
                 LoadingNextPageItem(modifier = Modifier)
             }
         }
-        item(key = "append_create_choice_card") {
-            CreateChoiceCard(
-                listType = listType,
-                onManualCreate = onManualCreate,
-                onAiCreate = onAiCreate,
-            )
+        // 应用(tab)列表不需要"创建新应用"卡片，其它 tab 保留。
+        if (listType != ListItemType.NORMAL) {
+            item(key = "append_create_choice_card") {
+                CreateChoiceCard(
+                    listType = listType,
+                    onManualCreate = onManualCreate,
+                    onAiCreate = onAiCreate,
+                )
+            }
         }
     }
 
