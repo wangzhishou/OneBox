@@ -19,6 +19,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
@@ -39,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.base.ui.ConfirmContentDialog
 import com.shifenmiao.base.ui.ConfirmDialog
+import com.shifenmiao.base.ui.ErrorTextInputField
+import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.components.Avatar
 import com.shifenmiao.common.ui.BaseScreen
@@ -49,7 +52,9 @@ import com.shifenmiao.model.login.LoginChannelConfig
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.profile.components.InvitationCodeAction
 import com.wanbaohe.profile.ui.AboutCardDivider
@@ -74,6 +79,8 @@ fun UserInfoScreen(
     val loginState = LocalLoginState.current
     val showExitDialog = remember { mutableStateOf(false) }
     val showLogoutDialog = remember { mutableStateOf(false) }
+    val showNicknameDialog = remember { mutableStateOf(false) }
+    val showChangePasswordSheet = remember { mutableStateOf(false) }
     val countdownTime = remember { mutableIntStateOf(COUNT_DOWN_TIME) }
 
     if (!loginState.isLogin) {
@@ -137,9 +144,33 @@ fun UserInfoScreen(
                             value = loginState.username,
                         )
                         AboutCardDivider()
-                        GlassListItemText(
-                            headline = stringResource(R.string.profile_user_info_nickname),
-                            value = loginState.nickname,
+                        GlassListItem(
+                            modifier = Modifier.clickable { showNicknameDialog.value = true },
+                            headlineContent = {
+                                Text(
+                                    text = stringResource(R.string.profile_user_info_nickname),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                            },
+                            trailingContent = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                ) {
+                                    Text(
+                                        text = loginState.nickname,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                            },
                         )
                         AboutCardDivider()
                         GlassListItemText(
@@ -181,6 +212,31 @@ fun UserInfoScreen(
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         )
                                     }
+                                },
+                            )
+                        }
+                        // 已绑手机走短信验证码,未绑手机但有真实邮箱(非占位邮箱)走邮箱验证码
+                        val hasRealEmail = loginState.emailOrMobile.contains("@") &&
+                            !loginState.emailOrMobile.endsWith("@example.com") &&
+                            !loginState.emailOrMobile.endsWith("@google.user")
+                        if (loginState.phone.isNotEmpty() || hasRealEmail) {
+                            AboutCardDivider()
+                            GlassListItem(
+                                modifier = Modifier.clickable { showChangePasswordSheet.value = true },
+                                headlineContent = {
+                                    Text(
+                                        text = stringResource(R.string.profile_change_password),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                    )
+                                },
+                                trailingContent = {
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
                                 },
                             )
                         }
@@ -380,6 +436,32 @@ fun UserInfoScreen(
             },
         )
     }
+
+    if (showNicknameDialog.value) {
+        NicknameEditDialog(
+            currentNickname = loginState.nickname,
+            onDismiss = { showNicknameDialog.value = false },
+            onConfirm = { nickname ->
+                loginComponent.updateNickname(
+                    nickname = nickname,
+                    onSuccess = {
+                        ActionUtils.showToast(R.string.profile_nickname_updated)
+                        showNicknameDialog.value = false
+                    },
+                    onFail = {
+                        ActionUtils.showError(it)
+                    }
+                )
+            },
+        )
+    }
+
+    if (showChangePasswordSheet.value) {
+        ChangePasswordSheet(
+            loginComponent = loginComponent,
+            onDismiss = { showChangePasswordSheet.value = false },
+        )
+    }
 }
 
 // ──────────────────────────────────────────────────────────────
@@ -475,4 +557,66 @@ private fun GlassLongPressItem(
         trailingContent = trailingContent,
         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
     )
+}
+@Composable
+private fun NicknameEditDialog(
+    currentNickname: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit,
+) {
+    var text by remember { mutableStateOf(currentNickname) }
+    var showError by remember { mutableStateOf(false) }
+    EnhancedAlertDialog(
+        visible = true,
+        onDismissRequest = onDismiss,
+        title = {
+            Text(text = stringResource(R.string.profile_change_nickname))
+        },
+        text = {
+            GlassOutlinedTextField(
+                value = text,
+                onValueChange = {
+                    text = it
+                    showError = false
+                },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = showError,
+                supportingText = {
+                    if (showError) {
+                        ErrorTextInputField(text = stringResource(R.string.profile_nickname_rule))
+                    }
+                },
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    val trimmed = text.trim()
+                    if (isValidNickname(trimmed)) {
+                        onConfirm(trimmed)
+                    } else {
+                        showError = true
+                    }
+                },
+            ) {
+                Text(text = stringResource(R.string.button_confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(R.string.button_cancel))
+            }
+        },
+    )
+}
+
+/**
+ * 昵称规则:2~20 个字符,仅支持中英文、数字、空格以及 _ - ·
+ */
+private fun isValidNickname(nickname: String): Boolean {
+    if (nickname.length !in 2..20) return false
+    return nickname.all {
+        it.isLetterOrDigit() || it == ' ' || it == '_' || it == '-' || it == '·'
+    }
 }

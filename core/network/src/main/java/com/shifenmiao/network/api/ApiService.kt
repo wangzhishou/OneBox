@@ -46,6 +46,8 @@ import com.shifenmiao.model.user.VerifyCodeRequest
 import com.shifenmiao.model.user.WechatLoginRequest
 import com.shifenmiao.model.user.ForgotPasswordRequest
 import com.shifenmiao.model.user.ResetPasswordRequest
+import com.shifenmiao.model.user.UpdateNicknameRequest
+import com.shifenmiao.model.user.ChangePasswordRequest
 import com.shifenmiao.network.BuildConfig
 import com.shifenmiao.storage.TokenStorage
 import okhttp3.MultipartBody
@@ -272,6 +274,18 @@ interface ApiService {
 
     @POST("user/invite")
     suspend fun applyInvitationCode(@Body userInviteRequest: UserInviteRequest): Response<Login>
+
+    /** 修改昵称,成功返回最新用户信息与新 JWT */
+    @POST("user/update-nickname")
+    suspend fun updateNickname(@Body request: UpdateNicknameRequest): Response<Login>
+
+    /** 验证码(短信或邮箱)修改密码 */
+    @POST("user/change-password")
+    suspend fun changePassword(@Body request: ChangePasswordRequest): Response<Status>
+
+    /** 向当前用户绑定的邮箱发送验证码(修改密码用) */
+    @POST("user/send-email-code")
+    suspend fun sendEmailCode(@Body body: Map<String, String> = emptyMap()): Response<Status>
 
     @POST("user/consume-points")
     suspend fun consumePoints(@Body consumePoints: ConsumePoints): Response<Login>

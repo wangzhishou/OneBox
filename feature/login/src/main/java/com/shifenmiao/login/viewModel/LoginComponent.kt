@@ -47,6 +47,8 @@ import com.shifenmiao.model.user.VerifyCodeRequest
 import com.shifenmiao.model.user.ForgotPasswordRequest
 import com.shifenmiao.model.user.GoogleLoginRequest
 import com.shifenmiao.model.user.ResetPasswordRequest
+import com.shifenmiao.model.user.UpdateNicknameRequest
+import com.shifenmiao.model.user.ChangePasswordRequest
 import com.shifenmiao.model.user.WechatLoginRequest
 import com.shifenmiao.model.user.event.BindPhoneEvent
 import com.shifenmiao.login.state.ForgotPasswordState
@@ -1340,6 +1342,99 @@ class LoginComponent @AssistedInject internal constructor(
                         bindPhoneEvent.onError(it)
                     }
                 )
+            }
+        }
+    }
+
+    /**
+     * 修改昵称,成功后经 responseHandle 刷新 LoginStateHolder
+     */
+    fun updateNickname(
+        nickname: String,
+        onSuccess: () -> Unit = {},
+        onFail: (str: String) -> Unit = { _ -> }
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = onFail
+            ) {
+                apiService.updateNickname(UpdateNicknameRequest(nickname))
+            }
+            response?.let {
+                responseHandle(
+                    response = it,
+                    onSuccess = { onSuccess() },
+                    onFail = onFail,
+                    onlyUpdate = true
+                )
+            }
+        }
+    }
+
+    /**
+     * 向当前用户绑定的邮箱发送验证码(未绑手机时修改密码用)
+     */
+    fun sendChangePasswordEmailCode(
+        onError: (String) -> Unit = {},
+        onSuccess: () -> Unit,
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = onError
+            ) {
+                apiService.sendEmailCode()
+            }
+            if (response != null) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    NetworkUtils.handleErrorResponse(
+                        response,
+                        onFriendlyErrorTip = {
+                            onError(it)
+                        }) {
+                        makeLog {
+                            "sendChangePasswordEmailCode" + it
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 验证码(短信或邮箱)修改密码,失败文案取后端 message
+     */
+    fun changePassword(
+        code: String,
+        newPassword: String,
+        onSuccess: () -> Unit = {},
+        onFail: (str: String) -> Unit = { _ -> }
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = onFail
+            ) {
+                apiService.changePassword(
+                    ChangePasswordRequest(
+                        code = code,
+                        newPassword = newPassword
+                    )
+                )
+            }
+            if (response != null) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    NetworkUtils.handleErrorResponse(
+                        response,
+                        onFriendlyErrorTip = onFail
+                    ) {
+                        makeLog {
+                            "changePassword" + it
+                        }
+                    }
+                }
             }
         }
     }
