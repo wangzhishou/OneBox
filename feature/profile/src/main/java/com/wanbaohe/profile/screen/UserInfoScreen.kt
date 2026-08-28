@@ -136,6 +136,7 @@ fun UserInfoScreen(
                             trailingContent = {
                                 Avatar(
                                     username = loginState.username,
+                                    nickname = loginState.nickname,
                                     avatar = loginState.avatar,
                                 )
                             },

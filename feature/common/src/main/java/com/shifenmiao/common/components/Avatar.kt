@@ -32,6 +32,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineAvatarDefault
 @Composable
 fun Avatar(
     username: String = "",
+    nickname: String? = null,
     avatar: String? = "",
     modifier: Modifier = Modifier,
     size: Dp = 48.dp,
@@ -56,17 +57,19 @@ fun Avatar(
         return
     }
     // ...existing code below (logged-in user avatar)...
-    val avatarTextString = remember {
-        if (username.isEmpty()) {
+    // 默认字母头像优先取昵称首字符(用户名可能是 openid 等乱码),昵称为空回退用户名
+    val avatarTextString = remember(nickname, username) {
+        val nameSource = nickname?.takeIf { it.isNotBlank() } ?: username
+        if (nameSource.isEmpty()) {
             StringUtils.getRandomCharacterFromAppName()
         } else {
-            StringUtils.getFirstCharacter(username)
+            StringUtils.getFirstCharacter(nameSource)
         }
     }
     val containerColor = MaterialTheme.colorScheme.secondaryContainer
     val textMeasurer = rememberTextMeasurer()
     val textColor = MaterialTheme.colorScheme.onSecondaryContainer
-    val avatarText = remember {
+    val avatarText = remember(avatarTextString, containerColor, textColor, size) {
         TextPainter(
             backgroundColor = containerColor,
             textMeasurer = textMeasurer,

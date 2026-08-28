@@ -43,6 +43,7 @@ fun ProfileLogin(
     ) {
         Avatar(
             username = loginState.username,
+            nickname = loginState.nickname,
             avatar = loginState.avatar,
             isLogin = loginState.isLogin
         )

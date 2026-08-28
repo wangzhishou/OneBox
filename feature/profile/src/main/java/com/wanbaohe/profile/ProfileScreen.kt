@@ -309,6 +309,7 @@ private fun ProfileUserSection(
     ) {
         Avatar(
             username = loginState.username,
+            nickname = loginState.nickname,
             avatar = loginState.avatar,
             size = 40.dp,
             isLogin = loginState.isLogin
