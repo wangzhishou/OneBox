@@ -1014,6 +1014,12 @@ And so, OneBox was born.]]></string>
     <string name="item_jump_wechat_not_installed">WeChat is not installed, so the mini program cannot be opened.</string>
     <string name="done_button">Done</string>
     <string name="note_placeholder">Start typing — supports Markdown, diagrams, images…</string>
+    <string name="note_select_category">Select Category</string>
+    <string name="note_category_empty">No categories yet. Tap Manage to create one.</string>
+    <string name="note_ai_create_title">AI Writing</string>
+    <string name="note_ai_create_message">Go to the AI assistant and let it help you write this note. You can save the result back as a note when done.</string>
+    <string name="note_ai_create_confirm">Go Create</string>
+    <string name="note_ai_create_prompt">Help me write a note</string>
 
     <!--Floating Robot exit confirm (playful) -->
     <string name="robot_exit_dialog_title" translatable="false">Wait! Hiding me already?</string>

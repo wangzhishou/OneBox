@@ -16,7 +16,8 @@ data class MarkdownPreloadConfig(
     val fontSizeSp: Float = 16f,
     val lineHeightSp: Float = 24f,
     val letterSpacingSp: Float = 0f,
-    val fontWeight: Int = 400
+    val fontWeight: Int = 400,
+    val toolbarExtras: String = ""
 ) {
     companion object {
         /**
@@ -29,7 +30,8 @@ data class MarkdownPreloadConfig(
             fontSizeSp: Float = 16f,
             lineHeightSp: Float = 24f,
             letterSpacingSp: Float = 0f,
-            fontWeight: Int = 400
+            fontWeight: Int = 400,
+            toolbarExtras: String = ""
         ) = MarkdownPreloadConfig(
             isDarkTheme = isDarkTheme,
             colors = EditorColors(
@@ -56,7 +58,8 @@ data class MarkdownPreloadConfig(
             fontSizeSp = fontSizeSp,
             lineHeightSp = lineHeightSp,
             letterSpacingSp = letterSpacingSp,
-            fontWeight = fontWeight
+            fontWeight = fontWeight,
+            toolbarExtras = toolbarExtras
         )
 
         private fun colorToHex(color: Int) = String.format("#%06X", 0xFFFFFF and color)

@@ -19,6 +19,7 @@ object MarkdownEditorHtmlTemplate {
      * @param lineHeightSp 正文行高（单位 sp）
      * @param letterSpacingSp 字符间距（单位 sp）
      * @param fontWeight 字重（例如 400, 700）
+     * @param toolbarExtras 追加在工具栏末尾的自定义按钮 HTML（默认为空）
      */
     fun generate(
         isDarkTheme: Boolean,
@@ -27,7 +28,8 @@ object MarkdownEditorHtmlTemplate {
         fontSizeSp: Float = 16f,
         lineHeightSp: Float = 24f,
         letterSpacingSp: Float = 0f,
-        fontWeight: Int = 400
+        fontWeight: Int = 400,
+        toolbarExtras: String = ""
     ): String {
         val darkClass = if (isDarkTheme) "dark" else ""
         val fullStorageKey = "milkdown_draft_$storageKey"
@@ -663,6 +665,7 @@ object MarkdownEditorHtmlTemplate {
             <textarea id="source-textarea" placeholder="Markdown 源码..."></textarea>
         </div>
         <div id="toolbar" style="display: none;">
+            $toolbarExtras
             ${TOOLBAR_HTML}
         </div>
     </div>
@@ -696,10 +699,6 @@ object MarkdownEditorHtmlTemplate {
     }
 
     private const val TOOLBAR_HTML = """
-        <button class="toolbar-btn" data-action="toggleSource" title="查看 Markdown 源码">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9.5 13.5 7.5 15.5 9.5 17.5"/><polyline points="14.5 13.5 16.5 15.5 14.5 17.5"/></svg>
-        </button>
-        <div class="toolbar-divider"></div>
         <button class="toolbar-btn" data-action="undo" title="撤销">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h10a5 5 0 0 1 5 5v0a5 5 0 0 1-5 5H7m-4-10l4-4m-4 4l4 4"/></svg>
         </button>
@@ -766,6 +765,10 @@ object MarkdownEditorHtmlTemplate {
         </button>
         <button class="toolbar-btn" data-action="selectAll" title="全选">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>
+        </button>
+        <div class="toolbar-divider"></div>
+        <button class="toolbar-btn" data-action="toggleSource" title="查看 Markdown 源码">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9.5 13.5 7.5 15.5 9.5 17.5"/><polyline points="14.5 13.5 16.5 15.5 14.5 17.5"/></svg>
         </button>
     """
 

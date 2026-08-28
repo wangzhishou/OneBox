@@ -930,6 +930,12 @@
     <string name="item_jump_wechat_not_installed">WeChatがインストールされていないため、ミニプログラムを開けません。</string>
     <string name="done_button">完了</string>
     <string name="note_placeholder">入力を開始 — Markdown、図、画像に対応…</string>
+    <string name="note_select_category">カテゴリを選択</string>
+    <string name="note_category_empty">カテゴリがまだありません。「管理」をタップして作成してください。</string>
+    <string name="note_ai_create_title">AI 作成</string>
+    <string name="note_ai_create_message">AI アシスタントでこのノートの作成を手伝ってもらいましょう。完成した内容はノートとして保存できます。</string>
+    <string name="note_ai_create_confirm">作成する</string>
+    <string name="note_ai_create_prompt">ノートの作成を手伝って</string>
     <string name="data_database">データ</string>
     <string name="data_backup">バックアップ</string>
     <string name="data_restore">復元</string>

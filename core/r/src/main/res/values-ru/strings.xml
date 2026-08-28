@@ -930,6 +930,12 @@
     <string name="item_jump_wechat_not_installed">WeChat не установлен, поэтому мини-программу невозможно открыть.</string>
     <string name="done_button">Готово</string>
     <string name="note_placeholder">Начните вводить текст — поддерживаются Markdown, диаграммы, изображения…</string>
+    <string name="note_select_category">Выбрать категорию</string>
+    <string name="note_category_empty">Категорий пока нет. Нажмите «Управление», чтобы создать.</string>
+    <string name="note_ai_create_title">ИИ-писатель</string>
+    <string name="note_ai_create_message">Перейдите к ИИ-ассистенту, и он поможет написать эту заметку. Готовый результат можно сохранить как заметку.</string>
+    <string name="note_ai_create_confirm">Перейти к созданию</string>
+    <string name="note_ai_create_prompt">Помоги мне написать заметку</string>
     <string name="data_database">Данные</string>
     <string name="data_backup">Резервная копия</string>
     <string name="data_restore">Восстановить</string>

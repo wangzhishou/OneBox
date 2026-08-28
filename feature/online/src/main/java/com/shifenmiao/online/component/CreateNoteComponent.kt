@@ -37,6 +37,26 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.shifenmiao.model.Source
 
+/** 笔记编辑器工具栏自定义按钮 action：分类 */
+internal const val NOTE_TOOLBAR_ACTION_CATEGORY = "noteCategory"
+
+/** 笔记编辑器工具栏自定义按钮 action：AI 创作 */
+internal const val NOTE_TOOLBAR_ACTION_AI = "noteAi"
+
+/**
+ * 笔记编辑页追加在编辑器工具栏末尾的按钮 HTML：分类、AI 创作。
+ * 点击经 MarkdownEditorBridge.onCustomToolbarAction 回调给 Compose 层。
+ */
+internal const val NOTE_EDITOR_TOOLBAR_EXTRAS = """
+    <button class="toolbar-btn" data-action="noteCategory" title="分类" onclick="window.Android && window.Android.onCustomToolbarAction && window.Android.onCustomToolbarAction('noteCategory')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+    </button>
+    <button class="toolbar-btn" data-action="noteAi" title="AI 创作" onclick="window.Android && window.Android.onCustomToolbarAction && window.Android.onCustomToolbarAction('noteAi')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 5.6 10 7 8.6 4.5 10 2 7.5 3.4 5 2l1.4 2.5L5 7l2.5-1.4z"/><path d="M19.5 15.4 17 14l1.4 2.5L17 19l2.5-1.4 2.5 1.4-1.4-2.5L22 14l-2.5 1.4z"/><path d="M22 2l-2.5 1.4L17 2l1.4 2.5L17 7l2.5-1.4L22 7l-1.4-2.5L22 2z"/><path d="M14.37 7.29c-.39-.39-1.02-.39-1.41 0L1.29 18.96c-.39.39-.39 1.02 0 1.41l2.34 2.34c.39.39 1.02.39 1.41 0L16.7 11.05c.39-.39.39-1.02 0-1.41l-2.33-2.35zm-1.03 5.49-2.12-2.12 2.44-2.44 2.12 2.12-2.44 2.44z"/></svg>
+    </button>
+    <div class="toolbar-divider"></div>
+"""
+
 
 class CreateNoteComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -67,7 +87,8 @@ class CreateNoteComponent @AssistedInject internal constructor(
             MarkdownPreloadConfig.fromColorScheme(
                 colorScheme = AppTheme.colorScheme,
                 isDarkTheme = AppTheme.isDarkTheme,
-                storageKey = "create_note_editor"
+                storageKey = "create_note_item",
+                toolbarExtras = NOTE_EDITOR_TOOLBAR_EXTRAS
             )
         )
         componentContext.lifecycle.doOnDestroy {

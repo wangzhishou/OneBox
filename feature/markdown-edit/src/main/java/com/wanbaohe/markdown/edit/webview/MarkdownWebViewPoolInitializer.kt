@@ -54,7 +54,8 @@ internal object MarkdownHtmlGenerator : HtmlGenerator<MarkdownPreloadConfig> {
             isDarkTheme = config.isDarkTheme,
             colors = config.colors,
             storageKey = config.storageKey,
-            fontSizeSp = config.fontSizeSp
+            fontSizeSp = config.fontSizeSp,
+            toolbarExtras = config.toolbarExtras
         )
     }
 }

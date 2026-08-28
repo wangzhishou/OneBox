@@ -930,6 +930,12 @@
     <string name="item_jump_wechat_not_installed">WeChat इंस्टॉल नहीं है, इसलिए मिनी प्रोग्राम नहीं खोला जा सकता।</string>
     <string name="done_button">पूर्ण</string>
     <string name="note_placeholder">टाइप करना शुरू करें — Markdown, आरेख, चित्र समर्थित हैं…</string>
+    <string name="note_select_category">श्रेणी चुनें</string>
+    <string name="note_category_empty">अभी कोई श्रेणी नहीं है। बनाने के लिए प्रबंधित करें पर टैप करें।</string>
+    <string name="note_ai_create_title">AI लेखन</string>
+    <string name="note_ai_create_message">AI असिस्टेंट पर जाएं और इस नोट को लिखने में मदद लें। पूरा होने पर परिणाम को नोट के रूप में सहेजा जा सकता है।</string>
+    <string name="note_ai_create_confirm">बनाने जाएं</string>
+    <string name="note_ai_create_prompt">एक नोट लिखने में मेरी मदद करें</string>
     <string name="data_database">डेटा</string>
     <string name="data_backup">बैकअप</string>
     <string name="data_restore">पुनर्स्थापित करें</string>

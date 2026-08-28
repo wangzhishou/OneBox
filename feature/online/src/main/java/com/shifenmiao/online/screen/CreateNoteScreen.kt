@@ -1,18 +1,14 @@
 package com.shifenmiao.online.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,22 +17,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.HomeTabKey
+import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.online.component.CreateNoteComponent
-import com.shifenmiao.online.ui.NoteCategorySelection
-import com.shifenmiao.theme.AppTheme
+import com.shifenmiao.online.component.NOTE_EDITOR_TOOLBAR_EXTRAS
+import com.shifenmiao.online.component.NOTE_TOOLBAR_ACTION_AI
+import com.shifenmiao.online.component.NOTE_TOOLBAR_ACTION_CATEGORY
+import com.shifenmiao.online.ui.NoteCategoryDialog
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
-import com.t8rin.imagetoolbox.core.ui.widget.text.EditorTitleField
 import com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults
 import com.wanbaohe.markdown.edit.webview.WebViewMarkdownEditor
 import com.wanbaohe.markdown.edit.webview.rememberWebViewMarkdownEditorState
@@ -51,6 +49,8 @@ fun CreateNoteScreen(
 ) {
     val uiState by createNoteComponent.uiState.collectAsState()
     val showExitDialog = rememberSaveable { mutableStateOf(false) }
+    val showCategoryDialog = rememberSaveable { mutableStateOf(false) }
+    val showAiDialog = rememberSaveable { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
 
@@ -70,30 +70,20 @@ fun CreateNoteScreen(
             editorState.setContent(uiState.data)
         }
     }
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val titlePlaceholder = if (uiState.isEditing) {
         stringResource(R.string.edit_note)
     } else {
         stringResource(R.string.new_note)
     }
-    fun handleEditorScrollDelta(deltaY: Float) {
-        val topBarState = scrollBehavior.state
-        topBarState.contentOffset += deltaY
-        topBarState.heightOffset = (topBarState.heightOffset - deltaY)
-            .coerceIn(topBarState.heightOffsetLimit, 0f)
-    }
 
     BaseScreen(
         title = {
-            EditorTitleField(
-                value = uiState.title,
-                onValueChange = createNoteComponent::onTitleChange,
-                placeholder = titlePlaceholder,
-                modifier = Modifier.fillMaxWidth()
+            Text(
+                text = titlePlaceholder,
+                style = MaterialTheme.typography.titleLarge
             )
         },
-        scrollBehavior = scrollBehavior,
-        type = EnhancedTopAppBarType.Medium,
+        type = EnhancedTopAppBarType.Center,
         onGoBack = onBack,
         actions = {
             IconButton(
@@ -131,24 +121,24 @@ fun CreateNoteScreen(
         showNavigationBarsPadding = true,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
-        // Category chips
-        NoteCategorySelection(
-            createNoteComponent = createNoteComponent,
-            uiState = uiState
-        )
-        Spacer(modifier = Modifier.height(12.dp))
         WebViewMarkdownEditor(
             initialValue = uiState.data,
             state = editorState,
             placeholder = stringResource(R.string.note_placeholder),
             textStyle = EditorUiDefaults.contentTextStyle(),
-            onVerticalScrollDelta = ::handleEditorScrollDelta,
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            modifier = Modifier
                 .weight(1f)
                 .navigationBarsPadding(),
             storageKey = "create_note_item",
             onContentChanged = {
                 createNoteComponent.markAsDirty()
+            },
+            toolbarExtras = NOTE_EDITOR_TOOLBAR_EXTRAS,
+            onCustomToolbarAction = { action ->
+                when (action) {
+                    NOTE_TOOLBAR_ACTION_CATEGORY -> showCategoryDialog.value = true
+                    NOTE_TOOLBAR_ACTION_AI -> showAiDialog.value = true
+                }
             }
         )
     }
@@ -161,5 +151,54 @@ fun CreateNoteScreen(
         },
         onDismiss = { showExitDialog.value = false },
         visible = showExitDialog.value
+    )
+
+    // 分类选择/管理浮动弹窗
+    NoteCategoryDialog(
+        visible = showCategoryDialog.value,
+        createNoteComponent = createNoteComponent,
+        uiState = uiState,
+        onDismiss = { showCategoryDialog.value = false }
+    )
+
+    // AI 创作引导弹窗：跳转 AI 助手
+    EnhancedAlertDialog(
+        visible = showAiDialog.value,
+        onDismissRequest = { showAiDialog.value = false },
+        icon = {
+            Icon(
+                imageVector = Icons.Outlined.AutoAwesome,
+                contentDescription = null
+            )
+        },
+        title = {
+            Text(text = stringResource(R.string.note_ai_create_title))
+        },
+        text = {
+            Text(text = stringResource(R.string.note_ai_create_message))
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    showAiDialog.value = false
+                    appComponent.onNavigate(
+                        Screen.AiChatScreen(
+                            conversation = Conversation(
+                                entryType = AIConversationEntryType.ASSISTANT,
+                                title = AppContext.getString(R.string.note_ai_create_title),
+                                prompt = AppContext.getString(R.string.note_ai_create_prompt)
+                            )
+                        )
+                    )
+                }
+            ) {
+                Text(text = stringResource(R.string.note_ai_create_confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { showAiDialog.value = false }) {
+                Text(text = stringResource(R.string.button_cancel))
+            }
+        }
     )
 }

@@ -53,6 +53,8 @@ import org.json.JSONObject
  * @param storageKey 用于区分不同页面的 localStorage 缓存 key
  * @param textStyle 文本样式，默认使用统一编辑器正文样式。将会映射为 WebView 内部的 CSS (支持 fontSize, lineHeight, letterSpacing, fontWeight)
  * @param onContentChanged 内容变化回调（用于更新 isDirty 状态）
+ * @param toolbarExtras 追加在工具栏末尾的自定义按钮 HTML（按钮点击经 Bridge 回调 [onCustomToolbarAction]）
+ * @param onCustomToolbarAction 自定义工具栏按钮点击回调，参数为按钮的 data-action 标识
  */
 @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
 @Composable
@@ -66,7 +68,9 @@ fun WebViewMarkdownEditor(
     storageKey: String = "default",
     textStyle: androidx.compose.ui.text.TextStyle? = null,
     onContentChanged: (() -> Unit)? = null,
-    onVerticalScrollDelta: ((Float) -> Unit)? = null
+    onVerticalScrollDelta: ((Float) -> Unit)? = null,
+    toolbarExtras: String = "",
+    onCustomToolbarAction: ((String) -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
     val isDarkTheme = isSystemInDarkTheme()
@@ -174,7 +178,7 @@ fun WebViewMarkdownEditor(
     }
 
     // 创建 JavaScript Bridge
-    val bridge = remember(onContentChanged, onVerticalScrollDelta) {
+    val bridge = remember(onContentChanged, onVerticalScrollDelta, onCustomToolbarAction) {
         MarkdownEditorBridge(
             context = context,
             onContentChanged = { _ ->
@@ -215,6 +219,11 @@ fun WebViewMarkdownEditor(
             onEditorScroll = { _, deltaY ->
                 scope.launch(Dispatchers.Main) {
                     onVerticalScrollDelta?.invoke(deltaY.toFloat())
+                }
+            },
+            onCustomToolbarAction = { action ->
+                scope.launch(Dispatchers.Main) {
+                    onCustomToolbarAction?.invoke(action)
                 }
             }
         )
@@ -352,7 +361,8 @@ fun WebViewMarkdownEditor(
                     fontSizeSp = fontSizeSp,
                     lineHeightSp = lineHeightSp,
                     letterSpacingSp = letterSpacingSp,
-                    fontWeight = fontWeight
+                    fontWeight = fontWeight,
+                    toolbarExtras = toolbarExtras
                 )
 
                 // 优先使用预拼接的 HTML，否则生成新的
@@ -364,7 +374,8 @@ fun WebViewMarkdownEditor(
                         fontSizeSp = fontSizeSp,
                         lineHeightSp = lineHeightSp,
                         letterSpacingSp = letterSpacingSp,
-                        fontWeight = fontWeight
+                        fontWeight = fontWeight,
+                        toolbarExtras = toolbarExtras
                     )
 
                 // 使用 appassets URL 作为 baseURL，支持按需加载本地资源

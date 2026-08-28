@@ -930,6 +930,12 @@ Und so wurde OneBox geboren.</string>
     <string name="item_jump_wechat_not_installed">WeChat ist nicht installiert, daher kann das Mini-Programm nicht geöffnet werden.</string>
     <string name="done_button">Fertig</string>
     <string name="note_placeholder">Tippen Sie los – unterstützt Markdown, Diagramme, Bilder…</string>
+    <string name="note_select_category">Kategorie auswählen</string>
+    <string name="note_category_empty">Noch keine Kategorien. Tippe auf Verwalten, um eine zu erstellen.</string>
+    <string name="note_ai_create_title">KI-Schreiben</string>
+    <string name="note_ai_create_message">Wechsle zum KI-Assistenten und lass dir beim Schreiben dieser Notiz helfen. Das Ergebnis kann anschließend als Notiz gespeichert werden.</string>
+    <string name="note_ai_create_confirm">Jetzt erstellen</string>
+    <string name="note_ai_create_prompt">Hilf mir, eine Notiz zu schreiben</string>
     <string name="data_database">Daten</string>
     <string name="data_backup">Sichern</string>
     <string name="data_restore">Wiederherstellen</string>

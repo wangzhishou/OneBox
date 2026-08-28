@@ -930,6 +930,12 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="item_jump_wechat_not_installed">Hindi naka-install ang WeChat, kaya hindi mabubuksan ang mini program.</string>
     <string name="done_button">Tapos</string>
     <string name="note_placeholder">Magsimulang mag-type — sumusuporta sa Markdown, diagram, mga larawan…</string>
+    <string name="note_select_category">Pumili ng Kategorya</string>
+    <string name="note_category_empty">Wala pang mga kategorya. I-tap ang Pamahalaan para gumawa.</string>
+    <string name="note_ai_create_title">Pagsulat gamit ang AI</string>
+    <string name="note_ai_create_message">Pumunta sa AI assistant at hayaan itong tulungan ka sa pagsulat ng note na ito. Maaaring i-save ang resulta bilang note kapag tapos na.</string>
+    <string name="note_ai_create_confirm">Pumunta at Gumawa</string>
+    <string name="note_ai_create_prompt">Tulungan mo akong magsulat ng note</string>
     <string name="data_database">Data</string>
     <string name="data_backup">Backup</string>
     <string name="data_restore">I-restore</string>

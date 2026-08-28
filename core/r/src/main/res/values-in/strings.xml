@@ -930,6 +930,12 @@ Maka, lahirlah OneBox.</string>
     <string name="item_jump_wechat_not_installed">WeChat tidak terpasang, sehingga program mini tidak dapat dibuka.</string>
     <string name="done_button">Selesai</string>
     <string name="note_placeholder">Mulai mengetik — mendukung Markdown, diagram, gambar…</string>
+    <string name="note_select_category">Pilih Kategori</string>
+    <string name="note_category_empty">Belum ada kategori. Ketuk Kelola untuk membuatnya.</string>
+    <string name="note_ai_create_title">Menulis dengan AI</string>
+    <string name="note_ai_create_message">Buka asisten AI dan biarkan AI membantu menulis catatan ini. Hasilnya dapat disimpan kembali sebagai catatan.</string>
+    <string name="note_ai_create_confirm">Mulai Membuat</string>
+    <string name="note_ai_create_prompt">Bantu saya menulis catatan</string>
     <string name="data_database">Data</string>
     <string name="data_backup">Cadangkan</string>
     <string name="data_restore">Pulihkan</string>

@@ -22,7 +22,8 @@ class MarkdownEditorBridge(
     private val onShowImageResizeDialog: ((Int, Int, Int, Int) -> Unit)? = null,
     private val onShowImageDialog: (() -> Unit)? = null,
     private val onShowLinkDialog: ((String) -> Unit)? = null,
-    private val onEditorScroll: ((Int, Int) -> Unit)? = null
+    private val onEditorScroll: ((Int, Int) -> Unit)? = null,
+    private val onCustomToolbarAction: ((String) -> Unit)? = null
 ) {
     private val clipboardManager: ClipboardManager by lazy {
         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -94,6 +95,16 @@ class MarkdownEditorBridge(
     @JavascriptInterface
     fun onEditorScroll(scrollTop: Int, deltaY: Int) {
         onEditorScroll?.invoke(scrollTop, deltaY)
+    }
+
+    /**
+     * 自定义工具栏按钮点击时由 JS 调用（toolbarExtras 注入的按钮）
+     * @param action 按钮的 data-action 标识
+     */
+    @Keep
+    @JavascriptInterface
+    fun onCustomToolbarAction(action: String) {
+        onCustomToolbarAction?.invoke(action)
     }
 
     /**

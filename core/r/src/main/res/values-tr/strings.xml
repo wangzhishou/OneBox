@@ -930,6 +930,12 @@ Ve böylece OneBox doğdu.</string>
     <string name="item_jump_wechat_not_installed">WeChat kurulu değil, bu yüzden mini program açılamıyor.</string>
     <string name="done_button">Bitti</string>
     <string name="note_placeholder">Yazmaya başlayın — Markdown, diyagramlar, görseller desteklenir…</string>
+    <string name="note_select_category">Kategori Seç</string>
+    <string name="note_category_empty">Henüz kategori yok. Oluşturmak için Yönet’e dokunun.</string>
+    <string name="note_ai_create_title">Yapay Zeka ile Yazma</string>
+    <string name="note_ai_create_message">Yapay zeka asistanına gidin ve bu notu yazmanıza yardımcı olsun. Bitince sonucu not olarak kaydedebilirsiniz.</string>
+    <string name="note_ai_create_confirm">Oluşturmaya Git</string>
+    <string name="note_ai_create_prompt">Bir not yazmama yardım et</string>
     <string name="data_database">Veri</string>
     <string name="data_backup">Yedekle</string>
     <string name="data_restore">Geri Yükle</string>
