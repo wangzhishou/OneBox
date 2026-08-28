@@ -213,6 +213,20 @@
     <string name="agent_tool_webp_create_failed">WebP composition failed: %1$s</string>
     <string name="agent_tool_webp_failed">WebP tool execution failed: %1$s</string>
 
+    <string name="agent_tool_generate_image_title">Generate Image</string>
+    <string name="agent_tool_generate_image_summary">Generate an AI image from a text prompt and save it to the app workspace</string>
+    <string name="agent_tool_generate_image_param_prompt">Text description of the image to generate.</string>
+    <string name="agent_tool_generate_image_param_size">Optional output size, e.g. 1024*1024; uses the model default if omitted.</string>
+    <string name="agent_tool_generate_image_param_negative_prompt">Optional negative prompt describing content to avoid.</string>
+    <string name="agent_tool_generate_image_param_force_refresh">true to regenerate instead of reusing the cached image for the same prompt.</string>
+    <string name="agent_tool_generate_image_missing_prompt">The prompt parameter is required</string>
+    <string name="agent_tool_generate_image_no_config">No image generation provider configured. Please set one up in Settings first.</string>
+    <string name="agent_tool_generate_image_need_login">Image generation requires sign-in first.</string>
+    <string name="agent_tool_generate_image_no_points">Not enough points to generate an image.</string>
+    <string name="agent_tool_generate_image_failed">Image generation failed: %1$s</string>
+    <string name="agent_tool_generate_image_deeplink_label">View in Files</string>
+    <string name="agent_tool_generate_image_deeplink_guidance">Open the file manager to view the generated image</string>
+
     <string name="agent_tool_read_barcode_title">Recognize Barcode</string>
     <string name="agent_tool_read_barcode_summary">Recognize QR codes or barcodes from an image URI and return structured content</string>
     <string name="agent_tool_read_barcode_param_image_uri">URI of the image to recognize.</string>

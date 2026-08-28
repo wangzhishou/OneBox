@@ -1,7 +1,7 @@
 package com.shifenmiao.ai.di
 
 import com.google.gson.Gson
-import com.shifenmiao.ai.file.AppWorkspaceResolver
+import com.t8rin.imagetoolbox.core.data.workspace.AppWorkspaceResolver
 import com.shifenmiao.ai.prompt.AndroidEnvironmentContextProvider
 import com.shifenmiao.ai.prompt.EnvironmentContextProvider
 import com.shifenmiao.model.ModelProvider

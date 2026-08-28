@@ -3,7 +3,7 @@ package com.shifenmiao.ai.prompt
 import android.os.Build
 import com.shifenmiao.ai.BuildConfig
 import com.shifenmiao.ai.R
-import com.shifenmiao.ai.file.AppWorkspaceResolver
+import com.t8rin.imagetoolbox.core.data.workspace.AppWorkspaceResolver
 import com.t8rin.imagetoolbox.core.utils.getString
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter

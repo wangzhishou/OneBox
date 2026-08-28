@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.a2ui)
     implementation(projects.core.interfaces)
+    implementation(projects.core.imageGeneration)
     implementation(projects.feature.common)
     implementation(projects.feature.cloudStorage)
     implementation(projects.feature.codeEditor)

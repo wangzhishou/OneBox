@@ -4,7 +4,7 @@ import com.shifenmiao.imagegeneration.model.ImageGenerationRequest
 import java.io.File
 
 data class CachedGeneratedImage(
-    /** App 内部持久文件，可直接传给 Coil/ImageGetter；跨 App 分享时需转换为 FileProvider URI。 */
+    /** 持久化的本地文件，位于 App 工作目录(无存储权限时回退私有目录)；可直接传给 Coil/ImageGetter，跨 App 分享时需转换为 FileProvider URI。 */
     val file: File,
     val cacheKey: String,
     val fromCache: Boolean,

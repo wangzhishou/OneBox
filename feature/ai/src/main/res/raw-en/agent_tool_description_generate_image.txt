@@ -1,0 +1,7 @@
+Generate an AI image from a text prompt (text-to-image). The result is saved in the generated-images folder of the app workspace and can be viewed in the file manager.
+
+Use cases:
+- The user asks to draw a picture, or to create an illustration, poster, or cover image
+- An article, note, or card needs a companion image
+
+Notes: the same prompt reuses the cached image by default; pass force_refresh=true to regenerate. size is optional (e.g. 1024*1024); the model default is used when omitted. The result returns a local filePath you can share with the user.

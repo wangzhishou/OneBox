@@ -1,4 +1,4 @@
-package com.shifenmiao.ai.file
+package com.t8rin.imagetoolbox.core.data.workspace
 
 import android.os.Environment
 import androidx.core.net.toUri
@@ -8,6 +8,10 @@ import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * 解析 App 工作目录:用户配置的保存文件夹优先,缺省为 Documents/OneBox。
+ * 文件管理器、Agent 文件工具、AI 生成图片等需要"用户可见"的产物统一落在这里。
+ */
 @Singleton
 class AppWorkspaceResolver @Inject constructor(
     private val settingsProvider: SettingsProvider,
@@ -67,4 +71,3 @@ data class AppWorkspaceRoot(
     val file: File,
     val description: String,
 )
-

@@ -8,6 +8,7 @@ android.namespace = "com.shifenmiao.imagegeneration"
 dependencies {
     api(projects.core.r)
     api(projects.core.network)
+    implementation(projects.core.data)
 
     api(libs.kotlinx.coroutines.core)
     api(libs.com.squareup.retrofit2.retrofit)

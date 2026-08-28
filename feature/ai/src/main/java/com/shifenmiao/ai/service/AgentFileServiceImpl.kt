@@ -6,7 +6,7 @@ import android.os.Environment
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import com.shifenmiao.base.utils.FileUtils
-import com.shifenmiao.ai.file.AppWorkspaceResolver
+import com.t8rin.imagetoolbox.core.data.workspace.AppWorkspaceResolver
 import com.shifenmiao.model.file.AgentBrowseFilesData
 import com.shifenmiao.model.file.AgentBrowseFilesParams
 import com.shifenmiao.model.file.AgentApplyTextPatchData

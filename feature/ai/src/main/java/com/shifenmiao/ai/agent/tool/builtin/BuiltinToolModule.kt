@@ -103,6 +103,11 @@ object BuiltinToolModule {
 
     @Provides
     @IntoMap
+    @StringKey("generate_image")
+    fun provideGenerateImageTool(tool: GenerateImageTool): AgentTool = tool
+
+    @Provides
+    @IntoMap
     @StringKey("read_barcode_from_image")
     fun provideReadBarcodeFromImageTool(tool: ReadBarcodeFromImageTool): AgentTool = tool
 

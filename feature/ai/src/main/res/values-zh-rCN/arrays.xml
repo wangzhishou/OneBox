@@ -195,6 +195,22 @@
         <item>提取这个 WebP 的所有帧</item>
     </string-array>
 
+    <string-array name="agent_tool_generate_image_keywords">
+        <item>生成图片</item>
+        <item>文生图</item>
+        <item>AI 绘画</item>
+        <item>画图</item>
+        <item>插画</item>
+        <item>海报</item>
+        <item>配图</item>
+    </string-array>
+
+    <string-array name="agent_tool_generate_image_examples">
+        <item>画一只坐在月亮上的蓝色小猫</item>
+        <item>帮我生成一张文章封面图</item>
+        <item>生成一张海边日落的海报背景</item>
+    </string-array>
+
     <string-array name="agent_tool_read_barcode_keywords">
         <item>二维码</item>
         <item>条码</item>

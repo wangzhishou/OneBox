@@ -213,6 +213,20 @@
     <string name="agent_tool_webp_create_failed">WebP 合成失败: %1$s</string>
     <string name="agent_tool_webp_failed">WebP 工具执行失败: %1$s</string>
 
+    <string name="agent_tool_generate_image_title">生成图片</string>
+    <string name="agent_tool_generate_image_summary">根据文字描述生成 AI 图片,并保存到 App 工作目录</string>
+    <string name="agent_tool_generate_image_param_prompt">要生成图片的文字描述。</string>
+    <string name="agent_tool_generate_image_param_size">可选输出尺寸,如 1024*1024;不填使用模型默认尺寸。</string>
+    <string name="agent_tool_generate_image_param_negative_prompt">可选反向提示词,描述不希望出现的内容。</string>
+    <string name="agent_tool_generate_image_param_force_refresh">为 true 时强制重新生成,不复用同一提示词的缓存图片。</string>
+    <string name="agent_tool_generate_image_missing_prompt">需要 prompt 参数</string>
+    <string name="agent_tool_generate_image_no_config">没有可用的图片生成配置,请先在设置中配置图片生成服务。</string>
+    <string name="agent_tool_generate_image_need_login">生成图片需要先登录。</string>
+    <string name="agent_tool_generate_image_no_points">积分不足,无法生成图片。</string>
+    <string name="agent_tool_generate_image_failed">生成图片失败: %1$s</string>
+    <string name="agent_tool_generate_image_deeplink_label">在文件管理中查看</string>
+    <string name="agent_tool_generate_image_deeplink_guidance">打开文件管理器查看生成的图片</string>
+
     <string name="agent_tool_read_barcode_title">识别二维码</string>
     <string name="agent_tool_read_barcode_summary">从图片 URI 中识别二维码或条码并结构化返回内容</string>
     <string name="agent_tool_read_barcode_param_image_uri">待识别图片的 URI。</string>
