@@ -39,8 +39,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -401,6 +404,9 @@ private fun ItemGrid(
     val scope = rememberCoroutineScope()
     val gridState: LazyStaggeredGridState = rememberLazyStaggeredGridState()
     val deleteState = rememberDeleteState()
+    val density = LocalDensity.current
+    // 最近一张普通卡片的实测高度,用于"创建新xx"引导卡与旁边卡片对齐(双列瀑布流本身不保证行高一致)
+    var siblingCardHeight by remember { mutableStateOf<Dp?>(null) }
 
     // 评论浮动层: 由 ItemListComponent 的 childSlot 驱动生命周期.
     val commentsSlot by itemListComponent.commentsSlot.subscribeAsState()
@@ -438,6 +444,11 @@ private fun ItemGrid(
             val item = pagingItems[index] ?: return@items
             VerticalStaggeredCard(
                 index = index,
+                modifier = Modifier.onSizeChanged { size ->
+                    if (size.height > 0) {
+                        siblingCardHeight = with(density) { size.height.toDp() }
+                    }
+                },
                 itemListComponent = itemListComponent,
                 itemWithStats = item,
                 maxTitleLines = cardMaxTitleLines,
@@ -486,6 +497,7 @@ private fun ItemGrid(
                     listType = listType,
                     onManualCreate = onManualCreate,
                     onAiCreate = onAiCreate,
+                    siblingHeight = siblingCardHeight,
                 )
             }
         }

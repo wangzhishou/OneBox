@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ListItemType
@@ -141,13 +142,19 @@ fun CreateChoiceCard(
     onManualCreate: () -> Unit,
     onAiCreate: () -> Unit,
     modifier: Modifier = Modifier,
+    /** 相邻普通卡片的实测高度,双列时据此与旁边的卡片对齐;为 null 时退回最小高度模式 */
+    siblingHeight: Dp? = null,
 ) {
     val typeName = listTypeDisplayName(listType)
     val shape = MaterialTheme.shapes.extraLarge
+    val fixedHeight = siblingHeight?.let { maxOf(it, 180.dp) }
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 220.dp)
+            .then(
+                if (fixedHeight != null) Modifier.height(fixedHeight)
+                else Modifier.heightIn(min = 220.dp)
+            )
             .glassThin(
                 shape = shape,
                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -155,7 +162,7 @@ fun CreateChoiceCard(
             .clip(shape)
             .padding(12.dp),
     ) {
-        val showActionIcons = maxWidth >= 160.dp
+        val showActionIcons = maxWidth >= 140.dp
         Column(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
                 Text(
@@ -163,7 +170,7 @@ fun CreateChoiceCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(2.dp))
@@ -171,7 +178,7 @@ fun CreateChoiceCard(
                     text = stringResource(R.string.home_create_new_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
@@ -183,6 +190,8 @@ fun CreateChoiceCard(
                 onClick = onManualCreate,
                 compact = true,
                 showIcon = showActionIcons,
+                modifier = if (fixedHeight != null) Modifier.weight(1f) else Modifier,
+                enforceMinHeight = fixedHeight == null,
             )
             Spacer(Modifier.height(8.dp))
             CreationActionCard(
@@ -193,6 +202,8 @@ fun CreateChoiceCard(
                 emphasized = true,
                 compact = true,
                 showIcon = showActionIcons,
+                modifier = if (fixedHeight != null) Modifier.weight(1f) else Modifier,
+                enforceMinHeight = fixedHeight == null,
             )
         }
     }
@@ -208,12 +219,14 @@ private fun CreationActionCard(
     emphasized: Boolean = false,
     compact: Boolean = false,
     showIcon: Boolean = true,
+    modifier: Modifier = Modifier,
+    enforceMinHeight: Boolean = true,
 ) {
     val shape = MaterialTheme.shapes.large
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = if (compact) 60.dp else 76.dp)
+            .heightIn(min = if (enforceMinHeight) (if (compact) 60.dp else 76.dp) else 0.dp)
             .clip(shape)
             .clickable(onClick = onClick)
             .glassThin(
@@ -261,8 +274,8 @@ private fun CreationActionCard(
         Icon(
             imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
             contentDescription = null,
-            tint = if (emphasized) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f)
-            else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(16.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         )
     }
 }
