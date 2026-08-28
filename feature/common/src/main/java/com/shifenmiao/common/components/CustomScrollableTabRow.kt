@@ -84,7 +84,7 @@ fun <T> GenericScrollableTabRow(
     val unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
 
     ScrollableTabRow(
-        modifier = modifier.padding(top = 0.dp, bottom = 4.dp),
+        modifier = modifier.padding(top = 0.dp, bottom = 8.dp),
         edgePadding = edgePadding,
         selectedTabIndex = currentPage,
         containerColor = Color.Transparent,
