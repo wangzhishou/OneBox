@@ -19,19 +19,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.shifenmiao.base.ui.DeleteConfirmDialog
 import com.shifenmiao.base.ui.loading.EmptyBox
 import com.shifenmiao.base.ui.utils.Animation
 import com.shifenmiao.common.components.SearchMessageCard
+import com.shifenmiao.common.components.comments.CommentsHost
 import com.shifenmiao.common.handle.HandleEvent
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.core.R
+import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.search.SuggestionModel
+import com.shifenmiao.online.component.ItemListComponent
+import com.shifenmiao.online.ui.VerticalStaggeredCard
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.storage.SearchHistoryStore
 import com.shifenmiao.theme.AppTheme
@@ -42,11 +51,16 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearchOff
 @Composable
 fun SearchResults(
     searchComponent: SearchComponent,
+    itemListComponent: ItemListComponent,
     queryValue: MutableState<String>
 ) {
     val searchItemList = searchComponent.searchItemList.collectAsState()
     val searchMessageEntity = searchComponent.searchMessageEntity.collectAsState()
     val hasResults = searchItemList.value.isNotEmpty()
+
+    // 与列表页一致: 删除确认弹窗 + 评论浮动层(由 ItemListComponent 的 childSlot 驱动)
+    val deleteState = rememberDeleteState()
+    val commentsSlot by itemListComponent.commentsSlot.subscribeAsState()
 
     if (hasResults) {
         val lazyStaggeredGridState: LazyStaggeredGridState = rememberLazyStaggeredGridState()
@@ -80,32 +94,45 @@ fun SearchResults(
                         && !BaseUtils.isHiddenId(itemWithRelation.item.id)
                     ) {
                         Animation.StaggeredAnimatedItem(index, content = {
-                            SearchMessageCard(
-                                id = itemWithRelation.item.id,
-                                title = itemWithRelation.item.title ?: "",
-                                description = itemWithRelation.item.description ?: "",
-                                queryValue = queryValue.value,
-                                tag = BaseUtils.getNameByType(itemWithRelation.item.listType ?: 0),
-                                iconName = itemWithRelation.item.iconName
-                            ) {
-                                SearchHistoryStore.addHistoryItem(
-                                    SuggestionModel(queryValue.value)
-                                )
-                                searchComponent.recordClick(itemWithRelation.item.id)
-                                scope.launch {
-                                    val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
-                                        appDatabase = searchComponent.appDatabase,
-                                        itemId = itemWithRelation.item.id,
-                                        listType = itemWithRelation.item.listType,
+                            VerticalStaggeredCard(
+                                index = index,
+                                itemListComponent = itemListComponent,
+                                itemWithStats = itemWithRelation,
+                                highlightKeyword = queryValue.value,
+                                commentCount = itemWithRelation.item.commentCount,
+                                onCommentClick = itemWithRelation.item.documentId
+                                    ?.takeIf { it.isNotBlank() }
+                                    ?.let { documentId ->
+                                        {
+                                            itemListComponent.showComments(
+                                                documentId = documentId,
+                                                itemTitle = itemWithRelation.item.title,
+                                                uid = uidFor(ListItemType.fromId(itemWithRelation.item.listType)),
+                                                localItemId = itemWithRelation.item.id,
+                                            )
+                                        }
+                                    },
+                                onDeleteRequest = deleteState::request,
+                                onClick = {
+                                    SearchHistoryStore.addHistoryItem(
+                                        SuggestionModel(queryValue.value)
                                     )
-                                    HandleEvent.handleCardClick(
-                                        context = context,
-                                        onNavigate = onNavigate,
-                                        itemWithRelation = itemWithRelation.toItemWithCategories(),
-                                        resource = resource,
-                                    )
+                                    searchComponent.recordClick(itemWithRelation.item.id)
+                                    scope.launch {
+                                        val resource = com.shifenmiao.common.handle.ItemResourceResolver.resolve(
+                                            appDatabase = searchComponent.appDatabase,
+                                            itemId = itemWithRelation.item.id,
+                                            listType = itemWithRelation.item.listType,
+                                        )
+                                        HandleEvent.handleCardClick(
+                                            context = context,
+                                            onNavigate = onNavigate,
+                                            itemWithRelation = itemWithRelation.toItemWithCategories(),
+                                            resource = resource,
+                                        )
+                                    }
                                 }
-                            }
+                            )
                         })
                     }
                 }
@@ -154,4 +181,43 @@ fun SearchResults(
         }
     }
 
+    DeleteConfirmDialog(
+        onDelete = {
+            itemListComponent.deleteItem(deleteState.itemId)
+            deleteState.dismiss()
+        },
+        showDeleteDialogState = deleteState.showDialog,
+        message = stringResource(R.string.delete_item_confirm_message, deleteState.title),
+    )
+
+    commentsSlot.child?.instance?.let { child ->
+        CommentsHost(
+            component = child.component,
+            onDismissed = itemListComponent::dismissComments,
+        )
+    }
 }
+
+private fun uidFor(listType: ListItemType?): String = when (listType) {
+    ListItemType.BLOG -> "api::blog.blog"
+    else -> "api::item-list.item-list"
+}
+
+private class DeleteState {
+    val showDialog = mutableStateOf(false)
+    var itemId: Int = 0
+    var title: String = ""
+
+    fun request(itemId: Int, title: String) {
+        this.itemId = itemId
+        this.title = title
+        showDialog.value = true
+    }
+
+    fun dismiss() {
+        showDialog.value = false
+    }
+}
+
+@Composable
+private fun rememberDeleteState(): DeleteState = remember { DeleteState() }

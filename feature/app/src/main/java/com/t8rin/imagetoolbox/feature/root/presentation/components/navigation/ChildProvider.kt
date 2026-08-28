@@ -836,6 +836,10 @@ class ChildProvider @Inject constructor(
                 componentContext = componentContext,
                 onGoBack = ::navigateBack,
             ),
+            itemListComponent = homeFactories.itemListComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
+            ),
             appComponent = appComponent
         )
 

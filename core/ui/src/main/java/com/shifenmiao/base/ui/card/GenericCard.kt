@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -169,7 +170,10 @@ fun GenericTonalCard(
     actions: List<CardAction> = emptyList(),
     palette: TonalCardPalette? = null,
     stateBar: @Composable ((showActions: Boolean, onToggleActions: () -> Unit) -> Unit)? = null,
-    supportingContentColor: Color = MaterialTheme.colorScheme.outline
+    supportingContentColor: Color = MaterialTheme.colorScheme.outline,
+    // 搜索场景的高亮文本(由调用方预先计算); 为 null 时按普通字符串渲染, 行为与之前一致
+    highlightedTitle: AnnotatedString? = null,
+    highlightedDescription: AnnotatedString? = null,
 ) {
     var showActions by remember { mutableStateOf(false) }
     val colorScheme = MaterialTheme.colorScheme
@@ -297,6 +301,7 @@ fun GenericTonalCard(
 
             // Middle section: title + description
             Column(modifier = Modifier.fillMaxWidth()) {
+                val titleText = highlightedTitle ?: AnnotatedString(title)
                 if (maxTitleLines == 1) {
                     Text(
                         modifier = Modifier.basicMarquee(
@@ -305,7 +310,7 @@ fun GenericTonalCard(
                             velocity = 30.dp,
                             repeatDelayMillis = 1000
                         ),
-                        text = title,
+                        text = titleText,
                         maxLines = 1,
                         style = MaterialTheme.typography.titleMedium,
                         overflow = TextOverflow.Clip,
@@ -313,7 +318,7 @@ fun GenericTonalCard(
                     )
                 } else {
                     Text(
-                        text = title,
+                        text = titleText,
                         maxLines = maxTitleLines,
                         style = MaterialTheme.typography.titleMedium.copy(
                             lineHeight = MaterialTheme.typography.titleMedium.fontSize * 1.2
@@ -324,7 +329,7 @@ fun GenericTonalCard(
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = description,
+                    text = highlightedDescription ?: AnnotatedString(description),
                     textAlign = TextAlign.Left,
                     style = MaterialTheme.typography.labelSmall,
                     color = resolvedPalette.descriptionColor,

@@ -20,6 +20,7 @@ import com.shifenmiao.base.ui.card.GenericTonalCard
 import com.shifenmiao.base.ui.card.TonalCardPaletteDefaults
 import com.shifenmiao.base.ui.card.TonalCardVisualVariant
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.components.OperateBar
 import com.shifenmiao.common.handle.ItemScreenResolver
 import com.shifenmiao.core.R
@@ -66,6 +67,8 @@ fun VerticalStaggeredCard(
     maxTitleLines: Int = 1,
     commentCount: Int? = null,
     onCommentClick: (() -> Unit)? = null,
+    // 搜索结果场景传入搜索词, 对标题/描述做高亮; 默认 null 时渲染与列表页完全一致
+    highlightKeyword: String? = null,
 ) {
     val item = itemWithStats.item
     val title = remember(item.title) { item.title }
@@ -289,6 +292,22 @@ fun VerticalStaggeredCard(
 
     val supportingContentColor =
         resolvedPalette.supportingContentColor
+
+    // 仅在传入搜索词时计算高亮(复用搜索卡片的同款高亮配色), 否则保持原样
+    val highlightKeywordNonBlank = highlightKeyword?.takeIf { it.isNotBlank() }
+    val highlightColor = MaterialTheme.colorScheme.onErrorContainer
+    val highlightBackgroundColor = MaterialTheme.colorScheme.errorContainer
+    val highlightedTitle = remember(title, highlightKeywordNonBlank, highlightColor, highlightBackgroundColor) {
+        highlightKeywordNonBlank?.let {
+            StringUtils.getHighlightedDescription(title, it, highlightColor, highlightBackgroundColor)
+        }
+    }
+    val highlightedDescription = remember(description, highlightKeywordNonBlank, highlightColor, highlightBackgroundColor) {
+        highlightKeywordNonBlank?.let {
+            StringUtils.getHighlightedDescription(description, it, highlightColor, highlightBackgroundColor)
+        }
+    }
+
     GenericTonalCard(
         id = item.id,
         supportingContentColor = supportingContentColor,
@@ -311,6 +330,8 @@ fun VerticalStaggeredCard(
         palette = resolvedPalette,
         onClick = onClick,
         onLongClick = onLongClick,
+        highlightedTitle = highlightedTitle,
+        highlightedDescription = highlightedDescription,
         stateBar = { _, _ ->
             OperateBar(
                 dataItem = item,

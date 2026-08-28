@@ -31,6 +31,7 @@ import com.shifenmiao.common.handle.HandleEvent
 import com.shifenmiao.common.handle.ItemResourceResolver
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
+import com.shifenmiao.online.component.ItemListComponent
 import com.shifenmiao.search.components.SearchResults
 import com.shifenmiao.search.components.SearchSuggest
 import com.shifenmiao.search.logic.SearchComponent
@@ -41,6 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     searchComponent: SearchComponent,
+    itemListComponent: ItemListComponent,
     appComponent: AppComponent
 ) {
     /**
@@ -86,6 +88,7 @@ fun SearchScreen(
         if (hasQuery) {
             SearchResults(
                 searchComponent = searchComponent,
+                itemListComponent = itemListComponent,
                 queryValue = queryValue
             )
         } else {

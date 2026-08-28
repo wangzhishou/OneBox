@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.core.base)
 
     implementation(projects.feature.common)
+    implementation(projects.feature.online)
 
     /**
      * 数据库

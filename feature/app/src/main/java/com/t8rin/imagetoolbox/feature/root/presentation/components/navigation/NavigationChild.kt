@@ -832,13 +832,15 @@ sealed interface NavigationChild {
 
     class Search(
         private val appComponent: AppComponent,
-        private val searchComponent: SearchComponent
+        private val searchComponent: SearchComponent,
+        private val itemListComponent: ItemListComponent
     ) : NavigationChild {
         @Composable
         override fun Content() {
             SearchScreen(
                 appComponent = appComponent,
-                searchComponent = searchComponent
+                searchComponent = searchComponent,
+                itemListComponent = itemListComponent
             )
         }
     }
