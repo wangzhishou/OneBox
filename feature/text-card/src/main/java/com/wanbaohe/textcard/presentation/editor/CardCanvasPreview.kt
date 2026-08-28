@@ -197,7 +197,8 @@ fun CardCanvasPreview(
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform
+                            onElementTransform = onElementTransform,
+                            onElementDelete = onElementDelete
                         )
                     }
                 }
@@ -210,7 +211,8 @@ fun CardCanvasPreview(
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform
+                            onElementTransform = onElementTransform,
+                            onElementDelete = onElementDelete
                         )
                     }
                 }
@@ -223,7 +225,8 @@ fun CardCanvasPreview(
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform
+                            onElementTransform = onElementTransform,
+                            onElementDelete = onElementDelete
                         )
                     }
                 }
@@ -236,7 +239,8 @@ fun CardCanvasPreview(
                             canvasWidthPx = canvasWidthPx,
                             canvasHeightPx = canvasHeightPx,
                             onElementTap = onElementTap,
-                            onElementTransform = onElementTransform
+                            onElementTransform = onElementTransform,
+                            onElementDelete = onElementDelete
                         )
                     }
                 }
@@ -640,6 +644,7 @@ private fun CardDecorationElement(
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onElementDelete: (String) -> Unit,
 ) {
     val emojis = Emoji.allIcons()
     // AI 生成贴纸(本地文件)> 素材贴纸(assets SVG)> emoji 下标
@@ -658,7 +663,8 @@ private fun CardDecorationElement(
         canvasWidthPx = canvasWidthPx,
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
-        onElementTransform = onElementTransform
+        onElementTransform = onElementTransform,
+        onDelete = { onElementDelete(decoration.id) }
     ) {
         Picture(
             model = model,
@@ -682,6 +688,7 @@ private fun CardImageElement(
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onElementDelete: (String) -> Unit,
 ) {
     val density = LocalDensity.current
     val sizePx = canvasWidthPx * CardLayout.IMAGE_ELEMENT_SIZE_RATIO
@@ -701,7 +708,8 @@ private fun CardImageElement(
         canvasWidthPx = canvasWidthPx,
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
-        onElementTransform = onElementTransform
+        onElementTransform = onElementTransform,
+        onDelete = { onElementDelete(element.id) }
     ) {
         val boxModifier = Modifier
             .size(width = widthDp, height = heightDp)
@@ -818,6 +826,7 @@ private fun CardShapeElement(
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onElementDelete: (String) -> Unit,
 ) {
     val density = LocalDensity.current
     ElementBox(
@@ -830,6 +839,7 @@ private fun CardShapeElement(
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
         onElementTransform = onElementTransform,
+        onDelete = { onElementDelete(element.id) },
         width = with(density) { (element.widthRatio * canvasWidthPx).toDp() }
     ) {
         Canvas(
@@ -916,6 +926,7 @@ private fun CardDrawElement(
     canvasHeightPx: Float,
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
+    onElementDelete: (String) -> Unit,
 ) {
     val bounds = element.contentBounds() ?: return
     val density = LocalDensity.current
@@ -929,6 +940,7 @@ private fun CardDrawElement(
         canvasHeightPx = canvasHeightPx,
         onElementTap = onElementTap,
         onElementTransform = onElementTransform,
+        onDelete = { onElementDelete(element.id) },
         width = with(density) { (bounds.width * canvasWidthPx).toDp() }
     ) {
         Canvas(

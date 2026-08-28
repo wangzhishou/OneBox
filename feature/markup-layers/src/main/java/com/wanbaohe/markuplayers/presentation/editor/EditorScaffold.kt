@@ -823,6 +823,11 @@ private fun EditorCanvas(
                                             isSelected = component.selectedLayerId == layer.id,
                                             onSelect = { component.selectLayer(layer.id) },
                                             onEditRequest = onEditRequest,
+                                            // 选中框上的红色 X 删除(组件内记 undo 快照);
+                                            // 绘制/框选模式下不显示(该模式下图层纯静态渲染)
+                                            onDelete = if (!drawMode && !aiRectSelect) {
+                                                { component.removeLayer(layer.id) }
+                                            } else null,
                                             onTransformEnd = { newTransform ->
                                                 component.updateLayerTransform(layer.id, newTransform)
                                             },

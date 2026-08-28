@@ -8,6 +8,8 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculateCentroidSize
@@ -18,6 +20,10 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -33,11 +40,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeHandles
 import com.t8rin.imagetoolbox.core.ui.widget.editor.HANDLE_SIZE
+import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
 import kotlin.math.abs
 import kotlin.math.cos
@@ -59,6 +70,8 @@ import kotlin.math.sin
  *
  * @param tapSelectable 是否响应点选手势。铺满画布的图层(如画笔)应传 false,
  * 否则会拦截画布的「点空白取消选择」
+ * @param onDelete 非空时选中态显示删除按钮(红色 X,同图文卡片元素框):
+ * 文字层(带 8 向尺寸手柄)放底部居中独立位,其余图层放选中框外侧右上角
  */
 @Composable
 fun BoxWithConstraintsScope.EditBox(
@@ -68,6 +81,7 @@ fun BoxWithConstraintsScope.EditBox(
     onTransformEnd: (LayerTransform) -> Unit,
     modifier: Modifier = Modifier,
     onEditRequest: (() -> Unit)? = null,
+    onDelete: (() -> Unit)? = null,
     tapSelectable: Boolean = true,
     resizeConfig: BoxResizeConfig? = null,
     content: @Composable BoxScope.() -> Unit,
@@ -163,6 +177,37 @@ fun BoxWithConstraintsScope.EditBox(
             scale = localTransform.scale,
             modifier = Modifier.matchParentSize()
         )
+        // 删除按钮(红色 X):独立 clickable,事件在子级被消费,不触发图层手势;
+        // 反缩放保持视觉尺寸恒定(同边框/手柄 chrome)。
+        // 文字层避开 8 向尺寸手柄放底部居中,其余图层放选中框外侧右上角
+        if (isSelected && !transform.locked && onDelete != null) {
+            val inverseChromeScale = 1f / localTransform.scale.coerceIn(0.1f, 10f)
+            val deleteAtBottom = resizeConfig != null
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .align(if (deleteAtBottom) Alignment.BottomCenter else Alignment.TopEnd)
+                    .offset(
+                        x = if (deleteAtBottom) 0.dp else 12.dp,
+                        y = if (deleteAtBottom) 40.dp else (-12).dp
+                    )
+                    .graphicsLayer {
+                        scaleX = inverseChromeScale
+                        scaleY = inverseChromeScale
+                    }
+                    .size(24.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.error)
+                    .clickable(onClick = onDelete)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Close,
+                    contentDescription = stringResource(R.string.markup_delete_layer),
+                    tint = MaterialTheme.colorScheme.onError,
+                    modifier = Modifier.size(14.dp)
+                )
+            }
+        }
         // 文字层 8 向框尺寸手柄(共享 chrome,仅选中未锁定时出现):
         // 手柄随图层一起被 graphicsLayer 变换(旋转/缩放时跟随图层);
         // 手势开始经 onResizeGestureStart 记 undo 快照
