@@ -1648,4 +1648,5 @@
     <string name="nav_text_card">텍스트 카드</string>
     <string name="text_card">텍스트 카드</string>
     <string name="text_card_sub">문구를 아름다운 공유 카드로 만들어 보세요</string>
+    <string name="profile_item_image_generation_settings">이미지 생성 및 편집</string>
 </resources>

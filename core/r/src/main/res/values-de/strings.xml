@@ -1648,4 +1648,5 @@ Und so wurde OneBox geboren.</string>
     <string name="nav_text_card">Textkarte</string>
     <string name="text_card">Textkarte</string>
     <string name="text_card_sub">Verwandle Zitate in wunderschöne, teilbare Karten</string>
+    <string name="profile_item_image_generation_settings">Bildgenerierung &amp; -bearbeitung</string>
 </resources>

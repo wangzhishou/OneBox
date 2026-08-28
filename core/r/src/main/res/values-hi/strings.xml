@@ -1648,4 +1648,5 @@
     <string name="nav_text_card">टेक्स्ट कार्ड</string>
     <string name="text_card">टेक्स्ट कार्ड</string>
     <string name="text_card_sub">कोट्स को सुंदर साझा कार्ड में बदलें</string>
+    <string name="profile_item_image_generation_settings">छवि निर्माण और संपादन</string>
 </resources>

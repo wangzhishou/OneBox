@@ -274,24 +274,7 @@ private fun ConfigEditor(
         }
     }
 
-    SettingsSection(stringResource(R.string.image_settings_proxy_section)) {
-        GlassOutlinedTextField(
-            value = draft.proxyUrl,
-            onValueChange = { draft = draft.copy(proxyUrl = it) },
-            label = { Text(stringResource(R.string.image_settings_proxy_url_label)) },
-            placeholder = { Text(descriptor.defaultProxyUrl) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-        )
-        GlassOutlinedTextField(
-            value = draft.proxyPath,
-            onValueChange = { draft = draft.copy(proxyPath = it) },
-            label = { Text(stringResource(R.string.image_settings_proxy_path_label)) },
-            placeholder = { Text(descriptor.defaultProxyPath) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-        )
-    }
+    // 后端代理由 App 内置使用，不对用户开放配置。
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -312,15 +295,17 @@ private fun ConfigEditor(
             Text(stringResource(R.string.image_settings_set_active_action))
         }
     }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End,
-    ) {
-        TextButton(onClick = onDelete) {
-            Text(
-                text = stringResource(R.string.image_settings_delete_action),
-                color = MaterialTheme.colorScheme.error,
-            )
+    if (savedConfig.id != ImageGenerationManager.DEFAULT_CONFIG_ID) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            TextButton(onClick = onDelete) {
+                Text(
+                    text = stringResource(R.string.image_settings_delete_action),
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
         }
     }
 }

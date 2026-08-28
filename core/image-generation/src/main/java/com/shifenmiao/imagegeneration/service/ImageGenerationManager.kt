@@ -24,4 +24,9 @@ interface ImageGenerationManager {
         config: ImageProviderConfig,
         request: ImageGenerationRequest,
     ): Result<ImageGenerationResult>
+
+    companion object {
+        /** 内置默认配置 id，不可删除。 */
+        const val DEFAULT_CONFIG_ID = "default-image-provider"
+    }
 }

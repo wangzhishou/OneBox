@@ -1648,4 +1648,5 @@
     <string name="nav_text_card">テキストカード</string>
     <string name="text_card">テキストカード</string>
     <string name="text_card_sub">言葉を美しいシェアカードに変換</string>
+    <string name="profile_item_image_generation_settings">画像生成と編集</string>
 </resources>

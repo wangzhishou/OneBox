@@ -28,7 +28,7 @@ class ImageGenerationManagerImpl @Inject constructor(
     init {
         if (repository.configs.value.isEmpty() && !repository.isInitialized()) {
             val defaultProvider = providersById.values.minBy { it.descriptor.providerId }
-            val config = defaultProvider.descriptor.toConfig(id = DEFAULT_CONFIG_ID)
+            val config = defaultProvider.descriptor.toConfig(id = ImageGenerationManager.DEFAULT_CONFIG_ID)
             repository.replace(listOf(config), config.id)
         }
     }
@@ -68,6 +68,7 @@ class ImageGenerationManagerImpl @Inject constructor(
     }
 
     override fun deleteConfig(id: String) {
+        require(id != ImageGenerationManager.DEFAULT_CONFIG_ID) { "Default image provider config cannot be deleted" }
         repository.delete(id)
     }
 
@@ -105,8 +106,4 @@ class ImageGenerationManagerImpl @Inject constructor(
         proxyPath = defaultProxyPath,
         model = defaultModel,
     )
-
-    companion object {
-        private const val DEFAULT_CONFIG_ID = "default-image-provider"
-    }
 }
