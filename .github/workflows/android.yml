@@ -51,7 +51,8 @@ env:
   DEFAULT_BUILD_TYPE: debug
 
 concurrency:
-  group: android-ci-${{ github.workflow }}-${{ github.ref }}
+  # workflow_dispatch 各次运行用独立 group (run_id), 避免手动批量触发时互相取消
+  group: android-ci-${{ github.workflow }}-${{ github.ref }}${{ github.event_name == 'workflow_dispatch' && format('-{0}', github.run_id) || '' }}
   cancel-in-progress: true
 
 jobs:
