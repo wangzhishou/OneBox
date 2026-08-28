@@ -1,6 +1,7 @@
 package com.shifenmiao.ai.agent.tool.builtin
 
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.shifenmiao.ai.R
 import com.shifenmiao.ai.agent.tool.AgentTool
 import com.shifenmiao.ai.agent.tool.AgentToolLoginChecker
@@ -90,9 +91,9 @@ class GenerateImageTool @Inject constructor(
     override suspend fun execute(arguments: String): AgentToolResult {
         return try {
             val params = if (arguments.isBlank()) {
-                GenerateImageParamsDto()
+                GenerateImageParams()
             } else {
-                gson.fromJson(arguments, GenerateImageParamsDto::class.java)
+                gson.fromJson(arguments, GenerateImageParams::class.java)
             }
             val prompt = params.prompt?.trim().orEmpty()
             if (prompt.isEmpty()) {
@@ -172,21 +173,26 @@ class GenerateImageTool @Inject constructor(
         )
     }
 
+    /**
+     * Gson 反射解析的 DTO 必须:① 嵌套在 Tool 内且以 Params 结尾,
+     * 命中 app/proguard-rules.pro 的 `builtin.**$*Params` keep 规则;
+     * ② 字段加 @SerializedName,防止 R8 混淆字段名导致 release 下解析不出参数。
+     */
+    private data class GenerateImageParams(
+        @SerializedName("prompt") val prompt: String? = null,
+        @SerializedName("size") val size: String? = null,
+        @SerializedName("negative_prompt") val negative_prompt: String? = null,
+        @SerializedName("force_refresh") val force_refresh: Boolean? = null,
+    )
+
+    private data class GenerateImageResult(
+        @SerializedName("filePath") val filePath: String,
+        @SerializedName("fileName") val fileName: String,
+        @SerializedName("fromCache") val fromCache: Boolean,
+        @SerializedName("cacheKey") val cacheKey: String,
+    )
+
     private companion object {
         const val POINTS_SOURCE = "agent_generate_image"
     }
 }
-
-private data class GenerateImageParamsDto(
-    val prompt: String? = null,
-    val size: String? = null,
-    val negative_prompt: String? = null,
-    val force_refresh: Boolean? = null,
-)
-
-private data class GenerateImageResult(
-    val filePath: String,
-    val fileName: String,
-    val fromCache: Boolean,
-    val cacheKey: String,
-)
