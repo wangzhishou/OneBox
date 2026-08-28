@@ -65,8 +65,12 @@ fun ImageGenerationSettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                // 限定高度为顶栏以下的剩余空间,否则滚动视口会延伸到屏幕外
+                .weight(1f)
+                // imePadding 必须在 verticalScroll 之前:让滚动视口整体收缩到键盘上方,
+                // 放在 scroll 之后只会给内容加底部 padding,视口仍被键盘遮挡
                 .imePadding()
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
