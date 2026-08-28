@@ -164,47 +164,49 @@ interface QwenImageApi {
     ): Response<QwenResponse>
 }
 
+// R8 full mode 下字段名会被混淆,Gson 序列化依赖 @SerializedName 固定 JSON key,
+// 否则 Release 包发出的请求网关解析不到 model("model not allowed: ")
 data class QwenRequest(
-    val model: String,
-    val input: QwenInput,
-    val parameters: QwenParameters,
+    @SerializedName("model") val model: String,
+    @SerializedName("input") val input: QwenInput,
+    @SerializedName("parameters") val parameters: QwenParameters,
 )
 
-data class QwenInput(val messages: List<QwenMessage>)
+data class QwenInput(@SerializedName("messages") val messages: List<QwenMessage>)
 
 data class QwenMessage(
-    val role: String = "user",
-    val content: List<QwenContent>,
+    @SerializedName("role") val role: String = "user",
+    @SerializedName("content") val content: List<QwenContent>,
 )
 
 data class QwenContent(
-    val image: String? = null,
-    val text: String? = null,
-    val type: String? = null,
+    @SerializedName("image") val image: String? = null,
+    @SerializedName("text") val text: String? = null,
+    @SerializedName("type") val type: String? = null,
 )
 
 data class QwenParameters(
     @SerializedName("prompt_extend") val promptExtend: Boolean,
     @SerializedName("prompt_extend_mode") val promptExtendMode: String,
     @SerializedName("enable_thinking") val enableThinking: Boolean,
-    val n: Int,
-    val size: String?,
+    @SerializedName("n") val n: Int,
+    @SerializedName("size") val size: String?,
     @SerializedName("negative_prompt") val negativePrompt: String?,
-    val seed: Int?,
-    val watermark: Boolean,
+    @SerializedName("seed") val seed: Int?,
+    @SerializedName("watermark") val watermark: Boolean,
 )
 
 data class QwenResponse(
-    val output: QwenOutput? = null,
-    val usage: QwenUsage? = null,
+    @SerializedName("output") val output: QwenOutput? = null,
+    @SerializedName("usage") val usage: QwenUsage? = null,
     @SerializedName("request_id") val requestId: String? = null,
-    val code: String? = null,
-    val message: String? = null,
+    @SerializedName("code") val code: String? = null,
+    @SerializedName("message") val message: String? = null,
 )
 
-data class QwenOutput(val choices: List<QwenChoice> = emptyList())
+data class QwenOutput(@SerializedName("choices") val choices: List<QwenChoice> = emptyList())
 
-data class QwenChoice(val message: QwenMessage? = null)
+data class QwenChoice(@SerializedName("message") val message: QwenMessage? = null)
 
 data class QwenUsage(
     @SerializedName("output_height") val outputHeight: Int? = null,
