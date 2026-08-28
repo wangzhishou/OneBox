@@ -9,6 +9,10 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.essenty.lifecycle.doOnStop
+import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.base.utils.StringUtils
+import com.shifenmiao.common.utils.BaseUtils
+import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -32,12 +36,23 @@ import kotlinx.coroutines.launch
 
 private const val SHAKE_THRESHOLD = 15f
 private const val SHAKE_COOLDOWN_MS = 1_000L
-private const val LINE_DELAY_MS = 420L
+private const val TOSS_DURATION_MS = 700L
+
+/** AI 解读积分来源标识 */
+private const val AI_INTERPRET_SOURCE = "iching_ai_interpretation"
+
+/** 积分预估余量倍数,与 BaseUtils.canConsumePoints 口径一致 */
+private const val POINTS_ESTIMATE_MARGIN = 3
 
 enum class IChingPage { CAST, RESULT }
 
 sealed interface CastingStage {
     data object Idle : CastingStage
+
+    /** 铜钱在空中翻转,completed 为已落定爻数 */
+    data class Tossing(val completed: Int) : CastingStage
+
+    /** 铜钱落地,显示已出爻,completed 为已出爻数 */
     data class Casting(val completed: Int) : CastingStage
     data class Success(val result: DivinationResult) : CastingStage
     data class Error(val message: String) : CastingStage
@@ -47,6 +62,7 @@ data class IChingUiState(
     val page: IChingPage = IChingPage.CAST,
     val question: String = "",
     val stage: CastingStage = CastingStage.Idle,
+    val lines: List<HexagramLine> = emptyList(),
     val result: DivinationResult? = null,
     val aiContent: String = "",
     val isGeneratingAI: Boolean = false,
@@ -127,33 +143,36 @@ class IChingDivinationComponent @AssistedInject internal constructor(
     }
 
     fun setQuestion(value: String) {
-        if (value.length <= 100 && _uiState.value.stage !is CastingStage.Casting) {
+        if (value.length <= 100 && _uiState.value.stage is CastingStage.Idle) {
             _uiState.update { it.copy(question = value) }
         }
     }
 
+    /** 摇一爻:铜钱动画落定后出一爻;满 6 爻自动生成结果进结果页 */
     fun startCasting() {
-        if (_uiState.value.stage is CastingStage.Casting) return
+        val state = _uiState.value
+        if (state.stage is CastingStage.Tossing || state.lines.size >= 6) return
         castingJob?.cancel()
         castingJob = componentScope.launch {
             try {
-                val lines = mutableListOf<HexagramLine>()
-                _uiState.update { it.copy(stage = CastingStage.Casting(0), aiContent = "", aiError = null) }
-                repeat(6) {
-                    delay(LINE_DELAY_MS)
-                    lines += generator.tossLine()
-                    _uiState.update { state -> state.copy(stage = CastingStage.Casting(lines.size)) }
-                }
-                val result = generator.create(_uiState.value.question, lines)
-                val record = IChingHistoryRecord.from(result)
-                runCatching { historyRepository.append(record) }
                 _uiState.update {
-                    it.copy(
-                        page = IChingPage.RESULT,
-                        stage = CastingStage.Success(result),
-                        result = result,
-                        currentRecordId = record.id,
-                    )
+                    it.copy(stage = CastingStage.Tossing(it.lines.size), aiContent = "", aiError = null)
+                }
+                delay(TOSS_DURATION_MS)
+                val lines = _uiState.value.lines + generator.tossLine()
+                _uiState.update { it.copy(lines = lines, stage = CastingStage.Casting(lines.size)) }
+                if (lines.size == 6) {
+                    val result = generator.create(_uiState.value.question, lines)
+                    val record = IChingHistoryRecord.from(result)
+                    runCatching { historyRepository.append(record) }
+                    _uiState.update {
+                        it.copy(
+                            page = IChingPage.RESULT,
+                            stage = CastingStage.Success(result),
+                            result = result,
+                            currentRecordId = record.id,
+                        )
+                    }
                 }
             } catch (cancelled: CancellationException) {
                 throw cancelled
@@ -163,9 +182,28 @@ class IChingDivinationComponent @AssistedInject internal constructor(
         }
     }
 
+    /**
+     * AI 解读入口:先过登录+积分预估闸门(规范见 onebox-doc/AGENTS.md「AI 功能登录与积分」),
+     * 未登录弹公共登录页,登录成功后自动续跑;积分不足自动提示。
+     */
     fun generateAIInterpretation() {
         val result = _uiState.value.result ?: return
         if (_uiState.value.isGeneratingAI) return
+        withAiGate(result) { doGenerateAIInterpretation(result) }
+    }
+
+    private fun withAiGate(result: DivinationResult, action: () -> Unit) {
+        if (!TokenStorage.isLogin()) {
+            ActionUtils.showLogin(source = AI_INTERPRET_SOURCE) { withAiGate(result, action) }
+            return
+        }
+        val estimatedPoints = BaseUtils.tokenToPoints(
+            StringUtils.calculateTokens(interpretationService.buildInput(result))
+        ) * POINTS_ESTIMATE_MARGIN
+        ActionUtils.checkPointsAndDo(point = estimatedPoints, onSuccess = action)
+    }
+
+    private fun doGenerateAIInterpretation(result: DivinationResult) {
         val recordId = _uiState.value.currentRecordId
         aiJob?.cancel()
         aiJob = componentScope.launch {
@@ -201,6 +239,7 @@ class IChingDivinationComponent @AssistedInject internal constructor(
             it.copy(
                 page = IChingPage.CAST,
                 stage = CastingStage.Idle,
+                lines = emptyList(),
                 result = null,
                 aiContent = "",
                 isGeneratingAI = false,

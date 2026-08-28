@@ -221,6 +221,7 @@ import android.net.Uri as AndroidUri
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.TaijiBagua
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInsights
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCoffee
@@ -465,7 +466,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.UnitConverter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUnitConverter
     is Screen.LoanCalculator -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLoanCalculator
     is Screen.DiceRoller -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDiceRoller
-    is Screen.IChingDivination -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic
+    is Screen.IChingDivination -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.TaijiBagua
     is Screen.IChingHistory -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory
     is Screen.Game2048 -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGame2048
     is Screen.XiangqiRouter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineXiangqi

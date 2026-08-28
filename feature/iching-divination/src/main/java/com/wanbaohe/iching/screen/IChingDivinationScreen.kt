@@ -2,8 +2,16 @@ package com.wanbaohe.iching.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
@@ -23,6 +32,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
@@ -31,10 +41,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.halilibo.richtext.commonmark.CommonMarkdownParseOptions
@@ -59,8 +72,15 @@ import com.wanbaohe.iching.component.IChingUiState
 import com.wanbaohe.iching.model.DivinationResult
 import com.wanbaohe.iching.model.HexagramInfo
 import com.wanbaohe.iching.model.HexagramLine
+import com.wanbaohe.iching.ui.icons.CoinBackRipple
+import com.wanbaohe.iching.ui.icons.CoinFrontKun
+import com.wanbaohe.iching.ui.icons.CoinFrontLi
+import com.wanbaohe.iching.ui.icons.CoinFrontQian
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+
+/** 三枚铜钱的正面(字)图标,依次 乾/坤/離 */
+private val CoinFronts = listOf(CoinFrontQian, CoinFrontKun, CoinFrontLi)
 
 @Composable
 fun IChingDivinationScreen(component: IChingDivinationComponent) {
@@ -68,7 +88,7 @@ fun IChingDivinationScreen(component: IChingDivinationComponent) {
     val title = when (state.page) {
         IChingPage.RESULT -> stringResource(R.string.iching_result_title)
         IChingPage.CAST -> when (state.stage) {
-            is CastingStage.Casting -> stringResource(R.string.iching_casting_title)
+            is CastingStage.Tossing, is CastingStage.Casting -> stringResource(R.string.iching_casting_title)
             else -> stringResource(R.string.iching_cast_title)
         }
     }
@@ -79,7 +99,7 @@ fun IChingDivinationScreen(component: IChingDivinationComponent) {
         actions = {
             IconButton(
                 onClick = component::navigateToHistory,
-                enabled = state.stage !is CastingStage.Casting,
+                enabled = state.stage !is CastingStage.Tossing,
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
@@ -118,11 +138,22 @@ private fun CastContent(
     AnimatedContent(targetState = state.stage, label = "casting_stage") { stage ->
         when (stage) {
             CastingStage.Idle -> CastForm(state.question, onQuestionChange, onCast)
-            is CastingStage.Casting -> CastingContent(stage.completed)
+            is CastingStage.Tossing -> TossingContent(completed = stage.completed)
+            is CastingStage.Casting -> LandedContent(lines = state.lines, onContinue = onCast)
             is CastingStage.Error -> ErrorContent(stage.message, onCast)
-            is CastingStage.Success -> CastingContent(completed = 6)
+            is CastingStage.Success -> LandedContent(lines = state.lines, onContinue = {})
         }
     }
+}
+
+@Composable
+private fun CoinImage(icon: ImageVector, modifier: Modifier = Modifier, size: Dp = 80.dp) {
+    Icon(
+        imageVector = icon,
+        contentDescription = null,
+        tint = MaterialTheme.colorScheme.primary,
+        modifier = modifier.size(size),
+    )
 }
 
 @Composable
@@ -131,7 +162,12 @@ private fun CastForm(question: String, onQuestionChange: (String) -> Unit, onCas
         modifier = Modifier.fillMaxSize().navigationBarsPadding().padding(24.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Spacer(Modifier.height(180.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 56.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally),
+        ) {
+            CoinFronts.forEach { CoinImage(it, size = 112.dp) }
+        }
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(
                 text = stringResource(R.string.iching_question_label),
@@ -156,31 +192,32 @@ private fun CastForm(question: String, onQuestionChange: (String) -> Unit, onCas
     }
 }
 
+/** 摇卦中:三枚铜钱在空中翻转下落,下方淡色椭圆承接 */
 @Composable
-private fun CastingContent(completed: Int) {
+private fun TossingContent(completed: Int) {
     Column(
         modifier = Modifier.fillMaxSize().navigationBarsPadding().padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Spacer(Modifier.height(96.dp))
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            GlassSurface(
-                style = GlassStyle.Thin,
-                shape = RoundedCornerShape(28.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                borderWidth = 0.8.dp,
+        Column(
+            modifier = Modifier.padding(top = 48.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Column(
-                    modifier = Modifier.padding(horizontal = 28.dp, vertical = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    repeat(6) { index ->
-                        LoadingLine(active = index >= 6 - completed)
-                    }
-                }
+                repeat(3) { index -> TossingCoin(index = index, icon = CoinFronts[index]) }
             }
+            Box(
+                modifier = Modifier
+                    .width(220.dp)
+                    .height(32.dp)
+                    .alpha(0.35f)
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.35f), CircleShape)
+            )
             Text(
                 text = stringResource(R.string.iching_casting_progress, completed),
                 style = MaterialTheme.typography.headlineSmall,
@@ -191,27 +228,192 @@ private fun CastingContent(completed: Int) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            KnowledgeTipCard(tipIndex = completed)
         }
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            GlassCircularProgressIndicator(
-                progress = { completed / 6f },
-                modifier = Modifier.size(18.dp),
-                strokeWidth = 2.dp,
+        PrimaryButton(
+            text = stringResource(R.string.iching_casting_status),
+            onClick = {},
+            enabled = false,
+        )
+    }
+}
+
+/** 单枚空中铜钱:错相位旋转 + 上下位移 + 纵向缩放模拟翻转 */
+@Composable
+private fun TossingCoin(index: Int, icon: ImageVector) {
+    val transition = rememberInfiniteTransition(label = "coin_toss_$index")
+    val delay = index * 130
+    val rotation by transition.animateFloat(
+        initialValue = -28f,
+        targetValue = 28f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(360, delayMillis = delay, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "coin_rotation_$index",
+    )
+    val offsetY by transition.animateFloat(
+        initialValue = -34f,
+        targetValue = 8f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(300, delayMillis = delay, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "coin_offset_$index",
+    )
+    val flip by transition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0.5f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(180, delayMillis = delay, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "coin_flip_$index",
+    )
+    CoinImage(
+        icon = icon,
+        size = 96.dp,
+        modifier = Modifier.graphicsLayer {
+            rotationZ = rotation
+            translationY = offsetY.dp.toPx()
+            scaleY = flip
+        },
+    )
+}
+
+/** 铜钱落地:三角落定(字/背面与爻值对应),下方自下而上累积已出爻 */
+@Composable
+private fun LandedContent(lines: List<HexagramLine>, onContinue: () -> Unit) {
+    val last = lines.lastOrNull()
+    // 铜钱起卦惯例:字(正面)=3、背=2,三枚之和即爻值 → 正面数 = 爻值 - 6
+    val frontCount = (last?.value ?: 0) - 6
+    val newestAlpha = remember { Animatable(1f) }
+    LaunchedEffect(lines.size) {
+        if (lines.isNotEmpty()) {
+            newestAlpha.snapTo(0f)
+            newestAlpha.animateTo(1f, tween(400))
+        }
+    }
+    Column(
+        modifier = Modifier.fillMaxSize().navigationBarsPadding().padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Column(
+            modifier = Modifier.padding(top = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                CoinImage(icon = if (frontCount >= 1) CoinFronts[0] else CoinBackRipple, size = 84.dp)
+                Row(horizontalArrangement = Arrangement.spacedBy(28.dp)) {
+                    CoinImage(icon = if (frontCount >= 2) CoinFronts[1] else CoinBackRipple, size = 84.dp)
+                    CoinImage(icon = if (frontCount >= 3) CoinFronts[2] else CoinBackRipple, size = 84.dp)
+                }
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                lines.asReversed().forEachIndexed { index, line ->
+                    Box(if (index == 0) Modifier.alpha(newestAlpha.value) else Modifier) {
+                        HexagramLineView(line)
+                    }
+                }
+            }
+            Text(
+                text = stringResource(R.string.iching_casting_progress, lines.size),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.SemiBold,
             )
-            Text(stringResource(R.string.iching_casting_status), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            last?.let { LineExplanationCard(line = it, position = lines.size) }
+        }
+        PrimaryButton(text = stringResource(R.string.iching_continue_cast), onClick = onContinue)
+    }
+}
+
+/** 本爻解释卡片:爻位 + 铜钱组合 + 老少阴阳 + 爻象 + 是否动爻 */
+@Composable
+private fun LineExplanationCard(line: HexagramLine, position: Int) {
+    val positionName = stringResource(
+        when (position) {
+            1 -> R.string.iching_line_pos_1
+            2 -> R.string.iching_line_pos_2
+            3 -> R.string.iching_line_pos_3
+            4 -> R.string.iching_line_pos_4
+            5 -> R.string.iching_line_pos_5
+            else -> R.string.iching_line_pos_6
+        }
+    )
+    val (combo, name) = when (line.value) {
+        6 -> R.string.iching_combo_6 to R.string.iching_line_name_6
+        7 -> R.string.iching_combo_7 to R.string.iching_line_name_7
+        8 -> R.string.iching_combo_8 to R.string.iching_line_name_8
+        else -> R.string.iching_combo_9 to R.string.iching_line_name_9
+    }
+    val symbol = stringResource(if (line.isYang) R.string.iching_line_yang else R.string.iching_line_yin)
+    val changing = stringResource(if (line.isChanging) R.string.iching_line_changing else R.string.iching_line_steady)
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        containerAlpha = 0.14f,
+        borderWidth = 0.6.dp,
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text(
+                text = stringResource(R.string.iching_line_title),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Text(
+                text = stringResource(
+                    R.string.iching_line_summary,
+                    positionName,
+                    stringResource(combo),
+                    stringResource(name),
+                    symbol,
+                    changing,
+                ),
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
     }
 }
 
+/** 易经小知识卡片:按已出爻数轮换展示铜钱摇卦法知识 */
 @Composable
-private fun LoadingLine(active: Boolean) {
-    GlassSurface(
-        modifier = Modifier.width(150.dp).height(9.dp).alpha(if (active) 1f else 0.18f),
-        style = if (active) GlassStyle.Medium else GlassStyle.Thin,
-        shape = RoundedCornerShape(99.dp),
-        color = MaterialTheme.colorScheme.primary,
-        borderWidth = 0.4.dp,
-    ) {}
+private fun KnowledgeTipCard(tipIndex: Int) {
+    val tips = listOf(
+        stringResource(R.string.iching_tip_1),
+        stringResource(R.string.iching_tip_2),
+        stringResource(R.string.iching_tip_3),
+        stringResource(R.string.iching_tip_4),
+        stringResource(R.string.iching_tip_5),
+        stringResource(R.string.iching_tip_6),
+    )
+    GlassCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        containerAlpha = 0.14f,
+        borderWidth = 0.6.dp,
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text(
+                text = stringResource(R.string.iching_tip_title),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Crossfade(targetState = tips[tipIndex % tips.size], label = "iching_tip") { tip ->
+                Text(
+                    text = tip,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -342,7 +544,7 @@ private fun AIInterpretationSection(state: IChingUiState, onGenerate: () -> Unit
                 )
             }
             Text(
-                text = stringResource(R.string.iching_disclaimer),
+                text = stringResource(com.shifenmiao.core.R.string.ai_content_notice),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -463,9 +665,10 @@ private fun GlassLineSegment(modifier: Modifier, color: Color) {
 }
 
 @Composable
-private fun PrimaryButton(text: String, onClick: () -> Unit) {
+private fun PrimaryButton(text: String, onClick: () -> Unit, enabled: Boolean = true) {
     GlassButton(
         onClick = onClick,
+        enabled = enabled,
         modifier = Modifier.fillMaxWidth().height(54.dp),
         shape = RoundedCornerShape(18.dp),
         color = MaterialTheme.colorScheme.primary,

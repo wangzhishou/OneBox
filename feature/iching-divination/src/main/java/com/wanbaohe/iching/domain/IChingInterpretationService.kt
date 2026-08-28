@@ -1,6 +1,9 @@
 package com.wanbaohe.iching.domain
 
+import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AIPromptResult
+import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.chat_prompt.dao.PromptDao
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.wanbaohe.iching.model.DivinationResult
@@ -14,21 +17,15 @@ class IChingInterpretationService @Inject constructor(
     suspend fun interpret(result: DivinationResult): Result<String> = try {
         Result.success(
             run {
-                val changedText = result.changed?.let { "变卦：第${it.number}卦 ${it.name}" } ?: "无变爻"
+                val input = buildInput(result)
                 val response = executor.execute(
                     systemPrompt = systemPrompt(),
-                    input = """
-                        所问：${result.question.ifBlank { "未指定具体事项" }}
-                        本卦：第${result.primary.number}卦 ${result.primary.name}
-                        上卦：${result.primary.upperTrigram}；下卦：${result.primary.lowerTrigram}
-                        爻值（自下而上）：${result.lines.joinToString(",") { it.value.toString() }}
-                        变爻：${result.changingLineNumbers.joinToString("、").ifBlank { "无" }}
-                        $changedText
-                    """.trimIndent(),
+                    input = input,
                 )
                 check(response.isSuccess && response.content.isNotBlank()) {
                     response.errorMessage?.takeIf(String::isNotBlank) ?: "AI 解读生成失败"
                 }
+                chargePoints(response, input)
                 response.content.trim()
             }
         )
@@ -36,6 +33,37 @@ class IChingInterpretationService @Inject constructor(
         throw cancelled
     } catch (throwable: Throwable) {
         Result.failure(throwable)
+    }
+
+    /** 解读请求输入文本(请求体与积分预估共用,保持一致口径) */
+    fun buildInput(result: DivinationResult): String {
+        val changedText = result.changed?.let { "变卦：第${it.number}卦 ${it.name}" } ?: "无变爻"
+        return """
+            所问：${result.question.ifBlank { "未指定具体事项" }}
+            本卦：第${result.primary.number}卦 ${result.primary.name}
+            上卦：${result.primary.upperTrigram}；下卦：${result.primary.lowerTrigram}
+            爻值（自下而上）：${result.lines.joinToString(",") { it.value.toString() }}
+            变爻：${result.changingLineNumbers.joinToString("、").ifBlank { "无" }}
+            $changedText
+        """.trimIndent()
+    }
+
+    /**
+     * 代理路由(我方服务器引擎)按量扣积分;BYOK 直连不扣。
+     * 接口带 usage 时按 totalTokens,否则按输入+输出文本估算。失败不扣(此处只在成功后调用)。
+     */
+    private fun chargePoints(response: AIPromptResult, input: String) {
+        if (!response.isProxyRoute) return
+        val tokens = response.totalTokens.takeIf { it > 0 }
+            ?: (StringUtils.calculateTokens(input) + StringUtils.calculateTokens(response.content))
+        if (tokens <= 0) return
+        runCatching {
+            BaseUtils.consumePoints(
+                degree = BaseUtils.tokenToPoints(tokens),
+                desc = "易经AI解读",
+                source = response.engineName.ifBlank { "iching" },
+            )
+        }
     }
 
     /** 优先读「系统提示词管理」中的预置提示词，取不到时回退到内置默认值 */

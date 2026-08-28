@@ -54,6 +54,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDecisionWheel
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteExif
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDemo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDiceRoller
+import com.t8rin.imagetoolbox.core.resources.icons.TaijiBagua
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDocumentScanner
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDraw
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawer
@@ -356,6 +357,7 @@ object IconRegistry {
         "UnitConverter" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUnitConverter },
         "LoanCalculator" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLoanCalculator },
         "DiceRoller" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDiceRoller },
+        "IChingDivination" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.TaijiBagua },
         "Game2048" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGame2048 },
         "Survive30s" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSurvive30s },
         "WebBrowser" to { com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language },
