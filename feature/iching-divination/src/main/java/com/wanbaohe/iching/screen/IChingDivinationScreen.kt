@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -159,7 +160,7 @@ private fun CoinImage(icon: ImageVector, modifier: Modifier = Modifier, size: Dp
 @Composable
 private fun CastForm(question: String, onQuestionChange: (String) -> Unit, onCast: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize().navigationBarsPadding().padding(24.dp),
+        modifier = Modifier.fillMaxSize().imePadding().navigationBarsPadding().padding(24.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(

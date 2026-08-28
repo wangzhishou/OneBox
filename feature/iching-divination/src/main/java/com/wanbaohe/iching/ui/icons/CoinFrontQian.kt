@@ -22,10 +22,10 @@ val CoinFrontQian: ImageVector
             viewportHeight = 816.0f,
         ).apply {
             group(
-                scaleX = 1.16f,
-                scaleY = 1.16f,
-                translationX = -64.58f,
-                translationY = -60.42f,
+                scaleX = 1.21f,
+                scaleY = 1.21f,
+                translationX = -84.95f,
+                translationY = -80.61f,
             ) {
                 path(
                     fill = null,
