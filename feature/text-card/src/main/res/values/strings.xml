@@ -19,6 +19,7 @@
     <string name="textcard_tab_background">Paper</string>    <string name="textcard_tab_text_style">Text Style</string>
     <string name="textcard_tab_layers">Layers</string>
     <string name="textcard_paper_background">Paper Background</string>
+    <string name="textcard_refresh_papers">Refresh papers</string>
     <string name="textcard_paper_none">None</string>
     <string name="textcard_paper_lined">Lined</string>
     <string name="textcard_paper_grid">Grid</string>

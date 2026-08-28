@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -54,6 +56,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Refresh
 
 /**
  * 纸张背景面板(设计稿 02):纸张网格 + 渐变色卡 + 自定义(相册)+ 背景透明度。
@@ -70,7 +73,38 @@ fun BackgroundPanel(component: TextCardComponent) {
         component.updateBackground(BackgroundSpec.Image(uri.toString()))
     }
 
-    PanelTitle(R.string.textcard_paper_background)
+    // 纸张标题行:右侧刷新按钮(后台新发布纸张后客户端列表不更新,手动重拉)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        PanelTitle(
+            titleRes = R.string.textcard_paper_background,
+            modifier = Modifier.weight(1f)
+        )
+        val refreshing = component.remotePapersRefreshing
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(28.dp)
+                .clip(CircleShape)
+                .clickable(enabled = !refreshing) { component.refreshRemotePapers() }
+        ) {
+            if (refreshing) {
+                CircularProgressIndicator(
+                    strokeWidth = 2.dp,
+                    modifier = Modifier.size(16.dp)
+                )
+            } else {
+                Icon(
+                    imageVector = MaterialIcons.Outlined.Refresh,
+                    contentDescription = stringResource(R.string.textcard_refresh_papers),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+    }
     // 纸张横向滑动列表:内置纸张在前,远程(Strapi)已就绪纸张追加在尾部
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),

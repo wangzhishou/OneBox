@@ -894,10 +894,25 @@ class TextCardComponent @AssistedInject internal constructor(
 
     private var papersJob: Job? by smartJob()
 
+    /** 远程纸张刷新中(刷新按钮 loading 态) */
+    private val _remotePapersRefreshing = mutableStateOf(false)
+    val remotePapersRefreshing: Boolean by _remotePapersRefreshing
+
     fun loadRemotePapers() {
         if (papersJob != null || _remotePapers.value.isNotEmpty()) return
         papersJob = componentScope.launch {
             _remotePapers.value = paperRepository.loadLocalPapers()
+        }
+    }
+
+    /** 手动刷新远程纸张(后台新发布纸张后客户端列表不更新时重拉);失败/为空保留现有列表 */
+    fun refreshRemotePapers() {
+        if (papersJob != null) return
+        papersJob = componentScope.launch {
+            _remotePapersRefreshing.value = true
+            val papers = paperRepository.loadLocalPapers()
+            if (papers.isNotEmpty()) _remotePapers.value = papers
+            _remotePapersRefreshing.value = false
         }
     }
 

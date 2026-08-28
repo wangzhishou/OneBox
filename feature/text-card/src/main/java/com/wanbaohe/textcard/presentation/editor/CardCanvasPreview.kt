@@ -324,8 +324,9 @@ private fun BackgroundLayerContent(
  * 新旋转角转回画布坐标系再归一化(同 markup-layers LayerTransform.applyGesture)。
  * [gesturesEnabled]=false(就地编辑态)时手势与手柄全部关闭,避免与文本选择/光标冲突,
  * 编辑态虚线框弱化显示。
- * [resizeConfig] 非空(文字块)= 8 向框尺寸手柄(改框宽/高,文字重排,字号不变),
- * 删除按钮经 [deleteAtBottom] 挪到底部居中独立位;为空(装饰)= 四角缩放手柄 + 右上删除。
+ * [resizeConfig] 非空(文字块)= 8 向框尺寸手柄(改框宽/高,文字重排,字号不变);
+ * 为空(装饰/图片/形状/画笔)= 四角缩放手柄。删除按钮统一放选中框下方居中,
+ * 避开四角缩放手柄与顶部旋转手柄,不与变换操作冲突。
  */
 @Composable
 private fun ElementBox(
@@ -339,7 +340,6 @@ private fun ElementBox(
     onElementTap: (String) -> Unit,
     onElementTransform: (String, Float, Float, Float, Float) -> Unit,
     onDelete: (() -> Unit)? = null,
-    deleteAtBottom: Boolean = false,
     gesturesEnabled: Boolean = true,
     width: Dp? = null,
     minHeight: Dp? = null,
@@ -408,16 +408,13 @@ private fun ElementBox(
     ) {
         content()
         // 删除按钮:独立 clickable,事件在子级被消费,不会触发元素的拖动/点选手势。
-        // 装饰:选中框外侧右上角 X;文字块:底部居中独立位(避开 8 向尺寸手柄)
+        // 统一放选中框下方居中(避开四角缩放手柄与顶部旋转手柄)
         if (isSelected && onDelete != null) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .align(if (deleteAtBottom) Alignment.BottomCenter else Alignment.TopEnd)
-                    .offset(
-                        x = if (deleteAtBottom) 0.dp else 12.dp,
-                        y = if (deleteAtBottom) 40.dp else (-12).dp
-                    )
+                    .align(Alignment.BottomCenter)
+                    .offset(y = 40.dp)
                     .graphicsLayer {
                         scaleX = inverseChromeScale
                         scaleY = inverseChromeScale
@@ -556,7 +553,6 @@ private fun CardTextElement(
         onDelete = if (canDelete) {
             { onElementDelete(block.id) }
         } else null,
-        deleteAtBottom = true,
         gesturesEnabled = !isEditing,
         width = with(density) { (canvasWidthPx * block.widthRatio).toDp() },
         minHeight = if (block.heightRatio > 0f) {
