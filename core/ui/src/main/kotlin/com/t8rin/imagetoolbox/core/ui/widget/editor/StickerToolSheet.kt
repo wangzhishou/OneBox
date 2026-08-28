@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -110,7 +111,9 @@ private fun StickerPanel(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            // 键盘弹出时弹层整体上移,AI 生成贴纸的输入框不被遮挡
             .navigationBarsPadding()
+            .imePadding()
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {

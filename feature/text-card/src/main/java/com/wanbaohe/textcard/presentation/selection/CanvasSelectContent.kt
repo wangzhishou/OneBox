@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -373,6 +374,8 @@ private fun CustomSizeDialog(
     EnhancedAlertDialog(
         visible = true,
         onDismissRequest = onDismiss,
+        // 键盘弹出时整体上移,输入框不被遮挡(同 markup-layers TextEditDialog)
+        modifier = Modifier.imePadding(),
         title = { Text(stringResource(R.string.textcard_custom_size_title)) },
         text = {
             Column {

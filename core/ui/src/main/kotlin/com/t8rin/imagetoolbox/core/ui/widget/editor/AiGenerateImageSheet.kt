@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -93,7 +94,9 @@ fun AiGenerateImageSheet(
             Column(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
+                    // 键盘弹出时弹层整体上移,提示词输入框不被遮挡
                     .navigationBarsPadding()
+                    .imePadding()
             ) {
                 // 编辑模式:当前图 + 历史版本横排(点历史版本回退,当前图进历史)
                 editImage?.let { target ->
