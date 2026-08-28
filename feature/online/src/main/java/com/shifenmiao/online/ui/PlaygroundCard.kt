@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
-import com.shifenmiao.base.utils.ImageUtils
 import com.wanbaohe.com.string.TimeFormatter
 import java.util.Date
 import com.shifenmiao.common.components.Avatar
@@ -71,7 +70,8 @@ fun PlaygroundCard(
                     var isLoading by remember(coverImage.url) { mutableStateOf(true) }
 
                     AsyncImage(
-                        model = ImageUtils.getImageThumbnailPath(coverImage),
+                        // 网关 /api/blogs 的 formats 只保 thumbnail 小图,全宽封面直接用原图,避免放大模糊
+                        model = coverImage.url,
                         contentDescription = blog.title,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.matchParentSize(),
