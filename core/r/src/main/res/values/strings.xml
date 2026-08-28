@@ -486,6 +486,8 @@ And so, OneBox was born.]]></string>
     <string name="profile_password_mismatch">Passwords do not match</string>
     <string name="profile_password_changed">Password changed successfully</string>
     <string name="profile_code_send_to">Verification code will be sent to %s</string>
+    <string name="profile_bind_email">Bind Email</string>
+    <string name="profile_email_bound">Email bound successfully</string>
     <string name="default_user_nickname">OneBoxer</string>
     <string name="profile_item_show_points_tip">Points Usage Tips</string>
     <string name="no_points">Not enough points. Invite friends to earn free points.</string>

@@ -48,6 +48,8 @@ import com.shifenmiao.model.user.ForgotPasswordRequest
 import com.shifenmiao.model.user.ResetPasswordRequest
 import com.shifenmiao.model.user.UpdateNicknameRequest
 import com.shifenmiao.model.user.ChangePasswordRequest
+import com.shifenmiao.model.user.SendBindEmailCodeRequest
+import com.shifenmiao.model.user.BindEmailRequest
 import com.shifenmiao.network.BuildConfig
 import com.shifenmiao.storage.TokenStorage
 import okhttp3.MultipartBody
@@ -286,6 +288,14 @@ interface ApiService {
     /** 向当前用户绑定的邮箱发送验证码(修改密码用) */
     @POST("user/send-email-code")
     suspend fun sendEmailCode(@Body body: Map<String, String> = emptyMap()): Response<Status>
+
+    /** 向待绑定的新邮箱发送验证码(绑定邮箱用) */
+    @POST("user/send-bind-email-code")
+    suspend fun sendBindEmailCode(@Body request: SendBindEmailCodeRequest): Response<Status>
+
+    /** 验证码绑定新邮箱,成功返回最新用户信息与新 JWT */
+    @POST("user/bind-email")
+    suspend fun bindEmail(@Body request: BindEmailRequest): Response<Login>
 
     @POST("user/consume-points")
     suspend fun consumePoints(@Body consumePoints: ConsumePoints): Response<Login>

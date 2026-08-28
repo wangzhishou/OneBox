@@ -513,6 +513,8 @@
     <string name="profile_password_mismatch">两次输入的密码不一致</string>
     <string name="profile_password_changed">密码修改成功</string>
     <string name="profile_code_send_to">验证码将发送至 %s</string>
+    <string name="profile_bind_email">绑定邮箱</string>
+    <string name="profile_email_bound">邮箱绑定成功</string>
     <string name="default_user_nickname">万宝子</string>
     <string name="profile_item_show_points_tip">积分消费提示</string>
     <string name="no_points">预估积分不足，邀请好友可以免费获得积分。</string>

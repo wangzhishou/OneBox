@@ -65,6 +65,7 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmail
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePhone
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDoorBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExitToApp
@@ -81,6 +82,7 @@ fun UserInfoScreen(
     val showLogoutDialog = remember { mutableStateOf(false) }
     val showNicknameDialog = remember { mutableStateOf(false) }
     val showChangePasswordSheet = remember { mutableStateOf(false) }
+    val showBindEmailSheet = remember { mutableStateOf(false) }
     val countdownTime = remember { mutableIntStateOf(COUNT_DOWN_TIME) }
 
     if (!loginState.isLogin) {
@@ -173,10 +175,40 @@ fun UserInfoScreen(
                             },
                         )
                         AboutCardDivider()
-                        GlassListItemText(
-                            headline = stringResource(R.string.profile_user_info_email),
-                            value = loginState.emailOrMobile,
-                        )
+                        // 未绑真实邮箱(占位邮箱或格式非法)时显示绑定按钮
+                        if (isBoundRealEmail(loginState.emailOrMobile)) {
+                            GlassListItemText(
+                                headline = stringResource(R.string.profile_user_info_email),
+                                value = loginState.emailOrMobile,
+                            )
+                        } else {
+                            GlassListItem(
+                                headlineContent = {
+                                    Text(
+                                        text = stringResource(R.string.profile_user_info_email),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                    )
+                                },
+                                trailingContent = {
+                                    Button(
+                                        onClick = { showBindEmailSheet.value = true },
+                                        colors = AppTheme.colors.getSecondaryContainerButtonColors(),
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(14.dp),
+                                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEmail,
+                                            contentDescription = "email",
+                                        )
+                                        Spacer(modifier = Modifier.size(8.dp))
+                                        Text(
+                                            text = stringResource(R.string.button_bind),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                        )
+                                    }
+                                },
+                            )
+                        }
                         // 海外渠道不提供绑定手机功能, 不展示手机号行
                         if (LoginChannelConfig.getConfigByFlavor().bindPhoneSupported) {
                             AboutCardDivider()
@@ -216,10 +248,7 @@ fun UserInfoScreen(
                             )
                         }
                         // 已绑手机走短信验证码,未绑手机但有真实邮箱(非占位邮箱)走邮箱验证码
-                        val hasRealEmail = loginState.emailOrMobile.contains("@") &&
-                            !loginState.emailOrMobile.endsWith("@example.com") &&
-                            !loginState.emailOrMobile.endsWith("@google.user")
-                        if (loginState.phone.isNotEmpty() || hasRealEmail) {
+                        if (loginState.phone.isNotEmpty() || isBoundRealEmail(loginState.emailOrMobile)) {
                             AboutCardDivider()
                             GlassListItem(
                                 modifier = Modifier.clickable { showChangePasswordSheet.value = true },
@@ -462,6 +491,13 @@ fun UserInfoScreen(
             onDismiss = { showChangePasswordSheet.value = false },
         )
     }
+
+    if (showBindEmailSheet.value) {
+        BindEmailSheet(
+            loginComponent = loginComponent,
+            onDismiss = { showBindEmailSheet.value = false },
+        )
+    }
 }
 
 // ──────────────────────────────────────────────────────────────
@@ -619,4 +655,13 @@ private fun isValidNickname(nickname: String): Boolean {
     return nickname.all {
         it.isLetterOrDigit() || it == ' ' || it == '_' || it == '-' || it == '·'
     }
+}
+
+/**
+ * 是否已绑定真实邮箱:合法邮箱格式且非占位域名(@example.com / @google.user)
+ */
+private fun isBoundRealEmail(emailOrMobile: String): Boolean {
+    if (!StringUtils.isValidEmail(emailOrMobile)) return false
+    return !emailOrMobile.endsWith("@example.com") &&
+        !emailOrMobile.endsWith("@google.user")
 }

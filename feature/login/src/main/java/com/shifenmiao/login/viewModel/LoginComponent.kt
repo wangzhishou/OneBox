@@ -49,6 +49,8 @@ import com.shifenmiao.model.user.GoogleLoginRequest
 import com.shifenmiao.model.user.ResetPasswordRequest
 import com.shifenmiao.model.user.UpdateNicknameRequest
 import com.shifenmiao.model.user.ChangePasswordRequest
+import com.shifenmiao.model.user.SendBindEmailCodeRequest
+import com.shifenmiao.model.user.BindEmailRequest
 import com.shifenmiao.model.user.WechatLoginRequest
 import com.shifenmiao.model.user.event.BindPhoneEvent
 import com.shifenmiao.login.state.ForgotPasswordState
@@ -1359,6 +1361,69 @@ class LoginComponent @AssistedInject internal constructor(
                 onError = onFail
             ) {
                 apiService.updateNickname(UpdateNicknameRequest(nickname))
+            }
+            response?.let {
+                responseHandle(
+                    response = it,
+                    onSuccess = { onSuccess() },
+                    onFail = onFail,
+                    onlyUpdate = true
+                )
+            }
+        }
+    }
+
+    /**
+     * 向待绑定的新邮箱发送验证码(绑定邮箱用)
+     */
+    fun sendBindEmailCode(
+        email: String,
+        onError: (String) -> Unit = {},
+        onSuccess: () -> Unit,
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = onError
+            ) {
+                apiService.sendBindEmailCode(SendBindEmailCodeRequest(email))
+            }
+            if (response != null) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    NetworkUtils.handleErrorResponse(
+                        response,
+                        onFriendlyErrorTip = {
+                            onError(it)
+                        }) {
+                        makeLog {
+                            "sendBindEmailCode" + it
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 验证码绑定新邮箱,成功后经 responseHandle 刷新 LoginStateHolder
+     */
+    fun bindEmail(
+        email: String,
+        code: String,
+        onSuccess: () -> Unit = {},
+        onFail: (str: String) -> Unit = { _ -> }
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = onFail
+            ) {
+                apiService.bindEmail(
+                    BindEmailRequest(
+                        email = email,
+                        code = code
+                    )
+                )
             }
             response?.let {
                 responseHandle(
