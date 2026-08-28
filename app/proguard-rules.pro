@@ -102,17 +102,16 @@
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
-# Keep all *Params data classes used by gson.fromJson(...Params::class.java) inside builtin tools.
-# Without this, R8 inlines/marks these private nested data classes as abstract and removes their
-# constructors, breaking Gson reflective instantiation at runtime.
--keep class com.shifenmiao.ai.agent.tool.builtin.**$*Params { *; }
--keep class com.shifenmiao.ai.agent.tool.builtin.**$*ToolParams { *; }
+# Keep ALL Gson-reflected classes inside AgentTool packages — argument Params/Args DTOs and
+# Result/Payload/Response classes alike, nested in the tool class or top-level in the file.
+# Without this, R8 obfuscates field names and strips constructors, breaking gson.fromJson/toJson
+# in release builds. NOTE: the rules must not use `$` (nested-only): several DTOs are top-level
+# file-private classes (e.g. webp_tool's WebpParamsDto, browse_files' BrowseFilesParams).
+-keep class com.shifenmiao.ai.agent.tool.builtin.** { *; }
 
 # Same Gson reflection hazard in feature-module AgentTools (e.g. teleprompter's
-# ManageTeleprompterParams, calendar's LunarCalendarArgs): keep their param/args
-# data classes so release builds can deserialize tool call arguments.
--keep class com.wanbaohe.**.ai.tool.**$*Params { *; }
--keep class com.wanbaohe.**.ai.tool.**$*Args { *; }
+# ManageTeleprompterParams, calendar's LunarCalendarArgs).
+-keep class com.wanbaohe.**.ai.tool.** { *; }
 
 # Keep top-level data classes deserialized by Gson at runtime.
 # R8's horizontal class merging can merge a public data class (e.g. AgentUserQuestionRequest)
