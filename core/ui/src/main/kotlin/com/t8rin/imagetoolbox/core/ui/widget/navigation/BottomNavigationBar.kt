@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -46,6 +47,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -283,6 +285,9 @@ private fun BottomNavigationTabItem(
                 text = item.label,
                 style = tabTextStyle,
                 maxLines = 1,
+                // 标签超长时不换行不省略,Marquee 滚动展示(与列表 Item 标题一致)
+                modifier = Modifier.basicMarquee(),
+                textAlign = TextAlign.Center,
                 color = if (isSelected) selectedContentColor else unselectedContentColor,
             )
         }
