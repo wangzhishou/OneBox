@@ -161,6 +161,14 @@ interface ToolExecutionConfig {
         get() = 0
 
     /**
+     * 单次执行超时毫秒数。0 或负值表示使用全局默认
+     * （远程配置 agentToolTimeoutSeconds,未下发时本地兜底 60 秒）。
+     * 耗时型工具（如 AI 生成图片、大文件处理）应返回更大的值。
+     */
+    val executionTimeoutMs: Long
+        get() = 0L
+
+    /**
      * 是否允许与同一轮中其他工具并行执行。
      *
      * 默认 true:大多数纯查询、读取类工具都是无副作用的,可以并行。

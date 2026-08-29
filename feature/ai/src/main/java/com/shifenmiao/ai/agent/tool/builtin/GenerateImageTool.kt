@@ -53,6 +53,9 @@ class GenerateImageTool @Inject constructor(
 
     override val riskLevel: ToolRiskLevel = ToolRiskLevel.SENSITIVE
 
+    // 文生图通常要十几秒到一分多钟,默认 30s 超时太短,放宽到 3 分钟
+    override val executionTimeoutMs: Long = 180_000L
+
     override val deepLinks: List<ToolDeepLink> = listOf(
         ToolDeepLink(
             uri = AppNavigationRegistry.buildStructuredDeeplink(

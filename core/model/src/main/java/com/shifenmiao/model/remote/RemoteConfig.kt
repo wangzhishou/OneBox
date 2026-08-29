@@ -62,6 +62,14 @@ data class RemoteConfig(
     val aiImageProcessPoints: Int? = null,
 
     /**
+     * Agent 单个工具的默认执行超时。
+     *
+     * 单位秒；默认 `null` 表示服务端未下发，由消费端回退到本地默认值（当前为 60）。
+     * 工具自身声明的 ToolExecutionConfig.executionTimeoutMs 优先级高于本字段。
+     */
+    val agentToolTimeoutSeconds: Int? = null,
+
+    /**
      * 网络请求访问的token。
      * 按渠道隔离：国内渠道与 google 渠道使用不同的默认 token，
      * 见 core/r 中 src/domestic / src/google 的 UrlConstantsFlavor。
@@ -281,6 +289,7 @@ data class RemoteConfig(
         loginBindPhone = mergeField(net.loginBindPhone, loginBindPhone),
         adminVipLevel = mergeField(net.adminVipLevel, adminVipLevel),
         aiImageProcessPoints = mergeField(net.aiImageProcessPoints, aiImageProcessPoints),
+        agentToolTimeoutSeconds = mergeField(net.agentToolTimeoutSeconds, agentToolTimeoutSeconds),
         accessToken = mergeField(net.accessToken, accessToken) { !it.isNullOrBlank() },
         requestUrl = mergeField(net.requestUrl, requestUrl) { !it.isNullOrBlank() },
         aiAgentUpdateInterval = mergeField(net.aiAgentUpdateInterval, aiAgentUpdateInterval),
@@ -350,6 +359,7 @@ data class RemoteConfig(
                 loginBindPhone == other.loginBindPhone &&
                 adminVipLevel == other.adminVipLevel &&
                 aiImageProcessPoints == other.aiImageProcessPoints &&
+                agentToolTimeoutSeconds == other.agentToolTimeoutSeconds &&
                 helpBlogIds == other.helpBlogIds &&
                 webViewResourceRules == other.webViewResourceRules &&
                 defaultWorkingEngine == other.defaultWorkingEngine &&
@@ -392,6 +402,7 @@ data class RemoteConfig(
             loginBindPhone,
             adminVipLevel,
             aiImageProcessPoints,
+            agentToolTimeoutSeconds,
             helpBlogIds,
             webViewResourceRules,
             defaultWorkingEngine,

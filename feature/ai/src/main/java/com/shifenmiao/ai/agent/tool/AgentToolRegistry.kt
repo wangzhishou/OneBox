@@ -300,7 +300,8 @@ class AgentToolRegistry @Inject constructor(
             confirmationTitle = tool.confirmationTitle,
             confirmationToolPresentation = tool.confirmationToolPresentation,
             parallelizable = tool.parallelizable,
-            isInteractive = tool is InteractiveAgentTool
+            isInteractive = tool is InteractiveAgentTool,
+            executionTimeoutMs = tool.executionTimeoutMs
         )
     }
 
@@ -528,6 +529,7 @@ data class AgentToolExecutionPolicy(
     val confirmationTitle: String = "",
     val confirmationToolPresentation: String = "",
     val parallelizable: Boolean = true,
-    val isInteractive: Boolean = false
+    val isInteractive: Boolean = false,
+    val executionTimeoutMs: Long = 0
 )
 

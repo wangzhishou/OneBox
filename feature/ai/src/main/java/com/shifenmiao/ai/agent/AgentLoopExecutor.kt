@@ -18,6 +18,7 @@ import com.shifenmiao.model.ai.ToolCall
 import com.shifenmiao.model.ai.ToolCallDelta
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 import com.shifenmiao.storage.AIChatStorage
+import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.logger.makeLog
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
@@ -54,8 +55,8 @@ class AgentLoopExecutor @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     companion object {
-        /** 普通工具默认执行超时（毫秒） */
-        private const val DEFAULT_TOOL_TIMEOUT_MS = 30_000L
+        /** 普通工具默认执行超时（毫秒），服务端未下发 agentToolTimeoutSeconds 时的本地兜底 */
+        private const val DEFAULT_TOOL_TIMEOUT_MS = 60_000L
     }
 
     /** 每轮 Agent Loop 开始前调用，重置累积器（不重置迭代计数） */
@@ -483,9 +484,18 @@ class AgentLoopExecutor @Inject constructor(
      * 4. 不需要确认
      * 5. 不需要权限申请
      */
+    /**
+     * 超时优先级:工具自身声明(ToolExecutionConfig.executionTimeoutMs)
+     * > 远程配置(RemoteConfig.agentToolTimeoutSeconds) > 本地默认 60s。
+     */
     private fun resolveExecutionTimeout(toolName: String): Long? {
         if (toolRegistry.isInteractiveTool(toolName)) return null
-        return DEFAULT_TOOL_TIMEOUT_MS
+        val toolTimeout = toolRegistry.getExecutionPolicy(toolName)?.executionTimeoutMs ?: 0L
+        if (toolTimeout > 0) return toolTimeout
+        return RemoteConfigStorage.getRemoteConfig().agentToolTimeoutSeconds
+            ?.takeIf { it > 0 }
+            ?.times(1000L)
+            ?: DEFAULT_TOOL_TIMEOUT_MS
     }
 
     private fun isEffectivelyParallelizable(toolCall: ToolCall): Boolean {
