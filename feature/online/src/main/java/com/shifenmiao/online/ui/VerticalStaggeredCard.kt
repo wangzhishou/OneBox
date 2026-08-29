@@ -318,11 +318,8 @@ fun VerticalStaggeredCard(
         actionContentColor = resolvedPalette.actionContentColor,
         title = title,
         description = description,
-        iconName = if (item.iconName == null) {
-            title
-        } else {
-            item.iconName
-        },
+        // iconName 只放图标注册表 key;为空(null/"")时回退为标题,由 LetterIcon 取当前语言标题首字
+        iconName = item.iconName?.takeIf { it.isNotEmpty() } ?: title,
         maxTitleLines = maxTitleLines,
         modifier = modifier,
         shape = shape,
