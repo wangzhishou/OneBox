@@ -1,0 +1,3 @@
+• New: Text Card — turn text into beautiful shareable cards with multiple paper styles and canvas sizes
+• New: I Ching Divination — cast a six-line hexagram and view the original and changed hexagrams with AI interpretation
+• Bug fixes and performance improvements

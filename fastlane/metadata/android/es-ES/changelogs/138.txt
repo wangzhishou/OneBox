@@ -1,0 +1,3 @@
+• Nuevo: Tarjeta de texto — convierte texto en atractivas tarjetas para compartir, con varios estilos de papel y tamaños de lienzo
+• Nuevo: Adivinación I Ching — genera un hexagrama de seis líneas y consulta los hexagramas original y cambiante con interpretación de IA
+• Corrección de errores y mejoras de rendimiento

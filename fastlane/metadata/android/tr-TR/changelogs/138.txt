@@ -1,0 +1,3 @@
+• Yeni: Metin Kartı — metni çeşitli kağıt stilleri ve tuval boyutlarıyla paylaşılabilir şık kartlara dönüştürün
+• Yeni: I Ching Falı — altı çizgili heksagram oluşturun, orijinal ve değişen heksagramları AI yorumuyla görüntüleyin
+• Hata düzeltmeleri ve performans iyileştirmeleri

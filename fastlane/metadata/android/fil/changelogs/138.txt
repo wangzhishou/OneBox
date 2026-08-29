@@ -1,0 +1,3 @@
+• Bago: Text Card — gawing magagandang shareable card ang teksto, may iba't ibang estilo ng papel at laki ng canvas
+• Bago: I Ching Divination — bumuo ng hexagram na may anim na linya at tingnan ang orihinal at nagbago na hexagram na may AI interpretation
+• Mga pag-aayos ng bug at pagpapabuti ng performance

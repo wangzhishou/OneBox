@@ -1,0 +1,3 @@
+• Baru: Kartu Teks — ubah teks menjadi kartu menarik untuk dibagikan, dengan berbagai gaya kertas dan ukuran kanvas
+• Baru: Ramalan I Ching — hasilkan heksagram enam garis dan lihat heksagram asli serta perubahannya dengan interpretasi AI
+• Perbaikan bug dan peningkatan performa

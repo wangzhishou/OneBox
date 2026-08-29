@@ -1,0 +1,3 @@
+• Neu: Textkarte — verwandle Text in ansprechende Karten zum Teilen, mit verschiedenen Papierstilen und Leinwandgrößen
+• Neu: I-Ging-Orakel — wirf ein Sechs-Linien-Hexagramm und siehe dir Ausgangs- und Wandlungshexagramm mit KI-Deutung an
+• Fehlerbehebungen und Leistungsverbesserungen
