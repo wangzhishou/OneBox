@@ -2,12 +2,8 @@
 <resources>
     <string name="app_name">OneBox</string>
     <string name="app_copyright">Hak Cipta © 2024 OneBox</string>
-    <string name="app_description">Hai, saya pengembang OneBox.
-
-Seperti banyak dari Anda, saya sering mengunduh seluruh aplikasi hanya untuk satu fitur kecil, atau berpindah-pindah antara berbagai situs web dan alat. Pengalaman itu memicu ide: mengapa tidak menggabungkan semua fitur yang berguna, praktis, dan menyenangkan dalam satu tempat?
-
-Maka, lahirlah OneBox.</string>
-    <string name="app_description_download_des">\n\nUnduh (salin ke browser): https://www.wanbaohe.com/download</string>
+    <string name="app_description">Satu aplikasi, 90+ alat — edit gambar, chat AI, produktivitas, mini-game. Semua dalam satu kotak.</string>
+    <string name="app_description_download_des">\n\nUnduh: https://www.wanbaohe.com/download\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
     <string name="app_slogan">Satu Kotak. Semuanya. Didukung AI.</string>
     <string name="dialog_title">Tips</string>

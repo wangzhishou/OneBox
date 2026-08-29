@@ -2,12 +2,8 @@
 <resources>
     <string name="app_name">OneBox</string>
     <string name="app_copyright">कॉपीराइट © 2024 OneBox</string>
-    <string name="app_description">नमस्ते, मैं OneBox का डेवलपर हूँ।
-
-आप में से कई लोगों की तरह, मैं अक्सर एक छोटी सी सुविधा के लिए पूरा ऐप डाउनलोड कर लेता था, या विभिन्न वेबसाइटों और टूल्स के बीच कूदता रहता था। उस अनुभव ने एक विचार जन्म दिया: क्यों न उन सभी उपयोगी, सुविधाजनक और मज़ेदार सुविधाओं को एक ही जगह लाया जाए?
-
-और इस तरह, OneBox का जन्म हुआ।</string>
-    <string name="app_description_download_des">\n\nडाउनलोड (ब्राउज़र में कॉपी करें): https://www.wanbaohe.com/download</string>
+    <string name="app_description">एक ऐप, 90+ टूल्स — इमेज एडिटिंग, AI चैट, प्रोडक्टिविटी, मिनी-गेम्स। सब कुछ एक ही बॉक्स में।</string>
+    <string name="app_description_download_des">\n\nडाउनलोड: https://www.wanbaohe.com/download\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
     <string name="app_slogan">एक बॉक्स। सब कुछ। AI-संचालित।</string>
     <string name="dialog_title">टिप</string>

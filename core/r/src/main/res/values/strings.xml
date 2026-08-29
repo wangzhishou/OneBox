@@ -2,12 +2,8 @@
 <resources>
     <string name="app_name">OneBox</string>
     <string name="app_copyright">Copyright © 2024 OneBox</string>
-    <string name="app_description"><![CDATA[Hi, I\'m the developer of OneBox.
-
-Like many of you, I often found myself downloading an entire app just for one tiny feature, or jumping between different websites and tools. That experience sparked an idea: why not bring together all those handy, useful, and fun features in one place?
-
-And so, OneBox was born.]]></string>
-    <string name="app_description_download_des"><![CDATA[\n\nDownload (copy to browser): https://www.wanbaohe.com/download]]></string>
+    <string name="app_description"><![CDATA[One app, 90+ tools — image editing, AI chat, productivity, mini-games. Everything in one box.]]></string>
+    <string name="app_description_download_des"><![CDATA[\n\nDownload: https://www.wanbaohe.com/download\nGitHub: https://github.com/wangzhishou/OneBox]]></string>
     <string name="app_launcher_name">OneBox</string>
     <string name="app_slogan">One Box. Everything. AI-Powered.</string>
     <string name="dialog_title">Tip</string>

@@ -2,4 +2,6 @@
 <!-- Google Play channel: login agreement links point to the overseas domain oneboxable.com -->
 <resources>
     <string name="user_privacy"><![CDATA[I have read and agree to the <a href="https://www.oneboxable.com/agreement/global.html">User Agreement</a> and <a href="https://www.oneboxable.com/privacy/global.html">Privacy Policy</a>.]]></string>
+    <!-- Google Play channel: share text points to the Play Store listing instead of the domestic download page -->
+    <string name="app_description_download_des"><![CDATA[\n\nGoogle Play: https://play.google.com/store/apps/details?id=com.shifenmiao.app\nGitHub: https://github.com/wangzhishou/OneBox]]></string>
 </resources>

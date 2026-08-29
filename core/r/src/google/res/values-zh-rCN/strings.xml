@@ -2,4 +2,6 @@
 <!-- Google Play 渠道: 登录页协议链接指向海外域名 oneboxable.com -->
 <resources>
     <string name="user_privacy"><![CDATA[我已阅读并同意<a href="https://www.oneboxable.com/agreement/global.html">《用户协议》</a>与 <a href="https://www.oneboxable.com/privacy/global.html">《隐私政策》</a>。]]></string>
+    <!-- Google Play 渠道: 分享文案指向 Play 商店而非国内下载页 -->
+    <string name="app_description_download_des"><![CDATA[\n\nGoogle Play：https://play.google.com/store/apps/details?id=com.shifenmiao.app\n开源：https://github.com/wangzhishou/OneBox]]></string>
 </resources>

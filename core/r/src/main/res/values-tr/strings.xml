@@ -2,12 +2,8 @@
 <resources>
     <string name="app_name">OneBox</string>
     <string name="app_copyright">Telif Hakkı © 2024 OneBox</string>
-    <string name="app_description">Merhaba, ben OneBox\'un geliştiricisiyim.
-
-Çoğunuz gibi ben de sık sık tek bir küçük özellik için tüm bir uygulamayı indiriyordum ya da farklı web siteleri ve araçlar arasında geçiş yapıyordum. Bu deneyim bir fikir doğurdu: neden tüm bu kullanışlı, yararlı ve eğlenceli özellikleri tek bir yerde toplamıyoruz?
-
-Ve böylece OneBox doğdu.</string>
-    <string name="app_description_download_des">\n\nİndir (tarayıcıya kopyala): https://www.wanbaohe.com/download</string>
+    <string name="app_description">Tek uygulama, 90\'dan fazla araç — görsel düzenleme, yapay zekâ sohbeti, üretkenlik, mini oyunlar. Hepsi tek kutuda.</string>
+    <string name="app_description_download_des">\n\nİndir: https://www.wanbaohe.com/download\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
     <string name="app_slogan">Tek Kutu. Her Şey. Yapay Zeka Destekli.</string>
     <string name="dialog_title">İpucu</string>

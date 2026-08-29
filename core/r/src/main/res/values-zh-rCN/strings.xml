@@ -2,12 +2,8 @@
 <resources>
     <string name="app_name">万宝盒</string>
     <string name="app_copyright">Copyright © 2024万宝盒</string>
-    <string name="app_description"><![CDATA[你好，我是「万宝盒」的开发者。
-
-和许多人一样，我常常为了一个不起眼的小功能，而去下载一整个APP，或是在不同的网站和工具间反复横跳。这种体验让我萌生了一个想法：为什么不把那些高频、实用、有趣的功能都集合在一起呢？
-
- 于是，「万宝盒」诞生了。]]></string>
-    <string name="app_description_download_des"><![CDATA[\n\n下载地址（复制到浏览器）：https://www.wanbaohe.com/]]></string>
+    <string name="app_description"><![CDATA[一个 App，90+ 工具：图像处理、AI 聊天、效率工具、小游戏——全部装进一个盒子。]]></string>
+    <string name="app_description_download_des"><![CDATA[\n\n下载：https://www.wanbaohe.com/download\n开源：https://github.com/wangzhishou/OneBox]]></string>
     <string name="app_launcher_name">万宝盒</string>
     <string name="app_slogan">万能宝盒万事万物皆可AI</string>
     <string name="dialog_title">提示</string>
