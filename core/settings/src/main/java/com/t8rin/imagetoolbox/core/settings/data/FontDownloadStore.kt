@@ -6,6 +6,7 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.settings.domain.FontCatalog
 import com.t8rin.imagetoolbox.core.settings.domain.model.DownloadableFont
 import com.t8rin.imagetoolbox.core.settings.domain.model.DownloadableFonts
+import com.t8rin.imagetoolbox.core.settings.domain.model.DownloadableFonts.urlsForCurrentFlavor
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
@@ -83,7 +84,7 @@ internal class FontDownloadStore @Inject constructor(
         onProgress: (Float) -> Unit,
     ): Result<FontType.File> = withContext(dispatchersHolder.ioDispatcher) {
         var lastFailure: Throwable = IllegalStateException("no mirror available")
-        for (url in font.urls) {
+        for (url in font.urlsForCurrentFlavor()) {
             val result = downloadFrom(url, font, onProgress)
             if (result.isSuccess) return@withContext result
             lastFailure = result.exceptionOrNull() ?: lastFailure

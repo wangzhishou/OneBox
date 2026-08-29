@@ -44,6 +44,17 @@ object CardLayout {
     /** 卡片底色(背景层半透明时透出) */
     const val CARD_BASE_COLOR = 0xFFFFFFFF
 
+    // ---- 自定义背景图 ----
+
+    /**
+     * 背景图过扫系数:Crop 铺满后再放大,为拖动留出余量,
+     * 避免图片与画布宽高比接近时一拖动就露出卡片底色(预览/导出双端同步)
+     */
+    const val BACKGROUND_IMAGE_OVERSCAN = 1.15f
+
+    /** 背景图归一化拖动偏移上限:过扫余量的一半,钳制在不出边的范围内 */
+    const val BACKGROUND_IMAGE_MAX_OFFSET = (BACKGROUND_IMAGE_OVERSCAN - 1f) / 2f
+
     // ---- 纸张纹理 ----
 
     /** 横线/方格纸线条颜色 */

@@ -38,6 +38,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
+import kotlin.math.ceil
 
 /**
  * 图文卡片导出:Bitmap.createBitmap(画布规格) → 背景(纹理/mesh 渐变/图片居中裁剪,
@@ -145,7 +146,7 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         )
     }
 
-    /** 相册图片:居中裁剪铺满画布,叠加用户拖动的归一化偏移 */
+    /** 相册图片:居中裁剪铺满画布 + 过扫放大(与预览侧同步),叠加用户拖动的归一化偏移 */
     private fun drawImageBackground(
         canvas: Canvas,
         image: BackgroundSpec.Image,
@@ -158,7 +159,7 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         val scale = maxOf(
             width.toFloat() / source.width,
             height.toFloat() / source.height
-        )
+        ) * CardLayout.BACKGROUND_IMAGE_OVERSCAN
         val drawWidth = source.width * scale
         val drawHeight = source.height * scale
         val shiftX = image.offsetX * width
@@ -193,8 +194,8 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         if (block.content.isBlank()) return
 
         val padding = width * CardLayout.CONTENT_PADDING_RATIO
-        // 框宽 = widthRatio·画布宽(文字在框内折行),与预览侧 CardTextElement 一致
-        val contentWidth = (width * block.widthRatio).toInt().coerceAtLeast(1)
+        // 框宽上限 = widthRatio·画布宽(文字在框内折行),与预览侧 CardTextElement 一致
+        val maxContentWidth = (width * block.widthRatio).toInt().coerceAtLeast(1)
         val left = padding + block.offsetX * width
         val top = width * block.baseTopRatio + block.offsetY * height
 
@@ -208,12 +209,24 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
             typeface = resolveTypeface(block)
             letterSpacing = block.letterSpacingEm
         }
-        val layout = StaticLayout.Builder
-            .obtain(block.content, 0, block.content.length, paint, contentWidth)
+        fun buildLayout(layoutWidth: Int): StaticLayout = StaticLayout.Builder
+            .obtain(block.content, 0, block.content.length, paint, layoutWidth)
             .setAlignment(block.alignment.toLayoutAlignment())
             .setLineSpacing(0f, block.lineSpacingMultiplier)
             .setIncludePad(false)
             .build()
+
+        // 未手动拖宽的块预览侧框随内容收缩(wrap):先按上限宽折行,取各行最大宽度
+        // 作为实际内容宽重建布局,定位与变换中心与预览一致;手动拖宽块直接用设定框宽
+        var layout = buildLayout(maxContentWidth)
+        val contentWidth = if (block.widthManuallySet) {
+            maxContentWidth
+        } else {
+            val maxLineWidth = (0 until layout.lineCount).maxOf { layout.getLineWidth(it) }
+            val wrappedWidth = ceil(maxLineWidth).toInt().coerceAtLeast(1)
+            if (wrappedWidth < maxContentWidth) layout = buildLayout(wrappedWidth)
+            wrappedWidth
+        }
 
         // 变换中心 = 框中心:框高 = max(内容高, 设定最小高),与预览 heightIn(min) 一致
         val boxHeight = maxOf(

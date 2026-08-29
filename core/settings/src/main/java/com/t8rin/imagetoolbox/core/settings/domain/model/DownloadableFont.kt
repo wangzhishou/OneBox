@@ -2,11 +2,17 @@ package com.t8rin.imagetoolbox.core.settings.domain.model
 
 import androidx.annotation.StringRes
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.settings.BuildConfig
 
 /**
- * 全局可下载字体清单(自 feature/text-card 上移)。urls 为多镜像按序回退
- * (jsDelivr 优先,GitHub 系兜底),应对部分环境(如模拟器)对单一 CDN 的证书校验失败。
+ * 全局可下载字体清单(自 feature/text-card 上移)。urls 为多镜像按序回退,
+ * 应对部分环境(如模拟器)对单一 CDN 的证书校验失败。
  * 中文字体体积大,展示 [approxSizeMb] 提示用户;不预打包任何字体文件。
+ *
+ * 镜像策略(按 [urlsForCurrentFlavor] 排序):
+ * - 国内渠道:R2(自有静态资源,bucket onebox-images 的 fonts/ 路径,国内可达)优先,
+ *   jsDelivr/GitHub 兜底——GitHub 系国内基本不可达
+ * - google 渠道:jsDelivr/GitHub 优先,R2 最后兜底
  *
  * 镜像可达性(2026-08-25 curl 实测,代理/无代理两环境均 GET+Range 验证):
  * - 思源黑体:jsDelivr google/fonts 可变 TTF 206/206;GitHub raw OTF 206/206
@@ -24,6 +30,9 @@ data class DownloadableFont(
 )
 
 object DownloadableFonts {
+
+    /** R2 静态资源基地址(自有 CDN,字体文件在 bucket 的 fonts/ 路径下,按 fileName 寻址) */
+    private const val R2_FONT_BASE = "https://images.oneboxable.com/fonts"
 
     val all: List<DownloadableFont> = listOf(
         DownloadableFont(
@@ -58,4 +67,13 @@ object DownloadableFonts {
     )
 
     fun byId(id: String): DownloadableFont? = all.find { it.id == id }
+
+    /**
+     * 当前渠道的镜像排序(下载按序回退):国内渠道 R2 优先(GitHub 系国内不可达),
+     * google 渠道保持 jsDelivr/GitHub 优先、R2 最后兜底
+     */
+    fun DownloadableFont.urlsForCurrentFlavor(): List<String> {
+        val r2Url = "$R2_FONT_BASE/$fileName"
+        return if (BuildConfig.FLAVOR == "google") urls + r2Url else listOf(r2Url) + urls
+    }
 }

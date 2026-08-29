@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -300,8 +302,8 @@ private fun BackgroundLayerContent(
                     )
             )
 
-            // 居中裁剪铺满 + 归一化拖动偏移(与导出侧 RectF 平移一致);
-            // 透明区域透出卡片底色,不画棋盘格
+            // 居中裁剪铺满 + 过扫放大(拖动余量,不露底色) + 归一化拖动偏移
+            // (与导出侧 RectF 平移一致);透明区域透出卡片底色,不画棋盘格
             is BackgroundSpec.Image -> Picture(
                 model = background.uri,
                 contentDescription = null,
@@ -310,6 +312,8 @@ private fun BackgroundLayerContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .graphicsLayer {
+                        scaleX = CardLayout.BACKGROUND_IMAGE_OVERSCAN
+                        scaleY = CardLayout.BACKGROUND_IMAGE_OVERSCAN
                         translationX = background.offsetX * canvasWidthPx
                         translationY = background.offsetY * canvasHeightPx
                     }
@@ -342,6 +346,7 @@ private fun ElementBox(
     onDelete: (() -> Unit)? = null,
     gesturesEnabled: Boolean = true,
     width: Dp? = null,
+    maxWidth: Dp? = null,
     minHeight: Dp? = null,
     resizeConfig: BoxResizeConfig? = null,
     content: @Composable () -> Unit,
@@ -360,6 +365,8 @@ private fun ElementBox(
         modifier = Modifier
             .offset { IntOffset(leftPx.roundToInt(), topPx.roundToInt()) }
             .then(if (width != null) Modifier.width(width) else Modifier)
+            // width 为空时的可选上限:框随内容收缩(wrap)但不超 maxWidth(文字框自适应模式)
+            .then(if (width == null && maxWidth != null) Modifier.widthIn(max = maxWidth) else Modifier)
             .then(if (minHeight != null) Modifier.heightIn(min = minHeight) else Modifier)
             .onSizeChanged { boxSizePx = it }
             .graphicsLayer {
@@ -535,7 +542,8 @@ private fun CardTextElement(
     onTextChange: (String, String) -> Unit,
     onTextEditCommit: () -> Unit,
 ) {
-    if (block.content.isBlank()) return
+    // 编辑态空内容也保留输入框:否则退格删空的瞬间整个元素被移出组合,焦点/键盘/选中态全丢
+    if (block.content.isBlank() && !isEditing) return
     val density = LocalDensity.current
     val paddingPx = canvasWidthPx * CardLayout.CONTENT_PADDING_RATIO
     val baseTopPx = canvasWidthPx * block.baseTopRatio
@@ -554,7 +562,11 @@ private fun CardTextElement(
             { onElementDelete(block.id) }
         } else null,
         gesturesEnabled = !isEditing,
-        width = with(density) { (canvasWidthPx * block.widthRatio).toDp() },
+        // 未手动拖宽:框随文字宽度收缩(wrap,widthRatio 为上限);拖宽后固定该宽
+        width = if (block.widthManuallySet) {
+            with(density) { (canvasWidthPx * block.widthRatio).toDp() }
+        } else null,
+        maxWidth = with(density) { (canvasWidthPx * block.widthRatio).toDp() },
         minHeight = if (block.heightRatio > 0f) {
             with(density) { (canvasHeightPx * block.heightRatio).toDp() }
         } else null,
@@ -574,19 +586,25 @@ private fun CardTextElement(
             }
         )
     ) {
+        // 自适应模式下内容 wrap(输入框给个最小宽,空内容时仍有点击区);固定宽时铺满框
+        val contentModifier = if (block.widthManuallySet) {
+            Modifier.fillMaxWidth()
+        } else {
+            Modifier.defaultMinSize(minWidth = 32.dp)
+        }
         if (isEditing) {
             InPlaceTextEditor(
                 block = block,
                 baseSizePx = canvasWidthPx * block.baseSizeRatio,
                 onTextChange = { onTextChange(block.id, it) },
                 onCommit = onTextEditCommit,
-                modifier = Modifier.fillMaxWidth()
+                modifier = contentModifier
             )
         } else {
             CardText(
                 block = block,
                 baseSizePx = canvasWidthPx * block.baseSizeRatio,
-                modifier = Modifier.fillMaxWidth()
+                modifier = contentModifier
             )
         }
     }

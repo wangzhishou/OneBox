@@ -3,8 +3,6 @@ package com.wanbaohe.textcard.presentation.editor.panels
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -54,7 +53,9 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.PickFontFamilySheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.logger.makeLog
 import com.wanbaohe.textcard.R
@@ -111,20 +112,12 @@ fun TextStylePanel(component: TextCardComponent) {
                     modifier = Modifier
                         .width(72.dp)
                         .height(48.dp)
-                        .clip(ShapeDefaults.default)
-                        .background(
-                            if (selected) {
+                        // 选中态用玻璃背景区分(玻璃关闭时回退纯色),不做描边
+                        .glassDense(
+                            shape = ShapeDefaults.default,
+                            color = if (selected) {
                                 MaterialTheme.colorScheme.primaryContainer
                             } else MaterialTheme.colorScheme.surfaceContainerHigh
-                        )
-                        .then(
-                            if (selected) {
-                                Modifier.border(
-                                    width = 1.dp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    shape = ShapeDefaults.default
-                                )
-                            } else Modifier
                         )
                         .clickable { component.selectTextBlock(item.id) }
                         .padding(horizontal = 6.dp)
@@ -303,7 +296,7 @@ private fun PanelSliderRow(
     }
 }
 
-/** 样式切换 chip:字形 + 文案,选中态中性灰底加深色文字(不用主色,避免整行变黄) */
+/** 样式切换 chip:字形 + 文案;选中态玻璃背景区分(玻璃关闭回退 M3 FilterChip),不做描边 */
 @Composable
 private fun StyleChip(
     glyph: String,
@@ -314,48 +307,40 @@ private fun StyleChip(
     fontWeight: FontWeight? = null,
     fontStyle: FontStyle? = null,
 ) {
-    val contentColor = if (selected) {
-        MaterialTheme.colorScheme.onSurface
-    } else MaterialTheme.colorScheme.onSurfaceVariant
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = modifier
-            .clip(ShapeDefaults.default)
-            .background(
-                if (selected) {
-                    MaterialTheme.colorScheme.surfaceContainerHighest
-                } else MaterialTheme.colorScheme.surfaceContainerHigh
-            )
-            .then(
-                if (selected) {
-                    Modifier.border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = ShapeDefaults.default
-                    )
-                } else Modifier
-            )
-            .clickable(onClick = onClick)
-            .padding(horizontal = 4.dp, vertical = 8.dp)
-    ) {
-        Text(
-            text = glyph,
-            style = MaterialTheme.typography.titleSmall.copy(
-                fontWeight = fontWeight,
-                fontStyle = fontStyle
-            ),
-            color = contentColor,
-            maxLines = 1
-        )
-        Spacer(Modifier.width(4.dp))
-        Text(
-            text = stringResource(labelRes),
-            style = MaterialTheme.typography.labelMedium,
-            color = contentColor,
-            maxLines = 1
-        )
-    }
+    GlassFilterChip(
+        selected = selected,
+        onClick = onClick,
+        modifier = modifier,
+        shape = ShapeDefaults.default,
+        // 不用 Outline:主色系背景区分选中
+        border = null,
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ),
+        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        glassSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        label = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = glyph,
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = fontWeight,
+                        fontStyle = fontStyle
+                    ),
+                    maxLines = 1
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    text = stringResource(labelRes),
+                    style = MaterialTheme.typography.labelMedium,
+                    maxLines = 1
+                )
+            }
+        }
+    )
 }
 
 /**

@@ -111,6 +111,7 @@ fun MeshGradientEditorSheet(
         sheetContent = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     // 导航栏留白挂在内容根上(同 markup-layers 各 Sheet 的成熟用法)
@@ -121,7 +122,6 @@ fun MeshGradientEditorSheet(
                     text = stringResource(R.string.textcard_mesh_edit_hint),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 MeshEditCanvas(
                     points = points,
@@ -165,9 +165,7 @@ fun MeshGradientEditorSheet(
                 // 预设色板行:点预设 = 以它为起点继续调
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 12.dp)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     items(GradientPresets.all.size) { index ->
                         val preset = GradientPresets.all[index]

@@ -288,12 +288,13 @@ class TextCardComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    /** 画布内拖动自定义背景图:仅背景为相册图时生效 */
+    /** 画布内拖动自定义背景图:仅背景为相册图时生效;钳制在过扫余量内,不出边 */
     fun updateBackgroundImageOffset(dx: Float, dy: Float) {
         val background = _background.value as? BackgroundSpec.Image ?: return
+        val maxOffset = CardLayout.BACKGROUND_IMAGE_MAX_OFFSET
         _background.value = background.copy(
-            offsetX = (background.offsetX + dx).coerceIn(-1f, 1f),
-            offsetY = (background.offsetY + dy).coerceIn(-1f, 1f)
+            offsetX = (background.offsetX + dx).coerceIn(-maxOffset, maxOffset),
+            offsetY = (background.offsetY + dy).coerceIn(-maxOffset, maxOffset)
         )
         registerChanges()
     }
@@ -446,6 +447,7 @@ class TextCardComponent @AssistedInject internal constructor(
         updateTextBlock(id) {
             it.copy(
                 widthRatio = widthRatio.coerceIn(CardLayout.MIN_TEXT_WIDTH_RATIO, 1f),
+                widthManuallySet = true,
                 heightRatio = heightRatio.coerceIn(0f, 1f),
                 offsetX = offsetX.coerceIn(-1f, 1f),
                 offsetY = offsetY.coerceIn(-1f, 1f)
