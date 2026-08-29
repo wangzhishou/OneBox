@@ -727,9 +727,10 @@ private fun FontFamilySettingSection(settingsComponent: SettingsComponent) {
 @Composable
 private fun FontSizeSettingSection(settingsComponent: SettingsComponent) {
     val settingsState = LocalSettingsState.current
+    // 默认(null=跟随系统)时滑杆停在 1.0 的中间位置, 可大可小
     val derivedValue by remember(settingsState) {
         derivedStateOf {
-            settingsState.fontScale ?: 0f
+            settingsState.fontScale ?: 1f
         }
     }
     var sliderValue by remember(derivedValue) {
@@ -738,7 +739,8 @@ private fun FontSizeSettingSection(settingsComponent: SettingsComponent) {
 
     val localActivity = LocalComponentActivity.current
     val onValueChange = { it: Float ->
-        settingsComponent.setFontScale(it)
+        // 回到 1.0 即恢复"默认(跟随系统)"
+        settingsComponent.setFontScale(if (it == 1f) 0f else it)
         localActivity.recreate()
     }
 
@@ -767,7 +769,8 @@ private fun FontSizeSettingSection(settingsComponent: SettingsComponent) {
                 }, label = ""
             ) { value ->
                 Text(
-                    text = value.takeIf { it > 0 }?.toString()?.trimTrailingZero()
+                    // 1.0 即"默认(跟随系统)"
+                    text = value.takeIf { it != 1f }?.toString()?.trimTrailingZero()
                         ?: stringResource(CoreR.string.defaultt),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
@@ -782,8 +785,7 @@ private fun FontSizeSettingSection(settingsComponent: SettingsComponent) {
             ),
             value = sliderValue,
             onValueChange = {
-                sliderValue = if (it == 0.45f) 0f
-                else it.roundToTwoDigits()
+                sliderValue = it.roundToTwoDigits()
             },
             valueRange = 0.45f..1.5f,
             onValueChangeFinished = {
@@ -798,9 +800,10 @@ private fun FontSizeSettingSection(settingsComponent: SettingsComponent) {
 fun FontSizeQuickSettingItem() {
     val localSettingsState = LocalSettingsState.current
     val settingsManager = LocalSettingsManager.current
+    // 默认(null=跟随系统)时滑杆停在 1.0 的中间位置, 可大可小
     val derivedValue by remember(localSettingsState.fontScale) {
         derivedStateOf {
-            localSettingsState.fontScale ?: 0f
+            localSettingsState.fontScale ?: 1f
         }
     }
     var sliderValue by remember(derivedValue) {
@@ -810,7 +813,8 @@ fun FontSizeQuickSettingItem() {
     val scope = rememberCoroutineScope()
     val onValueChange = { it: Float ->
         scope.launch {
-            settingsManager.setFontScale(it)
+            // 回到 1.0 即恢复"默认(跟随系统)"
+            settingsManager.setFontScale(if (it == 1f) 0f else it)
             localActivity.recreate()
         }
     }
@@ -838,7 +842,8 @@ fun FontSizeQuickSettingItem() {
             }, label = ""
         ) { value ->
             Text(
-                text = value.takeIf { it > 0 }?.toString()?.trimTrailingZero()
+                // 1.0 即"默认(跟随系统)"
+                text = value.takeIf { it != 1f }?.toString()?.trimTrailingZero()
                     ?: stringResource(CoreR.string.defaultt),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
@@ -850,8 +855,7 @@ fun FontSizeQuickSettingItem() {
         modifier = Modifier.padding(vertical = 0.dp),
         value = sliderValue,
         onValueChange = {
-            sliderValue = if (it == 0.45f) 0f
-            else it.roundToTwoDigits()
+            sliderValue = it.roundToTwoDigits()
         },
         valueRange = 0.45f..1.5f,
         onValueChangeFinished = {

@@ -260,14 +260,16 @@ private fun ThemeMenuThemeModeItem(settingsManager: SettingsManager) {
 @Composable
 private fun ThemeMenuFontSizeItem(settingsManager: SettingsManager) {
     val localSettingsState = LocalSettingsState.current
+    // 默认(null=跟随系统)时滑杆停在 1.0 的中间位置, 可大可小
     val derivedValue by remember(localSettingsState.fontScale) {
-        derivedStateOf { localSettingsState.fontScale ?: 0f }
+        derivedStateOf { localSettingsState.fontScale ?: 1f }
     }
     var sliderValue by remember(derivedValue) { mutableFloatStateOf(derivedValue) }
     val localActivity = LocalComponentActivity.current
     val scope = rememberCoroutineScope()
     val onValueChange = { it: Float ->
-        scope.launch { settingsManager.setFontScale(it); localActivity.recreate() }
+        // 回到 1.0 即恢复"默认(跟随系统)"
+        scope.launch { settingsManager.setFontScale(if (it == 1f) 0f else it); localActivity.recreate() }
     }
 
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
@@ -279,7 +281,8 @@ private fun ThemeMenuFontSizeItem(settingsManager: SettingsManager) {
                 modifier = Modifier.weight(1f))
             AnimatedContent(sliderValue, transitionSpec = { fadeIn() togetherWith fadeOut() }, label = "") { value ->
                 Text(
-                    text = value.takeIf { it > 0 }?.toString()?.trimTrailingZero()
+                    // 1.0 即"默认(跟随系统)"
+                    text = value.takeIf { it != 1f }?.toString()?.trimTrailingZero()
                         ?: stringResource(com.t8rin.imagetoolbox.core.resources.R.string.defaultt),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
@@ -288,7 +291,7 @@ private fun ThemeMenuFontSizeItem(settingsManager: SettingsManager) {
         }
         GlassCustomSlider(
             value = sliderValue,
-            onValueChange = { sliderValue = if (it == 0.45f) 0f else it.roundToTwoDigits() },
+            onValueChange = { sliderValue = it.roundToTwoDigits() },
             valueRange = 0.45f..1.5f,
             onValueChangeFinished = { onValueChange(sliderValue) }
         )

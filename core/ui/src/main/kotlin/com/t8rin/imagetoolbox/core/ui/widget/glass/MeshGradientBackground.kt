@@ -62,7 +62,8 @@ fun MeshGradientBackground(
         if (shouldRenderMeshGradient) {
             val style = settingsState.gradientBackgroundStyle
             val isDark = settingsState.isNightMode
-            val meshGradientAlphaMultiplier = if (isDark) 1f else 0.78f
+            // 日间模式整体压淡: alpha 乘数 0.78→0.60, 避免渐变背景抢占前景内容
+            val meshGradientAlphaMultiplier = if (isDark) 1f else 0.60f
             val meshGradientVeilMultiplier = if (isDark) 1f else 0.88f
 
             // 颜色计算全部进 remember — HSL 转换是 JNI 调用，避免每重组执行
@@ -74,9 +75,9 @@ fun MeshGradientBackground(
             val themePrimaryContainer = MaterialTheme.colorScheme.primaryContainer
             val themeTertiaryContainer = MaterialTheme.colorScheme.tertiaryContainer
 
-            // light 模式整体再淡一点:降饱和、提高向 surface 混合、alpha 打 8 折,
+            // light 模式整体再淡一点:降饱和、提高向 surface 混合、alpha 打折,
             // 避免背景补色压过品牌主色
-            val classicLightFade = if (isDark) 1f else 0.8f
+            val classicLightFade = if (isDark) 1f else 0.62f
             val classicColors = remember(
                 surfaceColor, isDark, meshGradientAlphaMultiplier, classicLightFade,
                 primaryAlpha, tertiaryAlpha, secondaryAlpha, accentAlpha,
@@ -374,7 +375,7 @@ private fun meshStylePalette(
     isDark: Boolean,
 ): MeshStylePalette? = when (style) {
     GradientBackgroundStyle.Aurora -> MeshStylePalette(
-        base = if (isDark) 0.22f else 0.26f,
+        base = if (isDark) 0.22f else 0.18f,
         topLeft = MeshVertex(0xFF80CBC4),              // 薄荷
         topRight = MeshVertex(0xFF7C4DFF, 0.95f),      // 紫罗兰
         bottomLeft = MeshVertex(0xFF00BFA5, 0.85f),    // 青绿
@@ -382,7 +383,7 @@ private fun meshStylePalette(
     )
 
     GradientBackgroundStyle.Ocean -> MeshStylePalette(
-        base = if (isDark) 0.24f else 0.28f,
+        base = if (isDark) 0.24f else 0.20f,
         topLeft = MeshVertex(0xFF0D1B2A, 1.1f),        // 午夜蓝
         topRight = MeshVertex(0xFF00E5FF),             // 荧光青
         bottomLeft = MeshVertex(0xFF1A237E, 0.75f),    // 靛蓝
@@ -390,7 +391,7 @@ private fun meshStylePalette(
     )
 
     GradientBackgroundStyle.Sunset -> MeshStylePalette(
-        base = if (isDark) 0.24f else 0.30f,
+        base = if (isDark) 0.24f else 0.21f,
         topLeft = MeshVertex(0xFFD81B60, 0.85f),       // 玫瑰粉
         topRight = MeshVertex(0xFFFF6F00),             // 琥珀橙
         bottomLeft = MeshVertex(0xFF4A148C, 0.55f),    // 暗紫
@@ -398,7 +399,7 @@ private fun meshStylePalette(
     )
 
     GradientBackgroundStyle.SakuraMist -> MeshStylePalette(
-        base = if (isDark) 0.20f else 0.26f,
+        base = if (isDark) 0.20f else 0.18f,
         topLeft = MeshVertex(0xFFF8BBD0),              // 柔粉
         topRight = MeshVertex(0xFFFFAB91, 0.85f),      // 蜜桃
         bottomLeft = MeshVertex(0xFFE1BEE7, 0.70f),    // 淡紫
@@ -406,7 +407,7 @@ private fun meshStylePalette(
     )
 
     GradientBackgroundStyle.MintBreeze -> MeshStylePalette(
-        base = if (isDark) 0.20f else 0.26f,
+        base = if (isDark) 0.20f else 0.18f,
         topLeft = MeshVertex(0xFF40C4FF, 0.90f),       // 晴空蓝
         topRight = MeshVertex(0xFF81C784, 0.70f),      // 嫩芽绿
         bottomLeft = MeshVertex(0xFF69F0AE),           // 薄荷绿
@@ -414,7 +415,7 @@ private fun meshStylePalette(
     )
 
     GradientBackgroundStyle.Lavender -> MeshStylePalette(
-        base = if (isDark) 0.22f else 0.28f,
+        base = if (isDark) 0.22f else 0.20f,
         topLeft = MeshVertex(0xFF7E57C2),              // 紫罗兰
         topRight = MeshVertex(0xFFF8BBD0, 0.65f),      // 柔粉
         bottomLeft = MeshVertex(0xFF82B1FF, 0.50f),    // 淡蓝
@@ -422,7 +423,7 @@ private fun meshStylePalette(
     )
 
     GradientBackgroundStyle.WarmGlow -> MeshStylePalette(
-        base = if (isDark) 0.24f else 0.30f,
+        base = if (isDark) 0.24f else 0.21f,
         topLeft = MeshVertex(0xFFFFE0B2, 0.65f),       // 奶油
         topRight = MeshVertex(0xFFFF7043, 0.85f),      // 珊瑚
         bottomLeft = MeshVertex(0xFFFFD54F, 0.55f),    // 暖金
@@ -430,7 +431,7 @@ private fun meshStylePalette(
     )
 
     GradientBackgroundStyle.NeonCyber -> MeshStylePalette(
-        base = if (isDark) 0.28f else 0.32f,
+        base = if (isDark) 0.28f else 0.22f,
         topLeft = MeshVertex(0xFF00E5FF),              // 电青
         topRight = MeshVertex(0xFF7C4DFF, 0.65f),      // 紫罗兰
         bottomLeft = MeshVertex(0xFFFF00E5, 0.90f),    // 品红
@@ -483,7 +484,7 @@ private fun createPrismFlowPainter(
     surfaceColor: Color,
     isDark: Boolean,
 ): MeshGradientPainter {
-    val base = if (isDark) 0.30f else 0.34f
+    val base = if (isDark) 0.30f else 0.24f
 
     fun vertexColor(argb: Long, alphaScale: Float = 1f): Color =
         Color(argb)
@@ -506,7 +507,7 @@ private fun createPrismFlowPainter(
 private fun Color.softenIfLight(
     surfaceColor: Color,
     isDark: Boolean,
-    amount: Float = 0.12f,
+    amount: Float = 0.26f,
 ): Color {
     if (isDark || amount <= 0f) return this
     return lerp(this, surfaceColor, amount)
