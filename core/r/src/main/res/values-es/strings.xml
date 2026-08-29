@@ -351,6 +351,7 @@ Y así nació OneBox.</string>
     <string name="profile_share_invitation_code">Compartir código de invitación</string>
     <string name="profile_input_invitation_copy">Copiar:</string>
     <string name="profile_item_theme">Tema</string>
+    <string name="profile_item_day_night_mode">Día y noche</string>
     <string name="profile_item_display">Diseño</string>
     <string name="profile_item_dispaly">Configuración de pantalla</string>
     <string name="profile_item_theme_dark">Oscuro</string>

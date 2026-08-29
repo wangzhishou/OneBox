@@ -215,7 +215,7 @@ private fun ThemeMenuThemeModeItem(settingsManager: SettingsManager) {
     Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp)) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDarkMode, null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.onSurface)
-            Text(stringResource(R.string.profile_item_theme),
+            Text(stringResource(R.string.profile_item_day_night_mode),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface)
         }

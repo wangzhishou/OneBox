@@ -436,6 +436,7 @@
     <string name="profile_share_invitation_code">分享邀请码</string>
     <string name="profile_input_invitation_copy">复制：</string>
     <string name="profile_item_theme">主题</string>
+    <string name="profile_item_day_night_mode">日夜间模式</string>
     <string name="profile_item_display">排版方式</string>
     <string name="profile_item_dispaly">显示设置</string>
     <string name="profile_item_theme_dark">夜间</string>

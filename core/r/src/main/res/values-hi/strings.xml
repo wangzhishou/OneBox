@@ -351,6 +351,7 @@
     <string name="profile_share_invitation_code">आमंत्रण कोड साझा करें</string>
     <string name="profile_input_invitation_copy">कॉपी करें:</string>
     <string name="profile_item_theme">थीम</string>
+    <string name="profile_item_day_night_mode">दिन और रात</string>
     <string name="profile_item_display">लेआउट</string>
     <string name="profile_item_dispaly">प्रदर्शन सेटिंग्स</string>
     <string name="profile_item_theme_dark">डार्क</string>

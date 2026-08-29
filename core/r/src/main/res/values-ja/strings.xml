@@ -351,6 +351,7 @@
     <string name="profile_share_invitation_code">招待コードを共有</string>
     <string name="profile_input_invitation_copy">コピー：</string>
     <string name="profile_item_theme">テーマ</string>
+    <string name="profile_item_day_night_mode">昼/夜モード</string>
     <string name="profile_item_display">レイアウト</string>
     <string name="profile_item_dispaly">表示設定</string>
     <string name="profile_item_theme_dark">ダーク</string>

@@ -351,6 +351,7 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="profile_share_invitation_code">Ibahagi ang Invite Code</string>
     <string name="profile_input_invitation_copy">Kopyahin:</string>
     <string name="profile_item_theme">Tema</string>
+    <string name="profile_item_day_night_mode">Araw at Gabi</string>
     <string name="profile_item_display">Layout</string>
     <string name="profile_item_dispaly">Mga Setting ng Display</string>
     <string name="profile_item_theme_dark">Madilim</string>

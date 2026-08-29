@@ -142,7 +142,10 @@ data class SettingsState(
         val Default by lazy {
             SettingsState(
                 nightMode = NightMode.System,
-                isDynamicColors = false,
+                // 默认主题为"千色千面"(builtin_dynamic, 见 AppThemePreset.Default),
+                // 首启即应启用壁纸动态取色, 否则首启配色(静态 fallback)与
+                // 切换其他主题再切回时的配色不一致
+                isDynamicColors = true,
                 allowChangeColorByImage = true,
                 emojisCount = 1,
                 isAmoledMode = false,
@@ -240,7 +243,7 @@ data class SettingsState(
                 isLiquidGlassEnabled = false,
                 isMeshGradientBackgroundEnabled = false,
                 customBackgroundImageUri = null,
-                gradientBackgroundStyle = GradientBackgroundStyle.Sunset,
+                gradientBackgroundStyle = GradientBackgroundStyle.Classic,
                 customBackgroundOverlayAlpha = 0.4f,
                 activeThemeId = "builtin_dynamic",
                 glassBaseAlpha = 1.0f,

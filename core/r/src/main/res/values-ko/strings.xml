@@ -351,6 +351,7 @@
     <string name="profile_share_invitation_code">초대 코드 공유</string>
     <string name="profile_input_invitation_copy">복사:</string>
     <string name="profile_item_theme">테마</string>
+    <string name="profile_item_day_night_mode">주간/야간 모드</string>
     <string name="profile_item_display">레이아웃</string>
     <string name="profile_item_dispaly">표시 설정</string>
     <string name="profile_item_theme_dark">다크</string>

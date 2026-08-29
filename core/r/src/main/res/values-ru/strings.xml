@@ -351,6 +351,7 @@
     <string name="profile_share_invitation_code">Поделиться пригласительным кодом</string>
     <string name="profile_input_invitation_copy">Копировать:</string>
     <string name="profile_item_theme">Тема</string>
+    <string name="profile_item_day_night_mode">День и ночь</string>
     <string name="profile_item_display">Макет</string>
     <string name="profile_item_dispaly">Настройки отображения</string>
     <string name="profile_item_theme_dark">Тёмная</string>

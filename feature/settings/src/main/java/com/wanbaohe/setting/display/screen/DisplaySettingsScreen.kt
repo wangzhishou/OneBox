@@ -242,7 +242,7 @@ fun ThemeSettingItem() {
                 tint = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = stringResource(R.string.profile_item_theme),
+                text = stringResource(R.string.profile_item_day_night_mode),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -264,21 +264,15 @@ fun ThemeSettingItem() {
                 NightMode.System
             ),
         )
-        var selectedIndex by remember {
-            mutableIntStateOf(
-                options.indexOfFirst { it.third == nightMode }
-            )
-        }
         GlassSegmentedButtonRow(
             options = options,
-            selectedOption = options[selectedIndex],
+            // 选中态直接由 nightMode 派生, 切换主题预设(如暗色主题)改写 NIGHT_MODE 后能即时联动
+            selectedOption = options.firstOrNull { it.third == nightMode } ?: options.last(),
             onOptionSelected = { triple ->
-                val index = options.indexOf(triple)
-                if (selectedIndex != index) {
+                if (triple.third != nightMode) {
                     scope.launch {
                         settingsManager.setNightMode(triple.third)
                     }
-                    selectedIndex = index
                 }
             },
             modifier = Modifier.fillMaxWidth(),

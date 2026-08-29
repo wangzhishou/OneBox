@@ -351,6 +351,7 @@ Ve böylece OneBox doğdu.</string>
     <string name="profile_share_invitation_code">Davet Kodunu Paylaş</string>
     <string name="profile_input_invitation_copy">Kopyala:</string>
     <string name="profile_item_theme">Tema</string>
+    <string name="profile_item_day_night_mode">Gündüz ve Gece</string>
     <string name="profile_item_display">Düzen</string>
     <string name="profile_item_dispaly">Görüntü Ayarları</string>
     <string name="profile_item_theme_dark">Koyu</string>
