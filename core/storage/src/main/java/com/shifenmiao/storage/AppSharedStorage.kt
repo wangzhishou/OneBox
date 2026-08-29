@@ -69,8 +69,6 @@ object AppSharedStorage {
     private const val S_GLASS_BASE_ALPHA = "s_glass_base_alpha"
     private const val S_CUSTOM_BG_IMAGE_URI = "s_custom_bg_image_uri"
     private const val S_ACTIVE_THEME_ID = "s_active_theme_id"
-    /** 标记 MMKV 启动缓存是否已被初始化过（首次从 DataStore 同步后置 true） */
-    private const val S_CACHE_INITIALIZED = "s_cache_initialized"
 
     private val _isEnableSensor = MutableStateFlow(loadIsEnableSensor())
     val isEnableSensor: StateFlow<Boolean> get() = _isEnableSensor
@@ -424,9 +422,6 @@ object AppSharedStorage {
      * 启动缓存是否已经被初始化过（至少从 DataStore 同步过一次）。
      * 首次安装 / 升级到新版时为 false。
      */
-    fun isStartupCacheInitialized(): Boolean =
-        load(S_CACHE_INITIALIZED, false) ?: false
-
     /**
      * 将 DataStore 中的启动关键字段一次性同步到 MMKV。
      * 在 [AndroidSettingsManager.settingsState] 首次 emit 及后续变更时调用。
@@ -493,7 +488,6 @@ object AppSharedStorage {
         save(S_GLASS_BASE_ALPHA, glassBaseAlpha)
         save(S_CUSTOM_BG_IMAGE_URI, customBackgroundImageUri ?: "")
         save(S_ACTIVE_THEME_ID, activeThemeId)
-        save(S_CACHE_INITIALIZED, true)
     }
 
     // ─── 单个启动设置的同步读取方法 ─────────────────────────────────────────

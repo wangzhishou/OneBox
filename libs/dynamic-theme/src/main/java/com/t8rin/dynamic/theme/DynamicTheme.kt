@@ -138,12 +138,18 @@ fun DynamicTheme(
         darkTheme = isDarkTheme
     )
     val configuration = LocalConfiguration.current
-    var prevOrientation by rememberSaveable { mutableIntStateOf(configuration.orientation) }
+    val orientation = configuration.orientation
+    var prevOrientation by rememberSaveable { mutableIntStateOf(orientation) }
+    // 旋转重建后首轮跳过 updateColorTuple, 保住"从图片取色"的结果不被主题色覆盖。
+    // 原实现把 prevOrientation 的赋值放在 effect 内, 会触发第二轮重启照样覆盖, 等于没保护;
+    // 现在用 SideEffect 在每次重组后同步 prevOrientation, 跳过只在旋转后的首轮生效一次
+    val isRotationRestore = prevOrientation != orientation
+    SideEffect { prevOrientation = orientation }
 
-    LaunchedEffect(colorTuple, prevOrientation) {
-        if (prevOrientation == configuration.orientation) {
+    LaunchedEffect(colorTuple) {
+        if (!isRotationRestore) {
             state.updateColorTuple(colorTuple)
-        } else prevOrientation = configuration.orientation
+        }
     }
 
     val lightTheme = !isDarkTheme
@@ -313,8 +319,11 @@ fun rememberAppColorTuple(
     darkTheme: Boolean
 ): ColorTuple {
     val context = LocalContext.current
+    // 只在 ON_RESUME(壁纸可能已变更)时重算; 原来以所有生命周期事件为 key,
+    // CREATE/START/PAUSE/STOP 每次都会重跑 wallpaper/dynamic scheme 查询, 纯浪费
+    val resumeCount = LocalLifecycleOwner.current.lifecycle.observeResumeCount().value
     return remember(
-        LocalLifecycleOwner.current.lifecycle.observeAsState().value,
+        resumeCount,
         dynamicColor,
         darkTheme,
         defaultColorTuple
@@ -370,6 +379,23 @@ fun rememberAppColorTuple(
             }.getOrNull() ?: defaultColorTuple
         }
     }.value
+}
+
+@Composable
+fun Lifecycle.observeResumeCount(): State<Int> {
+    val state = remember { mutableIntStateOf(0) }
+    DisposableEffect(this) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                state.intValue++
+            }
+        }
+        this@observeResumeCount.addObserver(observer)
+        onDispose {
+            this@observeResumeCount.removeObserver(observer)
+        }
+    }
+    return state
 }
 
 @Composable

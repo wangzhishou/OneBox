@@ -73,7 +73,7 @@ internal fun Preferences.toSettingsState(
         ?: default.addOriginalFilename,
     randomizeFilename = this[RANDOMIZE_FILENAME] ?: default.randomizeFilename,
     font = DomainFontFamily.fromString(this[SELECTED_FONT]) ?: default.font,
-    fontScale = (this[FONT_SCALE] ?: 1f).takeIf { it > 0f },
+    fontScale = (this[FONT_SCALE] ?: 0f).takeIf { it > 0f },
     allowCollectCrashlytics = this[ALLOW_CRASHLYTICS] ?: default.allowCollectCrashlytics,
     allowCollectAnalytics = this[ALLOW_ANALYTICS] ?: default.allowCollectAnalytics,
     allowBetas = this[ALLOW_BETAS] ?: default.allowBetas,

@@ -62,7 +62,6 @@ import com.t8rin.imagetoolbox.core.settings.domain.model.SettingsState
 import com.t8rin.imagetoolbox.core.settings.domain.toSimpleSettingsInteractor
 import com.t8rin.imagetoolbox.core.settings.presentation.model.asColorTuple
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSimpleSettingsInteractor
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.adjustFontSize
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalMetadataProvider
 import com.t8rin.imagetoolbox.core.ui.utils.provider.setContentWithWindowSizeClass
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
@@ -166,7 +165,6 @@ abstract class ComposeActivity : AppCompatActivity() {
                     updateFirebaseParams()
                     // DynamicColors 会改 Activity 的 ResourcesLoader, 需在主线程执行
                     runOnUiThread { applyDynamicColors() }
-                    adjustFontSize(state.fontScale)
                 }
                 .launchIn(this)
         }

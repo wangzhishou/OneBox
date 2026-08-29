@@ -167,7 +167,9 @@ data class SettingsState(
                 addOriginalFilename = false,
                 randomizeFilename = false,
                 font = DomainFontFamily.System,
-                fontScale = 1f,
+                // null = 跟随系统字体缩放(与字体滑杆的"默认"档语义一致);
+                // 之前默认 1f 会导致首启跟随系统、第二次启动起被强制 1.0 的漂移
+                fontScale = null,
                 allowCollectCrashlytics = true,
                 allowCollectAnalytics = true,
                 allowBetas = true,

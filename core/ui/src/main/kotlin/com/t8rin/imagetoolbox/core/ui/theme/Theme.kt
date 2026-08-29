@@ -52,12 +52,7 @@ fun ImageToolboxTheme(
         content = {
             MaterialTheme(
                 motionScheme = CustomMotionScheme,
-                colorScheme = MaterialTheme.colorScheme.copy(
-                    errorContainer = MaterialTheme.colorScheme.errorContainer.blend(
-                        color = MaterialTheme.colorScheme.primary,
-                        fraction = 0.15f
-                    )
-                ),
+                colorScheme = modifiedColorScheme(),
                 content = content
             )
         }
