@@ -1660,4 +1660,31 @@
     <string name="profile_item_open_source_sub">소스 코드 보기 — Star와 피드백 환영</string>
     <string name="profile_item_open_source_latest">최신 버전을 사용 중입니다</string>
     <string name="profile_item_open_source_update">새 버전 %1$s 사용 가능</string>
+    <string name="search">검색</string>
+    <string name="back_button">뒤로</string>
+    <string name="search_place_holder">검색</string>
+    <string name="no_item_found">항목을 찾을 수 없음</string>
+    <string name="no_search_history">검색 기록 없음</string>
+    <string name="history">기록</string>
+    <string name="delete_item_confirm_message">\"%1$s\"을(를) 삭제하시겠습니까?</string>
+    <string name="error_url_empty">URL은 비워 둘 수 없습니다</string>
+    <string name="robot_exit_dialog_title">잠깐! 벌써 저를 숨기시겠어요?</string>
+    <string name="robot_exit_dialog_message">이제 막 실력을 보여주려고 준비했는데~ 정말 먼저 퇴장하게 할 건가요?
+
+힌트: \'영구 숨기기\'를 선택해도 나중에 설정 &gt; 디스플레이 &gt; AI 어시스턴트에서 다시 불러올 수 있어요.</string>
+    <string name="robot_exit_dialog_this_time">잠시 숨기기</string>
+    <string name="robot_exit_dialog_forever">영구적으로 숨기기</string>
+    <string name="robot_exit_dialog_cancel">조금 더 참을게요</string>
+    <string name="robot_hint_executing">도구 실행 중…</string>
+    <string name="robot_hint_max_iterations">지시를 기다리는 중</string>
+    <string name="robot_hint_planning">도구 호출 계획 중…</string>
+    <string name="robot_hint_waiting_confirmation">확인이 필요해요</string>
+    <string name="robot_hint_waiting_input">답변이 필요해요</string>
+    <string name="robot_hint_waiting_llm">AI 응답을 기다리는 중…</string>
+    <string name="robot_status_executing">실행 중</string>
+    <string name="robot_status_max_iterations">지시 대기 중</string>
+    <string name="robot_status_planning">계획 중</string>
+    <string name="robot_status_waiting_confirmation">확인 대기 중</string>
+    <string name="robot_status_waiting_input">답변 대기 중</string>
+    <string name="robot_status_waiting_llm">응답 중</string>
 </resources>

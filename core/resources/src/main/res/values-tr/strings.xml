@@ -319,7 +319,7 @@
     <string name="using_large_fonts_warn">Büyük yazı tipleri kullanmak, düzeltilemeyecek arayüz hatalarına ve sorunlara neden olabilir. Dikkatli kullanın.</string>
     <string name="randomize_filename">Dosya adını rastgeleleştir</string>
     <string name="randomize_filename_sub">Etkinleştirilirse, çıktı dosya adı tamamen rastgele olacaktır</string>
-    <string name="presets_sub">125 ön ayarını seçerseniz, görüntü orijinalin %125\'i olarak kaydedilir. 50 seçerseniz, orijinalin %50\'si olarak kaydedilir</string>
+    <string name="presets_sub" formatted="false">125 ön ayarını seçerseniz, görüntü orijinalin %125\'i olarak kaydedilir. 50 seçerseniz, orijinalin %50\'si olarak kaydedilir</string>
     <string name="presets_sub_bytes">Burada ön ayar, çıktı dosyasının %%\'sini belirler — 5 MB\'lık bir görüntüde 50 ön ayarını seçerseniz, kaydedilen sonuç 2.5 MB olacaktır</string>
     <string name="saved_to">%2$s adıyla %1$s klasörüne kaydedildi</string>
     <string name="saved_to_without_filename">%1$s klasörüne kaydedildi</string>
@@ -1944,4 +1944,22 @@
     <string name="sticker_ai_points_hint">Her oluşturma %1$d puan harcar</string>
     <string name="sticker_ai_empty">Önce çıkartmayı tarif edin</string>
     <string name="sticker_ai_generating">Oluşturuluyor…</string>
+    <string name="app_name">OneBox</string>
+    <string name="app_launcher_name">OneBox</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="telegram">Telegram</string>
+    <string name="github">GitHub</string>
+    <string name="developer_email">t8rin@bk.ru</string>
+    <string name="float_array_of">floatArrayOf(f, f, f)</string>
+    <string name="default_prefix">OneBox</string>
+    <string name="firebase">Firebase</string>
+    <string name="crashlytics">Crashlytics</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="usdt">USDT</string>
+    <string name="ton_space">TON Space</string>
+    <string name="ton">TON</string>
+    <string name="exif">EXIF</string>
+    <string name="material_you">Material You</string>
+    <string name="app_developer">Malik Mukhametzyanov</string>
+    <string name="app_developer_nick">T8RIN</string>
 </resources>

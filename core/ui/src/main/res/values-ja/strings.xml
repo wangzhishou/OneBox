@@ -44,4 +44,7 @@
         <item>土</item>
         <item>日</item>
     </string-array>
+    <string name="date_picker_title">日付を選択</string>
+    <string name="time_range_picker_title">時間範囲を選択</string>
+    <string name="time_picker_title">時刻を選択</string>
 </resources>

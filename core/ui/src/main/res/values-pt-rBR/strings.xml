@@ -44,4 +44,7 @@
         <item>sáb</item>
         <item>dom</item>
     </string-array>
+    <string name="date_picker_title">Selecionar data</string>
+    <string name="time_range_picker_title">Selecionar intervalo de tempo</string>
+    <string name="time_picker_title">Selecionar hora</string>
 </resources>

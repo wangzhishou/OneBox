@@ -1,111 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Module Name -->
-    <string name="marktodo" translatable="false">待办清单</string>
+    <string name="marktodo">待办清单</string>
 
     <!-- Add Category / Add Task Dialog -->
-    <string name="action_add_category" translatable="false">添加分类</string>
-    <string name="dialog_add_category_title" translatable="false">添加待办主题</string>
-    <string name="dialog_edit_category_title" translatable="false">编辑待办主题</string>
-    <string name="dialog_add_category_hint" translatable="false">请输入主题名称</string>
-    <string name="dialog_add_category_icon" translatable="false">图标</string>
-    <string name="dialog_add_category_color" translatable="false">颜色</string>
-    <string name="dialog_add_category_color_auto" translatable="false">自动配色</string>
+    <string name="action_add_category">添加分类</string>
+    <string name="dialog_add_category_title">添加待办主题</string>
+    <string name="dialog_edit_category_title">编辑待办主题</string>
+    <string name="dialog_add_category_hint">请输入主题名称</string>
+    <string name="dialog_add_category_icon">图标</string>
+    <string name="dialog_add_category_color">颜色</string>
+    <string name="dialog_add_category_color_auto">自动配色</string>
 
-    <string name="dialog_add_task_title" translatable="false">添加待办</string>
-    <string name="dialog_add_task_title_with_category" translatable="false">添加待办（%1$s）</string>
-    <string name="dialog_edit_task_title" translatable="false">编辑待办</string>
-    <string name="dialog_add_task_hint" translatable="false">请输入待办标题</string>
-    <string name="dialog_add_task_note_hint" translatable="false">备注（可选）</string>
-    <string name="dialog_add_task_due_date" translatable="false">截止日期（可选）</string>
-    <string name="dialog_add_task_due_date_none" translatable="false">不设置</string>
-    <string name="dialog_add_task_tags_hint" translatable="false">标签（用逗号分隔，可选）</string>
-    <string name="dialog_add_task_select_date" translatable="false">结束日期</string>
+    <string name="dialog_add_task_title">添加待办</string>
+    <string name="dialog_add_task_title_with_category">添加待办（%1$s）</string>
+    <string name="dialog_edit_task_title">编辑待办</string>
+    <string name="dialog_add_task_hint">请输入待办标题</string>
+    <string name="dialog_add_task_note_hint">备注（可选）</string>
+    <string name="dialog_add_task_due_date">截止日期（可选）</string>
+    <string name="dialog_add_task_due_date_none">不设置</string>
+    <string name="dialog_add_task_tags_hint">标签（用逗号分隔，可选）</string>
+    <string name="dialog_add_task_select_date">结束日期</string>
 
-    <string name="action_confirm" translatable="false">确认</string>
-    <string name="action_cancel" translatable="false">取消</string>
+    <string name="action_confirm">确认</string>
+    <string name="action_cancel">取消</string>
 
     <!-- Task Actions -->
-    <string name="add_task" translatable="false">添加待办</string>
-    <string name="add_task_hint" translatable="false">添加待办</string>
-    <string name="task_completed" translatable="false">已完成</string>
-    <string name="task_pending" translatable="false">待处理</string>
+    <string name="add_task">添加待办</string>
+    <string name="add_task_hint">添加待办</string>
+    <string name="task_completed">已完成</string>
+    <string name="task_pending">待处理</string>
 
     <!-- Task Progress -->
-    <string name="task_progress_format" translatable="false">%1$d/%2$d</string>
-    <string name="tasks_count" translatable="false">%1$d / %2$d</string>
+    <string name="task_progress_format">%1$d/%2$d</string>
+    <string name="tasks_count">%1$d / %2$d</string>
 
     <!-- Task Fields -->
-    <string name="task_title" translatable="false">标题</string>
-    <string name="task_note" translatable="false">备注</string>
-    <string name="task_date" translatable="false">日期</string>
-    <string name="task_tags" translatable="false">标签</string>
+    <string name="task_title">标题</string>
+    <string name="task_note">备注</string>
+    <string name="task_date">日期</string>
+    <string name="task_tags">标签</string>
 
     <!-- Common Tags -->
-    <string name="tag_life" translatable="false">生活</string>
-    <string name="tag_operation" translatable="false">运营</string>
-    <string name="tag_writing" translatable="false">写作</string>
-    <string name="tag_urgent" translatable="false">紧急</string>
-    <string name="tag_important" translatable="false">重要</string>
+    <string name="tag_life">生活</string>
+    <string name="tag_operation">运营</string>
+    <string name="tag_writing">写作</string>
+    <string name="tag_urgent">紧急</string>
+    <string name="tag_important">重要</string>
 
     <!-- Actions -->
-    <string name="action_menu" translatable="false">菜单</string>
-    <string name="action_edit" translatable="false">编辑</string>
-    <string name="action_delete" translatable="false">删除</string>
-    <string name="action_complete" translatable="false">完成</string>
-    <string name="action_star" translatable="false">收藏</string>
-    <string name="action_select_all" translatable="false">全选</string>
-    <string name="action_deselect_all" translatable="false">取消全选</string>
-    <string name="action_delete_selected" translatable="false">删除选中</string>
+    <string name="action_menu">菜单</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_delete">删除</string>
+    <string name="action_complete">完成</string>
+    <string name="action_star">收藏</string>
+    <string name="action_select_all">全选</string>
+    <string name="action_deselect_all">取消全选</string>
+    <string name="action_delete_selected">删除选中</string>
 
     <!-- Empty State -->
-    <string name="empty_tasks_title" translatable="false">暂无待办</string>
-    <string name="empty_tasks_message" translatable="false">点击添加按钮创建新的待办事项</string>
+    <string name="empty_tasks_title">暂无待办</string>
+    <string name="empty_tasks_message">点击添加按钮创建新的待办事项</string>
 
     <!-- More Tasks -->
-    <string name="more_tasks_indicator" translatable="false">还有 %1$d 个任务…</string>
+    <string name="more_tasks_indicator">还有 %1$d 个任务…</string>
 
     <!-- Validation / Snackbar -->
-    <string name="validation_category_title_required" translatable="false">分类名称不能为空</string>
-    <string name="validation_category_title_duplicate" translatable="false">分类名称已存在</string>
-    <string name="validation_task_title_required" translatable="false">待办标题不能为空</string>
-    <string name="validation_task_title_duplicate" translatable="false">该分类下已有同名待办</string>
-    <string name="snackbar_category_added" translatable="false">已添加分类</string>
-    <string name="snackbar_task_added" translatable="false">已添加待办</string>
-    <string name="snackbar_task_updated" translatable="false">已更新待办</string>
-    <string name="snackbar_task_deleted" translatable="false">已删除待办</string>
+    <string name="validation_category_title_required">分类名称不能为空</string>
+    <string name="validation_category_title_duplicate">分类名称已存在</string>
+    <string name="validation_task_title_required">待办标题不能为空</string>
+    <string name="validation_task_title_duplicate">该分类下已有同名待办</string>
+    <string name="snackbar_category_added">已添加分类</string>
+    <string name="snackbar_task_added">已添加待办</string>
+    <string name="snackbar_task_updated">已更新待办</string>
+    <string name="snackbar_task_deleted">已删除待办</string>
 
     <!-- Category Detail Screen -->
-    <string name="action_add_task" translatable="false">添加待办</string>
-    <string name="action_filter" translatable="false">筛选</string>
-    <string name="action_sort" translatable="false">排序</string>
+    <string name="action_add_task">添加待办</string>
+    <string name="action_filter">筛选</string>
+    <string name="action_sort">排序</string>
 
     <!-- Statistics Labels -->
-    <string name="label_total" translatable="false">总计</string>
-    <string name="label_completed" translatable="false">已完成</string>
-    <string name="label_active" translatable="false">进行中</string>
+    <string name="label_total">总计</string>
+    <string name="label_completed">已完成</string>
+    <string name="label_active">进行中</string>
 
     <!-- Filter Options -->
-    <string name="filter_all" translatable="false">全部</string>
-    <string name="filter_active" translatable="false">未完成</string>
-    <string name="filter_completed" translatable="false">已完成</string>
-    <string name="filter_starred" translatable="false">已标星</string>
+    <string name="filter_all">全部</string>
+    <string name="filter_active">未完成</string>
+    <string name="filter_completed">已完成</string>
+    <string name="filter_starred">已标星</string>
 
     <!-- Sort Options -->
-    <string name="sort_date_desc" translatable="false">日期降序</string>
-    <string name="sort_date_asc" translatable="false">日期升序</string>
-    <string name="sort_title_asc" translatable="false">标题升序</string>
-    <string name="sort_title_desc" translatable="false">标题降序</string>
-    <string name="sort_starred_first" translatable="false">标星优先</string>
+    <string name="sort_date_desc">日期降序</string>
+    <string name="sort_date_asc">日期升序</string>
+    <string name="sort_title_asc">标题升序</string>
+    <string name="sort_title_desc">标题降序</string>
+    <string name="sort_starred_first">标星优先</string>
 
     <!-- Empty State -->
-    <string name="empty_tasks" translatable="false">暂无待办事项</string>
-    <string name="empty_tasks_hint" translatable="false">点击右上角 + 按钮添加新任务</string>
+    <string name="empty_tasks">暂无待办事项</string>
+    <string name="empty_tasks_hint">点击右上角 + 按钮添加新任务</string>
 
     <!-- Edit Mode -->
-    <string name="edit_mode_title" translatable="false">已选 %1$d 项</string>
-    <string name="snackbar_tasks_deleted" translatable="false">已删除 %1$d 个待办</string>
-    <string name="dialog_add_task_clear" translatable="false">清理</string>
+    <string name="edit_mode_title">已选 %1$d 项</string>
+    <string name="snackbar_tasks_deleted">已删除 %1$d 个待办</string>
+    <string name="dialog_add_task_clear">清理</string>
     <string name="toast_select_category_first">请先选择或添加一个分类</string>
     <string name="schedule_section_title">日程</string>
     <string name="action_open_schedule">打开日程中心</string>

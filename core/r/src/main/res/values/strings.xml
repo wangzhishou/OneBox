@@ -47,11 +47,11 @@ And so, OneBox was born.]]></string>
     <string name="mini_program">Mini Programs</string>
 
     <!--search-->
-    <string name="search" translatable="false">Search</string>
-    <string name="back_button" translatable="false">Back</string>
-    <string name="search_place_holder" translatable="false">Search</string>
-    <string name="no_item_found" translatable="false">No item found</string>
-    <string name="no_search_history" translatable="false">No search history</string>
+    <string name="search">Search</string>
+    <string name="back_button">Back</string>
+    <string name="search_place_holder">Search</string>
+    <string name="no_item_found">No item found</string>
+    <string name="no_search_history">No search history</string>
 
     <!--AI-->
     <string name="ai_chat_title">Chat</string>
@@ -153,7 +153,7 @@ And so, OneBox was born.]]></string>
     <string name="marquee_blink">Blink</string>
     <string name="marquee_blink_speed">Blink Speed</string>
     <string name="marquee_blink_speed_unit">times/s</string>
-    <string name="history" translatable="false">History</string>
+    <string name="history">History</string>
 
     <!-- Marquee Mode Settings -->
     <string name="marquee_letter_spacing">Letter Spacing</string>
@@ -366,7 +366,7 @@ And so, OneBox was born.]]></string>
     <string name="ai_question">Question:</string>
     <string name="ai_answer">Answer</string>
     <string name="ai_chat_delete_message">Confirm deletion to keep your data safe.</string>
-    <string name="delete_item_confirm_message" translatable="false">Delete "%1$s"?</string>
+    <string name="delete_item_confirm_message">Delete "%1$s"?</string>
 
 
     <string name="copy_errors">Copy Error</string>
@@ -962,7 +962,7 @@ And so, OneBox was born.]]></string>
     <string name="ai_error_length">• Conversation length limit: Our conversations have a maximum length. If the current chat is very long, it may fail due to resource limits. Try starting a new chat.</string>
     <string name="error_title_empty">Title cannot be empty</string>
     <string name="error_data_empty">Data cannot be empty</string>
-    <string name="error_url_empty" translatable="false">URL cannot be empty</string>
+    <string name="error_url_empty">URL cannot be empty</string>
     <string name="description_placeholder">Description</string>
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">Source code (optional)</string>
@@ -1027,13 +1027,13 @@ And so, OneBox was born.]]></string>
     <string name="note_ai_create_prompt">Help me write a note</string>
 
     <!--Floating Robot exit confirm (playful) -->
-    <string name="robot_exit_dialog_title" translatable="false">Wait! Hiding me already?</string>
-    <string name="robot_exit_dialog_message" translatable="false">I was just getting ready to show off my skills! Are you sure you want me to step off stage?
+    <string name="robot_exit_dialog_title">Wait! Hiding me already?</string>
+    <string name="robot_exit_dialog_message">I was just getting ready to show off my skills! Are you sure you want me to step off stage?
 
 Hint: If you choose "Hide Forever", you can bring me back later in Settings > Display > AI Assistant.</string>
-    <string name="robot_exit_dialog_this_time" translatable="false">Hide for Now</string>
-    <string name="robot_exit_dialog_forever" translatable="false">Hide Forever</string>
-    <string name="robot_exit_dialog_cancel" translatable="false">I\'ll Bear It</string>
+    <string name="robot_exit_dialog_this_time">Hide for Now</string>
+    <string name="robot_exit_dialog_forever">Hide Forever</string>
+    <string name="robot_exit_dialog_cancel">I\'ll Bear It</string>
     <string name="data_database">Data</string>
     <string name="data_backup">Backup</string>
     <string name="data_restore">Restore</string>
@@ -1862,19 +1862,19 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="prompt_push_success">Prompt synced</string>
     <string name="prompt_push_to_remote">Sync to remote</string>
 
-    <!-- Robot / agent hints and statuses (translatable="false" in source) -->
-    <string name="robot_hint_executing" translatable="false">Tool executing…</string>
-    <string name="robot_hint_max_iterations" translatable="false">Awaiting your instructions</string>
-    <string name="robot_hint_planning" translatable="false">Planning tool calls…</string>
-    <string name="robot_hint_waiting_confirmation" translatable="false">Awaiting your confirmation</string>
-    <string name="robot_hint_waiting_input" translatable="false">Awaiting your answer</string>
-    <string name="robot_hint_waiting_llm" translatable="false">Waiting for AI reply…</string>
-    <string name="robot_status_executing" translatable="false">Executing</string>
-    <string name="robot_status_max_iterations" translatable="false">Awaiting instructions</string>
-    <string name="robot_status_planning" translatable="false">Planning</string>
-    <string name="robot_status_waiting_confirmation" translatable="false">Awaiting confirmation</string>
-    <string name="robot_status_waiting_input" translatable="false">Awaiting answer</string>
-    <string name="robot_status_waiting_llm" translatable="false">Replying</string>
+    <!-- Robot / agent hints and statuses -->
+    <string name="robot_hint_executing">Tool executing…</string>
+    <string name="robot_hint_max_iterations">Awaiting your instructions</string>
+    <string name="robot_hint_planning">Planning tool calls…</string>
+    <string name="robot_hint_waiting_confirmation">Awaiting your confirmation</string>
+    <string name="robot_hint_waiting_input">Awaiting your answer</string>
+    <string name="robot_hint_waiting_llm">Waiting for AI reply…</string>
+    <string name="robot_status_executing">Executing</string>
+    <string name="robot_status_max_iterations">Awaiting instructions</string>
+    <string name="robot_status_planning">Planning</string>
+    <string name="robot_status_waiting_confirmation">Awaiting confirmation</string>
+    <string name="robot_status_waiting_input">Awaiting answer</string>
+    <string name="robot_status_waiting_llm">Replying</string>
 
     <!-- Startup trace overlay (Easter egg) -->
     <string name="startup_trace_overlay_title">Startup timing panel</string>

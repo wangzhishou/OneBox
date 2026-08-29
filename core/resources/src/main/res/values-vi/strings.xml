@@ -1230,4 +1230,22 @@
     <string name="lagrange_3_sub">Bộ lọc nội suy Lagrange bậc 3, mang lại độ chính xác cao hơn và kết quả mượt mà hơn cho việc chia tỷ lệ hình ảnh</string>
     <string name="lanczos_6_sub">Bộ lọc lấy mẫu lại Lanczos với bậc 6 cao hơn, mang lại tỷ lệ hình ảnh sắc nét và chính xác hơn</string>
     <string name="lanczos_6_jinc_sub">Một biến thể của bộ lọc Lanczos 6 sử dụng chức năng Jinc để cải thiện chất lượng lấy mẫu lại hình ảnh</string>
+    <string name="app_name">OneBox</string>
+    <string name="app_launcher_name">OneBox</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="telegram">Telegram</string>
+    <string name="github">GitHub</string>
+    <string name="developer_email">t8rin@bk.ru</string>
+    <string name="float_array_of">floatArrayOf(f, f, f)</string>
+    <string name="default_prefix">OneBox</string>
+    <string name="firebase">Firebase</string>
+    <string name="crashlytics">Crashlytics</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="usdt">USDT</string>
+    <string name="ton_space">TON Space</string>
+    <string name="ton">TON</string>
+    <string name="exif">EXIF</string>
+    <string name="material_you">Material You</string>
+    <string name="app_developer">Malik Mukhametzyanov</string>
+    <string name="app_developer_nick">T8RIN</string>
 </resources>

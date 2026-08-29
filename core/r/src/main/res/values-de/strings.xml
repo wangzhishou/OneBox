@@ -1660,4 +1660,31 @@ Und so wurde OneBox geboren.</string>
     <string name="profile_item_open_source_sub">Quelltext ansehen – Sterne &amp; Feedback willkommen</string>
     <string name="profile_item_open_source_latest">Du verwendest die neueste Version</string>
     <string name="profile_item_open_source_update">Neue Version %1$s verfügbar</string>
+    <string name="search">Suchen</string>
+    <string name="back_button">Zurück</string>
+    <string name="search_place_holder">Suchen</string>
+    <string name="no_item_found">Kein Element gefunden</string>
+    <string name="no_search_history">Kein Suchverlauf</string>
+    <string name="history">Verlauf</string>
+    <string name="delete_item_confirm_message">„%1$s“ wirklich löschen?</string>
+    <string name="error_url_empty">Die URL darf nicht leer sein</string>
+    <string name="robot_exit_dialog_title">Warte! Willst du mich schon verstecken?</string>
+    <string name="robot_exit_dialog_message">Ich hatte mich doch gerade erst bereitgemacht, so richtig glänzen zu dürfen! Soll ich wirklich schon von der Bühne gehen?
+
+Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter Einstellungen &gt; Anzeige &gt; KI-Assistent zurückholen.</string>
+    <string name="robot_exit_dialog_this_time">Vorübergehend ausblenden</string>
+    <string name="robot_exit_dialog_forever">Für immer ausblenden</string>
+    <string name="robot_exit_dialog_cancel">Ich ertrag es noch</string>
+    <string name="robot_hint_executing">Werkzeug wird ausgeführt…</string>
+    <string name="robot_hint_max_iterations">Warte auf deine Anweisungen</string>
+    <string name="robot_hint_planning">Plane Werkzeugaufrufe…</string>
+    <string name="robot_hint_waiting_confirmation">Deine Bestätigung ist erforderlich</string>
+    <string name="robot_hint_waiting_input">Deine Antwort ist erforderlich</string>
+    <string name="robot_hint_waiting_llm">Warte auf KI-Antwort…</string>
+    <string name="robot_status_executing">Wird ausgeführt</string>
+    <string name="robot_status_max_iterations">Bereit für Anweisungen</string>
+    <string name="robot_status_planning">Planung läuft</string>
+    <string name="robot_status_waiting_confirmation">Bestätigung ausstehend</string>
+    <string name="robot_status_waiting_input">Antwort ausstehend</string>
+    <string name="robot_status_waiting_llm">Antwortet</string>
 </resources>

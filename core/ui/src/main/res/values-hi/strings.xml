@@ -44,4 +44,7 @@
         <item>शनि</item>
         <item>रवि</item>
     </string-array>
+    <string name="date_picker_title">तारीख़ चुनें</string>
+    <string name="time_range_picker_title">समय अवधि चुनें</string>
+    <string name="time_picker_title">समय चुनें</string>
 </resources>

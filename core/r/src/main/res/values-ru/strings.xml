@@ -1660,4 +1660,31 @@
     <string name="profile_item_open_source_sub">Исходный код открыт — звёзды и отзывы приветствуются</string>
     <string name="profile_item_open_source_latest">У вас последняя версия</string>
     <string name="profile_item_open_source_update">Доступна новая версия %1$s</string>
+    <string name="search">Поиск</string>
+    <string name="back_button">Назад</string>
+    <string name="search_place_holder">Поиск</string>
+    <string name="no_item_found">Элементы не найдены</string>
+    <string name="no_search_history">Нет истории поиска</string>
+    <string name="history">История</string>
+    <string name="delete_item_confirm_message">Удалить «%1$s»?</string>
+    <string name="error_url_empty">URL не может быть пустым</string>
+    <string name="robot_exit_dialog_title">Подожди! Уже прячешь меня?</string>
+    <string name="robot_exit_dialog_message">Я только приготовился показать себя во всей красе! Точно хочешь, чтобы я ушёл со сцены?
+
+Подсказка: если выберешь «Скрыть навсегда», потом сможешь вернуть меня в Настройки &gt; Экран &gt; ИИ-помощник.</string>
+    <string name="robot_exit_dialog_this_time">Скрыть пока</string>
+    <string name="robot_exit_dialog_forever">Скрыть навсегда</string>
+    <string name="robot_exit_dialog_cancel">Я ещё потерплю</string>
+    <string name="robot_hint_executing">Инструмент выполняется…</string>
+    <string name="robot_hint_max_iterations">Ожидаю ваших указаний</string>
+    <string name="robot_hint_planning">Планирую вызовы инструментов…</string>
+    <string name="robot_hint_waiting_confirmation">Требуется ваше подтверждение</string>
+    <string name="robot_hint_waiting_input">Требуется ваш ответ</string>
+    <string name="robot_hint_waiting_llm">Ожидаю ответа ИИ…</string>
+    <string name="robot_status_executing">Выполняется</string>
+    <string name="robot_status_max_iterations">Ожидание указаний</string>
+    <string name="robot_status_planning">Планирование</string>
+    <string name="robot_status_waiting_confirmation">Ожидание подтверждения</string>
+    <string name="robot_status_waiting_input">Ожидание ответа</string>
+    <string name="robot_status_waiting_llm">Отвечает</string>
 </resources>

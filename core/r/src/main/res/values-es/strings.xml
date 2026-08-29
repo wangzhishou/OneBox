@@ -1660,4 +1660,31 @@ Y así nació OneBox.</string>
     <string name="profile_item_open_source_sub">Ver el código fuente: estrellas y comentarios bienvenidos</string>
     <string name="profile_item_open_source_latest">Ya tienes la última versión</string>
     <string name="profile_item_open_source_update">Nueva versión %1$s disponible</string>
+    <string name="search">Buscar</string>
+    <string name="back_button">Atrás</string>
+    <string name="search_place_holder">Buscar</string>
+    <string name="no_item_found">No se encontró ningún elemento</string>
+    <string name="no_search_history">Sin historial de búsqueda</string>
+    <string name="history">Historial</string>
+    <string name="delete_item_confirm_message">¿Eliminar «%1$s»?</string>
+    <string name="error_url_empty">La URL no puede estar vacía</string>
+    <string name="robot_exit_dialog_title">¡Espera! ¿Ya me vas a esconder?</string>
+    <string name="robot_exit_dialog_message">¡Justo estaba preparándome para presumir de mis habilidades! ¿Seguro que quieres que me baje del escenario?
+
+Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Ajustes &gt; Pantalla &gt; Asistente de IA.</string>
+    <string name="robot_exit_dialog_this_time">Ocultar por ahora</string>
+    <string name="robot_exit_dialog_forever">Ocultar para siempre</string>
+    <string name="robot_exit_dialog_cancel">Lo soporto un rato más</string>
+    <string name="robot_hint_executing">Herramienta en ejecución…</string>
+    <string name="robot_hint_max_iterations">Esperando tus instrucciones</string>
+    <string name="robot_hint_planning">Planificando llamadas a herramientas…</string>
+    <string name="robot_hint_waiting_confirmation">Se requiere tu confirmación</string>
+    <string name="robot_hint_waiting_input">Se requiere tu respuesta</string>
+    <string name="robot_hint_waiting_llm">Esperando respuesta de la IA…</string>
+    <string name="robot_status_executing">Ejecutando</string>
+    <string name="robot_status_max_iterations">En espera de instrucciones</string>
+    <string name="robot_status_planning">Planificando</string>
+    <string name="robot_status_waiting_confirmation">Pendiente de confirmación</string>
+    <string name="robot_status_waiting_input">Pendiente de respuesta</string>
+    <string name="robot_status_waiting_llm">Respondiendo</string>
 </resources>

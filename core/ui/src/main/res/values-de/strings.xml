@@ -44,4 +44,7 @@
         <item>Sa</item>
         <item>So</item>
     </string-array>
+    <string name="date_picker_title">Datum auswählen</string>
+    <string name="time_range_picker_title">Zeitraum auswählen</string>
+    <string name="time_picker_title">Zeit auswählen</string>
 </resources>

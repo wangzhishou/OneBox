@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="date_picker_title" translatable="false">选择日期</string>
+    <string name="date_picker_title">选择日期</string>
     <string name="date_picker_confirm">确认</string>
     <string name="date_picker_cancel">取消</string>
     <string name="date_picker_edit">编辑</string>
@@ -21,8 +21,8 @@
     <string name="date_picker_weekday_thu">四</string>
     <string name="date_picker_weekday_fri">五</string>
     <string name="date_picker_weekday_sat">六</string>
-    <string name="time_range_picker_title" translatable="false">选择时间段</string>
-    <string name="time_picker_title" translatable="false">选择时间</string>
+    <string name="time_range_picker_title">选择时间段</string>
+    <string name="time_picker_title">选择时间</string>
     <string name="time_range_picker_start_time">开始时间</string>
     <string name="time_range_picker_end_time">结束时间</string>
     <string name="time_range_picker_hour">时</string>

@@ -1660,4 +1660,31 @@
     <string name="profile_item_open_source_sub">ソースコードを公開中、Star・フィードバック歓迎</string>
     <string name="profile_item_open_source_latest">最新バージョンを利用中です</string>
     <string name="profile_item_open_source_update">新バージョン %1$s があります</string>
+    <string name="search">検索</string>
+    <string name="back_button">戻る</string>
+    <string name="search_place_holder">検索</string>
+    <string name="no_item_found">アイテムが見つかりません</string>
+    <string name="no_search_history">検索履歴はありません</string>
+    <string name="history">履歴</string>
+    <string name="delete_item_confirm_message">「%1$s」を削除しますか？</string>
+    <string name="error_url_empty">URLは空にできません</string>
+    <string name="robot_exit_dialog_title">待って！もう隠れちゃうの？</string>
+    <string name="robot_exit_dialog_message">せっかく腕前を見せようとしていたのに～本当にこの舞台から降りさせちゃいますか？
+
+ヒント：「完全に非表示」を選んだ場合でも、後から［設定＞表示＞AIアシスタント］で呼び戻せますよ。</string>
+    <string name="robot_exit_dialog_this_time">一時的に非表示</string>
+    <string name="robot_exit_dialog_forever">完全に非表示</string>
+    <string name="robot_exit_dialog_cancel">もう少し我慢する</string>
+    <string name="robot_hint_executing">ツール実行中…</string>
+    <string name="robot_hint_max_iterations">あなたの指示を待っています</string>
+    <string name="robot_hint_planning">ツール呼び出しを計画中…</string>
+    <string name="robot_hint_waiting_confirmation">確認が必要です</string>
+    <string name="robot_hint_waiting_input">回答が必要です</string>
+    <string name="robot_hint_waiting_llm">AIの返信を待っています…</string>
+    <string name="robot_status_executing">実行中</string>
+    <string name="robot_status_max_iterations">指示待ち</string>
+    <string name="robot_status_planning">計画中</string>
+    <string name="robot_status_waiting_confirmation">確認待ち</string>
+    <string name="robot_status_waiting_input">回答待ち</string>
+    <string name="robot_status_waiting_llm">返信中</string>
 </resources>

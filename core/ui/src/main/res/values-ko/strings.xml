@@ -44,4 +44,7 @@
         <item>토</item>
         <item>일</item>
     </string-array>
+    <string name="date_picker_title">날짜 선택</string>
+    <string name="time_range_picker_title">시간 범위 선택</string>
+    <string name="time_picker_title">시간 선택</string>
 </resources>

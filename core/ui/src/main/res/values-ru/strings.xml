@@ -44,4 +44,7 @@
         <item>сб</item>
         <item>вс</item>
     </string-array>
+    <string name="date_picker_title">Выбор даты</string>
+    <string name="time_range_picker_title">Выбор диапазона времени</string>
+    <string name="time_picker_title">Выбор времени</string>
 </resources>

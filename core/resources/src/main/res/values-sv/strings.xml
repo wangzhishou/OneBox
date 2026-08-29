@@ -272,4 +272,22 @@
     <string name="reorder">Omordna</string>
     <string name="fast_blur">Snabb-oskärpa</string>
     <string name="blur_size">Storlek på oskärpa</string>
+    <string name="app_name">OneBox</string>
+    <string name="app_launcher_name">OneBox</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="telegram">Telegram</string>
+    <string name="github">GitHub</string>
+    <string name="developer_email">t8rin@bk.ru</string>
+    <string name="float_array_of">floatArrayOf(f, f, f)</string>
+    <string name="default_prefix">OneBox</string>
+    <string name="firebase">Firebase</string>
+    <string name="crashlytics">Crashlytics</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="usdt">USDT</string>
+    <string name="ton_space">TON Space</string>
+    <string name="ton">TON</string>
+    <string name="exif">EXIF</string>
+    <string name="material_you">Material You</string>
+    <string name="app_developer">Malik Mukhametzyanov</string>
+    <string name="app_developer_nick">T8RIN</string>
 </resources>

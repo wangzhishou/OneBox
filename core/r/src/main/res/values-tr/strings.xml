@@ -1660,4 +1660,31 @@ Ve böylece OneBox doğdu.</string>
     <string name="profile_item_open_source_sub">Kaynak koduna göz atın — yıldız ve geri bildirim bekliyoruz</string>
     <string name="profile_item_open_source_latest">En yeni sürümü kullanıyorsunuz</string>
     <string name="profile_item_open_source_update">Yeni sürüm %1$s mevcut</string>
+    <string name="search">Ara</string>
+    <string name="back_button">Geri</string>
+    <string name="search_place_holder">Ara</string>
+    <string name="no_item_found">Öğe bulunamadı</string>
+    <string name="no_search_history">Arama geçmişi yok</string>
+    <string name="history">Geçmiş</string>
+    <string name="delete_item_confirm_message">\"%1$s\" silinsin mi?</string>
+    <string name="error_url_empty">URL boş olamaz</string>
+    <string name="robot_exit_dialog_title">Bekle! Beni mi saklıyorsun?</string>
+    <string name="robot_exit_dialog_message">Becerilerimi gösterecek şekilde tam hazırlanmıştım! Gerçekten sahneden inmemi istiyor musun?
+
+İpucu: \"Kalıcı olarak gizle\" seçeneğini seçersen, beni daha sonra Ayarlar &gt; Ekran &gt; Yapay Zekâ Asistanı bölümünden geri çağırabilirsin.</string>
+    <string name="robot_exit_dialog_this_time">Şimdilik gizle</string>
+    <string name="robot_exit_dialog_forever">Kalıcı olarak gizle</string>
+    <string name="robot_exit_dialog_cancel">Biraz daha katlanacağım</string>
+    <string name="robot_hint_executing">Araç çalışıyor…</string>
+    <string name="robot_hint_max_iterations">Talimatlarınızı bekliyorum</string>
+    <string name="robot_hint_planning">Araç çağrıları planlanıyor…</string>
+    <string name="robot_hint_waiting_confirmation">Onayınız gerekiyor</string>
+    <string name="robot_hint_waiting_input">Cevabınız gerekiyor</string>
+    <string name="robot_hint_waiting_llm">Yapay zekâ yanıtı bekleniyor…</string>
+    <string name="robot_status_executing">Çalışıyor</string>
+    <string name="robot_status_max_iterations">Talimat bekliyor</string>
+    <string name="robot_status_planning">Planlanıyor</string>
+    <string name="robot_status_waiting_confirmation">Onay bekliyor</string>
+    <string name="robot_status_waiting_input">Cevap bekliyor</string>
+    <string name="robot_status_waiting_llm">Yanıtlıyor</string>
 </resources>

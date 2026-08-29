@@ -44,4 +44,7 @@
         <item>Cmt</item>
         <item>Paz</item>
     </string-array>
+    <string name="date_picker_title">Tarih seç</string>
+    <string name="time_range_picker_title">Zaman aralığı seç</string>
+    <string name="time_picker_title">Saat seç</string>
 </resources>

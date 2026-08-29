@@ -906,4 +906,22 @@
     <string name="convert_sub">Konvertovať dávky obrázkov do zadaného formátu</string>
     <string name="add_new_folder">Pridať nový priečinok</string>
     <string name="downscale_image_sub">Obrázok bude pred spracovaním zmenšený na menšie rozmery, čo pomáha nástroju pracovať rýchlejšie a bezpečnejšie</string>
+    <string name="app_name">OneBox</string>
+    <string name="app_launcher_name">OneBox</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="telegram">Telegram</string>
+    <string name="github">GitHub</string>
+    <string name="developer_email">t8rin@bk.ru</string>
+    <string name="float_array_of">floatArrayOf(f, f, f)</string>
+    <string name="default_prefix">OneBox</string>
+    <string name="firebase">Firebase</string>
+    <string name="crashlytics">Crashlytics</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="usdt">USDT</string>
+    <string name="ton_space">TON Space</string>
+    <string name="ton">TON</string>
+    <string name="exif">EXIF</string>
+    <string name="material_you">Material You</string>
+    <string name="app_developer">Malik Mukhametzyanov</string>
+    <string name="app_developer_nick">T8RIN</string>
 </resources>

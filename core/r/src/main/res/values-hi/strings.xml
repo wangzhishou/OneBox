@@ -1660,4 +1660,31 @@
     <string name="profile_item_open_source_sub">सोर्स कोड देखें — Star और फीडबैक का स्वागत है</string>
     <string name="profile_item_open_source_latest">आप नवीनतम संस्करण पर हैं</string>
     <string name="profile_item_open_source_update">नया संस्करण %1$s उपलब्ध है</string>
+    <string name="search">खोजें</string>
+    <string name="back_button">वापस</string>
+    <string name="search_place_holder">खोजें</string>
+    <string name="no_item_found">कोई आइटम नहीं मिला</string>
+    <string name="no_search_history">कोई खोज इतिहास नहीं</string>
+    <string name="history">इतिहास</string>
+    <string name="delete_item_confirm_message">क्या आप \"%1$s\" को हटाना चाहते हैं?</string>
+    <string name="error_url_empty">URL खाली नहीं हो सकती</string>
+    <string name="robot_exit_dialog_title">रुको! क्या आप मुझे छुपा रहे हैं?</string>
+    <string name="robot_exit_dialog_message">मैं अभी-अभी अपने हुनर दिखाने के लिए तैयार हुआ था! क्या आप सच में मुझे मंच से उतरने देंगे?
+
+सुझाव: यदि आप \"हमेशा के लिए छुपाएँ\" चुनते हैं, तो आप मुझे बाद में सेटिंग &gt; डिस्प्ले &gt; AI सहायक से वापस बुला सकते हैं।</string>
+    <string name="robot_exit_dialog_this_time">अभी के लिए छुपाएँ</string>
+    <string name="robot_exit_dialog_forever">हमेशा के लिए छुपाएँ</string>
+    <string name="robot_exit_dialog_cancel">थोड़ा और सह लूँगा</string>
+    <string name="robot_hint_executing">टूल चल रहा है…</string>
+    <string name="robot_hint_max_iterations">आपके निर्देशों की प्रतीक्षा में</string>
+    <string name="robot_hint_planning">टूल कॉल की योजना बना रहा है…</string>
+    <string name="robot_hint_waiting_confirmation">आपकी पुष्टि की आवश्यकता है</string>
+    <string name="robot_hint_waiting_input">आपके उत्तर की आवश्यकता है</string>
+    <string name="robot_hint_waiting_llm">AI के उत्तर की प्रतीक्षा में…</string>
+    <string name="robot_status_executing">चल रहा है</string>
+    <string name="robot_status_max_iterations">निर्देश की प्रतीक्षा</string>
+    <string name="robot_status_planning">योजना बना रहा है</string>
+    <string name="robot_status_waiting_confirmation">पुष्टि लंबित</string>
+    <string name="robot_status_waiting_input">उत्तर लंबित</string>
+    <string name="robot_status_waiting_llm">उत्तर दे रहा है</string>
 </resources>

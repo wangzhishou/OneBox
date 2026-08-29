@@ -61,11 +61,11 @@
     <string name="mini_program">小程序</string>
 
     <!--search-->
-    <string name="search" translatable="false">Search</string>
-    <string name="back_button" translatable="false">返回</string>
-    <string name="search_place_holder" translatable="false">Search</string>
-    <string name="no_item_found" translatable="false">No item found</string>
-    <string name="no_search_history" translatable="false">暂无搜索历史</string>
+    <string name="search">搜索</string>
+    <string name="back_button">返回</string>
+    <string name="search_place_holder">搜索</string>
+    <string name="no_item_found">未找到项目</string>
+    <string name="no_search_history">暂无搜索历史</string>
 
     <!--AI-->
     <string name="ai_chat_title">聊天</string>
@@ -175,7 +175,7 @@
     <string name="marquee_blink">闪烁效果</string>
     <string name="marquee_blink_speed">闪烁速度</string>
     <string name="marquee_blink_speed_unit">次/秒</string>
-    <string name="history" translatable="false">历史记录</string>
+    <string name="history">历史记录</string>
 
     <!-- Marquee Mode Settings -->
     <string name="marquee_letter_spacing">字符间距</string>
@@ -393,7 +393,7 @@
     <string name="ai_question">问题：</string>
     <string name="ai_answer">答</string>
     <string name="ai_chat_delete_message">为确保数据安全，请在删除前再次确认。</string>
-    <string name="delete_item_confirm_message" translatable="false">确定要删除"%1$s"吗？</string>
+    <string name="delete_item_confirm_message">确定要删除"%1$s"吗？</string>
 
 
     <string name="copy_errors">复制错误</string>
@@ -1008,7 +1008,7 @@
     <string name="ai_error_length">• 对话长度限制:我们的对话有长度上限,如果当前对话已非常长,可能会因资源限制而失败。你可以尝试开启一个新对话。</string>
     <string name="error_title_empty">标题不能为空</string>
     <string name="error_data_empty">数据不能为空</string>
-    <string name="error_url_empty" translatable="false">网址不能为空</string>
+    <string name="error_url_empty">网址不能为空</string>
     <string name="description_placeholder">描述</string>
     <string name="url_placeholder">网址</string>
     <string name="input_data_placeholder">源代码(可选)</string>
@@ -1073,28 +1073,28 @@
     <string name="note_ai_create_prompt">帮我创作一篇笔记</string>
 
     <!-- Floating Robot agent status hints (bubble tip) -->
-    <string name="robot_hint_waiting_confirmation" translatable="false">需要你确认操作</string>
-    <string name="robot_hint_waiting_input" translatable="false">需要你回答问题</string>
-    <string name="robot_hint_planning" translatable="false">规划工具调用中…</string>
-    <string name="robot_hint_executing" translatable="false">工具执行中…</string>
-    <string name="robot_hint_waiting_llm" translatable="false">等待 AI 回复…</string>
-    <string name="robot_hint_max_iterations" translatable="false">等待你的指示</string>
+    <string name="robot_hint_waiting_confirmation">需要你确认操作</string>
+    <string name="robot_hint_waiting_input">需要你回答问题</string>
+    <string name="robot_hint_planning">规划工具调用中…</string>
+    <string name="robot_hint_executing">工具执行中…</string>
+    <string name="robot_hint_waiting_llm">等待 AI 回复…</string>
+    <string name="robot_hint_max_iterations">等待你的指示</string>
     <!-- Floating Robot bottom status badge labels -->
-    <string name="robot_status_waiting_confirmation" translatable="false">待确认</string>
-    <string name="robot_status_waiting_input" translatable="false">待回答</string>
-    <string name="robot_status_planning" translatable="false">规划中</string>
-    <string name="robot_status_executing" translatable="false">执行中</string>
-    <string name="robot_status_waiting_llm" translatable="false">回复中</string>
-    <string name="robot_status_max_iterations" translatable="false">待指示</string>
+    <string name="robot_status_waiting_confirmation">待确认</string>
+    <string name="robot_status_waiting_input">待回答</string>
+    <string name="robot_status_planning">规划中</string>
+    <string name="robot_status_executing">执行中</string>
+    <string name="robot_status_waiting_llm">回复中</string>
+    <string name="robot_status_max_iterations">待指示</string>
 
     <!--Floating Robot exit confirm (playful) -->
-    <string name="robot_exit_dialog_title" translatable="false">等等！要把我藏起来吗？</string>
-    <string name="robot_exit_dialog_message" translatable="false">我才刚准备好大显身手呢～真的要让我先退场吗？
+    <string name="robot_exit_dialog_title">等等！要把我藏起来吗？</string>
+    <string name="robot_exit_dialog_message">我才刚准备好大显身手呢～真的要让我先退场吗？
 
 小提示：选择“永久退出”后，你也可以在【设置-显示设置-智能助手】里把我再叫回来～</string>
-    <string name="robot_exit_dialog_this_time" translatable="false">先躲一会</string>
-    <string name="robot_exit_dialog_forever" translatable="false">永久退出</string>
-    <string name="robot_exit_dialog_cancel" translatable="false">再忍一忍</string>
+    <string name="robot_exit_dialog_this_time">先躲一会</string>
+    <string name="robot_exit_dialog_forever">永久退出</string>
+    <string name="robot_exit_dialog_cancel">再忍一忍</string>
     <string name="data_database">数据</string>
     <string name="data_backup">备份</string>
     <string name="data_restore">恢复</string>

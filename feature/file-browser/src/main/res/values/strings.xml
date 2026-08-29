@@ -1,108 +1,108 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources><!-- Screen Title -->
-    <string name="file_browser_title" translatable="false">File Browser</string>
+    <string name="file_browser_title">File Browser</string>
 
     <!-- Actions -->
-    <string name="action_back" translatable="false">Back</string>
-    <string name="action_sort" translatable="false">Sort</string>
-    <string name="action_refresh" translatable="false">Refresh</string>
+    <string name="action_back">Back</string>
+    <string name="action_sort">Sort</string>
+    <string name="action_refresh">Refresh</string>
 
     <!-- Top-level Navigation -->
-    <string name="nav_home" translatable="false">Root Directory</string>
-    <string name="nav_recents" translatable="false">Latest visits</string>
-    <string name="nav_workspace" translatable="false">Working Directory</string>
+    <string name="nav_home">Root Directory</string>
+    <string name="nav_recents">Latest visits</string>
+    <string name="nav_workspace">Working Directory</string>
 
     <!-- Content Description -->
-    <string name="cd_nav_home" translatable="false">Switch to Root Directory</string>
-    <string name="cd_nav_recents" translatable="false">Switch to Recent Visit</string>
-    <string name="cd_nav_workspace" translatable="false">Switch to Work Directory</string>
+    <string name="cd_nav_home">Switch to Root Directory</string>
+    <string name="cd_nav_recents">Switch to Recent Visit</string>
+    <string name="cd_nav_workspace">Switch to Work Directory</string>
 
     <!-- Sort Options -->
-    <string name="sort_by_name" translatable="false">Sort by Name</string>
-    <string name="sort_by_date" translatable="false">Sort by Change Time</string>
-    <string name="sort_by_size" translatable="false">Sort by Size</string>
-    <string name="sort_by_type" translatable="false">Sort by Type</string>
-    <string name="sort_ascending" translatable="false">Raise</string>
-    <string name="sort_descending" translatable="false">Descending</string>
+    <string name="sort_by_name">Sort by Name</string>
+    <string name="sort_by_date">Sort by Change Time</string>
+    <string name="sort_by_size">Sort by Size</string>
+    <string name="sort_by_type">Sort by Type</string>
+    <string name="sort_ascending">Raise</string>
+    <string name="sort_descending">Descending</string>
     <!-- Sort chips (short labels) -->
-    <string name="sort_name" translatable="false">Name</string>
-    <string name="sort_date" translatable="false">Time</string>
-    <string name="sort_size" translatable="false">Size</string>
-    <string name="sort_type" translatable="false">Type</string>
+    <string name="sort_name">Name</string>
+    <string name="sort_date">Time</string>
+    <string name="sort_size">Size</string>
+    <string name="sort_type">Type</string>
 
     <!-- File Info -->
-    <string name="file_size_bytes" translatable="false">%s B</string>
-    <string name="file_size_kb" translatable="false">%s KB</string>
-    <string name="file_size_mb" translatable="false">%s MB</string>
-    <string name="file_size_gb" translatable="false">%s GB</string>
-    <string name="file_items_count" translatable="false">Item   %d </string>
-    <string name="folder_label" translatable="false">Folder</string>
-    <string name="file_label" translatable="false">Documentation</string>
+    <string name="file_size_bytes">%s B</string>
+    <string name="file_size_kb">%s KB</string>
+    <string name="file_size_mb">%s MB</string>
+    <string name="file_size_gb">%s GB</string>
+    <string name="file_items_count">Item   %d </string>
+    <string name="folder_label">Folder</string>
+    <string name="file_label">Documentation</string>
 
     <!-- Empty States -->
-    <string name="empty_folder_title" translatable="false">Empty Folder</string>
-    <string name="empty_folder_message" translatable="false">No file in this folder</string>
-    <string name="no_permission_title" translatable="false">Permission required</string>
-    <string name="no_permission_message" translatable="false">Could not close temporary folder: %s</string>
+    <string name="empty_folder_title">Empty Folder</string>
+    <string name="empty_folder_message">No file in this folder</string>
+    <string name="no_permission_title">Permission required</string>
+    <string name="no_permission_message">Grant storage permission to browse files</string>
 
     <!-- Error States -->
-    <string name="error_loading_title" translatable="false">Loading failed</string>
-    <string name="error_loading_message" translatable="false">Could not load file list</string>
-    <string name="error_file_not_found" translatable="false">File not found</string>
-    <string name="error_permission_denied" translatable="false">Permission denied</string>
-    <string name="retry" translatable="false">Try again</string>
+    <string name="error_loading_title">Loading failed</string>
+    <string name="error_loading_message">Could not load file list</string>
+    <string name="error_file_not_found">File not found</string>
+    <string name="error_permission_denied">Permission denied</string>
+    <string name="retry">Try again</string>
 
     <!-- Loading -->
-    <string name="loading" translatable="false">Loading...</string>
+    <string name="loading">Loading...</string>
 
     <!-- Path -->
-    <string name="root_path" translatable="false">Root Directory</string>
-    <string name="storage_path" translatable="false">Storage</string>
+    <string name="root_path">Root Directory</string>
+    <string name="storage_path">Storage</string>
 
     <!-- Content Description -->
-    <string name="cd_folder_icon" translatable="false">Folder Icon</string>
-    <string name="cd_file_icon" translatable="false">File Icon</string>
-    <string name="cd_sort_menu" translatable="false">Sort Menu</string>
-    <string name="cd_back_button" translatable="false">Back button</string>
-    <string name="cd_navigate_up" translatable="false">Return to Top Level</string>
-    <string name="cd_switch_to_grid" translatable="false">Switch to Grid View</string>
-    <string name="cd_switch_to_list" translatable="false">Switch to List View</string>
+    <string name="cd_folder_icon">Folder Icon</string>
+    <string name="cd_file_icon">File Icon</string>
+    <string name="cd_sort_menu">Sort Menu</string>
+    <string name="cd_back_button">Back button</string>
+    <string name="cd_navigate_up">Return to Top Level</string>
+    <string name="cd_switch_to_grid">Switch to Grid View</string>
+    <string name="cd_switch_to_list">Switch to List View</string>
 
     <!-- Selection -->
-    <string name="cd_enter_selection" translatable="false">Enter Selection Mode</string>
-    <string name="cd_exit_selection" translatable="false">Exit Selection Mode</string>
-    <string name="cd_select_all" translatable="false">Select All</string>
-    <string name="cd_clear_selection" translatable="false">Cancel</string>
-    <string name="selected_count" translatable="false">Selected   %d item</string>
+    <string name="cd_enter_selection">Enter Selection Mode</string>
+    <string name="cd_exit_selection">Exit Selection Mode</string>
+    <string name="cd_select_all">Select All</string>
+    <string name="cd_clear_selection">Cancel</string>
+    <string name="selected_count">Selected   %d item</string>
 
     <!-- File Operations -->
-    <string name="open_with" translatable="false">Open With</string>
-    <string name="action_delete" translatable="false">Delete</string>
-    <string name="action_copy" translatable="false">Copy</string>
-    <string name="action_move" translatable="false">Move</string>
-    <string name="action_rename" translatable="false">Rename</string>
+    <string name="open_with">Open With</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_move">Move</string>
+    <string name="action_rename">Rename</string>
 
-    <string name="dialog_delete_title" translatable="false">Confirm Delete</string>
-    <string name="dialog_delete_message" translatable="false">Are you sure you want to delete the selected   %d  entry?</string>
-    <string name="dialog_rename_title" translatable="false">Rename</string>
-    <string name="dialog_rename_hint" translatable="false">Please enter a new name</string>
-    <string name="dialog_cancel" translatable="false">Cancel</string>
-    <string name="dialog_confirm" translatable="false">Sure.</string>
+    <string name="dialog_delete_title">Confirm Delete</string>
+    <string name="dialog_delete_message">Are you sure you want to delete the selected   %d  entry?</string>
+    <string name="dialog_rename_title">Rename</string>
+    <string name="dialog_rename_hint">Please enter a new name</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_confirm">Sure.</string>
 
-    <string name="operation_failed" translatable="false">Could not close temporary folder: %s</string>
+    <string name="operation_failed">Could not close temporary folder: %s</string>
 
     <!-- Time -->
-    <string name="created_time_unknown" translatable="false">Created:  </string>
+    <string name="created_time_unknown">Created:  </string>
 
     <!-- Recents Empty State -->
-    <string name="recents_empty_message" translatable="false">No record of recent visits</string>
-    <string name="cd_clear_recents" translatable="false">Clean up recent visits</string>
+    <string name="recents_empty_message">No record of recent visits</string>
+    <string name="cd_clear_recents">Clean up recent visits</string>
 
     <!-- Search -->
-    <string name="search_hint" translatable="false">Other Organiser</string>
-    <string name="cd_open_search" translatable="false">Open Search</string>
-    <string name="cd_close_search" translatable="false">Close Search</string>
-    <string name="cd_clear_search" translatable="false">Empty Search Contents</string>
+    <string name="search_hint">Other Organiser</string>
+    <string name="cd_open_search">Open Search</string>
+    <string name="cd_close_search">Close Search</string>
+    <string name="cd_clear_search">Empty Search Contents</string>
 
     <!-- Expand/Collapse -->
     <string name="expand">Expand</string>

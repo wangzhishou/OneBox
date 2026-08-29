@@ -1660,4 +1660,31 @@ Maka, lahirlah OneBox.</string>
     <string name="profile_item_open_source_sub">Lihat kode sumber — Star &amp; masukan sangat diterima</string>
     <string name="profile_item_open_source_latest">Anda sudah menggunakan versi terbaru</string>
     <string name="profile_item_open_source_update">Versi baru %1$s tersedia</string>
+    <string name="search">Cari</string>
+    <string name="back_button">Kembali</string>
+    <string name="search_place_holder">Cari</string>
+    <string name="no_item_found">Tidak ada item yang ditemukan</string>
+    <string name="no_search_history">Tidak ada riwayat pencarian</string>
+    <string name="history">Riwayat</string>
+    <string name="delete_item_confirm_message">Hapus \"%1$s\"?</string>
+    <string name="error_url_empty">URL tidak boleh kosong</string>
+    <string name="robot_exit_dialog_title">Tunggu! Sudah mau menyembunyikanku?</string>
+    <string name="robot_exit_dialog_message">Aku baru saja siap memamerkan kemampuanku! Yakin mau membuatku turun dari panggung?
+
+Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nanti di Setelan &gt; Tampilan &gt; Asisten AI.</string>
+    <string name="robot_exit_dialog_this_time">Sembunyikan sementara</string>
+    <string name="robot_exit_dialog_forever">Sembunyikan selamanya</string>
+    <string name="robot_exit_dialog_cancel">Aku sabar dulu</string>
+    <string name="robot_hint_executing">Alat sedang dijalankan…</string>
+    <string name="robot_hint_max_iterations">Menunggu instruksimu</string>
+    <string name="robot_hint_planning">Merencanakan pemanggilan alat…</string>
+    <string name="robot_hint_waiting_confirmation">Perlu konfirmasimu</string>
+    <string name="robot_hint_waiting_input">Perlu jawabanmu</string>
+    <string name="robot_hint_waiting_llm">Menunggu balasan AI…</string>
+    <string name="robot_status_executing">Menjalankan</string>
+    <string name="robot_status_max_iterations">Menunggu instruksi</string>
+    <string name="robot_status_planning">Merencanakan</string>
+    <string name="robot_status_waiting_confirmation">Menunggu konfirmasi</string>
+    <string name="robot_status_waiting_input">Menunggu jawaban</string>
+    <string name="robot_status_waiting_llm">Membalas</string>
 </resources>

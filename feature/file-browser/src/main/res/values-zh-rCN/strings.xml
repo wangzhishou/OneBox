@@ -1,111 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Screen Title -->
-    <string name="file_browser_title" translatable="false">文件浏览器</string>
+    <string name="file_browser_title">文件浏览器</string>
 
     <!-- Actions -->
-    <string name="action_back" translatable="false">返回</string>
-    <string name="action_sort" translatable="false">排序</string>
-    <string name="action_refresh" translatable="false">刷新</string>
+    <string name="action_back">返回</string>
+    <string name="action_sort">排序</string>
+    <string name="action_refresh">刷新</string>
 
     <!-- Top-level Navigation -->
-    <string name="nav_home" translatable="false">根目录</string>
-    <string name="nav_recents" translatable="false">最近访问</string>
-    <string name="nav_workspace" translatable="false">工作目录</string>
+    <string name="nav_home">根目录</string>
+    <string name="nav_recents">最近访问</string>
+    <string name="nav_workspace">工作目录</string>
 
     <!-- Content Description -->
-    <string name="cd_nav_home" translatable="false">切换到根目录</string>
-    <string name="cd_nav_recents" translatable="false">切换到最近访问</string>
-    <string name="cd_nav_workspace" translatable="false">切换到工作目录</string>
+    <string name="cd_nav_home">切换到根目录</string>
+    <string name="cd_nav_recents">切换到最近访问</string>
+    <string name="cd_nav_workspace">切换到工作目录</string>
 
     <!-- Sort Options -->
-    <string name="sort_by_name" translatable="false">按名称排序</string>
-    <string name="sort_by_date" translatable="false">按修改时间排序</string>
-    <string name="sort_by_size" translatable="false">按大小排序</string>
-    <string name="sort_by_type" translatable="false">按类型排序</string>
-    <string name="sort_ascending" translatable="false">升序</string>
-    <string name="sort_descending" translatable="false">降序</string>
+    <string name="sort_by_name">按名称排序</string>
+    <string name="sort_by_date">按修改时间排序</string>
+    <string name="sort_by_size">按大小排序</string>
+    <string name="sort_by_type">按类型排序</string>
+    <string name="sort_ascending">升序</string>
+    <string name="sort_descending">降序</string>
     <!-- Sort chips (short labels) -->
-    <string name="sort_name" translatable="false">名称</string>
-    <string name="sort_date" translatable="false">时间</string>
-    <string name="sort_size" translatable="false">大小</string>
-    <string name="sort_type" translatable="false">类型</string>
+    <string name="sort_name">名称</string>
+    <string name="sort_date">时间</string>
+    <string name="sort_size">大小</string>
+    <string name="sort_type">类型</string>
 
     <!-- File Info -->
-    <string name="file_size_bytes" translatable="false">%s B</string>
-    <string name="file_size_kb" translatable="false">%s KB</string>
-    <string name="file_size_mb" translatable="false">%s MB</string>
-    <string name="file_size_gb" translatable="false">%s GB</string>
-    <string name="file_items_count" translatable="false">%d 项</string>
-    <string name="folder_label" translatable="false">文件夹</string>
-    <string name="file_label" translatable="false">文件</string>
+    <string name="file_size_bytes">%s B</string>
+    <string name="file_size_kb">%s KB</string>
+    <string name="file_size_mb">%s MB</string>
+    <string name="file_size_gb">%s GB</string>
+    <string name="file_items_count">%d 项</string>
+    <string name="folder_label">文件夹</string>
+    <string name="file_label">文件</string>
 
     <!-- Empty States -->
-    <string name="empty_folder_title" translatable="false">空文件夹</string>
-    <string name="empty_folder_message" translatable="false">此文件夹中没有文件</string>
-    <string name="no_permission_title" translatable="false">需要权限</string>
-    <string name="no_permission_message" translatable="false">请授予存储权限以浏览文件</string>
+    <string name="empty_folder_title">空文件夹</string>
+    <string name="empty_folder_message">此文件夹中没有文件</string>
+    <string name="no_permission_title">需要权限</string>
+    <string name="no_permission_message">请授予存储权限以浏览文件</string>
 
     <!-- Error States -->
-    <string name="error_loading_title" translatable="false">加载失败</string>
-    <string name="error_loading_message" translatable="false">无法加载文件列表</string>
-    <string name="error_file_not_found" translatable="false">文件未找到</string>
-    <string name="error_permission_denied" translatable="false">权限被拒绝</string>
-    <string name="retry" translatable="false">重试</string>
+    <string name="error_loading_title">加载失败</string>
+    <string name="error_loading_message">无法加载文件列表</string>
+    <string name="error_file_not_found">文件未找到</string>
+    <string name="error_permission_denied">权限被拒绝</string>
+    <string name="retry">重试</string>
 
     <!-- Loading -->
-    <string name="loading" translatable="false">加载中…</string>
+    <string name="loading">加载中…</string>
 
     <!-- Path -->
-    <string name="root_path" translatable="false">根目录</string>
-    <string name="storage_path" translatable="false">存储</string>
+    <string name="root_path">根目录</string>
+    <string name="storage_path">存储</string>
 
     <!-- Content Description -->
-    <string name="cd_folder_icon" translatable="false">文件夹图标</string>
-    <string name="cd_file_icon" translatable="false">文件图标</string>
-    <string name="cd_sort_menu" translatable="false">排序菜单</string>
-    <string name="cd_back_button" translatable="false">返回按钮</string>
-    <string name="cd_navigate_up" translatable="false">返回上一级</string>
-    <string name="cd_switch_to_grid" translatable="false">切换到网格视图</string>
-    <string name="cd_switch_to_list" translatable="false">切换到列表视图</string>
+    <string name="cd_folder_icon">文件夹图标</string>
+    <string name="cd_file_icon">文件图标</string>
+    <string name="cd_sort_menu">排序菜单</string>
+    <string name="cd_back_button">返回按钮</string>
+    <string name="cd_navigate_up">返回上一级</string>
+    <string name="cd_switch_to_grid">切换到网格视图</string>
+    <string name="cd_switch_to_list">切换到列表视图</string>
 
     <!-- Selection -->
-    <string name="cd_enter_selection" translatable="false">进入选择模式</string>
-    <string name="cd_exit_selection" translatable="false">退出选择模式</string>
-    <string name="cd_select_all" translatable="false">全选</string>
-    <string name="cd_clear_selection" translatable="false">取消</string>
-    <string name="selected_count" translatable="false">已选择 %d 项</string>
+    <string name="cd_enter_selection">进入选择模式</string>
+    <string name="cd_exit_selection">退出选择模式</string>
+    <string name="cd_select_all">全选</string>
+    <string name="cd_clear_selection">取消</string>
+    <string name="selected_count">已选择 %d 项</string>
 
     <!-- File Operations -->
-    <string name="open_with" translatable="false">打开方式</string>
-    <string name="action_delete" translatable="false">删除</string>
-    <string name="action_copy" translatable="false">复制</string>
-    <string name="action_move" translatable="false">移动</string>
-    <string name="action_rename" translatable="false">重命名</string>
+    <string name="open_with">打开方式</string>
+    <string name="action_delete">删除</string>
+    <string name="action_copy">复制</string>
+    <string name="action_move">移动</string>
+    <string name="action_rename">重命名</string>
 
-    <string name="dialog_delete_title" translatable="false">确认删除</string>
-    <string name="dialog_delete_message" translatable="false">确定要删除已选择的 %d 项吗？</string>
-    <string name="dialog_rename_title" translatable="false">重命名</string>
-    <string name="dialog_rename_hint" translatable="false">请输入新名称</string>
-    <string name="dialog_cancel" translatable="false">取消</string>
-    <string name="dialog_confirm" translatable="false">确定</string>
+    <string name="dialog_delete_title">确认删除</string>
+    <string name="dialog_delete_message">确定要删除已选择的 %d 项吗？</string>
+    <string name="dialog_rename_title">重命名</string>
+    <string name="dialog_rename_hint">请输入新名称</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_confirm">确定</string>
 
-    <string name="operation_failed" translatable="false">操作失败：%s</string>
+    <string name="operation_failed">操作失败：%s</string>
 
     <!-- Time -->
-    <string name="created_time_unknown" translatable="false">创建时间：—</string>
+    <string name="created_time_unknown">创建时间：—</string>
 
     <!-- Recents Empty State -->
-    <string name="recents_empty_message" translatable="false">暂无最近访问记录</string>
-    <string name="cd_clear_recents" translatable="false">清空最近访问</string>
-    <string name="dialog_clear_recents_title" translatable="false">清空最近访问</string>
-    <string name="dialog_clear_recents_message" translatable="false">确定要清空所有最近访问记录吗？此操作不可撤销。</string>
+    <string name="recents_empty_message">暂无最近访问记录</string>
+    <string name="cd_clear_recents">清空最近访问</string>
+    <string name="dialog_clear_recents_title">清空最近访问</string>
+    <string name="dialog_clear_recents_message">确定要清空所有最近访问记录吗？此操作不可撤销。</string>
 
     <!-- Search -->
-    <string name="search_hint" translatable="false">搜索当前文件夹</string>
-    <string name="cd_open_search" translatable="false">打开搜索</string>
-    <string name="cd_close_search" translatable="false">关闭搜索</string>
-    <string name="cd_clear_search" translatable="false">清空搜索内容</string>
+    <string name="search_hint">搜索当前文件夹</string>
+    <string name="cd_open_search">打开搜索</string>
+    <string name="cd_close_search">关闭搜索</string>
+    <string name="cd_clear_search">清空搜索内容</string>
 
     <!-- Expand/Collapse -->
     <string name="expand">展开</string>

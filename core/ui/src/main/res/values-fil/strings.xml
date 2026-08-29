@@ -44,4 +44,7 @@
         <item>Sab</item>
         <item>Lin</item>
     </string-array>
+    <string name="date_picker_title">Pumili ng Petsa</string>
+    <string name="time_range_picker_title">Pumili ng Saklaw ng Oras</string>
+    <string name="time_picker_title">Pumili ng Oras</string>
 </resources>

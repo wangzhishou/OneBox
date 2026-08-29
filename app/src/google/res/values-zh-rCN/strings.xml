@@ -5,8 +5,8 @@
         注意: 这个 strings.xml 与 main 合并, 同名 string 会被替换
         中文环境(app_name / app_launcher_name)保持 "万宝盒"
     -->
-    <string name="app_launcher_name" translatable="false">万宝盒</string>
-    <string name="app_name" translatable="false">万宝盒</string>
-    <string name="default_folder" translatable="false">Documents/OneBox</string>
-    <string name="default_prefix" translatable="false">OneBox</string>
+    <string name="app_launcher_name">万宝盒</string>
+    <string name="app_name">万宝盒</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="default_prefix">OneBox</string>
 </resources>

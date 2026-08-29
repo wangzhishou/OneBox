@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string name="date_picker_title" translatable="false">Select Date</string>
+    <string name="date_picker_title">Select Date</string>
     <string name="date_picker_confirm">Confirm</string>
     <string name="date_picker_cancel">Cancel</string>
     <string name="date_picker_edit">Edit</string>
@@ -21,8 +21,8 @@
     <string name="date_picker_weekday_thu">Thu</string>
     <string name="date_picker_weekday_fri">Fri</string>
     <string name="date_picker_weekday_sat">Sat</string>
-    <string name="time_range_picker_title" translatable="false">Select Time Range</string>
-    <string name="time_picker_title" translatable="false">Select Time</string>
+    <string name="time_range_picker_title">Select Time Range</string>
+    <string name="time_picker_title">Select Time</string>
     <string name="time_range_picker_start_time">Start Time</string>
     <string name="time_range_picker_end_time">End Time</string>
     <string name="time_range_picker_hour">Hour</string>

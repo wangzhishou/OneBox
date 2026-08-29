@@ -44,4 +44,7 @@
         <item>Sab</item>
         <item>Min</item>
     </string-array>
+    <string name="date_picker_title">Pilih Tanggal</string>
+    <string name="time_range_picker_title">Pilih Rentang Waktu</string>
+    <string name="time_picker_title">Pilih Waktu</string>
 </resources>

@@ -1660,4 +1660,31 @@ At kaya, ipinanganak ang OneBox.</string>
     <string name="profile_item_open_source_sub">Tingnan ang source code — welcome ang Star at feedback</string>
     <string name="profile_item_open_source_latest">Pinakabagong bersyon na ang gamit mo</string>
     <string name="profile_item_open_source_update">May bagong bersyong %1$s</string>
+    <string name="search">Maghanap</string>
+    <string name="back_button">Bumalik</string>
+    <string name="search_place_holder">Maghanap</string>
+    <string name="no_item_found">Walang nahanap na item</string>
+    <string name="no_search_history">Walang search history</string>
+    <string name="history">Kasaysayan</string>
+    <string name="delete_item_confirm_message">Tanggalin ang \"%1$s\"?</string>
+    <string name="error_url_empty">Hindi maaaring walang laman ang URL</string>
+    <string name="robot_exit_dialog_title">Teka! Itatago mo na ba ako?</string>
+    <string name="robot_exit_dialog_message">Naghanda pa lamang akong magpakitang-gilas! Sigurado ka bang paalisin mo na ako?
+
+Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga Setting &gt; Display &gt; AI Assistant.</string>
+    <string name="robot_exit_dialog_this_time">Itago muna ngayon</string>
+    <string name="robot_exit_dialog_forever">Itago magpakailanman</string>
+    <string name="robot_exit_dialog_cancel">Titiisin ko muna</string>
+    <string name="robot_hint_executing">Isinasagawa ang tool…</string>
+    <string name="robot_hint_max_iterations">Naghihintay ng iyong mga tagubilin</string>
+    <string name="robot_hint_planning">Pinaplanuho ang mga tawag sa tool…</string>
+    <string name="robot_hint_waiting_confirmation">Kailangan ng iyong kumpirmasyon</string>
+    <string name="robot_hint_waiting_input">Kailangan ng iyong sagot</string>
+    <string name="robot_hint_waiting_llm">Naghihintay ng sagot ng AI…</string>
+    <string name="robot_status_executing">Isinasagawa</string>
+    <string name="robot_status_max_iterations">Naghihintay ng tagubilin</string>
+    <string name="robot_status_planning">Nagpaplano</string>
+    <string name="robot_status_waiting_confirmation">Naghihintay ng kumpirmasyon</string>
+    <string name="robot_status_waiting_input">Naghihintay ng sagot</string>
+    <string name="robot_status_waiting_llm">Sumasagot</string>
 </resources>

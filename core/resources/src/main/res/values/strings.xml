@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="app_name" translatable="false">万宝盒</string>
-    <string name="app_launcher_name" translatable="false">万宝盒</string>
-    <string name="default_folder" translatable="false">Documents/OneBox</string>
-    <string name="telegram" translatable="false">Telegram</string>
-    <string name="github" translatable="false">GitHub</string>
-    <string name="developer_email" translatable="false">t8rin@bk.ru</string>
-    <string name="float_array_of" translatable="false">floatArrayOf(f, f, f)</string>
-    <string name="default_prefix" translatable="false">OneBox</string>
-    <string name="firebase" translatable="false">Firebase</string>
-    <string name="crashlytics" translatable="false">Crashlytics</string>
-    <string name="bitcoin" translatable="false">Bitcoin</string>
-    <string name="usdt" translatable="false">USDT</string>
-    <string name="ton_space" translatable="false">TON Space</string>
-    <string name="ton" translatable="false">TON</string>
-    <string name="exif" translatable="false">EXIF</string>
-    <string name="material_you" translatable="false">Material You</string>
+    <string name="app_name">万宝盒</string>
+    <string name="app_launcher_name">万宝盒</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="telegram">Telegram</string>
+    <string name="github">GitHub</string>
+    <string name="developer_email">t8rin@bk.ru</string>
+    <string name="float_array_of">floatArrayOf(f, f, f)</string>
+    <string name="default_prefix">OneBox</string>
+    <string name="firebase">Firebase</string>
+    <string name="crashlytics">Crashlytics</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="usdt">USDT</string>
+    <string name="ton_space">TON Space</string>
+    <string name="ton">TON</string>
+    <string name="exif">EXIF</string>
+    <string name="material_you">Material You</string>
     <string name="something_went_wrong">An error occurred</string>
     <string name="button_retry">Retry</string>
     <string name="pick_image">Tap to select an image</string>
@@ -1877,8 +1877,8 @@
     <string name="error_correction_level">Error correction level</string>
     <string name="code_may_be_not_scannable">This code may not be scannable — adjust the appearance options to make sure all devices can read it</string>
     <string name="not_scannable">Not scannable</string>
-    <string name="app_developer" translatable="false">Malik Mukhametzyanov</string>
-    <string name="app_developer_nick" translatable="false">T8RIN</string>
+    <string name="app_developer">Malik Mukhametzyanov</string>
+    <string name="app_developer_nick">T8RIN</string>
     <string name="launcher_mode_sub">Tools will be displayed like a home screen app launcher, making them more compact</string>
     <string name="launcher_mode">Launcher mode</string>
     <string name="flood_fill_sub">Fill an area using the selected brush and style</string>
