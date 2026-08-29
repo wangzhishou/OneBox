@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
+import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.components.common.ImageThumbnailRow
 import com.shifenmiao.common.upload.UploadingImage
 import com.shifenmiao.interfaces.singleton.AppContext
@@ -693,7 +694,8 @@ private fun CommentInputBar(
         remaining < 100 -> MaterialTheme.colorScheme.tertiary
         else -> MaterialTheme.colorScheme.outlineVariant
     }
-    val canAddMore = isLoggedIn && pendingImages.size < COMMENT_MAX_IMAGES
+    // 不登录也保持可点: 点击时由 ActionUtils.showLogin 弹统一登录组件, 登录成功后自动继续.
+    val canAddMore = pendingImages.size < COMMENT_MAX_IMAGES
     val imagePicker = rememberImagePicker(
         picker = Picker.Multiple,
         onSuccess = { uris -> onAddImages(uris) },
@@ -783,7 +785,13 @@ private fun CommentInputBar(
             trailingIcon = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     GlassIconButton(
-                        onClick = { imagePicker.pickImage() },
+                        onClick = {
+                            // 上传需要登录 (Strapi Authenticated 角色才有 upload 权限),
+                            // 未登录先弹统一登录组件, 登录成功后自动继续打开图片选择器.
+                            ActionUtils.showLogin(source = "comment_add_image") {
+                                imagePicker.pickImage()
+                            }
+                        },
                         enabled = canAddMore,
                     ) {
                         Icon(

@@ -242,7 +242,11 @@ fun CreateFeedbackScreen(
                     modifier = Modifier.fillMaxWidth(),
                     images = uploadingImages,
                     onAddClick = {
-                        imageFilePickerAndUploader.pickFile()
+                        // 上传需要登录 (Strapi Authenticated 角色才有 upload 权限),
+                        // 未登录先弹统一登录组件, 登录成功后自动继续打开文件选择器.
+                        ActionUtils.showLogin(source = "feedback_upload_image") {
+                            imageFilePickerAndUploader.pickFile()
+                        }
                     },
                     onImageRemove = { strapiImage ->
                         uploadingImages.removeAll {
