@@ -57,6 +57,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -629,6 +630,12 @@ private fun NavigationToolbar(
     val scrollState = rememberScrollState()
     var sortMenuExpanded by remember { mutableStateOf(false) }
     val iconSize = 16.dp
+
+    // 面包屑保持单行横向滚动;路径超长时自动滚到末尾,保证当前目录始终可见
+    LaunchedEffect(breadcrumbs) {
+        withFrameNanos { }
+        scrollState.scrollTo(scrollState.maxValue)
+    }
 
     Row(
         modifier = modifier
