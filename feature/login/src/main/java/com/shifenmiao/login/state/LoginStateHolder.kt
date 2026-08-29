@@ -47,6 +47,7 @@ class LoginStateHolder @Inject constructor(
                     isWechat = user.openid?.isNotEmpty() ?: false,
                     vipLevel = user.vipLevel ?: 0,
                     totalRechargeAmount = user.totalRechargeAmount ?: 0.0,
+                    confirmed = user.confirmed,
                 )
                 syncAnalyticsUserProperties(
                     vipLevel = user.vipLevel ?: 0,
@@ -74,6 +75,7 @@ class LoginStateHolder @Inject constructor(
             isWechat = user.openid?.isNotEmpty() ?: false,
             vipLevel = user.vipLevel ?: 0,
             totalRechargeAmount = user.totalRechargeAmount ?: 0.0,
+            confirmed = user.confirmed,
         )
         val isWechat = user.openid?.isNotEmpty() ?: false
         analyticsManager.logEvent(

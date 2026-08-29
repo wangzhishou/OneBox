@@ -30,6 +30,8 @@ data class LoginState(
     val role: Int = 0,
     val vipLevel: Int = 0,
     val totalRechargeAmount: Double = 0.0,
+    /** 邮箱是否已验证(邮箱注册用户登录后为 false,验证成功后置 true) */
+    val confirmed: Boolean = false,
 )
 
 enum class LoginStyle(val value: Int) {

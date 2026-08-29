@@ -51,6 +51,7 @@ import com.shifenmiao.model.user.UpdateNicknameRequest
 import com.shifenmiao.model.user.ChangePasswordRequest
 import com.shifenmiao.model.user.SendBindEmailCodeRequest
 import com.shifenmiao.model.user.BindEmailRequest
+import com.shifenmiao.model.user.ConfirmEmailRequest
 import com.shifenmiao.model.user.WechatLoginRequest
 import com.shifenmiao.model.user.event.BindPhoneEvent
 import com.shifenmiao.login.state.ForgotPasswordState
@@ -1500,6 +1501,62 @@ class LoginComponent @AssistedInject internal constructor(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * 向当前登录用户绑定的邮箱发送验证验证码(邮箱验证用)
+     */
+    fun sendConfirmEmailCode(
+        onError: (String) -> Unit = {},
+        onSuccess: () -> Unit,
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = onError
+            ) {
+                apiService.sendConfirmEmailCode()
+            }
+            if (response != null) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    NetworkUtils.handleErrorResponse(
+                        response,
+                        onFriendlyErrorTip = {
+                            onError(it)
+                        }) {
+                        makeLog {
+                            "sendConfirmEmailCode" + it
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 验证码确认邮箱,成功后经 responseHandle 刷新 LoginStateHolder(confirmed=true)
+     */
+    fun confirmEmail(
+        code: String,
+        onSuccess: () -> Unit = {},
+        onFail: (str: String) -> Unit = { _ -> }
+    ) {
+        CoroutineScope(defaultDispatcher).launch {
+            val response = NetworkUtils.safeApiCall(
+                onError = onFail
+            ) {
+                apiService.confirmEmail(ConfirmEmailRequest(code = code))
+            }
+            response?.let {
+                responseHandle(
+                    response = it,
+                    onSuccess = { onSuccess() },
+                    onFail = onFail,
+                    onlyUpdate = true
+                )
             }
         }
     }

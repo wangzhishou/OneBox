@@ -29,3 +29,9 @@ data class BindEmailRequest(
     val email: String,
     val code: String
 ) : Parcelable
+
+@Parcelize
+@Serializable
+data class ConfirmEmailRequest(
+    val code: String
+) : Parcelable

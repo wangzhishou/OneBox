@@ -50,6 +50,7 @@ import com.shifenmiao.model.user.UpdateNicknameRequest
 import com.shifenmiao.model.user.ChangePasswordRequest
 import com.shifenmiao.model.user.SendBindEmailCodeRequest
 import com.shifenmiao.model.user.BindEmailRequest
+import com.shifenmiao.model.user.ConfirmEmailRequest
 import com.shifenmiao.network.BuildConfig
 import com.shifenmiao.storage.TokenStorage
 import okhttp3.MultipartBody
@@ -296,6 +297,14 @@ interface ApiService {
     /** 验证码绑定新邮箱,成功返回最新用户信息与新 JWT */
     @POST("user/bind-email")
     suspend fun bindEmail(@Body request: BindEmailRequest): Response<Login>
+
+    /** 向当前登录用户绑定的邮箱发送验证验证码(邮箱验证用,60s 冷却) */
+    @POST("user/send-confirm-email-code")
+    suspend fun sendConfirmEmailCode(@Body body: Map<String, String> = emptyMap()): Response<Status>
+
+    /** 验证码确认邮箱,成功返回完整登录响应(confirmed=true) */
+    @POST("user/confirm-email")
+    suspend fun confirmEmail(@Body request: ConfirmEmailRequest): Response<Login>
 
     @POST("user/consume-points")
     suspend fun consumePoints(@Body consumePoints: ConsumePoints): Response<Login>

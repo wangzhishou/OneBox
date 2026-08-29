@@ -515,6 +515,10 @@
     <string name="profile_code_send_to">验证码将发送至 %s</string>
     <string name="profile_bind_email">绑定邮箱</string>
     <string name="profile_email_bound">邮箱绑定成功</string>
+    <string name="profile_email_not_verified">邮箱未验证</string>
+    <string name="profile_verify_now">立即验证</string>
+    <string name="profile_verify_email">验证邮箱</string>
+    <string name="profile_email_verified_success">邮箱验证成功</string>
     <string name="default_user_nickname">万宝子</string>
     <string name="profile_item_show_points_tip">积分消费提示</string>
     <string name="no_points">预估积分不足，邀请好友可以免费获得积分。</string>

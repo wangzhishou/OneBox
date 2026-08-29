@@ -83,6 +83,7 @@ fun UserInfoScreen(
     val showNicknameDialog = remember { mutableStateOf(false) }
     val showChangePasswordSheet = remember { mutableStateOf(false) }
     val showBindEmailSheet = remember { mutableStateOf(false) }
+    val showVerifyEmailSheet = remember { mutableStateOf(false) }
     val countdownTime = remember { mutableIntStateOf(COUNT_DOWN_TIME) }
 
     if (!loginState.isLogin) {
@@ -182,6 +183,36 @@ fun UserInfoScreen(
                                 headline = stringResource(R.string.profile_user_info_email),
                                 value = loginState.emailOrMobile,
                             )
+                            // 邮箱注册账号未完成验证时给出提示入口
+                            if (!loginState.confirmed) {
+                                AboutCardDivider()
+                                GlassListItem(
+                                    headlineContent = {
+                                        Text(
+                                            text = stringResource(R.string.profile_email_not_verified),
+                                            style = MaterialTheme.typography.bodyLarge,
+                                            color = MaterialTheme.colorScheme.error,
+                                        )
+                                    },
+                                    trailingContent = {
+                                        Button(
+                                            onClick = { showVerifyEmailSheet.value = true },
+                                            colors = AppTheme.colors.getSecondaryContainerButtonColors(),
+                                        ) {
+                                            Icon(
+                                                modifier = Modifier.size(14.dp),
+                                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEmail,
+                                                contentDescription = "verifyEmail",
+                                            )
+                                            Spacer(modifier = Modifier.size(8.dp))
+                                            Text(
+                                                text = stringResource(R.string.profile_verify_now),
+                                                style = MaterialTheme.typography.bodyMedium,
+                                            )
+                                        }
+                                    },
+                                )
+                            }
                         } else {
                             GlassListItem(
                                 headlineContent = {
@@ -497,6 +528,13 @@ fun UserInfoScreen(
         BindEmailSheet(
             loginComponent = loginComponent,
             onDismiss = { showBindEmailSheet.value = false },
+        )
+    }
+
+    if (showVerifyEmailSheet.value) {
+        VerifyEmailSheet(
+            loginComponent = loginComponent,
+            onDismiss = { showVerifyEmailSheet.value = false },
         )
     }
 }
