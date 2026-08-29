@@ -250,6 +250,13 @@ internal class AndroidSettingsManager @Inject constructor(
             clearCacheOnLaunch = state.clearCacheOnLaunch,
             borderWidth = state.borderWidth,
             selectedFont = state.font.asString(),
+            isGlassmorphismEnabled = state.isGlassmorphismEnabled,
+            isLiquidGlassEnabled = state.isLiquidGlassEnabled,
+            isMeshGradientEnabled = state.isMeshGradientBackgroundEnabled,
+            gradientStyleOrdinal = state.gradientBackgroundStyle.ordinal2,
+            glassBaseAlpha = state.glassBaseAlpha,
+            customBackgroundImageUri = state.customBackgroundImageUri,
+            activeThemeId = state.activeThemeId,
         )
     }
 
@@ -971,11 +978,20 @@ internal class AndroidSettingsManager @Inject constructor(
         it[GLASS_BASE_ALPHA] = alpha.coerceIn(0f, 1f)
     }
 
-    override suspend fun applyThemePreset(preset: AppThemePreset) = edit {
-        it[ACTIVE_THEME_ID] = preset.id
+    override suspend fun applyThemePreset(
+        preset: AppThemePreset,
+        updateActiveThemeId: Boolean,
+    ) = edit {
+        if (updateActiveThemeId) {
+            it[ACTIVE_THEME_ID] = preset.id
+        }
         it[DYNAMIC_COLORS] = preset.isDynamicColors
-        if (preset.colorTupleString.isNotEmpty()) {
-            it[APP_COLOR_TUPLE] = preset.colorTupleString
+        // 无条件写入: 动态取色预设的 colorTupleString 为空串, 借此清掉上一个主题的
+        // 残留色, 否则之后关掉动态取色会回跳到旧主题配色(与 activeThemeId 自相矛盾)
+        it[APP_COLOR_TUPLE] = preset.colorTupleString
+        // 与 toggleDynamicColors 保持一致: 启用动态取色时关掉"从图片取色", 避免两个取色源同时为 true
+        if (preset.isDynamicColors) {
+            it[ALLOW_IMAGE_MONET] = false
         }
         it[NIGHT_MODE] = preset.nightMode.ordinal
         it[GLASSMORPHISM_ENABLED] = preset.isGlassmorphismEnabled

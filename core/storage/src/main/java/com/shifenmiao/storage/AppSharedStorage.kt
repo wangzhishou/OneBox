@@ -62,6 +62,13 @@ object AppSharedStorage {
     private const val S_CLEAR_CACHE_ON_LAUNCH = "s_clear_cache_on_launch"
     private const val S_BORDER_WIDTH = "s_border_width"
     private const val S_SELECTED_FONT = "s_selected_font"
+    private const val S_GLASSMORPHISM_ENABLED = "s_glassmorphism_enabled"
+    private const val S_LIQUID_GLASS_ENABLED = "s_liquid_glass_enabled"
+    private const val S_MESH_GRADIENT_ENABLED = "s_mesh_gradient_enabled"
+    private const val S_GRADIENT_STYLE = "s_gradient_style"
+    private const val S_GLASS_BASE_ALPHA = "s_glass_base_alpha"
+    private const val S_CUSTOM_BG_IMAGE_URI = "s_custom_bg_image_uri"
+    private const val S_ACTIVE_THEME_ID = "s_active_theme_id"
     /** 标记 MMKV 启动缓存是否已被初始化过（首次从 DataStore 同步后置 true） */
     private const val S_CACHE_INITIALIZED = "s_cache_initialized"
 
@@ -456,6 +463,13 @@ object AppSharedStorage {
         clearCacheOnLaunch: Boolean,
         borderWidth: Float,
         selectedFont: String,
+        isGlassmorphismEnabled: Boolean,
+        isLiquidGlassEnabled: Boolean,
+        isMeshGradientEnabled: Boolean,
+        gradientStyleOrdinal: Int,
+        glassBaseAlpha: Float,
+        customBackgroundImageUri: String?,
+        activeThemeId: String,
     ) {
         save(S_FONT_SCALE, fontScale ?: -1f)
         save(S_NIGHT_MODE, nightMode)
@@ -472,6 +486,13 @@ object AppSharedStorage {
         save(S_CLEAR_CACHE_ON_LAUNCH, clearCacheOnLaunch)
         save(S_BORDER_WIDTH, borderWidth)
         save(S_SELECTED_FONT, selectedFont)
+        save(S_GLASSMORPHISM_ENABLED, isGlassmorphismEnabled)
+        save(S_LIQUID_GLASS_ENABLED, isLiquidGlassEnabled)
+        save(S_MESH_GRADIENT_ENABLED, isMeshGradientEnabled)
+        save(S_GRADIENT_STYLE, gradientStyleOrdinal)
+        save(S_GLASS_BASE_ALPHA, glassBaseAlpha)
+        save(S_CUSTOM_BG_IMAGE_URI, customBackgroundImageUri ?: "")
+        save(S_ACTIVE_THEME_ID, activeThemeId)
         save(S_CACHE_INITIALIZED, true)
     }
 
@@ -523,6 +544,27 @@ object AppSharedStorage {
 
     fun loadStartupSelectedFont(): String =
         load(S_SELECTED_FONT, "0") ?: "0"  // default: System(0)
+
+    fun loadStartupIsGlassmorphismEnabled(): Boolean =
+        load(S_GLASSMORPHISM_ENABLED, true) ?: true
+
+    fun loadStartupIsLiquidGlassEnabled(): Boolean =
+        load(S_LIQUID_GLASS_ENABLED, false) ?: false
+
+    fun loadStartupIsMeshGradientEnabled(): Boolean =
+        load(S_MESH_GRADIENT_ENABLED, false) ?: false
+
+    fun loadStartupGradientStyle(): Int =
+        load(S_GRADIENT_STYLE, 0) ?: 0  // default: Classic(0), 与 SettingsState.Default 一致
+
+    fun loadStartupGlassBaseAlpha(): Float =
+        load(S_GLASS_BASE_ALPHA, 1f) ?: 1f
+
+    fun loadStartupCustomBackgroundImageUri(): String? =
+        load(S_CUSTOM_BG_IMAGE_URI, "")?.takeIf { it.isNotEmpty() }
+
+    fun loadStartupActiveThemeId(): String =
+        load(S_ACTIVE_THEME_ID, "builtin_dynamic") ?: "builtin_dynamic"
 
     // ─── 系统预置提示词版本（按语言隔离：预置 prompt 写入各语言自己的 Room 库） ──────────
 

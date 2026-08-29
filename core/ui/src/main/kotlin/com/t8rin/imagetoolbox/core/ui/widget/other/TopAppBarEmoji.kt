@@ -299,9 +299,9 @@ private fun ThemeMenuFontSizeItem(settingsManager: SettingsManager) {
 
 @Composable
 fun ThemeMenuGuessThemeItem(settingsManager: SettingsManager) {
-    val localSettingsState = LocalSettingsState.current
+    // 直接读全局状态, 不用 remember 缓存: 切换主题预设会改写 DYNAMIC_COLORS, 缓存会变 stale
+    val isDynamicColors = LocalSettingsState.current.isDynamicColors
     val scope = rememberCoroutineScope()
-    val isDynamicColors = remember { mutableStateOf(localSettingsState.isDynamicColors) }
 
     Row(Modifier.fillMaxWidth(), Arrangement.spacedBy(8.dp), Alignment.CenterVertically) {
         Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStar, null, Modifier.size(18.dp), tint = MaterialTheme.colorScheme.onSurface)
@@ -310,10 +310,10 @@ fun ThemeMenuGuessThemeItem(settingsManager: SettingsManager) {
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f))
         Switch(
-            checked = isDynamicColors.value,
-            onCheckedChange = { isDynamicColors.value = it; scope.launch { settingsManager.toggleDynamicColors() } },
+            checked = isDynamicColors,
+            onCheckedChange = { scope.launch { settingsManager.toggleDynamicColors() } },
             thumbContent = {
-                if (isDynamicColors.value) Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check, null, Modifier.size(SwitchDefaults.IconSize))
+                if (isDynamicColors) Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check, null, Modifier.size(SwitchDefaults.IconSize))
             },
             colors = AppTheme.colors.switchColors()
         )

@@ -2,7 +2,6 @@ package com.t8rin.imagetoolbox.core.ui.widget.glass
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,7 +61,7 @@ fun MeshGradientBackground(
 
         if (shouldRenderMeshGradient) {
             val style = settingsState.gradientBackgroundStyle
-            val isDark = isSystemInDarkTheme()
+            val isDark = settingsState.isNightMode
             val meshGradientAlphaMultiplier = if (isDark) 1f else 0.78f
             val meshGradientVeilMultiplier = if (isDark) 1f else 0.88f
 

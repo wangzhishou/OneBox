@@ -33,6 +33,13 @@ data class AppThemePreset(
 ) {
     companion object {
 
+        /**
+         * "自定义/未保存"哨兵 id —— 当实际生效的主题配置偏离任何已存预设时使用
+         * (AI 工具直接改字段、旧版本预览草稿的 "__editing__" 残留)。
+         * 选择器匹配不到该 id 时不高亮任何卡片, 语义上诚实。
+         */
+        const val CUSTOM_ID = "__custom__"
+
         /** 将 [colorTupleString] 拆分为 ARGB 颜色列表。 */
         fun parseColorTuple(colorTupleString: String): List<Int> {
             if (colorTupleString.isBlank()) return emptyList()

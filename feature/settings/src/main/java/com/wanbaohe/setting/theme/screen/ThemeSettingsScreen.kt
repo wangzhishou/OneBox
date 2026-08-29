@@ -49,6 +49,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -129,6 +130,21 @@ fun ThemeSettingsScreen(
     var pendingSelectPreset by remember { mutableStateOf<AppThemePreset?>(null) }
     // 遮罩透明度是全局设置（滑动时自动保存），单独追踪是否变更，以便使保存按钮可点击
     var overlayAlphaDirty by remember { mutableStateOf(false) }
+    // 遮罩透明度滑动即落盘, 不进草稿; 记录进入页面时的原值, "放弃修改"时恢复
+    val settingsManager = LocalSettingsManager.current
+    val scope = rememberCoroutineScope()
+    val currentSettingsState = LocalSettingsState.current
+    val originalOverlayAlpha = remember {
+        mutableFloatStateOf(currentSettingsState.customBackgroundOverlayAlpha)
+    }
+    val latestOverlayAlpha by rememberUpdatedState(currentSettingsState.customBackgroundOverlayAlpha)
+
+    /** 放弃修改时把滑动即落盘的遮罩透明度恢复到进入页面时的值 */
+    fun restoreOverlayAlphaIfDirty() {
+        if (overlayAlphaDirty) {
+            scope.launch { settingsManager.setCustomBackgroundOverlayAlpha(originalOverlayAlpha.floatValue) }
+        }
+    }
 
     val hasUnsavedChanges = editingDraft != null && (component.hasDraftChanged() || overlayAlphaDirty)
     val canReset = editingDraft != null && component.canResetDraft()
@@ -139,6 +155,8 @@ fun ThemeSettingsScreen(
             when (event) {
                 is ThemeSettingsEvent.SaveSuccess -> {
                     overlayAlphaDirty = false
+                    // 保存后原值基线更新为当前值, 之后的取消不再回退它
+                    originalOverlayAlpha.floatValue = latestOverlayAlpha
                     AppToastHost.showToast(getString(R.string.theme_saved_success))
                 }
                 is ThemeSettingsEvent.SaveFailed ->
@@ -317,6 +335,7 @@ fun ThemeSettingsScreen(
             text = { Text(stringResource(R.string.theme_switch_confirm_message)) },
             confirmButton = {
                 ConfirmButton {
+                    restoreOverlayAlphaIfDirty()
                     overlayAlphaDirty = false
                     component.selectPresetForEditing(targetPreset)
                     pendingSelectPreset = null
@@ -351,6 +370,7 @@ fun ThemeSettingsScreen(
             text = stringResource(R.string.theme_discard_message),
             onExit = {
                 showExitConfirmDialog = false
+                restoreOverlayAlphaIfDirty()
                 overlayAlphaDirty = false
                 component.restoreAndGoBack()
             },

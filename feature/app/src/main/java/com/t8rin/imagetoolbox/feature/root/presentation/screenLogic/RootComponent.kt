@@ -62,6 +62,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.handleDeeplinks
 import com.t8rin.imagetoolbox.core.ui.utils.helper.isShellPortraitOrientation
 import com.t8rin.imagetoolbox.core.ui.utils.helper.toImageModel
+import com.t8rin.imagetoolbox.core.ui.utils.loadStartupSettingsSnapshot
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
@@ -102,7 +103,7 @@ class RootComponent @AssistedInject internal constructor(
     private val _isUpdateAvailable: MutableValue<Boolean> = MutableValue(false)
     val isUpdateAvailable: Value<Boolean> = _isUpdateAvailable
 
-    private val _settingsState = mutableStateOf(SettingsState.Default)
+    private val _settingsState = mutableStateOf(loadStartupSettingsSnapshot())
     val settingsState: SettingsState by _settingsState
     private var startupSettingsHandled: Boolean = false
 

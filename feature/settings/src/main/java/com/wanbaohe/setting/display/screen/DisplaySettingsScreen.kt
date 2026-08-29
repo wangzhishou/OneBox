@@ -326,22 +326,17 @@ fun LayoutSettingItem() {
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-        var selectedIndex by remember {
-            mutableIntStateOf(
-                if (isGirdMode) 0 else 1
-            )
-        }
         val options = listOf(
             Pair(stringResource(R.string.profile_item_dislay_gird), com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles),
             Pair(stringResource(R.string.profile_item_dislay_list), com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineViewList)
         )
+        // 选中态直接由全局状态派生, 外部(如备份恢复)改写后能即时联动
+        val selected = if (isGirdMode) options[0] else options[1]
         GlassSegmentedButtonRow(
             options = options,
-            selectedOption = options[selectedIndex],
+            selectedOption = selected,
             onOptionSelected = { pair ->
-                val index = options.indexOf(pair)
-                if (index != selectedIndex) {
-                    selectedIndex = index
+                if (pair != selected) {
                     scope.launch {
                         settingsManager.toggleGroupOptionsByTypes()
                     }
@@ -571,23 +566,18 @@ fun DisableRobotSettingItem(appComponent: AppComponent) {
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-        var selectedIndex by remember {
-            mutableIntStateOf(
-                if (isDisableRobot) 1 else 0
-            )
-        }
         val options = listOf(
             stringResource(R.string.dispaly),
             stringResource(R.string.hide)
         )
+        // isDisableRobot 是 StateFlow 驱动, 选中态直接派生, 外部改写后能即时联动
+        val selected = if (isDisableRobot) options[1] else options[0]
         GlassSegmentedButtonRow(
             options = options,
-            selectedOption = options[selectedIndex],
+            selectedOption = selected,
             onOptionSelected = { label ->
-                val index = options.indexOf(label)
-                if (index != selectedIndex) {
-                    selectedIndex = index
-                    appComponent.setDisableRobot(index == 1)
+                if (label != selected) {
+                    appComponent.setDisableRobot(label == options[1])
                 }
             },
             modifier = Modifier.fillMaxWidth(0.6f),

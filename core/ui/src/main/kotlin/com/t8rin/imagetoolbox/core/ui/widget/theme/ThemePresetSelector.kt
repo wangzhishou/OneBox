@@ -92,7 +92,7 @@ fun ThemePresetSelector(
     val density = LocalDensity.current
 
     val allThemes by themeRepository.observeAllThemes()
-        .collectAsState(initial = AppThemePreset.builtinThemes)
+        .collectAsState(initial = themeRepository.themesSnapshot)
     val activeThemeId = LocalSettingsState.current.activeThemeId
 
     // 删除确认状态
@@ -110,10 +110,11 @@ fun ThemePresetSelector(
     LaunchedEffect(
         selectedIndexInRow,
         rowWidthPx,
-        scrollState.maxValue,
     ) {
         if (selectedIndexInRow < 0 || rowWidthPx <= 0) return@LaunchedEffect
 
+        // 不把 scrollState.maxValue 作为 key: 卡片增删导致 maxValue 变化时,
+        // 不应把正在手动浏览的用户拉回选中项
         val selectedStartPx = selectedIndexInRow * (cardWidthPx + cardSpacingPx)
         val selectedCenterPx = selectedStartPx + cardWidthPx / 2f
         val targetScroll = (selectedCenterPx - rowWidthPx / 2f)

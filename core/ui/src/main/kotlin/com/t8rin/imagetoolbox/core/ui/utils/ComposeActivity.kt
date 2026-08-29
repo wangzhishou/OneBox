@@ -45,7 +45,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.shifenmiao.interfaces.singleton.AppContext
-import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.di.entryPoint
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -59,8 +58,6 @@ import com.t8rin.imagetoolbox.core.domain.startup.StartupPhaseController
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.t8rin.imagetoolbox.core.settings.di.SettingsStateEntryPoint
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
-import com.t8rin.imagetoolbox.core.settings.domain.model.DomainFontFamily
-import com.t8rin.imagetoolbox.core.settings.domain.model.NightMode
 import com.t8rin.imagetoolbox.core.settings.domain.model.SettingsState
 import com.t8rin.imagetoolbox.core.settings.domain.toSimpleSettingsInteractor
 import com.t8rin.imagetoolbox.core.settings.presentation.model.asColorTuple
@@ -131,7 +128,7 @@ abstract class ComposeActivity : AppCompatActivity() {
             this@ComposeActivity.settingsManager = this.settingsManager
             // 使用 MMKV 同步读取启动关键设置，避免 runBlocking 阻塞主线程
             _settingsState.update {
-                loadStartupSettingsFromMMKV()
+                loadStartupSettingsSnapshot()
             }
             handleSystemBarsBehavior()
             handleSecureMode()
@@ -155,17 +152,24 @@ abstract class ComposeActivity : AppCompatActivity() {
 
         setupSplashScreen(splashScreen, savedInstanceState == null)
 
-        settingsManager
-            .settingsState
-            .onEach { state ->
-                _settingsState.update { state }
-                handleSystemBarsBehavior()
-                handleSecureMode()
-                updateFirebaseParams()
-                applyDynamicColors()
-                adjustFontSize(state.fontScale)
-            }
-            .launchIn(activityScope)
+        activityScope.launch {
+            // settingsState 的 stateIn initialValue 是 Default, 直接收集会先回放 Default,
+            // 把 attachBaseContext 里加载的 MMKV 快照整体打回默认值(安全模式/系统栏/动态取色
+            // 都会先按 Default 错误地跑一遍)。先等 DataStore 首个真实 emit 再开始收集。
+            settingsManager.getSettingsState()
+            settingsManager
+                .settingsState
+                .onEach { state ->
+                    _settingsState.update { state }
+                    handleSystemBarsBehavior()
+                    handleSecureMode()
+                    updateFirebaseParams()
+                    // DynamicColors 会改 Activity 的 ResourcesLoader, 需在主线程执行
+                    runOnUiThread { applyDynamicColors() }
+                    adjustFontSize(state.fontScale)
+                }
+                .launchIn(this)
+        }
 
         if (savedInstanceState == null) onFirstLaunch()
 
@@ -314,42 +318,18 @@ abstract class ComposeActivity : AppCompatActivity() {
     }
 
     fun applyDynamicColors() {
-        val colorTuple = settingsState.appColorTuple.asColorTuple()
+        val options = DynamicColorsOptions.Builder().apply {
+            // 动态取色(千色千面)时让系统使用壁纸色:
+            // 空 appColorTuple 经 asColorTuple() 兜底出来的是默认品牌紫,
+            // 若据此设 contentBasedSource, 壁纸取色会被染成紫色派生,
+            // 与 Compose 侧 rememberAppColorTuple 的壁纸取色互相打架
+            if (!settingsState.isDynamicColors) {
+                setContentBasedSource(settingsState.appColorTuple.asColorTuple().primary.toArgb())
+            }
+        }.build()
         DynamicColors.applyToActivityIfAvailable(
             this@ComposeActivity,
-            DynamicColorsOptions.Builder()
-                .setContentBasedSource(colorTuple.primary.toArgb())
-                .build()
-        )
-    }
-
-    /**
-     * 从 MMKV 同步读取启动关键设置，构建 partial SettingsState。
-     * 仅覆盖影响首帧渲染和 Activity 配置的字段，其余使用 Default 值。
-     * 完整状态将在 onCreate 中通过 settingsManager.settingsState Flow 异步补全。
-     */
-    private fun loadStartupSettingsFromMMKV(): SettingsState {
-        val default = SettingsState.Default
-        return default.copy(
-            fontScale = AppSharedStorage.loadStartupFontScale(),
-            nightMode = NightMode.fromOrdinal(AppSharedStorage.loadStartupNightMode())
-                ?: default.nightMode,
-            isDynamicColors = AppSharedStorage.loadStartupIsDynamicColors(),
-            appColorTuple = AppSharedStorage.loadStartupAppColorTuple(),
-            isAmoledMode = AppSharedStorage.loadStartupIsAmoledMode(),
-            themeStyle = AppSharedStorage.loadStartupThemeStyle(),
-            themeContrastLevel = AppSharedStorage.loadStartupThemeContrastLevel(),
-            isInvertThemeColors = AppSharedStorage.loadStartupIsInvertTheme(),
-            allowCollectCrashlytics = AppSharedStorage.loadStartupAllowCrashlytics(),
-            systemBarsVisibility = SystemBarsVisibility.fromOrdinal(
-                AppSharedStorage.loadStartupSystemBarsVisibility()
-            ) ?: default.systemBarsVisibility,
-            isSystemBarsVisibleBySwipe = AppSharedStorage.loadStartupIsSystemBarsVisibleBySwipe(),
-            isSecureMode = AppSharedStorage.loadStartupIsSecureMode(),
-            clearCacheOnLaunch = AppSharedStorage.loadStartupClearCacheOnLaunch(),
-            borderWidth = AppSharedStorage.loadStartupBorderWidth(),
-            font = DomainFontFamily.fromString(AppSharedStorage.loadStartupSelectedFont())
-                ?: default.font,
+            options
         )
     }
 

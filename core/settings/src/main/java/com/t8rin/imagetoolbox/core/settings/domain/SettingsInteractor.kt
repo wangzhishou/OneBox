@@ -256,8 +256,11 @@ interface SettingsInteractor : SimpleSettingsInteractor {
 
     /**
      * 原子地应用一个 [AppThemePreset]：同时写入所有主题相关设置字段。
+     *
+     * @param updateActiveThemeId 为 false 时不改写 ACTIVE_THEME_ID ——
+     *                            用于编辑页的实时预览, 避免预览哨兵 id 持久化
      */
-    suspend fun applyThemePreset(preset: AppThemePreset)
+    suspend fun applyThemePreset(preset: AppThemePreset, updateActiveThemeId: Boolean = true)
 }
 
 fun SettingsInteractor.toSimpleSettingsInteractor(): SimpleSettingsInteractor =

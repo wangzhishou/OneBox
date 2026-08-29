@@ -75,7 +75,7 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
     val events = _events.receiveAsFlow()
 
     val allThemes: StateFlow<List<AppThemePreset>> = themeSettingService.observeThemes()
-        .stateIn(componentScope, SharingStarted.Lazily, AppThemePreset.builtinThemes)
+        .stateIn(componentScope, SharingStarted.Lazily, themeSettingService.themesSnapshot)
 
     init {
         componentScope.launch {
@@ -145,22 +145,23 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
     }
 
     fun updateDraftPrimaryColor(argb: Int) {
-        _editingDraft.value = _editingDraft.value?.copy(primaryColor = argb)
+        // 手动改色即脱离动态取色, 预览/保存都按静态配色走
+        _editingDraft.value = _editingDraft.value?.copy(primaryColor = argb, isDynamicColors = false)
         applyDraftLive()
     }
 
     fun updateDraftSecondaryColor(argb: Int) {
-        _editingDraft.value = _editingDraft.value?.copy(secondaryColor = argb)
+        _editingDraft.value = _editingDraft.value?.copy(secondaryColor = argb, isDynamicColors = false)
         applyDraftLive()
     }
 
     fun updateDraftTertiaryColor(argb: Int) {
-        _editingDraft.value = _editingDraft.value?.copy(tertiaryColor = argb)
+        _editingDraft.value = _editingDraft.value?.copy(tertiaryColor = argb, isDynamicColors = false)
         applyDraftLive()
     }
 
     fun updateDraftSurfaceColor(argb: Int) {
-        _editingDraft.value = _editingDraft.value?.copy(surfaceColor = argb)
+        _editingDraft.value = _editingDraft.value?.copy(surfaceColor = argb, isDynamicColors = false)
         applyDraftLive()
     }
 
@@ -206,13 +207,14 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
     /**
      * 是否有"未保存的修改"：
      * - EditingUser  → draft 与已保存状态不同
-     * - CreatingNew  → 始终视为有内容待保存
+     * - CreatingNew  → 纯新建始终视为有内容待保存; 以某预设为蓝本时与蓝本对比,
+     *                  只点了一下卡片预览不算"有修改"
      */
     fun hasDraftChanged(): Boolean {
         val draft = _editingDraft.value ?: return false
         return when (val mode = _editMode.value) {
             is ThemeEditMode.EditingUser -> draft != mode.sourcePreset.toDraft()
-            is ThemeEditMode.CreatingNew -> true
+            is ThemeEditMode.CreatingNew -> mode.forkedFrom?.let { draft != it.toDraft() } ?: true
             null -> false
         }
     }
@@ -273,7 +275,10 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
 
     fun restoreAndGoBack() {
         componentScope.launch {
-            val original = originalPreset ?: AppThemePreset.Default
+            // 进入页面时的激活主题可能已在会话期间被删除, 校验后再恢复, 避免 activeThemeId 悬垂
+            val original = originalPreset
+                ?.takeIf { o -> themeSettingService.listThemes().any { it.id == o.id } }
+                ?: AppThemePreset.Default
             try {
                 themeSettingService.applyThemePreset(original)
             } catch (_: Exception) {
@@ -291,8 +296,9 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
 
     private fun applyDraftLive() {
         val draft = _editingDraft.value ?: return
-        val tempPreset = draft.toPreset(id = "__editing__")
-        componentScope.launch { themeSettingService.applyThemePreset(tempPreset) }
+        // 预览不改写 ACTIVE_THEME_ID, 避免哨兵 id 持久化后进程死亡造成 activeThemeId 悬垂
+        val tempPreset = draft.toPreset(id = AppThemePreset.CUSTOM_ID)
+        componentScope.launch { themeSettingService.previewThemePreset(tempPreset) }
     }
 
     /** 根据 isBuiltin 决定初始编辑模式 */
@@ -308,6 +314,7 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
             secondaryColor = colors.getOrNull(1) ?: DEFAULT_SECONDARY,
             tertiaryColor = colors.getOrNull(2) ?: DEFAULT_TERTIARY,
             surfaceColor = colors.getOrNull(3) ?: DEFAULT_SURFACE,
+            isDynamicColors = isDynamicColors,
             isGlassAlphaEnabled = isGlassmorphismEnabled,
             isLiquidGlassEnabled = isLiquidGlassEnabled,
             isMeshGradientBgEnabled = isMeshGradientBackgroundEnabled,
@@ -321,10 +328,12 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
     private fun EditingDraft.toPreset(id: String): AppThemePreset = AppThemePreset(
         id = id,
         name = name.ifBlank { DEFAULT_THEME_NAME },
-        colorTupleString = listOf(primaryColor, secondaryColor, tertiaryColor, surfaceColor)
+        // 动态取色主题不携带色元组(复制"千色千面"时保留动态语义, 预览不会变成无关静态配色)
+        colorTupleString = if (isDynamicColors) ""
+        else listOf(primaryColor, secondaryColor, tertiaryColor, surfaceColor)
             .joinToString("*"),
         nightMode = nightMode,
-        isDynamicColors = false,
+        isDynamicColors = isDynamicColors,
         isGlassmorphismEnabled = isGlassAlphaEnabled,
         isLiquidGlassEnabled = isLiquidGlassEnabled,
         isMeshGradientBackgroundEnabled = isMeshGradientBgEnabled,
@@ -390,6 +399,7 @@ data class EditingDraft(
     val secondaryColor: Int = -14046121,
     val tertiaryColor: Int = -8367522,
     val surfaceColor: Int = -591619,
+    val isDynamicColors: Boolean = false,
     val isGlassAlphaEnabled: Boolean = true,
     val isLiquidGlassEnabled: Boolean = false,
     val isMeshGradientBgEnabled: Boolean = true,

@@ -228,7 +228,9 @@ class ThemeSettingTool @Inject constructor(
                 message = textProvider.string(R.string.agent_tool_theme_setting_no_fields),
             )
             is ThemeChangeResult.Ok -> {
-                themeSettingService.applyThemePreset(change.next)
+                // 修改使配置偏离已存预设: 以自定义哨兵 id 应用,
+                // 之后 getCurrentTheme 从实际生效状态重建, 连续 set 不会互相回滚
+                themeSettingService.applyThemePreset(change.next.copy(id = AppThemePreset.CUSTOM_ID))
                 val updated = themeSettingService.getCurrentTheme()
                 return successResult(
                     action = "set",
@@ -263,8 +265,9 @@ class ThemeSettingTool @Inject constructor(
             }
         }
         if (colorUpdates.isNotEmpty()) {
+            // 动态取色主题无基线色元组, 以品牌色为基线, 避免必然失败
             val baseline = AppThemePreset.parseColorTuple(current.colorTupleString)
-                .ifEmpty { AppThemePreset.parseColorTuple(AppThemePreset.Default.colorTupleString) }
+                .ifEmpty { AppThemePreset.parseColorTuple(AppThemePreset.LogoTheme.colorTupleString) }
             val newColors = (0..3).map { idx -> colorUpdates[idx] ?: baseline.getOrNull(idx) }
             if (newColors.any { it == null }) {
                 return ThemeChangeResult.Invalid(
