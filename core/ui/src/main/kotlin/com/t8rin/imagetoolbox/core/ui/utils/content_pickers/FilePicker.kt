@@ -17,7 +17,6 @@
 
 package com.t8rin.imagetoolbox.core.ui.utils.content_pickers
 
-import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,17 +27,14 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.takePersistablePermission
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private data class FilePickerImpl(
-    val context: Context,
     val type: FileType,
     val mimeType: MimeType,
     val openDocument: ManagedActivityResultLauncher<Array<String>, Uri?>,
@@ -48,18 +44,18 @@ private data class FilePickerImpl(
 
     override fun pickFile() {
         (type to mimeType).makeLog("File Picker Start")
-        ContextUtils.requestStoragePermissionAndExecute(context) {
-            runCatching {
-                when (type) {
-                    FileType.Single -> openDocument.launch(mimeType.entries.toTypedArray())
-                    FileType.Multiple -> openDocumentMultiple.launch(mimeType.entries.toTypedArray())
-                }
-            }.onFailure {
-                it.makeLog("File Picker Failure")
-                onFailure(it)
-            }.onSuccess {
-                (type to mimeType).makeLog("File Picker Success")
+        // SAF(OpenDocument) 选文件不需要任何存储权限,
+        // 提前申请 READ_MEDIA_IMAGES 等权限会触发合规审核问题(场景7),直接拉起系统选择器
+        runCatching {
+            when (type) {
+                FileType.Single -> openDocument.launch(mimeType.entries.toTypedArray())
+                FileType.Multiple -> openDocumentMultiple.launch(mimeType.entries.toTypedArray())
             }
+        }.onFailure {
+            it.makeLog("File Picker Failure")
+            onFailure(it)
+        }.onSuccess {
+            (type to mimeType).makeLog("File Picker Success")
         }
     }
 
@@ -84,7 +80,6 @@ fun rememberFilePicker(
     onFailure: () -> Unit = {},
     onSuccess: (List<Uri>) -> Unit,
 ): FilePicker {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val openDocument = rememberLauncherForActivityResult(
@@ -121,7 +116,6 @@ fun rememberFilePicker(
     ) {
         derivedStateOf {
             FilePickerImpl(
-                context = context,
                 type = type,
                 mimeType = mimeType,
                 openDocument = openDocument,
