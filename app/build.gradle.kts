@@ -324,9 +324,13 @@ android {
 
     buildTypes {
         debug {
-            // 有 keystore.properties 时沿用 release 签名; 缺失时回退 AGP 默认 debug 签名
-            if (keystorePropertiesFile.exists()) {
-                signingConfig = signingConfigs.getByName("release")
+            // 有真实 release keystore 时沿用 release 签名; 否则回退 AGP 默认 debug 签名.
+            // 注意不能只看 keystore.properties 是否存在: CI 的 debug 构建也会生成该文件
+            // (仅含域名/token 注入配置, 无 storeFile), 此时 release 签名配置的 storeFile
+            // 是占位 defaultStoreFile, validateSigning<Variant>Debug 会因找不到文件而失败.
+            val releaseSigning = signingConfigs.getByName("release")
+            if (releaseSigning.storeFile?.exists() == true) {
+                signingConfig = releaseSigning
             }
             applicationIdSuffix = ".debug"
             // authority 由 Context.fileProviderAuthority 按 applicationId 派生, 此处须保持同值
