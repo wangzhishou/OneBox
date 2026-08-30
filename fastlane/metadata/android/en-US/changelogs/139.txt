@@ -1,0 +1,4 @@
+• New: F-Droid (foss) build — fully open-source flavor with no proprietary SDKs
+• New: Support the Developer entry (Ko-fi) for overseas users
+• Fix: file picker no longer requests storage permission prematurely
+• Bug fixes and performance improvements
