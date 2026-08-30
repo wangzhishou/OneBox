@@ -8,6 +8,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.MiniEdit
 import com.t8rin.imagetoolbox.core.resources.icons.Github
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineClearCache
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCoffee
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDonate
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFont
@@ -87,6 +88,7 @@ sealed class ProfileSetting(
             AboutUsSetting,
             UpdateSetting,
             OpenSource,
+            SupportDeveloper,
             RateAppSetting,
             ShareAppSetting
         )
@@ -160,6 +162,15 @@ sealed class ProfileSetting(
         title = R.string.profile_item_open_source,
         subtitle = R.string.profile_item_open_source_sub,
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Github,
+        trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew
+    )
+
+    // 仅海外渠道(google / foss)展示的 Ko-fi 打赏入口, 可见性在 ProfileScreen 按 isOverseas 过滤
+    data object SupportDeveloper : ProfileSetting(
+        id = 27,
+        title = R.string.profile_item_support_dev,
+        subtitle = R.string.profile_item_support_dev_sub,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCoffee,
         trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew
     )
 

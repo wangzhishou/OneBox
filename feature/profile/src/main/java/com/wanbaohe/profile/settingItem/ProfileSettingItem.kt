@@ -429,9 +429,13 @@ fun ProfileSettingItem(
                                 "oppo" -> add("oppomarket://details?packagename=$packageName")
                                 "vivo" -> add("vivomarket://details?id=$packageName")
                                 "yyb" -> add("tmast://appdetails?pname=$packageName")
+                                // foss 上架 F-Droid, 不上 Play 商店
+                                "foss" -> add("https://f-droid.org/packages/$packageName")
                             }
                             add("market://details?id=$packageName")
-                            add("https://play.google.com/store/apps/details?id=$packageName")
+                            if (flavor != "foss") {
+                                add("https://play.google.com/store/apps/details?id=$packageName")
+                            }
                         }
                         var opened = false
                         for (uri in uris) {
@@ -472,6 +476,24 @@ fun ProfileSettingItem(
                 themeIndex = themeIndex,
                 onclick = {
                     appComponent.jumpToAppStoreDetailUpdate()
+                },
+                settingsComponent = settingsComponent
+            )
+        }
+
+        ProfileSetting.SupportDeveloper -> {
+            // Ko-fi 打赏页(公开链接), 仅海外渠道可见(ProfileScreen 按 isOverseas 过滤)
+            BaseSettingItem(
+                modifier,
+                setting = setting,
+                themeIndex = themeIndex,
+                onclick = {
+                    runCatching {
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, "https://ko-fi.com/wangzhishou".toUri())
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        )
+                    }
                 },
                 settingsComponent = settingsComponent
             )

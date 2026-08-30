@@ -1893,6 +1893,9 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
 
     <string name="profile_item_open_source">Open Source Project</string>
     <string name="profile_item_open_source_sub">View the source code — stars &amp; feedback welcome</string>
+    <!-- 仅海外渠道(google / foss)展示的打赏入口, 跳 Ko-fi -->
+    <string name="profile_item_support_dev">Support the Developer</string>
+    <string name="profile_item_support_dev_sub">Buy me a coffee on Ko-fi ☕</string>
     <string name="profile_item_open_source_latest">You\'re on the latest version</string>
     <string name="profile_item_open_source_update">New version %1$s available</string>
 

@@ -1871,6 +1871,9 @@
     <string name="blessing_wall_sub">每日一点 · 好运相伴</string>
     <string name="profile_item_open_source">开源项目</string>
     <string name="profile_item_open_source_sub">查看源码，欢迎 Star 与反馈</string>
+    <!-- 仅海外渠道(google / foss)展示的打赏入口, 跳 Ko-fi -->
+    <string name="profile_item_support_dev">支持开发者</string>
+    <string name="profile_item_support_dev_sub">请作者喝杯咖啡 ☕</string>
     <string name="profile_item_open_source_latest">当前已是最新版本</string>
     <string name="profile_item_open_source_update">发现新版本 %1$s</string>
 </resources>

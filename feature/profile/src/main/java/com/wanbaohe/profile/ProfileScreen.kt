@@ -46,6 +46,7 @@ import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.core.R
 import com.shifenmiao.login.viewModel.LoginComponent
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -135,6 +136,8 @@ fun ProfileContent(
     // 支付全关的渠道(google)隐藏"请喝咖啡"购买入口; QQ/微信社区入口仅国内渠道展示
     val showDonateSetting = channelConfig.enablePayment
     val showCommunitySetting = channelConfig.enableWechat
+    // Ko-fi 打赏入口仅海外渠道(google / foss)展示; 国内渠道走 Donate 积分/支付体系
+    val showSupportDevSetting = FlavorType.fromName().isOverseas
     val itemModifier = Modifier
     val loginState = LocalLoginState.current
     val onNavigate = LocalOnNavigate.current
@@ -211,7 +214,8 @@ fun ProfileContent(
                                 group.settingsList.filter {
                                     (showLanguageSetting || it != ProfileSetting.LanguageSetting) &&
                                         (showDonateSetting || it != ProfileSetting.Donate) &&
-                                        (showCommunitySetting || it != ProfileSetting.Community)
+                                        (showCommunitySetting || it != ProfileSetting.Community) &&
+                                        (showSupportDevSetting || it != ProfileSetting.SupportDeveloper)
                                 }
                             }
                             itemsList.forEachIndexed { index, setting ->
