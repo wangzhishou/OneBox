@@ -425,6 +425,9 @@ android {
 androidComponents {
     onVariants(selector().withBuildType("release")) { variant ->
         val flavorName = variant.productFlavors.firstOrNull()?.second
+        // foss (F-Droid) 渠道在缺少 keystore.properties 的环境(F-Droid 构建服务器)不签名,
+        // 产出 unsigned APK 交由 F-Droid 统一签名; 本地/CI 有签名文件时行为不变
+        if (flavorName == "foss" && !keystorePropertiesFile.exists()) return@onVariants
         val googleKeystoreFile = rootProject.file("keystore-google.properties")
         val targetConfig = if (flavorName == "google" && googleKeystoreFile.exists()) {
             android.signingConfigs.getByName("google")
