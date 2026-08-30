@@ -619,7 +619,7 @@ private fun UnavailableEngineBanner(
                 )
                 Text(
                     text = stringResource(
-                        if (FlavorType.fromName() == FlavorType.GOOGLE) {
+                        if (FlavorType.fromName().isOverseas) {
                             R.string.ai_chat_engine_unavailable_banner_desc_overseas
                         } else {
                             R.string.ai_chat_engine_unavailable_banner_desc

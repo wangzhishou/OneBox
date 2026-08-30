@@ -268,14 +268,14 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
     }
 
     /**
-     * Google 渠道预制引擎的路由策略：
+     * 海外渠道(google / foss)预制引擎的路由策略：
      * - [AiEngineConfig.googleProxyEngines]（MiMo/DeepSeek）为例外：保留 Go 网关代理
      *   （走自家网关按积分计费），并清空内置 token 强制走代理
-     *   （否则 google 渠道"有 token 即可直连"会绕过积分门槛）；
+     *   （否则海外渠道"有 token 即可直连"会绕过积分门槛）；
      * - 其余引擎不走 Go 网关代理（与服务端种子一致），入库前清空代理路由，用户自带 token 直连。
      */
     private fun AiEngine.withGoogleFlavorRoutePolicy(): AiEngine {
-        if (FlavorType.fromName() != FlavorType.GOOGLE) return this
+        if (!FlavorType.fromName().isOverseas) return this
         return if (AiEngineConfig.googleProxyEngines.any { name.equals(it, ignoreCase = true) }) {
             copy(authorizationCode = "")
         } else {

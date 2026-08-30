@@ -6,6 +6,7 @@ package com.shifenmiao.core.constants
  * 实际值由 flavor sourceSet 决定：
  *   - src/domestic/.../UrlConstantsFlavor.kt   国内渠道（onebox / xiaomi / yyb / oppo / vivo / huawei）
  *   - src/google/.../UrlConstantsFlavor.kt     Google Play 渠道
+ *   - src/foss/.../UrlConstantsFlavor.kt       F-Droid 渠道（海外形态, 域名硬编码, token 为空）
  *
  * 想看/改哪个渠道的配置，直接打开对应 sourceSet 下的 UrlConstantsFlavor.kt 即可。
  */

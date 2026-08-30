@@ -55,7 +55,7 @@ import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsManager
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.logger.makeLog
-import com.tencent.mm.opensdk.constants.ConstantsAPI
+import com.shifenmiao.model.wechat.common.WechatProtocol
 import dagger.Lazy
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -322,7 +322,7 @@ class AppComponent @AssistedInject internal constructor(
 
     fun onLoginEvent(event: WechatEvent) {
         val resp = event.message
-        if (resp.type == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
+        if (resp.type == WechatProtocol.COMMAND_LAUNCH_WX_MINIPROGRAM) {
             _uiState.value = uiState.value.copy(
                 launchMiniProResp = true
             )

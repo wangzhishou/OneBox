@@ -253,7 +253,7 @@ object ActionUtils {
             onSuccess.invoke()
             return
         }
-        if (FlavorType.fromName() == FlavorType.GOOGLE &&
+        if (FlavorType.fromName().isOverseas &&
             !conversation.engine.hasProxyRouteConfigured()
         ) {
             onFailure.invoke(resourceProvider.getString(R.string.ai_chat_engine_unavailable_toast))

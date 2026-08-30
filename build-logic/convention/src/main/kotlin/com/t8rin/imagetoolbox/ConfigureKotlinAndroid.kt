@@ -64,6 +64,9 @@ internal fun Project.configureKotlinAndroid(
             createFlavor("vivo")
             createFlavor("huawei")
             createFlavor("google")
+            // F-Droid 渠道: 各 library 模块借此获得 foss flavor 与 src/foss sourceSet,
+            // 专有 SDK 的 stub 实现放在 src/foss/java 下
+            createFlavor("foss")
         }
 
         compileOptions.apply {

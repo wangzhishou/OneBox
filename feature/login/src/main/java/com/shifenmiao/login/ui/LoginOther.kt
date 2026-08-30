@@ -2,8 +2,6 @@
 
 package com.shifenmiao.login.ui
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,15 +28,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.shifenmiao.base.channel.ChannelConfig
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
 import com.shifenmiao.base.ui.BoxHorizontalDivider
 import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.base.ui.button.SecondaryButton
-import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.base.utils.CoreUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.model.login.LoginState
@@ -72,36 +66,10 @@ fun LoginOther(
         loginComponent.loginByWechat()
     }
 
-    val googleSignInClient = remember {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("335920196432-dmphr6uuv6rjhvf0gh8cg3qjt23ivccu.apps.googleusercontent.com")
-            .requestEmail()
-            .build()
-        GoogleSignIn.getClient(context, gso)
-    }
-
-    val googleSignInLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            val idToken = account?.idToken
-            if (idToken != null) {
-                loginComponent.loginByGoogle(idToken)
-            } else {
-                ActionUtils.showToast("Google login failed: no id token")
-            }
-        } catch (e: ApiException) {
-            if (e.statusCode != 12501) { // 12501 = USER_CANCELED
-                ActionUtils.showToast("Google login failed: ${e.statusCode}")
-            }
-        }
-    }
-
-    val googleConfirmFunction = {
-        googleSignInLauncher.launch(googleSignInClient.signInIntent)
-    }
+    // GMS 相关代码按 flavor 隔离在 src/google (真实) 与 src/nogms (stub), main 不 import GMS 类
+    val googleConfirmFunction = rememberGoogleSignInAction(
+        onIdToken = { idToken -> loginComponent.loginByGoogle(idToken) }
+    )
 
     Column(
         modifier = Modifier

@@ -925,12 +925,12 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     private suspend fun ensureLoginAndCheckPointsForRound(engine: com.shifenmiao.model.ai.AiEngine): Boolean {
-        // Google 渠道: 自带 token 可直连的引擎免登录免积分直接聊
-        if (FlavorType.fromName() == FlavorType.GOOGLE && engine.canChatDirectly()) {
+        // 海外渠道(google / foss): 自带 token 可直连的引擎免登录免积分直接聊
+        if (FlavorType.fromName().isOverseas && engine.canChatDirectly()) {
             return true
         }
-        // Google 渠道: 无代理路由时登录也无意义(网关无对应代理), 直接失败并提示去设置
-        if (FlavorType.fromName() == FlavorType.GOOGLE && !engine.hasProxyRouteConfigured()) {
+        // 海外渠道(google / foss): 无代理路由时登录也无意义(网关无对应代理), 直接失败并提示去设置
+        if (FlavorType.fromName().isOverseas && !engine.hasProxyRouteConfigured()) {
             ActionUtils.showError(R.string.ai_chat_engine_unavailable_toast)
             return false
         }

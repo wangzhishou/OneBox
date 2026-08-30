@@ -61,12 +61,12 @@ import com.shifenmiao.login.state.forgotPasswordConfirmPasswordMismatchErrorStat
 import com.shifenmiao.login.state.forgotPasswordEmailEmptyErrorState
 import com.shifenmiao.login.state.forgotPasswordNewPasswordEmptyErrorState
 import com.shifenmiao.model.wechat.Wechat
+import com.shifenmiao.model.wechat.common.WechatProtocol
 import com.shifenmiao.model.wechat.event.WechatEvent
 import com.shifenmiao.network.api.ApiService
 import com.shifenmiao.network.utils.NetworkUtils
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.logger.makeLog
-import com.tencent.mm.opensdk.constants.ConstantsAPI
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -205,10 +205,10 @@ class LoginComponent @AssistedInject internal constructor(
     fun onWechatLoginEvent(event: WechatEvent) {
         CoroutineScope(defaultDispatcher).launch {
             val resp = event.message
-            if (resp.type == ConstantsAPI.COMMAND_SENDAUTH) {
-                if (resp.errCode == com.tencent.mm.opensdk.modelbase.BaseResp.ErrCode.ERR_OK) {
+            if (resp.type == WechatProtocol.COMMAND_SENDAUTH) {
+                if (resp.errCode == WechatProtocol.ERR_OK) {
                     wechatLogin(resp.code)
-                } else if (resp.errCode == com.tencent.mm.opensdk.modelbase.BaseResp.ErrCode.ERR_AUTH_DENIED || resp.errCode == com.tencent.mm.opensdk.modelbase.BaseResp.ErrCode.ERR_USER_CANCEL) {
+                } else if (resp.errCode == WechatProtocol.ERR_AUTH_DENIED || resp.errCode == WechatProtocol.ERR_USER_CANCEL) {
                     endLogin()
                 }
             } else {

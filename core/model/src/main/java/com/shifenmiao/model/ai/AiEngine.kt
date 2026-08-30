@@ -80,12 +80,12 @@ data class AiEngine(
 
     /**
      * 是否可以直连官方 API 聊天。
-     * Google 渠道：用户自带 token 即可直连，无需先通过设置里的手动连通性测试；
+     * 海外渠道(google / foss)：用户自带 token 即可直连，无需先通过设置里的手动连通性测试；
      * 其他渠道维持原有语义（必须 isDetestPassed）。
      */
     fun canChatDirectly(): Boolean {
         return hasDirectConnectionReady() ||
-            (FlavorType.fromName() == FlavorType.GOOGLE && hasOwnToken())
+            (FlavorType.fromName().isOverseas && hasOwnToken())
     }
 
     fun hasProxyRouteConfigured(): Boolean {

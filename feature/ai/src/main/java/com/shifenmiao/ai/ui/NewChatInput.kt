@@ -224,7 +224,7 @@ fun NewChatInput(
             text = {
                 Text(
                     text = stringResource(
-                        if (FlavorType.fromName() == FlavorType.GOOGLE) {
+                        if (FlavorType.fromName().isOverseas) {
                             R.string.ai_chat_engine_unavailable_dialog_message_overseas
                         } else {
                             R.string.ai_chat_engine_unavailable_dialog_message

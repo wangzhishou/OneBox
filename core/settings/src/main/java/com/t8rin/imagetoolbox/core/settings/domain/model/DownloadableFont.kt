@@ -70,10 +70,10 @@ object DownloadableFonts {
 
     /**
      * 当前渠道的镜像排序(下载按序回退):国内渠道 R2 优先(GitHub 系国内不可达),
-     * google 渠道保持 jsDelivr/GitHub 优先、R2 最后兜底
+     * 海外渠道(google / foss)保持 jsDelivr/GitHub 优先、R2 最后兜底
      */
     fun DownloadableFont.urlsForCurrentFlavor(): List<String> {
         val r2Url = "$R2_FONT_BASE/$fileName"
-        return if (BuildConfig.FLAVOR == "google") urls + r2Url else listOf(r2Url) + urls
+        return if (BuildConfig.FLAVOR == "google" || BuildConfig.FLAVOR == "foss") urls + r2Url else listOf(r2Url) + urls
     }
 }

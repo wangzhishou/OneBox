@@ -71,6 +71,14 @@ fun injectFirebaseResValues(buildType: ApplicationBuildType, packageName: String
         ?.let { buildType.resValue("string", "google_storage_bucket", it) }
 }
 
+// Firebase 资源只有 google flavor 的 SDK 会读取; 显式请求其他渠道(含 foss)的构建时跳过注入,
+// 避免 foss/国内 APK 携带无用的 google_app_id 等资源. 无任务名(IDE 同步)或全量 assemble 时
+// 默认注入, 保证 google 变体永远拿到资源.
+val nonGoogleAppFlavorTaskMarkers = listOf("Onebox", "Xiaomi", "Yyb", "Oppo", "Vivo", "Huawei", "Foss")
+val firebaseResValuesEnabled = gradle.startParameter.taskNames.none { taskName ->
+    nonGoogleAppFlavorTaskMarkers.any { taskName.contains(it) }
+}
+
 // Crashlytics 反混淆: mapping_file_id 正常由 Crashlytics 插件每次构建生成并注入,
 // 这里按 versionName+versionCode+ABI 确定性生成 (UUID v3), 同一版本重复构建/上传幂等.
 // 不同 ABI 的 R8 mapping 可能不同, 故按 ABI 区分 id. 构建后由
@@ -200,6 +208,46 @@ android {
         buildConfigField("boolean", "SHOW_LANGUAGE_SETTING", "true")
     }
 
+    // F-Droid 渠道: 完全 FOSS 构建, 海外功能形态对齐 google 渠道,
+    // 但不携带任何专有 SDK (微信/支付宝/华为/GMS/Play Billing/和风 jar 全部关闭).
+    // 构建环境(F-Droid)没有 keystore.properties, 后端域名是公开信息, 直接硬编码;
+    // 游客 token 在 core/r/src/foss 的 UrlConstantsFlavor 硬编码(与 google 渠道同款低权限值, 有意公开);
+    // AI 厂商密钥 / 和风凭据 / googlePlacesApiKey 等注入为空串, 对应功能静默降级.
+    productFlavors.create("foss") {
+        manifestPlaceholders["flavorName"] = "foss"
+        buildConfigField("String", "FLAVOR", "\"foss\"")
+        dimension = "app"
+        // 海外包: 与 google 渠道一致的多语言集合
+        androidResources {
+            localeFilters += listOf(
+                "en",        // 英文 (默认)
+                "zh-rCN",    // 简体中文
+                "es",        // 西班牙语
+                "pt-rBR",    // 巴西葡萄牙语
+                "in",        // 印尼语
+                "hi",        // 印地语
+                "ru",        // 俄语
+                "tr",        // 土耳其语
+                "ja",        // 日语
+                "ko",        // 韩语
+                "fil",       // 菲律宾语
+                "de",        // 德语
+            )
+        }
+        // 硬编码海外生产域名(公开信息), 不依赖 keystore.properties
+        buildConfigField("String", "API_BASE_URL", "\"https://api.oneboxable.com\"")
+        buildConfigField("String", "WEB_BASE_URL", "\"https://www.oneboxable.com/\"")
+        buildConfigField("String", "PRIVACY_POLICY_URL", "\"https://www.oneboxable.com/privacy/global.html\"")
+        buildConfigField("String", "USER_AGREEMENT_URL", "\"https://www.oneboxable.com/agreement/global.html\"")
+        buildConfigField("boolean", "ENABLE_WECHAT", "false")
+        buildConfigField("boolean", "ENABLE_ALIPAY", "false")
+        buildConfigField("boolean", "ENABLE_HMS", "false")
+        buildConfigField("boolean", "ENABLE_GMS", "false")
+        buildConfigField("boolean", "ENABLE_PLAY_BILLING", "false")
+        // 海外多语言包, 展示语言切换入口
+        buildConfigField("boolean", "SHOW_LANGUAGE_SETTING", "true")
+    }
+
     // 3. 【关键修改】手动定义架构风味 (Abi Dimension)，指定 abiFilters
     // 不要使用上面的 createFlavor 函数，因为我们需要定制 ndk 块
     productFlavors {
@@ -284,8 +332,8 @@ android {
             // authority 由 Context.fileProviderAuthority 按 applicationId 派生, 此处须保持同值
             manifestPlaceholders["fileProviderAuthority"] = "com.shifenmiao.app.debug.fileprovider"
             // 未应用 google-services 插件, 手动注入 Firebase 资源 (.debug client);
-            // 国内 flavor 无 Firebase, 资源不会被读取
-            injectFirebaseResValues(this, "com.shifenmiao.app.debug")
+            // 仅 google flavor 构建时注入, 国内/foss 包无 Firebase
+            if (firebaseResValuesEnabled) injectFirebaseResValues(this, "com.shifenmiao.app.debug")
         }
         release {
             isMinifyEnabled = true
@@ -302,7 +350,7 @@ android {
             // authority 由 Context.fileProviderAuthority 按 applicationId 派生, 此处须保持同值
             manifestPlaceholders["fileProviderAuthority"] = "com.shifenmiao.app.fileprovider"
             // 同上: 匹配 com.shifenmiao.app client
-            injectFirebaseResValues(this, "com.shifenmiao.app")
+            if (firebaseResValuesEnabled) injectFirebaseResValues(this, "com.shifenmiao.app")
         }
     }
 

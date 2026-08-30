@@ -33,10 +33,10 @@ import com.shifenmiao.pay.PaymentResultCallback
 import com.shifenmiao.pay.alipay.Alipay
 import com.shifenmiao.pay.google.GooglePlayBilling
 import com.shifenmiao.pay.wechat.WechatPay
+import com.shifenmiao.model.wechat.common.WechatProtocol
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
-import com.tencent.mm.opensdk.constants.ConstantsAPI
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -134,7 +134,7 @@ class PayComponent @AssistedInject internal constructor(
                 productId = product.productId,
                 points = product.points,
                 title = details.name,
-                formattedPrice = details.oneTimePurchaseOfferDetails?.formattedPrice.orEmpty(),
+                formattedPrice = details.formattedPrice,
             )
         }
     }
@@ -168,7 +168,7 @@ class PayComponent @AssistedInject internal constructor(
     fun onWechatPayEvent(event: WechatEvent) {
         componentScope.launch {
             val resp = event.message
-            if (resp.type == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            if (resp.type == WechatProtocol.COMMAND_PAY_BY_WX) {
                 if (_selectedPayment.value is WechatPay) {
                     _selectedPayment.value.onPaySuccess(
                         WechatPayResult(

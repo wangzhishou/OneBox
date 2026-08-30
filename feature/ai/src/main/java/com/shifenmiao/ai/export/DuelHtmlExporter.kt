@@ -84,8 +84,8 @@ class DuelHtmlExporter {
         val headerHtml = buildHeaderHtml(conversation)
         val promptsHtml = buildPromptsHtml(config)
         val messagesHtml = buildMessagesHtml(sortedMessages, config, aiEngineCatalogManager)
-        // "AI 生成内容"显式标识是国内合规要求,海外(google)渠道不展示
-        val noticeBannerHtml = if (FlavorType.fromName() == FlavorType.GOOGLE) {
+        // "AI 生成内容"显式标识是国内合规要求,海外(google / foss)渠道不展示
+        val noticeBannerHtml = if (FlavorType.fromName().isOverseas) {
             ""
         } else {
             val notice = escapeHtml(AppContext.getString(R.string.ai_content_notice_short))

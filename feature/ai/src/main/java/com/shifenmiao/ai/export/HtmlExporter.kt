@@ -99,8 +99,8 @@ class HtmlExporter {
         val darkModeClass = if (isDark) "dark" else ""
         val promptHtml = buildPromptHtml(conversation, colorScheme)
         val messagesHtml = buildMessagesHtml(messages, aiEngineCatalogManager, conversation)
-        // "AI 生成内容"显式标识是国内合规要求,海外(google)渠道不展示
-        val noticeBannerHtml = if (FlavorType.fromName() == FlavorType.GOOGLE) {
+        // "AI 生成内容"显式标识是国内合规要求,海外(google / foss)渠道不展示
+        val noticeBannerHtml = if (FlavorType.fromName().isOverseas) {
             ""
         } else {
             val contentNotice = escapeHtml(AppContext.getString(R.string.ai_content_notice_short))

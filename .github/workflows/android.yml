@@ -13,6 +13,7 @@ on:
         default: google
         options:
           - google
+          - foss
           - xiaomi
           - yyb
           - oppo
@@ -61,10 +62,11 @@ jobs:
       should_publish_release: ${{ steps.compute.outputs.should_publish_release }}
       release_tag: ${{ steps.compute.outputs.release_tag }}
 
-    # tag 推送: Google 渠道出 universal + arm64 两个包; 手动触发: 单个所选变体
+    # tag 推送: Google + foss 渠道各出 universal + arm64 两个包; 手动触发: 单个所选变体
     strategy:
       fail-fast: false
       matrix:
+        app_flavor: ${{ github.event_name == 'push' && fromJSON('["google","foss"]') || fromJSON(format('["{0}"]', inputs.app_flavor || 'google')) }}
         abi_flavor: ${{ github.event_name == 'push' && fromJSON('["universal","arm64"]') || fromJSON(format('["{0}"]', inputs.abi_flavor || 'universal')) }}
 
     runs-on: ubuntu-latest
@@ -107,7 +109,7 @@ jobs:
         id: compute
         shell: bash
         env:
-          REQUESTED_APP_FLAVOR: ${{ github.event_name == 'workflow_dispatch' && inputs.app_flavor || env.DEFAULT_APP_FLAVOR }}
+          REQUESTED_APP_FLAVOR: ${{ matrix.app_flavor }}
           REQUESTED_ABI_FLAVOR: ${{ matrix.abi_flavor }}
           REQUESTED_BUILD_TYPE: ${{ github.event_name == 'workflow_dispatch' && inputs.build_type || env.DEFAULT_BUILD_TYPE }}
           REQUESTED_PUBLISH_RELEASE: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_release || 'false' }}
@@ -318,7 +320,7 @@ jobs:
         id: upload-signed-apk
         with:
           # matrix 各分支产物名必须唯一 (artifact v4 不可变), 发布时按前缀归集
-          name: built-apk-${{ matrix.abi_flavor }}
+          name: built-apk-${{ matrix.app_flavor }}-${{ matrix.abi_flavor }}
           path: ${{ steps.package_apk.outputs.output_apk_path }}
 
 

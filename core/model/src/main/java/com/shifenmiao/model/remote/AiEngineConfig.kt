@@ -77,7 +77,7 @@ object AiEngineConfig {
             FlavorType.VIVO,
             FlavorType.HUAWEI -> defaultEnabledEngines
 
-            // GOOGLE 及未显式映射的新渠道: 回退到海外可用的最小引擎集,
+            // GOOGLE / FOSS 及未显式映射的新渠道: 回退到海外可用的最小引擎集,
             // 避免新增海外渠道漏配时静默拿到海外不可访问的国内引擎
             else -> googleEnabledEngines
         }
@@ -208,6 +208,7 @@ object AiEngineConfig {
             FlavorType.VIVO -> true
             FlavorType.YYB -> true
             FlavorType.GOOGLE -> true
+            FlavorType.FOSS -> true
             else -> false
         }
     }
@@ -220,8 +221,8 @@ object AiEngineConfig {
      */
     fun getCapabilities(flavorType: FlavorType = FlavorType.fromName()): AiChannelCapabilities {
         return when (flavorType) {
-            // Google Play: 无国内账号体系限制, 用户自带 token, 全部放开
-            FlavorType.GOOGLE -> AiChannelCapabilities(
+            // 海外渠道(google / foss): 无国内账号体系限制, 用户自带 token, 全部放开
+            FlavorType.GOOGLE, FlavorType.FOSS -> AiChannelCapabilities(
                 canAddEngine = true,
                 canEditToken = true,
                 canEditUrl = true,

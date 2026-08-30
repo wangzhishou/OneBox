@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    F-Droid (foss) 渠道专属 Manifest
+    - 与 main/AndroidManifest.xml 合并: 这里只声明差异
+    - foss 构建不含微信 SDK, 移除微信回调 Activity 入口
+    - foss 无站内下载 APK 自更新逻辑, 移除 REQUEST_INSTALL_PACKAGES (同 google 渠道)
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove" />
+
+    <application>
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            tools:node="remove" />
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            tools:node="remove" />
+
+    </application>
+
+</manifest>

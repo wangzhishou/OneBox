@@ -20,8 +20,8 @@ fun AIContentNotice(
     isVisible: Boolean,
     modifier: Modifier = Modifier
 ) {
-    // "AI 生成内容"声明是国内合规要求,海外(google)渠道不展示
-    val showNotice = isVisible && FlavorType.fromName() != FlavorType.GOOGLE
+    // "AI 生成内容"声明是国内合规要求,海外(google / foss)渠道不展示
+    val showNotice = isVisible && !FlavorType.fromName().isOverseas
     AnimatedVisibility(
         modifier = modifier.padding(top = 20.dp, bottom = 30.dp),
         visible = showNotice,
