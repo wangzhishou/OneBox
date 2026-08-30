@@ -328,10 +328,11 @@ android {
             // 注意不能只看 keystore.properties 是否存在: CI 的 debug 构建也会生成该文件
             // (仅含域名/token 注入配置, 无 storeFile), 此时 release 签名配置的 storeFile
             // 是占位 defaultStoreFile, validateSigning<Variant>Debug 会因找不到文件而失败.
-            val releaseSigning = signingConfigs.getByName("release")
-            if (releaseSigning.storeFile?.exists() == true) {
-                signingConfig = releaseSigning
-            }
+            // findByName 而非 getByName: fdroidserver 构建前会整体移除 signingConfigs 块,
+            // 该环境下 findByName 返回 null 优雅回退, getByName 会直接抛异常
+            signingConfigs.findByName("release")
+                ?.takeIf { it.storeFile?.exists() == true }
+                ?.let { signingConfig = it }
             applicationIdSuffix = ".debug"
             // authority 由 Context.fileProviderAuthority 按 applicationId 派生, 此处须保持同值
             manifestPlaceholders["fileProviderAuthority"] = "com.shifenmiao.app.debug.fileprovider"
@@ -428,13 +429,19 @@ androidComponents {
         // foss (F-Droid) 渠道在缺少 keystore.properties 的环境(F-Droid 构建服务器)不签名,
         // 产出 unsigned APK 交由 F-Droid 统一签名; 本地/CI 有签名文件时行为不变
         if (flavorName == "foss" && !keystorePropertiesFile.exists()) return@onVariants
-        val googleKeystoreFile = rootProject.file("keystore-google.properties")
-        val targetConfig = if (flavorName == "google" && googleKeystoreFile.exists()) {
-            android.signingConfigs.getByName("google")
+        val configName = if (flavorName == "google" && rootProject.file("keystore-google.properties").exists()) {
+            "google"
         } else {
-            android.signingConfigs.getByName("release")
+            "release"
         }
-        variant.signingConfig.setConfig(targetConfig)
+        // findByName + let 写法是为了兼容 fdroidserver 的签名清除器: 它构建前按行删除
+        // signingConfigs 相关代码(含 android.signingConfigs. 且不带 { 的行整行删除),
+        // 此写法在清理后仍可编译; 配置块被移除时 findByName 返回 null, 优雅跳过签名
+        android.signingConfigs.let { configs ->
+            configs.findByName(configName)
+        }?.let { targetConfig ->
+            variant.signingConfig.setConfig(targetConfig)
+        }
     }
 }
 
