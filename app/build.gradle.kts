@@ -419,6 +419,12 @@ android {
         }
     }
 
+    // 不往 APK/AAB 里写 Play 依赖元数据签名块(Dependency metadata):
+    // F-Droid 扫描器视其为违规块, 可复现构建校验会拒绝
+    dependenciesInfo {
+        includeInApk = false
+    }
+
 
     buildFeatures {
         resValues = true
