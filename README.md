@@ -10,8 +10,11 @@
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
   [![Google Play](https://img.shields.io/badge/Google%20Play-OneBox-green?logo=google-play)](https://play.google.com/store/apps/details?id=com.shifenmiao.app)
+  [![F-Droid](https://img.shields.io/badge/F--Droid-in%20review-blue?logo=f-droid)](https://f-droid.org/packages/com.shifenmiao.app)
   [![Ko-fi](https://img.shields.io/badge/Ko--fi-donate-ff5e5b?logo=ko-fi&logoColor=white)](https://ko-fi.com/wangzhishou)
 </div>
+
+> **Built on [ImageToolbox](https://github.com/T8RIN/ImageToolbox).** OneBox started as a fork of T8RIN's image engine and grew into a full app: the image-processing core deliberately stays close to upstream so the diff stays reviewable, while the agent runtime, the 90+ tool screens and the app shell are new work. Upstream Apache-2.0 notices are preserved in the files they came from.
 
 ## Screenshots
 
@@ -98,6 +101,8 @@ It understands, acts, and reports back — in one flow.
 | `fastlane/` | Google Play listing copy & assets (fastlane supply format) |
 
 ## Architecture Entry Points
+
+Paths beginning with `com.t8rin.*` are inherited from upstream ImageToolbox and left unchanged on purpose, so the diff against upstream stays reviewable. Everything written for this project lives under `com.wanbaohe.*` / `com.shifenmiao.*`.
 
 - **App entry**: `app/src/main/java/com/shifenmiao/app/AppActivity.kt`
 - **Runtime navigation root**: `feature/app/src/main/java/com/t8rin/imagetoolbox/feature/root/presentation/screenLogic/RootComponent.kt`
@@ -212,4 +217,4 @@ Every bit of support turns directly into better features and a more stable servi
 
 ## License
 
-Apache-2.0, see `LICENSE`. This project is built on [ImageToolbox](https://github.com/T8RIN/ImageToolbox) (T8RIN, Apache-2.0); upstream copyright notices are preserved in source files.
+Apache-2.0, see `LICENSE`. Upstream ImageToolbox code (T8RIN, Apache-2.0) keeps its original copyright notices in the files it appears in — see the note at the top of this README.
