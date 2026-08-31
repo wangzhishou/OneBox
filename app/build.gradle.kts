@@ -285,6 +285,19 @@ android {
             enableV1Signing = true
         }
 
+        // foss (F-Droid) 渠道签名: 复用 release keystore, 但关闭 V1 签名.
+        // F-Droid 可复现构建用 apksigcopier 把上游签名复制到重建的 unsigned APK 上比对,
+        // 无法处理 V1 签名注入的 META-INF/* 条目; foss 仅海外分发(minSdk 24), V2 足够.
+        create("foss") {
+            keyAlias = keystoreProperties["keyAlias"] as? String ?: "defaultKeyAlias"
+            keyPassword = keystoreProperties["keyPassword"] as? String ?: "defaultKeyPassword"
+            storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
+                ?: file("defaultStoreFile")
+            storePassword = keystoreProperties["storePassword"] as? String ?: "defaultStorePassword"
+            enableV1Signing = false
+            enableV2Signing = true
+        }
+
         // Google Play 渠道独立签名: 国内 / Google 各自一把 keystore,
         // 任何一把泄露不会影响另一边的发布能力. 读取 keystore-google.properties,
         // 不存在时回退到 release 配置, 保持向后兼容.
@@ -429,10 +442,11 @@ androidComponents {
         // foss (F-Droid) 渠道在缺少 keystore.properties 的环境(F-Droid 构建服务器)不签名,
         // 产出 unsigned APK 交由 F-Droid 统一签名; 本地/CI 有签名文件时行为不变
         if (flavorName == "foss" && !keystorePropertiesFile.exists()) return@onVariants
-        val configName = if (flavorName == "google" && rootProject.file("keystore-google.properties").exists()) {
-            "google"
-        } else {
-            "release"
+        val configName = when {
+            // foss 走独立签名配置(V2-only), 见 signingConfigs.foss 注释
+            flavorName == "foss" -> "foss"
+            flavorName == "google" && rootProject.file("keystore-google.properties").exists() -> "google"
+            else -> "release"
         }
         // findByName + let 写法是为了兼容 fdroidserver 的签名清除器: 它构建前按行删除
         // signingConfigs 相关代码(含 android.signingConfigs. 且不带 { 的行整行删除),
