@@ -119,7 +119,7 @@ animationCore = "1.13.0-alpha01"
 pdfbox = "2.0.27.0"
 flinger = "2.0.2"
 opencv = "5.0.0.1"
-coilResvg = "1.0.0"
+coilResvg = "1.1.1"
 [libraries]
 coil-resvg = { module = "com.hashsequence:coil-resvg", version.ref = "coilResvg" }
 flinger = { module = "com.github.iamjosephmj.flinger:flinger", version.ref = "flinger" }
