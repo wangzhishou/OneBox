@@ -4,7 +4,7 @@
 
 输入要求：
 - 使用 `presentation` 指定展示样式：dialog 或 bottom_sheet。
-- 使用 `title` 和 `message` 提供上下文。
+- 使用 `title` 和 `message` 提供上下文。`message` 与每个问题的 `question` 文本支持 Markdown 语法（加粗、列表、链接等）。
 - 使用 `questions` 数组描述问题。**每个问题都必须放在 `questions` 数组里**，每项含：
   - `name`: 输出 answers 的字段名（snake_case）
   - `header`: 短标题

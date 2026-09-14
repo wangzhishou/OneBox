@@ -20,5 +20,6 @@ afterEvaluate {
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
+    implementation(projects.libs.richtext)
     googleImplementation(libs.places)
 }

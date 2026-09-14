@@ -19,6 +19,7 @@ import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
+import com.wanbaohe.a2ui.catalog.LocalA2uiPlaceAboveAll
 import com.wanbaohe.a2ui.domain.model.A2uiComponent
 import com.wanbaohe.a2ui.domain.model.DynamicValue
 import kotlinx.serialization.json.JsonPrimitive
@@ -51,6 +52,7 @@ class DateInputRenderer @Inject constructor() : A2uiComponentRenderer {
         var showDateRangePicker by remember { mutableStateOf(false) }
         var showTimePicker by remember { mutableStateOf(false) }
         var pendingDateMillis by remember { mutableStateOf<Long?>(null) }
+        val placeAboveAll = LocalA2uiPlaceAboveAll.current
 
         GlassOutlinedTextField(
             value = currentValue,
@@ -101,6 +103,7 @@ class DateInputRenderer @Inject constructor() : A2uiComponentRenderer {
                     showDatePicker = false
                 },
                 onDismiss = { showDatePicker = false },
+                placeAboveAll = placeAboveAll,
             )
         }
 
@@ -119,6 +122,7 @@ class DateInputRenderer @Inject constructor() : A2uiComponentRenderer {
                     showDateRangePicker = false
                 },
                 onDismiss = { showDateRangePicker = false },
+                placeAboveAll = placeAboveAll,
             )
         }
 
@@ -144,6 +148,7 @@ class DateInputRenderer @Inject constructor() : A2uiComponentRenderer {
                     showTimePicker = false
                     pendingDateMillis = null
                 },
+                placeAboveAll = placeAboveAll,
             )
         }
     }

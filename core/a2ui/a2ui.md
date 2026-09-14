@@ -273,6 +273,10 @@ A2UI（Agent-to-User Interface）是 Google 发起的开放协议，让 AI 动�
 
 ## 展示控件
 
+### Markdown
+Markdown 富文本(标题、加粗、列表、代码块、链接等,与聊天消息同一渲染管线)。
+- `text`: Markdown 内容 (String)
+
 ### Text
 文本。
 - `text`: 内容 (String)

@@ -6,6 +6,7 @@ import com.wanbaohe.a2ui.catalog.builtin.display.BadgeRenderer
 import com.wanbaohe.a2ui.catalog.builtin.display.DividerRenderer
 import com.wanbaohe.a2ui.catalog.builtin.display.IconRenderer
 import com.wanbaohe.a2ui.catalog.builtin.display.ImageRenderer
+import com.wanbaohe.a2ui.catalog.builtin.display.MarkdownRenderer
 import com.wanbaohe.a2ui.catalog.builtin.display.TabsRenderer
 import com.wanbaohe.a2ui.catalog.builtin.display.TextRenderer
 import com.wanbaohe.a2ui.catalog.builtin.display.VideoRenderer
@@ -154,4 +155,7 @@ abstract class A2uiRendererModule {
 
     @Binds @IntoSet
     abstract fun bindBadgeRenderer(impl: BadgeRenderer): A2uiComponentRenderer
+
+    @Binds @IntoSet
+    abstract fun bindMarkdownRenderer(impl: MarkdownRenderer): A2uiComponentRenderer
 }

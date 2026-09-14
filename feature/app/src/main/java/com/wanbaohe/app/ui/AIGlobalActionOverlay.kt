@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionPresentation
+import com.shifenmiao.ai.agent.tool.ui.rememberAskUserA2uiFormState
 import com.shifenmiao.ai.component.GlobalToolUiHost
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
@@ -146,13 +147,10 @@ fun AIGlobalActionOverlay(
 
     // ── 结构化问询表单 ──────────────────────────────────────────────────────
     questionRequest?.let { waiting ->
-        val formState = remember(waiting.toolCallId) {
-            AIQuestionFormState()
-        }
+        val renderProvider = toolUiHost.a2uiRenderProvider
+        val formState = rememberAskUserA2uiFormState(renderProvider, waiting)
         val submitAnswers = {
-            toolUiHost.submitUserQuestionAnswers(
-                formState.buildAnswers(waiting.questions)
-            )
+            toolUiHost.submitUserQuestionAnswers(formState.buildAnswers())
         }
         val cancelQuestion = {
             toolUiHost.cancelUserQuestion()
@@ -162,6 +160,7 @@ fun AIGlobalActionOverlay(
             AgentUserQuestionPresentation.dialog -> AIQuestionDialog(
                 request = waiting,
                 formState = formState,
+                renderProvider = renderProvider,
                 onSubmit = submitAnswers,
                 onCancel = cancelQuestion
             )
@@ -169,6 +168,7 @@ fun AIGlobalActionOverlay(
             AgentUserQuestionPresentation.bottom_sheet -> AIQuestionBottomSheet(
                 request = waiting,
                 formState = formState,
+                renderProvider = renderProvider,
                 onSubmit = submitAnswers,
                 onCancel = cancelQuestion
             )

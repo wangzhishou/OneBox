@@ -80,7 +80,7 @@ class AskUserTool @Inject constructor(
             ),
             "question" to ToolParameterProperty(
                 type = "string",
-                description = "Full question text shown to the user."
+                description = "Full question text shown to the user. Supports Markdown."
             ),
             "required" to ToolParameterProperty(
                 type = "boolean",
@@ -149,7 +149,7 @@ class AskUserTool @Inject constructor(
             ),
             "message" to ToolParameterProperty(
                 type = "string",
-                description = "Optional body text shown above the questions."
+                description = "Optional body text shown above the questions. Supports Markdown."
             ),
             "questions" to ToolParameterProperty(
                 type = "array",

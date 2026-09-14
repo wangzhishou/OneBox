@@ -14,15 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionRequest
+import com.shifenmiao.ai.agent.tool.ui.AskUserA2uiForm
+import com.shifenmiao.ai.agent.tool.ui.AskUserA2uiFormState
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.wanbaohe.a2ui.catalog.A2uiRenderProvider
+import com.wanbaohe.a2ui.catalog.LocalA2uiPlaceAboveAll
 
 @Composable
 fun AIQuestionBottomSheet(
     request: AgentUserQuestionRequest,
-    formState: AIQuestionFormState,
+    formState: AskUserA2uiFormState,
+    renderProvider: A2uiRenderProvider,
     onSubmit: () -> Unit,
     onCancel: () -> Unit
 ) {
@@ -45,7 +50,7 @@ fun AIQuestionBottomSheet(
                 )
                 ConfirmButton(
                     onClick = onSubmit,
-                    enabled = formState.isValid(request.questions),
+                    enabled = formState.isValid,
                     text = request.confirmText.ifBlank { stringResource(R.string.agent_tool_confirm_approve) }
                 )
             }
@@ -71,12 +76,11 @@ fun AIQuestionBottomSheet(
                     )
                 }
             }
-            CompositionLocalProvider(LocalAIQuestionPickerPlaceAboveAll provides true) {
-                AIQuestionContent(
-                    request = request,
+            CompositionLocalProvider(LocalA2uiPlaceAboveAll provides true) {
+                AskUserA2uiForm(
                     formState = formState,
+                    renderProvider = renderProvider,
                     modifier = Modifier.fillMaxWidth(),
-                    useLazyColumn = true
                 )
             }
         }

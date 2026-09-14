@@ -7,6 +7,7 @@ import com.shifenmiao.ai.agent.tool.FolderPickerRequest
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.ToolConfirmationRequest
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.a2ui.catalog.A2uiRenderProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -27,7 +28,8 @@ import javax.inject.Singleton
 @Singleton
 class GlobalToolUiHost @Inject constructor(
     private val interactiveToolRuntime: InteractiveToolRuntime,
-    private val gson: Gson
+    private val gson: Gson,
+    val a2uiRenderProvider: A2uiRenderProvider
 ) {
 
     val confirmationRequest: StateFlow<ToolConfirmationRequest?> =

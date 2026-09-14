@@ -18,6 +18,7 @@ import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
+import com.wanbaohe.a2ui.catalog.LocalA2uiPlaceAboveAll
 import com.wanbaohe.a2ui.domain.model.A2uiComponent
 import com.wanbaohe.a2ui.domain.model.DynamicValue
 import kotlinx.serialization.json.JsonPrimitive
@@ -46,6 +47,7 @@ class TimeInputRenderer @Inject constructor() : A2uiComponentRenderer {
 
         var showTimePicker by remember { mutableStateOf(false) }
         var showTimeRangePicker by remember { mutableStateOf(false) }
+        val placeAboveAll = LocalA2uiPlaceAboveAll.current
 
         GlassOutlinedTextField(
             value = currentValue,
@@ -88,6 +90,7 @@ class TimeInputRenderer @Inject constructor() : A2uiComponentRenderer {
                     showTimePicker = false
                 },
                 onDismiss = { showTimePicker = false },
+                placeAboveAll = placeAboveAll,
             )
         }
 
@@ -110,6 +113,7 @@ class TimeInputRenderer @Inject constructor() : A2uiComponentRenderer {
                     showTimeRangePicker = false
                 },
                 onDismiss = { showTimeRangePicker = false },
+                placeAboveAll = placeAboveAll,
             )
         }
     }
