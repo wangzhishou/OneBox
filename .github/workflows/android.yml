@@ -75,7 +75,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
@@ -336,7 +336,7 @@ jobs:
 
     steps:
       # gh release create/upload 需要本地 git 仓库上下文
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
       - name: Download signed APK
