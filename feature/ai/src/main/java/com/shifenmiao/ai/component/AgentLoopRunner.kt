@@ -24,11 +24,14 @@ import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.ToolCall
 import com.shifenmiao.model.ai.ToolDefinition
+import com.shifenmiao.model.ai.Usage
 import com.shifenmiao.model.ai.unified.LlmBuiltinTool
 import com.shifenmiao.model.ai.unified.LlmMessage
 import com.shifenmiao.model.ai.unified.LlmTurnRequest
 import com.shifenmiao.storage.AIChatStorage
 import com.t8rin.logger.makeLog
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.onEach
 
 /**
  * Agent Loop 执行器 —— 负责 Agent Loop 的核心执行循环。
@@ -57,6 +60,7 @@ class AgentLoopRunner(
     private val remoteRequestProvider: RemoteRequestProvider,
     private val modeTransitionManager: ModeTransitionManager,
     private val applicationContext: Context,
+    private val agentLoopInterceptors: Set<AgentLoopInterceptor>,
 ) {
 
     /**
@@ -155,69 +159,87 @@ class AgentLoopRunner(
         var consumedAnswerSnapshot = ""
         var consumedReasoningSnapshot = ""
 
-        while (!agentLoopExecutor.isMaxIterationsReached(session)) {
-            val iterationResult = executeToolIteration(
-                session = session,
-                executionContext = executionContext,
-                activeTools = activeTools,
-                allToolCallResults = allToolCallResults,
-                allStepDescriptors = allStepDescriptors,
-                allStepStatuses = allStepStatuses,
-                allStepResults = allStepResults,
-                interactionOwnerId = interactionOwnerId,
-                callbackRouter = callbackRouter,
-                conversationId = conversationId,
-                completionIdProvider = completionIdProvider,
-                answerProvider = answerProvider,
-                reasoningContentProvider = reasoningContentProvider,
-                budgetTracker = budgetTracker,
-                callback = callback,
-                previousAnswerSnapshot = consumedAnswerSnapshot,
-                previousReasoningSnapshot = consumedReasoningSnapshot,
-                isShuttingDownProvider = isShuttingDownProvider,
-            ) ?: break
+        fun turnContext(iteration: Int) = AgentTurnContext(
+            conversation = conversation,
+            conversationId = conversationId,
+            completionId = completionIdProvider(),
+            iteration = iteration,
+        )
 
-            // 回合结束: 当前 answer / reasoning 已被 appendToolResultsToContext 消费过,
-            // 下一回合用此刻的值作为快照基线.
-            consumedAnswerSnapshot = answerProvider()
-            consumedReasoningSnapshot = reasoningContentProvider()
+        try {
+            while (!agentLoopExecutor.isMaxIterationsReached(session)) {
+                val iterationResult = executeToolIteration(
+                    session = session,
+                    executionContext = executionContext,
+                    activeTools = activeTools,
+                    allToolCallResults = allToolCallResults,
+                    allStepDescriptors = allStepDescriptors,
+                    allStepStatuses = allStepStatuses,
+                    allStepResults = allStepResults,
+                    interactionOwnerId = interactionOwnerId,
+                    callbackRouter = callbackRouter,
+                    conversationId = conversationId,
+                    completionIdProvider = completionIdProvider,
+                    answerProvider = answerProvider,
+                    reasoningContentProvider = reasoningContentProvider,
+                    budgetTracker = budgetTracker,
+                    callback = callback,
+                    previousAnswerSnapshot = consumedAnswerSnapshot,
+                    previousReasoningSnapshot = consumedReasoningSnapshot,
+                    isShuttingDownProvider = isShuttingDownProvider,
+                ) ?: break
 
-            activeTools = iterationResult.activeTools
-            executionContext.activeTools = activeTools
-            // Phase 3.2: 发送 follow-up 前检查上下文预算，必要时裁剪
-            if (budgetTracker.needsTruncation) {
-                val before = executionContext.contextMessages.size
-                val fitted = fitContextMessages(
-                    messages = executionContext.contextMessages,
-                    contextWindowTokens = conversation.engine.model.effectiveContextWindow(),
+                // 回合结束: 当前 answer / reasoning 已被 appendToolResultsToContext 消费过,
+                // 下一回合用此刻的值作为快照基线.
+                consumedAnswerSnapshot = answerProvider()
+                consumedReasoningSnapshot = reasoningContentProvider()
+
+                activeTools = iterationResult.activeTools
+                executionContext.activeTools = activeTools
+                // Phase 3.2: 发送 follow-up 前检查上下文预算，必要时裁剪
+                if (budgetTracker.needsTruncation) {
+                    val before = executionContext.contextMessages.size
+                    val fitted = fitContextMessages(
+                        messages = executionContext.contextMessages,
+                        contextWindowTokens = conversation.engine.model.effectiveContextWindow(),
+                        conversation = conversation,
+                    )
+                    executionContext.contextMessages.clear()
+                    executionContext.contextMessages.addAll(fitted)
+                    "AgentLoopRunner: context truncated $before → ${fitted.size} msgs " +
+                        "(usage=${budgetTracker.currentUsage}/${budgetTracker.budget})"
+                        .makeLog("AgentLoopRunner")
+                }
+                budgetTracker.snapshot()
+
+                val hasMoreToolCalls = requestLlmFollowUp(
+                    session = session,
                     conversation = conversation,
+                    questionMessages = executionContext.originalQuestionMessages,
+                    contextMessages = executionContext.contextMessages,
+                    toolResultMessages = iterationResult.toolResultMessages,
+                    activeTools = activeTools,
+                    enableWebSearch = executionContext.enableWebSearch,
+                    enableReasoning = enableReasoning,
+                    iteration = iterationResult.iteration,
+                    stepDescriptors = iterationResult.stepDescriptors,
+                    stepStatuses = iterationResult.stepStatuses,
+                    stepResults = allStepResults,
+                    watchdogReason = "executeAgentLoop:iter=${iterationResult.iteration}",
+                    previousResponseIdProvider = previousResponseIdProvider,
+                    turnContext = turnContext(iterationResult.iteration),
+                    callback = callback,
                 )
-                executionContext.contextMessages.clear()
-                executionContext.contextMessages.addAll(fitted)
-                "AgentLoopRunner: context truncated $before → ${fitted.size} msgs " +
-                    "(usage=${budgetTracker.currentUsage}/${budgetTracker.budget})"
-                    .makeLog("AgentLoopRunner")
+                if (!hasMoreToolCalls) break
             }
-            budgetTracker.snapshot()
-
-            val hasMoreToolCalls = requestLlmFollowUp(
-                session = session,
-                conversation = conversation,
-                questionMessages = executionContext.originalQuestionMessages,
-                contextMessages = executionContext.contextMessages,
-                toolResultMessages = iterationResult.toolResultMessages,
-                activeTools = activeTools,
-                enableWebSearch = executionContext.enableWebSearch,
-                enableReasoning = enableReasoning,
-                iteration = iterationResult.iteration,
-                stepDescriptors = iterationResult.stepDescriptors,
-                stepStatuses = iterationResult.stepStatuses,
-                stepResults = allStepResults,
-                watchdogReason = "executeAgentLoop:iter=${iterationResult.iteration}",
-                previousResponseIdProvider = previousResponseIdProvider,
-                callback = callback,
-            )
-            if (!hasMoreToolCalls) break
+        } catch (ce: CancellationException) {
+            // 取消是正常控制流(用户停止/新一轮请求接管),不触发 onLoopError
+            throw ce
+        } catch (t: Throwable) {
+            agentLoopInterceptors.forEachInterceptor {
+                it.onLoopError(turnContext(session.currentIteration), t)
+            }
+            throw t
         }
 
         return finalizeExecutionLoop(session, executionContext, allToolCallResults, conversationId)
@@ -460,6 +482,7 @@ class AgentLoopRunner(
         stepResults: Map<String, String>,
         watchdogReason: String,
         previousResponseIdProvider: () -> String,
+        turnContext: AgentTurnContext,
         callback: AgentLoopCallback,
     ): Boolean {
         val previousResponseId = previousResponseIdProvider().takeIf {
@@ -497,11 +520,24 @@ class AgentLoopRunner(
             reasoningEnabled = enableReasoning && conversation.engine.model.canReasoning,
             previousResponseId = previousResponseId,
         )
+        agentLoopInterceptors.forEachInterceptor { it.beforeLlmTurn(turnContext) }
         val followUpFlow = remoteRequestProvider.fetchWithDirectRequest(
             conversation,
             followUpRequest,
         )
-        streamCollector.collectStream(followUpFlow, questionMessages, watchdogReason)
+        // 拦截链:tap 流事件捕获 usage(不改变事件本身),流正常结束后统一 afterLlmTurn.
+        // 流中途异常时 afterLlmTurn 不触发,由 execute() 的异常出口走 onLoopError.
+        var turnUsage: Usage? = null
+        streamCollector.collectStream(
+            followUpFlow.onEach { event ->
+                if (event is com.shifenmiao.model.ai.unified.LlmStreamEvent.UsageUpdated) {
+                    turnUsage = event.usage
+                }
+            },
+            questionMessages,
+            watchdogReason,
+        )
+        agentLoopInterceptors.forEachInterceptor { it.afterLlmTurn(turnContext, turnUsage) }
 
         return agentLoopExecutor.hasAccumulatedToolCalls(session)
     }

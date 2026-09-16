@@ -13,6 +13,8 @@ import com.shifenmiao.ai.agent.tool.AgentToolResult
 import com.shifenmiao.ai.agent.tool.InteractiveToolResultFactory
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.RetryPolicy
+import com.shifenmiao.ai.component.AgentLoopInterceptor
+import com.shifenmiao.ai.component.forEachInterceptor
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.ToolCallTaskEntity
 import com.shifenmiao.model.ai.FunctionCall
@@ -55,6 +57,7 @@ class AgentLoopExecutor @Inject constructor(
     private val loginChecker: AgentToolLoginChecker,
     private val interactiveToolBridge: InteractiveToolRuntime,
     private val gson: Gson,
+    private val agentLoopInterceptors: Set<@JvmSuppressWildcards AgentLoopInterceptor>,
     @ApplicationContext private val context: Context
 ) {
     companion object {
@@ -403,9 +406,17 @@ class AgentLoopExecutor @Inject constructor(
         evaluateToolExecutionGuards(
             toolCall = singleToolCall,
             interactionOwnerId = interactionOwnerId
-        )?.let { return it }
+        )?.let { guardResult ->
+            // 与 executeSingleToolCall 同一语义:guard 拦截不走 before,但结果走 after
+            agentLoopInterceptors.forEachInterceptor { it.afterToolExecute(singleToolCall, guardResult) }
+            return guardResult
+        }
 
-        return try {
+        agentLoopInterceptors.forEachInterceptor {
+            it.beforeToolExecute(singleToolCall, toolRegistry.getToolInstance(toolName))
+        }
+
+        val result = try {
             if (callbackRouter != null) {
                 // callback 子工具也统一通过 registry 注入 executionContext，
                 // 避免主链路和子链路在 toolCallId / interactionOwnerId 上再次分叉。
@@ -431,6 +442,8 @@ class AgentLoopExecutor @Inject constructor(
         } catch (e: Exception) {
             AgentToolResult("Tool execution failed: ${e.message}", isError = true)
         }
+        agentLoopInterceptors.forEachInterceptor { it.afterToolExecute(singleToolCall, result) }
+        return result
     }
 
     private suspend fun executeToolCallWithOptionalCallback(
@@ -576,8 +589,16 @@ class AgentLoopExecutor @Inject constructor(
         )
         if (guardResult != null) {
             onPersistCompleted?.invoke(toolCall.id, guardResult.content, guardResult.isError)
+            // 拦截链语义:guard 拦截时工具未实际执行,不触发 beforeToolExecute;
+            // 但拦截产生的失败结果仍视为"执行结果"的一种,走 afterToolExecute.
+            agentLoopInterceptors.forEachInterceptor { it.afterToolExecute(toolCall, guardResult) }
             if (!isShuttingDown()) onToolCompleted(toolCall, guardResult)
             return toolCall to guardResult
+        }
+
+        // guard 全部通过:工具实际执行前触发 beforeToolExecute(先于超时计时与重试循环).
+        agentLoopInterceptors.forEachInterceptor {
+            it.beforeToolExecute(toolCall, toolRegistry.getToolInstance(toolCall.function.name))
         }
 
         onPersistExecuting?.invoke(toolCall.id)
@@ -665,6 +686,9 @@ class AgentLoopExecutor @Inject constructor(
         } else {
             onPersistFailed?.invoke(toolCall.id, result.content)
         }
+        // 拦截链:此时拿到的是重试循环结束后的最终结果,与落库内容一致;
+        // Runner 回灌上下文时的截断发生在此之后,不影响这里的观测值.
+        agentLoopInterceptors.forEachInterceptor { it.afterToolExecute(toolCall, result) }
         if (!isShuttingDown()) onToolCompleted(toolCall, result)
         return toolCall to result
     }

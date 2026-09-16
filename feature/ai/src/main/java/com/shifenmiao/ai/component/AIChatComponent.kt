@@ -105,6 +105,7 @@ open class AIChatComponent @AssistedInject internal constructor(
     private val toolBindingRepository: ToolBindingRepository,
     private val agentToolRegistry: AgentToolRegistry,
     private val toolPredicates: Set<@JvmSuppressWildcards ToolPredicate>,
+    private val agentLoopInterceptors: Set<@JvmSuppressWildcards AgentLoopInterceptor>,
     private val conversationToolPolicyRepository: ConversationToolPolicyRepository,
     private val promptTemplateToolService: PromptTemplateToolService,
     private val conversationMemoryPolicyRepository: ConversationMemoryPolicyRepository,
@@ -243,6 +244,7 @@ open class AIChatComponent @AssistedInject internal constructor(
         },
         modeTransitionManager = modeTransitionManager,
         applicationContext = appContext,
+        agentLoopInterceptors = agentLoopInterceptors,
     )
 
     private val agentLoopOrchestrator = AgentLoopOrchestrator(
