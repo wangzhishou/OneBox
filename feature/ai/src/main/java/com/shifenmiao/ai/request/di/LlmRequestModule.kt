@@ -2,12 +2,12 @@ package com.shifenmiao.ai.request.di
 
 import com.shifenmiao.ai.request.DefaultLlmContextBudgetService
 import com.shifenmiao.ai.request.InMemoryLocalLlmModelRegistry
+import com.shifenmiao.ai.request.LiteRtLmRuntime
 import com.shifenmiao.ai.request.LlmContextBudgetService
 import com.shifenmiao.ai.request.LlmProviderAdapter
 import com.shifenmiao.ai.request.LocalLlmModelRegistry
 import com.shifenmiao.ai.request.LocalLlmRuntime
 import com.shifenmiao.ai.request.LocalOnDeviceAdapter
-import com.shifenmiao.ai.request.StubLocalLlmRuntime
 import com.shifenmiao.ai.request.adapter.AnthropicAdapter
 import com.shifenmiao.ai.request.adapter.OpenAiChatAdapter
 import com.shifenmiao.ai.request.adapter.OwnProxyAdapter
@@ -45,7 +45,7 @@ abstract class LlmRequestBindingsModule {
 
     @Binds
     @Singleton
-    abstract fun bindLocalLlmRuntime(impl: StubLocalLlmRuntime): LocalLlmRuntime
+    abstract fun bindLocalLlmRuntime(impl: LiteRtLmRuntime): LocalLlmRuntime
 
     @Binds
     @Singleton

@@ -80,4 +80,9 @@ dependencies {
      */
     implementation(projects.libs.twain)
     implementation(projects.libs.richtext)
+
+    /**
+     * 端侧 LLM 推理(LiteRT-LM)
+     */
+    implementation(libs.litertlm.android)
 }

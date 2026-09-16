@@ -122,7 +122,9 @@ pdfbox = "2.0.27.0"
 flinger = "2.0.2"
 opencv = "5.0.0.1"
 coilResvg = "1.1.2"
+litertlm = "0.16.1"
 [libraries]
+litertlm-android = { group = "com.google.ai.edge.litertlm", name = "litertlm-android", version.ref = "litertlm" }
 coil-resvg = { module = "com.hashsequence:coil-resvg", version.ref = "coilResvg" }
 flinger = { module = "com.github.iamjosephmj.flinger:flinger", version.ref = "flinger" }
 pdfbox = { module = "com.tom-roush:pdfbox-android", version.ref = "pdfbox" }
