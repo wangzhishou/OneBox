@@ -32,6 +32,19 @@ object ContextWindowManager {
     private const val DEFAULT_TOOL_RESULT_MAX_CHARS = 4096
 
     /**
+     * 裁剪结果。
+     *
+     * @param kept 保留的消息列表（system + 选中的消息段，不含裁剪提示）
+     * @param evicted 被整体裁掉的早期消息（被截断的 tool result 不算，仍属 kept）
+     * @param droppedSegmentCount 被裁掉的消息段数量（用于裁剪提示文案）
+     */
+    data class FitResult(
+        val kept: List<LlmMessage>,
+        val evicted: List<LlmMessage>,
+        val droppedSegmentCount: Int,
+    )
+
+    /**
      * 裁剪消息列表使其适配模型上下文窗口。
      *
      * @param messages 完整的消息列表（index 0 通常是 system prompt）
@@ -44,7 +57,31 @@ object ContextWindowManager {
         contextWindowTokens: Int,
         maxOutputTokens: Int = 0,
     ): List<LlmMessage> {
-        if (messages.isEmpty()) return messages
+        val result = fitToContextWindowWithEvicted(messages, contextWindowTokens, maxOutputTokens)
+        if (result.droppedSegmentCount == 0) return result.kept
+
+        // 5.1: 在 system 之后插入裁剪提示，避免 LLM 因“丢失记忆”而困惑
+        val marker = LlmMessage.createTextMessage(
+            role = "system",
+            text = "...[${result.droppedSegmentCount} earlier message segments omitted due to context window limits]..."
+        )
+        val insertIndex = result.kept.indexOfFirst { it.role != "system" }
+            .let { if (it < 0) result.kept.size else it }
+        return result.kept.toMutableList().apply { add(insertIndex, marker) }
+    }
+
+    /**
+     * 裁剪消息列表并同时返回被裁掉的早期消息，供 [ContextCompactor] 压缩为摘要。
+     *
+     * 裁剪规则与 [fitToContextWindow] 一致，但返回的 kept 不含裁剪提示占位，
+     * 由调用方决定插入摘要还是走 [fitToContextWindow] 的占位逻辑。
+     */
+    fun fitToContextWindowWithEvicted(
+        messages: List<LlmMessage>,
+        contextWindowTokens: Int,
+        maxOutputTokens: Int = 0,
+    ): FitResult {
+        if (messages.isEmpty()) return FitResult(messages, emptyList(), 0)
 
         val outputReserve = if (maxOutputTokens > 0) {
             maxOutputTokens
@@ -55,7 +92,12 @@ object ContextWindowManager {
         if (budget <= 0) {
             "ContextWindowManager: budget <= 0 (window=$contextWindowTokens, reserve=$outputReserve)"
                 .makeLog("ContextWindow")
-            return messages.takeLast(1) // 至少保留最后一条
+            // 至少保留最后一条；此处无 segment 概念，droppedSegmentCount 置 0 不插占位
+            return FitResult(
+                kept = messages.takeLast(1),
+                evicted = messages.dropLast(1),
+                droppedSegmentCount = 0,
+            )
         }
 
         // 分离 system prompt 和对话消息
@@ -66,8 +108,13 @@ object ContextWindowManager {
             "ContextWindowManager: system prompt alone ($systemTokens) exceeds budget ($budget)"
                 .makeLog("ContextWindow")
             // system prompt 本身就超标，只保留 system + 最后一条消息
-            val lastMsg = conversationMessages.lastOrNull() ?: return systemMessages
-            return systemMessages + lastMsg
+            val lastMsg = conversationMessages.lastOrNull()
+                ?: return FitResult(systemMessages, emptyList(), 0)
+            return FitResult(
+                kept = systemMessages + lastMsg,
+                evicted = conversationMessages.dropLast(1),
+                droppedSegmentCount = 0,
+            )
         }
 
         val remainingBudget = budget - systemTokens
@@ -107,26 +154,20 @@ object ContextWindowManager {
         }
 
         val droppedCount = segments.size - selectedSegments.size
-        val result = buildList {
-            addAll(systemMessages)
-            // 5.1: 插入裁剪提示，避免 LLM 因“丢失记忆”而困惑
-            if (droppedCount > 0) {
-                add(
-                    LlmMessage.createTextMessage(
-                        role = "system",
-                        text = "...[$droppedCount earlier message segments omitted due to context window limits]..."
-                    )
-                )
-            }
-            addAll(selectedSegments.flatMap { it.messages })
-        }
+        // 选中段从尾部连续，被裁段即前 droppedCount 个；被截断的 tool result 段仍在选中列，不算 evicted
+        val evicted = segments.take(droppedCount).flatMap { it.messages }
+        val kept = systemMessages + selectedSegments.flatMap { it.messages }
 
-        "ContextWindowManager: ${messages.size} msgs → ${result.size} msgs, " +
+        "ContextWindowManager: ${messages.size} msgs → ${kept.size} msgs, " +
             "dropped $droppedCount segments, " +
             "est. tokens: system=$systemTokens + history=$usedTokens = ${systemTokens + usedTokens} / $budget"
             .makeLog("ContextWindow")
 
-        return result
+        return FitResult(
+            kept = kept,
+            evicted = evicted,
+            droppedSegmentCount = droppedCount,
+        )
     }
 
     /**

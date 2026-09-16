@@ -30,6 +30,8 @@ class AIFeatureSettingsComponent @AssistedInject internal constructor(
         AIChatStorage.maxAgentIterations
     val maxAgentIterationsRange: IntRange =
         AIChatStorage.MIN_MAX_AGENT_ITERATIONS..AIChatStorage.MAX_MAX_AGENT_ITERATIONS
+    val isContextCompactionEnabled: StateFlow<Boolean> =
+        AIChatStorage.isEnableContextCompaction
 
     fun updateConversationTitleSummaryEnabled(enabled: Boolean) {
         AIChatStorage.saveIsEnableConversationTitleSummary(enabled)
@@ -49,6 +51,10 @@ class AIFeatureSettingsComponent @AssistedInject internal constructor(
 
     fun updateMaxAgentIterations(value: Int) {
         AIChatStorage.saveMaxAgentIterations(value)
+    }
+
+    fun updateContextCompactionEnabled(enabled: Boolean) {
+        AIChatStorage.saveIsEnableContextCompaction(enabled)
     }
 
     @AssistedFactory

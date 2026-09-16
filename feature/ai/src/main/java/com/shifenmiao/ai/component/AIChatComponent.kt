@@ -13,6 +13,7 @@ import com.shifenmiao.ai.agent.tool.ConversationToolPolicyRepository
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
+import com.shifenmiao.ai.context.ContextCompactor
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.ai.mediator.MessageRemoteMediator
 import com.shifenmiao.ai.memory.ConversationMemoryPolicyRepository
@@ -111,6 +112,7 @@ open class AIChatComponent @AssistedInject internal constructor(
     private val attachmentContentResolver: AttachmentContentResolver,
     private val systemPromptRepository: SystemPromptRepository,
     private val conversationTitleSummaryService: ConversationTitleSummaryService,
+    private val contextCompactor: ContextCompactor,
     @ApplicationContext private val appContext: Context,
     messageListUseCase: MessageListUseCase,
     a2uiRenderProvider: A2uiRenderProvider,
@@ -218,6 +220,7 @@ open class AIChatComponent @AssistedInject internal constructor(
         agentLoopExecutor = agentLoopExecutor,
         agentToolRegistry = agentToolRegistry,
         promptAssemblyService = promptAssemblyService,
+        contextCompactor = contextCompactor,
         gson = gson,
         contentReader = { path -> attachmentContentResolver.readContentFromPath(path) },
         imageDao = imageDao,

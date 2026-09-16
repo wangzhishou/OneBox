@@ -123,6 +123,8 @@
     <string name="ai_feature_settings_max_iterations_desc">Maximum number of iterations in a single Agent auto-run. Configurable range is %1$d–%2$d iterations.</string>
     <string name="ai_feature_settings_max_iterations_decrement">Decrease max iterations</string>
     <string name="ai_feature_settings_max_iterations_increment">Increase max iterations</string>
+    <string name="ai_feature_settings_context_compaction_toggle_title">Smart context compaction</string>
+    <string name="ai_feature_settings_context_compaction_toggle_desc">When the Agent context nears the model limit, earlier conversation is summarized by AI and kept as a digest instead of being dropped. When disabled, earlier messages are truncated directly.</string>
 
     <!-- AI model settings -->
     <!-- AI engine settings -->

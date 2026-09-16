@@ -123,6 +123,8 @@
     <string name="ai_feature_settings_max_iterations_desc">限制单次 Agent 自动执行的最大轮次，当前可设置范围为 %1$d-%2$d 轮。</string>
     <string name="ai_feature_settings_max_iterations_decrement">减少最大连续执行轮次</string>
     <string name="ai_feature_settings_max_iterations_increment">增加最大连续执行轮次</string>
+    <string name="ai_feature_settings_context_compaction_toggle_title">上下文智能压缩</string>
+    <string name="ai_feature_settings_context_compaction_toggle_desc">Agent 上下文接近模型上限时，先将早期对话交由 AI 总结为摘要保留，而不是直接丢弃。关闭后将直接裁剪早期消息。</string>
 
     <!-- AI 模型设置 -->
     <!-- AI 引擎设置 -->

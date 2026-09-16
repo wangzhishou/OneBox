@@ -8,6 +8,7 @@ import com.shifenmiao.ai.agent.AgentLoopSessionState
 import com.shifenmiao.ai.agent.ToolCallRecord
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.AgentToolResult
+import com.shifenmiao.ai.context.ContextCompactor
 import com.shifenmiao.ai.context.ContextWindowManager
 import com.shifenmiao.ai.context.TokenBudgetTracker
 import com.shifenmiao.ai.context.ToolResultTruncator
@@ -26,6 +27,7 @@ import com.shifenmiao.model.ai.ToolDefinition
 import com.shifenmiao.model.ai.unified.LlmBuiltinTool
 import com.shifenmiao.model.ai.unified.LlmMessage
 import com.shifenmiao.model.ai.unified.LlmTurnRequest
+import com.shifenmiao.storage.AIChatStorage
 import com.t8rin.logger.makeLog
 
 /**
@@ -47,6 +49,7 @@ class AgentLoopRunner(
     private val agentLoopExecutor: AgentLoopExecutor,
     private val agentToolRegistry: AgentToolRegistry,
     private val promptAssemblyService: PromptAssemblyService,
+    private val contextCompactor: ContextCompactor,
     private val gson: Gson,
     private val contentReader: suspend (String) -> String?,
     private val imageDao: ImageDao,
@@ -184,9 +187,10 @@ class AgentLoopRunner(
             // Phase 3.2: 发送 follow-up 前检查上下文预算，必要时裁剪
             if (budgetTracker.needsTruncation) {
                 val before = executionContext.contextMessages.size
-                val fitted = ContextWindowManager.fitToContextWindow(
+                val fitted = fitContextMessages(
                     messages = executionContext.contextMessages,
                     contextWindowTokens = conversation.engine.model.effectiveContextWindow(),
+                    conversation = conversation,
                 )
                 executionContext.contextMessages.clear()
                 executionContext.contextMessages.addAll(fitted)
@@ -283,6 +287,32 @@ class AgentLoopRunner(
     }
 
     // ---- private helpers ----
+
+    /**
+     * 上下文裁剪入口：压缩开关开启时，先把被裁掉的早期消息经 [ContextCompactor]
+     * 总结为摘要插回上下文（不计迭代、不计费）；压缩不可用或失败时回退硬裁剪。
+     */
+    private suspend fun fitContextMessages(
+        messages: List<LlmMessage>,
+        contextWindowTokens: Int,
+        conversation: Conversation,
+    ): List<LlmMessage> {
+        if (!AIChatStorage.isEnableContextCompaction.value) {
+            return ContextWindowManager.fitToContextWindow(messages, contextWindowTokens)
+        }
+        val fit = ContextWindowManager.fitToContextWindowWithEvicted(messages, contextWindowTokens)
+        val summary = fit.evicted.takeIf { it.isNotEmpty() }
+            ?.let { contextCompactor.compact(it, conversation) }
+            ?: return ContextWindowManager.fitToContextWindow(messages, contextWindowTokens)
+        val summaryMessage = LlmMessage.createTextMessage(
+            role = "system",
+            text = "[早期对话摘要] $summary",
+        )
+        // 摘要插在 system 之后、保留的历史消息之前，替代硬裁剪的 omitted 占位
+        val insertIndex = fit.kept.indexOfFirst { it.role != "system" }
+            .let { if (it < 0) fit.kept.size else it }
+        return fit.kept.toMutableList().apply { add(insertIndex, summaryMessage) }
+    }
 
     private suspend fun executeToolIteration(
         session: AgentLoopSessionState,

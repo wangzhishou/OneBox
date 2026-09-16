@@ -27,6 +27,7 @@ object AIChatStorage {
     private const val LAST_CHAT_WORKING_MODE = "last_chat_working_mode"
     private const val IS_ENABLE_MEMORY = "is_enable_memory"
     private const val IS_ENABLE_SKILLS = "is_enable_skills"
+    private const val IS_ENABLE_CONTEXT_COMPACTION = "is_enable_context_compaction"
 
     private val _isEnableWebSearch = MutableStateFlow(loadIsEnableWebSearch())
     val isEnableWebSearch: StateFlow<Boolean> get() = _isEnableWebSearch
@@ -42,6 +43,8 @@ object AIChatStorage {
     val isEnableMemory: StateFlow<Boolean> get() = _isEnableMemory
     private val _isEnableSkills = MutableStateFlow(loadIsEnableSkills())
     val isEnableSkills: StateFlow<Boolean> get() = _isEnableSkills
+    private val _isEnableContextCompaction = MutableStateFlow(loadIsEnableContextCompaction())
+    val isEnableContextCompaction: StateFlow<Boolean> get() = _isEnableContextCompaction
 
     fun saveConfigs(conversation: Conversation) {
         val copy = conversation.copy()
@@ -136,6 +139,15 @@ object AIChatStorage {
 
     fun loadIsEnableSkills(): Boolean {
         return mmkv.decodeBool(IS_ENABLE_SKILLS, true)
+    }
+
+    fun saveIsEnableContextCompaction(enabled: Boolean) {
+        mmkv.encode(IS_ENABLE_CONTEXT_COMPACTION, enabled)
+        _isEnableContextCompaction.value = enabled
+    }
+
+    fun loadIsEnableContextCompaction(): Boolean {
+        return mmkv.decodeBool(IS_ENABLE_CONTEXT_COMPACTION, true)
     }
 
     private fun sanitizeMaxAgentIterations(value: Int): Int {

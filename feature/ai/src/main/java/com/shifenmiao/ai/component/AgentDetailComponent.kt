@@ -9,6 +9,7 @@ import com.shifenmiao.ai.agent.tool.ConversationToolPolicyRepository
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
+import com.shifenmiao.ai.context.ContextCompactor
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.ai.mediator.MessageRemoteMediator
 import com.shifenmiao.ai.memory.ConversationMemoryPolicyRepository
@@ -78,6 +79,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     attachmentContentResolver: AttachmentContentResolver,
     systemPromptRepository: SystemPromptRepository,
     conversationTitleSummaryService: ConversationTitleSummaryService,
+    contextCompactor: ContextCompactor,
     @ApplicationContext applicationContext: Context,
     messageListUseCase: MessageListUseCase,
     markdownAstNodeParserFactory: MarkdownAstNodeParser.Factory,
@@ -119,6 +121,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     attachmentContentResolver = attachmentContentResolver,
     systemPromptRepository = systemPromptRepository,
     conversationTitleSummaryService = conversationTitleSummaryService,
+    contextCompactor = contextCompactor,
     gson = gson,
     imageDao = imageDao,
     a2uiRenderProvider = a2uiRenderProvider

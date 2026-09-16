@@ -40,6 +40,7 @@ import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBuild
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompress
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettingsSuggest
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMessage
@@ -53,6 +54,7 @@ fun AIFeatureSettingsScreen(
     val isExpandedPrompt by component.isExpandedPrompt.collectAsState()
     val isExpandedToolCall by component.isExpandedToolCall.collectAsState()
     val maxAgentIterations by component.maxAgentIterations.collectAsState()
+    val isContextCompactionEnabled by component.isContextCompactionEnabled.collectAsState()
 
     BaseScreen(
         title = stringResource(CoreR.string.profile_item_ai_feature_settings),
@@ -137,6 +139,14 @@ fun AIFeatureSettingsScreen(
                     incrementContentDescription = stringResource(
                         R.string.ai_feature_settings_max_iterations_increment
                     ),
+                )
+                OneBoxGroupDivider()
+                AIFeatureToggleRow(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCompress,
+                    title = stringResource(R.string.ai_feature_settings_context_compaction_toggle_title),
+                    description = stringResource(R.string.ai_feature_settings_context_compaction_toggle_desc),
+                    checked = isContextCompactionEnabled,
+                    onCheckedChange = component::updateContextCompactionEnabled,
                 )
             }
 
