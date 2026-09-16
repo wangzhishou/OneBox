@@ -9,6 +9,7 @@ import com.shifenmiao.ai.agent.tool.ConversationToolPolicyRepository
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
+import com.shifenmiao.ai.agent.tool.ToolPredicate
 import com.shifenmiao.ai.context.ContextCompactor
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.ai.mediator.MessageRemoteMediator
@@ -69,6 +70,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     interactiveToolBridge: InteractiveToolRuntime,
     globalToolUiHost: GlobalToolUiHost,
     private val localAgentToolRegistry: AgentToolRegistry,
+    private val toolPredicates: Set<@JvmSuppressWildcards ToolPredicate>,
     private val toolBindingRepository: ToolBindingRepository,
     conversationToolPolicyRepository: ConversationToolPolicyRepository,
     promptTemplateToolService: PromptTemplateToolService,
@@ -112,6 +114,7 @@ open class AgentDetailComponent @AssistedInject internal constructor(
     globalToolUiHost = globalToolUiHost,
     toolBindingRepository = toolBindingRepository,
     agentToolRegistry = localAgentToolRegistry,
+    toolPredicates = toolPredicates,
     conversationToolPolicyRepository = conversationToolPolicyRepository,
     promptTemplateToolService = promptTemplateToolService,
     conversationMemoryPolicyRepository = conversationMemoryPolicyRepository,

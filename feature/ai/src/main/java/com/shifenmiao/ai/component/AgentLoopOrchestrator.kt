@@ -12,6 +12,8 @@ import com.shifenmiao.ai.agent.tool.AgentToolResult
 import com.shifenmiao.ai.agent.tool.ConversationToolPolicyRepository
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.ToolConfirmationRequest
+import com.shifenmiao.ai.agent.tool.ToolFilterContext
+import com.shifenmiao.ai.agent.tool.ToolPredicate
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.execution.model.ExecutionStepUiModel
 import com.shifenmiao.ai.execution.presenter.ToolExecutionTextResolver
@@ -69,6 +71,7 @@ class AgentLoopOrchestrator(
     private val conversationToolPolicyRepository: ConversationToolPolicyRepository,
     private val conversationMemoryPolicyRepository: ConversationMemoryPolicyRepository,
     private val toolConfigResolver: ToolConfigResolver,
+    private val toolPredicates: Set<ToolPredicate>,
     private val toolCallbackRouter: ToolCallbackRouter,
     private val sharedState: ChatSharedState,
     private val streamContentProcessor: StreamContentProcessor,
@@ -121,9 +124,36 @@ class AgentLoopOrchestrator(
     }
 
     suspend fun buildRequestTools(): List<ToolDefinition>? {
-        val tools = promptAssemblyService.buildRequestTools()
+        val tools = applyToolPredicates(promptAssemblyService.buildRequestTools())
         logToolTrace("request_tools names=${tools?.map { it.function.name }} count=${tools?.size}")
         return tools
+    }
+
+    /**
+     * 谓词链筛选：对 EffectiveToolConfig 解析出的候选工具逐个过 [toolPredicates]，
+     * 全部通过才保留。云端协议下 ProtocolToolPredicate 一律放行，
+     * 云端引擎最终工具集与引入谓词链前完全一致。
+     */
+    private suspend fun applyToolPredicates(tools: List<ToolDefinition>?): List<ToolDefinition>? {
+        if (tools.isNullOrEmpty() || toolPredicates.isEmpty()) return tools
+        // resolve() 命中请求级快照（buildRequestTools 刚走过同一缓存），无额外 DB 开销
+        val effectiveConfig = toolConfigResolver.resolve()
+        val conversation = sharedState.conversation.value
+        val context = ToolFilterContext(
+            conversation = conversation,
+            workingMode = effectiveConfig.policy.workingMode,
+            protocol = conversation.engine.requestProtocol,
+            boundToolNames = effectiveConfig.boundToolNames,
+            selectedToolNames = effectiveConfig.policy.selectedToolNames,
+            memoryEnabled = effectiveConfig.memoryEnabled,
+            skillsEnabled = effectiveConfig.skillsEnabled,
+            toolsSupported = effectiveConfig.toolsSupported,
+        )
+        return tools.filter { definition ->
+            val tool = agentToolRegistry.getToolInstance(definition.function.name)
+                ?: return@filter true
+            toolPredicates.all { predicate -> predicate.isToolVisible(tool, context) }
+        }.takeIf { it.isNotEmpty() }
     }
 
     suspend fun buildEffectiveConversation(

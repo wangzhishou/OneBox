@@ -13,6 +13,7 @@ import com.shifenmiao.ai.agent.tool.ConversationToolPolicyRepository
 import com.shifenmiao.ai.agent.tool.InteractiveToolRuntime
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
+import com.shifenmiao.ai.agent.tool.ToolPredicate
 import com.shifenmiao.ai.context.ContextCompactor
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.ai.mediator.MessageRemoteMediator
@@ -103,6 +104,7 @@ open class AIChatComponent @AssistedInject internal constructor(
     private val globalToolUiHost: GlobalToolUiHost,
     private val toolBindingRepository: ToolBindingRepository,
     private val agentToolRegistry: AgentToolRegistry,
+    private val toolPredicates: Set<@JvmSuppressWildcards ToolPredicate>,
     private val conversationToolPolicyRepository: ConversationToolPolicyRepository,
     private val promptTemplateToolService: PromptTemplateToolService,
     private val conversationMemoryPolicyRepository: ConversationMemoryPolicyRepository,
@@ -251,6 +253,7 @@ open class AIChatComponent @AssistedInject internal constructor(
         conversationToolPolicyRepository = conversationToolPolicyRepository,
         conversationMemoryPolicyRepository = conversationMemoryPolicyRepository,
         toolConfigResolver = toolConfigResolver,
+        toolPredicates = toolPredicates,
         toolCallbackRouter = toolCallbackRouter,
         sharedState = sharedState,
         streamContentProcessor = streamContentProcessor,

@@ -127,6 +127,12 @@ class AgentToolRegistry @Inject constructor(
     /** 判断工具是否存在于注册表。 */
     fun containsTool(toolName: String): Boolean = toolName in toolProviders
 
+    /**
+     * 按名称取工具实例，找不到返回 null。
+     * 供 ToolPredicate 谓词筛选等需要执行器元数据的场景使用。
+     */
+    fun getToolInstance(toolName: String): AgentTool? = toolProviders[toolName]?.get()
+
     // ── 工具元数据缓存 ─────────────────────────────────────────────────────
     // [ToolCatalogItem] 的所有字段在编译期就确定 ([AgentTool] 接口默认值 + override),
     // 无运行时可变状态, 完全可以一次性构建并缓存. 避免每次 [getToolCatalogItem] /
