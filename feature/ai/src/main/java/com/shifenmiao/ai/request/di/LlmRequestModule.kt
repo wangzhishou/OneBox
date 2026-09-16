@@ -1,12 +1,8 @@
 package com.shifenmiao.ai.request.di
 
 import com.shifenmiao.ai.request.DefaultLlmContextBudgetService
-import com.shifenmiao.ai.request.InMemoryLocalLlmModelRegistry
-import com.shifenmiao.ai.request.LiteRtLmRuntime
 import com.shifenmiao.ai.request.LlmContextBudgetService
 import com.shifenmiao.ai.request.LlmProviderAdapter
-import com.shifenmiao.ai.request.LocalLlmModelRegistry
-import com.shifenmiao.ai.request.LocalLlmRuntime
 import com.shifenmiao.ai.request.LocalOnDeviceAdapter
 import com.shifenmiao.ai.request.adapter.AnthropicAdapter
 import com.shifenmiao.ai.request.adapter.OpenAiChatAdapter
@@ -17,7 +13,6 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -43,13 +38,8 @@ abstract class LlmRequestBindingsModule {
     @IntoSet
     abstract fun bindLocalOnDeviceAdapter(impl: LocalOnDeviceAdapter): LlmProviderAdapter
 
-    @Binds
-    @Singleton
-    abstract fun bindLocalLlmRuntime(impl: LiteRtLmRuntime): LocalLlmRuntime
-
-    @Binds
-    @Singleton
-    abstract fun bindLocalLlmModelRegistry(impl: InMemoryLocalLlmModelRegistry): LocalLlmModelRegistry
+    // LocalLlmRuntime / LocalLlmModelRegistry 的绑定按渠道拆在 flavor sourceSet 的
+    // LocalLlmFlavorModule 中(src/litertlm = google/foss, src/domestic = 国内 6 渠道)。
 
     @Binds
     abstract fun bindLlmContextBudgetService(impl: DefaultLlmContextBudgetService): LlmContextBudgetService

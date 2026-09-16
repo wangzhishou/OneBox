@@ -7,6 +7,21 @@ plugins {
 
 android.namespace = "com.shifenmiao.ai"
 
+// LiteRT-LM 端侧推理仅海外渠道 (同 core/pay、feature/ad-watch 的 flavor 隔离范式):
+//   - google/foss:    src/main + src/litertlm (LiteRtLmRuntime + InMemoryLocalLlmModelRegistry)
+//   - 国内 6 渠道:    src/main + src/domestic (UnsupportedLocalLlmRuntime + EmptyLocalLlmModelRegistry)
+// 模型文件从 HuggingFace 分发, 国内用户拿不到, 且 ~21MB native .so 不进国内包
+afterEvaluate {
+    android.sourceSets {
+        listOf("google", "foss").forEach { flavor ->
+            getByName(flavor).kotlin.srcDir("src/litertlm/java")
+        }
+        listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei").forEach { flavor ->
+            getByName(flavor).kotlin.srcDir("src/domestic/java")
+        }
+    }
+}
+
 dependencies {
 
     implementation(projects.core.r)
@@ -82,7 +97,8 @@ dependencies {
     implementation(projects.libs.richtext)
 
     /**
-     * 端侧 LLM 推理(LiteRT-LM)
+     * 端侧 LLM 推理(LiteRT-LM),仅海外渠道携带
      */
-    implementation(libs.litertlm.android)
+    "googleImplementation"(libs.litertlm.android)
+    "fossImplementation"(libs.litertlm.android)
 }
