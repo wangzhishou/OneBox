@@ -145,7 +145,26 @@ class InteractiveToolRuntime @Inject constructor(
         }
     }
 
-    suspend fun restoreWaitingInput(task: ToolCallTaskEntity): RestoredInteractiveRequestResult? {
+    /**
+     * 恢复 WAITING_INPUT 任务的交互请求(进程被杀后重建确认/提问 UI 并重新挂起)。
+     *
+     * @param interactionOwnerId 当前这次循环 invocation 的交互所有者 ID。
+     *
+     * 已核实(对照 ADK 0.8.0 "只恢复本次 invocation 发出的工具确认" 修复):
+     * 恢复必须绑定到当前 invocation —— 快照里的旧 interactionOwnerId 属于被杀进程
+     * (owner 内含 componentContext.hashCode(),跨进程必然变化),若原样保留:
+     * 1. UI 侧按 owner 过滤(AIChatToolUiCoordinator.onInteractiveRequestChanged)
+     *    会导致恢复的请求永不展示,恢复流程挂死;
+     * 2. 旧请求滞留在本单例的待处理队列头部,而 submitConfirmation/submitUserQuestion
+     *    无条件 complete 队首 deferred,后续任意会话/轮次的提交都可能错配给它
+     *    (跨 invocation 消费)。
+     * 因此这里统一用当前 owner 覆盖快照值;deferred 本身按 toolCallId(task.id)
+     * 入队,与任务一一对应,不会喂给其他轮次。
+     */
+    suspend fun restoreWaitingInput(
+        task: ToolCallTaskEntity,
+        interactionOwnerId: String? = null,
+    ): RestoredInteractiveRequestResult? {
         if (task.formRequestJson.isNullOrBlank()) {
             "Cannot restore: formRequestJson is empty for task ${task.id}".makeLog("InteractiveToolRuntime")
             return null
@@ -155,12 +174,18 @@ class InteractiveToolRuntime @Inject constructor(
         if (snapshot != null) {
             return when (snapshot.kind) {
                 InteractivePendingRequestSnapshot.KIND_CONFIRMATION -> {
-                    val request = snapshot.confirmationRequest?.copy(toolCallId = task.id) ?: return null
+                    val request = snapshot.confirmationRequest?.copy(
+                        toolCallId = task.id,
+                        interactionOwnerId = interactionOwnerId,
+                    ) ?: return null
                     restoreConfirmationRequest(request)
                 }
 
                 InteractivePendingRequestSnapshot.KIND_QUESTION -> {
-                    val request = snapshot.questionRequest?.copy(toolCallId = task.id) ?: return null
+                    val request = snapshot.questionRequest?.copy(
+                        toolCallId = task.id,
+                        interactionOwnerId = interactionOwnerId,
+                    ) ?: return null
                     restoreQuestionRequest(request)
                 }
 
@@ -180,7 +205,7 @@ class InteractiveToolRuntime @Inject constructor(
                 ToolConfirmationRequest(
                     toolCallId = task.id,
                     toolName = legacyRequest.toolName,
-                    interactionOwnerId = legacyRequest.interactionOwnerId,
+                    interactionOwnerId = interactionOwnerId,
                     dialogTitle = legacyRequest.dialogTitle,
                     dialogMessage = legacyRequest.dialogMessage,
                     submitButtonText = legacyRequest.submitButtonText,

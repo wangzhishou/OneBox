@@ -131,7 +131,11 @@ class ToolResumeCoordinator(
         onResumeLLMFollowUp: suspend (conversationId: String) -> Unit,
     ) {
         val task = resumeState.task
-        val restored = interactiveToolBridge.restoreWaitingInput(task)
+        // 恢复绑定到当前 invocation 的 owner:快照里的旧 owner 属于被杀进程,详见 restoreWaitingInput 注释
+        val restored = interactiveToolBridge.restoreWaitingInput(
+            task = task,
+            interactionOwnerId = interactionOwnerId,
+        )
         val requestKind = restored?.kind ?: parseInteractiveRequestKind(task)
 
         val tasksToResume = when (requestKind) {
