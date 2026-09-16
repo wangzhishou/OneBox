@@ -316,7 +316,7 @@ jobs:
           echo "output_apk_path=$OUTPUT_APK" >> "$GITHUB_OUTPUT"
           ls -la "$DIST_DIR"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         id: upload-signed-apk
         with:
           # matrix 各分支产物名必须唯一 (artifact v4 不可变), 发布时按前缀归集
