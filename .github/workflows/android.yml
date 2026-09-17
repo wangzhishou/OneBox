@@ -275,7 +275,13 @@ jobs:
 
           OUTPUT_APK="$DIST_DIR/$OUTPUT_APK_NAME"
 
-          if [[ "$SHOULD_SIGN" == "true" ]]; then
+          if [[ "$APP_FLAVOR" == "foss" ]]; then
+            # foss (F-Droid) 渠道: AGP 已在构建期用 keystore.properties 完成 V2 签名,
+            # 产物 zip 结构与 F-Droid 从源码重建的 unsigned APK 逐字节一致(apksigcopier 可直接比对).
+            # 此处若再用独立 apksigner 重签, 新版 build-tools 会重写 zip 对齐 extra,
+            # 破坏 F-Droid 可复现构建校验 (1.4.0 曾因此失败), 故直接跳过.
+            mv "$INPUT_APK" "$OUTPUT_APK"
+          elif [[ "$SHOULD_SIGN" == "true" ]]; then
             # 按渠道选择签名密钥 (google 渠道使用独立的 Google 签名)
             if [[ "$APP_FLAVOR" == "google" ]]; then
               KS_ALIAS="$GOOGLE_ALIAS"; KS_STORE_PASS="$GOOGLE_KEY_STORE_PASS"; KS_KEY_PASS="$GOOGLE_KEY_PASS"
