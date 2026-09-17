@@ -82,6 +82,8 @@ object BaseUtils {
         source: String = "",
         showToast: Boolean = false
     ) {
+        // 0 分不发请求:服务端对 points 有 required 校验,发过去只会收获 400 日志噪音
+        if (degree <= 0) return
         val consumePoints = ConsumePoints().apply {
             this.points = degree
             this.desc = desc
@@ -101,8 +103,12 @@ object BaseUtils {
         conversation: Conversation,
         desc: String = "",
     ) {
+        val points = tokenToPoints(token, conversation.engine.model.basePoints)
+        // 短回复按倍率四舍五入后为 0 分(如 15 tokens × 0.1 × 0.2 = 0.3),
+        // 本就不该扣,直接跳过,避免无效的 consume-points 400
+        if (points <= 0) return
         val consumePoints = ConsumePoints().apply {
-            this.points = tokenToPoints(token, conversation.engine.model.basePoints)
+            this.points = points
             this.desc = desc
             this.source = conversation.engine.model.name
         }
