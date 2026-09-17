@@ -10,6 +10,7 @@ import com.shifenmiao.base.entrypoint.AppEntryPoint
 import com.shifenmiao.base.hilt.ResourceProvider
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
+import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.auth.RequestAuthorizationCodeEvent
 import com.shifenmiao.model.channel.FlavorType
@@ -249,6 +250,11 @@ object ActionUtils {
         },
         onSuccess: () -> Unit = {},
     ) {
+        // 端侧本地引擎不需要 token/代理/登录/积分,直接放行
+        if (conversation.engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE) {
+            onSuccess.invoke()
+            return
+        }
         if (conversation.engine.canChatDirectly()) {
             onSuccess.invoke()
             return

@@ -59,6 +59,9 @@ object AiUtils {
      * 不需要代理的情况 和 付费模型
      */
     fun isNotFree(conversation: Conversation): Boolean {
+        // 端侧本地引擎永远不扣积分(本地模型记录为了展示"免费"角标会标 free=true,
+        // 不能让它漏进扣费判定)
+        if (conversation.engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE) return false
         return canProxy(conversation) || conversation.engine.model.free
     }
 

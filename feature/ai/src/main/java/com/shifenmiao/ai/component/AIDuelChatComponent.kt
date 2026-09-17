@@ -927,6 +927,10 @@ class AIDuelChatComponent @AssistedInject internal constructor(
     }
 
     private suspend fun ensureLoginAndCheckPointsForRound(engine: com.shifenmiao.model.ai.AiEngine): Boolean {
+        // 端侧本地引擎不需要 token/代理/登录/积分,直接放行
+        if (engine.requestProtocol == com.shifenmiao.model.ai.AiRequestProtocol.LOCAL_ON_DEVICE) {
+            return true
+        }
         // 海外渠道(google / foss): 自带 token 可直连的引擎免登录免积分直接聊
         if (FlavorType.fromName().isOverseas && engine.canChatDirectly()) {
             return true
