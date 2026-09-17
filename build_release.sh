@@ -216,7 +216,9 @@ for c in data.get("client", []):
         echo "  [跳过] 未能从 google-services.json 解析 com.shifenmiao.app 的 mobilesdk_app_id"
     else
         for a in "${ABIS[@]}"; do
-            variant="Google$(to_pascal <<< "$a")Release"
+            # AGP 产物目录首字母小写 (googleUniversalRelease); macOS 大小写不敏感所以
+            # 之前写成 Google 也能命中, 但脚本若在 Linux 上跑就会找不到文件
+            variant="google$(to_pascal <<< "$a")Release"
             mapping="app/build/outputs/mapping/$variant/mapping.txt"
             resource_file="app/build/crashlytics/mappingfileid-$a.xml"
             if [[ ! -f "$mapping" || ! -f "$resource_file" ]]; then

@@ -249,6 +249,90 @@ jobs:
             GIT_VERSION="$GIT_VERSION" ./gradlew -Dorg.gradle.offline=false -Dorg.gradle.jvmargs="-Xmx10g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8" -Pkotlin.daemon.jvmargs="-Xmx2g" --max-workers=2 -Dorg.gradle.java.home="$JAVA_HOME" "$BUILD_TASK" -x "lintVital$VARIANT_NAME" -x "lintVitalAnalyze$VARIANT_NAME"
           fi
 
+      # Crashlytics 反混淆 (仅 google release).
+      # 项目未应用 Crashlytics 插件, R8 混淆后的 mapping.txt 需手动上传:
+      #   mapping  : app/build/outputs/mapping/<variant>/mapping.txt
+      #   resource : app/build/crashlytics/mappingfileid-<abi>.xml (由 Gradle 任务生成, id 与 APK 内一致)
+      # 认证: CI 无法交互式 firebase login, 改用服务账号 (Application Default Credentials).
+      # mapping_file_id 由 versionName+versionCode+ABI 确定性生成, 同一版本重复构建/上传幂等.
+      # 上传失败不阻断发布, 只发 warning (该版本崩溃堆栈将保持混淆)
+      - name: Upload Crashlytics mapping (google release)
+        if: env.APP_FLAVOR == 'google' && env.BUILD_TYPE == 'release'
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          warn() { echo "::warning title=Crashlytics mapping::$1"; }
+
+          if [[ -z "${FIREBASE_SERVICE_ACCOUNT:-}" ]]; then
+            warn "未配置 secret FIREBASE_SERVICE_ACCOUNT, 跳过 mapping 上传"
+            exit 0
+          fi
+
+          # VARIANT_DIR 由前面的步骤算出, 已是 AGP 产物目录的小写首字母形式 (googleUniversal)
+          MAPPING="app/build/outputs/mapping/${VARIANT_DIR}Release/mapping.txt"
+          if [[ ! -f "$MAPPING" ]]; then
+            MAPPING="$(find app/build/outputs/mapping -maxdepth 2 -type f -name mapping.txt \
+              -path "*${ABI_FLAVOR}*" 2>/dev/null | head -n 1)"
+          fi
+          RESOURCE_FILE="app/build/crashlytics/mappingfileid-${ABI_FLAVOR}.xml"
+          if [[ -z "$MAPPING" || ! -f "$MAPPING" || ! -f "$RESOURCE_FILE" ]]; then
+            warn "缺 mapping 或 resource 文件 (mapping='${MAPPING:-空}' resource='$RESOURCE_FILE'), 跳过上传"
+            exit 0
+          fi
+          echo "mapping       : $MAPPING"
+          echo "resource-file : $RESOURCE_FILE"
+
+          # release 包名是 com.shifenmiao.app (debug client 是 .debug, 不能混用)
+          APP_ID="$(python3 -c '
+          import json
+          with open("app/src/google/assets/google-services.json") as f:
+              data = json.load(f)
+          for c in data.get("client", []):
+              info = c.get("client_info", {})
+              if info.get("android_client_info", {}).get("package_name") == "com.shifenmiao.app":
+                  print(info.get("mobilesdk_app_id", ""))
+                  break
+          ' 2>/dev/null || true)"
+          if [[ -z "$APP_ID" ]]; then
+            warn "未能从 google-services.json 解析 com.shifenmiao.app 的 mobilesdk_app_id"
+            exit 0
+          fi
+          echo "app-id        : $APP_ID"
+
+          if ! command -v firebase >/dev/null 2>&1; then
+            echo "==> 安装 firebase-tools"
+            npm install -g firebase-tools@15 >/dev/null 2>&1 || {
+              warn "firebase-tools 安装失败, 跳过 mapping 上传"
+              exit 0
+            }
+          fi
+
+          # secret 兼容两种写法: base64(推荐, 与 SIGNING_KEY 一致) 或原始 JSON
+          SA_RAW="$(printf '%s' "$FIREBASE_SERVICE_ACCOUNT" | base64 --decode 2>/dev/null || true)"
+          if [[ "$SA_RAW" != *'"private_key"'* ]]; then
+            SA_RAW="$FIREBASE_SERVICE_ACCOUNT"
+          fi
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-sa.json"
+          printf '%s' "$SA_RAW" > "$GOOGLE_APPLICATION_CREDENTIALS"
+
+          # firebase CLI 上传成功后的收尾阶段偶发非 0 退出, 以成功文案为准, 失败重试一次
+          for attempt in 1 2; do
+            output="$(firebase crashlytics:mappingfile:upload \
+              --app "$APP_ID" --resource-file "$RESOURCE_FILE" "$MAPPING" 2>&1 || true)"
+            echo "$output"
+            if grep -q "Successfully uploaded mapping file" <<< "$output"; then
+              echo "==> mapping 上传成功"
+              exit 0
+            fi
+            echo "[重试] 第 $attempt 次上传未成功" >&2
+          done
+
+          warn "mapping 上传失败, 该版本崩溃堆栈将保持混淆 (可本地用 build_release.sh 补传)"
+          exit 0
+
       - name: Prepare final APK artifact
         id: package_apk
         env:
