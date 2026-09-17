@@ -5,11 +5,14 @@ import com.shifenmiao.model.ai.Conversation
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
 /**
  * Stub 实现：用于 Phase 1 主链路打通，不依赖 native 库。
@@ -67,7 +70,7 @@ class StubLocalLlmRuntime @Inject constructor() : LocalLlmRuntime {
         currentSessionId = null
     }
 
-    override suspend fun release(modelId: String) = mutex.withLock {
+    override suspend fun releaseAll() = mutex.withLock {
         // Stub 不持有 native 资源，no-op
     }
 }
@@ -123,7 +126,9 @@ class LocalOnDeviceAdapter @Inject constructor(
             )
         )
 
-        val sessionId = "local-session-${UUID.randomUUID()}"
+        // sessionId 用会话稳定标识:同一 Conversation 的各轮共享,便于 cancel 精确定位,
+        // 也让 runtime 的"新轮次接管旧轮次"能识别出跨会话的旧推理
+        val sessionId = "local-session-${conversation.id}"
         val model = conversation.engine.model
         // maxTokens 取模型配置与 spec 上限的较小值，避免 spec 配置错误时一次输出撑爆上下文。
         val maxTokens = minOf(spec.maxOutputTokens, model.maxTokens)
@@ -139,23 +144,30 @@ class LocalOnDeviceAdapter @Inject constructor(
             stop = spec.chatTemplate.stopTokens,
         )
 
-        runtime.generate(generateRequest).collect { event ->
-            when (event) {
-                is LocalLlmGenerateEvent.Token ->
-                    emit(com.shifenmiao.model.ai.unified.LlmStreamEvent.TextDelta(event.text))
-                is LocalLlmGenerateEvent.Completed ->
-                    emit(
-                        com.shifenmiao.model.ai.unified.LlmStreamEvent.Completed(
-                            finishReason = event.finishReason
+        try {
+            runtime.generate(generateRequest).collect { event ->
+                when (event) {
+                    is LocalLlmGenerateEvent.Token ->
+                        emit(com.shifenmiao.model.ai.unified.LlmStreamEvent.TextDelta(event.text))
+                    is LocalLlmGenerateEvent.Completed ->
+                        emit(
+                            com.shifenmiao.model.ai.unified.LlmStreamEvent.Completed(
+                                finishReason = event.finishReason
+                            )
                         )
-                    )
-                is LocalLlmGenerateEvent.Failed ->
-                    emit(
-                        com.shifenmiao.model.ai.unified.LlmStreamEvent.Error(
-                            errorMessage = event.message
+                    is LocalLlmGenerateEvent.Failed ->
+                        emit(
+                            com.shifenmiao.model.ai.unified.LlmStreamEvent.Error(
+                                errorMessage = event.message
+                            )
                         )
-                    )
+                }
             }
+        } catch (e: CancellationException) {
+            // 用户点停止:收集协程取消是唯一到达这里的信号,native 推理循环未必响应
+            // 协程取消,必须显式 cancel 打断 runtime,再上抛完成结构化取消
+            withContext(NonCancellable) { runtime.cancel(sessionId) }
+            throw e
         }
     }
 }

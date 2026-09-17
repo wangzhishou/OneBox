@@ -25,5 +25,5 @@ class UnsupportedLocalLlmRuntime @Inject constructor() : LocalLlmRuntime {
 
     override suspend fun cancel(sessionId: String) = Unit
 
-    override suspend fun release(modelId: String) = Unit
+    override suspend fun releaseAll() = Unit
 }

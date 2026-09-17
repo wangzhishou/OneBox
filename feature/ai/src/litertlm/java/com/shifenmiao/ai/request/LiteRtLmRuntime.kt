@@ -35,10 +35,19 @@ import kotlinx.coroutines.withContext
  *   initialMessages,最后一条作为本轮输入;流式 chunk 映射为 Token 事件。
  *   LiteRT-LM 按模型自带 chat template 渲染,不再走 [LocalChatTemplate.render];
  *   request.stop 的字符串没有原生对应参数,这里做输出后处理截断。
- * - cancel 通过 [Conversation.cancelProcess] 打断 native 推理。
+ * - cancel 通过 [Conversation.cancelProcess] 打断 native 推理;取消的轮次一律以
+ *   Failed("cancelled") 收场,不会误报 Completed。
  *
- * 并发约定同接口注释:engine / conversations 的可变状态只在 [mutex] 内读写,
- * 流式 collect 本身不持锁,避免 cancel / release 被饿死。
+ * 并发约定(两把锁,满足接口"native runtime 内部串行化"约束):
+ * - [mutex] 只护可变状态(engine / loadedModelId / conversations / cancelledSessionIds /
+ *   activeSessionId / currentBackendIsGpu)的读写,临界区短平快;
+ *   Engine 创建 / initialize / close 等耗时操作一律在锁外进行。
+ * - [inferenceMutex] 串行化整个推理过程(streamConversation + CPU 回退重试循环);
+ *   协程取消按结构化取消上抛,锁随之释放。
+ * - 新轮次接管:generate 排队进 [inferenceMutex] 之前,若仍有其他 sessionId 在推理,
+ *   先 cancel(旧sessionId) 打断其 native 推理,避免新旧两轮互相等死。
+ * - releaseAll 由 Application.onTrimMemory(TRIM_MEMORY_MODERATE 及以上)触发,
+ *   任何时刻调用都安全(幂等),是内存压力下的保命路径。
  */
 @Singleton
 class LiteRtLmRuntime @Inject constructor(
@@ -46,6 +55,7 @@ class LiteRtLmRuntime @Inject constructor(
 ) : LocalLlmRuntime {
 
     private val mutex = Mutex()
+    private val inferenceMutex = Mutex()
     private var engine: Engine? = null
     private var loadedModelId: String? = null
 
@@ -55,83 +65,125 @@ class LiteRtLmRuntime @Inject constructor(
     private val conversations = mutableMapOf<String, Conversation>()
     private val cancelledSessionIds = mutableSetOf<String>()
 
-    override suspend fun prepare(model: LocalLlmModelSpec): LocalLlmPrepareResult = mutex.withLock {
+    /** 正在推理(持有 inferenceMutex)的 sessionId,供新轮次接管与 cancel 判活。 */
+    private var activeSessionId: String? = null
+
+    override suspend fun prepare(model: LocalLlmModelSpec): LocalLlmPrepareResult {
         if (model.modelPath.isBlank() || !File(model.modelPath).isFile) {
-            return@withLock LocalLlmPrepareResult.Failure(LocalLlmError.ModelFileMissing)
+            return LocalLlmPrepareResult.Failure(LocalLlmError.ModelFileMissing)
         }
-        engine?.let { current ->
-            if (loadedModelId == model.id) {
-                return@withLock LocalLlmPrepareResult.Success(loadedModelId = model.id)
+        // 锁内只做缓存命中判断:目标模型已加载直接复用
+        val cached = mutex.withLock { engine?.takeIf { loadedModelId == model.id } }
+        if (cached != null) return LocalLlmPrepareResult.Success(loadedModelId = model.id)
+
+        // Engine 创建与 initialize(大模型可达数秒)在锁外进行,不堵 cancel / releaseAll
+        val created = createEngine(model, Backend.GPU())?.let { it to true }
+            ?: createEngine(model, Backend.CPU())?.let { it to false }
+            ?: return LocalLlmPrepareResult.Failure(LocalLlmError.RuntimeLoadFailed)
+        val (newEngine, isGpu) = created
+
+        // 回锁内存放。若锁外期间别的 prepare 已加载同一模型(race),复用已有的、
+        // 关掉自己新建的;否则释放旧 Engine(切换模型或锁外被 releaseAll 清空),安放新 Engine
+        var engineToClose: Engine? = null
+        mutex.withLock {
+            val existing = engine
+            if (existing != null && loadedModelId == model.id) {
+                engineToClose = newEngine
+            } else {
+                engineToClose = existing
+                engine = newEngine
+                loadedModelId = model.id
+                currentBackendIsGpu = isGpu
             }
-            // 切换模型前先释放旧 Engine
-            closeEngine(current)
-            engine = null
-            loadedModelId = null
         }
-        val created = createEngine(model, Backend.GPU())
-            ?.also { currentBackendIsGpu = true }
-            ?: createEngine(model, Backend.CPU())
-                ?.also { currentBackendIsGpu = false }
-            ?: return@withLock LocalLlmPrepareResult.Failure(LocalLlmError.RuntimeLoadFailed)
-        engine = created
-        loadedModelId = model.id
-        LocalLlmPrepareResult.Success(loadedModelId = model.id)
+        // 释放权重耗时,同样放在锁外
+        engineToClose?.let { closeEngine(it) }
+        return LocalLlmPrepareResult.Success(loadedModelId = model.id)
     }
 
     override fun generate(request: LocalLlmGenerateRequest): Flow<LocalLlmGenerateEvent> = flow {
-        val prepared = mutex.withLock {
-            engine?.takeIf { loadedModelId == request.model.id }
-        }
-        if (prepared == null) {
-            emit(LocalLlmGenerateEvent.Failed("Local model is not prepared: ${request.model.id}"))
-            return@flow
-        }
-        var currentEngine: Engine = prepared
+        // 新轮次接管:仍有其他 session 在推理时先打断它,再排队等推理锁;
+        // 旧轮次会在流结束/失败后读到 cancelled 标记,以 Failed("cancelled") 收场
+        mutex.withLock { activeSessionId }
+            ?.takeIf { it != request.sessionId }
+            ?.let { cancel(it) }
 
-        var emittedAnyToken = false
-        var cpuRetried = false
-        while (true) {
-            val failure = try {
-                streamConversation(currentEngine, request) { delta ->
-                    emittedAnyToken = true
-                    emit(LocalLlmGenerateEvent.Token(delta))
+        inferenceMutex.withLock {
+            val prepared = mutex.withLock {
+                engine?.takeIf { loadedModelId == request.model.id }
+            }
+            if (prepared == null) {
+                emit(LocalLlmGenerateEvent.Failed("Local model is not prepared: ${request.model.id}"))
+                return@withLock
+            }
+            mutex.withLock { activeSessionId = request.sessionId }
+            try {
+                var currentEngine: Engine = prepared
+                var emittedAnyToken = false
+                var cpuRetried = false
+                while (true) {
+                    val failure = try {
+                        streamConversation(currentEngine, request) { delta ->
+                            emittedAnyToken = true
+                            emit(LocalLlmGenerateEvent.Token(delta))
+                        }
+                        null
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (t: Throwable) {
+                        t
+                    }
+                    // 成功与失败出口都要查取消标记:cancelProcess() 可能让流正常结束(无异常),
+                    // 用户取消必须上报 Failed("cancelled") 而非 Completed
+                    val cancelled = mutex.withLock { cancelledSessionIds.contains(request.sessionId) }
+                    if (cancelled) {
+                        emit(LocalLlmGenerateEvent.Failed("cancelled"))
+                        return@withLock
+                    }
+                    if (failure == null) {
+                        emit(LocalLlmGenerateEvent.Completed(finishReason = "stop"))
+                        return@withLock
+                    }
+                    // GPU 初始化在部分设备(如模拟器)上延迟到首次推理才失败:
+                    // 首批 token 之前的失败,回退 CPU 重建 Engine 重试一次;已产出 token 不重试,避免重复输出
+                    val canCpuRetry = !emittedAnyToken && !cpuRetried && mutex.withLock { currentBackendIsGpu }
+                    if (!canCpuRetry) {
+                        emit(LocalLlmGenerateEvent.Failed(failure.message ?: "Local generation failed"))
+                        return@withLock
+                    }
+                    cpuRetried = true
+                    // CPU 重建同样在状态锁外进行,避免数秒初始化堵住 cancel
+                    val cpuEngine = createEngine(request.model, Backend.CPU())
+                    if (cpuEngine == null) {
+                        val stale = mutex.withLock {
+                            val e = engine
+                            engine = null
+                            loadedModelId = null
+                            currentBackendIsGpu = false
+                            e
+                        }
+                        stale?.let { closeEngine(it) }
+                        emit(LocalLlmGenerateEvent.Failed("Local generation failed and CPU fallback unavailable"))
+                        return@withLock
+                    }
+                    val replaced = mutex.withLock {
+                        val old = engine
+                        engine = cpuEngine
+                        currentBackendIsGpu = false
+                        old
+                    }
+                    replaced?.let { closeEngine(it) }
+                    currentEngine = cpuEngine
                 }
-                null
-            } catch (e: CancellationException) {
-                throw e
-            } catch (t: Throwable) {
-                t
+            } finally {
+                // 取消标记与活跃标记在所有出口统一清理(含 CancellationException 出口),避免无界增长
+                withContext(NonCancellable) {
+                    mutex.withLock {
+                        if (activeSessionId == request.sessionId) activeSessionId = null
+                        cancelledSessionIds.remove(request.sessionId)
+                    }
+                }
             }
-            if (failure == null) {
-                emit(LocalLlmGenerateEvent.Completed(finishReason = "stop"))
-                return@flow
-            }
-            val cancelled = mutex.withLock { cancelledSessionIds.remove(request.sessionId) }
-            if (cancelled) {
-                emit(LocalLlmGenerateEvent.Failed("cancelled"))
-                return@flow
-            }
-            // GPU 初始化在部分设备(如模拟器)上延迟到首次推理才失败:
-            // 首批 token 之前的失败,回退 CPU 重建 Engine 重试一次;已产出 token 不重试,避免重复输出
-            val canCpuRetry = !emittedAnyToken && !cpuRetried && mutex.withLock { currentBackendIsGpu }
-            if (!canCpuRetry) {
-                emit(LocalLlmGenerateEvent.Failed(failure.message ?: "Local generation failed"))
-                return@flow
-            }
-            cpuRetried = true
-            val cpuEngine = mutex.withLock {
-                engine?.let { closeEngine(it) }
-                val created = createEngine(request.model, Backend.CPU())
-                engine = created
-                currentBackendIsGpu = false
-                if (created == null) loadedModelId = null
-                created
-            }
-            if (cpuEngine == null) {
-                emit(LocalLlmGenerateEvent.Failed("Local generation failed and CPU fallback unavailable"))
-                return@flow
-            }
-            currentEngine = cpuEngine
         }
     }
 
@@ -159,7 +211,12 @@ class LiteRtLmRuntime @Inject constructor(
             maxOutputToken = maxOutputToken,
         )
         val conversation = withContext(Dispatchers.Default) { currentEngine.createConversation(config) }
-        mutex.withLock { conversations[request.sessionId] = conversation }
+        val alreadyCancelled = mutex.withLock {
+            conversations[request.sessionId] = conversation
+            cancelledSessionIds.contains(request.sessionId)
+        }
+        // 注册窗口内已被 cancel(如新轮次接管),立即打断,不空转 native 推理
+        if (alreadyCancelled) runCatching { conversation.cancelProcess() }
 
         try {
             val fullText = StringBuilder()
@@ -193,24 +250,32 @@ class LiteRtLmRuntime @Inject constructor(
 
     override suspend fun cancel(sessionId: String) {
         val conversation = mutex.withLock {
-            cancelledSessionIds.add(sessionId)
-            conversations[sessionId]
+            val conv = conversations[sessionId]
+            // 只对确实活跃的 session 打取消标记,避免对早已结束的 session 滞留标记
+            if (conv != null || activeSessionId == sessionId) cancelledSessionIds.add(sessionId)
+            conv
         }
         conversation?.let { runCatching { it.cancelProcess() } }
     }
 
-    override suspend fun release(modelId: String) = mutex.withLock {
-        if (loadedModelId != modelId) return@withLock
-        conversations.values.forEach { conversation ->
+    override suspend fun releaseAll() {
+        val (activeConversations, staleEngine) = mutex.withLock {
+            val convs = conversations.values.toList()
+            conversations.clear()
+            cancelledSessionIds.clear()
+            val e = engine
+            engine = null
+            loadedModelId = null
+            currentBackendIsGpu = false
+            convs to e
+        }
+        // 打断与关闭放在锁外:进行中的 generate 会因流断裂以 Failed 收场,
+        // 其 finally 自行清理残余状态
+        activeConversations.forEach { conversation ->
             runCatching { conversation.cancelProcess() }
             runCatching { conversation.close() }
         }
-        conversations.clear()
-        cancelledSessionIds.clear()
-        engine?.let { closeEngine(it) }
-        engine = null
-        loadedModelId = null
-        currentBackendIsGpu = false
+        staleEngine?.let { closeEngine(it) }
     }
 
     /** Engine.initialize 为阻塞调用(大模型可达数秒),放到 Default dispatcher。 */
@@ -235,7 +300,7 @@ class LiteRtLmRuntime @Inject constructor(
             }
         }
 
-    /** 调用方须持有 [mutex];释放权重耗时,切到 Default 且不可取消。 */
+    /** 释放权重耗时,切到 Default 且不可取消;调用方不得持有 [mutex]。 */
     private suspend fun closeEngine(target: Engine) {
         withContext(NonCancellable + Dispatchers.Default) {
             if (target.isInitialized()) runCatching { target.close() }

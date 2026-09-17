@@ -1,6 +1,7 @@
 package com.shifenmiao.app
 
 import android.app.LocaleManager
+import android.content.ComponentCallbacks2
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.arkivanov.decompose.DecomposeSettings
 import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.shifenmiao.ai.request.di.LocalLlmEntryPoint
 import com.shifenmiao.app.functions.attachLogWriter
 import com.shifenmiao.app.functions.injectBaseComponent
 import com.shifenmiao.app.functions.registerSecurityProviders
@@ -32,6 +34,7 @@ import com.t8rin.imagetoolbox.core.domain.saving.KeepAliveService
 import com.t8rin.imagetoolbox.core.utils.LocaleSwitchWatcher
 import com.t8rin.imagetoolbox.core.utils.initAppContext
 import com.tencent.mmkv.MMKV
+import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -92,6 +95,31 @@ class AppApplication : BaseApplication() {
         // 语言在进程存活期间被切换(应用内选择或系统 per-app 语言设置):
         // Room/MMKV 按语言分库, Hilt 单例只在进程创建时注入, 需要冷重启整体切换到新语言数据源
         LocaleSwitchWatcher.onConfigurationChanged(this)
+    }
+
+    /**
+     * 内存压力保命路径: 端侧 LLM Engine 持有数 GB native 权重, 系统内存紧张时
+     * 主动释放比等进程被 LMK 杀掉代价小得多。
+     * 触发级别: TRIM_MEMORY_MODERATE(60, 应用退到后台且系统内存紧张) 及以上
+     * (含 TRIM_MEMORY_COMPLETE(80)); 前台级别(RUNNING_*)不触发, 避免打断正在进行的推理。
+     * 国内渠道绑定的是 UnsupportedLocalLlmRuntime, releaseAll 为 no-op, 同一入口无需区分渠道。
+     */
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE) {
+            releaseLocalLlmEngine()
+        }
+    }
+
+    private fun releaseLocalLlmEngine() {
+        val runtime = EntryPointAccessors.fromApplication(
+            this,
+            LocalLlmEntryPoint::class.java,
+        ).localLlmRuntime()
+        CoroutineScope(Dispatchers.Default).launch {
+            runCatching { runtime.releaseAll() }
+                .onFailure { android.util.Log.w("AppApplication", "LocalLlmRuntime.releaseAll failed", it) }
+        }
     }
 
     private fun initializeMainProcess(needShowPrivacyPolicyDialog: Boolean) {

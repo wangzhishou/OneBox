@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.Flow
  * 第二阶段：替换为 LlamaCppLocalLlmRuntime 等真实 native 实现。
  *
  * 实现约束（必读）：
- * - prepare / generate / cancel / release 必须在内部串行化（推荐用单线程 dispatcher
+ * - prepare / generate / cancel / releaseAll 必须在内部串行化（推荐用单线程 dispatcher
  *   + Mutex 包外层调用），避免同一 native 上下文被并发访问导致崩溃或 OOM。
- * - 同一时间只能持有一个 loaded modelId；切换模型前调用 release。
+ * - 同一时间只能持有一个 loaded modelId；切换模型前调用 releaseAll。
  * - native 推理循环未必响应协程取消，cancel() 必须显式打断 native 线程。
  */
 interface LocalLlmRuntime {
@@ -36,8 +36,12 @@ interface LocalLlmRuntime {
     /** 取消指定 session 的生成。native 推理循环未必响应协程取消，必须显式调用。 */
     suspend fun cancel(sessionId: String)
 
-    /** 释放指定模型的 native 资源。 */
-    suspend fun release(modelId: String)
+    /**
+     * 释放当前加载模型的全部 native 资源。
+     * 实现同一时刻只持有一个模型,故无需指定 modelId;
+     * 主要调用方是内存压力(onTrimMemory)等保命路径,须保证任何时刻调用都安全(幂等)。
+     */
+    suspend fun releaseAll()
 }
 
 sealed interface LocalLlmPrepareResult {
