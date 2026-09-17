@@ -244,6 +244,7 @@
     <string name="load_error_toast">网络状况不佳或数据暂时为空。</string>
     <string name="login_error_toast">登录出错，请稍后重试！</string>
     <string name="login_first">注册用户才能使用,请先登录</string>
+    <string name="on_device_model_not_supported">当前选中的端侧模型不支持此功能,请在设置中改用云端模型</string>
     <string name="open_url_toast">正在调用系统浏览器打开中</string>
     <string name="open_qq_group">正在打开官方QQ群，请确保已经安装QQ</string>
 

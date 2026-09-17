@@ -78,26 +78,13 @@ class AIPromptExecutor @Inject constructor(
         billing: PromptBilling = PromptBilling.MANAGED,
         billingDesc: String = "",
     ): AIPromptResult {
-        val engine = resolveEngine(engineMode)
+        val engine = resolveEngine(engineMode) ?: return onDeviceEngineError()
 
         if (engine.name.isBlank()) {
             return AIPromptResult(
                 content = "",
                 isSuccess = false,
                 errorMessage = "AI engine not configured",
-            )
-        }
-
-        // Phase 1 保护：本地引擎当前没有走 HTTP 链路的能力，
-        // 直接在调用 URL Resolver 之前拦截，避免 error() 抛出崩溃。
-        // Phase 2 计划：构造 LlmTurnRequest(stream = false) 走 LlmRequestGateway。
-        if (engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE) {
-            return AIPromptResult(
-                content = "",
-                isSuccess = false,
-                errorMessage = "Local on-device engine is not yet supported by AIPromptExecutor (Phase 2)",
-                engineName = engine.name,
-                modelName = engine.model.name,
             )
         }
 
@@ -226,24 +213,13 @@ class AIPromptExecutor @Inject constructor(
         billing: PromptBilling = PromptBilling.MANAGED,
         billingDesc: String = "",
     ): AIPromptResult {
-        val engine = resolveEngine(engineMode)
+        val engine = resolveEngine(engineMode) ?: return onDeviceEngineError()
 
         if (engine.name.isBlank()) {
             return AIPromptResult(
                 content = "",
                 isSuccess = false,
                 errorMessage = "AI engine not configured",
-            )
-        }
-
-        // 与 execute 一致:本地引擎当前没有走 HTTP 链路的能力,直接拦截
-        if (engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE) {
-            return AIPromptResult(
-                content = "",
-                isSuccess = false,
-                errorMessage = "Local on-device engine is not yet supported by AIPromptExecutor (Phase 2)",
-                engineName = engine.name,
-                modelName = engine.model.name,
             )
         }
 
@@ -430,12 +406,37 @@ class AIPromptExecutor @Inject constructor(
         }
     }
 
-    private fun resolveEngine(engineMode: EngineMode): AiEngine {
-        return when (engineMode) {
+    /**
+     * 解析本次执行要用的引擎。
+     *
+     * 端侧引擎(LOCAL_ON_DEVICE)的定位是「会话内由用户显式选择的聊天引擎」,
+     * 单轮提示词执行(标题生成、诗词等后台任务)一律走云端:请求槽位解析到端侧引擎时,
+     * 依次回退 FAST → DEFAULT → DUEL_A → DUEL_B 中第一个可用的云端引擎;
+     * 所有槽位都是端侧引擎时返回 null,由调用方给出用户可理解的错误文案。
+     */
+    private fun resolveEngine(engineMode: EngineMode): AiEngine? {
+        val requested = when (engineMode) {
             EngineMode.DEFAULT -> aiEngineManager.getCurrentAiEngine()
             EngineMode.FAST -> aiEngineManager.getFastAiEngine()
             EngineMode.DUEL_A -> aiEngineManager.getDuelEngineA()
             EngineMode.DUEL_B -> aiEngineManager.getDuelEngineB()
         }
+        if (requested.requestProtocol != AiRequestProtocol.LOCAL_ON_DEVICE) return requested
+
+        makeLog { "AIPromptExecutor: engine '${requested.name}' is on-device, fall back to a cloud engine" }
+        return listOf(
+            aiEngineManager.getFastAiEngine(),
+            aiEngineManager.getCurrentAiEngine(),
+            aiEngineManager.getDuelEngineA(),
+            aiEngineManager.getDuelEngineB(),
+        ).firstOrNull { it.name.isNotBlank() && it.requestProtocol != AiRequestProtocol.LOCAL_ON_DEVICE }
+    }
+
+    private fun onDeviceEngineError(): AIPromptResult {
+        return AIPromptResult(
+            content = "",
+            isSuccess = false,
+            errorMessage = getString(R.string.on_device_model_not_supported),
+        )
     }
 }

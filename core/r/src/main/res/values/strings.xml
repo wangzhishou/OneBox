@@ -222,6 +222,7 @@
     <string name="load_error_toast">Network issue or no data available.</string>
     <string name="login_error_toast">Login error. Please try again later.</string>
     <string name="login_first">Please log in first to use this feature</string>
+    <string name="on_device_model_not_supported">The selected on-device model does not support this feature. Please switch to a cloud model in Settings.</string>
     <string name="open_url_toast">Opening in system browser</string>
     <string name="open_qq_group">Opening QQ group. Please make sure QQ is installed.</string>
 
