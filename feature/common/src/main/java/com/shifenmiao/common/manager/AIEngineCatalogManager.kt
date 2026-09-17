@@ -96,10 +96,13 @@ class AIEngineCatalogManager @Inject constructor(
             )
             val defaultEngineNameSet = defaultModels.map { it.engineName.lowercase() }.toSet()
 
-            entities.map(AiModelEntity::toAiModel)
-                .filter { model ->
-                    defaultEngineNameSet.isEmpty() || defaultEngineNameSet.contains(model.engineName.lowercase())
-                }
+            // 本地自有的引擎/模型不受远程 defaultEngines 白名单限制,否则用户自建引擎的模型永远进不了选择器
+            entities.filter { entity ->
+                entity.isLocalOwned() ||
+                    defaultEngineNameSet.isEmpty() ||
+                    defaultEngineNameSet.contains(entity.engineName.lowercase())
+            }
+                .map(AiModelEntity::toAiModel)
                 .ifEmpty { defaultModels }
                 .groupBy { it.engineName.lowercase() }
         }
