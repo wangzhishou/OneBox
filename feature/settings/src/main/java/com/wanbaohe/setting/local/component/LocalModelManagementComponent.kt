@@ -72,21 +72,23 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
     // 模型文件托管在 Cloudflare R2(onebox-images bucket)的 models/ 路径,
-    // 上新模型需先上传 R2 再在此登记;URL 失效时下载失败并在页面上提示重试
+    // 上新模型需先上传 R2 再在此登记;URL 失效时下载失败并在页面上提示重试。
+    // 推荐顺序:Gemma 在前——它是 LiteRT-LM GPU 后端的官方优化模型;
+    // Qwen3-0.6B 在 Adreno(WebGPU)上会撞 128MB storage buffer 上限回退 CPU,推理明显更慢
     val recommendedModels: List<RecommendedLocalModel> = listOf(
-        RecommendedLocalModel(
-            displayNameRes = R.string.local_model_qwen3_name,
-            descriptionRes = R.string.local_model_qwen3_desc,
-            fileName = "Qwen3-0.6B.litertlm",
-            url = "https://images.oneboxable.com/models/Qwen3-0.6B.litertlm",
-            sizeLabel = "~615MB",
-        ),
         RecommendedLocalModel(
             displayNameRes = R.string.local_model_gemma3_name,
             descriptionRes = R.string.local_model_gemma3_desc,
             fileName = "gemma3-1b-it-int4.litertlm",
             url = "https://images.oneboxable.com/models/gemma3-1b-it-int4.litertlm",
             sizeLabel = "~585MB",
+        ),
+        RecommendedLocalModel(
+            displayNameRes = R.string.local_model_qwen3_name,
+            descriptionRes = R.string.local_model_qwen3_desc,
+            fileName = "Qwen3-0.6B.litertlm",
+            url = "https://images.oneboxable.com/models/Qwen3-0.6B.litertlm",
+            sizeLabel = "~615MB",
         ),
     )
 
@@ -208,6 +210,7 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
                 withContext(uiDispatcher) { onComplete(false, false) }
                 return@launch
             }
+            clearInferenceCaches(model.fileName)
             removeLocalModelRecord(model)
             val current = aiEngineManager.getCurrentAiEngine()
             val reverted = current.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE &&
@@ -296,6 +299,19 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
         }
     }
 
+    /**
+     * 清理模型对应的 LiteRT 推理缓存(GPU mldrift + XNNPack,单模型可达 ~1.2GB)。
+     * 缓存文件名以 `<模型文件名>_` 为前缀;新位置在 files/litertlm_cache,
+     * 旧位置(cacheDir 根,早期版本遗留,会被系统当缓存清掉)一并扫掉。
+     */
+    private fun clearInferenceCaches(fileName: String) {
+        val dirs = listOf(File(context.filesDir, INFERENCE_CACHE_DIR_NAME), context.cacheDir)
+        dirs.forEach { dir ->
+            dir.listFiles { file -> file.name.startsWith("${fileName}_") }
+                ?.forEach { file -> runCatching { file.delete() } }
+        }
+    }
+
     private fun resolveDisplayName(uri: Uri): String? {
         val fromProvider = runCatching {
             context.contentResolver.query(
@@ -325,5 +341,7 @@ class LocalModelManagementComponent @AssistedInject internal constructor(
         // 目录约定与 feature/ai 的 LocalModelDirectoryRegistry 保持一致
         const val MODELS_DIR_NAME = "local_models"
         const val MODEL_EXTENSION = "litertlm"
+        // 与 feature/ai LiteRtLmRuntime 的推理缓存目录约定一致
+        const val INFERENCE_CACHE_DIR_NAME = "litertlm_cache"
     }
 }

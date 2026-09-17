@@ -898,6 +898,7 @@
     <string name="ai_chat_engine_unavailable_dialog_title">无法发送消息</string>
     <string name="ai_chat_engine_unavailable_dialog_message">当前没有可用的 AI 引擎。请先在引擎设置中测试直连成功，或切换到有代理可用的引擎后再发送。</string>
     <string name="ai_chat_engine_unavailable_toast">当前没有可用的 AI 引擎，请先完成引擎设置</string>
+<string name="local_model_loading_hint">正在加载本地模型 %1$s，仅启动后第一次需要几秒…</string>
     <string name="ai_chat_empty_response_error">模型没有返回可展示的内容，请重试一次；如果仍然失败，可切换引擎或检查当前协议兼容性。</string>
     <string name="blog_title">查看文章详情</string>
     <string name="blog_escription">查看文章更多</string>

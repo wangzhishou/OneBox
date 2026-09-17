@@ -1736,6 +1736,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
 
     <!-- AI chat engine availability -->
     <string name="ai_chat_engine_unavailable_toast">No AI engine is available. Please finish engine setup first.</string>
+<string name="local_model_loading_hint">Loading local model %1$s, first load after app start takes a few seconds…</string>
     <string name="ai_chat_engine_unavailable_dialog_title">Cannot send message</string>
     <string name="ai_chat_engine_unavailable_dialog_message">No AI engine is available. Please test a working direct connection in engine settings, or switch to an engine with an available proxy, before sending.</string>
     <string name="ai_chat_engine_unavailable_banner_title">No AI engine available</string>

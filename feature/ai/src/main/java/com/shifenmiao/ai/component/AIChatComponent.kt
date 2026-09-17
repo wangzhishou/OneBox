@@ -17,6 +17,7 @@ import com.shifenmiao.ai.agent.tool.ToolPredicate
 import com.shifenmiao.ai.context.ContextCompactor
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.ai.mediator.MessageRemoteMediator
+import com.shifenmiao.ai.request.LocalLlmSessionManager
 import com.shifenmiao.ai.memory.ConversationMemoryPolicyRepository
 import com.shifenmiao.ai.memory.MemoryRepository
 import com.shifenmiao.ai.model.MessageUiModel
@@ -48,6 +49,7 @@ import com.shifenmiao.network.api.ApiService
 import com.shifenmiao.network.utils.NetworkUtils
 import com.wanbaohe.a2ui.catalog.A2uiRenderProvider
 import com.shifenmiao.model.ai.AttachedMedia
+import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.ContentType
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.MessageUIState
@@ -118,6 +120,7 @@ open class AIChatComponent @AssistedInject internal constructor(
     private val systemPromptRepository: SystemPromptRepository,
     private val conversationTitleSummaryService: ConversationTitleSummaryService,
     private val contextCompactor: ContextCompactor,
+    private val localLlmSessionManager: LocalLlmSessionManager,
     @ApplicationContext private val appContext: Context,
     messageListUseCase: MessageListUseCase,
     a2uiRenderProvider: A2uiRenderProvider,
@@ -1226,6 +1229,12 @@ open class AIChatComponent @AssistedInject internal constructor(
         return "$base · $tail"
     }
 
+    override fun onModelChanged(aiModel: AiModel) {
+        // 进入聊天页 / 切换模型后,若当前是端侧引擎则后台预热(大内存设备才生效),
+        // 用户看历史消息与打字的几秒里模型已加载完,首 token 接近秒回
+        localLlmSessionManager.maybeWarmUp(_conversation.value.engine)
+    }
+
     fun onDestroy() {
         streamContentProcessor.stopStreamWatchdog()
         agentLoopOrchestrator.onDestroy()
@@ -1233,5 +1242,7 @@ open class AIChatComponent @AssistedInject internal constructor(
         clearMessages()
         fetchJob?.cancel()
         chatInputComponent.onDispose()
+        // 离开聊天页延迟释放端侧模型权重(60s 内重回会取消),模型只在聊天场景存活
+        localLlmSessionManager.scheduleRelease()
     }
 }

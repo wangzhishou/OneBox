@@ -88,6 +88,7 @@ class StubLocalLlmRuntime @Inject constructor() : LocalLlmRuntime {
  */
 class LocalOnDeviceAdapter @Inject constructor(
     private val runtime: LocalLlmRuntime,
+    private val sessionManager: LocalLlmSessionManager,
     private val modelRegistry: LocalLlmModelRegistry,
 ) : LlmProviderAdapter {
 
@@ -109,7 +110,9 @@ class LocalOnDeviceAdapter @Inject constructor(
             return@flow
         }
 
-        val prepared = runtime.prepare(spec)
+        // prepare 统一走 SessionManager:维护"模型加载中"UI 状态与 loadedModelId 缓存,
+        // 并取消离开聊天页时排定的延迟释放
+        val prepared = sessionManager.prepare(spec)
         if (prepared is LocalLlmPrepareResult.Failure) {
             emit(
                 com.shifenmiao.model.ai.unified.LlmStreamEvent.Error(

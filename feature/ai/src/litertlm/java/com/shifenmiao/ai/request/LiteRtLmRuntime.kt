@@ -11,6 +11,7 @@ import com.google.ai.edge.litertlm.EngineConfig
 import com.google.ai.edge.litertlm.Message
 import com.google.ai.edge.litertlm.SamplerConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
+import com.t8rin.logger.makeLog
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -153,6 +154,7 @@ class LiteRtLmRuntime @Inject constructor(
                     }
                     cpuRetried = true
                     // CPU 重建同样在状态锁外进行,避免数秒初始化堵住 cancel
+                    makeLog { "LiteRtLmRuntime: GPU inference failed before first token, fallback to CPU. cause=${failure.message}" }
                     val cpuEngine = createEngine(request.model, Backend.CPU())
                     if (cpuEngine == null) {
                         val stale = mutex.withLock {
@@ -286,19 +288,27 @@ class LiteRtLmRuntime @Inject constructor(
                     modelPath = model.modelPath,
                     backend = backend,
                     maxNumTokens = model.contextWindowTokens,
-                    cacheDir = context.cacheDir.absolutePath,
+                    // 推理编译/权重缓存(GPU mldrift + XNNPack,单模型可达 ~1.2GB)必须放 filesDir:
+                    // cacheDir 会被 installd 按配额随时清空(实测 S23 Ultra 上写入 45s 后即被 purge),
+                    // 一旦缓存丢失,每次模型加载都要全量重建,冷启动后首次推理慢一个数量级
+                    cacheDir = inferenceCacheDir().absolutePath,
                 )
             )
             try {
                 candidate.initialize()
+                makeLog { "LiteRtLmRuntime: engine initialized model=${model.id} backend=${if (backend is Backend.GPU) "GPU" else "CPU"}" }
                 candidate
             } catch (e: CancellationException) {
                 throw e
-            } catch (_: Throwable) {
+            } catch (t: Throwable) {
+                makeLog { "LiteRtLmRuntime: engine init failed model=${model.id} backend=${if (backend is Backend.GPU) "GPU" else "CPU"}: $t" }
                 if (candidate.isInitialized()) runCatching { candidate.close() }
                 null
             }
         }
+
+    private fun inferenceCacheDir(): File =
+        File(context.filesDir, INFERENCE_CACHE_DIR_NAME).apply { mkdirs() }
 
     /** 释放权重耗时,切到 Default 且不可取消;调用方不得持有 [mutex]。 */
     private suspend fun closeEngine(target: Engine) {
@@ -320,5 +330,6 @@ class LiteRtLmRuntime @Inject constructor(
 
     private companion object {
         const val DEFAULT_TOP_K = 40
+        const val INFERENCE_CACHE_DIR_NAME = "litertlm_cache"
     }
 }

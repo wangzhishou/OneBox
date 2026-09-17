@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -71,6 +72,7 @@ fun MoreInputSection(
     val currentAIModel by appComponent.aiEngineManager.currentAIModel.collectAsState()
     val isEnableWebSearch by AIChatStorage.isEnableWebSearch.collectAsState()
     val inputState by chatInputComponent.chatInputState.collectAsState()
+    val loadingLocalModel by chatInputComponent.localLlmLoadingModelName.collectAsState()
 
     val imagePicker = rememberFilePicker(
         type = FileType.Multiple,
@@ -106,6 +108,29 @@ fun MoreInputSection(
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp)
     ) {
+        // 端侧模型加载提示:prepare(预热或首次推理前)需要数秒,把不可见的等待变成可解释的等待
+        loadingLocalModel?.let { modelName ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(14.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
+                )
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = stringResource(R.string.local_model_loading_hint, modelName),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
         // 第一区域：模型选择 + 功能开关, 功能开关：最多2个，两端对齐
         FlowRow(
             modifier = Modifier.fillMaxWidth(),

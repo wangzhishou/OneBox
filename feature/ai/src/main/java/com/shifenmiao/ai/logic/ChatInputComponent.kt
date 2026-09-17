@@ -5,6 +5,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.shifenmiao.ai.upload.FileAnalyzer
+import com.shifenmiao.ai.request.LocalLlmSessionManager
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.logic.CommonComponent
 import com.shifenmiao.core.R
@@ -51,6 +52,7 @@ class ChatInputComponent @AssistedInject internal constructor(
     apiService: ApiService,
     fileController: FileController,
     private val fileAnalyzer: FileAnalyzer,
+    localLlmSessionManager: LocalLlmSessionManager,
 ) : CommonComponent(
     settingsManager,
     dispatchersHolder,
@@ -59,6 +61,9 @@ class ChatInputComponent @AssistedInject internal constructor(
     apiService,
     fileController
 ) {
+
+    /** 端侧模型加载状态(非 null = 正在加载),UI 据此展示"正在加载本地模型…"提示。 */
+    val localLlmLoadingModelName: StateFlow<String?> = localLlmSessionManager.loadingModelName
 
     // 使用 InstanceKeeper 保持输入状态，确保跳转第三方返回后输入内容不丢失
     private val inputStateHolder: InputStateHolder =
