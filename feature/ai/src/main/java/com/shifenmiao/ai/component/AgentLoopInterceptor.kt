@@ -14,7 +14,8 @@ import kotlinx.coroutines.CancellationException
  * 在循环关键节点向外部暴露观察/扩展钩子。
  *
  * 注册方式:Hilt @IntoSet 多绑定(见 di/AgentLoopInterceptorModule),
- * AgentLoopRunner / AgentLoopExecutor 注入 Set<AgentLoopInterceptor> 后逐顺序调用。
+ * AgentLoopRunner / AgentLoopExecutor 注入 Set<AgentLoopInterceptor> 后按 [priority]
+ * 升序逐顺序调用(同 priority 顺序不保证)。
  *
  * 语义约定:
  * - 所有方法默认空实现,实现方按需重写。
@@ -23,6 +24,11 @@ import kotlinx.coroutines.CancellationException
  *   guard 拦截产生的失败结果仍会走 [afterToolExecute] —— 那也是"执行结果"的一种。
  */
 interface AgentLoopInterceptor {
+
+    /**
+     * 调用优先级,小的先调用;同 priority 顺序不保证。
+     */
+    val priority: Int get() = 0
 
     /** 循环内每次 LLM 请求发出前(首轮与 follow-up) */
     suspend fun beforeLlmTurn(context: AgentTurnContext) {}
@@ -56,12 +62,13 @@ data class AgentTurnContext(
 
 /**
  * 安全调用拦截器:单个拦截器抛异常只记录日志,绝不影响主循环。
+ * 按 [AgentLoopInterceptor.priority] 升序调用(同 priority 顺序不保证)。
  * CancellationException 原样上抛 —— 它属于调用协程自身的取消信号,吞掉会破坏结构化取消。
  */
 internal suspend inline fun Set<AgentLoopInterceptor>.forEachInterceptor(
     crossinline action: suspend (AgentLoopInterceptor) -> Unit,
 ) {
-    for (interceptor in this) {
+    for (interceptor in this.sortedBy { it.priority }) {
         try {
             action(interceptor)
         } catch (ce: CancellationException) {

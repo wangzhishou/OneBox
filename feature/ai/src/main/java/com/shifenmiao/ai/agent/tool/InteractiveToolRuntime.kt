@@ -148,7 +148,8 @@ class InteractiveToolRuntime @Inject constructor(
     /**
      * 恢复 WAITING_INPUT 任务的交互请求(进程被杀后重建确认/提问 UI 并重新挂起)。
      *
-     * @param interactionOwnerId 当前这次循环 invocation 的交互所有者 ID。
+     * @param interactionOwnerId 当前这次循环 invocation 的交互所有者 ID,必传 ——
+     * 恢复的请求必须绑定到当前 invocation,不设默认值以让编译器兜住"忘记传"。
      *
      * 已核实(对照 ADK 0.8.0 "只恢复本次 invocation 发出的工具确认" 修复):
      * 恢复必须绑定到当前 invocation —— 快照里的旧 interactionOwnerId 属于被杀进程
@@ -163,7 +164,7 @@ class InteractiveToolRuntime @Inject constructor(
      */
     suspend fun restoreWaitingInput(
         task: ToolCallTaskEntity,
-        interactionOwnerId: String? = null,
+        interactionOwnerId: String,
     ): RestoredInteractiveRequestResult? {
         if (task.formRequestJson.isNullOrBlank()) {
             "Cannot restore: formRequestJson is empty for task ${task.id}".makeLog("InteractiveToolRuntime")

@@ -5,13 +5,14 @@ import com.t8rin.logger.makeLog
 import javax.inject.Inject
 
 /**
- * 计费观察钩子 —— 只在 LLM 回合结束时记录 usage 日志,不做任何扣费。
+ * usage 观察钩子 —— 纯 usage 观测日志,只在 LLM 回合结束时记录 usage,不做任何扣费。
  *
  * 注意:Agent 聊天的实际扣费仍在 MessagePersistenceWorker.consumePoints
  * (消息入库时按 token 自报触发,见 AIChatComponent 的入库回调)。
- * 本类仅作为未来把计费迁移到拦截链时的观察点,迁移完成前保持纯日志行为。
+ * 本类是拦截链的占位验证:验证首轮与 follow-up 的 usage 都能被观测到,
+ * 未来若把计费迁移到拦截链,这里即是挂接点;迁移完成前保持纯日志行为。
  */
-class AgentLoopBillingObserver @Inject constructor() : AgentLoopInterceptor {
+class AgentLoopUsageObserver @Inject constructor() : AgentLoopInterceptor {
 
     override suspend fun afterLlmTurn(context: AgentTurnContext, usage: Usage?) {
         usage ?: return
@@ -22,6 +23,6 @@ class AgentLoopBillingObserver @Inject constructor() : AgentLoopInterceptor {
     }
 
     private companion object {
-        const val TAG = "AgentLoopBilling"
+        const val TAG = "AgentLoopUsage"
     }
 }

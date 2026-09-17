@@ -1,8 +1,8 @@
 package com.shifenmiao.ai.component.di
 
-import com.shifenmiao.ai.component.AgentLoopBillingObserver
 import com.shifenmiao.ai.component.AgentLoopInterceptor
 import com.shifenmiao.ai.component.AgentLoopLoggingInterceptor
+import com.shifenmiao.ai.component.AgentLoopUsageObserver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +25,5 @@ object AgentLoopInterceptorModule {
 
     @Provides
     @IntoSet
-    fun provideBillingObserver(impl: AgentLoopBillingObserver): AgentLoopInterceptor = impl
+    fun provideUsageObserver(impl: AgentLoopUsageObserver): AgentLoopInterceptor = impl
 }
