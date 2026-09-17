@@ -29,6 +29,8 @@ import kotlinx.coroutines.withContext
  * 行为:
  * - prepare 校验模型文件存在后初始化 Engine,优先 GPU 后端,失败回退 CPU;
  *   Engine 按 modelId 缓存,重复 prepare 同一模型直接复用,切换模型先释放旧 Engine。
+ *   注意部分设备(如模拟器)GPU 初始化延迟到首次推理才失败,此类失败由 generate
+ *   在首批 token 之前捕获并做一次 CPU 回退重试。
  * - generate 每次新建 [Conversation]:system 消息进 systemInstruction,其余历史进
  *   initialMessages,最后一条作为本轮输入;流式 chunk 映射为 Token 事件。
  *   LiteRT-LM 按模型自带 chat template 渲染,不再走 [LocalChatTemplate.render];
@@ -46,6 +48,10 @@ class LiteRtLmRuntime @Inject constructor(
     private val mutex = Mutex()
     private var engine: Engine? = null
     private var loadedModelId: String? = null
+
+    /** 当前 Engine 是否为 GPU 后端。部分设备(如模拟器)GPU 初始化延迟到首次推理才失败,
+     *  generate 捕获到首批 token 之前的失败时据此做一次 CPU 回退重试。 */
+    private var currentBackendIsGpu = false
     private val conversations = mutableMapOf<String, Conversation>()
     private val cancelledSessionIds = mutableSetOf<String>()
 
@@ -63,7 +69,9 @@ class LiteRtLmRuntime @Inject constructor(
             loadedModelId = null
         }
         val created = createEngine(model, Backend.GPU())
+            ?.also { currentBackendIsGpu = true }
             ?: createEngine(model, Backend.CPU())
+                ?.also { currentBackendIsGpu = false }
             ?: return@withLock LocalLlmPrepareResult.Failure(LocalLlmError.RuntimeLoadFailed)
         engine = created
         loadedModelId = model.id
@@ -71,20 +79,71 @@ class LiteRtLmRuntime @Inject constructor(
     }
 
     override fun generate(request: LocalLlmGenerateRequest): Flow<LocalLlmGenerateEvent> = flow {
-        val currentEngine = mutex.withLock {
+        val prepared = mutex.withLock {
             engine?.takeIf { loadedModelId == request.model.id }
         }
-        if (currentEngine == null) {
+        if (prepared == null) {
             emit(LocalLlmGenerateEvent.Failed("Local model is not prepared: ${request.model.id}"))
             return@flow
         }
+        var currentEngine: Engine = prepared
 
+        var emittedAnyToken = false
+        var cpuRetried = false
+        while (true) {
+            val failure = try {
+                streamConversation(currentEngine, request) { delta ->
+                    emittedAnyToken = true
+                    emit(LocalLlmGenerateEvent.Token(delta))
+                }
+                null
+            } catch (e: CancellationException) {
+                throw e
+            } catch (t: Throwable) {
+                t
+            }
+            if (failure == null) {
+                emit(LocalLlmGenerateEvent.Completed(finishReason = "stop"))
+                return@flow
+            }
+            val cancelled = mutex.withLock { cancelledSessionIds.remove(request.sessionId) }
+            if (cancelled) {
+                emit(LocalLlmGenerateEvent.Failed("cancelled"))
+                return@flow
+            }
+            // GPU 初始化在部分设备(如模拟器)上延迟到首次推理才失败:
+            // 首批 token 之前的失败,回退 CPU 重建 Engine 重试一次;已产出 token 不重试,避免重复输出
+            val canCpuRetry = !emittedAnyToken && !cpuRetried && mutex.withLock { currentBackendIsGpu }
+            if (!canCpuRetry) {
+                emit(LocalLlmGenerateEvent.Failed(failure.message ?: "Local generation failed"))
+                return@flow
+            }
+            cpuRetried = true
+            val cpuEngine = mutex.withLock {
+                engine?.let { closeEngine(it) }
+                val created = createEngine(request.model, Backend.CPU())
+                engine = created
+                currentBackendIsGpu = false
+                if (created == null) loadedModelId = null
+                created
+            }
+            if (cpuEngine == null) {
+                emit(LocalLlmGenerateEvent.Failed("Local generation failed and CPU fallback unavailable"))
+                return@flow
+            }
+            currentEngine = cpuEngine
+        }
+    }
+
+    /** 单次会话流式输出;正常结束与命中 stop 串均正常返回,失败抛异常交由调用方处理。 */
+    private suspend fun streamConversation(
+        currentEngine: Engine,
+        request: LocalLlmGenerateRequest,
+        onDelta: suspend (String) -> Unit,
+    ) {
         val nonSystem = request.messages.filterNot { it.role.equals("system", ignoreCase = true) }
         val outgoing = nonSystem.lastOrNull()?.toLiteRtMessage()
-        if (outgoing == null) {
-            emit(LocalLlmGenerateEvent.Failed("No message to send"))
-            return@flow
-        }
+            ?: throw IllegalStateException("No message to send")
         val systemText = request.messages
             .filter { it.role.equals("system", ignoreCase = true) }
             .joinToString("\n") { it.textContent() }
@@ -99,14 +158,7 @@ class LiteRtLmRuntime @Inject constructor(
             ),
             maxOutputToken = maxOutputToken,
         )
-        val conversation = try {
-            withContext(Dispatchers.Default) { currentEngine.createConversation(config) }
-        } catch (e: CancellationException) {
-            throw e
-        } catch (t: Throwable) {
-            emit(LocalLlmGenerateEvent.Failed(t.message ?: "Failed to create conversation"))
-            return@flow
-        }
+        val conversation = withContext(Dispatchers.Default) { currentEngine.createConversation(config) }
         mutex.withLock { conversations[request.sessionId] = conversation }
 
         try {
@@ -124,30 +176,17 @@ class LiteRtLmRuntime @Inject constructor(
                         // 命中 stop 串:只发截断后的增量,随后打断 native 推理
                         val prevLen = fullText.length - delta.length
                         if (stopIndex > prevLen) {
-                            emit(LocalLlmGenerateEvent.Token(fullText.substring(prevLen, stopIndex)))
+                            onDelta(fullText.substring(prevLen, stopIndex))
                         }
                         conversation.cancelProcess()
                         throw StopSequenceReached()
                     }
-                    emit(LocalLlmGenerateEvent.Token(delta))
+                    onDelta(delta)
                 }
-            emit(LocalLlmGenerateEvent.Completed(finishReason = "stop"))
         } catch (_: StopSequenceReached) {
-            emit(LocalLlmGenerateEvent.Completed(finishReason = "stop"))
-        } catch (e: CancellationException) {
-            throw e
-        } catch (t: Throwable) {
-            val cancelled = mutex.withLock { request.sessionId in cancelledSessionIds }
-            if (cancelled) {
-                emit(LocalLlmGenerateEvent.Failed("cancelled"))
-            } else {
-                emit(LocalLlmGenerateEvent.Failed(t.message ?: "Local generation failed"))
-            }
+            // 命中 stop 串,按正常结束处理
         } finally {
-            mutex.withLock {
-                conversations.remove(request.sessionId)
-                cancelledSessionIds.remove(request.sessionId)
-            }
+            mutex.withLock { conversations.remove(request.sessionId) }
             runCatching { conversation.close() }
         }
     }
@@ -171,6 +210,7 @@ class LiteRtLmRuntime @Inject constructor(
         engine?.let { closeEngine(it) }
         engine = null
         loadedModelId = null
+        currentBackendIsGpu = false
     }
 
     /** Engine.initialize 为阻塞调用(大模型可达数秒),放到 Default dispatcher。 */
