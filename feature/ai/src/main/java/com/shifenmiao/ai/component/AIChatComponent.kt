@@ -53,6 +53,7 @@ import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.MessageUIState
 import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.ai.ToolDefinition
+import com.shifenmiao.model.ai.Usage
 import com.shifenmiao.model.ai.event.MainClickEvent
 import com.shifenmiao.model.ai.event.MainClickEventFrom
 import com.shifenmiao.model.ai.event.MainShowType
@@ -79,6 +80,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -800,6 +802,20 @@ open class AIChatComponent @AssistedInject internal constructor(
                 preResolvedConfig = requestToolConfig
             )
 
+            // 拦截链首轮钩子: follow-up 回合的 before/after/onLoopError 在 AgentLoopRunner 内
+            // 触发, 首轮请求不经过 Runner, 在这里补齐. iteration 固定 0: Agent Loop 迭代从 1
+            // 起计, 0 表示首轮(尚未进入循环); completionId 在 ResponseStarted 前可能为空.
+            val firstTurnContext = AgentTurnContext(
+                conversation = effectiveConversation,
+                conversationId = _conversation.value.id,
+                completionId = _answerMessageEntity.value.completionId
+                    .takeIf { it.isNotBlank() }
+                    ?: _questionMessageEntity.value.completionId,
+                iteration = 0,
+            )
+            var firstTurnUsage: Usage? = null
+            agentLoopInterceptors.forEachInterceptor { it.beforeLlmTurn(firstTurnContext) }
+
             val resultFlow: Flow<LlmStreamEvent> = messageRemoteMediator.fetchAndSaveMessages(
                 effectiveConversation,
                 questionMessageEntityList,
@@ -810,17 +826,28 @@ open class AIChatComponent @AssistedInject internal constructor(
 
             streamContentProcessor.startStreamWatchdog(reason = "executeStreamingChat")
             try {
-                resultFlow.collect { streamEvent: LlmStreamEvent ->
+                resultFlow.onEach { streamEvent ->
+                    if (streamEvent is LlmStreamEvent.UsageUpdated) {
+                        firstTurnUsage = streamEvent.usage
+                    }
+                }.collect { streamEvent: LlmStreamEvent ->
                     processingMutex.withLock {
                         handleLlmEvent(streamEvent, questionMessageEntityList)
                     }
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 "resultFlow.collect EXCEPTION: ${e.javaClass.simpleName}: ${e.message}".makeLog("AIChatComponent")
+                // 与 Runner 语义一致: 取消不触发 onLoopError, 首轮流异常在这里上报
+                agentLoopInterceptors.forEachInterceptor { it.onLoopError(firstTurnContext, e) }
                 throw e
             } finally {
                 streamContentProcessor.stopStreamWatchdog()
             }
+            // 流正常结束才触发 afterLlmTurn(usage 可能为空: 上游未上报);
+            // 中途异常已由上面 catch 走 onLoopError, 不会执行到这里.
+            agentLoopInterceptors.forEachInterceptor { it.afterLlmTurn(firstTurnContext, firstTurnUsage) }
 
             if (isToolCallSupported && agentLoopOrchestrator.hasAccumulatedToolCalls()) {
                 agentLoopOrchestrator.executeAgentLoop(

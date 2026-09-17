@@ -1,6 +1,7 @@
 package com.shifenmiao.ai.context
 
 import com.shifenmiao.ai.request.LlmRequestGateway
+import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.model.ai.unified.LlmMessage
 import com.shifenmiao.model.ai.unified.LlmStreamEvent
@@ -18,12 +19,15 @@ import kotlinx.coroutines.withTimeoutOrNull
  * 而是先压缩成摘要插回上下文，保留任务连续性。
  *
  * 调用约定：
- * - 使用当前会话自己的引擎（[Conversation.engine]），非流式请求，不经计费链；
+ * - 优先使用全局 fast-task 引擎（[AIEngineManager.getEngineForFastTask]），非流式请求，
+ *   不经计费链：压缩是平台内部任务，会话引擎若为 OWN_PROXY 则是纯平台成本，
+ *   fast 引擎通常配置为低成本模型；取不到 fast 引擎时回退会话自身引擎；
  * - 任何异常 / 超时 / 空结果都返回 null，由调用方回退到硬裁剪。
  */
 @Singleton
 class ContextCompactor @Inject constructor(
     private val llmRequestGateway: LlmRequestGateway,
+    private val aiEngineManager: AIEngineManager,
 ) {
 
     /**
@@ -37,8 +41,9 @@ class ContextCompactor @Inject constructor(
         val transcript = buildTranscript(evicted)
         if (transcript.isBlank()) return null
 
+        val effectiveConversation = resolveCompactionConversation(conversation)
         val request = LlmTurnRequest(
-            model = conversation.engine.model.name,
+            model = effectiveConversation.engine.model.name,
             stream = false,
             messages = listOf(
                 LlmMessage.createTextMessage(role = "system", text = SUMMARY_SYSTEM_PROMPT),
@@ -50,7 +55,7 @@ class ContextCompactor @Inject constructor(
             withTimeoutOrNull(TIMEOUT_MS) {
                 val content = StringBuilder()
                 var failed = false
-                llmRequestGateway.streamTurn(conversation, request)
+                llmRequestGateway.streamTurn(effectiveConversation, request)
                     .catch { failed = true }
                     .collect { event ->
                         when (event) {
@@ -71,6 +76,18 @@ class ContextCompactor @Inject constructor(
             "ContextCompactor: compact failed: ${it.message}".makeLog("ContextCompactor")
             null
         }
+    }
+
+    /**
+     * 解析压缩请求使用的会话：engine 换成全局 fast-task 引擎，其余字段沿用会话值
+     * （[LlmRequestGateway.streamTurn] 需要完整 Conversation）。fast 引擎取不到或
+     * 与会话引擎相同（无需 copy）时回退原会话。
+     */
+    private fun resolveCompactionConversation(conversation: Conversation): Conversation {
+        val fastEngine = runCatching { aiEngineManager.getEngineForFastTask() }.getOrNull()
+            ?: return conversation
+        if (fastEngine == conversation.engine) return conversation
+        return conversation.copy(engine = fastEngine)
     }
 
     /**
