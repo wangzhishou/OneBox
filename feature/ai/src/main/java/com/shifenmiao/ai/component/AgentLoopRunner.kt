@@ -313,6 +313,11 @@ class AgentLoopRunner(
     /**
      * 上下文裁剪入口：压缩开关开启时，先把被裁掉的早期消息经 [ContextCompactor]
      * 总结为摘要插回上下文（不计迭代、不计费）；压缩不可用或失败时回退硬裁剪。
+     *
+     * 摘要必须作为普通历史消息(role=user)插回，而不是 system 消息：
+     * [ContextWindowManager] 对 system 消息全量保留永不淘汰，摘要放 system 会
+     * 随每次压缩单调膨胀直至耗尽预算；作为会话段开头的普通消息，它可以在下一轮
+     * 压缩时被正常淘汰、连同更新的 evicted 段一起被再次总结（"摘要的摘要"）。
      */
     private suspend fun fitContextMessages(
         messages: List<LlmMessage>,
@@ -327,10 +332,10 @@ class AgentLoopRunner(
             ?.let { contextCompactor.compact(it, conversation) }
             ?: return ContextWindowManager.fitToContextWindow(messages, contextWindowTokens)
         val summaryMessage = LlmMessage.createTextMessage(
-            role = "system",
+            role = "user",
             text = "[早期对话摘要] $summary",
         )
-        // 摘要插在 system 之后、保留的历史消息之前，替代硬裁剪的 omitted 占位
+        // 摘要插在 kept 中 system 段之后、会话段开头，替代硬裁剪的 omitted 占位
         val insertIndex = fit.kept.indexOfFirst { it.role != "system" }
             .let { if (it < 0) fit.kept.size else it }
         return fit.kept.toMutableList().apply { add(insertIndex, summaryMessage) }
