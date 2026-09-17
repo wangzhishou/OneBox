@@ -1915,6 +1915,14 @@ sealed class Screen(
     )
 
     @Serializable
+    @SerialName("LocalModelManagement")
+    data object LocalModelManagement : Screen(
+        id = -32,
+        title = com.shifenmiao.core.R.string.profile_item_local_models,
+        subtitle = 0,
+    )
+
+    @Serializable
     @SerialName("AuthCodeSettings")
     data object AuthCodeSettings : Screen(
         id = -27,

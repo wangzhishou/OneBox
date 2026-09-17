@@ -832,6 +832,7 @@
     <string name="profile_item_ai_feature_settings">功能开关</string>
     <string name="profile_item_ai_service_and_models">服务与模型</string>
     <string name="profile_item_ai_workflow_models">工作模型</string>
+    <string name="profile_item_local_models">本地模型</string>
     <string name="profile_item_ai_usage">用量统计</string>
     <string name="profile_item_ai_reply_style">系统提示词</string>
     <string name="profile_item_ai_memory">AI 记忆</string>

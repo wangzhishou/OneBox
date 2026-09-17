@@ -2,6 +2,7 @@ package com.wanbaohe.setting.router
 
 sealed class SettingsRoute {
     data object AIFeatureSettings : SettingsRoute()
+    data object LocalModelManagement : SettingsRoute()
     data object AIEngineList : SettingsRoute()
     data class AIEngineDetail(val engineName: String, val requestProtocol: String) : SettingsRoute()
     data object AIWorkingModel : SettingsRoute()

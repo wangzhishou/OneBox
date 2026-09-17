@@ -138,6 +138,9 @@ fun ProfileContent(
     val showCommunitySetting = channelConfig.enableWechat
     // Ko-fi 打赏入口仅海外渠道(google / foss)展示; 国内渠道走 Donate 积分/支付体系
     val showSupportDevSetting = FlavorType.fromName().isOverseas
+    // 本地模型管理入口仅打包 LiteRT-LM 运行时的渠道(google / foss)展示;
+    // 国内渠道隐藏入口后页面路由虽存在但不可达, 故页面内不再做渠道判断
+    val showLocalModelSetting = FlavorType.fromName().isOverseas
     val itemModifier = Modifier
     val loginState = LocalLoginState.current
     val onNavigate = LocalOnNavigate.current
@@ -215,7 +218,8 @@ fun ProfileContent(
                                     (showLanguageSetting || it != ProfileSetting.LanguageSetting) &&
                                         (showDonateSetting || it != ProfileSetting.Donate) &&
                                         (showCommunitySetting || it != ProfileSetting.Community) &&
-                                        (showSupportDevSetting || it != ProfileSetting.SupportDeveloper)
+                                        (showSupportDevSetting || it != ProfileSetting.SupportDeveloper) &&
+                                        (showLocalModelSetting || it != ProfileSetting.LocalModelManagement)
                                 }
                             }
                             itemsList.forEachIndexed { index, setting ->

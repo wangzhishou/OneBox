@@ -126,6 +126,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSlideshow
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSpeedTest
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSurvive30s
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSvgMaker
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTeleprompter
@@ -357,6 +358,7 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.StartEntrySettings -> "StartEntrySettings"
     is Screen.ThemeSettings -> "ThemeSettings"
     is Screen.AIFeatureSettings -> "AIFeatureSettings"
+    is Screen.LocalModelManagement -> "LocalModelManagement"
     is Screen.AuthCodeSettings -> "AuthCodeSettings"
     is Screen.AISettings -> "AISettings"
     is Screen.SystemPromptManagement -> "SystemPromptManagement"
@@ -494,6 +496,7 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.WebBrowser -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language
     is Screen.CodeEditor -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor
     is Screen.AIFeatureSettings -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.RobotHappy
+    is Screen.LocalModelManagement -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStorage
     is Screen.StartEntrySettings -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDoorFront
     is Screen.AuthCodeSettings -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLock
     is Screen.CloudStorage -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCloudStorage

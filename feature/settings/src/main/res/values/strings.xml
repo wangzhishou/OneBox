@@ -435,4 +435,37 @@
     <string name="skill_usage_low">LOW USE</string>
     <string name="skill_usage_regular">REGULAR USE</string>
     <string name="skill_usage_high">HIGH USE</string>
+
+    <!-- On-device model management -->
+    <string name="local_models_recommended_section">Recommended</string>
+    <string name="local_models_recommended_supporting">Download a model file to chat entirely on this device. No sign-in or points required.</string>
+    <string name="local_models_downloaded_section">Downloaded</string>
+    <string name="local_models_downloaded_supporting">Model files stored on this device. Set one as the chat model or delete it.</string>
+    <string name="local_models_import_section">Import from File</string>
+    <string name="local_models_import_supporting">Pick a .litertlm model file from storage to copy it into the on-device model directory.</string>
+    <string name="local_models_import_button">Choose model file</string>
+    <string name="local_models_empty">No models yet. Download one above or import a file.</string>
+    <string name="local_model_qwen3_name">Qwen3 0.6B</string>
+    <string name="local_model_qwen3_desc">Alibaba\'s compact multilingual chat model. Fast even on mid-range phones.</string>
+    <string name="local_model_gemma3_name">Gemma 3 1B</string>
+    <string name="local_model_gemma3_desc">Google\'s lightweight open model, good at English chat and summaries.</string>
+    <string name="local_models_download">Download</string>
+    <string name="local_models_retry">Retry</string>
+    <string name="local_models_cancel">Cancel</string>
+    <string name="local_models_downloaded">Downloaded</string>
+    <string name="local_models_download_failed">Download failed. Check your network and retry.</string>
+    <string name="local_models_set_as_chat_model">Set as chat model</string>
+    <string name="local_models_current_chat_model">Current chat model</string>
+    <string name="local_models_set_success">Chat model switched</string>
+    <string name="local_models_set_failed">Failed to switch chat model</string>
+    <string name="local_models_delete">Delete</string>
+    <string name="local_models_delete_confirm_title">Delete this model?</string>
+    <string name="local_models_delete_confirm_message">\"%1$s\" will be removed from this device. You can download or import it again later.</string>
+    <string name="local_models_delete_failed">Delete failed</string>
+    <string name="local_models_chat_model_reverted">The deleted model was the chat model. Switched back to the default cloud model.</string>
+    <string name="local_models_engine_title">On-Device</string>
+    <string name="local_models_import_success">Model imported</string>
+    <string name="local_models_import_failed">Import failed</string>
+    <string name="local_models_import_overwrite_title">Replace existing file?</string>
+    <string name="local_models_import_overwrite_message">\"%1$s\" already exists. Replace it with the selected file?</string>
 </resources>

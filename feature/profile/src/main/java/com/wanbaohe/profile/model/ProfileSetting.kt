@@ -30,6 +30,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePsychology
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineToggle
 import kotlinx.parcelize.RawValue
@@ -76,6 +77,7 @@ sealed class ProfileSetting(
         settingsList = listOf(
             AIModelSettings,
             AIModelWorkSettings,
+            LocalModelManagement,
             AITokenUsage,
             TTSSettings,
             ImageGenerationSettings,
@@ -219,6 +221,13 @@ sealed class ProfileSetting(
         id = 16,
         title = R.string.profile_item_ai_workflow_models,
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWorkModels
+    )
+
+    // 端侧(LiteRT-LM)模型管理入口, 仅 google / foss 渠道可见(ProfileScreen 按 isOverseas 过滤)
+    data object LocalModelManagement : ProfileSetting(
+        id = 30,
+        title = R.string.profile_item_local_models,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStorage
     )
 
     data object AITokenUsage : ProfileSetting(

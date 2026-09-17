@@ -797,6 +797,7 @@
     <string name="profile_group_ai_settings">AI Settings</string>
     <string name="profile_item_ai_service_and_models">Services &amp; Models</string>
     <string name="profile_item_ai_workflow_models">Active Models</string>
+    <string name="profile_item_local_models">On-Device Models</string>
     <string name="profile_item_ai_usage">Usage</string>
     <string name="profile_item_ai_reply_style">System Prompts</string>
     <string name="profile_item_ai_memory">AI Memory</string>

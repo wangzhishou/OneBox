@@ -1322,6 +1322,16 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        Screen.LocalModelManagement -> NavigationChild.SettingsRouter(
+            lifeFactories.get().settingRouterComponentFactory(
+                componentContext = componentContext,
+                route = SettingsRoute.LocalModelManagement,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+                appComponent = null,
+            )
+        )
+
         is Screen.AISettings -> NavigationChild.SettingsRouter(
             lifeFactories.get().settingRouterComponentFactory(
                 componentContext = componentContext,

@@ -11,6 +11,7 @@ import com.wanbaohe.setting.display.screen.DisplaySettingsScreen
 import com.wanbaohe.setting.display.screen.StartEntrySettingsScreen
 import com.wanbaohe.setting.easter.screen.EasterEggScreen
 import com.wanbaohe.setting.image.screen.ImageGenerationSettingsScreen
+import com.wanbaohe.setting.local.screen.LocalModelManagementScreen
 import com.wanbaohe.setting.memory.screen.MemoryManagementScreen
 import com.wanbaohe.setting.prompt.screen.SystemPromptDetailScreen
 import com.wanbaohe.setting.prompt.screen.SystemPromptManagementScreen
@@ -24,6 +25,7 @@ import com.wanbaohe.setting.theme.screen.ThemeSettingsScreen
 fun SettingRouterScreen(component: SettingRouterComponent) {
     when (val child = component.child) {
         is SettingRouterComponent.SettingChild.AIFeatureSettings -> AIFeatureSettingsScreen(child.component)
+        is SettingRouterComponent.SettingChild.LocalModelManagement -> LocalModelManagementScreen(child.component)
         is SettingRouterComponent.SettingChild.AIEngineList -> AIEngineSettingsScreen(child.component)
         is SettingRouterComponent.SettingChild.AIEngineDetail -> AIEngineSettingsDetailScreen(child.component)
         is SettingRouterComponent.SettingChild.AIWorkingModel -> AIWorkingModelSettingsScreen(child.component)

@@ -435,4 +435,37 @@
     <string name="skill_usage_low">低频使用</string>
     <string name="skill_usage_regular">经常使用</string>
     <string name="skill_usage_high">高频使用</string>
+
+    <!-- 本地模型管理 -->
+    <string name="local_models_recommended_section">推荐下载</string>
+    <string name="local_models_recommended_supporting">下载模型文件后即可完全在本机离线聊天，无需登录、不消耗积分。</string>
+    <string name="local_models_downloaded_section">已下载</string>
+    <string name="local_models_downloaded_supporting">保存在本机的模型文件，可设为聊天模型或删除。</string>
+    <string name="local_models_import_section">从文件导入</string>
+    <string name="local_models_import_supporting">从存储中选择 .litertlm 模型文件，拷贝到本地模型目录。</string>
+    <string name="local_models_import_button">选择模型文件</string>
+    <string name="local_models_empty">还没有模型，从上方下载或导入一个文件吧。</string>
+    <string name="local_model_qwen3_name">Qwen3 0.6B</string>
+    <string name="local_model_qwen3_desc">阿里出品的小参数多语言聊天模型，中端机型也能流畅运行。</string>
+    <string name="local_model_gemma3_name">Gemma 3 1B</string>
+    <string name="local_model_gemma3_desc">谷歌轻量开源模型，擅长英文对话与总结。</string>
+    <string name="local_models_download">下载</string>
+    <string name="local_models_retry">重试</string>
+    <string name="local_models_cancel">取消</string>
+    <string name="local_models_downloaded">已下载</string>
+    <string name="local_models_download_failed">下载失败，请检查网络后重试。</string>
+    <string name="local_models_set_as_chat_model">设为聊天模型</string>
+    <string name="local_models_current_chat_model">当前聊天模型</string>
+    <string name="local_models_set_success">已切换聊天模型</string>
+    <string name="local_models_set_failed">切换聊天模型失败</string>
+    <string name="local_models_delete">删除</string>
+    <string name="local_models_delete_confirm_title">删除这个模型？</string>
+    <string name="local_models_delete_confirm_message">「%1$s」将从本机移除，之后可以重新下载或导入。</string>
+    <string name="local_models_delete_failed">删除失败</string>
+    <string name="local_models_chat_model_reverted">删除的是当前聊天模型，已回退为默认云端模型。</string>
+    <string name="local_models_engine_title">本地模型</string>
+    <string name="local_models_import_success">模型已导入</string>
+    <string name="local_models_import_failed">导入失败</string>
+    <string name="local_models_import_overwrite_title">替换已有文件？</string>
+    <string name="local_models_import_overwrite_message">「%1$s」已存在，要用所选文件替换吗？</string>
 </resources>

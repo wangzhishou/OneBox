@@ -16,6 +16,7 @@ import com.wanbaohe.setting.ai.component.AIWorkingModelSettingsComponent
 import com.wanbaohe.setting.authcode.component.AuthCodeSettingsComponent
 import com.wanbaohe.setting.display.component.DisplaySettingsComponent
 import com.wanbaohe.setting.easter.component.EasterEggComponent
+import com.wanbaohe.setting.local.component.LocalModelManagementComponent
 import com.wanbaohe.setting.memory.component.MemoryManagementComponent
 import com.wanbaohe.setting.prompt.component.SystemPromptDetailComponent
 import com.shifenmiao.tts.service.TTSService
@@ -35,6 +36,7 @@ class SettingRouterComponent @AssistedInject internal constructor(
     @Assisted val onNavigate: (Screen) -> Unit,
     @Assisted val appComponent: AppComponent?,
     private val aiFeatureSettingsComponentFactory: AIFeatureSettingsComponent.Factory,
+    private val localModelManagementComponentFactory: LocalModelManagementComponent.Factory,
     private val aiEngineSettingsComponentFactory: AIEngineSettingsComponent.Factory,
     private val aiEngineSettingsDetailComponentFactory: AIEngineSettingsDetailComponent.Factory,
     private val aiWorkingModelSettingsComponentFactory: AIWorkingModelSettingsComponent.Factory,
@@ -60,6 +62,13 @@ class SettingRouterComponent @AssistedInject internal constructor(
                 componentContext = componentContext.childContext("ai_feature_settings"),
                 onGoBack = onGoBack,
                 onNavigate = onNavigate,
+            )
+        )
+
+        is SettingsRoute.LocalModelManagement -> SettingChild.LocalModelManagement(
+            localModelManagementComponentFactory(
+                componentContext = componentContext.childContext("local_model_management"),
+                onGoBack = onGoBack,
             )
         )
 
@@ -184,6 +193,7 @@ class SettingRouterComponent @AssistedInject internal constructor(
 
     sealed interface SettingChild {
         class AIFeatureSettings(val component: AIFeatureSettingsComponent) : SettingChild
+        class LocalModelManagement(val component: LocalModelManagementComponent) : SettingChild
         class AIEngineList(val component: AIEngineSettingsComponent) : SettingChild
         class AIEngineDetail(val component: AIEngineSettingsDetailComponent) : SettingChild
         class AIWorkingModel(val component: AIWorkingModelSettingsComponent) : SettingChild

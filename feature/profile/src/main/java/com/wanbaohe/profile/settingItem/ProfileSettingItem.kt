@@ -126,6 +126,18 @@ fun ProfileSettingItem(
             )
         }
 
+        ProfileSetting.LocalModelManagement -> {
+            BaseSettingItem(
+                modifier,
+                settingsComponent = settingsComponent,
+                setting = setting,
+                themeIndex = themeIndex,
+                onclick = {
+                    onNavigate(Screen.LocalModelManagement)
+                }
+            )
+        }
+
         ProfileSetting.AITokenUsage -> {
             BaseSettingItem(
                 modifier,
