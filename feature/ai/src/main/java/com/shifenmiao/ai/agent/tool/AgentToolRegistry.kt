@@ -129,7 +129,9 @@ class AgentToolRegistry @Inject constructor(
 
     /**
      * 按名称取工具实例，找不到返回 null。
-     * 供 ToolPredicate 谓词筛选等需要执行器元数据的场景使用。
+     * 供 AgentLoopInterceptor 回调（beforeToolExecute）等确实需要执行器实例的场景使用；
+     * 只读元数据的场景（如 ToolPredicate 筛选）请改用 [getToolCatalogItem]，
+     * 避免触发 Provider.get 走 Hilt 注入图。
      */
     fun getToolInstance(toolName: String): AgentTool? = toolProviders[toolName]?.get()
 

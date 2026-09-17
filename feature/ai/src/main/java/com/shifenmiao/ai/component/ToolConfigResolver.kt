@@ -58,6 +58,12 @@ class ToolConfigResolver(
     )
 
     /**
+     * 当前会话（与 [resolve] 内部使用的同一来源）。
+     * 供 PromptAssemblyService 构造 ToolFilterContext 等需要会话快照的场景使用。
+     */
+    fun currentConversation(): Conversation = conversationProvider()
+
+    /**
      * 请求级快照缓存。
      *
      * 仅由 [snapshot] 写入，[resolve] 读取。

@@ -215,6 +215,8 @@ open class AIChatComponent @AssistedInject internal constructor(
         agentToolRegistry = agentToolRegistry,
         memoryRepository = memoryRepository,
         skillRepository = skillRepository,
+        // 谓词链收在 PromptAssemblyService 内部（两条工具集产出路径统一过滤）
+        toolPredicates = toolPredicates,
     )
 
     private val modeTransitionManager = ModeTransitionManager(
@@ -257,7 +259,6 @@ open class AIChatComponent @AssistedInject internal constructor(
         conversationToolPolicyRepository = conversationToolPolicyRepository,
         conversationMemoryPolicyRepository = conversationMemoryPolicyRepository,
         toolConfigResolver = toolConfigResolver,
-        toolPredicates = toolPredicates,
         toolCallbackRouter = toolCallbackRouter,
         sharedState = sharedState,
         streamContentProcessor = streamContentProcessor,

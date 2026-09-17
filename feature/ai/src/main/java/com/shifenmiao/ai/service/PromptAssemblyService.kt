@@ -2,6 +2,8 @@ package com.shifenmiao.ai.service
 
 import com.google.gson.JsonParser
 import com.shifenmiao.ai.agent.AgentLoopExecutor
+import com.shifenmiao.ai.agent.tool.ToolFilterContext
+import com.shifenmiao.ai.agent.tool.ToolPredicate
 import com.shifenmiao.ai.agent.tool.builtin.MemoryGetTool
 import com.shifenmiao.ai.agent.tool.builtin.MemoryWriteTool
 import com.shifenmiao.ai.agent.tool.builtin.UseSkillTool
@@ -27,6 +29,9 @@ import com.t8rin.logger.makeLog
  * - 纯业务逻辑，不持有 UI 状态
  * - 无状态，所有方法均为纯函数或仅依赖注入的单例服务
  * - AgentLoopOrchestrator 通过委托调用此类，自身只负责协调
+ * - ToolPredicate 谓词链收口在本类内部（[buildRequestTools] 与
+ *   [buildFollowUpToolsAfterDiscovery] 两条产出工具集的路径统一过链），
+ *   避免只在某一条调用链过滤时被另一条路径绕过
  *
  * 注：因为依赖 ToolConfigResolver（每个组件实例独立构造），无法作为 Hilt 单例注入，
  * 由 AIChatComponent 手动构造并传给 AgentLoopOrchestrator。
@@ -38,6 +43,7 @@ class PromptAssemblyService(
     private val agentToolRegistry: AgentToolRegistry,
     private val memoryRepository: MemoryRepository,
     private val skillRepository: SkillRepository,
+    private val toolPredicates: Set<ToolPredicate> = emptySet(),
 ) {
     fun prepareToolSelection(
         engine: com.shifenmiao.model.ai.AiEngine,
@@ -74,7 +80,38 @@ class PromptAssemblyService(
 
         if (toolNames.isEmpty()) return null
         val tools = agentLoopExecutor.toolRegistry.getToolDefinitions(toolNames.toSet())
-        return tools.takeIf { it.isNotEmpty() }
+        // 谓词链收口：产出最终请求工具集前统一过一遍（云端协议谓词全部放行，集不变）
+        return applyToolPredicates(tools).takeIf { it.isNotEmpty() }
+    }
+
+    /**
+     * 谓词链筛选：对候选工具逐个过 [toolPredicates]，全部通过才保留。
+     * 判定基于工具名 + 注册表已缓存的目录元数据（O(1) 查表），
+     * 不触发 AgentTool 实例化 —— 每个 Agent 轮次要判定上百个候选，
+     * 实例化路径会走一遍 Hilt 注入图，正是注册表目录缓存要避免的事。
+     * 云端协议下 ProtocolToolPredicate 一律放行，云端引擎最终工具集与改造前一致。
+     */
+    private suspend fun applyToolPredicates(tools: List<ToolDefinition>): List<ToolDefinition> {
+        if (tools.isEmpty() || toolPredicates.isEmpty()) return tools
+        // resolve() 命中请求级快照（buildRequestTools 刚走过同一缓存），无额外 DB 开销
+        val effectiveConfig = toolConfigResolver.resolve()
+        val conversation = toolConfigResolver.currentConversation()
+        val context = ToolFilterContext(
+            conversation = conversation,
+            workingMode = effectiveConfig.policy.workingMode,
+            protocol = conversation.engine.requestProtocol,
+            boundToolNames = effectiveConfig.boundToolNames,
+            selectedToolNames = effectiveConfig.policy.selectedToolNames,
+            memoryEnabled = effectiveConfig.memoryEnabled,
+            skillsEnabled = effectiveConfig.skillsEnabled,
+            toolsSupported = effectiveConfig.toolsSupported,
+        )
+        return tools.filter { definition ->
+            val name = definition.function.name
+            toolPredicates.all { predicate ->
+                predicate.isToolVisible(name, agentToolRegistry.getToolCatalogItem(name), context)
+            }
+        }
     }
 
     /**
@@ -186,15 +223,21 @@ class PromptAssemblyService(
             .takeIf { it.isNotEmpty() }
             ?: return currentTools
 
+        // 谓词链收口：发现类工具扩展活跃集同样过链（扩展的是名字集合，name-based
+        // 谓词天然适用），避免端侧白名单被 discover_tools 路径绕过。
+        // 过滤后为空说明新增项全部被谓词拦下，维持当前工具集即可。
+        val filteredTools = applyToolPredicates(mergedTools)
+        if (filteredTools.isEmpty()) return currentTools
+
         // Trace: 记录工具扩展情况，便于调试动态扩展行为
         val addedNames = mergedNames - currentNames
         if (addedNames.isNotEmpty()) {
             "buildFollowUpToolsAfterDiscovery: current=${currentNames.size} " +
-                "added=${addedNames} merged=${mergedTools.size}"
+                "added=${addedNames} merged=${filteredTools.size}"
                 .makeLog("PromptAssembly")
         }
 
-        return mergedTools
+        return filteredTools
     }
 
     private fun buildImplicitFollowUpToolNames(calledDiscoveryTools: Set<String>): List<String> {

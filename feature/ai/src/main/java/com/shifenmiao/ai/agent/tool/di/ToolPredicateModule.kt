@@ -12,7 +12,8 @@ import dagger.multibindings.IntoSet
  * ToolPredicate 多绑定模块 —— 通过 @IntoSet 注册谓词。
  *
  * 新增筛选规则时在此追加一个 @Provides @IntoSet 即可，
- * AgentLoopOrchestrator 注入的 Set<ToolPredicate> 自动收齐。
+ * PromptAssemblyService 持有的 Set<ToolPredicate> 自动收齐
+ * （由 AIChatComponent 注入后经构造传入）。
  */
 @Module
 @InstallIn(SingletonComponent::class)
