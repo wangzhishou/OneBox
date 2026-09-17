@@ -30,6 +30,14 @@ object UrlConstants {
     const val DEEP_LINK_HOST_ACTION = "action"
     const val DEEP_LINK_HOST_ITEM = "item"
 
+    /**
+     * App Links(海外官网 https 深链):与 onebox:// 深链同构,
+     * https://www.oneboxable.com/link/screen/xxx 等价于 onebox://screen/xxx,
+     * 由 UrlNavigator 在进入导航管线前翻译。仅 google 渠道在 manifest 声明(autoVerify)。
+     */
+    const val APP_LINK_HOST = "www.oneboxable.com"
+    const val APP_LINK_PATH_PREFIX = "/link"
+
     const val DEEP_LINK_QUERY_ACTION = "action"
     const val DEEP_LINK_QUERY_ITEM_ID = "item_id"
     const val DEEP_LINK_QUERY_ROUTE_KEY = "route_key"

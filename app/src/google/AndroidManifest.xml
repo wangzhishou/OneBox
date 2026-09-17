@@ -34,6 +34,23 @@
         android:usesCleartextTraffic="false"
         tools:replace="android:label, android:networkSecurityConfig, android:requestLegacyExternalStorage, android:usesCleartextTraffic">
 
+        <!--
+            App Links: https://www.oneboxable.com/link/* 直接打开 App(与 onebox:// 深链同路由),
+            autoVerify 依赖 https://www.oneboxable.com/.well-known/assetlinks.json
+            中的 Play App Signing 证书指纹;未验证时退回系统默认打开方式,无负面影响
+        -->
+        <activity android:name=".AppActivity">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="www.oneboxable.com" />
+                <data android:path="/link" />
+                <data android:pathPrefix="/link/" />
+            </intent-filter>
+        </activity>
+
         <!-- 移除国内 SDK 入口, 海外渠道不暴露 -->
         <activity
             android:name=".wxapi.WXEntryActivity"

@@ -36,13 +36,15 @@ class UrlNavigator(
     fun navigate(url: String?): Boolean {
         if (url.isNullOrBlank()) return false
 
+        val target = appLinkToDeepLink(url) ?: url
+
         // 特殊处理：onebox://action/open?uri=... 直接走 ContentRouter 做智能路由
-        if (contentRouter != null && isOpenActionDeeplink(url)) {
-            return handleOpenDeeplink(url, contentRouter)
+        if (contentRouter != null && isOpenActionDeeplink(target)) {
+            return handleOpenDeeplink(target, contentRouter)
         }
 
-        val handler = UrlHandlerFactory.getHandler(url, contentRouter)
-        return handler.handleUrl(url, context, onNavigate)
+        val handler = UrlHandlerFactory.getHandler(target, contentRouter)
+        return handler.handleUrl(target, context, onNavigate)
     }
 
     /**
@@ -77,6 +79,28 @@ class UrlNavigator(
             allSiblings = emptyList(),
             fallbackToExternal = true
         )
+    }
+
+    /**
+     * 把 App Link(https://www.oneboxable.com/link/...)翻译为内部 onebox:// 深链,
+     * 使外部分享的 https 链接与站内 onebox:// 走同一条导航管线。
+     * 例:https://www.oneboxable.com/link/screen/poem?poem_id=1 -> onebox://screen/poem?poem_id=1
+     * 非 App Link 返回 null。
+     */
+    private fun appLinkToDeepLink(url: String): String? {
+        val uri = runCatching { url.toUri() }.getOrNull() ?: return null
+        if (uri.scheme != "https" && uri.scheme != "http") return null
+        if (!uri.host.equals(UrlConstants.APP_LINK_HOST, ignoreCase = true)) return null
+        val path = uri.path ?: return null
+        val prefix = UrlConstants.APP_LINK_PATH_PREFIX
+        if (path != prefix && !path.startsWith("$prefix/")) return null
+        val tail = path.removePrefix(prefix).removePrefix("/")
+        return buildString {
+            append(UrlConstants.DEEP_LINKS_PREFIX)
+            append(tail)
+            uri.encodedQuery?.let { append('?').append(it) }
+            uri.encodedFragment?.let { append('#').append(it) }
+        }
     }
 
     /**
