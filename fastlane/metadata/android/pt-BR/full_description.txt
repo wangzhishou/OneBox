@@ -22,17 +22,15 @@ Pare de caçar menus. Diga o que você quer e o OneBox transforma em ferramenta 
 • Toda ferramenta com dados de entrada tem criação com IA: descreva e a IA escreve para você
 
 【A caixa de ferramentas, se você preferir tocar】
-• Imagens: recortar, filtros, colagem, unir imagens longas, GIF, Image Studio com camadas, pincéis e texto, conversão (HEIC / WebP / AVIF) e compressão — tudo local
-• Arquivos e PDF: mesclar, dividir, extrair texto e imagens, editor Markdown com pré-visualização, criptografia, edição de EXIF, transferência entre dispositivos
+• Imagens: editor completo de fotos — recortar, filtros, colagem, unir imagens longas, GIF, Image Studio com camadas, pincéis e texto — além de conversão (HEIC / WebP / AVIF), compressor de imagens, bitmap para SVG e criador de papel de parede em gradiente, tudo local
+• Arquivos e PDF: scanner de documentos, mesclar e dividir PDF, extrair texto e imagens, editor Markdown com pré-visualização, criptografia de arquivos, edição de EXIF, transferência entre dispositivos
 • Produtividade: teleprompter, notas, tarefas, controle de gastos, hábitos, calendário, roleta de decisões, central de registros com IA (saúde, itens e validades, ciclo menstrual)
-• Dia a dia: fotos para documentos, ler e gerar QR, teste de velocidade, câmera com marca d'água, conversor de unidades, Cartão de texto, adivinhação do I Ching, minijogos
+• Dia a dia: cofre de senhas, fotos para documentos, ler e gerar QR, teste de velocidade, câmera com marca d'água, conversor de unidades, calculadora de empréstimos, bússola e altímetro, régua e transferidor, letreiro LED, seletor de cores, teste de pixels mortos, dados, Cartão de texto, adivinhação do I Ching, minijogos
 • Ad Watch: assista a um anúncio recompensado e ganhe pontos de IA — você decide, nunca obrigatório
 
-【Cliente DSH: o agente de IA do seu computador, pelo celular】
-Roda o DeepSeek Harness (DSH)? Escaneie um QR para parear e aprove, dê seguimento ou interrompa de onde quiser, por LAN ou por retransmissão com criptografia de ponta a ponta. Funciona com o plugin de código aberto onebox-dsh-bridge.
-
-【Um app que evolui sozinho】
-Seu feedback → uma IA lê como gerente de produto → o código é gerado, testado e publicado. Bugs, recursos que você quer, melhorias pequenas: qualquer um pode sair assim, e o OneBox se encaixa melhor em você quanto mais você usa.
+【Também incluído】
+• Cliente DSH: pareie com o DeepSeek Harness (DSH) do seu computador por uma retransmissão criptografada e controle tudo pelo celular
+• O OneBox até evolui sozinho: seu feedback é lido por uma IA gerente de produto, depois codificado, testado e publicado
 
 【Por que OneBox】
 • Gratuito e sem anúncios forçados — os anúncios recompensados são opcionais e rendem pontos de IA

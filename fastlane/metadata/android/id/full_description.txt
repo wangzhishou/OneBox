@@ -22,17 +22,15 @@ Tak perlu cari di menu. Katakan yang Anda mau dan OneBox mengubahnya jadi alat a
 • Setiap alat yang butuh masukan punya pintu AI create: deskripsikan, dan AI menuliskannya untuk Anda
 
 【Kotak peralatan, saat Anda lebih suka mengetuk sendiri】
-• Gambar: pangkas, filter, kolase, gabung gambar panjang, GIF, Image Studio dengan lapisan, kuas, dan teks, konversi format (HEIC / WebP / AVIF), kompresi — semuanya lokal
-• File & PDF: gabung, pisah, ekstrak teks dan gambar, editor Markdown dengan pratinjau langsung, enkripsi file, pengeditan EXIF, transfer antarperangkat
+• Gambar: editor foto lengkap — pangkas, filter, kolase, gabung gambar panjang, GIF, Image Studio dengan lapisan, kuas, dan teks — plus konversi format (HEIC / WebP / AVIF), kompresor gambar, bitmap-ke-SVG, dan pembuat wallpaper gradien, semuanya lokal
+• File & PDF: pemindai dokumen, gabung dan pisah PDF, ekstrak teks dan gambar, editor Markdown dengan pratinjau langsung, enkripsi file, pengeditan EXIF, transfer antarperangkat
 • Produktivitas: teleprompter, notepad, to-do, pembukuan, pelacak kebiasaan, kalender, roda pengambil keputusan, pusat catatan dengan wawasan AI (kesehatan, barang dan kedaluwarsa, siklus)
-• Sehari-hari: foto dokumen, pindai dan buat QR, uji kecepatan, kamera watermark, konverter satuan, Text Card, ramalan I Ching, mini-game
+• Sehari-hari: brankas kata sandi, foto dokumen, pemindai dan pembuat kode QR, uji kecepatan, kamera watermark, konverter satuan, kalkulator pinjaman, kompas dan altimeter, penggaris dan busur derajat, running text LED, pemilih warna, uji dead pixel, pelempar dadu, Text Card, ramalan I Ching, mini-game
 • Ad Watch: tonton iklan berhadiah untuk mendapat poin AI — pilihan Anda, tidak pernah dipaksa
 
-【Klien DSH: agen AI komputer Anda, dari ponsel】
-Menjalankan DeepSeek Harness (DSH)? Pindai kode QR untuk memasangkan, lalu setujui, antrekan lanjutan, atau hentikan dari mana saja — lewat LAN atau relai terenkripsi end-to-end. Bekerja dengan plugin open-source onebox-dsh-bridge.
-
-【App yang berevolusi sendiri】
-Umpan balik Anda → AI membacanya sebagai product manager → kode dibuat, diuji, dan dirilis. Laporan bug, permintaan fitur, ide penyempurnaan kecil — semuanya bisa dibangun begitu, jadi OneBox makin cocok untuk Anda makin sering Anda pakai.
+【Juga di dalam】
+• Klien DSH: pasangkan dengan DeepSeek Harness di komputer Anda lewat relai terenkripsi, kendalikan dari ponsel
+• OneBox bahkan berevolusi sendiri: umpan balik Anda dibaca oleh product manager AI, lalu dikodekan, diuji, dan dirilis
 
 【Mengapa OneBox】
 • Gratis dipakai, tanpa iklan paksa — iklan berhadiah opsional dan memberi poin AI

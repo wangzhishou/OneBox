@@ -1,45 +1,43 @@
-OneBox ist eine kostenlose All-in-One-Toolbox: 90+ Werkzeuge für Bilder, PDFs, Dateien und den Alltag — plus ein echter KI-Assistent, der nicht nur antwortet, sondern die Tools für dich bedient.
+OneBox ist eine kostenlose All-in-One-Toolbox: 90+ Werkzeuge für Bilder, PDFs, Dateien und den Alltag — plus ein echter KI-Assistent, der nicht nur Fragen beantwortet, sondern die Toolbox für dich bedient.
 
 【KI-Chat mit den Modellen, die du wählst】
-• Ein Einstieg für die wichtigsten Modelle: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
-• Offen für Dritte: jede OpenAI-, Anthropic- oder Responses-kompatible API mit eigenem API Key — sogar ein lokales Modell auf deinem eigenen Rechner
+• Ein Einstieg für die gängigsten Modelle: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
+• Offen für Drittanbieter: jede OpenAI-, Anthropic- oder Responses-kompatible API mit eigenem Schlüssel — sogar ein lokales Modell auf deinem eigenen Rechner
 • Spracheingabe, Bild- und Dateianhänge, Streaming-Antworten, Prompt-Bibliothek
-• Schreiben, Umschreiben, Zusammenfassen und Übersetzen
-• KI-Inhaltsdetektor: prüfe, ob Text oder Bild KI-generiert ist
+• Hilfe beim Schreiben, Umschreiben, Zusammenfassen und Übersetzen
+• KI-Inhaltsdetektor: prüfe, ob ein Text oder Bild KI-generiert ist
 
 【Ein Agent, der die Arbeit wirklich macht】
-• Der Assistent ruft 70+ Werkzeuge in der App auf: Bildkomprimierung, Formatkonvertierung, PDF zusammenführen und aufteilen, OCR und Barcodes, EXIF, Wasserzeichen, Haushaltsbuch, To-dos, Notizen, Cloud-Speicher, Websuche, Seitenlesen
-• Er bedient auch dein Handy: Bildschirm sehen, tippen, wischen, Text eingeben, um Aufgaben in einer anderen App zu erledigen
+• Der Assistent ruft 70+ Werkzeuge in der App auf: Bildkomprimierung und Formatkonvertierung, PDF zusammenführen und aufteilen, OCR und Barcode-Erkennung, EXIF-Bearbeitung, Wasserzeichen, Haushaltsbuch, To-dos, Notizen, Cloud-Speicher, Websuche und Seitenlesen
+• Er bedient auch dein Handy: Bildschirm sehen, tippen, wischen und Text eingeben, um eine Aufgabe in einer anderen App zu erledigen
 • Ein eingebauter Browser, den er steuert: Seiten öffnen, Inhalte lesen, Skripte ausführen
 • Agent-Gedächtnis und Skills: Er merkt sich dein Profil und wie du Dinge erledigt haben willst
 
 【Beschreib es — die App baut es】
-Kein Menü-Suchen mehr. Sag, was du willst, und OneBox baut daraus ein funktionierendes Tool oder eine App:
+Kein Suchen mehr in Menüs. Sag, was du willst, und OneBox macht daraus ein funktionierendes Werkzeug oder eine App:
 • „Gib mir 8 Vorschläge, was ich heute essen kann." — KI-Erstellen am Entscheidungsrad füllt die Optionen für dich aus
-• „Reiseplaner." „Artikel-Stil-Konverter." — die KI baut die ganze App samt Bildschirmen und Tools; verfeinere per Chat: „Mach den Button blau, füge eine Datumsauswahl hinzu"
+• „Reiseplaner." „Artikel-Stil-Konverter." — die KI baut die ganze App samt Bildschirmen und Werkzeugen; verfeinere sie per Chat: „Mach den Button blau, füge eine Datumsauswahl hinzu"
 • Antworten kommen als echte Bedienelemente — Formulare, Slider, Datums-, Zeit-, Farb- und Dateiauswahl, nativ im Chat, keine Textwand
 • Erzeuge Bilder aus einem Text-Prompt und bearbeite, komprimiere oder konvertiere sie mit derselben Toolbox
-• Jedes Werkzeug mit Eingabefeld hat einen KI-Erstellen-Einstieg: beschreib es, die KI schreibt es für dich
+• Jedes Werkzeug mit Eingabe hat einen KI-Erstellen-Einstieg: beschreib es, und die KI schreibt es für dich
 
 【Die Toolbox fürs Selbsttippen】
-• Bilder: Zuschneiden, Filter, Collage, Langbild-Stitching, GIF, Image Studio mit Ebenen, Pinseln und Text, Formatkonvertierung (HEIC / WebP / AVIF), Komprimierung — alles lokal
-• Dateien & PDF: Zusammenführen, Aufteilen, Text und Bilder extrahieren, Markdown-Editor mit Live-Vorschau, Dateiverschlüsselung, EXIF-Bearbeitung, Gerät-zu-Gerät-Transfer
+• Bilder: ein voller Foto-Editor — Zuschneiden, Filter, Collage, Langbild-Stitching, GIF, Image Studio mit Ebenen, Pinseln und Text — dazu Formatkonvertierung (HEIC / WebP / AVIF), Bildkompressor, Bitmap-zu-SVG und Verlaufshintergrund-Generator, alles lokal
+• Dateien & PDF: Dokumentenscanner, PDF zusammenführen und aufteilen, Text und Bilder extrahieren, Markdown-Editor mit Live-Vorschau, Dateiverschlüsselung, EXIF-Bearbeitung, Gerät-zu-Gerät-Transfer
 • Produktivität: Teleprompter, Notizblock, To-dos, Haushaltsbuch, Habit-Tracker, Kalender, Entscheidungsrad, Rekord-Center mit KI-Erkenntnissen (Gesundheit, Gegenstände und Verfallsdaten, Zyklus)
-• Alltag: Passfotos, QR scannen und erzeugen, Speedtest, Wasserzeichen-Kamera, Einheitenumrechner, Text Card, I-Ging, Mini-Spiele
-• Ad Watch: Rewarded Ad ansehen, KI-Punkte verdienen — deine Entscheidung, nie erzwungen
+• Alltag: Passwort-Tresor, Passfotos, QR-Code-Scanner und -Generator, Speedtest, Wasserzeichen-Kamera, Einheitenumrechner, Kreditrechner, Kompass und Höhenmesser, Lineal und Winkelmesser, LED-Laufschrift, Farbwähler, Pixelfehler-Test, Würfel, Text Card, I-Ging-Orakel, Mini-Spiele
+• Ad Watch: Rewarded Ad ansehen und KI-Punkte verdienen — deine Entscheidung, nie erzwungen
 
-【DSH-Client: der KI-Agent deines Computers, vom Handy aus】
-Du nutzt DeepSeek Harness (DSH)? QR-Code scannen zum Koppeln, dann von überall genehmigen, Rückfragen einreihen oder unterbrechen — per LAN oder Ende-zu-Ende-verschlüsseltem Relay. Funktioniert mit dem Open-Source-Plugin onebox-dsh-bridge.
-
-【Eine App, die sich selbst weiterentwickelt】
-Dein Feedback → eine KI liest es als Produktmanager → Code wird generiert, getestet und ausgeliefert. Bug-Meldungen, Funktionswünsche, kleine Verbesserungen — all das kann so entstehen, also passt OneBox immer besser zu dir.
+【Außerdem an Bord】
+• DSH-Client: koppeln mit DeepSeek Harness auf deinem Computer über ein verschlüsseltes Relay und vom Handy aus steuern
+• OneBox entwickelt sich sogar selbst weiter: Dein Feedback wird von einer KI als Produktmanagerin gelesen, dann programmiert, getestet und ausgeliefert
 
 【Warum OneBox】
 • Kostenlos nutzbar, keine erzwungene Werbung — Rewarded Ads sind freiwillig und bringen KI-Punkte
-• Datenschutz zuerst: Bilder und Dokumente werden lokal verarbeitet
+• Datenschutz zuerst: Bilder und Dokumente werden lokal auf deinem Gerät verarbeitet
 • Klare, moderne Material-Design-Oberfläche
-• Neue Tools und KI-Funktionen kommen laufend
+• Neue Werkzeuge und KI-Funktionen kommen laufend
 
-Wenn du es leid bist, zwischen einem Dutzend Tool-Apps zu wechseln, probier OneBox aus — vielleicht wird es wirklich deine letzte.
+Wenn du es leid bist, zwischen einem Dutzend Tool-Apps hin und her zu springen, probier es aus — vielleicht wird OneBox wirklich die letzte, die du brauchst.
 
 Kontakt: support@oneboxable.com

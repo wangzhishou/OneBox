@@ -1,1 +1,1 @@
-OneBox: KI-Toolbox, Foto, PDF
+OneBox: KI-Agent-Toolbox

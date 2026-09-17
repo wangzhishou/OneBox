@@ -2,7 +2,7 @@ Ang OneBox ay libreng all-in-one toolbox: 90+ tool para sa image, PDF, file at a
 
 【AI chat, gamit ang model na pinili mo】
 • Isang entry point sa pangunahing mga model: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
-• Bukas sa third-party: ikabit ang kahit anong OpenAI-, Anthropic- o Responses-compatible API gamit ang sariling key — kahit lokal na model sa computer mo
+• Bukas sa third-party: ikabit ang kahit anong OpenAI-, Anthropic- o Responses-compatible API gamit ang sariling key — kahit lokal na model sa sarili mong computer
 • Voice input, image at file attachment, streaming na sagot, prompt library
 • Tulong sa pagsulat, rewrite, summarize at translate
 • AI content detector: tingnan kung ang text o image ay gawa ng AI
@@ -10,34 +10,32 @@ Ang OneBox ay libreng all-in-one toolbox: 90+ tool para sa image, PDF, file at a
 【Isang agent na talagang gumagawa ng trabaho】
 • Kaya ng assistant ang 70+ tool sa app: image compression at format conversion, PDF merge at split, OCR at barcode reading, EXIF editing, watermark, bookkeeping, to-do, notes, cloud drive, web search at page reading
 • Kaya rin nitong patakbuhin ang phone: tingnan ang screen, tap, swipe at type para tapusin ang gawain sa ibang app
-• Built-in browser na kayang idrive: buksan ang page, basahin ang content, patakbuhin ang script
+• Built-in browser na kayang i-drive: buksan ang page, basahin ang content, patakbuhin ang script
 • Memory at skill ng agent: naaalala nito ang profile mo at ang gusto mong paraan ng trabaho
 
 【Ilarawan mo — gagawin ito ng app】
 Huwag nang maghanap sa menu. Sabihin ang gusto mo at gagawin ito ng OneBox na gumaganang tool o app:
-• "Bigyan mo ako ng 8 pagpipilian sa kakainin ngayon." — pinupuno ng AI create sa decision wheel ang option mo
+• "Bigyan mo ako ng 8 pagpipilian sa kakainin ko ngayon." — pinupuno ng AI create sa decision wheel ang mga option para sa iyo
 • "Travel planner." "Article style converter." — binubuo ng AI ang buong app, kasama ang screen at tool; i-refine sa chat: "gawing asul ang button, maglagay ng date picker"
-• Dumarating ang sagot bilang totoong control — form, slider, date, time, color at file picker sa loob ng chat, hindi pader ng text
+• Dumarating ang sagot bilang totoong control — form, slider, date, time, color at file picker sa loob mismo ng chat, hindi pader ng text
 • Gumawa ng image mula sa text prompt, tapos i-edit, i-compress o i-convert sa parehong toolbox
 • Bawat tool na may input ay may AI create entry: ilarawan mo at isusulat ito ng AI para sa iyo
 
 【Ang toolbox, kapag mas gusto mong mag-tap】
-• Mga image: crop, filter, collage, long-image stitching, GIF, Image Studio na may layer, brush, text, format conversion (HEIC / WebP / AVIF), compression — lokal lahat
-• File at PDF: merge, split, extract ng text at image, Markdown editor na may live preview, file encryption, EXIF editing, device-to-device transfer
-• Productivity: teleprompter, notepad, to-do, bookkeeping, habit tracker, calendar, decision wheel, record center na may AI insights (kalusugan, item, expiry, period)
-• Pang-araw-araw: ID photo, QR scan/generate, speed test, watermark camera, unit converter, Text Card, I Ching divination, mini-games
-• Ad Watch: manood ng rewarded ad para sa AI points — desisyon mo, hindi pinipilit
+• Mga image: kumpletong photo editor — crop, filter, collage, long-image stitching, GIF, Image Studio na may layer, brush at text — kasama ang format conversion (HEIC / WebP / AVIF), image compressor, bitmap-to-SVG at gradient wallpaper maker, lokal lahat
+• File at PDF: document scanner, PDF merge at split, extract ng text at image, Markdown editor na may live preview, file encryption, EXIF editing, device-to-device transfer
+• Productivity: teleprompter, notepad, to-do, bookkeeping, habit tracker, calendar, decision wheel, record center na may AI insights (kalusugan, item at expiry, period)
+• Pang-araw-araw: password vault, ID photo, QR code scanner at generator, speed test, watermark camera, unit converter, loan calculator, compass at altimeter, ruler at protractor, LED marquee, color picker, dead pixel test, dice roller, Text Card, I Ching divination, mini-games
+• Ad Watch: manood ng rewarded ad para kumita ng AI points — desisyon mo, hindi pinipilit
 
-【DSH client: ang AI agent ng computer mo, mula sa phone mo】
-Nagpapatakbo ka ng DeepSeek Harness (DSH)? I-scan ang QR code para mag-pair, tapos mag-approve, mag-follow up o mag-interrupt kahit saan, sa LAN o sa end-to-end encrypted na relay. Gumagana ito sa open-source na onebox-dsh-bridge plugin.
-
-【Isang app na kusang nag-e-evolve】
-Ang feedback mo → binabasa ng AI bilang product manager → nabubuo, nate-test at nare-release ang code. Bug report, feature request, maliliit na ideya — puwede itong mabuo nang ganito, kaya mas bagay sa iyo ang OneBox sa paggamit mo nito.
+【Kasama rin】
+• DSH client: mag-pair sa DeepSeek Harness (DSH) sa computer mo sa encrypted relay, kontrolin ito mula sa phone mo
+• Kusang nag-e-evolve pa ang OneBox: binabasa ng AI product manager ang feedback mo, tapos kinu-code, tine-test at nire-release
 
 【Bakit OneBox】
-• Libreng gamitin, walang sapilitang ads — opsyonal ang rewarded ads, may AI points
+• Libreng gamitin, walang sapilitang ads — opsyonal ang rewarded ads at may AI points
 • Privacy muna: lokal na pinoproseso sa device mo ang image at dokumento
-• Malinis, modernong Material Design interface
+• Malinis at modernong Material Design interface
 • Palaging may bagong tool at AI feature
 
 Kung pagod ka nang lumipat-lipat sa dose-dosenang tool app, subukan mo — baka ito na ang huli mong kailangan.

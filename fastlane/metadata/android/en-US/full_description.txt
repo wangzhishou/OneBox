@@ -22,17 +22,15 @@ Stop hunting through menus. Say what you want and OneBox turns it into a working
 • Every tool that needs input has an AI create entry: describe it, and the AI writes it for you
 
 【The toolbox, for when you'd rather tap】
-• Images: crop, filters, collage, long-image stitching, GIF, Image Studio with layers, brushes and text, format conversion (HEIC / WebP / AVIF), compression — all local
-• Files & PDF: merge, split, extract text and images, Markdown editor with live preview, file encryption, EXIF editing, device-to-device transfer
+• Images: a full photo editor — crop, filters, collage, long-image stitching, GIF, Image Studio with layers, brushes and text — plus format conversion (HEIC / WebP / AVIF), an image compressor, bitmap-to-SVG and a gradient wallpaper maker, all local
+• Files & PDF: document scanner, PDF merge and split, extract text and images, Markdown editor with live preview, file encryption, EXIF editing, device-to-device transfer
 • Productivity: teleprompter, notepad, to-dos, bookkeeping, habit tracker, calendar, decision wheel, record center with AI insights (health, items and expiry, period)
-• Everyday: ID photos, QR scan and generate, speed test, watermark camera, unit converter, Text Card, I Ching divination, mini-games
+• Everyday: password vault, ID photos, QR code scanner and generator, speed test, watermark camera, unit converter, loan calculator, compass and altimeter, ruler and protractor, LED marquee, color picker, dead pixel test, dice roller, Text Card, I Ching divination, mini-games
 • Ad Watch: watch a rewarded ad to earn AI points — your call, never forced
 
-【DSH client: your computer's AI agent, from your phone】
-Running DeepSeek Harness (DSH)? Scan a QR code to pair, then approve, follow up or interrupt from anywhere, over LAN or an end-to-end encrypted relay. Works with the open-source onebox-dsh-bridge plugin.
-
-【An app that evolves on its own】
-Your feedback → an AI reads it as a product manager → code is generated, tested and shipped. Bug reports, feature requests, small polish ideas — any of it may be built this way, so OneBox fits you better the more you use it.
+【Also inside】
+• DSH client: pair with DeepSeek Harness on your computer over an encrypted relay, drive it from your phone
+• OneBox even evolves on its own: your feedback is read by an AI product manager, then coded, tested and shipped
 
 【Why OneBox】
 • Free to use, no forced ads — rewarded ads are optional and earn AI points

@@ -22,17 +22,15 @@ Menülerde araç aramak yok. Ne istediğinizi söyleyin; OneBox onu çalışan b
 • Girdi gereken her araçta AI ile oluşturma var: anlatın, AI sizin için yazsın
 
 【Dokunmayı tercih ettiğiniz anlar için araç kutusu】
-• Görseller: kırpma, filtreler, kolaj, uzun görsel birleştirme, GIF, katmanlar, fırçalar ve metinle görsel stüdyosu, format dönüştürme (HEIC / WebP / AVIF), sıkıştırma — hepsi cihazda
+• Görseller: kırpma, filtreler, kolaj, uzun görsel birleştirme, GIF, katmanlar, fırçalar ve metinle görsel stüdyosu, format dönüştürme (HEIC / WebP / AVIF), görsel sıkıştırma, bitmap'ten SVG'ye dönüştürme ve gradyan duvar kağıdı oluşturucu — hepsi cihazda
 • Dosyalar ve PDF: birleştirme, bölme, metin ve görsel çıkarma, canlı önizlemeli Markdown düzenleyici, dosya şifreleme, EXIF düzenleme, cihazlar arası aktarım
 • Verimlilik: teleprompter, not defteri, yapılacaklar, bütçe defteri, alışkanlık takibi, takvim, karar çarkı, AI içgörüleriyle kayıt merkezi (sağlık, eşya ve son kullanma tarihi, adet takibi)
-• Günlük: vesikalık fotoğraf, QR kod tarama ve oluşturma, hız testi, filigranlı kamera, birim çevirici, Metin Kartı, I Ching falı, mini oyunlar
+• Günlük: şifre kasası, vesikalık fotoğraf, QR kod okuyucu ve oluşturucu, hız testi, filigranlı kamera, birim çevirici, kredi hesaplayıcı, pusula ve yükseklik ölçer, cetvel ve iletki, LED kayan yazı, renk seçici, ölü piksel testi, zar atma, Metin Kartı, I Ching falı, mini oyunlar
 • Reklam İzle: ödüllü reklam izleyip AI puanı kazanın — tercih sizin, asla zorunlu değil
 
-【DSH istemcisi: bilgisayarınızdaki AI ajanı, telefonunuzdan】
-Bilgisayarınızda DeepSeek Harness (DSH) mi çalışıyor? QR kodu tarayıp eşleştirin; sonra her yerden onaylayın, devam ettirin veya kesintiye uğratın — LAN üzerinden ya da uçtan uca şifreli bir aktarımla. Açık kaynaklı onebox-dsh-bridge eklentisiyle çalışır.
-
-【Kendi kendine evrilen bir uygulama】
-Geri bildiriminiz → AI bunları bir ürün yöneticisi gibi okur → kod üretilir, test edilir ve yayınlanır. Hata bildirimleri, özellik istekleri, küçük iyileştirmeler — herhangi biri bu şekilde hayata geçebilir; OneBox'ı kullandıkça size daha iyi uyar.
+【Bunlar da var】
+• DSH istemcisi: şifreli bir aktarım üzerinden bilgisayarınızdaki DeepSeek Harness (DSH) ile eşleşin, telefonunuzdan yönetin — açık kaynaklı onebox-dsh-bridge eklentisiyle çalışır
+• OneBox kendi kendine de evriliyor: geri bildiriminizi bir AI ürün yöneticisi okur; sonra kodlanır, test edilir ve yayınlanır
 
 【Neden OneBox】
 • Ücretsiz, zorunlu reklam yok — ödüllü reklamlar isteğe bağlı, AI puanı kazandırır
