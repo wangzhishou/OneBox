@@ -3,11 +3,13 @@ package com.wanbaohe.setting.ai.screen
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -28,6 +31,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,6 +48,7 @@ import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.ClearTextFieldTrailingIcon
 import com.shifenmiao.base.ui.PasswordTextField
@@ -802,14 +807,35 @@ private fun ServerConnectivityCard(
         title = stringResource(R.string.ai_engine_server_title),
         description = stringResource(R.string.ai_engine_server_desc),
     ) {
-        Text(
-            text = stringResource(R.string.ai_engine_protocol_label),
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        var showAuthOptions by rememberSaveable { mutableStateOf(false) }
+        val authArrowRotation by animateFloatAsState(if (showAuthOptions) 180f else 0f)
+
+        // 鉴权方式默认折叠(Bearer),点请求协议行尾箭头展开
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { showAuthOptions = !showAuthOptions },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.ai_engine_protocol_label),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
+            )
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(18.dp)
+                    .rotate(authArrowRotation),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
 
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(AiRequestProtocol.cloudProtocols) { protocol ->
+            // 「应用代理」是内置中转链路,不作为可选协议暴露
+            items(AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.OWN_PROXY }) { protocol ->
                 EngineFilterChip(
                     text = when (protocol) {
                         AiRequestProtocol.OPENAI_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_openai)
@@ -826,19 +852,25 @@ private fun ServerConnectivityCard(
             }
         }
 
-        Text(
-            text = stringResource(R.string.ai_engine_auth_type_label),
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(AuthType.entries) { authType ->
-                EngineFilterChip(
-                    text = authTypeLabel(authType),
-                    isSelected = engine.authType == authType,
-                    onClick = { onAuthTypeChange(authType) },
+        AnimatedVisibility(visible = showAuthOptions) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+            ) {
+                Text(
+                    text = stringResource(R.string.ai_engine_auth_type_label),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(AuthType.entries) { authType ->
+                        EngineFilterChip(
+                            text = authTypeLabel(authType),
+                            isSelected = engine.authType == authType,
+                            onClick = { onAuthTypeChange(authType) },
+                        )
+                    }
+                }
             }
         }
 
@@ -934,9 +966,10 @@ private fun ModelSelectionCard(
     onLoadRemoteModels: () -> Unit = {},
 ) {
     val loginState = LocalLoginState.current
-    // 渠道能力(如 Google 全量放开)或高等级用户可从服务商拉取模型列表
-    val canLoadRemote = remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
-            loginState.vipLevel == 10
+    // 渠道能力(如 Google 全量放开)或高等级用户可从服务商拉取模型列表;
+    // 但直连未验证(测试未通过)时拉取必然无权限,入口一并隐藏
+    val canLoadRemote = (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
+            loginState.vipLevel == 10) && engine.isDetestPassed
     SettingCard(
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineModelTraining,
         title = stringResource(R.string.ai_engine_model_title),
@@ -962,74 +995,139 @@ private fun ModelSelectionCard(
         } else {
             // 代理中转链路下按模型倍率扣积分,在模型后展示倍率
             val showPointsMultiplier = engine.usesProxyRoute()
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing)) {
-                items(models, key = { it.id }) { model ->
-                    EngineFilterChip(
-                        text = model.title.ifBlank { model.name },
-                        isSelected = model.id == engine.model.id,
-                        onClick = { onModelSelected(model) },
-                        trailingText = if (showPointsMultiplier) {
-                            model.pointsMultiplierText()
-                        } else null,
-                    )
-                }
-            }
-
             val selectedModel = models.firstOrNull { it.id == engine.model.id } ?: engine.model
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.ai_engine_model_selected_label),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.outline,
-            )
-            OneBoxListItem(
-                headlineContent = {
-                    Text(
-                        text = selectedModel.title.ifBlank { selectedModel.name },
-                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
-                    )
-                },
-                subtitle = {
-                    Text(
-                        text = if (selectedModel.canEdit) {
-                            stringResource(R.string.ai_engine_model_local_hint)
-                        } else {
-                            stringResource(R.string.ai_engine_model_remote_hint)
-                        },
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                },
-                contained = true,
-                trailingContent = {
-                    if (selectedModel.canEdit) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(onClick = { onModelEdit(selectedModel) }) {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                                    contentDescription = stringResource(R.string.ai_engine_edit_action),
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
-                            }
-                            IconButton(onClick = { onModelDelete(selectedModel) }) {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
-                                    contentDescription = stringResource(R.string.ai_engine_delete_action),
-                                    tint = MaterialTheme.colorScheme.error,
-                                )
-                            }
+
+            // 模型两列网格,选中高亮
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                models.chunked(2).forEach { rowModels ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        rowModels.forEach { model ->
+                            ModelSelectGridCard(
+                                model = model,
+                                isSelected = model.id == selectedModel.id,
+                                showPointsMultiplier = showPointsMultiplier,
+                                onClick = { onModelSelected(model) },
+                            )
+                        }
+                        if (rowModels.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
                         }
                     }
                 }
-            )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = if (selectedModel.canEdit) {
+                        stringResource(R.string.ai_engine_model_local_hint)
+                    } else {
+                        stringResource(R.string.ai_engine_model_remote_hint)
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f),
+                )
+                if (selectedModel.canEdit) {
+                    IconButton(
+                        onClick = { onModelEdit(selectedModel) },
+                        modifier = Modifier.size(36.dp),
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                            contentDescription = stringResource(R.string.ai_engine_edit_action),
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                    IconButton(
+                        onClick = { onModelDelete(selectedModel) },
+                        modifier = Modifier.size(36.dp),
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.ai_engine_delete_action),
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                }
+            }
+
             if (canLoadRemote) {
-                Spacer(modifier = Modifier.height(8.dp))
                 OneSecondaryButton(
                     text = stringResource(R.string.ai_engine_load_from_provider),
                     onClick = onLoadRemoteModels
+                )
+            }
+        }
+    }
+}
+
+/** 模型两列网格卡片:选中高亮(primary 描边 + 对勾),中转链路展示倍率 */
+@Composable
+private fun RowScope.ModelSelectGridCard(
+    model: AiModel,
+    isSelected: Boolean,
+    showPointsMultiplier: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier.weight(1f),
+        shape = RoundedCornerShape(12.dp),
+        color = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f)
+        },
+        border = if (isSelected) {
+            BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+        } else {
+            BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+        },
+        shadowElevation = 0.dp,
+        tonalElevation = 0.dp,
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = model.title.ifBlank { model.name },
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                    ),
+                    color = if (isSelected) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    },
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (showPointsMultiplier) {
+                    Text(
+                        text = model.pointsMultiplierText(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                    )
+                }
+            }
+            if (isSelected) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp),
                 )
             }
         }
@@ -1387,7 +1485,9 @@ private fun SettingCard(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
                         contentDescription = null,
-                        modifier = Modifier.rotate(arrowRotation),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .rotate(arrowRotation),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }

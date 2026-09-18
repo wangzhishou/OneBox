@@ -139,9 +139,9 @@
     <string name="ai_engine_title_label">显示名称</string>
     <string name="ai_engine_description_label">描述</string>
     <string name="ai_engine_protocol_label">请求协议</string>
-    <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
-    <string name="ai_engine_protocol_anthropic">Anthropic 兼容</string>
+    <string name="ai_engine_protocol_openai">OpenAI 兼容（Chat Completions）</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
+    <string name="ai_engine_protocol_anthropic">Anthropic 兼容（Messages）</string>
     <string name="ai_engine_protocol_proxy">应用代理</string>
     <string name="ai_engine_protocol_local_on_device">端侧本地（不走网络）</string>
     <string name="ai_engine_protocol_effective_direct">已验证 · 本地直连</string>

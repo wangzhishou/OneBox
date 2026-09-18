@@ -908,6 +908,19 @@
     <string name="agent_tool_add_local_ai_model_save_failed">保存模型配置失败，请检查名称是否重复</string>
     <string name="agent_tool_add_local_ai_model_failed">添加本地 AI 模型失败：%1$s</string>
 
+    <!-- AgentTool: switch_ai_model -->
+    <string name="agent_tool_switch_ai_model_title">切换模型</string>
+    <string name="agent_tool_switch_ai_model_summary">切换当前对话使用的 AI 引擎或模型</string>
+    <string name="agent_tool_switch_ai_model_description">切换当前对话使用的 AI 引擎/模型。当用户要求更换模型（如"换成 DeepSeek"、"用 GPT-5 回答"）时使用。engine_name 为引擎名（如 deepseek、openai、qwen、kimi、doubao、mimo、gemini、grok、claude 等）；model_name 可选，不填则使用该引擎当前模型；slot 用于选择切换的工作槽位：default（主对话）或 fast（快速任务）。</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">目标引擎名（provider 值，如 deepseek）</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">目标模型名（可选，如 deepseek-chat）；不填则保持引擎当前模型</string>
+    <string name="agent_tool_switch_ai_model_param_slot">工作槽位：default=主对话模型，fast=快速任务模型；默认 default</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">参数解析失败，engine_name 为必填</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">未找到引擎 %1$s，可用引擎：%2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">引擎 %1$s 下未找到模型 %2$s，可用模型：%3$s</string>
+    <string name="agent_tool_switch_ai_model_success">已切换模型：%1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">切换模型失败：%1$s</string>
+
     <!-- AgentTool: manage_cloud_connections -->
     <string name="agent_tool_manage_cloud_connections_title">管理云存储连接</string>
     <string name="agent_tool_manage_cloud_connections_summary">创建 / 测试 / 删除已保存的远程存储连接。凭据由用户输入，写入 EncryptedSharedPreferences。</string>

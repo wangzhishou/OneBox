@@ -327,6 +327,11 @@ object BuiltinToolModule {
     @StringKey("add_local_ai_model")
     fun provideAddLocalAiModelTool(tool: AddLocalAiModelTool): AgentTool = tool
 
+    @Provides
+    @IntoMap
+    @StringKey("switch_ai_model")
+    fun provideSwitchAiModelTool(tool: SwitchAiModelTool): AgentTool = tool
+
     // ========== 记忆/技能隐式系统工具（visibleToUser = false，受全局+会话开关门控） ==========
 
     @Provides

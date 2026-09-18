@@ -139,9 +139,9 @@
     <string name="ai_engine_title_label">Display Name</string>
     <string name="ai_engine_description_label">Description</string>
     <string name="ai_engine_protocol_label">Request Protocol</string>
-    <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
-    <string name="ai_engine_protocol_anthropic">Anthropic-Compatible</string>
+    <string name="ai_engine_protocol_openai">OpenAI-Compatible (Chat Completions)</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
+    <string name="ai_engine_protocol_anthropic">Anthropic-Compatible (Messages)</string>
     <string name="ai_engine_protocol_proxy">App Proxy</string>
     <string name="ai_engine_protocol_local_on_device">On-Device (No Network)</string>
     <string name="ai_engine_protocol_effective_direct">Verified · Local Direct</string>

@@ -908,6 +908,19 @@
     <string name="agent_tool_add_local_ai_model_save_failed">Failed to save model configuration; please check for duplicate names</string>
     <string name="agent_tool_add_local_ai_model_failed">Failed to add local AI model: %1$s</string>
 
+    <!-- AgentTool: switch_ai_model -->
+    <string name="agent_tool_switch_ai_model_title">Switch Model</string>
+    <string name="agent_tool_switch_ai_model_summary">Switch the AI engine or model used by the chat</string>
+    <string name="agent_tool_switch_ai_model_description">Switch the AI engine/model used for the current conversation. Use when the user asks to change models (e.g. "use DeepSeek", "switch to GPT-5"). engine_name is the engine/provider name (e.g. deepseek, openai, qwen, kimi, doubao, mimo, gemini, grok, claude); model_name is optional and falls back to the engine\'s current model; slot selects the working slot to update: default (main chat) or fast (quick tasks).</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">Target engine name (provider value, e.g. deepseek)</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">Target model name (optional, e.g. deepseek-chat); keep the engine\'s current model when omitted</string>
+    <string name="agent_tool_switch_ai_model_param_slot">Working slot: default = main chat model, fast = quick-task model; defaults to default</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">Failed to parse parameters; engine_name is required</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">Engine %1$s not found. Available engines: %2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">Model %2$s not found under engine %1$s. Available models: %3$s</string>
+    <string name="agent_tool_switch_ai_model_success">Model switched: %1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">Failed to switch model: %1$s</string>
+
     <!-- AgentTool: manage_cloud_connections -->
     <string name="agent_tool_manage_cloud_connections_title">Manage Cloud Storage Connections</string>
     <string name="agent_tool_manage_cloud_connections_summary">Create / test / delete saved remote storage connections. Credentials are entered by the user and written to EncryptedSharedPreferences.</string>
