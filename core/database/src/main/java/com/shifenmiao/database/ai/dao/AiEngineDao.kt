@@ -63,6 +63,12 @@ interface AiEngineDao {
     @Query("DELETE FROM ai_engines WHERE name = :name AND request_protocol = :requestProtocol")
     suspend fun deleteEngineByNameAndProtocol(name: String, requestProtocol: String)
 
+    /**
+     * 引擎改名（用于预制引擎名迁移，保留行内用户配置）
+     */
+    @Query("UPDATE ai_engines SET name = :newName WHERE name = :oldName")
+    suspend fun renameEngineName(oldName: String, newName: String)
+
     @Query("DELETE FROM ai_engines")
     suspend fun deleteAllEngines()
 

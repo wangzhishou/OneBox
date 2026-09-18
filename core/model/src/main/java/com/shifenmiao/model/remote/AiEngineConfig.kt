@@ -17,14 +17,19 @@ object AiEngineConfig {
      * v4: Google 渠道 DeepSeek 也改走 Go 网关代理; 老安装的 REMOTE 行恢复代理路由,
      *     仅清空仍为内置注入值的 token(用户自配 token 的行不动)。
      * v5: Google 渠道新增智谱 GLM / MiniMax 预制引擎(走 Go 网关代理按积分计费)。
+     * v6: MiniMax 引擎名统一为小写 "minmax"(v5 误用 camelCase "minMax", 与远程目录
+     *     "minmax" 在 DAO 精确匹配下去重失败, 列表出现两个 MiniMax), 合并/清理旧行。
      */
-    const val FLAVOR_PRESET_VERSION = 5
+    const val FLAVOR_PRESET_VERSION = 6
 
     /** 引入"清理 Google 渠道预制引擎代理"迁移的版本号 */
     const val PRESET_VERSION_CLEAR_GOOGLE_PROXY = 2
 
     /** 引入"Google 渠道 MiMo/DeepSeek 恢复 Go 网关代理"迁移的版本号 */
     const val PRESET_VERSION_GOOGLE_PROXY_ENGINES = 4
+
+    /** 引入"MiniMax 引擎名小写化合并"迁移的版本号 */
+    const val PRESET_VERSION_MINIMAX_NAME_UNIFY = 6
 
     /**
      * Google 渠道保留 Go 网关代理(按积分计费、需登录)的引擎名;

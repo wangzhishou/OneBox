@@ -57,6 +57,12 @@ interface AiModelDao {
     @Query("UPDATE ai_models SET engine_name = :engineName WHERE provider = :provider")
     suspend fun updateModelsEngineName(provider: String, engineName: String)
 
+    /**
+     * 统一模型的 provider 字段（用于预制引擎名迁移）
+     */
+    @Query("UPDATE ai_models SET provider = :newProvider WHERE provider = :oldProvider")
+    suspend fun updateModelsProvider(oldProvider: String, newProvider: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertModel(model: AiModelEntity): Long
 

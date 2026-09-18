@@ -223,6 +223,28 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
             }
         }
 
+        // v6 迁移: MiniMax 引擎名统一为小写 "minmax"。
+        // v5 本地预制误用 camelCase "minMax", 与远程目录 "minmax" 在 DAO 精确匹配下
+        // 去重失败, 列表出现两个 MiniMax。已有规范行(远程同步)时把用户 token 迁过去后
+        // 删除旧行及其模型; 没有规范行则直接改名, 保留用户全部配置。
+        if (appliedVersion < AiEngineConfig.PRESET_VERSION_MINIMAX_NAME_UNIFY) {
+            val legacyName = "minMax"
+            getEnginesByName(legacyName).forEach { legacy ->
+                val canonical = getEngineByNameAndProtocol(AiProvider.MinMax.value, legacy.requestProtocol)
+                if (canonical != null) {
+                    if (canonical.authorizationCode.isBlank() && legacy.authorizationCode.isNotBlank()) {
+                        updateEngine(canonical.copy(authorizationCode = legacy.authorizationCode))
+                    }
+                    deleteEngineByNameAndProtocol(legacyName, legacy.requestProtocol)
+                    appDatabase.aiModelDao().deleteModelsByEngineName(legacyName)
+                } else {
+                    appDatabase.aiEngineDao().renameEngineName(legacyName, AiProvider.MinMax.value)
+                    appDatabase.aiModelDao().updateModelsEngineName(legacyName, AiProvider.MinMax.value)
+                }
+            }
+            appDatabase.aiModelDao().updateModelsProvider(legacyName, AiProvider.MinMax.value)
+        }
+
         AiEngineConfig.getFlavorFallbackEngines(flavorType).distinct()
             .forEachIndexed { sortOrder, engineName ->
                 val provider = AiProvider.fromValue(engineName)

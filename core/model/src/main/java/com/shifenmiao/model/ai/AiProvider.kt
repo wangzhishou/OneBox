@@ -18,7 +18,9 @@ sealed class AiProvider(val value: String) : Parcelable {
     @Parcelize @Serializable data object DouBao : AiProvider("doubao")
     @Parcelize @Serializable data object Tencent : AiProvider("tencent")
     @Parcelize @Serializable data object DeepSeek : AiProvider("deepseek")
-    @Parcelize @Serializable data object MinMax : AiProvider("minMax")
+    // value 统一小写,与远程目录引擎名一致(曾用 camelCase "minMax",
+    // DAO 精确匹配下与远程 "minmax" 去重失败导致列表出现两个 MiniMax;v6 迁移清理旧行)
+    @Parcelize @Serializable data object MinMax : AiProvider("minmax")
     @Parcelize @Serializable data object ZhiPu : AiProvider("zhipu")
     @Parcelize @Serializable data object OpenRouter : AiProvider("openrouter")
     @Parcelize @Serializable data object Gemini : AiProvider("gemini")
@@ -46,7 +48,7 @@ sealed class AiProvider(val value: String) : Parcelable {
                 DouBao.value -> DouBao
                 Tencent.value -> Tencent
                 DeepSeek.value -> DeepSeek
-                MinMax.value.lowercase() -> MinMax
+                MinMax.value -> MinMax
                 ZhiPu.value -> ZhiPu
                 OpenRouter.value -> OpenRouter
                 Gemini.value -> Gemini
