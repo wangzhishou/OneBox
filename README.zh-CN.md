@@ -178,6 +178,29 @@ AI 理解、执行、反馈,一气呵成。
 - 执行 `assembleRelease`
 - 对 APK 签名并上传 release 产物
 
+### 更新提醒与国内分发
+
+App 里"我的 → 关于 → 开源项目"那一行会显示最新版本（有新版本时角标 + 主题色副标题，
+"我的"tab 上还有一个红点）。是否启动弹窗由后台远程配置 `appUpdate` 控制：
+
+```json
+"appUpdate": { "dialogEnabled": true, "dialogForVersionBelow": 150, "dialogCooldownHours": 24 }
+```
+
+- 未下发 = 只显示角标与副标题，不弹窗；老客户端不认识这个字段，完全不受影响。
+- `dialogForVersionBelow` 用来把弹窗收窄到"版本特别老"的那一段装机，避免打扰新版本用户。
+- 版本来源按渠道分：海外（google / foss）读 GitHub Releases，国内 6 渠道读 GitCode OpenAPI。
+
+GitCode 的仓库镜像**只同步分支 / 标签 / 提交，不同步 Release 附件**，所以国内发版要额外发布一次：
+
+```bash
+export GITCODE_TOKEN=xxx   # https://gitcode.com/setting/token-classic
+./scripts/publish_gitcode_release.py --tag 1.4.0 --dir release --abi arm64
+```
+
+CI（`.github/workflows/android.yml`）里有一段同样的发布步骤：配了 `GITCODE_TOKEN` secret
+且这次构建包含国内渠道包时会自动执行，否则安静跳过。**GitCode 仓库必须公开**，否则匿名 API 返回 403。
+
 ## AI / Agent 能力边界
 
 项目中的 AI 能力不是单点实现，而是由多个模块协作完成：

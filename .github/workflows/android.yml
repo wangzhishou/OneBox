@@ -462,3 +462,21 @@ jobs:
               gh release create "$RELEASE_TAG" "${apks[@]}" --generate-notes --target "$GITHUB_SHA"
             fi
           fi
+
+      # 国内渠道的更新源是 GitCode(国内直连不了 GitHub)。
+      # GitCode 的仓库镜像只同步分支/标签/提交,不同步 Release 附件,
+      # 所以国内包要在这里补发一次;没配 GITCODE_TOKEN 或这次没打国内包时安静跳过。
+      - name: Publish to GitCode (domestic update source)
+        env:
+          GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
+          RELEASE_TAG: ${{ needs.build_and_release.outputs.release_tag }}
+        shell: bash
+        run: |
+          if [[ -z "${GITCODE_TOKEN}" ]]; then
+            echo "GITCODE_TOKEN 未配置,跳过 GitCode 发布(国内渠道仍可本地跑 scripts/publish_gitcode_release.py)"
+            exit 0
+          fi
+          python3 scripts/publish_gitcode_release.py \
+            --tag "$RELEASE_TAG" \
+            --dir release-assets \
+            --channels xiaomi yyb oppo vivo huawei onebox

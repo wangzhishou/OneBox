@@ -170,6 +170,27 @@ A real `keystore.properties` is required for release packaging (the script exits
 
 `.github/workflows/android.yml` defines the tag-based release pipeline: Ubuntu runner, JDK 17, `assembleRelease`, then APK signing and release upload.
 
+### Update reminders & domestic distribution
+
+The "Open Source Project" row under *Profile → About* shows the latest release (plus a tab badge on
+*Profile* when a newer version exists). A startup dialog can be enabled from the remote config:
+
+```json
+"appUpdate": { "dialogEnabled": true, "dialogForVersionBelow": 150, "dialogCooldownHours": 24 }
+```
+
+The version source depends on the flavor: overseas (google / foss) reads GitHub Releases, the six
+domestic channels read the GitCode OpenAPI. GitCode mirrors only branches/tags/commits — **not**
+releases — so domestic builds need an extra publish step:
+
+```bash
+export GITCODE_TOKEN=xxx   # https://gitcode.com/setting/token-classic
+./scripts/publish_gitcode_release.py --tag 1.4.0 --dir release --abi arm64
+```
+
+The same step exists in CI and is skipped silently unless `GITCODE_TOKEN` is configured. The GitCode
+repository has to be public, otherwise the anonymous API returns 403.
+
 ## AI / Agent Capabilities
 
 AI features are composed from several modules:
