@@ -23,6 +23,8 @@ GitCode 的仓库镜像只同步**分支 / 标签 / 提交**,不同步 GitHub Re
 
 说明
 ----
+- **前置:tag 必须先存在于 GitCode**(脚本用 tag 当 target_commitish)。发布前确认:
+  `git push gitcode --tags`;2026-09 就漏推过 1.3.8/1.3.9 两个 tag。
 - 幂等:同名 release 已存在时不会重建(只补传缺失的附件);上传失败会打印建议的手工步骤。
 - 附件走 GitCode 给的华为 OBS 预签名 PUT,单文件 50-60MB 的 APK 实测可用;
   官方文档未写单文件上限与同名覆盖策略,所以脚本对已存在的同名附件默认跳过

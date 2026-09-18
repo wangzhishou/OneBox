@@ -194,7 +194,8 @@ App 里"我的 → 关于 → 开源项目"那一行会显示最新版本（有�
 GitCode 的仓库镜像**只同步分支 / 标签 / 提交，不同步 Release 附件**，所以国内发版要额外发布一次：
 
 ```bash
-export GITCODE_TOKEN=xxx   # https://gitcode.com/setting/token-classic
+export GITCODE_TOKEN=xxx          # https://gitcode.com/setting/token-classic
+git push gitcode --tags           # 先推 tag:脚本用 tag 当 target_commitish
 ./scripts/publish_gitcode_release.py --tag 1.4.0 --dir release --abi arm64
 ```
 

@@ -184,7 +184,8 @@ domestic channels read the GitCode OpenAPI. GitCode mirrors only branches/tags/c
 releases — so domestic builds need an extra publish step:
 
 ```bash
-export GITCODE_TOKEN=xxx   # https://gitcode.com/setting/token-classic
+export GITCODE_TOKEN=xxx          # https://gitcode.com/setting/token-classic
+git push gitcode --tags           # the tag must exist: it is used as target_commitish
 ./scripts/publish_gitcode_release.py --tag 1.4.0 --dir release --abi arm64
 ```
 
