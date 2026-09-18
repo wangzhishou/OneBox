@@ -69,6 +69,10 @@ def request(method: str, url: str, token: str, body=None, headers=None, raw=Fals
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode("utf-8", "replace")
         return exc.code, {"_error": detail}
+    except (urllib.error.URLError, OSError) as exc:
+        # 网络层异常(超时/DNS/TLS)只回原因,绝不回 URL —— 请求 URL 的查询串里带 access_token
+        reason = getattr(exc, "reason", exc)
+        return None, {"_error": f"{type(exc).__name__}: {reason}"}
 
 
 def with_token(url: str, token: str) -> str:
@@ -76,6 +80,15 @@ def with_token(url: str, token: str) -> str:
     query = urllib.parse.parse_qsl(parts.query)
     query.append(("access_token", token))
     return urllib.parse.urlunsplit(parts._replace(query=urllib.parse.urlencode(query)))
+
+
+def redact(message: str, token: str) -> str:
+    """打印前抹掉令牌。
+
+    脚本本身不保存任何令牌(只从环境变量读),但 GitCode 的鉴权走查询串,
+    URL 里会带 access_token —— 日志、CI 输出、截图都可能被转发,一律先抹掉。
+    """
+    return message.replace(token, "***") if token else message
 
 
 def create_release(tag: str, token: str, body: str, dry_run: bool) -> None:
@@ -88,7 +101,7 @@ def create_release(tag: str, token: str, body: str, dry_run: bool) -> None:
         "release_status": "latest" if "-" not in tag else "pre",
     }
     if dry_run:
-        print(f"[dry-run] POST {url} {json.dumps(payload, ensure_ascii=False)}")
+        print(f"[dry-run] POST {redact(url, token)} {json.dumps(payload, ensure_ascii=False)}")
         return
     status, resp = request("POST", url, token, body=payload)
     if status in (200, 201):
@@ -96,7 +109,7 @@ def create_release(tag: str, token: str, body: str, dry_run: bool) -> None:
     elif status == 400 and "已存在" in json.dumps(resp, ensure_ascii=False):
         print(f"[skip] GitCode release {tag} 已存在")
     else:
-        print(f"[warn] 创建 release 返回 {status}: {json.dumps(resp, ensure_ascii=False)[:300]}")
+        print(redact(f"[warn] 创建 release 返回 {status}: {json.dumps(resp, ensure_ascii=False)[:300]}", token))
 
 
 def list_attachments(tag: str, token: str):
@@ -133,7 +146,7 @@ def upload(tag: str, path: str, token: str, overwrite: bool, existing, dry_run: 
     )
     status, resp = request("GET", meta_url, token)
     if status != 200 or not isinstance(resp, dict) or not resp.get("url"):
-        print(f"[fail] {name}: 取上传地址失败 {status} {json.dumps(resp, ensure_ascii=False)[:200]}")
+        print(redact(f"[fail] {name}: 取上传地址失败 {status} {json.dumps(resp, ensure_ascii=False)[:200]}", token))
         return False
 
     # 预签名地址是华为 OBS:必须原样带上 GitCode 返回的 headers,且不要再附加 access_token
@@ -148,7 +161,7 @@ def upload(tag: str, path: str, token: str, overwrite: bool, existing, dry_run: 
             code = r.status
     except urllib.error.HTTPError as exc:
         code = exc.code
-        print(f"[fail] {name}: PUT 失败 {code} {exc.read().decode('utf-8', 'replace')[:200]}")
+        print(redact(f"[fail] {name}: PUT 失败 {code} {exc.read().decode('utf-8', 'replace')[:200]}", token))
         return False
     if 200 <= code < 300:
         print(f"[ok] 已上传 {name}({size / 1048576:.1f}MB)")
