@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,6 +44,7 @@ import com.wanbaohe.setting.local.screen.LocalModelManagementContent
 import com.wanbaohe.setting.router.AIServiceHubTab
 import com.wanbaohe.settings.R
 import com.shifenmiao.core.R as CoreR
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
@@ -212,11 +216,13 @@ private fun MultimodalSettingsContent(
                 text = stringResource(CoreR.string.profile_item_tts_settings),
                 isSelected = section == MultimodalSection.TTS,
                 onClick = { section = MultimodalSection.TTS },
+                leadingIcon = multimodalCheckIcon(selected = section == MultimodalSection.TTS),
             )
             EngineFilterChip(
                 text = stringResource(CoreR.string.profile_item_image_generation_settings),
                 isSelected = section == MultimodalSection.Image,
                 onClick = { section = MultimodalSection.Image },
+                leadingIcon = multimodalCheckIcon(selected = section == MultimodalSection.Image),
             )
         }
         Box(
@@ -238,5 +244,19 @@ private fun MultimodalSettingsContent(
                 )
             }
         }
+    }
+}
+
+// 多模态筛选 chip 的选中对勾;未选中返回 null 不占位
+@Composable
+private fun multimodalCheckIcon(selected: Boolean): (@Composable () -> Unit)? {
+    if (!selected) return null
+    return {
+        Icon(
+            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(16.dp),
+        )
     }
 }
