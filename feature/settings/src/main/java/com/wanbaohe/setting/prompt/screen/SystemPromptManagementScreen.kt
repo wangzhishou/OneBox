@@ -28,42 +28,52 @@ import com.wanbaohe.setting.prompt.component.SystemPromptManagementComponent
 fun SystemPromptManagementScreen(
     component: SystemPromptManagementComponent,
 ) {
-    val systemPrompts by component.systemPrompts.collectAsState()
-
     BaseScreen(
         title = stringResource(R.string.profile_item_ai_reply_style),
         onGoBack = component.onGoBack,
         supportGlassEffect = true,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = OneBoxDesignSystem.screenPadding),
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-        ) {
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
+        SystemPromptManagementContent(
+            component = component,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
 
-            systemPrompts.forEach { prompt ->
-                OneBoxSectionCard(
-                    onClick = {
-                        component.onNavigate(Screen.SystemPromptDetail(promptId = prompt.id))
-                    }
-                ) {
-                    Text(
-                        text = prompt.title ?: "",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = prompt.description ?: "",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+@Composable
+fun SystemPromptManagementContent(
+    component: SystemPromptManagementComponent,
+    modifier: Modifier = Modifier,
+) {
+    val systemPrompts by component.systemPrompts.collectAsState()
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = OneBoxDesignSystem.screenPadding),
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+    ) {
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
+
+        systemPrompts.forEach { prompt ->
+            OneBoxSectionCard(
+                onClick = {
+                    component.onNavigate(Screen.SystemPromptDetail(promptId = prompt.id))
                 }
+            ) {
+                Text(
+                    text = prompt.title ?: "",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = prompt.description ?: "",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
     }

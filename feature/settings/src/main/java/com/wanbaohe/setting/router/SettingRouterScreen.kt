@@ -42,8 +42,10 @@ fun SettingRouterScreen(component: SettingRouterComponent) {
         is SettingRouterComponent.SettingChild.SkillManagement -> SkillManagementScreen(child.component)
         is SettingRouterComponent.SettingChild.SkillDetail -> SkillDetailScreen(child.component)
         is SettingRouterComponent.SettingChild.AIPersonalization -> AIPersonalizationScreen(
+            promptComponent = child.promptComponent,
+            memoryComponent = child.memoryComponent,
+            skillComponent = child.skillComponent,
             onGoBack = child.onGoBack,
-            onNavigate = child.onNavigate,
         )
         is SettingRouterComponent.SettingChild.DisplaySettings -> DisplaySettingsScreen(child.component)
         is SettingRouterComponent.SettingChild.EasterEgg -> EasterEggScreen(child.component)

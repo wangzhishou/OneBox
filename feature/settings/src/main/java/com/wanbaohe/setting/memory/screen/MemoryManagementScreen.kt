@@ -51,6 +51,23 @@ import java.util.Locale
 fun MemoryManagementScreen(
     component: MemoryManagementComponent,
 ) {
+    BaseScreen(
+        title = stringResource(R.string.profile_item_ai_memory),
+        onGoBack = component.onGoBack,
+        supportGlassEffect = true,
+    ) {
+        MemoryManagementContent(
+            component = component,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+fun MemoryManagementContent(
+    component: MemoryManagementComponent,
+    modifier: Modifier = Modifier,
+) {
     val globalEnabled by component.globalMemoryEnabled.collectAsState()
     val profileEntries by component.profileEntries.collectAsState()
     val logEntries by component.logEntries.collectAsState()
@@ -68,151 +85,144 @@ fun MemoryManagementScreen(
     }
     val logClearedText = stringResource(SettingsR.string.memory_log_cleared)
 
-    BaseScreen(
-        title = stringResource(R.string.profile_item_ai_memory),
-        onGoBack = component.onGoBack,
-        supportGlassEffect = true,
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = OneBoxDesignSystem.screenPadding),
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = OneBoxDesignSystem.screenPadding),
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-        ) {
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
 
-            // 全局总开关
-            OneBoxSectionCard {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(SettingsR.string.memory_global_switch_title),
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Text(
-                            text = stringResource(SettingsR.string.memory_global_switch_subtitle),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Switch(
-                        checked = globalEnabled,
-                        onCheckedChange = { component.setGlobalMemoryEnabled(it) }
-                    )
-                }
-            }
-
-            // ─── profile 档案区（agent 只读、用户维护） ───
+        // 全局总开关
+        OneBoxSectionCard {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    OneBoxSectionHeader(
-                        title = stringResource(SettingsR.string.memory_profile_section),
-                        supporting = stringResource(SettingsR.string.memory_profile_supporting),
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(SettingsR.string.memory_global_switch_title),
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = stringResource(SettingsR.string.memory_global_switch_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                IconButton(
-                    onClick = {
-                        editingEntry = MemoryEntryEntity(kind = MemoryEntryEntity.KIND_PROFILE, content = "")
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = stringResource(SettingsR.string.memory_add_entry),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
-            if (profileEntries.isEmpty()) {
-                Text(
-                    text = stringResource(SettingsR.string.memory_profile_empty),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Switch(
+                    checked = globalEnabled,
+                    onCheckedChange = { component.setGlobalMemoryEnabled(it) }
                 )
             }
-            profileEntries.forEach { entry ->
+        }
+
+        // ─── profile 档案区（agent 只读、用户维护） ───
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                OneBoxSectionHeader(
+                    title = stringResource(SettingsR.string.memory_profile_section),
+                    supporting = stringResource(SettingsR.string.memory_profile_supporting),
+                )
+            }
+            IconButton(
+                onClick = {
+                    editingEntry = MemoryEntryEntity(kind = MemoryEntryEntity.KIND_PROFILE, content = "")
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = stringResource(SettingsR.string.memory_add_entry),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+        }
+        if (profileEntries.isEmpty()) {
+            Text(
+                text = stringResource(SettingsR.string.memory_profile_empty),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        profileEntries.forEach { entry ->
+            MemoryEntryCard(
+                entry = entry,
+                metaText = timeFormat.format(Date(entry.updatedAt)),
+                onEdit = { editingEntry = entry },
+                onDelete = { deletingEntry = entry },
+                onToggleEnabled = { enabled -> component.setEntryEnabled(entry, enabled) },
+            )
+        }
+
+        // ─── log 日志区（按日期分组，最新在前） ───
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                OneBoxSectionHeader(
+                    title = stringResource(SettingsR.string.memory_log_section),
+                    supporting = stringResource(SettingsR.string.memory_log_supporting),
+                )
+            }
+            IconButton(
+                onClick = {
+                    editingEntry = MemoryEntryEntity(kind = MemoryEntryEntity.KIND_LOG, content = "")
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = stringResource(SettingsR.string.memory_add_entry),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+            IconButton(
+                onClick = { showClearLogConfirm = true },
+                enabled = logEntries.isNotEmpty()
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Delete,
+                    contentDescription = stringResource(SettingsR.string.memory_clear_log),
+                    tint = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+        if (logEntries.isEmpty()) {
+            Text(
+                text = stringResource(SettingsR.string.memory_log_empty),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        logBuckets.forEach { (date, entries) ->
+            Text(
+                text = date,
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            entries.forEach { entry ->
                 MemoryEntryCard(
                     entry = entry,
-                    metaText = timeFormat.format(Date(entry.updatedAt)),
+                    metaText = buildString {
+                        append(timeFormat.format(Date(entry.createdAt)))
+                        entry.sourceConversationId?.takeIf { it.isNotBlank() }?.let {
+                            append(" · ")
+                            append(stringResource(SettingsR.string.memory_source_conversation, it))
+                        }
+                    },
                     onEdit = { editingEntry = entry },
                     onDelete = { deletingEntry = entry },
                     onToggleEnabled = { enabled -> component.setEntryEnabled(entry, enabled) },
                 )
             }
-
-            // ─── log 日志区（按日期分组，最新在前） ───
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    OneBoxSectionHeader(
-                        title = stringResource(SettingsR.string.memory_log_section),
-                        supporting = stringResource(SettingsR.string.memory_log_supporting),
-                    )
-                }
-                IconButton(
-                    onClick = {
-                        editingEntry = MemoryEntryEntity(kind = MemoryEntryEntity.KIND_LOG, content = "")
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = stringResource(SettingsR.string.memory_add_entry),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-                IconButton(
-                    onClick = { showClearLogConfirm = true },
-                    enabled = logEntries.isNotEmpty()
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = stringResource(SettingsR.string.memory_clear_log),
-                        tint = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
-            if (logEntries.isEmpty()) {
-                Text(
-                    text = stringResource(SettingsR.string.memory_log_empty),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            logBuckets.forEach { (date, entries) ->
-                Text(
-                    text = date,
-                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
-                entries.forEach { entry ->
-                    MemoryEntryCard(
-                        entry = entry,
-                        metaText = buildString {
-                            append(timeFormat.format(Date(entry.createdAt)))
-                            entry.sourceConversationId?.takeIf { it.isNotBlank() }?.let {
-                                append(" · ")
-                                append(stringResource(SettingsR.string.memory_source_conversation, it))
-                            }
-                        },
-                        onEdit = { editingEntry = entry },
-                        onDelete = { deletingEntry = entry },
-                        onToggleEnabled = { enabled -> component.setEntryEnabled(entry, enabled) },
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
         }
+
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
     }
 
     // 新增/编辑弹窗

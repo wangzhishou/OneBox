@@ -70,6 +70,23 @@ import java.io.InputStream
 fun SkillManagementScreen(
     component: SkillManagementComponent,
 ) {
+    BaseScreen(
+        title = stringResource(R.string.profile_item_ai_skill),
+        onGoBack = component.onGoBack,
+        supportGlassEffect = true,
+    ) {
+        SkillManagementContent(
+            component = component,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+fun SkillManagementContent(
+    component: SkillManagementComponent,
+    modifier: Modifier = Modifier,
+) {
     val globalEnabled by component.globalSkillsEnabled.collectAsState()
     val skills by component.skills.collectAsState()
 
@@ -129,175 +146,168 @@ fun SkillManagementScreen(
         }
     }
 
-    BaseScreen(
-        title = stringResource(R.string.profile_item_ai_skill),
-        onGoBack = component.onGoBack,
-        supportGlassEffect = true,
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = OneBoxDesignSystem.screenPadding),
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = OneBoxDesignSystem.screenPadding),
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-        ) {
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
 
-            // 全局总开关
-            OneBoxSectionCard {
+        // 全局总开关
+        OneBoxSectionCard {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(SettingsR.string.skill_global_switch_title),
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = stringResource(SettingsR.string.skill_global_switch_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(
+                    checked = globalEnabled,
+                    onCheckedChange = { component.setGlobalSkillsEnabled(it) }
+                )
+            }
+        }
+
+        // ─── 技能列表 ───
+        // 标题占满剩余宽度，操作收进两个图标按钮（新建 + 导入菜单），
+        // 长文案下也不会互相挤压换行
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                OneBoxSectionHeader(
+                    title = stringResource(SettingsR.string.skill_list_section),
+                    supporting = stringResource(SettingsR.string.skill_list_supporting),
+                )
+            }
+            IconButton(onClick = { showCreateDialog = true }) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = stringResource(SettingsR.string.skill_new),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
+            Box {
+                IconButton(onClick = { showImportMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Outlined.MoreVert,
+                        contentDescription = stringResource(SettingsR.string.skill_import_clipboard),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                DropdownMenu(
+                    expanded = showImportMenu,
+                    onDismissRequest = { showImportMenu = false }
+                ) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(SettingsR.string.skill_import_clipboard))
+                        },
+                        onClick = {
+                            showImportMenu = false
+                            val clipText = clipboardManager.getText()?.text.orEmpty()
+                            component.importFromContent(clipText, ::showImportResult)
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(SettingsR.string.skill_import_file))
+                        },
+                        onClick = {
+                            showImportMenu = false
+                            fileImportLauncher.launch(
+                                arrayOf("text/*", "text/markdown", "application/octet-stream")
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        if (skills.isEmpty()) {
+            Text(
+                text = stringResource(SettingsR.string.skill_empty),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        skills.forEach { skill ->
+            OneBoxSectionCard(onClick = { component.onNavigate(Screen.SkillDetail(skill.id)) }) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = stringResource(SettingsR.string.skill_global_switch_title),
+                            text = skill.name,
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
-                            text = stringResource(SettingsR.string.skill_global_switch_subtitle),
+                            text = skill.description,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                     Switch(
-                        checked = globalEnabled,
-                        onCheckedChange = { component.setGlobalSkillsEnabled(it) }
+                        checked = skill.enabled,
+                        onCheckedChange = { component.setSkillEnabled(skill, it) }
                     )
                 }
-            }
-
-            // ─── 技能列表 ───
-            // 标题占满剩余宽度，操作收进两个图标按钮（新建 + 导入菜单），
-            // 长文案下也不会互相挤压换行
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    OneBoxSectionHeader(
-                        title = stringResource(SettingsR.string.skill_list_section),
-                        supporting = stringResource(SettingsR.string.skill_list_supporting),
-                    )
-                }
-                IconButton(onClick = { showCreateDialog = true }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = stringResource(SettingsR.string.skill_new),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-                Box {
-                    IconButton(onClick = { showImportMenu = true }) {
-                        Icon(
-                            imageVector = Icons.Outlined.MoreVert,
-                            contentDescription = stringResource(SettingsR.string.skill_import_clipboard),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = showImportMenu,
-                        onDismissRequest = { showImportMenu = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(text = stringResource(SettingsR.string.skill_import_clipboard))
-                            },
-                            onClick = {
-                                showImportMenu = false
-                                val clipText = clipboardManager.getText()?.text.orEmpty()
-                                component.importFromContent(clipText, ::showImportResult)
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = {
-                                Text(text = stringResource(SettingsR.string.skill_import_file))
-                            },
-                            onClick = {
-                                showImportMenu = false
-                                fileImportLauncher.launch(
-                                    arrayOf("text/*", "text/markdown", "application/octet-stream")
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-
-            if (skills.isEmpty()) {
-                Text(
-                    text = stringResource(SettingsR.string.skill_empty),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            skills.forEach { skill ->
-                OneBoxSectionCard(onClick = { component.onNavigate(Screen.SkillDetail(skill.id)) }) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = skill.name,
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = skill.description,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                        Switch(
-                            checked = skill.enabled,
-                            onCheckedChange = { component.setSkillEnabled(skill, it) }
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-                    ) {
-                        SourceBadge(source = skill.source)
-                        UsageBadge(frequency = component.usageFrequency(skill.useCount))
-                        Spacer(modifier = Modifier.weight(1f))
-                        // 元数据编辑（name/description）与删除仅 LOCAL；分享正文走系统分享
-                        if (skill.source == SkillEntity.SOURCE_LOCAL) {
-                            IconButton(onClick = { metadataDialogSkill = skill }) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Edit,
-                                    contentDescription = stringResource(SettingsR.string.skill_edit_metadata_title),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                            IconButton(onClick = { deletingSkill = skill }) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Delete,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                        }
-                        IconButton(
-                            onClick = { context.shareText(skill.body) }
-                        ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+                ) {
+                    SourceBadge(source = skill.source)
+                    UsageBadge(frequency = component.usageFrequency(skill.useCount))
+                    Spacer(modifier = Modifier.weight(1f))
+                    // 元数据编辑（name/description）与删除仅 LOCAL；分享正文走系统分享
+                    if (skill.source == SkillEntity.SOURCE_LOCAL) {
+                        IconButton(onClick = { metadataDialogSkill = skill }) {
                             Icon(
-                                imageVector = Icons.Outlined.Share,
+                                imageVector = Icons.Outlined.Edit,
+                                contentDescription = stringResource(SettingsR.string.skill_edit_metadata_title),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        IconButton(onClick = { deletingSkill = skill }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
+                    IconButton(
+                        onClick = { context.shareText(skill.body) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Share,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
-
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
         }
+
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
     }
 
     // 新建：先填 name/description 创建空正文技能，成功后直接跳进正文编辑器

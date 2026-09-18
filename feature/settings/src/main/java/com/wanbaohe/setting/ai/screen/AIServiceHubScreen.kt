@@ -1,30 +1,39 @@
 package com.wanbaohe.setting.ai.screen
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.audio.NetworkAudioPlayer
-import com.shifenmiao.common.components.GenericScrollableTabRow
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.common.ui.ai.EngineFilterChip
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.tts.service.TTSService
+import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
+import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.setting.ai.component.AIEngineSettingsComponent
 import com.wanbaohe.setting.image.screen.ImageGenerationSettingsContent
 import com.wanbaohe.setting.local.component.LocalModelManagementComponent
@@ -32,13 +41,17 @@ import com.wanbaohe.setting.local.screen.LocalModelManagementContent
 import com.wanbaohe.setting.router.AIServiceHubTab
 import com.wanbaohe.settings.R
 import com.shifenmiao.core.R as CoreR
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 
 private data class HubTab(
     val key: AIServiceHubTab,
     @StringRes val titleRes: Int,
+    val icon: ImageVector,
 )
 
-// 「服务与模型」聚合页: 文本引擎 / 本地模型 / 多模态(语音合成 + 图片生成与编辑) 三个 Tab
+// 「服务与模型」聚合页: 底部导航切换 文本引擎 / 本地模型 / 多模态(语音合成 + 图片生成与编辑)
 @Composable
 fun AIServiceHubScreen(
     initialTab: AIServiceHubTab,
@@ -53,67 +66,132 @@ fun AIServiceHubScreen(
     // 与原 Profile 入口按 isOverseas 过滤的可见性保持一致
     val tabs = remember {
         buildList {
-            add(HubTab(AIServiceHubTab.Text, R.string.ai_service_hub_tab_text))
+            add(
+                HubTab(
+                    key = AIServiceHubTab.Text,
+                    titleRes = R.string.ai_service_hub_tab_text,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText,
+                )
+            )
             if (FlavorType.fromName().isOverseas) {
-                add(HubTab(AIServiceHubTab.Local, R.string.ai_service_hub_tab_local))
+                add(
+                    HubTab(
+                        key = AIServiceHubTab.Local,
+                        titleRes = R.string.ai_service_hub_tab_local,
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStorage,
+                    )
+                )
             }
-            add(HubTab(AIServiceHubTab.Multimodal, R.string.ai_service_hub_tab_multimodal))
+            add(
+                HubTab(
+                    key = AIServiceHubTab.Multimodal,
+                    titleRes = R.string.ai_service_hub_tab_multimodal,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures,
+                )
+            )
         }
     }
-    val initialPage = remember {
-        tabs.indexOfFirst { it.key == initialTab }.coerceAtLeast(0)
+    var selectedTab by remember {
+        mutableStateOf(
+            tabs.firstOrNull { it.key == initialTab }?.key ?: AIServiceHubTab.Text
+        )
     }
-    val pagerState = rememberPagerState(initialPage = initialPage) { tabs.size }
-    val coroutineScope = rememberCoroutineScope()
 
     BaseScreen(
         title = stringResource(CoreR.string.profile_item_ai_service_and_models),
         onGoBack = onGoBack,
+        showNavigationBarsPadding = false,
         supportGlassEffect = true,
-    ) {
-        GenericScrollableTabRow(
-            pagerState = pagerState,
-            items = tabs,
-            coroutineScope = coroutineScope,
-            indicatorHeight = 34.dp,
-            indicatorShape = MaterialTheme.shapes.large,
-            trailingContent = {
-                // 「新增引擎」按钮只在文本 Tab 显示
-                if (tabs.getOrNull(pagerState.currentPage)?.key == AIServiceHubTab.Text) {
-                    AIEngineAddEngineAction(onNavigate = engineComponent.onNavigate)
-                }
-            },
-            getTitle = { tab -> stringResource(tab.titleRes) },
-        )
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-        ) { page ->
-            when (tabs[page].key) {
-                AIServiceHubTab.Text -> AIEngineSettingsContent(
-                    component = engineComponent,
-                    modifier = Modifier.fillMaxSize(),
-                )
-
-                AIServiceHubTab.Local -> LocalModelManagementContent(
-                    component = localModelComponent,
-                    modifier = Modifier.fillMaxSize(),
-                )
-
-                AIServiceHubTab.Multimodal -> MultimodalSettingsContent(
-                    ttsService = ttsService,
-                    networkAudioPlayer = networkAudioPlayer,
-                    imageGenerationManager = imageGenerationManager,
-                )
+        actions = {
+            // 「新增引擎」按钮只在文本 Tab 显示
+            if (selectedTab == AIServiceHubTab.Text) {
+                AIEngineAddEngineAction(onNavigate = engineComponent.onNavigate)
             }
+        },
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                AnimatedContent(
+                    targetState = selectedTab,
+                    transitionSpec = {
+                        val direction = if (
+                            tabs.indexOfFirst { it.key == targetState } >
+                            tabs.indexOfFirst { it.key == initialState }
+                        ) 1 else -1
+                        (fadeIn(animationSpec = tween(250)) +
+                            slideInHorizontally(animationSpec = tween(300)) { it / 4 * direction })
+                            .togetherWith(
+                                fadeOut(animationSpec = tween(200)) +
+                                    slideOutHorizontally(animationSpec = tween(300)) { -it / 4 * direction }
+                            )
+                    },
+                    label = "ai_service_hub_tab_switch",
+                ) { tab ->
+                    when (tab) {
+                        AIServiceHubTab.Text -> AIEngineSettingsContent(
+                            component = engineComponent,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+
+                        AIServiceHubTab.Local -> LocalModelManagementContent(
+                            component = localModelComponent,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+
+                        AIServiceHubTab.Multimodal -> MultimodalSettingsContent(
+                            ttsService = ttsService,
+                            networkAudioPlayer = networkAudioPlayer,
+                            imageGenerationManager = imageGenerationManager,
+                        )
+                    }
+                }
+            }
+
+            HubBottomBar(
+                tabs = tabs,
+                selectedTab = selectedTab,
+                onSelect = { selectedTab = it },
+            )
         }
     }
 }
 
-// 多模态 Tab: 上语音合成、下图片生成与编辑;
-// 两块内容各自内部滚动, 用 weight 平分剩余高度(外层不能再套 verticalScroll)
+@Composable
+private fun HubBottomBar(
+    tabs: List<HubTab>,
+    selectedTab: AIServiceHubTab,
+    onSelect: (AIServiceHubTab) -> Unit,
+) {
+    val items = tabs.mapIndexed { index, tab ->
+        BottomNavItem(
+            id = index.toString(),
+            label = stringResource(tab.titleRes),
+            icon = tab.icon,
+            contentDescription = stringResource(tab.titleRes),
+        )
+    }
+    BottomNavigationBar(
+        items = items,
+        selectedItemId = tabs.indexOfFirst { it.key == selectedTab }.toString(),
+        onItemClick = { clicked ->
+            val index = clicked.id.toIntOrNull() ?: return@BottomNavigationBar
+            tabs.getOrNull(index)?.let { onSelect(it.key) }
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+
+private enum class MultimodalSection {
+    TTS,
+    Image,
+}
+
+// 多模态 Tab: 顶部「语音合成 / 图片生成与编辑」筛选切换,
+// 每个选项展示完整原详情页内容(占满剩余高度), 默认语音合成
 @Composable
 private fun MultimodalSettingsContent(
     ttsService: TTSService,
@@ -121,33 +199,44 @@ private fun MultimodalSettingsContent(
     imageGenerationManager: ImageGenerationManager,
 ) {
     val ttsConfig by ttsService.observeConfig().collectAsState(initial = TTSConfig())
+    var section by remember { mutableStateOf(MultimodalSection.TTS) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        MultimodalSectionHeader(title = stringResource(CoreR.string.profile_item_tts_settings))
-        Box(modifier = Modifier.weight(1f)) {
-            TTSSettingsContent(
-                config = ttsConfig,
-                ttsService = ttsService,
-                networkAudioPlayer = networkAudioPlayer,
-                modifier = Modifier.fillMaxWidth(),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            EngineFilterChip(
+                text = stringResource(CoreR.string.profile_item_tts_settings),
+                isSelected = section == MultimodalSection.TTS,
+                onClick = { section = MultimodalSection.TTS },
+            )
+            EngineFilterChip(
+                text = stringResource(CoreR.string.profile_item_image_generation_settings),
+                isSelected = section == MultimodalSection.Image,
+                onClick = { section = MultimodalSection.Image },
             )
         }
-        MultimodalSectionHeader(title = stringResource(CoreR.string.profile_item_image_generation_settings))
-        Box(modifier = Modifier.weight(1f)) {
-            ImageGenerationSettingsContent(
-                manager = imageGenerationManager,
-                modifier = Modifier.fillMaxWidth(),
-            )
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            when (section) {
+                MultimodalSection.TTS -> TTSSettingsContent(
+                    config = ttsConfig,
+                    ttsService = ttsService,
+                    networkAudioPlayer = networkAudioPlayer,
+                    modifier = Modifier.fillMaxSize(),
+                )
+
+                MultimodalSection.Image -> ImageGenerationSettingsContent(
+                    manager = imageGenerationManager,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
     }
-}
-
-@Composable
-private fun MultimodalSectionHeader(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.onPrimaryContainer,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-    )
 }

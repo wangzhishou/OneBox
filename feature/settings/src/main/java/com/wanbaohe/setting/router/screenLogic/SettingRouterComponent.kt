@@ -156,8 +156,22 @@ class SettingRouterComponent @AssistedInject internal constructor(
         )
 
         is SettingsRoute.AIPersonalization -> SettingChild.AIPersonalization(
+            promptComponent = systemPromptManagementComponentFactory(
+                componentContext = componentContext.childContext("system_prompt_mgmt"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            ),
+            memoryComponent = memoryManagementComponentFactory(
+                componentContext = componentContext.childContext("memory_mgmt"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            ),
+            skillComponent = skillManagementComponentFactory(
+                componentContext = componentContext.childContext("skill_mgmt"),
+                onGoBack = onGoBack,
+                onNavigate = onNavigate,
+            ),
             onGoBack = onGoBack,
-            onNavigate = onNavigate,
         )
 
         is SettingsRoute.DisplaySettings -> SettingChild.DisplaySettings(
@@ -209,8 +223,10 @@ class SettingRouterComponent @AssistedInject internal constructor(
         class SkillManagement(val component: SkillManagementComponent) : SettingChild
         class SkillDetail(val component: SkillDetailComponent) : SettingChild
         class AIPersonalization(
+            val promptComponent: SystemPromptManagementComponent,
+            val memoryComponent: MemoryManagementComponent,
+            val skillComponent: SkillManagementComponent,
             val onGoBack: () -> Unit,
-            val onNavigate: (Screen) -> Unit,
         ) : SettingChild
         class DisplaySettings(val component: DisplaySettingsComponent) : SettingChild
         class EasterEgg(val component: EasterEggComponent) : SettingChild
