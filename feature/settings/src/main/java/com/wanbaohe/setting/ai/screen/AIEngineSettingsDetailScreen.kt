@@ -834,26 +834,19 @@ private fun ServerConnectivityCard(
             )
         }
 
-        // 协议选项与模型管理同款两列卡片,选中/未选中样式一致
+        // 协议选项横向滚动,卡片样式与模型管理一致
         val selectableProtocols = remember {
             // 「应用代理」是内置中转链路,不作为可选协议暴露
             AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.OWN_PROXY }
         }
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            selectableProtocols.chunked(2).forEach { rowProtocols ->
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    rowProtocols.forEach { protocol ->
-                        SelectGridCard(
-                            title = protocolLabel(protocol),
-                            subtitle = null,
-                            isSelected = engine.requestProtocol == protocol,
-                            onClick = { onProtocolChange(protocol) },
-                        )
-                    }
-                    if (rowProtocols.size == 1) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
-                }
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(selectableProtocols) { protocol ->
+                SelectGridCard(
+                    title = protocolLabel(protocol),
+                    subtitle = null,
+                    isSelected = engine.requestProtocol == protocol,
+                    onClick = { onProtocolChange(protocol) },
+                )
             }
         }
 
@@ -869,8 +862,9 @@ private fun ServerConnectivityCard(
 
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(AuthType.entries) { authType ->
-                        EngineFilterChip(
-                            text = authTypeLabel(authType),
+                        SelectGridCard(
+                            title = authTypeLabel(authType),
+                            subtitle = null,
                             isSelected = engine.authType == authType,
                             onClick = { onAuthTypeChange(authType) },
                         )
@@ -1016,6 +1010,7 @@ private fun ModelSelectionCard(
                                 },
                                 isSelected = model.id == selectedModel.id,
                                 onClick = { onModelSelected(model) },
+                                modifier = Modifier.weight(1f),
                             )
                         }
                         if (rowModels.size == 1) {
@@ -1075,17 +1070,18 @@ private fun ModelSelectionCard(
     }
 }
 
-/** 两列网格选择卡片(模型/协议共用):选中高亮(primary 描边 + 对勾),未选中细描边 */
+/** 网格/横向列表通用选择卡片(模型/协议/鉴权共用):选中高亮(primary 描边 + 对勾),未选中细描边 */
 @Composable
-private fun RowScope.SelectGridCard(
+private fun SelectGridCard(
     title: String,
     subtitle: String?,
     isSelected: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         onClick = onClick,
-        modifier = Modifier.weight(1f),
+        modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         color = if (isSelected) {
             MaterialTheme.colorScheme.primaryContainer
