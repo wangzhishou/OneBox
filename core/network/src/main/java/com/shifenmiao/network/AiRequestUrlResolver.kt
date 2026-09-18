@@ -149,6 +149,8 @@ object AiRequestUrlResolver {
             AiProvider.DeepSeek.value -> UrlConstants.DEEP_SEEK_AI_PROXY_PATH
             AiProvider.Baidu.value -> UrlConstants.BAIDU_AI_PROXY_PATH
             AiProvider.Mimo.value -> UrlConstants.XIAOMI_AI_PROXY_PATH
+            AiProvider.ZhiPu.value -> UrlConstants.ZHIPU_AI_PROXY_PATH
+            AiProvider.MinMax.value.lowercase() -> UrlConstants.MINIMAX_AI_PROXY_PATH
             else -> UrlConstants.OPENAI_TEXT_COMPLETIONS_ENDPOINT
         }
     }

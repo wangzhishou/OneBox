@@ -93,6 +93,8 @@ data class AiModel(
         /** 已知模型的上下文窗口大小（前缀匹配） */
         private val KNOWN_CONTEXT_WINDOWS = linkedMapOf(
             // OpenAI
+            "gpt-6" to 1_050_000,
+            "gpt-5.6" to 1_050_000,
             "gpt-4o" to 128_000,
             "gpt-4-turbo" to 128_000,
             "gpt-4" to 8_192,
@@ -101,35 +103,57 @@ data class AiModel(
             "o3" to 200_000,
             "o4" to 200_000,
             // DeepSeek
+            "deepseek-flash" to 1_000_000,
             "deepseek-r1" to 64_000,
             "deepseek-v3" to 64_000,
             "deepseek-v4" to 64_000,
             "deepseek" to 64_000,
             // QWen
+            "qwen3.8-flash" to 1_000_000,
             "qwen3" to 131_072,
             "qwen2.5" to 131_072,
             "qwen2" to 131_072,
             "qwen" to 32_768,
             // Kimi / Moonshot
+            "kimi-k3" to 1_000_000,
             "kimi-k2" to 131_072,
             "kimi" to 131_072,
             "moonshot" to 131_072,
             // DouBao / ByteDance
             "doubao" to 128_000,
             // Tencent
+            "hy4" to 1_000_000,
             "hy3" to 256_000,
             "hunyuan" to 256_000,
             // Xiaomi Mimo
             "mimo" to 131_072,
             // Claude
+            "claude-fable" to 1_000_000,
+            "claude-opus-5" to 200_000,
+            "claude-sonnet-5" to 200_000,
             "claude-opus-4" to 200_000,
             "claude-sonnet-4" to 200_000,
             "claude-3.5" to 200_000,
             "claude-3" to 200_000,
             // Gemini
+            "gemini-3" to 1_000_000,
             "gemini-2.5" to 1_000_000,
             "gemini-2" to 1_048_576,
             "gemini" to 32_768,
+            // xAI Grok
+            "grok-4.6" to 500_000,
+            "grok-4.3" to 1_000_000,
+            "grok" to 500_000,
+            // Zhipu GLM
+            "glm-5" to 1_000_000,
+            "glm-4.6" to 200_000,
+            "glm" to 128_000,
+            // MiniMax
+            "minimax-m3" to 1_000_000,
+            "minimax" to 205_000,
+            // Baidu ERNIE
+            "ernie-4.5" to 128_000,
+            "ernie" to 128_000,
         )
         /**
          * Returns a sample AI model for the given provider
@@ -140,7 +164,7 @@ data class AiModel(
         fun getDefaultModelForProvider(provider: AiProvider): AiModel {
             return when (provider) {
                 AiProvider.OpenAi -> AiModel(
-                    name = "gpt-4",
+                    name = "gpt-5.6-luna",
                     title = AppContext.getString(R.string.ai_model_default_openai_title),
                     description = "",
                     canUploadFile = false,
@@ -159,7 +183,7 @@ data class AiModel(
                 )
 
                 AiProvider.QWen -> AiModel(
-                    name = "qwen3.6-plus",
+                    name = "qwen3.8-flash",
                     title = AppContext.getString(R.string.ai_model_default_qwen_title),
                     description = "",
                     canUploadFile = false,
@@ -178,7 +202,7 @@ data class AiModel(
                 )
 
                 AiProvider.Kimi -> AiModel(
-                    name = "kimi-k2.6",
+                    name = "kimi-k3",
                     title = AppContext.getString(R.string.ai_model_default_kimi_title),
                     description = "",
                     canUploadFile = false,
@@ -197,7 +221,7 @@ data class AiModel(
                 )
 
                 AiProvider.DouBao -> AiModel(
-                    name = "doubao-seed-2-0-pro-260215",
+                    name = "doubao-seed-2-1-pro-260915",
                     title = AppContext.getString(R.string.ai_model_default_doubao_title),
                     description = AppContext.getString(R.string.ai_model_default_doubao_description),
                     canUploadFile = false,
@@ -216,7 +240,7 @@ data class AiModel(
                 )
 
                 AiProvider.Tencent -> AiModel(
-                    name = "hy3-preview",
+                    name = "hy4-preview",
                     title = AppContext.getString(R.string.ai_model_default_tencent_title),
                     description = "",
                     canUploadFile = false,
@@ -235,7 +259,7 @@ data class AiModel(
                 )
 
                 AiProvider.DeepSeek -> AiModel(
-                    name = "deepseek-v4-flash",
+                    name = "deepseek-flash",
                     title = AppContext.getString(R.string.ai_model_default_deepseek_title),
                     description = "",
                     canUploadFile = false,
@@ -273,7 +297,7 @@ data class AiModel(
                 )
 
                 AiProvider.Gemini -> AiModel(
-                    name = "gemini-2.5-flash",
+                    name = "gemini-3.8-flash",
                     title = AppContext.getString(R.string.ai_model_default_gemini_title),
                     description = "",
                     canUploadFile = false,
@@ -292,7 +316,7 @@ data class AiModel(
                 )
 
                 AiProvider.Grok -> AiModel(
-                    name = "grok-4",
+                    name = "grok-4.3",
                     title = AppContext.getString(R.string.ai_model_default_grok_title),
                     description = "",
                     canUploadFile = false,
@@ -311,7 +335,7 @@ data class AiModel(
                 )
 
                 AiProvider.Claude -> AiModel(
-                    name = "claude-sonnet-4-5",
+                    name = "claude-sonnet-5",
                     title = AppContext.getString(R.string.ai_model_default_claude_title),
                     description = "",
                     canUploadFile = false,
@@ -348,8 +372,65 @@ data class AiModel(
                     canUseTempApi = false
                 )
 
+                AiProvider.ZhiPu -> AiModel(
+                    name = "glm-5.3-flash",
+                    title = AppContext.getString(R.string.ai_model_default_zhipu_title),
+                    description = "",
+                    canUploadFile = false,
+                    canNetwork = false,
+                    temperature = 0.7,
+                    topP = 0.95,
+                    free = false,
+                    provider = AiProvider.ZhiPu,
+                    basePoints = 0.3f,
+                    maxTokens = 2048,
+                    canReasoning = true,
+                    canEdit = false,
+                    canImage = true,
+                    canVideo = false,
+                    canUseTempApi = false
+                )
+
+                AiProvider.MinMax -> AiModel(
+                    name = "MiniMax-M2.7",
+                    title = AppContext.getString(R.string.ai_model_default_minimax_title),
+                    description = "",
+                    canUploadFile = false,
+                    canNetwork = false,
+                    temperature = 0.7,
+                    topP = 0.95,
+                    free = false,
+                    provider = AiProvider.MinMax,
+                    basePoints = 0.3f,
+                    maxTokens = 2048,
+                    canReasoning = false,
+                    canEdit = false,
+                    canImage = false,
+                    canVideo = false,
+                    canUseTempApi = false
+                )
+
+                AiProvider.Baidu -> AiModel(
+                    name = "ernie-4.5-turbo-128k",
+                    title = AppContext.getString(R.string.ai_model_default_baidu_title),
+                    description = "",
+                    canUploadFile = false,
+                    canNetwork = true,
+                    temperature = 0.95,
+                    topP = 0.8,
+                    free = false,
+                    provider = AiProvider.Baidu,
+                    basePoints = 0.5f,
+                    maxTokens = 2048,
+                    canReasoning = false,
+                    canEdit = false,
+                    canImage = false,
+                    canVideo = false,
+                    canUseTempApi = false
+                )
+
                 else -> AiModel(
-                    name = "deepseek-v4-flash",
+                    name = "deepseek-flash",
                     title = AppContext.getString(R.string.ai_model_default_deepseek_title),
                     description = "",
                     canUploadFile = false,

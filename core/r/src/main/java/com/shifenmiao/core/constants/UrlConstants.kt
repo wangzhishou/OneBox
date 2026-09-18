@@ -115,6 +115,8 @@ object UrlConstants {
     const val DEEP_SEEK_AI_PROXY_PATH = "/openai/deepseek/v1/chat/completions"
 
     const val BAIDU_AI_PROXY_PATH = "/openai/baidu/v2/chat/completions"
+    const val ZHIPU_AI_PROXY_PATH = "/openai/zhipu/v1/chat/completions"
+    const val MINIMAX_AI_PROXY_PATH = "/openai/minimax/v1/chat/completions"
 
     const val MIMO_TTS_PROXY_PATH = "tts/mimo/v1/chat/completions"
 
@@ -176,10 +178,28 @@ object UrlConstants {
     const val XIAOMI_TEXT_COMPLETIONS_ENDPOINT = "v1/chat/completions"
 
     /**
-     * 腾讯 AI
+     * 腾讯 AI(TokenHub 新平台;旧 api.hunyuan.cloud.tencent.com 2026-09-30 停服)
      */
-    const val TENCENT_AI_BASE_URL: String = "https://api.hunyuan.cloud.tencent.com/"
+    const val TENCENT_AI_BASE_URL: String = "https://tokenhub.tencentmaas.com/"
     const val TENCENT_TEXT_COMPLETIONS_ENDPOINT = "v1/chat/completions"
+
+    /**
+     * 智谱 GLM(海外 z.ai 端点,OpenAI 兼容协议)
+     */
+    const val ZHIPU_AI_BASE_URL: String = "https://api.z.ai/api/paas/v4/"
+    const val ZHIPU_TEXT_COMPLETIONS_ENDPOINT = "chat/completions"
+
+    /**
+     * MiniMax(海外端点,OpenAI 兼容协议)
+     */
+    const val MINIMAX_AI_BASE_URL: String = "https://api.minimax.io/v1/"
+    const val MINIMAX_TEXT_COMPLETIONS_ENDPOINT = "chat/completions"
+
+    /**
+     * 百度千帆 ERNIE(OpenAI 兼容端点)
+     */
+    const val BAIDU_AI_BASE_URL: String = "https://qianfan.baidubce.com/"
+    const val BAIDU_TEXT_COMPLETIONS_ENDPOINT = "v2/chat/completions"
 
     /**
      * DeepSeek AI

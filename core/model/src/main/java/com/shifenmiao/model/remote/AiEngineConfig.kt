@@ -16,8 +16,9 @@ object AiEngineConfig {
      * v3: Google 渠道预制 MiMo 并保留 Go 网关代理(走自家网关按积分计费, 见 AIEngineRepository)。
      * v4: Google 渠道 DeepSeek 也改走 Go 网关代理; 老安装的 REMOTE 行恢复代理路由,
      *     仅清空仍为内置注入值的 token(用户自配 token 的行不动)。
+     * v5: Google 渠道新增智谱 GLM / MiniMax 预制引擎(走 Go 网关代理按积分计费)。
      */
-    const val FLAVOR_PRESET_VERSION = 4
+    const val FLAVOR_PRESET_VERSION = 5
 
     /** 引入"清理 Google 渠道预制引擎代理"迁移的版本号 */
     const val PRESET_VERSION_CLEAR_GOOGLE_PROXY = 2
@@ -33,6 +34,8 @@ object AiEngineConfig {
         get() = listOf(
             AiProvider.Mimo.value,
             AiProvider.DeepSeek.value,
+            AiProvider.ZhiPu.value,
+            AiProvider.MinMax.value,
         )
 
     val defaultEnabledEngines: List<String>
@@ -64,6 +67,8 @@ object AiEngineConfig {
             AiProvider.Claude.value,
             AiProvider.QWen.value,
             AiProvider.OpenRouter.value,
+            AiProvider.ZhiPu.value,
+            AiProvider.MinMax.value,
         )
 
     fun getFlavorFallbackEngines(flavorType: FlavorType): List<String> {

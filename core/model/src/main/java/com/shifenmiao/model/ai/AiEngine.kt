@@ -299,6 +299,55 @@ data class AiEngine(
                     fileUploadStrategy = FileUploadStrategy.BASE64
                 )
 
+                // 智谱 / MiniMax(仅海外渠道): 代理路径经 defaultProxyPathFor 走 Go 网关
+                AiProvider.ZhiPu -> AiEngine(
+                    name = AiProvider.ZhiPu.value,
+                    iconName = "SmartToy",
+                    title = AppContext.getString(R.string.ai_engine_seed_zhipu_title),
+                    description = AppContext.getString(R.string.ai_engine_seed_zhipu_description),
+                    requestUrl = UrlConstants.ZHIPU_AI_BASE_URL,
+                    requestPath = UrlConstants.ZHIPU_TEXT_COMPLETIONS_ENDPOINT,
+                    proxyUrl = "",
+                    proxyPath = "",
+                    authorizationCode = "",
+                    model = AiModel.getDefaultModelForProvider(AiProvider.ZhiPu),
+                    requestProtocol = AiRequestProtocol.OPENAI_COMPATIBLE,
+                    stream = true,
+                    fileUploadStrategy = FileUploadStrategy.BASE64
+                )
+
+                AiProvider.MinMax -> AiEngine(
+                    name = AiProvider.MinMax.value,
+                    iconName = "SmartToy",
+                    title = AppContext.getString(R.string.ai_engine_seed_minimax_title),
+                    description = AppContext.getString(R.string.ai_engine_seed_minimax_description),
+                    requestUrl = UrlConstants.MINIMAX_AI_BASE_URL,
+                    requestPath = UrlConstants.MINIMAX_TEXT_COMPLETIONS_ENDPOINT,
+                    proxyUrl = "",
+                    proxyPath = "",
+                    authorizationCode = "",
+                    model = AiModel.getDefaultModelForProvider(AiProvider.MinMax),
+                    requestProtocol = AiRequestProtocol.OPENAI_COMPATIBLE,
+                    stream = true,
+                    fileUploadStrategy = FileUploadStrategy.BASE64
+                )
+
+                AiProvider.Baidu -> AiEngine(
+                    name = AiProvider.Baidu.value,
+                    iconName = "Search",
+                    title = AppContext.getString(R.string.ai_engine_seed_baidu_title),
+                    description = AppContext.getString(R.string.ai_engine_seed_baidu_description),
+                    requestUrl = UrlConstants.BAIDU_AI_BASE_URL,
+                    requestPath = UrlConstants.BAIDU_TEXT_COMPLETIONS_ENDPOINT,
+                    proxyUrl = UrlConstants.RELEASE_URL,
+                    proxyPath = UrlConstants.BAIDU_AI_PROXY_PATH,
+                    authorizationCode = "",
+                    model = AiModel.getDefaultModelForProvider(AiProvider.Baidu),
+                    requestProtocol = AiRequestProtocol.OPENAI_COMPATIBLE,
+                    stream = true,
+                    fileUploadStrategy = FileUploadStrategy.BASE64
+                )
+
                 else -> defaultEngineFallback(provider)
             }
         }
