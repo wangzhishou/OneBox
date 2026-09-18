@@ -75,7 +75,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
@@ -97,13 +97,13 @@ jobs:
           free -h
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
           distribution: temurin
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Compute build variables
         id: compute
@@ -406,7 +406,7 @@ jobs:
           echo "output_apk_path=$OUTPUT_APK" >> "$GITHUB_OUTPUT"
           ls -la "$DIST_DIR"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         id: upload-signed-apk
         with:
           # matrix 各分支产物名必须唯一 (artifact v4 不可变), 发布时按前缀归集
@@ -426,11 +426,11 @@ jobs:
 
     steps:
       # gh release create/upload 需要本地 git 仓库上下文
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 1
       - name: Download signed APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: built-apk-*
           path: release-assets

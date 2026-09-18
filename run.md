@@ -1,4 +1,4 @@
-# Wanbaohe 常用命令（Android 编译/安装/检查）
+# 万宝盒（OneBox）常用命令（Android 编译/安装/检查）
 
 所有命令默认在项目根目录执行。
 
