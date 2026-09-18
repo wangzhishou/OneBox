@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -585,7 +586,7 @@ private fun ModelProviderIcon(
     modifier: Modifier = Modifier,
 ) {
     val accent = resolveProviderAccentColor(model)
-    val monogram = resolveProviderMonogram(engine, model)
+    val brandIcon = providerBrandIcon(model.provider.value)
 
     Surface(
         modifier = modifier,
@@ -593,14 +594,23 @@ private fun ModelProviderIcon(
         color = accent.copy(alpha = 0.12f),
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = monogram,
-                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                color = accent,
-            )
+            if (brandIcon != null) {
+                Icon(
+                    imageVector = brandIcon,
+                    contentDescription = null,
+                    tint = accent,
+                    modifier = Modifier.fillMaxSize(0.58f)
+                )
+            } else {
+                Text(
+                    text = resolveProviderMonogram(engine, model),
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                    color = accent,
+                )
+            }
         }
     }
 }
@@ -660,13 +670,13 @@ private fun ModelGridContent(
     onModelClick: (AiEngine, AiModel) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 80.dp),
+        columns = GridCells.Adaptive(minSize = 104.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = AppTheme.dimens.spaceLarge),
         contentPadding = PaddingValues(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(count = models.size, key = { idx ->
             val (e, m) = models[idx]
@@ -708,19 +718,19 @@ fun ModelGridItem(
         tonalElevation = 0.dp,
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ModelProviderIcon(
                 engine = engine,
                 model = model,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(40.dp),
             )
 
             Text(
                 text = model.title,
-                style = MaterialTheme.typography.labelSmall.copy(
+                style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
                 ),
                 color = if (isSelected) accent else MaterialTheme.colorScheme.onSurface,
@@ -879,15 +889,7 @@ private fun resolveProviderLabel(
 
 @Composable
 private fun resolveProviderAccentColor(model: AiModel): Color {
-    return when (model.provider.value.lowercase()) {
-        "doubao" -> Color(0xFF6D5DF6)
-        "tencent" -> Color(0xFF4F46E5)
-        "deepseek" -> Color(0xFF4A3FF0)
-        "qwen" -> Color(0xFF0F766E)
-        "kimi" -> Color(0xFF7C3AED)
-        "openai" -> Color(0xFF10A37F)
-        else -> MaterialTheme.colorScheme.primary
-    }
+    return providerAccentColor(model.provider.value) ?: MaterialTheme.colorScheme.primary
 }
 
 private fun resolveProviderMonogram(
