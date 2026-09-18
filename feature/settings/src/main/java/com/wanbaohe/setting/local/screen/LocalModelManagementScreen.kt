@@ -48,6 +48,23 @@ import com.shifenmiao.core.R as CoreR
 fun LocalModelManagementScreen(
     component: LocalModelManagementComponent,
 ) {
+    BaseScreen(
+        title = stringResource(CoreR.string.profile_item_local_models),
+        onGoBack = component.onGoBack,
+        supportGlassEffect = true,
+    ) {
+        LocalModelManagementContent(
+            component = component,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+fun LocalModelManagementContent(
+    component: LocalModelManagementComponent,
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
     val downloadedModels by component.downloadedModels.collectAsState()
     val downloadStates by component.downloadStates.collectAsState()
@@ -84,98 +101,91 @@ fun LocalModelManagementScreen(
         }
     }
 
-    BaseScreen(
-        title = stringResource(CoreR.string.profile_item_local_models),
-        onGoBack = component.onGoBack,
-        supportGlassEffect = true,
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = OneBoxDesignSystem.screenPadding),
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = OneBoxDesignSystem.screenPadding),
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
-        ) {
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
 
-            // ─── 推荐下载 ───
-            OneBoxSectionCard {
-                OneBoxSectionHeader(
-                    title = stringResource(R.string.local_models_recommended_section),
-                    supporting = stringResource(R.string.local_models_recommended_supporting),
-                )
-            }
-            component.recommendedModels.forEach { model ->
-                RecommendedModelCard(
-                    model = model,
-                    isDownloaded = downloadedModels.any { it.fileName == model.fileName },
-                    downloadState = downloadStates[model.fileName],
-                    onDownload = { component.startDownload(model) },
-                    onCancel = { component.cancelDownload(model.fileName) },
-                )
-            }
+        // ─── 推荐下载 ───
+        OneBoxSectionCard {
+            OneBoxSectionHeader(
+                title = stringResource(R.string.local_models_recommended_section),
+                supporting = stringResource(R.string.local_models_recommended_supporting),
+            )
+        }
+        component.recommendedModels.forEach { model ->
+            RecommendedModelCard(
+                model = model,
+                isDownloaded = downloadedModels.any { it.fileName == model.fileName },
+                downloadState = downloadStates[model.fileName],
+                onDownload = { component.startDownload(model) },
+                onCancel = { component.cancelDownload(model.fileName) },
+            )
+        }
 
-            // ─── 已下载 ───
-            OneBoxSectionCard {
-                OneBoxSectionHeader(
-                    title = stringResource(R.string.local_models_downloaded_section),
-                    supporting = stringResource(R.string.local_models_downloaded_supporting),
-                )
-            }
-            if (downloadedModels.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.local_models_empty),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            downloadedModels.forEach { model ->
-                DownloadedModelCard(
-                    model = model,
-                    sizeText = Formatter.formatShortFileSize(context, model.sizeBytes),
-                    isCurrentChatModel = currentChatModelName.equals(model.modelName, ignoreCase = true),
-                    onSetAsChatModel = {
-                        component.setAsChatModel(model) { success ->
-                            AppToastHost.showToast(
-                                if (success) R.string.local_models_set_success
-                                else R.string.local_models_set_failed
-                            )
+        // ─── 已下载 ───
+        OneBoxSectionCard {
+            OneBoxSectionHeader(
+                title = stringResource(R.string.local_models_downloaded_section),
+                supporting = stringResource(R.string.local_models_downloaded_supporting),
+            )
+        }
+        if (downloadedModels.isEmpty()) {
+            Text(
+                text = stringResource(R.string.local_models_empty),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        downloadedModels.forEach { model ->
+            DownloadedModelCard(
+                model = model,
+                sizeText = Formatter.formatShortFileSize(context, model.sizeBytes),
+                isCurrentChatModel = currentChatModelName.equals(model.modelName, ignoreCase = true),
+                onSetAsChatModel = {
+                    component.setAsChatModel(model) { success ->
+                        AppToastHost.showToast(
+                            if (success) R.string.local_models_set_success
+                            else R.string.local_models_set_failed
+                        )
+                    }
+                },
+                onDelete = { deletingModel = model },
+            )
+        }
+
+        // ─── 从文件导入 ───
+        OneBoxSectionCard {
+            OneBoxSectionHeader(
+                title = stringResource(R.string.local_models_import_section),
+                supporting = stringResource(R.string.local_models_import_supporting),
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (isImporting) {
+                    LinearProgressIndicator(modifier = Modifier.weight(1f))
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+                EngineFilterChip(
+                    text = stringResource(R.string.local_models_import_button),
+                    isSelected = false,
+                    onClick = {
+                        if (!isImporting) {
+                            runCatching { importLauncher.launch(arrayOf("*/*")) }
                         }
                     },
-                    onDelete = { deletingModel = model },
                 )
             }
-
-            // ─── 从文件导入 ───
-            OneBoxSectionCard {
-                OneBoxSectionHeader(
-                    title = stringResource(R.string.local_models_import_section),
-                    supporting = stringResource(R.string.local_models_import_supporting),
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (isImporting) {
-                        LinearProgressIndicator(modifier = Modifier.weight(1f))
-                    } else {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
-                    EngineFilterChip(
-                        text = stringResource(R.string.local_models_import_button),
-                        isSelected = false,
-                        onClick = {
-                            if (!isImporting) {
-                                runCatching { importLauncher.launch(arrayOf("*/*")) }
-                            }
-                        },
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
         }
+
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
     }
 
     // 删除确认

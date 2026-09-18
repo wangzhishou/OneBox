@@ -77,17 +77,6 @@ fun BaseSettingItem(
             } ?: ""
         }
 
-        ProfileSetting.TTSSettings -> {
-            val config = appComponent?.ttsService?.observeConfig()?.collectAsState(null)
-            subtitle = config?.value?.let {
-                val provider = when (it.providerType) {
-                    com.shifenmiao.model.tts.TTSProviderType.OPENAI_COMPATIBLE -> "OpenAI"
-                    com.shifenmiao.model.tts.TTSProviderType.MIMO -> "Mimo"
-                }
-                "$provider · ${it.model} · ${it.defaultVoice}"
-            } ?: ""
-        }
-
         ProfileSetting.OpenSource -> {
             val release = remember {
                 EntryPointAccessors.fromApplication(

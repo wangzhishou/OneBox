@@ -21,6 +21,7 @@ import com.wanbaohe.setting.memory.component.MemoryManagementComponent
 import com.wanbaohe.setting.prompt.component.SystemPromptDetailComponent
 import com.shifenmiao.tts.service.TTSService
 import com.wanbaohe.setting.prompt.component.SystemPromptManagementComponent
+import com.wanbaohe.setting.router.AIServiceHubTab
 import com.wanbaohe.setting.router.SettingsRoute
 import com.wanbaohe.setting.skill.component.SkillDetailComponent
 import com.wanbaohe.setting.skill.component.SkillManagementComponent
@@ -65,19 +66,21 @@ class SettingRouterComponent @AssistedInject internal constructor(
             )
         )
 
-        is SettingsRoute.LocalModelManagement -> SettingChild.LocalModelManagement(
-            localModelManagementComponentFactory(
-                componentContext = componentContext.childContext("local_model_management"),
-                onGoBack = onGoBack,
-            )
-        )
-
-        is SettingsRoute.AIEngineList -> SettingChild.AIEngineList(
-            aiEngineSettingsComponentFactory(
+        is SettingsRoute.AIServiceHub -> SettingChild.AIServiceHub(
+            initialTab = route.initialTab,
+            engineComponent = aiEngineSettingsComponentFactory(
                 componentContext = componentContext.childContext("ai_engine_list"),
                 onGoBack = onGoBack,
                 onNavigate = onNavigate,
-            )
+            ),
+            localModelComponent = localModelManagementComponentFactory(
+                componentContext = componentContext.childContext("local_model_management"),
+                onGoBack = onGoBack,
+            ),
+            ttsService = ttsService,
+            networkAudioPlayer = networkAudioPlayer,
+            imageGenerationManager = imageGenerationManager,
+            onGoBack = onGoBack,
         )
 
         is SettingsRoute.AIEngineDetail -> SettingChild.AIEngineDetail(
@@ -152,6 +155,11 @@ class SettingRouterComponent @AssistedInject internal constructor(
             )
         )
 
+        is SettingsRoute.AIPersonalization -> SettingChild.AIPersonalization(
+            onGoBack = onGoBack,
+            onNavigate = onNavigate,
+        )
+
         is SettingsRoute.DisplaySettings -> SettingChild.DisplaySettings(
             displaySettingsComponentFactory(
                 componentContext = componentContext.childContext("display_settings"),
@@ -168,17 +176,6 @@ class SettingRouterComponent @AssistedInject internal constructor(
             )
         )
 
-        is SettingsRoute.TTSSettings -> SettingChild.TTSSettings(
-            ttsService = ttsService,
-            networkAudioPlayer = networkAudioPlayer,
-            onGoBack = onGoBack,
-        )
-
-        is SettingsRoute.ImageGenerationSettings -> SettingChild.ImageGenerationSettings(
-            manager = imageGenerationManager,
-            onGoBack = onGoBack,
-        )
-
         is SettingsRoute.AuthCodeSettings -> SettingChild.AuthCodeSettings(
             authCodeSettingsComponentFactory(
                 componentContext = componentContext.childContext("auth_code_settings"),
@@ -193,8 +190,15 @@ class SettingRouterComponent @AssistedInject internal constructor(
 
     sealed interface SettingChild {
         class AIFeatureSettings(val component: AIFeatureSettingsComponent) : SettingChild
-        class LocalModelManagement(val component: LocalModelManagementComponent) : SettingChild
-        class AIEngineList(val component: AIEngineSettingsComponent) : SettingChild
+        class AIServiceHub(
+            val initialTab: AIServiceHubTab,
+            val engineComponent: AIEngineSettingsComponent,
+            val localModelComponent: LocalModelManagementComponent,
+            val ttsService: TTSService,
+            val networkAudioPlayer: NetworkAudioPlayer,
+            val imageGenerationManager: ImageGenerationManager,
+            val onGoBack: () -> Unit,
+        ) : SettingChild
         class AIEngineDetail(val component: AIEngineSettingsDetailComponent) : SettingChild
         class AIWorkingModel(val component: AIWorkingModelSettingsComponent) : SettingChild
         class AIAddEngine(val component: AIAddEngineComponent) : SettingChild
@@ -204,17 +208,12 @@ class SettingRouterComponent @AssistedInject internal constructor(
         class MemoryManagement(val component: MemoryManagementComponent) : SettingChild
         class SkillManagement(val component: SkillManagementComponent) : SettingChild
         class SkillDetail(val component: SkillDetailComponent) : SettingChild
+        class AIPersonalization(
+            val onGoBack: () -> Unit,
+            val onNavigate: (Screen) -> Unit,
+        ) : SettingChild
         class DisplaySettings(val component: DisplaySettingsComponent) : SettingChild
         class EasterEgg(val component: EasterEggComponent) : SettingChild
-        class TTSSettings(
-            val ttsService: TTSService,
-            val networkAudioPlayer: NetworkAudioPlayer,
-            val onGoBack: () -> Unit,
-        ) : SettingChild
-        class ImageGenerationSettings(
-            val manager: ImageGenerationManager,
-            val onGoBack: () -> Unit,
-        ) : SettingChild
         class AuthCodeSettings(val component: AuthCodeSettingsComponent) : SettingChild
         class StartEntrySettings(val onGoBack: () -> Unit) : SettingChild
     }

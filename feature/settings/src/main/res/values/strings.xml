@@ -468,4 +468,7 @@
     <string name="local_models_import_failed">Import failed</string>
     <string name="local_models_import_overwrite_title">Replace existing file?</string>
     <string name="local_models_import_overwrite_message">\"%1$s\" already exists. Replace it with the selected file?</string>
+    <string name="ai_service_hub_tab_text">Text</string>
+    <string name="ai_service_hub_tab_local">Local</string>
+    <string name="ai_service_hub_tab_multimodal">Multimodal</string>
 </resources>

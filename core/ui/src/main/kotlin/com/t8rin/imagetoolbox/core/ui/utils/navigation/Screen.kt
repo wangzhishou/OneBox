@@ -1956,6 +1956,16 @@ sealed class Screen(
             @Serializable
             @SerialName("AISettingsAddEngine")
             data object AddEngine : Type()
+
+            // 聚合页初始 Tab: 本地模型
+            @Serializable
+            @SerialName("AISettingsLocal")
+            data object Local : Type()
+
+            // 聚合页初始 Tab: 多模态(语音合成 + 图片生成与编辑)
+            @Serializable
+            @SerialName("AISettingsMultimodal")
+            data object Multimodal : Type()
         }
     }
 
@@ -2033,6 +2043,14 @@ sealed class Screen(
     data object SkillManagement : Screen(
         id = -30,
         title = com.shifenmiao.core.R.string.profile_item_ai_skill,
+        subtitle = 0,
+    )
+
+    @Serializable
+    @SerialName("AIPersonalization")
+    data object AIPersonalization : Screen(
+        id = -33,
+        title = com.shifenmiao.core.R.string.profile_item_ai_personalization,
         subtitle = 0,
     )
 

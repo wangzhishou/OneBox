@@ -172,6 +172,7 @@ import com.wanbaohe.imageviewer.screenLogic.ImageViewerComponent
 import com.wanbaohe.markdown.edit.component.MarkdownEditorComponent
 import com.wanbaohe.profile.viewmodel.PayComponent
 import com.wanbaohe.schedule.component.ScheduleComponent
+import com.wanbaohe.setting.router.AIServiceHubTab
 import com.wanbaohe.setting.router.SettingsRoute
 import com.wanbaohe.setting.router.screenLogic.SettingRouterComponent
 import com.wanbaohe.speedtest.component.SpeedTestComponent
@@ -1322,10 +1323,11 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        // 本地模型无独立页面, 打开「服务与模型」聚合页的本地 Tab(保留 Screen 兼容旧链路)
         Screen.LocalModelManagement -> NavigationChild.SettingsRouter(
             lifeFactories.get().settingRouterComponentFactory(
                 componentContext = componentContext,
-                route = SettingsRoute.LocalModelManagement,
+                route = SettingsRoute.AIServiceHub(AIServiceHubTab.Local),
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo,
                 appComponent = null,
@@ -1372,20 +1374,32 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        // 语音合成无独立页面, 打开「服务与模型」聚合页的多模态 Tab(保留 Screen 兼容旧链路)
         Screen.TTSSettings -> NavigationChild.SettingsRouter(
             lifeFactories.get().settingRouterComponentFactory(
                 componentContext = componentContext,
-                route = com.wanbaohe.setting.router.SettingsRoute.TTSSettings,
+                route = SettingsRoute.AIServiceHub(AIServiceHubTab.Multimodal),
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo,
                 appComponent = null,
             )
         )
 
+        // 图片生成与编辑无独立页面, 打开「服务与模型」聚合页的多模态 Tab
         Screen.ImageGenerationSettings -> NavigationChild.SettingsRouter(
             lifeFactories.get().settingRouterComponentFactory(
                 componentContext = componentContext,
-                route = com.wanbaohe.setting.router.SettingsRoute.ImageGenerationSettings,
+                route = SettingsRoute.AIServiceHub(AIServiceHubTab.Multimodal),
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+                appComponent = null,
+            )
+        )
+
+        Screen.AIPersonalization -> NavigationChild.SettingsRouter(
+            lifeFactories.get().settingRouterComponentFactory(
+                componentContext = componentContext,
+                route = SettingsRoute.AIPersonalization,
                 onGoBack = ::navigateBack,
                 onNavigate = ::navigateTo,
                 appComponent = null,
@@ -1494,11 +1508,13 @@ class ChildProvider @Inject constructor(
 }
 
 private fun Screen.AISettings.Type?.toSettingsRoute(): SettingsRoute = when (this) {
-    null -> SettingsRoute.AIEngineList
+    null -> SettingsRoute.AIServiceHub()
     is Screen.AISettings.Type.EngineDetail -> SettingsRoute.AIEngineDetail(
         engineName = engineName,
         requestProtocol = requestProtocol,
     )
     Screen.AISettings.Type.WorkingModel -> SettingsRoute.AIWorkingModel
     Screen.AISettings.Type.AddEngine -> SettingsRoute.AIAddEngine
+    Screen.AISettings.Type.Local -> SettingsRoute.AIServiceHub(AIServiceHubTab.Local)
+    Screen.AISettings.Type.Multimodal -> SettingsRoute.AIServiceHub(AIServiceHubTab.Multimodal)
 }

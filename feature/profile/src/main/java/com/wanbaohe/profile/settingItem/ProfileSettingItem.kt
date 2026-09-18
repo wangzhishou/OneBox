@@ -126,18 +126,6 @@ fun ProfileSettingItem(
             )
         }
 
-        ProfileSetting.LocalModelManagement -> {
-            BaseSettingItem(
-                modifier,
-                settingsComponent = settingsComponent,
-                setting = setting,
-                themeIndex = themeIndex,
-                onclick = {
-                    onNavigate(Screen.LocalModelManagement)
-                }
-            )
-        }
-
         ProfileSetting.AITokenUsage -> {
             BaseSettingItem(
                 modifier,
@@ -150,64 +138,14 @@ fun ProfileSettingItem(
             )
         }
 
-        ProfileSetting.TTSSettings -> {
+        ProfileSetting.AIPersonalization -> {
             BaseSettingItem(
                 modifier,
                 settingsComponent = settingsComponent,
                 setting = setting,
                 themeIndex = themeIndex,
                 onclick = {
-                    onNavigate(Screen.TTSSettings)
-                },
-                appComponent = appComponent
-            )
-        }
-
-        ProfileSetting.ImageGenerationSettings -> {
-            BaseSettingItem(
-                modifier,
-                settingsComponent = settingsComponent,
-                setting = setting,
-                themeIndex = themeIndex,
-                onclick = {
-                    onNavigate(Screen.ImageGenerationSettings)
-                },
-                appComponent = appComponent
-            )
-        }
-
-        ProfileSetting.SystemPromptManagement -> {
-            BaseSettingItem(
-                modifier,
-                settingsComponent = settingsComponent,
-                setting = setting,
-                themeIndex = themeIndex,
-                onclick = {
-                    onNavigate(Screen.SystemPromptManagement)
-                }
-            )
-        }
-
-        ProfileSetting.MemoryManagement -> {
-            BaseSettingItem(
-                modifier,
-                settingsComponent = settingsComponent,
-                setting = setting,
-                themeIndex = themeIndex,
-                onclick = {
-                    onNavigate(Screen.MemoryManagement)
-                }
-            )
-        }
-
-        ProfileSetting.SkillManagement -> {
-            BaseSettingItem(
-                modifier,
-                settingsComponent = settingsComponent,
-                setting = setting,
-                themeIndex = themeIndex,
-                onclick = {
-                    onNavigate(Screen.SkillManagement)
+                    onNavigate(Screen.AIPersonalization)
                 }
             )
         }

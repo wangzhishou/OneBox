@@ -24,13 +24,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineGroup
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHelp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
-import com.t8rin.imagetoolbox.core.resources.icons.line.LinePsychology
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineToggle
 import kotlinx.parcelize.RawValue
@@ -77,14 +73,9 @@ sealed class ProfileSetting(
         settingsList = listOf(
             AIModelSettings,
             AIModelWorkSettings,
-            LocalModelManagement,
             AITokenUsage,
-            TTSSettings,
-            ImageGenerationSettings,
             AIFeatureSettings,
-            SystemPromptManagement,
-            MemoryManagement,
-            SkillManagement
+            AIPersonalization
         )
     )
 
@@ -223,47 +214,17 @@ sealed class ProfileSetting(
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWorkModels
     )
 
-    // 端侧(LiteRT-LM)模型管理入口, 仅 google / foss 渠道可见(ProfileScreen 按 isOverseas 过滤)
-    data object LocalModelManagement : ProfileSetting(
-        id = 30,
-        title = R.string.profile_item_local_models,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStorage
-    )
-
     data object AITokenUsage : ProfileSetting(
         id = 17,
         title = R.string.profile_item_ai_usage,
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBarChart
     )
 
-    data object TTSSettings : ProfileSetting(
-        id = 18,
-        title = R.string.profile_item_tts_settings,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMic
-    )
-
-    data object ImageGenerationSettings : ProfileSetting(
-        id = 25,
-        title = R.string.profile_item_image_generation_settings,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFeatures
-    )
-
-    data object SystemPromptManagement : ProfileSetting(
-        id = 19,
-        title = R.string.profile_item_ai_reply_style,
+    // 「提示词与个性化」聚合入口, 内部再跳系统提示词 / AI 记忆 / AI 技能三个独立页面
+    data object AIPersonalization : ProfileSetting(
+        id = 31,
+        title = R.string.profile_item_ai_personalization,
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePrompt
-    )
-
-    data object MemoryManagement : ProfileSetting(
-        id = 28,
-        title = R.string.profile_item_ai_memory,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory
-    )
-
-    data object SkillManagement : ProfileSetting(
-        id = 29,
-        title = R.string.profile_item_ai_skill,
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePsychology
     )
 
     data object Community : ProfileSetting(

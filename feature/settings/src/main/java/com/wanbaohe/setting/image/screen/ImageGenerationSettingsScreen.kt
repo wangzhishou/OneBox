@@ -47,6 +47,23 @@ fun ImageGenerationSettingsScreen(
     manager: ImageGenerationManager,
     onGoBack: () -> Unit,
 ) {
+    BaseScreen(
+        title = stringResource(CoreR.string.profile_item_image_generation_settings),
+        onGoBack = onGoBack,
+    ) {
+        ImageGenerationSettingsContent(
+            manager = manager,
+            // 限定高度为顶栏以下的剩余空间,否则滚动视口会延伸到屏幕外
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+fun ImageGenerationSettingsContent(
+    manager: ImageGenerationManager,
+    modifier: Modifier = Modifier,
+) {
     val configs by manager.observeConfigs().collectAsState(initial = manager.getConfigs())
     val activeConfig by manager.observeActiveConfig().collectAsState(initial = manager.getActiveConfig())
     val descriptors = remember { manager.getProviderDescriptors() }
@@ -58,88 +75,81 @@ fun ImageGenerationSettingsScreen(
         }
     }
 
-    BaseScreen(
-        title = stringResource(CoreR.string.profile_item_image_generation_settings),
-        onGoBack = onGoBack,
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            // imePadding 必须在 verticalScroll 之前:让滚动视口整体收缩到键盘上方,
+            // 放在 scroll 之后只会给内容加底部 padding,视口仍被键盘遮挡
+            .imePadding()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                // 限定高度为顶栏以下的剩余空间,否则滚动视口会延伸到屏幕外
-                .weight(1f)
-                // imePadding 必须在 verticalScroll 之前:让滚动视口整体收缩到键盘上方,
-                // 放在 scroll 之后只会给内容加底部 padding,视口仍被键盘遮挡
-                .imePadding()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            SettingsSection(stringResource(R.string.image_settings_configs_section)) {
-                if (configs.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.image_settings_no_config),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                configs.forEach { config ->
-                    ConfigItem(
-                        config = config,
-                        descriptor = descriptors.firstOrNull { it.providerId == config.providerId },
-                        selected = config.id == selectedId,
-                        active = config.id == activeConfig?.id,
-                        onClick = { selectedId = config.id },
-                    )
-                }
+        SettingsSection(stringResource(R.string.image_settings_configs_section)) {
+            if (configs.isEmpty()) {
                 Text(
-                    text = stringResource(R.string.image_settings_add_provider),
-                    style = MaterialTheme.typography.labelLarge,
+                    text = stringResource(R.string.image_settings_no_config),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    descriptors.forEach { descriptor ->
-                        TextButton(
-                            onClick = {
-                                val config = manager.createDefaultConfig(descriptor.providerId)
-                                manager.saveConfig(config, makeActive = configs.isEmpty())
-                                selectedId = config.id
-                            }
-                        ) {
-                            Text("+ ${descriptor.displayName}")
+            }
+            configs.forEach { config ->
+                ConfigItem(
+                    config = config,
+                    descriptor = descriptors.firstOrNull { it.providerId == config.providerId },
+                    selected = config.id == selectedId,
+                    active = config.id == activeConfig?.id,
+                    onClick = { selectedId = config.id },
+                )
+            }
+            Text(
+                text = stringResource(R.string.image_settings_add_provider),
+                style = MaterialTheme.typography.labelLarge,
+            )
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                descriptors.forEach { descriptor ->
+                    TextButton(
+                        onClick = {
+                            val config = manager.createDefaultConfig(descriptor.providerId)
+                            manager.saveConfig(config, makeActive = configs.isEmpty())
+                            selectedId = config.id
                         }
+                    ) {
+                        Text("+ ${descriptor.displayName}")
                     }
                 }
             }
+        }
 
-            val selected = configs.firstOrNull { it.id == selectedId }
-            if (selected != null) {
-                val descriptor = descriptors.firstOrNull { it.providerId == selected.providerId }
-                if (descriptor != null) {
-                    ConfigEditor(
-                        savedConfig = selected,
-                        descriptor = descriptor,
-                        isActive = selected.id == activeConfig?.id,
-                        onSave = { draft ->
-                            manager.saveConfig(draft)
-                            AppToastHost.showToast(R.string.image_settings_save_success)
-                        },
-                        onActivate = { draft ->
-                            manager.saveConfig(draft, makeActive = true)
-                            AppToastHost.showToast(R.string.image_settings_active_success)
-                        },
-                        onDelete = {
-                            manager.deleteConfig(selected.id)
-                            AppToastHost.showToast(R.string.image_settings_delete_success)
-                        },
-                    )
-                } else {
-                    SettingsSection(stringResource(R.string.image_settings_detail_section)) {
-                        Text(stringResource(R.string.image_settings_provider_unavailable, selected.providerId))
-                        TextButton(onClick = { manager.deleteConfig(selected.id) }) {
-                            Text(
-                                text = stringResource(R.string.image_settings_delete_action),
-                                color = MaterialTheme.colorScheme.error,
-                            )
-                        }
+        val selected = configs.firstOrNull { it.id == selectedId }
+        if (selected != null) {
+            val descriptor = descriptors.firstOrNull { it.providerId == selected.providerId }
+            if (descriptor != null) {
+                ConfigEditor(
+                    savedConfig = selected,
+                    descriptor = descriptor,
+                    isActive = selected.id == activeConfig?.id,
+                    onSave = { draft ->
+                        manager.saveConfig(draft)
+                        AppToastHost.showToast(R.string.image_settings_save_success)
+                    },
+                    onActivate = { draft ->
+                        manager.saveConfig(draft, makeActive = true)
+                        AppToastHost.showToast(R.string.image_settings_active_success)
+                    },
+                    onDelete = {
+                        manager.deleteConfig(selected.id)
+                        AppToastHost.showToast(R.string.image_settings_delete_success)
+                    },
+                )
+            } else {
+                SettingsSection(stringResource(R.string.image_settings_detail_section)) {
+                    Text(stringResource(R.string.image_settings_provider_unavailable, selected.providerId))
+                    TextButton(onClick = { manager.deleteConfig(selected.id) }) {
+                        Text(
+                            text = stringResource(R.string.image_settings_delete_action),
+                            color = MaterialTheme.colorScheme.error,
+                        )
                     }
                 }
             }

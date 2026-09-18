@@ -69,6 +69,47 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettingsSuggest
 fun AIEngineSettingsScreen(
     component: AIEngineSettingsComponent,
 ) {
+    BaseScreen(
+        title = stringResource(CoreR.string.profile_item_ai_service_and_models),
+        onGoBack = component.onGoBack,
+        supportGlassEffect = true,
+        actions = {
+            AIEngineAddEngineAction(onNavigate = component.onNavigate)
+        }
+    ) {
+        AIEngineSettingsContent(
+            component = component,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+// 「新增引擎」入口按钮: 渠道能力(如 Google 全量放开)或国内管理员可见;
+// 独立页面放在顶栏 actions, 聚合页放在 TabRow 尾部
+@Composable
+fun AIEngineAddEngineAction(
+    onNavigate: (Screen) -> Unit,
+) {
+    val capabilities = remember { AiEngineConfig.getCapabilities() }
+    if (capabilities.canAddEngine || LoginUtils.isAdmin()) {
+        IconButton(onClick = {
+            onNavigate(
+                Screen.AISettings(Screen.AISettings.Type.AddEngine)
+            )
+        }) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
+                contentDescription = stringResource(R.string.ai_engine_add_engine),
+            )
+        }
+    }
+}
+
+@Composable
+fun AIEngineSettingsContent(
+    component: AIEngineSettingsComponent,
+    modifier: Modifier = Modifier,
+) {
     val allEngines by component.allEngines.collectAsState()
     val currentAIEngine by component.currentAIEngine.collectAsState()
     val fastAIEngine by component.fastAIEngine.collectAsState()
@@ -84,113 +125,90 @@ fun AIEngineSettingsScreen(
         component.ensureCatalogRefreshed()
     }
 
-    BaseScreen(
-        title = stringResource(CoreR.string.profile_item_ai_service_and_models),
-        onGoBack = component.onGoBack,
-        supportGlassEffect = true,
-        actions = {
-            // 渠道能力(如 Google 全量放开)或国内管理员可新增引擎
-            val capabilities = remember { AiEngineConfig.getCapabilities() }
-            if (capabilities.canAddEngine || LoginUtils.isAdmin()) {
-                IconButton(onClick = {
-                    component.onNavigate(
-                        Screen.AISettings(Screen.AISettings.Type.AddEngine)
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = OneBoxDesignSystem.screenPadding),
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+    ) {
+        Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
+
+        OneBoxSectionCard {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+            ) {
+                Text(
+                    text = stringResource(R.string.ai_engine_list_heading),
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = stringResource(R.string.ai_engine_list_desc),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (isRefreshing) {
+                    Text(
+                        text = stringResource(R.string.ai_engine_auto_refreshing),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
-                }) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                        contentDescription = stringResource(R.string.ai_engine_add_engine),
+                } else if (!lastRefreshError.isNullOrBlank()) {
+                    Text(
+                        text = stringResource(
+                            R.string.ai_engine_refresh_failed,
+                            lastRefreshError.orEmpty()
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             }
         }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = OneBoxDesignSystem.screenPadding),
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-        ) {
-            Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
-
-            OneBoxSectionCard {
+        if (allEngines.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 48.dp),
+                contentAlignment = Alignment.Center,
+            ) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    Text(
-                        text = stringResource(R.string.ai_engine_list_heading),
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSurface,
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest,
+                        contentDescription = null,
+                        modifier = Modifier.size(48.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
-                        text = stringResource(R.string.ai_engine_list_desc),
-                        style = MaterialTheme.typography.bodyMedium,
+                        text = stringResource(R.string.ai_engine_list_empty),
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    if (isRefreshing) {
-                        Text(
-                            text = stringResource(R.string.ai_engine_auto_refreshing),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    } else if (!lastRefreshError.isNullOrBlank()) {
-                        Text(
-                            text = stringResource(
-                                R.string.ai_engine_refresh_failed,
-                                lastRefreshError.orEmpty()
-                            ),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
                 }
             }
-            if (allEngines.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 48.dp),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest,
-                            contentDescription = null,
-                            modifier = Modifier.size(48.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        Text(
-                            text = stringResource(R.string.ai_engine_list_empty),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            } else {
-                allEngines.forEach { engine ->
-                    EngineListCard(
-                        engine = engine,
-                        isDefault = currentAIEngine.identityKey() == engine.identityKey(),
-                        isFast = fastAIEngine.identityKey() == engine.identityKey(),
-                        isLocalOwned = localOwnedEngineKeys.contains(engine.identityKey()),
-                        onClick = {
-                            component.onNavigate(
-                                Screen.AISettings(
-                                    Screen.AISettings.Type.EngineDetail(
-                                        engineName = engine.name,
-                                        requestProtocol = engine.requestProtocol.name,
-                                    )
+        } else {
+            allEngines.forEach { engine ->
+                EngineListCard(
+                    engine = engine,
+                    isDefault = currentAIEngine.identityKey() == engine.identityKey(),
+                    isFast = fastAIEngine.identityKey() == engine.identityKey(),
+                    isLocalOwned = localOwnedEngineKeys.contains(engine.identityKey()),
+                    onClick = {
+                        component.onNavigate(
+                            Screen.AISettings(
+                                Screen.AISettings.Type.EngineDetail(
+                                    engineName = engine.name,
+                                    requestProtocol = engine.requestProtocol.name,
                                 )
                             )
-                        },
-                        onDelete = { pendingDeleteEngine = engine },
-                    )
-                }
+                        )
+                    },
+                    onDelete = { pendingDeleteEngine = engine },
+                )
             }
         }
     }

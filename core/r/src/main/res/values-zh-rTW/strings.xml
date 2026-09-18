@@ -781,6 +781,7 @@
     <string name="profile_item_ai_workflow_models">工作模型</string>
     <string name="profile_item_ai_usage">用量統計</string>
     <string name="profile_item_ai_reply_style">系統提示詞</string>
+    <string name="profile_item_ai_personalization">提示詞與個性化</string>
     <string name="profile_item_tts_settings">語音合成</string>
     <string name="profile_item_image_generation_settings">圖片生成與編輯</string>
     <string name="exporting">正在匯出資料</string>

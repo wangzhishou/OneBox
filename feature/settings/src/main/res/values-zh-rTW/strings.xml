@@ -345,4 +345,7 @@
     <string name="auth_code_settings_immersive_enter">進入沉浸式</string>
     <string name="auth_code_settings_immersive_exit">退出沉浸式</string>
     <string name="auth_code_settings_unnamed_item">未命名應用程式</string>
+    <string name="ai_service_hub_tab_text">文字</string>
+    <string name="ai_service_hub_tab_local">本機</string>
+    <string name="ai_service_hub_tab_multimodal">多模態</string>
 </resources>

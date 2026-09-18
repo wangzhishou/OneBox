@@ -85,7 +85,7 @@ fun TTSSettingsScreen(
 }
 
 @Composable
-private fun TTSSettingsContent(
+internal fun TTSSettingsContent(
     config: TTSConfig,
     ttsService: TTSService,
     networkAudioPlayer: NetworkAudioPlayer,
