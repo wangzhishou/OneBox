@@ -212,7 +212,7 @@
     <string name="ai_working_model_status_proxy">当前链路：代理可用</string>
     <string name="ai_working_model_status_unavailable">当前链路：不可用，请先去设置</string>
     <string name="ai_engine_server_title">服务连接</string>
-    <string name="ai_engine_server_desc">配置您的 API 端点和验证凭据，以连接到远程推理服务。</string>
+    <string name="ai_engine_server_desc">配置 API 端点与验证凭据</string>
     <string name="ai_engine_api_url">API地址</string>
     <string name="ai_engine_api_path">API路径</string>
     <string name="ai_engine_auth_token">授权码</string>

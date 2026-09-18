@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.icon.IconRegistry
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.common.ui.ai.providerAccentColor
+import com.shifenmiao.common.ui.ai.providerBrandIcon
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.remote.AiEngineConfig
@@ -269,12 +271,23 @@ private fun EngineListCard(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Top,
                 ) {
-                    val engineIcon = remember(engine.iconName) {
-                        IconRegistry.resolve(engine.iconName) ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest
+                    val brandIcon = providerBrandIcon(engine.name)
+                    if (brandIcon != null) {
+                        val accent = providerAccentColor(engine.name)
+                            ?: MaterialTheme.colorScheme.primary
+                        OneBoxLeadingIconBadge(
+                            icon = brandIcon,
+                            iconTint = accent,
+                            containerColor = accent.copy(alpha = 0.12f),
+                        )
+                    } else {
+                        val engineIcon = remember(engine.iconName) {
+                            IconRegistry.resolve(engine.iconName) ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest
+                        }
+                        OneBoxLeadingIconBadge(
+                            icon = engineIcon
+                        )
                     }
-                    OneBoxLeadingIconBadge(
-                        icon = engineIcon
-                    )
                     Spacer(modifier = Modifier.size(OneBoxDesignSystem.itemSpacing))
                     Column(
                         modifier = Modifier.weight(1f),

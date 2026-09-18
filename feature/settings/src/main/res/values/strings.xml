@@ -212,7 +212,7 @@
     <string name="ai_working_model_status_proxy">Current route: proxy available</string>
     <string name="ai_working_model_status_unavailable">Current route: unavailable — go to settings first</string>
     <string name="ai_engine_server_title">Service Connection</string>
-    <string name="ai_engine_server_desc">Configure your API endpoint and authentication credentials to connect to a remote inference service.</string>
+    <string name="ai_engine_server_desc">Configure API endpoint and credentials</string>
     <string name="ai_engine_api_url">API URL</string>
     <string name="ai_engine_api_path">API Path</string>
     <string name="ai_engine_auth_token">Auth Token</string>

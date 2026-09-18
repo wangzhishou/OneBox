@@ -814,7 +814,8 @@ private fun ServerConnectivityCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { showAuthOptions = !showAuthOptions },
+                .clickable { showAuthOptions = !showAuthOptions }
+                .padding(horizontal = 4.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -833,22 +834,26 @@ private fun ServerConnectivityCard(
             )
         }
 
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        // 协议选项与模型管理同款两列卡片,选中/未选中样式一致
+        val selectableProtocols = remember {
             // 「应用代理」是内置中转链路,不作为可选协议暴露
-            items(AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.OWN_PROXY }) { protocol ->
-                EngineFilterChip(
-                    text = when (protocol) {
-                        AiRequestProtocol.OPENAI_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_openai)
-                        AiRequestProtocol.RESPONSES_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_responses)
-                        AiRequestProtocol.ANTHROPIC_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_anthropic)
-                        AiRequestProtocol.OWN_PROXY -> stringResource(R.string.ai_engine_protocol_proxy)
-                        // 仅云端协议出现在本选择器；
-                        // LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）。
-                        AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(R.string.ai_engine_protocol_local_on_device)
-                    },
-                    isSelected = engine.requestProtocol == protocol,
-                    onClick = { onProtocolChange(protocol) }
-                )
+            AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.OWN_PROXY }
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            selectableProtocols.chunked(2).forEach { rowProtocols ->
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    rowProtocols.forEach { protocol ->
+                        SelectGridCard(
+                            title = protocolLabel(protocol),
+                            subtitle = null,
+                            isSelected = engine.requestProtocol == protocol,
+                            onClick = { onProtocolChange(protocol) },
+                        )
+                    }
+                    if (rowProtocols.size == 1) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
         }
 
@@ -1002,10 +1007,14 @@ private fun ModelSelectionCard(
                 models.chunked(2).forEach { rowModels ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         rowModels.forEach { model ->
-                            ModelSelectGridCard(
-                                model = model,
+                            SelectGridCard(
+                                title = model.title.ifBlank { model.name },
+                                subtitle = if (showPointsMultiplier) {
+                                    model.pointsMultiplierText()
+                                } else {
+                                    null
+                                },
                                 isSelected = model.id == selectedModel.id,
-                                showPointsMultiplier = showPointsMultiplier,
                                 onClick = { onModelSelected(model) },
                             )
                         }
@@ -1066,12 +1075,12 @@ private fun ModelSelectionCard(
     }
 }
 
-/** 模型两列网格卡片:选中高亮(primary 描边 + 对勾),中转链路展示倍率 */
+/** 两列网格选择卡片(模型/协议共用):选中高亮(primary 描边 + 对勾),未选中细描边 */
 @Composable
-private fun RowScope.ModelSelectGridCard(
-    model: AiModel,
+private fun RowScope.SelectGridCard(
+    title: String,
+    subtitle: String?,
     isSelected: Boolean,
-    showPointsMultiplier: Boolean,
     onClick: () -> Unit,
 ) {
     Surface(
@@ -1101,7 +1110,7 @@ private fun RowScope.ModelSelectGridCard(
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 Text(
-                    text = model.title.ifBlank { model.name },
+                    text = title,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
                     ),
@@ -1113,9 +1122,9 @@ private fun RowScope.ModelSelectGridCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                if (showPointsMultiplier) {
+                if (!subtitle.isNullOrBlank()) {
                     Text(
-                        text = model.pointsMultiplierText(),
+                        text = subtitle,
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -1131,6 +1140,19 @@ private fun RowScope.ModelSelectGridCard(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun protocolLabel(protocol: AiRequestProtocol): String {
+    return when (protocol) {
+        AiRequestProtocol.OPENAI_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_openai)
+        AiRequestProtocol.RESPONSES_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_responses)
+        AiRequestProtocol.ANTHROPIC_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_anthropic)
+        AiRequestProtocol.OWN_PROXY -> stringResource(R.string.ai_engine_protocol_proxy)
+        // 仅云端协议出现在本选择器；
+        // LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）。
+        AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(R.string.ai_engine_protocol_local_on_device)
     }
 }
 
