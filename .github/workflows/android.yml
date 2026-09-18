@@ -62,12 +62,16 @@ jobs:
       should_publish_release: ${{ steps.compute.outputs.should_publish_release }}
       release_tag: ${{ steps.compute.outputs.release_tag }}
 
-    # tag 推送: Google + foss 渠道各出 universal + arm64 两个包; 手动触发: 单个所选变体
+    # tag 推送: 海外(google/foss)各出 universal + arm64, 国内 6 渠道各出 arm64(给 GitCode 当国内更新源);
+    # 手动触发: 单个所选变体(include 为空, 行为与以前完全一致)
     strategy:
       fail-fast: false
       matrix:
         app_flavor: ${{ github.event_name == 'push' && fromJSON('["google","foss"]') || fromJSON(format('["{0}"]', inputs.app_flavor || 'google')) }}
         abi_flavor: ${{ github.event_name == 'push' && fromJSON('["universal","arm64"]') || fromJSON(format('["{0}"]', inputs.abi_flavor || 'universal')) }}
+        # 国内渠道用 include 追加(不覆盖上面的组合): arm64 一个架构足够 ——
+        # 手机端全是 arm64, 且 arm64/universal 两个 abi flavor 的 abiFilters 都是 arm64-v8a。
+        include: ${{ github.event_name == 'push' && fromJSON('[{"app_flavor":"xiaomi","abi_flavor":"arm64"},{"app_flavor":"yyb","abi_flavor":"arm64"},{"app_flavor":"oppo","abi_flavor":"arm64"},{"app_flavor":"vivo","abi_flavor":"arm64"},{"app_flavor":"huawei","abi_flavor":"arm64"},{"app_flavor":"onebox","abi_flavor":"arm64"}]') || fromJSON('[]') }}
 
     runs-on: ubuntu-latest
     timeout-minutes: 180
@@ -418,7 +422,7 @@ jobs:
   create_release:
     if: needs.build_and_release.outputs.should_publish_release == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     permissions:
       contents: write
     needs:
@@ -447,7 +451,8 @@ jobs:
           fi
 
           shopt -s nullglob
-          apks=(release-assets/*.apk)
+          # GitHub Release 只放海外包(google/foss); 国内 6 渠道包只进 GitCode
+          apks=(release-assets/*-google-*.apk release-assets/*-foss-*.apk)
           if (( ${#apks[@]} == 0 )); then
             echo "No APK files downloaded"
             exit 1
@@ -464,8 +469,9 @@ jobs:
           fi
 
       # 国内渠道的更新源是 GitCode(国内直连不了 GitHub)。
-      # GitCode 的仓库镜像只同步分支/标签/提交,不同步 Release 附件,
-      # 所以国内包要在这里补发一次;没配 GITCODE_TOKEN 或这次没打国内包时安静跳过。
+      # GitCode 的仓库镜像只同步分支/标签/提交,不同步 Release 附件,所以国内包要在这里补发一次。
+      # tag 推送时构建矩阵已包含国内 6 渠道(见上面的 include), 手动 dispatch 单个国内渠道时同样生效;
+      # 没配 GITCODE_TOKEN 或这次没打国内包时安静跳过。前置条件: 该 tag 必须已经推到 GitCode。
       - name: Publish to GitCode (domestic update source)
         env:
           GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}

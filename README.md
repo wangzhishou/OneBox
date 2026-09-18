@@ -189,8 +189,10 @@ git push gitcode --tags           # the tag must exist: it is used as target_com
 ./scripts/publish_gitcode_release.py --tag 1.4.0 --dir release --abi arm64
 ```
 
-The same step exists in CI and is skipped silently unless `GITCODE_TOKEN` is configured. The GitCode
-repository has to be public, otherwise the anonymous API returns 403.
+Tag pushes do this automatically: CI additionally builds the six domestic channels (arm64, appended via
+`matrix.include`) and publishes them to GitCode — requires the `GITCODE_TOKEN` secret and the tag being
+pushed to GitCode (the script uses the tag as `target_commitish`). The GitHub Release keeps the overseas
+packages only. The GitCode repository has to be public, otherwise the anonymous API returns 403.
 
 ## AI / Agent Capabilities
 

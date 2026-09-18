@@ -191,16 +191,21 @@ App 里"我的 → 关于 → 开源项目"那一行会显示最新版本（有�
 - `dialogForVersionBelow` 用来把弹窗收窄到"版本特别老"的那一段装机，避免打扰新版本用户。
 - 版本来源按渠道分：海外（google / foss）读 GitHub Releases，国内 6 渠道读 GitCode OpenAPI。
 
-GitCode 的仓库镜像**只同步分支 / 标签 / 提交，不同步 Release 附件**，所以国内发版要额外发布一次：
+GitCode 的仓库镜像**只同步分支 / 标签 / 提交，不同步 Release 附件**，所以国内包要在 GitCode 上单独发一次。
+正常发版不用手工做：**tag 推送时 CI 会额外构建国内 6 渠道（arm64）并自动发到 GitCode** ——
+构建矩阵用 `matrix.include` 追加这 6 个组合，前置条件是配了 `GITCODE_TOKEN` secret、
+且该 tag 已推到 GitCode（发布脚本用 tag 当 `target_commitish`）。
+
+需要补发或离线发版时用脚本：
 
 ```bash
 export GITCODE_TOKEN=xxx          # https://gitcode.com/setting/token-classic
-git push gitcode --tags           # 先推 tag:脚本用 tag 当 target_commitish
+git push gitcode --tags
 ./scripts/publish_gitcode_release.py --tag 1.4.0 --dir release --abi arm64
 ```
 
-CI（`.github/workflows/android.yml`）里有一段同样的发布步骤：配了 `GITCODE_TOKEN` secret
-且这次构建包含国内渠道包时会自动执行，否则安静跳过。**GitCode 仓库必须公开**，否则匿名 API 返回 403。
+GitHub Release 只挂海外包（google/foss 各 universal + arm64），国内 6 渠道包只进 GitCode。
+**GitCode 仓库必须公开**，否则匿名 API 返回 403。
 
 ## AI / Agent 能力边界
 
