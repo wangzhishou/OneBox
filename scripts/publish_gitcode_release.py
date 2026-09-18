@@ -207,7 +207,9 @@ def main() -> int:
 
     create_release(args.tag, token, args.body, args.dry_run)
     existing = [] if args.dry_run else list_attachments(args.tag, token)
-    ok = all(upload(args.tag, p, token, args.overwrite, existing, args.dry_run) for p in apks)
+    # 注意用列表推导而不是 all(generator):all() 会短路, 一个失败后面的包就不传了
+    results = [upload(args.tag, p, token, args.overwrite, existing, args.dry_run) for p in apks]
+    ok = all(results)
 
     print(f"\nGitCode release: {RELEASES_PAGE}")
     if not ok:
