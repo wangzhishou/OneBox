@@ -1700,4 +1700,8 @@
 <string name="household_items">アイテム管理</string>    <string name="household_items_description">賞味期限やメモと一緒に、物の保管場所を記録できます。</string>
     <string name="ai_detect_title">AI 検出</string>
     <string name="ai_detect_description">テキストや画像が AI 生成かどうかを検出します。</string>
+    <string name="app_update_dialog_title">新しいバージョン %1$s があります</string>
+    <string name="app_update_dialog_message">現在のバージョンは %1$s です。バージョン %2$s が公開されました。更新をおすすめします。</string>
+    <string name="app_update_dialog_confirm">今すぐ更新</string>
+    <string name="app_update_dialog_later">あとで</string>
 </resources>

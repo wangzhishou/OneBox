@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -68,6 +70,8 @@ data class BottomNavItem(
     val selectedContentColor: Color? = null,
     val unselectedContentColor: Color? = null,
     val enabled: Boolean = true,
+    /** 在图标右上角显示一个小红点（例如"我的"页里躺着一个新版本）。 */
+    val hasBadge: Boolean = false,
 )
 
 @Immutable
@@ -274,12 +278,20 @@ private fun BottomNavigationTabItem(
         ) {
             val imageVector = if (isSelected) item.selectedIcon else item.icon
             if (imageVector != null) {
-                Icon(
-                    imageVector = imageVector,
-                    contentDescription = item.contentDescription,
-                    modifier = Modifier.size(style.tabIconSize),
-                    tint = if (isSelected) selectedContentColor else unselectedContentColor,
-                )
+                BadgedBox(
+                    badge = {
+                        if (item.hasBadge) {
+                            Badge(containerColor = MaterialTheme.colorScheme.error)
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = imageVector,
+                        contentDescription = item.contentDescription,
+                        modifier = Modifier.size(style.tabIconSize),
+                        tint = if (isSelected) selectedContentColor else unselectedContentColor,
+                    )
+                }
             }
             Text(
                 text = item.label,

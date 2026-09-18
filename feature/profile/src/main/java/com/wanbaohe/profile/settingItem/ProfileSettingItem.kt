@@ -27,6 +27,7 @@ import com.shifenmiao.common.ui.WeChatConfirmDialog
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants
 import com.shifenmiao.core.constants.UrlConstants
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.network.update.OpenSourceReleaseEntryPoint
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.webview.di.WebViewEntryPoint
@@ -496,8 +497,14 @@ fun ProfileSettingItem(
                 themeIndex = themeIndex,
                 onclick = {
                     runCatching {
+                        // 国内渠道跳 GitCode 镜像:GitHub 在国内打不开,跳过去只会白屏
+                        val repoUrl = if (FlavorType.fromName().isOverseas) {
+                            UrlConstants.GITHUB_REPO
+                        } else {
+                            UrlConstants.GITCODE_REPO
+                        }
                         context.startActivity(
-                            Intent(Intent.ACTION_VIEW, UrlConstants.GITHUB_REPO.toUri())
+                            Intent(Intent.ACTION_VIEW, repoUrl.toUri())
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         )
                     }

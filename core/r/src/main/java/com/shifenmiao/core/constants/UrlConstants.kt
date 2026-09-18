@@ -92,6 +92,14 @@ object UrlConstants {
      */
     const val GITHUB_ISSUES = "$GITHUB_REPO/issues"
 
+    /**
+     * GitCode 开源镜像仓库地址(公开仓库,所有渠道一致)。
+     *
+     * 国内渠道的更新提醒/下载入口走这里:国内直连 GitHub 不稳定,
+     * 所以国内包的"开源项目"跳转与更新检查都以 GitCode 为准。
+     */
+    const val GITCODE_REPO = "https://gitcode.com/wangzhishou/OneBox"
+
     /** 是否显示备案号/备案查询入口，按渠道隔离（国内 true / google false） */
     const val SHOW_BEI_AN_ENTRY = UrlConstantsFlavor.SHOW_BEI_AN_ENTRY
 

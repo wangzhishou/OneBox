@@ -8,6 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.app.update.rememberUpdateAvailable
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavCenterAction
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
@@ -38,6 +39,8 @@ fun AppBottomNavigationBar(
         val id = "${index}_${screen.simpleName}"
         id to screen
     }
+    // 有开源新版本时在"我的"tab 上点一个红点：入口固定可见，不用滚设置页才发现
+    val hasUpdateAvailable = rememberUpdateAvailable()
     val items = tabs.map { (id, screen) ->
         BottomNavItem(
             id = id,
@@ -45,6 +48,7 @@ fun AppBottomNavigationBar(
             icon = screen.icon,
             selectedIcon = screen.twoToneIcon ?: screen.icon,
             contentDescription = stringResource(screen.subtitle),
+            hasBadge = hasUpdateAvailable && screen is Screen.Profile,
         )
     }
     val selectedItemId = if (addMenuExpanded) {

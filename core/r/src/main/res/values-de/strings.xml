@@ -1700,4 +1700,8 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
 <string name="household_items">Artikelverwaltung</string>    <string name="household_items_description">Behalten Sie im Blick, wo Dinge zu Hause aufbewahrt werden – mit Verfallsdatum und Notizen.</string>
     <string name="ai_detect_title">KI-Detektor</string>
     <string name="ai_detect_description">Erkennen Sie, ob Texte oder Bilder KI-generiert sind.</string>
+    <string name="app_update_dialog_title">Neue Version %1$s verfügbar</string>
+    <string name="app_update_dialog_message">Du nutzt Version %1$s. Version %2$s ist verfügbar – ein Update wird empfohlen.</string>
+    <string name="app_update_dialog_confirm">Jetzt aktualisieren</string>
+    <string name="app_update_dialog_later">Später</string>
 </resources>

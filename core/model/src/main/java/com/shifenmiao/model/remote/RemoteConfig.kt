@@ -281,7 +281,17 @@ data class RemoteConfig(
      * 与 [adminVipLevel] 同款意图：默认 `null` 表示服务端未下发，
      * 消费端回退到系统语音识别；`provider = "iflytek"` 时走讯飞大模型识别。
      */
-    val voiceInput: VoiceInputConfig? = null
+    val voiceInput: VoiceInputConfig? = null,
+
+    /**
+     * 开源版本更新提醒配置，远程下发。
+     *
+     * 网关按 channel + versionCode ≤ 本机取"最近一行"配置，因此本字段既能对全部装机生效，
+     * 也能只对某个版本段生效（例如只催特别老、必须升级的版本）。
+     * 默认 `null` = 未下发 = 不弹窗：不认识本字段的老客户端只会继续用设置页里的角标与副标题，
+     * 所以新增本字段对线上老版本零影响。详见 [AppUpdateConfig]。
+     */
+    val appUpdate: AppUpdateConfig? = null
 ) : Parcelable {
 
     /**
@@ -351,7 +361,8 @@ data class RemoteConfig(
         survive30sWinPoints = mergeField(net.survive30sWinPoints, survive30sWinPoints),
         adWatchRewardPoints = mergeField(net.adWatchRewardPoints, adWatchRewardPoints),
         blessingWallTabTexts = mergeField(net.blessingWallTabTexts, blessingWallTabTexts),
-        voiceInput = mergeField(net.voiceInput, voiceInput)
+        voiceInput = mergeField(net.voiceInput, voiceInput),
+        appUpdate = mergeField(net.appUpdate, appUpdate)
     )
 
     /**
@@ -411,7 +422,8 @@ data class RemoteConfig(
                 survive30sWinPoints == other.survive30sWinPoints &&
                 adWatchRewardPoints == other.adWatchRewardPoints &&
                 blessingWallTabTexts == other.blessingWallTabTexts &&
-                voiceInput == other.voiceInput
+                voiceInput == other.voiceInput &&
+                appUpdate == other.appUpdate
     }
 
     override fun hashCode(): Int {
@@ -457,7 +469,8 @@ data class RemoteConfig(
             survive30sWinPoints,
             adWatchRewardPoints,
             blessingWallTabTexts,
-            voiceInput
+            voiceInput,
+            appUpdate
         )
     }
 }
@@ -487,6 +500,43 @@ data class VoiceInputConfig(
     val apiKey: String? = null,
     val apiSecret: String? = null,
 ) : Parcelable
+
+@Parcelize
+@Serializable
+data class AppUpdateConfig(
+    /**
+     * 弹窗总开关。
+     *
+     * `true` = 启动后发现有新版本就弹窗提醒；未下发 / `false` = 只保留"我的"页角标与副标题，
+     * 不打断用户。默认关闭，需要催更时后台改这一行即可（最迟 5 分钟生效）。
+     */
+    val dialogEnabled: Boolean? = null,
+
+    /**
+     * 仅当本机 versionCode **小于**该值时才弹窗；未下发 = 不限制。
+     *
+     * 典型用法：整行配置对所有版本下发 `dialogEnabled = true`，
+     * 再用本字段把弹窗收窄到"特别老、必须升级"的版本段，避免打扰新版本用户。
+     */
+    val dialogForVersionBelow: Int? = null,
+
+    /**
+     * 同一个新版本 tag 的弹窗冷却小时数；未下发 = [DEFAULT_DIALOG_COOLDOWN_HOURS]。
+     *
+     * 用户点"稍后"后按 tag 记录时间；冷却期内不重复弹，出了更新的 tag 会重新弹。
+     */
+    val dialogCooldownHours: Int? = null,
+
+    /**
+     * 更新页地址覆盖（可选）。未下发时按渠道取开源仓库地址：
+     * 海外（google / foss）走 GitHub，国内渠道走 GitCode。
+     */
+    val updateUrl: String? = null,
+) : Parcelable {
+    companion object {
+        const val DEFAULT_DIALOG_COOLDOWN_HOURS = 24
+    }
+}
 
 @Parcelize
 @Serializable

@@ -42,6 +42,8 @@ fun BaseSettingItem(
 ) {
     val context = LocalContext.current
     var subtitle = stringResource(setting.subtitle)
+    // 有新版本时把副标题染成主题色并加粗：默认就比灰字显眼，无需用户点开任何东西
+    var emphasizeSubtitle = false
     val settingsState = LocalSettingsState.current
     val currentFolderUri = settingsState.saveFolderUri
     when (setting) {
@@ -90,6 +92,7 @@ fun BaseSettingItem(
                 } else {
                     stringResource(CoreR.string.profile_item_open_source_latest)
                 }
+                emphasizeSubtitle = it.isNewer
             }
         }
 
@@ -116,10 +119,14 @@ fun BaseSettingItem(
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.labelSmall,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Normal,
+                    fontSize = if (emphasizeSubtitle) 12.sp else 11.sp,
+                    fontWeight = if (emphasizeSubtitle) FontWeight.SemiBold else FontWeight.Normal,
                     lineHeight = 13.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.64f),
+                    color = if (emphasizeSubtitle) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.64f)
+                    },
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )

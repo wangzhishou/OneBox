@@ -46,6 +46,8 @@ object AppSharedStorage {
     private const val HABIT_PRESETS_SEEDED = "habit_presets_seeded"
     private const val LANGUAGE_SWITCH_NOTICE_DISMISSED = "language_switch_notice_dismissed"
     private const val LANGUAGE_USER_CHOSEN = "language_user_chosen"
+    private const val UPDATE_PROMPT_DISMISSED_TAG = "update_prompt_dismissed_tag"
+    private const val UPDATE_PROMPT_DISMISSED_AT = "update_prompt_dismissed_at"
 
     // ─── 启动关键设置 key（DataStore → MMKV 镜像缓存） ────────────────────────
     private const val S_FONT_SCALE = "s_font_scale"
@@ -619,5 +621,20 @@ object AppSharedStorage {
 
     fun saveLanguageUserChosen(chosen: Boolean) {
         save(LANGUAGE_USER_CHOSEN, chosen)
+    }
+
+    // ─── 开源版本更新提醒（弹窗冷却，按 tag 记录） ──────────────────────────
+
+    /** 用户最近一次点"稍后"的新版本 tag；空串 = 没有点过。 */
+    fun loadUpdatePromptDismissedTag(): String =
+        load(UPDATE_PROMPT_DISMISSED_TAG, "") ?: ""
+
+    /** 用户最近一次点"稍后"的时间戳（毫秒）；0 = 没有点过。 */
+    fun loadUpdatePromptDismissedAt(): Long =
+        load(UPDATE_PROMPT_DISMISSED_AT, 0L) ?: 0L
+
+    fun saveUpdatePromptDismissed(tag: String, at: Long) {
+        save(UPDATE_PROMPT_DISMISSED_TAG, tag)
+        save(UPDATE_PROMPT_DISMISSED_AT, at)
     }
 }

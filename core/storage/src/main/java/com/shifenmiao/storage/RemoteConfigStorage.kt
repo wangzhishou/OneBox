@@ -20,7 +20,8 @@ object RemoteConfigStorage {
     // v3: 新增 poemApiUrl 字段
     // v4: 新增 agentToolTimeoutSeconds 字段
     // v5: 新增 voiceInput 字段
-    private const val KEY_REMOTE_CONFIG = "one_remote_config_v5"
+    // v6: 新增 appUpdate 字段（更新提醒弹窗开关）
+    private const val KEY_REMOTE_CONFIG = "one_remote_config_v6"
 
     /**
      * 远程配置写入事件。replay=1 让新订阅者立刻收到"最近一次"事件以兜底

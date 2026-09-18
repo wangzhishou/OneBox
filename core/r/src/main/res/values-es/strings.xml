@@ -1700,4 +1700,8 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
 <string name="household_items">Gestor de artículos</string>    <string name="household_items_description">Recuerda dónde guardas las cosas en casa, con fechas de caducidad y notas.</string>
     <string name="ai_detect_title">Detector de IA</string>
     <string name="ai_detect_description">Detecta si un texto o una imagen fueron generados por IA.</string>
+    <string name="app_update_dialog_title">Nueva versión %1$s disponible</string>
+    <string name="app_update_dialog_message">Tienes la versión %1$s. La versión %2$s ya está disponible; se recomienda actualizar.</string>
+    <string name="app_update_dialog_confirm">Actualizar ahora</string>
+    <string name="app_update_dialog_later">Más tarde</string>
 </resources>

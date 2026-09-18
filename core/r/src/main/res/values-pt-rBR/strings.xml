@@ -1700,4 +1700,8 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
 <string name="household_items">Gerenciador de Itens</string>    <string name="household_items_description">Lembre-se de onde as coisas estão guardadas em casa, com datas de validade e notas.</string>
     <string name="ai_detect_title">Detector de IA</string>
     <string name="ai_detect_description">Detecte se textos ou imagens foram gerados por IA.</string>
+    <string name="app_update_dialog_title">Nova versão %1$s disponível</string>
+    <string name="app_update_dialog_message">Você está na versão %1$s. A versão %2$s já está disponível — recomendamos atualizar.</string>
+    <string name="app_update_dialog_confirm">Atualizar agora</string>
+    <string name="app_update_dialog_later">Mais tarde</string>
 </resources>

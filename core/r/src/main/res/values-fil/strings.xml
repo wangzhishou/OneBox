@@ -1700,4 +1700,8 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
 <string name="household_items">Pamamahala ng mga Item</string>    <string name="household_items_description">Tandaan kung saan nakalagay ang mga gamit sa bahay, may expiry dates at notes.</string>
     <string name="ai_detect_title">AI Detector</string>
     <string name="ai_detect_description">Tukuyin kung ang teksto o larawan ay gawa ng AI.</string>
+    <string name="app_update_dialog_title">May bagong bersyon %1$s</string>
+    <string name="app_update_dialog_message">Nasa %1$s ka. Available na ang bersyon %2$s — inirerekomendang i-update.</string>
+    <string name="app_update_dialog_confirm">I-update ngayon</string>
+    <string name="app_update_dialog_later">Mamaya</string>
 </resources>

@@ -113,6 +113,8 @@ dependencies {
     implementation(projects.feature.blessingWall)
     implementation(projects.feature.poem)
     implementation(projects.core.a2ui)
+    implementation(projects.core.network)
+    implementation(projects.core.storage)
 
     implementation(libs.androidx.window)
 }

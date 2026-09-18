@@ -1700,4 +1700,8 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
 <string name="household_items">Kelola Barang</string>    <string name="household_items_description">Ingat di mana barang disimpan di rumah, lengkap dengan tanggal kedaluwarsa dan catatan.</string>
     <string name="ai_detect_title">Detektor AI</string>
     <string name="ai_detect_description">Deteksi apakah teks atau gambar dibuat oleh AI.</string>
+    <string name="app_update_dialog_title">Versi baru %1$s tersedia</string>
+    <string name="app_update_dialog_message">Anda memakai versi %1$s. Versi %2$s sudah tersedia — sebaiknya perbarui.</string>
+    <string name="app_update_dialog_confirm">Perbarui sekarang</string>
+    <string name="app_update_dialog_later">Nanti</string>
 </resources>

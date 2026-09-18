@@ -1700,4 +1700,8 @@
 <string name="household_items">आइटम प्रबंधन</string>    <string name="household_items_description">घर में चीज़ें कहाँ रखी हैं याद रखें, एक्सपायरी तारीख और नोट्स के साथ।</string>
     <string name="ai_detect_title">AI डिटेक्टर</string>
     <string name="ai_detect_description">पता लगाएं कि टेक्स्ट या इमेज AI द्वारा बनाई गई है या नहीं।</string>
+    <string name="app_update_dialog_title">नया संस्करण %1$s उपलब्ध है</string>
+    <string name="app_update_dialog_message">आप %1$s पर हैं। संस्करण %2$s उपलब्ध है — अपडेट करने की सलाह दी जाती है।</string>
+    <string name="app_update_dialog_confirm">अभी अपडेट करें</string>
+    <string name="app_update_dialog_later">बाद में</string>
 </resources>

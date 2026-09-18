@@ -1700,4 +1700,8 @@
 <string name="household_items">Управление вещами</string>    <string name="household_items_description">Помните, где что лежит дома: сроки годности и заметки.</string>
     <string name="ai_detect_title">AI-детектор</string>
     <string name="ai_detect_description">Определяйте, создан ли текст или изображение с помощью ИИ.</string>
+    <string name="app_update_dialog_title">Доступна новая версия %1$s</string>
+    <string name="app_update_dialog_message">У вас версия %1$s. Доступна версия %2$s — рекомендуем обновиться.</string>
+    <string name="app_update_dialog_confirm">Обновить сейчас</string>
+    <string name="app_update_dialog_later">Позже</string>
 </resources>

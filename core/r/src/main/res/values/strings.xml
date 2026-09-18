@@ -1943,4 +1943,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="profile_item_open_source_latest">You\'re on the latest version</string>
     <string name="profile_item_open_source_update">New version %1$s available</string>
 
+    <string name="app_update_dialog_title">New version %1$s available</string>
+    <string name="app_update_dialog_message">You\'re on %1$s. Version %2$s is available — updating is recommended.</string>
+    <string name="app_update_dialog_confirm">Update now</string>
+    <string name="app_update_dialog_later">Later</string>
 </resources>

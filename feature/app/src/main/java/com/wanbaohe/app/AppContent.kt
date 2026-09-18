@@ -56,6 +56,9 @@ import com.wanbaohe.app.ui.StartupTraceOverlay
 import com.wanbaohe.app.ui.GlobalToolInteractionHost
 import com.wanbaohe.app.ui.VerifyContactSheet
 import com.wanbaohe.app.ui.WebViewModalBottomSheet
+import com.wanbaohe.app.update.AppUpdateDialogHost
+import com.wanbaohe.app.update.currentVersionName
+import com.wanbaohe.app.update.openSourceReleaseChecker
 import com.wanbaohe.profile.screen.BuyCoffeeDialogModalSheet
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -356,6 +359,20 @@ private fun AppOverlayHost(
     }
 
     val showPrivacyPolicyDialog = remember { mutableStateOf(CoreUtils.isShowPrivacyPolicyDialog()) }
+
+    // 开源仓库新版本检查：同意隐私政策之后才联网（与远程配置同一条合规红线）。
+    // 放在这里而不是启动处，一是首启不联网，二是同意后角标能立刻出现在"我的"tab 上，
+    // 不必等用户进设置页滚到"开源项目"那一行才触发检查。非首启时 state 一开始就是 false，
+    // composition 阶段就会查一次（切换 tab 不会重复查，检查器内部有 6 小时缓存）。
+    val updateCheckContext = LocalContext.current
+    LaunchedEffect(showPrivacyPolicyDialog.value) {
+        if (showPrivacyPolicyDialog.value) return@LaunchedEffect
+        runCatching {
+            openSourceReleaseChecker(updateCheckContext)
+                .checkLatest(currentVersionName(updateCheckContext))
+        }
+    }
+
     ProvideMermaidRenderer {
         PrivacyPolicyDialog(
             showPrivacyPolicyDialog,
@@ -390,6 +407,9 @@ private fun AppOverlayHost(
             webViewComponent = webViewComponent,
         )
     }
+
+    // 新版本弹窗提醒：仅在远程配置 appUpdate.dialogEnabled = true 时出现
+    AppUpdateDialogHost()
 
 }
 

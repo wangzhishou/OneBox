@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
@@ -28,6 +30,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
+import com.wanbaohe.app.update.rememberUpdateAvailable
 
 
 @Composable
@@ -56,6 +59,7 @@ fun NavigationRailBar(
                 containerColor = androidx.compose.ui.graphics.Color.Transparent
             ) {
                 Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))
+                val hasUpdateAvailable = rememberUpdateAvailable()
                 screenList.forEachIndexed { index, screen ->
                     val isSelected = index == currentTabPageIndex
                     NavigationRailItem(
@@ -71,12 +75,20 @@ fun NavigationRailBar(
                                 val imageVector: ImageVector? =
                                     if (isSelected) screen.twoToneIcon else screen.icon
                                 if (imageVector != null) {
-                                    Icon(
-                                        imageVector = imageVector,
-                                        contentDescription = stringResource(screen.subtitle),
-                                        modifier = Modifier.size(24.dp),
-                                        tint = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+                                    BadgedBox(
+                                        badge = {
+                                            if (hasUpdateAvailable && screen is Screen.Profile) {
+                                                Badge(containerColor = MaterialTheme.colorScheme.error)
+                                            }
+                                        }
+                                    ) {
+                                        Icon(
+                                            imageVector = imageVector,
+                                            contentDescription = stringResource(screen.subtitle),
+                                            modifier = Modifier.size(24.dp),
+                                            tint = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                 }
                             }
                         },

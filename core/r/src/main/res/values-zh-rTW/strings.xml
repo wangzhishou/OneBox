@@ -1760,4 +1760,8 @@
     <string name="profile_item_support_dev_sub">請作者喝杯咖啡 ☕</string>
     <string name="profile_item_open_source_latest">目前已是最新版本</string>
     <string name="profile_item_open_source_update">發現新版本 %1$s</string>
+    <string name="app_update_dialog_title">發現新版本 %1$s</string>
+    <string name="app_update_dialog_message">目前版本 %1$s，新版本 %2$s 已發布，建議更新後繼續使用。</string>
+    <string name="app_update_dialog_confirm">立即更新</string>
+    <string name="app_update_dialog_later">稍後</string>
 </resources>

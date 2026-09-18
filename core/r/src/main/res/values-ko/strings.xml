@@ -1700,4 +1700,8 @@
 <string name="household_items">물품 관리</string>    <string name="household_items_description">유통기한과 메모와 함께 물건 보관 위치를 기록하세요.</string>
     <string name="ai_detect_title">AI 감지기</string>
     <string name="ai_detect_description">텍스트나 이미지가 AI로 생성되었는지 감지합니다.</string>
+    <string name="app_update_dialog_title">새 버전 %1$s 사용 가능</string>
+    <string name="app_update_dialog_message">현재 버전은 %1$s입니다. 버전 %2$s이(가) 출시되었습니다. 업데이트를 권장합니다.</string>
+    <string name="app_update_dialog_confirm">지금 업데이트</string>
+    <string name="app_update_dialog_later">나중에</string>
 </resources>

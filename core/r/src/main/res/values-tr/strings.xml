@@ -1700,4 +1700,8 @@
 <string name="household_items">Eşya Yöneticisi</string>    <string name="household_items_description">Eşyalarınızın evde nerede olduğunu son kullanma tarihi ve notlarla kaydedin.</string>
     <string name="ai_detect_title">Yapay Zeka Dedektörü</string>
     <string name="ai_detect_description">Metin veya görsellerin yapay zeka tarafından üretilip üretilmediğini tespit edin.</string>
+    <string name="app_update_dialog_title">Yeni sürüm %1$s yayında</string>
+    <string name="app_update_dialog_message">%1$s sürümünü kullanıyorsunuz. %2$s sürümü yayında — güncellemeniz önerilir.</string>
+    <string name="app_update_dialog_confirm">Şimdi güncelle</string>
+    <string name="app_update_dialog_later">Daha sonra</string>
 </resources>
