@@ -526,7 +526,6 @@ private fun ModelProviderIcon(
     model: AiModel,
     modifier: Modifier = Modifier,
 ) {
-    val accent = resolveProviderAccentColor(model)
     val brandIcon = providerBrandIcon(model.provider.value)
 
     Surface(
@@ -542,14 +541,14 @@ private fun ModelProviderIcon(
                 Icon(
                     imageVector = brandIcon,
                     contentDescription = null,
-                    tint = accent,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.fillMaxSize(0.58f)
                 )
             } else {
                 Text(
                     text = resolveProviderMonogram(engine, model),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                    color = accent,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

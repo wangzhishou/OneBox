@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.icon.IconRegistry
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.common.ui.BaseScreen
-import com.shifenmiao.common.ui.ai.providerAccentColor
 import com.shifenmiao.common.ui.ai.providerBrandIcon
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.remote.AiEngineConfig
@@ -268,11 +267,9 @@ private fun EngineListCard(
                 ) {
                     val brandIcon = providerBrandIcon(engine.name)
                     if (brandIcon != null) {
-                        val accent = providerAccentColor(engine.name)
-                            ?: MaterialTheme.colorScheme.primary
                         OneBoxLeadingIconBadge(
                             icon = brandIcon,
-                            iconTint = accent,
+                            iconTint = MaterialTheme.colorScheme.onSurface,
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                         )
                     } else {
