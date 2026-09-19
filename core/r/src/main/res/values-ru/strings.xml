@@ -5,7 +5,7 @@
     <string name="app_description">Одно приложение — более 90 инструментов: редактирование изображений, ИИ-чат, продуктивность, мини-игры. Всё в одной коробке.</string>
     <string name="app_description_download_des">\n\nСкачать: https://www.wanbaohe.com/download\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
-    <string name="app_slogan">Одна коробка. Всё. С поддержкой ИИ.</string>
+    <string name="app_slogan">ИИ-агент и инструменты</string>
     <string name="dialog_title">Подсказка</string>
     <string name="button_close">Закрыть</string>
     <string name="button_confirm">Подтвердить</string>

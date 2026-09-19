@@ -5,7 +5,7 @@
 
   **English** | [简体中文](README.zh-CN.md)
 
-  A free AI-agent toolbox for Android: say what you need and the built-in agent drives
+  A free AI agent & toolbox for Android: say what you need and the built-in agent drives
   90+ in-app tools to get it done — plus image & document tools, productivity and daily utilities.
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)

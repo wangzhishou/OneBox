@@ -5,7 +5,7 @@
     <string name="app_description">앱 하나, 90개 이상의 도구 — 이미지 편집, AI 채팅, 생산성, 미니 게임. 모두 한 상자에 담았습니다.</string>
     <string name="app_description_download_des">\n\n다운로드: https://www.wanbaohe.com/download\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
-    <string name="app_slogan">원박스. 모든 것. AI 기반.</string>
+    <string name="app_slogan">AI 에이전트 &amp; 도구상자</string>
     <string name="dialog_title">팁</string>
     <string name="button_close">닫기</string>
     <string name="button_confirm">확인</string>

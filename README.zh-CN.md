@@ -5,7 +5,7 @@
 
   [English](README.md) | **简体中文**
 
-  免费的 AI Agent 一站式 Android 工具箱:说句话,内置 Agent 就能驱动 90+ 应用内工具替你干活;
+  免费的 Android AI 智能体 & 工具箱:说句话,内置 Agent 就能驱动 90+ 应用内工具替你干活;
   图片与文档处理、效率与生活工具,一个入口完成日常百事。
 
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
