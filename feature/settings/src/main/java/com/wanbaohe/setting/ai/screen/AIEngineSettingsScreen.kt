@@ -398,7 +398,7 @@ private fun EngineBadge(
             .glassBackground(
                 style = if (selected) GlassStyle.Thin else GlassStyle.Regular,
                 color = when {
-                    isError -> MaterialTheme.colorScheme.error.copy(alpha = 0.10f)
+                    isError -> MaterialTheme.colorScheme.surfaceContainerHigh
                     isPrimary -> MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
                     selected -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
                     else -> MaterialTheme.colorScheme.surfaceVariant

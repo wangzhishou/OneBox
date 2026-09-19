@@ -532,7 +532,7 @@ private fun ModelProviderIcon(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),
-        color = accent.copy(alpha = 0.12f),
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
