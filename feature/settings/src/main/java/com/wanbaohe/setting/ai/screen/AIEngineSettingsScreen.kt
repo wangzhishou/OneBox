@@ -273,14 +273,15 @@ private fun EngineListCard(
                         OneBoxLeadingIconBadge(
                             icon = brandIcon,
                             iconTint = accent,
-                            containerColor = accent.copy(alpha = 0.12f),
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                         )
                     } else {
                         val engineIcon = remember(engine.iconName) {
                             IconRegistry.resolve(engine.iconName) ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest
                         }
                         OneBoxLeadingIconBadge(
-                            icon = engineIcon
+                            icon = engineIcon,
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                         )
                     }
                     Spacer(modifier = Modifier.size(OneBoxDesignSystem.itemSpacing))
@@ -307,20 +308,20 @@ private fun EngineListCard(
                     }
                 }
 
-                // 链路不可用时才警示(可用状态由下方徽标表达), 其余信息进详情页
-                if (!engine.hasAvailableChatRoute()) {
-                    Text(
-                        text = stringResource(R.string.ai_engine_protocol_effective_unavailable),
-                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    // 链路状态:可用 / 不可用(不可用红色警示)
+                    val routeAvailable = engine.hasAvailableChatRoute()
+                    EngineBadge(
+                        text = stringResource(
+                            if (routeAvailable) R.string.ai_engine_status_available
+                            else R.string.ai_engine_status_unavailable
+                        ),
+                        isError = !routeAvailable,
+                    )
                     if (isFast) {
                         EngineBadge(text = stringResource(R.string.ai_engine_role_fast))
                     }
@@ -331,7 +332,6 @@ private fun EngineListCard(
                     if (engine.usesProxyRoute()) {
                         EngineBadge(text = engine.model.pointsMultiplierText())
                     }
-                    Spacer(modifier = Modifier.size(4.dp))
                     EngineBadge(
                         text = stringResource(
                             if (isLocalOwned) R.string.ai_engine_local_badge else R.string.ai_engine_remote_badge
@@ -345,7 +345,6 @@ private fun EngineListCard(
                         modifier = Modifier.size(14.dp),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
-                    Spacer(modifier = Modifier.size(4.dp))
                     Text(
                         text = stringResource(R.string.ai_engine_edit_action),
                         style = MaterialTheme.typography.labelLarge,
@@ -379,15 +378,24 @@ private fun EngineListCard(
 private fun EngineBadge(
     text: String,
     selected: Boolean = true,
+    isError: Boolean = false,
     onClick: (() -> Unit)? = null,
 ) {
+    val contentColor = when {
+        isError -> MaterialTheme.colorScheme.error
+        selected -> MaterialTheme.colorScheme.onPrimaryContainer
+        else -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
     Box(
         modifier = Modifier
             .then(if (onClick != null) Modifier.combinedClickable(onClick = onClick) else Modifier)
             .glassBackground(
                 style = if (selected) GlassStyle.Thin else GlassStyle.Regular,
-                color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
-                else MaterialTheme.colorScheme.surfaceVariant,
+                color = when {
+                    isError -> MaterialTheme.colorScheme.error.copy(alpha = 0.10f)
+                    selected -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
+                    else -> MaterialTheme.colorScheme.surfaceVariant
+                },
                 shape = RoundedCornerShape(50),
                 borderWidth = 0.dp,
             )
@@ -397,7 +405,7 @@ private fun EngineBadge(
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = contentColor,
         )
     }
 }

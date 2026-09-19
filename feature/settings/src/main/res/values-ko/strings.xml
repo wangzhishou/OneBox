@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic 호환</string>
     <string name="ai_engine_protocol_proxy">앱 프록시</string>
     <string name="ai_engine_protocol_local_on_device">기기 내 (네트워크 없음)</string>
-    <string name="ai_engine_protocol_effective_unavailable">사용 불가 · 먼저 테스트하거나 서비스를 전환하세요</string>
     <string name="ai_engine_protocol_direct_desc">인증 토큰이 확인되었습니다. 로컬 직접 연결이 우선 사용됩니다.</string>
     <string name="ai_engine_protocol_proxy_desc">인증 토큰이 확인되지 않았습니다. 현재는 앱 프록시를 통해 접속합니다.</string>
     <string name="ai_engine_auto_refreshing">최신 서비스 카탈로그 동기화 중…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">기본</string>
     <string name="ai_engine_role_fast">빠름</string>
     <string name="ai_engine_role_verified">인증 확인됨</string>
+    <string name="ai_engine_status_available">사용 가능</string>
+    <string name="ai_engine_status_unavailable">사용 불가</string>
     <string name="ai_engine_model_label">현재 모델</string>
     <string name="ai_engine_detail_title">모델 서비스 설정</string>
     <string name="ai_engine_loading">서비스 설정 불러오는 중…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">이 모델의 로컬 매개변수 및 기능 재정의를 지우고 원격 카탈로그의 기본값을 복원합니다.</string>
     <string name="ai_engine_model_restore_defaults_success">원격 기본값이 복원되었습니다.</string>
     <string name="ai_engine_model_restore_defaults_failed">원격 기본값 복원에 실패했습니다. 나중에 다시 시도해 주세요.</string>
-    <string name="ai_working_model_settings_heading">채팅 및 작업 모델</string>
-    <string name="ai_working_model_settings_desc">기본 채팅, 빠른 작업 및 AI 대결에 사용할 실제 모델 조합을 선택하세요.</string>
     <string name="ai_working_model_default_title">기본 채팅 모델</string>
     <string name="ai_working_model_default_desc">일반 AI 대화 및 주요 작업 시나리오에 사용됩니다.</string>
     <string name="ai_working_model_fast_title">빠른 작업 모델</string>

@@ -142,7 +142,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic 兼容（Messages）</string>
     <string name="ai_engine_protocol_proxy">应用代理</string>
     <string name="ai_engine_protocol_local_on_device">端侧本地（不走网络）</string>
-    <string name="ai_engine_protocol_effective_unavailable">不可用 · 请先测试或切换服务</string>
     <string name="ai_engine_protocol_direct_desc">授权码已验证通过，将优先使用本地直连方式访问。</string>
     <string name="ai_engine_protocol_proxy_desc">授权码尚未验证，当前将走 App 中转代理方式访问。</string>
     <string name="ai_engine_auto_refreshing">正在同步最新服务目录…</string>
@@ -160,6 +159,8 @@
     <string name="ai_engine_role_default">默认</string>
     <string name="ai_engine_role_fast">快速</string>
     <string name="ai_engine_role_verified">授权已验证</string>
+    <string name="ai_engine_status_available">可用</string>
+    <string name="ai_engine_status_unavailable">不可用</string>
     <string name="ai_engine_model_label">当前模型</string>
 
     <string name="ai_engine_detail_title">模型服务配置</string>
@@ -185,8 +186,6 @@
     <string name="ai_engine_model_restore_defaults_desc">清除当前模型的本地参数与能力覆盖，恢复使用远程目录中的默认配置。</string>
     <string name="ai_engine_model_restore_defaults_success">已恢复远程默认配置</string>
     <string name="ai_engine_model_restore_defaults_failed">恢复远程默认失败，请稍后重试。</string>
-    <string name="ai_working_model_settings_heading">对话与任务模型</string>
-    <string name="ai_working_model_settings_desc">为默认对话、快速任务和 AI 互聊选择实际使用的模型组合。</string>
     <string name="ai_working_model_default_title">默认对话模型</string>
     <string name="ai_working_model_default_desc">用于常规 AI 对话与主要任务场景。</string>
     <string name="ai_working_model_fast_title">快速任务模型</string>

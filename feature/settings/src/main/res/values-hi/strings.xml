@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic-संगत</string>
     <string name="ai_engine_protocol_proxy">ऐप प्रॉक्सी</string>
     <string name="ai_engine_protocol_local_on_device">डिवाइस पर (कोई नेटवर्क नहीं)</string>
-    <string name="ai_engine_protocol_effective_unavailable">अनुपलब्ध · पहले परीक्षण करें या सेवा बदलें</string>
     <string name="ai_engine_protocol_direct_desc">प्रमाणीकरण टोकन सत्यापित हो गया है। स्थानीय सीधा कनेक्शन को प्राथमिकता दी जाएगी।</string>
     <string name="ai_engine_protocol_proxy_desc">प्रमाणीकरण टोकन सत्यापित नहीं हुआ है। अभी के लिए पहुंच ऐप प्रॉक्सी के माध्यम से होगी।</string>
     <string name="ai_engine_auto_refreshing">नवीनतम सेवा सूची सिंक हो रही है…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">डिफ़ॉल्ट</string>
     <string name="ai_engine_role_fast">तेज़</string>
     <string name="ai_engine_role_verified">प्रमाणीकरण सत्यापित</string>
+    <string name="ai_engine_status_available">उपलब्ध</string>
+    <string name="ai_engine_status_unavailable">अनुपलब्ध</string>
     <string name="ai_engine_model_label">वर्तमान मॉडल</string>
     <string name="ai_engine_detail_title">मॉडल सेवा कॉन्फ़िगरेशन</string>
     <string name="ai_engine_loading">सेवा कॉन्फ़िगरेशन लोड हो रहा है…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">इस मॉडल के स्थानीय पैरामीटर और क्षमता ओवरराइड साफ़ करें और रिमोट कैटलॉग से डिफ़ॉल्ट पुनर्स्थापित करें।</string>
     <string name="ai_engine_model_restore_defaults_success">रिमोट डिफ़ॉल्ट पुनर्स्थापित किए गए</string>
     <string name="ai_engine_model_restore_defaults_failed">रिमोट डिफ़ॉल्ट पुनर्स्थापित करने में विफल। कृपया बाद में पुनः प्रयास करें।</string>
-    <string name="ai_working_model_settings_heading">चैट और कार्य मॉडल</string>
-    <string name="ai_working_model_settings_desc">डिफ़ॉल्ट चैट, तेज़ कार्यों और AI द्वंद्व के लिए उपयोग किए जाने वाले वास्तविक मॉडल संयोजन चुनें।</string>
     <string name="ai_working_model_default_title">डिफ़ॉल्ट चैट मॉडल</string>
     <string name="ai_working_model_default_desc">नियमित AI वार्तालापों और प्राथमिक कार्य परिदृश्यों के लिए उपयोग किया जाता है।</string>
     <string name="ai_working_model_fast_title">तेज़-कार्य मॉडल</string>

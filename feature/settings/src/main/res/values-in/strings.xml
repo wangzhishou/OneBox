@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Kompatibel dengan Anthropic</string>
     <string name="ai_engine_protocol_proxy">Proxy Aplikasi</string>
     <string name="ai_engine_protocol_local_on_device">Di Perangkat (Tanpa Jaringan)</string>
-    <string name="ai_engine_protocol_effective_unavailable">Tidak Tersedia · Uji atau ganti layanan terlebih dahulu</string>
     <string name="ai_engine_protocol_direct_desc">Token autentikasi telah diverifikasi. Koneksi langsung lokal akan diprioritaskan.</string>
     <string name="ai_engine_protocol_proxy_desc">Token autentikasi belum diverifikasi. Akses akan melalui proxy aplikasi untuk saat ini.</string>
     <string name="ai_engine_auto_refreshing">Menyinkronkan katalog layanan terbaru…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">Bawaan</string>
     <string name="ai_engine_role_fast">Cepat</string>
     <string name="ai_engine_role_verified">Autentikasi Terverifikasi</string>
+    <string name="ai_engine_status_available">Tersedia</string>
+    <string name="ai_engine_status_unavailable">Tidak tersedia</string>
     <string name="ai_engine_model_label">Model Saat Ini</string>
     <string name="ai_engine_detail_title">Konfigurasi Layanan Model</string>
     <string name="ai_engine_loading">Memuat konfigurasi layanan…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">Hapus parameter lokal dan override kemampuan model ini dan pulihkan default dari katalog jarak jauh.</string>
     <string name="ai_engine_model_restore_defaults_success">Default jarak jauh dipulihkan</string>
     <string name="ai_engine_model_restore_defaults_failed">Gagal memulihkan default jarak jauh. Silakan coba lagi nanti.</string>
-    <string name="ai_working_model_settings_heading">Model Chat &amp; Tugas</string>
-    <string name="ai_working_model_settings_desc">Pilih kombinasi model yang sebenarnya digunakan untuk chat default, tugas cepat, dan duel AI.</string>
     <string name="ai_working_model_default_title">Model Chat Default</string>
     <string name="ai_working_model_default_desc">Digunakan untuk percakapan AI reguler dan skenario tugas utama.</string>
     <string name="ai_working_model_fast_title">Model Tugas Cepat</string>

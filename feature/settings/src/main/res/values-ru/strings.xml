@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Совместимый с Anthropic</string>
     <string name="ai_engine_protocol_proxy">Прокси приложения</string>
     <string name="ai_engine_protocol_local_on_device">На устройстве (без сети)</string>
-    <string name="ai_engine_protocol_effective_unavailable">Недоступно · Сначала протестируйте или переключите сервис</string>
     <string name="ai_engine_protocol_direct_desc">Токен аутентификации проверен. Будет использоваться локальное прямое соединение.</string>
     <string name="ai_engine_protocol_proxy_desc">Токен аутентификации не проверен. Доступ будет осуществляться через прокси приложения.</string>
     <string name="ai_engine_auto_refreshing">Синхронизация последнего каталога сервисов…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">По умолчанию</string>
     <string name="ai_engine_role_fast">Быстро</string>
     <string name="ai_engine_role_verified">Аутентификация проверена</string>
+    <string name="ai_engine_status_available">Доступно</string>
+    <string name="ai_engine_status_unavailable">Недоступно</string>
     <string name="ai_engine_model_label">Текущая модель</string>
     <string name="ai_engine_detail_title">Конфигурация сервиса моделей</string>
     <string name="ai_engine_loading">Загрузка конфигурации сервиса…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">Очистить локальные переопределения параметров и возможностей этой модели и восстановить настройки по умолчанию из удаленного каталога.</string>
     <string name="ai_engine_model_restore_defaults_success">Удаленные настройки по умолчанию восстановлены</string>
     <string name="ai_engine_model_restore_defaults_failed">Не удалось восстановить удаленные настройки по умолчанию. Пожалуйста, попробуйте позже.</string>
-    <string name="ai_working_model_settings_heading">Модели для чата и задач</string>
-    <string name="ai_working_model_settings_desc">Выберите фактическую комбинацию моделей, используемую для обычного чата, быстрых задач и AI-дуэлей.</string>
     <string name="ai_working_model_default_title">Модель чата по умолчанию</string>
     <string name="ai_working_model_default_desc">Используется для обычных AI-разговоров и основных сценариев задач.</string>
     <string name="ai_working_model_fast_title">Модель быстрых задач</string>

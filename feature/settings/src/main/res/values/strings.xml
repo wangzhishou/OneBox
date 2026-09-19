@@ -142,7 +142,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic-Compatible (Messages)</string>
     <string name="ai_engine_protocol_proxy">App Proxy</string>
     <string name="ai_engine_protocol_local_on_device">On-Device (No Network)</string>
-    <string name="ai_engine_protocol_effective_unavailable">Unavailable · Test or switch the service first</string>
     <string name="ai_engine_protocol_direct_desc">The auth token has been verified. Local direct connection will be preferred.</string>
     <string name="ai_engine_protocol_proxy_desc">The auth token has not been verified. Access will go through the app proxy for now.</string>
     <string name="ai_engine_auto_refreshing">Syncing the latest service catalog…</string>
@@ -160,6 +159,8 @@
     <string name="ai_engine_role_default">Default</string>
     <string name="ai_engine_role_fast">Fast</string>
     <string name="ai_engine_role_verified">Auth Verified</string>
+    <string name="ai_engine_status_available">Available</string>
+    <string name="ai_engine_status_unavailable">Unavailable</string>
     <string name="ai_engine_model_label">Current Model</string>
 
     <string name="ai_engine_detail_title">Model Service Configuration</string>
@@ -185,8 +186,6 @@
     <string name="ai_engine_model_restore_defaults_desc">Clear this model\'s local parameter and capability overrides and restore the defaults from the remote catalog.</string>
     <string name="ai_engine_model_restore_defaults_success">Remote defaults restored</string>
     <string name="ai_engine_model_restore_defaults_failed">Failed to restore remote defaults. Please try again later.</string>
-    <string name="ai_working_model_settings_heading">Chat &amp; Task Models</string>
-    <string name="ai_working_model_settings_desc">Choose the actual model combination used for default chat, fast tasks, and AI duels.</string>
     <string name="ai_working_model_default_title">Default Chat Model</string>
     <string name="ai_working_model_default_desc">Used for regular AI conversations and primary task scenarios.</string>
     <string name="ai_working_model_fast_title">Fast-Task Model</string>

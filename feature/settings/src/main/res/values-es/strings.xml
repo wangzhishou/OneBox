@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Compatible con Anthropic</string>
     <string name="ai_engine_protocol_proxy">Proxy de la aplicación</string>
     <string name="ai_engine_protocol_local_on_device">En el dispositivo (sin red)</string>
-    <string name="ai_engine_protocol_effective_unavailable">No disponible · Pruebe o cambie el servicio primero</string>
     <string name="ai_engine_protocol_direct_desc">El token de autenticación ha sido verificado. Se preferirá la conexión directa local.</string>
     <string name="ai_engine_protocol_proxy_desc">El token de autenticación no ha sido verificado. El acceso se realizará a través del proxy de la aplicación por ahora.</string>
     <string name="ai_engine_auto_refreshing">Sincronizando el catálogo de servicios más reciente…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">Predeterminado</string>
     <string name="ai_engine_role_fast">Rápido</string>
     <string name="ai_engine_role_verified">Autenticación verificada</string>
+    <string name="ai_engine_status_available">Disponible</string>
+    <string name="ai_engine_status_unavailable">No disponible</string>
     <string name="ai_engine_model_label">Modelo actual</string>
     <string name="ai_engine_detail_title">Configuración del servicio de modelo</string>
     <string name="ai_engine_loading">Cargando configuración del servicio…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">Borra las anulaciones locales de parámetros y capacidades de este modelo y restaura los valores predeterminados del catálogo remoto.</string>
     <string name="ai_engine_model_restore_defaults_success">Valores remotos predeterminados restaurados</string>
     <string name="ai_engine_model_restore_defaults_failed">No se pudieron restaurar los valores remotos predeterminados. Inténtalo de nuevo más tarde.</string>
-    <string name="ai_working_model_settings_heading">Modelos de chat y tareas</string>
-    <string name="ai_working_model_settings_desc">Elige la combinación real de modelos utilizada para el chat predeterminado, tareas rápidas y duelos de IA.</string>
     <string name="ai_working_model_default_title">Modelo de chat predeterminado</string>
     <string name="ai_working_model_default_desc">Se utiliza para conversaciones regulares de IA y escenarios de tareas principales.</string>
     <string name="ai_working_model_fast_title">Modelo de tareas rápidas</string>

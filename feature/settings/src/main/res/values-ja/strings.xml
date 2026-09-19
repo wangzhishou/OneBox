@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic互換</string>
     <string name="ai_engine_protocol_proxy">アプリプロキシ</string>
     <string name="ai_engine_protocol_local_on_device">端末内（ネットワークなし）</string>
-    <string name="ai_engine_protocol_effective_unavailable">利用不可・先にテストまたはサービスを切り替えてください</string>
     <string name="ai_engine_protocol_direct_desc">認証トークンは検証済みです。ローカル直接接続が優先されます。</string>
     <string name="ai_engine_protocol_proxy_desc">認証トークンは未検証です。当面はアプリプロキシ経由でアクセスします。</string>
     <string name="ai_engine_auto_refreshing">最新のサービスカタログを同期中…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">デフォルト</string>
     <string name="ai_engine_role_fast">高速</string>
     <string name="ai_engine_role_verified">認証検証済み</string>
+    <string name="ai_engine_status_available">利用可能</string>
+    <string name="ai_engine_status_unavailable">利用不可</string>
     <string name="ai_engine_model_label">現在のモデル</string>
     <string name="ai_engine_detail_title">モデルサービス設定</string>
     <string name="ai_engine_loading">サービス設定を読み込み中…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">このモデルのローカルパラメータと機能の上書きをクリアし、リモートカタログのデフォルトを復元します。</string>
     <string name="ai_engine_model_restore_defaults_success">リモートのデフォルトが復元されました</string>
     <string name="ai_engine_model_restore_defaults_failed">リモートのデフォルトの復元に失敗しました。後でもう一度お試しください。</string>
-    <string name="ai_working_model_settings_heading">チャット＆タスクモデル</string>
-    <string name="ai_working_model_settings_desc">デフォルトのチャット、高速タスク、AIデュエルに使用する実際のモデル組み合わせを選択します。</string>
     <string name="ai_working_model_default_title">デフォルトのチャットモデル</string>
     <string name="ai_working_model_default_desc">通常のAI会話と主要なタスクシナリオに使用されます。</string>
     <string name="ai_working_model_fast_title">高速タスクモデル</string>

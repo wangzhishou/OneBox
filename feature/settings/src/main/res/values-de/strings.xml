@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic-kompatibel</string>
     <string name="ai_engine_protocol_proxy">App-Proxy</string>
     <string name="ai_engine_protocol_local_on_device">Auf dem Gerät (kein Netzwerk)</string>
-    <string name="ai_engine_protocol_effective_unavailable">Nicht verfügbar · Testen oder zuerst Dienst wechseln</string>
     <string name="ai_engine_protocol_direct_desc">Das Authentifizierungstoken wurde verifiziert. Die lokale direkte Verbindung wird bevorzugt.</string>
     <string name="ai_engine_protocol_proxy_desc">Das Authentifizierungstoken wurde nicht verifiziert. Der Zugriff erfolgt vorerst über den App-Proxy.</string>
     <string name="ai_engine_auto_refreshing">Aktuellster Dienstkatalog wird synchronisiert…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">Standard</string>
     <string name="ai_engine_role_fast">Schnell</string>
     <string name="ai_engine_role_verified">Auth verifiziert</string>
+    <string name="ai_engine_status_available">Verfügbar</string>
+    <string name="ai_engine_status_unavailable">Nicht verfügbar</string>
     <string name="ai_engine_model_label">Aktuelles Modell</string>
     <string name="ai_engine_detail_title">Modelldienst-Konfiguration</string>
     <string name="ai_engine_loading">Dienstkonfiguration wird geladen…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">Lokale Parameter- und Fähigkeitsüberschreibungen dieses Modells löschen und die Standardwerte aus dem Remote-Katalog wiederherstellen.</string>
     <string name="ai_engine_model_restore_defaults_success">Remote-Standardwerte wiederhergestellt</string>
     <string name="ai_engine_model_restore_defaults_failed">Wiederherstellen der Remote-Standardwerte fehlgeschlagen. Bitte versuchen Sie es später erneut.</string>
-    <string name="ai_working_model_settings_heading">Chat- und Aufgabenmodelle</string>
-    <string name="ai_working_model_settings_desc">Wählen Sie die tatsächliche Modellkombination für Standard-Chat, schnelle Aufgaben und KI-Duelle.</string>
     <string name="ai_working_model_default_title">Standard-Chatmodell</string>
     <string name="ai_working_model_default_desc">Wird für reguläre KI-Gespräche und primäre Aufgabenszenarien verwendet.</string>
     <string name="ai_working_model_fast_title">Schnellaufgabenmodell</string>

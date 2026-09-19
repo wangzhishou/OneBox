@@ -104,7 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic Uyumlu</string>
     <string name="ai_engine_protocol_proxy">Uygulama Proxy\'si</string>
     <string name="ai_engine_protocol_local_on_device">Cihazda (Ağ Yok)</string>
-    <string name="ai_engine_protocol_effective_unavailable">Kullanılamıyor · Önce test edin veya hizmeti değiştirin</string>
     <string name="ai_engine_protocol_direct_desc">Kimlik doğrulama belirteci doğrulandı. Yerel doğrudan bağlantı tercih edilecek.</string>
     <string name="ai_engine_protocol_proxy_desc">Kimlik doğrulama belirteci doğrulanmadı. Erişim şimdilik uygulama proxy\'si üzerinden sağlanacak.</string>
     <string name="ai_engine_auto_refreshing">En son hizmet kataloğu senkronize ediliyor…</string>
@@ -122,6 +121,8 @@
     <string name="ai_engine_role_default">Varsayılan</string>
     <string name="ai_engine_role_fast">Hızlı</string>
     <string name="ai_engine_role_verified">Kimlik Doğrulandı</string>
+    <string name="ai_engine_status_available">Kullanılabilir</string>
+    <string name="ai_engine_status_unavailable">Kullanılamaz</string>
     <string name="ai_engine_model_label">Geçerli Model</string>
     <string name="ai_engine_detail_title">Model Hizmeti Yapılandırması</string>
     <string name="ai_engine_loading">Hizmet yapılandırması yükleniyor…</string>
@@ -146,8 +147,6 @@
     <string name="ai_engine_model_restore_defaults_desc">Bu modelin yerel parametre ve yetenek geçersiz kılmalarını temizleyin ve uzak katalogdan varsayılanları geri yükleyin.</string>
     <string name="ai_engine_model_restore_defaults_success">Uzak varsayılanlar geri yüklendi</string>
     <string name="ai_engine_model_restore_defaults_failed">Uzak varsayılanlar geri yüklenemedi. Lütfen daha sonra tekrar deneyin.</string>
-    <string name="ai_working_model_settings_heading">Sohbet ve Görev Modelleri</string>
-    <string name="ai_working_model_settings_desc">Varsayılan sohbet, hızlı görevler ve AI düelloları için kullanılan gerçek model kombinasyonunu seçin.</string>
     <string name="ai_working_model_default_title">Varsayılan Sohbet Modeli</string>
     <string name="ai_working_model_default_desc">Normal AI konuşmaları ve birincil görev senaryoları için kullanılır.</string>
     <string name="ai_working_model_fast_title">Hızlı Görev Modeli</string>
