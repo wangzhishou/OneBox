@@ -1,1 +1,1 @@
-OneBox: AI Agent Toolbox
+OneBox: AI Agent & Toolbox

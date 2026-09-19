@@ -1,1 +1,1 @@
-OneBox: KI-Agent-Toolbox
+OneBox: KI-Agent & Toolbox

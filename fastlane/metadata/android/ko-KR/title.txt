@@ -1,1 +1,1 @@
-OneBox: AI 에이전트 도구상자
+OneBox: AI 에이전트 & 도구상자
