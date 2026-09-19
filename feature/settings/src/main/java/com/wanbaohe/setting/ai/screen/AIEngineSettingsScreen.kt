@@ -332,12 +332,16 @@ private fun EngineListCard(
                     if (engine.usesProxyRoute()) {
                         EngineBadge(text = engine.model.pointsMultiplierText())
                     }
-                    EngineBadge(
-                        text = stringResource(
-                            if (isLocalOwned) R.string.ai_engine_local_badge else R.string.ai_engine_remote_badge
-                        ),
-                        selected = isLocalOwned,
-                    )
+                    // 链路标签按真实路由显示: 走 App 中转=代理(主色), 可直连官方=直连; 与"不可用"天然互斥
+                    when {
+                        engine.usesProxyRoute() -> EngineBadge(
+                            text = stringResource(R.string.ai_engine_remote_badge),
+                            isPrimary = true,
+                        )
+                        engine.canChatDirectly() -> EngineBadge(
+                            text = stringResource(R.string.ai_engine_local_badge),
+                        )
+                    }
                     Spacer(modifier = Modifier.weight(1f))
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
@@ -379,10 +383,12 @@ private fun EngineBadge(
     text: String,
     selected: Boolean = true,
     isError: Boolean = false,
+    isPrimary: Boolean = false,
     onClick: (() -> Unit)? = null,
 ) {
     val contentColor = when {
         isError -> MaterialTheme.colorScheme.error
+        isPrimary -> MaterialTheme.colorScheme.primary
         selected -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -393,6 +399,7 @@ private fun EngineBadge(
                 style = if (selected) GlassStyle.Thin else GlassStyle.Regular,
                 color = when {
                     isError -> MaterialTheme.colorScheme.error.copy(alpha = 0.10f)
+                    isPrimary -> MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
                     selected -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
                     else -> MaterialTheme.colorScheme.surfaceVariant
                 },
