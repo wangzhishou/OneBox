@@ -1,1 +1,1 @@
-Free AI agent toolbox: AI chat, notes, bookkeeping, prompt manager, speed test
+Free AI agent & toolbox: AI chat, notes, bookkeeping, prompt manager, speed test

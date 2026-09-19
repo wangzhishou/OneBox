@@ -1,1 +1,1 @@
-Libreng AI agent toolbox: AI chat, notes, gastos, prompt manager, speed test
+Libreng AI agent & toolbox: AI chat, notes, gastos, prompt manager, speed test
