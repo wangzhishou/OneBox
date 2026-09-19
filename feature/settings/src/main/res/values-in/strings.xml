@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">Kunci API</string>
     <string name="ai_engine_auth_type_none">Tidak Ada</string>
     <string name="ai_engine_parameters_title">Parameter &amp; Kemampuan</string>
-    <string name="ai_engine_parameters_desc">Sesuaikan parameter generasi, sakelar kemampuan, dan strategi streaming.</string>
     <string name="ai_engine_temperature">Suhu Sampling</string>
     <string name="ai_engine_temperature_desc">Mengontrol keacakan teks yang dihasilkan. Nilai yang lebih tinggi lebih kreatif tetapi dapat mengurangi stabilitas.</string>
     <string name="ai_engine_top_p">Sampling Nukleus (Top-P)</string>

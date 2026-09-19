@@ -189,7 +189,6 @@
     <string name="ai_engine_auth_type_api_key">API Key</string>
     <string name="ai_engine_auth_type_none">無驗證</string>
     <string name="ai_engine_parameters_title">參數與能力</string>
-    <string name="ai_engine_parameters_desc">調整生成參數、能力開關與串流輸出策略。</string>
     <string name="ai_engine_temperature">取樣溫度</string>
     <string name="ai_engine_temperature_desc">控制生成文字的隨機性。較高值更有創意，但也可能降低穩定性。</string>
     <string name="ai_engine_top_p">核取樣 (Top-P)</string>

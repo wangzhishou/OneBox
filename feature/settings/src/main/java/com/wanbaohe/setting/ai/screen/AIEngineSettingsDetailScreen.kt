@@ -77,7 +77,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDangerButton
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
@@ -781,31 +780,13 @@ private fun ServerConnectivityCard(
 ) {
     SettingCard {
         var showAuthOptions by rememberSaveable { mutableStateOf(false) }
-        val authArrowRotation by animateFloatAsState(if (showAuthOptions) 180f else 0f)
 
         // 鉴权方式默认折叠(Bearer),点请求协议行尾箭头展开
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { showAuthOptions = !showAuthOptions }
-                .padding(horizontal = 4.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(R.string.ai_engine_protocol_label),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.weight(1f),
-            )
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(18.dp)
-                    .rotate(authArrowRotation),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+        CollapsibleSectionHeader(
+            title = stringResource(R.string.ai_engine_protocol_label),
+            expanded = showAuthOptions,
+            onToggle = { showAuthOptions = !showAuthOptions },
+        )
 
         // 协议选项横向滚动,卡片样式与模型管理一致
         val selectableProtocols = remember {
@@ -829,8 +810,8 @@ private fun ServerConnectivityCard(
             ) {
                 Text(
                     text = stringResource(R.string.ai_engine_auth_type_label),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
 
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1143,196 +1124,249 @@ private fun ParameterCard(
     onResetRemoteModelOverrides: () -> Unit,
     onNavigateToCloudStorage: () -> Unit = {},
 ) {
-    SettingCard(
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
-        title = stringResource(R.string.ai_engine_parameters_title),
-        description = stringResource(R.string.ai_engine_parameters_desc),
-        collapsible = true,
-    ) {
-        ParameterSliderRow(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHeat,
-            title = stringResource(R.string.ai_engine_temperature),
-            description = stringResource(R.string.ai_engine_temperature_desc),
-            value = engine.model.temperature.toFloat(),
-            onValueChange = onTemperatureChange,
+    // 与「请求协议」同款折叠头, 默认收起
+    SettingCard {
+        var expanded by rememberSaveable { mutableStateOf(false) }
+        CollapsibleSectionHeader(
+            title = stringResource(R.string.ai_engine_parameters_title),
+            expanded = expanded,
+            onToggle = { expanded = !expanded },
         )
-
-        ParameterSliderRow(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHighQuality,
-            title = stringResource(R.string.ai_engine_top_p),
-            description = stringResource(R.string.ai_engine_top_p_desc),
-            value = engine.model.topP.toFloat(),
-            onValueChange = onTopPChange,
-        )
-
-        ParameterSliderRow(
-            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
-            title = stringResource(R.string.ai_engine_max_tokens),
-            description = stringResource(R.string.ai_engine_max_tokens_desc),
-            value = (engine.model.maxTokens.coerceAtMost(8192) / 8192f),
-            onValueChange = { onMaxTokensChange((it * 8192).toInt().coerceAtLeast(256)) },
-            displayText = "${engine.model.maxTokens.coerceAtMost(8192)}",
-        )
-
-        CapabilitySwitchRow(
-            stringResource(R.string.ai_engine_capability_upload),
-            engine.model.canUploadFile,
-            onCanUploadFileChange
-        )
-        CapabilitySwitchRow(
-            stringResource(R.string.ai_engine_capability_network),
-            engine.model.canNetwork,
-            onCanNetworkChange
-        )
-        CapabilitySwitchRow(
-            stringResource(R.string.ai_engine_capability_reasoning),
-            engine.model.canReasoning,
-            onCanReasoningChange
-        )
-        CapabilitySwitchRow(
-            stringResource(R.string.ai_engine_capability_image),
-            engine.model.canImage,
-            onCanImageChange
-        )
-        CapabilitySwitchRow(
-            stringResource(R.string.ai_engine_capability_tools),
-            engine.model.supportToolCalls,
-            onSupportToolCallsChange
-        )
-
-        Text(
-            text = stringResource(R.string.ai_engine_file_upload_strategy_title),
-            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-        )
-
-        val strategies = com.shifenmiao.model.ai.FileUploadStrategy.entries
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(strategies) { strategy ->
-                EngineFilterChip(
-                    text = when (strategy) {
-                        com.shifenmiao.model.ai.FileUploadStrategy.BASE64 -> stringResource(R.string.ai_engine_file_upload_strategy_base64)
-                        com.shifenmiao.model.ai.FileUploadStrategy.CLOUD -> stringResource(R.string.ai_engine_file_upload_strategy_cloud)
-                    },
-                    isSelected = engine.fileUploadStrategy == strategy,
-                    onClick = { onFileUploadStrategyChange(strategy) }
+        AnimatedVisibility(visible = expanded) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+            ) {
+                ParameterCardContent(
+                    engine = engine,
+                    cloudConnections = cloudConnections,
+                    onTemperatureChange = onTemperatureChange,
+                    onTopPChange = onTopPChange,
+                    onMaxTokensChange = onMaxTokensChange,
+                    onCanUploadFileChange = onCanUploadFileChange,
+                    onCanNetworkChange = onCanNetworkChange,
+                    onCanReasoningChange = onCanReasoningChange,
+                    onCanImageChange = onCanImageChange,
+                    onIsFastChange = onIsFastChange,
+                    onIsCodeChange = onIsCodeChange,
+                    onSupportToolCallsChange = onSupportToolCallsChange,
+                    onStreamChange = onStreamChange,
+                    onFileUploadStrategyChange = onFileUploadStrategyChange,
+                    onCloudStorageConnectionIdChange = onCloudStorageConnectionIdChange,
+                    onCloudStorageBucketChange = onCloudStorageBucketChange,
+                    onCloudStoragePrefixChange = onCloudStoragePrefixChange,
+                    onResetRemoteModelOverrides = onResetRemoteModelOverrides,
+                    onNavigateToCloudStorage = onNavigateToCloudStorage,
                 )
             }
         }
+    }
+}
 
-        AnimatedVisibility(visible = engine.fileUploadStrategy == com.shifenmiao.model.ai.FileUploadStrategy.CLOUD) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                if (cloudConnections.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.ai_engine_cloud_storage_no_connection),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                        fontWeight = FontWeight.Medium
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    OneSecondaryButton(
-                        text = stringResource(R.string.ai_engine_cloud_storage_go_config),
-                        onClick = {
-                            onNavigateToCloudStorage()
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                } else {
-                    Text(
-                        text = stringResource(R.string.ai_engine_cloud_storage_connection_label),
-                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
-                    )
+@Composable
+private fun ParameterCardContent(
+    engine: AiEngine,
+    cloudConnections: List<com.wanbaohe.cloud.storage.model.CloudStorageConnection>,
+    onTemperatureChange: (Float) -> Unit,
+    onTopPChange: (Float) -> Unit,
+    onMaxTokensChange: (Int) -> Unit,
+    onCanUploadFileChange: (Boolean) -> Unit,
+    onCanNetworkChange: (Boolean) -> Unit,
+    onCanReasoningChange: (Boolean) -> Unit,
+    onCanImageChange: (Boolean) -> Unit,
+    onIsFastChange: (Boolean) -> Unit,
+    onIsCodeChange: (Boolean) -> Unit,
+    onSupportToolCallsChange: (Boolean) -> Unit,
+    onStreamChange: (Boolean) -> Unit,
+    onFileUploadStrategyChange: (com.shifenmiao.model.ai.FileUploadStrategy) -> Unit,
+    onCloudStorageConnectionIdChange: (String?) -> Unit,
+    onCloudStorageBucketChange: (String?) -> Unit,
+    onCloudStoragePrefixChange: (String) -> Unit,
+    onResetRemoteModelOverrides: () -> Unit,
+    onNavigateToCloudStorage: () -> Unit = {},
+) {
+    ParameterSliderRow(
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHeat,
+        title = stringResource(R.string.ai_engine_temperature),
+        description = stringResource(R.string.ai_engine_temperature_desc),
+        value = engine.model.temperature.toFloat(),
+        onValueChange = onTemperatureChange,
+    )
 
-                    LazyRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(cloudConnections) { connection ->
-                            val bucket = when (connection) {
-                                is com.wanbaohe.cloud.storage.model.CloudStorageConnection.S3Compat -> connection.bucket
-                                is com.wanbaohe.cloud.storage.model.CloudStorageConnection.WebDav -> connection.rootPath
-                                is com.wanbaohe.cloud.storage.model.CloudStorageConnection.Smb -> connection.share
-                            }
-                            EngineFilterChip(
-                                text = "${connection.displayName} (${bucket})",
-                                isSelected = engine.cloudStorageConnectionId == connection.id,
-                                onClick = {
-                                    onCloudStorageConnectionIdChange(connection.id)
-                                    onCloudStorageBucketChange(bucket)
-                                }
-                            )
+    ParameterSliderRow(
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHighQuality,
+        title = stringResource(R.string.ai_engine_top_p),
+        description = stringResource(R.string.ai_engine_top_p_desc),
+        value = engine.model.topP.toFloat(),
+        onValueChange = onTopPChange,
+    )
+
+    ParameterSliderRow(
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
+        title = stringResource(R.string.ai_engine_max_tokens),
+        description = stringResource(R.string.ai_engine_max_tokens_desc),
+        value = (engine.model.maxTokens.coerceAtMost(8192) / 8192f),
+        onValueChange = { onMaxTokensChange((it * 8192).toInt().coerceAtLeast(256)) },
+        displayText = "${engine.model.maxTokens.coerceAtMost(8192)}",
+    )
+
+    CapabilitySwitchRow(
+        stringResource(R.string.ai_engine_capability_upload),
+        engine.model.canUploadFile,
+        onCanUploadFileChange
+    )
+    CapabilitySwitchRow(
+        stringResource(R.string.ai_engine_capability_network),
+        engine.model.canNetwork,
+        onCanNetworkChange
+    )
+    CapabilitySwitchRow(
+        stringResource(R.string.ai_engine_capability_reasoning),
+        engine.model.canReasoning,
+        onCanReasoningChange
+    )
+    CapabilitySwitchRow(
+        stringResource(R.string.ai_engine_capability_image),
+        engine.model.canImage,
+        onCanImageChange
+    )
+    CapabilitySwitchRow(
+        stringResource(R.string.ai_engine_capability_tools),
+        engine.model.supportToolCalls,
+        onSupportToolCallsChange
+    )
+
+    Text(
+        text = stringResource(R.string.ai_engine_file_upload_strategy_title),
+        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+    )
+
+    val strategies = com.shifenmiao.model.ai.FileUploadStrategy.entries
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(strategies) { strategy ->
+            EngineFilterChip(
+                text = when (strategy) {
+                    com.shifenmiao.model.ai.FileUploadStrategy.BASE64 -> stringResource(R.string.ai_engine_file_upload_strategy_base64)
+                    com.shifenmiao.model.ai.FileUploadStrategy.CLOUD -> stringResource(R.string.ai_engine_file_upload_strategy_cloud)
+                },
+                isSelected = engine.fileUploadStrategy == strategy,
+                onClick = { onFileUploadStrategyChange(strategy) }
+            )
+        }
+    }
+
+    AnimatedVisibility(visible = engine.fileUploadStrategy == com.shifenmiao.model.ai.FileUploadStrategy.CLOUD) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            if (cloudConnections.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.ai_engine_cloud_storage_no_connection),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                OneSecondaryButton(
+                    text = stringResource(R.string.ai_engine_cloud_storage_go_config),
+                    onClick = {
+                        onNavigateToCloudStorage()
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            } else {
+                Text(
+                    text = stringResource(R.string.ai_engine_cloud_storage_connection_label),
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                )
+
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(cloudConnections) { connection ->
+                        val bucket = when (connection) {
+                            is com.wanbaohe.cloud.storage.model.CloudStorageConnection.S3Compat -> connection.bucket
+                            is com.wanbaohe.cloud.storage.model.CloudStorageConnection.WebDav -> connection.rootPath
+                            is com.wanbaohe.cloud.storage.model.CloudStorageConnection.Smb -> connection.share
                         }
+                        EngineFilterChip(
+                            text = "${connection.displayName} (${bucket})",
+                            isSelected = engine.cloudStorageConnectionId == connection.id,
+                            onClick = {
+                                onCloudStorageConnectionIdChange(connection.id)
+                                onCloudStorageBucketChange(bucket)
+                            }
+                        )
                     }
-
-                    OneBoxOutlinedTextField(
-                        value = engine.cloudStorageBucket.orEmpty(),
-                        onValueChange = { onCloudStorageBucketChange(it) },
-                        label = { Text(stringResource(R.string.ai_engine_cloud_storage_bucket_label)) },
-                        singleLine = true,
-                        trailingIcon = {
-                            ClearTextFieldTrailingIcon(
-                                value = engine.cloudStorageBucket.orEmpty(),
-                                onClear = { onCloudStorageBucketChange("") },
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    OneBoxOutlinedTextField(
-                        value = engine.cloudStoragePrefix,
-                        onValueChange = { onCloudStoragePrefixChange(it) },
-                        label = { Text(stringResource(R.string.ai_engine_cloud_storage_prefix_label)) },
-                        singleLine = true,
-                        trailingIcon = {
-                            ClearTextFieldTrailingIcon(
-                                value = engine.cloudStoragePrefix,
-                                onClear = { onCloudStoragePrefixChange("") },
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    OneSecondaryButton(
-                        text = stringResource(R.string.ai_engine_cloud_storage_go_config),
-                        onClick = {
-                            onNavigateToCloudStorage()
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
                 }
+
+                OneBoxOutlinedTextField(
+                    value = engine.cloudStorageBucket.orEmpty(),
+                    onValueChange = { onCloudStorageBucketChange(it) },
+                    label = { Text(stringResource(R.string.ai_engine_cloud_storage_bucket_label)) },
+                    singleLine = true,
+                    trailingIcon = {
+                        ClearTextFieldTrailingIcon(
+                            value = engine.cloudStorageBucket.orEmpty(),
+                            onClear = { onCloudStorageBucketChange("") },
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OneBoxOutlinedTextField(
+                    value = engine.cloudStoragePrefix,
+                    onValueChange = { onCloudStoragePrefixChange(it) },
+                    label = { Text(stringResource(R.string.ai_engine_cloud_storage_prefix_label)) },
+                    singleLine = true,
+                    trailingIcon = {
+                        ClearTextFieldTrailingIcon(
+                            value = engine.cloudStoragePrefix,
+                            onClear = { onCloudStoragePrefixChange("") },
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                OneSecondaryButton(
+                    text = stringResource(R.string.ai_engine_cloud_storage_go_config),
+                    onClick = {
+                        onNavigateToCloudStorage()
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
-
-
-
-        if (!engine.model.canEdit) {
-            OneSecondaryButton(
-                text = stringResource(R.string.ai_engine_model_restore_defaults_action),
-                onClick = onResetRemoteModelOverrides,
-                enabled = engine.model.hasLocalOverrides,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Text(
-                text = stringResource(R.string.ai_engine_model_restore_defaults_desc),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
     }
+
+
+
+    if (!engine.model.canEdit) {
+        OneSecondaryButton(
+            text = stringResource(R.string.ai_engine_model_restore_defaults_action),
+            onClick = onResetRemoteModelOverrides,
+            enabled = engine.model.hasLocalOverrides,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Text(
+            text = stringResource(R.string.ai_engine_model_restore_defaults_desc),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+
+    Spacer(modifier = Modifier.height(12.dp))
 }
 
 @Composable
@@ -1427,76 +1461,46 @@ private fun ParameterSliderRow(
     }
 }
 
-// 分组卡片: title 为空时不渲染头部(无标题分组), 「参数与能力」仍走带标题的折叠头
+// 分组卡片容器(无标题分组)
 @Composable
-private fun SettingCard(
-    icon: androidx.compose.ui.graphics.vector.ImageVector? = null,
-    title: String? = null,
-    description: String? = null,
-    collapsible: Boolean = false,
-    content: @Composable () -> Unit,
-) {
-    var expanded by rememberSaveable { mutableStateOf(!collapsible) }
-    val arrowRotation by animateFloatAsState(if (expanded) 180f else 0f)
+private fun SettingCard(content: @Composable () -> Unit) {
     OneBoxSectionCard {
         Column(
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
         ) {
-            if (title != null) {
-                Row(
-                    modifier = if (collapsible) {
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { expanded = !expanded }
-                    } else Modifier,
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-                ) {
-                    if (icon != null) {
-                        OneBoxLeadingIconBadge(icon = icon)
-                    }
-
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
-                    ) {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        if (description != null) {
-                            Text(
-                                text = description,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-
-                    if (collapsible) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(20.dp)
-                                .rotate(arrowRotation),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
-            if (collapsible) {
-                AnimatedVisibility(visible = expanded) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-                    ) {
-                        content()
-                    }
-                }
-            } else {
-                content()
-            }
+            content()
         }
+    }
+}
+
+// 可折叠分组头: 中号加粗标题 + 行尾旋转箭头, 整行可点
+@Composable
+private fun CollapsibleSectionHeader(
+    title: String,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+) {
+    val arrowRotation by animateFloatAsState(if (expanded) 180f else 0f)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onToggle)
+            .padding(horizontal = 4.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+        )
+        Icon(
+            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
+            contentDescription = null,
+            modifier = Modifier
+                .size(18.dp)
+                .rotate(arrowRotation),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }

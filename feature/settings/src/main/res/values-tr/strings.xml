@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">API Anahtarı</string>
     <string name="ai_engine_auth_type_none">Yok</string>
     <string name="ai_engine_parameters_title">Parametreler ve Yetenekler</string>
-    <string name="ai_engine_parameters_desc">Üretim parametrelerini, yetenek anahtarlarını ve akış stratejisini ayarlayın.</string>
     <string name="ai_engine_temperature">Örnekleme Sıcaklığı</string>
     <string name="ai_engine_temperature_desc">Üretilen metnin rastgeleliğini kontrol eder. Daha yüksek değerler daha yaratıcıdır ancak kararlılığı azaltabilir.</string>
     <string name="ai_engine_top_p">Çekirdek Örnekleme (Top-P)</string>

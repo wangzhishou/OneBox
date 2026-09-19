@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">API Key</string>
     <string name="ai_engine_auth_type_none">Wala</string>
     <string name="ai_engine_parameters_title">Mga Parameter at Kakayahan</string>
-    <string name="ai_engine_parameters_desc">Ayusin ang mga parameter ng pagbuo, mga toggle ng kakayahan, at estratehiya ng streaming.</string>
     <string name="ai_engine_temperature">Sampling Temperature</string>
     <string name="ai_engine_temperature_desc">Kinokontrol ang randomness ng nabuong teksto. Ang mas mataas na halaga ay mas malikhain ngunit maaaring magpababa ng katatagan.</string>
     <string name="ai_engine_top_p">Nucleus Sampling (Top-P)</string>

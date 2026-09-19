@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">Clave de API</string>
     <string name="ai_engine_auth_type_none">Ninguno</string>
     <string name="ai_engine_parameters_title">Parámetros y capacidades</string>
-    <string name="ai_engine_parameters_desc">Ajusta los parámetros de generación, los interruptores de capacidad y la estrategia de transmisión.</string>
     <string name="ai_engine_temperature">Temperatura de muestreo</string>
     <string name="ai_engine_temperature_desc">Controla la aleatoriedad del texto generado. Valores más altos son más creativos pero pueden reducir la estabilidad.</string>
     <string name="ai_engine_top_p">Muestreo de núcleo (Top-P)</string>

@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">Ключ API</string>
     <string name="ai_engine_auth_type_none">Нет</string>
     <string name="ai_engine_parameters_title">Параметры и возможности</string>
-    <string name="ai_engine_parameters_desc">Настройте параметры генерации, переключатели возможностей и стратегию потоковой передачи.</string>
     <string name="ai_engine_temperature">Температура выборки</string>
     <string name="ai_engine_temperature_desc">Управляет случайностью генерируемого текста. Более высокие значения делают вывод более креативным, но могут снизить стабильность.</string>
     <string name="ai_engine_top_p">Ядерная выборка (Top-P)</string>

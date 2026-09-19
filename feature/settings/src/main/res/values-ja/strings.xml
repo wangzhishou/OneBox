@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">APIキー</string>
     <string name="ai_engine_auth_type_none">なし</string>
     <string name="ai_engine_parameters_title">パラメータと機能</string>
-    <string name="ai_engine_parameters_desc">生成パラメータ、機能の切り替え、ストリーミング戦略を調整します。</string>
     <string name="ai_engine_temperature">サンプリング温度</string>
     <string name="ai_engine_temperature_desc">生成テキストのランダム性を制御します。値が高いほど創造的ですが、安定性が低下する可能性があります。</string>
     <string name="ai_engine_top_p">核サンプリング (Top-P)</string>

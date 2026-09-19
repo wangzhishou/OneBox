@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">API-Schlüssel</string>
     <string name="ai_engine_auth_type_none">Keine</string>
     <string name="ai_engine_parameters_title">Parameter &amp; Fähigkeiten</string>
-    <string name="ai_engine_parameters_desc">Passen Sie Generierungsparameter, Fähigkeits-Schalter und Streaming-Strategie an.</string>
     <string name="ai_engine_temperature">Sampling-Temperatur</string>
     <string name="ai_engine_temperature_desc">Steuert die Zufälligkeit des generierten Textes. Höhere Werte sind kreativer, können aber die Stabilität verringern.</string>
     <string name="ai_engine_top_p">Nucleus-Sampling (Top-P)</string>

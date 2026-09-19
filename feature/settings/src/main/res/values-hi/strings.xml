@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">API कुंजी</string>
     <string name="ai_engine_auth_type_none">कोई नहीं</string>
     <string name="ai_engine_parameters_title">पैरामीटर और क्षमताएं</string>
-    <string name="ai_engine_parameters_desc">जनरेशन पैरामीटर, क्षमता टॉगल और स्ट्रीमिंग रणनीति समायोजित करें।</string>
     <string name="ai_engine_temperature">सैंपलिंग तापमान</string>
     <string name="ai_engine_temperature_desc">उत्पन्न पाठ की यादृच्छिकता को नियंत्रित करता है। उच्च मान अधिक रचनात्मक होते हैं लेकिन स्थिरता कम कर सकते हैं।</string>
     <string name="ai_engine_top_p">न्यूक्लियस सैंपलिंग (Top-P)</string>

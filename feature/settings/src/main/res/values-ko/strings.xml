@@ -179,7 +179,6 @@
     <string name="ai_engine_auth_type_api_key">API 키</string>
     <string name="ai_engine_auth_type_none">없음</string>
     <string name="ai_engine_parameters_title">매개변수 및 기능</string>
-    <string name="ai_engine_parameters_desc">생성 매개변수, 기능 토글 및 스트리밍 전략을 조정하세요.</string>
     <string name="ai_engine_temperature">샘플링 온도</string>
     <string name="ai_engine_temperature_desc">생성된 텍스트의 무작위성을 제어합니다. 값이 높을수록 더 창의적이지만 안정성이 떨어질 수 있습니다.</string>
     <string name="ai_engine_top_p">핵 샘플링 (Top-P)</string>
