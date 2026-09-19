@@ -90,8 +90,6 @@
     <string name="ai_feature_settings_max_iterations_desc">단일 에이전트 자동 실행의 최대 반복 횟수입니다. 설정 가능한 범위는 %1$d–%2$d회입니다.</string>
     <string name="ai_feature_settings_max_iterations_decrement">최대 반복 횟수 줄이기</string>
     <string name="ai_feature_settings_max_iterations_increment">최대 반복 횟수 늘리기</string>
-    <string name="ai_engine_list_heading">공급자 및 모델 서비스</string>
-    <string name="ai_engine_list_desc">AI 공급자, 엔드포인트 구성 및 사용 가능한 모델을 중앙에서 관리합니다. 여기서 변경한 내용은 서비스 구성에만 영향을 미치며 현재 활성 작업 모델은 전환하지 않습니다.</string>
     <string name="ai_engine_add_engine">서비스 추가</string>
     <string name="ai_engine_add_dialog_title">모델 서비스 추가</string>
     <string name="ai_engine_add_dialog_desc">로컬에서 추가한 모델 서비스는 원격 업데이트로 덮어쓰지 않습니다.</string>
@@ -106,8 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic 호환</string>
     <string name="ai_engine_protocol_proxy">앱 프록시</string>
     <string name="ai_engine_protocol_local_on_device">기기 내 (네트워크 없음)</string>
-    <string name="ai_engine_protocol_effective_direct">확인됨 · 로컬 직접 연결</string>
-    <string name="ai_engine_protocol_effective_proxy">미확인 · 앱 프록시 경유</string>
     <string name="ai_engine_protocol_effective_unavailable">사용 불가 · 먼저 테스트하거나 서비스를 전환하세요</string>
     <string name="ai_engine_protocol_direct_desc">인증 토큰이 확인되었습니다. 로컬 직접 연결이 우선 사용됩니다.</string>
     <string name="ai_engine_protocol_proxy_desc">인증 토큰이 확인되지 않았습니다. 현재는 앱 프록시를 통해 접속합니다.</string>
@@ -127,8 +123,6 @@
     <string name="ai_engine_role_fast">빠름</string>
     <string name="ai_engine_role_verified">인증 확인됨</string>
     <string name="ai_engine_model_label">현재 모델</string>
-    <string name="ai_engine_route_label">현재 경로</string>
-    <string name="ai_engine_request_protocol_label">요청 프로토콜</string>
     <string name="ai_engine_detail_title">모델 서비스 설정</string>
     <string name="ai_engine_loading">서비스 설정 불러오는 중…</string>
     <string name="ai_engine_add_model">모델 추가</string>

@@ -90,8 +90,6 @@
     <string name="ai_feature_settings_max_iterations_desc">Número máximo de iterações em uma única execução automática do Agente. Faixa configurável é %1$d–%2$d iterações.</string>
     <string name="ai_feature_settings_max_iterations_decrement">Diminuir máximo de iterações</string>
     <string name="ai_feature_settings_max_iterations_increment">Aumentar máximo de iterações</string>
-    <string name="ai_engine_list_heading">Provedores e Serviços de Modelo</string>
-    <string name="ai_engine_list_desc">Gerencie centralmente provedores de IA, configuração de endpoint e modelos disponíveis. Alterações aqui afetam apenas a configuração do serviço; elas não alteram o modelo de trabalho atualmente ativo.</string>
     <string name="ai_engine_add_engine">Adicionar Serviço</string>
     <string name="ai_engine_add_dialog_title">Adicionar Serviço de Modelo</string>
     <string name="ai_engine_add_dialog_desc">Serviços de modelo adicionados localmente não serão sobrescritos por atualizações remotas.</string>
@@ -106,8 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Compatível com Anthropic</string>
     <string name="ai_engine_protocol_proxy">Proxy do aplicativo</string>
     <string name="ai_engine_protocol_local_on_device">No dispositivo (sem rede)</string>
-    <string name="ai_engine_protocol_effective_direct">Verificado · Direto local</string>
-    <string name="ai_engine_protocol_effective_proxy">Não verificado · Via proxy do aplicativo</string>
     <string name="ai_engine_protocol_effective_unavailable">Indisponível · Teste ou alterne o serviço primeiro</string>
     <string name="ai_engine_protocol_direct_desc">O token de autenticação foi verificado. A conexão direta local será preferida.</string>
     <string name="ai_engine_protocol_proxy_desc">O token de autenticação não foi verificado. O acesso passará pelo proxy do aplicativo por enquanto.</string>
@@ -127,8 +123,6 @@
     <string name="ai_engine_role_fast">Rápido</string>
     <string name="ai_engine_role_verified">Autenticação verificada</string>
     <string name="ai_engine_model_label">Modelo atual</string>
-    <string name="ai_engine_route_label">Rota atual</string>
-    <string name="ai_engine_request_protocol_label">Protocolo de solicitação</string>
     <string name="ai_engine_detail_title">Configuração do serviço de modelo</string>
     <string name="ai_engine_loading">Carregando configuração do serviço…</string>
     <string name="ai_engine_add_model">Adicionar Modelo</string>

@@ -90,8 +90,6 @@
     <string name="ai_feature_settings_max_iterations_desc">Jumlah maksimum iterasi dalam satu proses otomatis Agen. Rentang yang dapat dikonfigurasi adalah %1$d–%2$d iterasi.</string>
     <string name="ai_feature_settings_max_iterations_decrement">Kurangi iterasi maksimum</string>
     <string name="ai_feature_settings_max_iterations_increment">Tambah iterasi maksimum</string>
-    <string name="ai_engine_list_heading">Penyedia &amp; Layanan Model</string>
-    <string name="ai_engine_list_desc">Kelola secara terpusat penyedia AI, konfigurasi endpoint, dan model yang tersedia. Perubahan di sini hanya memengaruhi konfigurasi layanan; tidak mengalihkan model kerja aktif saat ini.</string>
     <string name="ai_engine_add_engine">Tambah Layanan</string>
     <string name="ai_engine_add_dialog_title">Tambah Layanan Model</string>
     <string name="ai_engine_add_dialog_desc">Layanan model yang ditambahkan secara lokal tidak akan ditimpa oleh pembaruan jarak jauh.</string>
@@ -106,8 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Kompatibel dengan Anthropic</string>
     <string name="ai_engine_protocol_proxy">Proxy Aplikasi</string>
     <string name="ai_engine_protocol_local_on_device">Di Perangkat (Tanpa Jaringan)</string>
-    <string name="ai_engine_protocol_effective_direct">Terverifikasi · Langsung Lokal</string>
-    <string name="ai_engine_protocol_effective_proxy">Belum Terverifikasi · Melalui Proxy Aplikasi</string>
     <string name="ai_engine_protocol_effective_unavailable">Tidak Tersedia · Uji atau ganti layanan terlebih dahulu</string>
     <string name="ai_engine_protocol_direct_desc">Token autentikasi telah diverifikasi. Koneksi langsung lokal akan diprioritaskan.</string>
     <string name="ai_engine_protocol_proxy_desc">Token autentikasi belum diverifikasi. Akses akan melalui proxy aplikasi untuk saat ini.</string>
@@ -127,8 +123,6 @@
     <string name="ai_engine_role_fast">Cepat</string>
     <string name="ai_engine_role_verified">Autentikasi Terverifikasi</string>
     <string name="ai_engine_model_label">Model Saat Ini</string>
-    <string name="ai_engine_route_label">Rute Saat Ini</string>
-    <string name="ai_engine_request_protocol_label">Protokol Permintaan</string>
     <string name="ai_engine_detail_title">Konfigurasi Layanan Model</string>
     <string name="ai_engine_loading">Memuat konfigurasi layanan…</string>
     <string name="ai_engine_add_model">Tambah Model</string>

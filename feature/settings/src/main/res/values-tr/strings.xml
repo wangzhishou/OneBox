@@ -90,8 +90,6 @@
     <string name="ai_feature_settings_max_iterations_desc">Tek bir Ajan otomatik çalıştırmasındaki maksimum yineleme sayısı. Yapılandırılabilir aralık %1$d–%2$d yinelemedir.</string>
     <string name="ai_feature_settings_max_iterations_decrement">Maksimum yinelemeyi azalt</string>
     <string name="ai_feature_settings_max_iterations_increment">Maksimum yinelemeyi artır</string>
-    <string name="ai_engine_list_heading">Sağlayıcılar ve Model Hizmetleri</string>
-    <string name="ai_engine_list_desc">Yapay zeka sağlayıcılarını, uç nokta yapılandırmasını ve mevcut modelleri merkezi olarak yönetin. Buradaki değişiklikler yalnızca hizmet yapılandırmasını etkiler; şu anda aktif olan çalışma modelini değiştirmez.</string>
     <string name="ai_engine_add_engine">Hizmet Ekle</string>
     <string name="ai_engine_add_dialog_title">Model Hizmeti Ekle</string>
     <string name="ai_engine_add_dialog_desc">Yerel olarak eklenen model hizmetleri, uzak güncellemeler tarafından üzerine yazılmaz.</string>
@@ -106,8 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic Uyumlu</string>
     <string name="ai_engine_protocol_proxy">Uygulama Proxy\'si</string>
     <string name="ai_engine_protocol_local_on_device">Cihazda (Ağ Yok)</string>
-    <string name="ai_engine_protocol_effective_direct">Doğrulandı · Yerel Doğrudan</string>
-    <string name="ai_engine_protocol_effective_proxy">Doğrulanmadı · Uygulama Proxy\'si Üzerinden</string>
     <string name="ai_engine_protocol_effective_unavailable">Kullanılamıyor · Önce test edin veya hizmeti değiştirin</string>
     <string name="ai_engine_protocol_direct_desc">Kimlik doğrulama belirteci doğrulandı. Yerel doğrudan bağlantı tercih edilecek.</string>
     <string name="ai_engine_protocol_proxy_desc">Kimlik doğrulama belirteci doğrulanmadı. Erişim şimdilik uygulama proxy\'si üzerinden sağlanacak.</string>
@@ -127,8 +123,6 @@
     <string name="ai_engine_role_fast">Hızlı</string>
     <string name="ai_engine_role_verified">Kimlik Doğrulandı</string>
     <string name="ai_engine_model_label">Geçerli Model</string>
-    <string name="ai_engine_route_label">Geçerli Rota</string>
-    <string name="ai_engine_request_protocol_label">İstek Protokolü</string>
     <string name="ai_engine_detail_title">Model Hizmeti Yapılandırması</string>
     <string name="ai_engine_loading">Hizmet yapılandırması yükleniyor…</string>
     <string name="ai_engine_add_model">Model Ekle</string>

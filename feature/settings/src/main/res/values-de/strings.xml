@@ -90,8 +90,6 @@
     <string name="ai_feature_settings_max_iterations_desc">Maximale Anzahl von Iterationen in einem einzelnen Agent-Autolauf. Der konfigurierbare Bereich liegt zwischen %1$d und %2$d Iterationen.</string>
     <string name="ai_feature_settings_max_iterations_decrement">Maximale Iterationen verringern</string>
     <string name="ai_feature_settings_max_iterations_increment">Maximale Iterationen erhöhen</string>
-    <string name="ai_engine_list_heading">Anbieter und Modelldienste</string>
-    <string name="ai_engine_list_desc">Verwalten Sie zentral KI-Anbieter, Endpunktkonfiguration und verfügbare Modelle. Änderungen hier betreffen nur die Dienstkonfiguration; sie wechseln nicht das aktuell aktive Arbeitsmodell.</string>
     <string name="ai_engine_add_engine">Dienst hinzufügen</string>
     <string name="ai_engine_add_dialog_title">Modelldienst hinzufügen</string>
     <string name="ai_engine_add_dialog_desc">Lokal hinzugefügte Modelldienste werden nicht durch Remote-Updates überschrieben.</string>
@@ -106,8 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic-kompatibel</string>
     <string name="ai_engine_protocol_proxy">App-Proxy</string>
     <string name="ai_engine_protocol_local_on_device">Auf dem Gerät (kein Netzwerk)</string>
-    <string name="ai_engine_protocol_effective_direct">Verifiziert · Lokal direkt</string>
-    <string name="ai_engine_protocol_effective_proxy">Nicht verifiziert · Über App-Proxy</string>
     <string name="ai_engine_protocol_effective_unavailable">Nicht verfügbar · Testen oder zuerst Dienst wechseln</string>
     <string name="ai_engine_protocol_direct_desc">Das Authentifizierungstoken wurde verifiziert. Die lokale direkte Verbindung wird bevorzugt.</string>
     <string name="ai_engine_protocol_proxy_desc">Das Authentifizierungstoken wurde nicht verifiziert. Der Zugriff erfolgt vorerst über den App-Proxy.</string>
@@ -127,8 +123,6 @@
     <string name="ai_engine_role_fast">Schnell</string>
     <string name="ai_engine_role_verified">Auth verifiziert</string>
     <string name="ai_engine_model_label">Aktuelles Modell</string>
-    <string name="ai_engine_route_label">Aktuelle Route</string>
-    <string name="ai_engine_request_protocol_label">Anfrageprotokoll</string>
     <string name="ai_engine_detail_title">Modelldienst-Konfiguration</string>
     <string name="ai_engine_loading">Dienstkonfiguration wird geladen…</string>
     <string name="ai_engine_add_model">Modell hinzufügen</string>

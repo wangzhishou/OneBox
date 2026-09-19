@@ -90,8 +90,6 @@
     <string name="ai_feature_settings_max_iterations_desc">単一のエージェント自動実行における最大反復回数。設定可能な範囲は%1$d〜%2$d回です。</string>
     <string name="ai_feature_settings_max_iterations_decrement">最大反復回数を減らす</string>
     <string name="ai_feature_settings_max_iterations_increment">最大反復回数を増やす</string>
-    <string name="ai_engine_list_heading">プロバイダーとモデルサービス</string>
-    <string name="ai_engine_list_desc">AIプロバイダー、エンドポイント設定、利用可能なモデルを一元管理します。ここでの変更はサービス設定のみに影響し、現在アクティブな作業モデルは切り替わりません。</string>
     <string name="ai_engine_add_engine">サービスを追加</string>
     <string name="ai_engine_add_dialog_title">モデルサービスを追加</string>
     <string name="ai_engine_add_dialog_desc">ローカルで追加されたモデルサービスは、リモート更新によって上書きされません。</string>
@@ -106,8 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic互換</string>
     <string name="ai_engine_protocol_proxy">アプリプロキシ</string>
     <string name="ai_engine_protocol_local_on_device">端末内（ネットワークなし）</string>
-    <string name="ai_engine_protocol_effective_direct">検証済み・ローカル直接接続</string>
-    <string name="ai_engine_protocol_effective_proxy">未検証・アプリプロキシ経由</string>
     <string name="ai_engine_protocol_effective_unavailable">利用不可・先にテストまたはサービスを切り替えてください</string>
     <string name="ai_engine_protocol_direct_desc">認証トークンは検証済みです。ローカル直接接続が優先されます。</string>
     <string name="ai_engine_protocol_proxy_desc">認証トークンは未検証です。当面はアプリプロキシ経由でアクセスします。</string>
@@ -127,8 +123,6 @@
     <string name="ai_engine_role_fast">高速</string>
     <string name="ai_engine_role_verified">認証検証済み</string>
     <string name="ai_engine_model_label">現在のモデル</string>
-    <string name="ai_engine_route_label">現在のルート</string>
-    <string name="ai_engine_request_protocol_label">リクエストプロトコル</string>
     <string name="ai_engine_detail_title">モデルサービス設定</string>
     <string name="ai_engine_loading">サービス設定を読み込み中…</string>
     <string name="ai_engine_add_model">モデルを追加</string>

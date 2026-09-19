@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -800,6 +801,10 @@ private fun ServerConnectivityCard(
                     subtitle = null,
                     isSelected = engine.requestProtocol == protocol,
                     onClick = { onProtocolChange(protocol) },
+                    // LazyRow 给子项的宽度上限是 Infinity,SelectGridCard 内部标题列用了
+                    // Modifier.weight(1f),权重在无界主轴下会解析成 0 宽 → 文字不可见;
+                    // 这里用内容固有宽度给卡片定宽,文字才能测量出真实尺寸
+                    modifier = Modifier.width(IntrinsicSize.Max),
                 )
             }
         }
@@ -821,6 +826,7 @@ private fun ServerConnectivityCard(
                             subtitle = null,
                             isSelected = engine.authType == authType,
                             onClick = { onAuthTypeChange(authType) },
+                            modifier = Modifier.width(IntrinsicSize.Max),
                         )
                     }
                 }

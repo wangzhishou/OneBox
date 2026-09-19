@@ -100,8 +100,6 @@
     <string name="ai_feature_settings_max_iterations_desc">限制單次 Agent 自動執行的最大輪次，目前可設定範圍為 %1$d-%2$d 輪。</string>
     <string name="ai_feature_settings_max_iterations_decrement">減少最大連續執行輪次</string>
     <string name="ai_feature_settings_max_iterations_increment">增加最大連續執行輪次</string>
-    <string name="ai_engine_list_heading">服務商與模型服務</string>
-    <string name="ai_engine_list_desc">集中管理 AI 服務商、介面設定與可用模型。這裡修改的是模型服務設定，不會直接切換目前工作模型。</string>
     <string name="ai_engine_add_engine">新增服務</string>
     <string name="ai_engine_add_dialog_title">新增模型服務</string>
     <string name="ai_engine_add_dialog_desc">本地新增的模型服務不會被遠端更新覆蓋。</string>
@@ -116,8 +114,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic 相容</string>
     <string name="ai_engine_protocol_proxy">應用程式代理</string>
     <string name="ai_engine_protocol_local_on_device">端側本地（不走網路）</string>
-    <string name="ai_engine_protocol_effective_direct">已驗證 · 本地直連</string>
-    <string name="ai_engine_protocol_effective_proxy">未驗證 · App 中轉</string>
     <string name="ai_engine_protocol_effective_unavailable">無法使用 · 請先測試或切換服務</string>
     <string name="ai_engine_protocol_direct_desc">授權碼已驗證通過，將優先使用本地直連方式存取。</string>
     <string name="ai_engine_protocol_proxy_desc">授權碼尚未驗證，目前將走 App 中轉代理方式存取。</string>
@@ -137,8 +133,6 @@
     <string name="ai_engine_role_fast">快速</string>
     <string name="ai_engine_role_verified">授權已驗證</string>
     <string name="ai_engine_model_label">目前模型</string>
-    <string name="ai_engine_route_label">目前鏈路</string>
-    <string name="ai_engine_request_protocol_label">請求協定</string>
     <string name="ai_engine_detail_title">模型服務設定</string>
     <string name="ai_engine_loading">正在載入服務設定…</string>
     <string name="ai_engine_add_model">新增模型</string>

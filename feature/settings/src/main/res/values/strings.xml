@@ -128,8 +128,6 @@
 
     <!-- AI model settings -->
     <!-- AI engine settings -->
-    <string name="ai_engine_list_heading">Providers &amp; Model Services</string>
-    <string name="ai_engine_list_desc">Centrally manage AI providers, endpoint configuration, and available models. Changes here affect service configuration only; they do not switch the currently active working model.</string>
     <string name="ai_engine_add_engine">Add Service</string>
     <string name="ai_engine_add_dialog_title">Add Model Service</string>
     <string name="ai_engine_add_dialog_desc">Locally added model services will not be overwritten by remote updates.</string>
@@ -144,8 +142,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic-Compatible (Messages)</string>
     <string name="ai_engine_protocol_proxy">App Proxy</string>
     <string name="ai_engine_protocol_local_on_device">On-Device (No Network)</string>
-    <string name="ai_engine_protocol_effective_direct">Verified · Local Direct</string>
-    <string name="ai_engine_protocol_effective_proxy">Unverified · Via App Proxy</string>
     <string name="ai_engine_protocol_effective_unavailable">Unavailable · Test or switch the service first</string>
     <string name="ai_engine_protocol_direct_desc">The auth token has been verified. Local direct connection will be preferred.</string>
     <string name="ai_engine_protocol_proxy_desc">The auth token has not been verified. Access will go through the app proxy for now.</string>
@@ -165,8 +161,6 @@
     <string name="ai_engine_role_fast">Fast</string>
     <string name="ai_engine_role_verified">Auth Verified</string>
     <string name="ai_engine_model_label">Current Model</string>
-    <string name="ai_engine_route_label">Current Route</string>
-    <string name="ai_engine_request_protocol_label">Request Protocol</string>
 
     <string name="ai_engine_detail_title">Model Service Configuration</string>
     <string name="ai_engine_loading">Loading service configuration…</string>

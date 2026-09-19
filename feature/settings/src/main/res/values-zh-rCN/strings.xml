@@ -128,8 +128,6 @@
 
     <!-- AI 模型设置 -->
     <!-- AI 引擎设置 -->
-    <string name="ai_engine_list_heading">服务商与模型服务</string>
-    <string name="ai_engine_list_desc">集中管理 AI 服务商、接口配置与可用模型。这里修改的是模型服务配置，不会直接切换当前工作模型。</string>
     <string name="ai_engine_add_engine">新增服务</string>
     <string name="ai_engine_add_dialog_title">新增模型服务</string>
     <string name="ai_engine_add_dialog_desc">本地新增的模型服务不会被远程更新覆盖。</string>
@@ -144,8 +142,6 @@
     <string name="ai_engine_protocol_anthropic">Anthropic 兼容（Messages）</string>
     <string name="ai_engine_protocol_proxy">应用代理</string>
     <string name="ai_engine_protocol_local_on_device">端侧本地（不走网络）</string>
-    <string name="ai_engine_protocol_effective_direct">已验证 · 本地直连</string>
-    <string name="ai_engine_protocol_effective_proxy">未验证 · App 中转</string>
     <string name="ai_engine_protocol_effective_unavailable">不可用 · 请先测试或切换服务</string>
     <string name="ai_engine_protocol_direct_desc">授权码已验证通过，将优先使用本地直连方式访问。</string>
     <string name="ai_engine_protocol_proxy_desc">授权码尚未验证，当前将走 App 中转代理方式访问。</string>
@@ -165,8 +161,6 @@
     <string name="ai_engine_role_fast">快速</string>
     <string name="ai_engine_role_verified">授权已验证</string>
     <string name="ai_engine_model_label">当前模型</string>
-    <string name="ai_engine_route_label">当前链路</string>
-    <string name="ai_engine_request_protocol_label">请求协议</string>
 
     <string name="ai_engine_detail_title">模型服务配置</string>
     <string name="ai_engine_loading">正在加载服务配置…</string>

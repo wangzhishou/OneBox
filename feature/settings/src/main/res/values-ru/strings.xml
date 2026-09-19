@@ -90,8 +90,6 @@
     <string name="ai_feature_settings_max_iterations_desc">Максимальное количество итераций в одном автоматическом запуске агента. Диапазон настройки: %1$d–%2$d итераций.</string>
     <string name="ai_feature_settings_max_iterations_decrement">Уменьшить максимальное количество итераций</string>
     <string name="ai_feature_settings_max_iterations_increment">Увеличить максимальное количество итераций</string>
-    <string name="ai_engine_list_heading">Провайдеры и сервисы моделей</string>
-    <string name="ai_engine_list_desc">Централизованное управление ИИ-провайдерами, конфигурацией конечных точек и доступными моделями. Изменения здесь влияют только на конфигурацию сервисов; они не переключают текущую активную рабочую модель.</string>
     <string name="ai_engine_add_engine">Добавить сервис</string>
     <string name="ai_engine_add_dialog_title">Добавить сервис моделей</string>
     <string name="ai_engine_add_dialog_desc">Локально добавленные сервисы моделей не будут перезаписаны удаленными обновлениями.</string>
@@ -106,8 +104,6 @@
     <string name="ai_engine_protocol_anthropic">Совместимый с Anthropic</string>
     <string name="ai_engine_protocol_proxy">Прокси приложения</string>
     <string name="ai_engine_protocol_local_on_device">На устройстве (без сети)</string>
-    <string name="ai_engine_protocol_effective_direct">Проверено · Локальное прямое</string>
-    <string name="ai_engine_protocol_effective_proxy">Не проверено · Через прокси приложения</string>
     <string name="ai_engine_protocol_effective_unavailable">Недоступно · Сначала протестируйте или переключите сервис</string>
     <string name="ai_engine_protocol_direct_desc">Токен аутентификации проверен. Будет использоваться локальное прямое соединение.</string>
     <string name="ai_engine_protocol_proxy_desc">Токен аутентификации не проверен. Доступ будет осуществляться через прокси приложения.</string>
@@ -127,8 +123,6 @@
     <string name="ai_engine_role_fast">Быстро</string>
     <string name="ai_engine_role_verified">Аутентификация проверена</string>
     <string name="ai_engine_model_label">Текущая модель</string>
-    <string name="ai_engine_route_label">Текущий маршрут</string>
-    <string name="ai_engine_request_protocol_label">Протокол запроса</string>
     <string name="ai_engine_detail_title">Конфигурация сервиса моделей</string>
     <string name="ai_engine_loading">Загрузка конфигурации сервиса…</string>
     <string name="ai_engine_add_model">Добавить модель</string>

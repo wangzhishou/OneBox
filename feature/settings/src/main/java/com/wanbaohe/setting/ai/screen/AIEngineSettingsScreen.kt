@@ -1,5 +1,6 @@
 package com.wanbaohe.setting.ai.screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -44,7 +44,6 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.providerAccentColor
 import com.shifenmiao.common.ui.ai.providerBrandIcon
 import com.shifenmiao.model.ai.AiEngine
-import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -125,91 +124,69 @@ fun AIEngineSettingsContent(
         component.ensureCatalogRefreshed()
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = OneBoxDesignSystem.screenPadding),
-        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-    ) {
-        Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
-
-        OneBoxSectionCard {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-            ) {
-                Text(
-                    text = stringResource(R.string.ai_engine_list_heading),
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Text(
-                    text = stringResource(R.string.ai_engine_list_desc),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                if (isRefreshing) {
-                    Text(
-                        text = stringResource(R.string.ai_engine_auto_refreshing),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                } else if (!lastRefreshError.isNullOrBlank()) {
-                    Text(
-                        text = stringResource(
-                            R.string.ai_engine_refresh_failed,
-                            lastRefreshError.orEmpty()
-                        ),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
+    Box(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = OneBoxDesignSystem.screenPadding),
+            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+        ) {
+            if (allEngines.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 48.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest,
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Text(
+                            text = stringResource(R.string.ai_engine_list_empty),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            } else {
+                allEngines.forEach { engine ->
+                    EngineListCard(
+                        engine = engine,
+                        isDefault = currentAIEngine.identityKey() == engine.identityKey(),
+                        isFast = fastAIEngine.identityKey() == engine.identityKey(),
+                        isLocalOwned = localOwnedEngineKeys.contains(engine.identityKey()),
+                        onClick = {
+                            component.onNavigate(
+                                Screen.AISettings(
+                                    Screen.AISettings.Type.EngineDetail(
+                                        engineName = engine.name,
+                                        requestProtocol = engine.requestProtocol.name,
+                                    )
+                                )
+                            )
+                        },
+                        onDelete = { pendingDeleteEngine = engine },
                     )
                 }
             }
         }
-        if (allEngines.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 48.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettingsSuggest,
-                        contentDescription = null,
-                        modifier = Modifier.size(48.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Text(
-                        text = stringResource(R.string.ai_engine_list_empty),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-        } else {
-            allEngines.forEach { engine ->
-                EngineListCard(
-                    engine = engine,
-                    isDefault = currentAIEngine.identityKey() == engine.identityKey(),
-                    isFast = fastAIEngine.identityKey() == engine.identityKey(),
-                    isLocalOwned = localOwnedEngineKeys.contains(engine.identityKey()),
-                    onClick = {
-                        component.onNavigate(
-                            Screen.AISettings(
-                                Screen.AISettings.Type.EngineDetail(
-                                    engineName = engine.name,
-                                    requestProtocol = engine.requestProtocol.name,
-                                )
-                            )
-                        )
-                    },
-                    onDelete = { pendingDeleteEngine = engine },
-                )
-            }
+
+        // 目录刷新状态悬浮底部轻提示(刷新中/失败), 不占列表位
+        AnimatedVisibility(
+            visible = isRefreshing || !lastRefreshError.isNullOrBlank(),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 12.dp),
+        ) {
+            RefreshStatusPill(isRefreshing = isRefreshing, error = lastRefreshError)
         }
     }
 
@@ -330,29 +307,14 @@ private fun EngineListCard(
                     }
                 }
 
-                InfoLabel(
-                    title = stringResource(R.string.ai_engine_request_protocol_label),
-                    value = when (engine.requestProtocol) {
-                        AiRequestProtocol.OPENAI_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_openai)
-                        AiRequestProtocol.RESPONSES_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_responses)
-                        AiRequestProtocol.ANTHROPIC_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_anthropic)
-                        AiRequestProtocol.OWN_PROXY -> stringResource(R.string.ai_engine_protocol_proxy)
-                        // 仅云端协议出现在本选择器；
-                        // LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）。
-                        AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(R.string.ai_engine_protocol_local_on_device)
-                    }
-                )
-
-                InfoLabel(
-                    title = stringResource(R.string.ai_engine_route_label),
-                    value = if (engine.canChatDirectly()) {
-                        stringResource(R.string.ai_engine_protocol_effective_direct)
-                    } else if (engine.hasProxyRouteConfigured()) {
-                        stringResource(R.string.ai_engine_protocol_effective_proxy)
-                    } else {
-                        stringResource(R.string.ai_engine_protocol_effective_unavailable)
-                    }
-                )
+                // 链路不可用时才警示(可用状态由下方徽标表达), 其余信息进详情页
+                if (!engine.hasAvailableChatRoute()) {
+                    Text(
+                        text = stringResource(R.string.ai_engine_protocol_effective_unavailable),
+                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -440,20 +402,40 @@ private fun EngineBadge(
     }
 }
 
+// 目录刷新状态: 悬浮底部 pill(刷新中带小圈, 失败红字)
 @Composable
-private fun InfoLabel(title: String, value: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.outline,
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+private fun RefreshStatusPill(
+    isRefreshing: Boolean,
+    error: String?,
+) {
+    Row(
+        modifier = Modifier
+            .glassBackground(
+                style = GlassStyle.Thin,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.85f),
+                shape = RoundedCornerShape(50),
+                borderWidth = 0.dp,
+            )
+            .padding(horizontal = 14.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        if (isRefreshing) {
+            androidx.compose.material3.CircularProgressIndicator(
+                modifier = Modifier.size(14.dp),
+                strokeWidth = 2.dp,
+            )
+            Text(
+                text = stringResource(R.string.ai_engine_auto_refreshing),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        } else if (!error.isNullOrBlank()) {
+            Text(
+                text = stringResource(R.string.ai_engine_refresh_failed, error),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error,
+            )
+        }
     }
 }
