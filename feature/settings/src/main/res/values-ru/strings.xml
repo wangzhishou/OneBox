@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">Протокол запроса</string>
     <string name="ai_engine_detail_title">Конфигурация сервиса моделей</string>
     <string name="ai_engine_loading">Загрузка конфигурации сервиса…</string>
-    <string name="ai_engine_detail_desc_default">Управление конечной точкой API, аутентификацией, параметрами модели и потоковым ответом.</string>
     <string name="ai_engine_add_model">Добавить модель</string>
     <string name="ai_engine_model_dialog_title">Добавить модель</string>
     <string name="ai_engine_model_edit_dialog_title">Изменить модель</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">Текущий маршрут: проверенное прямое соединение</string>
     <string name="ai_working_model_status_proxy">Текущий маршрут: доступен прокси</string>
     <string name="ai_working_model_status_unavailable">Текущий маршрут: недоступен — сначала перейдите в настройки</string>
-    <string name="ai_engine_server_title">Подключение к сервису</string>
-    <string name="ai_engine_server_desc">Настройте конечную точку API и учетные данные для подключения к удаленному сервису вывода.</string>
     <string name="ai_engine_api_url">URL API</string>
     <string name="ai_engine_api_path">Путь API</string>
     <string name="ai_engine_auth_token">Токен авторизации</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">Ключ API</string>
     <string name="ai_engine_auth_type_none">Нет</string>
-    <string name="ai_engine_model_title">Управление моделями</string>
-    <string name="ai_engine_model_desc">Управляйте доступными моделями текущего сервиса и выберите модель по умолчанию.</string>
     <string name="ai_engine_parameters_title">Параметры и возможности</string>
     <string name="ai_engine_parameters_desc">Настройте параметры генерации, переключатели возможностей и стратегию потоковой передачи.</string>
     <string name="ai_engine_temperature">Температура выборки</string>

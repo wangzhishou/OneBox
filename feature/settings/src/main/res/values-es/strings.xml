@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">Protocolo de solicitud</string>
     <string name="ai_engine_detail_title">Configuración del servicio de modelo</string>
     <string name="ai_engine_loading">Cargando configuración del servicio…</string>
-    <string name="ai_engine_detail_desc_default">Administra el endpoint de la API, la autenticación, los parámetros del modelo y la respuesta en streaming.</string>
     <string name="ai_engine_add_model">Agregar modelo</string>
     <string name="ai_engine_model_dialog_title">Agregar modelo</string>
     <string name="ai_engine_model_edit_dialog_title">Editar modelo</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">Ruta actual: directa verificada</string>
     <string name="ai_working_model_status_proxy">Ruta actual: proxy disponible</string>
     <string name="ai_working_model_status_unavailable">Ruta actual: no disponible: ve a ajustes primero</string>
-    <string name="ai_engine_server_title">Conexión de servicio</string>
-    <string name="ai_engine_server_desc">Configura tu endpoint de API y credenciales de autenticación para conectarte a un servicio de inferencia remoto.</string>
     <string name="ai_engine_api_url">URL de API</string>
     <string name="ai_engine_api_path">Ruta de API</string>
     <string name="ai_engine_auth_token">Token de autenticación</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">Clave de API</string>
     <string name="ai_engine_auth_type_none">Ninguno</string>
-    <string name="ai_engine_model_title">Gestión de modelos</string>
-    <string name="ai_engine_model_desc">Gestiona los modelos disponibles bajo el servicio actual y elige el predeterminado para usar.</string>
     <string name="ai_engine_parameters_title">Parámetros y capacidades</string>
     <string name="ai_engine_parameters_desc">Ajusta los parámetros de generación, los interruptores de capacidad y la estrategia de transmisión.</string>
     <string name="ai_engine_temperature">Temperatura de muestreo</string>

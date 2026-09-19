@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">Protocolo de solicitação</string>
     <string name="ai_engine_detail_title">Configuração do serviço de modelo</string>
     <string name="ai_engine_loading">Carregando configuração do serviço…</string>
-    <string name="ai_engine_detail_desc_default">Gerencie o endpoint da API, autenticação, parâmetros do modelo e resposta em streaming.</string>
     <string name="ai_engine_add_model">Adicionar Modelo</string>
     <string name="ai_engine_model_dialog_title">Adicionar Modelo</string>
     <string name="ai_engine_model_edit_dialog_title">Editar Modelo</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">Rota atual: direta verificada</string>
     <string name="ai_working_model_status_proxy">Rota atual: proxy disponível</string>
     <string name="ai_working_model_status_unavailable">Rota atual: indisponível — vá para as configurações primeiro</string>
-    <string name="ai_engine_server_title">Conexão de Serviço</string>
-    <string name="ai_engine_server_desc">Configure seu endpoint de API e credenciais de autenticação para conectar a um serviço de inferência remota.</string>
     <string name="ai_engine_api_url">URL da API</string>
     <string name="ai_engine_api_path">Caminho da API</string>
     <string name="ai_engine_auth_token">Token de Autenticação</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">Chave de API</string>
     <string name="ai_engine_auth_type_none">Nenhum</string>
-    <string name="ai_engine_model_title">Gerenciamento de Modelos</string>
-    <string name="ai_engine_model_desc">Gerencie os modelos disponíveis no serviço atual e escolha o padrão a ser usado.</string>
     <string name="ai_engine_parameters_title">Parâmetros e Recursos</string>
     <string name="ai_engine_parameters_desc">Ajuste os parâmetros de geração, alternâncias de recursos e estratégia de streaming.</string>
     <string name="ai_engine_temperature">Temperatura de Amostragem</string>

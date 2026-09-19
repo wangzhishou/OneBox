@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">リクエストプロトコル</string>
     <string name="ai_engine_detail_title">モデルサービス設定</string>
     <string name="ai_engine_loading">サービス設定を読み込み中…</string>
-    <string name="ai_engine_detail_desc_default">APIエンドポイント、認証、モデルパラメータ、ストリーミング応答を管理します。</string>
     <string name="ai_engine_add_model">モデルを追加</string>
     <string name="ai_engine_model_dialog_title">モデルを追加</string>
     <string name="ai_engine_model_edit_dialog_title">モデルを編集</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">現在のルート: 検証済みの直接接続</string>
     <string name="ai_working_model_status_proxy">現在のルート: プロキシ利用可能</string>
     <string name="ai_working_model_status_unavailable">現在のルート: 利用不可 — 先に設定を開いてください</string>
-    <string name="ai_engine_server_title">サービス接続</string>
-    <string name="ai_engine_server_desc">APIエンドポイントと認証情報を設定して、リモート推論サービスに接続します。</string>
     <string name="ai_engine_api_url">API URL</string>
     <string name="ai_engine_api_path">APIパス</string>
     <string name="ai_engine_auth_token">認証トークン</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">ベアラー</string>
     <string name="ai_engine_auth_type_api_key">APIキー</string>
     <string name="ai_engine_auth_type_none">なし</string>
-    <string name="ai_engine_model_title">モデル管理</string>
-    <string name="ai_engine_model_desc">現在のサービスで利用可能なモデルを管理し、使用するデフォルトモデルを選択します。</string>
     <string name="ai_engine_parameters_title">パラメータと機能</string>
     <string name="ai_engine_parameters_desc">生成パラメータ、機能の切り替え、ストリーミング戦略を調整します。</string>
     <string name="ai_engine_temperature">サンプリング温度</string>

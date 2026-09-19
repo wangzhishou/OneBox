@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">İstek Protokolü</string>
     <string name="ai_engine_detail_title">Model Hizmeti Yapılandırması</string>
     <string name="ai_engine_loading">Hizmet yapılandırması yükleniyor…</string>
-    <string name="ai_engine_detail_desc_default">API uç noktasını, kimlik doğrulamayı, model parametrelerini ve akış yanıtını yönetin.</string>
     <string name="ai_engine_add_model">Model Ekle</string>
     <string name="ai_engine_model_dialog_title">Model Ekle</string>
     <string name="ai_engine_model_edit_dialog_title">Modeli Düzenle</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">Geçerli rota: doğrulanmış doğrudan</string>
     <string name="ai_working_model_status_proxy">Geçerli rota: proxy mevcut</string>
     <string name="ai_working_model_status_unavailable">Geçerli rota: kullanılamıyor — önce ayarlara gidin</string>
-    <string name="ai_engine_server_title">Hizmet Bağlantısı</string>
-    <string name="ai_engine_server_desc">Uzak bir çıkarım hizmetine bağlanmak için API uç noktanızı ve kimlik doğrulama bilgilerinizi yapılandırın.</string>
     <string name="ai_engine_api_url">API URL\'si</string>
     <string name="ai_engine_api_path">API Yolu</string>
     <string name="ai_engine_auth_token">Kimlik Doğrulama Belirteci</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">Taşıyıcı</string>
     <string name="ai_engine_auth_type_api_key">API Anahtarı</string>
     <string name="ai_engine_auth_type_none">Yok</string>
-    <string name="ai_engine_model_title">Model Yönetimi</string>
-    <string name="ai_engine_model_desc">Geçerli hizmet altındaki mevcut modelleri yönetin ve kullanılacak varsayılanı seçin.</string>
     <string name="ai_engine_parameters_title">Parametreler ve Yetenekler</string>
     <string name="ai_engine_parameters_desc">Üretim parametrelerini, yetenek anahtarlarını ve akış stratejisini ayarlayın.</string>
     <string name="ai_engine_temperature">Örnekleme Sıcaklığı</string>

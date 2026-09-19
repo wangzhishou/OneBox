@@ -316,8 +316,9 @@ private fun EngineListCard(
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                             color = MaterialTheme.colorScheme.onSurface,
                         )
+                        // 副标题展示当前选中模型名(品牌名 + 模型名, 不再展示引擎简介)
                         Text(
-                            text = engine.description.ifBlank { engine.model.title },
+                            text = engine.model.title.ifBlank { engine.model.name },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 2,

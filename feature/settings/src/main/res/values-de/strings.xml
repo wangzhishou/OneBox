@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">Anfrageprotokoll</string>
     <string name="ai_engine_detail_title">Modelldienst-Konfiguration</string>
     <string name="ai_engine_loading">Dienstkonfiguration wird geladen…</string>
-    <string name="ai_engine_detail_desc_default">API-Endpunkt, Authentifizierung, Modellparameter und Streaming-Antwort verwalten.</string>
     <string name="ai_engine_add_model">Modell hinzufügen</string>
     <string name="ai_engine_model_dialog_title">Modell hinzufügen</string>
     <string name="ai_engine_model_edit_dialog_title">Modell bearbeiten</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">Aktuelle Route: verifiziert direkt</string>
     <string name="ai_working_model_status_proxy">Aktuelle Route: Proxy verfügbar</string>
     <string name="ai_working_model_status_unavailable">Aktuelle Route: nicht verfügbar – zuerst Einstellungen öffnen</string>
-    <string name="ai_engine_server_title">Dienstverbindung</string>
-    <string name="ai_engine_server_desc">Konfigurieren Sie Ihren API-Endpunkt und Ihre Authentifizierungsdaten, um eine Verbindung zu einem Remote-Inferenzdienst herzustellen.</string>
     <string name="ai_engine_api_url">API-URL</string>
     <string name="ai_engine_api_path">API-Pfad</string>
     <string name="ai_engine_auth_token">Auth-Token</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">API-Schlüssel</string>
     <string name="ai_engine_auth_type_none">Keine</string>
-    <string name="ai_engine_model_title">Modellverwaltung</string>
-    <string name="ai_engine_model_desc">Verwalten Sie die verfügbaren Modelle unter dem aktuellen Dienst und wählen Sie das Standardmodell aus.</string>
     <string name="ai_engine_parameters_title">Parameter &amp; Fähigkeiten</string>
     <string name="ai_engine_parameters_desc">Passen Sie Generierungsparameter, Fähigkeits-Schalter und Streaming-Strategie an.</string>
     <string name="ai_engine_temperature">Sampling-Temperatur</string>

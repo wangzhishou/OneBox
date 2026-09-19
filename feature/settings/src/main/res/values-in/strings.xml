@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">Protokol Permintaan</string>
     <string name="ai_engine_detail_title">Konfigurasi Layanan Model</string>
     <string name="ai_engine_loading">Memuat konfigurasi layanan…</string>
-    <string name="ai_engine_detail_desc_default">Kelola endpoint API, autentikasi, parameter model, dan respons streaming.</string>
     <string name="ai_engine_add_model">Tambah Model</string>
     <string name="ai_engine_model_dialog_title">Tambah Model</string>
     <string name="ai_engine_model_edit_dialog_title">Edit Model</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">Rute saat ini: langsung terverifikasi</string>
     <string name="ai_working_model_status_proxy">Rute saat ini: proxy tersedia</string>
     <string name="ai_working_model_status_unavailable">Rute saat ini: tidak tersedia — buka pengaturan terlebih dahulu</string>
-    <string name="ai_engine_server_title">Koneksi Layanan</string>
-    <string name="ai_engine_server_desc">Konfigurasikan endpoint API dan kredensial autentikasi Anda untuk terhubung ke layanan inferensi jarak jauh.</string>
     <string name="ai_engine_api_url">URL API</string>
     <string name="ai_engine_api_path">Jalur API</string>
     <string name="ai_engine_auth_token">Token Autentikasi</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">Kunci API</string>
     <string name="ai_engine_auth_type_none">Tidak Ada</string>
-    <string name="ai_engine_model_title">Manajemen Model</string>
-    <string name="ai_engine_model_desc">Kelola model yang tersedia di bawah layanan saat ini dan pilih default yang akan digunakan.</string>
     <string name="ai_engine_parameters_title">Parameter &amp; Kemampuan</string>
     <string name="ai_engine_parameters_desc">Sesuaikan parameter generasi, sakelar kemampuan, dan strategi streaming.</string>
     <string name="ai_engine_temperature">Suhu Sampling</string>

@@ -51,11 +51,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shifenmiao.common.R as CommonR
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
-import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
@@ -473,32 +471,7 @@ private fun ModelCard(
                     }
                 }
 
-                if (model.description.isNotBlank()) {
-                    Text(
-                        text = model.description,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    EngineInfoLabel(
-                        title = stringResource(CommonR.string.ai_model_protocol_label),
-                        value = resolveProtocolLabel(engine.requestProtocol)
-                    )
-                    EngineInfoLabel(
-                        title = stringResource(CommonR.string.ai_model_route_label),
-                        value = if (engine.isDetestPassed) {
-                            stringResource(CommonR.string.ai_model_route_direct)
-                        } else {
-                            stringResource(CommonR.string.ai_model_route_proxy)
-                        }
-                    )
-                }
+                // 模型卡片只保留模型名 + 品牌角标 + 积分倍率, 不再展示简介与协议/路由信息
             }
 
             if (isSelected) {
@@ -510,38 +483,6 @@ private fun ModelCard(
                 ) {}
             }
         }
-    }
-}
-
-@Composable
-private fun resolveProtocolLabel(protocol: AiRequestProtocol): String {
-    return when (protocol) {
-        AiRequestProtocol.OPENAI_COMPATIBLE -> stringResource(CommonR.string.ai_model_protocol_openai)
-        AiRequestProtocol.RESPONSES_COMPATIBLE -> stringResource(CommonR.string.ai_model_protocol_responses)
-        AiRequestProtocol.ANTHROPIC_COMPATIBLE -> stringResource(CommonR.string.ai_model_protocol_anthropic)
-        AiRequestProtocol.OWN_PROXY -> stringResource(CommonR.string.ai_model_protocol_proxy)
-        AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(CommonR.string.ai_model_protocol_local_on_device)
-    }
-}
-
-@Composable
-private fun EngineInfoLabel(title: String, value: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-            color = MaterialTheme.colorScheme.outline,
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Medium,
-                fontSize = 10.sp,
-            ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
     }
 }
 

@@ -170,7 +170,6 @@
 
     <string name="ai_engine_detail_title">模型服务配置</string>
     <string name="ai_engine_loading">正在加载服务配置…</string>
-    <string name="ai_engine_detail_desc_default">管理 API 地址、鉴权信息、模型参数与流式响应开关。</string>
     <string name="ai_engine_add_model">添加模型</string>
     <string name="ai_engine_model_dialog_title">新增模型</string>
     <string name="ai_engine_model_edit_dialog_title">编辑模型</string>
@@ -211,8 +210,6 @@
     <string name="ai_working_model_status_direct">当前链路：已测试直连</string>
     <string name="ai_working_model_status_proxy">当前链路：代理可用</string>
     <string name="ai_working_model_status_unavailable">当前链路：不可用，请先去设置</string>
-    <string name="ai_engine_server_title">服务连接</string>
-    <string name="ai_engine_server_desc">配置 API 端点与验证凭据</string>
     <string name="ai_engine_api_url">API地址</string>
     <string name="ai_engine_api_path">API路径</string>
     <string name="ai_engine_auth_token">授权码</string>
@@ -220,8 +217,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">API Key</string>
     <string name="ai_engine_auth_type_none">无鉴权</string>
-    <string name="ai_engine_model_title">模型管理</string>
-    <string name="ai_engine_model_desc">管理当前服务下的可用模型，并选择默认使用项。</string>
     <string name="ai_engine_parameters_title">参数与能力</string>
     <string name="ai_engine_parameters_desc">调整生成参数、能力开关与流式输出策略。</string>
     <string name="ai_engine_temperature">采样温度</string>

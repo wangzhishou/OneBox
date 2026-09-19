@@ -170,7 +170,6 @@
 
     <string name="ai_engine_detail_title">Model Service Configuration</string>
     <string name="ai_engine_loading">Loading service configuration…</string>
-    <string name="ai_engine_detail_desc_default">Manage the API endpoint, authentication, model parameters, and streaming response.</string>
     <string name="ai_engine_add_model">Add Model</string>
     <string name="ai_engine_model_dialog_title">Add Model</string>
     <string name="ai_engine_model_edit_dialog_title">Edit Model</string>
@@ -211,8 +210,6 @@
     <string name="ai_working_model_status_direct">Current route: verified direct</string>
     <string name="ai_working_model_status_proxy">Current route: proxy available</string>
     <string name="ai_working_model_status_unavailable">Current route: unavailable — go to settings first</string>
-    <string name="ai_engine_server_title">Service Connection</string>
-    <string name="ai_engine_server_desc">Configure API endpoint and credentials</string>
     <string name="ai_engine_api_url">API URL</string>
     <string name="ai_engine_api_path">API Path</string>
     <string name="ai_engine_auth_token">Auth Token</string>
@@ -220,8 +217,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">API Key</string>
     <string name="ai_engine_auth_type_none">None</string>
-    <string name="ai_engine_model_title">Model Management</string>
-    <string name="ai_engine_model_desc">Manage the available models under the current service and choose the default one to use.</string>
     <string name="ai_engine_parameters_title">Parameters &amp; Capabilities</string>
     <string name="ai_engine_parameters_desc">Adjust generation parameters, capability toggles, and streaming strategy.</string>
     <string name="ai_engine_temperature">Sampling Temperature</string>

@@ -141,7 +141,6 @@
     <string name="ai_engine_request_protocol_label">請求協定</string>
     <string name="ai_engine_detail_title">模型服務設定</string>
     <string name="ai_engine_loading">正在載入服務設定…</string>
-    <string name="ai_engine_detail_desc_default">管理 API 位址、驗證資訊、模型參數與串流回應開關。</string>
     <string name="ai_engine_add_model">新增模型</string>
     <string name="ai_engine_model_dialog_title">新增模型</string>
     <string name="ai_engine_model_edit_dialog_title">編輯模型</string>
@@ -182,8 +181,6 @@
     <string name="ai_working_model_status_direct">當前鏈路：已測試直連</string>
     <string name="ai_working_model_status_proxy">當前鏈路：代理可用</string>
     <string name="ai_working_model_status_unavailable">當前鏈路：不可用，請先去設定</string>
-    <string name="ai_engine_server_title">服務連接</string>
-    <string name="ai_engine_server_desc">配置您的 API 端點和驗證憑證，以連接到遠端推理服務。</string>
     <string name="ai_engine_api_url">API位址</string>
     <string name="ai_engine_api_path">API路徑</string>
     <string name="ai_engine_auth_token">授權碼</string>
@@ -191,8 +188,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">API Key</string>
     <string name="ai_engine_auth_type_none">無驗證</string>
-    <string name="ai_engine_model_title">模型管理</string>
-    <string name="ai_engine_model_desc">管理目前服務下的可用模型，並選擇預設使用項目。</string>
     <string name="ai_engine_parameters_title">參數與能力</string>
     <string name="ai_engine_parameters_desc">調整生成參數、能力開關與串流輸出策略。</string>
     <string name="ai_engine_temperature">取樣溫度</string>

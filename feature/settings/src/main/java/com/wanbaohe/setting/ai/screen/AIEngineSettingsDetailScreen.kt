@@ -93,9 +93,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineModelTraining
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHeat
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineDatasetLinked
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHighQuality
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
 
@@ -285,7 +283,8 @@ fun AIEngineSettingsDetailScreen(
     }
 
     BaseScreen(
-        title = stringResource(R.string.ai_engine_detail_title),
+        // 页面标题直接用品牌名, 加载完成前回退通用标题
+        title = draftEngine?.title ?: stringResource(R.string.ai_engine_detail_title),
         onGoBack = {
             if (hasUnsavedChanges) showExitConfirmDialog = true
             else component.onGoBack()
@@ -335,8 +334,6 @@ fun AIEngineSettingsDetailScreen(
                 verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.blockSpacing),
             ) {
                 Spacer(modifier = Modifier.height(OneBoxDesignSystem.microSpacing))
-
-                EngineInfoHeader(engine = engine)
 
                 // 渠道能力(如 Google 全量放开)或远程开关开放时, 展示服务器/Token 设置
                 val capabilities = remember { AiEngineConfig.getCapabilities() }
@@ -772,26 +769,6 @@ private fun RemoteModelPickerDialog(
 }
 
 @Composable
-private fun EngineInfoHeader(engine: AiEngine) {
-    OneBoxSectionCard {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
-        ) {
-            Text(
-                text = engine.title,
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = engine.description.ifBlank { stringResource(R.string.ai_engine_detail_desc_default) },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-@Composable
 private fun ServerConnectivityCard(
     engine: AiEngine,
     canEditApiSettings: Boolean,
@@ -802,11 +779,7 @@ private fun ServerConnectivityCard(
     onTokenChange: (String) -> Unit,
     onTestClick: () -> Unit,
 ) {
-    SettingCard(
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDatasetLinked,
-        title = stringResource(R.string.ai_engine_server_title),
-        description = stringResource(R.string.ai_engine_server_desc),
-    ) {
+    SettingCard {
         var showAuthOptions by rememberSaveable { mutableStateOf(false) }
         val authArrowRotation by animateFloatAsState(if (showAuthOptions) 180f else 0f)
 
@@ -969,11 +942,7 @@ private fun ModelSelectionCard(
     // 但直连未验证(测试未通过)时拉取必然无权限,入口一并隐藏
     val canLoadRemote = (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
             loginState.vipLevel == 10) && engine.isDetestPassed
-    SettingCard(
-        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineModelTraining,
-        title = stringResource(R.string.ai_engine_model_title),
-        description = stringResource(R.string.ai_engine_model_desc),
-    ) {
+    SettingCard {
         if (models.isEmpty()) {
             Text(
                 text = stringResource(R.string.ai_engine_model_no_items),
@@ -1458,11 +1427,12 @@ private fun ParameterSliderRow(
     }
 }
 
+// 分组卡片: title 为空时不渲染头部(无标题分组), 「参数与能力」仍走带标题的折叠头
 @Composable
 private fun SettingCard(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    title: String,
-    description: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector? = null,
+    title: String? = null,
+    description: String? = null,
     collapsible: Boolean = false,
     content: @Composable () -> Unit,
 ) {
@@ -1472,42 +1442,48 @@ private fun SettingCard(
         Column(
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
         ) {
-            Row(
-                modifier = if (collapsible) {
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { expanded = !expanded }
-                } else Modifier,
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
-            ) {
-                OneBoxLeadingIconBadge(icon = icon)
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
+            if (title != null) {
+                Row(
+                    modifier = if (collapsible) {
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { expanded = !expanded }
+                    } else Modifier,
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
                 ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                    if (icon != null) {
+                        OneBoxLeadingIconBadge(icon = icon)
+                    }
 
-                if (collapsible) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .rotate(arrowRotation),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                        if (description != null) {
+                            Text(
+                                text = description,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+
+                    if (collapsible) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .rotate(arrowRotation),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
             if (collapsible) {

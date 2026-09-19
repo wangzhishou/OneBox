@@ -131,7 +131,6 @@
     <string name="ai_engine_request_protocol_label">Request Protocol</string>
     <string name="ai_engine_detail_title">Model Service Configuration</string>
     <string name="ai_engine_loading">Loading service configuration…</string>
-    <string name="ai_engine_detail_desc_default">Pamahalaan ang API endpoint, authentication, mga parameter ng modelo, at streaming response.</string>
     <string name="ai_engine_add_model">Magdagdag ng Modelo</string>
     <string name="ai_engine_model_dialog_title">Magdagdag ng Modelo</string>
     <string name="ai_engine_model_edit_dialog_title">I-edit ang Modelo</string>
@@ -172,8 +171,6 @@
     <string name="ai_working_model_status_direct">Kasalukuyang ruta: na-verify na direktang</string>
     <string name="ai_working_model_status_proxy">Kasalukuyang ruta: available ang proxy</string>
     <string name="ai_working_model_status_unavailable">Kasalukuyang ruta: hindi available — pumunta muna sa mga setting</string>
-    <string name="ai_engine_server_title">Koneksyon ng Serbisyo</string>
-    <string name="ai_engine_server_desc">I-configure ang iyong API endpoint at mga kredensyal sa pagpapatunay upang kumonekta sa isang remote inference service.</string>
     <string name="ai_engine_api_url">API URL</string>
     <string name="ai_engine_api_path">API Path</string>
     <string name="ai_engine_auth_token">Auth Token</string>
@@ -181,8 +178,6 @@
     <string name="ai_engine_auth_type_bearer">Bearer</string>
     <string name="ai_engine_auth_type_api_key">API Key</string>
     <string name="ai_engine_auth_type_none">Wala</string>
-    <string name="ai_engine_model_title">Pamamahala ng Modelo</string>
-    <string name="ai_engine_model_desc">Pamahalaan ang mga available na modelo sa ilalim ng kasalukuyang serbisyo at piliin ang default na gagamitin.</string>
     <string name="ai_engine_parameters_title">Mga Parameter at Kakayahan</string>
     <string name="ai_engine_parameters_desc">Ayusin ang mga parameter ng pagbuo, mga toggle ng kakayahan, at estratehiya ng streaming.</string>
     <string name="ai_engine_temperature">Sampling Temperature</string>
