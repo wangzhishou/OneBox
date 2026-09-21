@@ -20,6 +20,9 @@ permissions:
   issues: read
 
 engine: copilot
+# 分诊是读代码+写摘要的轻活, 不需要顶配模型。gpt-5-mini 是 0 倍率(不消耗 premium
+# request), 也避开了 auto 会选中的 claude-sonnet-5 在部分套餐下的限流。
+model: gpt-5-mini
 
 # 手动触发时每次 run 单独占一个槽, 否则多次 dispatch 会抢同一个 conclusion 并发组
 concurrency:
