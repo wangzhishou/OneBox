@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -64,17 +65,21 @@ class AIEngineCatalogManager @Inject constructor(
     fun observeAvailableEngines(
         userLevel: Int = TokenStorage.getUserVipLevel()
     ): Flow<List<AiEngine>> {
-        return aiEngineRepository.observeResolvedEnginesByUserLevel(userLevel)
-            .map { engines ->
+        return combine(
+            aiEngineRepository.observeResolvedEnginesByUserLevel(userLevel),
+            observeLocalOwnedEngineIdentityKeys(),
+        ) { engines, localOwnedKeys -> engines to localOwnedKeys }
+            .map { (engines, localOwnedKeys) ->
                 val defaultEngines = AiEngineConfig.getDefaultEngines(
                     configuredEngines = RemoteConfigStorage.getRemoteConfig().defaultEngines,
                 )
                 val defaultEngineNameSet = defaultEngines.map(String::lowercase).toSet()
 
                 engines.filter { engine ->
-                    // 本地协议引擎必须始终直通，不被远程 defaultEngines 白名单过滤，
-                    // 否则用户导入的本地模型永远进不了引擎列表。
+                    // 本地协议与本地自有(用户自建)引擎必须始终直通,不被远程 defaultEngines 白名单过滤,
+                    // 否则用户添加的自定义引擎保存成功后永远进不了引擎列表。
                     engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE ||
+                        engine.identityKey() in localOwnedKeys ||
                         defaultEngineNameSet.isEmpty() ||
                         defaultEngineNameSet.contains(engine.name.lowercase())
                 }.ifEmpty {
