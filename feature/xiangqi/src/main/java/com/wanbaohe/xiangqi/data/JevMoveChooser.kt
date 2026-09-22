@@ -52,6 +52,7 @@ class JevMoveChooser @Inject constructor(
         val authorization = AiRequestUrlResolver.resolveAuthorizationHeader(engine)
         val request = JevBestMoveResolver.buildRequest(fen, boardState.sideToMove, history, legalMoves, model)
 
+        var lastError: String? = null
         repeat(2) {
             val selection = withContext(ioDispatcher) {
                 runCatching {
@@ -60,10 +61,22 @@ class JevMoveChooser @Inject constructor(
                         authorization = authorization,
                         body = request,
                     ).execute()
-                    if (!response.isSuccessful) return@runCatching null
-                    val body = response.body()?.string() ?: return@runCatching null
-                    JevBestMoveResolver.resolve(body, legalMoves)
-                }.getOrNull()
+                    if (!response.isSuccessful) {
+                        lastError = "http ${response.code()}"
+                        return@runCatching null
+                    }
+                    val body = response.body()?.string()
+                    if (body == null) {
+                        lastError = "empty body"
+                        return@runCatching null
+                    }
+                    JevBestMoveResolver.resolve(body, legalMoves).also {
+                        if (it == null) lastError = "unmapped choice"
+                    }
+                }.getOrElse {
+                    lastError = it.message ?: "request failed"
+                    null
+                }
             }
             if (selection != null) {
                 return MoveDecision(
@@ -76,6 +89,7 @@ class JevMoveChooser @Inject constructor(
         }
 
         return HeuristicMoveFallback.decision(legalMoves)
+            ?.copy(reason = "jev: ${lastError ?: "failed"}", fallbackUsed = true)
     }
 
     private fun EngineSlot.toEngine(): AiEngine = when (this) {

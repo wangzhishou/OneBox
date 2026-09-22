@@ -64,6 +64,14 @@ class AIAddEngineComponent @AssistedInject internal constructor(
                 proxyUrl = proxyUrl.ifBlank { UrlConstants.RELEASE_URL },
                 proxyPath = proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH },
             )
+            AiRequestProtocol.PIKAFISH -> copy(
+                requestProtocol = AiRequestProtocol.PIKAFISH,
+                authType = AuthType.NONE,
+                requestUrl = "",
+                requestPath = "",
+                proxyUrl = proxyUrl.ifBlank { UrlConstants.RELEASE_URL },
+                proxyPath = proxyPath.ifBlank { UrlConstants.XIANGQI_ENGINE_PROXY_PATH },
+            )
             else -> this
         }
     }

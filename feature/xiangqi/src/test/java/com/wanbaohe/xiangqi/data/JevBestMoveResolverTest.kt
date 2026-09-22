@@ -1,5 +1,6 @@
 package com.wanbaohe.xiangqi.data
 
+import com.wanbaohe.xiangqi.domain.UcciNotation
 import com.wanbaohe.xiangqi.domain.model.BoardPoint
 import com.wanbaohe.xiangqi.domain.model.Piece
 import com.wanbaohe.xiangqi.domain.model.PieceType
@@ -18,21 +19,30 @@ class JevBestMoveResolverTest {
     private val redRook = Piece(Side.RED, PieceType.ROOK)
     private val blackCannon = Piece(Side.BLACK, PieceType.CANNON)
 
+    // notationUcci 使用标准 UCCI(UCCI rank0=红方底线), 与 Pikafish bestmove 同一约定
     private val legalMoves = listOf(
         XiangqiMove(
             from = BoardPoint(4, 6), to = BoardPoint(4, 5),
-            piece = redPawn, notationUcci = "e6e5", notationCn = "兵五进一",
+            piece = redPawn, notationUcci = "e3e4", notationCn = "兵五进一",
         ),
         XiangqiMove(
             from = BoardPoint(0, 9), to = BoardPoint(0, 8),
-            piece = redRook, notationUcci = "a9a8", notationCn = "车九进一",
+            piece = redRook, notationUcci = "a0a1", notationCn = "车九进一",
         ),
         XiangqiMove(
             from = BoardPoint(1, 7), to = BoardPoint(1, 4),
             piece = redRook, captured = blackCannon,
-            notationUcci = "b7b4", notationCn = "车八进三",
+            notationUcci = "b2b5", notationCn = "车八进三",
         ),
     )
+
+    @Test
+    fun ucciFormatUsesRedHomeRankZero() {
+        assertEquals("a0a1", UcciNotation.format(BoardPoint(0, 9), BoardPoint(0, 8)))
+        assertEquals("e3e4", UcciNotation.format(BoardPoint(4, 6), BoardPoint(4, 5)))
+        // 初始局面红方兵 (file0, rank6) 标准 UCCI 为 a3, 与 Pikafish bestmove a3a4 一致
+        assertEquals("a3a4", UcciNotation.format(BoardPoint(0, 6), BoardPoint(0, 5)))
+    }
 
     @Test
     fun resolvePicksArgmaxFromProbabilitiesNotSampledChoice() {
@@ -42,9 +52,9 @@ class JevBestMoveResolverTest {
           "answers": {
             "best_move": {
               "type": "choice",
-              "choice": "e6e5",
+              "choice": "e3e4",
               "confidence": 0.9,
-              "probabilities": { "e6e5": 0.2, "a9a8": 0.7, "b7b4": 0.1 }
+              "probabilities": { "e3e4": 0.2, "a0a1": 0.7, "b2b5": 0.1 }
             }
           },
           "usage": {}
@@ -54,7 +64,7 @@ class JevBestMoveResolverTest {
         val selection = JevBestMoveResolver.resolve(raw, legalMoves)
 
         assertNotNull(selection)
-        assertEquals("a9a8", selection!!.move.notationUcci)
+        assertEquals("a0a1", selection!!.move.notationUcci)
         assertEquals(0.9, selection.confidence, 1e-9)
         assertEquals(0.7, selection.probability, 1e-9)
         assertEquals(raw, selection.rawResponse)
@@ -66,7 +76,7 @@ class JevBestMoveResolverTest {
         {
           "model": "jev-latest",
           "answers": {
-            "best_move": { "type": "choice", "choice": "b7b4", "confidence": 0.5 }
+            "best_move": { "type": "choice", "choice": "b2b5", "confidence": 0.5 }
           }
         }
         """.trimIndent()
@@ -74,7 +84,7 @@ class JevBestMoveResolverTest {
         val selection = JevBestMoveResolver.resolve(raw, legalMoves)
 
         assertNotNull(selection)
-        assertEquals("b7b4", selection!!.move.notationUcci)
+        assertEquals("b2b5", selection!!.move.notationUcci)
         assertEquals(0.0, selection.probability, 1e-9)
     }
 
@@ -86,9 +96,9 @@ class JevBestMoveResolverTest {
           "answers": {
             "best_move": {
               "type": "choice",
-              "choice": "e6e5",
+              "choice": "e3e4",
               "confidence": 0.9,
-              "probabilities": { "e6e5": 0.4, "z0z1": 0.6 }
+              "probabilities": { "e3e4": 0.4, "z0z1": 0.6 }
             }
           }
         }
@@ -109,7 +119,7 @@ class JevBestMoveResolverTest {
 
         assertNotNull(decision)
         assertTrue(decision!!.fallbackUsed)
-        assertEquals("b7b4", decision.move.notationUcci)
+        assertEquals("b2b5", decision.move.notationUcci)
 
         val withoutCapture = legalMoves.filter { it.captured == null }
         val fallback = HeuristicMoveFallback.decision(withoutCapture)
@@ -136,7 +146,7 @@ class JevBestMoveResolverTest {
         assertEquals("choice", bestMove.get("type").asString)
         val criteria = bestMove.getAsJsonObject("criteria")
         assertEquals(legalMoves.size, criteria.size())
-        assertTrue(criteria.get("e6e5").asString.startsWith("红兵"))
-        assertTrue(criteria.get("e6e5").asString.contains("兵五进一"))
+        assertTrue(criteria.get("e3e4").asString.startsWith("红兵"))
+        assertTrue(criteria.get("e3e4").asString.contains("兵五进一"))
     }
 }

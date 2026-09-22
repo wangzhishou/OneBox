@@ -20,8 +20,16 @@ private const val DRAW_HALF_MOVE_CLOCK = 120
 object GameArbiter {
 
     fun legalMoves(boardState: BoardState, side: Side = boardState.sideToMove): List<XiangqiMove> {
+        // MoveGenerator 只产出 from/to/piece, 记谱字段为空; AI 选着(Jev/LLM)与 JSON 导入
+        // 都依赖 notationUcci 做候选匹配, 必须在出口统一补全(中文记谱需要走子前的 boardState)。
         return MoveGenerator.pseudoLegalMoves(boardState, side)
             .filter { isLegalAfterMove(boardState, it, side) }
+            .map { move ->
+                move.copy(
+                    notationUcci = UcciNotation.format(move.from, move.to),
+                    notationCn = ChineseNotationFormatter.format(move, boardState),
+                )
+            }
     }
 
     fun applyMove(boardState: BoardState, move: XiangqiMove): MoveOutcome {

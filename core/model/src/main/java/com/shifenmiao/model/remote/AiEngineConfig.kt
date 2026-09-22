@@ -23,8 +23,11 @@ object AiEngineConfig {
      *     海外需 Cloud Run 版 go-proxy 部署 TYPESAFE_API_KEY 后可用)。
      * v8: Jev 预设补充官网直连地址(requestUrl/requestPath), 支持用户自带 key 直连,
      *     对 v7 已播种的 Jev 行只补空白字段, 不覆盖用户手改值。
+     * v9: 新增 Pikafish 象棋引擎预制(经 Go 网关 /xiangqi/engine/bestmove 远程走棋)。
+     * v10: 合并 name 大小写不同但 identityKey 相同的引擎行(如 DeepSeek/deepseek),
+     *      修复模型选择 LazyColumn key 重复崩溃。
      */
-    const val FLAVOR_PRESET_VERSION = 8
+    const val FLAVOR_PRESET_VERSION = 10
 
     /** 引入"清理 Google 渠道预制引擎代理"迁移的版本号 */
     const val PRESET_VERSION_CLEAR_GOOGLE_PROXY = 2
@@ -38,6 +41,9 @@ object AiEngineConfig {
     /** 引入"Jev 预设补充官网直连地址"迁移的版本号 */
     const val PRESET_VERSION_JEV_DIRECT_ROUTE = 8
 
+    /** 引入"合并 identityKey 冲突引擎行"迁移的版本号 */
+    const val PRESET_VERSION_IDENTITY_KEY_UNIFY = 10
+
     /**
      * Google 渠道保留 Go 网关代理(按积分计费、需登录)的引擎名;
      * 不在此列表的 google 预制引擎一律清空代理, 用户自带 token 直连。
@@ -49,6 +55,7 @@ object AiEngineConfig {
             AiProvider.ZhiPu.value,
             AiProvider.MinMax.value,
             AiProvider.Jev.value,
+            AiProvider.Pikafish.value,
         )
 
     val defaultEnabledEngines: List<String>
@@ -61,6 +68,7 @@ object AiEngineConfig {
             AiProvider.Baidu.value,
             AiProvider.Mimo.value,
             AiProvider.Jev.value,
+            AiProvider.Pikafish.value,
         )
 
     val oneboxEnabledEngines: List<String>
@@ -84,6 +92,7 @@ object AiEngineConfig {
             AiProvider.ZhiPu.value,
             AiProvider.MinMax.value,
             AiProvider.Jev.value,
+            AiProvider.Pikafish.value,
         )
 
     fun getFlavorFallbackEngines(flavorType: FlavorType): List<String> {

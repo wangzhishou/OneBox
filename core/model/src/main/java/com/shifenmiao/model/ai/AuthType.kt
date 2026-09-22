@@ -39,6 +39,8 @@ enum class AuthType : Parcelable {
                 AiRequestProtocol.OWN_PROXY -> NONE
                 // Jev 直连官网用 Bearer 用户 key; key 为空时由路由层回落到 App 代理(无需客户端鉴权)
                 AiRequestProtocol.JEV -> BEARER
+                // Pikafish 仅走自家 Go 网关, 鉴权由 AuthInterceptor 注入 App JWT
+                AiRequestProtocol.PIKAFISH -> NONE
                 AiRequestProtocol.OPENAI_COMPATIBLE,
                 AiRequestProtocol.RESPONSES_COMPATIBLE -> BEARER
                 // 端侧本地推理不涉及网络鉴权；

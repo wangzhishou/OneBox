@@ -131,6 +131,9 @@ object UrlConstants {
     /** TypeSafe System One (Jev) 判断模型代理路径 */
     const val JEV_PROXY_PATH = "ai/typesafe/systemone"
 
+    /** Pikafish 象棋引擎走棋代理路径 */
+    const val XIANGQI_ENGINE_PROXY_PATH = "xiangqi/engine/bestmove"
+
     /** TypeSafe (Jev) 官网直连地址与 System One 端点 */
     const val TYPESAFE_AI_BASE_URL = "https://api.typesafe.ai"
     const val JEV_SYSTEMONE_ENDPOINT = "v1/systemone"

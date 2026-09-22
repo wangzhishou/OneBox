@@ -144,6 +144,7 @@
     <string name="ai_engine_protocol_proxy">应用代理</string>
     <string name="ai_engine_protocol_local_on_device">端侧本地（不走网络）</string>
     <string name="ai_engine_protocol_jev">Jev 判断引擎</string>
+    <string name="ai_engine_protocol_pikafish">Pikafish 象棋引擎</string>
     <string name="ai_engine_protocol_direct_desc">授权码已验证通过，将优先使用本地直连方式访问。</string>
     <string name="ai_engine_protocol_proxy_desc">授权码尚未验证，当前将走 App 中转代理方式访问。</string>
     <string name="ai_engine_auto_refreshing">正在同步最新服务目录…</string>

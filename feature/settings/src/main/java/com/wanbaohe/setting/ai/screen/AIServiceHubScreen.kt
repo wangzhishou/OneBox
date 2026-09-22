@@ -154,14 +154,14 @@ fun AIServiceHubScreen(
                         AIServiceHubTab.Text -> AIEngineSettingsContent(
                             component = engineComponent,
                             modifier = Modifier.fillMaxSize(),
-                            // Jev 是独立协议的判断引擎, 在专属 tab 管理, 不混进普通引擎列表
-                            engineFilter = { it.requestProtocol != AiRequestProtocol.JEV },
+                            // Jev/Pikafish 是独立协议的专用引擎, 在专属 tab 管理, 不混进普通引擎列表
+                            engineFilter = { !it.requestProtocol.isNonChat },
                         )
 
                         AIServiceHubTab.Jev -> AIEngineSettingsContent(
                             component = engineComponent,
                             modifier = Modifier.fillMaxSize(),
-                            engineFilter = { it.requestProtocol == AiRequestProtocol.JEV },
+                            engineFilter = { it.requestProtocol.isNonChat },
                             emptyMessageRes = R.string.ai_engine_jev_list_empty,
                         )
 

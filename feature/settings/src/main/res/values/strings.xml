@@ -144,6 +144,7 @@
     <string name="ai_engine_protocol_proxy">App Proxy</string>
     <string name="ai_engine_protocol_local_on_device">On-Device (No Network)</string>
     <string name="ai_engine_protocol_jev">Jev Judgment Engine</string>
+    <string name="ai_engine_protocol_pikafish">Pikafish Chess Engine</string>
     <string name="ai_engine_protocol_direct_desc">The auth token has been verified. Local direct connection will be preferred.</string>
     <string name="ai_engine_protocol_proxy_desc">The auth token has not been verified. Access will go through the app proxy for now.</string>
     <string name="ai_engine_auto_refreshing">Syncing the latest service catalog…</string>

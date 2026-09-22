@@ -365,6 +365,23 @@ data class AiEngine(
                     fileUploadStrategy = FileUploadStrategy.BASE64
                 )
 
+                // Pikafish 象棋引擎: 仅经 Go 网关 /xiangqi/engine/bestmove 远程走棋
+                AiProvider.Pikafish -> AiEngine(
+                    name = AiProvider.Pikafish.value,
+                    iconName = "Extension",
+                    title = AppContext.getString(R.string.ai_engine_seed_pikafish_title),
+                    description = "",
+                    requestUrl = "",
+                    requestPath = "",
+                    proxyUrl = UrlConstants.RELEASE_URL,
+                    proxyPath = UrlConstants.XIANGQI_ENGINE_PROXY_PATH,
+                    authorizationCode = "",
+                    model = AiModel.getDefaultModelForProvider(AiProvider.Pikafish),
+                    requestProtocol = AiRequestProtocol.PIKAFISH,
+                    stream = false,
+                    fileUploadStrategy = FileUploadStrategy.BASE64
+                )
+
                 else -> defaultEngineFallback(provider)
             }
         }

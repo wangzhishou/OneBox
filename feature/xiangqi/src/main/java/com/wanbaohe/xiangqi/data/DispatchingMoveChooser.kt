@@ -16,6 +16,7 @@ class DispatchingMoveChooser @Inject constructor(
     private val aiEngineManager: AIEngineManager,
     private val llmMoveChooser: LlmMoveChooser,
     private val jevMoveChooser: JevMoveChooser,
+    private val pikafishMoveChooser: PikafishMoveChooser,
 ) : MoveChooser {
 
     override suspend fun choose(
@@ -25,10 +26,10 @@ class DispatchingMoveChooser @Inject constructor(
         legalMoves: List<XiangqiMove>,
         slot: EngineSlot,
     ): MoveDecision? {
-        val chooser = if (slot.toEngine().requestProtocol == AiRequestProtocol.JEV) {
-            jevMoveChooser
-        } else {
-            llmMoveChooser
+        val chooser = when (slot.toEngine().requestProtocol) {
+            AiRequestProtocol.JEV -> jevMoveChooser
+            AiRequestProtocol.PIKAFISH -> pikafishMoveChooser
+            else -> llmMoveChooser
         }
         return chooser.choose(
             boardState = boardState,

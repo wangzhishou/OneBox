@@ -52,7 +52,7 @@ fun EngineFilterChips(
             }
         }
 
-        items(items = allEngines, key = { it.identityKey() }) { engine ->
+        items(items = allEngines.distinctBy { it.identityKey() }, key = { it.identityKey() }) { engine ->
             val brandIcon = providerBrandIcon(engine.name)
             EngineFilterChip(
                 text = engine.title,

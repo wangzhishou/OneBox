@@ -261,6 +261,28 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
             }
         }
 
+        // v10 迁移: 合并 name 大小写不同但 identityKey 相同的引擎行(DeepSeek/deepseek)。
+        // 唯一索引区分大小写, 而 identityKey 会 lowercase, 导致模型选择 Lazy key 重复崩溃。
+        if (appliedVersion < AiEngineConfig.PRESET_VERSION_IDENTITY_KEY_UNIFY) {
+            appDatabase.aiEngineDao().getAllEnginesList()
+                .groupBy { AiEngineEntity.buildIdentityKey(it.name, it.requestProtocol) }
+                .filterValues { it.size > 1 }
+                .forEach { (_, rows) ->
+                    val keeper = rows.sortedWith(
+                        compareByDescending<AiEngineEntity> { it.name == it.name.lowercase() }
+                            .thenByDescending { it.sourceType() == AiConfigSource.REMOTE }
+                            .thenByDescending { it.id }
+                    ).first()
+                    rows.filter { it.id != keeper.id }.forEach { dup ->
+                        if (keeper.authorizationCode.isBlank() && dup.authorizationCode.isNotBlank()) {
+                            updateEngine(keeper.copy(authorizationCode = dup.authorizationCode))
+                        }
+                        appDatabase.aiModelDao().deleteModelsByEngineName(dup.name)
+                        deleteEngineByNameAndProtocol(dup.name, dup.requestProtocol)
+                    }
+                }
+        }
+
         AiEngineConfig.getFlavorFallbackEngines(flavorType).distinct()
             .forEachIndexed { sortOrder, engineName ->
                 val provider = AiProvider.fromValue(engineName)
@@ -385,9 +407,12 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
         models: List<AiModelEntity>,
     ): List<AiEngine> {
         val modelsByEngineName = models.groupBy { it.engineName.lowercase() }
-        return engines.map { engine ->
-            resolveEngine(engine = engine, modelsByEngineName = modelsByEngineName)
-        }
+        // name 大小写不同但 identityKey 相同(DeepSeek/deepseek)时 Lazy key 会撞车, 这里先收敛
+        return engines
+            .map { engine ->
+                resolveEngine(engine = engine, modelsByEngineName = modelsByEngineName)
+            }
+            .distinctBy { it.identityKey() }
     }
 
     private fun resolveEngine(

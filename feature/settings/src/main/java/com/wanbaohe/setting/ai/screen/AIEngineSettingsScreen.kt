@@ -79,7 +79,7 @@ fun AIEngineSettingsScreen(
         AIEngineSettingsContent(
             component = component,
             modifier = Modifier.weight(1f),
-            engineFilter = { it.requestProtocol != AiRequestProtocol.JEV },
+            engineFilter = { !it.requestProtocol.isNonChat },
         )
     }
 }
@@ -355,7 +355,7 @@ private fun EngineListCard(
                     }
                     // 代理中转链路按模型倍率扣积分,展示当前选中模型的倍率;
                     // Jev 不暴露中转链路概念, 隐藏倍率与代理 badge, 仅保留直连标记
-                    if (engine.requestProtocol != AiRequestProtocol.JEV) {
+                    if (!engine.requestProtocol.isNonChat) {
                         if (engine.usesProxyRoute()) {
                             EngineBadge(text = engine.model.pointsMultiplierText())
                         }

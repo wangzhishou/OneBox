@@ -388,7 +388,7 @@ private fun ModelCardList(
     ) {
         items(
             items = models,
-            key = { (engine, model) -> "${engine.identityKey()}_${model.id}" }
+            key = { (engine, model) -> "${engine.identityKey()}_${model.name}" }
         ) { (engine, model) ->
             val isSelected =
                 engine.identityKey() == selectedEngineName && model.name == selectedModelName
@@ -620,7 +620,7 @@ private fun ModelGridContent(
     ) {
         items(count = models.size, key = { idx ->
             val (e, m) = models[idx]
-            "${e.identityKey()}_${m.id}"
+            "${e.identityKey()}_${m.name}"
         }) { idx ->
             val (engine, model) = models[idx]
             val isSelected =
@@ -780,7 +780,7 @@ private fun buildFilteredModels(
                 )
             }
             .map { model -> engine to model }
-    }
+    }.distinctBy { (engine, model) -> "${engine.identityKey()}_${model.name}" }
 }
 
 private fun AiModel.matchesSearch(

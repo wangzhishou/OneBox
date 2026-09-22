@@ -59,12 +59,13 @@ fun AIAddEngineScreen(
     val trimmedRequestUrl = draft.requestUrl.trim()
     val trimmedRequestPath = draft.requestPath.trim()
     val isLocalProtocol = draft.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE
-    // Jev 仅走 App 代理, 不要求直连 URL/Path/Token
+    // Jev / Pikafish 仅走 App 代理, 不要求直连 URL/Path/Token
     val isJevProtocol = draft.requestProtocol == AiRequestProtocol.JEV
+    val isPikafishProtocol = draft.requestProtocol == AiRequestProtocol.PIKAFISH
     val isTitleError = showValidationErrors && trimmedTitle.isBlank()
     val isNameError = showValidationErrors && trimmedName.isBlank()
     // 本地协议不要求 URL/Path（由本地模型管理页处理），跳过校验避免阻止保存。
-    val skipCloudValidation = isLocalProtocol || isJevProtocol
+    val skipCloudValidation = isLocalProtocol || isJevProtocol || isPikafishProtocol
     val isRequestUrlError = !skipCloudValidation && showValidationErrors &&
         (trimmedRequestUrl.isBlank() || !StringUtils.isValidUrl(trimmedRequestUrl))
     val isRequestPathError = !skipCloudValidation && showValidationErrors && trimmedRequestPath.isBlank()
@@ -120,10 +121,10 @@ fun AIAddEngineScreen(
                 // 仅展示云端协议；LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）;
                 // JEV 引擎仅在 Jev tab 新增, 普通入口的选择器排除 JEV;
                 // 从 Jev tab 进入时协议锁定为 JEV, 只展示一个固定选中项。
-                val selectableProtocols = if (isJevProtocol) {
-                    listOf(AiRequestProtocol.JEV)
-                } else {
-                    AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.JEV }
+                val selectableProtocols = when {
+                    isJevProtocol -> listOf(AiRequestProtocol.JEV)
+                    isPikafishProtocol -> listOf(AiRequestProtocol.PIKAFISH)
+                    else -> AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.JEV }
                 }
                 items(selectableProtocols) { protocol ->
                     EngineFilterChip(
@@ -134,10 +135,11 @@ fun AIAddEngineScreen(
                             AiRequestProtocol.OWN_PROXY -> stringResource(R.string.ai_engine_protocol_proxy)
                             AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(R.string.ai_engine_protocol_local_on_device)
                             AiRequestProtocol.JEV -> stringResource(R.string.ai_engine_protocol_jev)
+                            AiRequestProtocol.PIKAFISH -> stringResource(R.string.ai_engine_protocol_pikafish)
                         },
                         isSelected = draft.requestProtocol == protocol,
                         onClick = {
-                            if (isJevProtocol) return@EngineFilterChip
+                            if (isJevProtocol || isPikafishProtocol) return@EngineFilterChip
                             component.updateDraft { engine ->
                                 val previousDefaultAuthType = AuthType.defaultFor(engine.requestProtocol)
                                 val nextAuthType = if (engine.authType == previousDefaultAuthType) {
@@ -153,16 +155,20 @@ fun AIAddEngineScreen(
                                 engine.copy(
                                     requestProtocol = protocol,
                                     authType = nextAuthType,
-                                    requestPath = engine.requestPath.ifBlank { fallbackPath },
-                                    proxyUrl = if (protocol == AiRequestProtocol.JEV) {
+                                    requestPath = if (protocol == AiRequestProtocol.PIKAFISH) {
+                                        ""
+                                    } else {
+                                        engine.requestPath.ifBlank { fallbackPath }
+                                    },
+                                    proxyUrl = if (protocol == AiRequestProtocol.JEV || protocol == AiRequestProtocol.PIKAFISH) {
                                         engine.proxyUrl.ifBlank { UrlConstants.RELEASE_URL }
                                     } else {
                                         engine.proxyUrl
                                     },
-                                    proxyPath = if (protocol == AiRequestProtocol.JEV) {
-                                        engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH }
-                                    } else {
-                                        engine.proxyPath
+                                    proxyPath = when (protocol) {
+                                        AiRequestProtocol.JEV -> engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH }
+                                        AiRequestProtocol.PIKAFISH -> engine.proxyPath.ifBlank { UrlConstants.XIANGQI_ENGINE_PROXY_PATH }
+                                        else -> engine.proxyPath
                                     },
                                 )
                             }
@@ -171,7 +177,7 @@ fun AIAddEngineScreen(
                 }
             }
 
-            if (!isJevProtocol) {
+            if (!isJevProtocol && !isPikafishProtocol) {
                 Text(
                     text = stringResource(R.string.ai_engine_auth_type_label),
                     style = MaterialTheme.typography.labelLarge,

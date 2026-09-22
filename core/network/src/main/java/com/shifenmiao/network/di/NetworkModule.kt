@@ -13,6 +13,7 @@ import com.shifenmiao.network.api.JevService
 import com.shifenmiao.network.api.OpenAICompatibleService
 import com.shifenmiao.network.api.OpenAIWithApiKeyService
 import com.shifenmiao.network.api.OwnProxyAIService
+import com.shifenmiao.network.api.XiangqiEngineService
 import com.shifenmiao.network.downloader.HtmlDownloader
 import com.shifenmiao.network.downloader.OkHttpHtmlDownloader
 import com.shifenmiao.network.interceptor.AuthInterceptor
@@ -194,6 +195,11 @@ object NetworkModule {
     // 代理路由走 DefaultRetrofit: AuthInterceptor 注入 App 登录 JWT
     fun provideJevProxyService(@Named("DefaultRetrofit") retrofit: Retrofit): JevService =
         retrofit.create(JevService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideXiangqiEngineService(@Named("DefaultRetrofit") retrofit: Retrofit): XiangqiEngineService =
+        retrofit.create(XiangqiEngineService::class.java)
 
     @Provides
     @Singleton

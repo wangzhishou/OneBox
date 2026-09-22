@@ -169,7 +169,7 @@ private fun WorkingEngineSummaryCard(
                         engine.model.title.ifBlank { engine.model.name }
                     )
                     Text(
-                        text = if (engine.requestProtocol != AiRequestProtocol.JEV && engine.usesProxyRoute()) {
+                        text = if (!engine.requestProtocol.isNonChat && engine.usesProxyRoute()) {
                             "$modelText · ${engine.model.pointsMultiplierText()}"
                         } else modelText,
                         style = MaterialTheme.typography.bodySmall,
@@ -179,8 +179,8 @@ private fun WorkingEngineSummaryCard(
                         text = stringResource(
                             when {
                                 engine.canChatDirectly() -> R.string.ai_working_model_status_direct
-                                // Jev 的中转链路是内置基础设施, 不暴露"代理"概念, 仅显示可用
-                                engine.requestProtocol == AiRequestProtocol.JEV &&
+                                // Jev/Pikafish 的中转链路是内置基础设施, 不暴露"代理"概念, 仅显示可用
+                                engine.requestProtocol.isNonChat &&
                                     engine.hasProxyRouteConfigured() -> R.string.ai_working_model_status_available
                                 engine.hasProxyRouteConfigured() -> R.string.ai_working_model_status_proxy
                                 else -> R.string.ai_working_model_status_unavailable

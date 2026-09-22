@@ -9,11 +9,18 @@ import com.wanbaohe.xiangqi.domain.model.XiangqiMove
 import kotlin.math.abs
 
 object UcciNotation {
-    fun format(from: BoardPoint, to: BoardPoint): String = buildString {
-        append(('a'.code + from.file).toChar())
-        append(from.rank)
-        append(('a'.code + to.file).toChar())
-        append(to.rank)
+    /**
+     * UCCI 坐标：文件 a-i 对应 file 0-8（红方视角从左到右）；
+     * **rank 0 是红方底线、rank 9 是黑方底线**。
+     * 本模块 [BoardPoint] 与 FEN 一致（rank 0 = 黑方底线），纵线必须取 `9 - rank`，
+     * 否则与 Pikafish / 标准 UCCI 引擎的 bestmove 对不上。
+     */
+    fun format(from: BoardPoint, to: BoardPoint): String = point(from) + point(to)
+
+    fun point(p: BoardPoint): String {
+        val file = ('a'.code + p.file).toChar()
+        val rank = BoardPoint.RANK_COUNT - 1 - p.rank
+        return "$file$rank"
     }
 }
 

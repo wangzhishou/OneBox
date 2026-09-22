@@ -25,6 +25,8 @@ object AiRequestUrlResolver {
                     RequestRoute.PROXY
                 }
             }
+            // Pikafish 仅支持自家 Go 网关远程引擎, 无直连
+            engine.requestProtocol == AiRequestProtocol.PIKAFISH -> RequestRoute.PROXY
             engine.canChatDirectly() -> RequestRoute.DIRECT
             engine.hasProxyRouteConfigured() -> RequestRoute.PROXY
             else -> RequestRoute.UNAVAILABLE
@@ -65,6 +67,12 @@ object AiRequestUrlResolver {
                         path = engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH },
                     )
                 }
+            }
+            AiRequestProtocol.PIKAFISH -> {
+                joinUrl(
+                    baseUrl = engine.proxyUrl.ifBlank { NetworkBuilder.getBaseUrl() },
+                    path = engine.proxyPath.ifBlank { UrlConstants.XIANGQI_ENGINE_PROXY_PATH },
+                )
             }
             AiRequestProtocol.RESPONSES_COMPATIBLE -> {
                 if (route == RequestRoute.DIRECT) {
@@ -130,6 +138,8 @@ object AiRequestUrlResolver {
                     .takeIf { shouldUseDirectRequest(engine) && it.isNotBlank() }
                     ?.let { "Bearer $it" }
             }
+            // Pikafish 仅走自家网关, 鉴权由 AuthInterceptor 注入 App JWT
+            AiRequestProtocol.PIKAFISH -> null
             AiRequestProtocol.RESPONSES_COMPATIBLE -> {
                 engine.authorizationCode
                     .takeIf { shouldUseDirectRequest(engine) && it.isNotBlank() }

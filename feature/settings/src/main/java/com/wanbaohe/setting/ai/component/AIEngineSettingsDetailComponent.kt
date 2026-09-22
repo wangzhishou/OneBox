@@ -124,6 +124,7 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
                 AiRequestProtocol.RESPONSES_COMPATIBLE -> "/v1/responses"
                 AiRequestProtocol.ANTHROPIC_COMPATIBLE -> "/v1/messages"
                 AiRequestProtocol.JEV -> UrlConstants.JEV_SYSTEMONE_ENDPOINT
+                AiRequestProtocol.PIKAFISH -> UrlConstants.XIANGQI_ENGINE_PROXY_PATH
                 else -> engine.requestPath.ifBlank { "/v1/chat/completions" }
             }
             val previousDefaultAuthType = AuthType.defaultFor(engine.requestProtocol)
@@ -137,19 +138,25 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
                 authType = nextAuthType,
                 requestUrl = if (value == AiRequestProtocol.JEV) {
                     engine.requestUrl.ifBlank { UrlConstants.TYPESAFE_AI_BASE_URL }
+                } else if (value == AiRequestProtocol.PIKAFISH) {
+                    ""
                 } else {
                     engine.requestUrl
                 },
-                requestPath = engine.requestPath.ifBlank { fallbackPath },
-                proxyUrl = if (value == AiRequestProtocol.JEV) {
+                requestPath = if (value == AiRequestProtocol.PIKAFISH) {
+                    ""
+                } else {
+                    engine.requestPath.ifBlank { fallbackPath }
+                },
+                proxyUrl = if (value == AiRequestProtocol.JEV || value == AiRequestProtocol.PIKAFISH) {
                     engine.proxyUrl.ifBlank { UrlConstants.RELEASE_URL }
                 } else {
                     engine.proxyUrl
                 },
-                proxyPath = if (value == AiRequestProtocol.JEV) {
-                    engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH }
-                } else {
-                    engine.proxyPath
+                proxyPath = when (value) {
+                    AiRequestProtocol.JEV -> engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH }
+                    AiRequestProtocol.PIKAFISH -> engine.proxyPath.ifBlank { UrlConstants.XIANGQI_ENGINE_PROXY_PATH }
+                    else -> engine.proxyPath
                 },
                 isDetestPassed = false
             )

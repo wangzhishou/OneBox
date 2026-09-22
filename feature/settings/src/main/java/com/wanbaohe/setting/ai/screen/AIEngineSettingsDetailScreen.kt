@@ -389,7 +389,7 @@ fun AIEngineSettingsDetailScreen(
                     },
                 )
 
-                if (engine.requestProtocol != AiRequestProtocol.JEV) {
+                if (!engine.requestProtocol.isNonChat) {
                     ParameterCard(
                         engine = engine,
                         cloudConnections = component.cloudConnections,
@@ -451,7 +451,7 @@ fun AIEngineSettingsDetailScreen(
             },
             onSave = {
                 val engine = draftEngine ?: return@BottomSaveCancelBar
-                val isJev = engine.requestProtocol == AiRequestProtocol.JEV
+                val isJev = engine.requestProtocol.isNonChat
                 val updatedEngine = engine.copy(
                     isUrlError = !isJev && !StringUtils.isValidUrl(engine.requestUrl)
                 )
@@ -784,7 +784,7 @@ private fun ServerConnectivityCard(
 ) {
     SettingCard {
         var showAuthOptions by rememberSaveable { mutableStateOf(false) }
-        val isJev = engine.requestProtocol == AiRequestProtocol.JEV
+        val isJev = engine.requestProtocol.isNonChat
 
         if (!isJev) {
             // 鉴权方式默认折叠(Bearer),点请求协议行尾箭头展开
@@ -800,7 +800,7 @@ private fun ServerConnectivityCard(
                 // JEV 由 Jev tab 专属管理, 仅当前已是 JEV 的引擎保留该项, 避免普通引擎被误切到 JEV
                 AiRequestProtocol.cloudProtocols
                     .filter { it != AiRequestProtocol.OWN_PROXY }
-                    .filter { it != AiRequestProtocol.JEV || engine.requestProtocol == AiRequestProtocol.JEV }
+                    .filter { !it.isNonChat || engine.requestProtocol == it }
             }
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(selectableProtocols) { protocol ->
@@ -945,7 +945,7 @@ private fun ModelSelectionCard(
     // 渠道能力(如 Google 全量放开)或高等级用户可从服务商拉取模型列表;
     // 但直连未验证(测试未通过)时拉取必然无权限,入口一并隐藏;
     // Jev 模型目录由客户端内置, 不支持从服务商拉取
-    val canLoadRemote = engine.requestProtocol != AiRequestProtocol.JEV &&
+    val canLoadRemote = !engine.requestProtocol.isNonChat &&
             (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
             loginState.vipLevel == 10) && engine.isDetestPassed
     SettingCard {
@@ -1125,6 +1125,7 @@ private fun protocolLabel(protocol: AiRequestProtocol): String {
         // LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）。
         AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(R.string.ai_engine_protocol_local_on_device)
         AiRequestProtocol.JEV -> stringResource(R.string.ai_engine_protocol_jev)
+        AiRequestProtocol.PIKAFISH -> stringResource(R.string.ai_engine_protocol_pikafish)
     }
 }
 

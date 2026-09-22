@@ -449,6 +449,26 @@ data class AiModel(
                     supportToolCalls = false,
                 )
 
+                AiProvider.Pikafish -> AiModel(
+                    name = "pikafish",
+                    title = AppContext.getString(R.string.ai_model_default_pikafish_title),
+                    description = "",
+                    canUploadFile = false,
+                    canNetwork = false,
+                    temperature = 0.3,
+                    topP = 1.0,
+                    free = false,
+                    provider = AiProvider.Pikafish,
+                    basePoints = 0.1f,
+                    maxTokens = 2048,
+                    canReasoning = false,
+                    canEdit = false,
+                    canImage = false,
+                    canVideo = false,
+                    canUseTempApi = false,
+                    supportToolCalls = false,
+                )
+
                 else -> AiModel(
                     name = "deepseek-flash",
                     title = AppContext.getString(R.string.ai_model_default_deepseek_title),

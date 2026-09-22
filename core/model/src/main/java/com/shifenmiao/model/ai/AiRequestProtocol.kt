@@ -45,7 +45,21 @@ enum class AiRequestProtocol : Parcelable {
      * requestUrl / requestPath / apiKey 字段在本协议下不使用。
      */
     @SerialName("jev")
-    JEV;
+    JEV,
+
+    /**
+     * Pikafish 象棋引擎走棋接口。
+     *
+     * 非 chat 协议：请求体为 FEN + 思考参数, 响应为 bestmove(UCCI)。
+     * 仅经 go-proxy `POST /xiangqi/engine/bestmove` 代理, 由 App JWT 鉴权;
+     * requestUrl / requestPath / apiKey 字段在本协议下不使用。
+     */
+    @SerialName("pikafish")
+    PIKAFISH;
+
+    /** 非 chat 协议: 只走各自专用通道, 不进聊天协议路由。 */
+    val isNonChat: Boolean
+        get() = this == JEV || this == PIKAFISH
 
     companion object {
         /**
@@ -72,6 +86,7 @@ enum class AiRequestProtocol : Parcelable {
                 "anthropic_compatible", "anthropiccompatible", "anthropic", "claude", "mimo" -> ANTHROPIC_COMPATIBLE
                 "local_on_device", "local", "on_device", "ondevice", "local_llm", "localllm" -> LOCAL_ON_DEVICE
                 "jev", "typesafe", "typesafe_systemone", "systemone", "system_one" -> JEV
+                "pikafish", "xiangqi_engine", "xiangqiengine", "ucci_engine" -> PIKAFISH
                 else -> entries.firstOrNull {
                     it.name.lowercase() == normalizedValue
                 } ?: OPENAI_COMPATIBLE

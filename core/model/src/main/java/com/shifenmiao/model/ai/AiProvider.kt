@@ -45,6 +45,12 @@ sealed class AiProvider(val value: String) : Parcelable {
      */
     @Parcelize @Serializable data object Jev : AiProvider("jev")
 
+    /**
+     * Pikafish 象棋引擎（服务端 UCI/UCCI 远程走棋）。
+     * 请求经 go-proxy 代理到 /xiangqi/engine/bestmove，鉴权由 App 登录 JWT 完成。
+     */
+    @Parcelize @Serializable data object Pikafish : AiProvider("pikafish")
+
     companion object {
         fun fromValue(providerName: String?): AiProvider {
             return when (providerName?.trim()?.lowercase()) {
@@ -64,6 +70,7 @@ sealed class AiProvider(val value: String) : Parcelable {
                 Baidu.value -> Baidu
                 Local.value -> Local
                 Jev.value, "typesafe" -> Jev
+                Pikafish.value, "xiangqi_engine" -> Pikafish
                 else -> Default
             }
         }
