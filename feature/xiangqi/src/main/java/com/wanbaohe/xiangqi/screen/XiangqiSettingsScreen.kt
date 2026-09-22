@@ -31,14 +31,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Switch
 import com.shifenmiao.base.utils.ActionUtils
-import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
 import com.shifenmiao.model.tts.TTSConfig
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.xiangqi.R
+import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiSource
 import com.wanbaohe.xiangqi.data.XiangqiTTSTemplates
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
+import com.wanbaohe.xiangqi.ui.XiangqiAiPickerBottomSheet
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
@@ -52,39 +54,33 @@ fun XiangqiSettingsScreen(
 ) {
     val settings by component.xiangqiSettings.collectAsState()
     val fastEngine by component.currentAIEngine.collectAsState()
-    val duelEngineA by component.duelEngineA.collectAsState()
-    val duelEngineB by component.duelEngineB.collectAsState()
-    val allEngines by component.allAiEngines.collectAsState()
-    val modelsByProvider by component.modelsByProvider.collectAsState()
+    val aiConfig by component.xiangqiAiConfig.collectAsState()
     val ttsConfig by component.ttsConfig.collectAsState(initial = TTSConfig())
     val runningSettingsActions by component.runningSettingsActions.collectAsState()
     var pickingSlot by remember { mutableStateOf<AiSlot?>(null) }
 
     val pickingSlotValue = pickingSlot
     if (pickingSlotValue != null) {
-        val (slotEngine, slotTitleRes) = when (pickingSlotValue) {
-            AiSlot.FAST -> fastEngine to R.string.xiangqi_settings_ai_picker_title
-            AiSlot.DUEL_A -> duelEngineA to R.string.xiangqi_settings_ai_duel_a_picker_title
-            AiSlot.DUEL_B -> duelEngineB to R.string.xiangqi_settings_ai_duel_b_picker_title
+        val (selectedSource, slotTitleRes) = when (pickingSlotValue) {
+            AiSlot.FAST -> aiConfig.fastSource to R.string.xiangqi_settings_ai_picker_title
+            AiSlot.DUEL_A -> aiConfig.duelASource to R.string.xiangqi_settings_ai_duel_a_picker_title
+            AiSlot.DUEL_B -> aiConfig.duelBSource to R.string.xiangqi_settings_ai_duel_b_picker_title
         }
-        AIModelsPickerBottomSheet(
+        XiangqiAiPickerBottomSheet(
             visible = true,
-            allEngines = allEngines,
-            modelsByProvider = modelsByProvider,
-            selectedEngineName = slotEngine.identityKey(),
-            selectedModelName = slotEngine.model.name,
+            selected = selectedSource,
+            workingModelTitle = sourceSubtitle(XiangqiAiSource.WorkingModel, fastEngine),
             title = stringResource(slotTitleRes),
-            onSelected = { selectedEngine, selectedModel ->
-                when (pickingSlotValue) {
-                    AiSlot.FAST -> component.switchAiModel(selectedEngine, selectedModel)
-                    AiSlot.DUEL_A -> component.switchDuelEngineA(selectedEngine, selectedModel)
-                    AiSlot.DUEL_B -> component.switchDuelEngineB(selectedEngine, selectedModel)
+            onSelected = { source ->
+                val slot = when (pickingSlotValue) {
+                    AiSlot.FAST -> EngineSlot.FAST
+                    AiSlot.DUEL_A -> EngineSlot.DUEL_A
+                    AiSlot.DUEL_B -> EngineSlot.DUEL_B
                 }
+                component.switchAiSource(slot, source)
                 pickingSlot = null
             },
             onDismiss = { pickingSlot = null },
-            showSettings = true,
-            onSettings = component::openAiModelSettings,
         )
     }
 
@@ -221,22 +217,22 @@ fun XiangqiSettingsScreen(
             AiSlotRow(
                 title = stringResource(R.string.xiangqi_settings_ai_fast_title),
                 description = stringResource(R.string.xiangqi_settings_ai_fast_desc),
-                engineName = fastEngine.title.ifBlank { fastEngine.name },
-                modelName = fastEngine.model.title.ifBlank { fastEngine.model.name },
+                engineName = sourceLabel(aiConfig.fastSource),
+                modelName = sourceSubtitle(aiConfig.fastSource, fastEngine),
                 onClick = { pickingSlot = AiSlot.FAST },
             )
             AiSlotRow(
                 title = stringResource(R.string.xiangqi_settings_ai_duel_a_title),
                 description = stringResource(R.string.xiangqi_settings_ai_duel_a_desc),
-                engineName = duelEngineA.title.ifBlank { duelEngineA.name },
-                modelName = duelEngineA.model.title.ifBlank { duelEngineA.model.name },
+                engineName = sourceLabel(aiConfig.duelASource),
+                modelName = sourceSubtitle(aiConfig.duelASource, fastEngine),
                 onClick = { pickingSlot = AiSlot.DUEL_A },
             )
             AiSlotRow(
                 title = stringResource(R.string.xiangqi_settings_ai_duel_b_title),
                 description = stringResource(R.string.xiangqi_settings_ai_duel_b_desc),
-                engineName = duelEngineB.title.ifBlank { duelEngineB.name },
-                modelName = duelEngineB.model.title.ifBlank { duelEngineB.model.name },
+                engineName = sourceLabel(aiConfig.duelBSource),
+                modelName = sourceSubtitle(aiConfig.duelBSource, fastEngine),
                 onClick = { pickingSlot = AiSlot.DUEL_B },
             )
         }
@@ -561,6 +557,28 @@ private fun TTSConfigSummaryItem(
 }
 
 private enum class AiSlot { FAST, DUEL_A, DUEL_B }
+
+@Composable
+private fun sourceLabel(source: XiangqiAiSource): String = when (source) {
+    XiangqiAiSource.WorkingModel -> stringResource(R.string.xiangqi_ai_source_working_model)
+    XiangqiAiSource.Jev -> stringResource(R.string.xiangqi_ai_source_jev)
+    is XiangqiAiSource.RemoteEngine -> when (source.engineId) {
+        XiangqiAiSource.RemoteEngine.PIKAFISH -> stringResource(R.string.xiangqi_ai_source_pikafish)
+        else -> source.engineId
+    }
+}
+
+@Composable
+private fun sourceSubtitle(
+    source: XiangqiAiSource,
+    workingModel: com.shifenmiao.model.ai.AiEngine,
+): String = when (source) {
+    XiangqiAiSource.WorkingModel ->
+        (workingModel.title.ifBlank { workingModel.name }) +
+            " · " + (workingModel.model.title.ifBlank { workingModel.model.name })
+    XiangqiAiSource.Jev -> stringResource(R.string.xiangqi_ai_source_jev_desc)
+    is XiangqiAiSource.RemoteEngine -> stringResource(R.string.xiangqi_ai_source_engine_desc)
+}
 
 private fun com.shifenmiao.model.tts.TTSProviderType.labelResId(): Int = when (this) {
     com.shifenmiao.model.tts.TTSProviderType.MIMO -> R.string.xiangqi_settings_tts_provider_mimo

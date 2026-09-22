@@ -797,10 +797,17 @@ private fun ServerConnectivityCard(
             // 协议选项横向滚动,卡片样式与模型管理一致
             val selectableProtocols = remember(engine.requestProtocol) {
                 // 「应用代理」是内置中转链路,不作为可选协议暴露;
-                // JEV 由 Jev tab 专属管理, 仅当前已是 JEV 的引擎保留该项, 避免普通引擎被误切到 JEV
+                // JEV 仅海外可选(国内无备案), 且仅当前已是 JEV 的引擎保留该项
+                val jevAllowed = com.shifenmiao.model.channel.FlavorType.fromName().isOverseas
                 AiRequestProtocol.cloudProtocols
                     .filter { it != AiRequestProtocol.OWN_PROXY }
-                    .filter { !it.isNonChat || engine.requestProtocol == it }
+                    .filter { protocol ->
+                        when (protocol) {
+                            AiRequestProtocol.JEV ->
+                                jevAllowed && engine.requestProtocol == AiRequestProtocol.JEV
+                            else -> !protocol.isNonChat || engine.requestProtocol == protocol
+                        }
+                    }
             }
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(selectableProtocols) { protocol ->

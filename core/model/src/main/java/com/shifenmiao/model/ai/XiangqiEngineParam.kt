@@ -11,6 +11,9 @@ import com.google.gson.annotations.SerializedName
 data class XiangqiEngineRequest(
     @SerializedName("fen")
     val fen: String,
+    /** 服务端引擎标识（如 "pikafish"），预留多引擎路由 */
+    @SerializedName("engine")
+    val engine: String? = null,
     @SerializedName("moves")
     val moves: String? = null,
     @SerializedName("movetime_ms")

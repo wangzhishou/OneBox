@@ -45,7 +45,13 @@
     <string name="xiangqi_settings_ai_model">Current model</string>
     <string name="xiangqi_settings_open_ai_model_settings">Open AI engine and model settings</string>
     <string name="xiangqi_settings_pick_ai_model">Choose Xiangqi AI model</string>
-    <string name="xiangqi_settings_ai_picker_title">Choose Xiangqi AI model</string>
+    <string name="xiangqi_settings_ai_picker_title">Choose Xiangqi AI</string>
+    <string name="xiangqi_ai_picker_desc">Xiangqi move engines are separate from chat models.</string>
+    <string name="xiangqi_ai_source_working_model">Fast working model</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe decision model</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Server-side chess engine</string>
     <string name="xiangqi_settings_ai_fast_title">Human vs AI model</string>
     <string name="xiangqi_settings_ai_fast_desc">Used in "Human vs AI" mode; affects move strength and style.</string>
     <string name="xiangqi_settings_ai_duel_a_title">AI duel · Red</string>

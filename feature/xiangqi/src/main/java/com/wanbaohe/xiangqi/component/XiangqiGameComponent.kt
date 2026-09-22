@@ -14,6 +14,9 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.xiangqi.application.dto.GameDetail
 import com.wanbaohe.xiangqi.application.port.outbound.AudioSettings
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiConfig
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiSource
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiStore
 import com.wanbaohe.xiangqi.application.usecase.AiOrchestrationUseCase
 import com.wanbaohe.xiangqi.application.usecase.AudioFeedbackUseCase
 import com.wanbaohe.xiangqi.application.usecase.ExportGameUseCase
@@ -22,7 +25,6 @@ import com.wanbaohe.xiangqi.application.usecase.ManageGameUseCase
 import com.wanbaohe.xiangqi.application.usecase.OnlinePlayUseCase
 import com.wanbaohe.xiangqi.application.usecase.PlayMoveUseCase
 import com.wanbaohe.xiangqi.application.usecase.SettingsUseCase
-import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.data.XiangqiPlyRecord
 import com.wanbaohe.xiangqi.domain.FenCodec
@@ -91,6 +93,7 @@ class XiangqiGameComponent @AssistedInject constructor(
     private val exportGame: ExportGameUseCase,
     private val settingsUseCase: SettingsUseCase,
     private val aiEngineManager: AIEngineManager,
+    private val xiangqiAiStore: XiangqiAiStore,
     private val onlinePlay: OnlinePlayUseCase,
     aiEngineCatalogManager: AIEngineCatalogManager,
     dispatchersHolder: DispatchersHolder,
@@ -209,7 +212,7 @@ class XiangqiGameComponent @AssistedInject constructor(
     }
 
     fun openAiModelSettings() {
-        onNavigate(Screen.Settings(searchQuery = AppContext.getString(R.string.xiangqi_search_ai_model)))
+        onNavigate(Screen.AISettings(Screen.AISettings.Type.WorkingModel))
     }
 
     fun switchAiModelForSide(side: Side, engine: AiEngine, model: AiModel) {
@@ -224,6 +227,30 @@ class XiangqiGameComponent @AssistedInject constructor(
         }
         refreshAiDisplay()
     }
+
+    fun switchAiSourceForSide(side: Side, source: XiangqiAiSource) {
+        val slot = when (uiState.mode) {
+            GameMode.LLM_VS_LLM -> if (side == Side.RED) EngineSlot.DUEL_A else EngineSlot.DUEL_B
+            else -> EngineSlot.FAST
+        }
+        componentScope.launch {
+            xiangqiAiStore.update(xiangqiAiStore.get().withSource(slot, source))
+            refreshAiDisplay()
+        }
+    }
+
+    fun currentSourceForSide(side: Side): XiangqiAiSource {
+        val slot = when (uiState.mode) {
+            GameMode.LLM_VS_LLM -> if (side == Side.RED) EngineSlot.DUEL_A else EngineSlot.DUEL_B
+            else -> EngineSlot.FAST
+        }
+        return currentAiConfig.value.sourceFor(slot)
+    }
+
+    val currentAIEngine: StateFlow<AiEngine> = aiEngineManager.fastAIEngine
+
+    val currentAiConfig: StateFlow<XiangqiAiConfig> = xiangqiAiStore.observe()
+        .stateIn(componentScope, SharingStarted.WhileSubscribed(5_000), XiangqiAiConfig())
 
     fun currentEngineForSide(side: Side): AiEngine = when (uiState.mode) {
         GameMode.LLM_VS_LLM ->
@@ -417,12 +444,15 @@ class XiangqiGameComponent @AssistedInject constructor(
 
     private fun resolveAiDisplay(mode: GameMode, playerType: PlayerType, side: Side): Pair<String, String> {
         if (playerType != PlayerType.LLM) return "" to ""
-        val engine = when (mode) {
-            GameMode.LLM_VS_LLM ->
-                if (side == Side.RED) aiEngineManager.getDuelEngineA() else aiEngineManager.getDuelEngineB()
-            else -> aiEngineManager.getFastAiEngine()
+        val source = currentSourceForSide(side)
+        return when (source) {
+            XiangqiAiSource.WorkingModel -> {
+                val engine = aiEngineManager.getFastAiEngine()
+                (engine.title.ifBlank { engine.name }) to (engine.model.title.ifBlank { engine.model.name })
+            }
+            XiangqiAiSource.Jev -> "Jev" to ""
+            is XiangqiAiSource.RemoteEngine -> source.engineId to ""
         }
-        return (engine.title.ifBlank { engine.name }) to (engine.model.title.ifBlank { engine.model.name })
     }
 
     private fun refreshAiDisplay() {

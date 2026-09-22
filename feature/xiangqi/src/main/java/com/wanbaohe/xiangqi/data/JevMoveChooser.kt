@@ -3,8 +3,8 @@ package com.wanbaohe.xiangqi.data
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.model.ai.AiEngine
+import com.shifenmiao.model.ai.AiProvider
 import com.shifenmiao.model.ai.JevChoiceAnswer
 import com.shifenmiao.model.ai.JevRequest
 import com.shifenmiao.model.ai.JevResponse
@@ -12,7 +12,6 @@ import com.shifenmiao.network.AiRequestUrlResolver
 import com.shifenmiao.network.api.JevService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
-import com.wanbaohe.xiangqi.application.port.outbound.MoveChooser
 import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
 import com.wanbaohe.xiangqi.domain.model.BoardState
 import com.wanbaohe.xiangqi.domain.model.Piece
@@ -26,13 +25,12 @@ import javax.inject.Singleton
 
 @Singleton
 class JevMoveChooser @Inject constructor(
-    private val aiEngineManager: AIEngineManager,
     @Named("JevDirectService") private val jevDirectService: JevService,
     @Named("JevProxyService") private val jevProxyService: JevService,
     dispatchersHolder: DispatchersHolder,
-) : MoveChooser, DispatchersHolder by dispatchersHolder {
+) : DispatchersHolder by dispatchersHolder {
 
-    override suspend fun choose(
+    suspend fun choose(
         boardState: BoardState,
         fen: String,
         history: List<String>,
@@ -41,7 +39,7 @@ class JevMoveChooser @Inject constructor(
     ): MoveDecision? {
         if (legalMoves.isEmpty()) return null
 
-        val engine = slot.toEngine()
+        val engine = AiEngine.builtInEngine(AiProvider.Jev)
         val model = engine.model.name.takeIf { it.startsWith("jev") } ?: JevBestMoveResolver.DEFAULT_MODEL
         val url = AiRequestUrlResolver.resolveRequestUrl(engine)
         val service = if (AiRequestUrlResolver.shouldUseDirectRequest(engine)) {
@@ -90,12 +88,6 @@ class JevMoveChooser @Inject constructor(
 
         return HeuristicMoveFallback.decision(legalMoves)
             ?.copy(reason = "jev: ${lastError ?: "failed"}", fallbackUsed = true)
-    }
-
-    private fun EngineSlot.toEngine(): AiEngine = when (this) {
-        EngineSlot.FAST -> aiEngineManager.getFastAiEngine()
-        EngineSlot.DUEL_A -> aiEngineManager.getDuelEngineA()
-        EngineSlot.DUEL_B -> aiEngineManager.getDuelEngineB()
     }
 }
 

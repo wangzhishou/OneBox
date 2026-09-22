@@ -8,6 +8,7 @@ import com.wanbaohe.xiangqi.application.port.outbound.SettingsStore
 import com.wanbaohe.xiangqi.application.port.outbound.SignalingClient
 import com.wanbaohe.xiangqi.application.port.outbound.SoundPlayer
 import com.wanbaohe.xiangqi.application.port.outbound.TtsEngine
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiStore
 import com.wanbaohe.xiangqi.data.AiTaskDaoAdapter
 import com.wanbaohe.xiangqi.data.AudioAdapter
 import com.wanbaohe.xiangqi.data.DispatchingMoveChooser
@@ -15,6 +16,7 @@ import com.wanbaohe.xiangqi.data.GameDaoAdapter
 import com.wanbaohe.xiangqi.data.PlyDaoAdapter
 import com.wanbaohe.xiangqi.data.SettingsPrefsAdapter
 import com.wanbaohe.xiangqi.data.TtsAdapter
+import com.wanbaohe.xiangqi.data.XiangqiAiPrefsAdapter
 import com.wanbaohe.xiangqi.data.online.SignalingApi
 import com.wanbaohe.xiangqi.data.online.SignalingClientImpl
 import com.shifenmiao.model.xiangqi.XiangqiServiceInterface
@@ -47,6 +49,10 @@ abstract class XiangqiModule {
     @Binds
     @Singleton
     abstract fun bindSettingsStore(adapter: SettingsPrefsAdapter): SettingsStore
+
+    @Binds
+    @Singleton
+    abstract fun bindXiangqiAiStore(adapter: XiangqiAiPrefsAdapter): XiangqiAiStore
 
     @Binds
     @Singleton

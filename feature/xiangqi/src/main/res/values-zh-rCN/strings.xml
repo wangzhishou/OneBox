@@ -44,7 +44,13 @@
     <string name="xiangqi_settings_ai_model">当前模型</string>
     <string name="xiangqi_settings_open_ai_model_settings">打开 AI 引擎和模型设置</string>
     <string name="xiangqi_settings_pick_ai_model">选择象棋 AI 模型</string>
-    <string name="xiangqi_settings_ai_picker_title">选择象棋 AI 模型</string>
+    <string name="xiangqi_settings_ai_picker_title">选择象棋 AI</string>
+    <string name="xiangqi_ai_picker_desc">象棋走棋引擎与聊天模型分开配置。</string>
+    <string name="xiangqi_ai_source_working_model">快速工作模型</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe 判断模型</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">服务端象棋引擎</string>
     <string name="xiangqi_settings_ai_fast_title">人机对弈 AI</string>
     <string name="xiangqi_settings_ai_fast_desc">在「人机对弈」模式下使用,影响落子的强度与风格。</string>
     <string name="xiangqi_settings_ai_duel_a_title">AI 对战 · 红方</string>

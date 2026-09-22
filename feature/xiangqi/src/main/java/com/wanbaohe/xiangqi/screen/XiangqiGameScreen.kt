@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.Avatar
 import com.shifenmiao.common.ui.BaseScreen
-import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
+import com.wanbaohe.xiangqi.ui.XiangqiAiPickerBottomSheet
 import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
@@ -212,18 +212,15 @@ fun XiangqiGameScreen(
 
     val pickingSideValue = pickingSide
     if (pickingSideValue != null) {
-        val allEngines by component.allAiEngines.collectAsState()
-        val modelsByProvider by component.modelsByProvider.collectAsState()
-        val currentEngine = component.currentEngineForSide(pickingSideValue)
-        AIModelsPickerBottomSheet(
+        val currentSource = component.currentSourceForSide(pickingSideValue)
+        val workingModel by component.currentAIEngine.collectAsState()
+        XiangqiAiPickerBottomSheet(
             visible = true,
-            allEngines = allEngines,
-            modelsByProvider = modelsByProvider,
-            selectedEngineName = currentEngine.identityKey(),
-            selectedModelName = currentEngine.model.name,
+            selected = currentSource,
+            workingModelTitle = workingModel.title.ifBlank { workingModel.name },
             title = stringResource(R.string.xiangqi_settings_ai_picker_title),
-            onSelected = { engine, model ->
-                component.switchAiModelForSide(pickingSideValue, engine, model)
+            onSelected = { source ->
+                component.switchAiSourceForSide(pickingSideValue, source)
                 pickingSide = null
             },
             onDismiss = { pickingSide = null },

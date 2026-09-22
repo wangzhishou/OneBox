@@ -96,8 +96,12 @@ fun AIModelsPickerBottomSheet(
         var selectedFilter by rememberSaveable { mutableStateOf(ENGINE_FILTER_ALL) }
         var searchQuery by rememberSaveable(visible) { mutableStateOf("") }
 
+        // 决策类协议（Jev/Pikafish）只在象棋专用选择器出现，不进聊天/通用模型面板
+        val chatEngines = remember(allEngines) {
+            allEngines.filter { !it.requestProtocol.isNonChat }
+        }
         val filteredModelsWithEngine by remember(
-            allEngines,
+            chatEngines,
             modelsByProvider,
             selectedFilter,
             searchQuery,
@@ -106,7 +110,7 @@ fun AIModelsPickerBottomSheet(
         ) {
             derivedStateOf {
                 buildFilteredModels(
-                    allEngines = allEngines,
+                    allEngines = chatEngines,
                     modelsByProvider = modelsByProvider,
                     selectedFilter = selectedFilter,
                     searchQuery = searchQuery,
@@ -145,7 +149,7 @@ fun AIModelsPickerBottomSheet(
 
             Spacer(modifier = Modifier.height(12.dp))
             EngineFilterChips(
-                allEngines = allEngines,
+                allEngines = chatEngines,
                 selectedFilter = selectedFilter,
                 onFilterSelected = { selectedFilter = it },
             )
@@ -765,11 +769,12 @@ private fun buildFilteredModels(
     searchQuery: String,
 ): List<Pair<AiEngine, AiModel>> {
     val normalizedQuery = searchQuery.trim().lowercase()
-    val engines = if (selectedFilter == ENGINE_FILTER_ALL) {
+    // 决策类协议（Jev/Pikafish）只在象棋专用选择器出现，不进聊天/通用模型面板
+    val engines = (if (selectedFilter == ENGINE_FILTER_ALL) {
         allEngines
     } else {
         allEngines.filter { it.identityKey() == selectedFilter }
-    }
+    }).filter { !it.requestProtocol.isNonChat }
     return engines.flatMap { engine ->
         val models = modelsByProvider[engine.name.lowercase()] ?: emptyList()
         models

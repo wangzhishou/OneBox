@@ -80,13 +80,16 @@ fun AIServiceHubScreen(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText,
                 )
             )
-            add(
-                HubTab(
-                    key = AIServiceHubTab.Jev,
-                    titleRes = R.string.ai_service_hub_tab_jev,
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePsychology,
+            // Jev(TypeSafe) 国内无备案, 仅海外渠道展示
+            if (FlavorType.fromName().isOverseas) {
+                add(
+                    HubTab(
+                        key = AIServiceHubTab.Jev,
+                        titleRes = R.string.ai_service_hub_tab_jev,
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePsychology,
+                    )
                 )
-            )
+            }
             if (FlavorType.fromName().isOverseas) {
                 add(
                     HubTab(
@@ -154,7 +157,7 @@ fun AIServiceHubScreen(
                         AIServiceHubTab.Text -> AIEngineSettingsContent(
                             component = engineComponent,
                             modifier = Modifier.fillMaxSize(),
-                            // Jev/Pikafish 是独立协议的专用引擎, 在专属 tab 管理, 不混进普通引擎列表
+                            // Jev/Pikafish 是决策/引擎类，不混进普通聊天引擎列表；模型选择面板也不出它们的筛选 tab
                             engineFilter = { !it.requestProtocol.isNonChat },
                         )
 

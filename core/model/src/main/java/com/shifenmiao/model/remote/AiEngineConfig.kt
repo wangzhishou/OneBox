@@ -67,7 +67,7 @@ object AiEngineConfig {
             AiProvider.Kimi.value,
             AiProvider.Baidu.value,
             AiProvider.Mimo.value,
-            AiProvider.Jev.value,
+            // Jev(TypeSafe) 国内无备案, 仅海外渠道预制
             AiProvider.Pikafish.value,
         )
 

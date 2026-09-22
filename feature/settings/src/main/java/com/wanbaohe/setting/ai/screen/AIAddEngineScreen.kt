@@ -121,10 +121,14 @@ fun AIAddEngineScreen(
                 // 仅展示云端协议；LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）;
                 // JEV 引擎仅在 Jev tab 新增, 普通入口的选择器排除 JEV;
                 // 从 Jev tab 进入时协议锁定为 JEV, 只展示一个固定选中项。
+                // Jev(TypeSafe) 国内无备案, 协议选择器仅海外暴露
+                val jevAllowed = com.shifenmiao.model.channel.FlavorType.fromName().isOverseas
                 val selectableProtocols = when {
                     isJevProtocol -> listOf(AiRequestProtocol.JEV)
                     isPikafishProtocol -> listOf(AiRequestProtocol.PIKAFISH)
-                    else -> AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.JEV }
+                    else -> AiRequestProtocol.cloudProtocols.filter {
+                        it != AiRequestProtocol.JEV || jevAllowed
+                    }
                 }
                 items(selectableProtocols) { protocol ->
                     EngineFilterChip(

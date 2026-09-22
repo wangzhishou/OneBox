@@ -25,7 +25,11 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.xiangqi.application.audio.XiangqiAudioDefaults
+import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
 import com.wanbaohe.xiangqi.application.port.outbound.SoundPlayer
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiConfig
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiSource
+import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiStore
 import com.wanbaohe.xiangqi.application.usecase.GameQueryUseCase
 import com.wanbaohe.xiangqi.application.usecase.SettingsUseCase
 import com.wanbaohe.xiangqi.component.XiangqiAnalysisComponent
@@ -64,6 +68,7 @@ class XiangqiRouterComponent @AssistedInject constructor(
     private val soundPlayer: SoundPlayer,
     private val ttsService: TTSService,
     private val aiEngineManager: AIEngineManager,
+    private val xiangqiAiStore: XiangqiAiStore,
     aiEngineCatalogManager: AIEngineCatalogManager,
     private val gameQuery: GameQueryUseCase,
     private val promptDao: PromptDao,
@@ -109,6 +114,9 @@ class XiangqiRouterComponent @AssistedInject constructor(
     val currentAIEngine: StateFlow<AiEngine> = aiEngineManager.fastAIEngine
     val duelEngineA: StateFlow<AiEngine> = aiEngineManager.duelEngineA
     val duelEngineB: StateFlow<AiEngine> = aiEngineManager.duelEngineB
+
+    val xiangqiAiConfig: StateFlow<XiangqiAiConfig> = xiangqiAiStore.observe()
+        .stateIn(componentScope, SharingStarted.WhileSubscribed(5_000), XiangqiAiConfig())
 
     val allAiEngines: StateFlow<List<AiEngine>> =
         aiEngineCatalogManager.observeAvailableEngines()
@@ -195,7 +203,15 @@ class XiangqiRouterComponent @AssistedInject constructor(
     fun switchDuelEngineA(engine: AiEngine, model: AiModel) { aiEngineManager.setDuelEngineA(engine.copy(model = model)) }
     fun switchDuelEngineB(engine: AiEngine, model: AiModel) { aiEngineManager.setDuelEngineB(engine.copy(model = model)) }
 
-    fun openAiModelSettings() { onNavigate(Screen.Settings(searchQuery = AppContext.getString(R.string.xiangqi_search_ai_model))) }
+    fun switchAiSource(slot: EngineSlot, source: XiangqiAiSource) {
+        componentScope.launch {
+            xiangqiAiStore.update(xiangqiAiStore.get().withSource(slot, source))
+        }
+    }
+
+    fun openAiModelSettings() {
+        onNavigate(Screen.AISettings(Screen.AISettings.Type.WorkingModel))
+    }
     fun openXiangqiPromptSettings() {
         componentScope.launch {
             val prompt = promptDao.getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_XIANGQI_MOVE)
