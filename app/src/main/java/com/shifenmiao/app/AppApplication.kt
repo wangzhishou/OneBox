@@ -21,6 +21,7 @@ import com.shifenmiao.base.BaseApplication
 import com.shifenmiao.base.utils.CoreUtils
 import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.database.AppDatabase
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.model.event.StartupTraceMarkEvent
 import com.shifenmiao.model.wechat.Wechat
@@ -128,7 +129,7 @@ class AppApplication : BaseApplication() {
         initAppContext()
         // 记录进程启动时的语言, 之后运行中语言变化会触发冷重启(见 onConfigurationChanged)
         LocaleSwitchWatcher.onProcessStart()
-        applyEnglishFallbackLocaleIfNeeded()
+        applyLocaleFallbackIfNeeded()
         DecomposeSettings.update { it.copy(duplicateConfigurationsEnabled = true) }
 
         setupFlags()
@@ -178,8 +179,12 @@ class AppApplication : BaseApplication() {
     }
 
     /**
-     * 海外语言兜底: 默认资源 values/ 是中文, 系统语言非中文且用户从未手动选择过
-     * 应用语言时, 首次启动直接把应用语言切到英文, 避免日/韩/法等地区用户看到中文界面。
+     * 语言兜底: 用户从未手动选择过应用语言时, 按渠道锁定兜底语言。
+     * 默认资源 values/ 是英文, 中文在 values-zh-rCN:
+     * - 海外(google/foss): 系统语言非中文时把应用语言切到英文, 避免日/韩/法等
+     *   地区用户看到中文界面。
+     * - 国内: 包内只有中文(values-zh-rCN) + 默认英文两份资源, 系统语言非中文时
+     *   锁 zh-CN, 否则英文系统会解析到默认英文资源, 整个界面变英文。
      * 用户一旦选过语言(应用内选择页落 LANGUAGE_USER_CHOSEN 标记——含"跟随系统";
      * 或系统侧 per-app locales 非空), 本逻辑不再干预。
      *
@@ -188,9 +193,9 @@ class AppApplication : BaseApplication() {
      * 之前因此每次冷启动都误判"从未选择", 虽没改成系统存储, 但会把
      * LocaleUtils 缓存错误覆写成 "en"(strings 与数据源语言不一致的根因)。
      */
-    private fun applyEnglishFallbackLocaleIfNeeded() {
+    private fun applyLocaleFallbackIfNeeded() {
         // 用户显式选择过语言(含"跟随系统")就不再干预;
-        // 否则"跟随系统"+非中文系统的用户每次冷启动都会被强制成英文
+        // 否则"跟随系统"的用户每次冷启动都会被强制改写语言
         if (AppSharedStorage.loadLanguageUserChosen()) return
         val perAppTag: String? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getSystemService(LocaleManager::class.java)
@@ -205,14 +210,15 @@ class AppApplication : BaseApplication() {
         if (!perAppTag.isNullOrBlank()) return
         val systemLanguage = Resources.getSystem().configuration.locales[0]?.language
         if (systemLanguage == Locale.CHINESE.language) return
+        val fallbackTag = if (FlavorType.fromName().isOverseas) "en" else "zh-CN"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getSystemService(LocaleManager::class.java).applicationLocales =
-                android.os.LocaleList.forLanguageTags("en")
+                android.os.LocaleList.forLanguageTags(fallbackTag)
         } else {
-            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(fallbackTag))
         }
         // 启动期主动改写语言, 告知 watcher 避免被误判为运行中切换而触发重启
-        LocaleSwitchWatcher.onLocaleOverriddenAtStartup("en")
+        LocaleSwitchWatcher.onLocaleOverriddenAtStartup(fallbackTag)
     }
 
     /**
