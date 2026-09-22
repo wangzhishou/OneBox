@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">無効なFEN形式</string>
     <string name="xiangqi_invalid_json">無効なJSON記法形式</string>
     <string name="xiangqi_ai_failed">AIが有効な手を返さなかったため、ローカルフォールバックを適用しました</string>
+    <string name="xiangqi_ai_local_fallback_title">エンジンが利用できないため、ローカルの代替手を指しました</string>
+    <string name="xiangqi_ai_local_fallback_message">理由: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">サウンドオン</string>
+    <string name="xiangqi_analysis_sound_off">サウンドオフ</string>
+    <string name="xiangqi_settings_sound_enabled">効果音とBGM</string>
     <string name="xiangqi_history_title">手の履歴</string>
     <string name="xiangqi_initial_position">初期位置</string>
     <string name="xiangqi_latest_game">最近の対局</string>

@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">Geçersiz FEN formatı</string>
     <string name="xiangqi_invalid_json">Geçersiz JSON notasyon formatı</string>
     <string name="xiangqi_ai_failed">AI geçerli bir hamle döndürmedi; yerel yedek uygulandı</string>
+    <string name="xiangqi_ai_local_fallback_title">Motor kullanılamıyor — yerel yedek hamle oynandı</string>
+    <string name="xiangqi_ai_local_fallback_message">Neden: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">Ses açık</string>
+    <string name="xiangqi_analysis_sound_off">Ses kapalı</string>
+    <string name="xiangqi_settings_sound_enabled">Ses ve arka plan müziği</string>
     <string name="xiangqi_history_title">Hamle geçmişi</string>
     <string name="xiangqi_initial_position">Başlangıç konumu</string>
     <string name="xiangqi_latest_game">Son oyunlar</string>

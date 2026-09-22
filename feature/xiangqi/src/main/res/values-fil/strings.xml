@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">Hindi wastong format ng FEN</string>
     <string name="xiangqi_invalid_json">Hindi wastong format ng JSON notation</string>
     <string name="xiangqi_ai_failed">Hindi nagbigay ng legal na hakbang ang AI; ginamit ang lokal na kapalit</string>
+    <string name="xiangqi_ai_local_fallback_title">Hindi available ang engine — lokal na fallback na hakbang ang ginamit</string>
+    <string name="xiangqi_ai_local_fallback_message">Dahilan: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">Bukas ang tunog</string>
+    <string name="xiangqi_analysis_sound_off">Sarado ang tunog</string>
+    <string name="xiangqi_settings_sound_enabled">Tunog at background na musika</string>
     <string name="xiangqi_history_title">Kasaysayan ng mga hakbang</string>
     <string name="xiangqi_initial_position">Paunang posisyon</string>
     <string name="xiangqi_latest_game">Mga kamakailang laro</string>

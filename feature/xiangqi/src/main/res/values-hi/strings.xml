@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">अमान्य FEN प्रारूप</string>
     <string name="xiangqi_invalid_json">अमान्य JSON नोटेशन प्रारूप</string>
     <string name="xiangqi_ai_failed">AI ने वैध चाल नहीं लौटाई; स्थानीय विकल्प लागू किया गया</string>
+    <string name="xiangqi_ai_local_fallback_title">इंजन उपलब्ध नहीं — स्थानीय फ़ॉलबैक चाल चली गई</string>
+    <string name="xiangqi_ai_local_fallback_message">कारण: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">ध्वनि चालू</string>
+    <string name="xiangqi_analysis_sound_off">ध्वनि बंद</string>
+    <string name="xiangqi_settings_sound_enabled">ध्वनि और पृष्ठभूमि संगीत</string>
     <string name="xiangqi_history_title">चाल इतिहास</string>
     <string name="xiangqi_initial_position">प्रारंभिक स्थिति</string>
     <string name="xiangqi_latest_game">हाल के खेल</string>

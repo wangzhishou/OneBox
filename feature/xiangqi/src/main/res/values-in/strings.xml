@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">Format FEN tidak valid</string>
     <string name="xiangqi_invalid_json">Format notasi JSON tidak valid</string>
     <string name="xiangqi_ai_failed">AI tidak mengembalikan langkah yang sah; fallback lokal diterapkan</string>
+    <string name="xiangqi_ai_local_fallback_title">Mesin tidak tersedia — langkah cadangan lokal dimainkan</string>
+    <string name="xiangqi_ai_local_fallback_message">Alasan: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">Suara aktif</string>
+    <string name="xiangqi_analysis_sound_off">Suara nonaktif</string>
+    <string name="xiangqi_settings_sound_enabled">Suara dan musik latar</string>
     <string name="xiangqi_history_title">Riwayat langkah</string>
     <string name="xiangqi_initial_position">Posisi awal</string>
     <string name="xiangqi_latest_game">Permainan terbaru</string>

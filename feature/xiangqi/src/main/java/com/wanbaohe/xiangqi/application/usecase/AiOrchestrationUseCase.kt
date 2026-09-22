@@ -90,7 +90,9 @@ class AiOrchestrationUseCase @Inject constructor(
         val result = playMove.commit(
             gameId = gameId,
             move = decision.move,
-            aiReason = decision.reason,
+            // 落库时打上机器可读前缀：UI 据此提示"这手是本地兜底，不是引擎给的"。
+            // 远程引擎不可用时兜底是静默的，用户只会觉得"AI 变笨了"，必须让它可见。
+            aiReason = decision.storedReason(),
             aiRawResponse = decision.rawResponse,
         )
 

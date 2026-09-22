@@ -168,6 +168,8 @@
     <string name="xiangqi_invalid_fen">Invalid FEN format</string>
     <string name="xiangqi_invalid_json">Invalid JSON notation format</string>
     <string name="xiangqi_ai_failed">AI did not return a legal move; local fallback applied</string>
+    <string name="xiangqi_ai_local_fallback_title">Engine unavailable — played a local fallback move</string>
+    <string name="xiangqi_ai_local_fallback_message">Reason: %1$s</string>
     <string name="xiangqi_history_title">Move history</string>
     <string name="xiangqi_initial_position">Initial position</string>
     <string name="xiangqi_latest_game">Recent games</string>

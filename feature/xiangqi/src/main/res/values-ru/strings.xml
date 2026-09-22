@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">Неверный формат FEN</string>
     <string name="xiangqi_invalid_json">Неверный формат JSON-нотации</string>
     <string name="xiangqi_ai_failed">ИИ не вернул допустимый ход; применен локальный запасной вариант</string>
+    <string name="xiangqi_ai_local_fallback_title">Движок недоступен — сделан локальный запасной ход</string>
+    <string name="xiangqi_ai_local_fallback_message">Причина: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">Звук включён</string>
+    <string name="xiangqi_analysis_sound_off">Звук выключен</string>
+    <string name="xiangqi_settings_sound_enabled">Звук и фоновая музыка</string>
     <string name="xiangqi_history_title">История ходов</string>
     <string name="xiangqi_initial_position">Начальная позиция</string>
     <string name="xiangqi_latest_game">Недавние игры</string>

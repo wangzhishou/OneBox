@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">잘못된 FEN 형식</string>
     <string name="xiangqi_invalid_json">잘못된 JSON 표기 형식</string>
     <string name="xiangqi_ai_failed">AI가 합법적인 수를 반환하지 않아 로컬 대체 수를 적용했습니다</string>
+    <string name="xiangqi_ai_local_fallback_title">엔진을 사용할 수 없어 로컬 대체 수를 두었습니다</string>
+    <string name="xiangqi_ai_local_fallback_message">이유: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">소리 켜짐</string>
+    <string name="xiangqi_analysis_sound_off">소리 꺼짐</string>
+    <string name="xiangqi_settings_sound_enabled">효과음 및 배경 음악</string>
     <string name="xiangqi_history_title">수순 기록</string>
     <string name="xiangqi_initial_position">초기 위치</string>
     <string name="xiangqi_latest_game">최근 게임</string>

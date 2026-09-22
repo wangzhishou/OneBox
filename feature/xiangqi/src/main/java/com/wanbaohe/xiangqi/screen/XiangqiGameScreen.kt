@@ -58,6 +58,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.xiangqi.BuildConfig
 import com.wanbaohe.xiangqi.R
+import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
 import com.wanbaohe.xiangqi.component.XiangqiGameComponent
 import com.wanbaohe.xiangqi.component.XiangqiGameUiState
 import com.wanbaohe.xiangqi.data.TextExportLabels
@@ -386,6 +387,52 @@ private fun XiangqiGameContent(
 
         if (BuildConfig.DEBUG && state.mode == GameMode.ONLINE_PVP) {
             OnlineDebugPanel(state = state)
+        }
+
+        // 引擎不可用时会静默回退本地兜底，只表现为"AI 突然变笨"。
+        // 这里把它显式说出来，并带上兜底原因（如 "pikafish: http 503"），否则无从排查。
+        val fallbackPly = state.history.lastOrNull {
+            MoveDecision.isLocalFallback(it.aiReason)
+        }?.takeIf { it.ply == state.currentPly }
+        if (fallbackPly != null) {
+            // 用落库的 moverSide 判定行棋方最可靠（不依赖当前轮到谁）
+            val engineName = when (fallbackPly.moverSide) {
+                Side.RED -> state.redAiServiceName.ifBlank { state.redAiModelName }
+                Side.BLACK -> state.blackAiServiceName.ifBlank { state.blackAiModelName }
+            }
+            StatusCard(
+                title = stringResource(R.string.xiangqi_ai_local_fallback_title),
+                subtitle = stringResource(
+                    R.string.xiangqi_ai_local_fallback_message,
+                    fallbackPly.aiReason
+                        .removePrefix(MoveDecision.LOCAL_FALLBACK_MARKER)
+                        .ifBlank { "unknown" },
+                ),
+                actions = {
+                    // AI 对战下两个座位都是引擎，只给一个"切换模型"入口会让人误解是哪个
+                    if (state.mode != GameMode.LLM_VS_LLM) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            if (engineName.isNotBlank()) {
+                                Text(
+                                    text = engineName,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.weight(1f),
+                                )
+                            }
+                            GlassTonalButton(
+                                onClick = component::openAiModelSettings,
+                                modifier = Modifier.weight(1f),
+                            ) {
+                                Text(stringResource(R.string.xiangqi_switch_ai_model))
+                            }
+                        }
+                    }
+                },
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))

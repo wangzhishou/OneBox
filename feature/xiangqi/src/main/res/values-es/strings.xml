@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">Formato FEN inválido</string>
     <string name="xiangqi_invalid_json">Formato de notación JSON inválido</string>
     <string name="xiangqi_ai_failed">La IA no devolvió un movimiento legal; se aplicó una alternativa local</string>
+    <string name="xiangqi_ai_local_fallback_title">Motor no disponible: se jugó una jugada local de respaldo</string>
+    <string name="xiangqi_ai_local_fallback_message">Motivo: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">Sonido activado</string>
+    <string name="xiangqi_analysis_sound_off">Sonido desactivado</string>
+    <string name="xiangqi_settings_sound_enabled">Sonido y música de fondo</string>
     <string name="xiangqi_history_title">Historial de movimientos</string>
     <string name="xiangqi_initial_position">Posición inicial</string>
     <string name="xiangqi_latest_game">Partidas recientes</string>

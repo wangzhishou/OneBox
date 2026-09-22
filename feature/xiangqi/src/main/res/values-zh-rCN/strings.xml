@@ -167,6 +167,8 @@
     <string name="xiangqi_invalid_fen">FEN 格式不合法</string>
     <string name="xiangqi_invalid_json">JSON 棋谱格式不合法</string>
     <string name="xiangqi_ai_failed">AI 未返回合法走法，已启用本地兜底</string>
+    <string name="xiangqi_ai_local_fallback_title">引擎不可用，已改用本地兜底着法</string>
+    <string name="xiangqi_ai_local_fallback_message">原因：%1$s</string>
     <string name="xiangqi_history_title">着法记录</string>
     <string name="xiangqi_initial_position">初始局面</string>
     <string name="xiangqi_latest_game">最近对局</string>

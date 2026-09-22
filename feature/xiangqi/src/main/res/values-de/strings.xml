@@ -165,6 +165,11 @@
     <string name="xiangqi_invalid_fen">Ungültiges FEN-Format</string>
     <string name="xiangqi_invalid_json">Ungültiges JSON-Notationsformat</string>
     <string name="xiangqi_ai_failed">KI hat keinen legalen Zug zurückgegeben; lokaler Ersatz angewendet</string>
+    <string name="xiangqi_ai_local_fallback_title">Engine nicht verfügbar – lokaler Ersatzzug gespielt</string>
+    <string name="xiangqi_ai_local_fallback_message">Grund: %1$s</string>
+    <string name="xiangqi_analysis_sound_on">Ton an</string>
+    <string name="xiangqi_analysis_sound_off">Ton aus</string>
+    <string name="xiangqi_settings_sound_enabled">Sound und Hintergrundmusik</string>
     <string name="xiangqi_history_title">Zughistorie</string>
     <string name="xiangqi_initial_position">Startposition</string>
     <string name="xiangqi_latest_game">Letzte Spiele</string>
