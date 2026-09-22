@@ -16,6 +16,15 @@ object AiRequestUrlResolver {
 
     fun resolveRequestRoute(engine: AiEngine): RequestRoute {
         return when {
+            // Jev: 与其他引擎同一套路由语义 —— 已验证直连(或 Google 渠道自带 token)
+            // 且官网地址已配置时直连, 否则走 App 代理兜底(代理路径有兜底常量, 始终可用)
+            engine.requestProtocol == AiRequestProtocol.JEV -> {
+                if (engine.canChatDirectly() && engine.requestUrl.isNotBlank()) {
+                    RequestRoute.DIRECT
+                } else {
+                    RequestRoute.PROXY
+                }
+            }
             engine.canChatDirectly() -> RequestRoute.DIRECT
             engine.hasProxyRouteConfigured() -> RequestRoute.PROXY
             else -> RequestRoute.UNAVAILABLE
@@ -41,6 +50,22 @@ object AiRequestUrlResolver {
         val route = resolveRequestRoute(engine)
 
         return when (engine.requestProtocol) {
+            AiRequestProtocol.JEV -> {
+                if (route == RequestRoute.DIRECT) {
+                    joinUrl(
+                        baseUrl = normalizeBaseUrl(
+                            baseUrl = engine.requestUrl,
+                            fallbackBaseUrl = NetworkBuilder.ensureValidBaseUrl(engine)
+                        ),
+                        path = engine.requestPath.ifBlank { UrlConstants.JEV_SYSTEMONE_ENDPOINT },
+                    )
+                } else {
+                    joinUrl(
+                        baseUrl = engine.proxyUrl.ifBlank { NetworkBuilder.getBaseUrl() },
+                        path = engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH },
+                    )
+                }
+            }
             AiRequestProtocol.RESPONSES_COMPATIBLE -> {
                 if (route == RequestRoute.DIRECT) {
                     val baseUrl = normalizeBaseUrl(
@@ -99,6 +124,12 @@ object AiRequestUrlResolver {
             AiRequestProtocol.ANTHROPIC_COMPATIBLE -> {
                 null
             }
+            // Jev: 直连时带用户官网 key; 代理路由不带(由 OkHttp AuthInterceptor 注入 App JWT)
+            AiRequestProtocol.JEV -> {
+                engine.authorizationCode
+                    .takeIf { shouldUseDirectRequest(engine) && it.isNotBlank() }
+                    ?.let { "Bearer $it" }
+            }
             AiRequestProtocol.RESPONSES_COMPATIBLE -> {
                 engine.authorizationCode
                     .takeIf { shouldUseDirectRequest(engine) && it.isNotBlank() }
@@ -151,6 +182,7 @@ object AiRequestUrlResolver {
             AiProvider.Mimo.value -> UrlConstants.XIAOMI_AI_PROXY_PATH
             AiProvider.ZhiPu.value -> UrlConstants.ZHIPU_AI_PROXY_PATH
             AiProvider.MinMax.value.lowercase() -> UrlConstants.MINIMAX_AI_PROXY_PATH
+            AiProvider.Jev.value -> UrlConstants.JEV_PROXY_PATH
             else -> UrlConstants.OPENAI_TEXT_COMPLETIONS_ENDPOINT
         }
     }

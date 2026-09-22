@@ -47,6 +47,7 @@
     <string name="ai_model_protocol_anthropic">Anthropic 兼容</string>
     <string name="ai_model_protocol_proxy">应用代理</string>
     <string name="ai_model_protocol_local_on_device">端侧本地（不走网络）</string>
+    <string name="ai_model_protocol_jev">Jev 判断引擎</string>
     <string name="ai_model_route_label">当前链路</string>
     <string name="ai_model_route_direct">已验证 · 本地直连</string>
     <string name="ai_model_route_proxy">未验证 · App 中转</string>

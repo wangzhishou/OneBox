@@ -348,6 +348,23 @@ data class AiEngine(
                     fileUploadStrategy = FileUploadStrategy.BASE64
                 )
 
+                // Jev(System One 判断模型): 自带官网 key 且验证通过后直连, 否则经 Go 网关代理兜底
+                AiProvider.Jev -> AiEngine(
+                    name = AiProvider.Jev.value,
+                    iconName = "Gavel",
+                    title = AppContext.getString(R.string.ai_engine_seed_jev_title),
+                    description = "",
+                    requestUrl = UrlConstants.TYPESAFE_AI_BASE_URL,
+                    requestPath = UrlConstants.JEV_SYSTEMONE_ENDPOINT,
+                    proxyUrl = UrlConstants.RELEASE_URL,
+                    proxyPath = UrlConstants.JEV_PROXY_PATH,
+                    authorizationCode = "",
+                    model = AiModel.getDefaultModelForProvider(AiProvider.Jev),
+                    requestProtocol = AiRequestProtocol.JEV,
+                    stream = false,
+                    fileUploadStrategy = FileUploadStrategy.BASE64
+                )
+
                 else -> defaultEngineFallback(provider)
             }
         }

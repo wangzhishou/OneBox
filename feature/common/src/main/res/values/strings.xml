@@ -47,6 +47,7 @@
     <string name="ai_model_protocol_anthropic">Anthropic-compatible</string>
     <string name="ai_model_protocol_proxy">App proxy</string>
     <string name="ai_model_protocol_local_on_device">On-device (no network)</string>
+    <string name="ai_model_protocol_jev">Jev judgment engine</string>
     <string name="ai_model_route_label">Current route</string>
     <string name="ai_model_route_direct">Verified · direct connection</string>
     <string name="ai_model_route_proxy">Unverified · routed via App proxy</string>

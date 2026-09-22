@@ -125,6 +125,10 @@
 -keep class com.shifenmiao.ai.agent.tool.ToolConfirmationRequest { *; }
 -keep class com.shifenmiao.model.ai.tool.ConversationToolPolicy { *; }
 -keep class com.shifenmiao.model.ai.tool.ToolCatalogItem { *; }
+# Jev(System One) 判断模型 DTO: Gson 反射解析/构造, 防横向类合并与字段混淆
+-keep class com.shifenmiao.model.ai.JevRequest { *; }
+-keep class com.shifenmiao.model.ai.JevResponse { *; }
+-keep class com.shifenmiao.model.ai.JevChoiceAnswer { *; }
 -keep class com.shifenmiao.ai.utils.AgentToolCallRecord { *; }
 -keep class com.shifenmiao.ai.agent.ToolCallRecord { *; }
 

@@ -9,6 +9,7 @@ import com.shifenmiao.network.api.AnthropicCompatibleService
 import com.shifenmiao.network.api.ApiService
 import com.shifenmiao.network.api.BaiduImageProcessApiService
 import com.shifenmiao.network.api.DocConvertApiService
+import com.shifenmiao.network.api.JevService
 import com.shifenmiao.network.api.OpenAICompatibleService
 import com.shifenmiao.network.api.OpenAIWithApiKeyService
 import com.shifenmiao.network.api.OwnProxyAIService
@@ -186,6 +187,21 @@ object NetworkModule {
     @Singleton
     fun provideOwnProxyAIService(@Named("DefaultRetrofit") retrofit: Retrofit): OwnProxyAIService =
         retrofit.create(OwnProxyAIService::class.java)
+
+    @Provides
+    @Singleton
+    @Named("JevProxyService")
+    // 代理路由走 DefaultRetrofit: AuthInterceptor 注入 App 登录 JWT
+    fun provideJevProxyService(@Named("DefaultRetrofit") retrofit: Retrofit): JevService =
+        retrofit.create(JevService::class.java)
+
+    @Provides
+    @Singleton
+    @Named("JevDirectService")
+    // 直连 typesafe.ai 走 OpenAICompatibleRetrofit: 不挂 AuthInterceptor,
+    // 避免把 App 登录 JWT 泄露给第三方, 用户 key 由 @Header 按引擎配置传递
+    fun provideJevDirectService(@Named("OpenAICompatibleRetrofit") retrofit: Retrofit): JevService =
+        retrofit.create(JevService::class.java)
 
     @Provides
     @Singleton

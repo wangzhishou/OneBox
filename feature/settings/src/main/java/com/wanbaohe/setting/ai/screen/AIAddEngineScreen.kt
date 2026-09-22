@@ -29,6 +29,7 @@ import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.BottomSaveCancelBar
 import com.shifenmiao.common.ui.ai.EngineFilterChip
+import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
@@ -58,15 +59,18 @@ fun AIAddEngineScreen(
     val trimmedRequestUrl = draft.requestUrl.trim()
     val trimmedRequestPath = draft.requestPath.trim()
     val isLocalProtocol = draft.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE
+    // Jev 仅走 App 代理, 不要求直连 URL/Path/Token
+    val isJevProtocol = draft.requestProtocol == AiRequestProtocol.JEV
     val isTitleError = showValidationErrors && trimmedTitle.isBlank()
     val isNameError = showValidationErrors && trimmedName.isBlank()
     // 本地协议不要求 URL/Path（由本地模型管理页处理），跳过校验避免阻止保存。
-    val isRequestUrlError = !isLocalProtocol && showValidationErrors &&
+    val skipCloudValidation = isLocalProtocol || isJevProtocol
+    val isRequestUrlError = !skipCloudValidation && showValidationErrors &&
         (trimmedRequestUrl.isBlank() || !StringUtils.isValidUrl(trimmedRequestUrl))
-    val isRequestPathError = !isLocalProtocol && showValidationErrors && trimmedRequestPath.isBlank()
+    val isRequestPathError = !skipCloudValidation && showValidationErrors && trimmedRequestPath.isBlank()
     // 名称/标题任何协议都必填；URL/Path 仅云端协议必填；本地协议下整段云端校验跳过。
     val hasValidationErrors = trimmedTitle.isBlank() || trimmedName.isBlank() ||
-        (!isLocalProtocol && (
+        (!skipCloudValidation && (
             trimmedRequestUrl.isBlank() ||
                 !StringUtils.isValidUrl(trimmedRequestUrl) ||
                 trimmedRequestPath.isBlank()
@@ -113,8 +117,15 @@ fun AIAddEngineScreen(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // 仅展示云端协议；LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）。
-                items(AiRequestProtocol.cloudProtocols) { protocol ->
+                // 仅展示云端协议；LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）;
+                // JEV 引擎仅在 Jev tab 新增, 普通入口的选择器排除 JEV;
+                // 从 Jev tab 进入时协议锁定为 JEV, 只展示一个固定选中项。
+                val selectableProtocols = if (isJevProtocol) {
+                    listOf(AiRequestProtocol.JEV)
+                } else {
+                    AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.JEV }
+                }
+                items(selectableProtocols) { protocol ->
                     EngineFilterChip(
                         text = when (protocol) {
                             AiRequestProtocol.OPENAI_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_openai)
@@ -122,9 +133,11 @@ fun AIAddEngineScreen(
                             AiRequestProtocol.ANTHROPIC_COMPATIBLE -> stringResource(R.string.ai_engine_protocol_anthropic)
                             AiRequestProtocol.OWN_PROXY -> stringResource(R.string.ai_engine_protocol_proxy)
                             AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(R.string.ai_engine_protocol_local_on_device)
+                            AiRequestProtocol.JEV -> stringResource(R.string.ai_engine_protocol_jev)
                         },
                         isSelected = draft.requestProtocol == protocol,
                         onClick = {
+                            if (isJevProtocol) return@EngineFilterChip
                             component.updateDraft { engine ->
                                 val previousDefaultAuthType = AuthType.defaultFor(engine.requestProtocol)
                                 val nextAuthType = if (engine.authType == previousDefaultAuthType) {
@@ -141,6 +154,16 @@ fun AIAddEngineScreen(
                                     requestProtocol = protocol,
                                     authType = nextAuthType,
                                     requestPath = engine.requestPath.ifBlank { fallbackPath },
+                                    proxyUrl = if (protocol == AiRequestProtocol.JEV) {
+                                        engine.proxyUrl.ifBlank { UrlConstants.RELEASE_URL }
+                                    } else {
+                                        engine.proxyUrl
+                                    },
+                                    proxyPath = if (protocol == AiRequestProtocol.JEV) {
+                                        engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH }
+                                    } else {
+                                        engine.proxyPath
+                                    },
                                 )
                             }
                         },
@@ -148,20 +171,22 @@ fun AIAddEngineScreen(
                 }
             }
 
-            Text(
-                text = stringResource(R.string.ai_engine_auth_type_label),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(AuthType.entries) { type ->
-                    EngineFilterChip(
-                        text = authTypeLabel(type),
-                        isSelected = draft.authType == type,
-                        onClick = {
-                            component.updateDraft { it.copy(authType = type) }
-                        },
-                    )
+            if (!isJevProtocol) {
+                Text(
+                    text = stringResource(R.string.ai_engine_auth_type_label),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(AuthType.entries) { type ->
+                        EngineFilterChip(
+                            text = authTypeLabel(type),
+                            isSelected = draft.authType == type,
+                            onClick = {
+                                component.updateDraft { it.copy(authType = type) }
+                            },
+                        )
+                    }
                 }
             }
 
@@ -214,6 +239,7 @@ fun AIAddEngineScreen(
                 },
             )
             // 本地协议下 URL / Path / Auth Token 字段无意义，整体隐藏；
+            // Jev 展示直连字段(官网地址/key), 仅跳过必填校验(留空走 App 代理兜底)。
             // Phase 2 由"本地模型管理"页提供专属导入流程。
             if (!isLocalProtocol) {
                 OneBoxOutlinedTextField(

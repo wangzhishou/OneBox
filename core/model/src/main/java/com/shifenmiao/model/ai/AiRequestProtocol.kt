@@ -35,7 +35,17 @@ enum class AiRequestProtocol : Parcelable {
      * 全部失效，由 [LocalLlmModelSpec] 描述物理文件、backend、chat template 等。
      */
     @SerialName("local_on_device")
-    LOCAL_ON_DEVICE;
+    LOCAL_ON_DEVICE,
+
+    /**
+     * TypeSafe System One 判断模型（Jev）。
+     *
+     * 非 chat 接口：请求体为 state + questions(choice 判断), 响应为各问题
+     * 的概率分布。仅经 go-proxy 代理访问(go-proxy 校验 model 以 jev 开头),
+     * requestUrl / requestPath / apiKey 字段在本协议下不使用。
+     */
+    @SerialName("jev")
+    JEV;
 
     companion object {
         /**
@@ -61,6 +71,7 @@ enum class AiRequestProtocol : Parcelable {
                 "own_proxy", "ownproxy", "proxy", "self_proxy", "self_hosted_proxy" -> OWN_PROXY
                 "anthropic_compatible", "anthropiccompatible", "anthropic", "claude", "mimo" -> ANTHROPIC_COMPATIBLE
                 "local_on_device", "local", "on_device", "ondevice", "local_llm", "localllm" -> LOCAL_ON_DEVICE
+                "jev", "typesafe", "typesafe_systemone", "systemone", "system_one" -> JEV
                 else -> entries.firstOrNull {
                     it.name.lowercase() == normalizedValue
                 } ?: OPENAI_COMPATIBLE

@@ -389,43 +389,45 @@ fun AIEngineSettingsDetailScreen(
                     },
                 )
 
-                ParameterCard(
-                    engine = engine,
-                    cloudConnections = component.cloudConnections,
-                    onTemperatureChange = component::updateTemperature,
-                    onTopPChange = component::updateTopP,
-                    onMaxTokensChange = component::updateMaxTokens,
-                    onCanUploadFileChange = component::updateModelCanUploadFile,
-                    onCanNetworkChange = component::updateModelCanNetwork,
-                    onCanReasoningChange = component::updateModelCanReasoning,
-                    onCanImageChange = component::updateModelCanImage,
-                    onIsFastChange = component::updateModelIsFast,
-                    onIsCodeChange = component::updateModelIsCode,
-                    onSupportToolCallsChange = component::updateModelSupportToolCalls,
-                    onStreamChange = component::updateStream,
-                    onFileUploadStrategyChange = component::updateFileUploadStrategy,
-                    onCloudStorageConnectionIdChange = component::updateCloudStorageConnectionId,
-                    onCloudStorageBucketChange = component::updateCloudStorageBucket,
-                    onCloudStoragePrefixChange = component::updateCloudStoragePrefix,
-                    onResetRemoteModelOverrides = {
-                        component.resetRemoteModelOverrides { success ->
-                            coroutineScope.launch {
-                                if (success) {
-                                    AppToastHost.showToast(
-                                        getString(R.string.ai_engine_model_restore_defaults_success)
-                                    )
-                                } else {
-                                    AppToastHost.showFailureToast(
-                                        getString(R.string.ai_engine_model_restore_defaults_failed)
-                                    )
+                if (engine.requestProtocol != AiRequestProtocol.JEV) {
+                    ParameterCard(
+                        engine = engine,
+                        cloudConnections = component.cloudConnections,
+                        onTemperatureChange = component::updateTemperature,
+                        onTopPChange = component::updateTopP,
+                        onMaxTokensChange = component::updateMaxTokens,
+                        onCanUploadFileChange = component::updateModelCanUploadFile,
+                        onCanNetworkChange = component::updateModelCanNetwork,
+                        onCanReasoningChange = component::updateModelCanReasoning,
+                        onCanImageChange = component::updateModelCanImage,
+                        onIsFastChange = component::updateModelIsFast,
+                        onIsCodeChange = component::updateModelIsCode,
+                        onSupportToolCallsChange = component::updateModelSupportToolCalls,
+                        onStreamChange = component::updateStream,
+                        onFileUploadStrategyChange = component::updateFileUploadStrategy,
+                        onCloudStorageConnectionIdChange = component::updateCloudStorageConnectionId,
+                        onCloudStorageBucketChange = component::updateCloudStorageBucket,
+                        onCloudStoragePrefixChange = component::updateCloudStoragePrefix,
+                        onResetRemoteModelOverrides = {
+                            component.resetRemoteModelOverrides { success ->
+                                coroutineScope.launch {
+                                    if (success) {
+                                        AppToastHost.showToast(
+                                            getString(R.string.ai_engine_model_restore_defaults_success)
+                                        )
+                                    } else {
+                                        AppToastHost.showFailureToast(
+                                            getString(R.string.ai_engine_model_restore_defaults_failed)
+                                        )
+                                    }
                                 }
                             }
-                        }
-                    },
-                    onNavigateToCloudStorage = {
-                        component.onNavigate(Screen.CloudStorage())
-                    },
-                )
+                        },
+                        onNavigateToCloudStorage = {
+                            component.onNavigate(Screen.CloudStorage())
+                        },
+                    )
+                }
 
                 if (localOwnedEngineKeys.contains(engine.identityKey())) {
                     Spacer(modifier = Modifier.height(24.dp))
@@ -449,10 +451,11 @@ fun AIEngineSettingsDetailScreen(
             },
             onSave = {
                 val engine = draftEngine ?: return@BottomSaveCancelBar
+                val isJev = engine.requestProtocol == AiRequestProtocol.JEV
                 val updatedEngine = engine.copy(
-                    isUrlError = !StringUtils.isValidUrl(engine.requestUrl)
+                    isUrlError = !isJev && !StringUtils.isValidUrl(engine.requestUrl)
                 )
-                if (!StringUtils.isValidUrl(updatedEngine.requestUrl) || updatedEngine.requestPath.isBlank()) {
+                if (!isJev && (!StringUtils.isValidUrl(updatedEngine.requestUrl) || updatedEngine.requestPath.isBlank())) {
                     component.updateUrlValidation(!StringUtils.isValidUrl(updatedEngine.requestUrl))
                     coroutineScope.launch {
                         AppToastHost.showFailureToast(
@@ -781,56 +784,70 @@ private fun ServerConnectivityCard(
 ) {
     SettingCard {
         var showAuthOptions by rememberSaveable { mutableStateOf(false) }
+        val isJev = engine.requestProtocol == AiRequestProtocol.JEV
 
-        // 鉴权方式默认折叠(Bearer),点请求协议行尾箭头展开
-        CollapsibleSectionHeader(
-            title = stringResource(R.string.ai_engine_protocol_label),
-            expanded = showAuthOptions,
-            onToggle = { showAuthOptions = !showAuthOptions },
-        )
+        if (!isJev) {
+            // 鉴权方式默认折叠(Bearer),点请求协议行尾箭头展开
+            CollapsibleSectionHeader(
+                title = stringResource(R.string.ai_engine_protocol_label),
+                expanded = showAuthOptions,
+                onToggle = { showAuthOptions = !showAuthOptions },
+            )
 
-        // 协议选项横向滚动,卡片样式与模型管理一致
-        val selectableProtocols = remember {
-            // 「应用代理」是内置中转链路,不作为可选协议暴露
-            AiRequestProtocol.cloudProtocols.filter { it != AiRequestProtocol.OWN_PROXY }
-        }
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(selectableProtocols) { protocol ->
-                SelectGridCard(
-                    title = protocolLabel(protocol),
-                    subtitle = null,
-                    isSelected = engine.requestProtocol == protocol,
-                    onClick = { onProtocolChange(protocol) },
-                    // LazyRow 给子项的宽度上限是 Infinity,SelectGridCard 内部标题列用了
-                    // Modifier.weight(1f),权重在无界主轴下会解析成 0 宽 → 文字不可见;
-                    // 这里用内容固有宽度给卡片定宽,文字才能测量出真实尺寸
-                    modifier = Modifier.width(IntrinsicSize.Max),
-                )
+            // 协议选项横向滚动,卡片样式与模型管理一致
+            val selectableProtocols = remember(engine.requestProtocol) {
+                // 「应用代理」是内置中转链路,不作为可选协议暴露;
+                // JEV 由 Jev tab 专属管理, 仅当前已是 JEV 的引擎保留该项, 避免普通引擎被误切到 JEV
+                AiRequestProtocol.cloudProtocols
+                    .filter { it != AiRequestProtocol.OWN_PROXY }
+                    .filter { it != AiRequestProtocol.JEV || engine.requestProtocol == AiRequestProtocol.JEV }
             }
-        }
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(selectableProtocols) { protocol ->
+                    SelectGridCard(
+                        title = protocolLabel(protocol),
+                        subtitle = null,
+                        isSelected = engine.requestProtocol == protocol,
+                        onClick = { onProtocolChange(protocol) },
+                        // LazyRow 给子项的宽度上限是 Infinity,SelectGridCard 内部标题列用了
+                        // Modifier.weight(1f),权重在无界主轴下会解析成 0 宽 → 文字不可见;
+                        // 这里用内容固有宽度给卡片定宽,文字才能测量出真实尺寸
+                        modifier = Modifier.width(IntrinsicSize.Max),
+                    )
+                }
+            }
 
-        AnimatedVisibility(visible = showAuthOptions) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
-            ) {
-                Text(
-                    text = stringResource(R.string.ai_engine_auth_type_label),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
+            AnimatedVisibility(visible = showAuthOptions) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+                ) {
+                    Text(
+                        text = stringResource(R.string.ai_engine_auth_type_label),
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
 
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(AuthType.entries) { authType ->
-                        SelectGridCard(
-                            title = authTypeLabel(authType),
-                            subtitle = null,
-                            isSelected = engine.authType == authType,
-                            onClick = { onAuthTypeChange(authType) },
-                            modifier = Modifier.width(IntrinsicSize.Max),
-                        )
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(AuthType.entries) { authType ->
+                            SelectGridCard(
+                                title = authTypeLabel(authType),
+                                subtitle = null,
+                                isSelected = engine.authType == authType,
+                                onClick = { onAuthTypeChange(authType) },
+                                modifier = Modifier.width(IntrinsicSize.Max),
+                            )
+                        }
                     }
                 }
             }
+        }
+
+        if (isJev) {
+            Text(
+                text = stringResource(R.string.ai_engine_jev_proxy_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
 
         OneBoxOutlinedTextField(
@@ -926,8 +943,10 @@ private fun ModelSelectionCard(
 ) {
     val loginState = LocalLoginState.current
     // 渠道能力(如 Google 全量放开)或高等级用户可从服务商拉取模型列表;
-    // 但直连未验证(测试未通过)时拉取必然无权限,入口一并隐藏
-    val canLoadRemote = (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
+    // 但直连未验证(测试未通过)时拉取必然无权限,入口一并隐藏;
+    // Jev 模型目录由客户端内置, 不支持从服务商拉取
+    val canLoadRemote = engine.requestProtocol != AiRequestProtocol.JEV &&
+            (remember { AiEngineConfig.getCapabilities() }.canLoadRemoteModels ||
             loginState.vipLevel == 10) && engine.isDetestPassed
     SettingCard {
         if (models.isEmpty()) {
@@ -1105,6 +1124,7 @@ private fun protocolLabel(protocol: AiRequestProtocol): String {
         // 仅云端协议出现在本选择器；
         // LOCAL_ON_DEVICE 由独立的"本地模型管理"页处理（Phase 2）。
         AiRequestProtocol.LOCAL_ON_DEVICE -> stringResource(R.string.ai_engine_protocol_local_on_device)
+        AiRequestProtocol.JEV -> stringResource(R.string.ai_engine_protocol_jev)
     }
 }
 

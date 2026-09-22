@@ -39,6 +39,12 @@ sealed class AiProvider(val value: String) : Parcelable {
      */
     @Parcelize @Serializable data object Local : AiProvider("local")
 
+    /**
+     * TypeSafe System One 判断模型（Jev）。
+     * 请求经 go-proxy 代理到 /ai/typesafe/systemone，鉴权由 App 登录 JWT 完成。
+     */
+    @Parcelize @Serializable data object Jev : AiProvider("jev")
+
     companion object {
         fun fromValue(providerName: String?): AiProvider {
             return when (providerName?.trim()?.lowercase()) {
@@ -57,6 +63,7 @@ sealed class AiProvider(val value: String) : Parcelable {
                 Mimo.value -> Mimo
                 Baidu.value -> Baidu
                 Local.value -> Local
+                Jev.value, "typesafe" -> Jev
                 else -> Default
             }
         }

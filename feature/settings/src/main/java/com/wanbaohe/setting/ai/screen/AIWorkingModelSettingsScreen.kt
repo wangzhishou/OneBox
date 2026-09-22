@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.AIModelsPickerBottomSheet
 import com.shifenmiao.model.ai.AiEngine
+import com.shifenmiao.model.ai.AiRequestProtocol
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSwapHoriz
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
@@ -162,13 +163,13 @@ private fun WorkingEngineSummaryCard(
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
-                    // 代理中转链路按模型倍率扣积分,模型名后追加倍率
+                    // 代理中转链路按模型倍率扣积分,模型名后追加倍率; Jev 不展示倍率(不暴露中转概念)
                     val modelText = stringResource(
                         R.string.ai_working_model_current_model,
                         engine.model.title.ifBlank { engine.model.name }
                     )
                     Text(
-                        text = if (engine.usesProxyRoute()) {
+                        text = if (engine.requestProtocol != AiRequestProtocol.JEV && engine.usesProxyRoute()) {
                             "$modelText · ${engine.model.pointsMultiplierText()}"
                         } else modelText,
                         style = MaterialTheme.typography.bodySmall,
@@ -178,6 +179,9 @@ private fun WorkingEngineSummaryCard(
                         text = stringResource(
                             when {
                                 engine.canChatDirectly() -> R.string.ai_working_model_status_direct
+                                // Jev 的中转链路是内置基础设施, 不暴露"代理"概念, 仅显示可用
+                                engine.requestProtocol == AiRequestProtocol.JEV &&
+                                    engine.hasProxyRouteConfigured() -> R.string.ai_working_model_status_available
                                 engine.hasProxyRouteConfigured() -> R.string.ai_working_model_status_proxy
                                 else -> R.string.ai_working_model_status_unavailable
                             }

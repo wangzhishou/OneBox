@@ -19,8 +19,12 @@ object AiEngineConfig {
      * v5: Google 渠道新增智谱 GLM / MiniMax 预制引擎(走 Go 网关代理按积分计费)。
      * v6: MiniMax 引擎名统一为小写 "minmax"(v5 误用 camelCase "minMax", 与远程目录
      *     "minmax" 在 DAO 精确匹配下去重失败, 列表出现两个 MiniMax), 合并/清理旧行。
+     * v7: 新增 Jev(System One 判断模型)预制引擎(国内 + 海外渠道均走 Go 网关代理,
+     *     海外需 Cloud Run 版 go-proxy 部署 TYPESAFE_API_KEY 后可用)。
+     * v8: Jev 预设补充官网直连地址(requestUrl/requestPath), 支持用户自带 key 直连,
+     *     对 v7 已播种的 Jev 行只补空白字段, 不覆盖用户手改值。
      */
-    const val FLAVOR_PRESET_VERSION = 6
+    const val FLAVOR_PRESET_VERSION = 8
 
     /** 引入"清理 Google 渠道预制引擎代理"迁移的版本号 */
     const val PRESET_VERSION_CLEAR_GOOGLE_PROXY = 2
@@ -30,6 +34,9 @@ object AiEngineConfig {
 
     /** 引入"MiniMax 引擎名小写化合并"迁移的版本号 */
     const val PRESET_VERSION_MINIMAX_NAME_UNIFY = 6
+
+    /** 引入"Jev 预设补充官网直连地址"迁移的版本号 */
+    const val PRESET_VERSION_JEV_DIRECT_ROUTE = 8
 
     /**
      * Google 渠道保留 Go 网关代理(按积分计费、需登录)的引擎名;
@@ -41,6 +48,7 @@ object AiEngineConfig {
             AiProvider.DeepSeek.value,
             AiProvider.ZhiPu.value,
             AiProvider.MinMax.value,
+            AiProvider.Jev.value,
         )
 
     val defaultEnabledEngines: List<String>
@@ -52,6 +60,7 @@ object AiEngineConfig {
             AiProvider.Kimi.value,
             AiProvider.Baidu.value,
             AiProvider.Mimo.value,
+            AiProvider.Jev.value,
         )
 
     val oneboxEnabledEngines: List<String>
@@ -74,6 +83,7 @@ object AiEngineConfig {
             AiProvider.OpenRouter.value,
             AiProvider.ZhiPu.value,
             AiProvider.MinMax.value,
+            AiProvider.Jev.value,
         )
 
     fun getFlavorFallbackEngines(flavorType: FlavorType): List<String> {

@@ -379,6 +379,8 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
                 }
             }
             AiRequestProtocol.RESPONSES_COMPATIBLE -> error("Responses API should be routed via createResponsesCall")
+            // Jev 不是 chat 协议, 走 JevMoveChooser / JevService 链路, 不会到达 chat 路由。
+            AiRequestProtocol.JEV -> error("JEV engine should be routed via JevMoveChooser, not ProtocolRoutingAIRequestHandler")
             // 端侧本地推理不走 HTTP；Gateway 已在更上层按 protocol 分流到 LocalOnDeviceAdapter，
             // 理论上不会到达此处。error() 是为了在出现回归 bug 时立刻暴露。
             AiRequestProtocol.LOCAL_ON_DEVICE -> error("Local on-device engine should be routed via LocalOnDeviceAdapter, not ProtocolRoutingAIRequestHandler")

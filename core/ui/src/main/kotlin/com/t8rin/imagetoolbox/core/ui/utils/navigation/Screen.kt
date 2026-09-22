@@ -1955,7 +1955,10 @@ sealed class Screen(
 
             @Serializable
             @SerialName("AISettingsAddEngine")
-            data object AddEngine : Type()
+            data class AddEngine(
+                /** 非空时按协议名预选(如 "JEV"),空串为默认 OPENAI_COMPATIBLE */
+                val initialProtocol: String = "",
+            ) : Type()
 
             // 聚合页初始 Tab: 本地模型
             @Serializable
@@ -1966,6 +1969,11 @@ sealed class Screen(
             @Serializable
             @SerialName("AISettingsMultimodal")
             data object Multimodal : Type()
+
+            // 聚合页初始 Tab: Jev 判断引擎
+            @Serializable
+            @SerialName("AISettingsJev")
+            data object Jev : Type()
         }
     }
 

@@ -79,6 +79,8 @@ class AIEngineCatalogManager @Inject constructor(
                     // 本地协议与本地自有(用户自建)引擎必须始终直通,不被远程 defaultEngines 白名单过滤,
                     // 否则用户添加的自定义引擎保存成功后永远进不了引擎列表。
                     engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE ||
+                        // Jev 为客户端内置引擎, 服务端种子可能尚未下发, 同样豁免白名单过滤。
+                        engine.requestProtocol == AiRequestProtocol.JEV ||
                         engine.identityKey() in localOwnedKeys ||
                         defaultEngineNameSet.isEmpty() ||
                         defaultEngineNameSet.contains(engine.name.lowercase())
@@ -104,6 +106,7 @@ class AIEngineCatalogManager @Inject constructor(
             // 本地自有的引擎/模型不受远程 defaultEngines 白名单限制,否则用户自建引擎的模型永远进不了选择器
             entities.filter { entity ->
                 entity.isLocalOwned() ||
+                    entity.engineName.equals(AiProvider.Jev.value, ignoreCase = true) ||
                     defaultEngineNameSet.isEmpty() ||
                     defaultEngineNameSet.contains(entity.engineName.lowercase())
             }

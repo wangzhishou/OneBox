@@ -701,6 +701,7 @@
     <string name="ai_engine_seed_grok_title">Grok</string>
     <string name="ai_engine_seed_claude_title">Claude</string>
     <string name="ai_engine_seed_openrouter_title">OpenRouter</string>
+    <string name="ai_engine_seed_jev_title">Jev</string>
     <string name="ai_model_default_openai_title">GPT-5.6 Luna</string>
     <string name="ai_model_default_gemini_title">Gemini 3.8 Flash</string>
     <string name="ai_model_default_grok_title">Grok 4.3</string>
@@ -716,6 +717,7 @@
     <string name="ai_model_default_zhipu_title">GLM 5.3 Flash</string>
     <string name="ai_model_default_minimax_title">MiniMax M2.7</string>
     <string name="ai_model_default_baidu_title">ERNIE 4.5 Turbo</string>
+    <string name="ai_model_default_jev_title">Jev</string>
     <string name="ai_engine_seed_zhipu_title">智谱 GLM</string>
     <string name="ai_engine_seed_minimax_title">MiniMax</string>
     <string name="ai_engine_seed_baidu_title">百度文心</string>

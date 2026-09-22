@@ -43,6 +43,7 @@ import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.providerBrandIcon
 import com.shifenmiao.model.ai.AiEngine
+import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.remote.AiEngineConfig
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -78,6 +79,7 @@ fun AIEngineSettingsScreen(
         AIEngineSettingsContent(
             component = component,
             modifier = Modifier.weight(1f),
+            engineFilter = { it.requestProtocol != AiRequestProtocol.JEV },
         )
     }
 }
@@ -87,17 +89,24 @@ fun AIEngineSettingsScreen(
 @Composable
 fun AIEngineAddEngineAction(
     onNavigate: (Screen) -> Unit,
+    initialProtocol: String = "",
 ) {
     val capabilities = remember { AiEngineConfig.getCapabilities() }
     if (capabilities.canAddEngine || LoginUtils.isAdmin()) {
         IconButton(onClick = {
             onNavigate(
-                Screen.AISettings(Screen.AISettings.Type.AddEngine)
+                Screen.AISettings(Screen.AISettings.Type.AddEngine(initialProtocol = initialProtocol))
             )
         }) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                contentDescription = stringResource(R.string.ai_engine_add_engine),
+                contentDescription = stringResource(
+                    if (initialProtocol == AiRequestProtocol.JEV.name) {
+                        R.string.ai_engine_add_jev_engine
+                    } else {
+                        R.string.ai_engine_add_engine
+                    }
+                ),
             )
         }
     }
@@ -107,6 +116,8 @@ fun AIEngineAddEngineAction(
 fun AIEngineSettingsContent(
     component: AIEngineSettingsComponent,
     modifier: Modifier = Modifier,
+    engineFilter: (AiEngine) -> Boolean = { true },
+    emptyMessageRes: Int = R.string.ai_engine_list_empty,
 ) {
     val allEngines by component.allEngines.collectAsState()
     val currentAIEngine by component.currentAIEngine.collectAsState()
@@ -124,6 +135,7 @@ fun AIEngineSettingsContent(
     }
 
     Box(modifier = modifier) {
+        val visibleEngines = allEngines.filter(engineFilter)
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,7 +143,7 @@ fun AIEngineSettingsContent(
                 .padding(horizontal = OneBoxDesignSystem.screenPadding),
             verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
         ) {
-            if (allEngines.isEmpty()) {
+            if (visibleEngines.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -149,14 +161,14 @@ fun AIEngineSettingsContent(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Text(
-                            text = stringResource(R.string.ai_engine_list_empty),
+                            text = stringResource(emptyMessageRes),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
             } else {
-                allEngines.forEach { engine ->
+                visibleEngines.forEach { engine ->
                     EngineListCard(
                         engine = engine,
                         isDefault = currentAIEngine.identityKey() == engine.identityKey(),
@@ -299,6 +311,22 @@ private fun EngineListCard(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                         )
+                        // Jev 引擎附加直连服务器地址摘要(去协议头), 便于区分多套官网配置;
+                        // 未配置(走内置兜底链路)时不显示地址
+                        if (engine.requestProtocol == AiRequestProtocol.JEV &&
+                            engine.requestUrl.isNotBlank()
+                        ) {
+                            Text(
+                                text = engine.requestUrl
+                                    .removePrefix("https://")
+                                    .removePrefix("http://")
+                                    .trimEnd('/'),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.outline,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
                     }
                     if (isDefault) {
                         EngineBadge(text = stringResource(R.string.ai_engine_role_default))
@@ -325,19 +353,24 @@ private fun EngineListCard(
                     if (engine.hasDirectConnectionReady()) {
                         EngineBadge(text = stringResource(R.string.ai_engine_role_verified))
                     }
-                    // 代理中转链路按模型倍率扣积分,展示当前选中模型的倍率
-                    if (engine.usesProxyRoute()) {
-                        EngineBadge(text = engine.model.pointsMultiplierText())
-                    }
-                    // 链路标签按真实路由显示: 走 App 中转=代理(主色), 可直连官方=直连; 与"不可用"天然互斥
-                    when {
-                        engine.usesProxyRoute() -> EngineBadge(
-                            text = stringResource(R.string.ai_engine_remote_badge),
-                            isPrimary = true,
-                        )
-                        engine.canChatDirectly() -> EngineBadge(
-                            text = stringResource(R.string.ai_engine_local_badge),
-                        )
+                    // 代理中转链路按模型倍率扣积分,展示当前选中模型的倍率;
+                    // Jev 不暴露中转链路概念, 隐藏倍率与代理 badge, 仅保留直连标记
+                    if (engine.requestProtocol != AiRequestProtocol.JEV) {
+                        if (engine.usesProxyRoute()) {
+                            EngineBadge(text = engine.model.pointsMultiplierText())
+                        }
+                        // 链路标签按真实路由显示: 走 App 中转=代理(主色), 可直连官方=直连; 与"不可用"天然互斥
+                        when {
+                            engine.usesProxyRoute() -> EngineBadge(
+                                text = stringResource(R.string.ai_engine_remote_badge),
+                                isPrimary = true,
+                            )
+                            engine.canChatDirectly() -> EngineBadge(
+                                text = stringResource(R.string.ai_engine_local_badge),
+                            )
+                        }
+                    } else if (engine.canChatDirectly()) {
+                        EngineBadge(text = stringResource(R.string.ai_engine_local_badge))
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Icon(

@@ -56,7 +56,7 @@ class LlmMoveChooser @Inject constructor(
             }
         }
 
-        return fallback(legalMoves)
+        return HeuristicMoveFallback.decision(legalMoves)
     }
 
     private fun parseSelectedMove(content: String, legalMoves: List<XiangqiMove>): XiangqiMove? {
@@ -79,14 +79,6 @@ class LlmMoveChooser @Inject constructor(
             .trim()
         JSONObject(cleaned).optString("reason")
     }.getOrDefault("")
-
-    private fun fallback(legalMoves: List<XiangqiMove>): MoveDecision? {
-        val move = legalMoves.sortedWith(
-            compareByDescending<XiangqiMove> { it.captured != null }
-                .thenByDescending { it.notationCn.contains("进") }
-        ).firstOrNull() ?: return null
-        return MoveDecision(move, "fallback", "fallback", fallbackUsed = true)
-    }
 
     private suspend fun buildSystemPrompt(): String {
         val preset = promptDao

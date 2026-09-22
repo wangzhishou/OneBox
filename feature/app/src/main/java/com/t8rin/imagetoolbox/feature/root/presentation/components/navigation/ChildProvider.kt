@@ -1514,7 +1514,8 @@ private fun Screen.AISettings.Type?.toSettingsRoute(): SettingsRoute = when (thi
         requestProtocol = requestProtocol,
     )
     Screen.AISettings.Type.WorkingModel -> SettingsRoute.AIWorkingModel
-    Screen.AISettings.Type.AddEngine -> SettingsRoute.AIAddEngine
+    is Screen.AISettings.Type.AddEngine -> SettingsRoute.AIAddEngine(initialProtocol = initialProtocol)
     Screen.AISettings.Type.Local -> SettingsRoute.AIServiceHub(AIServiceHubTab.Local)
     Screen.AISettings.Type.Multimodal -> SettingsRoute.AIServiceHub(AIServiceHubTab.Multimodal)
+    Screen.AISettings.Type.Jev -> SettingsRoute.AIServiceHub(AIServiceHubTab.Jev)
 }

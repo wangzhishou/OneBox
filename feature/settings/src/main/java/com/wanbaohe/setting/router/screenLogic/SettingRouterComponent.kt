@@ -103,6 +103,7 @@ class SettingRouterComponent @AssistedInject internal constructor(
         is SettingsRoute.AIAddEngine -> SettingChild.AIAddEngine(
             aiAddEngineComponentFactory(
                 componentContext = componentContext.childContext("ai_add_engine"),
+                initialProtocol = route.initialProtocol,
                 onGoBack = onGoBack,
             )
         )

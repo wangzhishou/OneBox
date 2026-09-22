@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.core.R
+import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
@@ -240,15 +241,29 @@ private fun testAiEngine(aiEngine: AiEngine): TestResult {
             .addInterceptor(loggingInterceptor)
             .build()
 
+        val isJev = aiEngine.requestProtocol == AiRequestProtocol.JEV
+
         val url = AiRequestUrlResolver.joinUrl(
             baseUrl = normalizeBaseUrl(
                 baseUrl = aiEngine.requestUrl,
                 fallbackBaseUrl = NetworkBuilder.ensureValidBaseUrl(aiEngine)
             ),
-            path = aiEngine.requestPath
+            path = aiEngine.requestPath.ifBlank { UrlConstants.JEV_SYSTEMONE_ENDPOINT }
+                .takeIf { isJev } ?: aiEngine.requestPath
         )
 
-        val jsonBody = if (aiEngine.requestProtocol == AiRequestProtocol.RESPONSES_COMPATIBLE) {
+        val jsonBody = if (isJev) {
+            JSONObject().apply {
+                put("state", "ping")
+                put("model", aiEngine.model.name.takeIf { it.startsWith("jev") } ?: "jev-latest")
+                put("questions", JSONObject().apply {
+                    put("ping", JSONObject().apply {
+                        put("type", "noul")
+                        put("instructions", "Is this a connectivity test?")
+                    })
+                })
+            }
+        } else if (aiEngine.requestProtocol == AiRequestProtocol.RESPONSES_COMPATIBLE) {
             JSONObject().apply {
                 put("model", aiEngine.model.name)
                 put("input", JSONArray().apply {
@@ -303,7 +318,8 @@ private fun testAiEngine(aiEngine: AiEngine): TestResult {
         val response = client.newCall(request).execute()
 
         if (response.isSuccessful) {
-            if (response.looksLikeStreamingResponse()) {
+            // Jev 的 systemone 非流式接口, HTTP 200 即通过; 其余协议仍需流式响应特征
+            if (isJev || response.looksLikeStreamingResponse()) {
                 TestResult(success = true, httpLogs = logBuffer.toString())
             } else {
                 TestResult(

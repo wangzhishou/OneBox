@@ -2,11 +2,12 @@ package com.wanbaohe.setting.router
 
 sealed class SettingsRoute {
     data object AIFeatureSettings : SettingsRoute()
-    // 「服务与模型」聚合页: 文本引擎 / 本地模型 / 多模态 三个 Tab
+    // 「服务与模型」聚合页: 文本引擎 / Jev / 本地模型 / 多模态 Tab
     data class AIServiceHub(val initialTab: AIServiceHubTab = AIServiceHubTab.Text) : SettingsRoute()
     data class AIEngineDetail(val engineName: String, val requestProtocol: String) : SettingsRoute()
     data object AIWorkingModel : SettingsRoute()
-    data object AIAddEngine : SettingsRoute()
+    /** initialProtocol 非空时按该协议预选(如从 Jev tab 进入时预选 JEV) */
+    data class AIAddEngine(val initialProtocol: String = "") : SettingsRoute()
     data object ThemeSettings : SettingsRoute()
     data object SystemPromptManagement : SettingsRoute()
     data class SystemPromptDetail(val promptId: Int) : SettingsRoute()
@@ -24,6 +25,7 @@ sealed class SettingsRoute {
 /** 「服务与模型」聚合页的 Tab 标识 */
 enum class AIServiceHubTab {
     Text,
+    Jev,
     Local,
     Multimodal,
 }

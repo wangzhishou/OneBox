@@ -32,6 +32,7 @@ import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ai.EngineFilterChip
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
+import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.model.tts.TTSConfig
 import com.shifenmiao.tts.service.TTSService
@@ -46,6 +47,7 @@ import com.wanbaohe.settings.R
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFeatures
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePsychology
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 
@@ -66,6 +68,7 @@ fun AIServiceHubScreen(
     imageGenerationManager: ImageGenerationManager,
     onGoBack: () -> Unit,
 ) {
+    // 「服务与模型」聚合页: 底部导航切换 文本引擎 / Jev / 本地模型 / 多模态(语音合成 + 图片生成与编辑)
     // 本地模型(端侧 LiteRT-LM)仅海外渠道(google / foss)开放,
     // 与原 Profile 入口按 isOverseas 过滤的可见性保持一致
     val tabs = remember {
@@ -75,6 +78,13 @@ fun AIServiceHubScreen(
                     key = AIServiceHubTab.Text,
                     titleRes = R.string.ai_service_hub_tab_text,
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText,
+                )
+            )
+            add(
+                HubTab(
+                    key = AIServiceHubTab.Jev,
+                    titleRes = R.string.ai_service_hub_tab_jev,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePsychology,
                 )
             )
             if (FlavorType.fromName().isOverseas) {
@@ -107,9 +117,14 @@ fun AIServiceHubScreen(
         showNavigationBarsPadding = false,
         supportGlassEffect = true,
         actions = {
-            // 「新增引擎」按钮只在文本 Tab 显示
-            if (selectedTab == AIServiceHubTab.Text) {
-                AIEngineAddEngineAction(onNavigate = engineComponent.onNavigate)
+            // 「新增引擎」按钮只在引擎列表类 Tab 显示, Jev tab 新增时预选 JEV 协议
+            when (selectedTab) {
+                AIServiceHubTab.Text -> AIEngineAddEngineAction(onNavigate = engineComponent.onNavigate)
+                AIServiceHubTab.Jev -> AIEngineAddEngineAction(
+                    onNavigate = engineComponent.onNavigate,
+                    initialProtocol = AiRequestProtocol.JEV.name,
+                )
+                else -> Unit
             }
         },
     ) {
@@ -139,6 +154,15 @@ fun AIServiceHubScreen(
                         AIServiceHubTab.Text -> AIEngineSettingsContent(
                             component = engineComponent,
                             modifier = Modifier.fillMaxSize(),
+                            // Jev 是独立协议的判断引擎, 在专属 tab 管理, 不混进普通引擎列表
+                            engineFilter = { it.requestProtocol != AiRequestProtocol.JEV },
+                        )
+
+                        AIServiceHubTab.Jev -> AIEngineSettingsContent(
+                            component = engineComponent,
+                            modifier = Modifier.fillMaxSize(),
+                            engineFilter = { it.requestProtocol == AiRequestProtocol.JEV },
+                            emptyMessageRes = R.string.ai_engine_jev_list_empty,
                         )
 
                         AIServiceHubTab.Local -> LocalModelManagementContent(

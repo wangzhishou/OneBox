@@ -2,6 +2,7 @@ package com.wanbaohe.setting.ai.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.common.manager.AIEngineCatalogManager
+import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.AiRequestProtocol
@@ -122,6 +123,7 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
             val fallbackPath = when (value) {
                 AiRequestProtocol.RESPONSES_COMPATIBLE -> "/v1/responses"
                 AiRequestProtocol.ANTHROPIC_COMPATIBLE -> "/v1/messages"
+                AiRequestProtocol.JEV -> UrlConstants.JEV_SYSTEMONE_ENDPOINT
                 else -> engine.requestPath.ifBlank { "/v1/chat/completions" }
             }
             val previousDefaultAuthType = AuthType.defaultFor(engine.requestProtocol)
@@ -133,7 +135,22 @@ class AIEngineSettingsDetailComponent @AssistedInject internal constructor(
             engine.copy(
                 requestProtocol = value,
                 authType = nextAuthType,
+                requestUrl = if (value == AiRequestProtocol.JEV) {
+                    engine.requestUrl.ifBlank { UrlConstants.TYPESAFE_AI_BASE_URL }
+                } else {
+                    engine.requestUrl
+                },
                 requestPath = engine.requestPath.ifBlank { fallbackPath },
+                proxyUrl = if (value == AiRequestProtocol.JEV) {
+                    engine.proxyUrl.ifBlank { UrlConstants.RELEASE_URL }
+                } else {
+                    engine.proxyUrl
+                },
+                proxyPath = if (value == AiRequestProtocol.JEV) {
+                    engine.proxyPath.ifBlank { UrlConstants.JEV_PROXY_PATH }
+                } else {
+                    engine.proxyPath
+                },
                 isDetestPassed = false
             )
         }

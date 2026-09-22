@@ -245,6 +245,22 @@ class AIEngineRepository @Inject constructor(private val appDatabase: AppDatabas
             appDatabase.aiModelDao().updateModelsProvider(legacyName, AiProvider.MinMax.value)
         }
 
+        // v8 迁移: Jev 预设补充官网直连地址(v7 播种的 Jev 行 requestUrl/requestPath 为空)。
+        // 只补空白字段, 用户已手改的直连配置不动; 引擎行按 name+protocol 唯一, 不会重复播种。
+        if (appliedVersion < AiEngineConfig.PRESET_VERSION_JEV_DIRECT_ROUTE) {
+            val builtIn = AiEngine.builtInEngine(AiProvider.Jev)
+            getEnginesByName(AiProvider.Jev.value).forEach { row ->
+                if (row.requestUrl.isBlank() || row.requestPath.isBlank()) {
+                    updateEngine(
+                        row.copy(
+                            requestUrl = row.requestUrl.ifBlank { builtIn.requestUrl },
+                            requestPath = row.requestPath.ifBlank { builtIn.requestPath },
+                        )
+                    )
+                }
+            }
+        }
+
         AiEngineConfig.getFlavorFallbackEngines(flavorType).distinct()
             .forEachIndexed { sortOrder, engineName ->
                 val provider = AiProvider.fromValue(engineName)
