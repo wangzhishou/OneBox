@@ -14,4 +14,10 @@ data class AudioSettings(
     val checkSoundUrl: String = "",
     val ttsEnabled: Boolean = true,
     val ttsTemplateTexts: Map<String, String> = emptyMap(),
+    /**
+     * 声音总开关（落子音效 + 背景音乐一起管）。
+     *
+     * 复盘页顶上那个小喇叭就是它：关掉之后整页安静，连 BGM 一起停。
+     */
+    val soundEnabled: Boolean = true,
 )

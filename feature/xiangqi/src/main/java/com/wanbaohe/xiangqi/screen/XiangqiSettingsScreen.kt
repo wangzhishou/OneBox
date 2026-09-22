@@ -159,6 +159,20 @@ fun XiangqiSettingsScreen(
             subtitle = stringResource(R.string.xiangqi_settings_audio_subtitle),
             icon = { Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMusicNote, contentDescription = null) },
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.xiangqi_settings_sound_enabled),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                Switch(
+                    checked = settings.soundEnabled,
+                    onCheckedChange = component::updateSoundEnabled,
+                )
+            }
             AudioUrlField(
                 label = stringResource(R.string.xiangqi_settings_move_sound),
                 value = settings.moveSoundUrl,

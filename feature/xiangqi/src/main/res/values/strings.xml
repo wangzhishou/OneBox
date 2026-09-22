@@ -162,6 +162,9 @@
     <string name="xiangqi_replay_to_end">End</string>
     <string name="xiangqi_replay_auto_play">Auto play</string>
     <string name="xiangqi_replay_pause">Pause</string>
+    <string name="xiangqi_analysis_sound_on">Sound on</string>
+    <string name="xiangqi_analysis_sound_off">Sound off</string>
+    <string name="xiangqi_settings_sound_enabled">Sound and background music</string>
     <string name="xiangqi_invalid_fen">Invalid FEN format</string>
     <string name="xiangqi_invalid_json">Invalid JSON notation format</string>
     <string name="xiangqi_ai_failed">AI did not return a legal move; local fallback applied</string>

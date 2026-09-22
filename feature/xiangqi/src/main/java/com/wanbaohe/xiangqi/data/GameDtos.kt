@@ -18,6 +18,7 @@ data class XiangqiSettings(
     val checkSoundUrl: String = "",
     val ttsEnabled: Boolean = true,
     val ttsTemplateTexts: Map<String, String> = emptyMap(),
+    val soundEnabled: Boolean = true,
 )
 
 data class XiangqiTTSTemplate(

@@ -1,5 +1,6 @@
 package com.wanbaohe.xiangqi.application.usecase
 
+import com.wanbaohe.xiangqi.application.audio.XiangqiAudioDefaults
 import com.wanbaohe.xiangqi.application.port.outbound.AudioSettings
 import com.wanbaohe.xiangqi.application.port.outbound.SoundPlayer
 import com.wanbaohe.xiangqi.application.port.outbound.TtsEngine
@@ -24,6 +25,7 @@ class AudioFeedbackUseCase @Inject constructor(
     )
 
     suspend fun play(profile: SoundProfile, settings: AudioSettings) {
+        if (!settings.soundEnabled) return
         if (tryTts(profile, settings)) return
         if (tryUrl(profile, settings)) return
         playBeep()

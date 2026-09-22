@@ -162,6 +162,9 @@
     <string name="xiangqi_replay_to_end">終局</string>
     <string name="xiangqi_replay_auto_play">自動播放</string>
     <string name="xiangqi_replay_pause">暫停</string>
+    <string name="xiangqi_analysis_sound_on">聲音已開</string>
+    <string name="xiangqi_analysis_sound_off">聲音已關</string>
+    <string name="xiangqi_settings_sound_enabled">音效與背景音樂</string>
     <string name="xiangqi_invalid_fen">FEN 格式不合法</string>
     <string name="xiangqi_invalid_json">JSON 棋譜格式不合法</string>
     <string name="xiangqi_ai_failed">AI 未回傳合法走法，已啟用本機備援</string>

@@ -31,6 +31,10 @@ class SettingsUseCase @Inject constructor(
         store.update(store.get().copy(ttsEnabled = enabled))
     }
 
+    suspend fun updateSoundEnabled(enabled: Boolean) {
+        store.update(store.get().copy(soundEnabled = enabled))
+    }
+
     suspend fun updateTTSTemplateText(tag: String, text: String) {
         val current = store.get()
         val next = current.ttsTemplateTexts.toMutableMap()

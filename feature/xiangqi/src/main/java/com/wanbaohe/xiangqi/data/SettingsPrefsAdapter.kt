@@ -36,6 +36,7 @@ class SettingsPrefsAdapter @Inject constructor(
             putString(KEY_BACKGROUND_MUSIC_URL, settings.backgroundMusicUrl)
             putString(KEY_CHECK_SOUND_URL, settings.checkSoundUrl)
             putBoolean(KEY_TTS_ENABLED, settings.ttsEnabled)
+            putBoolean(KEY_SOUND_ENABLED, settings.soundEnabled)
             TTS_TAGS.forEach { remove("tts_text_$it") }
             settings.ttsTemplateTexts.forEach { (tag, text) ->
                 putString("tts_text_$tag", text)
@@ -64,6 +65,7 @@ class SettingsPrefsAdapter @Inject constructor(
         private const val KEY_BACKGROUND_MUSIC_URL = "background_music_url"
         private const val KEY_CHECK_SOUND_URL = "check_sound_url"
         private const val KEY_TTS_ENABLED = "tts_enabled"
+        private const val KEY_SOUND_ENABLED = "sound_enabled"
         private val TTS_TAGS = listOf(
             "xiangqi-move", "xiangqi-capture", "xiangqi-check",
             "xiangqi-checkmate", "xiangqi-draw",

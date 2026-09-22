@@ -13,6 +13,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.VolumeOff
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -184,6 +186,8 @@ private fun XiangqiAnalysisContent(
             Column(modifier = Modifier.fillMaxWidth()) {
                 AnalysisPanelHeader(
                     moveCount = state.plies.size,
+                    isSoundOn = state.isSoundOn,
+                    onToggleSound = component::toggleSound,
                     onExport = onExport,
                 )
 
@@ -227,6 +231,8 @@ private fun XiangqiAnalysisContent(
 @Composable
 private fun AnalysisPanelHeader(
     moveCount: Int,
+    isSoundOn: Boolean,
+    onToggleSound: () -> Unit,
     onExport: () -> Unit,
 ) {
     Row(
@@ -254,6 +260,20 @@ private fun AnalysisPanelHeader(
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            // 声音总开关：关掉后这一步的音效和背景音乐一起停
+            GlassTonalIconButton(onClick = onToggleSound) {
+                Icon(
+                    imageVector = if (isSoundOn) {
+                        Icons.AutoMirrored.Outlined.VolumeUp
+                    } else {
+                        Icons.AutoMirrored.Outlined.VolumeOff
+                    },
+                    contentDescription = stringResource(
+                        if (isSoundOn) R.string.xiangqi_analysis_sound_on else R.string.xiangqi_analysis_sound_off,
+                    ),
+                    modifier = Modifier.size(18.dp),
+                )
+            }
             GlassTonalIconButton(onClick = onExport) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,

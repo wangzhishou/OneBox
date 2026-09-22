@@ -24,6 +24,7 @@ import com.shifenmiao.tts.service.TTSService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.xiangqi.application.audio.XiangqiAudioDefaults
 import com.wanbaohe.xiangqi.application.port.outbound.SoundPlayer
 import com.wanbaohe.xiangqi.application.usecase.GameQueryUseCase
 import com.wanbaohe.xiangqi.application.usecase.SettingsUseCase
@@ -184,6 +185,10 @@ class XiangqiRouterComponent @AssistedInject constructor(
     fun updateBackgroundMusicUrl(url: String) { componentScope.launch { settingsUseCase.updateBackgroundMusicUrl(url) } }
     fun updateCheckSoundUrl(url: String) { componentScope.launch { settingsUseCase.updateCheckSoundUrl(url) } }
     fun updateTTSEnabled(enabled: Boolean) { componentScope.launch { settingsUseCase.updateTTSEnabled(enabled) } }
+    fun updateSoundEnabled(enabled: Boolean) {
+        componentScope.launch { settingsUseCase.updateSoundEnabled(enabled) }
+        if (!enabled) soundPlayer.stopBackground()
+    }
     fun updateTTSTemplateText(tag: String, text: String) { componentScope.launch { settingsUseCase.updateTTSTemplateText(tag, text) } }
 
     fun switchAiModel(engine: AiEngine, model: AiModel) { aiEngineManager.switchFastModel(engine, model) }
@@ -247,7 +252,10 @@ class XiangqiRouterComponent @AssistedInject constructor(
 
     fun previewBackgroundMusic() {
         runSettingsAction(SettingsAction.PreviewBackgroundMusic) {
-            soundPlayer.playBackground(xiangqiSettings.value.backgroundMusicUrl)
+            // 没填 URL 就试听内置的默认 BGM，否则点"试听"什么也听不到
+            val url = xiangqiSettings.value.backgroundMusicUrl
+                .ifBlank { XiangqiAudioDefaults.BACKGROUND }
+            soundPlayer.playBackground(url)
         }
     }
 
@@ -367,6 +375,7 @@ class XiangqiRouterComponent @AssistedInject constructor(
         checkSoundUrl = checkSoundUrl,
         ttsEnabled = ttsEnabled,
         ttsTemplateTexts = ttsTemplateTexts,
+        soundEnabled = soundEnabled,
     )
 
     @AssistedFactory
