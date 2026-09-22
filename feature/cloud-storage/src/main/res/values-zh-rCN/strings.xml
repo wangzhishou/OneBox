@@ -124,4 +124,15 @@
     <string name="cloud_storage_smb_error_share_deleted">指定的 share 在服务器上不存在</string>
     <string name="cloud_storage_smb_error_sharing_violation">文件被另一进程占用，无法访问</string>
     <string name="cloud_storage_smb_error_generic">SMB 错误：%1$s（%2$s）</string>
+
+    <string name="cloud_storage_guide_action">使用指南</string>
+    <string name="cloud_storage_guide_title">云盘工具使用指南</string>
+    <string name="cloud_storage_guide_intro_title">这是什么？</string>
+    <string name="cloud_storage_guide_intro">在手机上直接浏览、上传、下载和管理你已有的云存储文件。支持阿里云 OSS、腾讯云 COS、华为云 OBS、百度云 BOS、AWS S3 及 S3 兼容服务（MinIO/R2），以及 WebDAV 和家庭 NAS（SMB）。</string>
+    <string name="cloud_storage_guide_connect_title">怎么连接？</string>
+    <string name="cloud_storage_guide_connect">点右上角「+」添加连接，按提示填写云厂商提供的 Endpoint、AccessKey 和 SecretKey。还没有密钥？到对应云厂商的控制台开通对象存储并创建密钥；也可以点首页的「云存储配置助手」，让 AI 一步步引导你完成。</string>
+    <string name="cloud_storage_guide_cost_title">收费吗？</string>
+    <string name="cloud_storage_guide_cost">本功能完全免费，文件直接在你手机和云厂商之间传输，不经过我们的服务器。云存储本身的费用由云厂商收取，一般都提供免费额度，个人轻度使用通常不用花钱。</string>
+    <string name="cloud_storage_guide_privacy_title">密钥安全吗？</string>
+    <string name="cloud_storage_guide_privacy">密钥只保存在你的手机上，不会上传到任何服务器。</string>
 </resources>
