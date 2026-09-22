@@ -597,7 +597,7 @@
     <string name="ai_model_default_doubao_description">Ein neues Flaggschiffmodell der nächsten Generation mit umfassenden Verbesserungen bei Wissen, Programmierung und logischem Denken.</string>
     <string name="ai_model_default_tencent_title">Hunyuan Hy4 Preview</string>
     <string name="ai_model_default_deepseek_title">DeepSeek Flash</string>
-    <string name="ai_model_default_mimo_title">Mimo-V2.5-pro</string>
+    <string name="ai_model_default_mimo_title">MiMo-V2.6-Flash</string>
     <string name="ai_bottom_sheet_title">Modell auswählen</string>
     <string name="ai_tencent">Tencent Hunyuan</string>
     <string name="ai_tencent_description">Tencent Hunyuan ist ein leistungsstarkes LLM mit starken chinesischen Schreibfähigkeiten, komplexem logischem Denken und zuverlässigen Aufgabenausführungsfähigkeiten.</string>

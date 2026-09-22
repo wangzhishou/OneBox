@@ -597,7 +597,7 @@
     <string name="ai_model_default_doubao_description">Isang bagong henerasyong flagship model na may komprehensibong pag-upgrade sa kaalaman, coding, at pangangatwiran.</string>
     <string name="ai_model_default_tencent_title">Hunyuan Hy4 Preview</string>
     <string name="ai_model_default_deepseek_title">DeepSeek Flash</string>
-    <string name="ai_model_default_mimo_title">Mimo-V2.5-pro</string>
+    <string name="ai_model_default_mimo_title">MiMo-V2.6-Flash</string>
     <string name="ai_bottom_sheet_title">Pumili ng Modelo</string>
     <string name="ai_tencent">Tencent Hunyuan</string>
     <string name="ai_tencent_description">Ang Tencent Hunyuan ay isang makapangyarihang LLM na may malakas na pagsusulat sa Tsino, kumplikadong lohikal na pangangatwiran, at maaasahang kakayahan sa pagpapatupad ng gawain.</string>

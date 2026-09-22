@@ -278,7 +278,7 @@ data class AiModel(
                 )
 
                 AiProvider.Mimo -> AiModel(
-                    name = "mimo-v2.5",
+                    name = "mimo-v2.6-flash",
                     title = AppContext.getString(R.string.ai_model_default_mimo_title),
                     description = "",
                     canUploadFile = true,

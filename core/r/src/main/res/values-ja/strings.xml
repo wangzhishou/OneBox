@@ -597,7 +597,7 @@
     <string name="ai_model_default_doubao_description">知識、コーディング、推論を全面的に強化した新世代フラッグシップモデル。</string>
     <string name="ai_model_default_tencent_title">Hunyuan Hy4 Preview</string>
     <string name="ai_model_default_deepseek_title">DeepSeek Flash</string>
-    <string name="ai_model_default_mimo_title">Mimo-V2.5-pro</string>
+    <string name="ai_model_default_mimo_title">MiMo-V2.6-Flash</string>
     <string name="ai_bottom_sheet_title">モデルを選択</string>
     <string name="ai_tencent">Tencent Hunyuan</string>
     <string name="ai_tencent_description">腾讯混元は、中国語の文章作成、複雑な論理的推論、信頼性の高いタスク実行能力を備えた強力なLLMです。</string>

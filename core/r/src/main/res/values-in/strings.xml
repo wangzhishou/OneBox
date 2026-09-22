@@ -597,7 +597,7 @@
     <string name="ai_model_default_doubao_description">Model flagship generasi baru dengan peningkatan menyeluruh dalam pengetahuan, pengkodean, dan penalaran.</string>
     <string name="ai_model_default_tencent_title">Hunyuan Hy4 Preview</string>
     <string name="ai_model_default_deepseek_title">DeepSeek Flash</string>
-    <string name="ai_model_default_mimo_title">Mimo-V2.5-pro</string>
+    <string name="ai_model_default_mimo_title">MiMo-V2.6-Flash</string>
     <string name="ai_bottom_sheet_title">Pilih Model</string>
     <string name="ai_tencent">Tencent Hunyuan</string>
     <string name="ai_tencent_description">Tencent Hunyuan adalah LLM yang kuat dengan kemampuan menulis bahasa China yang baik, penalaran logis yang kompleks, dan kemampuan eksekusi tugas yang andal.</string>

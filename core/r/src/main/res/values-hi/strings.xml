@@ -597,7 +597,7 @@
     <string name="ai_model_default_doubao_description">ज्ञान, कोडिंग और तर्क में व्यापक उन्नयन वाला नई पीढ़ी का प्रमुख मॉडल।</string>
     <string name="ai_model_default_tencent_title">Hunyuan Hy4 Preview</string>
     <string name="ai_model_default_deepseek_title">DeepSeek Flash</string>
-    <string name="ai_model_default_mimo_title">Mimo-V2.5-pro</string>
+    <string name="ai_model_default_mimo_title">MiMo-V2.6-Flash</string>
     <string name="ai_bottom_sheet_title">मॉडल चुनें</string>
     <string name="ai_tencent">Tencent Hunyuan</string>
     <string name="ai_tencent_description">Tencent Hunyuan एक शक्तिशाली LLM है जिसमें मजबूत चीनी लेखन, जटिल तार्किक तर्क और विश्वसनीय कार्य निष्पादन क्षमताएं हैं।</string>

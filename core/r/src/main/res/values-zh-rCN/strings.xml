@@ -713,7 +713,7 @@
     <string name="ai_model_default_doubao_description">全新一代主力模型，性能全面升级，在知识、代码、推理等方面表现卓越。</string>
     <string name="ai_model_default_tencent_title">混元 Hy4 Preview</string>
     <string name="ai_model_default_deepseek_title">DeepSeek Flash</string>
-    <string name="ai_model_default_mimo_title">Mimo-V2.5</string>
+    <string name="ai_model_default_mimo_title">MiMo-V2.6-Flash</string>
     <string name="ai_model_default_zhipu_title">GLM 5.3 Flash</string>
     <string name="ai_model_default_minimax_title">MiniMax M2.7</string>
     <string name="ai_model_default_baidu_title">ERNIE 4.5 Turbo</string>

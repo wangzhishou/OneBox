@@ -597,7 +597,7 @@
     <string name="ai_model_default_doubao_description">Bilgi, kodlama ve akıl yürütmede kapsamlı iyileştirmeler içeren yeni nesil amiral gemisi modeli.</string>
     <string name="ai_model_default_tencent_title">Hunyuan Hy4 Preview</string>
     <string name="ai_model_default_deepseek_title">DeepSeek Flash</string>
-    <string name="ai_model_default_mimo_title">Mimo-V2.5-pro</string>
+    <string name="ai_model_default_mimo_title">MiMo-V2.6-Flash</string>
     <string name="ai_bottom_sheet_title">Model Seç</string>
     <string name="ai_tencent">Tencent Hunyuan</string>
     <string name="ai_tencent_description">Tencent Hunyuan, güçlü Çince yazım, karmaşık mantıksal akıl yürütme ve güvenilir görev yürütme yeteneklerine sahip güçlü bir LLM\'dir.</string>
