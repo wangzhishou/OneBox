@@ -91,7 +91,8 @@ class PlayMoveUseCase @Inject constructor(
             notationUcci = if (matched.notationUcci.isBlank())
                 UcciNotation.format(matched.from, matched.to) else matched.notationUcci,
             notationCn = if (matched.notationCn.isBlank())
-                ChineseNotationFormatter.format(matched) else matched.notationCn,
+                // 必须传着法发生前的盘面：同线同名子力要用前/后消歧
+                ChineseNotationFormatter.format(matched, before) else matched.notationCn,
         )
         return enriched
     }

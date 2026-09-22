@@ -72,6 +72,7 @@ class GameDaoAdapter @Inject constructor(
         status = GameStatus.valueOf(status),
         resultText = result,
         updatedAt = updatedAt,
+        plyCount = currentPly,
     )
 
     private fun GameEntity.toDbEntity() = XiangqiGameEntity(

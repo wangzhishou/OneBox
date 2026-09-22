@@ -47,6 +47,7 @@ import com.wanbaohe.xiangqi.data.XiangqiGameSummary
 import com.wanbaohe.xiangqi.domain.model.GameMode
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.PlayerType
+import com.wanbaohe.xiangqi.presentation.localizedGameResultText
 import java.text.DateFormat
 import java.util.Date
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
@@ -104,7 +105,14 @@ private fun XiangqiLibraryContent(
         items(component.games, key = { it.id }) { item ->
             GameCard(
                 item = item,
-                onContinue = { component.openGame(item.id) },
+                // 已结束的局点卡片的本意是"复盘"，进行中的才是"继续下"
+                onContinue = {
+                    if (item.status.isFinished()) {
+                        component.openAnalysis(item.id)
+                    } else {
+                        component.openGame(item.id)
+                    }
+                },
                 onAnalysis = { component.openAnalysis(item.id) },
                 onDelete = { component.deleteGame(item.id) },
                 onRename = { newTitle -> component.renameGame(item.id, newTitle) },
@@ -233,6 +241,30 @@ private fun GameCard(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            // 副标题：找局时最先看的两项信息——手数与结果。缺了它们，列表里全是"已结束"。
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.xiangqi_ply_count, item.plyCount),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                val resultText = localizedGameResultText(item.resultText)
+                if (resultText.isNotBlank()) {
+                    Text(
+                        text = "·",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Text(
+                        text = resultText,
+                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
             Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)))
@@ -273,7 +305,18 @@ private fun GameCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(stringResource(R.string.xiangqi_library_open_analysis), color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.labelMedium)
+                    Text(
+                        // 进行中的局卡片点击就是进回放，"查看回放"在这里语义重叠，用「复盘」区分
+                        text = stringResource(
+                            if (item.status.isFinished()) {
+                                R.string.xiangqi_library_open_analysis
+                            } else {
+                                R.string.xiangqi_library_review
+                            },
+                        ),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
                     Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArrowForwardIos, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.size(16.dp))
                 }
             }
@@ -346,4 +389,10 @@ private fun RenameGameDialog(
             }
         },
     )
+}
+
+/** 终局判定：只有这些状态点卡片时才按"复盘"处理。 */
+private fun GameStatus.isFinished(): Boolean = when (this) {
+    GameStatus.RED_WINS, GameStatus.BLACK_WINS, GameStatus.DRAW, GameStatus.RESIGNED -> true
+    else -> false
 }

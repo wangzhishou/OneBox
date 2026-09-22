@@ -11,9 +11,7 @@ import com.shifenmiao.model.ai.AiModel
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
-import com.wanbaohe.xiangqi.application.dto.ExportLabels
 import com.wanbaohe.xiangqi.application.dto.GameDetail
-import com.wanbaohe.xiangqi.application.dto.PlyRecord
 import com.wanbaohe.xiangqi.application.port.outbound.AudioSettings
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
 import com.wanbaohe.xiangqi.application.usecase.AiOrchestrationUseCase
@@ -194,9 +192,11 @@ class XiangqiGameComponent @AssistedInject constructor(
         }
     }
 
-    fun exportText(labels: com.wanbaohe.xiangqi.data.TextExportLabels) {
+    fun exportText(labels: com.wanbaohe.xiangqi.data.TextExportLabels, resultText: String) {
         componentScope.launch {
-            uiState = uiState.copy(exportContent = exportGame.asText(gameId, labels.toAppDto()))
+            uiState = uiState.copy(
+                exportContent = exportGame.asText(gameId, labels, resultText),
+            )
         }
     }
 
@@ -268,7 +268,7 @@ class XiangqiGameComponent @AssistedInject constructor(
                     title = detail.title,
                     boardState = boardState,
                     legalMoves = legalMoves,
-                    history = detail.plies.map { it.toLegacy() },
+                    history = detail.plies,
                     currentPly = detail.currentPly,
                     status = detail.status,
                     mode = detail.mode,
@@ -467,14 +467,6 @@ class XiangqiGameComponent @AssistedInject constructor(
 
     private fun isLocalOnlineTurn(): Boolean =
         uiState.mode != GameMode.ONLINE_PVP || uiState.boardState.sideToMove == uiState.onlineMySide
-
-    private fun PlyRecord.toLegacy() = XiangqiPlyRecord(
-        ply, moveUcci, moveCn, beforeFen, afterFen, aiReason, aiRawResponse, thinkDurationMs,
-    )
-
-    private fun com.wanbaohe.xiangqi.data.TextExportLabels.toAppDto() = ExportLabels(
-        header, titleLabel, initialFenLabel, resultLabel,
-    )
 
     @AssistedFactory
     fun interface Factory {

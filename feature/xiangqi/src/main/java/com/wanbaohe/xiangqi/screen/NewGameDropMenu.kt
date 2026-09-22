@@ -62,7 +62,8 @@ fun NewGameDropMenu(
     val localTitle = stringResource(R.string.xiangqi_mode_local)
     val aiTitle = stringResource(R.string.xiangqi_mode_ai)
     val aiVsAiTitle = stringResource(R.string.xiangqi_mode_ai_vs_ai)
-    val libraryTitle = stringResource(R.string.xiangqi_library_title)
+    val importedGameTitle = stringResource(R.string.xiangqi_imported_game_title)
+    val importedFenTitle = stringResource(R.string.xiangqi_imported_fen_title)
 
     Box(modifier = modifier) {
         val rotation by animateFloatAsState(
@@ -219,9 +220,8 @@ fun NewGameDropMenu(
                             },
                             onClick = {
                                 expanded = false
-                                ActionUtils.showLogin(source = "xiangqi_import_fen") {
-                                    importFen = true
-                                }
+                                // 纯本地能力，不加登录门控（与「本地双人」口径一致）
+                                importFen = true
                             },
                         )
                         MenuItem(
@@ -236,9 +236,7 @@ fun NewGameDropMenu(
                             },
                             onClick = {
                                 expanded = false
-                                ActionUtils.showLogin(source = "xiangqi_import_json") {
-                                    importJson = true
-                                }
+                                importJson = true
                             },
                         )
                     }
@@ -253,7 +251,7 @@ fun NewGameDropMenu(
             hint = stringResource(R.string.xiangqi_import_hint_fen),
             onDismiss = { importFen = false },
             onConfirm = { text ->
-                component.importFen(libraryTitle, text)
+                component.importFen("", text, importedFenTitle)
                 importFen = false
             },
         )
@@ -265,7 +263,7 @@ fun NewGameDropMenu(
             hint = stringResource(R.string.xiangqi_import_hint_json),
             onDismiss = { importJson = false },
             onConfirm = { text ->
-                component.importJson(libraryTitle, text)
+                component.importJson("", text, importedGameTitle)
                 importJson = false
             },
         )

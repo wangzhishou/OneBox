@@ -15,9 +15,7 @@ import com.wanbaohe.xiangqi.application.usecase.SettingsUseCase
 import com.wanbaohe.xiangqi.data.XiangqiPlyRecord
 import com.wanbaohe.xiangqi.data.TextExportLabels
 import com.wanbaohe.xiangqi.domain.FenCodec
-import com.wanbaohe.xiangqi.domain.GameArbiter
 import com.wanbaohe.xiangqi.domain.model.BoardState
-import com.wanbaohe.xiangqi.domain.model.GameStatus
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -32,7 +30,13 @@ data class XiangqiAnalysisUiState(
     val maxPly: Int = 0,
     val plies: List<XiangqiPlyRecord> = emptyList(),
     val exportContent: String = "",
-    val status: GameStatus = GameStatus.PLAYING,
+    /**
+     * 落库的结果码（[com.wanbaohe.xiangqi.domain.GameResultCode]），与回放进度无关，整局恒定。
+     *
+     * 结果的唯一来源。**不要**改用当前回放局面重算的状态：认输局在任何一手的盘面上
+     * 都推不出 RESIGNED，用它会静默显示"未结束"。
+     */
+    val resultText: String = "",
     val isAutoPlaying: Boolean = false,
 )
 
@@ -92,13 +96,18 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
         componentScope.launch {
             gameQuery.observeById(gameId).collect { detail ->
                 detail ?: return@collect
-                val plies = detail.plies.map { it.toLegacy() }
+                val plies = detail.plies
                 val maxPly = plies.maxOfOrNull { it.ply } ?: 0
                 val target = if (targetInitialPly >= 0) {
                     targetInitialPly.coerceIn(0, maxPly).also { targetInitialPly = -1 }
                 } else {
                     detail.currentPly.coerceIn(0, maxPly)
                 }
+                // 结果与回放进度无关，整局恒定；在这里写一次，updatePly 只刷新盘面状态
+                uiState = uiState.copy(
+                    resultText = detail.resultText,
+                    title = detail.title,
+                )
                 updatePly(
                     plies,
                     detail.initialFen,
@@ -131,6 +140,23 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
         updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, uiState.maxPly)
     }
 
+    /**
+     * 跳到指定手（着法表点击）。
+     *
+     * 打谱的核心动线：80 回合的局想看第 50 手，不应该连点 50 次 ▶。
+     */
+    fun goToPly(ply: Int) {
+        stopAutoPlay()
+        val target = ply.coerceIn(0, uiState.maxPly)
+        updatePly(
+            uiState.plies,
+            uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN,
+            uiState.title,
+            target,
+            play = target > 0,
+        )
+    }
+
     fun openCurrentGame() {
         onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Game(gameId)))
     }
@@ -145,9 +171,11 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
         }
     }
 
-    fun exportText(labels: TextExportLabels) {
+    fun exportText(labels: TextExportLabels, resultText: String) {
         componentScope.launch {
-            uiState = uiState.copy(exportContent = exportGame.asText(gameId, labels.toAppDto()))
+            uiState = uiState.copy(
+                exportContent = exportGame.asText(gameId, labels, resultText),
+            )
         }
     }
 
@@ -169,7 +197,6 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
                 ?: initialFen
         }
         val boardState = FenCodec.parse(fen)
-        val status = GameArbiter.evaluateStatus(boardState)
         val maxPly = plies.maxOfOrNull { it.ply } ?: 0
         val safeTargetPly = when {
             plies.isEmpty() -> 0
@@ -183,28 +210,19 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
             currentPly = safeTargetPly,
             maxPly = maxPly,
             plies = plies,
-            status = status,
         )
         if (play && safeTargetPly > 0) {
-            playReplaySound(plies, safeTargetPly, status)
+            playReplaySound(plies, safeTargetPly)
         }
     }
 
-    private fun playReplaySound(plies: List<XiangqiPlyRecord>, targetPly: Int, status: GameStatus) {
+    private fun playReplaySound(plies: List<XiangqiPlyRecord>, targetPly: Int) {
         val record = plies.firstOrNull { it.ply == targetPly } ?: return
         componentScope.launch {
             val settings = settingsUseCase.current()
             audioFeedback.playForMove(record.beforeFen, record.afterFen, settings)
         }
     }
-
-    private fun com.wanbaohe.xiangqi.application.dto.PlyRecord.toLegacy() = XiangqiPlyRecord(
-        ply, moveUcci, moveCn, beforeFen, afterFen, aiReason, aiRawResponse, thinkDurationMs,
-    )
-
-    private fun TextExportLabels.toAppDto() = com.wanbaohe.xiangqi.application.dto.ExportLabels(
-        header, titleLabel, initialFenLabel, resultLabel,
-    )
 
     @AssistedFactory
     fun interface Factory {

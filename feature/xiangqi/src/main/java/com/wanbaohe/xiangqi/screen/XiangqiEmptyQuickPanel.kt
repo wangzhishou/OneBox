@@ -55,7 +55,8 @@ fun XiangqiEmptyQuickPanel(
     val localTitle = stringResource(R.string.xiangqi_mode_local)
     val aiTitle = stringResource(R.string.xiangqi_mode_ai)
     val aiVsAiTitle = stringResource(R.string.xiangqi_mode_ai_vs_ai)
-    val libraryTitle = stringResource(R.string.xiangqi_library_title)
+    val importedGameTitle = stringResource(R.string.xiangqi_imported_game_title)
+    val importedFenTitle = stringResource(R.string.xiangqi_imported_fen_title)
 
     var importFen by remember { mutableStateOf(false) }
     var importJson by remember { mutableStateOf(false) }
@@ -121,20 +122,14 @@ fun XiangqiEmptyQuickPanel(
             QuickAction(
                 label = stringResource(R.string.xiangqi_import_fen),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUploadFile,
-                onClick = {
-                    ActionUtils.showLogin(source = "xiangqi_import_fen") {
-                        importFen = true
-                    }
-                },
+                // 导入是纯本地能力（建本地对局 + 回放着法）：不联网、不走 AI、不扣积分，
+                // 与同面板的「本地双人」口径一致，因此不加登录门控。
+                onClick = { importFen = true },
             ),
             QuickAction(
                 label = stringResource(R.string.xiangqi_import_json),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
-                onClick = {
-                    ActionUtils.showLogin(source = "xiangqi_import_json") {
-                        importJson = true
-                    }
-                },
+                onClick = { importJson = true },
             ),
         )
 
@@ -163,7 +158,8 @@ fun XiangqiEmptyQuickPanel(
             hint = stringResource(R.string.xiangqi_import_hint_fen),
             onDismiss = { importFen = false },
             onConfirm = { text ->
-                component.importFen(libraryTitle, text)
+                // 标题传空串，是否采用文件里的 title 由 ImportGameUseCase 决定
+                component.importFen("", text, importedFenTitle)
                 importFen = false
             },
         )
@@ -174,7 +170,7 @@ fun XiangqiEmptyQuickPanel(
             hint = stringResource(R.string.xiangqi_import_hint_json),
             onDismiss = { importJson = false },
             onConfirm = { text ->
-                component.importJson(libraryTitle, text)
+                component.importJson("", text, importedGameTitle)
                 importJson = false
             },
         )

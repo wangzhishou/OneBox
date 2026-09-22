@@ -43,4 +43,6 @@ data class GameSummaryEntity(
     val status: GameStatus,
     val resultText: String,
     val updatedAt: Long,
+    /** 已走着法数（`xiangqi_game.current_ply`），历史卡片用于展示手数。 */
+    val plyCount: Int,
 )

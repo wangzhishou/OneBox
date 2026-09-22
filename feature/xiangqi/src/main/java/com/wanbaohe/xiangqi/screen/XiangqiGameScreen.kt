@@ -65,6 +65,7 @@ import com.wanbaohe.xiangqi.domain.model.GameMode
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.PlayerType
 import com.wanbaohe.xiangqi.domain.model.Side
+import com.wanbaohe.xiangqi.presentation.localizedGameResultText
 import com.wanbaohe.xiangqi.router.LocalXiangqiImmersiveModeState
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
 import kotlinx.coroutines.launch
@@ -94,6 +95,7 @@ fun XiangqiGameScreen(
         initialFenLabel = stringResource(R.string.xiangqi_export_initial_fen_label),
         resultLabel = stringResource(R.string.xiangqi_export_result_label),
     )
+    val localizedResultText = localizedGameResultText(state.status)
 
     val captureController = rememberCaptureController()
     val scope = rememberCoroutineScope()
@@ -144,15 +146,16 @@ fun XiangqiGameScreen(
     if (exportDialog) {
         ExportDialog(
             exportContent = state.exportContent,
+            onExportFen = component::exportFen,
+            onExportJson = component::exportJson,
+            // 结果文案在 UI 层本地化：导出层不依赖 Android 资源
+            onExportText = { component.exportText(exportLabels, localizedResultText) },
             onDismiss = {
                 exportDialog = false
                 component.dismissExport()
             },
-            onFen = component::exportFen,
-            onJson = component::exportJson,
-            onText = { component.exportText(exportLabels) },
             onShareImage = ::shareScreenshot,
-            isSharing = isCapturing,
+            isSharingImage = isCapturing,
         )
     }
 
@@ -746,63 +749,6 @@ private fun ActionBar(
             }
         }
     }
-}
-
-@Composable
-private fun ExportDialog(
-    exportContent: String,
-    onDismiss: () -> Unit,
-    onFen: () -> Unit,
-    onJson: () -> Unit,
-    onText: () -> Unit,
-    onShareImage: () -> Unit,
-    isSharing: Boolean,
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.xiangqi_export_dialog_title)) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    GlassTonalButton(onClick = onFen, modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.xiangqi_export_fen))
-                    }
-                    GlassTonalButton(onClick = onJson, modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.xiangqi_export_json))
-                    }
-                }
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    GlassTonalButton(onClick = onText, modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.xiangqi_export_text))
-                    }
-                    GlassTonalButton(
-                        onClick = onShareImage,
-                        enabled = !isSharing,
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        if (isSharing) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(18.dp),
-                                strokeWidth = 2.dp,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            )
-                        } else {
-                            Text(stringResource(R.string.xiangqi_share_image))
-                        }
-                    }
-                }
-                Text(
-                    text = exportContent.ifBlank { stringResource(R.string.xiangqi_empty_export) },
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
-        },
-        confirmButton = {
-            GlassTonalButton(onClick = onDismiss) {
-                Text(stringResource(R.string.xiangqi_close))
-            }
-        },
-    )
 }
 
 @Composable

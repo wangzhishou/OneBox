@@ -1,52 +1,16 @@
 package com.wanbaohe.xiangqi.data
 
-import com.wanbaohe.xiangqi.domain.model.GameMode
-import com.wanbaohe.xiangqi.domain.model.GameStatus
-import com.wanbaohe.xiangqi.domain.model.PlayerType
+/**
+ * UI 层历史上使用的一套 DTO 别名。
+ *
+ * 这些类型曾是与 `application.dto` 逐字段重复的独立 data class（Component 层靠一层 `toLegacy()`
+ * 纯搬运转换），改一个字段要同步两处、极易漏。现收敛为类型别名：**唯一事实源在 `application.dto`**。
+ */
+typealias XiangqiGameSummary = com.wanbaohe.xiangqi.application.dto.GameSummary
 
-data class XiangqiGameSummary(
-    val id: String,
-    val title: String,
-    val mode: GameMode,
-    val redPlayerType: PlayerType,
-    val blackPlayerType: PlayerType,
-    val status: GameStatus,
-    val resultText: String,
-    val updatedAt: Long,
-)
+typealias XiangqiPlyRecord = com.wanbaohe.xiangqi.application.dto.PlyRecord
 
-data class XiangqiPlyRecord(
-    val ply: Int,
-    val moveUcci: String,
-    val moveCn: String,
-    val beforeFen: String,
-    val afterFen: String,
-    val aiReason: String,
-    val aiRawResponse: String,
-    val thinkDurationMs: Long,
-)
-
-data class XiangqiGameDetail(
-    val id: String,
-    val title: String,
-    val mode: GameMode,
-    val redPlayerType: PlayerType,
-    val blackPlayerType: PlayerType,
-    val initialFen: String,
-    val currentFen: String,
-    val currentPly: Int,
-    val status: GameStatus,
-    val startedAt: Long,
-    val lastMoveAt: Long,
-    val plies: List<XiangqiPlyRecord>,
-)
-
-data class TextExportLabels(
-    val header: String,
-    val titleLabel: String,
-    val initialFenLabel: String,
-    val resultLabel: String,
-)
+typealias TextExportLabels = com.wanbaohe.xiangqi.application.dto.ExportLabels
 
 data class XiangqiSettings(
     val moveSoundUrl: String = "",

@@ -47,6 +47,7 @@ class GameQueryUseCase @Inject constructor(
         status = status,
         resultText = resultText,
         updatedAt = updatedAt,
+        plyCount = plyCount,
     )
 
     private fun com.wanbaohe.xiangqi.application.port.outbound.GameEntity.toDetail(
@@ -61,6 +62,8 @@ class GameQueryUseCase @Inject constructor(
         currentFen = currentFen,
         currentPly = currentPly,
         status = status,
+        resultText = resultText,
+        winnerSide = winnerSide,
         startedAt = startedAt,
         lastMoveAt = lastMoveAt,
         plies = plies.map { it.toRecord() },
@@ -85,6 +88,7 @@ class GameQueryUseCase @Inject constructor(
         ply = ply,
         moveUcci = moveUcci,
         moveCn = moveCn,
+        moverSide = moverSide,
         beforeFen = beforeFen,
         afterFen = afterFen,
         aiReason = aiReason,

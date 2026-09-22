@@ -11,6 +11,7 @@ import com.wanbaohe.xiangqi.application.usecase.DeleteGameUseCase
 import com.wanbaohe.xiangqi.application.usecase.ExportGameUseCase
 import com.wanbaohe.xiangqi.application.usecase.GameQueryUseCase
 import com.wanbaohe.xiangqi.application.usecase.ImportGameUseCase
+import com.wanbaohe.xiangqi.application.usecase.ImportResult
 import com.wanbaohe.xiangqi.domain.model.Side
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -40,11 +41,12 @@ class XiangqiServiceImpl @Inject constructor(
             createGame.createHumanVsAi(title, aiSide)
         }
 
+    /** Agent 侧缺省标题：调用方未给标题时直接沿用，避免依赖 UI 资源。 */
     override suspend fun importFen(title: String, fen: String): Result<String> =
-        runCatching { importGame.importFen(title, fen) }
+        runCatching { importGame.importFen(title, fen, title).requireGameId() }
 
     override suspend fun importJson(title: String, json: String): Result<String> =
-        runCatching { importGame.importJson(title, json) }
+        runCatching { importGame.importJson(title, json, title).requireGameId() }
 
     override suspend fun deleteGame(gameId: String): Result<Unit> =
         runCatching { deleteGame.delete(gameId) }
@@ -56,6 +58,15 @@ class XiangqiServiceImpl @Inject constructor(
         exportGame.asJson(gameId)
 
     // ── DTO 转换 ─────────────────────────────────────
+
+    /**
+     * Service 契约（[XiangqiServiceInterface]）只回 gameId 或抛异常，
+     * 这里把结构化导入结果收敛回该契约，失败原因原样带出给 Agent 展示。
+     */
+    private fun ImportResult.requireGameId(): String = when (this) {
+        is ImportResult.Success -> gameId
+        is ImportResult.Failure -> throw IllegalStateException(message.ifBlank { cause.name })
+    }
 
     private fun GameSummary.toDto() = XiangqiGameSummaryDto(
         id = id,

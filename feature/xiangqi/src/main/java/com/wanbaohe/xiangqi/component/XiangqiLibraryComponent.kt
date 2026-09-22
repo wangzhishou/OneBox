@@ -8,12 +8,15 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.xiangqi.application.usecase.CreateGameUseCase
-import com.shifenmiao.interfaces.singleton.AppContext
-import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.usecase.DeleteGameUseCase
 import com.wanbaohe.xiangqi.application.usecase.GameQueryUseCase
+import com.wanbaohe.xiangqi.application.usecase.ImportFailureCause
 import com.wanbaohe.xiangqi.application.usecase.ImportGameUseCase
+import com.wanbaohe.xiangqi.application.usecase.ImportResult
 import com.wanbaohe.xiangqi.application.usecase.ManageGameUseCase
+import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.interfaces.singleton.AppContext
+import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.data.XiangqiGameSummary
 import com.wanbaohe.xiangqi.domain.model.Side
 import dagger.assisted.Assisted
@@ -39,7 +42,7 @@ class XiangqiLibraryComponent @AssistedInject constructor(
     init {
         componentScope.launch {
             gameQuery.observeAll().collect { list ->
-                games = list.map { it.toLegacy() }
+                games = list
             }
         }
     }
@@ -87,17 +90,57 @@ class XiangqiLibraryComponent @AssistedInject constructor(
         }
     }
 
-    fun importFen(title: String, fen: String) {
+    fun importFen(title: String, fen: String, defaultTitle: String) {
         componentScope.launch {
-            val gameId = importGame.importFen(title, fen)
-            navigateToGame(gameId)
+            when (val result = importGame.importFen(title, fen, defaultTitle)) {
+                is ImportResult.Failure -> ActionUtils.showToast(
+                    when (result.cause) {
+                        ImportFailureCause.INVALID_FEN -> R.string.xiangqi_invalid_fen
+                        ImportFailureCause.INVALID_JSON -> R.string.xiangqi_invalid_json
+                    },
+                )
+                is ImportResult.Success -> {
+                    notifyImportOutcome(result)
+                    navigateToGame(result.gameId)
+                }
+            }
         }
     }
 
-    fun importJson(title: String, json: String) {
+    /** 导入 JSON 棋谱（含着法）。[defaultTitle] 同 [importFen]。 */
+    fun importJson(title: String, json: String, defaultTitle: String) {
         componentScope.launch {
-            val gameId = importGame.importJson(title, json)
-            navigateToGame(gameId)
+            when (val result = importGame.importJson(title, json, defaultTitle)) {
+                is ImportResult.Failure -> ActionUtils.showToast(
+                    when (result.cause) {
+                        ImportFailureCause.INVALID_FEN -> R.string.xiangqi_invalid_fen
+                        ImportFailureCause.INVALID_JSON -> R.string.xiangqi_invalid_json
+                    },
+                )
+                is ImportResult.Success -> {
+                    notifyImportOutcome(result)
+                    navigateToGame(result.gameId)
+                }
+            }
+        }
+    }
+
+    /**
+     * 局部失败也要说清楚：静默丢着法会直接摧毁用户对导入功能的信任。
+     */
+    private fun notifyImportOutcome(result: ImportResult.Success) {
+        when {
+            result.hasSkipped -> ActionUtils.showToast(
+                AppContext.getQuantityString(
+                    R.plurals.xiangqi_import_partial,
+                    result.importedPlies,
+                    result.importedPlies,
+                    result.skippedPlies.size,
+                ),
+            )
+            result.importedPlies > 0 -> ActionUtils.showToast(R.string.xiangqi_import_success)
+            // FEN 导入只有局面、没有着法，不必提示"导入成功"
+            else -> Unit
         }
     }
 
@@ -120,17 +163,6 @@ class XiangqiLibraryComponent @AssistedInject constructor(
     private fun navigateToGame(gameId: String) {
         onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Game(gameId)))
     }
-
-    private fun com.wanbaohe.xiangqi.application.dto.GameSummary.toLegacy() = XiangqiGameSummary(
-        id = id,
-        title = title,
-        mode = mode,
-        redPlayerType = redPlayerType,
-        blackPlayerType = blackPlayerType,
-        status = status,
-        resultText = resultText,
-        updatedAt = updatedAt,
-    )
 
     @AssistedFactory
     fun interface Factory {

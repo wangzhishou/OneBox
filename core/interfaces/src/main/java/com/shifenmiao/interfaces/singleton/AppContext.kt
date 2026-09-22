@@ -67,6 +67,17 @@ object AppContext {
         return context.getString(resId, string)
     }
 
+    /**
+     * 取复数资源。[quantity] 只用于选择复数形式，[formatArgs] 用于填充占位符
+     * （英文等语言下二者通常是同一个数字，中文只有一个复数形式）。
+     */
+    fun getQuantityString(resId: Int, quantity: Int, vararg formatArgs: Any): String {
+        if (!::context.isInitialized) {
+            throw IllegalStateException("ApplicationSingleton is not initialized")
+        }
+        return context.resources.getQuantityString(resId, quantity, *formatArgs)
+    }
+
     fun getContext(): Context {
         if (!::context.isInitialized) {
             throw IllegalStateException("ApplicationSingleton is not initialized")

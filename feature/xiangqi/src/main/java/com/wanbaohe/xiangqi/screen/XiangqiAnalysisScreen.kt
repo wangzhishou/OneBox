@@ -5,24 +5,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -40,8 +38,12 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.xiangqi.R
+import com.wanbaohe.xiangqi.application.dto.NotationRow
+import com.wanbaohe.xiangqi.application.dto.NotationRows
+import com.wanbaohe.xiangqi.application.dto.PlyRecord
 import com.wanbaohe.xiangqi.component.XiangqiAnalysisComponent
 import com.wanbaohe.xiangqi.data.TextExportLabels
+import com.wanbaohe.xiangqi.presentation.localizedGameResultText
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
@@ -63,12 +65,16 @@ fun XiangqiAnalysisScreen(
         initialFenLabel = stringResource(R.string.xiangqi_export_initial_fen_label),
         resultLabel = stringResource(R.string.xiangqi_export_result_label),
     )
+    // 结果文案在 UI 层本地化后传给导出，导出层不依赖 Android 资源。
+    // 用落库的 resultText（整局恒定），不是回放进度推出来的盘面状态。
+    val resultText = localizedGameResultText(state.resultText)
 
     val content: @Composable (Modifier) -> Unit = { contentModifier ->
         XiangqiAnalysisContent(
             component = component,
             modifier = contentModifier,
             onExport = { exportDialog = true },
+            resultText = resultText,
         )
     }
 
@@ -84,35 +90,14 @@ fun XiangqiAnalysisScreen(
     }
 
     if (exportDialog) {
-        AlertDialog(
-            onDismissRequest = {
+        ExportDialog(
+            exportContent = state.exportContent,
+            onExportFen = component::exportFen,
+            onExportJson = component::exportJson,
+            onExportText = { component.exportText(exportLabels, resultText) },
+            onDismiss = {
                 exportDialog = false
                 component.dismissExport()
-            },
-            title = { Text(stringResource(R.string.xiangqi_export_dialog_title)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        GlassTonalButton(onClick = component::exportFen, modifier = Modifier.weight(1f)) {
-                            Text(stringResource(R.string.xiangqi_export_fen))
-                        }
-                        GlassTonalButton(onClick = component::exportJson, modifier = Modifier.weight(1f)) {
-                            Text(stringResource(R.string.xiangqi_export_json))
-                        }
-                    }
-                    GlassTonalButton(onClick = { component.exportText(exportLabels) }, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.xiangqi_export_text))
-                    }
-                    Text(state.exportContent.ifBlank { stringResource(R.string.xiangqi_empty_export) })
-                }
-            },
-            confirmButton = {
-                GlassTonalButton(onClick = {
-                    exportDialog = false
-                    component.dismissExport()
-                }) {
-                    Text(stringResource(R.string.xiangqi_close))
-                }
             },
         )
     }
@@ -123,14 +108,23 @@ private fun XiangqiAnalysisContent(
     component: XiangqiAnalysisComponent,
     modifier: Modifier,
     onExport: () -> Unit,
+    resultText: String,
 ) {
     val state = component.uiState
+    val rows = remember(state.plies) { NotationRows.of(state.plies) }
+    val listState = rememberLazyListState()
+
+    // 自动播放/跳转时把当前手滚进可视区
+    LaunchedEffect(state.currentPly, rows.size) {
+        val index = rows.indexOfFirst { row ->
+            row.red?.ply == state.currentPly || row.black?.ply == state.currentPly
+        }
+        if (index >= 0) listState.animateScrollToItem(index)
+    }
 
     Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         XiangqiBoard(
@@ -140,7 +134,7 @@ private fun XiangqiAnalysisContent(
             onCellTap = { _, _ -> },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 4.dp),
         )
 
         ReplayControls(
@@ -152,117 +146,199 @@ private fun XiangqiAnalysisContent(
             onEnd = component::goToEnd,
         )
 
+        if (resultText.isNotBlank()) {
+            Text(
+                text = resultText,
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+
+        // 未终局的局从卡片「复盘」进来后，必须有路回对局页；已结束的局没有可继续的下法
+        if (resultText.isBlank()) {
+            GlassTonalButton(
+                onClick = component::openCurrentGame,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                    )
+                    Text(stringResource(R.string.xiangqi_analysis_back_to_game))
+                }
+            }
+        }
+
         GlassSurface(
-            modifier = Modifier.fillMaxWidth(),
+            // weight 让面板占据剩余高度：棋盘与导出入口固定，只有着法表内部滚动。
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             style = GlassStyle.Medium,
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+                AnalysisPanelHeader(
+                    moveCount = state.plies.size,
+                    onExport = onExport,
+                )
+
+                if (rows.isEmpty()) {
                     Text(
-                        text = stringResource(R.string.xiangqi_analysis_panel_title),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 20.sp,
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        text = stringResource(R.string.xiangqi_no_history),
+                        modifier = Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.clickable { onExport() },
-                        )
-                    }
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 8.dp),
-                ) {
-                    if (state.plies.isEmpty()) {
-                        Text(
-                            text = stringResource(R.string.xiangqi_no_history),
-                            modifier = Modifier.padding(8.dp),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    } else {
-                        state.plies.chunked(2).forEachIndexed { index, pair ->
-                            val redMove = pair.getOrNull(0)
-                            val blackMove = pair.getOrNull(1)
-                            val isRedActive = redMove?.ply == state.currentPly
-                            val isBlackActive = blackMove?.ply == state.currentPly
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(if (isRedActive || isBlackActive) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f) else Color.Transparent)
-                                    .padding(8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text(
-                                    text = "${index + 1}.",
-                                    modifier = Modifier.weight(0.15f),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                                Text(
-                                    text = redMove?.moveCn?.ifBlank { redMove.moveUcci } ?: "...",
-                                    modifier = Modifier.weight(0.425f),
-                                    color = if (isRedActive) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error,
-                                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = if (isRedActive) FontWeight.Bold else FontWeight.Normal),
-                                )
-                                Text(
-                                    text = blackMove?.moveCn?.ifBlank { blackMove.moveUcci } ?: "...",
-                                    modifier = Modifier.weight(0.425f),
-                                    color = if (isBlackActive) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = if (isBlackActive) FontWeight.Bold else FontWeight.Normal),
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    GlassTonalButton(
-                        onClick = onExport,
-                        modifier = Modifier.weight(1f),
+                } else {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                            horizontal = 8.dp,
+                            vertical = 8.dp,
+                        ),
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Text(stringResource(R.string.xiangqi_export_short))
-                        }
-                    }
-                    GlassTonalButton(
-                        onClick = component::openCurrentGame,
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory, contentDescription = null, modifier = Modifier.size(16.dp))
-                            Text(stringResource(R.string.xiangqi_analyze))
+                        items(rows, key = { it.turn }) { row ->
+                            NotationRowItem(
+                                row = row,
+                                currentPly = state.currentPly,
+                                onPlyClick = component::goToPly,
+                            )
                         }
                     }
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
+/**
+ * 面板标题栏。
+ *
+ * 导出入口必须固定在**滚动容器之外**：放在着法表内部时，长棋谱会把它推出屏幕，
+ * 用户得先滚到底再滚回来才能导出。
+ */
+@Composable
+private fun AnalysisPanelHeader(
+    moveCount: Int,
+    onExport: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.xiangqi_analysis_panel_title),
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp,
+            ),
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.xiangqi_ply_count, moveCount),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            GlassTonalIconButton(onClick = onExport) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
+                    contentDescription = stringResource(R.string.xiangqi_export),
+                    modifier = Modifier.size(18.dp),
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 一行着法。红/黑两列各自可点，点击跳到该手（打谱动线）。
+ *
+ * 黑先局面的首行 [NotationRow.red] 为 null，渲染成省略占位。
+ */
+@Composable
+private fun NotationRowItem(
+    row: NotationRow,
+    currentPly: Int,
+    onPlyClick: (Int) -> Unit,
+) {
+    val isRedActive = row.red?.ply == currentPly
+    val isBlackActive = row.black?.ply == currentPly
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                if (isRedActive || isBlackActive) {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                } else {
+                    Color.Transparent
+                },
+            )
+            .padding(horizontal = 8.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "${row.turn}.",
+            modifier = Modifier.weight(0.15f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        MoveCell(
+            ply = row.red,
+            isActive = isRedActive,
+            activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            idleColor = MaterialTheme.colorScheme.error,
+            modifier = Modifier.weight(0.425f),
+            onPlyClick = onPlyClick,
+        )
+        MoveCell(
+            ply = row.black,
+            isActive = isBlackActive,
+            activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            idleColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+            modifier = Modifier.weight(0.425f),
+            onPlyClick = onPlyClick,
+        )
+    }
+}
+
+@Composable
+private fun MoveCell(
+    ply: PlyRecord?,
+    isActive: Boolean,
+    activeColor: Color,
+    idleColor: Color,
+    modifier: Modifier,
+    onPlyClick: (Int) -> Unit,
+) {
+    Text(
+        text = ply?.displayText() ?: "...",
+        modifier = modifier.then(
+            if (ply != null) Modifier.clickable { onPlyClick(ply.ply) } else Modifier,
+        ),
+        color = if (isActive) activeColor else idleColor,
+        style = MaterialTheme.typography.bodyMedium.copy(
+            fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
+        ),
+    )
+}
+
+private fun PlyRecord.displayText(): String = moveCn.ifBlank { moveUcci }
 
 @Composable
 private fun ReplayControls(
