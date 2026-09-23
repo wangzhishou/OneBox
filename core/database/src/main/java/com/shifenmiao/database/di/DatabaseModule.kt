@@ -53,6 +53,12 @@ import com.shifenmiao.database.passwordvault.dao.PasswordVaultEntryDao
 import com.shifenmiao.database.passwordvault.repo.PasswordVaultRepository
 import com.shifenmiao.database.recent_access.dao.RecentAccessDao
 import com.shifenmiao.database.docconvert.dao.DocConvertTaskDao
+import com.shifenmiao.database.chess.dao.ChessAiTaskDao
+import com.shifenmiao.database.chess.dao.ChessGameDao
+import com.shifenmiao.database.chess.dao.ChessPlyDao
+import com.shifenmiao.database.gomoku.dao.GomokuAiTaskDao
+import com.shifenmiao.database.gomoku.dao.GomokuGameDao
+import com.shifenmiao.database.gomoku.dao.GomokuPlyDao
 import com.shifenmiao.database.habit.dao.HabitCheckInDao
 import com.shifenmiao.database.habit.dao.HabitDao
 import com.shifenmiao.database.habit.repo.HabitRepository
@@ -427,6 +433,36 @@ object DatabaseModule {
     @Provides
     fun provideXiangqiAiTaskDao(database: FeatureDatabase): XiangqiAiTaskDao {
         return database.xiangqiAiTaskDao()
+    }
+
+    @Provides
+    fun provideGomokuGameDao(database: FeatureDatabase): GomokuGameDao {
+        return database.gomokuGameDao()
+    }
+
+    @Provides
+    fun provideGomokuPlyDao(database: FeatureDatabase): GomokuPlyDao {
+        return database.gomokuPlyDao()
+    }
+
+    @Provides
+    fun provideGomokuAiTaskDao(database: FeatureDatabase): GomokuAiTaskDao {
+        return database.gomokuAiTaskDao()
+    }
+
+    @Provides
+    fun provideChessGameDao(database: FeatureDatabase): ChessGameDao {
+        return database.chessGameDao()
+    }
+
+    @Provides
+    fun provideChessPlyDao(database: FeatureDatabase): ChessPlyDao {
+        return database.chessPlyDao()
+    }
+
+    @Provides
+    fun provideChessAiTaskDao(database: FeatureDatabase): ChessAiTaskDao {
+        return database.chessAiTaskDao()
     }
 
     @Provides

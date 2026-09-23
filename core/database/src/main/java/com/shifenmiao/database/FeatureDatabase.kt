@@ -20,6 +20,12 @@ import com.shifenmiao.database.blessing.dao.BlessingWishDao
 import com.shifenmiao.database.blessing.entity.BlessingRecordEntity
 import com.shifenmiao.database.blessing.entity.BlessingTabConfigEntity
 import com.shifenmiao.database.blessing.entity.BlessingWishEntity
+import com.shifenmiao.database.chess.dao.ChessAiTaskDao
+import com.shifenmiao.database.chess.dao.ChessGameDao
+import com.shifenmiao.database.chess.dao.ChessPlyDao
+import com.shifenmiao.database.chess.entity.ChessAiTaskEntity
+import com.shifenmiao.database.chess.entity.ChessGameEntity
+import com.shifenmiao.database.chess.entity.ChessPlyEntity
 import com.shifenmiao.database.data_draft.dao.DataDraftDao
 import com.shifenmiao.database.data_draft.entity.DataDraftEntity
 import com.shifenmiao.database.decision_wheel.dao.WheelDao
@@ -28,6 +34,12 @@ import com.shifenmiao.database.decision_wheel.entity.WheelHistoryEntity
 import com.shifenmiao.database.decision_wheel.entity.WheelOptionEntity
 import com.shifenmiao.database.docconvert.dao.DocConvertTaskDao
 import com.shifenmiao.database.docconvert.entity.DocConvertTaskEntity
+import com.shifenmiao.database.gomoku.dao.GomokuAiTaskDao
+import com.shifenmiao.database.gomoku.dao.GomokuGameDao
+import com.shifenmiao.database.gomoku.dao.GomokuPlyDao
+import com.shifenmiao.database.gomoku.entity.GomokuAiTaskEntity
+import com.shifenmiao.database.gomoku.entity.GomokuGameEntity
+import com.shifenmiao.database.gomoku.entity.GomokuPlyEntity
 import com.shifenmiao.database.habit.dao.HabitCheckInDao
 import com.shifenmiao.database.habit.dao.HabitDao
 import com.shifenmiao.database.habit.entity.HabitCheckInEntity
@@ -122,6 +134,12 @@ import java.io.InputStreamReader
         XiangqiGameEntity::class,
         XiangqiPlyEntity::class,
         XiangqiAiTaskEntity::class,
+        GomokuGameEntity::class,
+        GomokuPlyEntity::class,
+        GomokuAiTaskEntity::class,
+        ChessGameEntity::class,
+        ChessPlyEntity::class,
+        ChessAiTaskEntity::class,
         WheelEntity::class,
         WheelOptionEntity::class,
         WheelHistoryEntity::class,
@@ -140,7 +158,7 @@ import java.io.InputStreamReader
         HouseholdItemEntity::class,
         PeriodRecordEntity::class,
     ],
-    version = Release140Migrations.VERSION,
+    version = Release141Migrations.VERSION,
     exportSchema = true
 )
 @TypeConverters(MarkTodoTypeConverters::class)
@@ -192,6 +210,18 @@ abstract class FeatureDatabase : RoomDatabase() {
     abstract fun xiangqiPlyDao(): XiangqiPlyDao
 
     abstract fun xiangqiAiTaskDao(): XiangqiAiTaskDao
+
+    abstract fun gomokuGameDao(): GomokuGameDao
+
+    abstract fun gomokuPlyDao(): GomokuPlyDao
+
+    abstract fun gomokuAiTaskDao(): GomokuAiTaskDao
+
+    abstract fun chessGameDao(): ChessGameDao
+
+    abstract fun chessPlyDao(): ChessPlyDao
+
+    abstract fun chessAiTaskDao(): ChessAiTaskDao
 
     abstract fun wheelDao(): WheelDao
 
@@ -386,6 +416,7 @@ abstract class FeatureDatabase : RoomDatabase() {
                         MIGRATION_2_3,
                         MIGRATION_3_4,
                         *Release140Migrations.feature,
+                        *Release141Migrations.feature,
                     )
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {
