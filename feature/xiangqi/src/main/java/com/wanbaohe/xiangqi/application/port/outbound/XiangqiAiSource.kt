@@ -10,6 +10,24 @@ package com.wanbaohe.xiangqi.application.port.outbound
  */
 sealed interface XiangqiAiSource {
 
+    /**
+     * 是否需要登录才能使用。
+     * 服务端开源引擎(Pikafish 等)免登录；聊天 LLM / Jev 需要账号。
+     */
+    val requiresLogin: Boolean
+        get() = this !is RemoteEngine
+
+    /** 是否消耗积分（走我方代理的 LLM/Jev；开源引擎免费） */
+    val requiresPoints: Boolean
+        get() = requiresLogin
+
+    /**
+     * 开局积分门槛（仅校验余额，不在此扣减）。
+     * 免费引擎为 0；付费模型预留一局的基本消耗，避免开完局每步都失败。
+     */
+    val startPoints: Int
+        get() = if (requiresPoints) START_POINTS else 0
+
     /** 全局「快速工作模型」聊天 LLM（跟聊天共用 FAST/工作槽，不在此另存模型） */
     data object WorkingModel : XiangqiAiSource
 
@@ -30,6 +48,12 @@ sealed interface XiangqiAiSource {
     }
 
     companion object {
+        /** 付费模型开局最低积分 */
+        const val START_POINTS = 20
+
+        /** 未配置时的默认走棋 AI：Pikafish */
+        val default: XiangqiAiSource = RemoteEngine(RemoteEngine.PIKAFISH)
+
         /**
          * 设置页 / 对局内选择器展示的完整列表。
          * Jev(TypeSafe) 国内无备案，仅海外渠道可选。
@@ -46,10 +70,11 @@ sealed interface XiangqiAiSource {
 
         fun fromKey(key: String?): XiangqiAiSource {
             return when (key?.trim()?.lowercase()) {
-                null, "", "working_model", "workingmodel", "fast" -> WorkingModel
+                null, "" -> default
+                "working_model", "workingmodel", "fast" -> WorkingModel
                 "jev", "typesafe", "systemone" -> {
                     if (com.shifenmiao.model.channel.FlavorType.fromName().isOverseas) Jev
-                    else WorkingModel
+                    else default
                 }
                 else -> {
                     val id = key.trim().lowercase()

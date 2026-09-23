@@ -211,10 +211,6 @@ class XiangqiGameComponent @AssistedInject constructor(
         componentScope.launch { requestAiMove() }
     }
 
-    fun openAiModelSettings() {
-        onNavigate(Screen.AISettings(Screen.AISettings.Type.WorkingModel))
-    }
-
     fun switchAiModelForSide(side: Side, engine: AiEngine, model: AiModel) {
         when (uiState.mode) {
             GameMode.LLM_VS_LLM -> {

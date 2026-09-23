@@ -12,16 +12,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
@@ -129,6 +134,7 @@ private fun SourceRow(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
+            SourceTags(source = source)
         }
         if (source is XiangqiAiSource.RemoteEngine) {
             Icon(
@@ -146,5 +152,43 @@ private fun SourceRow(
             )
         }
         Spacer(modifier = Modifier.width(4.dp))
+    }
+}
+
+@Composable
+private fun SourceTags(source: XiangqiAiSource) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(top = 4.dp),
+    ) {
+        if (source.requiresLogin) {
+            SourceTag(stringResource(R.string.xiangqi_ai_tag_login), Color(0xFFF08A5D))
+        }
+        if (source.requiresPoints) {
+            SourceTag(stringResource(R.string.xiangqi_ai_tag_points), Color(0xFF4F46E5))
+        }
+        if (!source.requiresLogin && !source.requiresPoints) {
+            SourceTag(stringResource(R.string.xiangqi_ai_tag_free), Color(0xFF3D8B7A))
+        }
+    }
+}
+
+@Composable
+private fun SourceTag(text: String, color: Color) {
+    Surface(
+        shape = RoundedCornerShape(999.dp),
+        color = color.copy(alpha = 0.14f),
+        shadowElevation = 0.dp,
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelSmall.copy(
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 10.sp,
+            ),
+            color = color.copy(alpha = 0.92f),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+        )
     }
 }

@@ -52,6 +52,9 @@
     <string name="xiangqi_ai_source_jev_desc">TypeSafe decision model</string>
     <string name="xiangqi_ai_source_pikafish">Pikafish</string>
     <string name="xiangqi_ai_source_engine_desc">Server-side chess engine</string>
+    <string name="xiangqi_ai_tag_login">Login required</string>
+    <string name="xiangqi_ai_tag_points">Uses points</string>
+    <string name="xiangqi_ai_tag_free">Free</string>
     <string name="xiangqi_settings_ai_fast_title">Human vs AI model</string>
     <string name="xiangqi_settings_ai_fast_desc">Used in "Human vs AI" mode; affects move strength and style.</string>
     <string name="xiangqi_settings_ai_duel_a_title">AI duel · Red</string>

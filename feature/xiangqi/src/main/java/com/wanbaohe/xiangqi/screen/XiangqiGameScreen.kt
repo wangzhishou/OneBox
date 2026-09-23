@@ -1,6 +1,7 @@
 package com.wanbaohe.xiangqi.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -39,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.Avatar
 import com.shifenmiao.common.ui.BaseScreen
@@ -243,7 +245,7 @@ private fun XiangqiGameContent(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+            .padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -268,24 +270,29 @@ private fun XiangqiGameContent(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            PlayerIdentityCardForSide(
-                side = topSide,
+            PlayersBar(
                 state = state,
+                topSide = topSide,
+                bottomSide = bottomSide,
                 humanDisplayName = humanDisplayName,
+                humanAvatarUrl = humanAvatarUrl,
                 onlineOpponentName = state.onlineOpponentName,
                 onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
-                humanAvatarUrl = humanAvatarUrl,
-                aiServiceName = aiServiceForSide(topSide, redAiService, blackAiService),
-                aiModelName = aiModelForSide(topSide, redAiModel, blackAiModel),
-                isActiveTurn = state.boardState.sideToMove == topSide,
+                redAiService = redAiService,
+                redAiModel = redAiModel,
+                blackAiService = blackAiService,
+                blackAiModel = blackAiModel,
                 playable = playable,
                 onPickAiFor = onPickAiFor,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp),
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .padding(horizontal = 8.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 XiangqiBoard(
@@ -315,23 +322,12 @@ private fun XiangqiGameContent(
                     )
                 }
             }
-
-            PlayerIdentityCardForSide(
-                side = bottomSide,
-                state = state,
-                humanDisplayName = humanDisplayName,
-                onlineOpponentName = state.onlineOpponentName,
-                onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
-                humanAvatarUrl = humanAvatarUrl,
-                aiServiceName = aiServiceForSide(bottomSide, redAiService, blackAiService),
-                aiModelName = aiModelForSide(bottomSide, redAiModel, blackAiModel),
-                isActiveTurn = state.boardState.sideToMove == bottomSide,
-                playable = playable,
-                onPickAiFor = onPickAiFor,
-            )
         }
 
         ActionBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
             onUndo = component::undo,
             onRedo = component::redo,
             onAnalysis = component::openAnalysis,
@@ -366,7 +362,8 @@ private fun XiangqiGameContent(
                             Text(stringResource(R.string.xiangqi_retry_ai))
                         }
                         GlassTonalButton(
-                            onClick = component::openAiModelSettings,
+                            // 与象棋设置共用 XiangqiAiPicker, 不跳全局 AI 设置
+                            onClick = { onPickAiFor(state.boardState.sideToMove) },
                             modifier = Modifier.weight(1f),
                         ) {
                             Text(stringResource(R.string.xiangqi_switch_ai_model))
@@ -421,7 +418,8 @@ private fun XiangqiGameContent(
                                 )
                             }
                             GlassTonalButton(
-                                onClick = component::openAiModelSettings,
+                                // 复用象棋设置的 AI 选择器, 针对兜底发生的那一方
+                                onClick = { onPickAiFor(fallbackPly.moverSide) },
                                 modifier = Modifier.weight(1f),
                             ) {
                                 Text(stringResource(R.string.xiangqi_switch_ai_model))
@@ -439,7 +437,9 @@ private fun XiangqiGameContent(
 @Composable
 private fun OnlineDebugPanel(state: XiangqiGameUiState) {
     GlassSurface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
         style = GlassStyle.Dense,
     ) {
         Column(
@@ -481,8 +481,80 @@ private fun OnlineDebugPanel(state: XiangqiGameUiState) {
     }
 }
 
+private fun XiangqiGameUiState.playerTypeFor(side: Side): PlayerType {
+    return if (side == Side.RED) redPlayerType else blackPlayerType
+}
+
 @Composable
-private fun PlayerIdentityCardForSide(
+private fun PlayersBar(
+    state: XiangqiGameUiState,
+    topSide: Side,
+    bottomSide: Side,
+    humanDisplayName: String,
+    humanAvatarUrl: String,
+    onlineOpponentName: String,
+    onlineOpponentAvatarUrl: String,
+    redAiService: String,
+    redAiModel: String,
+    blackAiService: String,
+    blackAiModel: String,
+    playable: Boolean,
+    onPickAiFor: (Side) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    GlassSurface(
+        modifier = modifier,
+        style = GlassStyle.Medium,
+        shape = MaterialTheme.shapes.large,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            PlayerBarItem(
+                side = topSide,
+                state = state,
+                humanDisplayName = humanDisplayName,
+                onlineOpponentName = onlineOpponentName,
+                onlineOpponentAvatarUrl = onlineOpponentAvatarUrl,
+                humanAvatarUrl = humanAvatarUrl,
+                aiServiceName = aiServiceForSide(topSide, redAiService, blackAiService),
+                aiModelName = aiModelForSide(topSide, redAiModel, blackAiModel),
+                isActiveTurn = state.boardState.sideToMove == topSide,
+                playable = playable,
+                onPickAiFor = onPickAiFor,
+                mirrored = false,
+                modifier = Modifier.weight(1f),
+            )
+            Text(
+                text = stringResource(R.string.xiangqi_vs_short),
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 12.dp),
+            )
+            PlayerBarItem(
+                side = bottomSide,
+                state = state,
+                humanDisplayName = humanDisplayName,
+                onlineOpponentName = onlineOpponentName,
+                onlineOpponentAvatarUrl = onlineOpponentAvatarUrl,
+                humanAvatarUrl = humanAvatarUrl,
+                aiServiceName = aiServiceForSide(bottomSide, redAiService, blackAiService),
+                aiModelName = aiModelForSide(bottomSide, redAiModel, blackAiModel),
+                isActiveTurn = state.boardState.sideToMove == bottomSide,
+                playable = playable,
+                onPickAiFor = onPickAiFor,
+                mirrored = true,
+                modifier = Modifier.weight(1f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlayerBarItem(
     side: Side,
     state: XiangqiGameUiState,
     humanDisplayName: String,
@@ -494,6 +566,8 @@ private fun PlayerIdentityCardForSide(
     isActiveTurn: Boolean,
     playable: Boolean,
     onPickAiFor: (Side) -> Unit,
+    mirrored: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     val playerType = state.playerTypeFor(side)
     val displayName = resolvePlayerDisplayName(
@@ -504,115 +578,64 @@ private fun PlayerIdentityCardForSide(
         onlineOpponentName = onlineOpponentName,
         aiServiceName = aiServiceName,
     )
-    PlayerIdentityCard(
-        displayName = displayName,
-        subtitle = resolvePlayerSubtitle(
+    val active = playable && isActiveTurn
+    val subtitle = if (active) {
+        resolvePlayerStatusText(
+            side = side,
+            playerType = playerType,
+            gameMode = state.mode,
+            isActiveTurn = isActiveTurn,
+            playable = playable,
+        )
+    } else {
+        resolvePlayerSubtitle(
             playerType = playerType,
             gameMode = state.mode,
             aiModelName = aiModelName,
-        ),
-        avatarSeed = displayName,
-        avatarUrl = resolvePlayerAvatarUrl(
-            playerType = playerType,
-            gameMode = state.mode,
-            humanAvatarUrl = humanAvatarUrl,
-            onlineOpponentAvatarUrl = onlineOpponentAvatarUrl,
-        ),
-        sideLabel = stringResource(if (side == Side.RED) R.string.xiangqi_side_red else R.string.xiangqi_side_black),
-        statusText = resolvePlayerStatusText(
-            side = side,
-            playerType = playerType,
-            gameMode = state.mode,
-            isActiveTurn = isActiveTurn,
-            playable = playable,
-        ),
-        statusColor = resolvePlayerStatusColor(
-            side = side,
-            isActiveTurn = isActiveTurn,
-            playable = playable,
-        ),
-        onClick = if (playerType == PlayerType.LLM) {
-            { onPickAiFor(side) }
-        } else null,
-    )
-}
-
-private fun XiangqiGameUiState.playerTypeFor(side: Side): PlayerType {
-    return if (side == Side.RED) redPlayerType else blackPlayerType
-}
-
-@Composable
-private fun PlayerIdentityCard(
-    displayName: String,
-    subtitle: String,
-    avatarSeed: String,
-    avatarUrl: String,
-    sideLabel: String,
-    statusText: String,
-    statusColor: Color,
-    onClick: (() -> Unit)? = null,
-) {
-    val cardShape = MaterialTheme.shapes.large
-    val content: @Composable () -> Unit = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Avatar(
-                username = avatarSeed,
-                avatar = avatarUrl,
-                size = 40.dp,
-                isLogin = true,
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = displayName,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                if (subtitle.isNotBlank()) {
-                    Text(
-                        text = subtitle,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = sideLabel,
-                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                Text(
-                    text = statusText,
-                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = statusColor,
-                )
-            }
-        }
-    }
-
-    if (onClick != null) {
-        GlassSurface(
-            onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
-            shape = cardShape,
-            style = GlassStyle.Medium,
-            content = content,
         )
+    }
+    val accentColor = if (active) {
+        resolvePlayerStatusColor(side = side, isActiveTurn = isActiveTurn, playable = playable)
     } else {
-        GlassSurface(
-            modifier = Modifier.fillMaxWidth(),
-            style = GlassStyle.Medium,
-            shape = cardShape,
-        ) {
-            content()
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+    val avatarUrl = resolvePlayerAvatarUrl(
+        playerType = playerType,
+        gameMode = state.mode,
+        humanAvatarUrl = humanAvatarUrl,
+        onlineOpponentAvatarUrl = onlineOpponentAvatarUrl,
+    )
+
+    Row(
+        modifier = modifier.then(
+            if (playerType == PlayerType.LLM) Modifier.clickable { onPickAiFor(side) } else Modifier
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = if (mirrored) Arrangement.End else Arrangement.Start,
+    ) {
+        if (!mirrored) {
+            Avatar(username = displayName, avatar = avatarUrl, size = 32.dp, isLogin = true)
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        Column(horizontalAlignment = if (mirrored) Alignment.End else Alignment.Start) {
+            Text(
+                text = displayName,
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                color = if (active) accentColor else MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.labelSmall,
+                color = accentColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        if (mirrored) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Avatar(username = displayName, avatar = avatarUrl, size = 32.dp, isLogin = true)
         }
     }
 }
@@ -715,7 +738,9 @@ private fun StatusCard(
     actions: (@Composable () -> Unit)? = null,
 ) {
     GlassSurface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
         style = GlassStyle.Medium,
     ) {
         Column(
@@ -740,6 +765,7 @@ private fun StatusCard(
 
 @Composable
 private fun ActionBar(
+    modifier: Modifier = Modifier,
     onUndo: () -> Unit,
     onRedo: () -> Unit,
     onAnalysis: () -> Unit,
@@ -753,42 +779,71 @@ private fun ActionBar(
     showResign: Boolean,
 ) {
     GlassSurface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         style = GlassStyle.Medium,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(horizontal = 16.dp, vertical = 10.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             GlassTonalIconButton(onClick = onUndo, enabled = allowUndoRedo) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo, contentDescription = null)
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
             }
             GlassTonalIconButton(onClick = onRedo, enabled = allowUndoRedo) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo, contentDescription = null)
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
             }
             GlassTonalIconButton(onClick = onAnalysis) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAnalytics, contentDescription = null)
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAnalytics,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
             }
             GlassTonalIconButton(onClick = onExport) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare, contentDescription = null)
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
             }
             GlassTonalIconButton(onClick = onRestart) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh, contentDescription = null)
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
             }
             if (showResign) {
                 GlassTonalIconButton(onClick = onResign) {
-                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFlag, contentDescription = null)
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFlag,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                    )
                 }
             }
             GlassTonalIconButton(onClick = onRename) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit, contentDescription = null)
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
             }
             GlassTonalIconButton(onClick = onToggleFullscreen) {
                 Icon(
                     imageVector = if (isImmersive) Icons.Outlined.FullscreenExit else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Fullscreen,
                     contentDescription = null,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         }

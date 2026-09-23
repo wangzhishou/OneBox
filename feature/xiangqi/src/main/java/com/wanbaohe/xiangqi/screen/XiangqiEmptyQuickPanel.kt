@@ -86,29 +86,17 @@ fun XiangqiEmptyQuickPanel(
             QuickAction(
                 label = stringResource(R.string.xiangqi_new_ai_as_black),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAvatarDefault,
-                onClick = {
-                    ActionUtils.showLogin(source = "xiangqi_ai_black") {
-                        component.createAiGame(aiTitle, Side.BLACK)
-                    }
-                },
+                onClick = { component.startAiGame(aiTitle, Side.BLACK) },
             ),
             QuickAction(
                 label = stringResource(R.string.xiangqi_new_ai_as_red),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRobot,
-                onClick = {
-                    ActionUtils.showLogin(source = "xiangqi_ai_red") {
-                        component.createAiGame(aiTitle, Side.RED)
-                    }
-                },
+                onClick = { component.startAiGame(aiTitle, Side.RED) },
             ),
             QuickAction(
                 label = stringResource(R.string.xiangqi_new_ai_vs_ai),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino,
-                onClick = {
-                    ActionUtils.showLogin(source = "xiangqi_ai_vs_ai") {
-                        component.createAiVsAiGame(aiVsAiTitle)
-                    }
-                },
+                onClick = { component.startAiVsAiGame(aiVsAiTitle) },
             ),
             QuickAction(
                 label = stringResource(R.string.xiangqi_new_online_game),

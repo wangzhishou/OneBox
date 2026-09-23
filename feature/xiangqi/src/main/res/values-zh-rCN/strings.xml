@@ -51,6 +51,9 @@
     <string name="xiangqi_ai_source_jev_desc">TypeSafe 判断模型</string>
     <string name="xiangqi_ai_source_pikafish">Pikafish</string>
     <string name="xiangqi_ai_source_engine_desc">服务端象棋引擎</string>
+    <string name="xiangqi_ai_tag_login">需登录</string>
+    <string name="xiangqi_ai_tag_points">耗积分</string>
+    <string name="xiangqi_ai_tag_free">免费</string>
     <string name="xiangqi_settings_ai_fast_title">人机对弈 AI</string>
     <string name="xiangqi_settings_ai_fast_desc">在「人机对弈」模式下使用,影响落子的强度与风格。</string>
     <string name="xiangqi_settings_ai_duel_a_title">AI 对战 · 红方</string>

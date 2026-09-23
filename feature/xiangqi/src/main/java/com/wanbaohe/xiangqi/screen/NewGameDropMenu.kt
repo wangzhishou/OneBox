@@ -140,9 +140,7 @@ fun NewGameDropMenu(
                             },
                             onClick = {
                                 expanded = false
-                                ActionUtils.showLogin(source = "xiangqi_ai_red") {
-                                    component.createAiGame(aiTitle, Side.RED)
-                                }
+                                component.startAiGame(aiTitle, Side.RED)
                             },
                         )
                         MenuItem(
@@ -157,9 +155,7 @@ fun NewGameDropMenu(
                             },
                             onClick = {
                                 expanded = false
-                                ActionUtils.showLogin(source = "xiangqi_ai_black") {
-                                    component.createAiGame(aiTitle, Side.BLACK)
-                                }
+                                component.startAiGame(aiTitle, Side.BLACK)
                             },
                         )
                         MenuItem(
@@ -174,9 +170,7 @@ fun NewGameDropMenu(
                             },
                             onClick = {
                                 expanded = false
-                                ActionUtils.showLogin(source = "xiangqi_ai_vs_ai") {
-                                    component.createAiVsAiGame(aiVsAiTitle)
-                                }
+                                component.startAiVsAiGame(aiVsAiTitle)
                             },
                         )
 
