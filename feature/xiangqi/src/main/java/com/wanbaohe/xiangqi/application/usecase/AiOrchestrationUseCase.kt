@@ -69,7 +69,9 @@ class AiOrchestrationUseCase @Inject constructor(
     ): MoveDecision? = moveChooser.choose(
         boardState = boardState,
         fen = requestFen,
-        history = detail.plies.takeLast(6).map { it.moveCn.ifBlank { it.moveUcci } },
+        // 历史走 UCCI: 与 legalMoves 的候选键同一种记法, Jev 的英文 prompt 也直接可读
+        // (中文记谱在英文题型里是噪音, 且模型最终要回的就是 UCCI)。
+        history = detail.plies.takeLast(6).map { it.moveUcci.ifBlank { it.moveCn } },
         legalMoves = GameArbiter.legalMoves(boardState),
         slot = slot,
     )
