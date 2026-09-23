@@ -133,20 +133,18 @@ class JevBestMoveResolverTest {
     private val sparseFen = "4k4/9/r8/9/R8/9/4p4/9/9/4K4 w 0 1"
 
     @Test
-    fun buildRequestOnlyCarriesShortlistedCandidates() {
+    fun buildRequestCarriesEveryLegalMoveWithFacts() {
         // 稀疏局面: 黑车 a7 无保护, e-file 上的黑卒只是挡住双将照面(在红车 e5 之后方);
         // 红车 a5 可吃它(a5a7)、可直上 a4 送吃(a5a4)、也可平到 e5 将军(a5e5)
         val board = FenCodec.parse(sparseFen)
         val moves = GameArbiter.legalMoves(board)
         val facts = moves.map { JevBestMoveResolver.analyze(board, it) }
-        val shortlist = JevBestMoveResolver.shortlist(facts, limit = 2)
 
         val request = JevBestMoveResolver.buildRequest(
             fen = sparseFen,
             boardState = board,
             history = listOf("a3a4", "a6a5"),
-            candidates = shortlist,
-            legalMoveCount = moves.size,
+            candidates = facts,
             model = "jev-latest",
         )
 
@@ -154,49 +152,46 @@ class JevBestMoveResolverTest {
         assertEquals("Chinese Chess (Xiangqi)", request.state.get("game").asString)
         assertEquals("Red", request.state.get("side_to_move").asString)
         assertEquals(2, request.state.getAsJsonArray("recent_moves").size())
-        assertEquals(moves.size, request.state.get("legal_move_count").asInt)
-        assertEquals(2, request.state.get("candidate_count").asInt)
         assertEquals(9.0, request.state.getAsJsonObject("piece_values").get("chariot").asDouble, 1e-9)
 
         val bestMove = request.questions.getAsJsonObject(JevBestMoveResolver.QUESTION_BEST_MOVE)
         assertEquals("choice", bestMove.get("type").asString)
         assertTrue(bestMove.get("instructions").asString.contains("checkmate"))
-        // criteria 里只有裁剪后的候选
+
+        // 不做裁剪: criteria 覆盖全部合法着法, 且 key 就是 UCCI
         val criteria = bestMove.getAsJsonObject("criteria")
-        assertEquals(2, criteria.size())
+        assertEquals(moves.size, criteria.size())
+        assertEquals(moves.size, request.state.get("legal_move_count").asInt)
+        moves.forEach { assertTrue(it.notationUcci, criteria.has(it.notationUcci)) }
     }
 
     @Test
-    fun shortlistDropsHangingMoveAndKeepsEngineSeed() {
+    fun describesThreatAsWinOnlyWhenTargetIsUndefended() {
         val board = FenCodec.parse(sparseFen)
         val byUcci = GameArbiter.legalMoves(board).associateBy { it.notationUcci }
-        val facts = byUcci.values.map { JevBestMoveResolver.analyze(board, it) }
+        fun describe(ucci: String) =
+            JevBestMoveResolver.describe(JevBestMoveResolver.analyze(board, byUcci.getValue(ucci)))
 
-        // 送吃的 a5a4(-9 分)挤不进前 2; 吃车 a5a7(+9)与将军 a5e5(+3)进
-        val picked = JevBestMoveResolver.shortlist(facts, limit = 2).map { it.move.notationUcci }
-        assertEquals(2, picked.size)
-        assertTrue(picked.toString(), picked.contains("a5a7"))
-        assertTrue(picked.toString(), picked.contains("a5e5"))
-        assertFalse(picked.toString(), picked.contains("a5a4"))
+        // 红车 a5 -> e5 落点安全, 且能白吃无保护的黑卒: 这是"赢子", 措辞必须强
+        val wins = describe("a5e5")
+        assertTrue(wins, wins.contains("Wins the Black soldier on e3 (1) next move, nothing defends it"))
 
-        // 引擎兜底名额: 即使本地分最低也一定会进候选(替代分最低的那个)
-        val seeded = JevBestMoveResolver.shortlist(facts, limit = 2, seed = byUcci.getValue("a5a4"))
-            .map { it.move.notationUcci }
-        assertEquals(2, seeded.size)
-        assertTrue(seeded.toString(), seeded.contains("a5a4"))
-        assertTrue(seeded.toString(), seeded.contains("a5a7"))
-
-        // 合法着法本身不多于上限时原样返回, 不做裁剪
-        val few = facts.take(3)
-        assertEquals(few.size, JevBestMoveResolver.shortlist(few, limit = 5).size)
+        // 红车 a5 -> a6 自己也挂在黑车口上: 收益兑现不了, 不能宣传成"赢子"
+        val contested = describe("a5a6")
+        assertTrue(contested, contested.contains("Attacks the Black chariot on a7 (9)"))
+        assertTrue(contested, contested.contains("but this piece can be taken first"))
+        assertFalse(contested, contested.contains("Wins the"))
     }
 
     @Test
     fun candidateFactsDescribeCaptureCheckAndSafety() {
         val board = FenCodec.parse(sparseFen)
         val byUcci = GameArbiter.legalMoves(board).associateBy { it.notationUcci }
-        fun describe(ucci: String) =
-            JevBestMoveResolver.describe(JevBestMoveResolver.analyze(board, byUcci.getValue(ucci)))
+        val inDanger = JevBestMoveResolver.piecesInDanger(board)
+        fun describe(ucci: String) = JevBestMoveResolver.describe(
+            JevBestMoveResolver.analyze(board, byUcci.getValue(ucci)),
+            inDanger,
+        )
 
         // 吃子: 红车 a5 x 黑车 a7, 吃完对方只剩将, 落点安全
         val capture = describe("a5a7")
@@ -216,11 +211,22 @@ class JevBestMoveResolverTest {
         assertTrue(check, check.contains("check"))
         assertTrue(check, check.contains("safe (nothing can take it next move)"))
 
+        // 危险清单: 红车 a5 正被黑车 a7 攻击且无人保护
+        assertEquals(1, inDanger.size)
+        assertTrue(inDanger[0].text(), inDanger[0].text().contains("Red chariot on a5"))
+        assertTrue(inDanger[0].text(), inDanger[0].text().contains("nothing defends it"))
+        // 走开这枚子的候选要说明解围; 与它无关的着法不带这句
+        assertTrue(capture, capture.contains("This also saves your Red chariot."))
+        assertFalse(describe("e0d0"), describe("e0d0").contains("This also saves"))
+
         // 每个候选描述都必须带事实, 否则 Jev 无从分辨(旧版只有「红车,中文记谱:车九进一」)
         byUcci.values.forEach { move ->
             val text = describe(move.notationUcci)
             assertTrue(text, text.contains("check"))
-            assertTrue(text, text.contains("threatens "))
+            assertTrue(
+                text,
+                text.contains("safe (") || text.contains("HANGING") || text.contains("protected"),
+            )
         }
     }
 }

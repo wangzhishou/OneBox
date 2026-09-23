@@ -13,9 +13,9 @@ import com.shifenmiao.network.api.JevService
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
 import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
-import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiSource
 import com.wanbaohe.xiangqi.domain.GameArbiter
 import com.wanbaohe.xiangqi.domain.UcciNotation
+import com.wanbaohe.xiangqi.domain.model.BoardPoint
 import com.wanbaohe.xiangqi.domain.model.BoardState
 import com.wanbaohe.xiangqi.domain.model.Piece
 import com.wanbaohe.xiangqi.domain.model.PieceType
@@ -65,19 +65,19 @@ private fun PieceType.englishName(): String = when (this) {
 /**
  * Jev(System One)走棋。
  *
- * 两段式, 因为让 Jev 在 20~44 个合法着法里直接挑是不可行的(实测 top p 只有 0.09~0.34,
- * argmax 近似随机):
- * 1. **裁剪**: 给每个合法着法算一遍局面事实(吃子/被吃/将军/威胁), 本地打分取前
- *    [JevBestMoveResolver.SHORTLIST_SIZE] 个, 并用服务端 Pikafish 的最佳着法兜一个名额;
- * 2. **判断**: 只把这几个候选连同事实描述发给 Jev, 由它在小集合里选最优。
+ * **全部合法着法都发给 Jev**, 不做候选裁剪 —— 靠的是每个候选都带上可比较的局面事实
+ * (吃子/被吃/将军/威胁)。只给「红炮,中文记谱:炮二平五」时 40+ 个选项毫无区分度,
+ * 概率会被摊平(实测 top p 只有 0.09); 补上事实后同样的全量候选就能拉开差距
+ * (实测 ply6 top p 0.63)。
  *
- * 走子链路本身没变: Jev 返回的着法仍要能映射回**全部**合法着法([JevBestMoveResolver.resolve])。
+ * 之所以留全量: 裁剪(本地战术打分 + Pikafish 兜底名额)虽然短期能提分, 但候选集会被
+ * "威胁"口径带偏 —— 实测同一门炮往同一方向挪 1~6 格会霸占名额, 观感上就成了反复动同一个子;
+ * 也让 Jev 自己的判断失去了覆盖面。等 Jev 进化(更强的局面理解)收益更直接。
  */
 @Singleton
 class JevMoveChooser @Inject constructor(
     @Named("JevDirectService") private val jevDirectService: JevService,
     @Named("JevProxyService") private val jevProxyService: JevService,
-    private val pikafishMoveChooser: PikafishMoveChooser,
     dispatchersHolder: DispatchersHolder,
 ) : DispatchersHolder by dispatchersHolder {
 
@@ -102,19 +102,16 @@ class JevMoveChooser @Inject constructor(
 
         // 每个候选都要推演对方应手, 属 CPU 密集操作, 不能在主线程上算
         // (componentScope 是 Dispatchers.Main.immediate)
-        val facts = withContext(defaultDispatcher) {
-            legalMoves.map { JevBestMoveResolver.analyze(boardState, it) }
-        }
-        val seed = engineSeedMove(boardState, fen, history, legalMoves, slot)
-        val shortlist = withContext(defaultDispatcher) {
-            JevBestMoveResolver.shortlist(facts, JevBestMoveResolver.SHORTLIST_SIZE, seed)
+        val (facts, inDanger) = withContext(defaultDispatcher) {
+            legalMoves.map { JevBestMoveResolver.analyze(boardState, it) } to
+                JevBestMoveResolver.piecesInDanger(boardState)
         }
         val request = JevBestMoveResolver.buildRequest(
             fen = fen,
             boardState = boardState,
             history = history,
-            candidates = shortlist,
-            legalMoveCount = legalMoves.size,
+            candidates = facts,
+            inDanger = inDanger,
             model = model,
         )
 
@@ -147,13 +144,7 @@ class JevMoveChooser @Inject constructor(
             if (selection != null) {
                 return MoveDecision(
                     move = selection.move,
-                    // 带上候选裁剪比: 从落库的 ai_reason 就能看出这一手是在几个候选里选的
-                    reason = "jev conf=%.2f p=%.2f cand=%d/%d".format(
-                        selection.confidence,
-                        selection.probability,
-                        shortlist.size,
-                        legalMoves.size,
-                    ),
+                    reason = "jev conf=%.2f p=%.2f".format(selection.confidence, selection.probability),
                     rawResponse = selection.rawResponse,
                     fallbackUsed = false,
                 )
@@ -163,31 +154,6 @@ class JevMoveChooser @Inject constructor(
         return HeuristicMoveFallback.decision(legalMoves)
             ?.copy(reason = "jev: ${lastError ?: "failed"}", fallbackUsed = true)
     }
-
-    /**
-     * 服务端 Pikafish 的最佳着法, 用作候选集的"保底名额"。
-     *
-     * 纯本地打分是战术口径, 遇到"最佳着法本身很安静"的局面会漏(实测 ply8 引擎首选支士,
-     * 本地分 0, 挤不进前 6)。引擎不可用(或它自己回退到本地兜底)时返回 null, 退化为纯本地裁剪。
-     */
-    private suspend fun engineSeedMove(
-        boardState: BoardState,
-        fen: String,
-        history: List<String>,
-        legalMoves: List<XiangqiMove>,
-        slot: EngineSlot,
-    ): XiangqiMove? = runCatching {
-        pikafishMoveChooser.choose(
-            boardState = boardState,
-            fen = fen,
-            history = history,
-            legalMoves = legalMoves,
-            slot = slot,
-            engineId = XiangqiAiSource.RemoteEngine.PIKAFISH,
-        )
-    }.getOrNull()
-        ?.takeUnless { it.fallbackUsed }
-        ?.move
 }
 
 internal object JevBestMoveResolver {
@@ -195,21 +161,8 @@ internal object JevBestMoveResolver {
     const val DEFAULT_MODEL = "jev-latest"
     const val QUESTION_BEST_MOVE = "best_move"
 
-    /** 交给 Jev 的候选数。太多它就是在猜, 太少会把好棋裁掉。 */
-    const val SHORTLIST_SIZE = 6
-
-    /** 同一个出发格最多进几个候选(防止候选全是同一门炮往同一方向挪) */
-    private const val MAX_PER_ORIGIN = 2
-
-    /** 将杀着法在裁剪打分里的权重(足够大, 一票否决其它项) */
-    private const val CHECKMATE_BONUS = 1000.0
-    private const val CHECK_BONUS = 3.0
-
-    /** 威胁还没兑现, 打分时打折 */
-    private const val THREAT_WEIGHT = 0.5
-
-    /** 极小的向前推进项, 只用来把同分着法排开(否则候选会全挤在棋盘一侧) */
-    private const val ADVANCE_WEIGHT = 0.05
+    /** 每个候选最多描述几个威胁(多一个就多一次着法推演) */
+    private const val MAX_THREATS = 2
 
     private val gson = Gson()
 
@@ -221,12 +174,10 @@ internal object JevBestMoveResolver {
     )
 
     /**
-     * 一步合法着法的局面事实。裁剪打分与英文描述都只用这一份数据, 避免重复推演。
+     * 一步合法着法的局面事实。英文描述只用这一份数据, 每步只推演一次。
      */
     data class CandidateFacts(
         val move: XiangqiMove,
-        /** 吃到的子力价值; 不吃子为 0 */
-        val captureValue: Double,
         val givesCheck: Boolean,
         /** 对方一步都走不出来(将杀或困毙) */
         val opponentHasNoReply: Boolean,
@@ -234,34 +185,42 @@ internal object JevBestMoveResolver {
         val cheapestAttacker: XiangqiMove?,
         /** 会被吃, 但能吃回来 */
         val defended: Boolean,
-        /** 落到新位置后能吃到的最多两个目标(按价值降序) */
-        val threats: List<XiangqiMove>,
+        /** 落到新位置后能吃到的目标(最多两个, 按价值降序) */
+        val threats: List<Threat>,
     ) {
         val isCheckmate: Boolean get() = opponentHasNoReply && givesCheck
 
         val isHanging: Boolean get() = cheapestAttacker != null && !defended
+    }
 
-        val bestThreatValue: Double
-            get() = threats.maxOfOrNull { it.captured?.type?.sortValue() ?: 0.0 } ?: 0.0
+    /**
+     * 落点这枚子下一步能吃掉的目标。
+     *
+     * [defended] 决定措辞强弱: 吃掉一个有人保护的目标只是"攻击", 不是收益 ——
+     * 否则同一门炮会在原地来回挪动时一直重复宣传同一个吃不到的威胁, 把模型钉死在这个子上。
+     */
+    data class Threat(
+        val target: Piece,
+        val square: BoardPoint,
+        val defended: Boolean,
+    )
 
-        /**
-         * 这一步的净子力风险: 落点没人能吃 = 0; 会被吃且无人保护 = 白送这枚子;
-         * 会被吃但有保护 = 交换差价(我方子力 - 对方来吃的最便宜子力, 不小于 0)。
-         */
-        val materialRisk: Double
-            get() {
-                val attacker = cheapestAttacker ?: return 0.0
-                val own = move.piece.type.sortValue()
-                return if (defended) maxOf(0.0, own - attacker.piece.type.sortValue()) else own
-            }
-
-        /** 向前推进的格数(红方 rank 递减、黑方递增), 只用于打破同分 */
-        val forwardProgress: Int
-            get() = if (move.piece.side == Side.RED) {
-                move.from.rank - move.to.rank
-            } else {
-                move.to.rank - move.from.rank
-            }
+    /**
+     * 当前局面里"被攻击且没人保护"的己方子: 真正需要处理的问题。
+     *
+     * 候选描述清一色是"我能威胁什么", 模型看不到自己的危险(实测对局里它一步都不回防),
+     * 所以把危险单独列进 state, 并给"把这枚子走开"的候选加一句解围说明。
+     */
+    data class DangerPiece(
+        val piece: Piece,
+        val square: BoardPoint,
+        val attacker: Piece,
+        val attackerSquare: BoardPoint,
+    ) {
+        fun text(): String =
+            "${piece.englishLabel()} on ${UcciNotation.point(square)} is attacked by the " +
+                "${attacker.englishLabel()} on ${UcciNotation.point(attackerSquare)} " +
+                "and nothing defends it"
     }
 
     /**
@@ -269,15 +228,18 @@ internal object JevBestMoveResolver {
      * 中日韩文字"可以处理但准确率较低"。
      */
     private const val BEST_MOVE_INSTRUCTIONS =
-        "You are a strong Chinese Chess (Xiangqi) player. Each option is one of the strongest " +
-            "candidate moves for the side to move, written in English and stating: what it takes, " +
+        "You are a strong Chinese Chess (Xiangqi) player. Each option is one legal move for the " +
+            "side to move, written in English and stating: what it takes, " +
             "whether it gives check, whether the moving piece is safe on its destination square, " +
             "and what that piece threatens next. Choose the strongest move. Weigh them roughly in " +
             "this order: checkmate > a capture or threat that wins material while staying safe > " +
             "a move that keeps your pieces protected and active > a capture that loses material > " +
             "a move flagged HANGING (the piece can be taken next move with nothing recapturing), " +
-            "which loses material for nothing. Coordinates use UCCI: files a-i from Red's left, " +
-            "ranks 0-9 with rank 0 on Red's home rank."
+            "which loses material for nothing. If state lists pieces of yours in danger, prefer a " +
+            "move that saves or defends them. Do not shuffle one piece back and forth: moving the " +
+            "same piece again is only good when it wins material, escapes an attack or answers a " +
+            "check. Coordinates use UCCI: files a-i from Red's left, ranks 0-9 with rank 0 on " +
+            "Red's home rank."
 
     /**
      * 推演一步着法之后的事实(吃子 / 将军 / 落点是否被吃被保 / 下一步威胁什么)。
@@ -299,7 +261,7 @@ internal object JevBestMoveResolver {
         val defended = cheapest != null &&
             GameArbiter.legalMoves(after.withPieceMoved(cheapest)).any { it.to == move.to }
 
-        // 把"能吃将/帅"排除掉: 那是将军(已单列), 不是威胁; 否则任何将军着法的威胁分都会被顶到最高
+        // 把"能吃将/帅"排除掉: 那是将军(已单列), 不是威胁
         val threats = GameArbiter.legalMoves(after, mover)
             .filter {
                 it.from == move.to && it.captured != null &&
@@ -307,11 +269,20 @@ internal object JevBestMoveResolver {
             }
             .distinctBy { it.to }
             .sortedByDescending { it.captured!!.type.sortValue() }
-            .take(2)
+            .take(MAX_THREATS)
+            .map { capture ->
+                // 目标有人保护 = 吃了会被吃回, 只能算"攻击", 不能宣传成收益
+                val targetDefended = GameArbiter.legalMoves(after.withPieceMoved(capture), opponent)
+                    .any { it.to == capture.to }
+                Threat(
+                    target = capture.captured!!,
+                    square = capture.to,
+                    defended = targetDefended,
+                )
+            }
 
         return CandidateFacts(
             move = move,
-            captureValue = move.captured?.type?.sortValue() ?: 0.0,
             givesCheck = givesCheck,
             opponentHasNoReply = replies.isEmpty(),
             cheapestAttacker = cheapest,
@@ -321,73 +292,41 @@ internal object JevBestMoveResolver {
     }
 
     /**
-     * 裁剪打分, **只用来挑候选, 不决定最终着法**(最终仍由 Jev 选)。
+     * 列出当前局面里被攻击且没人保护的己方子。
      *
-     * 口径: 吃子 + 打折后的威胁 + 将军 - 被吃风险, 再加一个极小的推进项打破同分。
+     * 一次推演覆盖全部己方子(对方能吃到的格子 + 逐个判断能不能吃回), 与候选数无关。
      */
-    fun score(facts: CandidateFacts): Double {
-        if (facts.isCheckmate) return CHECKMATE_BONUS
-        var score = facts.captureValue + THREAT_WEIGHT * facts.bestThreatValue
-        if (facts.givesCheck) score += CHECK_BONUS
-        score -= facts.materialRisk
-        score += ADVANCE_WEIGHT * facts.forwardProgress
-        return score
-    }
-
-    /**
-     * 候选裁剪: 本地打分取前 [limit] 个, 并把 [seed](Pikafish 的最佳着法)顶进来。
-     *
-     * 两条约束:
-     * - **同一个出发格最多两个候选**: 否则打分会把"同一门炮往同一方向挪 1~6 格"全塞进候选
-     *   (实测开局前 6 名全是炮的横move), Jev 看不到别处的好棋, 等于没裁剪;
-     * - 送吃着法(HANGING 且没有更大补偿)会被扣到负分, 自然落榜 —— Jev 连"白送一手"都看不到。
-     *
-     * 合法着法本身不多于 [limit] 时原样返回。
-     */
-    fun shortlist(
-        facts: List<CandidateFacts>,
-        limit: Int,
-        seed: XiangqiMove? = null,
-    ): List<CandidateFacts> {
-        require(limit > 0) { "limit must be positive" }
-        if (facts.size <= limit) return facts
-
-        val ranked = facts.sortedWith(
-            compareByDescending<CandidateFacts> { score(it) }
-                .thenByDescending { it.forwardProgress }
-                .thenBy { it.move.notationUcci }
-        )
-        val picked = mutableListOf<CandidateFacts>()
-        for (candidate in ranked) {
-            if (picked.size >= limit) break
-            val sameOrigin = picked.count { it.move.from == candidate.move.from }
-            if (sameOrigin >= MAX_PER_ORIGIN) continue
-            picked += candidate
-        }
-
-        if (seed != null) {
-            val seeded = facts.firstOrNull { it.move.notationUcci == seed.notationUcci }
-            if (seeded != null && seeded !in picked) {
-                // 用引擎着法顶掉本地分最低的那一个, 保证强手一定在候选里
-                if (picked.size >= limit) picked.removeAt(picked.lastIndex)
-                picked += seeded
+    fun piecesInDanger(board: BoardState): List<DangerPiece> {
+        val us = board.sideToMove
+        return GameArbiter.legalMoves(board, us.opposite())
+            .filter { it.captured != null && it.captured!!.type != PieceType.KING }
+            .groupBy { it.to }
+            .mapNotNull { (square, captures) ->
+                val cheapest = captures.minByOrNull { it.piece.type.sortValue() }
+                    ?: return@mapNotNull null
+                val target = cheapest.captured ?: return@mapNotNull null
+                val defended = GameArbiter.legalMoves(board.withPieceMoved(cheapest), us)
+                    .any { it.to == square }
+                if (defended) {
+                    null
+                } else {
+                    DangerPiece(target, square, cheapest.piece, cheapest.from)
+                }
             }
-        }
-        return picked
     }
 
     /**
-     * 组装 System One 请求。`criteria` 里只有裁剪后的候选。
+     * 组装 System One 请求: `criteria` 覆盖**全部**合法着法, 每个都带局面事实。
      *
-     * 早期版本把 20~44 个合法着法全塞进去, 且描述只有「红炮,中文记谱:炮二平五」——
-     * 候选几乎不可区分, 实测 top p 只有 0.09~0.34, argmax 近似随机落子。
+     * 早期版本描述只有「红炮,中文记谱:炮二平五」, 20~44 个候选彼此不可区分,
+     * 实测 top p 只有 0.09~0.34, argmax 近似随机落子; 补上事实后才拉开差距。
      */
     fun buildRequest(
         fen: String,
         boardState: BoardState,
         history: List<String>,
         candidates: List<CandidateFacts>,
-        legalMoveCount: Int,
+        inDanger: List<DangerPiece> = emptyList(),
         model: String,
     ): JevRequest {
         val side = boardState.sideToMove
@@ -399,16 +338,18 @@ internal object JevBestMoveResolver {
             add("piece_values", JsonObject().apply {
                 PIECE_VALUES.forEach { (type, value) -> addProperty(type.englishName(), value) }
             })
-            addProperty("legal_move_count", legalMoveCount)
-            addProperty("candidate_count", candidates.size)
+            addProperty("legal_move_count", candidates.size)
+            add("your_pieces_in_danger", JsonArray().apply {
+                inDanger.forEach { add(it.text()) }
+            })
             addProperty(
                 "task",
-                "The options are the strongest ${candidates.size} of the $legalMoveCount legal " +
-                    "moves. Pick the best one for the side to move.",
+                "The options below are all ${candidates.size} legal moves for the side to move. " +
+                    "Pick the strongest one.",
             )
         }
         val criteria = JsonObject().apply {
-            candidates.forEach { addProperty(it.move.notationUcci, describe(it)) }
+            candidates.forEach { addProperty(it.move.notationUcci, describe(it, inDanger)) }
         }
         val questions = JsonObject().apply {
             add(QUESTION_BEST_MOVE, JsonObject().apply {
@@ -423,7 +364,7 @@ internal object JevBestMoveResolver {
     /**
      * 把事实翻译成 Jev 能横向比较的英文短句(吃子 / 将军 / 落点安全 / 下一步威胁)。
      */
-    fun describe(facts: CandidateFacts): String {
+    fun describe(facts: CandidateFacts, inDanger: List<DangerPiece> = emptyList()): String {
         val move = facts.move
         val opponent = move.piece.side.opposite()
 
@@ -444,23 +385,31 @@ internal object JevBestMoveResolver {
 
         val safety = when {
             facts.cheapestAttacker == null -> "safe (nothing can take it next move)"
-            facts.defended -> "protected (${facts.attackerText()} can take it, but we recapture)"
-            else -> "HANGING (${facts.attackerText()} can take it next move, nothing recaptures)"
+            facts.isHanging -> "HANGING (${facts.attackerText()} can take it next move, nothing recaptures)"
+            else -> "protected (${facts.attackerText()} can take it, but we recapture)"
         }
 
         val threatText = if (facts.threats.isEmpty()) {
-            "threatens nothing"
+            "no threat"
         } else {
-            "threatens " + facts.threats.joinToString(", ") { threat ->
-                val target = threat.captured!!
-                "${target.englishLabel()} on ${UcciNotation.point(threat.to)}" +
-                    " (${target.type.valueText()})"
-            }
+            facts.threats.joinToString("; ") { threat ->
+                val label = "${threat.target.englishLabel()} on ${UcciNotation.point(threat.square)}" +
+                    " (${threat.target.type.valueText()})"
+                when {
+                    // 自己都站不住(下一步会被白吃)就别谈收益: 对方先手把这枚子吃掉, 威胁根本兑现不了
+                    threat.defended -> "attacks the $label, but it is defended"
+                    facts.isHanging -> "attacks the $label (but this piece can be taken first)"
+                    else -> "wins the $label next move, nothing defends it"
+                }
+            }.replaceFirstChar { it.uppercase() }
         }
+
+        val escape = inDanger.firstOrNull { it.square == move.from }
+        val escapeText = escape?.let { " This also saves your ${it.piece.englishLabel()}." } ?: ""
 
         val head = "${move.piece.englishLabel().replaceFirstChar { it.uppercase() }} " +
             "${UcciNotation.point(move.from)} -> ${UcciNotation.point(move.to)}"
-        return "$head: $capture. $check. $safety. $threatText."
+        return "$head: $capture. $check. $safety. $threatText.$escapeText"
     }
 
     fun resolve(rawJson: String, legalMoves: List<XiangqiMove>): Selection? {
