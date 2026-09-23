@@ -8,6 +8,7 @@ import com.shifenmiao.network.NetworkBuilder.cache
 import com.shifenmiao.network.api.AnthropicCompatibleService
 import com.shifenmiao.network.api.ApiService
 import com.shifenmiao.network.api.BaiduImageProcessApiService
+import com.shifenmiao.network.api.BoardGameEngineService
 import com.shifenmiao.network.api.DocConvertApiService
 import com.shifenmiao.network.api.JevService
 import com.shifenmiao.network.api.OpenAICompatibleService
@@ -200,6 +201,11 @@ object NetworkModule {
     @Singleton
     fun provideXiangqiEngineService(@Named("DefaultRetrofit") retrofit: Retrofit): XiangqiEngineService =
         retrofit.create(XiangqiEngineService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideBoardGameEngineService(@Named("DefaultRetrofit") retrofit: Retrofit): BoardGameEngineService =
+        retrofit.create(BoardGameEngineService::class.java)
 
     @Provides
     @Singleton
