@@ -113,6 +113,16 @@ class XiangqiGameComponent @AssistedInject constructor(
         aiEngineCatalogManager.observeModelsByProvider()
             .stateIn(componentScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
 
+    /**
+     * 象棋专用走棋 AI 配置（每槽位的来源）。
+     *
+     * ⚠️ 必须声明在 [init] 之前，并由 [collectAiConfig] 真正订阅：
+     * `stateIn(WhileSubscribed)` 没有下游时会一直停在初值 [XiangqiAiConfig]
+     * （即默认 Pikafish），只读 `.value` 拿到的是过期默认值而不是用户的选择。
+     */
+    val currentAiConfig: StateFlow<XiangqiAiConfig> = xiangqiAiStore.observe()
+        .stateIn(componentScope, SharingStarted.WhileSubscribed(5_000), XiangqiAiConfig())
+
     private var aiRequestJob: Job? = null
     private var lastRequestedFen: String? = null
     private var audioSettings: AudioSettings = AudioSettings()
@@ -121,6 +131,7 @@ class XiangqiGameComponent @AssistedInject constructor(
     init {
         collectSettings()
         collectAiEngines()
+        collectAiConfig()
         pauseOnStartup()
         observeGame()
     }
@@ -244,9 +255,6 @@ class XiangqiGameComponent @AssistedInject constructor(
     }
 
     val currentAIEngine: StateFlow<AiEngine> = aiEngineManager.fastAIEngine
-
-    val currentAiConfig: StateFlow<XiangqiAiConfig> = xiangqiAiStore.observe()
-        .stateIn(componentScope, SharingStarted.WhileSubscribed(5_000), XiangqiAiConfig())
 
     fun currentEngineForSide(side: Side): AiEngine = when (uiState.mode) {
         GameMode.LLM_VS_LLM ->
@@ -473,6 +481,18 @@ class XiangqiGameComponent @AssistedInject constructor(
             aiEngineManager.duelEngineB,
         ).forEach { flow ->
             componentScope.launch { flow.collect { refreshAiDisplay() } }
+        }
+    }
+
+    /**
+     * 订阅象棋 AI 来源配置。
+     *
+     * 除了让 [currentAiConfig] 保持最新（[currentSourceForSide] 读它的 `.value`），
+     * 还要在设置页 / 对局内选择器改动后刷新顶栏展示，否则界面会一直停在默认 Pikafish。
+     */
+    private fun collectAiConfig() {
+        componentScope.launch {
+            currentAiConfig.collect { refreshAiDisplay() }
         }
     }
 
