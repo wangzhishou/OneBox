@@ -347,6 +347,70 @@ object AppNavigationRegistry {
             ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "gomoku_router",
+                canonicalName = "screen.gomoku_router",
+                title = "五子棋",
+                description = "打开五子棋对局模块，支持跳转到具体棋局与在线房间",
+                aliases = listOf("gomoku", "五子棋"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "gomoku_router"
+                ),
+                screenBuilder = { params ->
+                    val gameId = params["game_id"].orEmpty()
+                    val roomId = params["room_id"]
+                        ?: params["roomId"]
+                        ?: params["room"]
+                        ?: ""
+                    val action = params["action"].orEmpty()
+                    val type = params["type"].orEmpty()
+                    when {
+                        roomId.isNotBlank() && action.equals("join_room", ignoreCase = true) -> {
+                            Screen.GomokuRouter(Screen.GomokuRouter.Type.JoinOnlineRoom(roomId))
+                        }
+
+                        gameId.isNotBlank() && type.equals("analysis", ignoreCase = true) ->
+                            Screen.GomokuRouter(Screen.GomokuRouter.Type.Analysis(gameId))
+
+                        gameId.isNotBlank() -> Screen.GomokuRouter(Screen.GomokuRouter.Type.Game(gameId))
+                        else -> Screen.GomokuRouter()
+                    }
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "chess_router",
+                canonicalName = "screen.chess_router",
+                title = "国际象棋",
+                description = "打开国际象棋对局模块，支持跳转到具体棋局与在线房间",
+                aliases = listOf("chess", "international_chess", "国际象棋"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "chess_router"
+                ),
+                screenBuilder = { params ->
+                    val gameId = params["game_id"].orEmpty()
+                    val roomId = params["room_id"]
+                        ?: params["roomId"]
+                        ?: params["room"]
+                        ?: ""
+                    val action = params["action"].orEmpty()
+                    val type = params["type"].orEmpty()
+                    when {
+                        roomId.isNotBlank() && action.equals("join_room", ignoreCase = true) -> {
+                            Screen.ChessRouter(Screen.ChessRouter.Type.JoinOnlineRoom(roomId))
+                        }
+
+                        gameId.isNotBlank() && type.equals("analysis", ignoreCase = true) ->
+                            Screen.ChessRouter(Screen.ChessRouter.Type.Analysis(gameId))
+
+                        gameId.isNotBlank() -> Screen.ChessRouter(Screen.ChessRouter.Type.Game(gameId))
+                        else -> Screen.ChessRouter()
+                    }
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
                 routeKey = Screen.Teleprompter().routeKey,
                 canonicalName = "screen.${Screen.Teleprompter().routeKey}",
                 title = "提词器",

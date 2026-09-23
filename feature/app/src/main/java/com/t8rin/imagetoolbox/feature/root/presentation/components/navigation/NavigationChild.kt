@@ -237,6 +237,10 @@ import com.wanbaohe.file_transfer.screenLogic.FileTransferComponent
 import com.wanbaohe.game2048.component.Game2048Component
 import com.wanbaohe.game2048.screen.Game2048Screen
 import com.wanbaohe.xiangqi.router.XiangqiRouterScreen
+import com.wanbaohe.gomoku.router.GomokuRouterScreen
+import com.wanbaohe.gomoku.router.screenLogic.GomokuRouterComponent
+import com.wanbaohe.chess.router.ChessRouterScreen
+import com.wanbaohe.chess.router.screenLogic.ChessRouterComponent
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.shifenmiao.webview.browser.BrowserComponent
 import com.shifenmiao.webview.browser.BrowserScreen
@@ -392,6 +396,16 @@ sealed interface NavigationChild {
     class Xiangqi(private val component: XiangqiRouterComponent) : NavigationChild {
         @Composable
         override fun Content() = XiangqiRouterScreen(component)
+    }
+
+    class Gomoku(private val component: GomokuRouterComponent) : NavigationChild {
+        @Composable
+        override fun Content() = GomokuRouterScreen(component)
+    }
+
+    class Chess(private val component: ChessRouterComponent) : NavigationChild {
+        @Composable
+        override fun Content() = ChessRouterScreen(component)
     }
 
     class PickColorFromImage(private val component: PickColorFromImageComponent) : NavigationChild {

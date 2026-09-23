@@ -1345,6 +1345,10 @@
     <string name="game_2048_description">클래식 숫자 합치기 퍼즐 게임</string>
     <string name="xiangqi_title">샹치</string>
     <string name="xiangqi_description">FEN 스냅샷, 리플레이, 가져오기/내보내기, LLM 대결을 지원하는 중국 장기.</string>
+    <string name="gomoku_title">Gomoku</string>
+    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
+    <string name="chess_title">Chess</string>
+    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
     <string name="minesweeper_title">지뢰 찾기</string>
     <string name="minesweeper_description">클래식 지뢰 찾기 — 논리와 추리를 테스트하세요.</string>
     <string name="survive_30s_screen_title">30초 생존</string>

@@ -1345,6 +1345,10 @@
     <string name="game_2048_description">Klassisches Zahlen-Zusammenfügen-Puzzle</string>
     <string name="xiangqi_title">Xiangqi</string>
     <string name="xiangqi_description">Chinesisches Schach mit FEN-Schnappschüssen, Wiedergabe, Import/Export und LLM-Kämpfen.</string>
+    <string name="gomoku_title">Gomoku</string>
+    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
+    <string name="chess_title">Chess</string>
+    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
     <string name="minesweeper_title">Minesweeper</string>
     <string name="minesweeper_description">Klassisches Minesweeper – teste deine Logik und dein Denkvermögen.</string>
     <string name="survive_30s_screen_title">Überlebe 30 Sekunden</string>

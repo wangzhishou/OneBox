@@ -1345,6 +1345,10 @@
     <string name="game_2048_description">क्लासिक संख्या-मिलान पहेली खेल</string>
     <string name="xiangqi_title">शतरंज</string>
     <string name="xiangqi_description">FEN स्नैपशॉट, रीप्ले, आयात/निर्यात और LLM लड़ाइयों के साथ चीनी शतरंज।</string>
+    <string name="gomoku_title">Gomoku</string>
+    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
+    <string name="chess_title">Chess</string>
+    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
     <string name="minesweeper_title">माइनस्वीपर</string>
     <string name="minesweeper_description">क्लासिक माइनस्वीपर — अपने तर्क और विचार का परीक्षण करें।</string>
     <string name="survive_30s_screen_title">30 सेकंड जीवित रहें</string>

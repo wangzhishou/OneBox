@@ -1867,6 +1867,78 @@ sealed class Screen(
     }
 
     @Serializable
+    @SerialName("GomokuRouter")
+    data class GomokuRouter(
+        val type: Type? = null
+    ) : Screen(
+        id = 1103,
+        title = com.shifenmiao.core.R.string.gomoku_title,
+        subtitle = com.shifenmiao.core.R.string.gomoku_description,
+    ) {
+        @Serializable
+        sealed class Type {
+            @Serializable
+            @SerialName("GomokuLibrary")
+            data object Library : Type()
+
+            @Serializable
+            @SerialName("GomokuGame")
+            data class Game(
+                val gameId: String,
+            ) : Type()
+
+            @Serializable
+            @SerialName("GomokuAnalysis")
+            data class Analysis(
+                val gameId: String,
+                val initialPly: Int = -1,
+            ) : Type()
+
+            @Serializable
+            @SerialName("GomokuJoinOnlineRoom")
+            data class JoinOnlineRoom(
+                val roomId: String,
+            ) : Type()
+        }
+    }
+
+    @Serializable
+    @SerialName("ChessRouter")
+    data class ChessRouter(
+        val type: Type? = null
+    ) : Screen(
+        id = 1104,
+        title = com.shifenmiao.core.R.string.chess_title,
+        subtitle = com.shifenmiao.core.R.string.chess_description,
+    ) {
+        @Serializable
+        sealed class Type {
+            @Serializable
+            @SerialName("ChessLibrary")
+            data object Library : Type()
+
+            @Serializable
+            @SerialName("ChessGame")
+            data class Game(
+                val gameId: String,
+            ) : Type()
+
+            @Serializable
+            @SerialName("ChessAnalysis")
+            data class Analysis(
+                val gameId: String,
+                val initialPly: Int = -1,
+            ) : Type()
+
+            @Serializable
+            @SerialName("ChessJoinOnlineRoom")
+            data class JoinOnlineRoom(
+                val roomId: String,
+            ) : Type()
+        }
+    }
+
+    @Serializable
     @SerialName("Minesweeper")
     data object Minesweeper : Screen(
         id = 1082,

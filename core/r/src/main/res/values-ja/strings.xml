@@ -1345,6 +1345,10 @@
     <string name="game_2048_description">定番の数字合体パズルゲーム</string>
     <string name="xiangqi_title">将棋</string>
     <string name="xiangqi_description">FENスナップショット、リプレイ、インポート/エクスポート、LLM対戦に対応した中国将棋。</string>
+    <string name="gomoku_title">Gomoku</string>
+    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
+    <string name="chess_title">Chess</string>
+    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
     <string name="minesweeper_title">マインスイーパ</string>
     <string name="minesweeper_description">定番のマインスイーパ — 論理的思考を試そう。</string>
     <string name="survive_30s_screen_title">30秒生き残れ</string>

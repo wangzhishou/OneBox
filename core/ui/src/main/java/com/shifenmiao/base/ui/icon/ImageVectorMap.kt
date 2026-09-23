@@ -115,6 +115,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineWatermarking
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWebpTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWeightResize
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineXiangqi
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineGomoku
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZip
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
@@ -385,6 +387,8 @@ object IconRegistry {
         "DataSync" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFileTransfer },
         "Teleprompter" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTeleprompter },
         "XiangqiRouter" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineXiangqi },
+        "GomokuRouter" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGomoku },
+        "ChessRouter" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChess },
         "LifeTime" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLifetime },
         "CreateAIAgent" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAgent },
         "CreateAIChatPrompt" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ChatPlus },

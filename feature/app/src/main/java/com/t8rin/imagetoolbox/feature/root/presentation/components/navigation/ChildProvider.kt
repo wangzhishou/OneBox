@@ -167,6 +167,8 @@ import com.wanbaohe.file.browser.screenLogic.FileBrowserComponent
 import com.wanbaohe.file_transfer.screenLogic.FileTransferComponent
 import com.wanbaohe.game2048.component.Game2048Component
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
+import com.wanbaohe.gomoku.router.screenLogic.GomokuRouterComponent
+import com.wanbaohe.chess.router.screenLogic.ChessRouterComponent
 import com.wanbaohe.idphoto.presentation.screenLogic.IdPhotoComponent
 import com.wanbaohe.imageviewer.screenLogic.ImageViewerComponent
 import com.wanbaohe.markdown.edit.component.MarkdownEditorComponent
@@ -435,6 +437,24 @@ class ChildProvider @Inject constructor(
 
         is Screen.XiangqiRouter -> NavigationChild.Xiangqi(
             lifeFactories.get().xiangqiRouterComponentFactory(
+                componentContext = componentContext,
+                type = config.type,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+            )
+        )
+
+        is Screen.GomokuRouter -> NavigationChild.Gomoku(
+            lifeFactories.get().gomokuRouterComponentFactory(
+                componentContext = componentContext,
+                type = config.type,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+            )
+        )
+
+        is Screen.ChessRouter -> NavigationChild.Chess(
+            lifeFactories.get().chessRouterComponentFactory(
                 componentContext = componentContext,
                 type = config.type,
                 onGoBack = ::navigateBack,

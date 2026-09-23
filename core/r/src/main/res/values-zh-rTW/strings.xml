@@ -1482,6 +1482,10 @@
     <string name="game_2048_description">經典數字合併益智遊戲</string>
     <string name="xiangqi_title">棋局分析器</string>
     <string name="xiangqi_description">支援 棋譜 快照儲存、回放、匯入匯出與 AI 人機對弈。</string>
+    <string name="gomoku_title">五子棋</string>
+    <string name="gomoku_description">15×15 棋盤五連對弈,支援快照儲存、回放、匯入匯出與 AI 人機對弈。</string>
+    <string name="chess_title">國際象棋</string>
+    <string name="chess_description">標準規則國際象棋,支援 FEN 快照、回放、匯入匯出與 AI 人機對弈。</string>
     <string name="minesweeper_title">踩地雷</string>
     <string name="minesweeper_description">經典的踩地雷遊戲，鍛鍊你的邏輯思維與推理能力。</string>
     <string name="ad_watch_title">廣告看看看</string>

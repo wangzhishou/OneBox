@@ -1537,6 +1537,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="game_2048_description">Classic number-merging puzzle game</string>
     <string name="xiangqi_title">Xiangqi</string>
     <string name="xiangqi_description">Chinese chess with FEN snapshots, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_title">Gomoku</string>
+    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
+    <string name="chess_title">Chess</string>
+    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
 
     <string name="minesweeper_title">Minesweeper</string>
     <string name="minesweeper_description">Classic minesweeper — test your logic and reasoning.</string>

@@ -1603,6 +1603,10 @@
     <string name="game_2048_description">经典数字合并益智游戏</string>
     <string name="xiangqi_title">棋局分析器</string>
     <string name="xiangqi_description">支持 棋谱 快照保存、回放、导入导出与 AI 人机对弈。</string>
+    <string name="gomoku_title">五子棋</string>
+    <string name="gomoku_description">15×15 棋盘五连对弈,支持快照保存、回放、导入导出与 AI 人机对弈。</string>
+    <string name="chess_title">国际象棋</string>
+    <string name="chess_description">标准规则国际象棋,支持 FEN 快照、回放、导入导出与 AI 人机对弈。</string>
 
     <string name="minesweeper_title">扫雷</string>
     <string name="minesweeper_description">经典的扫雷游戏，锻炼你的逻辑思维与推理能力。</string>

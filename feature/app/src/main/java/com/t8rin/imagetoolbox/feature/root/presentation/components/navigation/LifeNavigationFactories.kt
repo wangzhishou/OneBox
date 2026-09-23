@@ -35,6 +35,8 @@ import com.wanbaohe.iching.component.IChingDivinationComponent
 import com.wanbaohe.iching.component.IChingHistoryComponent
 import com.wanbaohe.game2048.component.Game2048Component
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
+import com.wanbaohe.gomoku.router.screenLogic.GomokuRouterComponent
+import com.wanbaohe.chess.router.screenLogic.ChessRouterComponent
 import com.wanbaohe.idphoto.presentation.screenLogic.IdPhotoComponent
 import com.wanbaohe.markdown.edit.component.MarkdownEditorComponent
 import com.wanbaohe.passwordvault.router.screenLogic.PasswordVaultRouterComponent
@@ -77,6 +79,8 @@ class LifeNavigationFactories @Inject constructor(
     val iChingHistoryComponentFactory: IChingHistoryComponent.Factory,
     val game2048ComponentFactory: Game2048Component.Factory,
     val xiangqiRouterComponentFactory: XiangqiRouterComponent.Factory,
+    val gomokuRouterComponentFactory: GomokuRouterComponent.Factory,
+    val chessRouterComponentFactory: ChessRouterComponent.Factory,
     val deadPixelTestComponentFactory: DeadPixelTestComponent.Factory,
     val minesweeperComponentFactory: com.wanbaohe.minesweeper.component.MinesweeperComponent.Factory,
     val adWatchComponentFactory: com.wanbaohe.adwatch.component.AdWatchComponent.Factory,

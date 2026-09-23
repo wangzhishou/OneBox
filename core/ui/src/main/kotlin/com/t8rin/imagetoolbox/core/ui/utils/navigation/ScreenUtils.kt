@@ -137,6 +137,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineWatermarking
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWebpTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWeightResize
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineXiangqi
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineGomoku
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZip
 import com.t8rin.imagetoolbox.core.resources.icons.EditAlt
 import com.t8rin.imagetoolbox.core.resources.icons.Language
@@ -492,6 +494,8 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.IChingHistory -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory
     is Screen.Game2048 -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGame2048
     is Screen.XiangqiRouter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineXiangqi
+    is Screen.GomokuRouter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGomoku
+    is Screen.ChessRouter -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChess
     is Screen.Survive30s -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSurvive30s
     is Screen.WebBrowser -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language
     is Screen.CodeEditor -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor
@@ -754,6 +758,8 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.Community,
                     Screen.MeasurementTools,
                     Screen.XiangqiRouter(),
+                    Screen.GomokuRouter(),
+                    Screen.ChessRouter(),
                     Screen.PasswordVault(),
                     Screen.BlessingWall(),
                     Screen.Poem(),

@@ -1,0 +1,222 @@
+package com.wanbaohe.chess.screen
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.shifenmiao.base.utils.ActionUtils
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.chess.R
+import com.wanbaohe.chess.component.ChessLibraryComponent
+import com.wanbaohe.chess.di.ChessOnlineEntryPoint
+import com.wanbaohe.chess.domain.model.Side
+import dagger.hilt.android.EntryPointAccessors
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCasino
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAvatarDefault
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineGroup
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePublic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
+
+/**
+ * 在 Play / Analyze / History 三个 tab 上,如果没有对局数据,
+ * 展示 6 个快捷创建入口(本地双人/人机×2/AI 对战/导入×2),代替"还没有对局"的空文案。
+ */
+@Composable
+fun ChessEmptyQuickPanel(
+    component: ChessLibraryComponent,
+    headline: String,
+    subline: String,
+    modifier: Modifier = Modifier,
+) {
+    val localTitle = stringResource(R.string.chess_mode_local)
+    val aiTitle = stringResource(R.string.chess_mode_ai)
+    val aiVsAiTitle = stringResource(R.string.chess_mode_ai_vs_ai)
+    val importedGameTitle = stringResource(R.string.chess_imported_game_title)
+    val importedFenTitle = stringResource(R.string.chess_imported_fen_title)
+
+    var importFen by remember { mutableStateOf(false) }
+    var importJson by remember { mutableStateOf(false) }
+    var showOnlineMatch by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            text = headline,
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Text(
+            text = subline,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+
+        val actions = listOf(
+            QuickAction(
+                label = stringResource(R.string.chess_new_local_game),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGroup,
+                onClick = { component.createLocalGame(localTitle) },
+            ),
+            QuickAction(
+                label = stringResource(R.string.chess_new_ai_as_black),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAvatarDefault,
+                onClick = { component.startAiGame(aiTitle, Side.BLACK) },
+            ),
+            QuickAction(
+                label = stringResource(R.string.chess_new_ai_as_white),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRobot,
+                onClick = { component.startAiGame(aiTitle, Side.WHITE) },
+            ),
+            QuickAction(
+                label = stringResource(R.string.chess_new_ai_vs_ai),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCasino,
+                onClick = { component.startAiVsAiGame(aiVsAiTitle) },
+            ),
+            QuickAction(
+                label = stringResource(R.string.chess_new_online_game),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePublic,
+                onClick = {
+                    ActionUtils.showLogin(source = "chess_online_empty") {
+                        showOnlineMatch = true
+                    }
+                },
+            ),
+            QuickAction(
+                label = stringResource(R.string.chess_import_fen),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUploadFile,
+                // 导入是纯本地能力（建本地对局 + 回放着法）：不联网、不走 AI、不扣积分，
+                // 与同面板的「本地双人」口径一致，因此不加登录门控。
+                onClick = { importFen = true },
+            ),
+            QuickAction(
+                label = stringResource(R.string.chess_import_json),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
+                onClick = { importJson = true },
+            ),
+        )
+
+        // 3 列 x 2 行
+        actions.chunked(3).forEach { row ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                row.forEach { action ->
+                    QuickActionCard(
+                        action = action,
+                        modifier = Modifier
+                            .weight(1f)
+                            .aspectRatio(1f),
+                    )
+                }
+                repeat(3 - row.size) { Box(modifier = Modifier.weight(1f)) }
+            }
+        }
+    }
+
+    if (importFen) {
+        ChessImportDialog(
+            title = stringResource(R.string.chess_import_dialog_title),
+            hint = stringResource(R.string.chess_import_hint_fen),
+            onDismiss = { importFen = false },
+            onConfirm = { text ->
+                // 标题传空串，是否采用文件里的 title 由 ImportGameUseCase 决定
+                component.importFen("", text, importedFenTitle)
+                importFen = false
+            },
+        )
+    }
+    if (importJson) {
+        ChessImportDialog(
+            title = stringResource(R.string.chess_import_dialog_title),
+            hint = stringResource(R.string.chess_import_hint_json),
+            onDismiss = { importJson = false },
+            onConfirm = { text ->
+                component.importJson("", text, importedGameTitle)
+                importJson = false
+            },
+        )
+    }
+    if (showOnlineMatch) {
+        val context = LocalContext.current
+        val entryPoint = remember {
+            EntryPointAccessors.fromApplication(
+                context.applicationContext,
+                ChessOnlineEntryPoint::class.java,
+            )
+        }
+        val onlinePlay = remember { entryPoint.chessOnlinePlayUseCase() }
+        OnlineMatchScreen(
+            onlinePlay = onlinePlay,
+            onDismiss = { showOnlineMatch = false },
+            onMatchReady = { roomId, mySide, opponentName, opponentAvatarUrl, initialFen ->
+                showOnlineMatch = false
+                component.createOnlineGame(roomId, mySide, opponentName, opponentAvatarUrl, initialFen)
+            },
+        )
+    }
+}
+
+private data class QuickAction(
+    val label: String,
+    val icon: ImageVector,
+    val onClick: () -> Unit,
+)
+
+@Composable
+private fun QuickActionCard(
+    action: QuickAction,
+    modifier: Modifier = Modifier,
+) {
+    GlassSurface(
+        onClick = action.onClick,
+        modifier = modifier.fillMaxSize(),
+        shape = RoundedCornerShape(20.dp),
+        style = GlassStyle.Medium,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Icon(
+                imageVector = action.icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            Text(
+                text = action.label,
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}

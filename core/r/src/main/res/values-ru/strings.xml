@@ -1345,6 +1345,10 @@
     <string name="game_2048_description">Классическая головоломка по слиянию чисел</string>
     <string name="xiangqi_title">Сянци</string>
     <string name="xiangqi_description">Китайские шахматы с FEN-снимками, повтором, импортом/экспортом и битвами с ИИ.</string>
+    <string name="gomoku_title">Gomoku</string>
+    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
+    <string name="chess_title">Chess</string>
+    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
     <string name="minesweeper_title">Сапёр</string>
     <string name="minesweeper_description">Классический сапёр — проверьте свою логику и рассуждения.</string>
     <string name="survive_30s_screen_title">Продержись 30 секунд</string>

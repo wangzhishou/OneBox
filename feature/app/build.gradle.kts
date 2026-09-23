@@ -105,6 +105,8 @@ dependencies {
     implementation(projects.feature.ichingDivination)
     implementation(projects.feature.game2048)
     implementation(projects.feature.xiangqi)
+    implementation(projects.feature.gomoku)
+    implementation(projects.feature.chess)
     implementation(projects.feature.teleprompter)
     implementation(projects.feature.aiDetect)
     implementation(projects.feature.survive30s)
