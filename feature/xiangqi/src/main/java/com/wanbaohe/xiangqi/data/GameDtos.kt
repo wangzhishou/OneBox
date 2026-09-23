@@ -28,10 +28,9 @@ data class XiangqiTTSTemplate(
 )
 
 object XiangqiTTSTemplates {
-    val MOVE = XiangqiTTSTemplate("xiangqi-move", com.wanbaohe.xiangqi.R.string.xiangqi_tts_move, "落子")
     val CAPTURE = XiangqiTTSTemplate("xiangqi-capture", com.wanbaohe.xiangqi.R.string.xiangqi_tts_capture, "吃！")
     val CHECK = XiangqiTTSTemplate("xiangqi-check", com.wanbaohe.xiangqi.R.string.xiangqi_tts_check, "将军！")
     val CHECKMATE = XiangqiTTSTemplate("xiangqi-checkmate", com.wanbaohe.xiangqi.R.string.xiangqi_tts_checkmate, "将死！")
     val DRAW = XiangqiTTSTemplate("xiangqi-draw", com.wanbaohe.xiangqi.R.string.xiangqi_tts_draw, "和棋！")
-    val ALL = listOf(MOVE, CAPTURE, CHECK, CHECKMATE, DRAW)
+    val ALL = listOf(CAPTURE, CHECK, CHECKMATE, DRAW)
 }

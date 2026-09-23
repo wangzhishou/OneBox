@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">Warten</string>
     <string name="xiangqi_retry_ai">KI erneut versuchen</string>
     <string name="xiangqi_switch_ai_model">Modell wechseln</string>
-    <string name="xiangqi_tts_move">Zugansage</string>
     <string name="xiangqi_tts_capture">Schlagansage</string>
     <string name="xiangqi_tts_check">Schachansage</string>
     <string name="xiangqi_tts_checkmate">Schachmattansage</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">KI hat keinen legalen Zug zurückgegeben; lokaler Ersatz angewendet</string>
     <string name="xiangqi_ai_local_fallback_title">Engine nicht verfügbar – lokaler Ersatzzug gespielt</string>
     <string name="xiangqi_ai_local_fallback_message">Grund: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">Xiangqi-Zug-Engines werden getrennt von Chat-Modellen konfiguriert.</string>
+    <string name="xiangqi_ai_source_working_model">Schnelles Arbeitsmodell</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe-Entscheidungsmodell</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Serverseitige Schach-Engine</string>
+    <string name="xiangqi_ai_tag_login">Anmeldung erforderlich</string>
+    <string name="xiangqi_ai_tag_points">Verbraucht Punkte</string>
+    <string name="xiangqi_ai_tag_free">Kostenlos</string>
     <string name="xiangqi_analysis_sound_on">Ton an</string>
     <string name="xiangqi_analysis_sound_off">Ton aus</string>
     <string name="xiangqi_settings_sound_enabled">Sound und Hintergrundmusik</string>
@@ -249,7 +257,6 @@
     <string name="xiangqi_tts_test_text">Sprachsynthese-Test</string>
     <string name="xiangqi_signaling_disconnected">Verbindung verloren, bitte erneut spielen</string>
     <string name="xiangqi_llm_history_none">Keine</string>
-    <string name="xiangqi_tts_default_move">Zug</string>
     <string name="xiangqi_tts_default_capture">Schlagen!</string>
     <string name="xiangqi_tts_default_check">Schach!</string>
     <string name="xiangqi_tts_default_checkmate">Schachmatt!</string>

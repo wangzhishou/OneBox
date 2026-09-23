@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">待機中</string>
     <string name="xiangqi_retry_ai">AIを再試行</string>
     <string name="xiangqi_switch_ai_model">モデルを切り替え</string>
-    <string name="xiangqi_tts_move">手の読み上げ</string>
     <string name="xiangqi_tts_capture">駒を取る読み上げ</string>
     <string name="xiangqi_tts_check">王手の読み上げ</string>
     <string name="xiangqi_tts_checkmate">詰みの読み上げ</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">AIが有効な手を返さなかったため、ローカルフォールバックを適用しました</string>
     <string name="xiangqi_ai_local_fallback_title">エンジンが利用できないため、ローカルの代替手を指しました</string>
     <string name="xiangqi_ai_local_fallback_message">理由: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">シャンチーの指し手エンジンはチャットモデルとは別に設定します。</string>
+    <string name="xiangqi_ai_source_working_model">高速ワークモデル</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe 判定モデル</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">サーバー側チェスエンジン</string>
+    <string name="xiangqi_ai_tag_login">ログインが必要</string>
+    <string name="xiangqi_ai_tag_points">ポイントを消費</string>
+    <string name="xiangqi_ai_tag_free">無料</string>
     <string name="xiangqi_analysis_sound_on">サウンドオン</string>
     <string name="xiangqi_analysis_sound_off">サウンドオフ</string>
     <string name="xiangqi_settings_sound_enabled">効果音とBGM</string>
@@ -248,7 +256,6 @@
     <string name="xiangqi_tts_test_text">音声合成テスト</string>
     <string name="xiangqi_signaling_disconnected">接続が切れました。再マッチしてください</string>
     <string name="xiangqi_llm_history_none">なし</string>
-    <string name="xiangqi_tts_default_move">移動</string>
     <string name="xiangqi_tts_default_capture">キャプチャ！</string>
     <string name="xiangqi_tts_default_check">チェック！</string>
     <string name="xiangqi_tts_default_checkmate">チェックメイト！</string>

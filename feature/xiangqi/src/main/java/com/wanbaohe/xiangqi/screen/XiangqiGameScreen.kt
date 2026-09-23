@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
@@ -28,8 +30,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,11 +43,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.Avatar
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.common.ui.ImmersiveModeState
 import com.wanbaohe.xiangqi.ui.XiangqiAiPickerBottomSheet
 import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
@@ -64,6 +71,8 @@ import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
 import com.wanbaohe.xiangqi.component.XiangqiGameComponent
 import com.wanbaohe.xiangqi.component.XiangqiGameUiState
 import com.wanbaohe.xiangqi.data.TextExportLabels
+import com.wanbaohe.xiangqi.data.XiangqiPlyRecord
+import com.wanbaohe.xiangqi.domain.model.BoardPoint
 import com.wanbaohe.xiangqi.domain.model.GameMode
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.PlayerType
@@ -82,6 +91,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmojiEvents
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAnalytics
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import kotlinx.coroutines.delay
 
 @Composable
 fun XiangqiGameScreen(
@@ -242,196 +254,322 @@ private fun XiangqiGameContent(
     val loginState = LocalLoginState.current
     val immersiveState = LocalXiangqiImmersiveModeState.current
 
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        val isRedTurn = state.boardState.sideToMove == Side.RED
-        val playable = state.status == GameStatus.PLAYING || state.status == GameStatus.CHECK
-        val humanDisplayName = BaseUtils.getDisplayName(loginState.nickname, loginState.username)
-            .ifBlank { stringResource(R.string.xiangqi_player_you) }
-        val humanAvatarUrl = loginState.avatar.orEmpty()
-        val redAiService =
-            state.redAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) }
-        val redAiModel =
-            state.redAiModelName.ifBlank { stringResource(R.string.xiangqi_settings_empty_value) }
-        val blackAiService =
-            state.blackAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) }
-        val blackAiModel =
-            state.blackAiModelName.ifBlank { stringResource(R.string.xiangqi_settings_empty_value) }
-        val bottomSide = if (state.mode == GameMode.ONLINE_PVP) state.onlineMySide else Side.RED
-        val topSide = bottomSide.opposite()
+    val playable = state.status == GameStatus.PLAYING || state.status == GameStatus.CHECK
+    val humanDisplayName = BaseUtils.getDisplayName(loginState.nickname, loginState.username)
+        .ifBlank { stringResource(R.string.xiangqi_player_you) }
+    val humanAvatarUrl = loginState.avatar.orEmpty()
+    val redAiService =
+        state.redAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) }
+    val redAiModel =
+        state.redAiModelName.ifBlank { stringResource(R.string.xiangqi_settings_empty_value) }
+    val blackAiService =
+        state.blackAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) }
+    val blackAiModel =
+        state.blackAiModelName.ifBlank { stringResource(R.string.xiangqi_settings_empty_value) }
+    val bottomSide = if (state.mode == GameMode.ONLINE_PVP) state.onlineMySide else Side.RED
+    val topSide = bottomSide.opposite()
+    // 当前局面的最后一手(撤销后随之回退),棋盘上用以明示上一步
+    val lastMove = state.history.getOrNull(state.currentPly - 1)?.let { parseUcciMove(it.moveUcci) }
+    // AI 兜底 ("AI_FALLBACK") 已经合法落子完成,不必再多一张提示卡;
+    // 只对真错 (AI_ERROR / 自定义错误文案) 显示并提供重试入口。
+    val showErrorCard = state.errorMessage.isNotBlank() && state.errorMessage != "AI_FALLBACK"
+    // 引擎不可用时会静默回退本地兜底,只表现为"AI 突然变笨"。
+    // 这里把它显式说出来,并带上兜底原因(如 "pikafish: http 503"),否则无从排查。
+    val fallbackPly = state.history.lastOrNull {
+        MoveDecision.isLocalFallback(it.aiReason)
+    }?.takeIf { it.ply == state.currentPly }
+    val showDebugPanel = BuildConfig.DEBUG && state.mode == GameMode.ONLINE_PVP
 
-        Column(
-            modifier = Modifier.capturable(captureController),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            PlayersBar(
-                state = state,
-                topSide = topSide,
-                bottomSide = bottomSide,
-                humanDisplayName = humanDisplayName,
-                humanAvatarUrl = humanAvatarUrl,
-                onlineOpponentName = state.onlineOpponentName,
-                onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
-                redAiService = redAiService,
-                redAiModel = redAiModel,
-                blackAiService = blackAiService,
-                blackAiModel = blackAiModel,
-                playable = playable,
-                onPickAiFor = onPickAiFor,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
-            )
+    BoxWithConstraints(modifier = modifier) {
+        // 高度允许时棋盘按可用高度自适应并水平居中;高度不够则回退为整宽棋盘 + 整页滚动
+        val chromeHeight = 32.dp + 52.dp + 16.dp + 60.dp + 16.dp +
+            (if (showErrorCard) StatusCardHeight + 16.dp else 0.dp) +
+            (if (showDebugPanel) 156.dp else 0.dp) +
+            (if (fallbackPly != null) StatusCardHeight + 16.dp else 0.dp)
+        val boardAvailable = maxHeight - chromeHeight
+        val adaptive = boardAvailable != Dp.Infinity && boardAvailable >= MinAdaptiveBoardHeight
 
-            Box(
+        if (adaptive) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                contentAlignment = Alignment.Center,
+                    .fillMaxSize()
+                    .padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                XiangqiBoard(
-                    boardState = state.boardState,
-                    selectedPoint = state.interaction.selectedPoint,
-                    candidateTargets = state.interaction.candidateTargets,
-                    onCellTap = component::onCellTap,
-                    modifier = Modifier.fillMaxWidth(),
-                    bottomSide = bottomSide,
-                    riverNotice = if (state.status == GameStatus.CHECK) stringResource(R.string.xiangqi_check) else "",
-                )
-                if (state.status == GameStatus.NOT_STARTED || state.status == GameStatus.PAUSED) {
-                    BoardStartOverlay(
-                        isResume = state.status == GameStatus.PAUSED,
-                        onStart = component::start,
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .capturable(captureController),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    PlayersBar(
+                        state = state,
+                        topSide = topSide,
+                        bottomSide = bottomSide,
+                        humanDisplayName = humanDisplayName,
+                        humanAvatarUrl = humanAvatarUrl,
+                        onlineOpponentName = state.onlineOpponentName,
+                        onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
+                        redAiService = redAiService,
+                        redAiModel = redAiModel,
+                        blackAiService = blackAiService,
+                        blackAiModel = blackAiModel,
+                        playable = playable,
+                        onPickAiFor = onPickAiFor,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                    )
+                    GameBoardArea(
+                        component = component,
+                        state = state,
+                        bottomSide = bottomSide,
+                        lastMove = lastMove,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .padding(horizontal = 8.dp),
                     )
                 }
-                val isGameOver = state.status == GameStatus.RED_WINS ||
-                    state.status == GameStatus.BLACK_WINS ||
-                    state.status == GameStatus.DRAW ||
-                    state.status == GameStatus.RESIGNED
-                if (isGameOver) {
-                    BoardGameOverOverlay(
-                        status = state.status,
-                        onRestart = component::restart,
-                        onReview = component::openAnalysis,
-                    )
+                GameActionBar(component, state, immersiveState, onExport, playable)
+                if (showErrorCard) {
+                    ErrorStatusCard(component, state, onPickAiFor)
+                }
+                if (showDebugPanel) {
+                    OnlineDebugPanel(state = state)
+                }
+                if (fallbackPly != null) {
+                    FallbackStatusCard(state, fallbackPly, onPickAiFor)
                 }
             }
+        } else {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Column(
+                    modifier = Modifier.capturable(captureController),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    PlayersBar(
+                        state = state,
+                        topSide = topSide,
+                        bottomSide = bottomSide,
+                        humanDisplayName = humanDisplayName,
+                        humanAvatarUrl = humanAvatarUrl,
+                        onlineOpponentName = state.onlineOpponentName,
+                        onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
+                        redAiService = redAiService,
+                        redAiModel = redAiModel,
+                        blackAiService = blackAiService,
+                        blackAiModel = blackAiModel,
+                        playable = playable,
+                        onPickAiFor = onPickAiFor,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                    )
+                    GameBoardArea(
+                        component = component,
+                        state = state,
+                        bottomSide = bottomSide,
+                        lastMove = lastMove,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                    )
+                }
+                GameActionBar(component, state, immersiveState, onExport, playable)
+                if (showErrorCard) {
+                    ErrorStatusCard(component, state, onPickAiFor)
+                }
+                if (showDebugPanel) {
+                    OnlineDebugPanel(state = state)
+                }
+                if (fallbackPly != null) {
+                    FallbackStatusCard(state, fallbackPly, onPickAiFor)
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+            }
         }
+    }
+}
 
-        ActionBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            onUndo = component::undo,
-            onRedo = component::redo,
-            onAnalysis = component::openAnalysis,
-            onExport = onExport,
-            onRestart = component::restart,
-            onResign = { component.showResignConfirm = true },
-            onRename = { component.showRenameDialog = true },
-            onToggleFullscreen = { immersiveState?.toggle() },
-            isImmersive = immersiveState?.isImmersive == true,
-            allowUndoRedo = state.mode != GameMode.ONLINE_PVP,
-            showResign = playable && state.mode != GameMode.LLM_VS_LLM,
-        )
+@Composable
+private fun GameBoardArea(
+    component: XiangqiGameComponent,
+    state: XiangqiGameUiState,
+    bottomSide: Side,
+    lastMove: Pair<BoardPoint, BoardPoint>?,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        // 内层 Box 随棋盘实际大小,遮罩层(matchParentSize)只盖住棋盘
+        Box(contentAlignment = Alignment.Center) {
+            XiangqiBoard(
+                boardState = state.boardState,
+                selectedPoint = state.interaction.selectedPoint,
+                candidateTargets = state.interaction.candidateTargets,
+                onCellTap = component::onCellTap,
+                bottomSide = bottomSide,
+                riverNotice = if (state.status == GameStatus.CHECK) stringResource(R.string.xiangqi_check) else "",
+                lastMove = lastMove,
+            )
+            if (state.status == GameStatus.NOT_STARTED || state.status == GameStatus.PAUSED) {
+                BoardStartOverlay(
+                    isResume = state.status == GameStatus.PAUSED,
+                    onStart = component::start,
+                )
+            }
+            val isGameOver = state.status == GameStatus.RED_WINS ||
+                state.status == GameStatus.BLACK_WINS ||
+                state.status == GameStatus.DRAW ||
+                state.status == GameStatus.RESIGNED
+            if (isGameOver) {
+                BoardGameOverOverlay(
+                    status = state.status,
+                    onRestart = component::restart,
+                    onReview = component::openAnalysis,
+                )
+            }
+        }
+    }
+}
 
-        // AI 兜底 ("AI_FALLBACK") 已经合法落子完成,不必再多一张提示卡;
-        // 只对真错 (AI_ERROR / 自定义错误文案) 显示并提供重试入口。
-        if (state.errorMessage.isNotBlank() && state.errorMessage != "AI_FALLBACK") {
-            StatusCard(
-                title = stringResource(R.string.xiangqi_ai_failed),
-                subtitle = when (state.errorMessage) {
-                    "AI_ERROR" -> stringResource(R.string.xiangqi_ai_failed)
-                    else -> state.errorMessage
-                },
-                actions = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        GlassTonalButton(
-                            onClick = component::retryAiMove,
+@Composable
+private fun GameActionBar(
+    component: XiangqiGameComponent,
+    state: XiangqiGameUiState,
+    immersiveState: ImmersiveModeState?,
+    onExport: () -> Unit,
+    playable: Boolean,
+) {
+    ActionBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp),
+        onUndo = component::undo,
+        onRedo = component::redo,
+        onAnalysis = component::openAnalysis,
+        onExport = onExport,
+        onRestart = component::restart,
+        onResign = { component.showResignConfirm = true },
+        onRename = { component.showRenameDialog = true },
+        onToggleFullscreen = { immersiveState?.toggle() },
+        isImmersive = immersiveState?.isImmersive == true,
+        allowUndoRedo = state.mode != GameMode.ONLINE_PVP,
+        showResign = playable && state.mode != GameMode.LLM_VS_LLM,
+    )
+}
+
+@Composable
+private fun ErrorStatusCard(
+    component: XiangqiGameComponent,
+    state: XiangqiGameUiState,
+    onPickAiFor: (Side) -> Unit,
+) {
+    StatusCard(
+        title = stringResource(R.string.xiangqi_ai_failed),
+        subtitle = when (state.errorMessage) {
+            "AI_ERROR" -> stringResource(R.string.xiangqi_ai_failed)
+            else -> state.errorMessage
+        },
+        actions = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                GlassTonalButton(
+                    onClick = component::retryAiMove,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(stringResource(R.string.xiangqi_retry_ai), maxLines = 1)
+                }
+                GlassTonalButton(
+                    // 与象棋设置共用 XiangqiAiPicker, 不跳全局 AI 设置
+                    onClick = { onPickAiFor(state.boardState.sideToMove) },
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(stringResource(R.string.xiangqi_switch_ai_model), maxLines = 1)
+                }
+                GlassTonalButton(
+                    onClick = component::dismissError,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(stringResource(R.string.xiangqi_close), maxLines = 1)
+                }
+            }
+        },
+    )
+}
+
+@Composable
+private fun FallbackStatusCard(
+    state: XiangqiGameUiState,
+    fallbackPly: XiangqiPlyRecord,
+    onPickAiFor: (Side) -> Unit,
+) {
+    // 用落库的 moverSide 判定行棋方最可靠(不依赖当前轮到谁)
+    val engineName = when (fallbackPly.moverSide) {
+        Side.RED -> state.redAiServiceName.ifBlank { state.redAiModelName }
+        Side.BLACK -> state.blackAiServiceName.ifBlank { state.blackAiModelName }
+    }
+    StatusCard(
+        title = stringResource(R.string.xiangqi_ai_local_fallback_title),
+        subtitle = stringResource(
+            R.string.xiangqi_ai_local_fallback_message,
+            fallbackPly.aiReason
+                .removePrefix(MoveDecision.LOCAL_FALLBACK_MARKER)
+                .ifBlank { "unknown" },
+        ),
+        actions = {
+            // AI 对战下两个座位都是引擎,只给一个"切换模型"入口会让人误解是哪个
+            if (state.mode != GameMode.LLM_VS_LLM) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    if (engineName.isNotBlank()) {
+                        Text(
+                            text = engineName,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f),
-                        ) {
-                            Text(stringResource(R.string.xiangqi_retry_ai))
-                        }
-                        GlassTonalButton(
-                            // 与象棋设置共用 XiangqiAiPicker, 不跳全局 AI 设置
-                            onClick = { onPickAiFor(state.boardState.sideToMove) },
-                            modifier = Modifier.weight(1f),
-                        ) {
-                            Text(stringResource(R.string.xiangqi_switch_ai_model))
-                        }
+                        )
                     }
                     GlassTonalButton(
-                        onClick = component::dismissError,
-                        modifier = Modifier.fillMaxWidth(),
+                        // 复用象棋设置的 AI 选择器, 针对兜底发生的那一方
+                        onClick = { onPickAiFor(fallbackPly.moverSide) },
+                        modifier = Modifier.weight(1f),
                     ) {
-                        Text(stringResource(R.string.xiangqi_close))
+                        Text(stringResource(R.string.xiangqi_switch_ai_model))
                     }
-                },
-            )
-        }
-
-        if (BuildConfig.DEBUG && state.mode == GameMode.ONLINE_PVP) {
-            OnlineDebugPanel(state = state)
-        }
-
-        // 引擎不可用时会静默回退本地兜底，只表现为"AI 突然变笨"。
-        // 这里把它显式说出来，并带上兜底原因（如 "pikafish: http 503"），否则无从排查。
-        val fallbackPly = state.history.lastOrNull {
-            MoveDecision.isLocalFallback(it.aiReason)
-        }?.takeIf { it.ply == state.currentPly }
-        if (fallbackPly != null) {
-            // 用落库的 moverSide 判定行棋方最可靠（不依赖当前轮到谁）
-            val engineName = when (fallbackPly.moverSide) {
-                Side.RED -> state.redAiServiceName.ifBlank { state.redAiModelName }
-                Side.BLACK -> state.blackAiServiceName.ifBlank { state.blackAiModelName }
+                }
             }
-            StatusCard(
-                title = stringResource(R.string.xiangqi_ai_local_fallback_title),
-                subtitle = stringResource(
-                    R.string.xiangqi_ai_local_fallback_message,
-                    fallbackPly.aiReason
-                        .removePrefix(MoveDecision.LOCAL_FALLBACK_MARKER)
-                        .ifBlank { "unknown" },
-                ),
-                actions = {
-                    // AI 对战下两个座位都是引擎，只给一个"切换模型"入口会让人误解是哪个
-                    if (state.mode != GameMode.LLM_VS_LLM) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            if (engineName.isNotBlank()) {
-                                Text(
-                                    text = engineName,
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.weight(1f),
-                                )
-                            }
-                            GlassTonalButton(
-                                // 复用象棋设置的 AI 选择器, 针对兜底发生的那一方
-                                onClick = { onPickAiFor(fallbackPly.moverSide) },
-                                modifier = Modifier.weight(1f),
-                            ) {
-                                Text(stringResource(R.string.xiangqi_switch_ai_model))
-                            }
-                        }
-                    }
-                },
-            )
-        }
+        },
+    )
+}
 
-        Spacer(modifier = Modifier.height(24.dp))
+/** 把 UCCI 着法(如 "h2e2")解析为起止坐标;rank 0 是红方底线,与 [BoardPoint] 一致 */
+private fun parseUcciMove(ucci: String): Pair<BoardPoint, BoardPoint>? {
+    if (ucci.length < 4) return null
+
+    fun pointAt(index: Int): BoardPoint? {
+        val file = ucci[index].lowercaseChar()
+        val rank = ucci[index + 1]
+        if (file !in 'a'..'i' || rank !in '0'..'9') return null
+        return BoardPoint(file - 'a', BoardPoint.RANK_COUNT - 1 - (rank - '0'))
     }
+
+    val from = pointAt(0) ?: return null
+    val to = pointAt(2) ?: return null
+    return from to to
 }
 
 @Composable
@@ -731,6 +869,9 @@ private fun resolvePlayerStatusColor(
     }
 }
 
+private val StatusCardHeight = 140.dp
+private val MinAdaptiveBoardHeight = 280.dp
+
 @Composable
 private fun StatusCard(
     title: String,
@@ -740,25 +881,75 @@ private fun StatusCard(
     GlassSurface(
         modifier = Modifier
             .fillMaxWidth()
+            .height(StatusCardHeight)
             .padding(horizontal = 12.dp),
         style = GlassStyle.Medium,
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.error
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.error,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-            Text(
-                subtitle,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            VerticalMarqueeText(
+                text = subtitle,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
             )
             actions?.invoke()
+        }
+    }
+}
+
+/** 固定高度内自下而上循环滚动的纵向走马灯;文字放得下时静止 */
+@Composable
+private fun VerticalMarqueeText(
+    text: String,
+    modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.bodySmall,
+    color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+) {
+    val scrollState = rememberScrollState()
+    var textHeightPx by remember { mutableIntStateOf(0) }
+    val gapPx = with(androidx.compose.ui.platform.LocalDensity.current) { 12.dp.roundToPx() }
+    val overflowing = scrollState.maxValue > 0
+
+    LaunchedEffect(text, overflowing) {
+        if (!overflowing) return@LaunchedEffect
+        while (true) {
+            scrollState.scrollTo(0)
+            delay(1200)
+            scrollState.animateScrollTo(textHeightPx + gapPx, tween(2500, easing = LinearEasing))
+            delay(1200)
+        }
+    }
+
+    Box(modifier = modifier.clip(RoundedCornerShape(6.dp))) {
+        Column(
+            modifier = Modifier.verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = text,
+                style = style,
+                color = color,
+                maxLines = Int.MAX_VALUE,
+                onTextLayout = { textHeightPx = it.size.height },
+            )
+            if (overflowing) {
+                Text(
+                    text = text,
+                    style = style,
+                    color = color,
+                    maxLines = Int.MAX_VALUE,
+                )
+            }
         }
     }
 }

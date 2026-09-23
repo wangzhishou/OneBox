@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">Naghihintay</string>
     <string name="xiangqi_retry_ai">Subukang muli ang AI</string>
     <string name="xiangqi_switch_ai_model">Palitan ang modelo</string>
-    <string name="xiangqi_tts_move">Anunsyo ng galaw</string>
     <string name="xiangqi_tts_capture">Anunsyo ng pagkuha</string>
     <string name="xiangqi_tts_check">Anunsyo ng tsek</string>
     <string name="xiangqi_tts_checkmate">Anunsyo ng checkmate</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">Hindi nagbigay ng legal na hakbang ang AI; ginamit ang lokal na kapalit</string>
     <string name="xiangqi_ai_local_fallback_title">Hindi available ang engine — lokal na fallback na hakbang ang ginamit</string>
     <string name="xiangqi_ai_local_fallback_message">Dahilan: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">Ang mga Xiangqi move engine ay hiwalay na isinaayos sa mga chat model.</string>
+    <string name="xiangqi_ai_source_working_model">Mabilis na working model</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe decision model</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Server-side na chess engine</string>
+    <string name="xiangqi_ai_tag_login">Kailangan mag-login</string>
+    <string name="xiangqi_ai_tag_points">Gumagamit ng points</string>
+    <string name="xiangqi_ai_tag_free">Libre</string>
     <string name="xiangqi_analysis_sound_on">Bukas ang tunog</string>
     <string name="xiangqi_analysis_sound_off">Sarado ang tunog</string>
     <string name="xiangqi_settings_sound_enabled">Tunog at background na musika</string>
@@ -248,7 +256,6 @@
     <string name="xiangqi_tts_test_text">Voice synthesis test</string>
     <string name="xiangqi_signaling_disconnected">Nawala ang koneksyon, mangyaring mag-rematch</string>
     <string name="xiangqi_llm_history_none">Wala</string>
-    <string name="xiangqi_tts_default_move">Galaw</string>
     <string name="xiangqi_tts_default_capture">Salo!</string>
     <string name="xiangqi_tts_default_check">Tsek!</string>
     <string name="xiangqi_tts_default_checkmate">Checkmate!</string>

@@ -116,7 +116,6 @@
     <string name="xiangqi_waiting">Waiting</string>
     <string name="xiangqi_retry_ai">Retry AI</string>
     <string name="xiangqi_switch_ai_model">Switch model</string>
-    <string name="xiangqi_tts_move">Move announcement</string>
     <string name="xiangqi_tts_capture">Capture announcement</string>
     <string name="xiangqi_tts_check">Check announcement</string>
     <string name="xiangqi_tts_checkmate">Checkmate announcement</string>
@@ -257,7 +256,6 @@
     <string name="xiangqi_tts_test_text">Voice synthesis test</string>
     <string name="xiangqi_signaling_disconnected">Connection lost, please rematch</string>
     <string name="xiangqi_llm_history_none">None</string>
-    <string name="xiangqi_tts_default_move">Move</string>
     <string name="xiangqi_tts_default_capture">Capture!</string>
     <string name="xiangqi_tts_default_check">Check!</string>
     <string name="xiangqi_tts_default_checkmate">Checkmate!</string>

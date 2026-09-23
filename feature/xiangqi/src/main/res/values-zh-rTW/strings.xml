@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">等待中</string>
     <string name="xiangqi_retry_ai">重試 AI</string>
     <string name="xiangqi_switch_ai_model">切換模型</string>
-    <string name="xiangqi_tts_move">走子播報</string>
     <string name="xiangqi_tts_capture">吃子播報</string>
     <string name="xiangqi_tts_check">將軍播報</string>
     <string name="xiangqi_tts_checkmate">將死播報</string>
@@ -170,6 +169,15 @@
     <string name="xiangqi_ai_failed">AI 未回傳合法走法，已啟用本機備援</string>
     <string name="xiangqi_ai_local_fallback_title">引擎無法使用，已改用本機兜底著法</string>
     <string name="xiangqi_ai_local_fallback_message">原因：%1$s</string>
+    <string name="xiangqi_ai_picker_desc">象棋走棋引擎與聊天模型分開設定。</string>
+    <string name="xiangqi_ai_source_working_model">快速工作模型</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe 判斷模型</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">服務端象棋引擎</string>
+    <string name="xiangqi_ai_tag_login">需登入</string>
+    <string name="xiangqi_ai_tag_points">耗積分</string>
+    <string name="xiangqi_ai_tag_free">免費</string>
     <string name="xiangqi_history_title">著法記錄</string>
     <string name="xiangqi_initial_position">初始局面</string>
     <string name="xiangqi_latest_game">最近對局</string>
@@ -248,7 +256,6 @@
     <string name="xiangqi_tts_test_text">語音合成測試</string>
     <string name="xiangqi_signaling_disconnected">連線已中斷，請重新配對</string>
     <string name="xiangqi_llm_history_none">無</string>
-    <string name="xiangqi_tts_default_move">落子</string>
     <string name="xiangqi_tts_default_capture">吃！</string>
     <string name="xiangqi_tts_default_check">將軍！</string>
     <string name="xiangqi_tts_default_checkmate">將死！</string>

@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.VolumeOff
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +27,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,9 +46,12 @@ import com.wanbaohe.xiangqi.component.XiangqiAnalysisComponent
 import com.wanbaohe.xiangqi.data.TextExportLabels
 import com.wanbaohe.xiangqi.presentation.localizedGameResultText
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePauseBars
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSkipNext
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSkipPrevious
 
@@ -376,14 +378,23 @@ private fun ReplayControls(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        // 首/尾用「竖线+三角」的 skip 图标：语义明确（跳到两端，不是逐手）
         GlassTonalIconButton(onClick = onStart) {
-            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSkipPrevious, contentDescription = stringResource(R.string.xiangqi_replay_to_start))
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSkipPrevious,
+                contentDescription = stringResource(R.string.xiangqi_replay_to_start),
+                // 该图标路径几乎铺满 24 视口（y 1.3-22.7），与 chevron/播放三角并排时
+                // 显得大一圈。**在调用处**缩放而不是改图标本身：LineSkipPrevious/Next
+                // 是全局共享图标，还被 core/ui 的图标选择器（ImageVectorMap）列出，
+                // 改全局会影响全 App 其它用到它的地方。
+                modifier = Modifier.scale(SKIP_ICON_SCALE),
+            )
         }
+        // 单步用 chevron：比"无竖线的 skip"更轻，且与首/尾不混淆
         GlassTonalIconButton(onClick = onPrev) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronLeft,
                 contentDescription = stringResource(R.string.xiangqi_replay_prev),
-                modifier = Modifier.graphicsLayer { scaleX = -1f },
             )
         }
         GlassTonalIconButton(
@@ -391,16 +402,37 @@ private fun ReplayControls(
             modifier = Modifier.size(52.dp),
         ) {
             Icon(
-                imageVector = if (isAutoPlaying) Icons.Outlined.Pause else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
-                contentDescription = stringResource(if (isAutoPlaying) R.string.xiangqi_replay_pause else R.string.xiangqi_replay_auto_play),
+                // 纯三角播放键，无外圈：外层按钮本身就是圆形玻璃底，
+                // 再套一个圆形图标会变成"圆套圆"
+                imageVector = if (isAutoPlaying) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePauseBars else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
+                contentDescription = stringResource(
+                    if (isAutoPlaying) R.string.xiangqi_replay_pause else R.string.xiangqi_replay_auto_play,
+                ),
                 modifier = Modifier.size(28.dp),
             )
         }
         GlassTonalIconButton(onClick = onNext) {
-            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle, contentDescription = stringResource(R.string.xiangqi_replay_next))
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
+                contentDescription = stringResource(R.string.xiangqi_replay_next),
+            )
         }
         GlassTonalIconButton(onClick = onEnd) {
-            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSkipNext, contentDescription = stringResource(R.string.xiangqi_replay_to_end))
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSkipNext,
+                contentDescription = stringResource(R.string.xiangqi_replay_to_end),
+                modifier = Modifier.scale(SKIP_ICON_SCALE),
+            )
         }
     }
 }
+
+/**
+ * 首/尾 skip 图标的局部缩放。
+ *
+ * 这两个图标在 24 视口里纵向铺满（1.3~22.7），而相邻的 chevron 与播放三角
+ * 只占约 12~14 单位，并排时 skip 会显得大一圈。缩到 ~78% 让留白与其它键一致。
+ *
+ * 只在调用处缩放、不改图标本体：它们被 core/ui 的图标选择器全局引用。
+ */
+private const val SKIP_ICON_SCALE = 0.78f

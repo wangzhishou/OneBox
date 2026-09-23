@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">Menunggu</string>
     <string name="xiangqi_retry_ai">Ulangi AI</string>
     <string name="xiangqi_switch_ai_model">Ganti model</string>
-    <string name="xiangqi_tts_move">Pengumuman langkah</string>
     <string name="xiangqi_tts_capture">Pengumuman tangkapan</string>
     <string name="xiangqi_tts_check">Pengumuman skak</string>
     <string name="xiangqi_tts_checkmate">Pengumuman skakmat</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">AI tidak mengembalikan langkah yang sah; fallback lokal diterapkan</string>
     <string name="xiangqi_ai_local_fallback_title">Mesin tidak tersedia — langkah cadangan lokal dimainkan</string>
     <string name="xiangqi_ai_local_fallback_message">Alasan: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">Mesin langkah Xiangqi dikonfigurasi terpisah dari model chat.</string>
+    <string name="xiangqi_ai_source_working_model">Model kerja cepat</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">Model keputusan TypeSafe</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Mesin catur sisi server</string>
+    <string name="xiangqi_ai_tag_login">Perlu login</string>
+    <string name="xiangqi_ai_tag_points">Menghabiskan poin</string>
+    <string name="xiangqi_ai_tag_free">Gratis</string>
     <string name="xiangqi_analysis_sound_on">Suara aktif</string>
     <string name="xiangqi_analysis_sound_off">Suara nonaktif</string>
     <string name="xiangqi_settings_sound_enabled">Suara dan musik latar</string>
@@ -248,7 +256,6 @@
     <string name="xiangqi_tts_test_text">Tes sintesis suara</string>
     <string name="xiangqi_signaling_disconnected">Koneksi terputus, silakan main ulang</string>
     <string name="xiangqi_llm_history_none">Tidak ada</string>
-    <string name="xiangqi_tts_default_move">Langkah</string>
     <string name="xiangqi_tts_default_capture">Tangkap!</string>
     <string name="xiangqi_tts_default_check">Skak!</string>
     <string name="xiangqi_tts_default_checkmate">Skakmat!</string>

@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">Bekleniyor</string>
     <string name="xiangqi_retry_ai">Yapay Zekayı Yeniden Dene</string>
     <string name="xiangqi_switch_ai_model">Modeli değiştir</string>
-    <string name="xiangqi_tts_move">Hamle duyurusu</string>
     <string name="xiangqi_tts_capture">Taş alma duyurusu</string>
     <string name="xiangqi_tts_check">Şah duyurusu</string>
     <string name="xiangqi_tts_checkmate">Mat duyurusu</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">AI geçerli bir hamle döndürmedi; yerel yedek uygulandı</string>
     <string name="xiangqi_ai_local_fallback_title">Motor kullanılamıyor — yerel yedek hamle oynandı</string>
     <string name="xiangqi_ai_local_fallback_message">Neden: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">Xiangqi hamle motorları sohbet modellerinden ayrı yapılandırılır.</string>
+    <string name="xiangqi_ai_source_working_model">Hızlı çalışma modeli</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe karar modeli</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Sunucu tarafı satranç motoru</string>
+    <string name="xiangqi_ai_tag_login">Giriş gerekli</string>
+    <string name="xiangqi_ai_tag_points">Puan harcar</string>
+    <string name="xiangqi_ai_tag_free">Ücretsiz</string>
     <string name="xiangqi_analysis_sound_on">Ses açık</string>
     <string name="xiangqi_analysis_sound_off">Ses kapalı</string>
     <string name="xiangqi_settings_sound_enabled">Ses ve arka plan müziği</string>
@@ -249,7 +257,6 @@
     <string name="xiangqi_tts_test_text">Ses sentezi testi</string>
     <string name="xiangqi_signaling_disconnected">Bağlantı koptu, lütfen tekrar eşleşin</string>
     <string name="xiangqi_llm_history_none">Yok</string>
-    <string name="xiangqi_tts_default_move">Hamle</string>
     <string name="xiangqi_tts_default_capture">Yakalama!</string>
     <string name="xiangqi_tts_default_check">Şah!</string>
     <string name="xiangqi_tts_default_checkmate">Mat!</string>

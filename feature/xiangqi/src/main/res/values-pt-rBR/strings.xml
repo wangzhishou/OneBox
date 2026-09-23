@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">Aguardando</string>
     <string name="xiangqi_retry_ai">Tentar IA novamente</string>
     <string name="xiangqi_switch_ai_model">Trocar modelo</string>
-    <string name="xiangqi_tts_move">Anúncio de movimento</string>
     <string name="xiangqi_tts_capture">Anúncio de captura</string>
     <string name="xiangqi_tts_check">Anúncio de xeque</string>
     <string name="xiangqi_tts_checkmate">Anúncio de xeque-mate</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">A IA não retornou um movimento legal; aplicado fallback local</string>
     <string name="xiangqi_ai_local_fallback_title">Motor indisponível — jogada local de reserva realizada</string>
     <string name="xiangqi_ai_local_fallback_message">Motivo: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">Os motores de jogadas de Xiangqi são configurados separadamente dos modelos de chat.</string>
+    <string name="xiangqi_ai_source_working_model">Modelo de trabalho rápido</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">Modelo de decisão TypeSafe</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Motor de xadrez no servidor</string>
+    <string name="xiangqi_ai_tag_login">Requer login</string>
+    <string name="xiangqi_ai_tag_points">Consome pontos</string>
+    <string name="xiangqi_ai_tag_free">Grátis</string>
     <string name="xiangqi_analysis_sound_on">Som ativado</string>
     <string name="xiangqi_analysis_sound_off">Som desativado</string>
     <string name="xiangqi_settings_sound_enabled">Som e música de fundo</string>
@@ -249,7 +257,6 @@
     <string name="xiangqi_tts_test_text">Teste de síntese de voz</string>
     <string name="xiangqi_signaling_disconnected">Conexão perdida, por favor, jogue novamente</string>
     <string name="xiangqi_llm_history_none">Nenhum</string>
-    <string name="xiangqi_tts_default_move">Mover</string>
     <string name="xiangqi_tts_default_capture">Captura!</string>
     <string name="xiangqi_tts_default_check">Xeque!</string>
     <string name="xiangqi_tts_default_checkmate">Xeque-mate!</string>

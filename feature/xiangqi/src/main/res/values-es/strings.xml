@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">Esperando</string>
     <string name="xiangqi_retry_ai">Reintentar IA</string>
     <string name="xiangqi_switch_ai_model">Cambiar modelo</string>
-    <string name="xiangqi_tts_move">Anuncio de movimiento</string>
     <string name="xiangqi_tts_capture">Anuncio de captura</string>
     <string name="xiangqi_tts_check">Anuncio de jaque</string>
     <string name="xiangqi_tts_checkmate">Anuncio de jaque mate</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">La IA no devolvió un movimiento legal; se aplicó una alternativa local</string>
     <string name="xiangqi_ai_local_fallback_title">Motor no disponible: se jugó una jugada local de respaldo</string>
     <string name="xiangqi_ai_local_fallback_message">Motivo: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">Los motores de jugadas de Xiangqi se configuran aparte de los modelos de chat.</string>
+    <string name="xiangqi_ai_source_working_model">Modelo de trabajo rápido</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">Modelo de decisión TypeSafe</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Motor de ajedrez en el servidor</string>
+    <string name="xiangqi_ai_tag_login">Requiere iniciar sesión</string>
+    <string name="xiangqi_ai_tag_points">Consume puntos</string>
+    <string name="xiangqi_ai_tag_free">Gratis</string>
     <string name="xiangqi_analysis_sound_on">Sonido activado</string>
     <string name="xiangqi_analysis_sound_off">Sonido desactivado</string>
     <string name="xiangqi_settings_sound_enabled">Sonido y música de fondo</string>
@@ -249,7 +257,6 @@
     <string name="xiangqi_tts_test_text">Prueba de síntesis de voz</string>
     <string name="xiangqi_signaling_disconnected">Conexión perdida, por favor reanuda</string>
     <string name="xiangqi_llm_history_none">Ninguno</string>
-    <string name="xiangqi_tts_default_move">Mover</string>
     <string name="xiangqi_tts_default_capture">¡Captura!</string>
     <string name="xiangqi_tts_default_check">¡Jaque!</string>
     <string name="xiangqi_tts_default_checkmate">¡Jaque mate!</string>

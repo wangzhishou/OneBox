@@ -22,11 +22,21 @@ class AudioFeedbackUseCase @Inject constructor(
     data class SoundProfile(
         val status: GameStatus,
         val isCapture: Boolean,
-    )
+    ) {
+        /** 普通走子(非吃子、非将军/终局)——不触发 TTS 播报 */
+        val isPlainMove: Boolean
+            get() = !isCapture &&
+                status != GameStatus.CHECK &&
+                status != GameStatus.RED_WINS &&
+                status != GameStatus.BLACK_WINS &&
+                status != GameStatus.DRAW
+    }
 
     suspend fun play(profile: SoundProfile, settings: AudioSettings) {
         if (!settings.soundEnabled) return
-        if (tryTts(profile, settings)) return
+        // 走子播报与每步音效重复, 普通走子不再走 TTS;
+        // 吃子/将军/将死/和棋的语音播报保留。
+        if (!profile.isPlainMove && tryTts(profile, settings)) return
         if (tryUrl(profile, settings)) return
         playBeep()
     }
@@ -60,8 +70,7 @@ class AudioFeedbackUseCase @Inject constructor(
             settings.checkSoundUrl.ifBlank { settings.moveSoundUrl }
         } else {
             settings.moveSoundUrl
-        }
-        if (url.isBlank()) return false
+        }.ifBlank { if (isCheck) XiangqiAudioDefaults.CHECK else XiangqiAudioDefaults.MOVE }
         soundPlayer.playEffect(url)
         return true
     }
@@ -89,12 +98,11 @@ class AudioFeedbackUseCase @Inject constructor(
         val defaultText: String,
     ) {
         companion object {
-            val MOVE = TtsTemplate("xiangqi-move", AppContext.getString(R.string.xiangqi_tts_default_move))
             val CAPTURE = TtsTemplate("xiangqi-capture", AppContext.getString(R.string.xiangqi_tts_default_capture))
             val CHECK = TtsTemplate("xiangqi-check", AppContext.getString(R.string.xiangqi_tts_default_check))
             val CHECKMATE = TtsTemplate("xiangqi-checkmate", AppContext.getString(R.string.xiangqi_tts_default_checkmate))
             val DRAW = TtsTemplate("xiangqi-draw", AppContext.getString(R.string.xiangqi_tts_default_draw))
-            val ALL = listOf(MOVE, CAPTURE, CHECK, CHECKMATE, DRAW)
+            val ALL = listOf(CAPTURE, CHECK, CHECKMATE, DRAW)
         }
     }
 
@@ -102,6 +110,6 @@ class AudioFeedbackUseCase @Inject constructor(
         GameStatus.RED_WINS, GameStatus.BLACK_WINS -> TtsTemplate.CHECKMATE
         GameStatus.DRAW -> TtsTemplate.DRAW
         GameStatus.CHECK -> TtsTemplate.CHECK
-        else -> if (profile.isCapture) TtsTemplate.CAPTURE else TtsTemplate.MOVE
+        else -> TtsTemplate.CAPTURE
     }
 }

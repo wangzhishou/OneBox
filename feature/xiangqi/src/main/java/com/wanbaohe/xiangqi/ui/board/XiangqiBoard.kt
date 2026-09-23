@@ -26,6 +26,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,6 +48,7 @@ fun XiangqiBoard(
     modifier: Modifier = Modifier,
     bottomSide: Side = Side.RED,
     riverNotice: String = "",
+    lastMove: Pair<BoardPoint, BoardPoint>? = null,
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -153,6 +155,8 @@ fun XiangqiBoard(
                         val piece = boardState.pieceAt(point)
                         val isSelected = point == selectedPoint
                         val isCandidate = point in candidateTargets
+                        val isLastMoveFrom = point == lastMove?.first
+                        val isLastMoveTo = point == lastMove?.second
                         
                         val pieceSize = with(androidx.compose.ui.platform.LocalDensity.current) { (vGapPx * 0.85f).toDp() }
                         
@@ -168,8 +172,18 @@ fun XiangqiBoard(
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            if (isCandidate) {
-                                Box(
+                            when {
+                                isLastMoveTo -> LastMoveRing(
+                                    pieceSize = pieceSize,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                                    width = 3.dp,
+                                )
+                                isLastMoveFrom -> LastMoveRing(
+                                    pieceSize = pieceSize,
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
+                                    width = 2.dp,
+                                )
+                                isCandidate -> Box(
                                     modifier = Modifier
                                         .size(pieceSize * 0.4f)
                                         .clip(CircleShape)
@@ -226,6 +240,20 @@ private fun displayPointToBoardPoint(displayFile: Int, displayRank: Int, bottomS
     } else {
         BoardPoint(BoardPoint.FILE_COUNT - 1 - displayFile, BoardPoint.RANK_COUNT - 1 - displayRank)
     }
+
+@Composable
+private fun LastMoveRing(
+    pieceSize: Dp,
+    color: Color,
+    width: Dp,
+) {
+    Box(
+        modifier = Modifier
+            .size(pieceSize * 1.12f)
+            .clip(CircleShape)
+            .border(width, color, CircleShape)
+    )
+}
 
 @Composable
 private fun PieceDisc(

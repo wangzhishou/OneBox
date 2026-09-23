@@ -115,7 +115,6 @@
     <string name="xiangqi_waiting">等待中</string>
     <string name="xiangqi_retry_ai">重试 AI</string>
     <string name="xiangqi_switch_ai_model">切换模型</string>
-    <string name="xiangqi_tts_move">走子播报</string>
     <string name="xiangqi_tts_capture">吃子播报</string>
     <string name="xiangqi_tts_check">将军播报</string>
     <string name="xiangqi_tts_checkmate">将死播报</string>
@@ -256,7 +255,6 @@
     <string name="xiangqi_tts_test_text">语音合成测试</string>
     <string name="xiangqi_signaling_disconnected">连接已断开，请重新匹配</string>
     <string name="xiangqi_llm_history_none">无</string>
-    <string name="xiangqi_tts_default_move">落子</string>
     <string name="xiangqi_tts_default_capture">吃！</string>
     <string name="xiangqi_tts_default_check">将军！</string>
     <string name="xiangqi_tts_default_checkmate">将死！</string>

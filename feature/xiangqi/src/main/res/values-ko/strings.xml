@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">대기 중</string>
     <string name="xiangqi_retry_ai">AI 재시도</string>
     <string name="xiangqi_switch_ai_model">모델 전환</string>
-    <string name="xiangqi_tts_move">수 알림</string>
     <string name="xiangqi_tts_capture">포획 알림</string>
     <string name="xiangqi_tts_check">체크 알림</string>
     <string name="xiangqi_tts_checkmate">체크메이트 알림</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">AI가 합법적인 수를 반환하지 않아 로컬 대체 수를 적용했습니다</string>
     <string name="xiangqi_ai_local_fallback_title">엔진을 사용할 수 없어 로컬 대체 수를 두었습니다</string>
     <string name="xiangqi_ai_local_fallback_message">이유: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">샹치 착수 엔진은 채팅 모델과 별도로 설정합니다.</string>
+    <string name="xiangqi_ai_source_working_model">빠른 워킹 모델</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe 판단 모델</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">서버 측 장기 엔진</string>
+    <string name="xiangqi_ai_tag_login">로그인 필요</string>
+    <string name="xiangqi_ai_tag_points">포인트 소모</string>
+    <string name="xiangqi_ai_tag_free">무료</string>
     <string name="xiangqi_analysis_sound_on">소리 켜짐</string>
     <string name="xiangqi_analysis_sound_off">소리 꺼짐</string>
     <string name="xiangqi_settings_sound_enabled">효과음 및 배경 음악</string>
@@ -248,7 +256,6 @@
     <string name="xiangqi_tts_test_text">음성 합성 테스트</string>
     <string name="xiangqi_signaling_disconnected">연결이 끊어졌습니다. 다시 대국해 주세요</string>
     <string name="xiangqi_llm_history_none">없음</string>
-    <string name="xiangqi_tts_default_move">이동</string>
     <string name="xiangqi_tts_default_capture">잡았다!</string>
     <string name="xiangqi_tts_default_check">장군!</string>
     <string name="xiangqi_tts_default_checkmate">외통장군!</string>

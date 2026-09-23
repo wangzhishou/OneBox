@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,7 +42,7 @@ import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiSource
 import com.wanbaohe.xiangqi.data.XiangqiTTSTemplates
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.wanbaohe.xiangqi.ui.XiangqiAiPickerBottomSheet
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
@@ -322,13 +323,15 @@ private fun AudioUrlField(
                 enabled = !isPreviewing,
                 modifier = Modifier.weight(1f),
             ) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle, contentDescription = null)
-                Text(
-                    stringResource(
-                        if (isPreviewing) R.string.xiangqi_settings_preview_loading
-                        else R.string.xiangqi_settings_preview
+                // 播放中只切换图标, 不换文字, 避免按钮宽度变化引起页面跳动
+                if (isPreviewing) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp,
                     )
-                )
+                } else {
+                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay, contentDescription = null)
+                }
             }
             trailingAction?.invoke()
         }
@@ -372,13 +375,14 @@ private fun TTSTemplateRow(
                 enabled = !isPlaying,
                 modifier = Modifier.weight(1f),
             ) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle, contentDescription = null)
-                Text(
-                    stringResource(
-                        if (isPlaying) R.string.xiangqi_settings_play_loading
-                        else R.string.xiangqi_settings_preview
+                if (isPlaying) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp,
                     )
-                )
+                } else {
+                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay, contentDescription = null)
+                }
             }
             GlassTonalButton(
                 onClick = { onGenerate(text) },
@@ -486,13 +490,14 @@ private fun CurrentTTSConfigCard(
                     enabled = ttsConfig.isValid() && !isPreviewing,
                     modifier = Modifier.weight(1f),
                 ) {
-                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle, contentDescription = null)
-                    Text(
-                        stringResource(
-                            if (isPreviewing) R.string.xiangqi_settings_preview_loading
-                            else R.string.xiangqi_settings_preview
+                    if (isPreviewing) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(18.dp),
+                            strokeWidth = 2.dp,
                         )
-                    )
+                    } else {
+                        Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay, contentDescription = null)
+                    }
                 }
 
                 GlassTonalButton(

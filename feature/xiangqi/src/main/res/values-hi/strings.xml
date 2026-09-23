@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">प्रतीक्षा कर रहे हैं</string>
     <string name="xiangqi_retry_ai">AI पुनः प्रयास करें</string>
     <string name="xiangqi_switch_ai_model">मॉडल बदलें</string>
-    <string name="xiangqi_tts_move">चाल की घोषणा</string>
     <string name="xiangqi_tts_capture">कब्जे की घोषणा</string>
     <string name="xiangqi_tts_check">चेक की घोषणा</string>
     <string name="xiangqi_tts_checkmate">चेकमेट की घोषणा</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">AI ने वैध चाल नहीं लौटाई; स्थानीय विकल्प लागू किया गया</string>
     <string name="xiangqi_ai_local_fallback_title">इंजन उपलब्ध नहीं — स्थानीय फ़ॉलबैक चाल चली गई</string>
     <string name="xiangqi_ai_local_fallback_message">कारण: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">शतरंज चाल इंजन चैट मॉडल से अलग कॉन्फ़िगर होते हैं।</string>
+    <string name="xiangqi_ai_source_working_model">तेज़ वर्किंग मॉडल</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">TypeSafe निर्णय मॉडल</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">सर्वर-साइड शतरंज इंजन</string>
+    <string name="xiangqi_ai_tag_login">लॉगिन ज़रूरी</string>
+    <string name="xiangqi_ai_tag_points">पॉइंट खर्च</string>
+    <string name="xiangqi_ai_tag_free">मुफ़्त</string>
     <string name="xiangqi_analysis_sound_on">ध्वनि चालू</string>
     <string name="xiangqi_analysis_sound_off">ध्वनि बंद</string>
     <string name="xiangqi_settings_sound_enabled">ध्वनि और पृष्ठभूमि संगीत</string>
@@ -249,7 +257,6 @@
     <string name="xiangqi_tts_test_text">वॉइस संश्लेषण परीक्षण</string>
     <string name="xiangqi_signaling_disconnected">कनेक्शन टूट गया, कृपया फिर से मैच करें</string>
     <string name="xiangqi_llm_history_none">कोई नहीं</string>
-    <string name="xiangqi_tts_default_move">चाल</string>
     <string name="xiangqi_tts_default_capture">कब्ज़ा!</string>
     <string name="xiangqi_tts_default_check">शह!</string>
     <string name="xiangqi_tts_default_checkmate">शहमात!</string>

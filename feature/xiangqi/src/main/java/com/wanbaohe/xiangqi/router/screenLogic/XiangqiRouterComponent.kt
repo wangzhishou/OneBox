@@ -259,11 +259,13 @@ class XiangqiRouterComponent @AssistedInject constructor(
     fun previewMoveSound() = previewSound(
         action = SettingsAction.PreviewMoveSound,
         url = xiangqiSettings.value.moveSoundUrl,
+        defaultUrl = XiangqiAudioDefaults.MOVE,
     )
 
     fun previewCheckSound() = previewSound(
         action = SettingsAction.PreviewCheckSound,
         url = xiangqiSettings.value.checkSoundUrl,
+        defaultUrl = XiangqiAudioDefaults.CHECK,
     )
 
     fun previewBackgroundMusic() {
@@ -281,9 +283,10 @@ class XiangqiRouterComponent @AssistedInject constructor(
         }
     }
 
-    private fun previewSound(action: SettingsAction, url: String) {
+    private fun previewSound(action: SettingsAction, url: String, defaultUrl: String) {
         runSettingsAction(action) {
-            soundPlayer.playEffect(url)
+            // 没填 URL 就试听内置默认音, 否则点"试听"什么也听不到
+            soundPlayer.playEffect(url.ifBlank { defaultUrl })
         }
     }
 

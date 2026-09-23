@@ -56,6 +56,7 @@ class SettingsPrefsAdapter @Inject constructor(
             checkSoundUrl = prefs.getString(KEY_CHECK_SOUND_URL, "").orEmpty(),
             ttsEnabled = prefs.getBoolean(KEY_TTS_ENABLED, true),
             ttsTemplateTexts = ttsTexts,
+            soundEnabled = prefs.getBoolean(KEY_SOUND_ENABLED, true),
         )
     }
 
@@ -67,7 +68,7 @@ class SettingsPrefsAdapter @Inject constructor(
         private const val KEY_TTS_ENABLED = "tts_enabled"
         private const val KEY_SOUND_ENABLED = "sound_enabled"
         private val TTS_TAGS = listOf(
-            "xiangqi-move", "xiangqi-capture", "xiangqi-check",
+            "xiangqi-capture", "xiangqi-check",
             "xiangqi-checkmate", "xiangqi-draw",
         )
     }

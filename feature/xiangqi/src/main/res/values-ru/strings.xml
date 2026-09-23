@@ -107,7 +107,6 @@
     <string name="xiangqi_waiting">Ожидание</string>
     <string name="xiangqi_retry_ai">Повторить ИИ</string>
     <string name="xiangqi_switch_ai_model">Сменить модель</string>
-    <string name="xiangqi_tts_move">Объявление хода</string>
     <string name="xiangqi_tts_capture">Объявление взятия</string>
     <string name="xiangqi_tts_check">Объявление шаха</string>
     <string name="xiangqi_tts_checkmate">Объявление мата</string>
@@ -167,6 +166,15 @@
     <string name="xiangqi_ai_failed">ИИ не вернул допустимый ход; применен локальный запасной вариант</string>
     <string name="xiangqi_ai_local_fallback_title">Движок недоступен — сделан локальный запасной ход</string>
     <string name="xiangqi_ai_local_fallback_message">Причина: %1$s</string>
+    <string name="xiangqi_ai_picker_desc">Движки ходов сянци настраиваются отдельно от чат-моделей.</string>
+    <string name="xiangqi_ai_source_working_model">Быстрая рабочая модель</string>
+    <string name="xiangqi_ai_source_jev">Jev</string>
+    <string name="xiangqi_ai_source_jev_desc">Решающая модель TypeSafe</string>
+    <string name="xiangqi_ai_source_pikafish">Pikafish</string>
+    <string name="xiangqi_ai_source_engine_desc">Серверный шахматный движок</string>
+    <string name="xiangqi_ai_tag_login">Требуется вход</string>
+    <string name="xiangqi_ai_tag_points">Расходует баллы</string>
+    <string name="xiangqi_ai_tag_free">Бесплатно</string>
     <string name="xiangqi_analysis_sound_on">Звук включён</string>
     <string name="xiangqi_analysis_sound_off">Звук выключен</string>
     <string name="xiangqi_settings_sound_enabled">Звук и фоновая музыка</string>
@@ -251,7 +259,6 @@
     <string name="xiangqi_tts_test_text">Тест синтеза речи</string>
     <string name="xiangqi_signaling_disconnected">Соединение потеряно, пожалуйста, сыграйте ещё раз</string>
     <string name="xiangqi_llm_history_none">Нет</string>
-    <string name="xiangqi_tts_default_move">Ход</string>
     <string name="xiangqi_tts_default_capture">Взятие!</string>
     <string name="xiangqi_tts_default_check">Шах!</string>
     <string name="xiangqi_tts_default_checkmate">Мат!</string>
