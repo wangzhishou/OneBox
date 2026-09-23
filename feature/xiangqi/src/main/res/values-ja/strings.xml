@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">轮到你了</string>
+    <string name="xiangqi_turn_badge">あなたの番</string>
     <string name="xiangqi_settings_audio_title">音频设置</string>
     <string name="xiangqi_settings_audio_subtitle">配置走子、背景和将军时播放的在线媒体文件。首次播放将被缓存。</string>
     <string name="xiangqi_settings_move_sound">効果音を移動</string>

@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">輪到你</string>
+    <string name="xiangqi_turn_badge">輪到</string>
     <string name="xiangqi_settings_audio_title">音效設定</string>
     <string name="xiangqi_settings_audio_subtitle">設定走子、背景和將軍時播放的線上媒體檔案，首次播放會快取。</string>
     <string name="xiangqi_settings_move_sound">每走一步音效</string>

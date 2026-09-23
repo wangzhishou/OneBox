@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ЭЛО 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">Ваш ход</string>
+    <string name="xiangqi_turn_badge">Ваш ход</string>
     <string name="xiangqi_settings_audio_title">Настройки звука</string>
     <string name="xiangqi_settings_audio_subtitle">Настройте онлайн-медиафайлы, воспроизводимые при ходе, фоне и шахе. Первое воспроизведение будет кэшировано.</string>
     <string name="xiangqi_settings_move_sound">Звуковой эффект перемещения</string>

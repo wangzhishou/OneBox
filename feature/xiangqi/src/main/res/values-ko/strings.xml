@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">당신 차례</string>
+    <string name="xiangqi_turn_badge">당신 차례</string>
     <string name="xiangqi_settings_audio_title">오디오 설정</string>
     <string name="xiangqi_settings_audio_subtitle">수, 배경, 장군 시 재생되는 온라인 미디어 파일을 구성합니다. 첫 재생은 캐시됩니다.</string>
     <string name="xiangqi_settings_move_sound">효과음 이동</string>

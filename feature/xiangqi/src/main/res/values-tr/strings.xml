@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">Sıra sende</string>
+    <string name="xiangqi_turn_badge">Sıra sende</string>
     <string name="xiangqi_settings_audio_title">Ses ayarları</string>
     <string name="xiangqi_settings_audio_subtitle">Hamle, arka plan ve şah çekme sırasında çalınan çevrimiçi medya dosyalarını yapılandırın. İlk oynatma önbelleğe alınır.</string>
     <string name="xiangqi_settings_move_sound">Hareket ses efekti</string>

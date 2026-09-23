@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">Iyong turn</string>
+    <string name="xiangqi_turn_badge">Ikaw na</string>
     <string name="xiangqi_settings_audio_title">Mga setting ng audio</string>
     <string name="xiangqi_settings_audio_subtitle">I-configure ang mga online media file na pinapatugtog sa paglipat, background, at check. Ang unang playback ay itatago sa cache.</string>
     <string name="xiangqi_settings_move_sound">Ilipat ang sound effect</string>

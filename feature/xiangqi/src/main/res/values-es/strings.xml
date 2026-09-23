@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">Tu turno</string>
+    <string name="xiangqi_turn_badge">Tu turno</string>
     <string name="xiangqi_settings_audio_title">Ajustes de audio</string>
     <string name="xiangqi_settings_audio_subtitle">Configura los archivos multimedia en línea que se reproducen al mover, en segundo plano y al dar jaque. La primera reproducción se almacenará en caché.</string>
     <string name="xiangqi_settings_move_sound">Efecto de sonido de movimiento</string>

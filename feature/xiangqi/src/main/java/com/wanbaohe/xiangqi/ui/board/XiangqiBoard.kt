@@ -273,18 +273,18 @@ private fun PieceDisc(
     
     val primaryColor = MaterialTheme.colorScheme.primary
     val secondaryColor = MaterialTheme.colorScheme.error
-    val pieceColor = if (isRed) secondaryColor else primaryColor
+    val pieceColor = if (isRed) secondaryColor else MaterialTheme.colorScheme.onSurface
     val glowColor = if (isRed) secondaryColor else primaryColor
-    
+
     val activeBorder = if (selected) primaryColor else MaterialTheme.colorScheme.outlineVariant
     val activeGlow = if (selected) primaryColor.copy(alpha = 0.6f) else Color.Transparent
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .shadow(if (selected) 8.dp else 4.dp, CircleShape, ambientColor = if (selected) activeGlow else Color.Black)
             .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f))
+            .background(MaterialTheme.colorScheme.surface)
             .border(
                 width = if (selected) 2.dp else 1.dp,
                 color = activeBorder,

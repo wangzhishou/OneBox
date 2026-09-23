@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">आपकी बारी</string>
+    <string name="xiangqi_turn_badge">आपकी बारी</string>
     <string name="xiangqi_settings_audio_title">ऑडियो सेटिंग्स</string>
     <string name="xiangqi_settings_audio_subtitle">चाल, पृष्ठभूमि और चेक पर चलाए जाने वाले ऑनलाइन मीडिया फ़ाइलें कॉन्फ़िगर करें। पहला प्लेबैक कैश किया जाएगा।</string>
     <string name="xiangqi_settings_move_sound">ध्वनि प्रभाव हटाएँ</string>

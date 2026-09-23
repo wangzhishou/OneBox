@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">Giliran Anda</string>
+    <string name="xiangqi_turn_badge">Giliranmu</string>
     <string name="xiangqi_settings_audio_title">Pengaturan audio</string>
     <string name="xiangqi_settings_audio_subtitle">Konfigurasikan file media online yang diputar saat langkah, latar belakang, dan skak. Pemutaran pertama akan di-cache.</string>
     <string name="xiangqi_settings_move_sound">Efek suara gerakan</string>

@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">Sie sind am Zug</string>
+    <string name="xiangqi_turn_badge">Du bist dran</string>
     <string name="xiangqi_settings_audio_title">Audioeinstellungen</string>
     <string name="xiangqi_settings_audio_subtitle">Konfigurieren Sie Online-Medien, die bei Zug, Hintergrund und Schach abgespielt werden. Die erste Wiedergabe wird zwischengespeichert.</string>
     <string name="xiangqi_settings_move_sound">Bewegungssoundeffekt</string>

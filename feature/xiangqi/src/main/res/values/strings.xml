@@ -29,6 +29,7 @@
     <string name="xiangqi_elo_you">ELO 1250</string>
     <string name="xiangqi_timer_empty">--:--</string>
     <string name="xiangqi_your_turn">Your turn</string>
+    <string name="xiangqi_turn_badge">Your turn</string>
     <string name="xiangqi_settings_audio_title">Audio settings</string>
     <string name="xiangqi_settings_audio_subtitle">Configure online media files played on move, background, and check. The first playback will be cached.</string>
     <string name="xiangqi_settings_move_sound">Move sound effect</string>

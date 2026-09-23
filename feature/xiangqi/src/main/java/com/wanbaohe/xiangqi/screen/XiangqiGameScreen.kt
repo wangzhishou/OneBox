@@ -1,12 +1,14 @@
 package com.wanbaohe.xiangqi.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -41,7 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -285,7 +292,7 @@ private fun XiangqiGameContent(
         val chromeHeight = 32.dp + 52.dp + 16.dp + 60.dp + 16.dp +
             (if (showErrorCard) StatusCardHeight + 16.dp else 0.dp) +
             (if (showDebugPanel) 156.dp else 0.dp) +
-            (if (fallbackPly != null) StatusCardHeight + 16.dp else 0.dp)
+            (if (fallbackPly != null) FallbackCardHeight + 16.dp else 0.dp)
         val boardAvailable = maxHeight - chromeHeight
         val adaptive = boardAvailable != Dp.Infinity && boardAvailable >= MinAdaptiveBoardHeight
 
@@ -516,10 +523,6 @@ private fun FallbackStatusCard(
     onPickAiFor: (Side) -> Unit,
 ) {
     // 用落库的 moverSide 判定行棋方最可靠(不依赖当前轮到谁)
-    val engineName = when (fallbackPly.moverSide) {
-        Side.RED -> state.redAiServiceName.ifBlank { state.redAiModelName }
-        Side.BLACK -> state.blackAiServiceName.ifBlank { state.blackAiModelName }
-    }
     StatusCard(
         title = stringResource(R.string.xiangqi_ai_local_fallback_title),
         subtitle = stringResource(
@@ -528,30 +531,24 @@ private fun FallbackStatusCard(
                 .removePrefix(MoveDecision.LOCAL_FALLBACK_MARKER)
                 .ifBlank { "unknown" },
         ),
-        actions = {
-            // AI 对战下两个座位都是引擎,只给一个"切换模型"入口会让人误解是哪个
-            if (state.mode != GameMode.LLM_VS_LLM) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+        height = FallbackCardHeight,
+        // AI 对战下两个座位都是引擎,只给一个"切换模型"入口会让人误解是哪个
+        titleTrailing = if (state.mode != GameMode.LLM_VS_LLM) {
+            {
+                GlassTonalButton(
+                    // 复用象棋设置的 AI 选择器, 针对兜底发生的那一方
+                    onClick = { onPickAiFor(fallbackPly.moverSide) },
+                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
                 ) {
-                    if (engineName.isNotBlank()) {
-                        Text(
-                            text = engineName,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.weight(1f),
-                        )
-                    }
-                    GlassTonalButton(
-                        // 复用象棋设置的 AI 选择器, 针对兜底发生的那一方
-                        onClick = { onPickAiFor(fallbackPly.moverSide) },
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(stringResource(R.string.xiangqi_switch_ai_model))
-                    }
+                    Text(
+                        stringResource(R.string.xiangqi_switch_ai_model),
+                        style = MaterialTheme.typography.labelSmall,
+                        maxLines = 1,
+                    )
                 }
             }
+        } else {
+            null
         },
     )
 }
@@ -648,7 +645,7 @@ private fun PlayersBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
+                .padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             PlayerBarItem(
@@ -666,12 +663,7 @@ private fun PlayersBar(
                 mirrored = false,
                 modifier = Modifier.weight(1f),
             )
-            Text(
-                text = stringResource(R.string.xiangqi_vs_short),
-                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 12.dp),
-            )
+            VsBadge(modifier = Modifier.padding(horizontal = 8.dp))
             PlayerBarItem(
                 side = bottomSide,
                 state = state,
@@ -717,64 +709,152 @@ private fun PlayerBarItem(
         aiServiceName = aiServiceName,
     )
     val active = playable && isActiveTurn
-    val subtitle = if (active) {
-        resolvePlayerStatusText(
-            side = side,
-            playerType = playerType,
-            gameMode = state.mode,
-            isActiveTurn = isActiveTurn,
-            playable = playable,
-        )
-    } else {
-        resolvePlayerSubtitle(
-            playerType = playerType,
-            gameMode = state.mode,
-            aiModelName = aiModelName,
-        )
-    }
-    val accentColor = if (active) {
-        resolvePlayerStatusColor(side = side, isActiveTurn = isActiveTurn, playable = playable)
-    } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
-    }
+    val subtitle = resolvePlayerSubtitle(
+        side = side,
+        playerType = playerType,
+        gameMode = state.mode,
+        aiModelName = aiModelName,
+    )
     val avatarUrl = resolvePlayerAvatarUrl(
         playerType = playerType,
         gameMode = state.mode,
         humanAvatarUrl = humanAvatarUrl,
         onlineOpponentAvatarUrl = onlineOpponentAvatarUrl,
     )
+    val sideDotColor = if (side == Side.RED) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.onSurface
+    }
 
-    Row(
-        modifier = modifier.then(
-            if (playerType == PlayerType.LLM) Modifier.clickable { onPickAiFor(side) } else Modifier
-        ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = if (mirrored) Arrangement.End else Arrangement.Start,
-    ) {
+    val clickableModifier = if (playerType == PlayerType.LLM) {
+        Modifier.clickable { onPickAiFor(side) }
+    } else {
+        Modifier
+    }
+    val content: @Composable () -> Unit = {
+        if (mirrored && active) {
+            TurnBadge()
+            Spacer(modifier = Modifier.width(6.dp))
+        }
         if (!mirrored) {
-            Avatar(username = displayName, avatar = avatarUrl, size = 32.dp, isLogin = true)
+            Avatar(username = displayName, avatar = avatarUrl, size = 34.dp, isLogin = true)
             Spacer(modifier = Modifier.width(8.dp))
         }
         Column(horizontalAlignment = if (mirrored) Alignment.End else Alignment.Start) {
             Text(
                 text = displayName,
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                color = if (active) accentColor else MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.labelSmall,
-                color = accentColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(7.dp)
+                        .clip(CircleShape)
+                        .background(sideDotColor)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+        if (!mirrored && active) {
+            Spacer(modifier = Modifier.width(6.dp))
+            TurnBadge()
         }
         if (mirrored) {
             Spacer(modifier = Modifier.width(8.dp))
-            Avatar(username = displayName, avatar = avatarUrl, size = 32.dp, isLogin = true)
+            Avatar(username = displayName, avatar = avatarUrl, size = 34.dp, isLogin = true)
         }
+    }
+
+    if (active) {
+        Box(
+            modifier = modifier
+                .then(clickableModifier)
+                .clip(RoundedCornerShape(14.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                    shape = RoundedCornerShape(14.dp),
+                )
+                .padding(horizontal = 10.dp, vertical = 8.dp),
+            contentAlignment = if (mirrored) Alignment.CenterEnd else Alignment.CenterStart,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = if (mirrored) Arrangement.End else Arrangement.Start,
+                content = { content() },
+            )
+        }
+    } else {
+        Row(
+            modifier = modifier
+                .then(clickableModifier)
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = if (mirrored) Arrangement.End else Arrangement.Start,
+            content = { content() },
+        )
+    }
+}
+
+@Composable
+private fun VsBadge(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f))
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.xiangqi_vs_short),
+            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+        )
+    }
+}
+
+/** 行棋方的"轮到"角标:虚线描边小胶囊 */
+@Composable
+private fun TurnBadge(modifier: Modifier = Modifier) {
+    val primary = MaterialTheme.colorScheme.primary
+    Box(
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f),
+                shape = RoundedCornerShape(50),
+            )
+            .drawBehind {
+                drawRoundRect(
+                    color = primary,
+                    style = Stroke(
+                        width = 1.5.dp.toPx(),
+                        pathEffect = PathEffect.dashPathEffect(
+                            floatArrayOf(5.dp.toPx(), 3.dp.toPx()),
+                        ),
+                    ),
+                    cornerRadius = CornerRadius(size.height / 2, size.height / 2),
+                )
+            }
+            .padding(horizontal = 10.dp, vertical = 3.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.xiangqi_turn_badge),
+            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
+            color = primary,
+            maxLines = 1,
+        )
     }
 }
 
@@ -800,21 +880,23 @@ private fun resolvePlayerDisplayName(
 
 @Composable
 private fun resolvePlayerSubtitle(
+    side: Side,
     playerType: PlayerType,
     gameMode: GameMode,
     aiModelName: String,
 ): String {
-    return when (playerType) {
+    val sideLabel =
+        stringResource(if (side == Side.RED) R.string.xiangqi_player_red else R.string.xiangqi_player_black)
+    val suffix = when (playerType) {
         PlayerType.LLM -> aiModelName
         PlayerType.REMOTE -> stringResource(R.string.xiangqi_mode_online)
         PlayerType.HUMAN -> if (gameMode == GameMode.HUMAN_VS_LLM) {
             stringResource(R.string.xiangqi_player_you)
-        } else if (gameMode == GameMode.ONLINE_PVP) {
-            stringResource(R.string.xiangqi_mode_online)
         } else {
-            stringResource(R.string.xiangqi_mode_local)
+            ""
         }
     }
+    return if (suffix.isBlank()) sideLabel else "$sideLabel · $suffix"
 }
 
 private fun resolvePlayerAvatarUrl(
@@ -837,51 +919,22 @@ private fun aiServiceForSide(side: Side, redAiService: String, blackAiService: S
 private fun aiModelForSide(side: Side, redAiModel: String, blackAiModel: String): String =
     if (side == Side.RED) redAiModel else blackAiModel
 
-@Composable
-private fun resolvePlayerStatusText(
-    side: Side,
-    playerType: PlayerType,
-    gameMode: GameMode,
-    isActiveTurn: Boolean,
-    playable: Boolean,
-): String {
-    if (!playable) return stringResource(R.string.xiangqi_waiting)
-    if (!isActiveTurn) return stringResource(R.string.xiangqi_waiting)
-    return when {
-        playerType == PlayerType.LLM -> stringResource(R.string.xiangqi_ai_thinking)
-        playerType == PlayerType.REMOTE -> stringResource(R.string.xiangqi_waiting_opponent_move)
-        gameMode == GameMode.HUMAN_VS_LLM || gameMode == GameMode.ONLINE_PVP -> stringResource(R.string.xiangqi_your_turn)
-        side == Side.RED -> stringResource(R.string.xiangqi_turn_red)
-        else -> stringResource(R.string.xiangqi_turn_black)
-    }
-}
-
-@Composable
-private fun resolvePlayerStatusColor(
-    side: Side,
-    isActiveTurn: Boolean,
-    playable: Boolean,
-): Color {
-    return when {
-        !playable || !isActiveTurn -> MaterialTheme.colorScheme.onSurfaceVariant
-        side == Side.RED -> MaterialTheme.colorScheme.error
-        else -> MaterialTheme.colorScheme.primary
-    }
-}
-
 private val StatusCardHeight = 140.dp
+private val FallbackCardHeight = 92.dp
 private val MinAdaptiveBoardHeight = 280.dp
 
 @Composable
 private fun StatusCard(
     title: String,
     subtitle: String,
+    height: Dp = StatusCardHeight,
+    titleTrailing: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
 ) {
     GlassSurface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(StatusCardHeight)
+            .height(height)
             .padding(horizontal = 12.dp),
         style = GlassStyle.Medium,
     ) {
@@ -889,13 +942,17 @@ private fun StatusCard(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(
-                title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.error,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.error,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                titleTrailing?.invoke()
+            }
             VerticalMarqueeText(
                 text = subtitle,
                 modifier = Modifier
