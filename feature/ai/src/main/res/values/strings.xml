@@ -661,7 +661,7 @@
     <string name="agent_tool_manage_xiangqi_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_xiangqi_param_title">Game title (required for create)</string>
-    <string name="agent_tool_manage_xiangqi_param_ai_as_red">Whether to create a human-vs-AI game with AI playing red (optional for create, default false)</string>
+    <string name="agent_tool_manage_xiangqi_param_ai_as_red">Whether AI plays red (optional for create/import_fen, default false so the human plays red and moves first; for import_fen, omit it to let the human play the side to move)</string>
     <string name="agent_tool_manage_xiangqi_param_export_format">Export format: fen / json / both (optional for export, default both)</string>
     <string name="agent_tool_manage_xiangqi_missing_game_id">Missing game_id parameter</string>
     <string name="agent_tool_manage_xiangqi_missing_title">Missing title parameter</string>
@@ -1066,7 +1066,7 @@
     <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
-    <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether AI plays black, i.e. first move (optional for create/import_fen, default false so the human plays black; for import_fen, omit it to let the human play the side to move)</string>
     <string name="agent_tool_manage_gomoku_param_export_format">Export format: fen / json / both (optional for export, default both)</string>
     <string name="agent_tool_manage_gomoku_missing_game_id">Missing game_id parameter</string>
     <string name="agent_tool_manage_gomoku_missing_title">Missing title parameter</string>
@@ -1103,5 +1103,5 @@
     <string name="agent_tool_manage_chess_imported_fen">FEN Imported</string>
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
-    <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_manage_chess_param_ai_as_white">Whether AI plays white, i.e. first move (optional for create/import_fen, default false so the human plays white; for import_fen, omit it to let the human play the side to move)</string>
 </resources>

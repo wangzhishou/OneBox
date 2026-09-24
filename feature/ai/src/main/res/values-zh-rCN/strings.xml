@@ -661,7 +661,7 @@
     <string name="agent_tool_manage_xiangqi_param_action">操作类型: list / detail / create / import_fen / import_json / delete / export</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">对局 ID（detail / delete / export 必填）</string>
     <string name="agent_tool_manage_xiangqi_param_title">对局标题（create 必填）</string>
-    <string name="agent_tool_manage_xiangqi_param_ai_as_red">是否创建人机对局且 AI 执红（create 可选，默认 false）</string>
+    <string name="agent_tool_manage_xiangqi_param_ai_as_red">AI 是否执红(create/import_fen 可选,默认 false 即人类执红先行;import_fen 不传时人类执当前回合方)</string>
     <string name="agent_tool_manage_xiangqi_param_export_format">导出格式: fen / json / both（export 可选，默认 both）</string>
     <string name="agent_tool_manage_xiangqi_missing_game_id">缺少 game_id 参数</string>
     <string name="agent_tool_manage_xiangqi_missing_title">缺少 title 参数</string>
@@ -1066,7 +1066,7 @@
     <string name="agent_tool_manage_gomoku_param_action">操作类型: list / detail / create / import_fen / import_json / delete / export</string>
     <string name="agent_tool_manage_gomoku_param_game_id">对局 ID(detail / delete / export 必填)</string>
     <string name="agent_tool_manage_gomoku_param_title">对局标题(create 必填)</string>
-    <string name="agent_tool_manage_gomoku_param_ai_as_black">是否创建人机对局且 AI 执黑(先手)(create 可选;不传则创建本地双人对局)</string>
+    <string name="agent_tool_manage_gomoku_param_ai_as_black">AI 是否执黑(先手)(create/import_fen 可选,默认 false 即人类执黑先行;import_fen 不传时人类执当前回合方)</string>
     <string name="agent_tool_manage_gomoku_param_export_format">导出格式: fen / json / both(export 可选,默认 both)</string>
     <string name="agent_tool_manage_gomoku_missing_game_id">缺少 game_id 参数</string>
     <string name="agent_tool_manage_gomoku_missing_title">缺少 title 参数</string>
@@ -1103,5 +1103,5 @@
     <string name="agent_tool_manage_chess_imported_fen">FEN 导入</string>
     <string name="agent_tool_manage_chess_imported">已导入对局: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">导入失败: %1$s</string>
-    <string name="agent_tool_manage_chess_param_ai_as_white">是否创建人机对局且 AI 执白(先手)(create 可选;不传则创建本地双人对局)</string>
+    <string name="agent_tool_manage_chess_param_ai_as_white">AI 是否执白(先手)(create/import_fen 可选,默认 false 即人类执白先行;import_fen 不传时人类执当前回合方)</string>
 </resources>

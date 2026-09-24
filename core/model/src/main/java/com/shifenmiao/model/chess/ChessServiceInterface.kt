@@ -23,6 +23,12 @@ interface ChessServiceInterface {
     /** 从 FEN 导入残局/自定义开局，返回 gameId。FEN 不合法抛异常。 */
     suspend fun importFen(title: String, fen: String): Result<String>
 
+    /**
+     * 从 FEN 导入残局为**人机对局**，返回 gameId。
+     * [aiAsWhite] 为 null 时人类执当前回合方（轮到谁走谁就是人类方），AI 执另一方。
+     */
+    suspend fun importFenAsAiGame(title: String, fen: String, aiAsWhite: Boolean? = null): Result<String>
+
     /** 从 JSON 对战记录导入（含回放走子），返回结构化结果（含导入/跳过手数）。JSON 不合法抛异常。 */
     suspend fun importJson(title: String, json: String): Result<ChessImportResultDto>
 

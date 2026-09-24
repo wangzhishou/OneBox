@@ -46,6 +46,12 @@ class ChessServiceImpl @Inject constructor(
     override suspend fun importFen(title: String, fen: String): Result<String> =
         runCatching { importGame.importFen(title, fen, title).requireGameId() }
 
+    override suspend fun importFenAsAiGame(title: String, fen: String, aiAsWhite: Boolean?): Result<String> =
+        runCatching {
+            val aiSide = aiAsWhite?.let { if (it) Side.WHITE else Side.BLACK }
+            importGame.importFenAsAiGame(title, fen, title, aiSide).requireGameId()
+        }
+
     override suspend fun importJson(title: String, json: String): Result<ChessImportResultDto> =
         runCatching {
             when (val result = importGame.importJson(title, json, title)) {

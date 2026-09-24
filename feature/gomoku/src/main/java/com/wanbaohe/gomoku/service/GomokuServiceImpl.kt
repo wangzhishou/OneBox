@@ -46,6 +46,12 @@ class GomokuServiceImpl @Inject constructor(
     override suspend fun importFen(title: String, fen: String): Result<String> =
         runCatching { importGame.importFen(title, fen, title).requireGameId() }
 
+    override suspend fun importFenAsAiGame(title: String, fen: String, aiAsBlack: Boolean?): Result<String> =
+        runCatching {
+            val aiSide = aiAsBlack?.let { if (it) Side.BLACK else Side.WHITE }
+            importGame.importFenAsAiGame(title, fen, title, aiSide).requireGameId()
+        }
+
     override suspend fun importJson(title: String, json: String): Result<GomokuImportResultDto> =
         runCatching {
             when (val result = importGame.importJson(title, json, title)) {

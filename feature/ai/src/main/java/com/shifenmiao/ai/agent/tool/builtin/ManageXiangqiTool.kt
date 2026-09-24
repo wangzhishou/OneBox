@@ -176,13 +176,9 @@ class ManageXiangqiTool @Inject constructor(
         if (title.isNullOrBlank()) {
             return errorResult(R.string.agent_tool_manage_xiangqi_missing_title)
         }
+        // 默认人机对局：不传 ai_as_red 时 AI 执黑、人类执红先行
         val aiAsRed = params.ai_as_red ?: false
-        val gameResult = if (aiAsRed != null) {
-            xiangqiService.createAiGame(title, aiAsRed)
-        } else {
-            xiangqiService.createLocalGame(title)
-        }
-        val gameId = gameResult.getOrElse {
+        val gameId = xiangqiService.createAiGame(title, aiAsRed).getOrElse {
             return errorResult(R.string.agent_tool_manage_xiangqi_failed, it.message ?: "unknown")
         }
         val result = mapOf(
@@ -190,7 +186,7 @@ class ManageXiangqiTool @Inject constructor(
             "success" to true,
             "game_id" to gameId,
             "title" to title,
-            "mode" to if (aiAsRed != null) "HUMAN_VS_LLM" else "LOCAL_PVP",
+            "mode" to "HUMAN_VS_LLM",
             "message" to textProvider.string(R.string.agent_tool_manage_xiangqi_created, title),
             "deepLinks" to listOf(
                 xiangqiDeepLink(
@@ -210,7 +206,8 @@ class ManageXiangqiTool @Inject constructor(
             return errorResult(R.string.agent_tool_manage_xiangqi_missing_fen)
         }
         val title = params.title ?: textProvider.string(R.string.agent_tool_manage_xiangqi_imported_fen)
-        val gameId = xiangqiService.importFen(title, fen).getOrElse {
+        // 残局默认人机对局：不传 ai_as_red 时人类执当前回合方
+        val gameId = xiangqiService.importFenAsAiGame(title, fen, params.ai_as_red).getOrElse {
             return errorResult(R.string.agent_tool_manage_xiangqi_import_failed, it.message ?: "invalid FEN")
         }
         val result = mapOf(
@@ -218,6 +215,7 @@ class ManageXiangqiTool @Inject constructor(
             "success" to true,
             "game_id" to gameId,
             "title" to title,
+            "mode" to "HUMAN_VS_LLM",
             "message" to textProvider.string(R.string.agent_tool_manage_xiangqi_imported, title),
             "deepLinks" to listOf(
                 xiangqiDeepLink(

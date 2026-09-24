@@ -45,6 +45,12 @@ class XiangqiServiceImpl @Inject constructor(
     override suspend fun importFen(title: String, fen: String): Result<String> =
         runCatching { importGame.importFen(title, fen, title).requireGameId() }
 
+    override suspend fun importFenAsAiGame(title: String, fen: String, aiAsRed: Boolean?): Result<String> =
+        runCatching {
+            val aiSide = aiAsRed?.let { if (it) Side.RED else Side.BLACK }
+            importGame.importFenAsAiGame(title, fen, title, aiSide).requireGameId()
+        }
+
     override suspend fun importJson(title: String, json: String): Result<String> =
         runCatching { importGame.importJson(title, json, title).requireGameId() }
 

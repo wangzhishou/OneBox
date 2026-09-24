@@ -176,13 +176,9 @@ class ManageChessTool @Inject constructor(
         if (title.isNullOrBlank()) {
             return errorResult(R.string.agent_tool_manage_chess_missing_title)
         }
-        val aiSide = params.ai_as_white
-        val gameResult = if (aiSide != null) {
-            chessService.createAiGame(title, aiSide)
-        } else {
-            chessService.createLocalGame(title)
-        }
-        val gameId = gameResult.getOrElse {
+        // 默认人机对局：不传 ai_as_white 时 AI 执黑、人类执白先行
+        val aiAsWhite = params.ai_as_white ?: false
+        val gameId = chessService.createAiGame(title, aiAsWhite).getOrElse {
             return errorResult(R.string.agent_tool_manage_chess_failed, it.message ?: "unknown")
         }
         val result = mapOf(
@@ -190,7 +186,7 @@ class ManageChessTool @Inject constructor(
             "success" to true,
             "game_id" to gameId,
             "title" to title,
-            "mode" to if (aiSide != null) "HUMAN_VS_LLM" else "LOCAL_PVP",
+            "mode" to "HUMAN_VS_LLM",
             "message" to textProvider.string(R.string.agent_tool_manage_chess_created, title),
             "deepLinks" to listOf(
                 chessDeepLink(
@@ -210,7 +206,8 @@ class ManageChessTool @Inject constructor(
             return errorResult(R.string.agent_tool_manage_chess_missing_fen)
         }
         val title = params.title ?: textProvider.string(R.string.agent_tool_manage_chess_imported_fen)
-        val gameId = chessService.importFen(title, fen).getOrElse {
+        // 残局默认人机对局：不传 ai_as_white 时人类执当前回合方
+        val gameId = chessService.importFenAsAiGame(title, fen, params.ai_as_white).getOrElse {
             return errorResult(R.string.agent_tool_manage_chess_import_failed, it.message ?: "invalid FEN")
         }
         val result = mapOf(
@@ -218,6 +215,7 @@ class ManageChessTool @Inject constructor(
             "success" to true,
             "game_id" to gameId,
             "title" to title,
+            "mode" to "HUMAN_VS_LLM",
             "message" to textProvider.string(R.string.agent_tool_manage_chess_imported, title),
             "deepLinks" to listOf(
                 chessDeepLink(

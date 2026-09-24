@@ -176,13 +176,9 @@ class ManageGomokuTool @Inject constructor(
         if (title.isNullOrBlank()) {
             return errorResult(R.string.agent_tool_manage_gomoku_missing_title)
         }
-        val aiSide = params.ai_as_black
-        val gameResult = if (aiSide != null) {
-            gomokuService.createAiGame(title, aiSide)
-        } else {
-            gomokuService.createLocalGame(title)
-        }
-        val gameId = gameResult.getOrElse {
+        // 默认人机对局：不传 ai_as_black 时 AI 执白、人类执黑先行
+        val aiAsBlack = params.ai_as_black ?: false
+        val gameId = gomokuService.createAiGame(title, aiAsBlack).getOrElse {
             return errorResult(R.string.agent_tool_manage_gomoku_failed, it.message ?: "unknown")
         }
         val result = mapOf(
@@ -190,7 +186,7 @@ class ManageGomokuTool @Inject constructor(
             "success" to true,
             "game_id" to gameId,
             "title" to title,
-            "mode" to if (aiSide != null) "HUMAN_VS_LLM" else "LOCAL_PVP",
+            "mode" to "HUMAN_VS_LLM",
             "message" to textProvider.string(R.string.agent_tool_manage_gomoku_created, title),
             "deepLinks" to listOf(
                 gomokuDeepLink(
@@ -210,7 +206,8 @@ class ManageGomokuTool @Inject constructor(
             return errorResult(R.string.agent_tool_manage_gomoku_missing_fen)
         }
         val title = params.title ?: textProvider.string(R.string.agent_tool_manage_gomoku_imported_fen)
-        val gameId = gomokuService.importFen(title, fen).getOrElse {
+        // 残局默认人机对局：不传 ai_as_black 时人类执当前回合方
+        val gameId = gomokuService.importFenAsAiGame(title, fen, params.ai_as_black).getOrElse {
             return errorResult(R.string.agent_tool_manage_gomoku_import_failed, it.message ?: "invalid FEN")
         }
         val result = mapOf(
@@ -218,6 +215,7 @@ class ManageGomokuTool @Inject constructor(
             "success" to true,
             "game_id" to gameId,
             "title" to title,
+            "mode" to "HUMAN_VS_LLM",
             "message" to textProvider.string(R.string.agent_tool_manage_gomoku_imported, title),
             "deepLinks" to listOf(
                 gomokuDeepLink(

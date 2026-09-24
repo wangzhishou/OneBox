@@ -5,6 +5,7 @@ import com.wanbaohe.xiangqi.domain.GameArbiter
 import com.wanbaohe.xiangqi.domain.GameResultCode
 import com.wanbaohe.xiangqi.domain.model.GameSetup
 import com.wanbaohe.xiangqi.domain.model.GameStatus
+import com.wanbaohe.xiangqi.domain.model.Side
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
@@ -51,6 +52,28 @@ class ImportGameUseCase @Inject constructor(
             return ImportResult.Failure(ImportFailureCause.INVALID_FEN, error.message.orEmpty())
         }
         val gameId = createGame.create(title.ifBlank { defaultTitle }, GameSetup.local(), normalized)
+        return ImportResult.Success(gameId, importedPlies = 0, skippedPlies = emptyList())
+    }
+
+    /**
+     * 从 FEN 导入残局为**人机对局**。
+     * [aiSide] 为 null 时人类执当前回合方（轮到谁走谁就是人类方），AI 执另一方。
+     */
+    suspend fun importFenAsAiGame(
+        title: String,
+        fen: String,
+        defaultTitle: String,
+        aiSide: Side? = null,
+    ): ImportResult {
+        val state = runCatching { FenCodec.parse(fen) }.getOrElse { error ->
+            return ImportResult.Failure(ImportFailureCause.INVALID_FEN, error.message.orEmpty())
+        }
+        val effectiveAiSide = aiSide ?: state.sideToMove.opposite()
+        val gameId = createGame.create(
+            title.ifBlank { defaultTitle },
+            GameSetup.humanVsAi(effectiveAiSide),
+            FenCodec.encode(state),
+        )
         return ImportResult.Success(gameId, importedPlies = 0, skippedPlies = emptyList())
     }
 
