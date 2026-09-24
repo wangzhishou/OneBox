@@ -188,7 +188,9 @@
     <plurals name="xiangqi_import_partial">
         <item quantity="other">%1$d手をインポート、%2$d手をスキップ</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d 手</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="other">%1$d 手</item>
+    </plurals>
     <string name="xiangqi_copy_notation">コピー</string>
     <string name="xiangqi_share_notation">共有</string>
     <string name="xiangqi_copied">コピーしました</string>

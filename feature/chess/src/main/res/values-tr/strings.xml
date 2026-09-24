@@ -80,7 +80,10 @@
     <string name="chess_library_status_game_over">Bitti</string>
     <string name="chess_library_open_analysis">İncele</string>
     <string name="chess_library_review">Tekrar oynat</string>
-    <string name="chess_ply_count">%1$d hamle</string>
+    <plurals name="chess_ply_count">
+        <item quantity="one">%1$d hamle</item>
+        <item quantity="other">%1$d hamle</item>
+    </plurals>
     <string name="chess_no_history">Henüz hamle yok</string>
     <string name="chess_replay_to_start">İlk</string>
     <string name="chess_replay_prev">Önceki</string>

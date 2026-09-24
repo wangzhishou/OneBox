@@ -80,7 +80,10 @@
     <string name="chess_library_status_game_over">समाप्त</string>
     <string name="chess_library_open_analysis">समीक्षा</string>
     <string name="chess_library_review">रीप्ले</string>
-    <string name="chess_ply_count">%1$d चालें</string>
+    <plurals name="chess_ply_count">
+        <item quantity="one">%1$d चाल</item>
+        <item quantity="other">%1$d चालें</item>
+    </plurals>
     <string name="chess_no_history">अभी तक कोई चाल नहीं</string>
     <string name="chess_replay_to_start">पहली</string>
     <string name="chess_replay_prev">पिछला</string>

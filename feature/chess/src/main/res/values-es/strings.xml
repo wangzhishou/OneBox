@@ -80,7 +80,10 @@
     <string name="chess_library_status_game_over">Finalizada</string>
     <string name="chess_library_open_analysis">Analizar</string>
     <string name="chess_library_review">Repetición</string>
-    <string name="chess_ply_count">%1$d jugadas</string>
+    <plurals name="chess_ply_count">
+        <item quantity="one">%1$d jugada</item>
+        <item quantity="other">%1$d jugadas</item>
+    </plurals>
     <string name="chess_no_history">Aún no hay jugadas</string>
     <string name="chess_replay_to_start">Inicio</string>
     <string name="chess_replay_prev">Anterior</string>

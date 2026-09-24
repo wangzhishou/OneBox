@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
@@ -151,7 +152,7 @@ private fun GomokuGameSummary.toCardData(): GameCardData {
             badgeBorder = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
         ),
         vsLabel = stringResource(R.string.gomoku_vs_short),
-        plyCountText = stringResource(R.string.gomoku_ply_count, plyCount),
+        plyCountText = pluralStringResource(R.plurals.gomoku_ply_count, plyCount, plyCount),
         resultText = localizedGameResultText(resultText),
         // 进行中的局卡片点击就是进回放,"查看回放"在这里语义重叠,用「复盘」区分
         actionLabel = stringResource(

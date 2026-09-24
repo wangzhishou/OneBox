@@ -189,7 +189,10 @@
         <item quantity="one">%1$d hamle içe aktarıldı, %2$d atlandı</item>
         <item quantity="other">%1$d hamle içe aktarıldı, %2$d atlandı</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d hamle</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="one">%1$d hamle</item>
+        <item quantity="other">%1$d hamle</item>
+    </plurals>
     <string name="xiangqi_copy_notation">Kopyala</string>
     <string name="xiangqi_share_notation">Paylaş</string>
     <string name="xiangqi_copied">Kopyalandı</string>

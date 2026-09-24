@@ -80,7 +80,10 @@
     <string name="gomoku_library_status_game_over">Bitti</string>
     <string name="gomoku_library_open_analysis">İncele</string>
     <string name="gomoku_library_review">Tekrar oynat</string>
-    <string name="gomoku_ply_count">%1$d hamle</string>
+    <plurals name="gomoku_ply_count">
+        <item quantity="one">%1$d hamle</item>
+        <item quantity="other">%1$d hamle</item>
+    </plurals>
     <string name="gomoku_no_history">Henüz hamle yok</string>
     <string name="gomoku_replay_to_start">İlk</string>
     <string name="gomoku_replay_prev">Önceki</string>

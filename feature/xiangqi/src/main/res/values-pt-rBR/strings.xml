@@ -189,7 +189,10 @@
         <item quantity="one">%1$d lance importado, %2$d ignorados</item>
         <item quantity="other">%1$d lances importados, %2$d ignorados</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d lances</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="one">%1$d lance</item>
+        <item quantity="other">%1$d lances</item>
+    </plurals>
     <string name="xiangqi_copy_notation">Copiar</string>
     <string name="xiangqi_share_notation">Compartilhar</string>
     <string name="xiangqi_copied">Copiado</string>

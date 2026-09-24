@@ -80,7 +80,9 @@
     <string name="gomoku_library_status_game_over">종료</string>
     <string name="gomoku_library_open_analysis">복기</string>
     <string name="gomoku_library_review">리플레이</string>
-    <string name="gomoku_ply_count">%1$d수</string>
+    <plurals name="gomoku_ply_count">
+        <item quantity="other">%1$d수</item>
+    </plurals>
     <string name="gomoku_no_history">아직 수가 없습니다</string>
     <string name="gomoku_replay_to_start">시작</string>
     <string name="gomoku_replay_prev">이전</string>

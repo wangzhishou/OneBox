@@ -80,7 +80,10 @@
     <string name="chess_library_status_game_over">Concluído</string>
     <string name="chess_library_open_analysis">Analisar</string>
     <string name="chess_library_review">Replay</string>
-    <string name="chess_ply_count">%1$d lances</string>
+    <plurals name="chess_ply_count">
+        <item quantity="one">%1$d lance</item>
+        <item quantity="other">%1$d lances</item>
+    </plurals>
     <string name="chess_no_history">Nenhum lance ainda</string>
     <string name="chess_replay_to_start">Iniciar</string>
     <string name="chess_replay_prev">Anterior</string>

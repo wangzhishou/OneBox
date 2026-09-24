@@ -80,7 +80,9 @@
     <string name="chess_library_status_game_over">終了</string>
     <string name="chess_library_open_analysis">検討</string>
     <string name="chess_library_review">リプレイ</string>
-    <string name="chess_ply_count">%1$d 手</string>
+    <plurals name="chess_ply_count">
+        <item quantity="other">%1$d 手</item>
+    </plurals>
     <string name="chess_no_history">まだ手がありません</string>
     <string name="chess_replay_to_start">最初</string>
     <string name="chess_replay_prev">前へ</string>

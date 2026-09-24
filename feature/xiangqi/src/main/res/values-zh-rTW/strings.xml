@@ -188,7 +188,9 @@
     <plurals name="xiangqi_import_partial">
         <item quantity="other">已匯入 %1$d 手，略過 %2$d 手</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d 手</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="other">%1$d 手</item>
+    </plurals>
     <string name="xiangqi_copy_notation">複製</string>
     <string name="xiangqi_share_notation">分享</string>
     <string name="xiangqi_copied">已複製</string>

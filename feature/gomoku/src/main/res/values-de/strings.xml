@@ -80,7 +80,10 @@
     <string name="gomoku_library_status_game_over">Beendet</string>
     <string name="gomoku_library_open_analysis">Wiederholung ansehen</string>
     <string name="gomoku_library_review">Wiederholung</string>
-    <string name="gomoku_ply_count">%1$d Züge</string>
+    <plurals name="gomoku_ply_count">
+        <item quantity="one">%1$d Zug</item>
+        <item quantity="other">%1$d Züge</item>
+    </plurals>
     <string name="gomoku_no_history">Noch keine Züge</string>
     <string name="gomoku_replay_to_start">Start</string>
     <string name="gomoku_replay_prev">Zurück</string>

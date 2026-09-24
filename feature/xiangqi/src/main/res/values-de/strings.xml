@@ -189,7 +189,10 @@
         <item quantity="one">%1$d Zug importiert, %2$d übersprungen</item>
         <item quantity="other">%1$d Züge importiert, %2$d übersprungen</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d Züge</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="one">%1$d Zug</item>
+        <item quantity="other">%1$d Züge</item>
+    </plurals>
     <string name="xiangqi_copy_notation">Kopieren</string>
     <string name="xiangqi_share_notation">Teilen</string>
     <string name="xiangqi_copied">Kopiert</string>

@@ -80,7 +80,10 @@
     <string name="chess_library_status_game_over">Finished</string>
     <string name="chess_library_open_analysis">Review</string>
     <string name="chess_library_review">Replay</string>
-    <string name="chess_ply_count">%1$d moves</string>
+    <plurals name="chess_ply_count">
+        <item quantity="one">%1$d move</item>
+        <item quantity="other">%1$d moves</item>
+    </plurals>
     <string name="chess_no_history">No moves yet</string>
     <string name="chess_replay_to_start">First</string>
     <string name="chess_replay_prev">Previous</string>

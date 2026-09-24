@@ -80,7 +80,9 @@
     <string name="gomoku_library_status_game_over">已结束</string>
     <string name="gomoku_library_open_analysis">复盘</string>
     <string name="gomoku_library_review">回放</string>
-    <string name="gomoku_ply_count">%1$d 手</string>
+    <plurals name="gomoku_ply_count">
+        <item quantity="other">%1$d 手</item>
+    </plurals>
     <string name="gomoku_no_history">暂无走子</string>
     <string name="gomoku_replay_to_start">第一手</string>
     <string name="gomoku_replay_prev">上一手</string>

@@ -191,7 +191,12 @@
         <item quantity="one">Импортирован %1$d ход, пропущено: %2$d</item>
         <item quantity="other">Импортировано ходов: %1$d, пропущено: %2$d</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d ходов</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="one">%1$d ход</item>
+        <item quantity="few">%1$d хода</item>
+        <item quantity="many">%1$d ходов</item>
+        <item quantity="other">%1$d хода</item>
+    </plurals>
     <string name="xiangqi_copy_notation">Копировать</string>
     <string name="xiangqi_share_notation">Поделиться</string>
     <string name="xiangqi_copied">Скопировано</string>

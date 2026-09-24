@@ -189,7 +189,10 @@
         <item quantity="one">Se importó %1$d jugada y se omitieron %2$d</item>
         <item quantity="other">Se importaron %1$d jugadas y se omitieron %2$d</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d jugadas</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="one">%1$d jugada</item>
+        <item quantity="other">%1$d jugadas</item>
+    </plurals>
     <string name="xiangqi_copy_notation">Copiar</string>
     <string name="xiangqi_share_notation">Compartir</string>
     <string name="xiangqi_copied">Copiado</string>

@@ -80,7 +80,9 @@
     <string name="chess_library_status_game_over">已結束</string>
     <string name="chess_library_open_analysis">復盤</string>
     <string name="chess_library_review">回放</string>
-    <string name="chess_ply_count">%1$d 手</string>
+    <plurals name="chess_ply_count">
+        <item quantity="other">%1$d 手</item>
+    </plurals>
     <string name="chess_no_history">暫無走子</string>
     <string name="chess_replay_to_start">第一手</string>
     <string name="chess_replay_prev">上一手</string>

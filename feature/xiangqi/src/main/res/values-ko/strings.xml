@@ -188,7 +188,9 @@
     <plurals name="xiangqi_import_partial">
         <item quantity="other">%1$d수 가져옴, %2$d수 건너뜀</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d수</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="other">%1$d수</item>
+    </plurals>
     <string name="xiangqi_copy_notation">복사</string>
     <string name="xiangqi_share_notation">공유</string>
     <string name="xiangqi_copied">복사됨</string>

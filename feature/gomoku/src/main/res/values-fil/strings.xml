@@ -80,7 +80,10 @@
     <string name="gomoku_library_status_game_over">Tapos na</string>
     <string name="gomoku_library_open_analysis">Suriin</string>
     <string name="gomoku_library_review">I-replay</string>
-    <string name="gomoku_ply_count">%1$d galaw</string>
+    <plurals name="gomoku_ply_count">
+        <item quantity="one">%1$d galaw</item>
+        <item quantity="other">%1$d galaw</item>
+    </plurals>
     <string name="gomoku_no_history">Wala pang galaw</string>
     <string name="gomoku_replay_to_start">Simula</string>
     <string name="gomoku_replay_prev">Nakaraan</string>

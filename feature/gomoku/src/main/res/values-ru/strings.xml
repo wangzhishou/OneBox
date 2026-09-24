@@ -80,7 +80,12 @@
     <string name="gomoku_library_status_game_over">Завершена</string>
     <string name="gomoku_library_open_analysis">Разбор</string>
     <string name="gomoku_library_review">Повтор</string>
-    <string name="gomoku_ply_count">%1$d ходов</string>
+    <plurals name="gomoku_ply_count">
+        <item quantity="one">%1$d ход</item>
+        <item quantity="few">%1$d хода</item>
+        <item quantity="many">%1$d ходов</item>
+        <item quantity="other">%1$d хода</item>
+    </plurals>
     <string name="gomoku_no_history">Ходов пока нет</string>
     <string name="gomoku_replay_to_start">В начало</string>
     <string name="gomoku_replay_prev">Назад</string>

@@ -80,7 +80,9 @@
     <string name="chess_library_status_game_over">Selesai</string>
     <string name="chess_library_open_analysis">Tinjau</string>
     <string name="chess_library_review">Putar ulang</string>
-    <string name="chess_ply_count">%1$d langkah</string>
+    <plurals name="chess_ply_count">
+        <item quantity="other">%1$d langkah</item>
+    </plurals>
     <string name="chess_no_history">Belum ada langkah</string>
     <string name="chess_replay_to_start">Awal</string>
     <string name="chess_replay_prev">Sebelumnya</string>

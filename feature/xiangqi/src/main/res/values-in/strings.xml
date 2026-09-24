@@ -188,7 +188,9 @@
     <plurals name="xiangqi_import_partial">
         <item quantity="other">Mengimpor %1$d langkah, melewati %2$d</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d langkah</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="other">%1$d langkah</item>
+    </plurals>
     <string name="xiangqi_copy_notation">Salin</string>
     <string name="xiangqi_share_notation">Bagikan</string>
     <string name="xiangqi_copied">Disalin</string>

@@ -189,7 +189,10 @@
         <item quantity="one">%1$d चाल आयात की, %2$d छोड़ीं</item>
         <item quantity="other">%1$d चालें आयात कीं, %2$d छोड़ीं</item>
     </plurals>
-    <string name="xiangqi_ply_count">%1$d चालें</string>
+    <plurals name="xiangqi_ply_count">
+        <item quantity="one">%1$d चाल</item>
+        <item quantity="other">%1$d चालें</item>
+    </plurals>
     <string name="xiangqi_copy_notation">कॉपी करें</string>
     <string name="xiangqi_share_notation">शेयर करें</string>
     <string name="xiangqi_copied">कॉपी किया गया</string>

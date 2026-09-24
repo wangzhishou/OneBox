@@ -80,7 +80,10 @@
     <string name="gomoku_library_status_game_over">Finalizada</string>
     <string name="gomoku_library_open_analysis">Analizar</string>
     <string name="gomoku_library_review">Repetición</string>
-    <string name="gomoku_ply_count">%1$d jugadas</string>
+    <plurals name="gomoku_ply_count">
+        <item quantity="one">%1$d jugada</item>
+        <item quantity="other">%1$d jugadas</item>
+    </plurals>
     <string name="gomoku_no_history">Aún no hay jugadas</string>
     <string name="gomoku_replay_to_start">Inicio</string>
     <string name="gomoku_replay_prev">Anterior</string>

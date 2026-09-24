@@ -80,7 +80,10 @@
     <string name="chess_library_status_game_over">Tapos na</string>
     <string name="chess_library_open_analysis">Suriin</string>
     <string name="chess_library_review">I-replay</string>
-    <string name="chess_ply_count">%1$d galaw</string>
+    <plurals name="chess_ply_count">
+        <item quantity="one">%1$d galaw</item>
+        <item quantity="other">%1$d galaw</item>
+    </plurals>
     <string name="chess_no_history">Wala pang galaw</string>
     <string name="chess_replay_to_start">Simula</string>
     <string name="chess_replay_prev">Nakaraan</string>
