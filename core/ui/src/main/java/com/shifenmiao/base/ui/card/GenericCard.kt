@@ -369,12 +369,15 @@ fun GenericTonalCard(
                 val titleText = highlightedTitle ?: AnnotatedString(title)
                 if (maxTitleLines == 1) {
                     Text(
-                        modifier = Modifier.basicMarquee(
-                            iterations = Int.MAX_VALUE,
-                            spacing = MarqueeSpacing(30.dp),
-                            velocity = 30.dp,
-                            repeatDelayMillis = 1000
-                        ),
+                        // fillMaxWidth 先把宽度钉在卡片内,Marquee 才不会把整行字画到邻卡上
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .basicMarquee(
+                                iterations = Int.MAX_VALUE,
+                                spacing = MarqueeSpacing(30.dp),
+                                velocity = 30.dp,
+                                repeatDelayMillis = 1000
+                            ),
                         text = titleText,
                         maxLines = 1,
                         style = MaterialTheme.typography.titleMedium,
@@ -383,6 +386,7 @@ fun GenericTonalCard(
                     )
                 } else {
                     Text(
+                        modifier = Modifier.fillMaxWidth(),
                         text = titleText,
                         maxLines = maxTitleLines,
                         style = MaterialTheme.typography.titleMedium.copy(

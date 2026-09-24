@@ -1625,6 +1625,7 @@
     <string name="playground_description">विचार और लेख</string>
     <string name="playground_empty">अभी तक कोई प्लेग्राउंड लेख नहीं</string>
     <string name="profile_item_ai_feature_settings">फीचर टॉगल्स</string>
+    <string name="profile_item_ai_personalization">प्रॉम्प्ट और वैयक्तिकरण</string>
     <string name="profile_item_rate_app">हमें रेट करें</string>
     <string name="prompt_push_failed">प्रॉम्प्ट सिंक विफल</string>
     <string name="prompt_push_success">प्रॉम्प्ट सिंक हो गया</string>

@@ -192,7 +192,8 @@ fun ProfileContent(
                 val groupTitleRes = group.groupTitle
                 if (groupTitleRes != R.string.empty_string) {
                     Text(
-                        text = stringResource(groupTitleRes).uppercase(),
+                        text = stringResource(groupTitleRes)
+                            .uppercase(java.util.Locale.getDefault()),
                         style = MaterialTheme.typography.labelMedium.copy(
                             fontWeight = FontWeight.SemiBold,
                             letterSpacing = 1.sp
@@ -248,7 +249,8 @@ fun ProfileContent(
         item {
             Spacer(modifier = Modifier.height(OneBoxDesignSystem.sectionSpacing))
             Text(
-                text = stringResource(R.string.data_database).uppercase(),
+                text = stringResource(R.string.data_database)
+                    .uppercase(java.util.Locale.getDefault()),
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.sp
@@ -418,7 +420,8 @@ private fun ProfileStatsRow(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = stringResource(R.string.profile_stats_points).uppercase(),
+                        text = stringResource(R.string.profile_stats_points)
+                            .uppercase(java.util.Locale.getDefault()),
                         style = MaterialTheme.typography.labelSmall.copy(
                             letterSpacing = 1.sp
                         ),
@@ -462,7 +465,8 @@ private fun ProfileStatsRow(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = stringResource(R.string.profile_stats_files).uppercase(),
+                        text = stringResource(R.string.profile_stats_files)
+                            .uppercase(java.util.Locale.getDefault()),
                         style = MaterialTheme.typography.labelSmall.copy(
                             letterSpacing = 1.sp
                         ),

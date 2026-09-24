@@ -50,6 +50,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -297,9 +298,12 @@ private fun BottomNavigationTabItem(
                 text = item.label,
                 style = tabTextStyle,
                 maxLines = 1,
-                // 标签超长时不换行不省略,Marquee 滚动展示(与列表 Item 标题一致)
-                modifier = Modifier.basicMarquee(),
+                // 标签超长时限制在格子宽度内滚动,避免被中心按钮/邻项裁成残词
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .basicMarquee(),
                 textAlign = TextAlign.Center,
+                overflow = TextOverflow.Clip,
                 color = if (isSelected) selectedContentColor else unselectedContentColor,
             )
         }

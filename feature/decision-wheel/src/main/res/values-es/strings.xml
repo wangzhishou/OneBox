@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">Rueda de decisiones</string>
+    <string name="wheel_tab">Rueda</string>
     <string name="new_wheel">Nueva rueda</string>
     <string name="edit_wheel">Editar rueda</string>
     <string name="edit_options">Editar opciones</string>
@@ -77,7 +78,7 @@
     <string name="date_walk">Caminar y charlar.</string>
     <string name="date_game">Jugar</string>
     <string name="date_cook">Cocinemos juntos.</string>
-    <string name="date_travel">Alrededores</string>
+    <string name="date_travel">Escapada de fin de semana</string>
     <string name="preset_chores">Distribución nacional</string>
     <string name="chore_dishes">Lavar los platos.</string>
     <string name="chore_floor">Arrastrar</string>
@@ -92,10 +93,10 @@
     <string name="penalty_two">Dos tragos</string>
     <string name="penalty_half">Medio vaso</string>
     <string name="penalty_bottoms_up">De un golpe</string>
-    <string name="penalty_substitute">Elige a alguien que beba por ti</string>
+    <string name="penalty_substitute">Bebe por ti</string>
     <string name="penalty_everyone">Todos beben uno</string>
     <string name="penalty_spared">Te libras</string>
-    <string name="penalty_double">Doble en la próxima ronda</string>
+    <string name="penalty_double">Doble la próxima</string>
 
     <!-- Presets - Truth or Dare -->
     <string name="preset_truth_dare">Verdad o reto</string>
@@ -110,9 +111,9 @@
 
     <!-- Presets - Blame Game -->
     <string name="preset_blame">¿De quién es la culpa?</string>
-    <string name="blame_requirements">Los requisitos no estaban claros</string>
+    <string name="blame_requirements">Requisitos vagos</string>
     <string name="blame_design">El diseño volvió a cambiar</string>
-    <string name="blame_backend">La API del backend cambió</string>
+    <string name="blame_backend">La API cambió</string>
     <string name="blame_test_env">El entorno de pruebas está caído</string>
     <string name="blame_boss">El jefe lo pidió a última hora</string>
     <string name="blame_network">Fallo de red</string>

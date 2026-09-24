@@ -49,6 +49,19 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 
+/** 按像素宽度截断文案,超长补省略号,避免扇区标签互相压字。 */
+private fun ellipsizeToWidth(label: String, paint: android.graphics.Paint, maxWidth: Float): String {
+    if (maxWidth <= 0f || paint.measureText(label) <= maxWidth) return label
+    val ellipsis = "…"
+    val ellipsisWidth = paint.measureText(ellipsis)
+    if (ellipsisWidth > maxWidth) return ellipsis
+    var end = label.length
+    while (end > 0 && paint.measureText(label, 0, end) + ellipsisWidth > maxWidth) {
+        end--
+    }
+    return label.substring(0, end.coerceAtLeast(0)) + ellipsis
+}
+
 /**
  * 转盘选项数据
  */
@@ -169,7 +182,10 @@ fun DecisionWheelCanvas(
                         // 删除线是"这个已经出局了"最不需要解释的表达
                         isStrikeThruText = !item.enabled
                     }
-                    drawText(item.label, textX, textY + 15f, paint)
+                    // 长文案按扇区可用宽度截断,避免选项文字互相压字
+                    val maxTextWidth = (sectorAngle / 360f * 2f * Math.PI * textRadius).toFloat() * 0.9f
+                    val displayLabel = ellipsizeToWidth(item.label, paint, maxTextWidth)
+                    drawText(displayLabel, textX, textY + 15f, paint)
                 }
             }
         }

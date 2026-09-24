@@ -1625,6 +1625,7 @@
     <string name="playground_description">Ide dan artikel</string>
     <string name="playground_empty">Belum ada artikel taman bermain</string>
     <string name="profile_item_ai_feature_settings">Sakelar Fitur</string>
+    <string name="profile_item_ai_personalization">Prompt &amp; Personalisasi</string>
     <string name="profile_item_rate_app">Beri Nilai Kami</string>
     <string name="prompt_push_failed">Sinkronisasi prompt gagal</string>
     <string name="prompt_push_success">Prompt tersinkronisasi</string>

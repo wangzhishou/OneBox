@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">Roda Keputusan</string>
+    <string name="wheel_tab">Roda</string>
     <string name="new_wheel">Putaran Baru</string>
     <string name="edit_wheel">Edit Roda</string>
     <string name="edit_options">Edit Opsi</string>

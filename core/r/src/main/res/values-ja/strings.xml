@@ -1624,7 +1624,8 @@
     <string name="playground">游乐场</string>
     <string name="playground_description">创意与文章</string>
     <string name="playground_empty">暂无游乐场文章</string>
-    <string name="profile_item_ai_feature_settings">功能开关</string>
+    <string name="profile_item_ai_feature_settings">機能トグル</string>
+    <string name="profile_item_ai_personalization">プロンプトとパーソナライズ</string>
     <string name="profile_item_rate_app">给我们评分</string>
     <string name="prompt_push_failed">提示同步失败</string>
     <string name="prompt_push_success">提示已同步</string>

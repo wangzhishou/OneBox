@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">Колесо решений</string>
+    <string name="wheel_tab">Колесо</string>
     <string name="new_wheel">Новый круг</string>
     <string name="edit_wheel">Изменить колесо</string>
     <string name="edit_options">Изменить параметры</string>
@@ -77,7 +78,7 @@
     <string name="date_walk">Прогулка и разговор.</string>
     <string name="date_game">Играть в игру</string>
     <string name="date_cook">Давай готовить вместе.</string>
-    <string name="date_travel">Вокруг</string>
+    <string name="date_travel">Выходные в поездке</string>
     <string name="preset_chores">Отечественный прокат</string>
     <string name="chore_dishes">Мыть посуду.</string>
     <string name="chore_floor">Тянуть</string>
@@ -91,11 +92,11 @@
     <string name="penalty_one">Один глоток</string>
     <string name="penalty_two">Два глотка</string>
     <string name="penalty_half">Полбокала</string>
-    <string name="penalty_bottoms_up">До дна</string>
-    <string name="penalty_substitute">Назначь кого-то вместо себя</string>
+    <string name="penalty_bottoms_up">Осушить</string>
+    <string name="penalty_substitute">Пить за тебя</string>
     <string name="penalty_everyone">Все пьют по одному</string>
     <string name="penalty_spared">В этот раз пронесло</string>
-    <string name="penalty_double">В следующем раунде вдвое</string>
+    <string name="penalty_double">Двойной раунд</string>
 
     <!-- Presets - Truth or Dare -->
     <string name="preset_truth_dare">Правда или действие</string>
@@ -110,10 +111,10 @@
 
     <!-- Presets - Blame Game -->
     <string name="preset_blame">Кто виноват?</string>
-    <string name="blame_requirements">Требования были размытыми</string>
+    <string name="blame_requirements">ТЗ было туманным</string>
     <string name="blame_design">Дизайн снова поменяли</string>
-    <string name="blame_backend">Бэкенд сменил API</string>
-    <string name="blame_test_env">Тестовый стенд упал</string>
+    <string name="blame_backend">API изменился</string>
+    <string name="blame_test_env">Тестовый стенд</string>
     <string name="blame_boss">Начальник попросил в последний момент</string>
     <string name="blame_network">Сбой сети</string>
     <string name="blame_legacy">Виноват легаси-код</string>

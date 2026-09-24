@@ -1625,6 +1625,7 @@
     <string name="playground_description">Fikirler ve makaleler</string>
     <string name="playground_empty">Henüz oyun alanı makalesi yok</string>
     <string name="profile_item_ai_feature_settings">Özellik Anahtarları</string>
+    <string name="profile_item_ai_personalization">İstemler ve Kişiselleştirme</string>
     <string name="profile_item_rate_app">Bizi Değerlendirin</string>
     <string name="prompt_push_failed">İstem senkronizasyonu başarısız</string>
     <string name="prompt_push_success">İstem senkronize edildi</string>

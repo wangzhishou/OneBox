@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">Entscheidungsrad</string>
+    <string name="wheel_tab">Rad</string>
     <string name="new_wheel">Neue Schleife</string>
     <string name="edit_wheel">Rad bearbeiten</string>
     <string name="edit_options">Optionen bearbeiten</string>
@@ -70,14 +71,14 @@
     <string name="pay_aa">AA</string>
     <string name="pay_boss">Geht aufs Haus.</string>
     <string name="pay_next_time">Nächstes Mal.</string>
-    <string name="pay_luck">Es ist Glück.</string>
+    <string name="pay_luck">Schere Stein Papier</string>
     <string name="preset_date_night">Wofür?</string>
     <string name="date_movie">Filme schauen.</string>
-    <string name="date_dinner">Kerzenlicht-Dinner.</string>
+    <string name="date_dinner">Lichter-Dinner</string>
     <string name="date_walk">Spazieren und reden.</string>
     <string name="date_game">Spiel spielen</string>
     <string name="date_cook">Lass uns zusammen kochen.</string>
-    <string name="date_travel">Umgebung</string>
+    <string name="date_travel">Wochenendtrip</string>
     <string name="preset_chores">Inländische Verteilung</string>
     <string name="chore_dishes">Geschirr spülen.</string>
     <string name="chore_floor">Ziehen</string>
@@ -90,19 +91,19 @@
     <string name="preset_drink_penalty">Trinkstrafe</string>
     <string name="penalty_one">Ein Schluck</string>
     <string name="penalty_two">Zwei Schluck</string>
-    <string name="penalty_half">Nur ein halbes Glas</string>
+    <string name="penalty_half">Halbes Glas</string>
     <string name="penalty_bottoms_up">Ex und hopp</string>
-    <string name="penalty_substitute">Jemanden bestimmen, der für dich trinkt</string>
-    <string name="penalty_everyone">Alle trinken einen</string>
-    <string name="penalty_spared">Diese Runde frei</string>
-    <string name="penalty_double">Nächste Runde doppelt</string>
+    <string name="penalty_substitute">Ersatztrinker</string>
+    <string name="penalty_everyone">Alle trinken</string>
+    <string name="penalty_spared">Runde frei</string>
+    <string name="penalty_double">Doppelte Runde</string>
 
     <!-- Presets - Truth or Dare -->
     <string name="preset_truth_dare">Wahrheit oder Pflicht</string>
     <string name="td_truth">Wahrheit</string>
     <string name="td_dare">Pflicht</string>
-    <string name="td_truth_hard">Wahrheit, verschärft</string>
-    <string name="td_dare_hard">Pflicht, gewagter</string>
+    <string name="td_truth_hard">Würzige Wahrheit</string>
+    <string name="td_dare_hard">Knalliger Mutprobe</string>
     <string name="td_pick_someone">Jemanden bestimmen</string>
     <string name="td_you_choose">Du denkst dir was aus</string>
     <string name="td_pass">Weitergeben</string>
@@ -110,11 +111,11 @@
 
     <!-- Presets - Blame Game -->
     <string name="preset_blame">Wer schiebt die Schuld?</string>
-    <string name="blame_requirements">Anforderungen waren unklar</string>
+    <string name="blame_requirements">Anforderungen unklar</string>
     <string name="blame_design">Design wurde wieder geändert</string>
-    <string name="blame_backend">Backend-API hat sich geändert</string>
-    <string name="blame_test_env">Testumgebung ist down</string>
-    <string name="blame_boss">Chef wollte es spontan</string>
+    <string name="blame_backend">Backend geändert</string>
+    <string name="blame_test_env">Test-Env down</string>
+    <string name="blame_boss">Boss-Idee</string>
     <string name="blame_network">Netzwerkproblem</string>
     <string name="blame_legacy">Der Legacy-Code war es</string>
 

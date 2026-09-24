@@ -1625,6 +1625,7 @@
     <string name="playground_description">Mga ideya at artikulo</string>
     <string name="playground_empty">Wala pang artikulo sa palaruan</string>
     <string name="profile_item_ai_feature_settings">Mga Toggle ng Tampok</string>
+    <string name="profile_item_ai_personalization">Mga Prompt at Personalisasyon</string>
     <string name="profile_item_rate_app">I-rate Kami</string>
     <string name="prompt_push_failed">Nabigo ang pag-sync ng prompt</string>
     <string name="prompt_push_success">Na-sync ang prompt</string>

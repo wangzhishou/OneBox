@@ -1625,6 +1625,7 @@
     <string name="playground_description">Идеи и статьи</string>
     <string name="playground_empty">Пока нет статей в песочнице</string>
     <string name="profile_item_ai_feature_settings">Переключатели функций</string>
+    <string name="profile_item_ai_personalization">Промпты и персонализация</string>
     <string name="profile_item_rate_app">Оцените нас</string>
     <string name="prompt_push_failed">Синхронизация подсказок не удалась</string>
     <string name="prompt_push_success">Подсказки синхронизированы</string>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">결정 돌림판</string>
+    <string name="wheel_tab">룰렛</string>
     <string name="new_wheel">새 루프</string>
     <string name="edit_wheel">돌림판 편집</string>
     <string name="edit_options">옵션 편집</string>

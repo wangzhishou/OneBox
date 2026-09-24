@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">निर्णय पहिया</string>
+    <string name="wheel_tab">पहिया</string>
     <string name="new_wheel">नया लूप</string>
     <string name="edit_wheel">पहिया संपादित करें</string>
     <string name="edit_options">विकल्प संपादित करें</string>
@@ -92,10 +93,10 @@
     <string name="penalty_two">दो पेग</string>
     <string name="penalty_half">आधा गिलास</string>
     <string name="penalty_bottoms_up">एक ही घूँट में</string>
-    <string name="penalty_substitute">अपनी जगह किसी और को पिलाओ</string>
+    <string name="penalty_substitute">कोई और पिएगा</string>
     <string name="penalty_everyone">सब एक-एक पिएँ</string>
     <string name="penalty_spared">इस राउंड में बच गए</string>
-    <string name="penalty_double">अगले राउंड में दोगुना</string>
+    <string name="penalty_double">अगला डबल</string>
 
     <!-- Presets - Truth or Dare -->
     <string name="preset_truth_dare">सच या चुनौती</string>
@@ -110,9 +111,9 @@
 
     <!-- Presets - Blame Game -->
     <string name="preset_blame">किसकी गलती?</string>
-    <string name="blame_requirements">ज़रूरतें साफ़ नहीं थीं</string>
+    <string name="blame_requirements">रिक्वायरमेंट अस्पष्ट</string>
     <string name="blame_design">डिज़ाइन फिर बदला</string>
-    <string name="blame_backend">बैकएंड API बदल गया</string>
+    <string name="blame_backend">API बदला</string>
     <string name="blame_test_env">टेस्ट एनवायरनमेंट डाउन है</string>
     <string name="blame_boss">बॉस ने आख़िरी वक़्त में जोड़ा</string>
     <string name="blame_network">नेटवर्क की दिक़्क़त</string>

@@ -239,7 +239,7 @@
     <string name="forgot_password_error_empty_password">Bitte geben Sie ein neues Passwort ein</string>
     <string name="forgot_password_error_password_mismatch">Passwörter stimmen nicht überein</string>
     <string name="dashboard_title_welcome_user">Willkommen</string>
-    <string name="profile_group_support">Support &amp; Community</string>
+    <string name="profile_group_support">Hilfe und Community</string>
     <string name="profile_group_system">System</string>
     <string name="profile_group_about">Über</string>
     <string name="profile_edit_profile">Profil bearbeiten</string>
@@ -1625,6 +1625,7 @@
     <string name="playground_description">Ideen und Artikel</string>
     <string name="playground_empty">Noch keine Spielplatz-Artikel</string>
     <string name="profile_item_ai_feature_settings">Feature-Toggles</string>
+    <string name="profile_item_ai_personalization">Prompts &amp; Personalisierung</string>
     <string name="profile_item_rate_app">Bewerten Sie uns</string>
     <string name="prompt_push_failed">Prompt-Synchronisierung fehlgeschlagen</string>
     <string name="prompt_push_success">Prompt synchronisiert</string>

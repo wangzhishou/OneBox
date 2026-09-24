@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">決定ホイール</string>
+    <string name="wheel_tab">ホイール</string>
     <string name="new_wheel">新しいループ</string>
     <string name="edit_wheel">ホイールを編集</string>
     <string name="edit_options">オプションを編集</string>

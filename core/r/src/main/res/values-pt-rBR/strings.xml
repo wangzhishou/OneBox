@@ -1625,6 +1625,7 @@
     <string name="playground_description">Ideias e artigos</string>
     <string name="playground_empty">Ainda não há artigos no playground</string>
     <string name="profile_item_ai_feature_settings">Alternâncias de recursos</string>
+    <string name="profile_item_ai_personalization">Prompts e personalização</string>
     <string name="profile_item_rate_app">Avalie-nos</string>
     <string name="prompt_push_failed">Falha na sincronização do prompt</string>
     <string name="prompt_push_success">Prompt sincronizado</string>

@@ -1625,6 +1625,7 @@
     <string name="playground_description">Ideas y artículos</string>
     <string name="playground_empty">Aún no hay artículos en el área de juegos</string>
     <string name="profile_item_ai_feature_settings">Interruptores de funciones</string>
+    <string name="profile_item_ai_personalization">Prompts y personalización</string>
     <string name="profile_item_rate_app">Califícanos</string>
     <string name="prompt_push_failed">La sincronización de la solicitud falló</string>
     <string name="prompt_push_success">Solicitud sincronizada</string>

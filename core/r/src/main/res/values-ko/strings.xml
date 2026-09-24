@@ -1625,6 +1625,7 @@
     <string name="playground_description">아이디어 및 기사</string>
     <string name="playground_empty">아직 플레이그라운드 기사가 없습니다</string>
     <string name="profile_item_ai_feature_settings">기능 토글</string>
+    <string name="profile_item_ai_personalization">프롬프트 및 개인화</string>
     <string name="profile_item_rate_app">평가하기</string>
     <string name="prompt_push_failed">프롬프트 동기화 실패</string>
     <string name="prompt_push_success">프롬프트 동기화됨</string>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="decision_wheel_title">Karar Çarkı</string>
+    <string name="wheel_tab">Çark</string>
     <string name="new_wheel">Yeni Döngü</string>
     <string name="edit_wheel">Çarkı Düzenle</string>
     <string name="edit_options">Seçenekleri Düzenle</string>
@@ -92,10 +93,10 @@
     <string name="penalty_two">İki shot</string>
     <string name="penalty_half">Yarım bardak</string>
     <string name="penalty_bottoms_up">Bir dikişte</string>
-    <string name="penalty_substitute">Yerine içecek birini seç</string>
+    <string name="penalty_substitute">Yerine içen</string>
     <string name="penalty_everyone">Herkes bir içer</string>
     <string name="penalty_spared">Bu tur kurtuldun</string>
-    <string name="penalty_double">Sonraki tur iki katı</string>
+    <string name="penalty_double">Çift tur</string>
 
     <!-- Presets - Truth or Dare -->
     <string name="preset_truth_dare">Doğruluk mu cesaret mi</string>
@@ -110,7 +111,7 @@
 
     <!-- Presets - Blame Game -->
     <string name="preset_blame">Suç kimde?</string>
-    <string name="blame_requirements">İhtiyaçlar net değildi</string>
+    <string name="blame_requirements">Gereksinim belirsiz</string>
     <string name="blame_design">Tasarım yine değişti</string>
     <string name="blame_backend">Backend API değişti</string>
     <string name="blame_test_env">Test ortamı çöktü</string>
