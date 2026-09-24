@@ -640,9 +640,9 @@
     <string name="ai_chat_quick_start_16">帮我整理一份周末出游攻略网页</string>
     <string name="ai_chat_quick_start_17">帮我写一篇笔记，主题是</string>
     <string name="ai_chat_quick_start_18">帮我收藏一个网址：</string>
-    <string name="ai_chat_quick_start_19">帮我用 manage_xiangqi 工具创建一个中国象棋残局棋谱，局面摆得有趣一些，创建好后给我跳转链接</string>
-    <string name="ai_chat_quick_start_20">帮我用 manage_gomoku 工具创建一个五子棋残局棋谱，局面摆得有趣一些，创建好后给我跳转链接</string>
-    <string name="ai_chat_quick_start_21">帮我用 manage_chess 工具创建一个国际象棋残局棋谱，局面摆得有趣一些，创建好后给我跳转链接</string>
+    <string name="ai_chat_quick_start_19">帮我创建一个中国象棋残局棋谱，局面摆得有趣一些，创建好后给我跳转链接</string>
+    <string name="ai_chat_quick_start_20">帮我创建一个五子棋残局棋谱，局面摆得有趣一些，创建好后给我跳转链接</string>
+    <string name="ai_chat_quick_start_21">帮我创建一个国际象棋残局棋谱，局面摆得有趣一些，创建好后给我跳转链接</string>
     <string name="ai_chat_jump_to_latest_streaming">正在生成新内容，点击回到底部</string>
     <string name="ai_chat_jump_to_latest_message">有新消息，点击查看</string>
     <string name="ai_chat_message_limit_notice">仅加载最近 50 条消息，更早消息已归档</string>

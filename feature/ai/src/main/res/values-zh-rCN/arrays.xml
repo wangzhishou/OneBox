@@ -699,6 +699,7 @@
     </string-array>
 
     <string-array name="agent_tool_manage_xiangqi_keywords">
+        <item>残局</item>
         <item>象棋</item>
         <item>xiangqi</item>
         <item>棋局</item>
@@ -985,6 +986,7 @@
     </string-array>
 
     <string-array name="agent_tool_manage_gomoku_keywords">
+        <item>残局</item>
         <item>五子棋</item>
         <item>gomoku</item>
         <item>连珠</item>
@@ -1009,6 +1011,7 @@
     </string-array>
 
     <string-array name="agent_tool_manage_chess_keywords">
+        <item>残局</item>
         <item>国际象棋</item>
         <item>chess</item>
         <item>西洋棋</item>
