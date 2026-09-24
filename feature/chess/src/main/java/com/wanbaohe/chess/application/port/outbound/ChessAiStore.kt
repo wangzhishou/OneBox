@@ -3,7 +3,7 @@ package com.wanbaohe.chess.application.port.outbound
 import kotlinx.coroutines.flow.Flow
 
 /**
- * 五子棋走棋 AI 配置（与聊天工作槽分离）。默认「快速工作模型」LLM。
+ * 国际象棋走棋 AI 配置（与聊天工作槽分离）。默认服务端免费引擎 Stockfish（免登录、免积分）。
  */
 data class ChessAiConfig(
     val fastSource: ChessAiSource = ChessAiSource.default,

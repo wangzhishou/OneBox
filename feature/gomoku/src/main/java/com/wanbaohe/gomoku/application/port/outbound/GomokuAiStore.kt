@@ -3,7 +3,7 @@ package com.wanbaohe.gomoku.application.port.outbound
 import kotlinx.coroutines.flow.Flow
 
 /**
- * 五子棋走棋 AI 配置（与聊天工作槽分离）。默认「快速工作模型」LLM。
+ * 五子棋走棋 AI 配置（与聊天工作槽分离）。默认服务端免费引擎 Rapfi（免登录、免积分）。
  */
 data class GomokuAiConfig(
     val fastSource: GomokuAiSource = GomokuAiSource.default,

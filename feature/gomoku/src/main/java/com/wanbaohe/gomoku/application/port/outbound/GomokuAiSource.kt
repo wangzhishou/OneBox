@@ -48,8 +48,8 @@ sealed interface GomokuAiSource {
         /** 付费模型开局最低积分 */
         const val START_POINTS = 20
 
-        /** 未配置时的默认走棋 AI */
-        val default: GomokuAiSource = WorkingModel
+        /** 未配置时的默认走棋 AI:Rapfi(服务端免费引擎,免登录免积分) */
+        val default: GomokuAiSource = RemoteEngine(RemoteEngine.RAPFI)
 
         /** 设置页 / 对局内选择器展示的完整列表 */
         val presets: List<GomokuAiSource>
@@ -60,7 +60,8 @@ sealed interface GomokuAiSource {
 
         fun fromKey(key: String?): GomokuAiSource {
             return when (key?.trim()?.lowercase()) {
-                null, "", "working_model", "workingmodel", "fast" -> WorkingModel
+                null, "" -> default
+                "working_model", "workingmodel", "fast" -> WorkingModel
                 else -> {
                     val id = key.trim().lowercase()
                     RemoteEngine.presets.firstOrNull { it.engineId == id }
