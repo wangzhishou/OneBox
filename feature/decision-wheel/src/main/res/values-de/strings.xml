@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="decision_wheel_title">Entscheidungsdrehscheibe</string>
+    <string name="decision_wheel_title">Entscheidungsrad</string>
     <string name="new_wheel">Neue Schleife</string>
-    <string name="edit_wheel">Drehscheibe bearbeiten</string>
+    <string name="edit_wheel">Rad bearbeiten</string>
     <string name="edit_options">Optionen bearbeiten</string>
     <string name="spin_again">Erneut drehen</string>
     <string name="options_list">Optionsliste</string>
@@ -10,7 +10,7 @@
     <string name="close">Schließen</string>
     <string name="spin_again_action">Erneut drehen.</string>
     <string name="start">Start</string>
-    <string name="wheel_title">Titel der Drehscheibe</string>
+    <string name="wheel_title">Titel des Rads</string>
     <string name="options_list_count">Optionsliste ( %1$d )</string>
     <string name="add_option">Optionen hinzufügen</string>
     <string name="save">Speichern</string>
@@ -53,7 +53,7 @@
     <string name="palette_scheme">Farbschema</string>
     <string name="target_emoji">🎯</string>
     <string name="apply">Anwenden</string>
-    <string name="wheel_settings_title">Drehscheiben-Einstellungen</string>
+    <string name="wheel_settings_title">Radeinstellungen</string>
     <string name="wheel_settings">Einstellungen</string>
     <string name="wheel_settings_duration">Rotationszeit</string>
     <string name="wheel_settings_duration_value">%1$d ms</string>

@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">Lepaskan untuk menyegarkan</string>
     <string name="pull_to_refresh_refreshing_label">Menyegarkan…</string>
     <string name="pull_to_refresh_complete_label">Terbaru</string>
-    <string name="d_seconds_ago">%d detik yang lalu</string>
-    <string name="d_minutes_ago">%d menit yang lalu</string>
-    <string name="d_hours_ago">%1$d jam yang lalu</string>
     <string name="refresh_cooldown_hint">Terlalu sering menyegarkan, coba lagi nanti</string>
     <string name="open_mini_program">Buka Program Mini</string>
     <string name="open_url">Buka</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">Jadilah yang pertama membagikan ide Anda</string>
     <string name="playground_footer_title">Bagikan ide Anda</string>
     <string name="playground_footer_description">Punya ide bagus? Tulis artikel dan jelajahi bersama</string>
-    <string name="favorite_usage_count">Digunakan %d kali</string>
     <string name="favorite_time_just_now">Baru saja</string>
-    <string name="favorite_time_minutes_ago">%d menit yang lalu</string>
-    <string name="favorite_time_hours_ago">%d jam yang lalu</string>
-    <string name="favorite_time_days_ago">%d hari yang lalu</string>
     <string name="back_prressed_once">Tekan lagi untuk keluar</string>
     <string name="privacy_item_camera_description">Akses kamera diperlukan untuk fitur pemindaian.</string>
     <string name="created_by_ai">Audio dihasilkan oleh AI</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">Anda dapat menonaktifkannya di halaman telur Paskah; mulai ulang untuk mengamati rantai cold-start penuh lagi.</string>
     <string name="startup_trace_overlay_total">Total rantai saat ini: %1$d ms</string>
     <string name="time_just_now">Baru saja</string>
-    <string name="time_minutes_ago_format">%1$d menit yang lalu</string>
-    <string name="time_hours_ago_format">%1$d jam yang lalu</string>
-    <string name="time_days_ago_format">%1$d hari yang lalu</string>
     <string name="privacy_item_camera_title">Izin Kamera</string>
     <string name="blessing_wall">Dinding Berkah</string>
     <string name="poem">Puisi Tiongkok</string>
@@ -1704,4 +1694,44 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="ai_chat_quick_start_21">Susun akhir permainan klasik dari pertandingan catur terkenal untuk melawan AI, lalu berikan tautan untuk membukanya</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="other">%d detik yang lalu</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="other">%d menit yang lalu</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="other">%1$d jam yang lalu</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="other">Digunakan %d kali</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="other">%d menit yang lalu</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="other">%d jam yang lalu</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="other">%d hari yang lalu</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="other">%1$d menit yang lalu</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="other">%1$d jam yang lalu</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="other">%1$d hari yang lalu</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">Jatuh tempo hari ini</string>
+    <string name="time_due_yesterday">Jatuh tempo kemarin</string>
+    <string name="time_overdue_days">Terlambat %d hari</string>
+    <string name="time_due_in_minutes">Jatuh tempo dalam %d menit</string>
+    <string name="time_due_in_hours">Jatuh tempo dalam %d jam</string>
+    <string name="time_due_tomorrow">Jatuh tempo besok</string>
+    <string name="time_due_in_days">Jatuh tempo dalam %d hari</string>
+    <string name="time_due_on">Jatuh tempo: %s</string>
 </resources>

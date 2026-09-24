@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -144,8 +145,8 @@ fun FeaturedCard(
 
                         ClickInfoType.COUNT -> {
                             val c = item.clickCount
-                            if (c > 0) stringResource(
-                                com.shifenmiao.core.R.string.favorite_usage_count, c
+                            if (c > 0) pluralStringResource(
+                                com.shifenmiao.core.R.plurals.favorite_usage_count, c, c
                             ) else BaseUtils.getNameByType(item.item.listType ?: 0)
                         }
 

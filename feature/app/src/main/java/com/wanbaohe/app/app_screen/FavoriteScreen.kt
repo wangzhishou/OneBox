@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -514,7 +515,7 @@ private fun CompactGridItemCard(
                 if (item.clickCount > 0) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = stringResource(R.string.favorite_usage_count, item.clickCount),
+                        text = pluralStringResource(R.plurals.favorite_usage_count, item.clickCount, item.clickCount),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.outline,
                         maxLines = 1
@@ -611,7 +612,7 @@ private fun MineListItemCard(
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
                         Text(
-                            text = stringResource(R.string.favorite_usage_count, itemWithCategories.clickCount),
+                            text = pluralStringResource(R.plurals.favorite_usage_count, itemWithCategories.clickCount, itemWithCategories.clickCount),
                             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )

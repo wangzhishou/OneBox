@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">놓아서 새로고침</string>
     <string name="pull_to_refresh_refreshing_label">새로고침 중…</string>
     <string name="pull_to_refresh_complete_label">최신 상태</string>
-    <string name="d_seconds_ago">%d초 전</string>
-    <string name="d_minutes_ago">%d분 전</string>
-    <string name="d_hours_ago">%1$d시간 전</string>
     <string name="refresh_cooldown_hint">새로고침이 너무 잦습니다. 잠시 후 다시 시도해 주세요.</string>
     <string name="open_mini_program">미니 프로그램 열기</string>
     <string name="open_url">열기</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">첫 번째로 아이디어를 공유하세요</string>
     <string name="playground_footer_title">아이디어 공유</string>
     <string name="playground_footer_description">좋은 아이디어가 있나요? 기사를 작성하고 함께 탐구해 보세요</string>
-    <string name="favorite_usage_count">%d회 사용됨</string>
     <string name="favorite_time_just_now">방금</string>
-    <string name="favorite_time_minutes_ago">%d분 전</string>
-    <string name="favorite_time_hours_ago">%d시간 전</string>
-    <string name="favorite_time_days_ago">%d일 전</string>
     <string name="back_prressed_once">한 번 더 누르면 종료됩니다</string>
     <string name="privacy_item_camera_description">스캔 기능을 사용하려면 카메라 접근 권한이 필요합니다.</string>
     <string name="created_by_ai">AI가 생성한 오디오</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">이스터 에그 페이지에서 비활성화할 수 있습니다; 전체 콜드 스타트 체인을 다시 관찰하려면 재시작하세요.</string>
     <string name="startup_trace_overlay_total">현재 체인 총합: %1$d ms</string>
     <string name="time_just_now">방금</string>
-    <string name="time_minutes_ago_format">%1$d분 전</string>
-    <string name="time_hours_ago_format">%1$d시간 전</string>
-    <string name="time_days_ago_format">%1$d일 전</string>
     <string name="privacy_item_camera_title">카메라 권한</string>
     <string name="blessing_wall">축복의 벽</string>
     <string name="poem">중국 고전 시가</string>
@@ -1704,4 +1694,44 @@
     <string name="ai_chat_quick_start_21">유명한 체스 명국의 고전 엔드게임을 AI와 대결하도록 구성하고 열기 링크를 주세요</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="other">%d초 전</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="other">%d분 전</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="other">%1$d시간 전</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="other">%d회 사용됨</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="other">%d분 전</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="other">%d시간 전</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="other">%d일 전</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="other">%1$d분 전</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="other">%1$d시간 전</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="other">%1$d일 전</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">오늘 마감</string>
+    <string name="time_due_yesterday">어제 마감</string>
+    <string name="time_overdue_days">%d일 지남</string>
+    <string name="time_due_in_minutes">%d분 후 마감</string>
+    <string name="time_due_in_hours">%d시간 후 마감</string>
+    <string name="time_due_tomorrow">내일 마감</string>
+    <string name="time_due_in_days">%d일 후 마감</string>
+    <string name="time_due_on">마감: %s</string>
 </resources>

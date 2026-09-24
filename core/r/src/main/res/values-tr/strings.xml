@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">Yenilemek için bırakın</string>
     <string name="pull_to_refresh_refreshing_label">Yenileniyor…</string>
     <string name="pull_to_refresh_complete_label">Güncel</string>
-    <string name="d_seconds_ago">%d saniye önce</string>
-    <string name="d_minutes_ago">%d dakika önce</string>
-    <string name="d_hours_ago">%1$d saat önce</string>
     <string name="refresh_cooldown_hint">Çok sık yeniliyorsunuz, lütfen daha sonra tekrar deneyin</string>
     <string name="open_mini_program">Mini Programı Aç</string>
     <string name="open_url">Aç</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">Fikrinizi paylaşan ilk kişi olun</string>
     <string name="playground_footer_title">Fikrinizi paylaşın</string>
     <string name="playground_footer_description">İyi bir fikriniz mi var? Bir makale yazın ve birlikte keşfedin</string>
-    <string name="favorite_usage_count">%d kez kullanıldı</string>
     <string name="favorite_time_just_now">Şimdi</string>
-    <string name="favorite_time_minutes_ago">%d dakika önce</string>
-    <string name="favorite_time_hours_ago">%d saat önce</string>
-    <string name="favorite_time_days_ago">%d gün önce</string>
     <string name="back_prressed_once">Çıkmak için tekrar basın</string>
     <string name="privacy_item_camera_description">Tarama özellikleri için kamera erişimi gereklidir.</string>
     <string name="created_by_ai">Yapay zeka tarafından üretilen ses</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">Bunu Paskalya yumurtası sayfasında devre dışı bırakabilirsiniz; tam soğuk başlatma zincirini tekrar gözlemlemek için yeniden başlatın.</string>
     <string name="startup_trace_overlay_total">Geçerli zincir toplamı: %1$d ms</string>
     <string name="time_just_now">Az önce</string>
-    <string name="time_minutes_ago_format">%1$d dakika önce</string>
-    <string name="time_hours_ago_format">%1$d saat önce</string>
-    <string name="time_days_ago_format">%1$d gün önce</string>
     <string name="privacy_item_camera_title">Kamera İzni</string>
     <string name="blessing_wall">Dilek Duvarı</string>
     <string name="poem">Çin Şiiri</string>
@@ -1704,4 +1694,54 @@
     <string name="ai_chat_quick_start_21">AI\'a karşı oynamak için ünlü bir satranç maçından klasik bir final kur, sonra açmak için bağlantıyı ver</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="one">%d saniye önce</item>
+        <item quantity="other">%d saniye önce</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="one">%d dakika önce</item>
+        <item quantity="other">%d dakika önce</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="one">%1$d saat önce</item>
+        <item quantity="other">%1$d saat önce</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="one">%d kez kullanıldı</item>
+        <item quantity="other">%d kez kullanıldı</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="one">%d dakika önce</item>
+        <item quantity="other">%d dakika önce</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="one">%d saat önce</item>
+        <item quantity="other">%d saat önce</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="one">%d gün önce</item>
+        <item quantity="other">%d gün önce</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="one">%1$d dakika önce</item>
+        <item quantity="other">%1$d dakika önce</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="one">%1$d saat önce</item>
+        <item quantity="other">%1$d saat önce</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="one">%1$d gün önce</item>
+        <item quantity="other">%1$d gün önce</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">Bugün son gün</string>
+    <string name="time_due_yesterday">Dün son gündü</string>
+    <string name="time_overdue_days">%d gün gecikti</string>
+    <string name="time_due_in_minutes">%d dakika içinde son gün</string>
+    <string name="time_due_in_hours">%d saat içinde son gün</string>
+    <string name="time_due_tomorrow">Yarın son gün</string>
+    <string name="time_due_in_days">%d gün içinde son gün</string>
+    <string name="time_due_on">Son tarih: %s</string>
 </resources>

@@ -53,7 +53,7 @@
     <string name="palette_scheme">색상 구성</string>
     <string name="target_emoji">🎯</string>
     <string name="apply">적용</string>
-    <string name="wheel_settings_title">턴보드 설정</string>
+    <string name="wheel_settings_title">돌림판 설정</string>
     <string name="wheel_settings">설정</string>
     <string name="wheel_settings_duration">회전 시간</string>
     <string name="wheel_settings_duration_value">%1$d ms</string>

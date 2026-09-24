@@ -134,14 +134,14 @@
     <string name="agent_tool_bazi_param_day">出生日（1–31）</string>
     <string name="agent_tool_bazi_param_hour">出生时辰（0–23，24小时制）</string>
     <string name="agent_tool_bazi_error_date">出生日期格式无效或不受支持</string>
-    <string name="agent_tool_auspicious_day_title">择吉日查询</string>
-    <string name="agent_tool_auspicious_day_summary">根据指定活动搜索未来的吉日或忌日</string>
-    <string name="agent_tool_auspicious_day_param_items">活动列表，例如婚礼、搬家、开业、出行</string>
-    <string name="agent_tool_auspicious_day_param_is_avoid">是否使用回避模式（true = 搜索忌日，false = 搜索吉日）</string>
-    <string name="agent_tool_auspicious_day_param_range">搜索范围（天数，默认90）</string>
-    <string name="agent_tool_auspicious_day_error_param">参数无效：items必须是字符串数组</string>
-    <string name="agent_tool_auspicious_day_no_result">未找到匹配的日期</string>
-    <string name="agent_tool_auspicious_day_error">择吉日查询失败</string>
+    <string name="agent_tool_auspicious_day_title">吉日検索</string>
+    <string name="agent_tool_auspicious_day_summary">指定した活動に基づいて、今後の吉日または凶日を検索します</string>
+    <string name="agent_tool_auspicious_day_param_items">活動リスト（例：結婚、引越し、開店、旅行）</string>
+    <string name="agent_tool_auspicious_day_param_is_avoid">凶日検索モードを使うか（true=凶日を検索、false=吉日を検索）</string>
+    <string name="agent_tool_auspicious_day_param_range">検索範囲（日数、デフォルト90）</string>
+    <string name="agent_tool_auspicious_day_error_param">パラメータが不正です: items は文字列配列である必要があります</string>
+    <string name="agent_tool_auspicious_day_no_result">一致する日付が見つかりませんでした</string>
+    <string name="agent_tool_auspicious_day_error">吉日検索に失敗しました</string>
     <string name="agent_tool_lunar_convert_title">日历转换</string>
     <string name="agent_tool_lunar_convert_summary">公历与农历之间的双向转换，支持闰月</string>
     <string name="agent_tool_lunar_convert_param_direction">转换方向</string>

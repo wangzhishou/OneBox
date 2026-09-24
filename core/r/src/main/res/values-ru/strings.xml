@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">Отпустите для обновления</string>
     <string name="pull_to_refresh_refreshing_label">Обновление…</string>
     <string name="pull_to_refresh_complete_label">Актуально</string>
-    <string name="d_seconds_ago">%d секунд назад</string>
-    <string name="d_minutes_ago">%d минут назад</string>
-    <string name="d_hours_ago">%1$d часов назад</string>
     <string name="refresh_cooldown_hint">Слишком частые обновления, попробуйте позже</string>
     <string name="open_mini_program">Открыть мини-программу</string>
     <string name="open_url">Открыть</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">Станьте первым, кто поделится своей идеей</string>
     <string name="playground_footer_title">Поделитесь своей идеей</string>
     <string name="playground_footer_description">Есть хорошая идея? Напишите статью и обсудите ее вместе</string>
-    <string name="favorite_usage_count">Использовано %d раз</string>
     <string name="favorite_time_just_now">Только что</string>
-    <string name="favorite_time_minutes_ago">%d минут назад</string>
-    <string name="favorite_time_hours_ago">%d часов назад</string>
-    <string name="favorite_time_days_ago">%d дней назад</string>
     <string name="back_prressed_once">Нажмите еще раз для выхода</string>
     <string name="privacy_item_camera_description">Доступ к камере необходим для функций сканирования.</string>
     <string name="created_by_ai">Аудио создано ИИ</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">Вы можете отключить это на странице пасхального яйца; перезапустите, чтобы снова увидеть полную цепочку холодного старта.</string>
     <string name="startup_trace_overlay_total">Текущая цепочка: %1$d мс</string>
     <string name="time_just_now">Только что</string>
-    <string name="time_minutes_ago_format">%1$d мин назад</string>
-    <string name="time_hours_ago_format">%1$d ч назад</string>
-    <string name="time_days_ago_format">%1$d дн назад</string>
     <string name="privacy_item_camera_title">Разрешение на камеру</string>
     <string name="blessing_wall">Стена благословений</string>
     <string name="poem">Китайская поэзия</string>
@@ -1704,4 +1694,74 @@
     <string name="ai_chat_quick_start_21">Собери классический эндшпиль из известной шахматной партии против ИИ и дай ссылку для открытия</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="one">%d секунду назад</item>
+        <item quantity="few">%d секунды назад</item>
+        <item quantity="many">%d секунд назад</item>
+        <item quantity="other">%d секунды назад</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="one">%d минуту назад</item>
+        <item quantity="few">%d минуты назад</item>
+        <item quantity="many">%d минут назад</item>
+        <item quantity="other">%d минуты назад</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="one">%1$d час назад</item>
+        <item quantity="few">%1$d часа назад</item>
+        <item quantity="many">%1$d часов назад</item>
+        <item quantity="other">%1$d часа назад</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="one">Использовано %d раз</item>
+        <item quantity="few">Использовано %d раза</item>
+        <item quantity="many">Использовано %d раз</item>
+        <item quantity="other">Использовано %d раз</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="one">%d минуту назад</item>
+        <item quantity="few">%d минуты назад</item>
+        <item quantity="many">%d минут назад</item>
+        <item quantity="other">%d минуты назад</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="one">%d час назад</item>
+        <item quantity="few">%d часа назад</item>
+        <item quantity="many">%d часов назад</item>
+        <item quantity="other">%d часа назад</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="one">%d день назад</item>
+        <item quantity="few">%d дня назад</item>
+        <item quantity="many">%d дней назад</item>
+        <item quantity="other">%d дня назад</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="one">%1$d минуту назад</item>
+        <item quantity="few">%1$d минуты назад</item>
+        <item quantity="many">%1$d минут назад</item>
+        <item quantity="other">%1$d минуты назад</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="one">%1$d час назад</item>
+        <item quantity="few">%1$d часа назад</item>
+        <item quantity="many">%1$d часов назад</item>
+        <item quantity="other">%1$d часа назад</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="one">%1$d день назад</item>
+        <item quantity="few">%1$d дня назад</item>
+        <item quantity="many">%1$d дней назад</item>
+        <item quantity="other">%1$d дня назад</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">Срок сегодня</string>
+    <string name="time_due_yesterday">Срок был вчера</string>
+    <string name="time_overdue_days">Просрочено на %d дней</string>
+    <string name="time_due_in_minutes">Срок через %d минут</string>
+    <string name="time_due_in_hours">Срок через %d часов</string>
+    <string name="time_due_tomorrow">Срок завтра</string>
+    <string name="time_due_in_days">Срок через %d дней</string>
+    <string name="time_due_on">Срок: %s</string>
 </resources>

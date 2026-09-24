@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="decision_wheel_title">Tablero de decisiones</string>
+    <string name="decision_wheel_title">Rueda de decisiones</string>
     <string name="new_wheel">Nueva rueda</string>
-    <string name="edit_wheel">Editar tablero</string>
+    <string name="edit_wheel">Editar rueda</string>
     <string name="edit_options">Editar opciones</string>
     <string name="spin_again">Girar de nuevo</string>
     <string name="options_list">Lista de opciones</string>
@@ -10,7 +10,7 @@
     <string name="close">Cerrar</string>
     <string name="spin_again_action">Gira de nuevo.</string>
     <string name="start">Inicio</string>
-    <string name="wheel_title">Título del tablero</string>
+    <string name="wheel_title">Título de la rueda</string>
     <string name="options_list_count">Lista de opciones ( %1$d )</string>
     <string name="add_option">Agregar opciones</string>
     <string name="save">Guardar</string>
@@ -53,7 +53,7 @@
     <string name="palette_scheme">Esquema de colores</string>
     <string name="target_emoji">🎯</string>
     <string name="apply">Aplicar</string>
-    <string name="wheel_settings_title">Configuración del tablero giratorio</string>
+    <string name="wheel_settings_title">Configuración de la rueda</string>
     <string name="wheel_settings">Configuración</string>
     <string name="wheel_settings_duration">Tiempo de rotación</string>
     <string name="wheel_settings_duration_value">%1$d ms</string>

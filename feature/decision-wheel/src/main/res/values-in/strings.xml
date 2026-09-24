@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="decision_wheel_title">Papan Keputusan</string>
+    <string name="decision_wheel_title">Roda Keputusan</string>
     <string name="new_wheel">Putaran Baru</string>
-    <string name="edit_wheel">Edit Papan</string>
+    <string name="edit_wheel">Edit Roda</string>
     <string name="edit_options">Edit Opsi</string>
     <string name="spin_again">Putar lagi</string>
     <string name="options_list">Daftar Opsi</string>
@@ -10,7 +10,7 @@
     <string name="close">Tutup</string>
     <string name="spin_again_action">Putar lagi.</string>
     <string name="start">Mulai</string>
-    <string name="wheel_title">Judul Papan</string>
+    <string name="wheel_title">Judul Roda</string>
     <string name="options_list_count">Daftar Opsi ( %1$d )</string>
     <string name="add_option">Tambah Opsi</string>
     <string name="save">Simpan</string>
@@ -53,7 +53,7 @@
     <string name="palette_scheme">Skema warna</string>
     <string name="target_emoji">🎯</string>
     <string name="apply">Terapkan</string>
-    <string name="wheel_settings_title">Pengaturan Papan Putar</string>
+    <string name="wheel_settings_title">Pengaturan Roda</string>
     <string name="wheel_settings">Pengaturan</string>
     <string name="wheel_settings_duration">Waktu Putar</string>
     <string name="wheel_settings_duration_value">%1$d ms</string>

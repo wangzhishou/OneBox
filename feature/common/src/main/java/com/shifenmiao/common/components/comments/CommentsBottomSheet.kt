@@ -1044,9 +1044,15 @@ private fun formatRelativeTime(epochMillis: Long): String {
     val ctx = AppContext.getContext()
     return when {
         sec < 60 -> ctx.getString(com.shifenmiao.core.R.string.time_just_now)
-        min < 60 -> ctx.getString(com.shifenmiao.core.R.string.time_minutes_ago_format, min.toInt())
-        hour < 24 -> ctx.getString(com.shifenmiao.core.R.string.time_hours_ago_format, hour.toInt())
-        day < 30 -> ctx.getString(com.shifenmiao.core.R.string.time_days_ago_format, day.toInt())
+        min < 60 -> AppContext.getQuantityString(
+            com.shifenmiao.core.R.plurals.time_minutes_ago_format, min.toInt(), min.toInt()
+        )
+        hour < 24 -> AppContext.getQuantityString(
+            com.shifenmiao.core.R.plurals.time_hours_ago_format, hour.toInt(), hour.toInt()
+        )
+        day < 30 -> AppContext.getQuantityString(
+            com.shifenmiao.core.R.plurals.time_days_ago_format, day.toInt(), day.toInt()
+        )
         else -> {
             val date = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
             date.format(java.util.Date(epochMillis))

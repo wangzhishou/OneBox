@@ -42,9 +42,9 @@
 
     <!--Home-->
     <string name="home">首页</string>
-    <string name="home_description">Home Description</string>
+    <string name="home_description">所有工具都在这里</string>
     <string name="profile">我的</string>
-    <string name="profile_description">Profile Description</string>
+    <string name="profile_description">账号与设置</string>
     <string name="online">发现</string>
     <string name="online_description">探索精选内容</string>
     <string name="playground">玩法</string>
@@ -223,9 +223,6 @@
     <string name="pull_to_refresh_release_label">释放以刷新</string>
     <string name="pull_to_refresh_refreshing_label">正在刷新…</string>
     <string name="pull_to_refresh_complete_label">已是最新</string>
-    <string name="d_seconds_ago">%d 秒前</string>
-    <string name="d_minutes_ago">%d 分钟前</string>
-    <string name="d_hours_ago">%1$d 小时前</string>
     <string name="refresh_cooldown_hint">刷新太频繁，请稍候再试</string>
 
     <!--online-->
@@ -786,11 +783,7 @@
     <string name="home_created_content_hint">创建后会显示在这里</string>
     <string name="my_content_empty">你还没有本地创建的内容</string>
     <string name="my_content_empty_action_note">去记事本创建</string>
-    <string name="favorite_usage_count">使用 %d 次</string>
     <string name="favorite_time_just_now">刚刚</string>
-    <string name="favorite_time_minutes_ago">%d 分钟前</string>
-    <string name="favorite_time_hours_ago">%d 小时前</string>
-    <string name="favorite_time_days_ago">%d 天前</string>
     <string name="back_prressed_once">再按一次退出APP</string>
     <string name="privacy_item_camera_description">授权使用照相相机访问权限，用于拍照上传图片以及文档扫描功能，帮助您快速拍摄照片并完成后续处理与保存。</string>
     <string name="created_by_ai">音频由AI生成</string>
@@ -1660,7 +1653,7 @@
     <string name="agent_tool_confirm_category">工具分类：%s</string>
     <string name="agent_tool_confirm_arguments">调用参数：%s</string>
     <string name="agent_stream_timeout">连接已超时，请稍后重试</string>
-    <string name="agent_tool_history_count">%d tool call(s)</string>
+    <string name="agent_tool_history_count">%d 次工具调用</string>
     <string name="agent_tool_waiting_llm">工具已完成，等待 AI 回复 · Round %d</string>
     <string name="agent_max_iterations_reached">已执行 %d 轮工具调用，点击"继续执行"可进一步处理</string>
     <string name="agent_tool_waiting_user_input">等待你完成 %s 的输入…</string>
@@ -1904,9 +1897,6 @@
 
     <!-- 通用时间 -->
     <string name="time_just_now">刚刚</string>
-    <string name="time_minutes_ago_format">%1$d 分钟前</string>
-    <string name="time_hours_ago_format">%1$d 小时前</string>
-    <string name="time_days_ago_format">%1$d 天前</string>
     <string name="privacy_item_camera_title">相机权限</string>
     <string name="blessing_wall">祈福墙</string>
     <string name="poem">中国古诗词</string>
@@ -1925,4 +1915,44 @@
     <string name="app_update_dialog_message">当前版本 %1$s，新版本 %2$s 已发布，建议更新后继续使用。</string>
     <string name="app_update_dialog_confirm">立即更新</string>
     <string name="app_update_dialog_later">稍后</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="other">%d 秒前</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="other">%d 分钟前</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="other">%1$d 小时前</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="other">使用 %d 次</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="other">%d 分钟前</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="other">%d 小时前</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="other">%d 天前</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="other">%1$d 分钟前</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="other">%1$d 小时前</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="other">%1$d 天前</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">今天到期</string>
+    <string name="time_due_yesterday">昨天到期</string>
+    <string name="time_overdue_days">过期%d天</string>
+    <string name="time_due_in_minutes">%d分钟后到期</string>
+    <string name="time_due_in_hours">%d小时后到期</string>
+    <string name="time_due_tomorrow">明天到期</string>
+    <string name="time_due_in_days">%d天后到期</string>
+    <string name="time_due_on">到期：%s</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="decision_wheel_title">Decision Turnboard</string>
+<resources><string name="decision_wheel_title">Decision Wheel</string>
     <string name="new_wheel">New Loop</string>
-    <string name="edit_wheel">Edit Turnboard</string>
+    <string name="edit_wheel">Edit Wheel</string>
     <string name="edit_options">Edit Options</string>
     <string name="spin_again">Rotate again</string>
     <string name="options_list">Options List</string>
@@ -9,7 +9,7 @@
     <string name="close">Close</string>
     <string name="spin_again_action">Turn again.</string>
     <string name="start">Start</string>
-    <string name="wheel_title">Turnboard Title</string>
+    <string name="wheel_title">Wheel Title</string>
     <string name="options_list_count">Options List (  %1$d )</string>
     <string name="add_option">Add Options</string>
     <string name="save">Save</string>
@@ -59,7 +59,7 @@
     <string name="apply">Apply</string>
 
     <!-- Settings - Decision Wheel -->
-    <string name="wheel_settings_title">Turnboard Settings</string>
+    <string name="wheel_settings_title">Wheel Settings</string>
     <string name="wheel_settings">Settings</string>
     <string name="wheel_tab">Wheel</string>
     <string name="wheel_settings_duration">Rotate Time</string>

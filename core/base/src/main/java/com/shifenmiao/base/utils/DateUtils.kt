@@ -30,24 +30,20 @@ object DateUtils {
     private fun getTimePassedInHourMinSec(resourceProvider: ResourceProvider, timePassedMs: Long): String {
         return when {
             timePassedMs < TimeUnit.MINUTES.toMillis(1) -> {
-                resourceProvider.getString(
-                    R.string.d_seconds_ago,
-                    TimeUnit.MILLISECONDS.toSeconds(timePassedMs)
-                )
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(timePassedMs).toInt()
+                resourceProvider.getQuantityString(R.plurals.d_seconds_ago, seconds, seconds)
             }
 
             timePassedMs < TimeUnit.HOURS.toMillis(1) -> {
-                resourceProvider.getString(
-                    R.string.d_minutes_ago,
-                    TimeUnit.MILLISECONDS.toMinutes(timePassedMs)
-                )
+                val minutes = TimeUnit.MILLISECONDS.toMinutes(timePassedMs).toInt()
+                resourceProvider.getQuantityString(R.plurals.d_minutes_ago, minutes, minutes)
             }
 
             timePassedMs < TimeUnit.HOURS.toMillis(4) -> {
                 val hours = TimeUnit.MILLISECONDS.toHours(timePassedMs)
                 val minutes =
                     TimeUnit.MILLISECONDS.toMinutes(timePassedMs - hours * TimeUnit.HOURS.toMillis(1))
-                resourceProvider.getString(R.string.d_hours_ago, hours, minutes)
+                resourceProvider.getQuantityString(R.plurals.d_hours_ago, hours.toInt(), hours.toInt())
             }
 
             else -> ""

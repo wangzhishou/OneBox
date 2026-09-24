@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="decision_wheel_title">Painel de Decisão</string>
+    <string name="decision_wheel_title">Roda de Decisão</string>
     <string name="new_wheel">Novo Loop</string>
-    <string name="edit_wheel">Editar Painel</string>
+    <string name="edit_wheel">Editar Roda</string>
     <string name="edit_options">Editar Opções</string>
     <string name="spin_again">Girar novamente</string>
     <string name="options_list">Lista de Opções</string>
@@ -10,7 +10,7 @@
     <string name="close">Fechar</string>
     <string name="spin_again_action">Gire novamente.</string>
     <string name="start">Iniciar</string>
-    <string name="wheel_title">Título do Painel</string>
+    <string name="wheel_title">Título da Roda</string>
     <string name="options_list_count">Lista de Opções ( %1$d )</string>
     <string name="add_option">Adicionar Opções</string>
     <string name="save">Salvar</string>
@@ -53,7 +53,7 @@
     <string name="palette_scheme">Esquema de cores</string>
     <string name="target_emoji">🎯</string>
     <string name="apply">Aplicar</string>
-    <string name="wheel_settings_title">Configurações do quadro</string>
+    <string name="wheel_settings_title">Configurações da Roda</string>
     <string name="wheel_settings">Configurações</string>
     <string name="wheel_settings_duration">Tempo de rotação</string>
     <string name="wheel_settings_duration_value">%1$d ms</string>

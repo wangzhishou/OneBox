@@ -1534,8 +1534,8 @@
     <string name="share_base_64">Base64を共有</string>
     <string name="actions">操作</string>
     <string name="base_64_actions">Base64操作</string>
-    <string name="add_outline">添加轮廓</string>
-    <string name="add_outline_sub">添加带有特殊颜色和边框文字的轮廓</string>
+    <string name="add_outline">アウトラインを追加</string>
+    <string name="add_outline_sub">特殊な色と枠線付きテキストのアウトラインを追加</string>
     <string name="outline_color">轮廓颜色</string>
     <string name="outline_size">轮廓大小</string>
     <string name="rotation">旋转</string>

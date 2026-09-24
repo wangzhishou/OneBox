@@ -150,35 +150,32 @@
     <string name="marquee_countdown_format_sec">%d秒</string>
     <string name="marquee_bouncing_speed">バウンス速度</string>
     <string name="marquee_presentation_style">全屏样式</string>
-    <string name="marquee_preview_truncated_hint">预览最多显示 %d 个字符。点击“显示跑马灯”查看完整内容。</string>
-    <string name="marquee_background_blink">背景闪烁</string>
-    <string name="marquee_fireworks_background">烟花背景</string>
+    <string name="marquee_preview_truncated_hint">プレビューは最大 %d 文字まで表示します。「走馬灯を表示」で全文を確認できます。</string>
+    <string name="marquee_background_blink">背景点滅</string>
+    <string name="marquee_fireworks_background">花火背景</string>
     <string name="marquee_fullscreen_hint">双击切换方向 · 双指缩放文字</string>
-    <string name="marquee_preview_unavailable">预览不可用</string>
+    <string name="marquee_preview_unavailable">プレビューは利用できません</string>
     <string name="marquee_mode_classic">经典</string>
     <string name="marquee_mode_classic_desc">水平滚动</string>
-    <string name="marquee_mode_typewriter">打字机</string>
-    <string name="marquee_mode_typewriter_desc">逐字显示</string>
-    <string name="marquee_mode_one_char">一次一个</string>
+    <string name="marquee_mode_typewriter">タイプライター</string>
+    <string name="marquee_mode_typewriter_desc">1文字ずつ表示</string>
+    <string name="marquee_mode_one_char">1文字ずつ</string>
     <string name="marquee_mode_one_char_desc">单字符轮播</string>
     <string name="marquee_mode_paged">分页</string>
-    <string name="marquee_mode_paged_desc">自动翻页</string>
-    <string name="marquee_mode_clock">时钟</string>
-    <string name="marquee_mode_clock_desc">实时显示</string>
-    <string name="marquee_mode_countdown">倒计时</string>
-    <string name="marquee_mode_countdown_desc">计时器</string>
-    <string name="marquee_mode_bouncing">弹跳</string>
-    <string name="marquee_mode_bouncing_desc">边缘弹跳</string>
-    <string name="last_updated">最后更新 %s</string>
-    <string name="pull_to_refresh_pull_label">下拉刷新…</string>
+    <string name="marquee_mode_paged_desc">自動ページ送り</string>
+    <string name="marquee_mode_clock">時計</string>
+    <string name="marquee_mode_clock_desc">リアルタイム表示</string>
+    <string name="marquee_mode_countdown">カウントダウン</string>
+    <string name="marquee_mode_countdown_desc">タイマー</string>
+    <string name="marquee_mode_bouncing">バウンド</string>
+    <string name="marquee_mode_bouncing_desc">端でバウンド</string>
+    <string name="last_updated">最終更新 %s</string>
+    <string name="pull_to_refresh_pull_label">引っ張って更新…</string>
     <string name="pull_to_refresh_release_label">释放刷新</string>
     <string name="pull_to_refresh_refreshing_label">刷新中…</string>
-    <string name="pull_to_refresh_complete_label">已是最新</string>
-    <string name="d_seconds_ago">%d 秒前</string>
-    <string name="d_minutes_ago">%d 分钟前</string>
-    <string name="d_hours_ago">%1$d 小时前</string>
-    <string name="refresh_cooldown_hint">刷新过于频繁，请稍后再试</string>
-    <string name="open_mini_program">打开小程序</string>
+    <string name="pull_to_refresh_complete_label">最新です</string>
+    <string name="refresh_cooldown_hint">更新が頻繁すぎます。しばらくしてからお試しください</string>
+    <string name="open_mini_program">ミニプログラムを開く</string>
     <string name="open_url">開く</string>
     <string name="open_url_by_browser">閲覧</string>
     <string name="copy_url">コピー</string>
@@ -454,30 +451,30 @@
     <string name="identity_verification">本人確認</string>
     <string name="input_phone_number">電話番号を入力</string>
     <string name="input_code_number">验证码</string>
-    <string name="get_code">发送验证码</string>
+    <string name="get_code">認証コードを送信</string>
     <string name="phone_number">手机号码</string>
     <string name="phone_number_error">手机号码无效</string>
-    <string name="code_number_error">6位数字</string>
-    <string name="code_number">6位数字</string>
-    <string name="phone_placeholder">手机号：139xxxxxxxx</string>
-    <string name="get_code_ed">已发送</string>
+    <string name="code_number_error">6桁の数字</string>
+    <string name="code_number">6桁の数字</string>
+    <string name="phone_placeholder">電話番号：139xxxxxxxx</string>
+    <string name="get_code_ed">送信済み</string>
     <string name="login_bind_phone_desc">根据<a href="https://www.cac.gov.cn/2022-06/14/c_1656821626455324.htm">中国相关法规</a>，为保护您的账户安全，需要进行手机号验证。我们致力于保护您的隐私。</string>
-    <string name="phone_login">手机</string>
+    <string name="phone_login">電話</string>
     <string name="please_enter_correct_phone_number_and_verification_code">手机号码或验证码错误。</string>
     <string name="profile_invitation_code_success">+%s积分</string>
     <string name="privacy_update_title">隐私政策更新</string>
-    <string name="profile_item_quick_setting">摇一摇开始AI聊天</string>
+    <string name="profile_item_quick_setting">シェイクでAIチャットを開始</string>
     <string name="profile_item_confetti">成功彩带效果</string>
-    <string name="close">关闭</string>
-    <string name="quick_setting">快捷设置</string>
+    <string name="close">閉じる</string>
+    <string name="quick_setting">クイック設定</string>
     <string name="profile_item_debug_environment">调试环境</string>
     <string name="required_field">此字段为必填项</string>
-    <string name="default_color_scheme_cannot_delete">默认主题颜色无法删除。</string>
+    <string name="default_color_scheme_cannot_delete">デフォルトのテーマカラーは削除できません。</string>
     <string name="current_color_scheme_cannot_delete">当前使用的颜色无法删除。</string>
-    <string name="one_box">智能体</string>
-    <string name="one_box_description">创造力即未来——每个人都是创作者。</string>
+    <string name="one_box">エージェント</string>
+    <string name="one_box_description">創造力は未来——誰もがクリエイター。</string>
     <string name="required_field_error">必填字段：%s</string>
-    <string name="type_agent">智能体</string>
+    <string name="type_agent">エージェント</string>
     <string name="date_range_picker_title">选择日期范围</string>
     <string name="ai_content_notice">AI生成内容，不代表本应用观点。</string>
     <string name="ai_models_modal_sheet_description">左右滑动切换模型</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">最初にアイデアを共有しましょう</string>
     <string name="playground_footer_title">アイデアを共有</string>
     <string name="playground_footer_description">良いアイデアがありますか？記事を書いて一緒に探求しましょう</string>
-    <string name="favorite_usage_count">%d回使用</string>
     <string name="favorite_time_just_now">たった今</string>
-    <string name="favorite_time_minutes_ago">%d分前</string>
-    <string name="favorite_time_hours_ago">%d時間前</string>
-    <string name="favorite_time_days_ago">%d日前</string>
     <string name="back_prressed_once">もう一度押すと終了します</string>
     <string name="privacy_item_camera_description">スキャン機能にはカメラへのアクセスが必要です。</string>
     <string name="created_by_ai">AI生成オーディオ</string>
@@ -801,12 +794,12 @@
     <string name="ai_input_prompts">プロンプト</string>
     <string name="ai_tools_center_title">工具中心</string>
     <string name="ai_tools_mode_auto">自动</string>
-    <string name="ai_tools_mode_hybrid">推荐</string>
+    <string name="ai_tools_mode_hybrid">おすすめ</string>
     <string name="ai_tools_mode_manual">手动</string>
-    <string name="ai_tools_recommended">推荐</string>
+    <string name="ai_tools_recommended">おすすめ</string>
     <string name="ai_tools_all">所有工具</string>
     <string name="ai_tools_filtered">已筛选</string>
-    <string name="ai_tools_restore_recommended">恢复推荐</string>
+    <string name="ai_tools_restore_recommended">おすすめを復元</string>
     <string name="ai_tools_enabled_count">第一轮发送了%1$d个工具，更多工具稍后自动发现。工具越多，令牌消耗越多。</string>
     <string name="ai_tools_none_enabled">未启用任何工具。模型将仅以聊天模式回复。</string>
     <string name="ai_tools_select_all">全选</string>
@@ -1640,10 +1633,7 @@
     <string name="startup_trace_overlay_toggle_desc">启用后，启动追踪点会显示在屏幕上——有助于分析发布版冷启动时间。</string>
     <string name="startup_trace_overlay_hint">您可以在彩蛋页面中禁用此功能；重启以再次观察完整的冷启动链路。</string>
     <string name="startup_trace_overlay_total">当前链路总计：%1$d 毫秒</string>
-    <string name="time_just_now">刚刚</string>
-    <string name="time_minutes_ago_format">%1$d 分钟前</string>
-    <string name="time_hours_ago_format">%1$d 小时前</string>
-    <string name="time_days_ago_format">%1$d 天前</string>
+    <string name="time_just_now">たった今</string>
     <string name="privacy_item_camera_title">相机权限</string>
     <string name="blessing_wall">祝福墙</string>
     <string name="poem">中国古詩詞</string>
@@ -1704,4 +1694,44 @@
     <string name="ai_chat_quick_start_21">有名なチェスの名局の終盤を AI 対戦用に配置して、開くリンクを教えて</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="other">%d 秒前</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="other">%d 分前</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="other">%1$d 時間前</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="other">%d回使用</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="other">%d分前</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="other">%d時間前</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="other">%d日前</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="other">%1$d 分前</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="other">%1$d 時間前</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="other">%1$d 日前</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">今日期限</string>
+    <string name="time_due_yesterday">昨日期限</string>
+    <string name="time_overdue_days">%d日超過</string>
+    <string name="time_due_in_minutes">%d分後に期限</string>
+    <string name="time_due_in_hours">%d時間後に期限</string>
+    <string name="time_due_tomorrow">明日期限</string>
+    <string name="time_due_in_days">%d日後に期限</string>
+    <string name="time_due_on">期限: %s</string>
 </resources>

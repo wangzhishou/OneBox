@@ -9,4 +9,6 @@ import javax.inject.Singleton
 class ResourceProvider @Inject constructor(@ApplicationContext val context: Context) {
     fun getString(id: Int) = context.getString(id)
     fun getString(id: Int, vararg args: Any) = context.getString(id, *args)
+    fun getQuantityString(id: Int, quantity: Int, vararg args: Any) =
+        context.resources.getQuantityString(id, quantity, *args)
 }

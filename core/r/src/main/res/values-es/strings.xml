@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">Suelta para actualizar</string>
     <string name="pull_to_refresh_refreshing_label">Actualizando…</string>
     <string name="pull_to_refresh_complete_label">Actualizado</string>
-    <string name="d_seconds_ago">Hace %d segundos</string>
-    <string name="d_minutes_ago">Hace %d minutos</string>
-    <string name="d_hours_ago">Hace %1$d horas</string>
     <string name="refresh_cooldown_hint">Actualizando demasiado seguido, intenta de nuevo más tarde</string>
     <string name="open_mini_program">Abrir mini programa</string>
     <string name="open_url">Abrir</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">Sé el primero en compartir tu idea</string>
     <string name="playground_footer_title">Comparte tu idea</string>
     <string name="playground_footer_description">¿Tienes una buena idea? Escribe un artículo y explóralo juntos</string>
-    <string name="favorite_usage_count">Usado %d veces</string>
     <string name="favorite_time_just_now">Ahora mismo</string>
-    <string name="favorite_time_minutes_ago">Hace %d minutos</string>
-    <string name="favorite_time_hours_ago">Hace %d horas</string>
-    <string name="favorite_time_days_ago">Hace %d días</string>
     <string name="back_prressed_once">Pulsa de nuevo para salir</string>
     <string name="privacy_item_camera_description">Se necesita acceso a la cámara para las funciones de escaneo.</string>
     <string name="created_by_ai">Audio generado por IA</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">Puedes desactivarlo en la página de huevo de Pascua; reinicia para observar nuevamente la cadena completa de arranque en frío.</string>
     <string name="startup_trace_overlay_total">Total de la cadena actual: %1$d ms</string>
     <string name="time_just_now">Ahora mismo</string>
-    <string name="time_minutes_ago_format">Hace %1$d minutos</string>
-    <string name="time_hours_ago_format">Hace %1$d horas</string>
-    <string name="time_days_ago_format">Hace %1$d días</string>
     <string name="privacy_item_camera_title">Permiso de cámara</string>
     <string name="blessing_wall">Muro de bendiciones</string>
     <string name="poem">Poesía china</string>
@@ -1704,4 +1694,54 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="ai_chat_quick_start_21">Prepárame un final clásico de una partida famosa de ajedrez para jugar contra la IA y luego dame el enlace para abrirlo</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="one">Hace %d segundo</item>
+        <item quantity="other">Hace %d segundos</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="one">Hace %d minuto</item>
+        <item quantity="other">Hace %d minutos</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="one">Hace %1$d hora</item>
+        <item quantity="other">Hace %1$d horas</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="one">Usado %d vez</item>
+        <item quantity="other">Usado %d veces</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="one">Hace %d minuto</item>
+        <item quantity="other">Hace %d minutos</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="one">Hace %d hora</item>
+        <item quantity="other">Hace %d horas</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="one">Hace %d día</item>
+        <item quantity="other">Hace %d días</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="one">Hace %1$d minuto</item>
+        <item quantity="other">Hace %1$d minutos</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="one">Hace %1$d hora</item>
+        <item quantity="other">Hace %1$d horas</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="one">Hace %1$d día</item>
+        <item quantity="other">Hace %1$d días</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">Vence hoy</string>
+    <string name="time_due_yesterday">Venció ayer</string>
+    <string name="time_overdue_days">Vencido hace %d días</string>
+    <string name="time_due_in_minutes">Vence en %d minutos</string>
+    <string name="time_due_in_hours">Vence en %d horas</string>
+    <string name="time_due_tomorrow">Vence mañana</string>
+    <string name="time_due_in_days">Vence en %d días</string>
+    <string name="time_due_on">Vence: %s</string>
 </resources>

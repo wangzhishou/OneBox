@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="decision_wheel_title">決定ターンボード</string>
+    <string name="decision_wheel_title">決定ホイール</string>
     <string name="new_wheel">新しいループ</string>
-    <string name="edit_wheel">ターンボードを編集</string>
+    <string name="edit_wheel">ホイールを編集</string>
     <string name="edit_options">オプションを編集</string>
     <string name="spin_again">もう一度回す</string>
     <string name="options_list">オプションリスト</string>
@@ -10,7 +10,7 @@
     <string name="close">閉じる</string>
     <string name="spin_again_action">もう一度回す。</string>
     <string name="start">開始</string>
-    <string name="wheel_title">ターンボードのタイトル</string>
+    <string name="wheel_title">ホイールのタイトル</string>
     <string name="options_list_count">オプションリスト（ %1$d ）</string>
     <string name="add_option">オプションを追加</string>
     <string name="save">保存</string>
@@ -53,7 +53,7 @@
     <string name="palette_scheme">配色</string>
     <string name="target_emoji">🎯</string>
     <string name="apply">適用</string>
-    <string name="wheel_settings_title">ターンボード設定</string>
+    <string name="wheel_settings_title">ホイール設定</string>
     <string name="wheel_settings">設定</string>
     <string name="wheel_settings_duration">回転時間</string>
     <string name="wheel_settings_duration_value">%1$d ミリ秒</string>

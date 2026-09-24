@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">Zum Aktualisieren loslassen</string>
     <string name="pull_to_refresh_refreshing_label">Wird aktualisiert…</string>
     <string name="pull_to_refresh_complete_label">Aktuell</string>
-    <string name="d_seconds_ago">Vor %d Sekunden</string>
-    <string name="d_minutes_ago">Vor %d Minuten</string>
-    <string name="d_hours_ago">Vor %1$d Stunden</string>
     <string name="refresh_cooldown_hint">Zu häufiges Aktualisieren, bitte später erneut versuchen</string>
     <string name="open_mini_program">Mini-Programm öffnen</string>
     <string name="open_url">Öffnen</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">Sei der Erste, der deine Idee teilt</string>
     <string name="playground_footer_title">Teile deine Idee</string>
     <string name="playground_footer_description">Hast du eine gute Idee? Schreib einen Artikel und erkunde ihn gemeinsam</string>
-    <string name="favorite_usage_count">%d Mal verwendet</string>
     <string name="favorite_time_just_now">Gerade eben</string>
-    <string name="favorite_time_minutes_ago">Vor %d Minuten</string>
-    <string name="favorite_time_hours_ago">Vor %d Stunden</string>
-    <string name="favorite_time_days_ago">Vor %d Tagen</string>
     <string name="back_prressed_once">Erneut drücken, um zu beenden</string>
     <string name="privacy_item_camera_description">Kamerazugriff ist für Scan-Funktionen erforderlich.</string>
     <string name="created_by_ai">Audio von KI generiert</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">Sie können dies auf der Easter-Egg-Seite deaktivieren; starten Sie neu, um die vollständige Kaltstartkette erneut zu beobachten.</string>
     <string name="startup_trace_overlay_total">Aktuelle Ketten-Gesamtdauer: %1$d ms</string>
     <string name="time_just_now">Gerade eben</string>
-    <string name="time_minutes_ago_format">Vor %1$d Minuten</string>
-    <string name="time_hours_ago_format">Vor %1$d Stunden</string>
-    <string name="time_days_ago_format">Vor %1$d Tagen</string>
     <string name="privacy_item_camera_title">Kamera-Berechtigung</string>
     <string name="blessing_wall">Segensmauer</string>
     <string name="poem">Chinesische Gedichte</string>
@@ -1704,4 +1694,54 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="ai_chat_quick_start_21">Richte mir ein klassisches Endspiel aus einer berühmten Schachpartie gegen die KI ein und gib mir danach den Öffnungslink</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="one">Vor %d Sekunde</item>
+        <item quantity="other">Vor %d Sekunden</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="one">Vor %d Minute</item>
+        <item quantity="other">Vor %d Minuten</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="one">Vor %1$d Stunde</item>
+        <item quantity="other">Vor %1$d Stunden</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="one">%d Mal verwendet</item>
+        <item quantity="other">%d Mal verwendet</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="one">Vor %d Minute</item>
+        <item quantity="other">Vor %d Minuten</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="one">Vor %d Stunde</item>
+        <item quantity="other">Vor %d Stunden</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="one">Vor %d Tag</item>
+        <item quantity="other">Vor %d Tagen</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="one">Vor %1$d Minute</item>
+        <item quantity="other">Vor %1$d Minuten</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="one">Vor %1$d Stunde</item>
+        <item quantity="other">Vor %1$d Stunden</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="one">Vor %1$d Tag</item>
+        <item quantity="other">Vor %1$d Tagen</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">Heute fällig</string>
+    <string name="time_due_yesterday">Gestern fällig</string>
+    <string name="time_overdue_days">%d Tage überfällig</string>
+    <string name="time_due_in_minutes">In %d Minuten fällig</string>
+    <string name="time_due_in_hours">In %d Stunden fällig</string>
+    <string name="time_due_tomorrow">Morgen fällig</string>
+    <string name="time_due_in_days">In %d Tagen fällig</string>
+    <string name="time_due_on">Fällig: %s</string>
 </resources>

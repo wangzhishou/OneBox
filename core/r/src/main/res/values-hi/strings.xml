@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">रिफ्रेश करने के लिए छोड़ें</string>
     <string name="pull_to_refresh_refreshing_label">रिफ्रेश हो रहा है…</string>
     <string name="pull_to_refresh_complete_label">अद्यतित</string>
-    <string name="d_seconds_ago">%d सेकंड पहले</string>
-    <string name="d_minutes_ago">%d मिनट पहले</string>
-    <string name="d_hours_ago">%1$d घंटे पहले</string>
     <string name="refresh_cooldown_hint">बहुत बार रिफ्रेश कर रहे हैं, कृपया बाद में पुनः प्रयास करें</string>
     <string name="open_mini_program">मिनी प्रोग्राम खोलें</string>
     <string name="open_url">खोलें</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">अपना विचार साझा करने वाले पहले व्यक्ति बनें</string>
     <string name="playground_footer_title">अपना विचार साझा करें</string>
     <string name="playground_footer_description">कोई अच्छा विचार है? एक लेख लिखें और इसे एक साथ खोजें</string>
-    <string name="favorite_usage_count">%d बार उपयोग किया गया</string>
     <string name="favorite_time_just_now">अभी</string>
-    <string name="favorite_time_minutes_ago">%d मिनट पहले</string>
-    <string name="favorite_time_hours_ago">%d घंटे पहले</string>
-    <string name="favorite_time_days_ago">%d दिन पहले</string>
     <string name="back_prressed_once">बाहर निकलने के लिए फिर से दबाएं</string>
     <string name="privacy_item_camera_description">स्कैनिंग सुविधाओं के लिए कैमरा एक्सेस आवश्यक है।</string>
     <string name="created_by_ai">ऑडियो AI द्वारा उत्पन्न</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">आप इसे ईस्टर एग पेज में अक्षम कर सकते हैं; पूर्ण कोल्ड-स्टार्ट श्रृंखला फिर से देखने के लिए पुनः आरंभ करें।</string>
     <string name="startup_trace_overlay_total">वर्तमान श्रृंखला कुल: %1$d मि.से.</string>
     <string name="time_just_now">अभी</string>
-    <string name="time_minutes_ago_format">%1$d मिनट पहले</string>
-    <string name="time_hours_ago_format">%1$d घंटे पहले</string>
-    <string name="time_days_ago_format">%1$d दिन पहले</string>
     <string name="privacy_item_camera_title">कैमरा अनुमति</string>
     <string name="blessing_wall">आशीर्वाद दीवार</string>
     <string name="poem">चीनी कविता</string>
@@ -1704,4 +1694,54 @@
     <string name="ai_chat_quick_start_21">किसी प्रसिद्ध शतरंज खेल का शास्त्रीय अंतिम खेल AI के विरुद्ध सेट करें, फिर खोलने का लिंक दें</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="one">%d सेकंड पहले</item>
+        <item quantity="other">%d सेकंड पहले</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="one">%d मिनट पहले</item>
+        <item quantity="other">%d मिनट पहले</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="one">%1$d घंटे पहले</item>
+        <item quantity="other">%1$d घंटे पहले</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="one">%d बार उपयोग किया गया</item>
+        <item quantity="other">%d बार उपयोग किया गया</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="one">%d मिनट पहले</item>
+        <item quantity="other">%d मिनट पहले</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="one">%d घंटे पहले</item>
+        <item quantity="other">%d घंटे पहले</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="one">%d दिन पहले</item>
+        <item quantity="other">%d दिन पहले</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="one">%1$d मिनट पहले</item>
+        <item quantity="other">%1$d मिनट पहले</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="one">%1$d घंटे पहले</item>
+        <item quantity="other">%1$d घंटे पहले</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="one">%1$d दिन पहले</item>
+        <item quantity="other">%1$d दिन पहले</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">आज देय</string>
+    <string name="time_due_yesterday">कल देय था</string>
+    <string name="time_overdue_days">%d दिन अतिदेय</string>
+    <string name="time_due_in_minutes">%d मिनट में देय</string>
+    <string name="time_due_in_hours">%d घंटे में देय</string>
+    <string name="time_due_tomorrow">कल देय</string>
+    <string name="time_due_in_days">%d दिन में देय</string>
+    <string name="time_due_on">देय: %s</string>
 </resources>

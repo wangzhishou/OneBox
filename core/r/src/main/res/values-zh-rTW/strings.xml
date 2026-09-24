@@ -37,9 +37,9 @@
     <string name="demo_navigation_deeplink_example_home_prompt">首頁 · 提示詞 Tab</string>
     <string name="demo_navigation_deeplink_example_home_web">首頁 · 網址 Tab</string>
     <string name="home">首頁</string>
-    <string name="home_description">Home Description</string>
+    <string name="home_description">所有工具都在這裡</string>
     <string name="profile">我的</string>
-    <string name="profile_description">Profile Description</string>
+    <string name="profile_description">帳號與設定</string>
     <string name="online">發現</string>
     <string name="online_description">探索精選內容</string>
     <string name="playground">玩法</string>
@@ -202,9 +202,6 @@
     <string name="pull_to_refresh_release_label">放開以重新整理</string>
     <string name="pull_to_refresh_refreshing_label">正在重新整理…</string>
     <string name="pull_to_refresh_complete_label">已是最新</string>
-    <string name="d_seconds_ago">%d 秒前</string>
-    <string name="d_minutes_ago">%d 分鐘前</string>
-    <string name="d_hours_ago">%1$d 小時前</string>
     <string name="refresh_cooldown_hint">重新整理過於頻繁，請稍後再試</string>
     <string name="open_mini_program">跳轉小程式</string>
     <string name="open_url">開啟</string>
@@ -720,11 +717,7 @@
     <string name="home_created_content_hint">建立後會顯示在這裡</string>
     <string name="my_content_empty">你還沒有本地建立的內容</string>
     <string name="my_content_empty_action_note">去記事本建立</string>
-    <string name="favorite_usage_count">使用 %d 次</string>
     <string name="favorite_time_just_now">剛剛</string>
-    <string name="favorite_time_minutes_ago">%d 分鐘前</string>
-    <string name="favorite_time_hours_ago">%d 小時前</string>
-    <string name="favorite_time_days_ago">%d 天前</string>
     <string name="back_prressed_once">再按一次退出APP</string>
     <string name="privacy_item_camera_description">授權使用照相相機存取權限，用於拍照上傳圖片以及文件掃描功能，幫助您快速拍攝照片並完成後續處理與儲存。</string>
     <string name="created_by_ai">音訊由AI生成</string>
@@ -1527,7 +1520,7 @@
     <string name="agent_tool_confirm_category">工具分類：%s</string>
     <string name="agent_tool_confirm_arguments">呼叫參數：%s</string>
     <string name="agent_stream_timeout">連線已逾時，請稍後重試</string>
-    <string name="agent_tool_history_count">%d tool call(s)</string>
+    <string name="agent_tool_history_count">%d 次工具呼叫</string>
     <string name="agent_tool_waiting_llm">工具已完成，等待 AI 回覆 · Round %d</string>
     <string name="agent_max_iterations_reached">已執行 %d 輪工具呼叫，點擊「繼續執行」可進一步處理</string>
     <string name="agent_tool_waiting_user_input">等待你完成 %s 的輸入…</string>
@@ -1739,9 +1732,6 @@
     <string name="comment_text_blocked">留言內容違規, 請修改後重試</string>
     <string name="comment_text_audit_failed">留言審核服務異常, 請稍後重試</string>
     <string name="time_just_now">剛剛</string>
-    <string name="time_minutes_ago_format">%1$d 分鐘前</string>
-    <string name="time_hours_ago_format">%1$d 小時前</string>
-    <string name="time_days_ago_format">%1$d 天前</string>
     <string name="privacy_item_camera_title">相機權限</string>
     <string name="blessing_wall">祈福牆</string>
     <string name="poem">中國古詩詞</string>
@@ -1764,4 +1754,44 @@
     <string name="ai_chat_quick_start_21">幫我擺一個國際象棋歷史名局的經典殘局，我要和 AI 對戰，創建好後給我跳轉連結</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="other">%d 秒前</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="other">%d 分鐘前</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="other">%1$d 小時前</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="other">使用 %d 次</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="other">%d 分鐘前</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="other">%d 小時前</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="other">%d 天前</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="other">%1$d 分鐘前</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="other">%1$d 小時前</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="other">%1$d 天前</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">今天到期</string>
+    <string name="time_due_yesterday">昨天到期</string>
+    <string name="time_overdue_days">過期%d天</string>
+    <string name="time_due_in_minutes">%d分鐘後到期</string>
+    <string name="time_due_in_hours">%d小時後到期</string>
+    <string name="time_due_tomorrow">明天到期</string>
+    <string name="time_due_in_days">%d天後到期</string>
+    <string name="time_due_on">到期：%s</string>
 </resources>

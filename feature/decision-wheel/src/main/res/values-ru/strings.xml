@@ -53,7 +53,7 @@
     <string name="palette_scheme">Цветовая схема</string>
     <string name="target_emoji">🎯</string>
     <string name="apply">Применить</string>
-    <string name="wheel_settings_title">Настройки поворотного стола</string>
+    <string name="wheel_settings_title">Настройки колеса</string>
     <string name="wheel_settings">Настройки</string>
     <string name="wheel_settings_duration">Время вращения</string>
     <string name="wheel_settings_duration_value">%1$d мс</string>

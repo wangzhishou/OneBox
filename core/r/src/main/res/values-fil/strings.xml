@@ -174,9 +174,6 @@
     <string name="pull_to_refresh_release_label">Bitawan upang i-refresh</string>
     <string name="pull_to_refresh_refreshing_label">Nagre-refresh…</string>
     <string name="pull_to_refresh_complete_label">Napapanahon</string>
-    <string name="d_seconds_ago">%d segundo ang nakalipas</string>
-    <string name="d_minutes_ago">%d minuto ang nakalipas</string>
-    <string name="d_hours_ago">%1$d oras ang nakalipas</string>
     <string name="refresh_cooldown_hint">Masyadong madalas mag-refresh, pakisubukan muli mamaya</string>
     <string name="open_mini_program">Buksan ang Mini Program</string>
     <string name="open_url">Buksan</string>
@@ -650,11 +647,7 @@
     <string name="playground_empty_description">Ikaw ang maunang magbahagi ng iyong ideya</string>
     <string name="playground_footer_title">Ibahagi ang iyong ideya</string>
     <string name="playground_footer_description">May magandang ideya? Sumulat ng artikulo at tuklasin ito nang sama-sama</string>
-    <string name="favorite_usage_count">Ginamit nang %d beses</string>
     <string name="favorite_time_just_now">Ngayon lang</string>
-    <string name="favorite_time_minutes_ago">%d minuto ang nakalipas</string>
-    <string name="favorite_time_hours_ago">%d oras ang nakalipas</string>
-    <string name="favorite_time_days_ago">%d araw ang nakalipas</string>
     <string name="back_prressed_once">Pindutin muli upang lumabas</string>
     <string name="privacy_item_camera_description">Kailangan ang access sa camera para sa mga tampok ng pag-scan.</string>
     <string name="created_by_ai">Audio na ginawa ng AI</string>
@@ -1641,9 +1634,6 @@
     <string name="startup_trace_overlay_hint">Maaari mong i-disable ito sa pahina ng Easter egg; i-restart upang makita muli ang buong chain ng malamig na pagsisimula.</string>
     <string name="startup_trace_overlay_total">Kabuuang chain ngayon: %1$d ms</string>
     <string name="time_just_now">Ngayon lang</string>
-    <string name="time_minutes_ago_format">%1$d minuto ang nakalipas</string>
-    <string name="time_hours_ago_format">%1$d oras ang nakalipas</string>
-    <string name="time_days_ago_format">%1$d araw ang nakalipas</string>
     <string name="privacy_item_camera_title">Pahintulot sa Camera</string>
     <string name="blessing_wall">Pader ng Pagpapala</string>
     <string name="poem">Tulang Tsino</string>
@@ -1704,4 +1694,54 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="ai_chat_quick_start_21">I-set up ang klasikong endgame mula sa isang sikat na chess game laban sa AI, at ibigay ang link para buksan</string>
     <string name="ai_engine_seed_pikafish_title">Pikafish</string>
     <string name="ai_model_default_pikafish_title">Pikafish</string>
+    <plurals name="d_seconds_ago">
+        <item quantity="one">%d segundo ang nakalipas</item>
+        <item quantity="other">%d segundo ang nakalipas</item>
+    </plurals>
+    <plurals name="d_minutes_ago">
+        <item quantity="one">%d minuto ang nakalipas</item>
+        <item quantity="other">%d minuto ang nakalipas</item>
+    </plurals>
+    <plurals name="d_hours_ago">
+        <item quantity="one">%1$d oras ang nakalipas</item>
+        <item quantity="other">%1$d oras ang nakalipas</item>
+    </plurals>
+    <plurals name="favorite_usage_count">
+        <item quantity="one">Ginamit nang %d beses</item>
+        <item quantity="other">Ginamit nang %d beses</item>
+    </plurals>
+    <plurals name="favorite_time_minutes_ago">
+        <item quantity="one">%d minuto ang nakalipas</item>
+        <item quantity="other">%d minuto ang nakalipas</item>
+    </plurals>
+    <plurals name="favorite_time_hours_ago">
+        <item quantity="one">%d oras ang nakalipas</item>
+        <item quantity="other">%d oras ang nakalipas</item>
+    </plurals>
+    <plurals name="favorite_time_days_ago">
+        <item quantity="one">%d araw ang nakalipas</item>
+        <item quantity="other">%d araw ang nakalipas</item>
+    </plurals>
+    <plurals name="time_minutes_ago_format">
+        <item quantity="one">%1$d minuto ang nakalipas</item>
+        <item quantity="other">%1$d minuto ang nakalipas</item>
+    </plurals>
+    <plurals name="time_hours_ago_format">
+        <item quantity="one">%1$d oras ang nakalipas</item>
+        <item quantity="other">%1$d oras ang nakalipas</item>
+    </plurals>
+    <plurals name="time_days_ago_format">
+        <item quantity="one">%1$d araw ang nakalipas</item>
+        <item quantity="other">%1$d araw ang nakalipas</item>
+    </plurals>
+
+    <!-- Due date formatting -->
+    <string name="time_due_today">Due ngayon</string>
+    <string name="time_due_yesterday">Due kahapon</string>
+    <string name="time_overdue_days">Na-late nang %d araw</string>
+    <string name="time_due_in_minutes">Due sa %d minuto</string>
+    <string name="time_due_in_hours">Due sa %d oras</string>
+    <string name="time_due_tomorrow">Due bukas</string>
+    <string name="time_due_in_days">Due sa %d araw</string>
+    <string name="time_due_on">Due: %s</string>
 </resources>
