@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">Analisador de jogos de Xiangqi</string>
+    <string name="xiangqi_library_title">Xiangqi</string>
     <string name="xiangqi_library_subtitle">Partidas locais de xadrez chinês para dois jogadores e com LLM, baseadas em snapshots FEN</string>
     <string name="xiangqi_tab_play">Jogar</string>
     <string name="xiangqi_tab_analyze">Analisar</string>

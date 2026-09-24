@@ -1,5 +1,5 @@
 <resources>
-    <string name="xiangqi_library_title">棋局分析器</string>
+    <string name="xiangqi_library_title">中国象棋</string>
     <string name="xiangqi_library_subtitle">中国象棋FEN 快照驱动的本地双人和 LLM 对弈</string>
     <string name="xiangqi_tab_play">对局</string>
     <string name="xiangqi_tab_analyze">分析</string>

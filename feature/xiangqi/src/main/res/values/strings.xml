@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">Xiangqi game analyzer</string>
+    <string name="xiangqi_library_title">Xiangqi</string>
     <string name="xiangqi_library_subtitle">FEN snapshot-driven local two-player and LLM Chinese chess matches</string>
     <string name="xiangqi_tab_play">Play</string>
     <string name="xiangqi_tab_analyze">Analyze</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">Анализатор игры в сянци</string>
+    <string name="xiangqi_library_title">Сянци</string>
     <string name="xiangqi_library_subtitle">Локальные партии для двух игроков и матчи с ИИ в китайские шахматы на основе снимков FEN</string>
     <string name="xiangqi_tab_play">Играть</string>
     <string name="xiangqi_tab_analyze">Анализ</string>

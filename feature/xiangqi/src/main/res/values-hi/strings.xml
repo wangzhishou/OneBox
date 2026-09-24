@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">शतरंज खेल विश्लेषक</string>
+    <string name="xiangqi_library_title">शियांग्की</string>
     <string name="xiangqi_library_subtitle">FEN स्नैपशॉट-आधारित स्थानीय दो-खिलाड़ी और LLM चीनी शतरंज मैच</string>
     <string name="xiangqi_tab_play">खेलें</string>
     <string name="xiangqi_tab_analyze">विश्लेषण</string>

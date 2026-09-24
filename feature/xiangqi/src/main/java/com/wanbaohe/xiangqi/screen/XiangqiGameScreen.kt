@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,7 +27,6 @@ import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -71,7 +69,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.xiangqi.BuildConfig
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
@@ -90,16 +87,16 @@ import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFlag
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmojiEvents
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAnalytics
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import com.wanbaohe.boardgame.ui.BoardGameOverOverlay
+import com.wanbaohe.boardgame.ui.BoardStartOverlay
 import kotlinx.coroutines.delay
 
 @Composable
@@ -430,7 +427,13 @@ private fun GameBoardArea(
             )
             if (state.status == GameStatus.NOT_STARTED || state.status == GameStatus.PAUSED) {
                 BoardStartOverlay(
-                    isResume = state.status == GameStatus.PAUSED,
+                    startLabel = stringResource(
+                        if (state.status == GameStatus.PAUSED) {
+                            R.string.xiangqi_resume_action
+                        } else {
+                            R.string.xiangqi_start_action
+                        }
+                    ),
                     onStart = component::start,
                 )
             }
@@ -440,9 +443,17 @@ private fun GameBoardArea(
                 state.status == GameStatus.RESIGNED
             if (isGameOver) {
                 BoardGameOverOverlay(
-                    status = state.status,
+                    resultTitle = when (state.status) {
+                        GameStatus.RED_WINS -> stringResource(R.string.xiangqi_game_over_red)
+                        GameStatus.BLACK_WINS -> stringResource(R.string.xiangqi_game_over_black)
+                        GameStatus.DRAW -> stringResource(R.string.xiangqi_game_over_draw)
+                        else -> stringResource(R.string.xiangqi_resign_result)
+                    },
+                    restartLabel = stringResource(R.string.xiangqi_game_over_restart),
+                    reviewLabel = stringResource(R.string.xiangqi_game_over_review),
                     onRestart = component::restart,
                     onReview = component::openAnalysis,
+                    emphasizeResult = state.status != GameStatus.DRAW,
                 )
             }
         }
@@ -1093,91 +1104,6 @@ private fun ActionBar(
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
                 )
-            }
-        }
-    }
-}
-
-@Composable
-private fun BoxScope.BoardStartOverlay(
-    isResume: Boolean,
-    onStart: () -> Unit,
-) {
-    Box(
-        modifier = Modifier
-            .matchParentSize()
-            .clip(MaterialTheme.shapes.large)
-            .glassBackground(
-                style = GlassStyle.Dense,
-                color = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
-                shape = MaterialTheme.shapes.large
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        ExtendedFloatingActionButton(
-            onClick = onStart,
-            icon = {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PlayCircle,
-                    contentDescription = null,
-                )
-            },
-            text = {
-                Text(
-                    text = stringResource(
-                        if (isResume) R.string.xiangqi_resume_action else R.string.xiangqi_start_action
-                    ),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                )
-            },
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-    }
-}
-
-@Composable
-private fun BoxScope.BoardGameOverOverlay(
-    status: GameStatus,
-    onRestart: () -> Unit,
-    onReview: () -> Unit,
-) {
-    val titleText = when (status) {
-        GameStatus.RED_WINS -> stringResource(R.string.xiangqi_game_over_red)
-        GameStatus.BLACK_WINS -> stringResource(R.string.xiangqi_game_over_black)
-        GameStatus.DRAW -> stringResource(R.string.xiangqi_game_over_draw)
-        GameStatus.RESIGNED -> stringResource(R.string.xiangqi_resign_result)
-        else -> ""
-    }
-    Box(
-        modifier = Modifier
-            .matchParentSize()
-            .clip(MaterialTheme.shapes.large)
-            .background(Color.Black.copy(alpha = 0.36f)),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEmojiEvents,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(48.dp),
-            )
-            Text(
-                text = titleText,
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                GlassTonalButton(onClick = onReview) {
-                    Text(stringResource(R.string.xiangqi_game_over_review))
-                }
-                GlassTonalButton(onClick = onRestart) {
-                    Text(stringResource(R.string.xiangqi_game_over_restart))
-                }
             }
         }
     }

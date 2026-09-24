@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">샹치 게임 분석기</string>
+    <string name="xiangqi_library_title">샹치</string>
     <string name="xiangqi_library_subtitle">FEN 스냅샷 기반 로컬 2인 및 LLM 중국 장기 대국</string>
     <string name="xiangqi_tab_play">게임 시작</string>
     <string name="xiangqi_tab_analyze">분석</string>

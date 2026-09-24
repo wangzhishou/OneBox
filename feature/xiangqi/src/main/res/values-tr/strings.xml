@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">Xiangqi oyun analizörü</string>
+    <string name="xiangqi_library_title">Xiangqi</string>
     <string name="xiangqi_library_subtitle">FEN anlık görüntüsüyle yerel iki oyunculu ve LLM Çin satrancı maçları</string>
     <string name="xiangqi_tab_play">Oyna</string>
     <string name="xiangqi_tab_analyze">Analiz</string>

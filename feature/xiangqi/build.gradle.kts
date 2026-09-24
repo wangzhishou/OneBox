@@ -9,6 +9,7 @@ android.namespace = "com.wanbaohe.xiangqi"
 
 dependencies {
     implementation(projects.feature.common)
+    implementation(projects.feature.boardgame)
     implementation(projects.core.tts)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization.json)

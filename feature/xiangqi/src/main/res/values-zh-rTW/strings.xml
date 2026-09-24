@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">棋局分析器</string>
+    <string name="xiangqi_library_title">中國象棋</string>
     <string name="xiangqi_library_subtitle">中國象棋FEN 快照驅動的本地雙人和 LLM 對弈</string>
     <string name="xiangqi_tab_play">對局</string>
     <string name="xiangqi_tab_analyze">分析</string>

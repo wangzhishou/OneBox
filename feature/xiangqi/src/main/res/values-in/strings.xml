@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">Analisator permainan Xiangqi</string>
+    <string name="xiangqi_library_title">Xiangqi</string>
     <string name="xiangqi_library_subtitle">Pertandingan catur Tiongkok lokal dua pemain dan LLM berbasis snapshot FEN</string>
     <string name="xiangqi_tab_play">Main</string>
     <string name="xiangqi_tab_analyze">Analisis</string>
