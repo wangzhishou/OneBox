@@ -36,7 +36,7 @@
     <string name="gomoku_start_action">開始</string>
     <string name="gomoku_resume_action">続行</string>
     <string name="gomoku_game_over_review">検討</string>
-    <string name="gomoku_game_over_restart">再開</string>
+    <string name="gomoku_game_over_restart">再プレイ</string>
     <string name="gomoku_game_over_subtitle_black">おめでとうございます、黒の勝ちです</string>
     <string name="gomoku_game_over_subtitle_white">おめでとうございます、白の勝ちです</string>
     <string name="gomoku_game_over_subtitle_draw">両者合意により引き分けです</string>
@@ -60,8 +60,8 @@
     <string name="gomoku_mode_ai">AI対戦</string>
     <string name="gomoku_mode_ai_vs_ai">AI対AI</string>
     <string name="gomoku_new_local_game">ローカル対人戦</string>
-    <string name="gomoku_new_ai_as_black">AIが黒</string>
-    <string name="gomoku_new_ai_as_white">AIが白</string>
+    <string name="gomoku_new_ai_as_black">AIが黒番</string>
+    <string name="gomoku_new_ai_as_white">AIが白番</string>
     <string name="gomoku_new_ai_vs_ai">AI対AI</string>
     <string name="gomoku_import_fen">FENをインポート</string>
     <string name="gomoku_import_json">JSONをインポート</string>
@@ -102,7 +102,7 @@
     <string name="gomoku_share_notation">共有</string>
     <string name="gomoku_export_header">五目並べの棋譜</string>
     <string name="gomoku_export_title_label">タイトル</string>
-    <string name="gomoku_export_initial_fen_label">初期位置</string>
+    <string name="gomoku_export_initial_fen_label">初期局面</string>
     <string name="gomoku_export_result_label">結果</string>
     <string name="gomoku_settings_sound_title">サウンド</string>
     <string name="gomoku_settings_sound_subtitle">指し手の効果音、対局終了の効果音、BGM。初回の再生時にファイルをダウンロードしてキャッシュします。</string>
@@ -113,11 +113,11 @@
     <string name="gomoku_settings_stop_bgm">BGMを停止</string>
     <string name="gomoku_settings_tts_title">音声読み上げ</string>
     <string name="gomoku_settings_tts_subtitle">勝利と引き分けを音声合成で読み上げます。</string>
-    <string name="gomoku_settings_tts_enabled">音声読み上げを有効にする</string>
+    <string name="gomoku_settings_tts_enabled">音声読み上げ</string>
     <string name="gomoku_settings_tts_preview">音声をプレビュー</string>
     <string name="gomoku_settings_ai_title">五目並べAI</string>
     <string name="gomoku_settings_ai_subtitle">「人間対AI」および「AI対AI」モードの指し手エンジンです。</string>
-    <string name="gomoku_settings_ai_fast">人間 vs AI</string>
+    <string name="gomoku_settings_ai_fast">人間対AI</string>
     <string name="gomoku_settings_ai_duel_a">AI対AI・黒</string>
     <string name="gomoku_settings_ai_duel_b">AI対AI・白</string>
     <string name="gomoku_settings_ai_picker_title">五目並べAIを選択</string>
