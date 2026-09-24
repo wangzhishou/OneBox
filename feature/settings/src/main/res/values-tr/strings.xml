@@ -322,4 +322,5 @@
     <string name="image_settings_save_success">Görsel sağlayıcı yapılandırması kaydedildi</string>
     <string name="image_settings_active_success">Etkin görsel sağlayıcı güncellendi</string>
     <string name="image_settings_delete_success">Görsel sağlayıcı yapılandırması silindi</string>
+    <string name="ai_engine_protocol_pikafish">Pikafish Satranç Motoru</string>
 </resources>

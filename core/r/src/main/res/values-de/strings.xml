@@ -1346,9 +1346,9 @@
     <string name="xiangqi_title">Xiangqi</string>
     <string name="xiangqi_description">Chinesisches Schach mit FEN-Schnappschüssen, Wiedergabe, Import/Export und LLM-Kämpfen.</string>
     <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_description">Fünf in einer Reihe auf einem 15×15-Brett, mit Stellungsspeichern, Wiedergabe, Import/Export und KI-Kämpfen.</string>
+    <string name="chess_title">Schach</string>
+    <string name="chess_description">Internationales Schach mit Standard-FEN, Wiedergabe, Import/Export und KI-Kämpfen.</string>
     <string name="minesweeper_title">Minesweeper</string>
     <string name="minesweeper_description">Klassisches Minesweeper – teste deine Logik und dein Denkvermögen.</string>
     <string name="survive_30s_screen_title">Überlebe 30 Sekunden</string>
@@ -1697,4 +1697,11 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="app_update_dialog_message">Du nutzt Version %1$s. Version %2$s ist verfügbar – ein Update wird empfohlen.</string>
     <string name="app_update_dialog_confirm">Jetzt aktualisieren</string>
     <string name="app_update_dialog_later">Später</string>
+    <string name="ai_error_content_filtered">Die Anfrage wurde durch die Inhalts-sicherheitsrichtlinie des Modellanbieters blockiert. Bitte formulieren Sie es um und versuchen Sie es erneut.</string>
+    <string name="ai_chat_stream_interrupted">Verbindung unterbrochen, bevor die Antwort abgeschlossen war. Bitte erneut versuchen.</string>
+    <string name="ai_chat_quick_start_19">Richte mir ein klassisches Endspiel aus einer berühmten Xiangqi-Partie gegen die KI ein und gib mir danach den Öffnungslink</string>
+    <string name="ai_chat_quick_start_20">Richte mir ein klassisches Endspiel aus einer berühmten Gomoku-Partie gegen die KI ein und gib mir danach den Öffnungslink</string>
+    <string name="ai_chat_quick_start_21">Richte mir ein klassisches Endspiel aus einer berühmten Schachpartie gegen die KI ein und gib mir danach den Öffnungslink</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

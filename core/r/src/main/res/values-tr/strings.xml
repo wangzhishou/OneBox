@@ -1346,9 +1346,9 @@
     <string name="xiangqi_title">Xiangqi</string>
     <string name="xiangqi_description">FEN anlık görüntüleri, tekrar oynatma, içe/dışa aktarma ve LLM savaşları ile Çin satrancı.</string>
     <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_description">15×15 tahtada beş taş dizisi; konum anlık görüntüleri, tekrar oynatma, içe/dışa aktarma ve LLM maçları.</string>
+    <string name="chess_title">Satranç</string>
+    <string name="chess_description">Standart FEN ile uluslararası satranç; tekrar oynatma, içe/dışa aktarma ve LLM maçları.</string>
     <string name="minesweeper_title">Mayın Tarlası</string>
     <string name="minesweeper_description">Klasik mayın tarlası — mantığınızı ve akıl yürütmenizi test edin.</string>
     <string name="survive_30s_screen_title">30 Saniye Hayatta Kal</string>
@@ -1697,4 +1697,11 @@
     <string name="app_update_dialog_message">%1$s sürümünü kullanıyorsunuz. %2$s sürümü yayında — güncellemeniz önerilir.</string>
     <string name="app_update_dialog_confirm">Şimdi güncelle</string>
     <string name="app_update_dialog_later">Daha sonra</string>
+    <string name="ai_error_content_filtered">İstek, model sağlayıcısının içerik güvenliği politikası tarafından engellendi. Lütfen ifadenizi değiştirip tekrar deneyin.</string>
+    <string name="ai_chat_stream_interrupted">Yanıt tamamlanmadan önce bağlantı kesildi. Lütfen tekrar deneyin.</string>
+    <string name="ai_chat_quick_start_19">AI\'a karşı oynamak için ünlü bir Çin satrancı maçından klasik bir final kur, sonra açmak için bağlantıyı ver</string>
+    <string name="ai_chat_quick_start_20">AI\'a karşı oynamak için ünlü bir Gomoku maçından klasik bir final kur, sonra açmak için bağlantıyı ver</string>
+    <string name="ai_chat_quick_start_21">AI\'a karşı oynamak için ünlü bir satranç maçından klasik bir final kur, sonra açmak için bağlantıyı ver</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

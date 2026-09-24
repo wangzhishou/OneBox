@@ -1346,9 +1346,9 @@
     <string name="xiangqi_title">Xiangqi</string>
     <string name="xiangqi_description">Chinese chess na may FEN snapshots, replay, import/export, at LLM battles.</string>
     <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_description">Five-in-a-row sa 15×15 board, may position snapshot, replay, import/export, at laban sa LLM.</string>
     <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="chess_description">International chess na may standard FEN, replay, import/export, at laban sa LLM.</string>
     <string name="minesweeper_title">Minesweeper</string>
     <string name="minesweeper_description">Classic minesweeper — subukan ang iyong lohika at pangangatwiran.</string>
     <string name="survive_30s_screen_title">Makaligtas ng 30 Segundo</string>
@@ -1697,4 +1697,11 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="app_update_dialog_message">Nasa %1$s ka. Available na ang bersyon %2$s — inirerekomendang i-update.</string>
     <string name="app_update_dialog_confirm">I-update ngayon</string>
     <string name="app_update_dialog_later">Mamaya</string>
+    <string name="ai_error_content_filtered">Na-block ng content safety policy ng model provider ang request. Paki-rephrase at subukan muli.</string>
+    <string name="ai_chat_stream_interrupted">Naputol ang koneksyon bago matapos ang sagot. Pakisubukang muli.</string>
+    <string name="ai_chat_quick_start_19">I-set up ang klasikong endgame mula sa isang sikat na laro ng Chinese chess laban sa AI, at ibigay ang link para buksan</string>
+    <string name="ai_chat_quick_start_20">I-set up ang klasikong endgame mula sa isang sikat na laro ng Five in a Row laban sa AI, at ibigay ang link para buksan</string>
+    <string name="ai_chat_quick_start_21">I-set up ang klasikong endgame mula sa isang sikat na chess game laban sa AI, at ibigay ang link para buksan</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

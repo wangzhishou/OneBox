@@ -125,14 +125,4 @@
     <string name="cloud_storage_smb_error_sharing_violation">The file is in use by another process and cannot be accessed</string>
     <string name="cloud_storage_smb_error_generic">SMB error: %1$s (%2$s)</string>
 
-    <string name="cloud_storage_guide_action">Usage guide</string>
-    <string name="cloud_storage_guide_title">Cloud storage guide</string>
-    <string name="cloud_storage_guide_intro_title">What is this?</string>
-    <string name="cloud_storage_guide_intro">Browse, upload, download and manage files in your own cloud storage right on your phone. Aliyun OSS, Tencent COS, Huawei OBS, Baidu BOS, AWS S3 and S3-compatible services (MinIO/R2) are supported, plus WebDAV and home NAS (SMB).</string>
-    <string name="cloud_storage_guide_connect_title">How do I connect?</string>
-    <string name="cloud_storage_guide_connect">Tap \"+\" in the top right corner and fill in the Endpoint, AccessKey and SecretKey from your cloud provider. No keys yet? Enable object storage and create a key in the provider console, or tap \"Cloud Storage Setup Assistant\" on the start page and let the AI walk you through it.</string>
-    <string name="cloud_storage_guide_cost_title">Does it cost anything?</string>
-    <string name="cloud_storage_guide_cost">This feature is completely free, and files travel directly between your phone and your cloud provider, never through our servers. Storage itself is billed by the provider, and most providers offer a free tier that covers light personal use.</string>
-    <string name="cloud_storage_guide_privacy_title">Are my keys safe?</string>
-    <string name="cloud_storage_guide_privacy">Your keys are stored only on this device and are never uploaded to any server.</string>
 </resources>

@@ -322,4 +322,5 @@
     <string name="image_settings_save_success">이미지 제공자 구성이 저장되었습니다</string>
     <string name="image_settings_active_success">사용 중인 이미지 제공자가 업데이트되었습니다</string>
     <string name="image_settings_delete_success">이미지 제공자 구성이 삭제되었습니다</string>
+    <string name="ai_engine_protocol_pikafish">Pikafish 체스 엔진</string>
 </resources>

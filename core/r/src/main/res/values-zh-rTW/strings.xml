@@ -1759,4 +1759,9 @@
     <string name="app_update_dialog_message">目前版本 %1$s，新版本 %2$s 已發布，建議更新後繼續使用。</string>
     <string name="app_update_dialog_confirm">立即更新</string>
     <string name="app_update_dialog_later">稍後</string>
+    <string name="ai_chat_quick_start_19">幫我擺一個中國象棋歷史名局的經典殘局，我要和 AI 對戰，創建好後給我跳轉連結</string>
+    <string name="ai_chat_quick_start_20">幫我擺一個五子棋經典名局的殘局，我要和 AI 對戰，創建好後給我跳轉連結</string>
+    <string name="ai_chat_quick_start_21">幫我擺一個國際象棋歷史名局的經典殘局，我要和 AI 對戰，創建好後給我跳轉連結</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

@@ -1345,10 +1345,10 @@
     <string name="game_2048_description">Классическая головоломка по слиянию чисел</string>
     <string name="xiangqi_title">Сянци</string>
     <string name="xiangqi_description">Китайские шахматы с FEN-снимками, повтором, импортом/экспортом и битвами с ИИ.</string>
-    <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_title">Гомоку</string>
+    <string name="gomoku_description">Пять в ряд на доске 15×15, со снимками позиции, воспроизведением, импортом/экспортом и матчами с LLM.</string>
+    <string name="chess_title">Шахматы</string>
+    <string name="chess_description">Международные шахматы со стандартным FEN, воспроизведением, импортом/экспортом и матчами с LLM.</string>
     <string name="minesweeper_title">Сапёр</string>
     <string name="minesweeper_description">Классический сапёр — проверьте свою логику и рассуждения.</string>
     <string name="survive_30s_screen_title">Продержись 30 секунд</string>
@@ -1697,4 +1697,11 @@
     <string name="app_update_dialog_message">У вас версия %1$s. Доступна версия %2$s — рекомендуем обновиться.</string>
     <string name="app_update_dialog_confirm">Обновить сейчас</string>
     <string name="app_update_dialog_later">Позже</string>
+    <string name="ai_error_content_filtered">Запрос заблокирован политикой безопасности контента поставщика модели. Переформулируйте и попробуйте снова.</string>
+    <string name="ai_chat_stream_interrupted">Соединение прервано до завершения ответа. Попробуйте ещё раз.</string>
+    <string name="ai_chat_quick_start_19">Собери классический эндшпиль из известной партии по сянци против ИИ и дай ссылку для открытия</string>
+    <string name="ai_chat_quick_start_20">Собери классический эндшпиль из известной партии в гомоку против ИИ и дай ссылку для открытия</string>
+    <string name="ai_chat_quick_start_21">Собери классический эндшпиль из известной шахматной партии против ИИ и дай ссылку для открытия</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

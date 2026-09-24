@@ -322,4 +322,5 @@
     <string name="image_settings_save_success">Configuração do provedor de imagem salva</string>
     <string name="image_settings_active_success">Provedor de imagem ativo atualizado</string>
     <string name="image_settings_delete_success">Configuração do provedor de imagem excluída</string>
+    <string name="ai_engine_protocol_pikafish">Motor de xadrez Pikafish</string>
 </resources>

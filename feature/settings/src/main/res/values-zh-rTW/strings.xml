@@ -335,4 +335,5 @@
     <string name="ai_service_hub_tab_text">文字</string>
     <string name="ai_service_hub_tab_local">本機</string>
     <string name="ai_service_hub_tab_multimodal">多模態</string>
+    <string name="ai_engine_protocol_pikafish">Pikafish 象棋引擎</string>
 </resources>

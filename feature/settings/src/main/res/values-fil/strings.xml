@@ -322,4 +322,5 @@
     <string name="image_settings_save_success">Nai-save ang konfigurasyon ng provider ng larawan</string>
     <string name="image_settings_active_success">Na-update ang aktibong provider ng larawan</string>
     <string name="image_settings_delete_success">Natanggal ang konfigurasyon ng provider ng larawan</string>
+    <string name="ai_engine_protocol_pikafish">Pikafish Chess Engine</string>
 </resources>

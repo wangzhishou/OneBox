@@ -1343,12 +1343,12 @@
     <string name="nav_ai_app">チャット</string>
     <string name="game_2048_title">2048</string>
     <string name="game_2048_description">定番の数字合体パズルゲーム</string>
-    <string name="xiangqi_title">将棋</string>
-    <string name="xiangqi_description">FENスナップショット、リプレイ、インポート/エクスポート、LLM対戦に対応した中国将棋。</string>
-    <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="xiangqi_title">中国象棋</string>
+    <string name="xiangqi_description">FENスナップショット、リプレイ、インポート/エクスポート、LLM対戦に対応した中国象棋（シャンチー）。</string>
+    <string name="gomoku_title">五目並べ</string>
+    <string name="gomoku_description">15×15 盤の五目並べ。局面スナップショット、リプレイ、インポート/エクスポート、LLM 対戦に対応。</string>
+    <string name="chess_title">チェス</string>
+    <string name="chess_description">標準 FEN の国際チェス。リプレイ、インポート/エクスポート、LLM 対戦に対応。</string>
     <string name="minesweeper_title">マインスイーパ</string>
     <string name="minesweeper_description">定番のマインスイーパ — 論理的思考を試そう。</string>
     <string name="survive_30s_screen_title">30秒生き残れ</string>
@@ -1697,4 +1697,11 @@
     <string name="app_update_dialog_message">現在のバージョンは %1$s です。バージョン %2$s が公開されました。更新をおすすめします。</string>
     <string name="app_update_dialog_confirm">今すぐ更新</string>
     <string name="app_update_dialog_later">あとで</string>
+    <string name="ai_error_content_filtered">モデル提供元のコンテンツ安全ポリシーによりリクエストがブロックされました。表現を変えて再度お試しください。</string>
+    <string name="ai_chat_stream_interrupted">回答が完了する前に接続が切断されました。もう一度お試しください。</string>
+    <string name="ai_chat_quick_start_19">有名なシャンチー（中国象棋）の名局の定跡的な終盤を AI 対戦用に配置して、開くリンクを教えて</string>
+    <string name="ai_chat_quick_start_20">有名な五目並べの名局の終盤を AI 対戦用に配置して、開くリンクを教えて</string>
+    <string name="ai_chat_quick_start_21">有名なチェスの名局の終盤を AI 対戦用に配置して、開くリンクを教えて</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

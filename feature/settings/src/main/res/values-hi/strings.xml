@@ -322,4 +322,5 @@
     <string name="image_settings_save_success">छवि प्रदाता कॉन्फ़िगरेशन सहेजा गया</string>
     <string name="image_settings_active_success">सक्रिय छवि प्रदाता अपडेट किया गया</string>
     <string name="image_settings_delete_success">छवि प्रदाता कॉन्फ़िगरेशन हटाया गया</string>
+    <string name="ai_engine_protocol_pikafish">Pikafish शतरंज इंजन</string>
 </resources>

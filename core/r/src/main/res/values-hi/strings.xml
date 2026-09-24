@@ -1345,10 +1345,10 @@
     <string name="game_2048_description">क्लासिक संख्या-मिलान पहेली खेल</string>
     <string name="xiangqi_title">शतरंज</string>
     <string name="xiangqi_description">FEN स्नैपशॉट, रीप्ले, आयात/निर्यात और LLM लड़ाइयों के साथ चीनी शतरंज।</string>
-    <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_title">गोमोकू</string>
+    <string name="gomoku_description">15×15 बोर्ड पर पाँच-इन-अ-रो, स्थिति स्नैपशॉट, रीप्ले, आयात/निर्यात और LLM मुकाबलों के साथ।</string>
+    <string name="chess_title">अंतरराष्ट्रीय शतरंज</string>
+    <string name="chess_description">मानक FEN के साथ अंतरराष्ट्रीय शतरंज, रीप्ले, आयात/निर्यात और LLM मुकाबलों के साथ।</string>
     <string name="minesweeper_title">माइनस्वीपर</string>
     <string name="minesweeper_description">क्लासिक माइनस्वीपर — अपने तर्क और विचार का परीक्षण करें।</string>
     <string name="survive_30s_screen_title">30 सेकंड जीवित रहें</string>
@@ -1697,4 +1697,11 @@
     <string name="app_update_dialog_message">आप %1$s पर हैं। संस्करण %2$s उपलब्ध है — अपडेट करने की सलाह दी जाती है।</string>
     <string name="app_update_dialog_confirm">अभी अपडेट करें</string>
     <string name="app_update_dialog_later">बाद में</string>
+    <string name="ai_error_content_filtered">अनुरोध मॉडल प्रदाता की कंटेंट सेफ़्टी नीति द्वारा अवरुद्ध किया गया। कृपया पुनः लिखकर पुनः प्रयास करें।</string>
+    <string name="ai_chat_stream_interrupted">उत्तर पूरा होने से पहले कनेक्शन टूट गया। कृपया पुनः प्रयास करें।</string>
+    <string name="ai_chat_quick_start_19">किसी प्रसिद्ध शतरंज (चीनी शतरंज) खेल का शास्त्रीय अंतिम खेल AI के विरुद्ध सेट करें, फिर खोलने का लिंक दें</string>
+    <string name="ai_chat_quick_start_20">किसी प्रसिद्ध गोमोकू (पाँच-इन-अ-रो) खेल का शास्त्रीय अंतिम खेल AI के विरुद्ध सेट करें, फिर खोलने का लिंक दें</string>
+    <string name="ai_chat_quick_start_21">किसी प्रसिद्ध शतरंज खेल का शास्त्रीय अंतिम खेल AI के विरुद्ध सेट करें, फिर खोलने का लिंक दें</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

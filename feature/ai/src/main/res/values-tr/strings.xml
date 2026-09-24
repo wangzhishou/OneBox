@@ -801,8 +801,8 @@
     <string name="agent_tool_automate_ui_task_failed">Görev %1$d. adımda başarısız oldu: %2$s</string>
     <string name="agent_tool_automate_ui_task_step_limit">Görev %1$d adım sonra durduruldu (sınıra ulaşıldı). Son eylem: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">Şu anda hiçbir Activity mevcut değil. Sohbeti normal bir sayfadan açtığınızdan emin olun.</string>
-    <string name="agent_tool_manage_gomoku_title">Manage Gomoku Games</string>
-    <string name="agent_tool_manage_gomoku_summary">Query, create, import endgame/opening, import game records, delete and export Gomoku (Five in a Row) games</string>
+    <string name="agent_tool_manage_gomoku_title">Gomoku oyunlarını yönet</string>
+    <string name="agent_tool_manage_gomoku_summary">Gomoku oyunlarını sorgula, oluştur, final/açılış içe aktar, kayıt içe aktar, sil ve dışa aktar</string>
     <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
@@ -822,8 +822,8 @@
     <string name="agent_tool_manage_gomoku_imported_fen">FEN Imported</string>
     <string name="agent_tool_manage_gomoku_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_gomoku_import_failed">Import failed: %1$s</string>
-    <string name="agent_tool_manage_chess_title">Manage Chess Games</string>
-    <string name="agent_tool_manage_chess_summary">Query, create, import endgame/opening, import game records, delete and export chess games</string>
+    <string name="agent_tool_manage_chess_title">Satranç oyunlarını yönet</string>
+    <string name="agent_tool_manage_chess_summary">Satranç oyunlarını sorgula, oluştur, final/açılış içe aktar, kayıt içe aktar, sil ve dışa aktar</string>
     <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>

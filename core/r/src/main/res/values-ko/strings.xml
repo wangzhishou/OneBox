@@ -1345,10 +1345,10 @@
     <string name="game_2048_description">클래식 숫자 합치기 퍼즐 게임</string>
     <string name="xiangqi_title">샹치</string>
     <string name="xiangqi_description">FEN 스냅샷, 리플레이, 가져오기/내보내기, LLM 대결을 지원하는 중국 장기.</string>
-    <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_title">오목</string>
+    <string name="gomoku_description">15×15 보드 오목. 위치 스냅샷, 재생, 가져오기/내보내기 및 LLM 대전 지원.</string>
+    <string name="chess_title">체스</string>
+    <string name="chess_description">표준 FEN의 국제 체스. 재생, 가져오기/내보내기 및 LLM 대전 지원.</string>
     <string name="minesweeper_title">지뢰 찾기</string>
     <string name="minesweeper_description">클래식 지뢰 찾기 — 논리와 추리를 테스트하세요.</string>
     <string name="survive_30s_screen_title">30초 생존</string>
@@ -1697,4 +1697,11 @@
     <string name="app_update_dialog_message">현재 버전은 %1$s입니다. 버전 %2$s이(가) 출시되었습니다. 업데이트를 권장합니다.</string>
     <string name="app_update_dialog_confirm">지금 업데이트</string>
     <string name="app_update_dialog_later">나중에</string>
+    <string name="ai_error_content_filtered">모델 제공자의 콘텐츠 안전 정책에 의해 요청이 차단되었습니다. 표현을 바꾼 후 다시 시도하세요.</string>
+    <string name="ai_chat_stream_interrupted">응답이 완료되기 전에 연결이 끊어졌습니다. 다시 시도하세요.</string>
+    <string name="ai_chat_quick_start_19">유명한 샹치(중국 장기) 명국의 고전 엔드게임을 AI와 대결하도록 구성하고 열기 링크를 주세요</string>
+    <string name="ai_chat_quick_start_20">유명한 오목 명국의 고전 엔드게임을 AI와 대결하도록 구성하고 열기 링크를 주세요</string>
+    <string name="ai_chat_quick_start_21">유명한 체스 명국의 고전 엔드게임을 AI와 대결하도록 구성하고 열기 링크를 주세요</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

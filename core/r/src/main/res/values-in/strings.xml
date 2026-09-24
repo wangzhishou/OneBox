@@ -1346,9 +1346,9 @@
     <string name="xiangqi_title">Xiangqi</string>
     <string name="xiangqi_description">Catur Cina dengan snapshot FEN, putar ulang, impor/ekspor, dan pertarungan LLM.</string>
     <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_description">Lima berjajar di papan 15×15, dengan cuplikan posisi, putar ulang, impor/ekspor, dan pertarungan LLM.</string>
+    <string name="chess_title">Catur</string>
+    <string name="chess_description">Catur internasional dengan FEN standar, putar ulang, impor/ekspor, dan pertarungan LLM.</string>
     <string name="minesweeper_title">Minesweeper</string>
     <string name="minesweeper_description">Minesweeper klasik — uji logika dan penalaran Anda.</string>
     <string name="survive_30s_screen_title">Bertahan 30 Detik</string>
@@ -1697,4 +1697,11 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="app_update_dialog_message">Anda memakai versi %1$s. Versi %2$s sudah tersedia — sebaiknya perbarui.</string>
     <string name="app_update_dialog_confirm">Perbarui sekarang</string>
     <string name="app_update_dialog_later">Nanti</string>
+    <string name="ai_error_content_filtered">Permintaan diblokir oleh kebijakan keamanan konten penyedia model. Silakan ubah formulasi dan coba lagi.</string>
+    <string name="ai_chat_stream_interrupted">Koneksi terputus sebelum jawaban selesai. Silakan coba lagi.</string>
+    <string name="ai_chat_quick_start_19">Susun akhir permainan klasik dari pertandingan catur Tiongkok terkenal untuk melawan AI, lalu berikan tautan untuk membukanya</string>
+    <string name="ai_chat_quick_start_20">Susun akhir permainan klasik dari pertandingan Gomoku terkenal untuk melawan AI, lalu berikan tautan untuk membukanya</string>
+    <string name="ai_chat_quick_start_21">Susun akhir permainan klasik dari pertandingan catur terkenal untuk melawan AI, lalu berikan tautan untuk membukanya</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

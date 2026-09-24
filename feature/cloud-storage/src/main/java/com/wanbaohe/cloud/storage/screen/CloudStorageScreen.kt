@@ -19,9 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.draw.clip
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ViewList
@@ -88,7 +86,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAutoFix
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineHelp
 
 @Composable
 fun CloudStorageScreen(
@@ -109,7 +106,6 @@ fun CloudStorageScreen(
     val isGridMode by component.isGridMode.collectAsState()
 
     var showConnectionSheet by remember { mutableStateOf(false) }
-    var showGuideDialog by remember { mutableStateOf(false) }
     var showConnectionSwitcher by remember { mutableStateOf(false) }
     var editingConnection by remember { mutableStateOf<CloudStorageConnection?>(null) }
     var showBucketSheet by remember { mutableStateOf(false) }
@@ -171,12 +167,6 @@ fun CloudStorageScreen(
         onGoBack = onGoBack,
         isBackHandler = false,
         actions = {
-            IconButton(onClick = { showGuideDialog = true }) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHelp,
-                    contentDescription = stringResource(R.string.cloud_storage_guide_action),
-                )
-            }
             IconButton(onClick = { showConnectionSheet = true }) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
@@ -476,10 +466,6 @@ fun CloudStorageScreen(
         )
     }
 
-    if (showGuideDialog) {
-        CloudStorageGuideDialog(onDismiss = { showGuideDialog = false })
-    }
-
     if (message != null) {
         EnhancedAlertDialog(
             visible = message != null,
@@ -641,65 +627,6 @@ private fun CloudStatePlaceholder(
 private fun copyToClipboard(context: Context, text: String) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     clipboard.setPrimaryClip(ClipData.newPlainText("cloud-storage-url", text))
-}
-
-@Composable
-private fun CloudStorageGuideDialog(
-    onDismiss: () -> Unit,
-) {
-    EnhancedAlertDialog(
-        visible = true,
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.cloud_storage_guide_title)) },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                GuideSection(
-                    title = stringResource(R.string.cloud_storage_guide_intro_title),
-                    body = stringResource(R.string.cloud_storage_guide_intro),
-                )
-                GuideSection(
-                    title = stringResource(R.string.cloud_storage_guide_connect_title),
-                    body = stringResource(R.string.cloud_storage_guide_connect),
-                )
-                GuideSection(
-                    title = stringResource(R.string.cloud_storage_guide_cost_title),
-                    body = stringResource(R.string.cloud_storage_guide_cost),
-                )
-                GuideSection(
-                    title = stringResource(R.string.cloud_storage_guide_privacy_title),
-                    body = stringResource(R.string.cloud_storage_guide_privacy),
-                )
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cloud_storage_confirm))
-            }
-        },
-    )
-}
-
-@Composable
-private fun GuideSection(
-    title: String,
-    body: String,
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        Text(
-            text = body,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-    }
 }
 
 @Composable

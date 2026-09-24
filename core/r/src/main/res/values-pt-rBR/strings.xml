@@ -1346,9 +1346,9 @@
     <string name="xiangqi_title">Xiangqi</string>
     <string name="xiangqi_description">Xadrez chinês com capturas FEN, replay, importação/exportação e batalhas com LLM.</string>
     <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_description">Cinco em linha em um tabuleiro 15×15, com instantâneos de posição, reprodução, importação/exportação e batalhas com LLM.</string>
+    <string name="chess_title">Xadrez</string>
+    <string name="chess_description">Xadrez internacional com FEN padrão, reprodução, importação/exportação e batalhas com LLM.</string>
     <string name="minesweeper_title">Campo Minado</string>
     <string name="minesweeper_description">Campo minado clássico — teste sua lógica e raciocínio.</string>
     <string name="survive_30s_screen_title">Sobreviva 30 Segundos</string>
@@ -1697,4 +1697,11 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="app_update_dialog_message">Você está na versão %1$s. A versão %2$s já está disponível — recomendamos atualizar.</string>
     <string name="app_update_dialog_confirm">Atualizar agora</string>
     <string name="app_update_dialog_later">Mais tarde</string>
+    <string name="ai_error_content_filtered">A solicitação foi bloqueada pela política de segurança de conteúdo do provedor do modelo. Reformule e tente novamente.</string>
+    <string name="ai_chat_stream_interrupted">A conexão foi interrompida antes de a resposta ser concluída. Tente novamente.</string>
+    <string name="ai_chat_quick_start_19">Monte um final clássico de uma partida famosa de xadrez chinês para eu jogar contra a IA e depois me dê o link para abrir</string>
+    <string name="ai_chat_quick_start_20">Monte um final clássico de uma partida famosa de cinco em linha para eu jogar contra a IA e depois me dê o link para abrir</string>
+    <string name="ai_chat_quick_start_21">Monte um final clássico de uma partida famosa de xadrez para eu jogar contra a IA e depois me dê o link para abrir</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>

@@ -1346,9 +1346,9 @@
     <string name="xiangqi_title">Ajedrez chino</string>
     <string name="xiangqi_description">Ajedrez chino con capturas FEN, reproducción, importación/exportación y batallas con LLM.</string>
     <string name="gomoku_title">Gomoku</string>
-    <string name="gomoku_description">Five-in-a-row on a 15x15 board, with position snapshots, replay, import/export, and LLM battles.</string>
-    <string name="chess_title">Chess</string>
-    <string name="chess_description">International chess with standard FEN, replay, import/export, and LLM battles.</string>
+    <string name="gomoku_description">Cinco en línea en un tablero de 15×15, con capturas de posición, reproducción, importación/exportación y batallas con LLM.</string>
+    <string name="chess_title">Ajedrez</string>
+    <string name="chess_description">Ajedrez internacional con FEN estándar, reproducción, importación/exportación y batallas con LLM.</string>
     <string name="minesweeper_title">Buscaminas</string>
     <string name="minesweeper_description">Buscaminas clásico: pon a prueba tu lógica y razonamiento.</string>
     <string name="survive_30s_screen_title">Sobrevive 30 segundos</string>
@@ -1697,4 +1697,11 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="app_update_dialog_message">Tienes la versión %1$s. La versión %2$s ya está disponible; se recomienda actualizar.</string>
     <string name="app_update_dialog_confirm">Actualizar ahora</string>
     <string name="app_update_dialog_later">Más tarde</string>
+    <string name="ai_error_content_filtered">La solicitud fue bloqueada por la política de seguridad de contenidos del proveedor del modelo. Reformúlala e inténtalo de nuevo.</string>
+    <string name="ai_chat_stream_interrupted">Se interrumpió la conexión antes de completar la respuesta. Inténtalo de nuevo.</string>
+    <string name="ai_chat_quick_start_19">Prepárame un final clásico de una partida famosa de ajedrez chino para jugar contra la IA y luego dame el enlace para abrirlo</string>
+    <string name="ai_chat_quick_start_20">Prepárame un final clásico de una partida famosa de cinco en línea para jugar contra la IA y luego dame el enlace para abrirlo</string>
+    <string name="ai_chat_quick_start_21">Prepárame un final clásico de una partida famosa de ajedrez para jugar contra la IA y luego dame el enlace para abrirlo</string>
+    <string name="ai_engine_seed_pikafish_title">Pikafish</string>
+    <string name="ai_model_default_pikafish_title">Pikafish</string>
 </resources>
