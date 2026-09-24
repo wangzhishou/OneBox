@@ -4,6 +4,8 @@ import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.imagegeneration.loader.ImageGenerationLoader
 import com.shifenmiao.imagegeneration.loader.ImageGenerationLoaderImpl
 import com.shifenmiao.imagegeneration.provider.ImageGenerationProvider
+import com.shifenmiao.imagegeneration.provider.hunyuan.HunyuanImageApi
+import com.shifenmiao.imagegeneration.provider.hunyuan.HunyuanImageProvider
 import com.shifenmiao.imagegeneration.provider.qwen.QwenImageApi
 import com.shifenmiao.imagegeneration.provider.qwen.QwenImageProvider
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
@@ -45,6 +47,12 @@ abstract class ImageGenerationModule {
     @IntoSet
     abstract fun bindQwenImageProvider(
         provider: QwenImageProvider,
+    ): ImageGenerationProvider
+
+    @Binds
+    @IntoSet
+    abstract fun bindHunyuanImageProvider(
+        provider: HunyuanImageProvider,
     ): ImageGenerationProvider
 
     companion object {
@@ -100,5 +108,29 @@ abstract class ImageGenerationModule {
             .client(client)
             .build()
             .create(QwenImageApi::class.java)
+
+        @Provides
+        @Singleton
+        @Named("DirectHunyuanImageApi")
+        fun provideDirectHunyuanApi(
+            @Named("DirectImageGenerationClient") client: OkHttpClient,
+        ): HunyuanImageApi = Retrofit.Builder()
+            .baseUrl(UrlConstants.HUNYUAN_IMAGE_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+            .create(HunyuanImageApi::class.java)
+
+        @Provides
+        @Singleton
+        @Named("ProxyHunyuanImageApi")
+        fun provideProxyHunyuanApi(
+            @Named("ProxyImageGenerationClient") client: OkHttpClient,
+        ): HunyuanImageApi = Retrofit.Builder()
+            .baseUrl(NetworkBuilder.getBaseUrl())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+            .create(HunyuanImageApi::class.java)
     }
 }

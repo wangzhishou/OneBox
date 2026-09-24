@@ -27,7 +27,9 @@ class ImageGenerationManagerImpl @Inject constructor(
 
     init {
         if (repository.configs.value.isEmpty() && !repository.isInitialized()) {
-            val defaultProvider = providersById.values.minBy { it.descriptor.providerId }
+            // 默认固定千问:混元代理路由上线前,字母序会让 hunyuan-image 抢默认导致新用户 404
+            val defaultProvider = providersById["qwen-image"]
+                ?: providersById.values.minBy { it.descriptor.providerId }
             val config = defaultProvider.descriptor.toConfig(id = ImageGenerationManager.DEFAULT_CONFIG_ID)
             repository.replace(listOf(config), config.id)
         }

@@ -116,6 +116,7 @@ object UrlConstants {
 
     const val ALIBABA_AI_PROXY_PATH = "openai/alibaba/v1/chat/completions"
     const val ALIBABA_QWEN_IMAGE_PROXY_PATH = "ai/alibaba/qwen-image/v1/generation"
+    const val TENCENT_HUNYUAN_IMAGE_PROXY_PATH = "ai/tencent/hunyuan-image/v1/generation"
     const val KIM_AI_PROXY_PATH = "openai/kimi/v1/chat/completions"
     const val DOU_BAO_AI_PROXY_PATH = "/openai/doubao/v1/chat/completions"
     const val XIAOMI_AI_PROXY_PATH = "/openai/xiaomi/v1/chat/completions"
@@ -152,6 +153,12 @@ object UrlConstants {
     const val Q_WEN_AI_TEXT_COMPLETIONS_ENDPOINT = "compatible-mode/v1/chat/completions"
     const val Q_WEN_IMAGE_GENERATION_ENDPOINT =
         "api/v1/services/aigc/multimodal-generation/generation"
+
+    /**
+     * 腾讯混元生图(TokenHub)
+     */
+    const val HUNYUAN_IMAGE_BASE_URL = "https://tokenhub.tencentmaas.com/"
+    const val HUNYUAN_IMAGE_GENERATION_ENDPOINT = "v1/wand/hunyuan-image/v35-generation"
 
     /**
      * Open AI
