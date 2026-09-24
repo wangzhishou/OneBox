@@ -135,6 +135,8 @@
     <string name="ai_engine_dialog_required_hint">请先完善必填字段后再保存。</string>
     <string name="ai_engine_dialog_validation_failed">请先完善必填项并修正错误字段。</string>
     <string name="ai_engine_name_label">服务标识</string>
+    <string name="ai_engine_name_auto_hint">服务的唯一标识，已根据显示名称自动生成，一般无需修改。</string>
+    <string name="ai_engine_more_options">更多选项</string>
     <string name="ai_engine_title_label">显示名称</string>
     <string name="ai_engine_description_label">描述</string>
     <string name="ai_engine_protocol_label">请求协议</string>

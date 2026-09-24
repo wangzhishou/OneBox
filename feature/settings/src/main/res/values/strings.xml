@@ -135,6 +135,8 @@
     <string name="ai_engine_dialog_required_hint">Please complete all required fields before saving.</string>
     <string name="ai_engine_dialog_validation_failed">Please complete the required fields and fix any invalid ones.</string>
     <string name="ai_engine_name_label">Service Key</string>
+    <string name="ai_engine_name_auto_hint">Unique key for this service, auto-filled from the display name; usually no need to change.</string>
+    <string name="ai_engine_more_options">More options</string>
     <string name="ai_engine_title_label">Display Name</string>
     <string name="ai_engine_description_label">Description</string>
     <string name="ai_engine_protocol_label">Request Protocol</string>
