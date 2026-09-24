@@ -6,17 +6,17 @@
     <string name="chess_tab_library">Verlauf</string>
     <string name="chess_tab_settings">Einstellungen</string>
     <string name="chess_empty_play_title">Kein Spiel ausgewählt</string>
-    <string name="chess_empty_play_message">Erstelle, importiere oder öffne zuerst ein Spiel, bevor du mit dem Spielen beginnst.</string>
+    <string name="chess_empty_play_message">Erstellen, importieren oder öffnen Sie zuerst ein Spiel, bevor Sie mit dem Spielen beginnen.</string>
     <string name="chess_empty_analyze_title">Keine Spiele zum Analysieren</string>
-    <string name="chess_empty_analyze_message">Wähle ein vorhandenes Spiel oder erstelle ein neues, bevor du die Analyseansicht öffnest.</string>
+    <string name="chess_empty_analyze_message">Wählen Sie ein vorhandenes Spiel aus oder erstellen Sie ein neues, bevor Sie die Analyseansicht öffnen.</string>
     <string name="chess_empty_library_title">Noch keine Spiele</string>
-    <string name="chess_empty_library_message">Nutze die Schnellaktionen unten, um dein erstes Spiel zu starten.</string>
+    <string name="chess_empty_library_message">Nutzen Sie die Schnellaktionen unten, um Ihr erstes Spiel zu starten.</string>
     <string name="chess_analysis_panel_title">Analyse</string>
     <string name="chess_analysis_title">Spielanalyse</string>
     <string name="chess_analysis_back_to_game">Zurück zur Partie</string>
     <string name="chess_analysis_sound_on">Ton an</string>
     <string name="chess_analysis_sound_off">Ton aus</string>
-    <string name="chess_player_you">Du</string>
+    <string name="chess_player_you">Sie</string>
     <string name="chess_player_ai">KI</string>
     <string name="chess_player_black">Schwarz</string>
     <string name="chess_player_white">Weiß</string>
@@ -24,7 +24,7 @@
     <string name="chess_player_local_white">Spieler 1</string>
     <string name="chess_side_black">Schwarz</string>
     <string name="chess_side_white">Weiß</string>
-    <string name="chess_turn_badge">Du bist dran</string>
+    <string name="chess_turn_badge">Sie sind dran</string>
     <string name="chess_vs_short">Gegen</string>
     <string name="chess_game_title">Schachpartie</string>
     <string name="chess_game_over_black">Schwarz gewinnt</string>
@@ -32,7 +32,7 @@
     <string name="chess_game_over_draw">Unentschieden</string>
     <string name="chess_resign_result">Spiel durch Aufgabe beendet</string>
     <string name="chess_resign_confirm_title">Aufgeben?</string>
-    <string name="chess_resign_confirm_message">Du verlierst dieses Spiel. Fortfahren?</string>
+    <string name="chess_resign_confirm_message">Sie verlieren dieses Spiel. Fortfahren?</string>
     <string name="chess_start_action">Starten</string>
     <string name="chess_resume_action">Fortsetzen</string>
     <string name="chess_game_over_review">Wiederholung ansehen</string>
@@ -94,7 +94,7 @@
     <string name="chess_export_json">JSON</string>
     <string name="chess_export_text">Text</string>
     <string name="chess_share_image">Bild teilen</string>
-    <string name="chess_empty_export">Wähle oben ein Format, um Inhalte zu erzeugen</string>
+    <string name="chess_empty_export">Wählen Sie oben ein Format, um Inhalte zu erzeugen</string>
     <string name="chess_copied">Kopiert</string>
     <string name="chess_copy_notation">Kopieren</string>
     <string name="chess_share_notation">Teilen</string>
@@ -155,7 +155,7 @@
     <string name="chess_room_list">Raumliste</string>
     <string name="chess_room_code">Raum: %1$s</string>
     <string name="chess_online_initial_fen">Grundstellung</string>
-    <string name="chess_online_initial_fen_hint">Füge eine eigene Stellung ein oder behalte die Standardeinstellung, um aus der Grundstellung zu beginnen.</string>
+    <string name="chess_online_initial_fen_hint">Fügen Sie eine eigene Stellung ein oder behalten Sie die Standardeinstellung bei, um aus der Grundstellung zu beginnen.</string>
     <string name="chess_create_room_failed">Erstellen fehlgeschlagen</string>
     <string name="chess_join_room_failed">Beitritt fehlgeschlagen</string>
     <string name="chess_fetch_rooms_failed">Raumliste konnte nicht aktualisiert werden. Bitte später erneut versuchen.</string>

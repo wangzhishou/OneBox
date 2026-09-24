@@ -9,7 +9,7 @@
     <string name="xiangqi_empty_play_title">Walang napiling laro</string>
     <string name="xiangqi_empty_play_message">Gumawa, mag-import, o magbukas muna ng laro bago magsimulang maglaro.</string>
     <string name="xiangqi_empty_analyze_title">Walang mga larong susuriin</string>
-    <string name="xiangqi_empty_analyze_message">Pumili ng umiiral na laro, o gumawa ng bago bago buksan ang view ng pagsusuri.</string>
+    <string name="xiangqi_empty_analyze_message">Pumili ng umiiral na laro, o gumawa ng bago bago mo buksan ang view ng pagsusuri.</string>
     <string name="xiangqi_go_library">Pumunta sa kasaysayan</string>
     <string name="xiangqi_analysis_panel_title">Pagsusuri</string>
     <string name="xiangqi_export_short">I-export</string>
