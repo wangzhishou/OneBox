@@ -530,7 +530,9 @@ class CreateAIAgentComponent @AssistedInject internal constructor(
 
                         is LlmStreamEvent.ResponseStarted,
                         is LlmStreamEvent.SearchResultsEvent,
-                        is LlmStreamEvent.ToolCallDeltaEvent -> Unit
+                        is LlmStreamEvent.ToolCallDeltaEvent,
+                        // 流异常中断: 不置 streamCompleted, collect 结束后落入下方"未完成"分支, 不为残缺内容计费
+                        is LlmStreamEvent.StreamAborted -> Unit
                     }
                 }
 

@@ -829,10 +829,13 @@ open class AIChatComponent @AssistedInject internal constructor(
             )
 
             streamContentProcessor.startStreamWatchdog(reason = "executeStreamingChat")
+            var firstTurnAborted = false
             try {
                 resultFlow.onEach { streamEvent ->
-                    if (streamEvent is LlmStreamEvent.UsageUpdated) {
-                        firstTurnUsage = streamEvent.usage
+                    when (streamEvent) {
+                        is LlmStreamEvent.UsageUpdated -> firstTurnUsage = streamEvent.usage
+                        is LlmStreamEvent.StreamAborted -> firstTurnAborted = true
+                        else -> Unit
                     }
                 }.collect { streamEvent: LlmStreamEvent ->
                     processingMutex.withLock {
@@ -852,6 +855,17 @@ open class AIChatComponent @AssistedInject internal constructor(
             // 流正常结束才触发 afterLlmTurn(usage 可能为空: 上游未上报);
             // 中途异常已由上面 catch 走 onLoopError, 不会执行到这里.
             agentLoopInterceptors.forEachInterceptor { it.afterLlmTurn(firstTurnContext, firstTurnUsage) }
+
+            if (firstTurnAborted) {
+                // 首轮流异常中断(未收到协议结束标记连接即关闭): 已流出的内容不完整,
+                // 直接走错误 UI, 不进入 Agent Loop / 完成持久化路径(避免为失败轮次扣积分)。
+                // 首轮不自动重试 —— fetchAndSaveMessages 已落库, 重试可能产生重复消息。
+                renderErrorUIForChat(
+                    applicationContext.getString(R.string.ai_chat_stream_interrupted),
+                    questionMessageEntityList
+                )
+                return
+            }
 
             if (isToolCallSupported && agentLoopOrchestrator.hasAccumulatedToolCalls()) {
                 agentLoopOrchestrator.executeAgentLoop(
@@ -896,10 +910,12 @@ open class AIChatComponent @AssistedInject internal constructor(
                     persistInterruptedChat()
                 }
                 else -> {
-                    val errorMessage = if (isWatchdogTimeout) {
-                        applicationContext.getString(R.string.agent_stream_timeout)
-                    } else {
-                        buildChatErrorMessage(e)
+                    val errorMessage = when {
+                        isWatchdogTimeout -> applicationContext.getString(R.string.agent_stream_timeout)
+                        e is LlmStreamAbortedException -> applicationContext.getString(
+                            R.string.ai_chat_stream_interrupted
+                        )
+                        else -> buildChatErrorMessage(e)
                     }
                     renderErrorUIForChat(errorMessage, questionMessageEntityList)
                 }
@@ -977,6 +993,13 @@ open class AIChatComponent @AssistedInject internal constructor(
                     toolCallsChainJson = agentLoopOrchestrator.toolCallsChainJson,
                     startQuestionTime = streamContentProcessor.startQuestionTime
                 )
+            }
+
+            is LlmStreamEvent.StreamAborted -> {
+                // 不渲染错误、不标记 sawEnd: Agent Loop follow-up 回合由 Runner 捕获后重试;
+                // 首轮/非 Agent 场景由 executeStreamingChat 在 collect 结束后统一渲染错误。
+                "stream aborted before end marker (responseId=${streamEvent.responseId})"
+                    .makeLog("AIChatComponent")
             }
         }
     }

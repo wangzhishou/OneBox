@@ -1117,6 +1117,13 @@ class AIDuelChatComponent @AssistedInject internal constructor(
 
                     is LlmStreamEvent.ResponseStarted,
                     is LlmStreamEvent.ToolCallDeltaEvent -> Unit
+
+                    // 流异常中断(未收到结束标记连接即关闭): 与 Error 同路径, 走错误提示
+                    is LlmStreamEvent.StreamAborted -> {
+                        errorMsg = applicationContext.getString(R.string.ai_chat_stream_interrupted)
+                        streamEnded = true
+                        this.cancel()
+                    }
                 }
             }
         }

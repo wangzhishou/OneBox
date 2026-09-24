@@ -903,6 +903,7 @@
     <string name="ai_chat_engine_unavailable_toast">当前没有可用的 AI 引擎，请先完成引擎设置</string>
 <string name="local_model_loading_hint">正在加载本地模型 %1$s，仅启动后第一次需要几秒…</string>
     <string name="ai_chat_empty_response_error">模型没有返回可展示的内容，请重试一次；如果仍然失败，可切换引擎或检查当前协议兼容性。</string>
+    <string name="ai_chat_stream_interrupted">连接中断，回答未完成。请重试。</string>
     <string name="blog_title">查看文章详情</string>
     <string name="blog_escription">查看文章更多</string>
     <string name="no_app_to_open_file">打开失败,发生未知错误,可能没有权限</string>

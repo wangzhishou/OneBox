@@ -210,7 +210,12 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
             }
 
             if (isActive && !sawEnd) {
-                trySend(LlmStreamEvent.Completed(responseId = emittedResponseId))
+                // 流在未收到协议结束标记时被对端/中间层关闭(如网关 300s 超时),
+                // 已流出的内容不完整 —— 不能当作正常 Completed 收尾, 否则调用方
+                // 会把残缺内容当完整回答持久化/计费。发 StreamAborted 由上层决定重试或报错。
+                "Stream closed without end marker, emitting StreamAborted (chunkCount=$chunkCount)"
+                    .makeLog("ProtocolRoutingAIRequestHandler")
+                trySend(LlmStreamEvent.StreamAborted(responseId = emittedResponseId))
             }
         } catch (e: CancellationException) {
             throw e

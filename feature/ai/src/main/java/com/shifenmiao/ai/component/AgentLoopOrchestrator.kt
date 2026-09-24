@@ -565,6 +565,14 @@ class AgentLoopOrchestrator(
                 sharedState.updateAnswerMessage { it.copy(previousResponseId = previousResponseId) }
             }
         }
+
+        override fun onRestoreStreamContent(answerSnapshot: String, reasoningSnapshot: String) {
+            if (isShuttingDown) return
+            sharedState.updateAnswerMessage { current ->
+                current.copy(answer = answerSnapshot, reasoningContent = reasoningSnapshot)
+            }
+            streamContentProcessor.updatePlaceHolderMessage(forceUpdate = true)
+        }
     }
 
 

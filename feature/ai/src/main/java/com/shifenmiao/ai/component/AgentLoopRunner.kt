@@ -27,10 +27,12 @@ import com.shifenmiao.model.ai.ToolDefinition
 import com.shifenmiao.model.ai.Usage
 import com.shifenmiao.model.ai.unified.LlmBuiltinTool
 import com.shifenmiao.model.ai.unified.LlmMessage
+import com.shifenmiao.model.ai.unified.LlmStreamEvent
 import com.shifenmiao.model.ai.unified.LlmTurnRequest
 import com.shifenmiao.storage.AIChatStorage
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
 
 /**
@@ -227,6 +229,8 @@ class AgentLoopRunner(
                     stepResults = allStepResults,
                     watchdogReason = "executeAgentLoop:iter=${iterationResult.iteration}",
                     previousResponseIdProvider = previousResponseIdProvider,
+                    answerProvider = answerProvider,
+                    reasoningContentProvider = reasoningContentProvider,
                     turnContext = turnContext(iterationResult.iteration),
                     callback = callback,
                 )
@@ -487,6 +491,8 @@ class AgentLoopRunner(
         stepResults: Map<String, String>,
         watchdogReason: String,
         previousResponseIdProvider: () -> String,
+        answerProvider: () -> String,
+        reasoningContentProvider: () -> String,
         turnContext: AgentTurnContext,
         callback: AgentLoopCallback,
     ): Boolean {
@@ -514,35 +520,63 @@ class AgentLoopRunner(
             ),
         )
 
-        val followUpRequest = LlmTurnRequest(
-            stream = conversation.engine.stream,
-            model = conversation.engine.model.name,
-            messages = if (previousResponseId != null) toolResultMessages else contextMessages,
-            tools = activeTools,
-            builtinTools = buildSet {
-                if (enableWebSearch) add(LlmBuiltinTool.WEB_SEARCH)
-            },
-            reasoningEnabled = enableReasoning && conversation.engine.model.canReasoning,
-            previousResponseId = previousResponseId,
-        )
-        agentLoopInterceptors.forEachInterceptor { it.beforeLlmTurn(turnContext) }
-        val followUpFlow = remoteRequestProvider.fetchWithDirectRequest(
-            conversation,
-            followUpRequest,
-        )
-        // 拦截链:tap 流事件捕获 usage(不改变事件本身),流正常结束后统一 afterLlmTurn.
-        // 流中途异常时 afterLlmTurn 不触发,由 execute() 的异常出口走 onLoopError.
-        var turnUsage: Usage? = null
-        streamCollector.collectStream(
-            followUpFlow.onEach { event ->
-                if (event is com.shifenmiao.model.ai.unified.LlmStreamEvent.UsageUpdated) {
-                    turnUsage = event.usage
-                }
-            },
-            questionMessages,
-            watchdogReason,
-        )
-        agentLoopInterceptors.forEachInterceptor { it.afterLlmTurn(turnContext, turnUsage) }
+        // 流中断重试基准: 本回合开始时的 UI 内容快照, 重试前回滚避免内容重复叠加
+        val answerSnapshot = answerProvider()
+        val reasoningSnapshot = reasoningContentProvider()
+
+        var attempt = 0
+        while (true) {
+            val followUpRequest = LlmTurnRequest(
+                stream = conversation.engine.stream,
+                model = conversation.engine.model.name,
+                messages = if (previousResponseId != null) toolResultMessages else contextMessages,
+                tools = activeTools,
+                builtinTools = buildSet {
+                    if (enableWebSearch) add(LlmBuiltinTool.WEB_SEARCH)
+                },
+                reasoningEnabled = enableReasoning && conversation.engine.model.canReasoning,
+                previousResponseId = previousResponseId,
+            )
+            agentLoopInterceptors.forEachInterceptor { it.beforeLlmTurn(turnContext) }
+            val followUpFlow = remoteRequestProvider.fetchWithDirectRequest(
+                conversation,
+                followUpRequest,
+            )
+            // 拦截链:tap 流事件捕获 usage(不改变事件本身),流正常结束后统一 afterLlmTurn.
+            // 流中途异常时 afterLlmTurn 不触发,由 execute() 的异常出口走 onLoopError.
+            var turnUsage: Usage? = null
+            var streamAborted = false
+            streamCollector.collectStream(
+                followUpFlow.onEach { event ->
+                    when (event) {
+                        is LlmStreamEvent.UsageUpdated -> turnUsage = event.usage
+                        is LlmStreamEvent.StreamAborted -> streamAborted = true
+                        else -> Unit
+                    }
+                },
+                questionMessages,
+                watchdogReason,
+            )
+            if (!streamAborted) {
+                agentLoopInterceptors.forEachInterceptor { it.afterLlmTurn(turnContext, turnUsage) }
+                break
+            }
+
+            attempt++
+            if (attempt > MAX_STREAM_ABORT_RETRIES) {
+                "llm turn stream aborted, retries exhausted (attempt=$attempt)"
+                    .makeLog("AgentLoopRunner")
+                throw LlmStreamAbortedException("LLM stream aborted after $attempt attempts")
+            }
+            "llm turn stream aborted, retrying (attempt=$attempt/$MAX_STREAM_ABORT_RETRIES)"
+                .makeLog("AgentLoopRunner")
+            // 重试前清理: 残留的 tool_call 碎片直接丢弃(参数可能已被截断, 不能执行);
+            // UI 已流式渲染的内容回滚到回合开始快照。
+            agentLoopExecutor.resetAccumulator(session)
+            callback.onRestoreStreamContent(answerSnapshot, reasoningSnapshot)
+            callback.onResetStreamWatchdog()
+            delay(STREAM_ABORT_RETRY_DELAY_MS)
+        }
 
         return agentLoopExecutor.hasAccumulatedToolCalls(session)
     }
@@ -777,4 +811,18 @@ class AgentLoopRunner(
         val arguments: String?,
         val debugInfo: String?,
     )
+
+    private companion object {
+        /** 流中断(未收到结束标记连接即关闭)时单轮 LLM 请求的最大重试次数 */
+        const val MAX_STREAM_ABORT_RETRIES = 2
+
+        /** 流中断重试间隔(远小于看门狗 60s 空闲超时) */
+        const val STREAM_ABORT_RETRY_DELAY_MS = 2_000L
+    }
 }
+
+/**
+ * LLM 流多次异常中断(未收到协议结束标记连接即关闭)后放弃重试。
+ * 由 executeStreamingChat 的 catch 统一映射为"连接中断"错误 UI。
+ */
+class LlmStreamAbortedException(message: String) : java.io.IOException(message)

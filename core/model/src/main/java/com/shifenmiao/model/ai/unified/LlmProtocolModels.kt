@@ -208,5 +208,13 @@ sealed class LlmStreamEvent {
         val errorCode: Int = 1,
         val errorMessage: String,
     ) : LlmStreamEvent()
+
+    /**
+     * 流异常终止：连接在收到协议结束标记（finish_reason / [DONE] / message_stop）前被关闭，
+     * 已流出的内容可能不完整。消费方不应将其视为正常完成：
+     * Agent Loop follow-up 回合由 Runner 捕获后重试；首轮/非 Agent 场景由收集方渲染错误。
+     */
+    @Serializable
+    data class StreamAborted(val responseId: String? = null) : LlmStreamEvent()
 }
 

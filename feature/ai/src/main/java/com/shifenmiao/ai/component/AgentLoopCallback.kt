@@ -50,4 +50,10 @@ interface AgentLoopCallback {
 
     /** 更新回答消息（如 previousResponseId） */
     fun onUpdateAnswerMessage(previousResponseId: String?)
+
+    /**
+     * 流中断重试前调用：把本回合已流式渲染到 UI 的内容回滚到快照，
+     * 避免重试后新旧内容重复叠加。
+     */
+    fun onRestoreStreamContent(answerSnapshot: String, reasoningSnapshot: String)
 }
