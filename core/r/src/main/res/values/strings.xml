@@ -612,9 +612,9 @@
     <string name="ai_chat_quick_start_16">Help me put together a weekend trip guide webpage</string>
     <string name="ai_chat_quick_start_17">Help me write a note about </string>
     <string name="ai_chat_quick_start_18">Help me save this website: </string>
-    <string name="ai_chat_quick_start_19">Create a Chinese chess (Xiangqi) endgame position for me to play against the AI, make the position interesting, then give me the link to open it</string>
-    <string name="ai_chat_quick_start_20">Create a Gomoku (Five in a Row) endgame position for me to play against the AI, make the position interesting, then give me the link to open it</string>
-    <string name="ai_chat_quick_start_21">Create a chess endgame position for me to play against the AI, make the position interesting, then give me the link to open it</string>
+    <string name="ai_chat_quick_start_19">Set up a classic endgame from a famous Xiangqi (Chinese chess) game for me to play against the AI, then give me the link to open it</string>
+    <string name="ai_chat_quick_start_20">Set up a classic endgame from a famous Gomoku (Five in a Row) game for me to play against the AI, then give me the link to open it</string>
+    <string name="ai_chat_quick_start_21">Set up a classic endgame from a famous chess game for me to play against the AI, then give me the link to open it</string>
     <string name="ai_chat_jump_to_latest_streaming">New content being generated, tap to go to bottom</string>
     <string name="ai_chat_jump_to_latest_message">New message, tap to view</string>
     <string name="ai_chat_message_limit_notice">Only the last 50 messages are shown. Older messages are archived.</string>
