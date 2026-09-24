@@ -7,8 +7,8 @@ androidCompileSdkExtension = "-"
 
 eddsa = "0.3.0"
 nanohttpd = "2.3.1"
-versionName = "1.4.0"
-versionCode = "140"
+versionName = "1.4.1"
+versionCode = "141"
 gitVersion = "000"
 jvmTarget = "17"
 
