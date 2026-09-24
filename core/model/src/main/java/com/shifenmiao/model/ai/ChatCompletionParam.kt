@@ -64,6 +64,12 @@ data class ChatCompletionRequest(
     val stop: List<String>? = null,
     @SerializedName("stream")
     val stream: Boolean = true,
+    /**
+     * 流式请求时要求上游在最后一帧返回 usage(OpenAI 标准字段)。
+     * 缺省时上游不下发 usage, 客户端只能本地估算, 思考类模型的 reasoning token 会全部丢失。
+     */
+    @SerializedName("stream_options")
+    val streamOptions: StreamOptions? = null,
     @SerializedName("temperature")
     val temperature: Double? = null,
     @SerializedName("top_p")
@@ -88,6 +94,13 @@ data class ReasoningOptions(
     val effort: String = "medium",
     @SerializedName("enabled")
     val enabled: Boolean? = null,
+) : Parcelable
+
+@Parcelize
+@Serializable
+data class StreamOptions(
+    @SerializedName("include_usage")
+    val includeUsage: Boolean = true,
 ) : Parcelable
 
 /**

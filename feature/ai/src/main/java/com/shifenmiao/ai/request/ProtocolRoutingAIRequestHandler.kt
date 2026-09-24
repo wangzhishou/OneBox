@@ -26,6 +26,7 @@ import com.shifenmiao.model.ai.ImageSource
 import com.shifenmiao.model.ai.ListOrStringContent
 import com.shifenmiao.model.ai.RequestMessage
 import com.shifenmiao.model.ai.ReasoningOptions
+import com.shifenmiao.model.ai.StreamOptions
 import com.shifenmiao.model.ai.RoleType
 import com.shifenmiao.model.ai.ToolCallDelta
 import com.shifenmiao.model.ai.ToolDefinition
@@ -133,7 +134,9 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
             streaming = true
         )
         var responseBody: ResponseBody? = null
-        var sawEnd = false
+        var sawFinish = false
+        var sawDone = false
+        var finishReason: String? = null
         var chunkCount = 0
         var emittedResponseId: String? = null
 
@@ -172,9 +175,25 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
                             anthropicState = anthropicState
                         ) ?: continue
                         chunkCount++
-                        if (chunk.isEnd) sawEnd = true
+                        val hasFinish = chunk.choices.any { choice ->
+                            (!choice.finishReason.isNullOrBlank() && choice.finishReason != "null") ||
+                                choice.message != null
+                        }
+                        if (hasFinish) {
+                            sawFinish = true
+                            finishReason = chunk.choices.firstNotNullOfOrNull { choice ->
+                                choice.finishReason?.takeIf { it.isNotBlank() && it != "null" }
+                            } ?: finishReason
+                        }
+                        // [DONE] / message_stop / usage-only 等协议级最后一帧(isEnd 但无 finishReason);
+                        // finish_reason 帧不算最后一帧 —— 它后面通常还有一帧 usage, 必须继续读。
+                        if (chunk.isEnd && !hasFinish) sawDone = true
                         var closed = false
                         for (event in mapChatChunkToEvents(chunk, emittedResponseId)) {
+                            // Completed 不在此处透传, 延迟到流末尾统一发出:
+                            // finish 帧之后还有 usage 帧, 先发 Completed 会让消费方
+                            // 把随后的 UsageUpdated 当作"流后事件"丢弃, token 统计失真。
+                            if (event is LlmStreamEvent.Completed) continue
                             if (event is LlmStreamEvent.ResponseStarted) emittedResponseId = event.responseId
                             val sendResult = trySend(event)
                             if (sendResult.isClosed) {
@@ -183,7 +202,7 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
                             }
                         }
                         if (closed || chunk.errorCode != 0) break
-                        if (sawEnd) {
+                        if (sawDone) {
                             if (BuildConfig.DEBUG) {
                                 "Stream end marker received, breaking read loop (chunkCount=$chunkCount)"
                                     .makeLog("ProtocolRoutingAIRequestHandler")
@@ -194,7 +213,8 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
                     }
                 }
                 if (BuildConfig.DEBUG) {
-                    "Stream read loop exited: chunkCount=$chunkCount sawEnd=$sawEnd isActive=$isActive"
+                    "Stream read loop exited: chunkCount=$chunkCount sawFinish=$sawFinish " +
+                        "sawDone=$sawDone isActive=$isActive"
                         .makeLog("ProtocolRoutingAIRequestHandler")
                 }
             } catch (e: CancellationException) {
@@ -209,13 +229,26 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
                 }
             }
 
-            if (isActive && !sawEnd) {
-                // 流在未收到协议结束标记时被对端/中间层关闭(如网关 300s 超时),
-                // 已流出的内容不完整 —— 不能当作正常 Completed 收尾, 否则调用方
-                // 会把残缺内容当完整回答持久化/计费。发 StreamAborted 由上层决定重试或报错。
-                "Stream closed without end marker, emitting StreamAborted (chunkCount=$chunkCount)"
-                    .makeLog("ProtocolRoutingAIRequestHandler")
-                trySend(LlmStreamEvent.StreamAborted(responseId = emittedResponseId))
+            if (isActive) {
+                if (sawFinish || sawDone) {
+                    if (BuildConfig.DEBUG) {
+                        "Stream completed, emitting deferred Completed (chunkCount=$chunkCount)"
+                            .makeLog("ProtocolRoutingAIRequestHandler")
+                    }
+                    trySend(
+                        LlmStreamEvent.Completed(
+                            responseId = emittedResponseId,
+                            finishReason = finishReason
+                        )
+                    )
+                } else {
+                    // 流在未收到协议结束标记时被对端/中间层关闭(如网关 300s 超时),
+                    // 已流出的内容不完整 —— 不能当作正常 Completed 收尾, 否则调用方
+                    // 会把残缺内容当完整回答持久化/计费。发 StreamAborted 由上层决定重试或报错。
+                    "Stream closed without end marker, emitting StreamAborted (chunkCount=$chunkCount)"
+                        .makeLog("ProtocolRoutingAIRequestHandler")
+                    trySend(LlmStreamEvent.StreamAborted(responseId = emittedResponseId))
+                }
             }
         } catch (e: CancellationException) {
             throw e
@@ -429,6 +462,7 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
         return ChatCompletionRequest(
             model = request.model,
             stream = request.stream,
+            streamOptions = if (request.stream) StreamOptions(includeUsage = true) else null,
             messages = request.messages.map { message ->
                 message.toRequestMessage().adjustReasoningContentForChatProvider(engine)
             },
