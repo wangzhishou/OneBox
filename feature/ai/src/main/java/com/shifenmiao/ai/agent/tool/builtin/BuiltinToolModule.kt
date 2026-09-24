@@ -293,6 +293,16 @@ object BuiltinToolModule {
     @StringKey("manage_xiangqi")
     fun provideManageXiangqiTool(tool: ManageXiangqiTool): AgentTool = tool
 
+    @Provides
+    @IntoMap
+    @StringKey("manage_gomoku")
+    fun provideManageGomokuTool(tool: ManageGomokuTool): AgentTool = tool
+
+    @Provides
+    @IntoMap
+    @StringKey("manage_chess")
+    fun provideManageChessTool(tool: ManageChessTool): AgentTool = tool
+
     // ========== 浏览器操控工具 ==========
 
     @Provides

@@ -1,0 +1,23 @@
+管理国际象棋对局，支持以下操作（每个操作成功后返回包含 deeplink 的结果，可跳转到国际象棋页面）：
+
+【列表与详情】
+- list: 列出所有历史对局，无需参数。
+- detail: 获取对局详情和走子记录，需传 game_id。
+
+【创建对局】
+- create: 创建新对局。需传 title。传 ai_as_white=true 创建人机对局（AI 执白，先手），ai_as_white=false 创建人机对局（AI 执黑，后手），不传 ai_as_white 则创建本地双人对局。
+
+【导入残局/自定义开局】
+- import_fen: 从 FEN 字符串导入残局或自定义开局。当用户要求“创建残局”“摆一个残局”“导入棋谱开局”“从某个局面开始”时使用此操作。需传 fen 参数，可选 title。
+  标准 FEN 六段式: "局面 执子方 易位权 吃过路兵 半回合计数 回合数"，如 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"。
+  局面部分 8 行用 / 分隔（第 1 行是 rank 8，即黑方底线），每行 8 列。大写=白方（P兵 N马 B象 R车 Q后 K王），小写=黑方（p n b r q k），数字=连续空格数。
+  执子方: w=白方, b=黑方。易位权: KQkq 的组合，无则 -。吃过路兵格无则 -。计数没有可靠来源时可写 0 1。
+
+【导入对战记录】
+- import_json: 从 JSON 对战记录导入完整对局并回放走子。当用户要求“导入对战记录”“回放一盘棋”“导入棋谱”时使用此操作。需传 json_data 参数，可选 title。
+  JSON 格式: {"version":1,"title":"标题","initialFen":"初始FEN","result":"结果","moves":[{"move":"e2e4","moveCn":"e4"},...]}。move 为 UCI 坐标格式（如 "e2e4"，升变带尾字母如 "e7e8q"），moves 按顺序回放。
+  result 合法值: "WHITE"(白胜) / "BLACK"(黑胜) / "DRAW"(和棋) / "RESIGNED"(认输) / ""(未结束)；认输局另传 winnerSide: "WHITE"|"BLACK"。
+
+【删除与导出】
+- delete: 删除对局，需传 game_id。
+- export: 导出棋谱和对战记录，需传 game_id，可选 export_format 为 fen/json/both。

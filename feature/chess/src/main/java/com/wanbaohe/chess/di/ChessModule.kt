@@ -19,6 +19,8 @@ import com.wanbaohe.chess.data.ChessAiPrefsAdapter
 import com.wanbaohe.chess.data.online.SignalingApi
 import com.wanbaohe.chess.data.online.SignalingClientImpl
 import com.wanbaohe.chess.application.port.outbound.SignalingClient
+import com.wanbaohe.chess.service.ChessServiceImpl
+import com.shifenmiao.model.chess.ChessServiceInterface
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -67,6 +69,10 @@ abstract class ChessModule {
     @Binds
     @Singleton
     abstract fun bindSignalingClient(impl: SignalingClientImpl): SignalingClient
+
+    @Binds
+    @Singleton
+    abstract fun bindChessService(impl: ChessServiceImpl): ChessServiceInterface
 
     companion object {
         @Provides

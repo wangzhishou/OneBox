@@ -19,6 +19,8 @@ import com.wanbaohe.gomoku.data.TtsAdapter
 import com.wanbaohe.gomoku.data.GomokuAiPrefsAdapter
 import com.wanbaohe.gomoku.data.online.SignalingApi
 import com.wanbaohe.gomoku.data.online.SignalingClientImpl
+import com.wanbaohe.gomoku.service.GomokuServiceImpl
+import com.shifenmiao.model.gomoku.GomokuServiceInterface
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -67,6 +69,10 @@ abstract class GomokuModule {
     @Binds
     @Singleton
     abstract fun bindSignalingClient(impl: SignalingClientImpl): SignalingClient
+
+    @Binds
+    @Singleton
+    abstract fun bindGomokuService(impl: GomokuServiceImpl): GomokuServiceInterface
 
     companion object {
         @Provides

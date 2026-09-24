@@ -801,4 +801,47 @@
     <string name="agent_tool_automate_ui_task_failed">タスクはステップ%1$dで失敗しました: %2$s</string>
     <string name="agent_tool_automate_ui_task_step_limit">タスクは%1$dステップで停止しました（制限に達しました）。最後のアクション: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">現在利用可能なアクティビティがありません。通常のページからチャットを開いてください。</string>
+    <string name="agent_tool_manage_gomoku_title">Manage Gomoku Games</string>
+    <string name="agent_tool_manage_gomoku_summary">Query, create, import endgame/opening, import game records, delete and export Gomoku (Five in a Row) games</string>
+    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
+    <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
+    <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_manage_gomoku_param_export_format">Export format: fen / json / both (optional for export, default both)</string>
+    <string name="agent_tool_manage_gomoku_missing_game_id">Missing game_id parameter</string>
+    <string name="agent_tool_manage_gomoku_missing_title">Missing title parameter</string>
+    <string name="agent_tool_manage_gomoku_not_found">Game %1$s does not exist</string>
+    <string name="agent_tool_manage_gomoku_unknown_action">Unknown action: %1$s</string>
+    <string name="agent_tool_manage_gomoku_failed">Gomoku operation failed: %1$s</string>
+    <string name="agent_tool_manage_gomoku_created">Game created: %1$s</string>
+    <string name="agent_tool_manage_gomoku_deleted">Game deleted: %1$s</string>
+    <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">Missing fen parameter</string>
+    <string name="agent_tool_manage_gomoku_missing_json">Missing json_data parameter</string>
+    <string name="agent_tool_manage_gomoku_imported_fen">FEN Imported</string>
+    <string name="agent_tool_manage_gomoku_imported">Game imported: %1$s</string>
+    <string name="agent_tool_manage_gomoku_import_failed">Import failed: %1$s</string>
+    <string name="agent_tool_manage_chess_title">Manage Chess Games</string>
+    <string name="agent_tool_manage_chess_summary">Query, create, import endgame/opening, import game records, delete and export chess games</string>
+    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
+    <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
+    <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_manage_chess_param_export_format">Export format: fen / json / both (optional for export, default both)</string>
+    <string name="agent_tool_manage_chess_missing_game_id">Missing game_id parameter</string>
+    <string name="agent_tool_manage_chess_missing_title">Missing title parameter</string>
+    <string name="agent_tool_manage_chess_not_found">Game %1$s does not exist</string>
+    <string name="agent_tool_manage_chess_unknown_action">Unknown action: %1$s</string>
+    <string name="agent_tool_manage_chess_failed">Chess operation failed: %1$s</string>
+    <string name="agent_tool_manage_chess_created">Game created: %1$s</string>
+    <string name="agent_tool_manage_chess_deleted">Game deleted: %1$s</string>
+    <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
+    <string name="agent_tool_manage_chess_missing_fen">Missing fen parameter</string>
+    <string name="agent_tool_manage_chess_missing_json">Missing json_data parameter</string>
+    <string name="agent_tool_manage_chess_imported_fen">FEN Imported</string>
+    <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
+    <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
+    <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
 </resources>

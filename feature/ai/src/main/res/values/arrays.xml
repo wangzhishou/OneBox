@@ -1011,5 +1011,52 @@
         <item>Set the start page to notes</item>
         <item>Restore the default start page</item>
     </string-array>
+
+    <string-array name="agent_tool_manage_gomoku_keywords">
+        <item>五子棋</item>
+        <item>gomoku</item>
+        <item>连珠</item>
+        <item>五连</item>
+        <item>棋局</item>
+        <item>对局</item>
+        <item>棋谱</item>
+        <item>下棋</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_gomoku_examples">
+        <item>查看我的五子棋对局</item>
+        <item>创建一个五子棋残局</item>
+        <item>摆一个五子棋残局</item>
+        <item>导入五子棋棋谱开局</item>
+        <item>导入对战记录</item>
+        <item>回放一盘五子棋</item>
+        <item>帮我创建一个人机对弈</item>
+        <item>导出 xxx 对局的棋谱</item>
+        <item>删除 xxx 对局</item>
+        <item>查看 xxx 对局详情</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_chess_keywords">
+        <item>国际象棋</item>
+        <item>chess</item>
+        <item>西洋棋</item>
+        <item>棋局</item>
+        <item>对局</item>
+        <item>棋谱</item>
+        <item>下棋</item>
+    </string-array>
+
+    <string-array name="agent_tool_manage_chess_examples">
+        <item>查看我的国际象棋对局</item>
+        <item>创建一个国际象棋残局</item>
+        <item>摆一个国际象棋残局</item>
+        <item>导入国际象棋棋谱开局</item>
+        <item>导入对战记录</item>
+        <item>回放一盘国际象棋</item>
+        <item>帮我创建一个人机对弈</item>
+        <item>导出 xxx 对局的棋谱</item>
+        <item>删除 xxx 对局</item>
+        <item>查看 xxx 对局详情</item>
+    </string-array>
 </resources>
 
