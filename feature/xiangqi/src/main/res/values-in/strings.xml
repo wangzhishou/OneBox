@@ -261,5 +261,5 @@
     <string name="xiangqi_tts_default_check">Skak!</string>
     <string name="xiangqi_tts_default_checkmate">Skakmat!</string>
     <string name="xiangqi_tts_default_draw">Seri!</string>
-    <string name="xiangqi_new_ai_create">AI create game</string>
+    <string name="xiangqi_new_ai_create">AI buat permainan</string>
 </resources>

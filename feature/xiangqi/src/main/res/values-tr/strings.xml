@@ -262,5 +262,5 @@
     <string name="xiangqi_tts_default_check">Şah!</string>
     <string name="xiangqi_tts_default_checkmate">Mat!</string>
     <string name="xiangqi_tts_default_draw">Berabere!</string>
-    <string name="xiangqi_new_ai_create">AI create game</string>
+    <string name="xiangqi_new_ai_create">AI ile oyun oluştur</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="xiangqi_library_title">샹치</string>
-    <string name="xiangqi_library_subtitle">FEN 스냅샷 기반 로컬 2인 및 LLM 중국 장기 대국</string>
+    <string name="xiangqi_library_subtitle">FEN 스냅샷 기반 로컬 2인 및 LLM 샹치 대국</string>
     <string name="xiangqi_tab_play">게임 시작</string>
     <string name="xiangqi_tab_analyze">분석</string>
     <string name="xiangqi_tab_library">기록</string>
@@ -40,13 +40,13 @@
     <string name="xiangqi_settings_preview_loading">미리보는 중…</string>
     <string name="xiangqi_settings_stop_preview">중지</string>
     <string name="xiangqi_settings_stop_loading">중지하는 중…</string>
-    <string name="xiangqi_settings_ai_title">장기 AI</string>
+    <string name="xiangqi_settings_ai_title">샹치 AI</string>
     <string name="xiangqi_settings_ai_subtitle">\"인간 대 AI\" 및 \"AI 대 AI\" 모드에서 양측 모델을 구성합니다.</string>
     <string name="xiangqi_settings_ai_engine">현재 엔진</string>
     <string name="xiangqi_settings_ai_model">현재 모델</string>
     <string name="xiangqi_settings_open_ai_model_settings">AI 엔진 및 모델 설정 열기</string>
-    <string name="xiangqi_settings_pick_ai_model">장기 AI 모델 선택</string>
-    <string name="xiangqi_settings_ai_picker_title">장기 AI 모델 선택</string>
+    <string name="xiangqi_settings_pick_ai_model">샹치 AI 모델 선택</string>
+    <string name="xiangqi_settings_ai_picker_title">샹치 AI 선택</string>
     <string name="xiangqi_settings_ai_fast_title">인간 대 AI 모델</string>
     <string name="xiangqi_settings_ai_fast_desc">\"인간 대 AI\" 모드에서 사용되며, 수의 강도와 스타일에 영향을 줍니다.</string>
     <string name="xiangqi_settings_ai_duel_a_title">AI 대결 · 홍</string>
@@ -55,12 +55,12 @@
     <string name="xiangqi_settings_ai_duel_b_desc">이 모델은 \"AI 대 AI\" 모드에서 흑(黑)을 둡니다.</string>
     <string name="xiangqi_settings_ai_duel_a_picker_title">홍 대결 모델 선택</string>
     <string name="xiangqi_settings_ai_duel_b_picker_title">흑 대결 모델 선택</string>
-    <string name="xiangqi_current_ai_title">현재 장기 AI</string>
+    <string name="xiangqi_current_ai_title">현재 샹치 AI</string>
     <string name="xiangqi_current_ai_subtitle">서비스와 모델은 AI의 수 스타일과 안정성에 직접 영향을 줍니다.</string>
     <string name="xiangqi_current_ai_service">서비스</string>
     <string name="xiangqi_current_ai_model">모델</string>
-    <string name="xiangqi_settings_prompt_title">장기 프롬프트</string>
-    <string name="xiangqi_settings_prompt_subtitle">AI가 수를 선택하는 방식에 영향을 주는 시스템 장기 프롬프트를 관리합니다.</string>
+    <string name="xiangqi_settings_prompt_title">샹치 프롬프트</string>
+    <string name="xiangqi_settings_prompt_subtitle">AI의 착수 선택에 영향을 주는 시스템 샹치 프롬프트를 관리합니다.</string>
     <string name="xiangqi_settings_open_prompt_settings">시스템 프롬프트 설정 열기</string>
     <string name="xiangqi_settings_user_title">게임 플레이어</string>
     <string name="xiangqi_settings_user_subtitle">게임 중 플레이어 패널에서 \"당신\"과 AI의 이름과 아바타를 설정하세요.</string>
@@ -145,14 +145,14 @@
     <string name="xiangqi_library_review">복기</string>
     <string name="xiangqi_vs_short">VS</string>
     <string name="xiangqi_import_dialog_title">기보 가져오기</string>
-    <string name="xiangqi_import_hint_fen">중국 장기 FEN 입력</string>
+    <string name="xiangqi_import_hint_fen">샹치 FEN 입력</string>
     <string name="xiangqi_import_hint_json">JSON 기보 입력</string>
     <string name="xiangqi_export_dialog_title">기보 내보내기</string>
     <string name="xiangqi_export_fen">국면 내보내기</string>
     <string name="xiangqi_export_json">기보 내보내기</string>
     <string name="xiangqi_export_text">텍스트 기보 내보내기</string>
     <string name="xiangqi_share_image">이미지 공유</string>
-    <string name="xiangqi_export_header">[중국 장기 게임]</string>
+    <string name="xiangqi_export_header">[샹치 대국]</string>
     <string name="xiangqi_export_title_label">제목</string>
     <string name="xiangqi_export_initial_fen_label">초기 위치</string>
     <string name="xiangqi_export_result_label">결과</string>
@@ -172,7 +172,7 @@
     <string name="xiangqi_ai_source_jev">Jev</string>
     <string name="xiangqi_ai_source_jev_desc">TypeSafe 판단 모델</string>
     <string name="xiangqi_ai_source_pikafish">Pikafish</string>
-    <string name="xiangqi_ai_source_engine_desc">서버 측 장기 엔진</string>
+    <string name="xiangqi_ai_source_engine_desc">서버 측 샹치 엔진</string>
     <string name="xiangqi_ai_tag_login">로그인 필요</string>
     <string name="xiangqi_ai_tag_points">포인트 소모</string>
     <string name="xiangqi_ai_tag_free">무료</string>
@@ -253,7 +253,7 @@
     <string name="xiangqi_rename_game">이름 바꾸기</string>
     <string name="xiangqi_rename_hint">게임 이름 입력</string>
     <string name="xiangqi_search_ai_model">AI 모델</string>
-    <string name="xiangqi_search_prompt">장기 프롬프트</string>
+    <string name="xiangqi_search_prompt">샹치 프롬프트</string>
     <string name="xiangqi_tts_test_text">음성 합성 테스트</string>
     <string name="xiangqi_signaling_disconnected">연결이 끊어졌습니다. 다시 대국해 주세요</string>
     <string name="xiangqi_llm_history_none">없음</string>
@@ -261,5 +261,5 @@
     <string name="xiangqi_tts_default_check">장군!</string>
     <string name="xiangqi_tts_default_checkmate">외통장군!</string>
     <string name="xiangqi_tts_default_draw">무승부!</string>
-    <string name="xiangqi_new_ai_create">AI create game</string>
+    <string name="xiangqi_new_ai_create">AI로 게임 만들기</string>
 </resources>

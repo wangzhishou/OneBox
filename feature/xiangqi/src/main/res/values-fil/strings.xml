@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="xiangqi_library_title">Xiangqi</string>
+    <string name="xiangqi_library_title">Ahedres na Tsino</string>
     <string name="xiangqi_library_subtitle">Lokal na dalawang-manlalaro at LLM na mga laban sa Chinese chess na hinihimok ng FEN snapshot</string>
     <string name="xiangqi_tab_play">Laro</string>
     <string name="xiangqi_tab_analyze">Suriin</string>
@@ -13,7 +13,7 @@
     <string name="xiangqi_go_library">Pumunta sa kasaysayan</string>
     <string name="xiangqi_analysis_panel_title">Pagsusuri</string>
     <string name="xiangqi_export_short">I-export</string>
-    <string name="xiangqi_player_grandmaster_ai">Grandmaster AI</string>
+    <string name="xiangqi_player_grandmaster_ai">Grandmaster na AI</string>
     <string name="xiangqi_player_opponent">Kalaban</string>
     <string name="xiangqi_player_you">Ikaw</string>
     <string name="xiangqi_player_ai">AI</string>
@@ -33,14 +33,14 @@
     <string name="xiangqi_settings_audio_title">Mga setting ng audio</string>
     <string name="xiangqi_settings_audio_subtitle">I-configure ang mga online media file na pinapatugtog sa paglipat, background, at check. Ang unang playback ay itatago sa cache.</string>
     <string name="xiangqi_settings_move_sound">Ilipat ang sound effect</string>
-    <string name="xiangqi_settings_background_music">Background music</string>
+    <string name="xiangqi_settings_background_music">Musika sa background</string>
     <string name="xiangqi_settings_check_sound">Suriin ang sound effect</string>
     <string name="xiangqi_settings_audio_url_hint">Idikit ang isang online audio o video-na-may-audio na URL</string>
-    <string name="xiangqi_settings_preview">Preview</string>
+    <string name="xiangqi_settings_preview">I-preview</string>
     <string name="xiangqi_settings_preview_loading">Nagpepreview…</string>
     <string name="xiangqi_settings_stop_preview">Itigil</string>
     <string name="xiangqi_settings_stop_loading">Humihinto…</string>
-    <string name="xiangqi_settings_ai_title">Xiangqi AI</string>
+    <string name="xiangqi_settings_ai_title">AI sa Xiangqi</string>
     <string name="xiangqi_settings_ai_subtitle">I-configure ang mga modelo para sa magkabilang panig sa mga mode na \"Tao vs AI\" at \"AI vs AI\".</string>
     <string name="xiangqi_settings_ai_engine">Kasalukuyang engine</string>
     <string name="xiangqi_settings_ai_model">Kasalukuyang modelo</string>
@@ -59,7 +59,7 @@
     <string name="xiangqi_current_ai_subtitle">Ang serbisyo at modelo ay direktang nakakaapekto sa estilo at katatagan ng AI moves.</string>
     <string name="xiangqi_current_ai_service">Serbisyo</string>
     <string name="xiangqi_current_ai_model">Modelo</string>
-    <string name="xiangqi_settings_prompt_title">Xiangqi prompts</string>
+    <string name="xiangqi_settings_prompt_title">Mga prompt ng Xiangqi</string>
     <string name="xiangqi_settings_prompt_subtitle">Pamahalaan ang mga system Xiangqi prompts na nakakaapekto sa kung paano pumipili ng mga galaw ang AI.</string>
     <string name="xiangqi_settings_open_prompt_settings">Buksan ang mga setting ng system prompt</string>
     <string name="xiangqi_settings_user_title">Mga manlalaro ng laro</string>
@@ -73,13 +73,13 @@
     <string name="xiangqi_settings_logged_in">Naka-sign in</string>
     <string name="xiangqi_settings_not_logged_in">Naka-sign out</string>
     <string name="xiangqi_settings_user_id">ID ng gumagamit</string>
-    <string name="xiangqi_settings_username">Username</string>
+    <string name="xiangqi_settings_username">Pangalan ng user</string>
     <string name="xiangqi_settings_nickname">Palayaw</string>
     <string name="xiangqi_settings_points">Mga puntos</string>
     <string name="xiangqi_settings_vip_level">Antas ng VIP</string>
     <string name="xiangqi_settings_empty_value">—</string>
     <string name="xiangqi_game_title">Laro</string>
-    <string name="xiangqi_analysis_title">Replay</string>
+    <string name="xiangqi_analysis_title">Pag-replay</string>
     <string name="xiangqi_analysis_back_to_game">Bumalik sa laro</string>
     <string name="xiangqi_new_local_game">Lokal na PvP</string>
     <string name="xiangqi_new_ai_as_black">AI bilang Itim</string>
@@ -88,7 +88,7 @@
     <string name="xiangqi_import_fen">I-import ang posisyon</string>
     <string name="xiangqi_import_json">I-import ang talaan ng laro</string>
     <string name="xiangqi_continue">Magpatuloy</string>
-    <string name="xiangqi_analyze">Replay</string>
+    <string name="xiangqi_analyze">I-replay</string>
     <string name="xiangqi_export">I-export</string>
     <string name="xiangqi_undo">I-undo</string>
     <string name="xiangqi_redo">I-redo</string>
@@ -112,7 +112,7 @@
     <string name="xiangqi_tts_check">Anunsyo ng tsek</string>
     <string name="xiangqi_tts_checkmate">Anunsyo ng checkmate</string>
     <string name="xiangqi_tts_draw">Anunsyo ng tabla</string>
-    <string name="xiangqi_settings_tts_title">AI voice synthesis</string>
+    <string name="xiangqi_settings_tts_title">Sintesis ng boses gamit ang AI</string>
     <string name="xiangqi_settings_tts_subtitle">Gamitin ang AI upang bumuo ng mga personalized na voice lines, awtomatikong pinapatugtog kapag may ginawang galaw.</string>
     <string name="xiangqi_settings_tts_enabled">Paganahin ang voice synthesis</string>
     <string name="xiangqi_settings_tts_current_summary_title">Kasalukuyang voice profile</string>
@@ -132,7 +132,7 @@
     <string name="xiangqi_game_over_red">Pula ang panalo</string>
     <string name="xiangqi_game_over_black">Itim ang panalo</string>
     <string name="xiangqi_game_over_draw">Tabla</string>
-    <string name="xiangqi_check">Check</string>
+    <string name="xiangqi_check">Tsek</string>
     <string name="xiangqi_status_playing">Nagpe-play</string>
     <string name="xiangqi_no_games">Wala pang laro — magsimula muna ng isa</string>
     <string name="xiangqi_empty_library_title">Wala pang laro</string>
@@ -160,8 +160,8 @@
     <string name="xiangqi_replay_prev">Nakaraan</string>
     <string name="xiangqi_replay_next">Susunod</string>
     <string name="xiangqi_replay_to_end">Wakas</string>
-    <string name="xiangqi_replay_auto_play">Auto play</string>
-    <string name="xiangqi_replay_pause">Pause</string>
+    <string name="xiangqi_replay_auto_play">Awtomatikong paglalaro</string>
+    <string name="xiangqi_replay_pause">I-pause</string>
     <string name="xiangqi_invalid_fen">Hindi wastong format ng FEN</string>
     <string name="xiangqi_invalid_json">Hindi wastong format ng JSON notation</string>
     <string name="xiangqi_ai_failed">Hindi nagbigay ng legal na hakbang ang AI; ginamit ang lokal na kapalit</string>
@@ -170,7 +170,7 @@
     <string name="xiangqi_ai_picker_desc">Ang mga Xiangqi move engine ay hiwalay na isinaayos sa mga chat model.</string>
     <string name="xiangqi_ai_source_working_model">Mabilis na working model</string>
     <string name="xiangqi_ai_source_jev">Jev</string>
-    <string name="xiangqi_ai_source_jev_desc">TypeSafe decision model</string>
+    <string name="xiangqi_ai_source_jev_desc">Modelo ng desisyon ng TypeSafe</string>
     <string name="xiangqi_ai_source_pikafish">Pikafish</string>
     <string name="xiangqi_ai_source_engine_desc">Server-side na chess engine</string>
     <string name="xiangqi_ai_tag_login">Kailangan mag-login</string>
@@ -208,7 +208,7 @@
     <string name="xiangqi_game_over_restart">Maglaro muli</string>
     <string name="xiangqi_game_over_review">Tingnan ang replay</string>
     <string name="xiangqi_new_online_game">Online na laban</string>
-    <string name="xiangqi_mode_online">Online PvP</string>
+    <string name="xiangqi_mode_online">Online na PvP</string>
     <string name="xiangqi_online_match_title">Online na laban</string>
     <string name="xiangqi_create_room">Gumawa ng kuwarto</string>
     <string name="xiangqi_join_room">Sumali sa kuwarto</string>
@@ -239,7 +239,7 @@
     <string name="xiangqi_join_target_room_retry">Sumali muli</string>
     <string name="xiangqi_waiting_opponent_move">Naghihintay sa galaw ng kalaban…</string>
     <string name="xiangqi_opponent_disconnected">Nadiskonekta ang kalaban</string>
-    <string name="xiangqi_online_debug_title">Online signaling debug</string>
+    <string name="xiangqi_online_debug_title">Debug ng online signaling</string>
     <string name="xiangqi_online_debug_state">Room %1$s · Aking panig %2$s · Estado %3$s</string>
     <string name="xiangqi_online_debug_empty">Wala pang signaling logs</string>
     <string name="xiangqi_delete_game">Burahin ang laro</string>
@@ -252,14 +252,14 @@
     <string name="xiangqi_resign_result">Sumuko na</string>
     <string name="xiangqi_rename_game">Palitan ang pangalan</string>
     <string name="xiangqi_rename_hint">Ilagay ang pangalan ng laro</string>
-    <string name="xiangqi_search_ai_model">AI model</string>
-    <string name="xiangqi_search_prompt">Xiangqi prompt</string>
-    <string name="xiangqi_tts_test_text">Voice synthesis test</string>
+    <string name="xiangqi_search_ai_model">Modelo ng AI</string>
+    <string name="xiangqi_search_prompt">Prompt ng Xiangqi</string>
+    <string name="xiangqi_tts_test_text">Pagsubok ng sintesis ng boses</string>
     <string name="xiangqi_signaling_disconnected">Nawala ang koneksyon, mangyaring mag-rematch</string>
     <string name="xiangqi_llm_history_none">Wala</string>
     <string name="xiangqi_tts_default_capture">Salo!</string>
     <string name="xiangqi_tts_default_check">Tsek!</string>
-    <string name="xiangqi_tts_default_checkmate">Checkmate!</string>
+    <string name="xiangqi_tts_default_checkmate">Tsek-mate!</string>
     <string name="xiangqi_tts_default_draw">Tabla!</string>
-    <string name="xiangqi_new_ai_create">AI create game</string>
+    <string name="xiangqi_new_ai_create">Gumawa ng laro ang AI</string>
 </resources>
