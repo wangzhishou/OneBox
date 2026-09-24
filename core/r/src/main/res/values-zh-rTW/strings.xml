@@ -737,6 +737,7 @@
     <string name="remember_choice">下次不再顯示</string>
     <string name="mini_program_remember_choice">是否快捷開啟微信小程式</string>
     <string name="ai_error_sensitive">為保障內容安全，部分結果暫未展示。</string>
+    <string name="ai_error_content_filtered">請求被模型服務商的內容安全策略攔截，請調整表述後重試。</string>
     <string name="ai_error_insufficient_system_resource">系統推理資源不足，生成被打斷。</string>
     <string name="ai_error_unknown">發生未知錯誤!</string>
     <string name="ai_chat_expanded_reasoning_chat">顯示推理過程</string>

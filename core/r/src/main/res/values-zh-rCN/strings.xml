@@ -803,6 +803,7 @@
     <string name="remember_choice">下次不再显示</string>
     <string name="mini_program_remember_choice">是否快捷打开微信小程序</string>
     <string name="ai_error_sensitive">为保障内容安全，部分结果暂未展示。</string>
+    <string name="ai_error_content_filtered">请求被模型服务商的内容安全策略拦截，请调整表述后重试。</string>
     <string name="ai_error_insufficient_system_resource">系统推理资源不足，生成被打断。</string>
     <string name="ai_error_unknown">发生未知错误!</string>
     <string name="ai_chat_expanded_reasoning_chat">显示推理过程</string>

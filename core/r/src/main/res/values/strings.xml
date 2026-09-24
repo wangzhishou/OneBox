@@ -769,6 +769,7 @@
     <string name="remember_choice">Don\'t show again</string>
     <string name="mini_program_remember_choice">Quick-open WeChat mini programs?</string>
     <string name="ai_error_sensitive">Some results were filtered for content safety.</string>
+    <string name="ai_error_content_filtered">The request was blocked by the model provider\'s content safety policy. Please rephrase and try again.</string>
     <string name="ai_error_insufficient_system_resource">Insufficient system resources. Generation was interrupted.</string>
     <string name="ai_error_unknown">An unknown error occurred!</string>
     <string name="ai_chat_expanded_reasoning_chat">Show reasoning</string>

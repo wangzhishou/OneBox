@@ -686,12 +686,14 @@ open class AIChatComponent @AssistedInject internal constructor(
 
     private suspend fun renderErrorUIForChat(
         errorMessage: String,
-        questionMessageEntityList: List<MessageEntity>? = null
+        questionMessageEntityList: List<MessageEntity>? = null,
+        skipPoints: Boolean = false
     ) {
         messagePersistenceWorker.renderErrorUIForChat(
             errorMessage = errorMessage,
             questionMessageEntityList = questionMessageEntityList,
-            reasoningTime = streamContentProcessor.reasoningTime
+            reasoningTime = streamContentProcessor.reasoningTime,
+            skipPoints = skipPoints
         )
     }
 
@@ -936,7 +938,18 @@ open class AIChatComponent @AssistedInject internal constructor(
 
         when (streamEvent) {
             is LlmStreamEvent.Error -> {
-                renderErrorUIForChat(streamEvent.errorMessage, questionMessageEntityList)
+                // 内容风控拒绝且本轮零产出(无累积 usage、无可见内容)时不扣积分;
+                // Agent 跑到一半被拒的场景仍有累积 usage, 按既有错误路径正常计费。
+                val nothingProduced = _answerMessageEntity.value.totalTokens == 0 &&
+                    _answerMessageEntity.value.answer.isBlank() &&
+                    _answerMessageEntity.value.reasoningContent.isBlank()
+                val skipPoints = streamEvent.errorCode == AiUtils.ERROR_CODE_CONTENT_FILTER &&
+                    nothingProduced
+                renderErrorUIForChat(
+                    streamEvent.errorMessage,
+                    questionMessageEntityList,
+                    skipPoints = skipPoints
+                )
             }
 
             is LlmStreamEvent.ResponseStarted -> {

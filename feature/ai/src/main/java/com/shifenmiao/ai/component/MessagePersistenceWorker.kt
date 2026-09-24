@@ -149,11 +149,15 @@ class MessagePersistenceWorker(
 
     /**
      * 渲染错误 UI 并持久化错误消息。
+     *
+     * @param skipPoints  true 时跳过积分扣减(用于内容风控拒绝且本轮零产出等
+     *                    未产生任何有效内容的场景); 默认 false 保持既有行为。
      */
     suspend fun renderErrorUIForChat(
         errorMessage: String,
         questionMessageEntityList: List<MessageEntity>? = null,
         reasoningTime: Long = 0L,
+        skipPoints: Boolean = false,
     ) {
         sharedState.updateChatUiState {
             it.copy(
@@ -204,7 +208,9 @@ class MessagePersistenceWorker(
                 messageIncrement = 2,
                 timestamp = currentTime.time
             )
-            consumePoints(sharedState.answerMessageEntity.value)
+            if (!skipPoints) {
+                consumePoints(sharedState.answerMessageEntity.value)
+            }
         }
     }
 

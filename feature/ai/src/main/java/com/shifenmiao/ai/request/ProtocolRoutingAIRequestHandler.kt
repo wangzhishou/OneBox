@@ -967,9 +967,15 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
     }
 
     private fun ChatCompletionChunk.toErrorEvent(): LlmStreamEvent.Error {
+        // 兜底: provider 通过 error_msg 字段(而非 finish_reason)下发风控拒绝的场景
+        val contentFilter = AiUtils.isContentFilterRejection(errorMsg)
         return LlmStreamEvent.Error(
-            errorCode = errorCode,
-            errorMessage = errorMsg.ifBlank { "Unknown error" }
+            errorCode = if (contentFilter) AiUtils.ERROR_CODE_CONTENT_FILTER else errorCode,
+            errorMessage = if (contentFilter) {
+                AiUtils.contentFilterErrorMessage()
+            } else {
+                errorMsg.ifBlank { "Unknown error" }
+            }
         )
     }
 

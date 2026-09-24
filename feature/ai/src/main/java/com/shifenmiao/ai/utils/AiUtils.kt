@@ -569,6 +569,30 @@ object AiUtils {
         return extraMessages
     }
 
+    /**
+     * 内容风控拒绝(上游 provider 安全拦截)专用错误码, 会一直透传到
+     * [com.shifenmiao.model.ai.unified.LlmStreamEvent.Error.errorCode], 供 UI 层识别。
+     *
+     * 各 provider 的表现形式:
+     * - Xiaomi MiMo: 流内 finish_reason=content_filter, content 为
+     *   "The request was rejected because it was considered high risk"
+     * - 百度千帆: finish_reason=sensitive
+     * - OpenAI 风格: HTTP 400 + error.type=content_filter
+     */
+    const val ERROR_CODE_CONTENT_FILTER = -100
+
+    /** 判断上游错误文本是否为内容风控拒绝(兼容各 provider 文案特征) */
+    fun isContentFilterRejection(text: String): Boolean {
+        val lower = text.lowercase()
+        return lower.contains("content_filter") ||
+            lower.contains("content filter") ||
+            lower.contains("considered high risk") ||
+            lower.contains("high risk")
+    }
+
+    fun contentFilterErrorMessage(): String =
+        AppContext.getString(R.string.ai_error_content_filtered)
+
     fun transformChatCompletion(chatCompletionChunk: ChatCompletionChunk): ChatCompletionChunk {
         chatCompletionChunk.choices.let { choice ->
             if (choice.isNotEmpty()) {
@@ -582,21 +606,10 @@ object AiUtils {
 
                         FinishReason.SENSITIVE.value,
                         FinishReason.CONTENT_FILTER.value -> {
-                            chatCompletionChunk.errorCode = 1
-                            chatCompletionChunk.errorMsg = if (chatCompletionChunk.choices.isNotEmpty()) {
-                                chatCompletionChunk.choices[0].let {
-                                    if (it.delta?.content?.isNotEmpty() == true) {
-                                        it.delta?.content
-                                            ?: AppContext.getString(R.string.ai_error_sensitive)
-                                    } else {
-                                        it.message?.content
-                                            ?: AppContext.getString(R.string.ai_error_sensitive)
-                                    }
-                                }
-
-                            } else {
-                                AppContext.getString(R.string.ai_error_sensitive)
-                            }
+                            // 统一用本地化文案, 不透传 provider 的原始英文
+                            // (如 Xiaomi MiMo: "The request was rejected because it was considered high risk")
+                            chatCompletionChunk.errorCode = ERROR_CODE_CONTENT_FILTER
+                            chatCompletionChunk.errorMsg = contentFilterErrorMessage()
                         }
 
                         FinishReason.INSUFFICIENT_SYSTEM_RESOURCE.value -> {
@@ -643,6 +656,14 @@ object AiUtils {
                 return ChatCompletionChunk(
                     errorCode = statusCode,
                     errorMsg = AppContext.getString(R.string.verify_contact_ai_desc)
+                )
+            }
+
+            // 上游内容风控拒绝(如 Xiaomi MiMo 400 content_filter): 本地化文案, 不透传原始英文
+            if (isContentFilterRejection(errorBodyString)) {
+                return ChatCompletionChunk(
+                    errorCode = ERROR_CODE_CONTENT_FILTER,
+                    errorMsg = contentFilterErrorMessage()
                 )
             }
 
