@@ -261,4 +261,5 @@
     <string name="xiangqi_tts_default_check">チェック！</string>
     <string name="xiangqi_tts_default_checkmate">チェックメイト！</string>
     <string name="xiangqi_tts_default_draw">引き分け！</string>
+    <string name="xiangqi_new_ai_create">AI create game</string>
 </resources>

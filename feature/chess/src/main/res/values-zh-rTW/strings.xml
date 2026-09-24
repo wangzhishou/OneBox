@@ -172,4 +172,5 @@
     <string name="chess_join_target_room_connecting">正在連線房間…</string>
     <string name="chess_join_target_room_retry">重新加入</string>
     <string name="chess_signaling_disconnected">連線已中斷,請重新配對</string>
+    <string name="chess_new_ai_create">AI 建立棋局</string>
 </resources>

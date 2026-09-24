@@ -1,5 +1,11 @@
 package com.wanbaohe.chess.screen
 
+import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.storage.RemoteConfigStorage
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -58,6 +64,9 @@ fun NewGameDropMenu(
     var importFen by remember { mutableStateOf(false) }
     var importJson by remember { mutableStateOf(false) }
     var showOnlineMatch by remember { mutableStateOf(false) }
+    val onNavigate = LocalOnNavigate.current
+    val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
+    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_21)
 
     val localTitle = stringResource(R.string.chess_mode_local)
     val aiTitle = stringResource(R.string.chess_mode_ai)
@@ -194,6 +203,32 @@ fun NewGameDropMenu(
                                 ActionUtils.showLogin(source = "chess_online") {
                                     showOnlineMatch = true
                                 }
+                            },
+                        )
+
+                        MenuItem(
+                            label = stringResource(R.string.chess_new_ai_create),
+                            icon = {
+                                Icon(
+                                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
+                                    null,
+                                    Modifier.size(20.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            },
+                            onClick = {
+                                expanded = false
+                                val prompts = RemoteConfigStorage.getRemoteConfig().chatQuickStartPrompts
+                                onNavigate(
+                                    Screen.AITabChatScreen(
+                                        Conversation(
+                                            entryType = AIConversationEntryType.ASSISTANT,
+                                            title = aiChatTitle,
+                                            template = prompts?.getOrNull(20)?.takeIf { it.isNotBlank() }
+                                                ?: aiCreateFallback,
+                                        )
+                                    )
+                                )
                             },
                         )
 

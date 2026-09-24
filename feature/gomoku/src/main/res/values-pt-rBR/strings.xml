@@ -166,4 +166,5 @@ Tap or scan to join: %2$s</string>
     <string name="gomoku_join_target_room_connecting">Connecting to room…</string>
     <string name="gomoku_join_target_room_retry">Join again</string>
     <string name="gomoku_signaling_disconnected">Connection lost, please rematch</string>
+    <string name="gomoku_new_ai_create">AI create game</string>
 </resources>

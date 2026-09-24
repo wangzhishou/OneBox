@@ -262,4 +262,5 @@
     <string name="xiangqi_tts_default_check">Schach!</string>
     <string name="xiangqi_tts_default_checkmate">Schachmatt!</string>
     <string name="xiangqi_tts_default_draw">Unentschieden!</string>
+    <string name="xiangqi_new_ai_create">AI create game</string>
 </resources>

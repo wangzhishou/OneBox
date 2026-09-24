@@ -262,4 +262,5 @@
     <string name="xiangqi_tts_default_check">Xeque!</string>
     <string name="xiangqi_tts_default_checkmate">Xeque-mate!</string>
     <string name="xiangqi_tts_default_draw">Empate!</string>
+    <string name="xiangqi_new_ai_create">AI create game</string>
 </resources>

@@ -261,4 +261,5 @@
     <string name="xiangqi_tts_default_check">장군!</string>
     <string name="xiangqi_tts_default_checkmate">외통장군!</string>
     <string name="xiangqi_tts_default_draw">무승부!</string>
+    <string name="xiangqi_new_ai_create">AI create game</string>
 </resources>

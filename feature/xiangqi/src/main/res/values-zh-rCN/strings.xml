@@ -260,4 +260,5 @@
     <string name="xiangqi_tts_default_check">将军！</string>
     <string name="xiangqi_tts_default_checkmate">将死！</string>
     <string name="xiangqi_tts_default_draw">和棋！</string>
+    <string name="xiangqi_new_ai_create">AI 创建棋局</string>
 </resources>
