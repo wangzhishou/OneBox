@@ -1,6 +1,5 @@
 package com.shifenmiao.common.components
 
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AutoAwesome
@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.base.ui.card.TonalCardPalette
@@ -167,10 +168,15 @@ private fun CategoryTagBadge(
             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
             color = textColor,
             maxLines = 1,
-            // 分类名超长时截断并跑马灯滚动,不再挤压右侧评论入口
-            modifier = Modifier
-                .widthIn(max = 140.dp)
-                .basicMarquee(),
+            // 分类名超长时先自动降字号,仍放不下才省略号(不用 marquee:长语种会一直滚动、
+            // 静止帧只剩残词);宽度上限同时避免挤压右侧评论入口
+            autoSize = TextAutoSize.StepBased(
+                minFontSize = 9.sp,
+                maxFontSize = MaterialTheme.typography.labelSmall.fontSize,
+                stepSize = 0.5.sp,
+            ),
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.widthIn(max = 140.dp),
         )
     }
 }

@@ -7,10 +7,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.background
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.rememberScrollState
@@ -54,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.shifenmiao.base.ui.icon.IconAvatar
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
@@ -369,19 +369,18 @@ fun GenericTonalCard(
                 val titleText = highlightedTitle ?: AnnotatedString(title)
                 if (maxTitleLines == 1) {
                     Text(
-                        // fillMaxWidth 先把宽度钉在卡片内,Marquee 才不会把整行字画到邻卡上
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .basicMarquee(
-                                iterations = Int.MAX_VALUE,
-                                spacing = MarqueeSpacing(30.dp),
-                                velocity = 30.dp,
-                                repeatDelayMillis = 1000
-                            ),
+                        // fillMaxWidth 先把宽度钉在卡片内;超长标题自动降字号,仍放不下才省略号,
+                        // 不再用 marquee —— 长语种(德语等)会永远滚动、静止帧只剩残词
+                        modifier = Modifier.fillMaxWidth(),
                         text = titleText,
                         maxLines = 1,
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 13.sp,
+                            maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            stepSize = 0.5.sp,
+                        ),
                         style = MaterialTheme.typography.titleMedium,
-                        overflow = TextOverflow.Clip,
+                        overflow = TextOverflow.Ellipsis,
                         color = resolvedPalette.titleColor,
                     )
                 } else {

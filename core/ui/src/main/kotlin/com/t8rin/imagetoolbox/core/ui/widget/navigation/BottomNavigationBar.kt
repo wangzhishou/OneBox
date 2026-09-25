@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,6 +27,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -304,8 +304,13 @@ private fun BottomNavigationTabItem(
                 text = item.label,
                 style = tabTextStyle,
                 maxLines = 1,
-                // 胶囊贴合文字宽度;超出 tabMaxWidth/格子宽度时截断并跑马灯滚动
-                modifier = Modifier.basicMarquee(),
+                // 按可用宽度自动降字号:日语 アシスタント / プロフィール 等长标签整词显示,不再被硬裁成残词。
+                // 注意不能同时用 basicMarquee —— marquee 会用无界宽度测量,autoSize 会失效。
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = 9.sp,
+                    maxFontSize = tabTextStyle.fontSize,
+                    stepSize = 0.5.sp,
+                ),
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Clip,
                 color = if (isSelected) selectedContentColor else unselectedContentColor,
