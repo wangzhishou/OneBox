@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">Buka Pengelola Barang</string>
     <string name="agent_tool_household_edit_link">Lihat barang</string>
     <string name="agent_tool_household_unknown_error">Kesalahan tidak diketahui</string>
+    <string name="household_ai_assist_fill_in">Catat obat flu di kotak obat kamar tidur, kedaluwarsa Juni 2027</string>
 </resources>

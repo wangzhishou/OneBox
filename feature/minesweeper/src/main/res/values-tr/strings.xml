@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Mayın Tarlası</string>
+    <string name="minesweeper_restart">Yeniden Başlat</string>
+    <string name="minesweeper_sound_on">Ses açık</string>
+    <string name="minesweeper_sound_off">Ses kapalı</string>
+    <string name="minesweeper_mode_dig">Kazma modu</string>
+    <string name="minesweeper_mode_flag">Bayrak modu</string>
+    <string name="minesweeper_hint_dig">Bir hücreyi açmak için dokunun</string>
+    <string name="minesweeper_hint_flag">Mayını işaretlemek için dokunun</string>
+    <string name="minesweeper_time">Süre</string>
+    <string name="minesweeper_mines_left">Mayın</string>
+    <string name="minesweeper_won">Temizlendi</string>
+    <string name="minesweeper_lost">Boom</string>
+    <string name="minesweeper_play_again">Tekrar oyna</string>
+    <string name="minesweeper_result_detail">%1$d sn</string>
+    <string name="minesweeper_fullscreen">Tam ekran</string>
+    <string name="minesweeper_exit_fullscreen">Tam ekrandan çık</string>
+    <string name="minesweeper_share">Paylaş</string>
+</resources>

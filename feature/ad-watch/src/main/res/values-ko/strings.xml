@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">광고 보고 포인트 받기</string>
+    <string name="ad_watch_headline_1">대기업이 돈 쏟아부은 광고, 뭘 노리고 있을까요?</string>
+    <string name="ad_watch_headline_2">대기업이 내보내는 광고는 어떤 모습일까요?</string>
+    <string name="ad_watch_headline_3">15초로 보는 브랜드들의 간판 기술</string>
+    <string name="ad_watch_headline_4">남들은 돈 써서 눈길 끌고, 당신은 포인트 적립</string>
+    <string name="ad_watch_headline_5">광고주들의 경쟁 현장, 무료로 구경하세요</string>
+    <string name="ad_watch_subtitle">15초 광고를 보고 %1$d 포인트 받기</string>
+    <string name="ad_watch_cta">광고 보기 · +%1$d 포인트</string>
+    <string name="ad_watch_remaining">오늘 남은 횟수 %1$d/%2$d</string>
+    <string name="ad_watch_daily_limit_reached">오늘 횟수를 모두 사용했습니다. 내일 다시 오세요</string>
+    <string name="ad_watch_loading">광고 로딩 중…</string>
+    <string name="ad_watch_load_failed">광고 로드 실패</string>
+    <string name="ad_watch_retry">재시도</string>
+    <string name="ad_watch_ad_not_ready">광고가 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요</string>
+</resources>

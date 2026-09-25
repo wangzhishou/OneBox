@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">生理記録</string>
+    <string name="period_stats_title">周期の統計</string>
+    <string name="period_detail_title">記録の詳細</string>
+    <string name="period_add_title">新規記録</string>
+    <string name="period_edit_title">記録を編集</string>
+    <string name="period_tab_records">記録</string>
+    <string name="period_tab_stats">データ</string>
+    <string name="period_search">検索</string>
+    <string name="period_search_hint">メモや症状を検索</string>
+    <string name="period_add">追加</string>
+    <string name="period_save">保存</string>
+    <string name="period_cancel">キャンセル</string>
+    <string name="period_delete">削除</string>
+    <string name="period_loading">読み込み中…</string>
+    <string name="period_saved">保存しました</string>
+    <string name="period_record_added">記録を追加しました</string>
+    <string name="period_deleted">記録を削除しました</string>
+    <string name="period_save_failed">保存に失敗しました</string>
+    <string name="period_toast_recorded">生理を記録しました</string>
+    <string name="period_empty_title">記録はまだありません</string>
+    <string name="period_empty_subtitle">体調をAIに伝えるだけで、ワンタップで記録を作成できます</string>
+    <string name="period_ai_quick_record">AIクイック記録</string>
+    <string name="period_manual_record">手動で記録</string>
+    <string name="period_empty_example">例:「昨日から生理が始まり、軽い生理痛があります」</string>
+    <string name="period_ai_assist_title">生理記録アシスタント</string>
+    <string name="period_ai_assist_fill_in">昨日から生理が始まって生理痛がひどいので、記録しておいて</string>
+    <string name="period_ai_assist_prompt">あなたはユーザーの生理記録アシスタントです。ユーザーが生理の状態、経血量、症状、気分を伝えたら、add_period_record で記録してください（日付は yyyy-MM-dd 形式）。周期の長さ、次回の生理、統計について質問されたら query_period_records を使用してください。記録を修正する場合は update_period_record、削除する場合は delete_period_record を使用してください。記録後は各操作を簡潔に確認してください。</string>
+    <string name="period_record_count">%1$d件の記録</string>
+    <string name="period_month_group_pattern">yyyy年M月</string>
+    <string name="period_short_date_pattern">M月d日</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint">（複数選択可）</string>
+    <string name="period_cycle_day">周期 %1$d日目</string>
+    <string name="period_cycle_day_unknown">周期 —</string>
+    <string name="period_status_period">生理中</string>
+    <string name="period_status_ovulation">排卵期</string>
+    <string name="period_status_normal">通常</string>
+    <string name="period_status_start">開始</string>
+    <string name="period_status_mid">生理中</string>
+    <string name="period_status_end">終了</string>
+    <string name="period_calendar_prev">前の月</string>
+    <string name="period_calendar_next">次の月</string>
+    <string name="period_field_date">日付</string>
+    <string name="period_field_status">生理ステータス</string>
+    <string name="period_field_flow">経血量</string>
+    <string name="period_field_symptoms">症状</string>
+    <string name="period_field_mood">気分</string>
+    <string name="period_field_note">メモ</string>
+    <string name="period_note_hint">メモ（任意）</string>
+    <string name="period_delete_record">記録を削除</string>
+    <string name="period_delete_confirm_title">この記録を削除しますか？</string>
+    <string name="period_delete_confirm_message">この操作は取り消せません。</string>
+    <string name="period_flow_none">なし</string>
+    <string name="period_flow_light">少ない</string>
+    <string name="period_flow_medium">普通</string>
+    <string name="period_flow_heavy">多い</string>
+    <string name="period_mood_very_happy">最高</string>
+    <string name="period_mood_happy">良い</string>
+    <string name="period_mood_normal">ふつう</string>
+    <string name="period_mood_sad">低い</string>
+    <string name="period_mood_very_sad">悪い</string>
+    <string name="period_symptom_abdominal_pain">生理痛</string>
+    <string name="period_symptom_headache">頭痛</string>
+    <string name="period_symptom_back_pain">腰痛</string>
+    <string name="period_symptom_mood_swings">気分の波</string>
+    <string name="period_symptom_breast_tenderness">胸の張り</string>
+    <string name="period_symptom_fatigue">疲労</string>
+    <string name="period_symptom_nausea">吐き気</string>
+    <string name="period_symptom_insomnia">不眠</string>
+    <string name="period_symptom_appetite_change">食欲の変化</string>
+    <string name="period_symptom_acne">肌荒れ</string>
+    <string name="period_symptom_edema">むくみ</string>
+    <string name="period_stats_range_6m">過去6か月</string>
+    <string name="period_stats_range_day">日</string>
+    <string name="period_stats_range_week">週</string>
+    <string name="period_stats_range_month">月</string>
+    <string name="period_stats_avg_cycle">平均周期</string>
+    <string name="period_stats_avg_period">平均生理期間</string>
+    <string name="period_stats_next">次回の生理</string>
+    <string name="period_stats_vs_prev">前回比 %1$+d日</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">周期の長さの推移</string>
+    <string name="period_stats_trend_empty">生理開始の記録が2回以上必要です</string>
+    <string name="period_stats_symptom_title">症状の内訳</string>
+    <string name="period_stats_symptom_empty">症状のデータはまだありません</string>
+    <string name="period_stats_symptom_center">合計</string>
+    <string name="period_day_unit">日</string>
+    <string name="period_month_unit">月</string>
+    <string name="period_next_label">次回の生理</string>
+    <string name="period_days_until">あと%1$d日</string>
+    <string name="period_timeline_title">タイムライン</string>
+    <string name="period_timeline_start">生理開始</string>
+    <string name="period_timeline_end">生理終了予定</string>
+    <string name="period_log_record_created">生理記録を作成しました</string>
+    <string name="period_log_record_updated">生理記録を更新しました</string>
+    <string name="period_log_record_deleted">生理記録を削除しました</string>
+    <string name="agent_tool_add_period_record_title">生理記録を追加</string>
+    <string name="agent_tool_add_period_record_summary">生理の開始・終了、経血量、症状、気分を記録</string>
+    <string name="agent_tool_add_period_record_description">生理の記録を追加します：日付（yyyy-MM-dd）、任意の is_period_start / is_period_end、flow_intensity（NONE/LIGHT/MEDIUM/HEAVY）、symptoms 配列、mood（VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD）、note。</string>
+    <string name="agent_tool_add_period_record_failed">生理記録の追加に失敗しました: %1$s</string>
+    <string name="agent_tool_query_period_records_title">生理記録を照会</string>
+    <string name="agent_tool_query_period_records_summary">記録、周期の統計、次回生理の予測を照会</string>
+    <string name="agent_tool_query_period_records_description">最近の生理記録と、平均周期、平均生理期間、次回開始予定日を照会します。limit は任意です。</string>
+    <string name="agent_tool_query_period_records_empty">生理記録はまだありません。</string>
+    <string name="agent_tool_query_period_records_failed">生理記録の照会に失敗しました: %1$s</string>
+    <string name="agent_tool_update_period_record_title">生理記録を更新</string>
+    <string name="agent_tool_update_period_record_summary">record_id で既存の生理記録を更新</string>
+    <string name="agent_tool_update_period_record_description">生理記録を更新します。record_id と変更する項目（date、is_period_start、is_period_end、flow_intensity、symptoms、mood、note）を指定してください。</string>
+    <string name="agent_tool_update_period_record_failed">生理記録の更新に失敗しました: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">生理記録を削除</string>
+    <string name="agent_tool_delete_period_record_summary">record_id で生理記録を削除</string>
+    <string name="agent_tool_delete_period_record_description">生理記録を完全に削除します。record_id とユーザーの確認が必要です。</string>
+    <string name="agent_tool_delete_period_record_done">生理記録 %1$s を削除しました</string>
+    <string name="agent_tool_delete_period_record_failed">生理記録の削除に失敗しました: %1$s</string>
+    <string name="agent_tool_period_param_date">記録日（yyyy-MM-dd）</string>
+    <string name="agent_tool_period_param_is_start">この日が生理開始日かどうか</string>
+    <string name="agent_tool_period_param_is_end">この日が生理終了日かどうか</string>
+    <string name="agent_tool_period_param_flow">経血量: NONE、LIGHT、MEDIUM、HEAVY のいずれか</string>
+    <string name="agent_tool_period_param_symptoms">症状の配列（例: ABDOMINAL_PAIN、HEADACHE、FATIGUE）</string>
+    <string name="agent_tool_period_param_mood">気分: VERY_HAPPY、HAPPY、NORMAL、SAD、VERY_SAD のいずれか</string>
+    <string name="agent_tool_period_param_note">メモ（任意）</string>
+    <string name="agent_tool_period_param_record_id">生理記録のID</string>
+    <string name="agent_tool_period_param_limit">取得する記録の最大件数（1〜50）</string>
+    <string name="agent_tool_period_label_date">日付</string>
+    <string name="agent_tool_period_label_flow">経血量</string>
+    <string name="agent_tool_period_label_symptoms">症状</string>
+    <string name="agent_tool_period_open_link">生理記録を開く</string>
+    <string name="agent_tool_period_detail_link">記録の詳細を開く</string>
+    <string name="agent_tool_period_no_next">データが不足しています</string>
+    <string name="agent_tool_period_unknown_error">不明なエラー</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>生理</item>
+        <item>月経</item>
+        <item>周期</item>
+        <item>経期</item>
+        <item>生理記録</item>
+        <item>生理日</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>今日から生理が始まって、軽い生理痛があります</item>
+        <item>今日から生理が始まったので記録して、経血量は普通です</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>周期</item>
+        <item>次回の生理</item>
+        <item>予測</item>
+        <item>生理予定日</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>次回の生理はいつですか？</item>
+        <item>私の周期は安定していますか？</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>生理記録を更新</item>
+        <item>記録を修正</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>昨日の記録の経血量を「多い」に変更して</item>
+        <item>昨日の記録の経血量を多いに変えて</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>生理記録を削除</item>
+        <item>記録を削除</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>昨日の生理記録を削除して</item>
+        <item>昨日の生理記録を消して</item>
+    </string-array>
+</resources>

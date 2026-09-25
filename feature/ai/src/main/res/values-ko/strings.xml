@@ -844,4 +844,89 @@
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_theme_setting_param_glass_border_alpha">유리 테두리 표시 여부. **숫자형**(문자열 아님), 범위 [0.0, 1.0], 기본값 0.17(17%%). 0이면 테두리가 완전히 사라지고, 값이 클수록 윤곽선이 더 뚜렷해집니다. glass_alpha와는 무관합니다. 선택 사항</string>
+    <string name="agent_tool_switch_ai_model_title">모델 전환</string>
+    <string name="agent_tool_switch_ai_model_summary">채팅에 사용할 AI 엔진 또는 모델을 전환합니다</string>
+    <string name="agent_tool_switch_ai_model_description">현재 대화에 사용할 AI 엔진/모델을 전환합니다. 사용자가 모델 변경을 요청할 때 사용하세요(예: \"DeepSeek 사용\", \"GPT-5로 전환\"). engine_name은 엔진/제공자 이름(예: deepseek, openai, qwen, kimi, doubao, mimo, gemini, grok, claude)이고, model_name은 선택 사항이며 생략하면 해당 엔진의 현재 모델을 사용합니다. slot은 업데이트할 작업 슬롯을 선택합니다: default(기본 채팅) 또는 fast(빠른 작업).</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">대상 엔진 이름(제공자 값, 예: deepseek)</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">대상 모델 이름(선택 사항, 예: deepseek-chat), 생략하면 엔진의 현재 모델을 유지합니다</string>
+    <string name="agent_tool_switch_ai_model_param_slot">작업 슬롯: default = 기본 채팅 모델, fast = 빠른 작업 모델, 기본값은 default</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">매개변수를 구문 분석하지 못했습니다. engine_name은 필수입니다</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">%1$s 엔진을 찾을 수 없습니다. 사용 가능한 엔진: %2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">모델 %2$s을(를) 엔진 %1$s에서 찾을 수 없습니다. 사용 가능한 모델: %3$s</string>
+    <string name="agent_tool_switch_ai_model_success">모델 전환 완료: %1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">모델 전환 실패: %1$s</string>
+    <string name="agent_tool_font_scale_setting_title">글꼴 크기</string>
+    <string name="agent_tool_font_scale_setting_summary">앱 글꼴 배율을 확인하거나 변경합니다(0.45~1.5, 또는 시스템 글꼴 크기 따르기)</string>
+    <string name="agent_tool_font_scale_setting_param_action">작업 유형. get=현재 글꼴 배율 읽기, set=변경하기. **action만 필수입니다**</string>
+    <string name="agent_tool_font_scale_setting_param_scale">글꼴 배율. 0.45~1.5 범위의 숫자 문자열(1.0 = 기본값) 또는 시스템 글꼴 크기를 따르는 \"system\" / \"default\". set 전용</string>
+    <string name="agent_tool_font_scale_setting_failed">글꼴 배율 설정 실패: %1$s</string>
+    <string name="agent_tool_font_scale_setting_unknown_action">알 수 없는 작업: %1$s. get / set 중 하나여야 합니다</string>
+    <string name="agent_tool_font_scale_setting_missing_action">action 매개변수가 없습니다</string>
+    <string name="agent_tool_font_scale_setting_missing_scale">set 작업에는 scale 매개변수가 필요합니다(0.45 ~ 1.5 또는 \"system\")</string>
+    <string name="agent_tool_font_scale_setting_out_of_range">잘못된 배율: %1$s. 0.45~1.5 범위의 숫자 또는 \"system\" / \"default\"여야 합니다</string>
+    <string name="agent_tool_font_scale_setting_get_message">현재 글꼴 배율을 읽었습니다</string>
+    <string name="agent_tool_font_scale_setting_set_message">글꼴 배율을 %1$s(으)로 설정했습니다</string>
+    <string name="agent_tool_font_scale_setting_set_system_message">글꼴 배율을 시스템 글꼴 크기에 따르도록 설정했습니다</string>
+    <string name="agent_tool_font_scale_setting_effective_hint">새 글꼴 배율이 적용되었습니다. 1초 이내에 인터페이스가 자동으로 새로 고쳐집니다</string>
+    <string name="agent_tool_font_scale_setting_deeplink_label">디스플레이 설정</string>
+    <string name="agent_tool_font_scale_setting_deeplink_guidance">디스플레이 설정에서 글꼴 크기를 세부 조정하려면 탭하세요</string>
+    <string name="agent_tool_night_mode_setting_title">야간 모드</string>
+    <string name="agent_tool_night_mode_setting_summary">라이트 / 다크 / 시스템 야간 모드를 확인하거나 전환합니다(즉시 적용)</string>
+    <string name="agent_tool_night_mode_setting_param_action">작업 유형. get=현재 모드 읽기, set=모드 전환. **action만 필수입니다**</string>
+    <string name="agent_tool_night_mode_setting_param_mode">야간 모드. Light(주간) / Dark(야간) / System(시스템 따르기), 대소문자 구분 없음. set 전용</string>
+    <string name="agent_tool_night_mode_setting_failed">야간 모드 설정 실패: %1$s</string>
+    <string name="agent_tool_night_mode_setting_unknown_action">알 수 없는 작업: %1$s. get / set 중 하나여야 합니다</string>
+    <string name="agent_tool_night_mode_setting_missing_action">action 매개변수가 없습니다</string>
+    <string name="agent_tool_night_mode_setting_missing_mode">set 작업에는 mode 매개변수가 필요합니다(Light / Dark / System)</string>
+    <string name="agent_tool_night_mode_setting_invalid_mode">잘못된 야간 모드: %1$s. Light / Dark / System 중 하나여야 합니다</string>
+    <string name="agent_tool_night_mode_setting_get_message">현재 야간 모드: %1$s</string>
+    <string name="agent_tool_night_mode_setting_set_message">야간 모드를 %1$s(으)로 전환했습니다</string>
+    <string name="agent_tool_night_mode_setting_deeplink_label">디스플레이 설정</string>
+    <string name="agent_tool_night_mode_setting_deeplink_guidance">디스플레이 설정에서 야간 모드를 전환하려면 탭하세요</string>
+    <string name="agent_tool_start_entry_setting_title">시작 화면</string>
+    <string name="agent_tool_start_entry_setting_summary">앱을 콜드 스타트한 후 열리는 페이지를 확인하거나 변경합니다(다음 콜드 스타트에 적용)</string>
+    <string name="agent_tool_start_entry_setting_param_action">작업 유형. list=모든 후보 페이지 나열, get=현재 시작 화면 읽기, set=변경하기. **action만 필수입니다**</string>
+    <string name="agent_tool_start_entry_setting_param_screen_id">시작 화면 페이지 id. list 응답의 candidates[i].id에서 가져온 숫자 id 또는 기본 홈 페이지로 되돌리는 \"default\" / \"home\". set 전용</string>
+    <string name="agent_tool_start_entry_setting_failed">시작 화면 설정 실패: %1$s</string>
+    <string name="agent_tool_start_entry_setting_unknown_action">알 수 없는 작업: %1$s. list / get / set 중 하나여야 합니다</string>
+    <string name="agent_tool_start_entry_setting_missing_action">action 매개변수가 없습니다</string>
+    <string name="agent_tool_start_entry_setting_missing_screen_id">set 작업에는 screen_id 매개변수가 필요합니다(list의 후보 id 또는 \"default\")</string>
+    <string name="agent_tool_start_entry_setting_invalid_screen_id">잘못된 screen_id: %1$s. 숫자 후보 id 또는 \"default\" / \"home\"이어야 합니다</string>
+    <string name="agent_tool_start_entry_setting_unknown_screen_id">알 수 없는 screen_id: %1$s. 먼저 list를 호출해 유효한 후보 id를 확인하세요</string>
+    <string name="agent_tool_start_entry_setting_list_message">시작 화면 후보를 읽었습니다</string>
+    <string name="agent_tool_start_entry_setting_get_message">현재 시작 화면을 읽었습니다</string>
+    <string name="agent_tool_start_entry_setting_set_message">시작 화면 설정: %1$s</string>
+    <string name="agent_tool_start_entry_setting_effective_hint">시작 화면은 앱을 다음에 콜드 스타트할 때만 적용됩니다</string>
+    <string name="agent_tool_start_entry_setting_deeplink_label">디스플레이 설정</string>
+    <string name="agent_tool_start_entry_setting_deeplink_guidance">디스플레이 설정에서 시작 화면을 선택하려면 탭하세요</string>
+    <string name="agent_tool_memory_write_description">사용자 또는 현재 프로젝트에 대한 지속적인 메모리를 저장합니다. 대화를 넘어 유지할 만한 선호도, 핵심 사실, 결정 사항, 규칙 등을 기록하세요. 간결하고 독립적으로 이해되는 문장으로 작성하세요. 비밀번호, API 키, 일회성 임시 정보는 기록하지 마세요.</string>
+    <string name="agent_tool_memory_write_param_content">저장할 메모리 문장. 간결하고 독립적으로 이해되어야 합니다</string>
+    <string name="agent_tool_memory_write_result_saved">메모리를 저장했습니다(id=%1$d).</string>
+    <string name="agent_tool_memory_write_too_long">메모리 내용이 너무 깁니다. 최대 %1$d자입니다. 내용을 줄여 핵심만 저장하세요.</string>
+    <string name="agent_tool_gate_memory_disabled">이 대화에서는 메모리가 비활성화되어 있습니다(전역 또는 대화별 스위치가 꺼져 있음). 이 대화에서 메모리 도구를 다시 호출하지 마세요.</string>
+    <string name="agent_tool_gate_skills_disabled">이 대화에서는 스킬이 비활성화되어 있습니다(전역 또는 대화별 스위치가 꺼져 있음). 이 대화에서 use_skill 도구를 다시 호출하지 마세요.</string>
+    <string name="agent_tool_memory_get_description">저장된 메모리 항목을 키워드로 검색합니다. 모든 키워드가 일치하는 항목만 반환됩니다(대소문자 구분 없음). 키워드를 생략하면 최근 항목을 모두 표시합니다. scope=log(기본값)는 로그 항목만 검색하고, scope=all은 사용자 프로필도 포함합니다.</string>
+    <string name="agent_tool_memory_get_param_keywords">공백 또는 쉼표로 구분한 키워드. 비워 두면 최근 항목을 모두 표시합니다</string>
+    <string name="agent_tool_memory_get_param_scope">검색 범위: log(기본값) 또는 all(사용자 프로필 포함)</string>
+    <string name="agent_tool_memory_get_result_empty">일치하는 메모리 항목이 없습니다.</string>
+    <string name="agent_tool_memory_get_result_entry">#%1$d [%2$s] (%3$s)</string>
+    <string name="agent_tool_memory_get_result_truncated_count">[일치하는 항목이 더 있지만 생략되었습니다: 결과 제한은 %1$d개입니다. 키워드를 좁혀 주세요.]</string>
+    <string name="agent_tool_memory_get_result_truncated_entries">[출력 제한에 맞추기 위해 %1$d개 항목이 잘렸습니다. 더 구체적인 키워드로 전체 내용을 확인하세요.]</string>
+    <string name="agent_tool_memory_get_result_truncated_bytes">[출력 크기 제한에 도달해 %1$d개 항목이 생략되었습니다. 키워드를 좁혀 주세요.]</string>
+    <string name="agent_tool_use_skill_description">&lt;available_skills&gt;에 나열된 스킬의 전체 지침을 이름으로 불러옵니다. 스킬을 적용하기 전에 항상 이 도구를 호출하세요.</string>
+    <string name="agent_tool_use_skill_param_name">&lt;available_skills&gt;에 나열된 그대로의 스킬 이름(슬러그)</string>
+    <string name="agent_tool_use_skill_not_found">스킬 \'%1$s\'을(를) 찾을 수 없거나 비활성화되어 있습니다. 사용 가능한 스킬: %2$s</string>
+    <string name="agent_tool_use_skill_none_available">(없음)</string>
+    <string name="agent_memory_prompt_omitted_hint">(예산에 맞추기 위해 이전 메모리를 생략했습니다. memory_get으로 검색하세요.)</string>
+    <string name="agent_memory_prompt_omitted_hint_no_search">(예산에 맞추기 위해 이전 메모리를 생략했습니다.)</string>
+    <string name="agent_memory_prompt_profile_header">사용자 프로필:</string>
+    <string name="agent_memory_prompt_log_header">메모리 로그(%1$s):</string>
+    <string name="agent_skills_prompt_unlisted">(나열되지 않은 스킬 %1$d개 더 있음)</string>
+    <string name="agent_skill_import_invalid">잘못된 SKILL.md: 프런트매터에 한 줄짜리 name 및 description 필드가 있어야 합니다</string>
+    <string name="ai_tools_session_memory">이 대화의 메모리</string>
+    <string name="ai_tools_session_memory_hint">저장된 메모리를 주입하고 이 대화에서 AI가 메모리를 작성하도록 허용합니다</string>
+    <string name="ai_tools_session_skills">이 대화의 스킬</string>
+    <string name="ai_tools_session_skills_hint">사용 가능한 스킬 목록을 표시하고 이 대화에서 AI가 스킬을 불러오도록 허용합니다</string>
+    <string name="ai_tools_session_global_off_hint">AI 설정에서 전역으로 꺼져 있어 대화별 스위치를 사용할 수 없습니다</string>
 </resources>

@@ -58,4 +58,5 @@
     <string name="data_sync_reselect">Tekrar seç</string>
     <string name="data_sync_importing">İçe aktarılıyor…</string>
     <string name="data_sync_confirm_import">İçe aktar</string>
+    <string name="ai_model_protocol_jev">Jev karar motoru</string>
 </resources>

@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">Seguimiento de hábitos</string>
     <string name="activity_log_habit_created">Nuevo hábito: %1$s</string>
     <string name="activity_log_habit_check_in">Registro: %1$s</string>
+    <string name="sys_prompt_iching_title">Prompt del sistema de interpretación del I Ching</string>
+    <string name="sys_prompt_iching_desc">Instrucciones del sistema para interpretar una pregunta, un hexagrama y las líneas cambiantes</string>
+    <string name="sys_prompt_memory_global_title">Guía del perfil de memoria</string>
+    <string name="sys_prompt_memory_global_desc">Preámbulo insertado antes de la sección de perfil de usuario de la memoria de AI</string>
+    <string name="sys_prompt_memory_recent_title">Guía del registro reciente de memoria</string>
+    <string name="sys_prompt_memory_recent_desc">Preámbulo insertado antes de la sección de registro reciente de la memoria de AI (menciona la herramienta memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Guía del registro reciente de memoria (sin herramientas)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Variante de respaldo que se usa cuando el modelo no admite llamadas a herramientas</string>
+    <string name="sys_prompt_skills_guidance_title">Guía de la lista de habilidades</string>
+    <string name="sys_prompt_skills_guidance_desc">Preámbulo insertado antes de la lista de habilidades disponibles</string>
 </resources>

@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">Abrir el gestor de objetos</string>
     <string name="agent_tool_household_edit_link">Ver objeto</string>
     <string name="agent_tool_household_unknown_error">Error desconocido</string>
+    <string name="household_ai_assist_fill_in">Registra el medicamento para el resfriado en el botiquín del dormitorio, caduca en junio de 2027</string>
 </resources>

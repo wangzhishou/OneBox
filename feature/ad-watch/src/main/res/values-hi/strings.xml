@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">विज्ञापन देखें</string>
+    <string name="ad_watch_headline_1">बड़े ब्रांड जिन विज्ञापनों पर करोड़ों खर्च करते हैं, उनमें क्या दांव लगाते हैं?</string>
+    <string name="ad_watch_headline_2">बड़ी कंपनियाँ जो विज्ञापन चलाती हैं, वे कैसे दिखते हैं?</string>
+    <string name="ad_watch_headline_3">15 सेकंड में देखें ब्रांडों का असली दम</string>
+    <string name="ad_watch_headline_4">दूसरे पैसा लगाकर ध्यान खींचते हैं, आप साथ में पॉइंट्स कमाते हैं</string>
+    <string name="ad_watch_headline_5">विज्ञापनदाताओं की जुगत, मुफ़्त में देखें</string>
+    <string name="ad_watch_subtitle">15 सेकंड का विज्ञापन देखें, %1$d पॉइंट्स कमाएँ</string>
+    <string name="ad_watch_cta">विज्ञापन देखें · +%1$d पॉइंट्स</string>
+    <string name="ad_watch_remaining">आज शेष %1$d/%2$d बार</string>
+    <string name="ad_watch_daily_limit_reached">आज की सीमा पूरी हो गई, कल फिर आएँ</string>
+    <string name="ad_watch_loading">विज्ञापन लोड हो रहा है…</string>
+    <string name="ad_watch_load_failed">विज्ञापन लोड नहीं हो सका</string>
+    <string name="ad_watch_retry">पुनः प्रयास करें</string>
+    <string name="ad_watch_ad_not_ready">विज्ञापन अभी तैयार नहीं है, कुछ देर बाद प्रयास करें</string>
+</resources>

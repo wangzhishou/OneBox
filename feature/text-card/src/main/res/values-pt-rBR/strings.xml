@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">Estrela</string>
     <string name="textcard_shape_filled">Preenchido</string>
     <string name="textcard_draw_width">Espessura do traço</string>
+    <string name="textcard_canvas_custom">Tamanho personalizado</string>
+    <string name="textcard_canvas_custom_desc">Insira a largura × altura personalizadas</string>
+    <string name="textcard_custom_size_title">Tamanho da área de desenho personalizado</string>
+    <string name="textcard_canvas_width">Largura (px)</string>
+    <string name="textcard_canvas_height">Altura (px)</string>
+    <string name="textcard_refresh_papers">Atualizar papéis</string>
+    <string name="textcard_editing_selection">Editando: texto selecionado</string>
+    <string name="textcard_clear_selection_style">Limpar estilo</string>
 </resources>

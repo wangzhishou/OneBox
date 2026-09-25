@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">テストURL</string>
     <string name="speed_test_config_estimated_mb_hint">推定データ量（MB）</string>
     <string name="speed_test_config_duration_hint">時間（秒）</string>
+    <string name="speed_test_measuring_latency">レイテンシを計測中…</string>
+    <string name="speed_test_stop">テストを停止</string>
+    <string name="speed_test_stop_hint">タップで停止。途中の結果は保存されません</string>
+    <string name="speed_test_reference_scale">ダウンロード速度の目安 · ユーザーランキングではありません</string>
 </resources>

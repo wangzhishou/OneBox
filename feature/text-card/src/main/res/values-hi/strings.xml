@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">तारा</string>
     <string name="textcard_shape_filled">भरा हुआ</string>
     <string name="textcard_draw_width">स्ट्रोक चौड़ाई</string>
+    <string name="textcard_canvas_custom">कस्टम आकार</string>
+    <string name="textcard_canvas_custom_desc">कस्टम चौड़ाई × ऊँचाई दर्ज करें</string>
+    <string name="textcard_custom_size_title">कस्टम कैनवास आकार</string>
+    <string name="textcard_canvas_width">चौड़ाई (px)</string>
+    <string name="textcard_canvas_height">ऊँचाई (px)</string>
+    <string name="textcard_refresh_papers">पेपर बदलें</string>
+    <string name="textcard_editing_selection">संपादन: चयनित टेक्स्ट</string>
+    <string name="textcard_clear_selection_style">स्टाइल साफ़ करें</string>
 </resources>

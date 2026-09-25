@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Werbung ansehen</string>
+    <string name="ad_watch_headline_1">Was steckt hinter den teuren Werbespots großer Marken?</string>
+    <string name="ad_watch_headline_2">Wie die Werbespots der großen Konzerne aussehen</string>
+    <string name="ad_watch_headline_3">15 Sekunden, um die Paradedisziplin der Marken zu sehen</string>
+    <string name="ad_watch_headline_4">Andere zahlen für Aufmerksamkeit, nebenbei Punkte sammeln</string>
+    <string name="ad_watch_headline_5">Der Konkurrenzkampf der Werbetreibenden – kostenlos ansehen</string>
+    <string name="ad_watch_subtitle">15 Sekunden Werbung ansehen, %1$d Punkte verdienen</string>
+    <string name="ad_watch_cta">Werbung ansehen · +%1$d Punkte</string>
+    <string name="ad_watch_remaining">Heute noch %1$d/%2$d</string>
+    <string name="ad_watch_daily_limit_reached">Tageslimit erreicht – morgen wieder vorbeischauen</string>
+    <string name="ad_watch_loading">Werbung wird geladen…</string>
+    <string name="ad_watch_load_failed">Werbung konnte nicht geladen werden</string>
+    <string name="ad_watch_retry">Erneut versuchen</string>
+    <string name="ad_watch_ad_not_ready">Werbung noch nicht bereit, bitte später erneut versuchen</string>
+</resources>

@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">Rastreador de Hábitos</string>
     <string name="activity_log_habit_created">Novo hábito: %1$s</string>
     <string name="activity_log_habit_check_in">Check-in: %1$s</string>
+    <string name="sys_prompt_iching_title">Prompt de Sistema da Interpretação do I Ching</string>
+    <string name="sys_prompt_iching_desc">Instruções de sistema usadas para interpretar uma pergunta, um hexagrama e linhas mutáveis</string>
+    <string name="sys_prompt_memory_global_title">Orientação do Perfil de Memória</string>
+    <string name="sys_prompt_memory_global_desc">Preâmbulo injetado antes da seção de perfil do usuário na memória da AI</string>
+    <string name="sys_prompt_memory_recent_title">Orientação do Registro Recente de Memória</string>
+    <string name="sys_prompt_memory_recent_desc">Preâmbulo injetado antes da seção de registro recente na memória da AI (menciona a ferramenta memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Orientação do Registro Recente de Memória (Sem Ferramentas)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Variante de fallback usada quando o modelo não oferece suporte a chamadas de ferramentas</string>
+    <string name="sys_prompt_skills_guidance_title">Orientação da Lista de Habilidades</string>
+    <string name="sys_prompt_skills_guidance_desc">Preâmbulo injetado antes da lista de habilidades disponíveis</string>
 </resources>

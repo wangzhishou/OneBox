@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">Звезда</string>
     <string name="textcard_shape_filled">Заливка</string>
     <string name="textcard_draw_width">Толщина штриха</string>
+    <string name="textcard_canvas_custom">Свой размер</string>
+    <string name="textcard_canvas_custom_desc">Введите свою ширину × высоту</string>
+    <string name="textcard_custom_size_title">Свой размер холста</string>
+    <string name="textcard_canvas_width">Ширина (px)</string>
+    <string name="textcard_canvas_height">Высота (px)</string>
+    <string name="textcard_refresh_papers">Обновить фоны</string>
+    <string name="textcard_editing_selection">Редактирование: выделенный текст</string>
+    <string name="textcard_clear_selection_style">Сбросить стиль</string>
 </resources>

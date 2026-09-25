@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">アイテム管理を開く</string>
     <string name="agent_tool_household_edit_link">アイテムを表示</string>
     <string name="agent_tool_household_unknown_error">不明なエラー</string>
+    <string name="household_ai_assist_fill_in">寝室の薬箱にある風邪薬を登録、2027 年 6 月に期限切れ</string>
 </resources>

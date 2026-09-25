@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">Test URL\'si</string>
     <string name="speed_test_config_estimated_mb_hint">Tahmini veri (MB)</string>
     <string name="speed_test_config_duration_hint">Süre (sn)</string>
+    <string name="speed_test_measuring_latency">Gecikme ölçülüyor…</string>
+    <string name="speed_test_stop">Testi durdur</string>
+    <string name="speed_test_stop_hint">Durdurmak için dokunun; kısmi sonuçlar kaydedilmez</string>
+    <string name="speed_test_reference_scale">İndirme hızı referansı · kullanıcı sıralaması değildir</string>
 </resources>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">Regl Takibi</string>
+    <string name="period_stats_title">Döngü İstatistikleri</string>
+    <string name="period_detail_title">Kayıt Ayrıntısı</string>
+    <string name="period_add_title">Yeni Kayıt</string>
+    <string name="period_edit_title">Kaydı Düzenle</string>
+    <string name="period_tab_records">Kayıtlar</string>
+    <string name="period_tab_stats">Veriler</string>
+    <string name="period_search">Ara</string>
+    <string name="period_search_hint">Notlarda veya semptomlarda ara</string>
+    <string name="period_add">Ekle</string>
+    <string name="period_save">Kaydet</string>
+    <string name="period_cancel">İptal</string>
+    <string name="period_delete">Sil</string>
+    <string name="period_loading">Yükleniyor…</string>
+    <string name="period_saved">Kaydedildi</string>
+    <string name="period_record_added">Kayıt eklendi</string>
+    <string name="period_deleted">Kayıt silindi</string>
+    <string name="period_save_failed">Kaydedilemedi</string>
+    <string name="period_toast_recorded">Regl kaydedildi</string>
+    <string name="period_empty_title">Henüz kayıt yok</string>
+    <string name="period_empty_subtitle">AI\'ya nasıl hissettiğinizi anlatın, tek dokunuşla kayıt oluşturun</string>
+    <string name="period_ai_quick_record">AI Hızlı Kayıt</string>
+    <string name="period_manual_record">Manuel Kayıt</string>
+    <string name="period_empty_example">örn. \"Reglim dün başladı, hafif kramplar\"</string>
+    <string name="period_ai_assist_title">Regl Takibi Asistanı</string>
+    <string name="period_ai_assist_fill_in">Reglim dün kötü kramplarla başladı, benim için kaydet</string>
+    <string name="period_ai_assist_prompt">Sen kullanıcının regl takip asistanısın. Kullanıcı regl durumunu, akışını, semptomlarını veya ruh halini anlattığında bunu add_period_record\'u kullanarak kaydet (tarih için yyyy-MM-dd kullan). Kullanıcı döngü uzunluğu, sonraki regl veya istatistikleri sorduğunda query_period_records\'u kullan. Bir kaydı düzeltmek için update_period_record\'u, silmek için delete_period_record\'u kullan. Kayıttan sonra her işlemi kısaca onayla.</string>
+    <string name="period_record_count">%1$d kayıt</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">MMM d</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (çoklu seçim)</string>
+    <string name="period_cycle_day">Döngü günü %1$d</string>
+    <string name="period_cycle_day_unknown">Döngü günü —</string>
+    <string name="period_status_period">Regl</string>
+    <string name="period_status_ovulation">Yumurtlama</string>
+    <string name="period_status_normal">Normal</string>
+    <string name="period_status_start">Başlangıç</string>
+    <string name="period_status_mid">Regl</string>
+    <string name="period_status_end">Bitiş</string>
+    <string name="period_calendar_prev">Önceki ay</string>
+    <string name="period_calendar_next">Sonraki ay</string>
+    <string name="period_field_date">Tarih</string>
+    <string name="period_field_status">Regl durumu</string>
+    <string name="period_field_flow">Akış</string>
+    <string name="period_field_symptoms">Semptomlar</string>
+    <string name="period_field_mood">Ruh hali</string>
+    <string name="period_field_note">Not</string>
+    <string name="period_note_hint">İsteğe bağlı not</string>
+    <string name="period_delete_record">Kaydı sil</string>
+    <string name="period_delete_confirm_title">Bu kayıt silinsin mi?</string>
+    <string name="period_delete_confirm_message">Bu işlem geri alınamaz.</string>
+    <string name="period_flow_none">Yok</string>
+    <string name="period_flow_light">Az</string>
+    <string name="period_flow_medium">Orta</string>
+    <string name="period_flow_heavy">Yoğun</string>
+    <string name="period_mood_very_happy">Harika</string>
+    <string name="period_mood_happy">İyi</string>
+    <string name="period_mood_normal">Fena değil</string>
+    <string name="period_mood_sad">Düşük</string>
+    <string name="period_mood_very_sad">Kötü</string>
+    <string name="period_symptom_abdominal_pain">Kramplar</string>
+    <string name="period_symptom_headache">Baş ağrısı</string>
+    <string name="period_symptom_back_pain">Sırt ağrısı</string>
+    <string name="period_symptom_mood_swings">Ruh hali değişimleri</string>
+    <string name="period_symptom_breast_tenderness">Göğüs hassasiyeti</string>
+    <string name="period_symptom_fatigue">Yorgunluk</string>
+    <string name="period_symptom_nausea">Mide bulantısı</string>
+    <string name="period_symptom_insomnia">Uykusuzluk</string>
+    <string name="period_symptom_appetite_change">İştah değişimi</string>
+    <string name="period_symptom_acne">Akne</string>
+    <string name="period_symptom_edema">Şişkinlik</string>
+    <string name="period_stats_range_6m">Son 6 ay</string>
+    <string name="period_stats_range_day">Gün</string>
+    <string name="period_stats_range_week">Hafta</string>
+    <string name="period_stats_range_month">Ay</string>
+    <string name="period_stats_avg_cycle">Ort. döngü</string>
+    <string name="period_stats_avg_period">Ort. regl</string>
+    <string name="period_stats_next">Sonraki regl</string>
+    <string name="period_stats_vs_prev">önceki %1$+d güne göre</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">Döngü uzunluğu eğilimi</string>
+    <string name="period_stats_trend_empty">En az iki döngü başlangıcı gerekli</string>
+    <string name="period_stats_symptom_title">Semptom dağılımı</string>
+    <string name="period_stats_symptom_empty">Henüz semptom verisi yok</string>
+    <string name="period_stats_symptom_center">Toplam</string>
+    <string name="period_day_unit">g</string>
+    <string name="period_month_unit">Ay</string>
+    <string name="period_next_label">Sonraki regl</string>
+    <string name="period_days_until">%1$d gün sonra</string>
+    <string name="period_timeline_title">Zaman çizelgesi</string>
+    <string name="period_timeline_start">Regl başlangıcı</string>
+    <string name="period_timeline_end">Tahmini regl bitişi</string>
+    <string name="period_log_record_created">Regl kaydı oluşturuldu</string>
+    <string name="period_log_record_updated">Regl kaydı güncellendi</string>
+    <string name="period_log_record_deleted">Regl kaydı silindi</string>
+    <string name="agent_tool_add_period_record_title">Regl kaydı ekle</string>
+    <string name="agent_tool_add_period_record_summary">Regl başlangıcını/bitişini, akışı, semptomları ve ruh halini kaydedin</string>
+    <string name="agent_tool_add_period_record_description">Bir regl kaydı girin: tarih (yyyy-MM-dd), isteğe bağlı is_period_start / is_period_end, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), semptom dizisi, ruh hali (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) ve not.</string>
+    <string name="agent_tool_add_period_record_failed">Regl kaydı eklenemedi: %1$s</string>
+    <string name="agent_tool_query_period_records_title">Regl kayıtlarını sorgula</string>
+    <string name="agent_tool_query_period_records_summary">Kayıtları, döngü istatistiklerini ve sonraki regl tahminini sorgulayın</string>
+    <string name="agent_tool_query_period_records_description">Son regl kayıtlarının yanı sıra ortalama döngüyü, ortalama regl süresini ve tahmini sonraki başlangıcı sorgular. İsteğe bağlı limit.</string>
+    <string name="agent_tool_query_period_records_empty">Henüz regl kaydı yok.</string>
+    <string name="agent_tool_query_period_records_failed">Regl kayıtları sorgulanamadı: %1$s</string>
+    <string name="agent_tool_update_period_record_title">Regl kaydını güncelle</string>
+    <string name="agent_tool_update_period_record_summary">record_id ile mevcut bir regl kaydını güncelleyin</string>
+    <string name="agent_tool_update_period_record_description">Bir regl kaydını günceller. record_id ile değiştirilecek alanları (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note) verin.</string>
+    <string name="agent_tool_update_period_record_failed">Regl kaydı güncellenemedi: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">Regl kaydını sil</string>
+    <string name="agent_tool_delete_period_record_summary">record_id ile bir regl kaydını silin</string>
+    <string name="agent_tool_delete_period_record_description">Bir regl kaydını kalıcı olarak siler. record_id ve kullanıcı onayı gerekir.</string>
+    <string name="agent_tool_delete_period_record_done">Regl kaydı silindi %1$s</string>
+    <string name="agent_tool_delete_period_record_failed">Regl kaydı silinemedi: %1$s</string>
+    <string name="agent_tool_period_param_date">Kayıt tarihi, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">Bu günün regl başlangıcı olup olmadığı</string>
+    <string name="agent_tool_period_param_is_end">Bu günün regl bitişi olup olmadığı</string>
+    <string name="agent_tool_period_param_flow">Akış yoğunluğu: NONE, LIGHT, MEDIUM veya HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">Semptom dizisi, örn. ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">Ruh hali: VERY_HAPPY, HAPPY, NORMAL, SAD veya VERY_SAD</string>
+    <string name="agent_tool_period_param_note">İsteğe bağlı not</string>
+    <string name="agent_tool_period_param_record_id">Regl kaydı kimliği</string>
+    <string name="agent_tool_period_param_limit">Döndürülecek en fazla kayıt (1-50)</string>
+    <string name="agent_tool_period_label_date">Tarih</string>
+    <string name="agent_tool_period_label_flow">Akış</string>
+    <string name="agent_tool_period_label_symptoms">Semptomlar</string>
+    <string name="agent_tool_period_open_link">Regl takibini aç</string>
+    <string name="agent_tool_period_detail_link">Kayıt ayrıntısını aç</string>
+    <string name="agent_tool_period_no_next">Yeterli veri yok</string>
+    <string name="agent_tool_period_unknown_error">Bilinmeyen hata</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>regl</item>
+        <item>adet</item>
+        <item>menstrüasyon</item>
+        <item>döngü</item>
+        <item>adet döngüsü</item>
+        <item>aybaşı</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>Bugün hafif kramplarla reglim başladı</item>
+        <item>Bugün regl olduğumu kaydet, akış orta</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>döngü</item>
+        <item>sonraki regl</item>
+        <item>adet döngüsü</item>
+        <item>tahmin</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>Sonraki reglim ne zaman?</item>
+        <item>Döngüm düzenli mi?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>regl güncelle</item>
+        <item>regl kaydını değiştir</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>Dünkü kaydı yoğun akış olarak güncelle</item>
+        <item>Dünkü kaydın akışını yoğun yap</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>regl sil</item>
+        <item>regl kaydını sil</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>Dünkü regl kaydını sil</item>
+        <item>Dünün regl kaydını kaldır</item>
+    </string-array>
+</resources>

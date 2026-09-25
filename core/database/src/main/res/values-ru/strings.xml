@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">Трекер привычек</string>
     <string name="activity_log_habit_created">Новая привычка: %1$s</string>
     <string name="activity_log_habit_check_in">Отметка: %1$s</string>
+    <string name="sys_prompt_iching_title">Системная подсказка для толкования И-цзин</string>
+    <string name="sys_prompt_iching_desc">Системные инструкции для толкования вопроса, гексаграммы и изменяющихся линий</string>
+    <string name="sys_prompt_memory_global_title">Руководство по профилю памяти</string>
+    <string name="sys_prompt_memory_global_desc">Вступление, добавляемое перед разделом профиля пользователя в памяти AI</string>
+    <string name="sys_prompt_memory_recent_title">Руководство по недавним записям памяти</string>
+    <string name="sys_prompt_memory_recent_desc">Вступление, добавляемое перед разделом недавних записей в памяти AI (упоминает инструмент memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Руководство по недавним записям памяти (без инструментов)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Резервный вариант, используемый, когда модель не поддерживает вызов инструментов</string>
+    <string name="sys_prompt_skills_guidance_title">Руководство по списку навыков</string>
+    <string name="sys_prompt_skills_guidance_desc">Вступление, добавляемое перед списком доступных навыков</string>
 </resources>

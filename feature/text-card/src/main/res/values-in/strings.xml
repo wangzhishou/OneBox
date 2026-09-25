@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">Bintang</string>
     <string name="textcard_shape_filled">Terisi</string>
     <string name="textcard_draw_width">Ketebalan goresan</string>
+    <string name="textcard_canvas_custom">Ukuran Kustom</string>
+    <string name="textcard_canvas_custom_desc">Masukkan lebar × tinggi kustom</string>
+    <string name="textcard_custom_size_title">Ukuran Kanvas Kustom</string>
+    <string name="textcard_canvas_width">Lebar (px)</string>
+    <string name="textcard_canvas_height">Tinggi (px)</string>
+    <string name="textcard_refresh_papers">Segarkan kertas</string>
+    <string name="textcard_editing_selection">Mengedit: teks terpilih</string>
+    <string name="textcard_clear_selection_style">Hapus gaya</string>
 </resources>

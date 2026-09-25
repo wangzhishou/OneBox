@@ -844,4 +844,89 @@
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_theme_setting_param_glass_border_alpha">Cam kenarlık görünürlüğü. **Sayı türü** (dize DEĞİL), aralık [0.0, 1.0], varsayılan 0.17 (%%17). 0 kenarlığı tamamen gizler; değer yükseldikçe ana hat belirginleşir. glass_alpha\'dan bağımsızdır. İsteğe bağlı</string>
+    <string name="agent_tool_switch_ai_model_title">Model Değiştir</string>
+    <string name="agent_tool_switch_ai_model_summary">Sohbette kullanılan AI motorunu veya modelini değiştirin</string>
+    <string name="agent_tool_switch_ai_model_description">Geçerli sohbet için kullanılan AI motorunu/modelini değiştirir. Kullanıcı model değiştirmek istediğinde kullanın (örn. \"DeepSeek kullan\", \"GPT-5\'e geç\"). engine_name motor/sağlayıcı adıdır (örn. deepseek, openai, qwen, kimi, doubao, mimo, gemini, grok, claude); model_name isteğe bağlıdır ve atlanırsa motorun geçerli modeli kullanılır; slot güncellenecek çalışma yuvasını seçer: default (ana sohbet) veya fast (hızlı görevler).</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">Hedef motor adı (sağlayıcı değeri, örn. deepseek)</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">Hedef model adı (isteğe bağlı, örn. deepseek-chat); atlanırsa motorun geçerli modeli korunur</string>
+    <string name="agent_tool_switch_ai_model_param_slot">Çalışma yuvası: default = ana sohbet modeli, fast = hızlı görev modeli; varsayılan olarak default</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">Parametreler ayrıştırılamadı; engine_name gerekli</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">Motor %1$s bulunamadı. Kullanılabilir motorlar: %2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">Model %2$s, %1$s motorunda bulunamadı. Kullanılabilir modeller: %3$s</string>
+    <string name="agent_tool_switch_ai_model_success">Model değiştirildi: %1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">Model değiştirilemedi: %1$s</string>
+    <string name="agent_tool_font_scale_setting_title">Yazı Boyutu</string>
+    <string name="agent_tool_font_scale_setting_summary">Uygulamanın yazı ölçeğini okur veya değiştirir (0.45–1.5 veya sistem yazı boyutunu izler)</string>
+    <string name="agent_tool_font_scale_setting_param_action">Eylem türü. get=geçerli yazı ölçeğini okur; set=değiştirir. **Yalnızca action gereklidir**</string>
+    <string name="agent_tool_font_scale_setting_param_scale">Yazı ölçeği. 0.45 ~ 1.5 aralığında sayısal dize (1.0 = varsayılan) veya sistem yazı boyutunu izlemek için \"system\" / \"default\". Yalnızca set</string>
+    <string name="agent_tool_font_scale_setting_failed">Yazı ölçeği ayarı başarısız: %1$s</string>
+    <string name="agent_tool_font_scale_setting_unknown_action">Bilinmeyen eylem: %1$s. get / set değerlerinden biri olmalı</string>
+    <string name="agent_tool_font_scale_setting_missing_action">action parametresi eksik</string>
+    <string name="agent_tool_font_scale_setting_missing_scale">set eylemi scale parametresini gerektirir (0.45 ~ 1.5 veya \"system\")</string>
+    <string name="agent_tool_font_scale_setting_out_of_range">Geçersiz ölçek: %1$s. 0.45 ~ 1.5 aralığında bir sayı veya \"system\" / \"default\" olmalı</string>
+    <string name="agent_tool_font_scale_setting_get_message">Geçerli yazı ölçeği okundu</string>
+    <string name="agent_tool_font_scale_setting_set_message">Yazı ölçeği %1$s olarak ayarlandı</string>
+    <string name="agent_tool_font_scale_setting_set_system_message">Yazı ölçeği sistem yazı boyutunu izleyecek şekilde ayarlandı</string>
+    <string name="agent_tool_font_scale_setting_effective_hint">Yeni yazı ölçeği uygulandı; arayüz bir saniye içinde otomatik olarak yenilenir</string>
+    <string name="agent_tool_font_scale_setting_deeplink_label">Ekran Ayarları</string>
+    <string name="agent_tool_font_scale_setting_deeplink_guidance">Yazı boyutunu ekran ayarlarında ince ayarlamak için dokunun</string>
+    <string name="agent_tool_night_mode_setting_title">Gece Modu</string>
+    <string name="agent_tool_night_mode_setting_summary">Gece modunu (Light / Dark / System) okur veya değiştirir (anında etkili olur)</string>
+    <string name="agent_tool_night_mode_setting_param_action">Eylem türü. get=geçerli modu okur; set=modu değiştirir. **Yalnızca action gereklidir**</string>
+    <string name="agent_tool_night_mode_setting_param_mode">Gece modu. Light (gündüz) / Dark (gece) / System (sistemi izler), büyük/küçük harfe duyarsız. Yalnızca set</string>
+    <string name="agent_tool_night_mode_setting_failed">Gece modu ayarı başarısız: %1$s</string>
+    <string name="agent_tool_night_mode_setting_unknown_action">Bilinmeyen eylem: %1$s. get / set değerlerinden biri olmalı</string>
+    <string name="agent_tool_night_mode_setting_missing_action">action parametresi eksik</string>
+    <string name="agent_tool_night_mode_setting_missing_mode">set eylemi mode parametresini gerektirir (Light / Dark / System)</string>
+    <string name="agent_tool_night_mode_setting_invalid_mode">Geçersiz gece modu: %1$s. Light / Dark / System\'den biri olmalı</string>
+    <string name="agent_tool_night_mode_setting_get_message">Geçerli gece modu: %1$s</string>
+    <string name="agent_tool_night_mode_setting_set_message">Gece modu %1$s olarak değiştirildi</string>
+    <string name="agent_tool_night_mode_setting_deeplink_label">Ekran Ayarları</string>
+    <string name="agent_tool_night_mode_setting_deeplink_guidance">Gece modunu ekran ayarlarında değiştirmek için dokunun</string>
+    <string name="agent_tool_start_entry_setting_title">Başlangıç Ekranı</string>
+    <string name="agent_tool_start_entry_setting_summary">Uygulamanın soğuk başlatmadan sonra açıldığı sayfayı görüntüler veya değiştirir (sonraki soğuk başlatmada etkili olur)</string>
+    <string name="agent_tool_start_entry_setting_param_action">Eylem türü. list=tüm aday sayfaları listeler; get=geçerli başlangıç ekranını okur; set=değiştirir. **Yalnızca action gereklidir**</string>
+    <string name="agent_tool_start_entry_setting_param_screen_id">Başlangıç ekranı sayfa kimliği. list yanıtındaki candidates[i].id sayısal kimliği veya varsayılan ana sayfaya dönmek için \"default\" / \"home\". Yalnızca set</string>
+    <string name="agent_tool_start_entry_setting_failed">Başlangıç ekranı ayarı başarısız: %1$s</string>
+    <string name="agent_tool_start_entry_setting_unknown_action">Bilinmeyen eylem: %1$s. list / get / set değerlerinden biri olmalı</string>
+    <string name="agent_tool_start_entry_setting_missing_action">action parametresi eksik</string>
+    <string name="agent_tool_start_entry_setting_missing_screen_id">set eylemi screen_id parametresini gerektirir (list öğesinden bir aday kimliği veya \"default\")</string>
+    <string name="agent_tool_start_entry_setting_invalid_screen_id">Geçersiz screen_id: %1$s. Sayısal bir aday kimliği veya \"default\" / \"home\" olmalı</string>
+    <string name="agent_tool_start_entry_setting_unknown_screen_id">Bilinmeyen screen_id: %1$s. Geçerli aday kimliklerini almak için önce list çağırın</string>
+    <string name="agent_tool_start_entry_setting_list_message">Başlangıç ekranı adayları okundu</string>
+    <string name="agent_tool_start_entry_setting_get_message">Geçerli başlangıç ekranı okundu</string>
+    <string name="agent_tool_start_entry_setting_set_message">Başlangıç ekranı şuna ayarlandı: %1$s</string>
+    <string name="agent_tool_start_entry_setting_effective_hint">Başlangıç ekranı yalnızca uygulamanın sonraki soğuk başlatmasında etkili olur</string>
+    <string name="agent_tool_start_entry_setting_deeplink_label">Ekran Ayarları</string>
+    <string name="agent_tool_start_entry_setting_deeplink_guidance">Ekran ayarlarında bir başlangıç ekranı seçmek için dokunun</string>
+    <string name="agent_tool_memory_write_description">Kullanıcı veya geçerli proje hakkında kalıcı bir bellek kaydı kaydedin: tercihler, önemli bilgiler, kararlar ve sohbetler arasında saklanmaya değer kurallar. Kısa ve kendi başına anlaşılır ifadeler yazın. Sırları, parolaları, API anahtarlarını veya tek seferlik geçici ayrıntıları KAYDETMEYİN.</string>
+    <string name="agent_tool_memory_write_param_content">Kaydedilecek bellek ifadesi; kısa ve kendi başına anlaşılır olmalı</string>
+    <string name="agent_tool_memory_write_result_saved">Bellek kaydedildi (id=%1$d).</string>
+    <string name="agent_tool_memory_write_too_long">Bellek içeriği çok uzun: en fazla %1$d karakter. Kısaltın ve yalnızca önemli noktaları kaydedin.</string>
+    <string name="agent_tool_gate_memory_disabled">Bu sohbet için bellek devre dışı (genel veya sohbet bazlı anahtar kapalı). Bu sohbette bellek araçlarını yeniden çağırmayın.</string>
+    <string name="agent_tool_gate_skills_disabled">Bu sohbet için beceriler devre dışı (genel veya sohbet bazlı anahtar kapalı). Bu sohbette use_skill aracını yeniden çağırmayın.</string>
+    <string name="agent_tool_memory_get_description">Kayıtlı bellek kayıtlarını anahtar kelimelerle arayın; bir kayıt yalnızca TÜM anahtar kelimeler eşleştiğinde döndürülür (büyük/küçük harfe duyarsız). En son kayıtları dökmek için anahtar kelimeleri atlayın. scope=log (varsayılan) yalnızca günlük kayıtlarını arar, scope=all kullanıcı profilini de içerir.</string>
+    <string name="agent_tool_memory_get_param_keywords">Boşluk veya virgülle ayrılmış anahtar kelimeler; en son kayıtları dökmek için boş bırakın</string>
+    <string name="agent_tool_memory_get_param_scope">Arama kapsamı: log (varsayılan) veya all (kullanıcı profilini içerir)</string>
+    <string name="agent_tool_memory_get_result_empty">Eşleşen bellek kaydı yok.</string>
+    <string name="agent_tool_memory_get_result_entry">#%1$d [%2$s] (%3$s)</string>
+    <string name="agent_tool_memory_get_result_truncated_count">[Daha fazla kayıt eşleşti ancak atlandı: sonuç sınırı %1$d kayıt. Anahtar kelimeleri daraltın.]</string>
+    <string name="agent_tool_memory_get_result_truncated_entries">[Çıktı sınırına sığması için %1$d kayıt kısaltıldı. Tamamını okumak için daha özel anahtar kelimeler kullanın.]</string>
+    <string name="agent_tool_memory_get_result_truncated_bytes">[%1$d kayıt atlandı: çıktı boyutu sınırına ulaşıldı. Anahtar kelimeleri daraltın.]</string>
+    <string name="agent_tool_use_skill_description">&lt;available_skills&gt; içinde listelenen bir becerinin tam yönergelerini adıyla yükleyin. Bir beceriyi uygulamadan önce her zaman bunu çağırın.</string>
+    <string name="agent_tool_use_skill_param_name">Beceri adı (slug), &lt;available_skills&gt; içinde listelendiği şekilde tam olarak</string>
+    <string name="agent_tool_use_skill_not_found">Beceri \'%1$s\' bulunamadı veya devre dışı. Kullanılabilir beceriler: %2$s</string>
+    <string name="agent_tool_use_skill_none_available">(yok)</string>
+    <string name="agent_memory_prompt_omitted_hint">(Bütçeye sığması için önceki bellekler atlandı; aramak için memory_get kullanın.)</string>
+    <string name="agent_memory_prompt_omitted_hint_no_search">(Bütçeye sığması için önceki bellekler atlandı.)</string>
+    <string name="agent_memory_prompt_profile_header">Kullanıcı profili:</string>
+    <string name="agent_memory_prompt_log_header">Bellek günlüğü (%1$s):</string>
+    <string name="agent_skills_prompt_unlisted">(%1$d beceri daha listelenmedi.)</string>
+    <string name="agent_skill_import_invalid">Geçersiz SKILL.md: üst bilgi tek satırlık name ve description alanları içermelidir</string>
+    <string name="ai_tools_session_memory">Bu sohbet için bellek</string>
+    <string name="ai_tools_session_memory_hint">Kayıtlı bellekleri ekler ve AI\'nın bu sohbette bellek yazmasına izin verir</string>
+    <string name="ai_tools_session_skills">Bu sohbet için beceriler</string>
+    <string name="ai_tools_session_skills_hint">Kullanılabilir beceri listesini gösterir ve AI\'nın bu sohbette beceri yüklemesine izin verir</string>
+    <string name="ai_tools_session_global_off_hint">AI ayarlarında genel olarak kapatıldı; sohbet anahtarı kullanılamıyor</string>
 </resources>

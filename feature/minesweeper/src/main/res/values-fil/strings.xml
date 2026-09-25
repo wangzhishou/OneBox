@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Minesweeper</string>
+    <string name="minesweeper_restart">I-restart</string>
+    <string name="minesweeper_sound_on">I-on ang tunog</string>
+    <string name="minesweeper_sound_off">I-off ang tunog</string>
+    <string name="minesweeper_mode_dig">Mode ng paghukay</string>
+    <string name="minesweeper_mode_flag">Mode ng pag-flag</string>
+    <string name="minesweeper_hint_dig">I-tap para buksan ang isang cell</string>
+    <string name="minesweeper_hint_flag">I-tap para mag-flag ng mina</string>
+    <string name="minesweeper_time">Oras</string>
+    <string name="minesweeper_mines_left">Mga mina</string>
+    <string name="minesweeper_won">Nalinis</string>
+    <string name="minesweeper_lost">Boom</string>
+    <string name="minesweeper_play_again">Maglaro muli</string>
+    <string name="minesweeper_result_detail">%1$d s</string>
+    <string name="minesweeper_fullscreen">Buong screen</string>
+    <string name="minesweeper_exit_fullscreen">Lumabas sa buong screen</string>
+    <string name="minesweeper_share">Ibahagi</string>
+</resources>

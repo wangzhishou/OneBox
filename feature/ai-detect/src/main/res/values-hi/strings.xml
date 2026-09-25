@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">टेक्स्ट डिटेक्शन</string>
+    <string name="ai_detect_image_tab">छवि डिटेक्शन</string>
+    <string name="ai_detect_text_hint">पहचानने के लिए टेक्स्ट चिपकाएँ या लिखें…</string>
+    <string name="ai_detect_button">पहचानें</string>
+    <string name="ai_detect_detecting">पहचान हो रही है…</string>
+    <string name="ai_detect_upload_hint">अपलोड करने या छवि चिपकाने के लिए टैप करें…</string>
+    <string name="ai_detect_upload_format">JPG / PNG / WebP समर्थित, 300×300 से बड़ी, 10MB तक</string>
+    <string name="ai_detect_change_image">छवि बदलें</string>
+    <string name="ai_detect_probability_label">AI संभावना</string>
+    <string name="ai_detect_verdict_likely_ai">संभवतः AI से बना</string>
+    <string name="ai_detect_verdict_maybe_ai">AI से बना हो सकता है</string>
+    <string name="ai_detect_verdict_likely_human">संभवतः इंसान द्वारा बनाया गया</string>
+    <string name="ai_detect_recheck">फिर से पहचानें</string>
+    <string name="ai_detect_view_detail">विवरण देखें</string>
+    <string name="ai_detect_collapse_detail">विवरण छिपाएँ</string>
+    <string name="ai_detect_segment_human">इंसान</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">संदिग्ध AI</string>
+    <string name="ai_detect_labels_ratio_title">लेबल अनुपात</string>
+    <string name="ai_detect_image_confidence_detail">मॉडल इस छवि के AI से बने होने पर %1$d%% का भरोसा देता है। मान जितना अधिक, छवि के AI से बने होने की संभावना उतनी ही अधिक।</string>
+    <string name="ai_detect_history">डिटेक्शन इतिहास</string>
+    <string name="ai_detect_history_empty">अभी तक कोई डिटेक्शन रिकॉर्ड नहीं</string>
+    <string name="ai_detect_clear_all">सभी साफ़ करें</string>
+    <string name="ai_detect_clear_confirm">सभी डिटेक्शन रिकॉर्ड साफ़ करें?</string>
+    <string name="ai_detect_confirm">पुष्टि करें</string>
+    <string name="ai_detect_cancel">रद्द करें</string>
+    <string name="ai_detect_delete">हटाएँ</string>
+    <string name="ai_detect_type_text">टेक्स्ट</string>
+    <string name="ai_detect_type_image">छवि</string>
+    <string name="ai_detect_detail_title">डिटेक्शन विवरण</string>
+    <string name="ai_detect_error_image_too_large">छवि 10MB से छोटी होनी चाहिए</string>
+    <string name="ai_detect_error_image_too_small">छवि 300×300 से बड़ी होनी चाहिए</string>
+    <string name="ai_detect_error_image_unreadable">छवि पढ़ी नहीं जा सकी</string>
+    <string name="ai_detect_error_network">डिटेक्शन विफल रहा, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="agent_tool_detect_ai_text_title">AI टेक्स्ट डिटेक्शन</string>
+    <string name="agent_tool_detect_ai_text_summary">पहचानें कि कोई टेक्स्ट संभवतः AI से बना है या नहीं; AI संभावना, निर्णय और हर खंड के लेबल लौटाता है</string>
+    <string name="agent_tool_detect_ai_text_param_text">पहचानने के लिए सादा टेक्स्ट</string>
+    <string name="agent_tool_detect_ai_text_error_args">अमान्य पैरामीटर: text एक खाली न होने वाली स्ट्रिंग होनी चाहिए</string>
+    <string name="agent_tool_detect_ai_image_title">AI छवि डिटेक्शन</string>
+    <string name="agent_tool_detect_ai_image_summary">पहचानें कि कोई छवि संभवतः AI से बनी है या नहीं; AI-निर्माण का भरोसा और निर्णय लौटाता है</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">पहचानने के लिए छवि URI; content:// और file:// समर्थित, बातचीत के अटैचमेंट या browse_files टूल से प्राप्त करें</string>
+    <string name="agent_tool_detect_ai_image_error_args">अमान्य पैरामीटर: image_uri एक खाली न होने वाली स्ट्रिंग होनी चाहिए</string>
+</resources>

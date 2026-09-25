@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">テキスト検出</string>
+    <string name="ai_detect_image_tab">画像検出</string>
+    <string name="ai_detect_text_hint">検出するテキストを貼り付けるか入力…</string>
+    <string name="ai_detect_button">検出</string>
+    <string name="ai_detect_detecting">検出中…</string>
+    <string name="ai_detect_upload_hint">タップして画像をアップロードまたは貼り付け…</string>
+    <string name="ai_detect_upload_format">JPG / PNG / WebP に対応、300×300 以上、最大 10MB</string>
+    <string name="ai_detect_change_image">画像を変更</string>
+    <string name="ai_detect_probability_label">AI の可能性</string>
+    <string name="ai_detect_verdict_likely_ai">AI 生成の可能性が高い</string>
+    <string name="ai_detect_verdict_maybe_ai">AI 生成の可能性あり</string>
+    <string name="ai_detect_verdict_likely_human">人が作成した可能性が高い</string>
+    <string name="ai_detect_recheck">再検出</string>
+    <string name="ai_detect_view_detail">詳細を表示</string>
+    <string name="ai_detect_collapse_detail">詳細を非表示</string>
+    <string name="ai_detect_segment_human">人による作成</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">AI の疑い</string>
+    <string name="ai_detect_labels_ratio_title">ラベル比率</string>
+    <string name="ai_detect_image_confidence_detail">この画像に対する AI 生成の信頼度は %1$d%% です。値が高いほど AI 生成の可能性が高くなります。</string>
+    <string name="ai_detect_history">検出履歴</string>
+    <string name="ai_detect_history_empty">検出履歴はまだありません</string>
+    <string name="ai_detect_clear_all">すべてクリア</string>
+    <string name="ai_detect_clear_confirm">検出履歴をすべて削除しますか？</string>
+    <string name="ai_detect_confirm">確認</string>
+    <string name="ai_detect_cancel">キャンセル</string>
+    <string name="ai_detect_delete">削除</string>
+    <string name="ai_detect_type_text">テキスト</string>
+    <string name="ai_detect_type_image">画像</string>
+    <string name="ai_detect_detail_title">検出の詳細</string>
+    <string name="ai_detect_error_image_too_large">画像は 10MB 未満にしてください</string>
+    <string name="ai_detect_error_image_too_small">画像は 300×300 より大きくしてください</string>
+    <string name="ai_detect_error_image_unreadable">画像を読み込めません</string>
+    <string name="ai_detect_error_network">検出に失敗しました。しばらくしてからもう一度お試しください</string>
+    <string name="agent_tool_detect_ai_text_title">AI テキスト検出</string>
+    <string name="agent_tool_detect_ai_text_summary">テキストが AI 生成かどうかを検出し、AI の確率、判定、区間ごとのラベルを返します</string>
+    <string name="agent_tool_detect_ai_text_param_text">検出するプレーンテキストの内容</string>
+    <string name="agent_tool_detect_ai_text_error_args">パラメータが無効です。text には空でない文字列を指定してください</string>
+    <string name="agent_tool_detect_ai_image_title">AI 画像検出</string>
+    <string name="agent_tool_detect_ai_image_summary">画像が AI 生成かどうかを検出し、AI 生成の信頼度と判定を返します</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">検出する画像の URI。content:// と file:// に対応し、会話の添付ファイルまたは browse_files ツールから取得できます</string>
+    <string name="agent_tool_detect_ai_image_error_args">パラメータが無効です。image_uri には空でない文字列を指定してください</string>
+</resources>

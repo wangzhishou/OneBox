@@ -844,4 +844,89 @@
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_theme_setting_param_glass_border_alpha">Visibilitas batas kaca. **Tipe angka** (bukan string), rentang [0.0, 1.0], default 0.17 (17%%). 0 menyembunyikan batas sepenuhnya; lebih tinggi = garis luar lebih terlihat. Tidak bergantung pada glass_alpha. Opsional</string>
+    <string name="agent_tool_switch_ai_model_title">Ganti Model</string>
+    <string name="agent_tool_switch_ai_model_summary">Ganti mesin AI atau model yang dipakai obrolan</string>
+    <string name="agent_tool_switch_ai_model_description">Ganti mesin/model AI yang dipakai untuk percakapan saat ini. Gunakan saat pengguna meminta mengganti model (mis. \"gunakan DeepSeek\", \"ganti ke GPT-5\"). engine_name adalah nama mesin/penyedia (mis. deepseek, openai, qwen, kimi, doubao, mimo, gemini, grok, claude); model_name opsional dan jika kosong akan memakai model yang sedang dipakai mesin tersebut; slot memilih slot kerja yang diperbarui: default (obrolan utama) atau fast (tugas cepat).</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">Nama mesin tujuan (nilai penyedia, mis. deepseek)</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">Nama model tujuan (opsional, mis. deepseek-chat); biarkan kosong untuk mempertahankan model yang sedang dipakai mesin tersebut</string>
+    <string name="agent_tool_switch_ai_model_param_slot">Slot kerja: default = model obrolan utama, fast = model tugas cepat; default-nya default</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">Gagal mengurai parameter; engine_name wajib diisi</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">Mesin %1$s tidak ditemukan. Mesin yang tersedia: %2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">Model %2$s tidak ditemukan pada mesin %1$s. Model yang tersedia: %3$s</string>
+    <string name="agent_tool_switch_ai_model_success">Model diganti: %1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">Gagal mengganti model: %1$s</string>
+    <string name="agent_tool_font_scale_setting_title">Ukuran Font</string>
+    <string name="agent_tool_font_scale_setting_summary">Baca atau ubah skala font aplikasi (0.45–1.5, atau ikuti ukuran font sistem)</string>
+    <string name="agent_tool_font_scale_setting_param_action">Jenis tindakan. get=baca skala font saat ini; set=ubah. **Hanya action yang wajib**</string>
+    <string name="agent_tool_font_scale_setting_param_scale">Skala font. String angka dalam rentang 0.45 ~ 1.5 (1.0 = default), atau \"system\" / \"default\" untuk mengikuti ukuran font sistem. Hanya untuk set</string>
+    <string name="agent_tool_font_scale_setting_failed">Pengaturan skala font gagal: %1$s</string>
+    <string name="agent_tool_font_scale_setting_unknown_action">Tindakan tidak dikenal: %1$s. Harus salah satu dari get / set</string>
+    <string name="agent_tool_font_scale_setting_missing_action">Parameter action tidak ada</string>
+    <string name="agent_tool_font_scale_setting_missing_scale">Tindakan set memerlukan parameter scale (0.45 ~ 1.5, atau \"system\")</string>
+    <string name="agent_tool_font_scale_setting_out_of_range">Skala tidak valid: %1$s. Harus angka dalam rentang 0.45 ~ 1.5, atau \"system\" / \"default\"</string>
+    <string name="agent_tool_font_scale_setting_get_message">Skala font saat ini terbaca</string>
+    <string name="agent_tool_font_scale_setting_set_message">Skala font diatur ke %1$s</string>
+    <string name="agent_tool_font_scale_setting_set_system_message">Skala font diatur untuk mengikuti ukuran font sistem</string>
+    <string name="agent_tool_font_scale_setting_effective_hint">Skala font baru telah diterapkan; antarmuka akan disegarkan otomatis dalam satu detik</string>
+    <string name="agent_tool_font_scale_setting_deeplink_label">Pengaturan Tampilan</string>
+    <string name="agent_tool_font_scale_setting_deeplink_guidance">Ketuk untuk menyetel ukuran font di pengaturan tampilan</string>
+    <string name="agent_tool_night_mode_setting_title">Mode Malam</string>
+    <string name="agent_tool_night_mode_setting_summary">Baca atau ganti mode malam Terang / Gelap / Sistem (langsung berlaku)</string>
+    <string name="agent_tool_night_mode_setting_param_action">Jenis tindakan. get=baca mode saat ini; set=ganti mode. **Hanya action yang wajib**</string>
+    <string name="agent_tool_night_mode_setting_param_mode">Mode malam. Light (siang) / Dark (malam) / System (ikuti sistem), tidak peka huruf besar-kecil. Hanya untuk set</string>
+    <string name="agent_tool_night_mode_setting_failed">Pengaturan mode malam gagal: %1$s</string>
+    <string name="agent_tool_night_mode_setting_unknown_action">Tindakan tidak dikenal: %1$s. Harus salah satu dari get / set</string>
+    <string name="agent_tool_night_mode_setting_missing_action">Parameter action tidak ada</string>
+    <string name="agent_tool_night_mode_setting_missing_mode">Tindakan set memerlukan parameter mode (Light / Dark / System)</string>
+    <string name="agent_tool_night_mode_setting_invalid_mode">Mode malam tidak valid: %1$s. Harus salah satu dari Light / Dark / System</string>
+    <string name="agent_tool_night_mode_setting_get_message">Mode malam saat ini: %1$s</string>
+    <string name="agent_tool_night_mode_setting_set_message">Mode malam diganti ke %1$s</string>
+    <string name="agent_tool_night_mode_setting_deeplink_label">Pengaturan Tampilan</string>
+    <string name="agent_tool_night_mode_setting_deeplink_guidance">Ketuk untuk mengganti mode malam di pengaturan tampilan</string>
+    <string name="agent_tool_start_entry_setting_title">Halaman Awal</string>
+    <string name="agent_tool_start_entry_setting_summary">Lihat atau ubah halaman yang dibuka aplikasi setelah cold start (berlaku pada cold start berikutnya)</string>
+    <string name="agent_tool_start_entry_setting_param_action">Jenis tindakan. list=daftar semua halaman kandidat; get=baca halaman awal saat ini; set=ubah. **Hanya action yang wajib**</string>
+    <string name="agent_tool_start_entry_setting_param_screen_id">Id halaman awal. Id numerik dari respons list candidates[i].id, atau \"default\" / \"home\" untuk memulihkan halaman beranda default. Hanya untuk set</string>
+    <string name="agent_tool_start_entry_setting_failed">Pengaturan halaman awal gagal: %1$s</string>
+    <string name="agent_tool_start_entry_setting_unknown_action">Tindakan tidak dikenal: %1$s. Harus salah satu dari list / get / set</string>
+    <string name="agent_tool_start_entry_setting_missing_action">Parameter action tidak ada</string>
+    <string name="agent_tool_start_entry_setting_missing_screen_id">Tindakan set memerlukan parameter screen_id (id kandidat dari list, atau \"default\")</string>
+    <string name="agent_tool_start_entry_setting_invalid_screen_id">screen_id tidak valid: %1$s. Harus id kandidat numerik, atau \"default\" / \"home\"</string>
+    <string name="agent_tool_start_entry_setting_unknown_screen_id">screen_id tidak dikenal: %1$s. Panggil list lebih dulu untuk mendapatkan id kandidat yang valid</string>
+    <string name="agent_tool_start_entry_setting_list_message">Kandidat halaman awal terbaca</string>
+    <string name="agent_tool_start_entry_setting_get_message">Halaman awal saat ini terbaca</string>
+    <string name="agent_tool_start_entry_setting_set_message">Halaman awal diatur ke: %1$s</string>
+    <string name="agent_tool_start_entry_setting_effective_hint">Halaman awal hanya berlaku pada cold start aplikasi berikutnya</string>
+    <string name="agent_tool_start_entry_setting_deeplink_label">Pengaturan Tampilan</string>
+    <string name="agent_tool_start_entry_setting_deeplink_guidance">Ketuk untuk memilih halaman awal di pengaturan tampilan</string>
+    <string name="agent_tool_memory_write_description">Simpan entri memori permanen tentang pengguna atau proyek saat ini: preferensi, fakta penting, keputusan, dan konvensi yang layak dipertahankan antarpercakapan. Tulis pernyataan yang ringkas dan mandiri. JANGAN catat rahasia, kata sandi, kunci API, atau detail sesaat yang hanya sekali pakai.</string>
+    <string name="agent_tool_memory_write_param_content">Pernyataan memori yang akan disimpan, ringkas dan mandiri</string>
+    <string name="agent_tool_memory_write_result_saved">Memori disimpan (id=%1$d).</string>
+    <string name="agent_tool_memory_write_too_long">Isi memori terlalu panjang: maksimal %1$d karakter. Persingkat dan simpan poin-poin pentingnya saja.</string>
+    <string name="agent_tool_gate_memory_disabled">Memori dinonaktifkan untuk percakapan ini (sakelar global atau per percakapan dimatikan). Jangan panggil alat memori lagi dalam percakapan ini.</string>
+    <string name="agent_tool_gate_skills_disabled">Skill dinonaktifkan untuk percakapan ini (sakelar global atau per percakapan dimatikan). Jangan panggil alat use_skill lagi dalam percakapan ini.</string>
+    <string name="agent_tool_memory_get_description">Cari entri memori tersimpan berdasarkan kata kunci; entri hanya dikembalikan jika SEMUA kata kunci cocok (tidak peka huruf besar-kecil). Kosongkan kata kunci untuk menampilkan entri terbaru. scope=log (default) hanya mencari entri log, scope=all juga menyertakan profil pengguna.</string>
+    <string name="agent_tool_memory_get_param_keywords">Kata kunci dipisahkan spasi atau koma; biarkan kosong untuk menampilkan entri terbaru</string>
+    <string name="agent_tool_memory_get_param_scope">Cakupan pencarian: log (default) atau all (sertakan profil pengguna)</string>
+    <string name="agent_tool_memory_get_result_empty">Tidak ada entri memori yang cocok.</string>
+    <string name="agent_tool_memory_get_result_entry">#%1$d [%2$s] (%3$s)</string>
+    <string name="agent_tool_memory_get_result_truncated_count">[Lebih banyak entri cocok tetapi dihilangkan: batas hasil adalah %1$d entri. Persempit kata kunci.]</string>
+    <string name="agent_tool_memory_get_result_truncated_entries">[%1$d entri dipotong agar sesuai batas keluaran. Gunakan kata kunci yang lebih spesifik untuk membacanya secara utuh.]</string>
+    <string name="agent_tool_memory_get_result_truncated_bytes">[%1$d entri dihilangkan: batas ukuran keluaran tercapai. Persempit kata kunci.]</string>
+    <string name="agent_tool_use_skill_description">Muat instruksi lengkap skill yang terdaftar di &lt;available_skills&gt; berdasarkan namanya. Selalu panggil ini sebelum menerapkan skill.</string>
+    <string name="agent_tool_use_skill_param_name">Nama skill (slug) persis seperti yang terdaftar di &lt;available_skills&gt;</string>
+    <string name="agent_tool_use_skill_not_found">Skill \'%1$s\' tidak ditemukan atau dinonaktifkan. Skill yang tersedia: %2$s</string>
+    <string name="agent_tool_use_skill_none_available">(tidak ada)</string>
+    <string name="agent_memory_prompt_omitted_hint">(Memori sebelumnya dihilangkan agar sesuai anggaran; gunakan memory_get untuk mencarinya.)</string>
+    <string name="agent_memory_prompt_omitted_hint_no_search">(Memori sebelumnya dihilangkan agar sesuai anggaran.)</string>
+    <string name="agent_memory_prompt_profile_header">Profil pengguna:</string>
+    <string name="agent_memory_prompt_log_header">Log memori (%1$s):</string>
+    <string name="agent_skills_prompt_unlisted">(%1$d skill lain tidak terdaftar.)</string>
+    <string name="agent_skill_import_invalid">SKILL.md tidak valid: frontmatter harus memuat kolom name dan description satu baris</string>
+    <string name="ai_tools_session_memory">Memori untuk percakapan ini</string>
+    <string name="ai_tools_session_memory_hint">Sisipkan memori tersimpan dan izinkan AI menulis memori dalam percakapan ini</string>
+    <string name="ai_tools_session_skills">Skill untuk percakapan ini</string>
+    <string name="ai_tools_session_skills_hint">Tampilkan daftar skill yang tersedia dan izinkan AI memuat skill dalam percakapan ini</string>
+    <string name="ai_tools_session_global_off_hint">Dimatikan secara global di pengaturan AI; sakelar percakapan tidak tersedia</string>
 </resources>

@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">Habit Tracker</string>
     <string name="activity_log_habit_created">Bagong ugali: %1$s</string>
     <string name="activity_log_habit_check_in">Check-in: %1$s</string>
+    <string name="sys_prompt_iching_title">System Prompt para sa Interpretasyon ng I Ching</string>
+    <string name="sys_prompt_iching_desc">Mga tagubilin ng system na ginagamit para bigyang-kahulugan ang isang tanong, hexagrama, at mga nagbabagong linya</string>
+    <string name="sys_prompt_memory_global_title">Gabay sa Profile ng Memorya</string>
+    <string name="sys_prompt_memory_global_desc">Panimulang bahagi na ipinapasok bago ang seksyon ng profile ng gumagamit sa memorya ng AI</string>
+    <string name="sys_prompt_memory_recent_title">Gabay sa Kamakailang Log ng Memorya</string>
+    <string name="sys_prompt_memory_recent_desc">Panimulang bahagi na ipinapasok bago ang seksyon ng kamakailang log ng memorya ng AI (binabanggit ang tool na memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Gabay sa Kamakailang Log ng Memorya (Walang Tool)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Panghaliling bersyon na ginagamit kapag hindi sinusuportahan ng modelo ang mga tool call</string>
+    <string name="sys_prompt_skills_guidance_title">Gabay sa Listahan ng Mga Skill</string>
+    <string name="sys_prompt_skills_guidance_desc">Panimulang bahagi na ipinapasok bago ang listahan ng mga magagamit na skill</string>
 </resources>

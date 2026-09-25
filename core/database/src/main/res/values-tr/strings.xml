@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">Alışkanlık Takibi</string>
     <string name="activity_log_habit_created">Yeni alışkanlık: %1$s</string>
     <string name="activity_log_habit_check_in">Check-in: %1$s</string>
+    <string name="sys_prompt_iching_title">I Ching Yorumu Sistem İstemi</string>
+    <string name="sys_prompt_iching_desc">Bir soruyu, heksagramı ve değişen çizgileri yorumlamak için kullanılan sistem yönergeleri</string>
+    <string name="sys_prompt_memory_global_title">Bellek Profili Yönergesi</string>
+    <string name="sys_prompt_memory_global_desc">AI belleğinin kullanıcı profili bölümünden önce eklenen giriş metni</string>
+    <string name="sys_prompt_memory_recent_title">Bellek Son Kayıtlar Yönergesi</string>
+    <string name="sys_prompt_memory_recent_desc">AI belleğinin son kayıtlar bölümünden önce eklenen giriş metni (memory_get aracından söz eder)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Bellek Son Kayıtlar Yönergesi (Araç Yok)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Model araç çağrılarını desteklemediğinde kullanılan yedek sürüm</string>
+    <string name="sys_prompt_skills_guidance_title">Beceriler Listesi Yönergesi</string>
+    <string name="sys_prompt_skills_guidance_desc">Kullanılabilir beceriler listesinden önce eklenen giriş metni</string>
 </resources>

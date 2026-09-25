@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">습관 트래커</string>
     <string name="activity_log_habit_created">새 습관: %1$s</string>
     <string name="activity_log_habit_check_in">체크인: %1$s</string>
+    <string name="sys_prompt_iching_title">주역 해석 시스템 프롬프트</string>
+    <string name="sys_prompt_iching_desc">질문, 괘, 변효를 해석할 때 사용하는 시스템 지침</string>
+    <string name="sys_prompt_memory_global_title">기억 프로필 지침</string>
+    <string name="sys_prompt_memory_global_desc">AI 기억의 사용자 프로필 섹션 앞에 삽입되는 도입 문구</string>
+    <string name="sys_prompt_memory_recent_title">기억 최근 기록 지침</string>
+    <string name="sys_prompt_memory_recent_desc">AI 기억의 최근 기록 섹션 앞에 삽입되는 도입 문구(memory_get 도구 언급)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">기억 최근 기록 지침(도구 없음)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">모델이 도구 호출을 지원하지 않을 때 사용하는 대체 버전</string>
+    <string name="sys_prompt_skills_guidance_title">스킬 목록 지침</string>
+    <string name="sys_prompt_skills_guidance_desc">사용 가능한 스킬 목록 앞에 삽입되는 도입 문구</string>
 </resources>

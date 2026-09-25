@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">아이템 관리자 열기</string>
     <string name="agent_tool_household_edit_link">아이템 보기</string>
     <string name="agent_tool_household_unknown_error">알 수 없는 오류</string>
+    <string name="household_ai_assist_fill_in">침실 약통에 있는 감기약을 등록해 줘, 유통기한 2027년 6월</string>
 </resources>

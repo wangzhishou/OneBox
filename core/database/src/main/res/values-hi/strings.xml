@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">आदत ट्रैकर</string>
     <string name="activity_log_habit_created">नई आदत: %1$s</string>
     <string name="activity_log_habit_check_in">चेक-इन: %1$s</string>
+    <string name="sys_prompt_iching_title">आई चिंग व्याख्या सिस्टम प्रॉम्प्ट</string>
+    <string name="sys_prompt_iching_desc">किसी प्रश्न, हेक्साग्राम और परिवर्तनशील रेखाओं की व्याख्या के लिए उपयोग किए जाने वाले सिस्टम निर्देश</string>
+    <string name="sys_prompt_memory_global_title">मेमोरी प्रोफ़ाइल मार्गदर्शन</string>
+    <string name="sys_prompt_memory_global_desc">AI मेमोरी के उपयोगकर्ता प्रोफ़ाइल अनुभाग से पहले जोड़ी जाने वाली प्रस्तावना</string>
+    <string name="sys_prompt_memory_recent_title">मेमोरी हालिया लॉग मार्गदर्शन</string>
+    <string name="sys_prompt_memory_recent_desc">AI मेमोरी के हालिया लॉग अनुभाग से पहले जोड़ी जाने वाली प्रस्तावना (memory_get टूल का उल्लेख करती है)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">मेमोरी हालिया लॉग मार्गदर्शन (बिना टूल)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">जब मॉडल टूल कॉल का समर्थन नहीं करता तब उपयोग किया जाने वाला वैकल्पिक रूप</string>
+    <string name="sys_prompt_skills_guidance_title">स्किल सूची मार्गदर्शन</string>
+    <string name="sys_prompt_skills_guidance_desc">उपलब्ध स्किल सूची से पहले जोड़ी जाने वाली प्रस्तावना</string>
 </resources>

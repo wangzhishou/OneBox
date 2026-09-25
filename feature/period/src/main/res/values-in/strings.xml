@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">Pelacak Menstruasi</string>
+    <string name="period_stats_title">Statistik Siklus</string>
+    <string name="period_detail_title">Detail Catatan</string>
+    <string name="period_add_title">Catatan Baru</string>
+    <string name="period_edit_title">Edit Catatan</string>
+    <string name="period_tab_records">Catatan</string>
+    <string name="period_tab_stats">Data</string>
+    <string name="period_search">Cari</string>
+    <string name="period_search_hint">Cari catatan atau gejala</string>
+    <string name="period_add">Tambah</string>
+    <string name="period_save">Simpan</string>
+    <string name="period_cancel">Batal</string>
+    <string name="period_delete">Hapus</string>
+    <string name="period_loading">Memuat…</string>
+    <string name="period_saved">Tersimpan</string>
+    <string name="period_record_added">Catatan ditambahkan</string>
+    <string name="period_deleted">Catatan dihapus</string>
+    <string name="period_save_failed">Gagal menyimpan</string>
+    <string name="period_toast_recorded">Menstruasi tercatat</string>
+    <string name="period_empty_title">Belum ada catatan</string>
+    <string name="period_empty_subtitle">Ceritakan kondisimu ke AI dan buat catatan dengan sekali ketuk</string>
+    <string name="period_ai_quick_record">Catat Cepat dengan AI</string>
+    <string name="period_manual_record">Catat Manual</string>
+    <string name="period_empty_example">mis. \"Menstruasi saya mulai kemarin, kram ringan\"</string>
+    <string name="period_ai_assist_title">Asisten Pelacak Menstruasi</string>
+    <string name="period_ai_assist_fill_in">Menstruasi saya mulai kemarin dengan kram hebat, tolong catat</string>
+    <string name="period_ai_assist_prompt">Anda adalah asisten pelacak menstruasi pengguna. Saat pengguna menjelaskan status menstruasi, aliran, gejala, atau suasana hati, catat dengan add_period_record (gunakan yyyy-MM-dd untuk tanggal). Saat pengguna bertanya tentang panjang siklus, menstruasi berikutnya, atau statistik, gunakan query_period_records. Untuk memperbaiki catatan, gunakan update_period_record. Untuk menghapusnya, gunakan delete_period_record. Konfirmasi setiap tindakan secara singkat setelah mencatat.</string>
+    <string name="period_record_count">%1$d catatan</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">MMM d</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (pilih beberapa)</string>
+    <string name="period_cycle_day">Hari siklus %1$d</string>
+    <string name="period_cycle_day_unknown">Hari siklus —</string>
+    <string name="period_status_period">Menstruasi</string>
+    <string name="period_status_ovulation">Ovulasi</string>
+    <string name="period_status_normal">Normal</string>
+    <string name="period_status_start">Mulai</string>
+    <string name="period_status_mid">Menstruasi</string>
+    <string name="period_status_end">Selesai</string>
+    <string name="period_calendar_prev">Bulan sebelumnya</string>
+    <string name="period_calendar_next">Bulan berikutnya</string>
+    <string name="period_field_date">Tanggal</string>
+    <string name="period_field_status">Status menstruasi</string>
+    <string name="period_field_flow">Aliran</string>
+    <string name="period_field_symptoms">Gejala</string>
+    <string name="period_field_mood">Suasana hati</string>
+    <string name="period_field_note">Catatan</string>
+    <string name="period_note_hint">Catatan opsional</string>
+    <string name="period_delete_record">Hapus catatan</string>
+    <string name="period_delete_confirm_title">Hapus catatan ini?</string>
+    <string name="period_delete_confirm_message">Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="period_flow_none">Tidak ada</string>
+    <string name="period_flow_light">Ringan</string>
+    <string name="period_flow_medium">Sedang</string>
+    <string name="period_flow_heavy">Berat</string>
+    <string name="period_mood_very_happy">Sangat baik</string>
+    <string name="period_mood_happy">Baik</string>
+    <string name="period_mood_normal">Biasa saja</string>
+    <string name="period_mood_sad">Murung</string>
+    <string name="period_mood_very_sad">Buruk</string>
+    <string name="period_symptom_abdominal_pain">Kram</string>
+    <string name="period_symptom_headache">Sakit kepala</string>
+    <string name="period_symptom_back_pain">Nyeri punggung</string>
+    <string name="period_symptom_mood_swings">Perubahan suasana hati</string>
+    <string name="period_symptom_breast_tenderness">Nyeri payudara</string>
+    <string name="period_symptom_fatigue">Kelelahan</string>
+    <string name="period_symptom_nausea">Mual</string>
+    <string name="period_symptom_insomnia">Insomnia</string>
+    <string name="period_symptom_appetite_change">Perubahan nafsu makan</string>
+    <string name="period_symptom_acne">Jerawat</string>
+    <string name="period_symptom_edema">Perut kembung</string>
+    <string name="period_stats_range_6m">6 bulan terakhir</string>
+    <string name="period_stats_range_day">Hari</string>
+    <string name="period_stats_range_week">Minggu</string>
+    <string name="period_stats_range_month">Bulan</string>
+    <string name="period_stats_avg_cycle">Rata-rata siklus</string>
+    <string name="period_stats_avg_period">Rata-rata menstruasi</string>
+    <string name="period_stats_next">Menstruasi berikutnya</string>
+    <string name="period_stats_vs_prev">dibanding %1$+d hr lalu</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">Tren panjang siklus</string>
+    <string name="period_stats_trend_empty">Perlu minimal dua awal siklus</string>
+    <string name="period_stats_symptom_title">Distribusi gejala</string>
+    <string name="period_stats_symptom_empty">Belum ada data gejala</string>
+    <string name="period_stats_symptom_center">Total</string>
+    <string name="period_day_unit">hr</string>
+    <string name="period_month_unit">bln</string>
+    <string name="period_next_label">Menstruasi berikutnya</string>
+    <string name="period_days_until">Dalam %1$d hari</string>
+    <string name="period_timeline_title">Lini masa</string>
+    <string name="period_timeline_start">Awal menstruasi</string>
+    <string name="period_timeline_end">Perkiraan akhir menstruasi</string>
+    <string name="period_log_record_created">Catatan menstruasi dibuat</string>
+    <string name="period_log_record_updated">Catatan menstruasi diperbarui</string>
+    <string name="period_log_record_deleted">Catatan menstruasi dihapus</string>
+    <string name="agent_tool_add_period_record_title">Tambah catatan menstruasi</string>
+    <string name="agent_tool_add_period_record_summary">Catat awal/akhir menstruasi, aliran, gejala, dan suasana hati</string>
+    <string name="agent_tool_add_period_record_description">Catat entri menstruasi: tanggal (yyyy-MM-dd), opsional is_period_start / is_period_end, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), array symptoms, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD), dan note.</string>
+    <string name="agent_tool_add_period_record_failed">Gagal menambah catatan menstruasi: %1$s</string>
+    <string name="agent_tool_query_period_records_title">Kueri catatan menstruasi</string>
+    <string name="agent_tool_query_period_records_summary">Kueri catatan, statistik siklus, dan prediksi menstruasi berikutnya</string>
+    <string name="agent_tool_query_period_records_description">Kueri catatan menstruasi terbaru beserta rata-rata siklus, rata-rata panjang menstruasi, dan perkiraan awal berikutnya. limit opsional.</string>
+    <string name="agent_tool_query_period_records_empty">Belum ada catatan menstruasi.</string>
+    <string name="agent_tool_query_period_records_failed">Gagal mengambil catatan menstruasi: %1$s</string>
+    <string name="agent_tool_update_period_record_title">Perbarui catatan menstruasi</string>
+    <string name="agent_tool_update_period_record_summary">Perbarui catatan menstruasi yang ada berdasarkan record_id</string>
+    <string name="agent_tool_update_period_record_description">Perbarui catatan menstruasi. Sertakan record_id dan kolom yang ingin diubah (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note).</string>
+    <string name="agent_tool_update_period_record_failed">Gagal memperbarui catatan menstruasi: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">Hapus catatan menstruasi</string>
+    <string name="agent_tool_delete_period_record_summary">Hapus catatan menstruasi berdasarkan record_id</string>
+    <string name="agent_tool_delete_period_record_description">Hapus catatan menstruasi secara permanen. Memerlukan record_id dan konfirmasi pengguna.</string>
+    <string name="agent_tool_delete_period_record_done">Catatan menstruasi %1$s dihapus</string>
+    <string name="agent_tool_delete_period_record_failed">Gagal menghapus catatan menstruasi: %1$s</string>
+    <string name="agent_tool_period_param_date">Tanggal catatan, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">Apakah hari ini adalah awal menstruasi</string>
+    <string name="agent_tool_period_param_is_end">Apakah hari ini adalah akhir menstruasi</string>
+    <string name="agent_tool_period_param_flow">Intensitas aliran: NONE, LIGHT, MEDIUM, atau HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">Array symptoms, mis. ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">Mood: VERY_HAPPY, HAPPY, NORMAL, SAD, atau VERY_SAD</string>
+    <string name="agent_tool_period_param_note">Catatan opsional</string>
+    <string name="agent_tool_period_param_record_id">ID catatan menstruasi</string>
+    <string name="agent_tool_period_param_limit">Maksimum catatan yang dikembalikan (1-50)</string>
+    <string name="agent_tool_period_label_date">Tanggal</string>
+    <string name="agent_tool_period_label_flow">Aliran</string>
+    <string name="agent_tool_period_label_symptoms">Gejala</string>
+    <string name="agent_tool_period_open_link">Buka pelacak menstruasi</string>
+    <string name="agent_tool_period_detail_link">Buka detail catatan</string>
+    <string name="agent_tool_period_no_next">Data tidak cukup</string>
+    <string name="agent_tool_period_unknown_error">Kesalahan tidak diketahui</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>menstruasi</item>
+        <item>haid</item>
+        <item>siklus</item>
+        <item>datang bulan</item>
+        <item>siklus menstruasi</item>
+        <item>catat menstruasi</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>Menstruasi saya mulai hari ini dengan kram ringan</item>
+        <item>Tolong catat menstruasi saya hari ini, aliran sedang</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>siklus</item>
+        <item>menstruasi berikutnya</item>
+        <item>periode berikutnya</item>
+        <item>prediksi</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>Kapan menstruasi saya berikutnya?</item>
+        <item>Apakah siklus saya teratur?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>ubah catatan menstruasi</item>
+        <item>perbarui catatan haid</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>Ubah catatan kemarin menjadi aliran berat</item>
+        <item>Ganti aliran catatan kemarin jadi berat</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>hapus catatan menstruasi</item>
+        <item>hapus catatan haid</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>Hapus catatan menstruasi kemarin</item>
+        <item>Hapus entri haid kemarin</item>
+    </string-array>
+</resources>

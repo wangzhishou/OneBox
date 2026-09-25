@@ -58,4 +58,5 @@
     <string name="data_sync_reselect">Pumili muli</string>
     <string name="data_sync_importing">Ini-import…</string>
     <string name="data_sync_confirm_import">I-import</string>
+    <string name="ai_model_protocol_jev">Jev judgment engine</string>
 </resources>

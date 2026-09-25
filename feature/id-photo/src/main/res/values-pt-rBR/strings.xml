@@ -89,4 +89,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">Para licenças de guia turístico</string>
     <string name="id_photo_preset_size_desc_chsi">Para coleta de fotos do CHSI/Xuexin</string>
     <string name="id_photo_preset_size_desc_id_card">Para carteiras de identidade de segunda geração</string>
+    <string name="id_photo_export_target_size">Tamanho de exportação</string>
+    <string name="id_photo_export_source_size">Tamanho original</string>
+    <string name="id_photo_export_estimated_size">Tamanho estimado</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
+    <string name="id_photo_tab_beauty">Embelezamento com um toque</string>
+    <string name="id_photo_beauty_light">Leve</string>
+    <string name="id_photo_beauty_standard">Padrão</string>
+    <string name="id_photo_beauty_deep">Forte</string>
+    <string name="id_photo_beauty_points_tip">~%d pontos por uso</string>
+    <string name="id_photo_ai_process_failed">Falha no processamento de IA. Tente novamente mais tarde</string>
+    <string name="id_photo_beauty">Embelezamento de retrato com IA</string>
+    <string name="id_photo_bg_replace">Substituição de fundo com IA</string>
+    <string name="id_photo_bg_original">Original</string>
+    <string name="id_photo_bg_transparent">Transparente</string>
+    <string name="id_photo_beauty_apply">Aplicar</string>
+    <string name="id_photo_beauty_group_skin">Pele</string>
+    <string name="id_photo_beauty_group_flaw">Remoção de imperfeições</string>
+    <string name="id_photo_beauty_group_reshape">Reforma facial</string>
+    <string name="id_photo_beauty_group_eye">Realce dos olhos</string>
+    <string name="id_photo_beauty_group_hair">Cabelo</string>
+    <string name="id_photo_beauty_group_teeth">Dentes</string>
+    <string name="id_photo_beauty_group_body">Reforma corporal</string>
+    <string name="id_photo_bp_face_smooth">Suavização</string>
+    <string name="id_photo_bp_face_smooth_gray">Suavização cinza neutro</string>
+    <string name="id_photo_bp_face_smooth_fine">Suavização de alta/baixa frequência</string>
+    <string name="id_photo_bp_face_smooth_new">Suavização do contorno facial</string>
+    <string name="id_photo_bp_skin_white">Clareamento</string>
+    <string name="id_photo_bp_skin_bright">Luminosidade</string>
+    <string name="id_photo_bp_skin_red">Aspecto rosado</string>
+    <string name="id_photo_bp_skin_sharpen">Nitidez da pele</string>
+    <string name="id_photo_bp_face_color_same">Tom de pele uniforme</string>
+    <string name="id_photo_bp_skin_prefer">Tom quente-frio</string>
+    <string name="id_photo_bp_face_highlight">Iluminação do rosto</string>
+    <string name="id_photo_bp_face_shadow">Sombra do rosto</string>
+    <string name="id_photo_bp_remove_face_flaw">Imperfeições faciais</string>
+    <string name="id_photo_bp_remove_dark_circles">Olheiras</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">Rugas ao redor dos olhos</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">Rugas na testa</string>
+    <string name="id_photo_bp_remove_laugh_line">Linhas de expressão</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">Rugas no pescoço</string>
+    <string name="id_photo_bp_remove_double_chin">Papada</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">Rugas nos lábios</string>
+    <string name="id_photo_bp_remove_face_glossy">Brilho oleoso</string>
+    <string name="id_photo_bp_remove_face_moles">Remover pintas</string>
+    <string name="id_photo_bp_face_small">Rosto menor</string>
+    <string name="id_photo_bp_face_thin">Rosto mais fino</string>
+    <string name="id_photo_bp_face_v">Rosto em V</string>
+    <string name="id_photo_bp_jaw_width">Contorno do maxilar</string>
+    <string name="id_photo_bp_cheekbone_width">Maçãs do rosto</string>
+    <string name="id_photo_bp_face_width">Largura do rosto</string>
+    <string name="id_photo_bp_forehead_height">Testa</string>
+    <string name="id_photo_bp_chin_height">Comprimento do queixo</string>
+    <string name="id_photo_bp_face_symmetry">Simetria facial</string>
+    <string name="id_photo_bp_eyebrow_thickness">Espessura das sobrancelhas</string>
+    <string name="id_photo_bp_eyebrow_distance">Distância das sobrancelhas</string>
+    <string name="id_photo_bp_eyebrow_height">Altura das sobrancelhas</string>
+    <string name="id_photo_bp_eye_scale">Tamanho dos olhos</string>
+    <string name="id_photo_bp_eye_distance">Distância entre os olhos</string>
+    <string name="id_photo_bp_eye_angle">Ângulo dos olhos</string>
+    <string name="id_photo_bp_nose_scale">Tamanho do nariz</string>
+    <string name="id_photo_bp_nose_height">Altura do nariz</string>
+    <string name="id_photo_bp_nose_bridge">Dorso do nariz</string>
+    <string name="id_photo_bp_nose_wing">Asas do nariz</string>
+    <string name="id_photo_bp_nose_tip">Ponta do nariz</string>
+    <string name="id_photo_bp_mouth_scale">Tamanho da boca</string>
+    <string name="id_photo_bp_mouth_width">Largura da boca</string>
+    <string name="id_photo_bp_mouth_position">Posição da boca</string>
+    <string name="id_photo_bp_shiny_eye">Olhar brilhante</string>
+    <string name="id_photo_bp_remove_eye_streaks">Vermelhidão nos olhos</string>
+    <string name="id_photo_bp_fill_hair_part">Preenchimento da risca</string>
+    <string name="id_photo_bp_calvaria_height">Altura do topo da cabeça</string>
+    <string name="id_photo_bp_hairline_height">Linha do cabelo</string>
+    <string name="id_photo_bp_remove_white_hair">Cabelos brancos</string>
+    <string name="id_photo_bp_remove_burst_hair">Fios arrepiados</string>
+    <string name="id_photo_bp_teeth_white">Clareamento dos dentes</string>
+    <string name="id_photo_bp_teeth_repair">Reparo dos dentes</string>
+    <string name="id_photo_bp_ai_body_thin">Modelagem corporal com IA</string>
+    <string name="id_photo_bp_body_thin">Afinamento do corpo</string>
+    <string name="id_photo_bp_head_small">Cabeça menor</string>
+    <string name="id_photo_bp_neck_length">Comprimento do pescoço</string>
+    <string name="id_photo_bp_neck_thin">Pescoço mais fino</string>
+    <string name="id_photo_bp_arm_thin">Braços mais finos</string>
+    <string name="id_photo_bp_waist_thin">Cintura mais fina</string>
+    <string name="id_photo_bp_leg_thin">Pernas mais finas</string>
+    <string name="id_photo_bp_leg_long">Pernas mais longas</string>
+    <string name="id_photo_bp_body_heighten">Aumentar altura</string>
+    <string name="id_photo_bp_desc_face_smooth">Maior = pele mais lisa e hidratada</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">Maior = brilho da pele mais uniforme</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">Maior = pele mais lisa</string>
+    <string name="id_photo_bp_desc_face_smooth_new">Maior = contorno facial mais liso e suave</string>
+    <string name="id_photo_bp_desc_skin_white">Maior = pele mais clara</string>
+    <string name="id_photo_bp_desc_skin_bright">Maior = pele mais radiante</string>
+    <string name="id_photo_bp_desc_skin_red">Maior = pele mais rosada</string>
+    <string name="id_photo_bp_desc_skin_sharpen">Maior = textura da pele mais nítida</string>
+    <string name="id_photo_bp_desc_face_color_same">Maior = tom de pele facial mais uniforme</string>
+    <string name="id_photo_bp_desc_skin_prefer">Negativo = mais frio, positivo = mais quente</string>
+    <string name="id_photo_bp_desc_face_highlight">Maior = iluminação facial mais intensa</string>
+    <string name="id_photo_bp_desc_face_shadow">Maior = sombra facial mais profunda</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">Maior = remoção de imperfeições mais limpa</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">Maior = olheiras mais claras</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">Maior = rugas ao redor dos olhos mais suaves</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">Maior = rugas na testa mais suaves</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">Maior = linhas de expressão mais suaves</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">Maior = remoção de rugas no pescoço mais limpa</string>
+    <string name="id_photo_bp_desc_remove_double_chin">Maior = papada menos visível</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">Maior = rugas nos lábios mais suaves</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">Maior = menos brilho oleoso</string>
+    <string name="id_photo_bp_desc_remove_face_moles">Ative para remover pintas do rosto</string>
+    <string name="id_photo_bp_desc_face_small">Maior = rosto menor</string>
+    <string name="id_photo_bp_desc_face_thin">Maior = rosto mais fino</string>
+    <string name="id_photo_bp_desc_face_v">Maior = linha V mais acentuada</string>
+    <string name="id_photo_bp_desc_jaw_width">Maior = maxilar mais fino</string>
+    <string name="id_photo_bp_desc_cheekbone_width">Maior = maçãs do rosto menos salientes</string>
+    <string name="id_photo_bp_desc_face_width">Maior = rosto mais largo</string>
+    <string name="id_photo_bp_desc_forehead_height">Maior = testa mais alta</string>
+    <string name="id_photo_bp_desc_chin_height">Maior = queixo mais longo</string>
+    <string name="id_photo_bp_desc_face_symmetry">Maior = rosto mais simétrico</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">Maior = sobrancelhas mais grossas</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">Maior = sobrancelhas mais afastadas</string>
+    <string name="id_photo_bp_desc_eyebrow_height">Maior = sobrancelhas mais altas</string>
+    <string name="id_photo_bp_desc_eye_scale">Maior = olhos maiores</string>
+    <string name="id_photo_bp_desc_eye_distance">Maior = olhos mais afastados</string>
+    <string name="id_photo_bp_desc_eye_angle">Maior = cantos dos olhos mais levantados</string>
+    <string name="id_photo_bp_desc_nose_scale">Maior = nariz maior</string>
+    <string name="id_photo_bp_desc_nose_height">Maior = nariz mais alto</string>
+    <string name="id_photo_bp_desc_nose_bridge">Maior = dorso do nariz mais alto</string>
+    <string name="id_photo_bp_desc_nose_wing">Maior = asas do nariz mais largas</string>
+    <string name="id_photo_bp_desc_nose_tip">Maior = ponta do nariz maior</string>
+    <string name="id_photo_bp_desc_mouth_scale">Maior = boca maior</string>
+    <string name="id_photo_bp_desc_mouth_width">Maior = boca mais larga</string>
+    <string name="id_photo_bp_desc_mouth_position">Maior = boca mais alta</string>
+    <string name="id_photo_bp_desc_shiny_eye">Maior = olhar mais brilhante</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">Maior = remoção mais intensa de vasos vermelhos</string>
+    <string name="id_photo_bp_desc_fill_hair_part">Maior = preenchimento mais intenso da risca</string>
+    <string name="id_photo_bp_desc_calvaria_height">Maior = topo da cabeça mais alto</string>
+    <string name="id_photo_bp_desc_hairline_height">Maior = linha do cabelo mais alta</string>
+    <string name="id_photo_bp_desc_remove_white_hair">Maior = remoção mais intensa de cabelos brancos</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">Maior = remoção mais intensa de fios arrepiados</string>
+    <string name="id_photo_bp_desc_teeth_white">Maior = dentes mais brancos</string>
+    <string name="id_photo_bp_desc_teeth_repair">Ative para reparar defeitos nos dentes</string>
+    <string name="id_photo_bp_desc_ai_body_thin">Maior = corpo mais fino (IA)</string>
+    <string name="id_photo_bp_desc_body_thin">Maior = corpo mais fino</string>
+    <string name="id_photo_bp_desc_head_small">Maior = cabeça menor</string>
+    <string name="id_photo_bp_desc_neck_length">Maior = pescoço mais longo</string>
+    <string name="id_photo_bp_desc_neck_thin">Maior = pescoço mais fino</string>
+    <string name="id_photo_bp_desc_arm_thin">Maior = braços mais finos</string>
+    <string name="id_photo_bp_desc_waist_thin">Maior = cintura mais fina</string>
+    <string name="id_photo_bp_desc_leg_thin">Maior = pernas mais finas</string>
+    <string name="id_photo_bp_desc_leg_long">Maior = pernas mais longas</string>
+    <string name="id_photo_bp_desc_body_heighten">Maior = silhueta mais alta</string>
 </resources>

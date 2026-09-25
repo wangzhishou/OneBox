@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">Yıldız</string>
     <string name="textcard_shape_filled">Dolu</string>
     <string name="textcard_draw_width">Fırça kalınlığı</string>
+    <string name="textcard_canvas_custom">Özel Boyut</string>
+    <string name="textcard_canvas_custom_desc">Özel genişlik × yükseklik girin</string>
+    <string name="textcard_custom_size_title">Özel Tuval Boyutu</string>
+    <string name="textcard_canvas_width">Genişlik (px)</string>
+    <string name="textcard_canvas_height">Yükseklik (px)</string>
+    <string name="textcard_refresh_papers">Kağıtları yenile</string>
+    <string name="textcard_editing_selection">Düzenleniyor: seçili metin</string>
+    <string name="textcard_clear_selection_style">Stili temizle</string>
 </resources>

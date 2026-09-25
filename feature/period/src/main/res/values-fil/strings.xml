@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">Period Tracker</string>
+    <string name="period_stats_title">Stats ng Cycle</string>
+    <string name="period_detail_title">Detalye ng Rekord</string>
+    <string name="period_add_title">Bagong Rekord</string>
+    <string name="period_edit_title">I-edit ang Rekord</string>
+    <string name="period_tab_records">Mga Rekord</string>
+    <string name="period_tab_stats">Data</string>
+    <string name="period_search">Maghanap</string>
+    <string name="period_search_hint">Maghanap ng tala o sintomas</string>
+    <string name="period_add">Idagdag</string>
+    <string name="period_save">I-save</string>
+    <string name="period_cancel">Kanselahin</string>
+    <string name="period_delete">I-delete</string>
+    <string name="period_loading">Naglo-load…</string>
+    <string name="period_saved">Nai-save</string>
+    <string name="period_record_added">Naidagdag ang rekord</string>
+    <string name="period_deleted">Na-delete ang rekord</string>
+    <string name="period_save_failed">Nabigo ang pag-save</string>
+    <string name="period_toast_recorded">Naitala ang regla</string>
+    <string name="period_empty_title">Wala pang rekord</string>
+    <string name="period_empty_subtitle">Sabihin sa AI ang nararamdaman mo at gumawa ng rekord sa isang tap</string>
+    <string name="period_ai_quick_record">Mabilis na Rekord sa AI</string>
+    <string name="period_manual_record">Manu-manong Rekord</string>
+    <string name="period_empty_example">hal. \"Nagsimula ang regla ko kahapon, bahagyang pananakit\"</string>
+    <string name="period_ai_assist_title">Katulong sa Period Tracker</string>
+    <string name="period_ai_assist_fill_in">Nagsimula ang regla ko kahapon na may matinding pananakit, itala mo na</string>
+    <string name="period_ai_assist_prompt">Ika\'y ang period tracker assistant ng user. Kapag inilarawan ng user ang status ng regla, flow, sintomas o mood, itala ito gamit ang add_period_record (gamitin ang yyyy-MM-dd para sa petsa). Kapag nagtanong ang user tungkol sa haba ng cycle, susunod na regla o stats, gamitin ang query_period_records. Para itama ang isang rekord, gamitin ang update_period_record. Para mag-alis ng isa, gamitin ang delete_period_record. Kumpirmahin nang maikli ang bawat aksyon pagkatapos itala.</string>
+    <string name="period_record_count">%1$d rekord</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">MMM d</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (multi-select)</string>
+    <string name="period_cycle_day">Araw %1$d ng cycle</string>
+    <string name="period_cycle_day_unknown">Araw ng cycle —</string>
+    <string name="period_status_period">Regla</string>
+    <string name="period_status_ovulation">Ovulasyon</string>
+    <string name="period_status_normal">Normal</string>
+    <string name="period_status_start">Simula</string>
+    <string name="period_status_mid">Regla</string>
+    <string name="period_status_end">Katapusan</string>
+    <string name="period_calendar_prev">Nakaraang buwan</string>
+    <string name="period_calendar_next">Susunod na buwan</string>
+    <string name="period_field_date">Petsa</string>
+    <string name="period_field_status">Status ng regla</string>
+    <string name="period_field_flow">Flow</string>
+    <string name="period_field_symptoms">Mga Sintomas</string>
+    <string name="period_field_mood">Mood</string>
+    <string name="period_field_note">Tala</string>
+    <string name="period_note_hint">Opsyonal na tala</string>
+    <string name="period_delete_record">I-delete ang rekord</string>
+    <string name="period_delete_confirm_title">I-delete ang rekord na ito?</string>
+    <string name="period_delete_confirm_message">Hindi na ito maibabalik.</string>
+    <string name="period_flow_none">Wala</string>
+    <string name="period_flow_light">Magaan</string>
+    <string name="period_flow_medium">Katamtaman</string>
+    <string name="period_flow_heavy">Malakas</string>
+    <string name="period_mood_very_happy">Napakasaya</string>
+    <string name="period_mood_happy">Masaya</string>
+    <string name="period_mood_normal">Okay lang</string>
+    <string name="period_mood_sad">Malungkot</string>
+    <string name="period_mood_very_sad">Napakalungkot</string>
+    <string name="period_symptom_abdominal_pain">Pamanhid ng tiyan</string>
+    <string name="period_symptom_headache">Sakit ng ulo</string>
+    <string name="period_symptom_back_pain">Sakit ng likod</string>
+    <string name="period_symptom_mood_swings">Pagbabago ng mood</string>
+    <string name="period_symptom_breast_tenderness">Pananakit ng dibdib</string>
+    <string name="period_symptom_fatigue">Pagkapagod</string>
+    <string name="period_symptom_nausea">Pagduduwal</string>
+    <string name="period_symptom_insomnia">Insomnia</string>
+    <string name="period_symptom_appetite_change">Pagbabago ng gana sa pagkain</string>
+    <string name="period_symptom_acne">Tagihawat</string>
+    <string name="period_symptom_edema">Pagmamaga ng tiyan</string>
+    <string name="period_stats_range_6m">Huling 6 na buwan</string>
+    <string name="period_stats_range_day">Araw</string>
+    <string name="period_stats_range_week">Linggo</string>
+    <string name="period_stats_range_month">Buwan</string>
+    <string name="period_stats_avg_cycle">Avg cycle</string>
+    <string name="period_stats_avg_period">Avg regla</string>
+    <string name="period_stats_next">Susunod na regla</string>
+    <string name="period_stats_vs_prev">kumpara sa nakaraang %1$+d d</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">Trend ng haba ng cycle</string>
+    <string name="period_stats_trend_empty">Kailangan ng hindi bababa sa dalawang simula ng cycle</string>
+    <string name="period_stats_symptom_title">Distribusyon ng sintomas</string>
+    <string name="period_stats_symptom_empty">Wala pang data ng sintomas</string>
+    <string name="period_stats_symptom_center">Kabuuan</string>
+    <string name="period_day_unit">d</string>
+    <string name="period_month_unit">M</string>
+    <string name="period_next_label">Susunod na regla</string>
+    <string name="period_days_until">Sa %1$d araw</string>
+    <string name="period_timeline_title">Timeline</string>
+    <string name="period_timeline_start">Simula ng regla</string>
+    <string name="period_timeline_end">Inaasahang katapusan ng regla</string>
+    <string name="period_log_record_created">Nagawa ang rekord ng regla</string>
+    <string name="period_log_record_updated">Na-update ang rekord ng regla</string>
+    <string name="period_log_record_deleted">Na-delete ang rekord ng regla</string>
+    <string name="agent_tool_add_period_record_title">Magdagdag ng rekord ng regla</string>
+    <string name="agent_tool_add_period_record_summary">Itala ang simula/katapusan ng regla, flow, sintomas at mood</string>
+    <string name="agent_tool_add_period_record_description">Itala ang entry ng regla: petsa (yyyy-MM-dd), opsyonal na is_period_start / is_period_end, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), array ng symptoms, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) at note.</string>
+    <string name="agent_tool_add_period_record_failed">Nabigo ang pagdagdag ng rekord ng regla: %1$s</string>
+    <string name="agent_tool_query_period_records_title">I-query ang mga rekord ng regla</string>
+    <string name="agent_tool_query_period_records_summary">I-query ang mga rekord, stats ng cycle at prediksiyon ng susunod na regla</string>
+    <string name="agent_tool_query_period_records_description">I-query ang mga kamakailang rekord ng regla kasama ang average na cycle, average na haba ng regla at susunod na prediktibong simula. Opsyonal na limit.</string>
+    <string name="agent_tool_query_period_records_empty">Wala pang rekord ng regla.</string>
+    <string name="agent_tool_query_period_records_failed">Nabigo ang pag-query ng mga rekord ng regla: %1$s</string>
+    <string name="agent_tool_update_period_record_title">I-update ang rekord ng regla</string>
+    <string name="agent_tool_update_period_record_summary">I-update ang umiiral na rekord ng regla gamit ang record_id</string>
+    <string name="agent_tool_update_period_record_description">I-update ang rekord ng regla. Ibigay ang record_id at anumang field na babaguhin (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note).</string>
+    <string name="agent_tool_update_period_record_failed">Nabigo ang pag-update ng rekord ng regla: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">I-delete ang rekord ng regla</string>
+    <string name="agent_tool_delete_period_record_summary">I-delete ang rekord ng regla gamit ang record_id</string>
+    <string name="agent_tool_delete_period_record_description">Permanenteng i-delete ang rekord ng regla. Kailangan ang record_id at kumpirmasyon ng user.</string>
+    <string name="agent_tool_delete_period_record_done">Na-delete ang rekord ng regla %1$s</string>
+    <string name="agent_tool_delete_period_record_failed">Nabigo ang pag-delete ng rekord ng regla: %1$s</string>
+    <string name="agent_tool_period_param_date">Petsa ng rekord, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">Kung ang araw na ito ay simula ng regla</string>
+    <string name="agent_tool_period_param_is_end">Kung ang araw na ito ay katapusan ng regla</string>
+    <string name="agent_tool_period_param_flow">Lakas ng flow: NONE, LIGHT, MEDIUM o HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">Array ng symptoms, hal. ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">Mood: VERY_HAPPY, HAPPY, NORMAL, SAD o VERY_SAD</string>
+    <string name="agent_tool_period_param_note">Opsyonal na tala</string>
+    <string name="agent_tool_period_param_record_id">Id ng rekord ng regla</string>
+    <string name="agent_tool_period_param_limit">Max na rekord na ibabalik (1-50)</string>
+    <string name="agent_tool_period_label_date">Petsa</string>
+    <string name="agent_tool_period_label_flow">Flow</string>
+    <string name="agent_tool_period_label_symptoms">Mga Sintomas</string>
+    <string name="agent_tool_period_open_link">Buksan ang period tracker</string>
+    <string name="agent_tool_period_detail_link">Buksan ang detalye ng rekord</string>
+    <string name="agent_tool_period_no_next">Kulang ang data</string>
+    <string name="agent_tool_period_unknown_error">Hindi kilalang error</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>period</item>
+        <item>menstruation</item>
+        <item>cycle</item>
+        <item>regla</item>
+        <item>panahon ng regla</item>
+        <item>buwanang dalaw</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>Nagsimula ang regla ko ngayon na may bahagyang pananakit</item>
+        <item>Itala mo nga, nagkaroon ako ng regla ngayon, katamtaman ang flow</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>cycle</item>
+        <item>susunod na regla</item>
+        <item>cycle</item>
+        <item>prediksiyon</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>Kailan ang susunod kong regla?</item>
+        <item>Regular ba ang cycle ko?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>i-update ang regla</item>
+        <item>baguhin ang rekord ng regla</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>I-update mo\'ng rekord kahapon para maging malakas ang flow</item>
+        <item>Gawing malakas ang flow ng rekord kahapon</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>i-delete ang regla</item>
+        <item>i-delete ang rekord ng regla</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>I-delete ang rekord ng regla kahapon</item>
+        <item>I-delete ang rekord ng regla kahapon</item>
+    </string-array>
+</resources>

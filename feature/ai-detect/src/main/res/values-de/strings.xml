@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">Textprüfung</string>
+    <string name="ai_detect_image_tab">Bildprüfung</string>
+    <string name="ai_detect_text_hint">Text zum Prüfen einfügen oder eingeben…</string>
+    <string name="ai_detect_button">Prüfen</string>
+    <string name="ai_detect_detecting">Wird geprüft…</string>
+    <string name="ai_detect_upload_hint">Tippen, um ein Bild hochzuladen oder einzufügen…</string>
+    <string name="ai_detect_upload_format">Unterstützt JPG / PNG / WebP, größer als 300×300, bis zu 10 MB</string>
+    <string name="ai_detect_change_image">Bild ändern</string>
+    <string name="ai_detect_probability_label">AI-Wahrscheinlichkeit</string>
+    <string name="ai_detect_verdict_likely_ai">Wahrscheinlich AI-generiert</string>
+    <string name="ai_detect_verdict_maybe_ai">Möglicherweise AI-generiert</string>
+    <string name="ai_detect_verdict_likely_human">Wahrscheinlich von Menschen erstellt</string>
+    <string name="ai_detect_recheck">Erneut prüfen</string>
+    <string name="ai_detect_view_detail">Details anzeigen</string>
+    <string name="ai_detect_collapse_detail">Details ausblenden</string>
+    <string name="ai_detect_segment_human">Mensch</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">AI-Verdacht</string>
+    <string name="ai_detect_labels_ratio_title">Label-Anteile</string>
+    <string name="ai_detect_image_confidence_detail">Das Modell schätzt die Wahrscheinlichkeit einer AI-Generierung für dieses Bild auf %1$d%%. Je höher der Wert, desto wahrscheinlicher ist es AI-generiert.</string>
+    <string name="ai_detect_history">Prüfverlauf</string>
+    <string name="ai_detect_history_empty">Noch keine Prüfeinträge</string>
+    <string name="ai_detect_clear_all">Alle löschen</string>
+    <string name="ai_detect_clear_confirm">Alle Prüfeinträge löschen?</string>
+    <string name="ai_detect_confirm">Bestätigen</string>
+    <string name="ai_detect_cancel">Abbrechen</string>
+    <string name="ai_detect_delete">Löschen</string>
+    <string name="ai_detect_type_text">Text</string>
+    <string name="ai_detect_type_image">Bild</string>
+    <string name="ai_detect_detail_title">Prüfdetails</string>
+    <string name="ai_detect_error_image_too_large">Das Bild muss kleiner als 10 MB sein</string>
+    <string name="ai_detect_error_image_too_small">Das Bild muss größer als 300×300 sein</string>
+    <string name="ai_detect_error_image_unreadable">Bild kann nicht gelesen werden</string>
+    <string name="ai_detect_error_network">Prüfung fehlgeschlagen, bitte später erneut versuchen</string>
+    <string name="agent_tool_detect_ai_text_title">AI-Textprüfung</string>
+    <string name="agent_tool_detect_ai_text_summary">Prüft, ob ein Text wahrscheinlich AI-generiert ist, und liefert AI-Wahrscheinlichkeit, Urteil und Labels pro Abschnitt</string>
+    <string name="agent_tool_detect_ai_text_param_text">Der zu prüfende reine Textinhalt</string>
+    <string name="agent_tool_detect_ai_text_error_args">Ungültige Parameter: text muss eine nicht leere Zeichenkette sein</string>
+    <string name="agent_tool_detect_ai_image_title">AI-Bildprüfung</string>
+    <string name="agent_tool_detect_ai_image_summary">Prüft, ob ein Bild wahrscheinlich AI-generiert ist, und liefert die Sicherheit der AI-Generierung und das Urteil</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">Zu prüfende Bild-URI; unterstützt content:// und file://, erhältlich aus Chat-Anhängen oder dem Tool browse_files</string>
+    <string name="agent_tool_detect_ai_image_error_args">Ungültige Parameter: image_uri muss eine nicht leere Zeichenkette sein</string>
+</resources>

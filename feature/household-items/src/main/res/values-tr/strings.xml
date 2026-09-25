@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">Öğe Yöneticisini Aç</string>
     <string name="agent_tool_household_edit_link">Öğeyi görüntüle</string>
     <string name="agent_tool_household_unknown_error">Bilinmeyen hata</string>
+    <string name="household_ai_assist_fill_in">Yatak odasındaki ecza dolabındaki soğuk algınlığı ilacını kaydet, son kullanma tarihi Haziran 2027</string>
 </resources>

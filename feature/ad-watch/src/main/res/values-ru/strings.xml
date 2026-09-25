@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Просмотр рекламы</string>
+    <string name="ad_watch_headline_1">О чём реклама, на которую бренды тратят миллионы?</string>
+    <string name="ad_watch_headline_2">Как выглядит реклама, в которую вкладываются гиганты?</string>
+    <string name="ad_watch_headline_3">15 секунд, чтобы увидеть козыри брендов</string>
+    <string name="ad_watch_headline_4">Другие платят за внимание — вы получаете баллы</string>
+    <string name="ad_watch_headline_5">Битва рекламодателей — смотрите бесплатно</string>
+    <string name="ad_watch_subtitle">Смотрите рекламу 15 секунд — получайте %1$d баллов</string>
+    <string name="ad_watch_cta">Смотреть рекламу · +%1$d баллов</string>
+    <string name="ad_watch_remaining">Осталось сегодня: %1$d/%2$d</string>
+    <string name="ad_watch_daily_limit_reached">Лимит на сегодня исчерпан, возвращайтесь завтра</string>
+    <string name="ad_watch_loading">Загрузка рекламы…</string>
+    <string name="ad_watch_load_failed">Не удалось загрузить рекламу</string>
+    <string name="ad_watch_retry">Повторить</string>
+    <string name="ad_watch_ad_not_ready">Реклама ещё не готова, попробуйте позже</string>
+</resources>

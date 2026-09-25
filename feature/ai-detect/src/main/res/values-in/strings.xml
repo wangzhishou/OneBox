@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">Deteksi Teks</string>
+    <string name="ai_detect_image_tab">Deteksi Gambar</string>
+    <string name="ai_detect_text_hint">Tempel atau ketik teks yang ingin dideteksi…</string>
+    <string name="ai_detect_button">Deteksi</string>
+    <string name="ai_detect_detecting">Mendeteksi…</string>
+    <string name="ai_detect_upload_hint">Ketuk untuk mengunggah atau menempel gambar…</string>
+    <string name="ai_detect_upload_format">Mendukung JPG / PNG / WebP, lebih dari 300×300, maksimal 10MB</string>
+    <string name="ai_detect_change_image">Ganti Gambar</string>
+    <string name="ai_detect_probability_label">Probabilitas AI</string>
+    <string name="ai_detect_verdict_likely_ai">Kemungkinan besar dibuat AI</string>
+    <string name="ai_detect_verdict_maybe_ai">Mungkin dibuat AI</string>
+    <string name="ai_detect_verdict_likely_human">Kemungkinan besar buatan manusia</string>
+    <string name="ai_detect_recheck">Deteksi Ulang</string>
+    <string name="ai_detect_view_detail">Lihat Detail</string>
+    <string name="ai_detect_collapse_detail">Sembunyikan Detail</string>
+    <string name="ai_detect_segment_human">Manusia</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">Diduga AI</string>
+    <string name="ai_detect_labels_ratio_title">Rasio Label</string>
+    <string name="ai_detect_image_confidence_detail">Model memberi gambar ini tingkat keyakinan generasi AI sebesar %1$d%%. Semakin tinggi nilainya, semakin besar kemungkinan gambar ini dibuat AI.</string>
+    <string name="ai_detect_history">Riwayat Deteksi</string>
+    <string name="ai_detect_history_empty">Belum ada riwayat deteksi</string>
+    <string name="ai_detect_clear_all">Bersihkan Semua</string>
+    <string name="ai_detect_clear_confirm">Bersihkan semua riwayat deteksi?</string>
+    <string name="ai_detect_confirm">Konfirmasi</string>
+    <string name="ai_detect_cancel">Batal</string>
+    <string name="ai_detect_delete">Hapus</string>
+    <string name="ai_detect_type_text">Teks</string>
+    <string name="ai_detect_type_image">Gambar</string>
+    <string name="ai_detect_detail_title">Detail Deteksi</string>
+    <string name="ai_detect_error_image_too_large">Gambar harus lebih kecil dari 10MB</string>
+    <string name="ai_detect_error_image_too_small">Gambar harus lebih besar dari 300×300</string>
+    <string name="ai_detect_error_image_unreadable">Tidak dapat membaca gambar</string>
+    <string name="ai_detect_error_network">Deteksi gagal, coba lagi nanti</string>
+    <string name="agent_tool_detect_ai_text_title">Deteksi Teks AI</string>
+    <string name="agent_tool_detect_ai_text_summary">Mendeteksi apakah suatu teks kemungkinan dibuat AI, lalu mengembalikan probabilitas AI, kesimpulan, dan label per segmen</string>
+    <string name="agent_tool_detect_ai_text_param_text">Isi teks biasa yang akan dideteksi</string>
+    <string name="agent_tool_detect_ai_text_error_args">Parameter tidak valid: teks harus berupa string yang tidak kosong</string>
+    <string name="agent_tool_detect_ai_image_title">Deteksi Gambar AI</string>
+    <string name="agent_tool_detect_ai_image_summary">Mendeteksi apakah suatu gambar kemungkinan dibuat AI, lalu mengembalikan tingkat keyakinan generasi AI dan kesimpulannya</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">URI gambar yang akan dideteksi; mendukung content:// dan file://, bisa didapat dari lampiran percakapan atau tool browse_files</string>
+    <string name="agent_tool_detect_ai_image_error_args">Parameter tidak valid: image_uri harus berupa string yang tidak kosong</string>
+</resources>

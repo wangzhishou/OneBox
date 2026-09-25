@@ -844,4 +844,89 @@
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_theme_setting_param_glass_border_alpha">Sichtbarkeit des Glasrahmens. **Zahlentyp** (kein String), Bereich [0.0, 1.0], Standard 0.17 (17%%). 0 blendet den Rahmen vollständig aus; höher = sichtbarere Kontur. Unabhängig von glass_alpha. Optional</string>
+    <string name="agent_tool_switch_ai_model_title">Modell wechseln</string>
+    <string name="agent_tool_switch_ai_model_summary">Die vom Chat verwendete KI-Engine oder das Modell wechseln</string>
+    <string name="agent_tool_switch_ai_model_description">Wechselt die für die aktuelle Unterhaltung verwendete KI-Engine bzw. das Modell. Verwenden, wenn der Nutzer das Modell ändern möchte (z. B. \"DeepSeek verwenden\", \"zu GPT-5 wechseln\"). engine_name ist der Name der Engine bzw. des Anbieters (z. B. deepseek, openai, qwen, kimi, doubao, mimo, gemini, grok, claude); model_name ist optional und verwendet sonst das aktuelle Modell der jeweiligen Engine; slot wählt den zu aktualisierenden Arbeitsslot: default (Hauptchat) oder fast (Schnellaufgaben).</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">Name der Ziel-Engine (Anbieterwert, z. B. deepseek)</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">Name des Zielmodells (optional, z. B. deepseek-chat); wenn weggelassen, bleibt das aktuelle Modell der Engine erhalten</string>
+    <string name="agent_tool_switch_ai_model_param_slot">Arbeitsslot: default = Modell für den Hauptchat, fast = Modell für Schnellaufgaben; Standard ist default</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">Parameter konnten nicht verarbeitet werden; engine_name ist erforderlich</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">Engine %1$s nicht gefunden. Verfügbare Engines: %2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">Modell %2$s wurde unter Engine %1$s nicht gefunden. Verfügbare Modelle: %3$s</string>
+    <string name="agent_tool_switch_ai_model_success">Modell gewechselt: %1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">Modellwechsel fehlgeschlagen: %1$s</string>
+    <string name="agent_tool_font_scale_setting_title">Schriftgröße</string>
+    <string name="agent_tool_font_scale_setting_summary">App-Schriftgröße lesen oder ändern (0.45–1.5 oder der Systemschriftgröße folgen)</string>
+    <string name="agent_tool_font_scale_setting_param_action">Aktionstyp. get=aktuelle Schriftgröße lesen; set=ändern. **Nur action ist erforderlich**</string>
+    <string name="agent_tool_font_scale_setting_param_scale">Schriftgröße. Numerische Zeichenkette im Bereich 0.45 ~ 1.5 (1.0 = Standard) oder \"system\" / \"default\", um der Systemschriftgröße zu folgen. Nur für set</string>
+    <string name="agent_tool_font_scale_setting_failed">Einstellen der Schriftgröße fehlgeschlagen: %1$s</string>
+    <string name="agent_tool_font_scale_setting_unknown_action">Unbekannte Aktion: %1$s. Muss get oder set sein</string>
+    <string name="agent_tool_font_scale_setting_missing_action">Parameter action fehlt</string>
+    <string name="agent_tool_font_scale_setting_missing_scale">Die Aktion set erfordert den Parameter scale (0.45 ~ 1.5 oder \"system\")</string>
+    <string name="agent_tool_font_scale_setting_out_of_range">Ungültige Schriftgröße: %1$s. Muss eine Zahl im Bereich 0.45 ~ 1.5 oder \"system\" / \"default\" sein</string>
+    <string name="agent_tool_font_scale_setting_get_message">Aktuelle Schriftgröße gelesen</string>
+    <string name="agent_tool_font_scale_setting_set_message">Schriftgröße auf %1$s gesetzt</string>
+    <string name="agent_tool_font_scale_setting_set_system_message">Schriftgröße folgt jetzt der Systemschriftgröße</string>
+    <string name="agent_tool_font_scale_setting_effective_hint">Die neue Schriftgröße wurde angewendet; die Oberfläche wird innerhalb einer Sekunde automatisch aktualisiert</string>
+    <string name="agent_tool_font_scale_setting_deeplink_label">Anzeigeeinstellungen</string>
+    <string name="agent_tool_font_scale_setting_deeplink_guidance">Tippen, um die Schriftgröße in den Anzeigeeinstellungen fein einzustellen</string>
+    <string name="agent_tool_night_mode_setting_title">Nachtmodus</string>
+    <string name="agent_tool_night_mode_setting_summary">Nachtmodus Hell / Dunkel / System lesen oder umschalten (wirkt sofort)</string>
+    <string name="agent_tool_night_mode_setting_param_action">Aktionstyp. get=aktuellen Modus lesen; set=Modus umschalten. **Nur action ist erforderlich**</string>
+    <string name="agent_tool_night_mode_setting_param_mode">Nachtmodus. Light (hell) / Dark (dunkel) / System (dem System folgen), Groß-/Kleinschreibung egal. Nur für set</string>
+    <string name="agent_tool_night_mode_setting_failed">Einstellen des Nachtmodus fehlgeschlagen: %1$s</string>
+    <string name="agent_tool_night_mode_setting_unknown_action">Unbekannte Aktion: %1$s. Muss get oder set sein</string>
+    <string name="agent_tool_night_mode_setting_missing_action">Parameter action fehlt</string>
+    <string name="agent_tool_night_mode_setting_missing_mode">Die Aktion set erfordert den Parameter mode (Light / Dark / System)</string>
+    <string name="agent_tool_night_mode_setting_invalid_mode">Ungültiger Nachtmodus: %1$s. Muss Light, Dark oder System sein</string>
+    <string name="agent_tool_night_mode_setting_get_message">Aktueller Nachtmodus: %1$s</string>
+    <string name="agent_tool_night_mode_setting_set_message">Nachtmodus auf %1$s umgestellt</string>
+    <string name="agent_tool_night_mode_setting_deeplink_label">Anzeigeeinstellungen</string>
+    <string name="agent_tool_night_mode_setting_deeplink_guidance">Tippen, um den Nachtmodus in den Anzeigeeinstellungen umzuschalten</string>
+    <string name="agent_tool_start_entry_setting_title">Einstiegsseite</string>
+    <string name="agent_tool_start_entry_setting_summary">Die Seite anzeigen oder ändern, die die App nach einem Kaltstart öffnet (wirkt beim nächsten Kaltstart)</string>
+    <string name="agent_tool_start_entry_setting_param_action">Aktionstyp. list=alle möglichen Seiten auflisten; get=aktuelle Einstiegsseite lesen; set=ändern. **Nur action ist erforderlich**</string>
+    <string name="agent_tool_start_entry_setting_param_screen_id">ID der Einstiegsseite. Numerische ID aus der list-Antwort candidates[i].id oder \"default\" / \"home\", um die Standard-Startseite wiederherzustellen. Nur für set</string>
+    <string name="agent_tool_start_entry_setting_failed">Einstellen der Einstiegsseite fehlgeschlagen: %1$s</string>
+    <string name="agent_tool_start_entry_setting_unknown_action">Unbekannte Aktion: %1$s. Muss list, get oder set sein</string>
+    <string name="agent_tool_start_entry_setting_missing_action">Parameter action fehlt</string>
+    <string name="agent_tool_start_entry_setting_missing_screen_id">Die Aktion set erfordert den Parameter screen_id (eine Kandidaten-ID aus list oder \"default\")</string>
+    <string name="agent_tool_start_entry_setting_invalid_screen_id">Ungültige screen_id: %1$s. Muss eine numerische Kandidaten-ID oder \"default\" / \"home\" sein</string>
+    <string name="agent_tool_start_entry_setting_unknown_screen_id">Unbekannte screen_id: %1$s. Zuerst list aufrufen, um gültige Kandidaten-IDs zu erhalten</string>
+    <string name="agent_tool_start_entry_setting_list_message">Einstiegsseiten-Kandidaten gelesen</string>
+    <string name="agent_tool_start_entry_setting_get_message">Aktuelle Einstiegsseite gelesen</string>
+    <string name="agent_tool_start_entry_setting_set_message">Einstiegsseite festgelegt auf: %1$s</string>
+    <string name="agent_tool_start_entry_setting_effective_hint">Die Einstiegsseite wird erst beim nächsten Kaltstart der App wirksam</string>
+    <string name="agent_tool_start_entry_setting_deeplink_label">Anzeigeeinstellungen</string>
+    <string name="agent_tool_start_entry_setting_deeplink_guidance">Tippen, um in den Anzeigeeinstellungen eine Einstiegsseite auszuwählen</string>
+    <string name="agent_tool_memory_write_description">Einen dauerhaften Erinnerungseintrag über den Nutzer oder das aktuelle Projekt sichern: Vorlieben, wichtige Fakten, Entscheidungen und Konventionen, die über Unterhaltungen hinweg erhalten bleiben sollen. Verfasse prägnante, eigenständige Aussagen. Speichere KEINE Geheimnisse, Passwörter, API-Schlüssel oder einmalige, flüchtige Details.</string>
+    <string name="agent_tool_memory_write_param_content">Die zu speichernde Aussage, prägnant und eigenständig</string>
+    <string name="agent_tool_memory_write_result_saved">Erinnerung gespeichert (id=%1$d).</string>
+    <string name="agent_tool_memory_write_too_long">Der Inhalt der Erinnerung ist zu lang: maximal %1$d Zeichen. Kürze ihn und speichere nur die Kernpunkte.</string>
+    <string name="agent_tool_gate_memory_disabled">Erinnerungen sind für diese Unterhaltung deaktiviert (der globale oder der unterhaltungsbezogene Schalter ist aus). Rufe die Erinnerungswerkzeuge in dieser Unterhaltung nicht erneut auf.</string>
+    <string name="agent_tool_gate_skills_disabled">Skills sind für diese Unterhaltung deaktiviert (der globale oder der unterhaltungsbezogene Schalter ist aus). Rufe das Werkzeug use_skill in dieser Unterhaltung nicht erneut auf.</string>
+    <string name="agent_tool_memory_get_description">Durchsucht gespeicherte Erinnerungseinträge nach Stichwörtern; ein Eintrag wird nur zurückgegeben, wenn ALLE Stichwörter übereinstimmen (Groß-/Kleinschreibung egal). Stichwörter weglassen, um die neuesten Einträge auszugeben. scope=log (Standard) durchsucht nur Protokolleinträge, scope=all schließt auch das Nutzerprofil ein.</string>
+    <string name="agent_tool_memory_get_param_keywords">Stichwörter durch Leerzeichen oder Kommas getrennt; leer lassen, um die neuesten Einträge auszugeben</string>
+    <string name="agent_tool_memory_get_param_scope">Suchbereich: log (Standard) oder all (Nutzerprofil einbeziehen)</string>
+    <string name="agent_tool_memory_get_result_empty">Keine passenden Erinnerungseinträge.</string>
+    <string name="agent_tool_memory_get_result_entry">#%1$d [%2$s] (%3$s)</string>
+    <string name="agent_tool_memory_get_result_truncated_count">[Weitere Einträge passten, wurden aber weggelassen: Das Ergebnislimit liegt bei %1$d Einträgen. Grenze die Stichwörter ein.]</string>
+    <string name="agent_tool_memory_get_result_truncated_entries">[%1$d Einträge wurden gekürzt, um das Ausgabelimit einzuhalten. Verwende genauere Stichwörter, um sie vollständig zu lesen.]</string>
+    <string name="agent_tool_memory_get_result_truncated_bytes">[%1$d Einträge wurden weggelassen: Die Ausgabegröße hat das Limit erreicht. Grenze die Stichwörter ein.]</string>
+    <string name="agent_tool_use_skill_description">Lädt die vollständigen Anweisungen eines in &lt;available_skills&gt; aufgeführten Skills über seinen Namen. Rufe dies immer auf, bevor du einen Skill anwendest.</string>
+    <string name="agent_tool_use_skill_param_name">Der Skill-Name (Slug) genau wie in &lt;available_skills&gt; aufgeführt</string>
+    <string name="agent_tool_use_skill_not_found">Skill \'%1$s\' nicht gefunden oder deaktiviert. Verfügbare Skills: %2$s</string>
+    <string name="agent_tool_use_skill_none_available">(keine)</string>
+    <string name="agent_memory_prompt_omitted_hint">(Frühere Erinnerungen wurden aus Platzgründen weggelassen; mit memory_get danach suchen.)</string>
+    <string name="agent_memory_prompt_omitted_hint_no_search">(Frühere Erinnerungen wurden aus Platzgründen weggelassen.)</string>
+    <string name="agent_memory_prompt_profile_header">Nutzerprofil:</string>
+    <string name="agent_memory_prompt_log_header">Erinnerungsprotokoll (%1$s):</string>
+    <string name="agent_skills_prompt_unlisted">(%1$d weitere Skills nicht aufgeführt.)</string>
+    <string name="agent_skill_import_invalid">Ungültige SKILL.md: Das Frontmatter muss einzeilige Felder name und description enthalten</string>
+    <string name="ai_tools_session_memory">Erinnerungen für diese Unterhaltung</string>
+    <string name="ai_tools_session_memory_hint">Gespeicherte Erinnerungen einbeziehen und der KI erlauben, in dieser Unterhaltung Erinnerungen zu schreiben</string>
+    <string name="ai_tools_session_skills">Skills für diese Unterhaltung</string>
+    <string name="ai_tools_session_skills_hint">Die Liste der verfügbaren Skills anzeigen und der KI erlauben, in dieser Unterhaltung Skills zu laden</string>
+    <string name="ai_tools_session_global_off_hint">In den KI-Einstellungen global deaktiviert; der Schalter für die Unterhaltung ist nicht verfügbar</string>
 </resources>

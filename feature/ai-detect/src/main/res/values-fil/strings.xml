@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">Deteksyon ng Teksto</string>
+    <string name="ai_detect_image_tab">Deteksyon ng Larawan</string>
+    <string name="ai_detect_text_hint">I-paste o i-type ang tekstong ide-detect…</string>
+    <string name="ai_detect_button">I-detect</string>
+    <string name="ai_detect_detecting">Nagde-detect…</string>
+    <string name="ai_detect_upload_hint">I-tap para mag-upload o i-paste ang isang larawan…</string>
+    <string name="ai_detect_upload_format">Sinusuportahan ang JPG / PNG / WebP, mas malaki sa 300×300, hanggang 10MB</string>
+    <string name="ai_detect_change_image">Palitan ang Larawan</string>
+    <string name="ai_detect_probability_label">Probabilidad ng AI</string>
+    <string name="ai_detect_verdict_likely_ai">Malamang na gawa ng AI</string>
+    <string name="ai_detect_verdict_maybe_ai">Posibleng gawa ng AI</string>
+    <string name="ai_detect_verdict_likely_human">Malamang na gawa ng tao</string>
+    <string name="ai_detect_recheck">Suriin Muli</string>
+    <string name="ai_detect_view_detail">Tingnan ang Detalye</string>
+    <string name="ai_detect_collapse_detail">Itago ang Detalye</string>
+    <string name="ai_detect_segment_human">Tao</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">Pinaghihinalaang AI</string>
+    <string name="ai_detect_labels_ratio_title">Proporsyon ng Label</string>
+    <string name="ai_detect_image_confidence_detail">Binibigyan ng modelo ang larawang ito ng kumpiyansa sa pag-generate ng AI na %1$d%%. Habang mas mataas ang halaga, mas malamang na gawa ito ng AI.</string>
+    <string name="ai_detect_history">Kasaysayan ng Deteksyon</string>
+    <string name="ai_detect_history_empty">Wala pang tala ng deteksyon</string>
+    <string name="ai_detect_clear_all">I-clear Lahat</string>
+    <string name="ai_detect_clear_confirm">I-clear ang lahat ng tala ng deteksyon?</string>
+    <string name="ai_detect_confirm">Kumpirmahin</string>
+    <string name="ai_detect_cancel">Kanselahin</string>
+    <string name="ai_detect_delete">Tanggalin</string>
+    <string name="ai_detect_type_text">Teksto</string>
+    <string name="ai_detect_type_image">Larawan</string>
+    <string name="ai_detect_detail_title">Detalye ng Deteksyon</string>
+    <string name="ai_detect_error_image_too_large">Dapat mas maliit sa 10MB ang larawan</string>
+    <string name="ai_detect_error_image_too_small">Dapat mas malaki sa 300×300 ang larawan</string>
+    <string name="ai_detect_error_image_unreadable">Hindi mabasa ang larawan</string>
+    <string name="ai_detect_error_network">Nabigo ang deteksyon, subukan muli mamaya</string>
+    <string name="agent_tool_detect_ai_text_title">Deteksyon ng AI sa Teksto</string>
+    <string name="agent_tool_detect_ai_text_summary">I-detect kung malamang na gawa ng AI ang isang teksto, ibinabalik ang probabilidad ng AI, hatol, at mga label ng bawat bahagi</string>
+    <string name="agent_tool_detect_ai_text_param_text">Ang plain text na ide-detect</string>
+    <string name="agent_tool_detect_ai_text_error_args">Di-wastong parameter: dapat walang laman na string ang text</string>
+    <string name="agent_tool_detect_ai_image_title">Deteksyon ng AI sa Larawan</string>
+    <string name="agent_tool_detect_ai_image_summary">I-detect kung malamang na gawa ng AI ang isang larawan, ibinabalik ang kumpiyansa sa pag-generate ng AI at ang hatol</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">Image URI na ide-detect; sinusuportahan ang content:// at file://, makukuha mula sa mga attachment ng usapan o sa tool na browse_files</string>
+    <string name="agent_tool_detect_ai_image_error_args">Di-wastong parameter: dapat walang laman na string ang image_uri</string>
+</resources>

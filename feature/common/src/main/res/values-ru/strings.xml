@@ -58,4 +58,5 @@
     <string name="data_sync_reselect">Выбрать снова</string>
     <string name="data_sync_importing">Импорт…</string>
     <string name="data_sync_confirm_import">Импорт</string>
+    <string name="ai_model_protocol_jev">Движок решений Jev</string>
 </resources>

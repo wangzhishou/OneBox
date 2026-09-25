@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">Обнаружение текста</string>
+    <string name="ai_detect_image_tab">Обнаружение изображений</string>
+    <string name="ai_detect_text_hint">Вставьте или введите текст для проверки…</string>
+    <string name="ai_detect_button">Проверить</string>
+    <string name="ai_detect_detecting">Проверяем…</string>
+    <string name="ai_detect_upload_hint">Нажмите, чтобы загрузить или вставить изображение…</string>
+    <string name="ai_detect_upload_format">Поддерживаются JPG / PNG / WebP, от 300×300, до 10 МБ</string>
+    <string name="ai_detect_change_image">Сменить изображение</string>
+    <string name="ai_detect_probability_label">Вероятность ИИ</string>
+    <string name="ai_detect_verdict_likely_ai">Скорее всего создано ИИ</string>
+    <string name="ai_detect_verdict_maybe_ai">Возможно создано ИИ</string>
+    <string name="ai_detect_verdict_likely_human">Скорее всего создано человеком</string>
+    <string name="ai_detect_recheck">Проверить снова</string>
+    <string name="ai_detect_view_detail">Показать подробности</string>
+    <string name="ai_detect_collapse_detail">Скрыть подробности</string>
+    <string name="ai_detect_segment_human">Человек</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">Похоже на ИИ</string>
+    <string name="ai_detect_labels_ratio_title">Доля меток</string>
+    <string name="ai_detect_image_confidence_detail">Модель оценивает вероятность генерации ИИ для этого изображения в %1$d%%. Чем выше значение, тем вероятнее, что оно создано ИИ.</string>
+    <string name="ai_detect_history">История проверок</string>
+    <string name="ai_detect_history_empty">Записей о проверках пока нет</string>
+    <string name="ai_detect_clear_all">Очистить всё</string>
+    <string name="ai_detect_clear_confirm">Очистить все записи о проверках?</string>
+    <string name="ai_detect_confirm">Подтвердить</string>
+    <string name="ai_detect_cancel">Отмена</string>
+    <string name="ai_detect_delete">Удалить</string>
+    <string name="ai_detect_type_text">Текст</string>
+    <string name="ai_detect_type_image">Изображение</string>
+    <string name="ai_detect_detail_title">Детали проверки</string>
+    <string name="ai_detect_error_image_too_large">Изображение должно быть меньше 10 МБ</string>
+    <string name="ai_detect_error_image_too_small">Изображение должно быть больше 300×300</string>
+    <string name="ai_detect_error_image_unreadable">Не удалось прочитать изображение</string>
+    <string name="ai_detect_error_network">Не удалось выполнить проверку, повторите попытку позже</string>
+    <string name="agent_tool_detect_ai_text_title">Обнаружение текста ИИ</string>
+    <string name="agent_tool_detect_ai_text_summary">Определяет, вероятно ли текст создан ИИ, и возвращает вероятность ИИ, вердикт и метки по фрагментам</string>
+    <string name="agent_tool_detect_ai_text_param_text">Простой текст для проверки</string>
+    <string name="agent_tool_detect_ai_text_error_args">Неверные параметры: text должен быть непустой строкой</string>
+    <string name="agent_tool_detect_ai_image_title">Обнаружение изображений ИИ</string>
+    <string name="agent_tool_detect_ai_image_summary">Определяет, вероятно ли изображение создано ИИ, и возвращает уверенность в генерации ИИ и вердикт</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">URI изображения для проверки; поддерживаются content:// и file://, можно получить из вложений беседы или с помощью инструмента browse_files</string>
+    <string name="agent_tool_detect_ai_image_error_args">Неверные параметры: image_uri должен быть непустой строкой</string>
+</resources>

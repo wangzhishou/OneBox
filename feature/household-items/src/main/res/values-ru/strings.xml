@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">Открыть менеджер предметов</string>
     <string name="agent_tool_household_edit_link">Просмотреть предмет</string>
     <string name="agent_tool_household_unknown_error">Неизвестная ошибка</string>
+    <string name="household_ai_assist_fill_in">Запиши лекарство от простуды в аптечку в спальне, срок годности — июнь 2027</string>
 </resources>

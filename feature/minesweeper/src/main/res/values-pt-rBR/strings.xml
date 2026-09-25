@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Campo Minado</string>
+    <string name="minesweeper_restart">Reiniciar</string>
+    <string name="minesweeper_sound_on">Som ativado</string>
+    <string name="minesweeper_sound_off">Som desativado</string>
+    <string name="minesweeper_mode_dig">Modo escavar</string>
+    <string name="minesweeper_mode_flag">Modo bandeira</string>
+    <string name="minesweeper_hint_dig">Toque para abrir uma célula</string>
+    <string name="minesweeper_hint_flag">Toque para marcar uma mina</string>
+    <string name="minesweeper_time">Tempo</string>
+    <string name="minesweeper_mines_left">Minas</string>
+    <string name="minesweeper_won">Limpo</string>
+    <string name="minesweeper_lost">Bum</string>
+    <string name="minesweeper_play_again">Jogar novamente</string>
+    <string name="minesweeper_result_detail">%1$d s</string>
+    <string name="minesweeper_fullscreen">Tela cheia</string>
+    <string name="minesweeper_exit_fullscreen">Sair da tela cheia</string>
+    <string name="minesweeper_share">Compartilhar</string>
+</resources>

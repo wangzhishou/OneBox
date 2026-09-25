@@ -89,4 +89,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">Turist rehberi lisansları için</string>
     <string name="id_photo_preset_size_desc_chsi">CHSI/Xuexin fotoğraf toplama için</string>
     <string name="id_photo_preset_size_desc_id_card">İkinci nesil kimlik kartları için</string>
+    <string name="id_photo_export_target_size">Dışa Aktarma Boyutu</string>
+    <string name="id_photo_export_source_size">Kaynak Boyutu</string>
+    <string name="id_photo_export_estimated_size">Tahmini Boyut</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
+    <string name="id_photo_tab_beauty">Tek Dokunuşla Güzelleştir</string>
+    <string name="id_photo_beauty_light">Hafif</string>
+    <string name="id_photo_beauty_standard">Standart</string>
+    <string name="id_photo_beauty_deep">Güçlü</string>
+    <string name="id_photo_beauty_points_tip">Kullanım başına ~%d puan</string>
+    <string name="id_photo_ai_process_failed">AI işlemi başarısız oldu, lütfen daha sonra tekrar deneyin</string>
+    <string name="id_photo_beauty">AI portre güzelleştirme</string>
+    <string name="id_photo_bg_replace">AI arka plan değiştirme</string>
+    <string name="id_photo_bg_original">Orijinal</string>
+    <string name="id_photo_bg_transparent">Saydam</string>
+    <string name="id_photo_beauty_apply">Uygula</string>
+    <string name="id_photo_beauty_group_skin">Cilt</string>
+    <string name="id_photo_beauty_group_flaw">Leke Giderme</string>
+    <string name="id_photo_beauty_group_reshape">Yüz Şekillendirme</string>
+    <string name="id_photo_beauty_group_eye">Göz İyileştirme</string>
+    <string name="id_photo_beauty_group_hair">Saç</string>
+    <string name="id_photo_beauty_group_teeth">Dişler</string>
+    <string name="id_photo_beauty_group_body">Vücut Şekillendirme</string>
+    <string name="id_photo_bp_face_smooth">Yumuşatma</string>
+    <string name="id_photo_bp_face_smooth_gray">Nötr Gri Yumuşatma</string>
+    <string name="id_photo_bp_face_smooth_fine">Yüksek/Düşük Frekanslı Yumuşatma</string>
+    <string name="id_photo_bp_face_smooth_new">Yüz Hattı Yumuşatma</string>
+    <string name="id_photo_bp_skin_white">Beyazlatma</string>
+    <string name="id_photo_bp_skin_bright">Işıltı</string>
+    <string name="id_photo_bp_skin_red">Pembe Ton</string>
+    <string name="id_photo_bp_skin_sharpen">Cilt Netliği</string>
+    <string name="id_photo_bp_face_color_same">Eşit Cilt Tonu</string>
+    <string name="id_photo_bp_skin_prefer">Sıcak-Soğuk Ton</string>
+    <string name="id_photo_bp_face_highlight">Yüz Aydınlatma</string>
+    <string name="id_photo_bp_face_shadow">Yüz Gölgesi</string>
+    <string name="id_photo_bp_remove_face_flaw">Yüz Lekeleri</string>
+    <string name="id_photo_bp_remove_dark_circles">Göz Altı Morlukları</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">Göz Kırışıklıkları</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">Alın Kırışıklıkları</string>
+    <string name="id_photo_bp_remove_laugh_line">Gülme Çizgileri</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">Boyun Kırışıklıkları</string>
+    <string name="id_photo_bp_remove_double_chin">Çift Çene</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">Dudak Kırışıklıkları</string>
+    <string name="id_photo_bp_remove_face_glossy">Yağlı Parlama</string>
+    <string name="id_photo_bp_remove_face_moles">Benleri Gider</string>
+    <string name="id_photo_bp_face_small">Küçük Yüz</string>
+    <string name="id_photo_bp_face_thin">İnce Yüz</string>
+    <string name="id_photo_bp_face_v">V Şekilli Yüz</string>
+    <string name="id_photo_bp_jaw_width">Çene Hattı</string>
+    <string name="id_photo_bp_cheekbone_width">Elmacık Kemikleri</string>
+    <string name="id_photo_bp_face_width">Yüz Genişliği</string>
+    <string name="id_photo_bp_forehead_height">Alın</string>
+    <string name="id_photo_bp_chin_height">Çene Uzunluğu</string>
+    <string name="id_photo_bp_face_symmetry">Yüz Simetrisi</string>
+    <string name="id_photo_bp_eyebrow_thickness">Kaş Kalınlığı</string>
+    <string name="id_photo_bp_eyebrow_distance">Kaş Aralığı</string>
+    <string name="id_photo_bp_eyebrow_height">Kaş Yüksekliği</string>
+    <string name="id_photo_bp_eye_scale">Göz Boyutu</string>
+    <string name="id_photo_bp_eye_distance">Göz Aralığı</string>
+    <string name="id_photo_bp_eye_angle">Göz Açısı</string>
+    <string name="id_photo_bp_nose_scale">Burun Boyutu</string>
+    <string name="id_photo_bp_nose_height">Burun Yüksekliği</string>
+    <string name="id_photo_bp_nose_bridge">Burun Köprüsü</string>
+    <string name="id_photo_bp_nose_wing">Burun Kanatları</string>
+    <string name="id_photo_bp_nose_tip">Burun Ucu</string>
+    <string name="id_photo_bp_mouth_scale">Ağız Boyutu</string>
+    <string name="id_photo_bp_mouth_width">Ağız Genişliği</string>
+    <string name="id_photo_bp_mouth_position">Ağız Konumu</string>
+    <string name="id_photo_bp_shiny_eye">Parlak Gözler</string>
+    <string name="id_photo_bp_remove_eye_streaks">Göz Kızarıklığı</string>
+    <string name="id_photo_bp_fill_hair_part">Saç Ayrımı Dolgusu</string>
+    <string name="id_photo_bp_calvaria_height">Tepe Yüksekliği</string>
+    <string name="id_photo_bp_hairline_height">Saç Çizgisi</string>
+    <string name="id_photo_bp_remove_white_hair">Beyaz Saçlar</string>
+    <string name="id_photo_bp_remove_burst_hair">Uçuşan Saçlar</string>
+    <string name="id_photo_bp_teeth_white">Diş Beyazlatma</string>
+    <string name="id_photo_bp_teeth_repair">Diş Onarımı</string>
+    <string name="id_photo_bp_ai_body_thin">AI Vücut Şekillendirme</string>
+    <string name="id_photo_bp_body_thin">Vücut İnceltme</string>
+    <string name="id_photo_bp_head_small">Küçük Kafa</string>
+    <string name="id_photo_bp_neck_length">Boyun Uzunluğu</string>
+    <string name="id_photo_bp_neck_thin">İnce Boyun</string>
+    <string name="id_photo_bp_arm_thin">İnce Kollar</string>
+    <string name="id_photo_bp_waist_thin">İnce Bel</string>
+    <string name="id_photo_bp_leg_thin">İnce Bacaklar</string>
+    <string name="id_photo_bp_leg_long">Uzun Bacaklar</string>
+    <string name="id_photo_bp_body_heighten">Boy Uzatma</string>
+    <string name="id_photo_bp_desc_face_smooth">Daha yüksek = daha pürüzsüz ve nemli cilt</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">Daha yüksek = daha eşit cilt parlaklığı</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">Daha yüksek = daha pürüzsüz cilt</string>
+    <string name="id_photo_bp_desc_face_smooth_new">Daha yüksek = daha pürüzsüz ve yumuşak yüz hattı</string>
+    <string name="id_photo_bp_desc_skin_white">Daha yüksek = daha beyaz cilt</string>
+    <string name="id_photo_bp_desc_skin_bright">Daha yüksek = daha ışıltılı cilt</string>
+    <string name="id_photo_bp_desc_skin_red">Daha yüksek = daha pembe cilt</string>
+    <string name="id_photo_bp_desc_skin_sharpen">Daha yüksek = daha net cilt dokusu</string>
+    <string name="id_photo_bp_desc_face_color_same">Daha yüksek = daha eşit yüz cilt tonu</string>
+    <string name="id_photo_bp_desc_skin_prefer">Negatif = daha soğuk, pozitif = daha sıcak</string>
+    <string name="id_photo_bp_desc_face_highlight">Daha yüksek = daha güçlü yüz aydınlatması</string>
+    <string name="id_photo_bp_desc_face_shadow">Daha yüksek = daha koyu yüz gölgesi</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">Daha yüksek = daha etkili leke giderme</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">Daha yüksek = daha açık göz altı morlukları</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">Daha yüksek = daha az göz çevresi kırışıklığı</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">Daha yüksek = daha az alın kırışıklığı</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">Daha yüksek = daha az gülme çizgisi</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">Daha yüksek = daha etkili boyun kırışıklığı giderme</string>
+    <string name="id_photo_bp_desc_remove_double_chin">Daha yüksek = daha az belirgin çift çene</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">Daha yüksek = daha az dudak kırışıklığı</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">Daha yüksek = daha az yağlı parlama</string>
+    <string name="id_photo_bp_desc_remove_face_moles">Yüzdeki benleri gidermek için açın</string>
+    <string name="id_photo_bp_desc_face_small">Daha yüksek = daha küçük yüz</string>
+    <string name="id_photo_bp_desc_face_thin">Daha yüksek = daha ince yüz</string>
+    <string name="id_photo_bp_desc_face_v">Daha yüksek = daha keskin V hattı</string>
+    <string name="id_photo_bp_desc_jaw_width">Daha yüksek = daha ince çene hattı</string>
+    <string name="id_photo_bp_desc_cheekbone_width">Daha yüksek = daha az belirgin elmacık kemikleri</string>
+    <string name="id_photo_bp_desc_face_width">Daha yüksek = daha geniş yüz</string>
+    <string name="id_photo_bp_desc_forehead_height">Daha yüksek = daha uzun alın</string>
+    <string name="id_photo_bp_desc_chin_height">Daha yüksek = daha uzun çene</string>
+    <string name="id_photo_bp_desc_face_symmetry">Daha yüksek = daha simetrik yüz</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">Daha yüksek = daha kalın kaşlar</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">Daha yüksek = daha geniş kaş aralığı</string>
+    <string name="id_photo_bp_desc_eyebrow_height">Daha yüksek = daha yukarıda kaşlar</string>
+    <string name="id_photo_bp_desc_eye_scale">Daha yüksek = daha büyük gözler</string>
+    <string name="id_photo_bp_desc_eye_distance">Daha yüksek = daha geniş göz aralığı</string>
+    <string name="id_photo_bp_desc_eye_angle">Daha yüksek = daha kalkık göz uçları</string>
+    <string name="id_photo_bp_desc_nose_scale">Daha yüksek = daha büyük burun</string>
+    <string name="id_photo_bp_desc_nose_height">Daha yüksek = daha uzun burun</string>
+    <string name="id_photo_bp_desc_nose_bridge">Daha yüksek = daha yüksek burun köprüsü</string>
+    <string name="id_photo_bp_desc_nose_wing">Daha yüksek = daha geniş burun kanatları</string>
+    <string name="id_photo_bp_desc_nose_tip">Daha yüksek = daha büyük burun ucu</string>
+    <string name="id_photo_bp_desc_mouth_scale">Daha yüksek = daha büyük ağız</string>
+    <string name="id_photo_bp_desc_mouth_width">Daha yüksek = daha geniş ağız</string>
+    <string name="id_photo_bp_desc_mouth_position">Daha yüksek = daha yukarıda ağız konumu</string>
+    <string name="id_photo_bp_desc_shiny_eye">Daha yüksek = daha parlak gözler</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">Daha yüksek = daha etkili kırmızı damar giderme</string>
+    <string name="id_photo_bp_desc_fill_hair_part">Daha yüksek = daha etkili saç ayrımı dolgusu</string>
+    <string name="id_photo_bp_desc_calvaria_height">Daha yüksek = daha yüksek tepe</string>
+    <string name="id_photo_bp_desc_hairline_height">Daha yüksek = daha yukarıda saç çizgisi</string>
+    <string name="id_photo_bp_desc_remove_white_hair">Daha yüksek = daha etkili beyaz saç giderme</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">Daha yüksek = daha etkili uçuşan saç giderme</string>
+    <string name="id_photo_bp_desc_teeth_white">Daha yüksek = daha beyaz dişler</string>
+    <string name="id_photo_bp_desc_teeth_repair">Diş kusurlarını onarmak için açın</string>
+    <string name="id_photo_bp_desc_ai_body_thin">Daha yüksek = daha ince vücut (AI)</string>
+    <string name="id_photo_bp_desc_body_thin">Daha yüksek = daha ince vücut</string>
+    <string name="id_photo_bp_desc_head_small">Daha yüksek = daha küçük kafa</string>
+    <string name="id_photo_bp_desc_neck_length">Daha yüksek = daha uzun boyun</string>
+    <string name="id_photo_bp_desc_neck_thin">Daha yüksek = daha ince boyun</string>
+    <string name="id_photo_bp_desc_arm_thin">Daha yüksek = daha ince kollar</string>
+    <string name="id_photo_bp_desc_waist_thin">Daha yüksek = daha ince bel</string>
+    <string name="id_photo_bp_desc_leg_thin">Daha yüksek = daha ince bacaklar</string>
+    <string name="id_photo_bp_desc_leg_long">Daha yüksek = daha uzun bacaklar</string>
+    <string name="id_photo_bp_desc_body_heighten">Daha yüksek = daha uzun boy</string>
 </resources>

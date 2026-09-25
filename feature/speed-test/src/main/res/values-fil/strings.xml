@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">URL ng pagsubok</string>
     <string name="speed_test_config_estimated_mb_hint">Tinatayang data (MB)</string>
     <string name="speed_test_config_duration_hint">Tagal (seg)</string>
+    <string name="speed_test_measuring_latency">Sinusukat ang latency…</string>
+    <string name="speed_test_stop">Itigil ang pagsubok</string>
+    <string name="speed_test_stop_hint">I-tap para itigil; hindi nase-save ang mga bahagyang resulta</string>
+    <string name="speed_test_reference_scale">Sanggunian ng bilis ng pag-download · hindi ranking ng mga user</string>
 </resources>

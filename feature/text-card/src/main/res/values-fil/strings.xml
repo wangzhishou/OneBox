@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">Bituin</string>
     <string name="textcard_shape_filled">Punong</string>
     <string name="textcard_draw_width">Kapal ng guhit</string>
+    <string name="textcard_canvas_custom">Pasadyang Laki</string>
+    <string name="textcard_canvas_custom_desc">Ilagay ang pasadyang lapad × taas</string>
+    <string name="textcard_custom_size_title">Pasadyang Laki ng Canvas</string>
+    <string name="textcard_canvas_width">Lapad (px)</string>
+    <string name="textcard_canvas_height">Taas (px)</string>
+    <string name="textcard_refresh_papers">I-refresh ang mga papel</string>
+    <string name="textcard_editing_selection">Nag-e-edit: napiling teksto</string>
+    <string name="textcard_clear_selection_style">I-clear ang estilo</string>
 </resources>

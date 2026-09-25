@@ -89,4 +89,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">टूर गाइड लाइसेंस के लिए</string>
     <string name="id_photo_preset_size_desc_chsi">CHSI/Xuexin फोटो संग्रह के लिए</string>
     <string name="id_photo_preset_size_desc_id_card">दूसरी पीढ़ी के आईडी कार्ड के लिए</string>
+    <string name="id_photo_export_target_size">निर्यात आकार</string>
+    <string name="id_photo_export_source_size">स्रोत आकार</string>
+    <string name="id_photo_export_estimated_size">अनुमानित आकार</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
+    <string name="id_photo_tab_beauty">एक टैप सुंदरीकरण</string>
+    <string name="id_photo_beauty_light">हल्का</string>
+    <string name="id_photo_beauty_standard">मानक</string>
+    <string name="id_photo_beauty_deep">गहरा</string>
+    <string name="id_photo_beauty_points_tip">प्रति उपयोग ~%d क्रेडिट</string>
+    <string name="id_photo_ai_process_failed">AI प्रोसेसिंग विफल रही, कृपया बाद में पुनः प्रयास करें</string>
+    <string name="id_photo_beauty">AI पोर्ट्रेट सुंदरीकरण</string>
+    <string name="id_photo_bg_replace">AI पृष्ठभूमि बदलें</string>
+    <string name="id_photo_bg_original">मूल</string>
+    <string name="id_photo_bg_transparent">पारदर्शी</string>
+    <string name="id_photo_beauty_apply">लागू करें</string>
+    <string name="id_photo_beauty_group_skin">त्वचा</string>
+    <string name="id_photo_beauty_group_flaw">दाग-धब्बे हटाना</string>
+    <string name="id_photo_beauty_group_reshape">चेहरे का आकार</string>
+    <string name="id_photo_beauty_group_eye">आँखों का सुधार</string>
+    <string name="id_photo_beauty_group_hair">बाल</string>
+    <string name="id_photo_beauty_group_teeth">दाँत</string>
+    <string name="id_photo_beauty_group_body">शरीर का आकार</string>
+    <string name="id_photo_bp_face_smooth">स्मूदिंग</string>
+    <string name="id_photo_bp_face_smooth_gray">न्यूट्रल ग्रे स्मूदिंग</string>
+    <string name="id_photo_bp_face_smooth_fine">उच्च/निम्न-आवृत्ति स्मूदिंग</string>
+    <string name="id_photo_bp_face_smooth_new">फेस कॉन्टूर स्मूदिंग</string>
+    <string name="id_photo_bp_skin_white">गोरा करना</string>
+    <string name="id_photo_bp_skin_bright">चमक</string>
+    <string name="id_photo_bp_skin_red">लालिमा</string>
+    <string name="id_photo_bp_skin_sharpen">त्वचा की स्पष्टता</string>
+    <string name="id_photo_bp_face_color_same">समान त्वचा रंग</string>
+    <string name="id_photo_bp_skin_prefer">गर्म-ठंडा टोन</string>
+    <string name="id_photo_bp_face_highlight">चेहरे की हाइलाइट</string>
+    <string name="id_photo_bp_face_shadow">चेहरे की छाया</string>
+    <string name="id_photo_bp_remove_face_flaw">चेहरे के दाग-धब्बे</string>
+    <string name="id_photo_bp_remove_dark_circles">काले घेरे</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">आँखों की झुर्रियाँ</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">माथे की झुर्रियाँ</string>
+    <string name="id_photo_bp_remove_laugh_line">हँसी की रेखाएँ</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">गर्दन की झुर्रियाँ</string>
+    <string name="id_photo_bp_remove_double_chin">डबल चिन</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">होंठों की झुर्रियाँ</string>
+    <string name="id_photo_bp_remove_face_glossy">चेहरे की चिपचिपाहट</string>
+    <string name="id_photo_bp_remove_face_moles">तिल हटाएँ</string>
+    <string name="id_photo_bp_face_small">छोटा चेहरा</string>
+    <string name="id_photo_bp_face_thin">पतला चेहरा</string>
+    <string name="id_photo_bp_face_v">V-आकार का चेहरा</string>
+    <string name="id_photo_bp_jaw_width">जॉलाइन</string>
+    <string name="id_photo_bp_cheekbone_width">गाल की हड्डियाँ</string>
+    <string name="id_photo_bp_face_width">चेहरे की चौड़ाई</string>
+    <string name="id_photo_bp_forehead_height">माथा</string>
+    <string name="id_photo_bp_chin_height">ठुड्डी की लंबाई</string>
+    <string name="id_photo_bp_face_symmetry">चेहरे की समरूपता</string>
+    <string name="id_photo_bp_eyebrow_thickness">भौंहों की मोटाई</string>
+    <string name="id_photo_bp_eyebrow_distance">भौंहों की दूरी</string>
+    <string name="id_photo_bp_eyebrow_height">भौंहों की ऊँचाई</string>
+    <string name="id_photo_bp_eye_scale">आँखों का आकार</string>
+    <string name="id_photo_bp_eye_distance">आँखों की दूरी</string>
+    <string name="id_photo_bp_eye_angle">आँखों का कोण</string>
+    <string name="id_photo_bp_nose_scale">नाक का आकार</string>
+    <string name="id_photo_bp_nose_height">नाक की ऊँचाई</string>
+    <string name="id_photo_bp_nose_bridge">नाक की नाकी</string>
+    <string name="id_photo_bp_nose_wing">नाक के पंख</string>
+    <string name="id_photo_bp_nose_tip">नाक की नोक</string>
+    <string name="id_photo_bp_mouth_scale">मुँह का आकार</string>
+    <string name="id_photo_bp_mouth_width">मुँह की चौड़ाई</string>
+    <string name="id_photo_bp_mouth_position">मुँह की स्थिति</string>
+    <string name="id_photo_bp_shiny_eye">चमकदार आँखें</string>
+    <string name="id_photo_bp_remove_eye_streaks">आँखों की लालिमा</string>
+    <string name="id_photo_bp_fill_hair_part">बालों की माँग भरें</string>
+    <string name="id_photo_bp_calvaria_height">सिर के शीर्ष की ऊँचाई</string>
+    <string name="id_photo_bp_hairline_height">हेयरलाइन</string>
+    <string name="id_photo_bp_remove_white_hair">सफ़ेद बाल</string>
+    <string name="id_photo_bp_remove_burst_hair">बिखरे बाल</string>
+    <string name="id_photo_bp_teeth_white">दाँत सफ़ेद करना</string>
+    <string name="id_photo_bp_teeth_repair">दाँत की मरम्मत</string>
+    <string name="id_photo_bp_ai_body_thin">AI बॉडी शेपिंग</string>
+    <string name="id_photo_bp_body_thin">शरीर पतला करना</string>
+    <string name="id_photo_bp_head_small">छोटा सिर</string>
+    <string name="id_photo_bp_neck_length">गर्दन की लंबाई</string>
+    <string name="id_photo_bp_neck_thin">पतली गर्दन</string>
+    <string name="id_photo_bp_arm_thin">पतली बाँहें</string>
+    <string name="id_photo_bp_waist_thin">पतली कमर</string>
+    <string name="id_photo_bp_leg_thin">पतली टाँगें</string>
+    <string name="id_photo_bp_leg_long">लंबी टाँगें</string>
+    <string name="id_photo_bp_body_heighten">लंबाई बढ़ाएँ</string>
+    <string name="id_photo_bp_desc_face_smooth">अधिक = ज़्यादा चिकनी, नमीयुक्त त्वचा</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">अधिक = ज़्यादा समान त्वचा चमक</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">अधिक = ज़्यादा चिकनी त्वचा</string>
+    <string name="id_photo_bp_desc_face_smooth_new">अधिक = ज़्यादा चिकना, कोमल चेहरे का कॉन्टूर</string>
+    <string name="id_photo_bp_desc_skin_white">अधिक = ज़्यादा गोरी त्वचा</string>
+    <string name="id_photo_bp_desc_skin_bright">अधिक = ज़्यादा चमकदार त्वचा</string>
+    <string name="id_photo_bp_desc_skin_red">अधिक = ज़्यादा लालिमा वाली त्वचा</string>
+    <string name="id_photo_bp_desc_skin_sharpen">अधिक = ज़्यादा स्पष्ट त्वचा बनावट</string>
+    <string name="id_photo_bp_desc_face_color_same">अधिक = चेहरे का ज़्यादा समान त्वचा रंग</string>
+    <string name="id_photo_bp_desc_skin_prefer">ऋणात्मक = ठंडा, धनात्मक = गर्म</string>
+    <string name="id_photo_bp_desc_face_highlight">अधिक = ज़्यादा तेज़ चेहरे की हाइलाइट</string>
+    <string name="id_photo_bp_desc_face_shadow">अधिक = ज़्यादा गहरी चेहरे की छाया</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">अधिक = ज़्यादा साफ़ दाग-धब्बे हटाना</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">अधिक = ज़्यादा हल्के काले घेरे</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">अधिक = आँखों के आसपास की झुर्रियाँ ज़्यादा हल्की</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">अधिक = माथे की झुर्रियाँ ज़्यादा हल्की</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">अधिक = हँसी की रेखाएँ ज़्यादा हल्की</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">अधिक = गर्दन की झुर्रियाँ ज़्यादा साफ़ हटेंगी</string>
+    <string name="id_photo_bp_desc_remove_double_chin">अधिक = डबल चिन कम दिखेगा</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">अधिक = होंठों की झुर्रियाँ ज़्यादा हल्की</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">अधिक = कम तैलीय चमक</string>
+    <string name="id_photo_bp_desc_remove_face_moles">चेहरे के तिल हटाने के लिए चालू करें</string>
+    <string name="id_photo_bp_desc_face_small">अधिक = छोटा चेहरा</string>
+    <string name="id_photo_bp_desc_face_thin">अधिक = पतला चेहरा</string>
+    <string name="id_photo_bp_desc_face_v">अधिक = ज़्यादा तीखी V-लाइन</string>
+    <string name="id_photo_bp_desc_jaw_width">अधिक = पतली जॉलाइन</string>
+    <string name="id_photo_bp_desc_cheekbone_width">अधिक = कम उभरी गाल की हड्डियाँ</string>
+    <string name="id_photo_bp_desc_face_width">अधिक = चौड़ा चेहरा</string>
+    <string name="id_photo_bp_desc_forehead_height">अधिक = ऊँचा माथा</string>
+    <string name="id_photo_bp_desc_chin_height">अधिक = लंबी ठुड्डी</string>
+    <string name="id_photo_bp_desc_face_symmetry">अधिक = ज़्यादा समरूप चेहरा</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">अधिक = ज़्यादा घनी भौंहें</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">अधिक = भौंहों के बीच ज़्यादा दूरी</string>
+    <string name="id_photo_bp_desc_eyebrow_height">अधिक = ज़्यादा ऊँची भौंहें</string>
+    <string name="id_photo_bp_desc_eye_scale">अधिक = बड़ी आँखें</string>
+    <string name="id_photo_bp_desc_eye_distance">अधिक = आँखों के बीच ज़्यादा दूरी</string>
+    <string name="id_photo_bp_desc_eye_angle">अधिक = आँखों के कोने ज़्यादा ऊपर उठे</string>
+    <string name="id_photo_bp_desc_nose_scale">अधिक = बड़ी नाक</string>
+    <string name="id_photo_bp_desc_nose_height">अधिक = ऊँची नाक</string>
+    <string name="id_photo_bp_desc_nose_bridge">अधिक = ऊँची नाक की नाकी</string>
+    <string name="id_photo_bp_desc_nose_wing">अधिक = चौड़े नाक के पंख</string>
+    <string name="id_photo_bp_desc_nose_tip">अधिक = बड़ी नाक की नोक</string>
+    <string name="id_photo_bp_desc_mouth_scale">अधिक = बड़ा मुँह</string>
+    <string name="id_photo_bp_desc_mouth_width">अधिक = चौड़ा मुँह</string>
+    <string name="id_photo_bp_desc_mouth_position">अधिक = मुँह की स्थिति ज़्यादा ऊपर</string>
+    <string name="id_photo_bp_desc_shiny_eye">अधिक = ज़्यादा चमकदार आँखें</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">अधिक = लाल नसें ज़्यादा हटेंगी</string>
+    <string name="id_photo_bp_desc_fill_hair_part">अधिक = माँग ज़्यादा भरेगी</string>
+    <string name="id_photo_bp_desc_calvaria_height">अधिक = ऊँचा शीर्ष</string>
+    <string name="id_photo_bp_desc_hairline_height">अधिक = ऊँची हेयरलाइन</string>
+    <string name="id_photo_bp_desc_remove_white_hair">अधिक = सफ़ेद बाल ज़्यादा हटेंगे</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">अधिक = बिखरे बाल ज़्यादा हटेंगे</string>
+    <string name="id_photo_bp_desc_teeth_white">अधिक = ज़्यादा सफ़ेद दाँत</string>
+    <string name="id_photo_bp_desc_teeth_repair">दाँतों की खामियाँ ठीक करने के लिए चालू करें</string>
+    <string name="id_photo_bp_desc_ai_body_thin">अधिक = पतला शरीर (AI)</string>
+    <string name="id_photo_bp_desc_body_thin">अधिक = पतला शरीर</string>
+    <string name="id_photo_bp_desc_head_small">अधिक = छोटा सिर</string>
+    <string name="id_photo_bp_desc_neck_length">अधिक = लंबी गर्दन</string>
+    <string name="id_photo_bp_desc_neck_thin">अधिक = पतली गर्दन</string>
+    <string name="id_photo_bp_desc_arm_thin">अधिक = पतली बाँहें</string>
+    <string name="id_photo_bp_desc_waist_thin">अधिक = पतली कमर</string>
+    <string name="id_photo_bp_desc_leg_thin">अधिक = पतली टाँगें</string>
+    <string name="id_photo_bp_desc_leg_long">अधिक = लंबी टाँगें</string>
+    <string name="id_photo_bp_desc_body_heighten">अधिक = लंबा कद</string>
 </resources>

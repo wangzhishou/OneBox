@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Tonton Iklan</string>
+    <string name="ad_watch_headline_1">Merek besar bakar duit buat iklan, sebenarnya jual apa?</string>
+    <string name="ad_watch_headline_2">Iklan yang dipercaya merek raksasa, seperti apa?</string>
+    <string name="ad_watch_headline_3">15 detik, lihat andalan para merek</string>
+    <string name="ad_watch_headline_4">Orang lain bayar demi perhatian, kamu dapat poin</string>
+    <string name="ad_watch_headline_5">Persaingan ketat para pengiklan, tonton gratis</string>
+    <string name="ad_watch_subtitle">Tonton iklan 15 detik, dapat %1$d poin</string>
+    <string name="ad_watch_cta">Tonton iklan · +%1$d poin</string>
+    <string name="ad_watch_remaining">Sisa hari ini %1$d/%2$d kali</string>
+    <string name="ad_watch_daily_limit_reached">Kuota hari ini habis, kembali lagi besok</string>
+    <string name="ad_watch_loading">Memuat iklan…</string>
+    <string name="ad_watch_load_failed">Gagal memuat iklan</string>
+    <string name="ad_watch_retry">Coba Lagi</string>
+    <string name="ad_watch_ad_not_ready">Iklan belum siap, coba lagi nanti</string>
+</resources>

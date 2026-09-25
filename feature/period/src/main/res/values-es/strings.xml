@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">Registro menstrual</string>
+    <string name="period_stats_title">Estadísticas del ciclo</string>
+    <string name="period_detail_title">Detalle del registro</string>
+    <string name="period_add_title">Nuevo registro</string>
+    <string name="period_edit_title">Editar registro</string>
+    <string name="period_tab_records">Registros</string>
+    <string name="period_tab_stats">Datos</string>
+    <string name="period_search">Buscar</string>
+    <string name="period_search_hint">Busca notas o síntomas</string>
+    <string name="period_add">Agregar</string>
+    <string name="period_save">Guardar</string>
+    <string name="period_cancel">Cancelar</string>
+    <string name="period_delete">Eliminar</string>
+    <string name="period_loading">Cargando…</string>
+    <string name="period_saved">Guardado</string>
+    <string name="period_record_added">Registro agregado</string>
+    <string name="period_deleted">Registro eliminado</string>
+    <string name="period_save_failed">No se pudo guardar</string>
+    <string name="period_toast_recorded">Período registrado</string>
+    <string name="period_empty_title">Aún no hay registros</string>
+    <string name="period_empty_subtitle">Cuéntale a la AI cómo te sientes y genera un registro con un toque</string>
+    <string name="period_ai_quick_record">Registro rápido con AI</string>
+    <string name="period_manual_record">Registro manual</string>
+    <string name="period_empty_example">p. ej. \"Mi período empezó ayer, cólicos leves\"</string>
+    <string name="period_ai_assist_title">Asistente del registro menstrual</string>
+    <string name="period_ai_assist_fill_in">Mi período empezó ayer con cólicos fuertes, regístralo por mí</string>
+    <string name="period_ai_assist_prompt">Eres el asistente de registro menstrual del usuario. Cuando el usuario describa el estado de su período, el flujo, los síntomas o el ánimo, regístralo con add_period_record (usa yyyy-MM-dd para la fecha). Cuando pregunte por la duración del ciclo, el próximo período o las estadísticas, usa query_period_records. Para corregir un registro, usa update_period_record. Para eliminar uno, usa delete_period_record. Confirma brevemente cada acción después de registrar.</string>
+    <string name="period_record_count">%1$d registros</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">MMM d</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (selección múltiple)</string>
+    <string name="period_cycle_day">Día %1$d del ciclo</string>
+    <string name="period_cycle_day_unknown">Día del ciclo —</string>
+    <string name="period_status_period">Período</string>
+    <string name="period_status_ovulation">Ovulación</string>
+    <string name="period_status_normal">Normal</string>
+    <string name="period_status_start">Inicio</string>
+    <string name="period_status_mid">Período</string>
+    <string name="period_status_end">Fin</string>
+    <string name="period_calendar_prev">Mes anterior</string>
+    <string name="period_calendar_next">Mes siguiente</string>
+    <string name="period_field_date">Fecha</string>
+    <string name="period_field_status">Estado del período</string>
+    <string name="period_field_flow">Flujo</string>
+    <string name="period_field_symptoms">Síntomas</string>
+    <string name="period_field_mood">Ánimo</string>
+    <string name="period_field_note">Nota</string>
+    <string name="period_note_hint">Nota opcional</string>
+    <string name="period_delete_record">Eliminar registro</string>
+    <string name="period_delete_confirm_title">¿Eliminar este registro?</string>
+    <string name="period_delete_confirm_message">Esta acción no se puede deshacer.</string>
+    <string name="period_flow_none">Ninguno</string>
+    <string name="period_flow_light">Leve</string>
+    <string name="period_flow_medium">Moderado</string>
+    <string name="period_flow_heavy">Abundante</string>
+    <string name="period_mood_very_happy">Muy bien</string>
+    <string name="period_mood_happy">Bien</string>
+    <string name="period_mood_normal">Normal</string>
+    <string name="period_mood_sad">Decaído</string>
+    <string name="period_mood_very_sad">Mal</string>
+    <string name="period_symptom_abdominal_pain">Cólicos</string>
+    <string name="period_symptom_headache">Dolor de cabeza</string>
+    <string name="period_symptom_back_pain">Dolor de espalda</string>
+    <string name="period_symptom_mood_swings">Cambios de humor</string>
+    <string name="period_symptom_breast_tenderness">Sensibilidad en los senos</string>
+    <string name="period_symptom_fatigue">Fatiga</string>
+    <string name="period_symptom_nausea">Náuseas</string>
+    <string name="period_symptom_insomnia">Insomnio</string>
+    <string name="period_symptom_appetite_change">Cambio de apetito</string>
+    <string name="period_symptom_acne">Acné</string>
+    <string name="period_symptom_edema">Hinchazón</string>
+    <string name="period_stats_range_6m">Últimos 6 meses</string>
+    <string name="period_stats_range_day">Día</string>
+    <string name="period_stats_range_week">Semana</string>
+    <string name="period_stats_range_month">Mes</string>
+    <string name="period_stats_avg_cycle">Ciclo prom.</string>
+    <string name="period_stats_avg_period">Período prom.</string>
+    <string name="period_stats_next">Próximo período</string>
+    <string name="period_stats_vs_prev">vs. últimos %1$+d d</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">Tendencia de duración del ciclo</string>
+    <string name="period_stats_trend_empty">Se necesitan al menos dos inicios de ciclo</string>
+    <string name="period_stats_symptom_title">Distribución de síntomas</string>
+    <string name="period_stats_symptom_empty">Aún no hay datos de síntomas</string>
+    <string name="period_stats_symptom_center">Total</string>
+    <string name="period_day_unit">d</string>
+    <string name="period_month_unit">M</string>
+    <string name="period_next_label">Próximo período</string>
+    <string name="period_days_until">En %1$d días</string>
+    <string name="period_timeline_title">Cronología</string>
+    <string name="period_timeline_start">Inicio del período</string>
+    <string name="period_timeline_end">Fin previsto del período</string>
+    <string name="period_log_record_created">Registro de período creado</string>
+    <string name="period_log_record_updated">Registro de período actualizado</string>
+    <string name="period_log_record_deleted">Registro de período eliminado</string>
+    <string name="agent_tool_add_period_record_title">Agregar registro de período</string>
+    <string name="agent_tool_add_period_record_summary">Registra el inicio/fin del período, el flujo, los síntomas y el ánimo</string>
+    <string name="agent_tool_add_period_record_description">Registra una entrada de período: fecha (yyyy-MM-dd), is_period_start / is_period_end opcionales, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), lista de síntomas, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) y nota.</string>
+    <string name="agent_tool_add_period_record_failed">No se pudo agregar el registro de período: %1$s</string>
+    <string name="agent_tool_query_period_records_title">Consultar registros de período</string>
+    <string name="agent_tool_query_period_records_summary">Consulta registros, estadísticas del ciclo y predicción del próximo período</string>
+    <string name="agent_tool_query_period_records_description">Consulta los registros de período recientes, además del ciclo promedio, la duración promedio del período y el próximo inicio previsto. Límite opcional.</string>
+    <string name="agent_tool_query_period_records_empty">Aún no hay registros de período.</string>
+    <string name="agent_tool_query_period_records_failed">No se pudieron consultar los registros de período: %1$s</string>
+    <string name="agent_tool_update_period_record_title">Actualizar registro de período</string>
+    <string name="agent_tool_update_period_record_summary">Actualiza un registro de período existente por record_id</string>
+    <string name="agent_tool_update_period_record_description">Actualiza un registro de período. Indica record_id y los campos que quieras cambiar (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note).</string>
+    <string name="agent_tool_update_period_record_failed">No se pudo actualizar el registro de período: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">Eliminar registro de período</string>
+    <string name="agent_tool_delete_period_record_summary">Elimina un registro de período por record_id</string>
+    <string name="agent_tool_delete_period_record_description">Elimina un registro de período de forma permanente. Requiere record_id y la confirmación del usuario.</string>
+    <string name="agent_tool_delete_period_record_done">Registro de período %1$s eliminado</string>
+    <string name="agent_tool_delete_period_record_failed">No se pudo eliminar el registro de período: %1$s</string>
+    <string name="agent_tool_period_param_date">Fecha del registro, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">Indica si este día es el inicio del período</string>
+    <string name="agent_tool_period_param_is_end">Indica si este día es el fin del período</string>
+    <string name="agent_tool_period_param_flow">Intensidad del flujo: NONE, LIGHT, MEDIUM o HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">Lista de síntomas, p. ej. ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">Ánimo: VERY_HAPPY, HAPPY, NORMAL, SAD o VERY_SAD</string>
+    <string name="agent_tool_period_param_note">Nota opcional</string>
+    <string name="agent_tool_period_param_record_id">ID del registro de período</string>
+    <string name="agent_tool_period_param_limit">Máximo de registros a devolver (1-50)</string>
+    <string name="agent_tool_period_label_date">Fecha</string>
+    <string name="agent_tool_period_label_flow">Flujo</string>
+    <string name="agent_tool_period_label_symptoms">Síntomas</string>
+    <string name="agent_tool_period_open_link">Abrir el registro menstrual</string>
+    <string name="agent_tool_period_detail_link">Abrir el detalle del registro</string>
+    <string name="agent_tool_period_no_next">Datos insuficientes</string>
+    <string name="agent_tool_period_unknown_error">Error desconocido</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>período</item>
+        <item>menstruación</item>
+        <item>ciclo</item>
+        <item>regla</item>
+        <item>menstruo</item>
+        <item>periodo</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>Hoy me vino la regla con cólicos leves</item>
+        <item>Anota que hoy me vino la regla, flujo moderado</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>ciclo</item>
+        <item>próximo período</item>
+        <item>período</item>
+        <item>predicción</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>¿Cuándo me viene el próximo período?</item>
+        <item>¿Es regular mi ciclo?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>actualizar período</item>
+        <item>editar registro de período</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>Cambia el registro de ayer a flujo abundante</item>
+        <item>Cambia el flujo del registro de ayer a abundante</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>eliminar período</item>
+        <item>borrar registro de período</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>Elimina el registro de período de ayer</item>
+        <item>Borra el registro de período de ayer</item>
+    </string-array>
+</resources>

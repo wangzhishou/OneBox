@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">Metin Algılama</string>
+    <string name="ai_detect_image_tab">Görsel Algılama</string>
+    <string name="ai_detect_text_hint">Algılanacak metni yapıştırın veya yazın…</string>
+    <string name="ai_detect_button">Algıla</string>
+    <string name="ai_detect_detecting">Algılanıyor…</string>
+    <string name="ai_detect_upload_hint">Görsel yüklemek veya yapıştırmak için dokunun…</string>
+    <string name="ai_detect_upload_format">JPG / PNG / WebP destekler, 300×300\'den büyük, en fazla 10MB</string>
+    <string name="ai_detect_change_image">Görseli Değiştir</string>
+    <string name="ai_detect_probability_label">AI Olasılığı</string>
+    <string name="ai_detect_verdict_likely_ai">Muhtemelen AI ile üretilmiş</string>
+    <string name="ai_detect_verdict_maybe_ai">AI ile üretilmiş olabilir</string>
+    <string name="ai_detect_verdict_likely_human">Muhtemelen insan yapımı</string>
+    <string name="ai_detect_recheck">Yeniden Algıla</string>
+    <string name="ai_detect_view_detail">Ayrıntıları Gör</string>
+    <string name="ai_detect_collapse_detail">Ayrıntıları Gizle</string>
+    <string name="ai_detect_segment_human">İnsan</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">Şüpheli AI</string>
+    <string name="ai_detect_labels_ratio_title">Etiket Oranları</string>
+    <string name="ai_detect_image_confidence_detail">Model bu görsel için %1$d%% AI üretimi güveni veriyor. Değer yükseldikçe görselin AI ile üretilmiş olma olasılığı artar.</string>
+    <string name="ai_detect_history">Algılama Geçmişi</string>
+    <string name="ai_detect_history_empty">Henüz algılama kaydı yok</string>
+    <string name="ai_detect_clear_all">Tümünü Temizle</string>
+    <string name="ai_detect_clear_confirm">Tüm algılama kayıtları temizlensin mi?</string>
+    <string name="ai_detect_confirm">Onayla</string>
+    <string name="ai_detect_cancel">İptal</string>
+    <string name="ai_detect_delete">Sil</string>
+    <string name="ai_detect_type_text">Metin</string>
+    <string name="ai_detect_type_image">Görsel</string>
+    <string name="ai_detect_detail_title">Algılama Ayrıntıları</string>
+    <string name="ai_detect_error_image_too_large">Görsel 10MB\'den küçük olmalı</string>
+    <string name="ai_detect_error_image_too_small">Görsel 300×300\'den büyük olmalı</string>
+    <string name="ai_detect_error_image_unreadable">Görsel okunamadı</string>
+    <string name="ai_detect_error_network">Algılama başarısız oldu, lütfen daha sonra tekrar deneyin</string>
+    <string name="agent_tool_detect_ai_text_title">AI Metin Algılama</string>
+    <string name="agent_tool_detect_ai_text_summary">Bir metnin AI ile üretilmiş olma olasılığını algılar; AI olasılığını, sonucu ve bölüm bazlı etiketleri döndürür</string>
+    <string name="agent_tool_detect_ai_text_param_text">Algılanacak düz metin içeriği</string>
+    <string name="agent_tool_detect_ai_text_error_args">Geçersiz parametreler: text boş olmayan bir dize olmalı</string>
+    <string name="agent_tool_detect_ai_image_title">AI Görsel Algılama</string>
+    <string name="agent_tool_detect_ai_image_summary">Bir görselin AI ile üretilmiş olma olasılığını algılar; AI üretimi güvenini ve sonucu döndürür</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">Algılanacak görsel URI\'si; content:// ve file:// destekler, sohbet eklerinden veya browse_files aracından alınabilir</string>
+    <string name="agent_tool_detect_ai_image_error_args">Geçersiz parametreler: image_uri boş olmayan bir dize olmalı</string>
+</resources>

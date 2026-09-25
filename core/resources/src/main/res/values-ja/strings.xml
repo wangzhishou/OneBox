@@ -1962,4 +1962,12 @@
     <string name="material_you">Material You</string>
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
+    <string name="downloadable_fonts">ダウンロードできるフォント</string>
+    <string name="font_preview_text">暮らしを記録し、美しさを見つけよう</string>
+    <string name="font_download">ダウンロード</string>
+    <string name="font_downloaded">ダウンロード済み</string>
+    <string name="font_download_failed">フォントのダウンロードに失敗しました。タップして再試行</string>
+    <string name="font_noto_sans">Noto Sans SC</string>
+    <string name="font_noto_serif">Noto Serif SC</string>
+    <string name="font_lxgw">LXGW WenKai</string>
 </resources>

@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">Buksan ang Item Manager</string>
     <string name="agent_tool_household_edit_link">Tingnan ang item</string>
     <string name="agent_tool_household_unknown_error">Hindi kilalang error</string>
+    <string name="household_ai_assist_fill_in">Itala ang gamot sa sipon sa kahon ng gamot sa kwarto, mag-eexpire sa Hunyo 2027</string>
 </resources>

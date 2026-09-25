@@ -844,4 +844,89 @@
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_theme_setting_param_glass_border_alpha">ग्लास बॉर्डर की दृश्यता। **संख्या प्रकार** (स्ट्रिंग नहीं), सीमा [0.0, 1.0], डिफ़ॉल्ट 0.17 (17%%)। 0 बॉर्डर को पूरी तरह छिपा देता है; अधिक मान = अधिक दिखने वाली रूपरेखा। glass_alpha से स्वतंत्र। वैकल्पिक</string>
+    <string name="agent_tool_switch_ai_model_title">मॉडल बदलें</string>
+    <string name="agent_tool_switch_ai_model_summary">चैट द्वारा उपयोग किए जाने वाले AI इंजन या मॉडल को बदलें</string>
+    <string name="agent_tool_switch_ai_model_description">वर्तमान वार्तालाप के लिए उपयोग किए जाने वाले AI इंजन/मॉडल को बदलें। तब उपयोग करें जब उपयोगकर्ता मॉडल बदलने के लिए कहे (जैसे \"use DeepSeek\", \"switch to GPT-5\")। engine_name इंजन/प्रदाता का नाम है (जैसे deepseek, openai, qwen, kimi, doubao, mimo, gemini, grok, claude); model_name वैकल्पिक है और छोड़ने पर इंजन के वर्तमान मॉडल का उपयोग होता है; slot उस कार्य स्लॉट को चुनता है जिसे अपडेट करना है: default (मुख्य चैट) या fast (त्वरित कार्य)।</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">लक्ष्य इंजन का नाम (प्रदाता मान, जैसे deepseek)</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">लक्ष्य मॉडल का नाम (वैकल्पिक, जैसे deepseek-chat); छोड़ने पर इंजन का वर्तमान मॉडल बना रहता है</string>
+    <string name="agent_tool_switch_ai_model_param_slot">कार्य स्लॉट: default = मुख्य चैट मॉडल, fast = त्वरित कार्य मॉडल; डिफ़ॉल्ट default है</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">पैरामीटर पार्स करने में विफल; engine_name आवश्यक है</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">इंजन %1$s नहीं मिला। उपलब्ध इंजन: %2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">मॉडल %2$s इंजन %1$s के अंतर्गत नहीं मिला। उपलब्ध मॉडल: %3$s</string>
+    <string name="agent_tool_switch_ai_model_success">मॉडल बदला गया: %1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">मॉडल बदलने में विफल: %1$s</string>
+    <string name="agent_tool_font_scale_setting_title">फ़ॉन्ट आकार</string>
+    <string name="agent_tool_font_scale_setting_summary">ऐप का फ़ॉन्ट स्केल देखें या बदलें (0.45–1.5, या सिस्टम फ़ॉन्ट आकार का पालन करें)</string>
+    <string name="agent_tool_font_scale_setting_param_action">क्रिया प्रकार। get=वर्तमान फ़ॉन्ट स्केल पढ़ें; set=उसे बदलें। **केवल action आवश्यक है**</string>
+    <string name="agent_tool_font_scale_setting_param_scale">फ़ॉन्ट स्केल। 0.45 ~ 1.5 सीमा में संख्यात्मक स्ट्रिंग (1.0 = डिफ़ॉल्ट), या सिस्टम फ़ॉन्ट आकार अपनाने के लिए \"system\" / \"default\"। केवल set</string>
+    <string name="agent_tool_font_scale_setting_failed">फ़ॉन्ट स्केल सेट करने में विफल: %1$s</string>
+    <string name="agent_tool_font_scale_setting_unknown_action">अज्ञात क्रिया: %1$s। get / set में से एक होनी चाहिए</string>
+    <string name="agent_tool_font_scale_setting_missing_action">action पैरामीटर अनुपलब्ध है</string>
+    <string name="agent_tool_font_scale_setting_missing_scale">set क्रिया के लिए scale पैरामीटर आवश्यक है (0.45 ~ 1.5, या \"system\")</string>
+    <string name="agent_tool_font_scale_setting_out_of_range">अमान्य स्केल: %1$s। 0.45 ~ 1.5 सीमा में संख्या, या \"system\" / \"default\" होना चाहिए</string>
+    <string name="agent_tool_font_scale_setting_get_message">वर्तमान फ़ॉन्ट स्केल पढ़ा गया</string>
+    <string name="agent_tool_font_scale_setting_set_message">फ़ॉन्ट स्केल %1$s पर सेट किया गया</string>
+    <string name="agent_tool_font_scale_setting_set_system_message">फ़ॉन्ट स्केल सिस्टम फ़ॉन्ट आकार का पालन करने पर सेट किया गया</string>
+    <string name="agent_tool_font_scale_setting_effective_hint">नया फ़ॉन्ट स्केल लागू हो गया है; इंटरफ़ेस एक सेकंड के भीतर अपने आप रीफ़्रेश हो जाएगा</string>
+    <string name="agent_tool_font_scale_setting_deeplink_label">डिस्प्ले सेटिंग्स</string>
+    <string name="agent_tool_font_scale_setting_deeplink_guidance">डिस्प्ले सेटिंग्स में फ़ॉन्ट आकार बारीकी से समायोजित करने के लिए टैप करें</string>
+    <string name="agent_tool_night_mode_setting_title">नाइट मोड</string>
+    <string name="agent_tool_night_mode_setting_summary">लाइट / डार्क / सिस्टम नाइट मोड देखें या बदलें (तुरंत प्रभावी होता है)</string>
+    <string name="agent_tool_night_mode_setting_param_action">क्रिया प्रकार। get=वर्तमान मोड पढ़ें; set=मोड बदलें। **केवल action आवश्यक है**</string>
+    <string name="agent_tool_night_mode_setting_param_mode">नाइट मोड। Light (दिन) / Dark (रात) / System (सिस्टम का पालन), केस-असंवेदनशील। केवल set</string>
+    <string name="agent_tool_night_mode_setting_failed">नाइट मोड सेट करने में विफल: %1$s</string>
+    <string name="agent_tool_night_mode_setting_unknown_action">अज्ञात क्रिया: %1$s। get / set में से एक होनी चाहिए</string>
+    <string name="agent_tool_night_mode_setting_missing_action">action पैरामीटर अनुपलब्ध है</string>
+    <string name="agent_tool_night_mode_setting_missing_mode">set क्रिया के लिए mode पैरामीटर आवश्यक है (Light / Dark / System)</string>
+    <string name="agent_tool_night_mode_setting_invalid_mode">अमान्य नाइट मोड: %1$s। Light / Dark / System में से एक होना चाहिए</string>
+    <string name="agent_tool_night_mode_setting_get_message">वर्तमान नाइट मोड: %1$s</string>
+    <string name="agent_tool_night_mode_setting_set_message">नाइट मोड %1$s पर बदल दिया गया</string>
+    <string name="agent_tool_night_mode_setting_deeplink_label">डिस्प्ले सेटिंग्स</string>
+    <string name="agent_tool_night_mode_setting_deeplink_guidance">डिस्प्ले सेटिंग्स में नाइट मोड बदलने के लिए टैप करें</string>
+    <string name="agent_tool_start_entry_setting_title">प्रारंभ पृष्ठ</string>
+    <string name="agent_tool_start_entry_setting_summary">कोल्ड स्टार्ट के बाद ऐप जिस पृष्ठ पर खुलता है उसे देखें या बदलें (अगले कोल्ड स्टार्ट पर प्रभावी होता है)</string>
+    <string name="agent_tool_start_entry_setting_param_action">क्रिया प्रकार। list=सभी संभावित पृष्ठों की सूची; get=वर्तमान प्रारंभ पृष्ठ पढ़ें; set=उसे बदलें। **केवल action आवश्यक है**</string>
+    <string name="agent_tool_start_entry_setting_param_screen_id">प्रारंभ पृष्ठ की आईडी। list प्रतिक्रिया के candidates[i].id से संख्यात्मक आईडी, या डिफ़ॉल्ट होम पृष्ठ बहाल करने के लिए \"default\" / \"home\"। केवल set</string>
+    <string name="agent_tool_start_entry_setting_failed">प्रारंभ पृष्ठ सेट करने में विफल: %1$s</string>
+    <string name="agent_tool_start_entry_setting_unknown_action">अज्ञात क्रिया: %1$s। list / get / set में से एक होनी चाहिए</string>
+    <string name="agent_tool_start_entry_setting_missing_action">action पैरामीटर अनुपलब्ध है</string>
+    <string name="agent_tool_start_entry_setting_missing_screen_id">set क्रिया के लिए screen_id पैरामीटर आवश्यक है (list से कोई संभावित आईडी, या \"default\")</string>
+    <string name="agent_tool_start_entry_setting_invalid_screen_id">अमान्य screen_id: %1$s। संख्यात्मक संभावित आईडी, या \"default\" / \"home\" होना चाहिए</string>
+    <string name="agent_tool_start_entry_setting_unknown_screen_id">अज्ञात screen_id: %1$s। मान्य संभावित आईडी पाने के लिए पहले list कॉल करें</string>
+    <string name="agent_tool_start_entry_setting_list_message">प्रारंभ पृष्ठ के विकल्प पढ़े गए</string>
+    <string name="agent_tool_start_entry_setting_get_message">वर्तमान प्रारंभ पृष्ठ पढ़ा गया</string>
+    <string name="agent_tool_start_entry_setting_set_message">प्रारंभ पृष्ठ सेट किया गया: %1$s</string>
+    <string name="agent_tool_start_entry_setting_effective_hint">प्रारंभ पृष्ठ केवल ऐप के अगले कोल्ड स्टार्ट पर प्रभावी होगा</string>
+    <string name="agent_tool_start_entry_setting_deeplink_label">डिस्प्ले सेटिंग्स</string>
+    <string name="agent_tool_start_entry_setting_deeplink_guidance">डिस्प्ले सेटिंग्स में प्रारंभ पृष्ठ चुनने के लिए टैप करें</string>
+    <string name="agent_tool_memory_write_description">उपयोगकर्ता या वर्तमान प्रोजेक्ट के बारे में एक स्थायी मेमोरी प्रविष्टि सहेजें: प्राथमिकताएँ, मुख्य तथ्य, निर्णय और वार्तालापों के बीच रखने योग्य परंपराएँ। संक्षिप्त, स्वतःपूर्ण कथन लिखें। गुप्त जानकारी, पासवर्ड, API कुंजियाँ या एकबारगी अस्थायी विवरण दर्ज न करें।</string>
+    <string name="agent_tool_memory_write_param_content">सहेजने योग्य मेमोरी कथन, संक्षिप्त और स्वतःपूर्ण</string>
+    <string name="agent_tool_memory_write_result_saved">मेमोरी सहेजी गई (id=%1$d)।</string>
+    <string name="agent_tool_memory_write_too_long">मेमोरी सामग्री बहुत लंबी है: अधिकतम %1$d अक्षर। इसे छोटा करें और केवल मुख्य बिंदु सहेजें।</string>
+    <string name="agent_tool_gate_memory_disabled">इस वार्तालाप के लिए मेमोरी अक्षम है (वैश्विक या प्रति-वार्तालाप स्विच बंद है)। इस वार्तालाप में मेमोरी टूल फिर से न कॉल करें।</string>
+    <string name="agent_tool_gate_skills_disabled">इस वार्तालाप के लिए स्किल अक्षम हैं (वैश्विक या प्रति-वार्तालाप स्विच बंद है)। इस वार्तालाप में use_skill टूल फिर से न कॉल करें।</string>
+    <string name="agent_tool_memory_get_description">कीवर्ड द्वारा सहेजी गई मेमोरी प्रविष्टियाँ खोजें; कोई प्रविष्टि तभी लौटाई जाती है जब सभी कीवर्ड मेल खाएँ (केस-असंवेदनशील)। नवीनतम प्रविष्टियाँ देखने के लिए keywords छोड़ दें। scope=log (डिफ़ॉल्ट) केवल लॉग प्रविष्टियाँ खोजता है, scope=all में उपयोगकर्ता प्रोफ़ाइल भी शामिल होती है।</string>
+    <string name="agent_tool_memory_get_param_keywords">कीवर्ड स्पेस या कॉमा से अलग करें; नवीनतम प्रविष्टियाँ देखने के लिए खाली छोड़ें</string>
+    <string name="agent_tool_memory_get_param_scope">खोज सीमा: log (डिफ़ॉल्ट) या all (उपयोगकर्ता प्रोफ़ाइल सहित)</string>
+    <string name="agent_tool_memory_get_result_empty">कोई मेमोरी प्रविष्टि मेल नहीं खाई।</string>
+    <string name="agent_tool_memory_get_result_entry">#%1$d [%2$s] (%3$s)</string>
+    <string name="agent_tool_memory_get_result_truncated_count">[और प्रविष्टियाँ मेल खाईं लेकिन छोड़ दी गईं: परिणाम सीमा %1$d प्रविष्टियाँ है। कीवर्ड और विशिष्ट करें।]</string>
+    <string name="agent_tool_memory_get_result_truncated_entries">[आउटपुट सीमा में फ़िट करने के लिए %1$d प्रविष्टियाँ काट दी गईं। उन्हें पूरा पढ़ने के लिए अधिक विशिष्ट कीवर्ड उपयोग करें।]</string>
+    <string name="agent_tool_memory_get_result_truncated_bytes">[%1$d प्रविष्टियाँ छोड़ दी गईं: आउटपुट आकार सीमा पूरी हो गई। कीवर्ड और विशिष्ट करें।]</string>
+    <string name="agent_tool_use_skill_description">&lt;available_skills&gt; में सूचीबद्ध किसी स्किल के पूर्ण निर्देश उसके नाम से लोड करें। किसी स्किल को लागू करने से पहले हमेशा इसे कॉल करें।</string>
+    <string name="agent_tool_use_skill_param_name">स्किल का नाम (स्लग) बिल्कुल वैसा ही जैसा &lt;available_skills&gt; में सूचीबद्ध है</string>
+    <string name="agent_tool_use_skill_not_found">स्किल \'%1$s\' नहीं मिली या अक्षम है। उपलब्ध स्किल: %2$s</string>
+    <string name="agent_tool_use_skill_none_available">(कोई नहीं)</string>
+    <string name="agent_memory_prompt_omitted_hint">(बजट में फ़िट करने के लिए पहले की मेमोरीज़ छोड़ दी गईं; उन्हें खोजने के लिए memory_get का उपयोग करें।)</string>
+    <string name="agent_memory_prompt_omitted_hint_no_search">(बजट में फ़िट करने के लिए पहले की मेमोरीज़ छोड़ दी गईं।)</string>
+    <string name="agent_memory_prompt_profile_header">उपयोगकर्ता प्रोफ़ाइल:</string>
+    <string name="agent_memory_prompt_log_header">मेमोरी लॉग (%1$s):</string>
+    <string name="agent_skills_prompt_unlisted">(%1$d और स्किल सूचीबद्ध नहीं हैं।)</string>
+    <string name="agent_skill_import_invalid">अमान्य SKILL.md: frontmatter में एक-पंक्ति वाले name और description फ़ील्ड होने चाहिए</string>
+    <string name="ai_tools_session_memory">इस वार्तालाप के लिए मेमोरी</string>
+    <string name="ai_tools_session_memory_hint">सहेजी गई मेमोरीज़ शामिल करें और AI को इस वार्तालाप में मेमोरी लिखने की अनुमति दें</string>
+    <string name="ai_tools_session_skills">इस वार्तालाप के लिए स्किल</string>
+    <string name="ai_tools_session_skills_hint">उपलब्ध स्किल की सूची दिखाएँ और AI को इस वार्तालाप में स्किल लोड करने की अनुमति दें</string>
+    <string name="ai_tools_session_global_off_hint">AI सेटिंग्स में वैश्विक रूप से बंद है; वार्तालाप स्विच उपलब्ध नहीं है</string>
 </resources>

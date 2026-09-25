@@ -1963,4 +1963,12 @@
     <string name="material_you">Material You</string>
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
+    <string name="downloadable_fonts">Fuentes descargables</string>
+    <string name="font_preview_text">Registra la vida, descubre la belleza</string>
+    <string name="font_download">Descargar</string>
+    <string name="font_downloaded">Descargada</string>
+    <string name="font_download_failed">No se pudo descargar la fuente. Toca para reintentar</string>
+    <string name="font_noto_sans">Noto Sans SC</string>
+    <string name="font_noto_serif">Noto Serif SC</string>
+    <string name="font_lxgw">LXGW WenKai</string>
 </resources>

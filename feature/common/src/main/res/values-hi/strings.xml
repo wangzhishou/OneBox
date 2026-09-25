@@ -58,4 +58,5 @@
     <string name="data_sync_reselect">फिर से चुनें</string>
     <string name="data_sync_importing">आयात हो रहा है…</string>
     <string name="data_sync_confirm_import">आयात</string>
+    <string name="ai_model_protocol_jev">Jev निर्णय इंजन</string>
 </resources>

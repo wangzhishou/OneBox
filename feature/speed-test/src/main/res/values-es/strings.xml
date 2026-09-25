@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">URL de prueba</string>
     <string name="speed_test_config_estimated_mb_hint">Datos estimados (MB)</string>
     <string name="speed_test_config_duration_hint">Duración (seg)</string>
+    <string name="speed_test_measuring_latency">Midiendo la latencia…</string>
+    <string name="speed_test_stop">Detener prueba</string>
+    <string name="speed_test_stop_hint">Toca para detener; los resultados parciales no se guardan</string>
+    <string name="speed_test_reference_scale">Referencia de velocidad de descarga · no es una clasificación de usuarios</string>
 </resources>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">Трекер менструации</string>
+    <string name="period_stats_title">Статистика цикла</string>
+    <string name="period_detail_title">Детали записи</string>
+    <string name="period_add_title">Новая запись</string>
+    <string name="period_edit_title">Изменить запись</string>
+    <string name="period_tab_records">Записи</string>
+    <string name="period_tab_stats">Данные</string>
+    <string name="period_search">Поиск</string>
+    <string name="period_search_hint">Поиск по заметкам и симптомам</string>
+    <string name="period_add">Добавить</string>
+    <string name="period_save">Сохранить</string>
+    <string name="period_cancel">Отмена</string>
+    <string name="period_delete">Удалить</string>
+    <string name="period_loading">Загрузка…</string>
+    <string name="period_saved">Сохранено</string>
+    <string name="period_record_added">Запись добавлена</string>
+    <string name="period_deleted">Запись удалена</string>
+    <string name="period_save_failed">Не удалось сохранить</string>
+    <string name="period_toast_recorded">Менструация отмечена</string>
+    <string name="period_empty_title">Записей пока нет</string>
+    <string name="period_empty_subtitle">Расскажите AI о своём самочувствии — запись создастся в один тап</string>
+    <string name="period_ai_quick_record">Быстрая запись с AI</string>
+    <string name="period_manual_record">Ручная запись</string>
+    <string name="period_empty_example">Например: \"Вчера начались месячные, слабые спазмы\"</string>
+    <string name="period_ai_assist_title">Ассистент трекера менструации</string>
+    <string name="period_ai_assist_fill_in">Вчера начались месячные, сильные спазмы — запиши</string>
+    <string name="period_ai_assist_prompt">Вы — ассистент пользователя по отслеживанию менструального цикла. Когда пользователь описывает состояние, интенсивность, симптомы или настроение, запишите это с помощью add_period_record (дата в формате yyyy-MM-dd). Когда пользователь спрашивает о длине цикла, следующих месячных или статистике, используйте query_period_records. Чтобы исправить запись, используйте update_period_record. Чтобы удалить запись, используйте delete_period_record. Кратко подтверждайте каждое действие после записи.</string>
+    <string name="period_record_count">%1$d записей</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">MMM d</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (множественный выбор)</string>
+    <string name="period_cycle_day">День цикла %1$d</string>
+    <string name="period_cycle_day_unknown">День цикла —</string>
+    <string name="period_status_period">Менструация</string>
+    <string name="period_status_ovulation">Овуляция</string>
+    <string name="period_status_normal">Обычное состояние</string>
+    <string name="period_status_start">Начало</string>
+    <string name="period_status_mid">Менструация</string>
+    <string name="period_status_end">Конец</string>
+    <string name="period_calendar_prev">Предыдущий месяц</string>
+    <string name="period_calendar_next">Следующий месяц</string>
+    <string name="period_field_date">Дата</string>
+    <string name="period_field_status">Статус менструации</string>
+    <string name="period_field_flow">Обильность</string>
+    <string name="period_field_symptoms">Симптомы</string>
+    <string name="period_field_mood">Настроение</string>
+    <string name="period_field_note">Заметка</string>
+    <string name="period_note_hint">Заметка (необязательно)</string>
+    <string name="period_delete_record">Удалить запись</string>
+    <string name="period_delete_confirm_title">Удалить эту запись?</string>
+    <string name="period_delete_confirm_message">Это действие нельзя отменить.</string>
+    <string name="period_flow_none">Нет</string>
+    <string name="period_flow_light">Скудные</string>
+    <string name="period_flow_medium">Умеренные</string>
+    <string name="period_flow_heavy">Обильные</string>
+    <string name="period_mood_very_happy">Отлично</string>
+    <string name="period_mood_happy">Хорошо</string>
+    <string name="period_mood_normal">Нормально</string>
+    <string name="period_mood_sad">Плохо</string>
+    <string name="period_mood_very_sad">Очень плохо</string>
+    <string name="period_symptom_abdominal_pain">Спазмы</string>
+    <string name="period_symptom_headache">Головная боль</string>
+    <string name="period_symptom_back_pain">Боль в спине</string>
+    <string name="period_symptom_mood_swings">Перепады настроения</string>
+    <string name="period_symptom_breast_tenderness">Болезненность груди</string>
+    <string name="period_symptom_fatigue">Усталость</string>
+    <string name="period_symptom_nausea">Тошнота</string>
+    <string name="period_symptom_insomnia">Бессонница</string>
+    <string name="period_symptom_appetite_change">Изменение аппетита</string>
+    <string name="period_symptom_acne">Акне</string>
+    <string name="period_symptom_edema">Вздутие</string>
+    <string name="period_stats_range_6m">Последние 6 месяцев</string>
+    <string name="period_stats_range_day">День</string>
+    <string name="period_stats_range_week">Неделя</string>
+    <string name="period_stats_range_month">Месяц</string>
+    <string name="period_stats_avg_cycle">Ср. цикл</string>
+    <string name="period_stats_avg_period">Ср. месячные</string>
+    <string name="period_stats_next">Следующие месячные</string>
+    <string name="period_stats_vs_prev">к прошлому %1$+d дн.</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">Динамика длины цикла</string>
+    <string name="period_stats_trend_empty">Нужны как минимум два начала цикла</string>
+    <string name="period_stats_symptom_title">Распределение симптомов</string>
+    <string name="period_stats_symptom_empty">Данных о симптомах пока нет</string>
+    <string name="period_stats_symptom_center">Всего</string>
+    <string name="period_day_unit">дн.</string>
+    <string name="period_month_unit">мес.</string>
+    <string name="period_next_label">Следующие месячные</string>
+    <string name="period_days_until">Через %1$d дн.</string>
+    <string name="period_timeline_title">Хронология</string>
+    <string name="period_timeline_start">Начало менструации</string>
+    <string name="period_timeline_end">Ожидаемый конец менструации</string>
+    <string name="period_log_record_created">Запись о менструации создана</string>
+    <string name="period_log_record_updated">Запись о менструации обновлена</string>
+    <string name="period_log_record_deleted">Запись о менструации удалена</string>
+    <string name="agent_tool_add_period_record_title">Добавить запись о менструации</string>
+    <string name="agent_tool_add_period_record_summary">Запись начала и конца менструации, обильности, симптомов и настроения</string>
+    <string name="agent_tool_add_period_record_description">Создать запись о менструации: дата (yyyy-MM-dd), необязательные is_period_start и is_period_end, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), массив symptoms, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) и заметка.</string>
+    <string name="agent_tool_add_period_record_failed">Не удалось добавить запись о менструации: %1$s</string>
+    <string name="agent_tool_query_period_records_title">Запросить записи о менструации</string>
+    <string name="agent_tool_query_period_records_summary">Запрос записей, статистики цикла и прогноза следующих месячных</string>
+    <string name="agent_tool_query_period_records_description">Запрос последних записей о менструации, а также средней длины цикла, средней длительности менструации и прогноза следующего начала. Необязательный limit.</string>
+    <string name="agent_tool_query_period_records_empty">Записей о менструации пока нет.</string>
+    <string name="agent_tool_query_period_records_failed">Не удалось получить записи о менструации: %1$s</string>
+    <string name="agent_tool_update_period_record_title">Изменить запись о менструации</string>
+    <string name="agent_tool_update_period_record_summary">Изменить существующую запись о менструации по record_id</string>
+    <string name="agent_tool_update_period_record_description">Изменить запись о менструации. Укажите record_id и любые поля для изменения (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note).</string>
+    <string name="agent_tool_update_period_record_failed">Не удалось изменить запись о менструации: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">Удалить запись о менструации</string>
+    <string name="agent_tool_delete_period_record_summary">Удалить запись о менструации по record_id</string>
+    <string name="agent_tool_delete_period_record_description">Удалить запись о менструации безвозвратно. Требуется record_id и подтверждение пользователя.</string>
+    <string name="agent_tool_delete_period_record_done">Запись о менструации %1$s удалена</string>
+    <string name="agent_tool_delete_period_record_failed">Не удалось удалить запись о менструации: %1$s</string>
+    <string name="agent_tool_period_param_date">Дата записи, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">Является ли этот день началом менструации</string>
+    <string name="agent_tool_period_param_is_end">Является ли этот день концом менструации</string>
+    <string name="agent_tool_period_param_flow">Интенсивность выделений: NONE, LIGHT, MEDIUM или HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">Массив симптомов, например ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">Настроение: VERY_HAPPY, HAPPY, NORMAL, SAD или VERY_SAD</string>
+    <string name="agent_tool_period_param_note">Заметка (необязательно)</string>
+    <string name="agent_tool_period_param_record_id">Идентификатор записи о менструации</string>
+    <string name="agent_tool_period_param_limit">Максимум записей в ответе (1-50)</string>
+    <string name="agent_tool_period_label_date">Дата</string>
+    <string name="agent_tool_period_label_flow">Обильность</string>
+    <string name="agent_tool_period_label_symptoms">Симптомы</string>
+    <string name="agent_tool_period_open_link">Открыть трекер менструации</string>
+    <string name="agent_tool_period_detail_link">Открыть детали записи</string>
+    <string name="agent_tool_period_no_next">Недостаточно данных</string>
+    <string name="agent_tool_period_unknown_error">Неизвестная ошибка</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>менструация</item>
+        <item>месячные</item>
+        <item>цикл</item>
+        <item>критические дни</item>
+        <item>менструация</item>
+        <item>месячные</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>Сегодня начались месячные, слабые спазмы</item>
+        <item>Запиши, что сегодня начались месячные, средняя обильность</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>цикл</item>
+        <item>следующие месячные</item>
+        <item>цикл</item>
+        <item>прогноз</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>Когда будут следующие месячные?</item>
+        <item>Мой цикл регулярный?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>изменить менструацию</item>
+        <item>изменить запись о менструации</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>Изменить вчерашнюю запись на обильные выделения</item>
+        <item>Поменять вчерашнюю запись: обильные выделения</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>удалить менструацию</item>
+        <item>удалить запись о менструации</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>Удалить вчерашнюю запись о менструации</item>
+        <item>Удалить запись о менструации за вчера</item>
+    </string-array>
+</resources>

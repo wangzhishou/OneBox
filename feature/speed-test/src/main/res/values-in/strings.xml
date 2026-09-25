@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">URL tes</string>
     <string name="speed_test_config_estimated_mb_hint">Perkiraan data (MB)</string>
     <string name="speed_test_config_duration_hint">Durasi (detik)</string>
+    <string name="speed_test_measuring_latency">Mengukur latensi…</string>
+    <string name="speed_test_stop">Hentikan tes</string>
+    <string name="speed_test_stop_hint">Ketuk untuk berhenti; hasil sementara tidak disimpan</string>
+    <string name="speed_test_reference_scale">Referensi kecepatan unduh · bukan peringkat pengguna</string>
 </resources>

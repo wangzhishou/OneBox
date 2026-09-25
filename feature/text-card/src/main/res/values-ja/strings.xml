@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">星</string>
     <string name="textcard_shape_filled">塗りつぶし</string>
     <string name="textcard_draw_width">線の太さ</string>
+    <string name="textcard_canvas_custom">カスタムサイズ</string>
+    <string name="textcard_canvas_custom_desc">幅×高さを入力</string>
+    <string name="textcard_custom_size_title">キャンバスサイズのカスタマイズ</string>
+    <string name="textcard_canvas_width">幅 (px)</string>
+    <string name="textcard_canvas_height">高さ (px)</string>
+    <string name="textcard_refresh_papers">ペーパーを更新</string>
+    <string name="textcard_editing_selection">編集中：選択テキスト</string>
+    <string name="textcard_clear_selection_style">スタイルをクリア</string>
 </resources>

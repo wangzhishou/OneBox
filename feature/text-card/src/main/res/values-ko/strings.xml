@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">별</string>
     <string name="textcard_shape_filled">채우기</string>
     <string name="textcard_draw_width">선 굵기</string>
+    <string name="textcard_canvas_custom">사용자 지정 크기</string>
+    <string name="textcard_canvas_custom_desc">사용자 지정 너비 × 높이 입력</string>
+    <string name="textcard_custom_size_title">사용자 지정 캔버스 크기</string>
+    <string name="textcard_canvas_width">너비 (px)</string>
+    <string name="textcard_canvas_height">높이 (px)</string>
+    <string name="textcard_refresh_papers">배경 새로 고침</string>
+    <string name="textcard_editing_selection">편집 중: 선택한 텍스트</string>
+    <string name="textcard_clear_selection_style">스타일 지우기</string>
 </resources>

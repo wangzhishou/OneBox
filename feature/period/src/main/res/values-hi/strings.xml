@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">पीरियड ट्रैकर</string>
+    <string name="period_stats_title">चक्र आँकड़े</string>
+    <string name="period_detail_title">रिकॉर्ड विवरण</string>
+    <string name="period_add_title">नया रिकॉर्ड</string>
+    <string name="period_edit_title">रिकॉर्ड संपादित करें</string>
+    <string name="period_tab_records">रिकॉर्ड</string>
+    <string name="period_tab_stats">डेटा</string>
+    <string name="period_search">खोजें</string>
+    <string name="period_search_hint">नोट या लक्षण खोजें</string>
+    <string name="period_add">जोड़ें</string>
+    <string name="period_save">सहेजें</string>
+    <string name="period_cancel">रद्द करें</string>
+    <string name="period_delete">हटाएँ</string>
+    <string name="period_loading">लोड हो रहा है…</string>
+    <string name="period_saved">सहेजा गया</string>
+    <string name="period_record_added">रिकॉर्ड जोड़ा गया</string>
+    <string name="period_deleted">रिकॉर्ड हटाया गया</string>
+    <string name="period_save_failed">सहेजना विफल रहा</string>
+    <string name="period_toast_recorded">पीरियड दर्ज हो गया</string>
+    <string name="period_empty_title">अभी कोई रिकॉर्ड नहीं</string>
+    <string name="period_empty_subtitle">AI को बताएँ कि आप कैसा महसूस कर रही हैं, एक टैप में रिकॉर्ड बन जाएगा</string>
+    <string name="period_ai_quick_record">AI त्वरित रिकॉर्ड</string>
+    <string name="period_manual_record">मैन्युअल रिकॉर्ड</string>
+    <string name="period_empty_example">जैसे \"कल मेरा पीरियड शुरू हुआ, हल्का दर्द\"</string>
+    <string name="period_ai_assist_title">पीरियड ट्रैकर सहायक</string>
+    <string name="period_ai_assist_fill_in">कल मेरा पीरियड तेज़ दर्द के साथ शुरू हुआ, इसे मेरे लिए दर्ज कर दो</string>
+    <string name="period_ai_assist_prompt">आप उपयोगकर्ता के पीरियड ट्रैकर सहायक हैं। जब उपयोगकर्ता पीरियड की स्थिति, रक्तस्राव, लक्षण या मनोदशा बताए, तो उसे add_period_record से दर्ज करें (तारीख के लिए yyyy-MM-dd का उपयोग करें)। जब उपयोगकर्ता चक्र की लंबाई, अगला पीरियड या आँकड़े पूछे, तो query_period_records का उपयोग करें। किसी रिकॉर्ड को ठीक करने के लिए update_period_record का उपयोग करें। किसी रिकॉर्ड को हटाने के लिए delete_period_record का उपयोग करें। दर्ज करने के बाद हर कार्रवाई की संक्षेप में पुष्टि करें।</string>
+    <string name="period_record_count">%1$d रिकॉर्ड</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">MMM d</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (बहु-चयन)</string>
+    <string name="period_cycle_day">चक्र का दिन %1$d</string>
+    <string name="period_cycle_day_unknown">चक्र का दिन —</string>
+    <string name="period_status_period">पीरियड</string>
+    <string name="period_status_ovulation">ओव्यूलेशन</string>
+    <string name="period_status_normal">सामान्य</string>
+    <string name="period_status_start">शुरुआत</string>
+    <string name="period_status_mid">पीरियड</string>
+    <string name="period_status_end">अंत</string>
+    <string name="period_calendar_prev">पिछला महीना</string>
+    <string name="period_calendar_next">अगला महीना</string>
+    <string name="period_field_date">तारीख</string>
+    <string name="period_field_status">पीरियड की स्थिति</string>
+    <string name="period_field_flow">रक्तस्राव</string>
+    <string name="period_field_symptoms">लक्षण</string>
+    <string name="period_field_mood">मनोदशा</string>
+    <string name="period_field_note">नोट</string>
+    <string name="period_note_hint">वैकल्पिक नोट</string>
+    <string name="period_delete_record">रिकॉर्ड हटाएँ</string>
+    <string name="period_delete_confirm_title">यह रिकॉर्ड हटाएँ?</string>
+    <string name="period_delete_confirm_message">इसे पूर्ववत नहीं किया जा सकता।</string>
+    <string name="period_flow_none">कोई नहीं</string>
+    <string name="period_flow_light">हल्का</string>
+    <string name="period_flow_medium">मध्यम</string>
+    <string name="period_flow_heavy">अधिक</string>
+    <string name="period_mood_very_happy">बहुत अच्छा</string>
+    <string name="period_mood_happy">अच्छा</string>
+    <string name="period_mood_normal">ठीक</string>
+    <string name="period_mood_sad">उदास</string>
+    <string name="period_mood_very_sad">बुरा</string>
+    <string name="period_symptom_abdominal_pain">पेट में ऐंठन</string>
+    <string name="period_symptom_headache">सिरदर्द</string>
+    <string name="period_symptom_back_pain">कमर दर्द</string>
+    <string name="period_symptom_mood_swings">मूड स्विंग</string>
+    <string name="period_symptom_breast_tenderness">स्तनों में दर्द</string>
+    <string name="period_symptom_fatigue">थकान</string>
+    <string name="period_symptom_nausea">जी मिचलाना</string>
+    <string name="period_symptom_insomnia">अनिद्रा</string>
+    <string name="period_symptom_appetite_change">भूख में बदलाव</string>
+    <string name="period_symptom_acne">मुँहासे</string>
+    <string name="period_symptom_edema">पेट फूलना</string>
+    <string name="period_stats_range_6m">पिछले 6 महीने</string>
+    <string name="period_stats_range_day">दिन</string>
+    <string name="period_stats_range_week">सप्ताह</string>
+    <string name="period_stats_range_month">महीना</string>
+    <string name="period_stats_avg_cycle">औसत चक्र</string>
+    <string name="period_stats_avg_period">औसत पीरियड</string>
+    <string name="period_stats_next">अगला पीरियड</string>
+    <string name="period_stats_vs_prev">पिछले से %1$+d दिन</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">चक्र की लंबाई का रुझान</string>
+    <string name="period_stats_trend_empty">कम से कम दो चक्र शुरुआतें चाहिए</string>
+    <string name="period_stats_symptom_title">लक्षणों का वितरण</string>
+    <string name="period_stats_symptom_empty">अभी कोई लक्षण डेटा नहीं</string>
+    <string name="period_stats_symptom_center">कुल</string>
+    <string name="period_day_unit">दिन</string>
+    <string name="period_month_unit">माह</string>
+    <string name="period_next_label">अगला पीरियड</string>
+    <string name="period_days_until">%1$d दिन में</string>
+    <string name="period_timeline_title">टाइमलाइन</string>
+    <string name="period_timeline_start">पीरियड की शुरुआत</string>
+    <string name="period_timeline_end">पीरियड खत्म होने की संभावित तारीख</string>
+    <string name="period_log_record_created">पीरियड रिकॉर्ड बनाया गया</string>
+    <string name="period_log_record_updated">पीरियड रिकॉर्ड अपडेट किया गया</string>
+    <string name="period_log_record_deleted">पीरियड रिकॉर्ड हटाया गया</string>
+    <string name="agent_tool_add_period_record_title">पीरियड रिकॉर्ड जोड़ें</string>
+    <string name="agent_tool_add_period_record_summary">पीरियड की शुरुआत/समाप्ति, रक्तस्राव, लक्षण और मनोदशा दर्ज करें</string>
+    <string name="agent_tool_add_period_record_description">पीरियड प्रविष्टि दर्ज करें: तारीख (yyyy-MM-dd), वैकल्पिक is_period_start / is_period_end, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), symptoms ऐरे, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) और नोट।</string>
+    <string name="agent_tool_add_period_record_failed">पीरियड रिकॉर्ड जोड़ना विफल: %1$s</string>
+    <string name="agent_tool_query_period_records_title">पीरियड रिकॉर्ड देखें</string>
+    <string name="agent_tool_query_period_records_summary">रिकॉर्ड, चक्र आँकड़े और अगले पीरियड का अनुमान देखें</string>
+    <string name="agent_tool_query_period_records_description">हाल के पीरियड रिकॉर्ड के साथ औसत चक्र, औसत पीरियड अवधि और अगली अनुमानित शुरुआत देखें। वैकल्पिक limit।</string>
+    <string name="agent_tool_query_period_records_empty">अभी कोई पीरियड रिकॉर्ड नहीं।</string>
+    <string name="agent_tool_query_period_records_failed">पीरियड रिकॉर्ड देखना विफल: %1$s</string>
+    <string name="agent_tool_update_period_record_title">पीरियड रिकॉर्ड अपडेट करें</string>
+    <string name="agent_tool_update_period_record_summary">record_id से मौजूदा पीरियड रिकॉर्ड अपडेट करें</string>
+    <string name="agent_tool_update_period_record_description">पीरियड रिकॉर्ड अपडेट करें। record_id और बदलने वाले फ़ील्ड दें (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note)।</string>
+    <string name="agent_tool_update_period_record_failed">पीरियड रिकॉर्ड अपडेट करना विफल: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">पीरियड रिकॉर्ड हटाएँ</string>
+    <string name="agent_tool_delete_period_record_summary">record_id से पीरियड रिकॉर्ड हटाएँ</string>
+    <string name="agent_tool_delete_period_record_description">पीरियड रिकॉर्ड को स्थायी रूप से हटाएँ। record_id और उपयोगकर्ता की पुष्टि आवश्यक है।</string>
+    <string name="agent_tool_delete_period_record_done">पीरियड रिकॉर्ड %1$s हटाया गया</string>
+    <string name="agent_tool_delete_period_record_failed">पीरियड रिकॉर्ड हटाना विफल: %1$s</string>
+    <string name="agent_tool_period_param_date">रिकॉर्ड की तारीख, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">क्या यह दिन पीरियड की शुरुआत है</string>
+    <string name="agent_tool_period_param_is_end">क्या यह दिन पीरियड का अंत है</string>
+    <string name="agent_tool_period_param_flow">रक्तस्राव की मात्रा: NONE, LIGHT, MEDIUM या HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">symptoms ऐरे, जैसे ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">मनोदशा: VERY_HAPPY, HAPPY, NORMAL, SAD या VERY_SAD</string>
+    <string name="agent_tool_period_param_note">वैकल्पिक नोट</string>
+    <string name="agent_tool_period_param_record_id">पीरियड रिकॉर्ड id</string>
+    <string name="agent_tool_period_param_limit">लौटाए जाने वाले अधिकतम रिकॉर्ड (1-50)</string>
+    <string name="agent_tool_period_label_date">तारीख</string>
+    <string name="agent_tool_period_label_flow">रक्तस्राव</string>
+    <string name="agent_tool_period_label_symptoms">लक्षण</string>
+    <string name="agent_tool_period_open_link">पीरियड ट्रैकर खोलें</string>
+    <string name="agent_tool_period_detail_link">रिकॉर्ड विवरण खोलें</string>
+    <string name="agent_tool_period_no_next">पर्याप्त डेटा नहीं</string>
+    <string name="agent_tool_period_unknown_error">अज्ञात त्रुटि</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>पीरियड</item>
+        <item>मासिक धर्म</item>
+        <item>चक्र</item>
+        <item>माहवारी</item>
+        <item>मासिक चक्र</item>
+        <item>माहवारी के दिन</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>आज मेरा पीरियड हल्के दर्द के साथ शुरू हुआ</item>
+        <item>मेरे लिए दर्ज करें कि आज माहवारी शुरू हुई, रक्तस्राव मध्यम</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>चक्र</item>
+        <item>अगला पीरियड</item>
+        <item>मासिक चक्र</item>
+        <item>अनुमान</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>मेरा अगला पीरियड कब है?</item>
+        <item>मेरा चक्र नियमित है या नहीं?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>पीरियड अपडेट करें</item>
+        <item>पीरियड रिकॉर्ड बदलें</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>कल के रिकॉर्ड का रक्तस्राव अधिक करें</item>
+        <item>कल के रिकॉर्ड में रक्तस्राव अधिक कर दें</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>पीरियड हटाएँ</item>
+        <item>पीरियड रिकॉर्ड हटाएँ</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>कल का पीरियड रिकॉर्ड हटाएँ</item>
+        <item>कल वाला पीरियड रिकॉर्ड मिटाएँ</item>
+    </string-array>
+</resources>

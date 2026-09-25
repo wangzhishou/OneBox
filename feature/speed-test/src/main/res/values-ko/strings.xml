@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">테스트 URL</string>
     <string name="speed_test_config_estimated_mb_hint">예상 데이터(MB)</string>
     <string name="speed_test_config_duration_hint">시간(초)</string>
+    <string name="speed_test_measuring_latency">지연 시간 측정 중…</string>
+    <string name="speed_test_stop">테스트 중지</string>
+    <string name="speed_test_stop_hint">탭하여 중지하세요. 일부 결과는 저장되지 않습니다</string>
+    <string name="speed_test_reference_scale">다운로드 속도 참고 기준 · 사용자 순위가 아닙니다</string>
 </resources>

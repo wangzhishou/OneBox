@@ -844,4 +844,89 @@
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
+    <string name="agent_tool_theme_setting_param_glass_border_alpha">Pagkakita ng glass na hangganan. **Uri na numero** (HINDI string), saklaw [0.0, 1.0], default 0.17 (17%%). Ang 0 ay ganap na nagtatago ng hangganan; mas mataas = mas nakikitang balangkas. Independiyente sa glass_alpha. Opsyonal</string>
+    <string name="agent_tool_switch_ai_model_title">Palitan ang Modelo</string>
+    <string name="agent_tool_switch_ai_model_summary">Palitan ang AI engine o modelong ginagamit ng chat</string>
+    <string name="agent_tool_switch_ai_model_description">Palitan ang AI engine/modelo na ginagamit para sa kasalukuyang usapan. Gamitin kapag hiniling ng user na palitan ang modelo (hal. \"use DeepSeek\", \"switch to GPT-5\"). Ang engine_name ay pangalan ng engine/provider (hal. deepseek, openai, qwen, kimi, doubao, mimo, gemini, grok, claude); ang model_name ay opsyonal at kapag ito\'y hindi ibinigay, babalik sa kasalukuyang modelo ng engine; pinipili ng slot ang working slot na ia-update: default (pangunahing chat) o fast (mabilisang gawain).</string>
+    <string name="agent_tool_switch_ai_model_param_engine_name">Pangalan ng target engine (halaga ng provider, hal. deepseek)</string>
+    <string name="agent_tool_switch_ai_model_param_model_name">Pangalan ng target na modelo (opsyonal, hal. deepseek-chat); kapag ito\'y hindi ibinigay, panatilihin ang kasalukuyang modelo ng engine</string>
+    <string name="agent_tool_switch_ai_model_param_slot">Working slot: default = modelo ng pangunahing chat, fast = modelo para sa mabilisang gawain; default ay default</string>
+    <string name="agent_tool_switch_ai_model_invalid_params">Nabigong i-parse ang mga parameter; kailangan ang engine_name</string>
+    <string name="agent_tool_switch_ai_model_engine_not_found">Hindi natagpuan ang engine na %1$s. Mga available na engine: %2$s</string>
+    <string name="agent_tool_switch_ai_model_model_not_found">Hindi natagpuan ang modelong %2$s sa ilalim ng engine na %1$s. Mga available na modelo: %3$s</string>
+    <string name="agent_tool_switch_ai_model_success">Napalitan ang modelo: %1$s · %2$s</string>
+    <string name="agent_tool_switch_ai_model_failed">Nabigong palitan ang modelo: %1$s</string>
+    <string name="agent_tool_font_scale_setting_title">Laki ng Font</string>
+    <string name="agent_tool_font_scale_setting_summary">Basahin o baguhin ang font scale ng app (0.45–1.5, o sundan ang laki ng font ng system)</string>
+    <string name="agent_tool_font_scale_setting_param_action">Uri ng action. get=basahin ang kasalukuyang font scale; set=baguhin ito. **Ang action lang ang kailangan**</string>
+    <string name="agent_tool_font_scale_setting_param_scale">Font scale. Numeric string sa saklaw 0.45 ~ 1.5 (1.0 = default), o \"system\" / \"default\" para sundan ang laki ng font ng system. set lamang</string>
+    <string name="agent_tool_font_scale_setting_failed">Nabigo ang pagtatakda ng font scale: %1$s</string>
+    <string name="agent_tool_font_scale_setting_unknown_action">Hindi kilalang action: %1$s. Dapat isa sa get / set</string>
+    <string name="agent_tool_font_scale_setting_missing_action">Kulang ang parameter na action</string>
+    <string name="agent_tool_font_scale_setting_missing_scale">Ang action na set ay nangangailangan ng parameter na scale (0.45 ~ 1.5, o \"system\")</string>
+    <string name="agent_tool_font_scale_setting_out_of_range">Di-wastong scale: %1$s. Dapat na numero sa saklaw 0.45 ~ 1.5, o \"system\" / \"default\"</string>
+    <string name="agent_tool_font_scale_setting_get_message">Nabasa ang kasalukuyang font scale</string>
+    <string name="agent_tool_font_scale_setting_set_message">Itinakda ang font scale sa %1$s</string>
+    <string name="agent_tool_font_scale_setting_set_system_message">Itinakda ang font scale na sumunod sa laki ng font ng system</string>
+    <string name="agent_tool_font_scale_setting_effective_hint">Nailapat na ang bagong font scale; awtomatikong magre-refresh ang interface sa loob ng isang segundo</string>
+    <string name="agent_tool_font_scale_setting_deeplink_label">Mga Setting ng Display</string>
+    <string name="agent_tool_font_scale_setting_deeplink_guidance">I-tap para i-fine-tune ang laki ng font sa mga setting ng display</string>
+    <string name="agent_tool_night_mode_setting_title">Mode ng Gabi</string>
+    <string name="agent_tool_night_mode_setting_summary">Basahin o palitan ang Light / Dark / System na mode ng gabi (agad na nagkakabisa)</string>
+    <string name="agent_tool_night_mode_setting_param_action">Uri ng action. get=basahin ang kasalukuyang mode; set=palitan ang mode. **Ang action lang ang kailangan**</string>
+    <string name="agent_tool_night_mode_setting_param_mode">Mode ng gabi. Light (araw) / Dark (gabi) / System (sundan ang system), hindi case-sensitive. set lamang</string>
+    <string name="agent_tool_night_mode_setting_failed">Nabigo ang pagtatakda ng mode ng gabi: %1$s</string>
+    <string name="agent_tool_night_mode_setting_unknown_action">Hindi kilalang action: %1$s. Dapat isa sa get / set</string>
+    <string name="agent_tool_night_mode_setting_missing_action">Kulang ang parameter na action</string>
+    <string name="agent_tool_night_mode_setting_missing_mode">Ang action na set ay nangangailangan ng parameter na mode (Light / Dark / System)</string>
+    <string name="agent_tool_night_mode_setting_invalid_mode">Di-wastong mode ng gabi: %1$s. Dapat isa sa Light / Dark / System</string>
+    <string name="agent_tool_night_mode_setting_get_message">Kasalukuyang mode ng gabi: %1$s</string>
+    <string name="agent_tool_night_mode_setting_set_message">Napalitan ang mode ng gabi sa %1$s</string>
+    <string name="agent_tool_night_mode_setting_deeplink_label">Mga Setting ng Display</string>
+    <string name="agent_tool_night_mode_setting_deeplink_guidance">I-tap para palitan ang mode ng gabi sa mga setting ng display</string>
+    <string name="agent_tool_start_entry_setting_title">Simulang Pahina</string>
+    <string name="agent_tool_start_entry_setting_summary">Tingnan o baguhin ang pahinang binubuksan ng app pagkatapos ng cold start (nagkakabisa sa susunod na cold start)</string>
+    <string name="agent_tool_start_entry_setting_param_action">Uri ng action. list=ilista ang lahat ng posibleng pahina; get=basahin ang kasalukuyang start entry; set=baguhin ito. **Ang action lang ang kailangan**</string>
+    <string name="agent_tool_start_entry_setting_param_screen_id">Id ng panimulang pahina. Numeric id mula sa list response na candidates[i].id, o \"default\" / \"home\" para ibalik ang default na home page. set lamang</string>
+    <string name="agent_tool_start_entry_setting_failed">Nabigo ang pagtatakda ng start entry: %1$s</string>
+    <string name="agent_tool_start_entry_setting_unknown_action">Hindi kilalang action: %1$s. Dapat isa sa list / get / set</string>
+    <string name="agent_tool_start_entry_setting_missing_action">Kulang ang parameter na action</string>
+    <string name="agent_tool_start_entry_setting_missing_screen_id">Ang action na set ay nangangailangan ng parameter na screen_id (isang candidate id mula sa list, o \"default\")</string>
+    <string name="agent_tool_start_entry_setting_invalid_screen_id">Di-wastong screen_id: %1$s. Dapat numeric na candidate id, o \"default\" / \"home\"</string>
+    <string name="agent_tool_start_entry_setting_unknown_screen_id">Hindi kilalang screen_id: %1$s. Tawagin muna ang list para makuha ang mga wastong candidate id</string>
+    <string name="agent_tool_start_entry_setting_list_message">Nabasa ang mga kandidato ng start entry</string>
+    <string name="agent_tool_start_entry_setting_get_message">Nabasa ang kasalukuyang start entry</string>
+    <string name="agent_tool_start_entry_setting_set_message">Itinakda ang start entry sa: %1$s</string>
+    <string name="agent_tool_start_entry_setting_effective_hint">Nagkakabisa lang ang start entry sa susunod na cold start ng app</string>
+    <string name="agent_tool_start_entry_setting_deeplink_label">Mga Setting ng Display</string>
+    <string name="agent_tool_start_entry_setting_deeplink_guidance">I-tap para pumili ng start entry sa mga setting ng display</string>
+    <string name="agent_tool_memory_write_description">Mag-save ng pangmatagalang memory entry tungkol sa user o sa kasalukuyang proyekto: mga preference, mahahalagang katotohanan, desisyon at kumbensiyon na dapat panatilihin sa mga usapan. Sumulat ng maikli at makapag-iisang pahayag. HUWAG itala ang mga sekreto, password, API key o pansamantalang detalye.</string>
+    <string name="agent_tool_memory_write_param_content">Ang pahayag ng memory na ise-save, maikli at makapag-iisa</string>
+    <string name="agent_tool_memory_write_result_saved">Na-save ang memory (id=%1$d).</string>
+    <string name="agent_tool_memory_write_too_long">Masyadong mahaba ang nilalaman ng memory: %1$d chars ang maximum. Paikliin ito at itala lang ang mahahalagang punto.</string>
+    <string name="agent_tool_gate_memory_disabled">Naka-disable ang memory para sa usapang ito (naka-off ang global o per-conversation na switch). Huwag nang tawagin ang mga tool ng memory sa usapang ito.</string>
+    <string name="agent_tool_gate_skills_disabled">Naka-disable ang mga skill para sa usapang ito (naka-off ang global o per-conversation na switch). Huwag nang tawagin ang tool na use_skill sa usapang ito.</string>
+    <string name="agent_tool_memory_get_description">Maghanap ng mga na-save na memory entry gamit ang mga keyword; ibinabalik lang ang entry kapag tumugma ang LAHAT ng keyword (hindi case-sensitive). Iwasan ang keywords para ilabas ang pinakabagong mga entry. Ang scope=log (default) ay naghahanap lang sa mga log entry, ang scope=all ay kasama rin ang profile ng user.</string>
+    <string name="agent_tool_memory_get_param_keywords">Mga keyword na pinaghihiwalay ng espasyo o kuwit; iwanang walang laman para ilabas ang pinakabagong mga entry</string>
+    <string name="agent_tool_memory_get_param_scope">Saklaw ng paghahanap: log (default) o all (kasama ang profile ng user)</string>
+    <string name="agent_tool_memory_get_result_empty">Walang tumugmang memory entry.</string>
+    <string name="agent_tool_memory_get_result_entry">#%1$d [%2$s] (%3$s)</string>
+    <string name="agent_tool_memory_get_result_truncated_count">[May iba pang tumugmang entry ngunit hindi naisama: ang limitasyon ng resulta ay %1$d entry. Gawing mas tiyak ang mga keyword.]</string>
+    <string name="agent_tool_memory_get_result_truncated_entries">[%1$d entry ang na-truncate para kasya sa limitasyon ng output. Gumamit ng mas tiyak na keyword para mabasa ang mga ito nang buo.]</string>
+    <string name="agent_tool_memory_get_result_truncated_bytes">[%1$d entry ang hindi naisama: naabot ang limitasyon ng laki ng output. Gawing mas tiyak ang mga keyword.]</string>
+    <string name="agent_tool_use_skill_description">I-load ang buong tagubilin ng skill na nakalista sa &lt;available_skills&gt; sa pamamagitan ng pangalan nito. Laging tawagin ito bago gamitin ang isang skill.</string>
+    <string name="agent_tool_use_skill_param_name">Ang pangalan ng skill (slug) nang eksakto tulad ng nakalista sa &lt;available_skills&gt;</string>
+    <string name="agent_tool_use_skill_not_found">Hindi natagpuan o naka-disable ang skill na \'%1$s\'. Mga available na skill: %2$s</string>
+    <string name="agent_tool_use_skill_none_available">(wala)</string>
+    <string name="agent_memory_prompt_omitted_hint">(Inalis ang mga naunang memory para kasya sa budget; gamitin ang memory_get para hanapin ang mga ito.)</string>
+    <string name="agent_memory_prompt_omitted_hint_no_search">(Inalis ang mga naunang memory para kasya sa budget.)</string>
+    <string name="agent_memory_prompt_profile_header">Profile ng user:</string>
+    <string name="agent_memory_prompt_log_header">Memory log (%1$s):</string>
+    <string name="agent_skills_prompt_unlisted">(%1$d pang skill ang hindi nakalista.)</string>
+    <string name="agent_skill_import_invalid">Di-wastong SKILL.md: ang frontmatter ay dapat may single-line na name at description field</string>
+    <string name="ai_tools_session_memory">Memory para sa usapang ito</string>
+    <string name="ai_tools_session_memory_hint">I-inject ang mga na-save na memory at payagan ang AI na magsulat ng memory sa usapang ito</string>
+    <string name="ai_tools_session_skills">Mga skill para sa usapang ito</string>
+    <string name="ai_tools_session_skills_hint">Ipakita ang listahan ng available na skill at payagan ang AI na mag-load ng skill sa usapang ito</string>
+    <string name="ai_tools_session_global_off_hint">Naka-off sa buong app sa mga setting ng AI; hindi available ang switch ng usapan</string>
 </resources>

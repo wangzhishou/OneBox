@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Reklam İzle</string>
+    <string name="ad_watch_headline_1">Büyük markaların servet harcadığı reklamlar neyi anlatıyor?</string>
+    <string name="ad_watch_headline_2">Dev şirketlerin verdiği reklamlar nasıl görünüyor?</string>
+    <string name="ad_watch_headline_3">15 saniyede markaların hünerlerini gör</string>
+    <string name="ad_watch_headline_4">Başkaları dikkat çekmek için ödeme yapıyor, sen puan kazanıyorsun</string>
+    <string name="ad_watch_headline_5">Reklamverenlerin yarışına ücretsiz tanık ol</string>
+    <string name="ad_watch_subtitle">15 saniyelik reklam izle, %1$d puan kazan</string>
+    <string name="ad_watch_cta">Reklam izle · +%1$d puan</string>
+    <string name="ad_watch_remaining">Bugün kalan %1$d/%2$d hak</string>
+    <string name="ad_watch_daily_limit_reached">Bugünkü hakkın doldu, yarın tekrar gel</string>
+    <string name="ad_watch_loading">Reklam yükleniyor…</string>
+    <string name="ad_watch_load_failed">Reklam yüklenemedi</string>
+    <string name="ad_watch_retry">Tekrar Dene</string>
+    <string name="ad_watch_ad_not_ready">Reklam henüz hazır değil, lütfen sonra tekrar dene</string>
+</resources>

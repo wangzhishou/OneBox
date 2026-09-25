@@ -89,4 +89,12 @@
     <string name="textcard_shape_star">Stern</string>
     <string name="textcard_shape_filled">Gefüllt</string>
     <string name="textcard_draw_width">Strichstärke</string>
+    <string name="textcard_canvas_custom">Eigene Größe</string>
+    <string name="textcard_canvas_custom_desc">Eigene Breite × Höhe eingeben</string>
+    <string name="textcard_custom_size_title">Eigene Leinwandgröße</string>
+    <string name="textcard_canvas_width">Breite (px)</string>
+    <string name="textcard_canvas_height">Höhe (px)</string>
+    <string name="textcard_refresh_papers">Hintergründe aktualisieren</string>
+    <string name="textcard_editing_selection">Bearbeitung: ausgewählter Text</string>
+    <string name="textcard_clear_selection_style">Stil löschen</string>
 </resources>

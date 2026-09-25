@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">지뢰찾기</string>
+    <string name="minesweeper_restart">다시 시작</string>
+    <string name="minesweeper_sound_on">소리 켜기</string>
+    <string name="minesweeper_sound_off">소리 끄기</string>
+    <string name="minesweeper_mode_dig">열기 모드</string>
+    <string name="minesweeper_mode_flag">깃발 모드</string>
+    <string name="minesweeper_hint_dig">탭하여 칸 열기</string>
+    <string name="minesweeper_hint_flag">탭하여 지뢰에 깃발 꽂기</string>
+    <string name="minesweeper_time">시간</string>
+    <string name="minesweeper_mines_left">지뢰</string>
+    <string name="minesweeper_won">성공</string>
+    <string name="minesweeper_lost">펑</string>
+    <string name="minesweeper_play_again">다시 하기</string>
+    <string name="minesweeper_result_detail">%1$d초</string>
+    <string name="minesweeper_fullscreen">전체 화면</string>
+    <string name="minesweeper_exit_fullscreen">전체 화면 종료</string>
+    <string name="minesweeper_share">공유</string>
+</resources>

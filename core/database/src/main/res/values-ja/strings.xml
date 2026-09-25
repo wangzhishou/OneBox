@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">習慣トラッカー</string>
     <string name="activity_log_habit_created">新しい習慣:%1$s</string>
     <string name="activity_log_habit_check_in">チェックイン:%1$s</string>
+    <string name="sys_prompt_iching_title">易経解釈システムプロンプト</string>
+    <string name="sys_prompt_iching_desc">質問・卦・変爻を解釈するために使用するシステム指示</string>
+    <string name="sys_prompt_memory_global_title">メモリプロフィールのガイダンス</string>
+    <string name="sys_prompt_memory_global_desc">AIメモリのユーザープロフィール部分の前に挿入される前置き</string>
+    <string name="sys_prompt_memory_recent_title">メモリ最近ログのガイダンス</string>
+    <string name="sys_prompt_memory_recent_desc">AIメモリの最近ログ部分の前に挿入される前置き（memory_get ツールに言及）</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">メモリ最近ログのガイダンス（ツールなし）</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">モデルがツール呼び出しに対応していない場合に使用される代替バージョン</string>
+    <string name="sys_prompt_skills_guidance_title">スキル一覧のガイダンス</string>
+    <string name="sys_prompt_skills_guidance_desc">利用可能なスキル一覧の前に挿入される前置き</string>
 </resources>

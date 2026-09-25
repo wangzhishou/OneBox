@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">URL для теста</string>
     <string name="speed_test_config_estimated_mb_hint">Оценочный объем данных (МБ)</string>
     <string name="speed_test_config_duration_hint">Длительность (сек)</string>
+    <string name="speed_test_measuring_latency">Измерение задержки…</string>
+    <string name="speed_test_stop">Остановить тест</string>
+    <string name="speed_test_stop_hint">Нажмите, чтобы остановить; частичные результаты не сохраняются</string>
+    <string name="speed_test_reference_scale">Справка по скорости загрузки · это не рейтинг пользователей</string>
 </resources>

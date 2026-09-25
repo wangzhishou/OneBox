@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">マインスイーパー</string>
+    <string name="minesweeper_restart">やり直す</string>
+    <string name="minesweeper_sound_on">サウンドオン</string>
+    <string name="minesweeper_sound_off">サウンドオフ</string>
+    <string name="minesweeper_mode_dig">掘るモード</string>
+    <string name="minesweeper_mode_flag">旗モード</string>
+    <string name="minesweeper_hint_dig">タップしてマスを開く</string>
+    <string name="minesweeper_hint_flag">タップして地雷に旗を立てる</string>
+    <string name="minesweeper_time">時間</string>
+    <string name="minesweeper_mines_left">地雷</string>
+    <string name="minesweeper_won">クリア</string>
+    <string name="minesweeper_lost">ドカン</string>
+    <string name="minesweeper_play_again">もう一度プレイ</string>
+    <string name="minesweeper_result_detail">%1$d 秒</string>
+    <string name="minesweeper_fullscreen">全画面</string>
+    <string name="minesweeper_exit_fullscreen">全画面を終了</string>
+    <string name="minesweeper_share">共有</string>
+</resources>

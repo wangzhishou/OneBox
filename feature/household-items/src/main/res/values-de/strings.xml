@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">Artikelverwaltung öffnen</string>
     <string name="agent_tool_household_edit_link">Artikel anzeigen</string>
     <string name="agent_tool_household_unknown_error">Unbekannter Fehler</string>
+    <string name="household_ai_assist_fill_in">Erfasse das Erkältungsmedikament in der Medikamentenbox im Schlafzimmer, Ablauf Juni 2027</string>
 </resources>

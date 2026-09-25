@@ -89,4 +89,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">Para sa mga lisensya ng gabay sa turismo</string>
     <string name="id_photo_preset_size_desc_chsi">Para sa koleksyon ng larawan ng CHSI/Xuexin</string>
     <string name="id_photo_preset_size_desc_id_card">Para sa mga second-generation ID card</string>
+    <string name="id_photo_export_target_size">Laki ng Export</string>
+    <string name="id_photo_export_source_size">Laki ng Pinagmulan</string>
+    <string name="id_photo_export_estimated_size">Tantyang Laki</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
+    <string name="id_photo_tab_beauty">Isang Tap na Pagpapaganda</string>
+    <string name="id_photo_beauty_light">Magaan</string>
+    <string name="id_photo_beauty_standard">Karaniwan</string>
+    <string name="id_photo_beauty_deep">Malakas</string>
+    <string name="id_photo_beauty_points_tip">~%d credits bawat gamit</string>
+    <string name="id_photo_ai_process_failed">Nabigo ang pagproseso ng AI, subukan muli mamaya</string>
+    <string name="id_photo_beauty">Pagpapaganda ng larawan ng mukha gamit ang AI</string>
+    <string name="id_photo_bg_replace">Pagpapalit ng background gamit ang AI</string>
+    <string name="id_photo_bg_original">Orihinal</string>
+    <string name="id_photo_bg_transparent">Transparent</string>
+    <string name="id_photo_beauty_apply">Ilapat</string>
+    <string name="id_photo_beauty_group_skin">Balat</string>
+    <string name="id_photo_beauty_group_flaw">Pag-alis ng Kapintasan</string>
+    <string name="id_photo_beauty_group_reshape">Paghubog ng Mukha</string>
+    <string name="id_photo_beauty_group_eye">Pagpapaganda ng Mata</string>
+    <string name="id_photo_beauty_group_hair">Buhok</string>
+    <string name="id_photo_beauty_group_teeth">Ngipin</string>
+    <string name="id_photo_beauty_group_body">Paghubog ng Katawan</string>
+    <string name="id_photo_bp_face_smooth">Pagpapakinis</string>
+    <string name="id_photo_bp_face_smooth_gray">Neutral Gray na Pagpapakinis</string>
+    <string name="id_photo_bp_face_smooth_fine">High/Low-Frequency na Pagpapakinis</string>
+    <string name="id_photo_bp_face_smooth_new">Pagpapakinis ng Tabas ng Mukha</string>
+    <string name="id_photo_bp_skin_white">Pagpapaputi</string>
+    <string name="id_photo_bp_skin_bright">Kaningningan</string>
+    <string name="id_photo_bp_skin_red">Kulay Rosas</string>
+    <string name="id_photo_bp_skin_sharpen">Kalinawan ng Balat</string>
+    <string name="id_photo_bp_face_color_same">Pantay na Kulay ng Balat</string>
+    <string name="id_photo_bp_skin_prefer">Mainit-Malamig na Tono</string>
+    <string name="id_photo_bp_face_highlight">Highlight ng Mukha</string>
+    <string name="id_photo_bp_face_shadow">Anino ng Mukha</string>
+    <string name="id_photo_bp_remove_face_flaw">Mga Kapintasan sa Mukha</string>
+    <string name="id_photo_bp_remove_dark_circles">Maiitim na Bilog sa Mata</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">Kulubot sa Paligid ng Mata</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">Kulubot sa Noo</string>
+    <string name="id_photo_bp_remove_laugh_line">Guiray sa Pisngi</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">Kulubot sa Leeg</string>
+    <string name="id_photo_bp_remove_double_chin">Dobleng Baba</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">Kulubot sa Labi</string>
+    <string name="id_photo_bp_remove_face_glossy">Langis na Kintab</string>
+    <string name="id_photo_bp_remove_face_moles">Alisin ang Nunal</string>
+    <string name="id_photo_bp_face_small">Mas Maliit na Mukha</string>
+    <string name="id_photo_bp_face_thin">Mas Manipis na Mukha</string>
+    <string name="id_photo_bp_face_v">Hugis-V na Mukha</string>
+    <string name="id_photo_bp_jaw_width">Tabas ng Panga</string>
+    <string name="id_photo_bp_cheekbone_width">Mga Pisngi</string>
+    <string name="id_photo_bp_face_width">Lapad ng Mukha</string>
+    <string name="id_photo_bp_forehead_height">Noo</string>
+    <string name="id_photo_bp_chin_height">Haba ng Baba</string>
+    <string name="id_photo_bp_face_symmetry">Simetrya ng Mukha</string>
+    <string name="id_photo_bp_eyebrow_thickness">Kapal ng Kilay</string>
+    <string name="id_photo_bp_eyebrow_distance">Distansya ng Kilay</string>
+    <string name="id_photo_bp_eyebrow_height">Taas ng Kilay</string>
+    <string name="id_photo_bp_eye_scale">Laki ng Mata</string>
+    <string name="id_photo_bp_eye_distance">Distansya ng Mata</string>
+    <string name="id_photo_bp_eye_angle">Anggulo ng Mata</string>
+    <string name="id_photo_bp_nose_scale">Laki ng Ilong</string>
+    <string name="id_photo_bp_nose_height">Taas ng Ilong</string>
+    <string name="id_photo_bp_nose_bridge">Tulay ng Ilong</string>
+    <string name="id_photo_bp_nose_wing">Mga Gilid ng Ilong</string>
+    <string name="id_photo_bp_nose_tip">Dulo ng Ilong</string>
+    <string name="id_photo_bp_mouth_scale">Laki ng Bibig</string>
+    <string name="id_photo_bp_mouth_width">Lapad ng Bibig</string>
+    <string name="id_photo_bp_mouth_position">Posisyon ng Bibig</string>
+    <string name="id_photo_bp_shiny_eye">Maningning na Mata</string>
+    <string name="id_photo_bp_remove_eye_streaks">Pamumula ng Mata</string>
+    <string name="id_photo_bp_fill_hair_part">Pagpuno ng Hati ng Buhok</string>
+    <string name="id_photo_bp_calvaria_height">Taas ng Tuktok ng Ulo</string>
+    <string name="id_photo_bp_hairline_height">Hairline</string>
+    <string name="id_photo_bp_remove_white_hair">Puting Buhok</string>
+    <string name="id_photo_bp_remove_burst_hair">Nagliliparang Buhok</string>
+    <string name="id_photo_bp_teeth_white">Pagpapaputi ng Ngipin</string>
+    <string name="id_photo_bp_teeth_repair">Pagkumpuni ng Ngipin</string>
+    <string name="id_photo_bp_ai_body_thin">Paghubog ng Katawan gamit ang AI</string>
+    <string name="id_photo_bp_body_thin">Pagpapapayat ng Katawan</string>
+    <string name="id_photo_bp_head_small">Mas Maliit na Ulo</string>
+    <string name="id_photo_bp_neck_length">Haba ng Leeg</string>
+    <string name="id_photo_bp_neck_thin">Mas Manipis na Leeg</string>
+    <string name="id_photo_bp_arm_thin">Mas Manipis na Braso</string>
+    <string name="id_photo_bp_waist_thin">Mas Manipis na Baywang</string>
+    <string name="id_photo_bp_leg_thin">Mas Manipis na Binti</string>
+    <string name="id_photo_bp_leg_long">Mas Mahabang Binti</string>
+    <string name="id_photo_bp_body_heighten">Pagpapataas</string>
+    <string name="id_photo_bp_desc_face_smooth">Mas mataas = mas makinis at mas basa-basa ang balat</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">Mas mataas = mas pantay ang liwanag ng balat</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">Mas mataas = mas makinis ang balat</string>
+    <string name="id_photo_bp_desc_face_smooth_new">Mas mataas = mas makinis at mas malambot ang tabas ng mukha</string>
+    <string name="id_photo_bp_desc_skin_white">Mas mataas = mas maputi ang balat</string>
+    <string name="id_photo_bp_desc_skin_bright">Mas mataas = mas maningning ang balat</string>
+    <string name="id_photo_bp_desc_skin_red">Mas mataas = mas kulay rosas ang balat</string>
+    <string name="id_photo_bp_desc_skin_sharpen">Mas mataas = mas malinaw ang tekstura ng balat</string>
+    <string name="id_photo_bp_desc_face_color_same">Mas mataas = mas pantay ang kulay ng balat sa mukha</string>
+    <string name="id_photo_bp_desc_skin_prefer">Negatibo = mas malamig, positibo = mas mainit</string>
+    <string name="id_photo_bp_desc_face_highlight">Mas mataas = mas malakas ang highlight ng mukha</string>
+    <string name="id_photo_bp_desc_face_shadow">Mas mataas = mas malalim ang anino ng mukha</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">Mas mataas = mas malinis ang pag-alis ng kapintasan</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">Mas mataas = mas maliwanag ang maiitim na bilog sa mata</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">Mas mataas = mas banayad ang kulubot sa paligid ng mata</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">Mas mataas = mas banayad ang kulubot sa noo</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">Mas mataas = mas banayad ang guiray sa pisngi</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">Mas mataas = mas malinis ang pag-alis ng kulubot sa leeg</string>
+    <string name="id_photo_bp_desc_remove_double_chin">Mas mataas = mas hindi halata ang dobleng baba</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">Mas mataas = mas banayad ang kulubot sa labi</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">Mas mataas = mas kaunting langis na kintab</string>
+    <string name="id_photo_bp_desc_remove_face_moles">I-on upang alisin ang mga nunal sa mukha</string>
+    <string name="id_photo_bp_desc_face_small">Mas mataas = mas maliit ang mukha</string>
+    <string name="id_photo_bp_desc_face_thin">Mas mataas = mas manipis ang mukha</string>
+    <string name="id_photo_bp_desc_face_v">Mas mataas = mas matalim ang linya ng V</string>
+    <string name="id_photo_bp_desc_jaw_width">Mas mataas = mas manipis ang tabas ng panga</string>
+    <string name="id_photo_bp_desc_cheekbone_width">Mas mataas = mas hindi kitang mga pisngi</string>
+    <string name="id_photo_bp_desc_face_width">Mas mataas = mas malapad ang mukha</string>
+    <string name="id_photo_bp_desc_forehead_height">Mas mataas = mas mataas ang noo</string>
+    <string name="id_photo_bp_desc_chin_height">Mas mataas = mas mahaba ang baba</string>
+    <string name="id_photo_bp_desc_face_symmetry">Mas mataas = mas simetriko ang mukha</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">Mas mataas = mas makapal ang kilay</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">Mas mataas = mas malapad ang agwat ng kilay</string>
+    <string name="id_photo_bp_desc_eyebrow_height">Mas mataas = mas mataas ang kilay</string>
+    <string name="id_photo_bp_desc_eye_scale">Mas mataas = mas malaki ang mata</string>
+    <string name="id_photo_bp_desc_eye_distance">Mas mataas = mas malapad ang agwat ng mata</string>
+    <string name="id_photo_bp_desc_eye_angle">Mas mataas = mas nakatataas ang sulok ng mata</string>
+    <string name="id_photo_bp_desc_nose_scale">Mas mataas = mas malaki ang ilong</string>
+    <string name="id_photo_bp_desc_nose_height">Mas mataas = mas mataas ang ilong</string>
+    <string name="id_photo_bp_desc_nose_bridge">Mas mataas = mas mataas ang tulay ng ilong</string>
+    <string name="id_photo_bp_desc_nose_wing">Mas mataas = mas malapad ang gilid ng ilong</string>
+    <string name="id_photo_bp_desc_nose_tip">Mas mataas = mas malaki ang dulo ng ilong</string>
+    <string name="id_photo_bp_desc_mouth_scale">Mas mataas = mas malaki ang bibig</string>
+    <string name="id_photo_bp_desc_mouth_width">Mas mataas = mas malapad ang bibig</string>
+    <string name="id_photo_bp_desc_mouth_position">Mas mataas = mas mataas ang posisyon ng bibig</string>
+    <string name="id_photo_bp_desc_shiny_eye">Mas mataas = mas maningning ang mata</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">Mas mataas = mas malakas ang pag-alis ng pulang ugat</string>
+    <string name="id_photo_bp_desc_fill_hair_part">Mas mataas = mas malakas ang pagpuno ng hati ng buhok</string>
+    <string name="id_photo_bp_desc_calvaria_height">Mas mataas = mas mataas ang tuktok ng ulo</string>
+    <string name="id_photo_bp_desc_hairline_height">Mas mataas = mas mataas ang hairline</string>
+    <string name="id_photo_bp_desc_remove_white_hair">Mas mataas = mas malakas ang pag-alis ng puting buhok</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">Mas mataas = mas malakas ang pag-alis ng nagliliparang buhok</string>
+    <string name="id_photo_bp_desc_teeth_white">Mas mataas = mas maputi ang ngipin</string>
+    <string name="id_photo_bp_desc_teeth_repair">I-on upang kumpunihin ang mga depekto ng ngipin</string>
+    <string name="id_photo_bp_desc_ai_body_thin">Mas mataas = mas payat ang katawan (AI)</string>
+    <string name="id_photo_bp_desc_body_thin">Mas mataas = mas payat ang katawan</string>
+    <string name="id_photo_bp_desc_head_small">Mas mataas = mas maliit ang ulo</string>
+    <string name="id_photo_bp_desc_neck_length">Mas mataas = mas mahaba ang leeg</string>
+    <string name="id_photo_bp_desc_neck_thin">Mas mataas = mas manipis ang leeg</string>
+    <string name="id_photo_bp_desc_arm_thin">Mas mataas = mas manipis ang braso</string>
+    <string name="id_photo_bp_desc_waist_thin">Mas mataas = mas manipis ang baywang</string>
+    <string name="id_photo_bp_desc_leg_thin">Mas mataas = mas manipis ang binti</string>
+    <string name="id_photo_bp_desc_leg_long">Mas mataas = mas mahaba ang binti</string>
+    <string name="id_photo_bp_desc_body_heighten">Mas mataas = mas matangkad ang pigura</string>
 </resources>

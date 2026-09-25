@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">広告ウォッチ</string>
+    <string name="ad_watch_headline_1">大手ブランドが巨額を投じる広告、その狙いとは?</string>
+    <string name="ad_watch_headline_2">大手企業が出稿する広告、どんなもの?</string>
+    <string name="ad_watch_headline_3">15秒で、各ブランドの真骨頂をチェック</string>
+    <string name="ad_watch_headline_4">注目を奪い合う広告を眺めて、ついでにポイント獲得</string>
+    <string name="ad_watch_headline_5">広告主たちの競争を、無料で見学</string>
+    <string name="ad_watch_subtitle">15秒の広告を見て %1$d ポイント獲得</string>
+    <string name="ad_watch_cta">広告を見る · +%1$d ポイント</string>
+    <string name="ad_watch_remaining">本日の残り %1$d/%2$d 回</string>
+    <string name="ad_watch_daily_limit_reached">本日の回数を使い切りました。また明日どうぞ</string>
+    <string name="ad_watch_loading">広告を読み込み中…</string>
+    <string name="ad_watch_load_failed">広告の読み込みに失敗しました</string>
+    <string name="ad_watch_retry">再試行</string>
+    <string name="ad_watch_ad_not_ready">広告の準備ができていません。しばらくしてからお試しください</string>
+</resources>

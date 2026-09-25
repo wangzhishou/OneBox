@@ -1962,4 +1962,12 @@
     <string name="material_you">Material You</string>
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
+    <string name="downloadable_fonts">İndirilebilir yazı tipleri</string>
+    <string name="font_preview_text">Hayatı kaydet, güzelliği keşfet</string>
+    <string name="font_download">İndir</string>
+    <string name="font_downloaded">İndirildi</string>
+    <string name="font_download_failed">Yazı tipi indirilemedi, tekrar denemek için dokunun</string>
+    <string name="font_noto_sans">Noto Sans SC</string>
+    <string name="font_noto_serif">Noto Serif SC</string>
+    <string name="font_lxgw">LXGW WenKai</string>
 </resources>

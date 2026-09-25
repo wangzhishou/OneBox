@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">आइटम मैनेजर खोलें</string>
     <string name="agent_tool_household_edit_link">आइटम देखें</string>
     <string name="agent_tool_household_unknown_error">अज्ञात त्रुटि</string>
+    <string name="household_ai_assist_fill_in">बेडरूम की दवा पेटी में सर्दी की दवा दर्ज करें, जून 2027 में समाप्त</string>
 </resources>

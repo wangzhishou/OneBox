@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">텍스트 탐지</string>
+    <string name="ai_detect_image_tab">이미지 탐지</string>
+    <string name="ai_detect_text_hint">탐지할 텍스트를 붙여넣거나 입력하세요…</string>
+    <string name="ai_detect_button">탐지</string>
+    <string name="ai_detect_detecting">탐지 중…</string>
+    <string name="ai_detect_upload_hint">탭하여 이미지를 업로드하거나 붙여넣으세요…</string>
+    <string name="ai_detect_upload_format">JPG / PNG / WebP 지원, 300×300 이상, 최대 10MB</string>
+    <string name="ai_detect_change_image">이미지 변경</string>
+    <string name="ai_detect_probability_label">AI 확률</string>
+    <string name="ai_detect_verdict_likely_ai">AI 생성 가능성 높음</string>
+    <string name="ai_detect_verdict_maybe_ai">AI 생성 가능성 있음</string>
+    <string name="ai_detect_verdict_likely_human">사람이 만든 가능성 높음</string>
+    <string name="ai_detect_recheck">다시 탐지</string>
+    <string name="ai_detect_view_detail">상세 보기</string>
+    <string name="ai_detect_collapse_detail">상세 숨기기</string>
+    <string name="ai_detect_segment_human">사람</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">AI 의심</string>
+    <string name="ai_detect_labels_ratio_title">레이블 비율</string>
+    <string name="ai_detect_image_confidence_detail">모델이 이 이미지에 부여한 AI 생성 신뢰도는 %1$d%%입니다. 값이 높을수록 AI가 생성했을 가능성이 큽니다</string>
+    <string name="ai_detect_history">탐지 기록</string>
+    <string name="ai_detect_history_empty">아직 탐지 기록이 없습니다</string>
+    <string name="ai_detect_clear_all">모두 지우기</string>
+    <string name="ai_detect_clear_confirm">모든 탐지 기록을 지울까요?</string>
+    <string name="ai_detect_confirm">확인</string>
+    <string name="ai_detect_cancel">취소</string>
+    <string name="ai_detect_delete">삭제</string>
+    <string name="ai_detect_type_text">텍스트</string>
+    <string name="ai_detect_type_image">이미지</string>
+    <string name="ai_detect_detail_title">탐지 상세</string>
+    <string name="ai_detect_error_image_too_large">이미지는 10MB보다 작아야 합니다</string>
+    <string name="ai_detect_error_image_too_small">이미지는 300×300보다 커야 합니다</string>
+    <string name="ai_detect_error_image_unreadable">이미지를 읽을 수 없습니다</string>
+    <string name="ai_detect_error_network">탐지에 실패했습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="agent_tool_detect_ai_text_title">AI 텍스트 탐지</string>
+    <string name="agent_tool_detect_ai_text_summary">텍스트가 AI로 생성되었을 가능성을 탐지하여 AI 확률, 판정, 구간별 레이블을 반환합니다</string>
+    <string name="agent_tool_detect_ai_text_param_text">탐지할 일반 텍스트 내용</string>
+    <string name="agent_tool_detect_ai_text_error_args">잘못된 매개변수: text는 비어 있지 않은 문자열이어야 합니다</string>
+    <string name="agent_tool_detect_ai_image_title">AI 이미지 탐지</string>
+    <string name="agent_tool_detect_ai_image_summary">이미지가 AI로 생성되었을 가능성을 탐지하여 AI 생성 신뢰도와 판정을 반환합니다</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">탐지할 이미지 URI. content://와 file://를 지원하며 대화 첨부 파일이나 browse_files 도구에서 얻을 수 있습니다</string>
+    <string name="agent_tool_detect_ai_image_error_args">잘못된 매개변수: image_uri는 비어 있지 않은 문자열이어야 합니다</string>
+</resources>

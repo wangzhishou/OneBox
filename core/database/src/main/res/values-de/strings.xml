@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">Gewohnheits-Tracker</string>
     <string name="activity_log_habit_created">Neue Gewohnheit: %1$s</string>
     <string name="activity_log_habit_check_in">Check-in: %1$s</string>
+    <string name="sys_prompt_iching_title">System-Eingabeaufforderung für die I-Ging-Deutung</string>
+    <string name="sys_prompt_iching_desc">Systemanweisungen zur Deutung einer Frage, eines Hexagramms und der wandelnden Linien</string>
+    <string name="sys_prompt_memory_global_title">Anleitung zum Speicherprofil</string>
+    <string name="sys_prompt_memory_global_desc">Präambel, die vor dem Nutzerprofil-Abschnitt des AI-Speichers eingefügt wird</string>
+    <string name="sys_prompt_memory_recent_title">Anleitung zum aktuellen Speicherprotokoll</string>
+    <string name="sys_prompt_memory_recent_desc">Präambel, die vor dem Abschnitt mit dem aktuellen Protokoll des AI-Speichers eingefügt wird (nennt das Tool memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Anleitung zum aktuellen Speicherprotokoll (ohne Tools)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Fallback-Variante, die verwendet wird, wenn das Modell keine Tool-Aufrufe unterstützt</string>
+    <string name="sys_prompt_skills_guidance_title">Anleitung zur Skills-Liste</string>
+    <string name="sys_prompt_skills_guidance_desc">Präambel, die vor der Liste der verfügbaren Skills eingefügt wird</string>
 </resources>

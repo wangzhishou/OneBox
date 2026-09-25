@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Сапёр</string>
+    <string name="minesweeper_restart">Заново</string>
+    <string name="minesweeper_sound_on">Звук вкл.</string>
+    <string name="minesweeper_sound_off">Звук выкл.</string>
+    <string name="minesweeper_mode_dig">Режим открытия</string>
+    <string name="minesweeper_mode_flag">Режим флажка</string>
+    <string name="minesweeper_hint_dig">Нажмите, чтобы открыть клетку</string>
+    <string name="minesweeper_hint_flag">Нажмите, чтобы поставить флажок</string>
+    <string name="minesweeper_time">Время</string>
+    <string name="minesweeper_mines_left">Мины</string>
+    <string name="minesweeper_won">Очищено</string>
+    <string name="minesweeper_lost">Взрыв</string>
+    <string name="minesweeper_play_again">Играть снова</string>
+    <string name="minesweeper_result_detail">%1$d с</string>
+    <string name="minesweeper_fullscreen">Полный экран</string>
+    <string name="minesweeper_exit_fullscreen">Выйти из полного экрана</string>
+    <string name="minesweeper_share">Поделиться</string>
+</resources>

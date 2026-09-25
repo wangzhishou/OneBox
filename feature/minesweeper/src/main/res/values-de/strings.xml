@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Minesweeper</string>
+    <string name="minesweeper_restart">Neustart</string>
+    <string name="minesweeper_sound_on">Ton an</string>
+    <string name="minesweeper_sound_off">Ton aus</string>
+    <string name="minesweeper_mode_dig">Aufdeckmodus</string>
+    <string name="minesweeper_mode_flag">Flaggenmodus</string>
+    <string name="minesweeper_hint_dig">Tippen, um ein Feld aufzudecken</string>
+    <string name="minesweeper_hint_flag">Tippen, um eine Mine zu markieren</string>
+    <string name="minesweeper_time">Zeit</string>
+    <string name="minesweeper_mines_left">Minen</string>
+    <string name="minesweeper_won">Geschafft</string>
+    <string name="minesweeper_lost">Bumm</string>
+    <string name="minesweeper_play_again">Nochmal spielen</string>
+    <string name="minesweeper_result_detail">%1$d s</string>
+    <string name="minesweeper_fullscreen">Vollbild</string>
+    <string name="minesweeper_exit_fullscreen">Vollbild beenden</string>
+    <string name="minesweeper_share">Teilen</string>
+</resources>

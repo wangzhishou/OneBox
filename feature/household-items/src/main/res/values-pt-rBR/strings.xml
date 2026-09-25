@@ -177,4 +177,5 @@
     <string name="agent_tool_household_open_link">Abrir Gerenciador de Itens</string>
     <string name="agent_tool_household_edit_link">Ver item</string>
     <string name="agent_tool_household_unknown_error">Erro desconhecido</string>
+    <string name="household_ai_assist_fill_in">Registre o remédio para resfriado na caixa de remédios do quarto, com validade em junho de 2027</string>
 </resources>

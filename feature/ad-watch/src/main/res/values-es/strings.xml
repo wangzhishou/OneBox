@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Mira anuncios</string>
+    <string name="ad_watch_headline_1">¿Qué promocionan las grandes marcas con tanto dinero?</string>
+    <string name="ad_watch_headline_2">¿Cómo son los anuncios en los que invierten las grandes empresas?</string>
+    <string name="ad_watch_headline_3">15 segundos para ver lo mejor de cada marca</string>
+    <string name="ad_watch_headline_4">Otros pagan por llamar la atención, tú ganas puntos</string>
+    <string name="ad_watch_headline_5">La competencia de los anunciantes, gratis para mirar</string>
+    <string name="ad_watch_subtitle">Mira 15 segundos de anuncio y gana %1$d puntos</string>
+    <string name="ad_watch_cta">Ver anuncio · +%1$d puntos</string>
+    <string name="ad_watch_remaining">Hoy quedan %1$d/%2$d</string>
+    <string name="ad_watch_daily_limit_reached">Has agotado las veces de hoy, vuelve mañana</string>
+    <string name="ad_watch_loading">Cargando anuncio…</string>
+    <string name="ad_watch_load_failed">No se pudo cargar el anuncio</string>
+    <string name="ad_watch_retry">Reintentar</string>
+    <string name="ad_watch_ad_not_ready">El anuncio aún no está listo, inténtalo más tarde</string>
+</resources>

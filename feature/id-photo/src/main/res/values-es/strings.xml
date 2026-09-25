@@ -89,4 +89,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">Para licencias de guía turístico</string>
     <string name="id_photo_preset_size_desc_chsi">Para la recopilación de fotos de CHSI/Xuexin</string>
     <string name="id_photo_preset_size_desc_id_card">Para DNI de segunda generación</string>
+    <string name="id_photo_export_target_size">Tamaño de exportación</string>
+    <string name="id_photo_export_source_size">Tamaño original</string>
+    <string name="id_photo_export_estimated_size">Tamaño estimado</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
+    <string name="id_photo_tab_beauty">Belleza con un toque</string>
+    <string name="id_photo_beauty_light">Ligero</string>
+    <string name="id_photo_beauty_standard">Estándar</string>
+    <string name="id_photo_beauty_deep">Intenso</string>
+    <string name="id_photo_beauty_points_tip">~%d créditos por uso</string>
+    <string name="id_photo_ai_process_failed">El procesamiento con AI falló. Inténtalo de nuevo más tarde</string>
+    <string name="id_photo_beauty">Belleza de retrato con AI</string>
+    <string name="id_photo_bg_replace">Reemplazo de fondo con AI</string>
+    <string name="id_photo_bg_original">Original</string>
+    <string name="id_photo_bg_transparent">Transparente</string>
+    <string name="id_photo_beauty_apply">Aplicar</string>
+    <string name="id_photo_beauty_group_skin">Piel</string>
+    <string name="id_photo_beauty_group_flaw">Eliminar imperfecciones</string>
+    <string name="id_photo_beauty_group_reshape">Remodelar rostro</string>
+    <string name="id_photo_beauty_group_eye">Realzar ojos</string>
+    <string name="id_photo_beauty_group_hair">Cabello</string>
+    <string name="id_photo_beauty_group_teeth">Dientes</string>
+    <string name="id_photo_beauty_group_body">Remodelar cuerpo</string>
+    <string name="id_photo_bp_face_smooth">Suavizado</string>
+    <string name="id_photo_bp_face_smooth_gray">Suavizado gris neutro</string>
+    <string name="id_photo_bp_face_smooth_fine">Suavizado de alta/baja frecuencia</string>
+    <string name="id_photo_bp_face_smooth_new">Suavizado del contorno facial</string>
+    <string name="id_photo_bp_skin_white">Blanqueamiento</string>
+    <string name="id_photo_bp_skin_bright">Luminosidad</string>
+    <string name="id_photo_bp_skin_red">Rubor</string>
+    <string name="id_photo_bp_skin_sharpen">Nitidez de la piel</string>
+    <string name="id_photo_bp_face_color_same">Tono de piel uniforme</string>
+    <string name="id_photo_bp_skin_prefer">Tono cálido-frío</string>
+    <string name="id_photo_bp_face_highlight">Iluminación del rostro</string>
+    <string name="id_photo_bp_face_shadow">Sombra del rostro</string>
+    <string name="id_photo_bp_remove_face_flaw">Imperfecciones faciales</string>
+    <string name="id_photo_bp_remove_dark_circles">Ojeras</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">Arrugas de los ojos</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">Arrugas de la frente</string>
+    <string name="id_photo_bp_remove_laugh_line">Líneas de expresión</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">Arrugas del cuello</string>
+    <string name="id_photo_bp_remove_double_chin">Papada</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">Arrugas de los labios</string>
+    <string name="id_photo_bp_remove_face_glossy">Brillo graso</string>
+    <string name="id_photo_bp_remove_face_moles">Eliminar lunares</string>
+    <string name="id_photo_bp_face_small">Rostro más pequeño</string>
+    <string name="id_photo_bp_face_thin">Rostro más delgado</string>
+    <string name="id_photo_bp_face_v">Rostro en forma de V</string>
+    <string name="id_photo_bp_jaw_width">Mandíbula</string>
+    <string name="id_photo_bp_cheekbone_width">Pómulos</string>
+    <string name="id_photo_bp_face_width">Ancho del rostro</string>
+    <string name="id_photo_bp_forehead_height">Frente</string>
+    <string name="id_photo_bp_chin_height">Longitud del mentón</string>
+    <string name="id_photo_bp_face_symmetry">Simetría facial</string>
+    <string name="id_photo_bp_eyebrow_thickness">Grosor de las cejas</string>
+    <string name="id_photo_bp_eyebrow_distance">Distancia entre cejas</string>
+    <string name="id_photo_bp_eyebrow_height">Altura de las cejas</string>
+    <string name="id_photo_bp_eye_scale">Tamaño de los ojos</string>
+    <string name="id_photo_bp_eye_distance">Distancia entre ojos</string>
+    <string name="id_photo_bp_eye_angle">Ángulo de los ojos</string>
+    <string name="id_photo_bp_nose_scale">Tamaño de la nariz</string>
+    <string name="id_photo_bp_nose_height">Altura de la nariz</string>
+    <string name="id_photo_bp_nose_bridge">Puente nasal</string>
+    <string name="id_photo_bp_nose_wing">Aletas de la nariz</string>
+    <string name="id_photo_bp_nose_tip">Punta de la nariz</string>
+    <string name="id_photo_bp_mouth_scale">Tamaño de la boca</string>
+    <string name="id_photo_bp_mouth_width">Ancho de la boca</string>
+    <string name="id_photo_bp_mouth_position">Posición de la boca</string>
+    <string name="id_photo_bp_shiny_eye">Ojos brillantes</string>
+    <string name="id_photo_bp_remove_eye_streaks">Rojez de los ojos</string>
+    <string name="id_photo_bp_fill_hair_part">Rellenar la raya del cabello</string>
+    <string name="id_photo_bp_calvaria_height">Altura de la coronilla</string>
+    <string name="id_photo_bp_hairline_height">Línea del cabello</string>
+    <string name="id_photo_bp_remove_white_hair">Cabello blanco</string>
+    <string name="id_photo_bp_remove_burst_hair">Cabello rebelde</string>
+    <string name="id_photo_bp_teeth_white">Blanqueamiento dental</string>
+    <string name="id_photo_bp_teeth_repair">Reparación dental</string>
+    <string name="id_photo_bp_ai_body_thin">Moldeado corporal con AI</string>
+    <string name="id_photo_bp_body_thin">Adelgazar el cuerpo</string>
+    <string name="id_photo_bp_head_small">Cabeza más pequeña</string>
+    <string name="id_photo_bp_neck_length">Longitud del cuello</string>
+    <string name="id_photo_bp_neck_thin">Cuello más delgado</string>
+    <string name="id_photo_bp_arm_thin">Brazos más delgados</string>
+    <string name="id_photo_bp_waist_thin">Cintura más delgada</string>
+    <string name="id_photo_bp_leg_thin">Piernas más delgadas</string>
+    <string name="id_photo_bp_leg_long">Piernas más largas</string>
+    <string name="id_photo_bp_body_heighten">Aumentar estatura</string>
+    <string name="id_photo_bp_desc_face_smooth">Más alto = piel más suave e hidratada</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">Más alto = brillo de la piel más uniforme</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">Más alto = piel más suave</string>
+    <string name="id_photo_bp_desc_face_smooth_new">Más alto = contorno facial más suave y terso</string>
+    <string name="id_photo_bp_desc_skin_white">Más alto = piel más blanca</string>
+    <string name="id_photo_bp_desc_skin_bright">Más alto = piel más radiante</string>
+    <string name="id_photo_bp_desc_skin_red">Más alto = piel más sonrosada</string>
+    <string name="id_photo_bp_desc_skin_sharpen">Más alto = textura de la piel más nítida</string>
+    <string name="id_photo_bp_desc_face_color_same">Más alto = tono facial más uniforme</string>
+    <string name="id_photo_bp_desc_skin_prefer">Negativo = más frío, positivo = más cálido</string>
+    <string name="id_photo_bp_desc_face_highlight">Más alto = mayor iluminación del rostro</string>
+    <string name="id_photo_bp_desc_face_shadow">Más alto = sombra facial más intensa</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">Más alto = eliminación de imperfecciones más limpia</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">Más alto = ojeras más claras</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">Más alto = arrugas de los ojos más suaves</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">Más alto = arrugas de la frente más suaves</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">Más alto = líneas de expresión más suaves</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">Más alto = eliminación de arrugas del cuello más limpia</string>
+    <string name="id_photo_bp_desc_remove_double_chin">Más alto = papada menos visible</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">Más alto = arrugas de los labios más suaves</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">Más alto = menos brillo graso</string>
+    <string name="id_photo_bp_desc_remove_face_moles">Actívalo para eliminar los lunares del rostro</string>
+    <string name="id_photo_bp_desc_face_small">Más alto = rostro más pequeño</string>
+    <string name="id_photo_bp_desc_face_thin">Más alto = rostro más delgado</string>
+    <string name="id_photo_bp_desc_face_v">Más alto = línea en V más marcada</string>
+    <string name="id_photo_bp_desc_jaw_width">Más alto = mandíbula más estilizada</string>
+    <string name="id_photo_bp_desc_cheekbone_width">Más alto = pómulos menos prominentes</string>
+    <string name="id_photo_bp_desc_face_width">Más alto = rostro más ancho</string>
+    <string name="id_photo_bp_desc_forehead_height">Más alto = frente más alta</string>
+    <string name="id_photo_bp_desc_chin_height">Más alto = mentón más largo</string>
+    <string name="id_photo_bp_desc_face_symmetry">Más alto = rostro más simétrico</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">Más alto = cejas más gruesas</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">Más alto = cejas más separadas</string>
+    <string name="id_photo_bp_desc_eyebrow_height">Más alto = cejas más altas</string>
+    <string name="id_photo_bp_desc_eye_scale">Más alto = ojos más grandes</string>
+    <string name="id_photo_bp_desc_eye_distance">Más alto = ojos más separados</string>
+    <string name="id_photo_bp_desc_eye_angle">Más alto = rabillo del ojo más elevado</string>
+    <string name="id_photo_bp_desc_nose_scale">Más alto = nariz más grande</string>
+    <string name="id_photo_bp_desc_nose_height">Más alto = nariz más alta</string>
+    <string name="id_photo_bp_desc_nose_bridge">Más alto = puente nasal más alto</string>
+    <string name="id_photo_bp_desc_nose_wing">Más alto = aletas de la nariz más anchas</string>
+    <string name="id_photo_bp_desc_nose_tip">Más alto = punta de la nariz más grande</string>
+    <string name="id_photo_bp_desc_mouth_scale">Más alto = boca más grande</string>
+    <string name="id_photo_bp_desc_mouth_width">Más alto = boca más ancha</string>
+    <string name="id_photo_bp_desc_mouth_position">Más alto = posición de la boca más alta</string>
+    <string name="id_photo_bp_desc_shiny_eye">Más alto = ojos más brillantes</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">Más alto = mayor eliminación de rojez en los ojos</string>
+    <string name="id_photo_bp_desc_fill_hair_part">Más alto = mayor relleno de la raya del cabello</string>
+    <string name="id_photo_bp_desc_calvaria_height">Más alto = coronilla más alta</string>
+    <string name="id_photo_bp_desc_hairline_height">Más alto = línea del cabello más alta</string>
+    <string name="id_photo_bp_desc_remove_white_hair">Más alto = mayor eliminación de cabello blanco</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">Más alto = mayor eliminación de cabello rebelde</string>
+    <string name="id_photo_bp_desc_teeth_white">Más alto = dientes más blancos</string>
+    <string name="id_photo_bp_desc_teeth_repair">Actívalo para reparar defectos dentales</string>
+    <string name="id_photo_bp_desc_ai_body_thin">Más alto = cuerpo más delgado (AI)</string>
+    <string name="id_photo_bp_desc_body_thin">Más alto = cuerpo más delgado</string>
+    <string name="id_photo_bp_desc_head_small">Más alto = cabeza más pequeña</string>
+    <string name="id_photo_bp_desc_neck_length">Más alto = cuello más largo</string>
+    <string name="id_photo_bp_desc_neck_thin">Más alto = cuello más delgado</string>
+    <string name="id_photo_bp_desc_arm_thin">Más alto = brazos más delgados</string>
+    <string name="id_photo_bp_desc_waist_thin">Más alto = cintura más delgada</string>
+    <string name="id_photo_bp_desc_leg_thin">Más alto = piernas más delgadas</string>
+    <string name="id_photo_bp_desc_leg_long">Más alto = piernas más largas</string>
+    <string name="id_photo_bp_desc_body_heighten">Más alto = figura más alta</string>
 </resources>

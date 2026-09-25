@@ -1961,4 +1961,12 @@
     <string name="material_you">Material You</string>
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
+    <string name="downloadable_fonts">다운로드 가능한 글꼴</string>
+    <string name="font_preview_text">삶을 기록하고 아름다움을 발견하세요</string>
+    <string name="font_download">다운로드</string>
+    <string name="font_downloaded">다운로드됨</string>
+    <string name="font_download_failed">글꼴 다운로드에 실패했습니다. 탭하여 다시 시도하세요</string>
+    <string name="font_noto_sans">Noto Sans SC</string>
+    <string name="font_noto_serif">Noto Serif SC</string>
+    <string name="font_lxgw">LXGW WenKai</string>
 </resources>

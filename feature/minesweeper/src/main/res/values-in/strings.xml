@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Sapu Ranjau</string>
+    <string name="minesweeper_restart">Mulai Ulang</string>
+    <string name="minesweeper_sound_on">Suara Aktif</string>
+    <string name="minesweeper_sound_off">Suara Nonaktif</string>
+    <string name="minesweeper_mode_dig">Mode Gali</string>
+    <string name="minesweeper_mode_flag">Mode Bendera</string>
+    <string name="minesweeper_hint_dig">Ketuk untuk membuka kotak</string>
+    <string name="minesweeper_hint_flag">Ketuk untuk menandai ranjau</string>
+    <string name="minesweeper_time">Waktu</string>
+    <string name="minesweeper_mines_left">Ranjau</string>
+    <string name="minesweeper_won">Bersih</string>
+    <string name="minesweeper_lost">Bum</string>
+    <string name="minesweeper_play_again">Main Lagi</string>
+    <string name="minesweeper_result_detail">%1$d dtk</string>
+    <string name="minesweeper_fullscreen">Layar Penuh</string>
+    <string name="minesweeper_exit_fullscreen">Keluar dari Layar Penuh</string>
+    <string name="minesweeper_share">Bagikan</string>
+</resources>

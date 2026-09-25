@@ -52,4 +52,8 @@
     <string name="speed_test_config_url_hint">परीक्षण URL</string>
     <string name="speed_test_config_estimated_mb_hint">अनुमानित डेटा (MB)</string>
     <string name="speed_test_config_duration_hint">अवधि (सेकंड)</string>
+    <string name="speed_test_measuring_latency">लेटेंसी मापी जा रही है…</string>
+    <string name="speed_test_stop">परीक्षण रोकें</string>
+    <string name="speed_test_stop_hint">रोकने के लिए टैप करें; अधूरे परिणाम सहेजे नहीं जाते</string>
+    <string name="speed_test_reference_scale">डाउनलोड गति संदर्भ · उपयोगकर्ता रैंकिंग नहीं</string>
 </resources>

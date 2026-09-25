@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">생리 주기 트래커</string>
+    <string name="period_stats_title">주기 통계</string>
+    <string name="period_detail_title">기록 상세</string>
+    <string name="period_add_title">새 기록</string>
+    <string name="period_edit_title">기록 편집</string>
+    <string name="period_tab_records">기록</string>
+    <string name="period_tab_stats">데이터</string>
+    <string name="period_search">검색</string>
+    <string name="period_search_hint">메모 또는 증상 검색</string>
+    <string name="period_add">추가</string>
+    <string name="period_save">저장</string>
+    <string name="period_cancel">취소</string>
+    <string name="period_delete">삭제</string>
+    <string name="period_loading">불러오는 중…</string>
+    <string name="period_saved">저장됨</string>
+    <string name="period_record_added">기록이 추가되었습니다</string>
+    <string name="period_deleted">기록이 삭제되었습니다</string>
+    <string name="period_save_failed">저장 실패</string>
+    <string name="period_toast_recorded">생리 기록 완료</string>
+    <string name="period_empty_title">아직 기록이 없습니다</string>
+    <string name="period_empty_subtitle">AI에게 상태를 말하면 한 번의 탭으로 기록이 생성됩니다</string>
+    <string name="period_ai_quick_record">AI 빠른 기록</string>
+    <string name="period_manual_record">직접 기록</string>
+    <string name="period_empty_example">예: \"어제 생리가 시작됐고 복통이 가벼워요\"</string>
+    <string name="period_ai_assist_title">생리 주기 트래커 도우미</string>
+    <string name="period_ai_assist_fill_in">어제 생리가 시작됐고 복통이 심했어요. 기록해 주세요</string>
+    <string name="period_ai_assist_prompt">당신은 사용자의 생리 주기 트래커 도우미입니다. 사용자가 생리 상태, 생리량, 증상 또는 기분을 설명하면 add_period_record로 기록하세요(날짜는 yyyy-MM-dd 사용). 사용자가 주기 길이, 다음 생리 또는 통계를 물으면 query_period_records를 사용하세요. 기록을 수정하려면 update_period_record, 삭제하려면 delete_period_record를 사용하세요. 기록 후 각 작업을 간단히 확인해 주세요.</string>
+    <string name="period_record_count">기록 %1$d개</string>
+    <string name="period_month_group_pattern">yyyy년 MMMM</string>
+    <string name="period_short_date_pattern">M월 d일</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (복수 선택)</string>
+    <string name="period_cycle_day">주기 %1$d일차</string>
+    <string name="period_cycle_day_unknown">주기 일차 —</string>
+    <string name="period_status_period">생리 중</string>
+    <string name="period_status_ovulation">배란기</string>
+    <string name="period_status_normal">일반</string>
+    <string name="period_status_start">시작</string>
+    <string name="period_status_mid">생리 중</string>
+    <string name="period_status_end">종료</string>
+    <string name="period_calendar_prev">이전 달</string>
+    <string name="period_calendar_next">다음 달</string>
+    <string name="period_field_date">날짜</string>
+    <string name="period_field_status">생리 상태</string>
+    <string name="period_field_flow">생리량</string>
+    <string name="period_field_symptoms">증상</string>
+    <string name="period_field_mood">기분</string>
+    <string name="period_field_note">메모</string>
+    <string name="period_note_hint">메모(선택)</string>
+    <string name="period_delete_record">기록 삭제</string>
+    <string name="period_delete_confirm_title">이 기록을 삭제할까요?</string>
+    <string name="period_delete_confirm_message">이 작업은 되돌릴 수 없습니다.</string>
+    <string name="period_flow_none">없음</string>
+    <string name="period_flow_light">적음</string>
+    <string name="period_flow_medium">보통</string>
+    <string name="period_flow_heavy">많음</string>
+    <string name="period_mood_very_happy">매우 좋음</string>
+    <string name="period_mood_happy">좋음</string>
+    <string name="period_mood_normal">보통</string>
+    <string name="period_mood_sad">나쁨</string>
+    <string name="period_mood_very_sad">매우 나쁨</string>
+    <string name="period_symptom_abdominal_pain">복통</string>
+    <string name="period_symptom_headache">두통</string>
+    <string name="period_symptom_back_pain">요통</string>
+    <string name="period_symptom_mood_swings">기분 변화</string>
+    <string name="period_symptom_breast_tenderness">유방 통증</string>
+    <string name="period_symptom_fatigue">피로</string>
+    <string name="period_symptom_nausea">메스꺼움</string>
+    <string name="period_symptom_insomnia">불면증</string>
+    <string name="period_symptom_appetite_change">식욕 변화</string>
+    <string name="period_symptom_acne">여드름</string>
+    <string name="period_symptom_edema">부종</string>
+    <string name="period_stats_range_6m">최근 6개월</string>
+    <string name="period_stats_range_day">일</string>
+    <string name="period_stats_range_week">주</string>
+    <string name="period_stats_range_month">월</string>
+    <string name="period_stats_avg_cycle">평균 주기</string>
+    <string name="period_stats_avg_period">평균 생리 기간</string>
+    <string name="period_stats_next">다음 생리</string>
+    <string name="period_stats_vs_prev">지난번 대비 %1$+d일</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">주기 길이 추이</string>
+    <string name="period_stats_trend_empty">생리 시작 기록이 최소 2회 필요합니다</string>
+    <string name="period_stats_symptom_title">증상 분포</string>
+    <string name="period_stats_symptom_empty">아직 증상 데이터가 없습니다</string>
+    <string name="period_stats_symptom_center">합계</string>
+    <string name="period_day_unit">일</string>
+    <string name="period_month_unit">개월</string>
+    <string name="period_next_label">다음 생리</string>
+    <string name="period_days_until">%1$d일 후</string>
+    <string name="period_timeline_title">타임라인</string>
+    <string name="period_timeline_start">생리 시작</string>
+    <string name="period_timeline_end">예상 생리 종료</string>
+    <string name="period_log_record_created">생리 기록이 생성되었습니다</string>
+    <string name="period_log_record_updated">생리 기록이 수정되었습니다</string>
+    <string name="period_log_record_deleted">생리 기록이 삭제되었습니다</string>
+    <string name="agent_tool_add_period_record_title">생리 기록 추가</string>
+    <string name="agent_tool_add_period_record_summary">생리 시작/종료, 생리량, 증상, 기분을 기록합니다</string>
+    <string name="agent_tool_add_period_record_description">생리 기록을 추가합니다: 날짜(yyyy-MM-dd), 선택 사항인 is_period_start / is_period_end, flow_intensity(NONE/LIGHT/MEDIUM/HEAVY), symptoms 배열, mood(VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD), 메모.</string>
+    <string name="agent_tool_add_period_record_failed">생리 기록 추가 실패: %1$s</string>
+    <string name="agent_tool_query_period_records_title">생리 기록 조회</string>
+    <string name="agent_tool_query_period_records_summary">기록, 주기 통계, 다음 생리 예측을 조회합니다</string>
+    <string name="agent_tool_query_period_records_description">최근 생리 기록과 평균 주기, 평균 생리 기간, 다음 예상 시작일을 조회합니다. limit은 선택 사항입니다.</string>
+    <string name="agent_tool_query_period_records_empty">아직 생리 기록이 없습니다.</string>
+    <string name="agent_tool_query_period_records_failed">생리 기록 조회 실패: %1$s</string>
+    <string name="agent_tool_update_period_record_title">생리 기록 수정</string>
+    <string name="agent_tool_update_period_record_summary">record_id로 기존 생리 기록을 수정합니다</string>
+    <string name="agent_tool_update_period_record_description">생리 기록을 수정합니다. record_id와 변경할 필드(날짜, is_period_start, is_period_end, flow_intensity, symptoms, mood, 메모)를 입력하세요.</string>
+    <string name="agent_tool_update_period_record_failed">생리 기록 수정 실패: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">생리 기록 삭제</string>
+    <string name="agent_tool_delete_period_record_summary">record_id로 생리 기록을 삭제합니다</string>
+    <string name="agent_tool_delete_period_record_description">생리 기록을 영구적으로 삭제합니다. record_id와 사용자 확인이 필요합니다.</string>
+    <string name="agent_tool_delete_period_record_done">생리 기록 %1$s을(를) 삭제했습니다</string>
+    <string name="agent_tool_delete_period_record_failed">생리 기록 삭제 실패: %1$s</string>
+    <string name="agent_tool_period_param_date">기록 날짜, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">이 날짜가 생리 시작일인지 여부</string>
+    <string name="agent_tool_period_param_is_end">이 날짜가 생리 종료일인지 여부</string>
+    <string name="agent_tool_period_param_flow">생리량: NONE, LIGHT, MEDIUM 또는 HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">증상 배열, 예: ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">기분: VERY_HAPPY, HAPPY, NORMAL, SAD 또는 VERY_SAD</string>
+    <string name="agent_tool_period_param_note">메모(선택)</string>
+    <string name="agent_tool_period_param_record_id">생리 기록 ID</string>
+    <string name="agent_tool_period_param_limit">반환할 최대 기록 수(1-50)</string>
+    <string name="agent_tool_period_label_date">날짜</string>
+    <string name="agent_tool_period_label_flow">생리량</string>
+    <string name="agent_tool_period_label_symptoms">증상</string>
+    <string name="agent_tool_period_open_link">생리 주기 트래커 열기</string>
+    <string name="agent_tool_period_detail_link">기록 상세 열기</string>
+    <string name="agent_tool_period_no_next">데이터가 부족합니다</string>
+    <string name="agent_tool_period_unknown_error">알 수 없는 오류</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>생리</item>
+        <item>월경</item>
+        <item>주기</item>
+        <item>생리통</item>
+        <item>생리 기록</item>
+        <item>생리 시작</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>오늘 생리가 시작됐고 복통이 가벼워요</item>
+        <item>오늘 생리 시작했어, 생리량 보통으로 기록해 줘</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>주기</item>
+        <item>다음 생리</item>
+        <item>생리 주기</item>
+        <item>예측</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>다음 생리는 언제인가요?</item>
+        <item>내 주기는 규칙적인가요?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>생리 기록 수정</item>
+        <item>생리 수정</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>어제 기록의 생리량을 많음으로 수정해 줘</item>
+        <item>어제 기록 생리량을 많음으로 바꿔 줘</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>생리 기록 삭제</item>
+        <item>생리 삭제</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>어제 생리 기록을 삭제해 줘</item>
+        <item>어제 그 생리 기록 지워 줘</item>
+    </string-array>
+</resources>

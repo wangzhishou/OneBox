@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Panonood ng Anunsyo</string>
+    <string name="ad_watch_headline_1">Ano ang mga patalastas na pinagkakagastusan ng malalaking brand?</string>
+    <string name="ad_watch_headline_2">Ano ang hitsura ng mga ad na pinapalabas ng malalaking kumpanya?</string>
+    <string name="ad_watch_headline_3">15 segundo, tingnan ang husay ng mga brand</string>
+    <string name="ad_watch_headline_4">Ang iba ay gumagastos para sa atensyon, ikaw ay kumikita ng puntos</string>
+    <string name="ad_watch_headline_5">Panoorin nang libre ang labanan ng mga advertiser</string>
+    <string name="ad_watch_subtitle">Manood ng 15 segundong ad, makakuha ng %1$d puntos</string>
+    <string name="ad_watch_cta">Manood ng ad · +%1$d puntos</string>
+    <string name="ad_watch_remaining">Natitira ngayong araw %1$d/%2$d</string>
+    <string name="ad_watch_daily_limit_reached">Naubos na ang bilang ng beses ngayong araw, bumalik bukas</string>
+    <string name="ad_watch_loading">Naglo-load ang ad…</string>
+    <string name="ad_watch_load_failed">Nabigo ang pag-load ng ad</string>
+    <string name="ad_watch_retry">Subukan Muli</string>
+    <string name="ad_watch_ad_not_ready">Hindi pa handa ang ad, subukan muli mamaya</string>
+</resources>

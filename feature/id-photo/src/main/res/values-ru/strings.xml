@@ -89,4 +89,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">Для лицензий гида</string>
     <string name="id_photo_preset_size_desc_chsi">Для сбора фотографий CHSI/Xuexin</string>
     <string name="id_photo_preset_size_desc_id_card">Для удостоверений личности второго поколения</string>
+    <string name="id_photo_export_target_size">Размер экспорта</string>
+    <string name="id_photo_export_source_size">Исходный размер</string>
+    <string name="id_photo_export_estimated_size">Примерный размер</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
+    <string name="id_photo_tab_beauty">Улучшение в один тап</string>
+    <string name="id_photo_beauty_light">Слабое</string>
+    <string name="id_photo_beauty_standard">Стандартное</string>
+    <string name="id_photo_beauty_deep">Сильное</string>
+    <string name="id_photo_beauty_points_tip">~%d баллов за использование</string>
+    <string name="id_photo_ai_process_failed">Не удалось обработать с помощью AI. Повторите попытку позже</string>
+    <string name="id_photo_beauty">AI-улучшение портрета</string>
+    <string name="id_photo_bg_replace">AI-замена фона</string>
+    <string name="id_photo_bg_original">Оригинал</string>
+    <string name="id_photo_bg_transparent">Прозрачный</string>
+    <string name="id_photo_beauty_apply">Применить</string>
+    <string name="id_photo_beauty_group_skin">Кожа</string>
+    <string name="id_photo_beauty_group_flaw">Удаление дефектов</string>
+    <string name="id_photo_beauty_group_reshape">Коррекция лица</string>
+    <string name="id_photo_beauty_group_eye">Улучшение глаз</string>
+    <string name="id_photo_beauty_group_hair">Волосы</string>
+    <string name="id_photo_beauty_group_teeth">Зубы</string>
+    <string name="id_photo_beauty_group_body">Коррекция фигуры</string>
+    <string name="id_photo_bp_face_smooth">Сглаживание</string>
+    <string name="id_photo_bp_face_smooth_gray">Нейтральное серое сглаживание</string>
+    <string name="id_photo_bp_face_smooth_fine">Высоко- и низкочастотное сглаживание</string>
+    <string name="id_photo_bp_face_smooth_new">Сглаживание контура лица</string>
+    <string name="id_photo_bp_skin_white">Отбеливание</string>
+    <string name="id_photo_bp_skin_bright">Сияние</string>
+    <string name="id_photo_bp_skin_red">Румянец</string>
+    <string name="id_photo_bp_skin_sharpen">Чёткость кожи</string>
+    <string name="id_photo_bp_face_color_same">Ровный тон кожи</string>
+    <string name="id_photo_bp_skin_prefer">Тёплый/холодный тон</string>
+    <string name="id_photo_bp_face_highlight">Блик на лице</string>
+    <string name="id_photo_bp_face_shadow">Тень на лице</string>
+    <string name="id_photo_bp_remove_face_flaw">Дефекты кожи лица</string>
+    <string name="id_photo_bp_remove_dark_circles">Тёмные круги</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">Морщины вокруг глаз</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">Морщины на лбу</string>
+    <string name="id_photo_bp_remove_laugh_line">Носогубные складки</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">Морщины на шее</string>
+    <string name="id_photo_bp_remove_double_chin">Второй подбородок</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">Морщины на губах</string>
+    <string name="id_photo_bp_remove_face_glossy">Жирный блеск</string>
+    <string name="id_photo_bp_remove_face_moles">Удаление родинок</string>
+    <string name="id_photo_bp_face_small">Уменьшение лица</string>
+    <string name="id_photo_bp_face_thin">Сужение лица</string>
+    <string name="id_photo_bp_face_v">V-образное лицо</string>
+    <string name="id_photo_bp_jaw_width">Линия челюсти</string>
+    <string name="id_photo_bp_cheekbone_width">Скулы</string>
+    <string name="id_photo_bp_face_width">Ширина лица</string>
+    <string name="id_photo_bp_forehead_height">Лоб</string>
+    <string name="id_photo_bp_chin_height">Длина подбородка</string>
+    <string name="id_photo_bp_face_symmetry">Симметрия лица</string>
+    <string name="id_photo_bp_eyebrow_thickness">Густота бровей</string>
+    <string name="id_photo_bp_eyebrow_distance">Расстояние между бровями</string>
+    <string name="id_photo_bp_eyebrow_height">Высота бровей</string>
+    <string name="id_photo_bp_eye_scale">Размер глаз</string>
+    <string name="id_photo_bp_eye_distance">Расстояние между глазами</string>
+    <string name="id_photo_bp_eye_angle">Угол глаз</string>
+    <string name="id_photo_bp_nose_scale">Размер носа</string>
+    <string name="id_photo_bp_nose_height">Высота носа</string>
+    <string name="id_photo_bp_nose_bridge">Переносица</string>
+    <string name="id_photo_bp_nose_wing">Крылья носа</string>
+    <string name="id_photo_bp_nose_tip">Кончик носа</string>
+    <string name="id_photo_bp_mouth_scale">Размер рта</string>
+    <string name="id_photo_bp_mouth_width">Ширина рта</string>
+    <string name="id_photo_bp_mouth_position">Положение рта</string>
+    <string name="id_photo_bp_shiny_eye">Сияние глаз</string>
+    <string name="id_photo_bp_remove_eye_streaks">Покраснение глаз</string>
+    <string name="id_photo_bp_fill_hair_part">Заполнение пробора</string>
+    <string name="id_photo_bp_calvaria_height">Высота макушки</string>
+    <string name="id_photo_bp_hairline_height">Линия роста волос</string>
+    <string name="id_photo_bp_remove_white_hair">Седые волосы</string>
+    <string name="id_photo_bp_remove_burst_hair">Выбившиеся волосы</string>
+    <string name="id_photo_bp_teeth_white">Отбеливание зубов</string>
+    <string name="id_photo_bp_teeth_repair">Коррекция зубов</string>
+    <string name="id_photo_bp_ai_body_thin">AI-коррекция фигуры</string>
+    <string name="id_photo_bp_body_thin">Похудение</string>
+    <string name="id_photo_bp_head_small">Уменьшение головы</string>
+    <string name="id_photo_bp_neck_length">Длина шеи</string>
+    <string name="id_photo_bp_neck_thin">Сужение шеи</string>
+    <string name="id_photo_bp_arm_thin">Сужение рук</string>
+    <string name="id_photo_bp_waist_thin">Сужение талии</string>
+    <string name="id_photo_bp_leg_thin">Сужение ног</string>
+    <string name="id_photo_bp_leg_long">Удлинение ног</string>
+    <string name="id_photo_bp_body_heighten">Увеличение роста</string>
+    <string name="id_photo_bp_desc_face_smooth">Больше = более гладкая и увлажнённая кожа</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">Больше = более ровная яркость кожи</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">Больше = более гладкая кожа</string>
+    <string name="id_photo_bp_desc_face_smooth_new">Больше = более гладкий и мягкий контур лица</string>
+    <string name="id_photo_bp_desc_skin_white">Больше = более белая кожа</string>
+    <string name="id_photo_bp_desc_skin_bright">Больше = более сияющая кожа</string>
+    <string name="id_photo_bp_desc_skin_red">Больше = более выраженный румянец</string>
+    <string name="id_photo_bp_desc_skin_sharpen">Больше = более чёткая текстура кожи</string>
+    <string name="id_photo_bp_desc_face_color_same">Больше = более ровный тон кожи лица</string>
+    <string name="id_photo_bp_desc_skin_prefer">Отрицательное = холоднее, положительное = теплее</string>
+    <string name="id_photo_bp_desc_face_highlight">Больше = сильнее блик на лице</string>
+    <string name="id_photo_bp_desc_face_shadow">Больше = глубже тень на лице</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">Больше = лучше удаление дефектов</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">Больше = светлее тёмные круги</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">Больше = меньше морщин вокруг глаз</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">Больше = меньше морщин на лбу</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">Больше = меньше носогубных складок</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">Больше = лучше удаление морщин на шее</string>
+    <string name="id_photo_bp_desc_remove_double_chin">Больше = менее заметен второй подбородок</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">Больше = меньше морщин на губах</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">Больше = меньше жирного блеска</string>
+    <string name="id_photo_bp_desc_remove_face_moles">Включите, чтобы удалить родинки на лице</string>
+    <string name="id_photo_bp_desc_face_small">Больше = меньше лицо</string>
+    <string name="id_photo_bp_desc_face_thin">Больше = уже лицо</string>
+    <string name="id_photo_bp_desc_face_v">Больше = чётче V-образная линия</string>
+    <string name="id_photo_bp_desc_jaw_width">Больше = тоньше линия челюсти</string>
+    <string name="id_photo_bp_desc_cheekbone_width">Больше = менее выраженные скулы</string>
+    <string name="id_photo_bp_desc_face_width">Больше = шире лицо</string>
+    <string name="id_photo_bp_desc_forehead_height">Больше = выше лоб</string>
+    <string name="id_photo_bp_desc_chin_height">Больше = длиннее подбородок</string>
+    <string name="id_photo_bp_desc_face_symmetry">Больше = симметричнее лицо</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">Больше = гуще брови</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">Больше = шире расстояние между бровями</string>
+    <string name="id_photo_bp_desc_eyebrow_height">Больше = выше брови</string>
+    <string name="id_photo_bp_desc_eye_scale">Больше = крупнее глаза</string>
+    <string name="id_photo_bp_desc_eye_distance">Больше = шире расстояние между глазами</string>
+    <string name="id_photo_bp_desc_eye_angle">Больше = сильнее приподнятые уголки глаз</string>
+    <string name="id_photo_bp_desc_nose_scale">Больше = крупнее нос</string>
+    <string name="id_photo_bp_desc_nose_height">Больше = выше нос</string>
+    <string name="id_photo_bp_desc_nose_bridge">Больше = выше переносица</string>
+    <string name="id_photo_bp_desc_nose_wing">Больше = шире крылья носа</string>
+    <string name="id_photo_bp_desc_nose_tip">Больше = крупнее кончик носа</string>
+    <string name="id_photo_bp_desc_mouth_scale">Больше = крупнее рот</string>
+    <string name="id_photo_bp_desc_mouth_width">Больше = шире рот</string>
+    <string name="id_photo_bp_desc_mouth_position">Больше = выше положение рта</string>
+    <string name="id_photo_bp_desc_shiny_eye">Больше = ярче сияние глаз</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">Больше = сильнее удаление красных сосудов</string>
+    <string name="id_photo_bp_desc_fill_hair_part">Больше = сильнее заполнение пробора</string>
+    <string name="id_photo_bp_desc_calvaria_height">Больше = выше макушка</string>
+    <string name="id_photo_bp_desc_hairline_height">Больше = выше линия роста волос</string>
+    <string name="id_photo_bp_desc_remove_white_hair">Больше = сильнее удаление седых волос</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">Больше = сильнее удаление выбившихся волос</string>
+    <string name="id_photo_bp_desc_teeth_white">Больше = белее зубы</string>
+    <string name="id_photo_bp_desc_teeth_repair">Включите, чтобы исправить дефекты зубов</string>
+    <string name="id_photo_bp_desc_ai_body_thin">Больше = стройнее фигура (AI)</string>
+    <string name="id_photo_bp_desc_body_thin">Больше = стройнее фигура</string>
+    <string name="id_photo_bp_desc_head_small">Больше = меньше голова</string>
+    <string name="id_photo_bp_desc_neck_length">Больше = длиннее шея</string>
+    <string name="id_photo_bp_desc_neck_thin">Больше = тоньше шея</string>
+    <string name="id_photo_bp_desc_arm_thin">Больше = тоньше руки</string>
+    <string name="id_photo_bp_desc_waist_thin">Больше = тоньше талия</string>
+    <string name="id_photo_bp_desc_leg_thin">Больше = тоньше ноги</string>
+    <string name="id_photo_bp_desc_leg_long">Больше = длиннее ноги</string>
+    <string name="id_photo_bp_desc_body_heighten">Больше = выше рост</string>
 </resources>

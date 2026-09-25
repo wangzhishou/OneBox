@@ -89,4 +89,156 @@
     <string name="id_photo_preset_size_desc_tour_guide">Untuk lisensi pemandu wisata</string>
     <string name="id_photo_preset_size_desc_chsi">Untuk pengumpulan foto CHSI/Xuexin</string>
     <string name="id_photo_preset_size_desc_id_card">Untuk kartu identitas generasi kedua</string>
+    <string name="id_photo_export_target_size">Ukuran Ekspor</string>
+    <string name="id_photo_export_source_size">Ukuran Sumber</string>
+    <string name="id_photo_export_estimated_size">Perkiraan Ukuran</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d px</string>
+    <string name="id_photo_tab_beauty">Cantik Sekali Ketuk</string>
+    <string name="id_photo_beauty_light">Ringan</string>
+    <string name="id_photo_beauty_standard">Standar</string>
+    <string name="id_photo_beauty_deep">Kuat</string>
+    <string name="id_photo_beauty_points_tip">~%d poin per pemakaian</string>
+    <string name="id_photo_ai_process_failed">Pemrosesan AI gagal, coba lagi nanti</string>
+    <string name="id_photo_beauty">Mempercantik wajah dengan AI</string>
+    <string name="id_photo_bg_replace">Ganti latar dengan AI</string>
+    <string name="id_photo_bg_original">Asli</string>
+    <string name="id_photo_bg_transparent">Transparan</string>
+    <string name="id_photo_beauty_apply">Terapkan</string>
+    <string name="id_photo_beauty_group_skin">Kulit</string>
+    <string name="id_photo_beauty_group_flaw">Hilangkan Noda</string>
+    <string name="id_photo_beauty_group_reshape">Bentuk Wajah</string>
+    <string name="id_photo_beauty_group_eye">Percantik Mata</string>
+    <string name="id_photo_beauty_group_hair">Rambut</string>
+    <string name="id_photo_beauty_group_teeth">Gigi</string>
+    <string name="id_photo_beauty_group_body">Bentuk Tubuh</string>
+    <string name="id_photo_bp_face_smooth">Penghalusan</string>
+    <string name="id_photo_bp_face_smooth_gray">Penghalusan Abu Netral</string>
+    <string name="id_photo_bp_face_smooth_fine">Penghalusan Frekuensi Tinggi/Rendah</string>
+    <string name="id_photo_bp_face_smooth_new">Penghalusan Kontur Wajah</string>
+    <string name="id_photo_bp_skin_white">Pemutihan</string>
+    <string name="id_photo_bp_skin_bright">Kecerahan</string>
+    <string name="id_photo_bp_skin_red">Kemerahan</string>
+    <string name="id_photo_bp_skin_sharpen">Kejelasan Kulit</string>
+    <string name="id_photo_bp_face_color_same">Warna Kulit Merata</string>
+    <string name="id_photo_bp_skin_prefer">Nada Hangat-Dingin</string>
+    <string name="id_photo_bp_face_highlight">Sorotan Wajah</string>
+    <string name="id_photo_bp_face_shadow">Bayangan Wajah</string>
+    <string name="id_photo_bp_remove_face_flaw">Noda Wajah</string>
+    <string name="id_photo_bp_remove_dark_circles">Kantung Mata</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">Kerutan Mata</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">Kerutan Dahi</string>
+    <string name="id_photo_bp_remove_laugh_line">Kerutan Senyum</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">Kerutan Leher</string>
+    <string name="id_photo_bp_remove_double_chin">Dagu Ganda</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">Kerutan Bibir</string>
+    <string name="id_photo_bp_remove_face_glossy">Wajah Berminyak</string>
+    <string name="id_photo_bp_remove_face_moles">Hilangkan Tahi Lalat</string>
+    <string name="id_photo_bp_face_small">Wajah Lebih Kecil</string>
+    <string name="id_photo_bp_face_thin">Wajah Lebih Tirus</string>
+    <string name="id_photo_bp_face_v">Wajah Berbentuk V</string>
+    <string name="id_photo_bp_jaw_width">Garis Rahang</string>
+    <string name="id_photo_bp_cheekbone_width">Tulang Pipi</string>
+    <string name="id_photo_bp_face_width">Lebar Wajah</string>
+    <string name="id_photo_bp_forehead_height">Dahi</string>
+    <string name="id_photo_bp_chin_height">Panjang Dagu</string>
+    <string name="id_photo_bp_face_symmetry">Simetri Wajah</string>
+    <string name="id_photo_bp_eyebrow_thickness">Ketebalan Alis</string>
+    <string name="id_photo_bp_eyebrow_distance">Jarak Alis</string>
+    <string name="id_photo_bp_eyebrow_height">Tinggi Alis</string>
+    <string name="id_photo_bp_eye_scale">Ukuran Mata</string>
+    <string name="id_photo_bp_eye_distance">Jarak Mata</string>
+    <string name="id_photo_bp_eye_angle">Sudut Mata</string>
+    <string name="id_photo_bp_nose_scale">Ukuran Hidung</string>
+    <string name="id_photo_bp_nose_height">Tinggi Hidung</string>
+    <string name="id_photo_bp_nose_bridge">Batang Hidung</string>
+    <string name="id_photo_bp_nose_wing">Cuping Hidung</string>
+    <string name="id_photo_bp_nose_tip">Ujung Hidung</string>
+    <string name="id_photo_bp_mouth_scale">Ukuran Mulut</string>
+    <string name="id_photo_bp_mouth_width">Lebar Mulut</string>
+    <string name="id_photo_bp_mouth_position">Posisi Mulut</string>
+    <string name="id_photo_bp_shiny_eye">Mata Berkilau</string>
+    <string name="id_photo_bp_remove_eye_streaks">Mata Merah</string>
+    <string name="id_photo_bp_fill_hair_part">Isi Belahan Rambut</string>
+    <string name="id_photo_bp_calvaria_height">Tinggi Ubun-Ubun</string>
+    <string name="id_photo_bp_hairline_height">Garis Rambut</string>
+    <string name="id_photo_bp_remove_white_hair">Rambut Putih</string>
+    <string name="id_photo_bp_remove_burst_hair">Rambut Berantakan</string>
+    <string name="id_photo_bp_teeth_white">Pemutihan Gigi</string>
+    <string name="id_photo_bp_teeth_repair">Perbaikan Gigi</string>
+    <string name="id_photo_bp_ai_body_thin">Bentuk Tubuh AI</string>
+    <string name="id_photo_bp_body_thin">Langsingkan Tubuh</string>
+    <string name="id_photo_bp_head_small">Kepala Lebih Kecil</string>
+    <string name="id_photo_bp_neck_length">Panjang Leher</string>
+    <string name="id_photo_bp_neck_thin">Leher Lebih Langsing</string>
+    <string name="id_photo_bp_arm_thin">Lengan Lebih Langsing</string>
+    <string name="id_photo_bp_waist_thin">Pinggang Lebih Langsing</string>
+    <string name="id_photo_bp_leg_thin">Kaki Lebih Langsing</string>
+    <string name="id_photo_bp_leg_long">Kaki Lebih Panjang</string>
+    <string name="id_photo_bp_body_heighten">Tinggikan Tubuh</string>
+    <string name="id_photo_bp_desc_face_smooth">Semakin tinggi = kulit semakin halus dan lembap</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">Semakin tinggi = kecerahan kulit semakin merata</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">Semakin tinggi = kulit semakin halus</string>
+    <string name="id_photo_bp_desc_face_smooth_new">Semakin tinggi = kontur wajah semakin halus dan lembut</string>
+    <string name="id_photo_bp_desc_skin_white">Semakin tinggi = kulit semakin putih</string>
+    <string name="id_photo_bp_desc_skin_bright">Semakin tinggi = kulit semakin bercahaya</string>
+    <string name="id_photo_bp_desc_skin_red">Semakin tinggi = kulit semakin kemerahan</string>
+    <string name="id_photo_bp_desc_skin_sharpen">Semakin tinggi = tekstur kulit semakin jelas</string>
+    <string name="id_photo_bp_desc_face_color_same">Semakin tinggi = warna kulit wajah semakin merata</string>
+    <string name="id_photo_bp_desc_skin_prefer">Negatif = lebih dingin, positif = lebih hangat</string>
+    <string name="id_photo_bp_desc_face_highlight">Semakin tinggi = sorotan wajah semakin kuat</string>
+    <string name="id_photo_bp_desc_face_shadow">Semakin tinggi = bayangan wajah semakin pekat</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">Semakin tinggi = noda wajah semakin bersih</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">Semakin tinggi = kantung mata semakin cerah</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">Semakin tinggi = kerutan mata semakin tipis</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">Semakin tinggi = kerutan dahi semakin tipis</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">Semakin tinggi = kerutan senyum semakin tipis</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">Semakin tinggi = kerutan leher semakin bersih</string>
+    <string name="id_photo_bp_desc_remove_double_chin">Semakin tinggi = dagu ganda semakin samar</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">Semakin tinggi = kerutan bibir semakin tipis</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">Semakin tinggi = wajah semakin tidak berminyak</string>
+    <string name="id_photo_bp_desc_remove_face_moles">Aktifkan untuk menghilangkan tahi lalat di wajah</string>
+    <string name="id_photo_bp_desc_face_small">Semakin tinggi = wajah semakin kecil</string>
+    <string name="id_photo_bp_desc_face_thin">Semakin tinggi = wajah semakin tirus</string>
+    <string name="id_photo_bp_desc_face_v">Semakin tinggi = garis V semakin tegas</string>
+    <string name="id_photo_bp_desc_jaw_width">Semakin tinggi = garis rahang semakin tirus</string>
+    <string name="id_photo_bp_desc_cheekbone_width">Semakin tinggi = tulang pipi semakin tidak menonjol</string>
+    <string name="id_photo_bp_desc_face_width">Semakin tinggi = wajah semakin lebar</string>
+    <string name="id_photo_bp_desc_forehead_height">Semakin tinggi = dahi semakin tinggi</string>
+    <string name="id_photo_bp_desc_chin_height">Semakin tinggi = dagu semakin panjang</string>
+    <string name="id_photo_bp_desc_face_symmetry">Semakin tinggi = wajah semakin simetris</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">Semakin tinggi = alis semakin tebal</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">Semakin tinggi = jarak alis semakin lebar</string>
+    <string name="id_photo_bp_desc_eyebrow_height">Semakin tinggi = alis semakin tinggi</string>
+    <string name="id_photo_bp_desc_eye_scale">Semakin tinggi = mata semakin besar</string>
+    <string name="id_photo_bp_desc_eye_distance">Semakin tinggi = jarak mata semakin lebar</string>
+    <string name="id_photo_bp_desc_eye_angle">Semakin tinggi = sudut mata semakin terangkat</string>
+    <string name="id_photo_bp_desc_nose_scale">Semakin tinggi = hidung semakin besar</string>
+    <string name="id_photo_bp_desc_nose_height">Semakin tinggi = hidung semakin tinggi</string>
+    <string name="id_photo_bp_desc_nose_bridge">Semakin tinggi = batang hidung semakin tinggi</string>
+    <string name="id_photo_bp_desc_nose_wing">Semakin tinggi = cuping hidung semakin lebar</string>
+    <string name="id_photo_bp_desc_nose_tip">Semakin tinggi = ujung hidung semakin besar</string>
+    <string name="id_photo_bp_desc_mouth_scale">Semakin tinggi = mulut semakin besar</string>
+    <string name="id_photo_bp_desc_mouth_width">Semakin tinggi = mulut semakin lebar</string>
+    <string name="id_photo_bp_desc_mouth_position">Semakin tinggi = posisi mulut semakin tinggi</string>
+    <string name="id_photo_bp_desc_shiny_eye">Semakin tinggi = mata semakin berkilau</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">Semakin tinggi = pembuluh merah mata semakin hilang</string>
+    <string name="id_photo_bp_desc_fill_hair_part">Semakin tinggi = belahan rambut semakin terisi</string>
+    <string name="id_photo_bp_desc_calvaria_height">Semakin tinggi = ubun-ubun semakin tinggi</string>
+    <string name="id_photo_bp_desc_hairline_height">Semakin tinggi = garis rambut semakin tinggi</string>
+    <string name="id_photo_bp_desc_remove_white_hair">Semakin tinggi = rambut putih semakin hilang</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">Semakin tinggi = rambut berantakan semakin rapi</string>
+    <string name="id_photo_bp_desc_teeth_white">Semakin tinggi = gigi semakin putih</string>
+    <string name="id_photo_bp_desc_teeth_repair">Aktifkan untuk memperbaiki cacat gigi</string>
+    <string name="id_photo_bp_desc_ai_body_thin">Semakin tinggi = tubuh semakin langsing (AI)</string>
+    <string name="id_photo_bp_desc_body_thin">Semakin tinggi = tubuh semakin langsing</string>
+    <string name="id_photo_bp_desc_head_small">Semakin tinggi = kepala semakin kecil</string>
+    <string name="id_photo_bp_desc_neck_length">Semakin tinggi = leher semakin panjang</string>
+    <string name="id_photo_bp_desc_neck_thin">Semakin tinggi = leher semakin langsing</string>
+    <string name="id_photo_bp_desc_arm_thin">Semakin tinggi = lengan semakin langsing</string>
+    <string name="id_photo_bp_desc_waist_thin">Semakin tinggi = pinggang semakin langsing</string>
+    <string name="id_photo_bp_desc_leg_thin">Semakin tinggi = kaki semakin langsing</string>
+    <string name="id_photo_bp_desc_leg_long">Semakin tinggi = kaki semakin panjang</string>
+    <string name="id_photo_bp_desc_body_heighten">Semakin tinggi = tubuh semakin tinggi</string>
 </resources>

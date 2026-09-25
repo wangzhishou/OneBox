@@ -22,4 +22,14 @@
     <string name="activity_log_habit_app_title">Pelacak Kebiasaan</string>
     <string name="activity_log_habit_created">Kebiasaan baru: %1$s</string>
     <string name="activity_log_habit_check_in">Check-in: %1$s</string>
+    <string name="sys_prompt_iching_title">Prompt Sistem Interpretasi I Ching</string>
+    <string name="sys_prompt_iching_desc">Instruksi sistem yang dipakai untuk menafsirkan pertanyaan, heksagram, dan garis yang berubah</string>
+    <string name="sys_prompt_memory_global_title">Panduan Profil Memori</string>
+    <string name="sys_prompt_memory_global_desc">Pembuka yang disisipkan sebelum bagian profil pengguna pada memori AI</string>
+    <string name="sys_prompt_memory_recent_title">Panduan Log Terbaru Memori</string>
+    <string name="sys_prompt_memory_recent_desc">Pembuka yang disisipkan sebelum bagian log terbaru pada memori AI (menyebut alat memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Panduan Log Terbaru Memori (Tanpa Alat)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Varian cadangan yang dipakai saat model tidak mendukung pemanggilan alat</string>
+    <string name="sys_prompt_skills_guidance_title">Panduan Daftar Skill</string>
+    <string name="sys_prompt_skills_guidance_desc">Pembuka yang disisipkan sebelum daftar skill yang tersedia</string>
 </resources>
