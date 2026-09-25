@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">رد على تعليق</string>
     <string name="notification_type_system">النظام</string>
     <string name="notification_type_feedback_reply">رد على ملاحظة</string>
+    <string name="notification_section_my_comments">تعليقاتك</string>
+    <string name="notification_section_replies">الردود</string>
+    <string name="notification_you_commented">علّقت في «%1$s»:</string>
+    <string name="notification_you_commented_fallback">علّقت:</string>
+    <string name="notification_replied_to_you">%1$s رد على تعليقك:</string>
+    <string name="notification_from_source">من: %1$s</string>
+    <string name="notification_replier_anonymous">أحدهم</string>
 </resources>

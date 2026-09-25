@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">Balasan Komentar</string>
     <string name="notification_type_system">Sistem</string>
     <string name="notification_type_feedback_reply">Balasan Masukan</string>
+    <string name="notification_section_my_comments">Komentar Saya</string>
+    <string name="notification_section_replies">Balasan</string>
+    <string name="notification_you_commented">Anda mengomentari \"%1$s\":</string>
+    <string name="notification_you_commented_fallback">Anda mengomentari:</string>
+    <string name="notification_replied_to_you">%1$s membalas komentar Anda:</string>
+    <string name="notification_from_source">Dari: %1$s</string>
+    <string name="notification_replier_anonymous">Anonim</string>
 </resources>

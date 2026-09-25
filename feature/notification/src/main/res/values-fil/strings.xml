@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">Sagot sa Komento</string>
     <string name="notification_type_system">Sistema</string>
     <string name="notification_type_feedback_reply">Sagot sa Feedback</string>
+    <string name="notification_section_my_comments">Aking mga Komento</string>
+    <string name="notification_section_replies">Mga Sagot</string>
+    <string name="notification_you_commented">Nagkomento ka sa \"%1$s\":</string>
+    <string name="notification_you_commented_fallback">Nagkomento ka:</string>
+    <string name="notification_replied_to_you">%1$s ay tumugon sa iyong komento:</string>
+    <string name="notification_from_source">Mula sa: %1$s</string>
+    <string name="notification_replier_anonymous">Isang tao</string>
 </resources>

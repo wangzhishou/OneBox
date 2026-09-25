@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">댓글 답글</string>
     <string name="notification_type_system">시스템</string>
     <string name="notification_type_feedback_reply">피드백 답변</string>
+    <string name="notification_section_my_comments">내 댓글</string>
+    <string name="notification_section_replies">답글</string>
+    <string name="notification_you_commented">\"%1$s\"에 댓글을 남겼습니다:</string>
+    <string name="notification_you_commented_fallback">댓글을 남겼습니다:</string>
+    <string name="notification_replied_to_you">%1$s님이 내 댓글에 답글을 남겼습니다:</string>
+    <string name="notification_from_source">출처: %1$s</string>
+    <string name="notification_replier_anonymous">익명</string>
 </resources>

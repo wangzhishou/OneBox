@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">टिप्पणी उत्तर</string>
     <string name="notification_type_system">सिस्टम</string>
     <string name="notification_type_feedback_reply">प्रतिक्रिया उत्तर</string>
+    <string name="notification_section_my_comments">मेरी टिप्पणियाँ</string>
+    <string name="notification_section_replies">उत्तर</string>
+    <string name="notification_you_commented">आपने \"%1$s\" में टिप्पणी की:</string>
+    <string name="notification_you_commented_fallback">आपने टिप्पणी की:</string>
+    <string name="notification_replied_to_you">%1$s ने आपकी टिप्पणी का उत्तर दिया:</string>
+    <string name="notification_from_source">इससे: %1$s</string>
+    <string name="notification_replier_anonymous">कोई</string>
 </resources>

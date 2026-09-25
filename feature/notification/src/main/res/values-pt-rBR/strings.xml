@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">Resposta a comentário</string>
     <string name="notification_type_system">Sistema</string>
     <string name="notification_type_feedback_reply">Resposta ao feedback</string>
+    <string name="notification_section_my_comments">Meus comentários</string>
+    <string name="notification_section_replies">Respostas</string>
+    <string name="notification_you_commented">Você comentou em \"%1$s\":</string>
+    <string name="notification_you_commented_fallback">Você comentou:</string>
+    <string name="notification_replied_to_you">%1$s respondeu ao seu comentário:</string>
+    <string name="notification_from_source">De: %1$s</string>
+    <string name="notification_replier_anonymous">Alguém</string>
 </resources>

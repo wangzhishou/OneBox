@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">Yorum Yanıtı</string>
     <string name="notification_type_system">Sistem</string>
     <string name="notification_type_feedback_reply">Geri Bildirim Yanıtı</string>
+    <string name="notification_section_my_comments">Yorumlarım</string>
+    <string name="notification_section_replies">Yanıtlar</string>
+    <string name="notification_you_commented">\"%1$s\" içinde yorum yaptınız:</string>
+    <string name="notification_you_commented_fallback">Yorum yaptınız:</string>
+    <string name="notification_replied_to_you">%1$s yorumunuza yanıt verdi:</string>
+    <string name="notification_from_source">Kaynak: %1$s</string>
+    <string name="notification_replier_anonymous">Anonim</string>
 </resources>

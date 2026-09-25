@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">Ответ на комментарий</string>
     <string name="notification_type_system">Система</string>
     <string name="notification_type_feedback_reply">Ответ на отзыв</string>
+    <string name="notification_section_my_comments">Мои комментарии</string>
+    <string name="notification_section_replies">Ответы</string>
+    <string name="notification_you_commented">Вы оставили комментарий в «%1$s»:</string>
+    <string name="notification_you_commented_fallback">Вы оставили комментарий:</string>
+    <string name="notification_replied_to_you">Новый ответ на ваш комментарий от %1$s:</string>
+    <string name="notification_from_source">Из: %1$s</string>
+    <string name="notification_replier_anonymous">Кто-то</string>
 </resources>

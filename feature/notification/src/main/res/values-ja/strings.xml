@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">コメント返信</string>
     <string name="notification_type_system">システム</string>
     <string name="notification_type_feedback_reply">フィードバック返信</string>
+    <string name="notification_section_my_comments">自分のコメント</string>
+    <string name="notification_section_replies">返信</string>
+    <string name="notification_you_commented">「%1$s」にコメントしました:</string>
+    <string name="notification_you_commented_fallback">コメントしました:</string>
+    <string name="notification_replied_to_you">%1$sさんがあなたのコメントに返信しました:</string>
+    <string name="notification_from_source">投稿元: %1$s</string>
+    <string name="notification_replier_anonymous">匿名</string>
 </resources>
