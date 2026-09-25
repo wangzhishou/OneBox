@@ -1,5 +1,8 @@
 package com.wanbaohe.loancalculator.viewmodel
 
+import java.util.Locale
+import com.shifenmiao.model.money.MoneyFormat
+import com.shifenmiao.model.money.AppCurrency
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,17 +18,9 @@ fun String.yuanToFen(): Long {
     return (d * 100).roundToLong()
 }
 
-/** 将分（Long）格式化为 ¥X,XXX.XX 展示字符串 */
-fun Long.fenToYuanString(): String {
-    val negative = this < 0
-    val abs = if (negative) -this else this
-    val major = abs / 100
-    val minor = abs % 100
-    val majorFormatted = major.toString().reversed()
-        .chunked(3).joinToString(",").reversed()
-    val sign = if (negative) "-" else ""
-    return "${sign}¥${majorFormatted}.${minor.toString().padStart(2, '0')}"
-}
+/** 将分（Long）格式化为当前币种的展示字符串，如 ¥1,234.50 / ₩12,300 */
+fun Long.fenToMoneyString(currency: AppCurrency, locale: Locale = Locale.getDefault()): String =
+    MoneyFormat.amount(this, currency, locale)
 
 /**
  * UI 状态，持有所有输入字段和计算结果。

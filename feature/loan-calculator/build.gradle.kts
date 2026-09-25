@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.core.model)
     implementation(projects.core.resources)
+    implementation(projects.core.storage)
     implementation(projects.core.theme)
     implementation(projects.feature.common)
 }

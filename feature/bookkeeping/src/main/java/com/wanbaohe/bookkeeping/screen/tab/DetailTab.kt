@@ -1,5 +1,6 @@
 package com.wanbaohe.bookkeeping.screen.tab
 
+import com.shifenmiao.model.money.AppCurrency
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -192,6 +193,7 @@ internal fun DetailTab(
             ) { section ->
                 DaySectionCard(
                     section = section,
+                    currency = uiState.currency,
                     onDeleteRecord = { recordId -> pendingDeleteRecordId = recordId },
                     onEditRecord = { recordId ->
                         component.onNavigate(
@@ -276,6 +278,7 @@ private fun DaySectionCard(
     section: DaySectionCardUi,
     onDeleteRecord: (String) -> Unit,
     onEditRecord: (String) -> Unit,
+    currency: AppCurrency,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -297,8 +300,8 @@ private fun DaySectionCard(
             val summary = section.items.firstOrNull() as? DetailSectionUi.SummaryChip
             if (summary != null) {
                 SummaryChip(
-                    expenseText = centsText(summary.expenseCents),
-                    incomeText = centsText(summary.incomeCents),
+                    expenseText = centsText(summary.expenseCents, currency),
+                    incomeText = centsText(summary.incomeCents, currency),
                 )
             }
         }
@@ -313,6 +316,7 @@ private fun DaySectionCard(
                         record = item.record,
                         onDelete = { onDeleteRecord(item.record.id) },
                         onEdit = { onEditRecord(item.record.id) },
+                        currency = currency,
                     )
                 }
 
@@ -429,6 +433,7 @@ private fun RecordItemRow(
     record: BookkeepingRecordUi,
     onDelete: () -> Unit,
     onEdit: () -> Unit,
+    currency: AppCurrency,
 ) {
     val dismissState = androidx.compose.material3.rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
@@ -522,7 +527,7 @@ private fun RecordItemRow(
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                 ) {
                     Text(
-                        text = signedAmount(record),
+                        text = signedAmount(record, currency),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                     )

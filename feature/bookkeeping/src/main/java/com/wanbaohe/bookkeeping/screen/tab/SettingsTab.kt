@@ -1,5 +1,10 @@
 package com.wanbaohe.bookkeeping.screen.tab
 
+import com.shifenmiao.model.money.AppCurrency
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.AlertDialog
 import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -15,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -64,6 +70,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAccountBalance
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSwapHoriz
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArchive
@@ -107,6 +114,8 @@ internal fun SettingsTab(
     )
 
     var managingType by remember { mutableStateOf<BookkeepingRecordType?>(null) }
+    var showCurrencyPicker by remember { mutableStateOf(false) }
+    val uiState by component.uiState.collectAsState()
 
     val backupCreator = rememberFileCreator(
         mimeType = MimeType.Json,
@@ -263,6 +272,26 @@ internal fun SettingsTab(
 
         item {
             Text(
+                text = stringResource(R.string.bookkeeping_preference_section),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+
+        item {
+            SettingsActionCard(
+                title = stringResource(R.string.bookkeeping_currency_title),
+                description = "${uiState.currency.symbol} ${uiState.currency.code} · " +
+                    stringResource(R.string.bookkeeping_currency_desc),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccountBalance,
+                iconContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                onIconContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                onClick = { showCurrencyPicker = true },
+            )
+        }
+
+        item {
+            Text(
                 text = stringResource(R.string.bookkeeping_tool_section),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
@@ -314,6 +343,17 @@ internal fun SettingsTab(
         }
 
         item { Spacer(modifier = Modifier.height(80.dp)) }
+    }
+
+    if (showCurrencyPicker) {
+        CurrencyPickerDialog(
+            selected = uiState.currency,
+            onDismiss = { showCurrencyPicker = false },
+            onSelect = { currency ->
+                component.onCurrencyChange(currency)
+                showCurrencyPicker = false
+            },
+        )
     }
 
     managingType?.let { type ->
@@ -527,6 +567,57 @@ private fun CategorySectionCard(
             }
         }
     }
+}
+
+@Composable
+private fun CurrencyPickerDialog(
+    selected: AppCurrency,
+    onDismiss: () -> Unit,
+    onSelect: (AppCurrency) -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.bookkeeping_currency_title)) },
+        text = {
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                items(AppCurrency.entries.toList(), key = { it.code }) { currency ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable { onSelect(currency) }
+                            .padding(horizontal = 8.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Text(
+                            text = currency.symbol,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.width(36.dp),
+                        )
+                        Text(
+                            text = currency.code,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f),
+                        )
+                        if (currency == selected) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(com.shifenmiao.core.R.string.close))
+            }
+        },
+    )
 }
 
 @Composable

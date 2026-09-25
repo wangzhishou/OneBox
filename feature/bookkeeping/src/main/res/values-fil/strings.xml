@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">Tinanggal ang kategorya</string>
     <string name="bookkeeping_log_backup_restored">Naibalik ang backup</string>
     <string name="bookkeeping_log_csv_imported_count">Na-import ang %1$d na entry</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d na kategorya, %2$d na entry</string>
     <string name="bookkeeping_collapse_keypad">Itago ang keypad</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">Bookkeeping Assistant</string>
     <string name="bookkeeping_ai_assist_prompt">Ikaw ang bookkeeping assistant ng user. Kapag inilarawan ang kita o gastos sa natural na wika, i-record gamit ang add_bookkeeping_record.</string>
     <string name="bookkeeping_ai_assist_fill_in">Ang tanghalian ay 28, i-log ito bilang gastos sa pagkain</string>
+    <string name="bookkeeping_preference_section">Mga Kagustuhan</string>
+    <string name="bookkeeping_currency_title">Pera</string>
+    <string name="bookkeeping_currency_desc">Ginagamit sa mga halaga sa pagtatala at loan calculator</string>
 </resources>

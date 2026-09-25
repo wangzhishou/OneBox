@@ -1,5 +1,6 @@
 package com.wanbaohe.bookkeeping.model
 
+import com.shifenmiao.model.money.AppCurrency
 import com.t8rin.imagetoolbox.core.ui.widget.charts.BarChartEntry
 import java.time.LocalDate
 import java.time.YearMonth
@@ -59,6 +60,8 @@ data class BookkeepingUiState(
     val breakdowns: List<CategoryBreakdownUi> = emptyList(),
     val incomeBreakdowns: List<CategoryBreakdownUi> = emptyList(),
     val dailyBars: List<BarChartEntry> = emptyList(),
+    /** 记账/金额展示币种(来自 AppSharedStorage,可在设置页改) */
+    val currency: AppCurrency = AppCurrency.default,
 )
 
 enum class BookkeepingTab {

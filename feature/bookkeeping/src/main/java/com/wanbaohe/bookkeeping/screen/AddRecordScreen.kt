@@ -195,14 +195,14 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                             ) {
                                 Row(verticalAlignment = Alignment.Bottom) {
                                     Text(
-                                        text = "¥",
+                                        text = uiState.currency.symbol,
                                         color = AppTheme.colors.getPrimaryColor(),
                                         fontSize = 24.sp,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = uiState.amountInput.ifEmpty { "0.00" },
+                                        text = uiState.amountInput.ifEmpty { if (uiState.currency.fractionDigits == 0) "0" else "0.00" },
                                         fontSize = 48.sp,
                                         fontWeight = FontWeight.ExtraBold,
                                         color = MaterialTheme.colorScheme.onSurface

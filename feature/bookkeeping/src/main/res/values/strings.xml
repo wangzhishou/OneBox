@@ -118,8 +118,8 @@
     <string name="bookkeeping_log_backup_restored">Backup restored</string>
     <string name="bookkeeping_log_csv_imported_count">Imported %1$d entries</string>
     <!-- ActivityLog descriptions -->
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d categories, %2$d entries</string>
     <!-- AddRecord keypad collapse / expand -->
@@ -180,4 +180,7 @@
     <string name="bookkeeping_cat_creditcard">Credit Card Payment</string>
     <string name="bookkeeping_cat_transfer_out">Transfer</string>
     <string name="bookkeeping_cat_excl_other">Other</string>
+    <string name="bookkeeping_preference_section">Preferences</string>
+    <string name="bookkeeping_currency_title">Currency</string>
+    <string name="bookkeeping_currency_desc">Used for amounts in bookkeeping and the loan calculator</string>
 </resources>

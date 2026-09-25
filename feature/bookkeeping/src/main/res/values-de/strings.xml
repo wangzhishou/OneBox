@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">Kategorie gelöscht</string>
     <string name="bookkeeping_log_backup_restored">Sicherung wiederhergestellt</string>
     <string name="bookkeeping_log_csv_imported_count">%1$d Einträge importiert</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d Kategorien, %2$d Einträge</string>
     <string name="bookkeeping_collapse_keypad">Tastatur ausblenden</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">Buchhaltungs-Assistent</string>
     <string name="bookkeeping_ai_assist_prompt">Du bist der Buchhaltungs-Assistent des Nutzers. Wenn der Nutzer Einnahmen oder Ausgaben in natürlicher Sprache beschreibt, buche sie mit add_bookkeeping_record. Bestätige danach kurz Betrag, Kategorie und Typ.</string>
     <string name="bookkeeping_ai_assist_fill_in">Mittagessen für 28, als Essensausgabe buchen</string>
+    <string name="bookkeeping_preference_section">Präferenzen</string>
+    <string name="bookkeeping_currency_title">Währung</string>
+    <string name="bookkeeping_currency_desc">Wird für Beträge im Haushaltsbuch und im Kreditrechner verwendet</string>
 </resources>

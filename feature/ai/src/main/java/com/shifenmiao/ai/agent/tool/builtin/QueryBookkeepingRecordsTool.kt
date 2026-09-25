@@ -141,15 +141,15 @@ class QueryBookkeepingRecordsTool @Inject constructor(
                         }
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_expense),
-                            value = "¥${centsToYuanText(result.summary.expenseCents)}",
+                            value = centsToMoneyText(result.summary.expenseCents),
                         )
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_income),
-                            value = "¥${centsToYuanText(result.summary.incomeCents)}",
+                            value = centsToMoneyText(result.summary.incomeCents),
                         )
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_excluded),
-                            value = "¥${centsToYuanText(result.summary.excludedCents)}",
+                            value = centsToMoneyText(result.summary.excludedCents),
                         )
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_record_count),
@@ -160,7 +160,7 @@ class QueryBookkeepingRecordsTool @Inject constructor(
                         appendMarkdownSection(textProvider.string(R.string.agent_tool_bookkeeping_section_records)) {
                             result.records.forEachIndexed { index, record ->
                                 val editDeeplink = bookkeepingAddRecordDeeplink(record.id)
-                                appendLine("${index + 1}. ${record.happenedDate} · ${record.type.displayName(textProvider)} · ¥${centsToYuanText(record.amountCents)} · ${categoryNameOrDefault(record.categoryName, textProvider)}")
+                                appendLine("${index + 1}. ${record.happenedDate} · ${record.type.displayName(textProvider)} · ${centsToMoneyText(record.amountCents)} · ${categoryNameOrDefault(record.categoryName, textProvider)}")
                                 record.note?.let {
                                     appendLine("   - ${sanitizeMarkdownText(textProvider.string(R.string.agent_tool_bookkeeping_label_note))}：${sanitizeMarkdownText(it)}")
                                 }

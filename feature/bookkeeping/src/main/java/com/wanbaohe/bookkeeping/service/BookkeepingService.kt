@@ -1,5 +1,7 @@
 package com.wanbaohe.bookkeeping.service
 
+import com.shifenmiao.storage.AppSharedStorage
+import com.shifenmiao.model.money.MoneyFormat
 import android.content.Context
 import android.net.Uri
 import com.shifenmiao.database.activity.ActivityLogRecorder
@@ -346,7 +348,8 @@ class BookkeepingService @Inject constructor(
                 BookkeepingRecordType.EXCLUDED -> "excluded"
             }
             val catName = record.categoryId?.let { allCategoryMap[it] } ?: ""
-            val amount = "%.2f".format(record.amountCents / 100.0)
+            // 固定 Locale.US:逗号小数分隔符会破坏 CSV 列并导致再次导入时金额被截断
+            val amount = String.format(Locale.US, "%.2f", record.amountCents / 100.0)
             val note = (record.note ?: "").replace("\"", "\"\"")
             sb.appendLine("$date,$typeName,\"$catName\",$amount,\"$note\"")
         }
@@ -704,8 +707,9 @@ class BookkeepingService @Inject constructor(
         )
     }
 
+    /** 日志描述里的金额:符号与小数位跟随用户设置的币种(文案里的 ¥ 已移除) */
     private fun formatAmount(amountCents: Long): String =
-        String.format(Locale.US, "%.2f", amountCents / 100.0)
+        MoneyFormat.amount(amountCents, AppSharedStorage.currency.value)
 
     private fun formatHappenedDate(date: LocalDate): String {
         return date.format(LOCALIZED_DATE_FORMATTER)

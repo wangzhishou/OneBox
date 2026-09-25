@@ -7,6 +7,8 @@ import com.shifenmiao.database.bookkeeping.entity.BookkeepingCategoryEntity
 import com.shifenmiao.database.bookkeeping.model.BookkeepingRecordWithCategory
 import com.shifenmiao.database.bookkeeping.repo.BookkeepingRepository
 import com.shifenmiao.interfaces.singleton.AppContext
+import com.shifenmiao.model.money.AppCurrency
+import com.shifenmiao.storage.AppSharedStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.wanbaohe.bookkeeping.R
@@ -83,6 +85,7 @@ class BookkeepingComponent @AssistedInject internal constructor(
     init {
         seedDefaultCategories()
         observeCategories()
+        observeCurrency()
         statsAggregator.observeRange(_uiState.value.timeFilter.dateRange())
         bindUiState()
         if (editingRecordId != null) {
@@ -152,6 +155,20 @@ class BookkeepingComponent @AssistedInject internal constructor(
                 )
             )
         )
+    }
+
+    /** 币种设置变化时同步到 UI 状态(设置页改完立即刷新所有金额展示) */
+    private fun observeCurrency() {
+        _uiState.value = _uiState.value.copy(currency = AppSharedStorage.currency.value)
+        AppSharedStorage.currency
+            .onEach { currency -> _uiState.value = _uiState.value.copy(currency = currency) }
+            .launchIn(componentScope)
+    }
+
+    /** 设置页切换币种:落盘 + 通知所有订阅方 */
+    fun onCurrencyChange(currency: AppCurrency) {
+        AppSharedStorage.saveCurrency(currency)
+        _uiState.value = _uiState.value.copy(currency = currency)
     }
 
     fun onTypeChange(type: BookkeepingRecordType) {

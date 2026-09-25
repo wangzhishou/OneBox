@@ -1,5 +1,7 @@
 package com.wanbaohe.bookkeeping.screen.tab
 
+import com.shifenmiao.model.money.AppCurrency
+import com.shifenmiao.model.money.MoneyFormat
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.shifenmiao.theme.AppTheme
 
@@ -168,6 +170,7 @@ internal fun StatsTab(
             MonthlySummaryCard(
                 expenseCents = uiState.summary.expenseCents,
                 incomeCents  = uiState.summary.incomeCents,
+                currency     = uiState.currency,
             )
         }
 
@@ -186,13 +189,13 @@ internal fun StatsTab(
                     ) {
                         DonutExpenseChart(
                             slices      = donutSlices,
-                            centerText  = centsText(uiState.summary.expenseCents),
+                            centerText  = centsText(uiState.summary.expenseCents, uiState.currency),
                             chartSize   = 200.dp,
                             strokeWidth = 36.dp,
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    DonutLegend(breakdowns = breakdowns, palette = palette)
+                    DonutLegend(breakdowns = breakdowns, palette = palette, currency = uiState.currency)
                 }
             }
         }
@@ -212,13 +215,13 @@ internal fun StatsTab(
                     ) {
                         DonutExpenseChart(
                             slices      = incomeDonutSlices,
-                            centerText  = centsText(uiState.summary.incomeCents),
+                            centerText  = centsText(uiState.summary.incomeCents, uiState.currency),
                             chartSize   = 200.dp,
                             strokeWidth = 36.dp,
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    DonutLegend(breakdowns = incomeBreakdowns, palette = palette)
+                    DonutLegend(breakdowns = incomeBreakdowns, palette = palette, currency = uiState.currency)
                 }
             }
         }
@@ -238,9 +241,10 @@ internal fun StatsTab(
                             )
                         }
                         RankRow(
-                            rank    = index + 1,
-                            item    = item,
-                            color   = palette[item.colorIndex % palette.size],
+                            rank     = index + 1,
+                            item     = item,
+                            color    = palette[item.colorIndex % palette.size],
+                            currency = uiState.currency,
                         )
                     }
                 }
@@ -289,6 +293,7 @@ internal fun StatsTab(
 private fun MonthlySummaryCard(
     expenseCents: Long,
     incomeCents: Long,
+    currency: AppCurrency,
 ) {
     val netCents = incomeCents - expenseCents
 
@@ -300,24 +305,23 @@ private fun MonthlySummaryCard(
             SummaryMetricCard(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.bookkeeping_total_expense),
-                value = centsText(expenseCents),
+                value = centsText(expenseCents, currency),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTrendingDown,
                 tone = SummaryMetricTone.EXPENSE,
             )
             SummaryMetricCard(
                 modifier = Modifier.weight(1f),
                 label = stringResource(R.string.bookkeeping_total_income),
-                value = centsText(incomeCents),
+                value = centsText(incomeCents, currency),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTrendingUp,
                 tone = SummaryMetricTone.INCOME,
             )
         }
 
-        val balanceStr = (if (netCents < 0) "-" else "") + centsValueText(kotlin.math.abs(netCents))
         SummaryMetricCard(
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.bookkeeping_current_balance),
-            value = "¥$balanceStr",
+            value = MoneyFormat.amount(netCents, currency),
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAccountWallet,
             tone = SummaryMetricTone.NEUTRAL,
             compact = true,
@@ -454,6 +458,7 @@ private fun StatsSectionCard(
 private fun DonutLegend(
     breakdowns: List<CategoryBreakdownUi>,
     palette:    List<Color>,
+    currency:   AppCurrency,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         breakdowns.forEach { item ->
@@ -466,7 +471,7 @@ private fun DonutLegend(
                 Box(modifier = Modifier.size(10.dp).clip(CircleShape).background(color))
                 Text(item.name, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
                 Text(
-                    text       = centsText(item.amountCents),
+                    text       = centsText(item.amountCents, currency),
                     style      = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -488,9 +493,10 @@ private fun DonutLegend(
 
 @Composable
 private fun RankRow(
-    rank:  Int,
-    item:  CategoryBreakdownUi,
-    color: Color,
+    rank:     Int,
+    item:     CategoryBreakdownUi,
+    color:    Color,
+    currency: AppCurrency,
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue   = item.progress.coerceIn(0f, 1f),
@@ -529,7 +535,7 @@ private fun RankRow(
             // 分类名
             Text(item.name, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
             // 金额
-            Text(centsText(item.amountCents), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+            Text(centsText(item.amountCents, currency), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
             // 百分比
             Text(
                 text      = "${(item.progress * 100).toInt()}%",

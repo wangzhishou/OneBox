@@ -90,15 +90,15 @@ class QueryBookkeepingSummaryTool @Inject constructor(
                     appendMarkdownSection(textProvider.string(R.string.agent_tool_bookkeeping_section_summary)) {
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_expense),
-                            value = "¥${centsToYuanText(summary.expenseCents)}",
+                            value = centsToMoneyText(summary.expenseCents),
                         )
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_income),
-                            value = "¥${centsToYuanText(summary.incomeCents)}",
+                            value = centsToMoneyText(summary.incomeCents),
                         )
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_balance),
-                            value = "¥${centsToYuanText(summary.incomeCents - summary.expenseCents)}",
+                            value = centsToMoneyText(summary.incomeCents - summary.expenseCents),
                         )
                         appendMarkdownBullet(
                             label = textProvider.string(R.string.agent_tool_bookkeeping_label_record_count),
@@ -108,14 +108,14 @@ class QueryBookkeepingSummaryTool @Inject constructor(
                     if (summary.expenseByCategory.isNotEmpty()) {
                         appendMarkdownSection(textProvider.string(R.string.agent_tool_bookkeeping_section_expense_categories)) {
                             summary.expenseByCategory.take(10).forEach { item ->
-                                appendLine("- ${sanitizeMarkdownText(item.categoryName)} · ¥${centsToYuanText(item.amountCents)}")
+                                appendLine("- ${sanitizeMarkdownText(item.categoryName)} · ${centsToMoneyText(item.amountCents)}")
                             }
                         }
                     }
                     if (summary.incomeByCategory.isNotEmpty()) {
                         appendMarkdownSection(textProvider.string(R.string.agent_tool_bookkeeping_section_income_categories)) {
                             summary.incomeByCategory.take(10).forEach { item ->
-                                appendLine("- ${sanitizeMarkdownText(item.categoryName)} · ¥${centsToYuanText(item.amountCents)}")
+                                appendLine("- ${sanitizeMarkdownText(item.categoryName)} · ${centsToMoneyText(item.amountCents)}")
                             }
                         }
                     }
@@ -123,7 +123,7 @@ class QueryBookkeepingSummaryTool @Inject constructor(
                         appendMarkdownSection(textProvider.string(R.string.agent_tool_bookkeeping_section_recent_records)) {
                             recent.forEachIndexed { index, rec ->
                                 val editDeeplink = bookkeepingAddRecordDeeplink(rec.id)
-                                appendLine("${index + 1}. ${rec.happenedDate} · ${rec.type.displayName(textProvider)} · ¥${centsToYuanText(rec.amountCents)} · ${categoryNameOrDefault(rec.categoryName, textProvider)}")
+                                appendLine("${index + 1}. ${rec.happenedDate} · ${rec.type.displayName(textProvider)} · ${centsToMoneyText(rec.amountCents)} · ${categoryNameOrDefault(rec.categoryName, textProvider)}")
                                 rec.note?.let {
                                     appendLine("   - ${sanitizeMarkdownText(textProvider.string(R.string.agent_tool_bookkeeping_label_note))}：${sanitizeMarkdownText(it)}")
                                 }

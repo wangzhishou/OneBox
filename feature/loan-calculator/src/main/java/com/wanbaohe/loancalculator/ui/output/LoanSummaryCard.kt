@@ -1,5 +1,7 @@
 package com.wanbaohe.loancalculator.ui.output
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.loancalculator.R
 import com.wanbaohe.loancalculator.domain.LoanResult
-import com.wanbaohe.loancalculator.viewmodel.fenToYuanString
+import com.shifenmiao.storage.AppSharedStorage
+import com.wanbaohe.loancalculator.viewmodel.fenToMoneyString
 
 /**
  * 计算结果摘要卡片（贷款金额、月均还款、总利息、还款总额）
@@ -31,6 +34,7 @@ fun LoanSummaryCard(
     result: LoanResult,
     modifier: Modifier = Modifier,
 ) {
+    val currency by AppSharedStorage.currency.collectAsState()
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -48,7 +52,7 @@ fun LoanSummaryCard(
 
         // 月均还款（首月）
         Text(
-            text = result.firstPayment.fenToYuanString(),
+            text = result.firstPayment.fenToMoneyString(currency),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -68,11 +72,11 @@ fun LoanSummaryCard(
         ) {
             SummaryMetric(
                 label = stringResource(R.string.loan_result_total_interest),
-                value = result.totalInterest.fenToYuanString(),
+                value = result.totalInterest.fenToMoneyString(currency),
             )
             SummaryMetric(
                 label = stringResource(R.string.loan_result_total_repayment),
-                value = result.totalRepayment.fenToYuanString(),
+                value = result.totalRepayment.fenToMoneyString(currency),
                 alignEnd = true,
             )
         }

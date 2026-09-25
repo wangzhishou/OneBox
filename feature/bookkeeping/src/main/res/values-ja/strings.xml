@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">カテゴリを削除しました</string>
     <string name="bookkeeping_log_backup_restored">バックアップを復元しました</string>
     <string name="bookkeeping_log_csv_imported_count">%1$d件の記入をインポートしました</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$dカテゴリ、%2$d件の記入</string>
     <string name="bookkeeping_collapse_keypad">キーパッドを隠す</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">家計簿アシスタント</string>
     <string name="bookkeeping_ai_assist_prompt">あなたはユーザーの家計簿アシスタントです。自然言語で収入や支出を伝えられたら、add_bookkeeping_record で記録してください。</string>
     <string name="bookkeeping_ai_assist_fill_in">昼食に28かかった、食費として記録して</string>
+    <string name="bookkeeping_preference_section">環境設定</string>
+    <string name="bookkeeping_currency_title">通貨</string>
+    <string name="bookkeeping_currency_desc">家計簿とローン計算の金額に使用します</string>
 </resources>

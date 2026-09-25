@@ -1,5 +1,7 @@
 package com.shifenmiao.ai.agent.tool.builtin
 
+import com.shifenmiao.storage.AppSharedStorage
+import com.shifenmiao.model.money.MoneyFormat
 import com.shifenmiao.ai.R
 import com.shifenmiao.ai.agent.tool.AgentToolTextProvider
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordType
@@ -8,7 +10,12 @@ internal fun buildMarkdownLink(label: String, deeplink: String): String {
     return "[${sanitizeMarkdownText(label)}]($deeplink)"
 }
 
-internal fun centsToYuanText(amountCents: Long): String = "%.2f".format(amountCents / 100.0)
+/**
+ * 金额文案:符号/千分位/小数位跟随用户在记账里设置的币种;
+ * 同时固定走 [MoneyFormat](不再用 "%.2f".format,避免德语等逗号小数破坏 markdown 数字)。
+ */
+internal fun centsToMoneyText(amountCents: Long): String =
+    MoneyFormat.amount(amountCents, AppSharedStorage.currency.value)
 
 internal fun BookkeepingRecordType.displayName(textProvider: AgentToolTextProvider): String = when (this) {
     BookkeepingRecordType.EXPENSE -> textProvider.string(R.string.agent_tool_bookkeeping_type_expense)

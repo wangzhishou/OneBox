@@ -118,8 +118,8 @@
     <string name="bookkeeping_log_backup_restored">恢复了备份</string>
     <string name="bookkeeping_log_csv_imported_count">导入了 %1$d 条账目</string>
     <!-- ActivityLog descriptions -->
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">共 %1$d 类、%2$d 条账目</string>
     <!-- AddRecord keypad collapse / expand -->
@@ -180,4 +180,7 @@
     <string name="bookkeeping_cat_creditcard">信用卡还款</string>
     <string name="bookkeeping_cat_transfer_out">转账</string>
     <string name="bookkeeping_cat_excl_other">其他</string>
+    <string name="bookkeeping_preference_section">偏好设置</string>
+    <string name="bookkeeping_currency_title">币种</string>
+    <string name="bookkeeping_currency_desc">记账与贷款计算器中的金额单位</string>
 </resources>

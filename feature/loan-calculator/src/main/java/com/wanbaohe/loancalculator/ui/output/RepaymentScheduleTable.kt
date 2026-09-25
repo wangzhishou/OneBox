@@ -1,5 +1,7 @@
 package com.wanbaohe.loancalculator.ui.output
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -19,7 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.loancalculator.R
 import com.wanbaohe.loancalculator.domain.InstallmentItem
-import com.wanbaohe.loancalculator.viewmodel.fenToYuanString
+import com.shifenmiao.storage.AppSharedStorage
+import com.wanbaohe.loancalculator.viewmodel.fenToMoneyString
 
 /**
  * 还款计划表（5列：期次/月还款/本金/利息/剩余本金）。
@@ -89,6 +92,7 @@ private fun TableRow(
     item: InstallmentItem,
     bgColor: androidx.compose.ui.graphics.Color,
 ) {
+    val currency by AppSharedStorage.currency.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,10 +101,10 @@ private fun TableRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DataCell(text = "${item.month}", weight = 0.12f, fontWeight = FontWeight.Medium)
-        DataCell(text = item.payment.fenToYuanString(), weight = 0.22f)
-        DataCell(text = item.principal.fenToYuanString(), weight = 0.22f)
-        DataCell(text = item.interest.fenToYuanString(), weight = 0.22f)
-        DataCell(text = item.remaining.fenToYuanString(), weight = 0.22f)
+        DataCell(text = item.payment.fenToMoneyString(currency), weight = 0.22f)
+        DataCell(text = item.principal.fenToMoneyString(currency), weight = 0.22f)
+        DataCell(text = item.interest.fenToMoneyString(currency), weight = 0.22f)
+        DataCell(text = item.remaining.fenToMoneyString(currency), weight = 0.22f)
     }
 }
 

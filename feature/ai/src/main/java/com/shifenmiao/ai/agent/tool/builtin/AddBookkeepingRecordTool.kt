@@ -114,7 +114,7 @@ class AddBookkeepingRecordTool @Inject constructor(
             content = buildString {
                 appendLine("# ${sanitizeMarkdownText(title)}")
                 appendLine()
-                appendLine("- ${request.type.displayName(textProvider)} · ¥${request.amountText()} · ${sanitizeMarkdownText(request.categoryName)}")
+                appendLine("- ${request.type.displayName(textProvider)} · ${request.amountText()} · ${sanitizeMarkdownText(request.categoryName)}")
                 appendMarkdownBullet(
                     label = textProvider.string(R.string.agent_tool_bookkeeping_label_date),
                     value = request.date.toString(),
@@ -258,7 +258,7 @@ class AddBookkeepingRecordTool @Inject constructor(
                     successes.forEachIndexed { order, success ->
                         val request = originalRequests[success.index]
                         val editDeeplink = bookkeepingAddRecordDeeplink(success.recordId)
-                        appendLine("${order + 1}. ${request.date} · ${request.type.displayName(textProvider)} · ¥${request.amountText()} · ${sanitizeMarkdownText(request.categoryName)}")
+                        appendLine("${order + 1}. ${request.date} · ${request.type.displayName(textProvider)} · ${request.amountText()} · ${sanitizeMarkdownText(request.categoryName)}")
                         request.note?.let {
                             appendLine("   - ${sanitizeMarkdownText(textProvider.string(R.string.agent_tool_bookkeeping_label_note))}：${sanitizeMarkdownText(it)}")
                         }
@@ -313,5 +313,5 @@ class AddBookkeepingRecordTool @Inject constructor(
         )
     }
 
-    private fun ResolvedRecordRequest.amountText(): String = "%.2f".format(amountCents / 100.0)
+    private fun ResolvedRecordRequest.amountText(): String = centsToMoneyText(amountCents)
 }

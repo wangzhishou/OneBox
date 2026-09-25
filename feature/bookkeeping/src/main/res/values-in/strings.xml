@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">Menghapus kategori</string>
     <string name="bookkeeping_log_backup_restored">Cadangan dipulihkan</string>
     <string name="bookkeeping_log_csv_imported_count">Mengimpor %1$d entri</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d kategori, %2$d entri</string>
     <string name="bookkeeping_collapse_keypad">Sembunyikan papan ketik</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">Asisten Pembukuan</string>
     <string name="bookkeeping_ai_assist_prompt">Anda adalah asisten pembukuan pengguna. Saat pengguna mendeskripsikan pemasukan atau pengeluaran dalam bahasa alami, catat dengan add_bookkeeping_record.</string>
     <string name="bookkeeping_ai_assist_fill_in">Makan siang 28, catat sebagai pengeluaran makan</string>
+    <string name="bookkeeping_preference_section">Preferensi</string>
+    <string name="bookkeeping_currency_title">Mata Uang</string>
+    <string name="bookkeeping_currency_desc">Digunakan untuk jumlah di pembukuan dan kalkulator pinjaman</string>
 </resources>

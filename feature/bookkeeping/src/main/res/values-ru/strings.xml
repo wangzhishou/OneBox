@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">Категория удалена</string>
     <string name="bookkeeping_log_backup_restored">Резервная копия восстановлена</string>
     <string name="bookkeeping_log_csv_imported_count">Импортировано записей: %1$d</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">Категорий: %1$d, записей: %2$d</string>
     <string name="bookkeeping_collapse_keypad">Скрыть клавиатуру</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">Помощник по учёту</string>
     <string name="bookkeeping_ai_assist_prompt">Ты помощник по учёту пользователя. Когда пользователь описывает доходы или расходы, запиши через add_bookkeeping_record.</string>
     <string name="bookkeeping_ai_assist_fill_in">Обед стоил 28, запиши как расход на еду</string>
+    <string name="bookkeeping_preference_section">Настройки</string>
+    <string name="bookkeeping_currency_title">Валюта</string>
+    <string name="bookkeeping_currency_desc">Используется для сумм в учёте расходов и кредитном калькуляторе</string>
 </resources>

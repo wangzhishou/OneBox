@@ -113,8 +113,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">刪除分類</string>
     <string name="bookkeeping_log_backup_restored">還原了備份</string>
     <string name="bookkeeping_log_csv_imported_count">匯入了 %1$d 筆帳目</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">共 %1$d 類、%2$d 筆帳目</string>
     <string name="bookkeeping_collapse_keypad">收起鍵盤</string>
@@ -171,4 +171,7 @@
     <string name="bookkeeping_cat_creditcard">信用卡還款</string>
     <string name="bookkeeping_cat_transfer_out">轉帳</string>
     <string name="bookkeeping_cat_excl_other">其他</string>
+    <string name="bookkeeping_preference_section">偏好設定</string>
+    <string name="bookkeeping_currency_title">幣種</string>
+    <string name="bookkeeping_currency_desc">記帳與貸款計算器中的金額單位</string>
 </resources>

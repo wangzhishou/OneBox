@@ -1,5 +1,6 @@
 package com.wanbaohe.bookkeeping.component
 
+import com.shifenmiao.model.money.MoneyFormat
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordType
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordUi
 import com.wanbaohe.bookkeeping.model.BookkeepingUiState
@@ -15,10 +16,6 @@ import java.time.LocalDate
 internal class RecordEditor(
     private val service: BookkeepingService,
 ) {
-    companion object {
-        private const val MAX_DECIMAL_PLACES = 2
-    }
-
     fun startAdd(state: BookkeepingUiState, defaultCategoryId: String?): BookkeepingUiState {
         return state.copy(
             editingRecordId = null,
@@ -30,7 +27,7 @@ internal class RecordEditor(
     }
 
     fun startEdit(state: BookkeepingUiState, record: BookkeepingRecordUi, fallbackCategoryId: String?): BookkeepingUiState {
-        val amountStr = formatCentsToInput(record.amountCents)
+        val amountStr = MoneyFormat.inputText(record.amountCents, state.currency)
         return state.copy(
             editingRecordId = record.id,
             amountInput = amountStr,
@@ -51,21 +48,33 @@ internal class RecordEditor(
         state.copy(selectedDate = date.coerceAtMost(LocalDate.now()))
 
     fun changeAmount(state: BookkeepingUiState, raw: String): BookkeepingUiState {
-        val normalized = raw.filter { it.isDigit() || it == '.' }
-        val dotCount = normalized.count { it == '.' }
-        val safe = if (dotCount > 1) normalized.dropLast(1) else normalized
-        val finalValue = if (safe == ".") "0." else safe
+        val maxDecimals = state.currency.fractionDigits
+        // 零小数币种(KRW/IDR/JPY)不接受小数点
+        val normalized = if (maxDecimals == 0) raw.filter { it.isDigit() } else raw.filter { it.isDigit() || it == '.' }
+        val dotIndex = normalized.indexOf('.')
+        val safe = when {
+            dotIndex < 0 -> normalized
+            else -> normalized.substring(0, dotIndex + 1) +
+                normalized.substring(dotIndex + 1).replace(".", "").take(maxDecimals)
+        }
+        val finalValue = when {
+            safe == "." -> "0."
+            safe.startsWith(".") -> "0$safe"
+            else -> safe
+        }
         return state.copy(amountInput = finalValue)
     }
 
     fun appendDigit(state: BookkeepingUiState, digit: Char): BookkeepingUiState {
         val current = state.amountInput
+        // 零小数币种(KRW/IDR/JPY)不接受小数点
+        if (digit == '.' && state.currency.fractionDigits == 0) return state
         if (digit == '.' && current.contains('.')) return state
         if (digit == '.' && current.isEmpty()) return state.copy(amountInput = "0.")
         if (digit == '0' && current == "0") return state
         if (digit != '.' && current == "0") return state.copy(amountInput = digit.toString())
         val dotIndex = current.indexOf('.')
-        if (dotIndex >= 0 && current.length - dotIndex - 1 >= MAX_DECIMAL_PLACES) return state
+        if (dotIndex >= 0 && current.length - dotIndex - 1 >= state.currency.fractionDigits) return state
         return state.copy(amountInput = current + digit)
     }
 
@@ -93,11 +102,4 @@ internal class RecordEditor(
         )
     }
 
-    private fun formatCentsToInput(cents: Long): String = if (cents % 100 == 0L) {
-        (cents / 100).toString()
-    } else {
-        val major = cents / 100
-        val minor = cents % 100
-        "$major.${minor.toString().padStart(2, '0')}"
-    }
 }

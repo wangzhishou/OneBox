@@ -1,5 +1,7 @@
 package com.wanbaohe.bookkeeping.screen.util
 
+import com.shifenmiao.model.money.AppCurrency
+import com.shifenmiao.model.money.MoneyFormat
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordType
 import com.wanbaohe.bookkeeping.model.BookkeepingRecordUi
 import java.time.DayOfWeek
@@ -8,26 +10,17 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-/** 将分（cents）格式化为带符号的货币字符串，如 ¥12.50 */
-internal fun centsText(cents: Long): String {
-    val sign = if (cents < 0) "-" else ""
-    val absolute = kotlin.math.abs(cents)
-    val major = absolute / 100
-    val minor = absolute % 100
-    return "${sign}¥${major}.${minor.toString().padStart(2, '0')}"
-}
+/** 带币种符号的金额,如 ¥12.50 / ₩12,300(币种与小数位由调用方传入的 [currency] 决定) */
+internal fun centsText(cents: Long, currency: AppCurrency): String =
+    MoneyFormat.amount(cents, currency)
 
-/** 仅格式化绝对值，不带货币符号也不带正负号，如 12.50 */
-internal fun centsValueText(cents: Long): String {
-    val absolute = kotlin.math.abs(cents)
-    val major = absolute / 100
-    val minor = absolute % 100
-    return "${major}.${minor.toString().padStart(2, '0')}"
-}
+/** 仅格式化绝对值,不带货币符号也不带正负号,如 12.50 */
+internal fun centsValueText(cents: Long, currency: AppCurrency): String =
+    MoneyFormat.value(cents, currency)
 
 /** 根据账单类型加上 +/- 前缀 */
-internal fun signedAmount(record: BookkeepingRecordUi): String {
-    val value = centsValueText(record.amountCents)
+internal fun signedAmount(record: BookkeepingRecordUi, currency: AppCurrency): String {
+    val value = centsValueText(record.amountCents, currency)
     return when (record.type) {
         BookkeepingRecordType.INCOME   -> "+$value"
         BookkeepingRecordType.EXPENSE  -> "-$value"
@@ -55,10 +48,13 @@ internal fun daySectionTitle(
         today.minusDays(1) -> yesterdayLabel
         else               -> dayLabels[date.dayOfWeek] ?: date.dayOfWeek.name
     }
-    return "${date.format(DateTimeFormatter.ofPattern("M月d日"))} $suffix"
+    // 跟随语言习惯,不要在非中文语种下输出 "M月d日"
+    return "${date.format(LOCALIZED_MONTH_DAY)} $suffix"
 }
 
 /** 账单行副标题：时间（+ 备注） */
+private val LOCALIZED_MONTH_DAY = DateTimeFormatter.ofPattern("MMM d", java.util.Locale.getDefault())
+
 internal fun recordLineSubtitle(record: BookkeepingRecordUi): String {
     val time = Instant.ofEpochMilli(record.happenedAt)
         .atZone(ZoneId.systemDefault())

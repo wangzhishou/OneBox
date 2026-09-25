@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">Kategori silindi</string>
     <string name="bookkeeping_log_backup_restored">Yedek geri yüklendi</string>
     <string name="bookkeeping_log_csv_imported_count">%1$d kayıt içe aktarıldı</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d kategori, %2$d kayıt</string>
     <string name="bookkeeping_collapse_keypad">Klavyeyi gizle</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">Muhasebe Asistanı</string>
     <string name="bookkeeping_ai_assist_prompt">Kullanıcının muhasebe asistanısın. Doğal dille gelir veya gider anlatıldığında add_bookkeeping_record ile kaydet.</string>
     <string name="bookkeeping_ai_assist_fill_in">Öğle yemeği 28 tuttu, yemek gideri olarak kaydet</string>
+    <string name="bookkeeping_preference_section">Tercihler</string>
+    <string name="bookkeeping_currency_title">Para Birimi</string>
+    <string name="bookkeeping_currency_desc">Gelir-gider ve kredi hesaplayıcıdaki tutarlar için kullanılır</string>
 </resources>

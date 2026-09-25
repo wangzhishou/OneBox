@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">श्रेणी हटाई गई</string>
     <string name="bookkeeping_log_backup_restored">बैकअप पुनर्स्थापित किया गया</string>
     <string name="bookkeeping_log_csv_imported_count">%1$d प्रविष्टियाँ आयात की गईं</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d श्रेणियाँ, %2$d प्रविष्टियाँ</string>
     <string name="bookkeeping_collapse_keypad">कीपैड छिपाएं</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">बहीखाता सहायक</string>
     <string name="bookkeeping_ai_assist_prompt">आप उपयोगकर्ता के बहीखाता सहायक हैं। जब उपयोगकर्ता स्वाभाविक भाषा में आय या व्यय बताए, तो add_bookkeeping_record से दर्ज करें।</string>
     <string name="bookkeeping_ai_assist_fill_in">दोपहर के भोजन में 28 खर्च हुए, इसे भोजन व्यय के रूप में दर्ज करें</string>
+    <string name="bookkeeping_preference_section">प्राथमिकताएँ</string>
+    <string name="bookkeeping_currency_title">मुद्रा</string>
+    <string name="bookkeeping_currency_desc">हिसाब-किताब और लोन कैलकुलेटर की राशियों के लिए</string>
 </resources>

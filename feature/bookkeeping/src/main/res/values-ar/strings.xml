@@ -113,8 +113,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">تم حذف الفئة</string>
     <string name="bookkeeping_log_backup_restored">تمت استعادة النسخة الاحتياطية</string>
     <string name="bookkeeping_log_csv_imported_count">تم استيراد %1$d قيود</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d فئات، %2$d قيود</string>
     <string name="bookkeeping_collapse_keypad">إخفاء لوحة المفاتيح</string>
@@ -171,4 +171,7 @@
     <string name="bookkeeping_cat_creditcard">سداد بطاقة الائتمان</string>
     <string name="bookkeeping_cat_transfer_out">تحويل</string>
     <string name="bookkeeping_cat_excl_other">أخرى</string>
+    <string name="bookkeeping_preference_section">التفضيلات</string>
+    <string name="bookkeeping_currency_title">العملة</string>
+    <string name="bookkeeping_currency_desc">تُستخدم لمبالغ دفتر الحسابات وحاسبة القروض</string>
 </resources>

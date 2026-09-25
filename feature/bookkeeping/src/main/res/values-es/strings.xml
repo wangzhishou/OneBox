@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">Categoría eliminada</string>
     <string name="bookkeeping_log_backup_restored">Copia de seguridad restaurada</string>
     <string name="bookkeeping_log_csv_imported_count">%1$d entradas importadas</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">%1$d categorías, %2$d entradas</string>
     <string name="bookkeeping_collapse_keypad">Ocultar teclado</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">Asistente de contabilidad</string>
     <string name="bookkeeping_ai_assist_prompt">Eres el asistente de contabilidad del usuario. Cuando describa ingresos o gastos en lenguaje natural, regístralos con add_bookkeeping_record. Después confirma brevemente importe, categoría y tipo.</string>
     <string name="bookkeeping_ai_assist_fill_in">El almuerzo costó 28, regístralo como gasto de comida</string>
+    <string name="bookkeeping_preference_section">Preferencias</string>
+    <string name="bookkeeping_currency_title">Moneda</string>
+    <string name="bookkeeping_currency_desc">Se usa para los importes en contabilidad y en la calculadora de préstamos</string>
 </resources>

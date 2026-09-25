@@ -103,8 +103,8 @@
     <string name="bookkeeping_log_category_deleted_fallback">카테고리 삭제됨</string>
     <string name="bookkeeping_log_backup_restored">백업 복원됨</string>
     <string name="bookkeeping_log_csv_imported_count">%1$d개 항목 가져옴</string>
-    <string name="bookkeeping_log_record_desc_full">%1$s · ¥%2$s · %3$s · %4$s · %5$s</string>
-    <string name="bookkeeping_log_record_desc_no_note">%1$s · ¥%2$s · %3$s · %4$s</string>
+    <string name="bookkeeping_log_record_desc_full">%1$s · %2$s · %3$s · %4$s · %5$s</string>
+    <string name="bookkeeping_log_record_desc_no_note">%1$s · %2$s · %3$s · %4$s</string>
     <string name="bookkeeping_log_category_renamed_desc">%1$s → %2$s</string>
     <string name="bookkeeping_log_backup_restored_desc">카테고리 %1$d개, 항목 %2$d개</string>
     <string name="bookkeeping_collapse_keypad">키패드 숨기기</string>
@@ -172,4 +172,7 @@
     <string name="bookkeeping_ai_assist_title">가계부 도우미</string>
     <string name="bookkeeping_ai_assist_prompt">당신은 사용자의 가계부 도우미입니다. 사용자가 자연어로 수입/지출을 말하면 add_bookkeeping_record로 기록하세요.</string>
     <string name="bookkeeping_ai_assist_fill_in">점심 28 썼어, 식비로 기록해 줘</string>
+    <string name="bookkeeping_preference_section">환경 설정</string>
+    <string name="bookkeeping_currency_title">통화</string>
+    <string name="bookkeeping_currency_desc">가계부와 대출 계산기의 금액에 사용됩니다</string>
 </resources>
