@@ -33,6 +33,8 @@
     <string name="chess_resign_result">تم الاستسلام</string>
     <string name="chess_resign_confirm_title">الاستسلام؟</string>
     <string name="chess_resign_confirm_message">ستخسر هذه المباراة. هل تريد المتابعة؟</string>
+    <string name="chess_restart_confirm_title">إعادة بدء اللعبة؟</string>
+    <string name="chess_restart_confirm_message">سيتم حفظ اللعبة الحالية في المكتبة وبدء لعبة جديدة. هل تريد المتابعة؟</string>
     <string name="chess_start_action">ابدأ</string>
     <string name="chess_resume_action">استئناف</string>
     <string name="chess_game_over_review">مراجعة</string>

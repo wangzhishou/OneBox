@@ -252,12 +252,15 @@
     <string name="xiangqi_resign">Rendirse</string>
     <string name="xiangqi_resign_confirm_title">¿Confirmar rendición?</string>
     <string name="xiangqi_resign_confirm_message">Perderás esta partida. ¿Seguro que quieres rendirte?</string>
+    <string name="xiangqi_restart_confirm_title">¿Reiniciar partida?</string>
+    <string name="xiangqi_restart_confirm_message">La partida actual se guardará en la biblioteca y se iniciará una nueva. ¿Continuar?</string>
+    <string name="xiangqi_game_over_back">Volver</string>
     <string name="xiangqi_opponent_resigned">El oponente se rindió</string>
     <string name="xiangqi_resign_result">Rendido</string>
     <string name="xiangqi_rename_game">Renombrar</string>
     <string name="xiangqi_rename_hint">Introduce el nombre de la partida</string>
     <string name="xiangqi_search_ai_model">Modelo de IA</string>
-    <string name="xiangqi_search_prompt">Indicación de Xiangqi</string>
+    <string name="xiangqi_search_prompt">Prompt de Xiangqi</string>
     <string name="xiangqi_tts_test_text">Prueba de síntesis de voz</string>
     <string name="xiangqi_signaling_disconnected">Conexión perdida, por favor reanuda</string>
     <string name="xiangqi_llm_history_none">Ninguno</string>

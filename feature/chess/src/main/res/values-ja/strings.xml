@@ -33,6 +33,8 @@
     <string name="chess_resign_result">投了しました</string>
     <string name="chess_resign_confirm_title">投了しますか？</string>
     <string name="chess_resign_confirm_message">この対局に負けることになります。続けますか？</string>
+    <string name="chess_restart_confirm_title">ゲームを再開しますか？</string>
+    <string name="chess_restart_confirm_message">現在の対局は棋譜に保存され、新しい対局を開始します。続けますか？</string>
     <string name="chess_start_action">開始</string>
     <string name="chess_resume_action">続行</string>
     <string name="chess_game_over_review">検討</string>

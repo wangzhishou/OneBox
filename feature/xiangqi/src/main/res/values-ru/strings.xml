@@ -256,6 +256,9 @@
     <string name="xiangqi_resign">Сдаться</string>
     <string name="xiangqi_resign_confirm_title">Подтвердить сдачу?</string>
     <string name="xiangqi_resign_confirm_message">Вы проиграете эту игру. Вы уверены, что хотите сдаться?</string>
+    <string name="xiangqi_restart_confirm_title">Начать партию заново?</string>
+    <string name="xiangqi_restart_confirm_message">Текущая партия будет сохранена в библиотеку и начнётся новая партия. Продолжить?</string>
+    <string name="xiangqi_game_over_back">Назад</string>
     <string name="xiangqi_opponent_resigned">Противник сдался</string>
     <string name="xiangqi_resign_result">Сдался</string>
     <string name="xiangqi_rename_game">Переименовать</string>

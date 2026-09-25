@@ -250,6 +250,9 @@
     <string name="xiangqi_resign">認輸</string>
     <string name="xiangqi_resign_confirm_title">確認認輸？</string>
     <string name="xiangqi_resign_confirm_message">認輸後本局將判負，確定要認輸嗎？</string>
+    <string name="xiangqi_restart_confirm_title">重新開局?</string>
+    <string name="xiangqi_restart_confirm_message">目前對局會保存到棋庫,並開啟一局新對局。確定重新開局嗎?</string>
+    <string name="xiangqi_game_over_back">返回</string>
     <string name="xiangqi_opponent_resigned">對手已認輸</string>
     <string name="xiangqi_resign_result">認輸</string>
     <string name="xiangqi_rename_game">重新命名</string>

@@ -250,6 +250,9 @@
     <string name="xiangqi_resign">기권</string>
     <string name="xiangqi_resign_confirm_title">기권을 확인하시겠습니까?</string>
     <string name="xiangqi_resign_confirm_message">이 게임에서 패배하게 됩니다. 기권하시겠습니까?</string>
+    <string name="xiangqi_restart_confirm_title">게임을 다시 시작하시겠습니까?</string>
+    <string name="xiangqi_restart_confirm_message">현재 대국은 기보함에 저장되고 새 대국이 시작됩니다. 계속하시겠습니까?</string>
+    <string name="xiangqi_game_over_back">뒤로</string>
     <string name="xiangqi_opponent_resigned">상대방이 기권했습니다</string>
     <string name="xiangqi_resign_result">기권함</string>
     <string name="xiangqi_rename_game">이름 바꾸기</string>

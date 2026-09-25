@@ -250,6 +250,9 @@
     <string name="xiangqi_resign">Menyerah</string>
     <string name="xiangqi_resign_confirm_title">Konfirmasi menyerah?</string>
     <string name="xiangqi_resign_confirm_message">Anda akan kalah dalam permainan ini. Anda yakin ingin menyerah?</string>
+    <string name="xiangqi_restart_confirm_title">Mulai ulang permainan?</string>
+    <string name="xiangqi_restart_confirm_message">Permainan saat ini akan disimpan ke pustaka dan permainan baru akan dimulai. Lanjutkan?</string>
+    <string name="xiangqi_game_over_back">Kembali</string>
     <string name="xiangqi_opponent_resigned">Lawan menyerah</string>
     <string name="xiangqi_resign_result">Menyerah</string>
     <string name="xiangqi_rename_game">Ubah nama</string>

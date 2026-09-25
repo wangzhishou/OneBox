@@ -33,6 +33,8 @@
     <string name="gomoku_resign_result">Partida encerrada por desistência</string>
     <string name="gomoku_resign_confirm_title">Desistir?</string>
     <string name="gomoku_resign_confirm_message">Você perderá esta partida. Deseja continuar?</string>
+    <string name="gomoku_restart_confirm_title">Reiniciar o jogo?</string>
+    <string name="gomoku_restart_confirm_message">O jogo atual será salvo na biblioteca e um novo jogo será iniciado. Continuar?</string>
     <string name="gomoku_start_action">Iniciar</string>
     <string name="gomoku_resume_action">Continuar</string>
     <string name="gomoku_game_over_review">Ver replay</string>

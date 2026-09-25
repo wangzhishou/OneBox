@@ -252,6 +252,9 @@
     <string name="xiangqi_resign">त्यागें</string>
     <string name="xiangqi_resign_confirm_title">त्याग की पुष्टि करें?</string>
     <string name="xiangqi_resign_confirm_message">आप यह खेल हार जाएंगे। क्या आप वाकई त्यागना चाहते हैं?</string>
+    <string name="xiangqi_restart_confirm_title">खेल फिर से शुरू करें?</string>
+    <string name="xiangqi_restart_confirm_message">वर्तमान खेल लाइब्रेरी में सहेज लिया जाएगा और नया खेल शुरू होगा। जारी रखें?</string>
+    <string name="xiangqi_game_over_back">वापस</string>
     <string name="xiangqi_opponent_resigned">प्रतिद्वंद्वी ने त्याग दिया</string>
     <string name="xiangqi_resign_result">त्याग दिया गया</string>
     <string name="xiangqi_rename_game">नाम बदलें</string>

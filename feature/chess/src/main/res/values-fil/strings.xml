@@ -33,6 +33,8 @@
     <string name="chess_resign_result">Natapos ang laro sa pagsuko</string>
     <string name="chess_resign_confirm_title">Sumuko?</string>
     <string name="chess_resign_confirm_message">Matatalo ka sa larong ito. Magpatuloy?</string>
+    <string name="chess_restart_confirm_title">Muling simulan ang laro?</string>
+    <string name="chess_restart_confirm_message">Isesave sa library ang kasalukuyang laro at magsisimula ng bagong laro. Magpatuloy?</string>
     <string name="chess_start_action">Simulan</string>
     <string name="chess_resume_action">Ipagpatuloy</string>
     <string name="chess_game_over_review">Suriin</string>

@@ -33,6 +33,8 @@
     <string name="gomoku_resign_result">Permainan berakhir karena menyerah</string>
     <string name="gomoku_resign_confirm_title">Menyerah?</string>
     <string name="gomoku_resign_confirm_message">Anda akan kalah dalam permainan ini. Lanjutkan?</string>
+    <string name="gomoku_restart_confirm_title">Mulai ulang permainan?</string>
+    <string name="gomoku_restart_confirm_message">Permainan saat ini akan disimpan ke pustaka dan permainan baru akan dimulai. Lanjutkan?</string>
     <string name="gomoku_start_action">Mulai</string>
     <string name="gomoku_resume_action">Lanjutkan</string>
     <string name="gomoku_game_over_review">Tinjau</string>

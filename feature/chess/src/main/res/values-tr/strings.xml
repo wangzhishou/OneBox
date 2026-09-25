@@ -33,6 +33,8 @@
     <string name="chess_resign_result">Oyun teslim ile sona erdi</string>
     <string name="chess_resign_confirm_title">Teslim olunsun mu?</string>
     <string name="chess_resign_confirm_message">Bu oyunu kaybedeceksiniz. Devam etmek istiyor musunuz?</string>
+    <string name="chess_restart_confirm_title">Oyun yeniden başlatılsın mı?</string>
+    <string name="chess_restart_confirm_message">Mevcut oyun kütüphaneye kaydedilecek ve yeni bir oyun başlayacak. Devam edilsin mi?</string>
     <string name="chess_start_action">Başlat</string>
     <string name="chess_resume_action">Devam et</string>
     <string name="chess_game_over_review">İncele</string>

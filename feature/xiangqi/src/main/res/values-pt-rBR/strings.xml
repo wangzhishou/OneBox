@@ -252,6 +252,9 @@
     <string name="xiangqi_resign">Desistir</string>
     <string name="xiangqi_resign_confirm_title">Confirmar desistência?</string>
     <string name="xiangqi_resign_confirm_message">Você perderá este jogo. Tem certeza de que deseja desistir?</string>
+    <string name="xiangqi_restart_confirm_title">Reiniciar o jogo?</string>
+    <string name="xiangqi_restart_confirm_message">O jogo atual será salvo na biblioteca e um novo jogo será iniciado. Continuar?</string>
+    <string name="xiangqi_game_over_back">Voltar</string>
     <string name="xiangqi_opponent_resigned">Oponente desistiu</string>
     <string name="xiangqi_resign_result">Desistiu</string>
     <string name="xiangqi_rename_game">Renomear</string>

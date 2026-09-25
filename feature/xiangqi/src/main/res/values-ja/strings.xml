@@ -250,6 +250,9 @@
     <string name="xiangqi_resign">投了</string>
     <string name="xiangqi_resign_confirm_title">投了しますか？</string>
     <string name="xiangqi_resign_confirm_message">このゲームに負けます。投了してもよろしいですか？</string>
+    <string name="xiangqi_restart_confirm_title">ゲームを再開しますか？</string>
+    <string name="xiangqi_restart_confirm_message">現在の対局は棋譜に保存され、新しい対局を開始します。続けますか？</string>
+    <string name="xiangqi_game_over_back">戻る</string>
     <string name="xiangqi_opponent_resigned">対戦相手が投了しました</string>
     <string name="xiangqi_resign_result">投了しました</string>
     <string name="xiangqi_rename_game">名前を変更</string>

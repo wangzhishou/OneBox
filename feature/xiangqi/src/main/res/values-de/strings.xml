@@ -252,6 +252,9 @@
     <string name="xiangqi_resign">Aufgeben</string>
     <string name="xiangqi_resign_confirm_title">Aufgeben bestätigen?</string>
     <string name="xiangqi_resign_confirm_message">Sie verlieren dieses Spiel. Möchten Sie wirklich aufgeben?</string>
+    <string name="xiangqi_restart_confirm_title">Neues Spiel starten?</string>
+    <string name="xiangqi_restart_confirm_message">Das aktuelle Spiel wird in der Bibliothek gespeichert und ein neues Spiel gestartet. Fortfahren?</string>
+    <string name="xiangqi_game_over_back">Zurück</string>
     <string name="xiangqi_opponent_resigned">Gegner hat aufgegeben</string>
     <string name="xiangqi_resign_result">Aufgegeben</string>
     <string name="xiangqi_rename_game">Umbenennen</string>

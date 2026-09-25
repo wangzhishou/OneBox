@@ -33,6 +33,8 @@
     <string name="gomoku_resign_result">Партия завершена сдачей</string>
     <string name="gomoku_resign_confirm_title">Сдаться?</string>
     <string name="gomoku_resign_confirm_message">Вы проиграете эту партию. Продолжить?</string>
+    <string name="gomoku_restart_confirm_title">Начать партию заново?</string>
+    <string name="gomoku_restart_confirm_message">Текущая партия будет сохранена в библиотеку и начнётся новая партия. Продолжить?</string>
     <string name="gomoku_start_action">Начать</string>
     <string name="gomoku_resume_action">Продолжить</string>
     <string name="gomoku_game_over_review">Разбор</string>

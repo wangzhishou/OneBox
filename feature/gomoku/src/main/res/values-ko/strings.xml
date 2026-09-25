@@ -33,6 +33,8 @@
     <string name="gomoku_resign_result">기권으로 종료</string>
     <string name="gomoku_resign_confirm_title">기권하시겠습니까?</string>
     <string name="gomoku_resign_confirm_message">이 게임에서 패배하게 됩니다. 계속하시겠습니까?</string>
+    <string name="gomoku_restart_confirm_title">게임을 다시 시작하시겠습니까?</string>
+    <string name="gomoku_restart_confirm_message">현재 대국은 기보함에 저장되고 새 대국이 시작됩니다. 계속하시겠습니까?</string>
     <string name="gomoku_start_action">시작</string>
     <string name="gomoku_resume_action">계속</string>
     <string name="gomoku_game_over_review">복기</string>

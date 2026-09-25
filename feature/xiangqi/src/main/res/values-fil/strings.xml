@@ -251,6 +251,9 @@
     <string name="xiangqi_resign">Sumuko</string>
     <string name="xiangqi_resign_confirm_title">Kumpirmahin ang pagsuko?</string>
     <string name="xiangqi_resign_confirm_message">Matatalo ka sa larong ito. Sigurado ka bang gusto mong sumuko?</string>
+    <string name="xiangqi_restart_confirm_title">Muling simulan ang laro?</string>
+    <string name="xiangqi_restart_confirm_message">Isesave sa library ang kasalukuyang laro at magsisimula ng bagong laro. Magpatuloy?</string>
+    <string name="xiangqi_game_over_back">Bumalik</string>
     <string name="xiangqi_opponent_resigned">Sumuko ang kalaban</string>
     <string name="xiangqi_resign_result">Sumuko na</string>
     <string name="xiangqi_rename_game">Palitan ang pangalan</string>

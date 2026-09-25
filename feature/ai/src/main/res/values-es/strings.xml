@@ -40,7 +40,7 @@
     <string name="agent_tool_pick_files_failed">Error de la herramienta pick_files: %1$s</string>
     <string name="agent_tool_pick_folder_title">Seleccionar carpeta</string>
     <string name="agent_tool_pick_folder_summary">Permitir que el usuario seleccione un directorio de trabajo mediante el selector de carpetas del sistema</string>
-    <string name="agent_tool_pick_folder_param_message">Indicación que explica por qué es necesario seleccionar una carpeta (opcional).</string>
+    <string name="agent_tool_pick_folder_param_message">Prompt que explica por qué es necesario seleccionar una carpeta (opcional).</string>
     <string name="agent_tool_pick_folder_failed">La herramienta pick_folder falló: %1$s</string>
     <string name="agent_tool_ask_user_title">Preguntar al usuario</string>
     <string name="agent_tool_ask_user_summary">Mostrar preguntas estructuradas al usuario y esperar respuestas antes de continuar</string>

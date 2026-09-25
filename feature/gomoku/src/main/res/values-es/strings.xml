@@ -33,6 +33,8 @@
     <string name="gomoku_resign_result">Partida abandonada</string>
     <string name="gomoku_resign_confirm_title">¿Rendirse?</string>
     <string name="gomoku_resign_confirm_message">Perderás esta partida. ¿Continuar?</string>
+    <string name="gomoku_restart_confirm_title">¿Reiniciar partida?</string>
+    <string name="gomoku_restart_confirm_message">La partida actual se guardará en la biblioteca y se iniciará una nueva. ¿Continuar?</string>
     <string name="gomoku_start_action">Iniciar</string>
     <string name="gomoku_resume_action">Continuar</string>
     <string name="gomoku_game_over_review">Revisar</string>

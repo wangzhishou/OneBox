@@ -260,6 +260,9 @@
     <string name="xiangqi_resign">الاستسلام</string>
     <string name="xiangqi_resign_confirm_title">تأكيد الاستسلام؟</string>
     <string name="xiangqi_resign_confirm_message">ستخسر هذه المباراة. هل أنت متأكد من الاستسلام؟</string>
+    <string name="xiangqi_restart_confirm_title">إعادة بدء اللعبة؟</string>
+    <string name="xiangqi_restart_confirm_message">سيتم حفظ اللعبة الحالية في المكتبة وبدء لعبة جديدة. هل تريد المتابعة؟</string>
+    <string name="xiangqi_game_over_back">رجوع</string>
     <string name="xiangqi_opponent_resigned">استسلم المنافس</string>
     <string name="xiangqi_resign_result">استسلمت</string>
     <string name="xiangqi_rename_game">إعادة تسمية</string>

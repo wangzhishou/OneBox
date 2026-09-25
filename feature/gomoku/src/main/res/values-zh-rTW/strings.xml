@@ -33,6 +33,8 @@
     <string name="gomoku_resign_result">認輸</string>
     <string name="gomoku_resign_confirm_title">認輸?</string>
     <string name="gomoku_resign_confirm_message">認輸後本局判負,確定認輸嗎?</string>
+    <string name="gomoku_restart_confirm_title">重新開局?</string>
+    <string name="gomoku_restart_confirm_message">目前對局會保存到棋庫,並開啟一局新對局。確定重新開局嗎?</string>
     <string name="gomoku_start_action">開始</string>
     <string name="gomoku_resume_action">繼續</string>
     <string name="gomoku_game_over_review">復盤</string>
