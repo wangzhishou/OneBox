@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">حاسبة القروض</string>
+    <string name="loan_calc_amount_label">مبلغ القرض ($)</string>
+    <string name="loan_calc_amount_hint">يرجى إدخال المبلغ.</string>
+    <string name="loan_calc_term_label">مدة القرض</string>
+    <string name="loan_calc_term_hint">اختيار</string>
+    <string name="loan_calc_rate_label">معدل الفائدة السنوي (%)</string>
+    <string name="loan_calc_rate_hint">أدخل معدل الفائدة السنوي</string>
+    <string name="loan_calc_method_label">طريقة السداد</string>
+    <string name="loan_calc_method_hint">اختيار</string>
+    <string name="loan_calc_start">بدء الحساب</string>
+    <string name="loan_calc_cancel">إلغاء</string>
+    <string name="loan_method_equal_installment">الأقساط المتساوية</string>
+    <string name="loan_method_equal_installment_desc">القسط الشهري والقسط الأساسي والفائدة</string>
+    <string name="loan_method_equal_payment">الدفعات المتساوية</string>
+    <string name="loan_method_equal_payment_desc">القسط الشهري ثابت، ويزيد أصل الدين وتنخفض الفائدة شهرياً</string>
+    <string name="loan_method_equal_principal">أصل الدين المتساوي</string>
+    <string name="loan_method_equal_principal_desc">ينخفض القسط الشهري تدريجياً، مع ثبات أصل الدين شهرياً وانخفاض الفائدة</string>
+    <string name="loan_method_interest_first">الفائدة أولاً</string>
+    <string name="loan_method_interest_first_desc">فائدة شهرية ثابتة وسداد كامل أصل الدين في النهاية</string>
+    <string name="loan_result_monthly_payment">متوسط السداد الشهري</string>
+    <string name="loan_result_total_interest">إجمالي الفائدة</string>
+    <string name="loan_result_total_repayment">إجمالي السداد</string>
+    <string name="loan_result_schedule_title">خطة السداد</string>
+    <string name="loan_result_month">الفترة</string>
+    <string name="loan_result_monthly_col">سداد الشهر</string>
+    <string name="loan_result_principal_col">أصل الدين</string>
+    <string name="loan_result_interest_col">الفائدة</string>
+    <string name="loan_result_remaining_col">أصل الدين المتبقي</string>
+    <string name="loan_input_error_amount">يرجى إدخال مبلغ قرض صالح</string>
+    <string name="loan_input_error_term">يرجى تحديد مدة القرض</string>
+    <string name="loan_input_error_rate">أدخل معدل فائدة سنوياً صالحاً</string>
+    <string name="loan_input_error_method">يرجى اختيار طريقة السداد.</string>
+    <string name="loan_term_months">%1$d أشهر</string>
+    <string name="loan_term_years">%1$d سنوات (%2$d أشهر)</string>
+    <string name="loan_term_picker_title">اختيار مدة القرض</string>
+</resources>

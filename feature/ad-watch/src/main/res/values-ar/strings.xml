@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">مشاهدة الإعلانات</string>
+    <string name="ad_watch_headline_1">ما الذي تبيعه العلامات التجارية الكبرى فعلاً؟</string>
+    <string name="ad_watch_headline_2">كيف تبدو الإعلانات من الطراز الرفيع حقاً؟</string>
+    <string name="ad_watch_headline_3">15 ثانية تقدّم فيها العلامات التجارية أفضل ما لديها</string>
+    <string name="ad_watch_headline_4">هم يدفعون مقابل نظرتك، وأنت تكسب النقاط</string>
+    <string name="ad_watch_headline_5">المعلنون يتنافسون — ومقعدك في الصف الأول مجاناً</string>
+    <string name="ad_watch_subtitle">شاهد إعلاناً لمدة 15 ثانية واكسب %1$d نقاط</string>
+    <string name="ad_watch_cta">شاهد الإعلان · +%1$d نقطة</string>
+    <string name="ad_watch_remaining">بقي %1$d من %2$d اليوم</string>
+    <string name="ad_watch_daily_limit_reached">بلغت الحد اليومي، عُد غداً</string>
+    <string name="ad_watch_loading">جارٍ تحميل الإعلان…</string>
+    <string name="ad_watch_load_failed">فشل تحميل الإعلان</string>
+    <string name="ad_watch_retry">إعادة المحاولة</string>
+    <string name="ad_watch_ad_not_ready">الإعلان غير جاهز بعد، حاول مرة أخرى لاحقاً</string>
+</resources>

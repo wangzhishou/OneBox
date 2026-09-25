@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">متتبّع الدورة الشهرية</string>
+    <string name="period_stats_title">إحصاءات الدورة</string>
+    <string name="period_detail_title">تفاصيل السجل</string>
+    <string name="period_add_title">سجل جديد</string>
+    <string name="period_edit_title">تعديل السجل</string>
+    <string name="period_tab_records">السجلات</string>
+    <string name="period_tab_stats">البيانات</string>
+    <string name="period_search">بحث</string>
+    <string name="period_search_hint">ابحث في الملاحظات أو الأعراض</string>
+    <string name="period_add">إضافة</string>
+    <string name="period_save">حفظ</string>
+    <string name="period_cancel">إلغاء</string>
+    <string name="period_delete">حذف</string>
+    <string name="period_loading">جارٍ التحميل…</string>
+    <string name="period_saved">تم الحفظ</string>
+    <string name="period_record_added">تمت إضافة السجل</string>
+    <string name="period_deleted">تم حذف السجل</string>
+    <string name="period_save_failed">فشل الحفظ</string>
+    <string name="period_toast_recorded">تم تسجيل الدورة</string>
+    <string name="period_empty_title">لا توجد سجلات بعد</string>
+    <string name="period_empty_subtitle">أخبر الذكاء الاصطناعي بما تشعرين به وأنشئ سجلًا بلمسة واحدة</string>
+    <string name="period_ai_quick_record">تسجيل سريع بالذكاء الاصطناعي</string>
+    <string name="period_manual_record">تسجيل يدوي</string>
+    <string name="period_empty_example">مثال: \"بدأت دورتي أمس مع تقلصات خفيفة\"</string>
+    <string name="period_ai_assist_title">مساعد متتبّع الدورة الشهرية</string>
+    <string name="period_ai_assist_fill_in">بدأت دورتي أمس مع تقلصات شديدة، سجّلها لي</string>
+    <string name="period_ai_assist_prompt">أنت مساعد متتبّع الدورة الشهرية للمستخدم. عندما يصف المستخدم حالة الدورة أو كمية الدم أو الأعراض أو المزاج، سجّلها باستخدام add_period_record (استخدم yyyy-MM-dd للتاريخ). وعندما يسأل المستخدم عن طول الدورة أو الدورة التالية أو الإحصاءات، استخدم query_period_records. ولتصحيح سجل استخدم update_period_record. ولحذف سجل استخدم delete_period_record. أكّد كل إجراء باختصار بعد التسجيل.</string>
+    <string name="period_record_count">%1$d سجل</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">MMM d</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint"> (اختيار متعدد)</string>
+    <string name="period_cycle_day">يوم الدورة %1$d</string>
+    <string name="period_cycle_day_unknown">يوم الدورة —</string>
+    <string name="period_status_period">دورة</string>
+    <string name="period_status_ovulation">إباضة</string>
+    <string name="period_status_normal">عادي</string>
+    <string name="period_status_start">بداية</string>
+    <string name="period_status_mid">دورة</string>
+    <string name="period_status_end">نهاية</string>
+    <string name="period_calendar_prev">الشهر السابق</string>
+    <string name="period_calendar_next">الشهر التالي</string>
+    <string name="period_field_date">التاريخ</string>
+    <string name="period_field_status">حالة الدورة</string>
+    <string name="period_field_flow">كمية الدم</string>
+    <string name="period_field_symptoms">الأعراض</string>
+    <string name="period_field_mood">المزاج</string>
+    <string name="period_field_note">ملاحظة</string>
+    <string name="period_note_hint">ملاحظة اختيارية</string>
+    <string name="period_delete_record">حذف السجل</string>
+    <string name="period_delete_confirm_title">حذف هذا السجل؟</string>
+    <string name="period_delete_confirm_message">لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="period_flow_none">لا شيء</string>
+    <string name="period_flow_light">خفيفة</string>
+    <string name="period_flow_medium">متوسطة</string>
+    <string name="period_flow_heavy">غزيرة</string>
+    <string name="period_mood_very_happy">ممتاز</string>
+    <string name="period_mood_happy">جيد</string>
+    <string name="period_mood_normal">مقبول</string>
+    <string name="period_mood_sad">منخفض</string>
+    <string name="period_mood_very_sad">سيئ</string>
+    <string name="period_symptom_abdominal_pain">تقلصات</string>
+    <string name="period_symptom_headache">صداع</string>
+    <string name="period_symptom_back_pain">ألم الظهر</string>
+    <string name="period_symptom_mood_swings">تقلبات مزاجية</string>
+    <string name="period_symptom_breast_tenderness">حساسية الثدي</string>
+    <string name="period_symptom_fatigue">إرهاق</string>
+    <string name="period_symptom_nausea">غثيان</string>
+    <string name="period_symptom_insomnia">أرق</string>
+    <string name="period_symptom_appetite_change">تغيّر الشهية</string>
+    <string name="period_symptom_acne">حب الشباب</string>
+    <string name="period_symptom_edema">انتفاخ</string>
+    <string name="period_stats_range_6m">آخر 6 أشهر</string>
+    <string name="period_stats_range_day">يوم</string>
+    <string name="period_stats_range_week">أسبوع</string>
+    <string name="period_stats_range_month">شهر</string>
+    <string name="period_stats_avg_cycle">متوسط الدورة</string>
+    <string name="period_stats_avg_period">متوسط الدورة الشهرية</string>
+    <string name="period_stats_next">الدورة التالية</string>
+    <string name="period_stats_vs_prev">مقارنة بآخر %1$+d يوم</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">اتجاه طول الدورة</string>
+    <string name="period_stats_trend_empty">يلزم بدايتا دورتين على الأقل</string>
+    <string name="period_stats_symptom_title">توزيع الأعراض</string>
+    <string name="period_stats_symptom_empty">لا توجد بيانات أعراض بعد</string>
+    <string name="period_stats_symptom_center">الإجمالي</string>
+    <string name="period_day_unit">ي</string>
+    <string name="period_month_unit">ش</string>
+    <string name="period_next_label">الدورة التالية</string>
+    <string name="period_days_until">بعد %1$d يوم</string>
+    <string name="period_timeline_title">الخط الزمني</string>
+    <string name="period_timeline_start">بداية الدورة</string>
+    <string name="period_timeline_end">نهاية الدورة المتوقعة</string>
+    <string name="period_log_record_created">تم إنشاء سجل الدورة</string>
+    <string name="period_log_record_updated">تم تحديث سجل الدورة</string>
+    <string name="period_log_record_deleted">تم حذف سجل الدورة</string>
+    <string name="agent_tool_add_period_record_title">إضافة سجل دورة</string>
+    <string name="agent_tool_add_period_record_summary">تسجيل بداية/نهاية الدورة وكمية الدم والأعراض والمزاج</string>
+    <string name="agent_tool_add_period_record_description">تسجيل إدخال دورة: date (yyyy-MM-dd)، وis_period_start / is_period_end الاختياريان، وflow_intensity ‏(NONE/LIGHT/MEDIUM/HEAVY)، ومصفوفة symptoms، وmood ‏(VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD)، وnote.</string>
+    <string name="agent_tool_add_period_record_failed">فشلت إضافة سجل الدورة: %1$s</string>
+    <string name="agent_tool_query_period_records_title">استعلام سجلات الدورة</string>
+    <string name="agent_tool_query_period_records_summary">استعلام السجلات وإحصاءات الدورة وتوقع الدورة التالية</string>
+    <string name="agent_tool_query_period_records_description">استعلام سجلات الدورة الأخيرة إضافة إلى متوسط الدورة ومتوسط طول الدورة الشهرية والبداية المتوقعة التالية. limit اختياري.</string>
+    <string name="agent_tool_query_period_records_empty">لا توجد سجلات دورة بعد.</string>
+    <string name="agent_tool_query_period_records_failed">فشل استعلام سجلات الدورة: %1$s</string>
+    <string name="agent_tool_update_period_record_title">تحديث سجل الدورة</string>
+    <string name="agent_tool_update_period_record_summary">تحديث سجل دورة موجود عبر record_id</string>
+    <string name="agent_tool_update_period_record_description">تحديث سجل الدورة الشهرية. مرّر record_id وأي حقول تريد تغييرها (date، is_period_start، is_period_end، flow_intensity، symptoms، mood، note).</string>
+    <string name="agent_tool_update_period_record_failed">فشل تحديث سجل الدورة الشهرية: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">حذف سجل الدورة الشهرية</string>
+    <string name="agent_tool_delete_period_record_summary">حذف سجل الدورة الشهرية بواسطة record_id</string>
+    <string name="agent_tool_delete_period_record_description">حذف سجل الدورة الشهرية نهائيًا. يتطلب record_id وتأكيد المستخدم.</string>
+    <string name="agent_tool_delete_period_record_done">تم حذف سجل الدورة الشهرية %1$s</string>
+    <string name="agent_tool_delete_period_record_failed">فشل حذف سجل الدورة الشهرية: %1$s</string>
+    <string name="agent_tool_period_param_date">تاريخ السجل، yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">ما إذا كان هذا اليوم بداية الدورة</string>
+    <string name="agent_tool_period_param_is_end">ما إذا كان هذا اليوم نهاية الدورة</string>
+    <string name="agent_tool_period_param_flow">شدة التدفق: NONE أو LIGHT أو MEDIUM أو HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">مصفوفة الأعراض، مثل ABDOMINAL_PAIN، HEADACHE، FATIGUE</string>
+    <string name="agent_tool_period_param_mood">المزاج: VERY_HAPPY أو HAPPY أو NORMAL أو SAD أو VERY_SAD</string>
+    <string name="agent_tool_period_param_note">ملاحظة اختيارية</string>
+    <string name="agent_tool_period_param_record_id">معرّف سجل الدورة الشهرية</string>
+    <string name="agent_tool_period_param_limit">الحد الأقصى لعدد السجلات المُعادة (1-50)</string>
+    <string name="agent_tool_period_label_date">التاريخ</string>
+    <string name="agent_tool_period_label_flow">التدفق</string>
+    <string name="agent_tool_period_label_symptoms">الأعراض</string>
+    <string name="agent_tool_period_open_link">فتح متتبّع الدورة الشهرية</string>
+    <string name="agent_tool_period_detail_link">فتح تفاصيل السجل</string>
+    <string name="agent_tool_period_no_next">لا توجد بيانات كافية</string>
+    <string name="agent_tool_period_unknown_error">خطأ غير معروف</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>الدورة الشهرية</item>
+        <item>الحيض</item>
+        <item>الدورة</item>
+        <item>الطمث</item>
+        <item>العادة الشهرية</item>
+        <item>أيام الحيض</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>بدأت دورتي اليوم مع تقلصات خفيفة</item>
+        <item>سجّل لي أنني حِضت اليوم، والتدفق متوسط</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>الدورة</item>
+        <item>الدورة القادمة</item>
+        <item>الفترة</item>
+        <item>التوقّع</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>متى موعد دورتي القادمة؟</item>
+        <item>هل دورتي منتظمة؟</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>تحديث الدورة</item>
+        <item>تعديل سجل الدورة الشهرية</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>حدِّث سجل الأمس\' إلى تدفق غزير</item>
+        <item>غيّر تدفق سجل الأمس إلى غزير</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>حذف الدورة</item>
+        <item>حذف سجل الدورة الشهرية</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>احذف سجل الدورة الشهرية الخاص بالأمس</item>
+        <item>امسح سجل الدورة الشهرية الخاص بالأمس</item>
+    </string-array>
+</resources>

@@ -1,14 +1,14 @@
 /**
  * i18n 文案加载与应用
  *
- * 支持 zh-CN / zh-TW / en / es / pt-BR / in / hi / ru / tr / ja / ko / fil / de，字典由服务端按语言下发（res/raw/i18n[_lang].json）。
+ * 支持 zh-CN / zh-TW / en / es / pt-BR / in / hi / ru / tr / ja / ko / fil / de / ar，字典由服务端按语言下发（res/raw/i18n[_lang].json）。
  */
 
 const STORAGE_KEY = 'ft-lang';
 
 /**
  * 语言检测优先级：?lang= URL query > localStorage(ft-lang) > navigator.language
- * 规范化：zh-TW/zh-HK/zh-Hant → zh-TW（繁体），其余 zh* → zh-CN（简体），es* → es，pt* → pt-BR，in/id* → in（印尼语），hi* → hi（印地语），ru* → ru（俄语），tr* → tr（土耳其语），ja* → ja（日语），ko* → ko（韩语），fil* → fil（菲律宾语），de* → de（德语），其余 → en（即未支持语言默认英文）
+ * 规范化：zh-TW/zh-HK/zh-Hant → zh-TW（繁体），其余 zh* → zh-CN（简体），es* → es，pt* → pt-BR，in/id* → in（印尼语），hi* → hi（印地语），ru* → ru（俄语），tr* → tr（土耳其语），ja* → ja（日语），ko* → ko（韩语），fil* → fil（菲律宾语），de* → de（德语），ar* → ar（阿拉伯语，RTL），其余 → en（即未支持语言默认英文）
  */
 export function detectLang() {
   const normalize = (raw) => {
@@ -35,6 +35,8 @@ export function detectLang() {
     if (v.startsWith('fil')) return 'fil';
     // 德语
     if (v.startsWith('de')) return 'de';
+    // 阿拉伯语（RTL）
+    if (v.startsWith('ar')) return 'ar';
     return 'en';
   };
 
@@ -75,6 +77,8 @@ export const i18n = {
         if (!res.ok) continue;
         this.dict = await res.json();
         document.documentElement.lang = this.lang;
+        // 阿拉伯语按 RTL 渲染；其余语言显式回落 LTR，避免切换语言后方向残留
+        document.documentElement.dir = this.lang === 'ar' ? 'rtl' : 'ltr';
         this.apply();
         return;
       } catch (_) {

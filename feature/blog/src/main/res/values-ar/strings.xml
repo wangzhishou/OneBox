@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="agent_tool_submit_feedback_title">إرسال الملاحظات</string>
+    <string name="agent_tool_submit_feedback_summary">أرسل الاقتراحات أو تقارير الأخطاء أو طلبات الميزات إلى المطوّرين</string>
+    <string name="agent_tool_submit_feedback_description">إرسال ملاحظات المستخدم (الاقتراحات أو تقارير الأخطاء أو طلبات الميزات) إلى فريق التطوير. لا يتطلب تسجيل الدخول. المعامل content مطلوب، وستُضاف معلومات الاتصال الاختيارية إلى الملاحظات ليتمكن المطوّرون من المتابعة.</string>
+    <string name="agent_tool_submit_feedback_param_content">محتوى الملاحظات، مطلوب، حتى 2000 حرف. صف المشكلة أو الاقتراح أو طلب الميزة بالتفصيل.</string>
+    <string name="agent_tool_submit_feedback_param_contact">معلومات اتصال اختيارية (البريد الإلكتروني، QQ، WeChat، إلخ) ليتمكن المطوّرون من الوصول إلى المستخدم للمتابعة.</string>
+    <string name="agent_tool_submit_feedback_success">تم إرسال الملاحظات بنجاح. شكرًا لك! سيراجعها المطوّرون في أقرب وقت، ويمكنك الاطلاع على الردود في صفحة الملاحظات.</string>
+    <string name="agent_tool_submit_feedback_failed">فشل إرسال الملاحظات: %1$s</string>
+    <string name="agent_tool_submit_feedback_error_empty_content">لا يمكن أن يكون محتوى الملاحظات فارغًا</string>
+    <string name="agent_tool_submit_feedback_error_too_long">محتوى الملاحظات يتجاوز الحد الأقصى للطول (%1$d حرفًا كحد أقصى)</string>
+    <string name="agent_tool_submit_feedback_contact_label">الاتصال</string>
+    <string name="agent_tool_submit_feedback_unknown_error">خطأ غير معروف</string>
+    <string name="agent_tool_submit_feedback_open_link">عرض ملاحظاتي</string>
+    <string-array name="agent_tool_submit_feedback_keywords">
+        <item>الملاحظات</item>
+        <item>اقتراح</item>
+        <item>تقرير خطأ</item>
+        <item>طلب ميزة</item>
+        <item>مشكلة</item>
+    </string-array>
+    <string-array name="agent_tool_submit_feedback_examples">
+        <item>أرسل ملاحظات نيابة عني: أتمنى أن يتبدّل الوضع الداكن تلقائيًا</item>
+        <item>أريد الإبلاغ عن مشكلة: يتوقف ماسح رمز QR عن العمل أحيانًا</item>
+        <item>أرسل ملاحظات: يُرجى إضافة إعادة التسمية الجماعية، بريدي الإلكتروني هو test@example.com</item>
+    </string-array>
+</resources>

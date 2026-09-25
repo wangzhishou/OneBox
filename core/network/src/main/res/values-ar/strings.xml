@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">فشل الاتصال بالشبكة، يرجى التحقق من إعدادات الشبكة</string>
+    <string name="error_request_timeout">انتهت مهلة الطلب، يرجى المحاولة لاحقاً</string>
+    <string name="error_cannot_connect_server">تعذّر الاتصال بالخادم، يرجى التحقق من الشبكة</string>
+    <string name="error_ssl_failed">فشل الاتصال الآمن، يرجى التحقق من إعدادات الشبكة</string>
+    <string name="error_network_exception">خطأ في الشبكة، يرجى التحقق من اتصال الشبكة</string>
+    <string name="error_request_cancelled">تم إلغاء الطلب</string>
+    <string name="error_data_parse_failed">فشل تحليل البيانات، يرجى المحاولة لاحقاً</string>
+    <string name="error_bad_request">معطيات الطلب غير صالحة</string>
+    <string name="error_unauthorized">غير مصرّح، يرجى تسجيل الدخول مرة أخرى</string>
+    <string name="error_forbidden">الوصول ممنوع</string>
+    <string name="error_not_found">المورد المطلوب غير موجود</string>
+    <string name="error_server_internal">خطأ داخلي في الخادم</string>
+    <string name="error_server_maintenance">الخادم قيد الصيانة، يرجى المحاولة لاحقاً</string>
+    <string name="error_server_code">خطأ في الخادم (%d)</string>
+    <string name="error_client_error">خطأ في الطلب، يرجى التحقق من المعطيات</string>
+    <string name="error_server_error">خطأ في الخادم، يرجى المحاولة لاحقاً</string>
+    <string name="error_request_failed">فشل الطلب، يرجى المحاولة لاحقاً</string>
+    <string name="error_request_failed_with_message">فشل الطلب: %s</string>
+    <string name="error_unknown">خطأ غير معروف</string>
+    <string name="no_error_body">لا يوجد نص للخطأ</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

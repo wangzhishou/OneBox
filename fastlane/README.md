@@ -9,7 +9,7 @@ metadata/android/<locale>/full_description.txt   # 完整描述(≤4000 字符)
 metadata/android/<locale>/changelogs/<versionCode>.txt  # 各版本更新说明
 ```
 
-现有 locale:`en-US`(基准)、`zh-CN`、`es-ES`、`pt-BR`、`id`、`hi-IN`、`ru-RU`、`tr-TR`、`ja-JP`、`ko-KR`、`fil`、`de-DE`。新增语言时按 Play 语言码建目录(如 `pt-BR`、`hi-IN`),从 `en-US` 翻译,注意上面的字符限制;品牌词 OneBox 不翻。
+现有 locale:`en-US`(基准)、`zh-CN`、`es-ES`、`pt-BR`、`id`、`hi-IN`、`ru-RU`、`tr-TR`、`ja-JP`、`ko-KR`、`fil`、`de-DE`、`ar`。新增语言时按 Play 语言码建目录(如 `pt-BR`、`hi-IN`),从 `en-US` 翻译,注意上面的字符限制;品牌词 OneBox 不翻。
 
 ## 商店图片(按语言)
 

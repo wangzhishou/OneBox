@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">تسجيلات الحضور</string>
+    <string name="habit_tab_checkin">تسجيل الحضور</string>
+    <string name="habit_tab_stats">الإحصاءات</string>
+    <string name="habit_add">إضافة عادة</string>
+    <string name="habit_summary_rate">نسبة تسجيل الحضور</string>
+    <string name="habit_summary_done">منجز</string>
+    <string name="habit_summary_missed">قيد الانتظار</string>
+    <string name="habit_today_section">تسجيلات حضور اليوم</string>
+    <string name="habit_edit_mode">تعديل</string>
+    <string name="habit_edit_done">تم</string>
+    <string name="habit_empty_list">لا توجد عادات بعد. اضغط + لإنشاء واحدة.</string>
+    <string name="habit_delete_habit">حذف العادة</string>
+    <string-array name="habit_weekdays_short">
+        <item>الاثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </string-array>
+    <string name="habit_stats_week_trend">هذا الأسبوع</string>
+    <string name="habit_stats_distribution">التوزيع</string>
+    <string name="habit_stats_rate_trend">اتجاه نسبة تسجيل الحضور</string>
+    <string name="habit_stats_not_started">لم يبدأ</string>
+    <string name="habit_stats_total_habits">إجمالي العادات</string>
+    <string name="habit_stats_empty">لا توجد بيانات بعد</string>
+    <string name="habit_last_7_days">آخر 7 أيام</string>
+    <string name="habit_last_30_days">آخر 30 يومًا</string>
+    <string name="habit_add_title">عادة جديدة</string>
+    <string name="habit_edit_title">تعديل العادة</string>
+    <string name="habit_edit_name_label">اسم العادة</string>
+    <string name="habit_edit_name_hint">أدخل اسم العادة</string>
+    <string name="habit_edit_icon_label">اختر الأيقونة</string>
+    <string name="habit_edit_color_label">اختر اللون</string>
+    <string name="habit_edit_color_auto_hint">يُستخدم لون المظهر تلقائيًا عند عدم الاختيار</string>
+    <string name="habit_edit_repeat_label">التكرار</string>
+    <string name="habit_repeat_daily">كل يوم</string>
+    <string name="habit_repeat_weekly">أسبوعيًا</string>
+    <string name="habit_repeat_monthly">شهريًا</string>
+    <string name="habit_repeat_custom">مخصّص</string>
+    <string name="habit_repeat_daily_desc">يتكرر كل يوم</string>
+    <string name="habit_repeat_times_week_label">عدد المرات في الأسبوع</string>
+    <string name="habit_repeat_times_month_label">عدد المرات في الشهر</string>
+    <string name="habit_edit_reminder_label">التذكير</string>
+    <string name="habit_edit_reminder_none">بلا تذكير</string>
+    <string name="habit_edit_reminder_subtitle">ذكّرني بتسجيل الحضور في هذا الوقت</string>
+    <string name="habit_edit_reminder_clear">مسح</string>
+    <string name="habit_edit_note_label">ملاحظة (اختياري)</string>
+    <string name="habit_edit_note_hint">أضف ملاحظة...</string>
+    <string name="habit_edit_stats_label">تتبّع إحصاءات تسجيل الحضور</string>
+    <string name="habit_edit_stats_subtitle">تتبّع نسبة تسجيل الحضور والسلاسل عند التفعيل</string>
+    <string name="habit_save">حفظ</string>
+    <string name="habit_name_required">يرجى إدخال اسم العادة</string>
+    <string name="habit_saved">تم الحفظ</string>
+    <string name="habit_freq_daily">يوميًا</string>
+    <string name="habit_freq_weekly_times">%1$d مرات في الأسبوع</string>
+    <string name="habit_freq_monthly_times">%1$d مرات في الشهر</string>
+    <string name="habit_preset_drink_water">اشرب 8 أكواب من الماء</string>
+    <string name="habit_preset_wake_early">الاستيقاظ مبكرًا</string>
+    <string name="habit_preset_exercise">ممارسة الرياضة</string>
+    <string name="habit_preset_reading">القراءة</string>
+    <string name="habit_preset_meditation">التأمل</string>
+    <string name="habit_preset_no_stay_up">عدم السهر</string>
+    <string name="habit_notification_channel_name">تذكيرات العادات</string>
+    <string name="habit_notification_channel_desc">تذكيرات يومية لتسجيل حضور العادات</string>
+    <string name="habit_notification_text">حان وقت تسجيل الحضور: %1$s</string>
+    <string name="habit_streak_days">سلسلة %1$d يوم</string>
+    <string name="agent_tool_add_habit_title">إضافة عادة</string>
+    <string name="agent_tool_add_habit_summary">إنشاء عادة جديدة في متتبّع العادات</string>
+    <string name="agent_tool_add_habit_description">إنشاء عادة جديدة في متتبّع العادات. يدعم اسمًا وأيقونة مخصّصين، وتكرارًا (يوميًا / N مرات في الأسبوع / N مرات في الشهر / أيام أسبوع مخصّصة)، ووقت تذكير يومي وملاحظة اختياريين.</string>
+    <string name="agent_tool_add_habit_param_name">اسم العادة، مثل \"اشرب 8 أكواب من الماء\"</string>
+    <string name="agent_tool_add_habit_param_icon">مفتاح الأيقونة، أحد ما يلي: waterdrop, sunrise, running, book, meditation, moon, toothbrush, pill, fruit, writing, piggybank, dumbbell</string>
+    <string name="agent_tool_add_habit_param_repeat_type">نوع التكرار: daily / weekly_times / monthly_times / custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_repeat_target">عدد المرات في الأسبوع أو الشهر، من 1 إلى 30، ويُستخدم فقط مع weekly_times / monthly_times</string>
+    <string name="agent_tool_add_habit_param_weekdays">أيام الأسبوع في وضع custom_weekdays، مصفوفة من 1 إلى 7 (1=الاثنين، 7=الأحد)</string>
+    <string name="agent_tool_add_habit_param_remind_time">وقت التذكير اليومي بصيغة HH:mm (24 ساعة)، اختياري</string>
+    <string name="agent_tool_add_habit_param_note">ملاحظة اختيارية</string>
+    <string name="agent_tool_add_habit_success">تم إنشاء العادة</string>
+    <string name="agent_tool_add_habit_failed">فشل إنشاء العادة: %1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>عادة</item>
+        <item>إضافة عادة</item>
+        <item>إنشاء عادة</item>
+        <item>تسجيل الحضور</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>أضف عادة شرب 8 أكواب من الماء كل يوم</item>
+        <item>أنشئ عادة الجري 3 مرات في الأسبوع</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">تسجيل حضور عادة</string>
+    <string name="agent_tool_check_in_habit_summary">تسجيل حضور عادة في يوم محدّد</string>
+    <string name="agent_tool_check_in_habit_description">وضع علامة تسجيل حضور على عادة في يوم محدّد (اليوم افتراضيًا). يُحدَّد موضع العادة عبر habit_id أو عبر habit_name بالمطابقة الضبابية. تسجيل الحضور مرتين في اليوم نفسه لا يغيّر شيئًا.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">معرّف العادة. يُفضّل استخدامه عند معرفته، وإلا يُستخدم habit_name</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">اسم العادة، ويُطابَق ضبابيًا عند غياب habit_id</string>
+    <string name="agent_tool_check_in_habit_param_date">تاريخ تسجيل الحضور بصيغة yyyy-MM-dd، والافتراضي هو اليوم، ويجب ألا يكون في المستقبل</string>
+    <string name="agent_tool_check_in_habit_success">تم تسجيل الحضور</string>
+    <string name="agent_tool_check_in_habit_already">تم تسجيل الحضور في ذلك اليوم مسبقًا</string>
+    <string name="agent_tool_check_in_habit_not_found">لم يتم العثور على العادة: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">فشل تسجيل الحضور: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>عادة</item>
+        <item>تسجيل الحضور</item>
+        <item>تم</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>سجّل حضور عادة الجري اليوم</item>
+        <item>علّم القراءة كمنجزة ليوم أمس</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">استعلام عن العادات</string>
+    <string name="agent_tool_query_habits_summary">سرد العادات مع حالة اليوم ونسبة تسجيل الحضور الأسبوعية</string>
+    <string name="agent_tool_query_habits_description">استعلام عن قائمة العادات: حالة تسجيل الحضور اليوم لكل عادة، وسلاسل العادات اليومية، ونسبة تسجيل الحضور الإجمالية لهذا الأسبوع.</string>
+    <string name="agent_tool_query_habits_section_today">اليوم</string>
+    <string name="agent_tool_query_habits_weekly_rate">النسبة الأسبوعية</string>
+    <string name="agent_tool_query_habits_empty">لا توجد عادات بعد</string>
+    <string name="agent_tool_query_habits_failed">فشل الاستعلام عن العادات: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>عادة</item>
+        <item>حالة تسجيل الحضور</item>
+        <item>سلسلة</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>ما العادات المتبقية اليوم؟</item>
+        <item>اعرض نسبة تسجيل حضور عاداتي هذا الأسبوع</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">التاريخ</string>
+    <string name="agent_tool_habit_label_repeat">التكرار</string>
+    <string name="agent_tool_habit_label_reminder">التذكير</string>
+    <string name="agent_tool_habit_label_name">الاسم</string>
+    <string name="agent_tool_habit_open_link">فتح متتبّع العادات</string>
+    <string name="agent_tool_habit_edit_link">عرض العادة</string>
+    <string name="agent_tool_unknown_error">خطأ غير معروف</string>
+</resources>

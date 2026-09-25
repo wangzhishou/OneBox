@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">مركز الجدول</string>
+    <string name="schedule_sync_card_title">أساس المزامنة جاهز</string>
+    <string name="schedule_sync_card_description">هذه الوحدة تملك بالفعل نموذج الأحداث الخاص بها وحالة مؤشر المزامنة وحقول جسر المهام، لذا يمكن إضافة Google Calendar لاحقًا دون إرباك وحدتي التقويم الفلكي أو المهام.</string>
+    <string name="schedule_sync_ready">تم حفظ مؤشر المزامنة</string>
+    <string name="schedule_sync_not_connected">لا يوجد حساب متصل</string>
+    <string name="schedule_event_count_label">%1$d أحداث</string>
+    <string name="schedule_linked_task_chip">سياق المهام مرتبط</string>
+    <string name="schedule_last_error_label">آخر خطأ: %1$s</string>
+    <string name="schedule_action_card_title">ابدأ بنطاق أحداث محلي نظيف</string>
+    <string name="schedule_action_create_local">إنشاء حدث محلي</string>
+    <string name="schedule_action_create_focus">إنشاء حدث من تاريخ التركيز</string>
+    <string name="schedule_action_open_todo">فتح المهام</string>
+    <string name="schedule_action_open_calendar">فتح التقويم</string>
+    <string name="schedule_event_section_title">الأحداث</string>
+    <string name="schedule_empty_title">لا توجد أحداث في الجدول بعد</string>
+    <string name="schedule_empty_description">ابدأ بالأحداث المحلية أولًا، ثم أضف مصادقة حساب Google والمزامنة التفاضلية ومعالجة التعارضات تدريجيًا.</string>
+    <string name="schedule_provider_local">محلي</string>
+    <string name="schedule_provider_system">تقويم النظام</string>
+    <string name="schedule_provider_google">تقويم Google</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">محلي فقط</string>
+    <string name="schedule_status_pending_upload">في انتظار الرفع</string>
+    <string name="schedule_status_synced">تمت المزامنة</string>
+    <string name="schedule_status_pending_delete">في انتظار الحذف</string>
+    <string name="schedule_status_conflict">تعارض</string>
+    <string name="schedule_status_failed">فشلت المزامنة</string>
+    <string name="schedule_linked_task_badge">جسر المهام</string>
+    <string name="schedule_quick_event_title">حدث محلي جديد</string>
+    <string name="schedule_focus_event_title">حدث التركيز</string>
+    <string name="schedule_linked_task_description">المهمة المرتبطة: %1$s</string>
+    <string name="schedule_save_to_system_calendar">الكتابة مباشرة إلى تقويم النظام</string>
+    <string name="schedule_export_to_system_calendar">إضافة إلى تقويم النظام</string>
+    <string name="schedule_system_calendar_unavailable">لا يوجد تطبيق تقويم متاح على هذا الجهاز</string>
+    <string name="schedule_no_writable_calendar">لا يوجد تقويم نظام قابل للكتابة</string>
+    <string name="schedule_saved_to_system_calendar">تم الحفظ في تقويم النظام</string>
+    <string name="schedule_save_to_system_calendar_failed">فشل الحفظ في تقويم النظام. يرجى المحاولة لاحقًا</string>
+    <string name="schedule_calendar_permission_denied">إذن التقويم مطلوب للكتابة مباشرة في تقويم النظام</string>
+    <string name="schedule_choose_calendar_title">اختر التقويم الهدف</string>
+    <string name="schedule_calendar_primary_badge">أساسي</string>
+    <string name="schedule_dialog_close">إغلاق</string>
+    <string name="schedule_permission_dialog_title">إذن التقويم مطلوب</string>
+    <string name="schedule_permission_dialog_message">يرجى تمكين أذونات قراءة/كتابة التقويم في إعدادات النظام للكتابة مباشرة في تقويم النظام.</string>
+    <string name="schedule_open_settings">فتح الإعدادات</string>
+    <string name="agent_tool_schedule_unknown_error">خطأ غير معروف</string>
+    <string name="agent_tool_schedule_open_link">فتح الجدول</string>
+    <string name="agent_tool_schedule_label_start">البداية</string>
+    <string name="agent_tool_schedule_label_end">النهاية</string>
+    <string name="agent_tool_schedule_label_all_day">حدث ليوم كامل</string>
+    <string name="agent_tool_schedule_label_location">الموقع</string>
+    <string name="agent_tool_schedule_invalid_datetime">تاريخ/وقت غير صالح \"%1$s\". استخدم صيغة ISO، مثل 2026-09-10T14:00 أو 2026-09-10.</string>
+    <string name="agent_tool_schedule_invalid_date">تاريخ غير صالح \"%1$s\". استخدم yyyy-MM-dd، مثل 2026-09-10.</string>
+    <string name="agent_tool_add_schedule_event_title">إضافة حدث في الجدول</string>
+    <string name="agent_tool_add_schedule_event_summary">إنشاء حدث جدول محلي بعنوان ووقت وملاحظة وموقع.</string>
+    <string name="agent_tool_add_schedule_event_description">إنشاء حدث جدول محلي. الحقلان `title` و `start` مطلوبان؛ و`end` يكون افتراضيًا بعد ساعة من البداية (أو اليوم التالي للأحداث التي تستغرق يومًا كاملًا). تقبل الأوقات سلاسل ISO: 2026-09-10T14:00 أو 2026-09-10T14:00:00+08:00 أو تاريخًا مجردًا 2026-09-10.</string>
+    <string name="agent_tool_add_schedule_event_param_title">عنوان الحدث، مطلوب.</string>
+    <string name="agent_tool_add_schedule_event_param_start">وقت البداية بصيغة ISO، مثل 2026-09-10T14:00؛ والتاريخ المجرد يعني 00:00 من ذلك اليوم.</string>
+    <string name="agent_tool_add_schedule_event_param_end">وقت النهاية بصيغة ISO. اختياري؛ ويكون افتراضيًا بعد ساعة من البداية، أو اليوم التالي للأحداث التي تستغرق يومًا كاملًا.</string>
+    <string name="agent_tool_add_schedule_event_param_all_day">ما إذا كان هذا حدثًا ليوم كامل، والقيمة الافتراضية false.</string>
+    <string name="agent_tool_add_schedule_event_param_description">ملاحظة اختيارية للحدث.</string>
+    <string name="agent_tool_add_schedule_event_param_location">موقع الحدث، اختياري.</string>
+    <string name="agent_tool_add_schedule_event_title_required">المعامل title مطلوب ولا يمكن أن يكون فارغًا.</string>
+    <string name="agent_tool_add_schedule_event_failed">فشلت إضافة حدث الجدول: %1$s</string>
+    <string-array name="agent_tool_add_schedule_event_keywords">
+        <item>الجدول</item>
+        <item>التقويم</item>
+        <item>تذكير</item>
+        <item>ترتيب</item>
+        <item>schedule</item>
+        <item>calendar</item>
+        <item>إنشاء جدول</item>
+    </string-array>
+    <string-array name="agent_tool_add_schedule_event_examples">
+        <item>ذكّرني بالاجتماع غدًا الساعة 3 بعد الظهر</item>
+        <item>أنشئ حدثًا ليوم كامل في 20 سبتمبر: حفل زفاف صديق</item>
+        <item>رتّب تمارين رياضية يوم الاثنين القادم من 10:00 إلى 11:00، والموقع في النادي الرياضي</item>
+    </string-array>
+    <string name="agent_tool_query_schedule_events_title">الاستعلام عن أحداث الجدول</string>
+    <string name="agent_tool_query_schedule_events_summary">الاستعلام عن أحداث الجدول المحلية خلال نطاق زمني.</string>
+    <string name="agent_tool_query_schedule_events_description">الاستعلام عن أحداث الجدول المحلية المتقاطعة مع نطاق زمني. الحقل `start_date` يكون افتراضيًا اليوم، و`end_date` يكون افتراضيًا 6 أيام بعده (نافذة 7 أيام). يعيد حتى 50 حدثًا مرتبة حسب وقت البداية، ولكل منها المعرّف والعنوان والوقت والموقع والملاحظة؛ ويمكن تمرير المعرّف إلى delete_schedule_event.</string>
+    <string name="agent_tool_query_schedule_events_param_start_date">تاريخ بداية النطاق، yyyy-MM-dd؛ والقيمة الافتراضية هي اليوم.</string>
+    <string name="agent_tool_query_schedule_events_param_end_date">تاريخ نهاية النطاق (شاملًا)، yyyy-MM-dd؛ والقيمة الافتراضية هي 6 أيام بعد start_date.</string>
+    <string name="agent_tool_query_schedule_events_end_before_start">لا يمكن أن يكون end_date أسبق من start_date.</string>
+    <string name="agent_tool_query_schedule_events_empty">لا توجد أحداث في هذا النطاق</string>
+    <string name="agent_tool_query_schedule_events_failed">فشل الاستعلام عن أحداث الجدول: %1$s</string>
+    <string-array name="agent_tool_query_schedule_events_keywords">
+        <item>الجدول</item>
+        <item>التقويم</item>
+        <item>ترتيب</item>
+        <item>schedule</item>
+        <item>calendar</item>
+        <item>الاستعلام عن الجدول</item>
+        <item>ما ترتيبات اليوم</item>
+    </string-array>
+    <string-array name="agent_tool_query_schedule_events_examples">
+        <item>ما ترتيباتي اليوم</item>
+        <item>أرني جدول هذا الأسبوع</item>
+        <item>ابحث عن الجدول من 10 سبتمبر إلى 15 سبتمبر</item>
+    </string-array>
+    <string name="agent_tool_delete_schedule_event_title">حذف حدث من الجدول</string>
+    <string name="agent_tool_delete_schedule_event_summary">حذف حدث جدول محلي بواسطة معرّفه.</string>
+    <string name="agent_tool_delete_schedule_event_description">حذف حدث جدول محلي بواسطة event_id (عادةً من نتيجة query_schedule_events). يؤدي الحذف أيضًا إلى إزالة ارتباطاته بتقويم النظام ولا يمكن التراجع عنه، لذا يلزم تأكيد المستخدم قبل التنفيذ.</string>
+    <string name="agent_tool_delete_schedule_event_param_event_id">معرّف الحدث المراد حذفه، من نتائج query_schedule_events.</string>
+    <string name="agent_tool_delete_schedule_event_id_required">المعامل event_id مطلوب.</string>
+    <string name="agent_tool_delete_schedule_event_not_found">لم يتم العثور على الحدث: %1$s</string>
+    <string name="agent_tool_delete_schedule_event_deleted">تم الحذف: %1$s</string>
+    <string name="agent_tool_delete_schedule_event_failed">فشل حذف حدث الجدول: %1$s</string>
+    <string name="agent_tool_delete_schedule_event_confirm_title">حذف حدث الجدول</string>
+    <string name="agent_tool_delete_schedule_event_confirm_presentation">حذف حدث الجدول نهائيًا</string>
+    <string-array name="agent_tool_delete_schedule_event_keywords">
+        <item>جدول</item>
+        <item>تقويم</item>
+        <item>حذف الموعد</item>
+        <item>إلغاء الموعد</item>
+        <item>موعد</item>
+        <item>إلغاء حدث</item>
+    </string-array>
+    <string-array name="agent_tool_delete_schedule_event_examples">
+        <item>احذف اجتماع الساعة 3 مساءً غدًا</item>
+        <item>ألغِ موعد التمرين يوم الجمعة</item>
+    </string-array>
+</resources>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="record_center_title">السجلات الصحية</string>
+    <string name="record_center_type_heart_rate_title">معدل ضربات القلب</string>
+    <string name="record_center_type_heart_rate_desc">سجّل بيانات معدل ضربات القلب وأدرها لمراقبة صحة القلب</string>
+    <string name="record_center_type_blood_pressure_title">ضغط الدم</string>
+    <string name="record_center_type_blood_pressure_desc">سجّل بيانات ضغط الدم وأدرها لتتبّع اتجاهاته مع الوقت</string>
+    <string name="record_center_type_blood_glucose_title">سكر الدم</string>
+    <string name="record_center_type_blood_glucose_desc">سجّل بيانات سكر الدم وأدرها للمساعدة في ضبط مستوى السكر</string>
+    <string name="record_center_type_weight_title">الوزن</string>
+    <string name="record_center_type_weight_desc">سجّل بيانات الوزن وأدرها لتتبّع تغيّراته</string>
+    <string name="record_center_type_bmi_title">BMI</string>
+    <string name="record_center_type_bmi_desc">سجّل بيانات BMI وأدرها لتقييم صحة الوزن</string>
+    <string name="record_center_type_body_fat_title">دهون الجسم</string>
+    <string name="record_center_type_body_fat_desc">سجّل بيانات دهون الجسم وأدرها لفهم تغيّرات تكوين الجسم</string>
+    <string name="record_center_type_uric_acid_title">حمض اليوريك</string>
+    <string name="record_center_type_uric_acid_desc">سجّل بيانات حمض اليوريك وأدرها للمساعدة في الوقاية من النقرس والتحكم به</string>
+    <string name="record_center_type_blood_lipid_title">دهون الدم</string>
+    <string name="record_center_type_blood_lipid_desc">سجّل بيانات دهون الدم وأدرها لمراقبة مستويات الدهون</string>
+    <string name="record_center_type_blood_oxygen_title">أكسجين الدم</string>
+    <string name="record_center_type_blood_oxygen_desc">سجّل بيانات أكسجين الدم وأدرها لمراقبة صحة الجهاز التنفسي والدورة الدموية</string>
+    <string name="record_center_type_body_temperature_title">درجة الحرارة</string>
+    <string name="record_center_type_body_temperature_desc">سجّل بيانات حرارة الجسم وأدرها لتتبّع تغيّرات الحرارة</string>
+    <string name="record_center_type_sleep_duration_title">النوم</string>
+    <string name="record_center_type_sleep_duration_desc">سجّل مدة النوم وأدرها لتحسين جودة النوم</string>
+    <string name="record_center_type_waist_circumference_title">محيط الخصر</string>
+    <string name="record_center_type_waist_circumference_desc">سجّل بيانات محيط الخصر وأدرها لمراقبة صحة البطن</string>
+    <string name="record_center_field_heart_rate_value">معدل ضربات القلب</string>
+    <string name="record_center_field_bp_systolic">الانقباضي</string>
+    <string name="record_center_field_bp_diastolic">الانبساطي</string>
+    <string name="record_center_field_glucose_value">سكر الدم</string>
+    <string name="record_center_field_weight_value">الوزن</string>
+    <string name="record_center_field_bmi_value">BMI</string>
+    <string name="record_center_field_body_fat_value">دهون الجسم</string>
+    <string name="record_center_field_uric_acid_value">حمض اليوريك</string>
+    <string name="record_center_field_lipid_total_cholesterol">الكوليسترول الكلي</string>
+    <string name="record_center_field_lipid_triglyceride">الدهون الثلاثية</string>
+    <string name="record_center_field_lipid_ldl">LDL</string>
+    <string name="record_center_field_lipid_hdl">HDL</string>
+    <string name="record_center_field_blood_oxygen_value">أكسجين الدم</string>
+    <string name="record_center_field_body_temperature_value">حرارة الجسم</string>
+    <string name="record_center_field_sleep_duration_value">مدة النوم</string>
+    <string name="record_center_field_waist_circumference_value">محيط الخصر</string>
+    <string name="record_center_ref_heart_rate">الطبيعي 60-100 نبضة/دقيقة</string>
+    <string name="record_center_ref_blood_pressure">الطبيعي 90-140/60-90 ملم زئبق</string>
+    <string name="record_center_ref_blood_glucose">الطبيعي على الريق 3.9-6.1 مليمول/لتر</string>
+    <string name="record_center_ref_bmi">الطبيعي 18.5-24</string>
+    <string name="record_center_ref_uric_acid">الطبيعي: الرجال 208-428، النساء 155-357 ميكرومول/لتر</string>
+    <string name="record_center_ref_blood_lipid">الكوليسترول الكلي &lt;5.2 مليمول/لتر</string>
+    <string name="record_center_ref_blood_oxygen">الطبيعي 95-100%</string>
+    <string name="record_center_ref_body_temperature">الطبيعي 36.0-37.3 °C</string>
+    <string name="record_center_ref_sleep_duration">الموصى به 7-9 ساعات</string>
+    <string name="record_center_ref_waist_circumference">الرجال &lt;90 / النساء &lt;85 سم</string>
+    <string name="record_center_label_time">الوقت</string>
+    <string name="record_center_label_note">ملاحظة</string>
+    <string name="record_center_action_save">حفظ</string>
+    <string name="record_center_action_delete">حذف</string>
+    <string name="record_center_add_record">إضافة سجل</string>
+    <string name="record_center_edit_record">تعديل السجل</string>
+    <string name="record_center_empty">لا توجد سجلات بعد</string>
+    <string name="record_center_stats_latest">الأحدث</string>
+    <string name="record_center_stats_average">المتوسط</string>
+    <string name="record_center_stats_max">الأعلى</string>
+    <string name="record_center_stats_min">الأدنى</string>
+    <string name="record_center_range_7d">7 أيام</string>
+    <string name="record_center_range_30d">30 يومًا</string>
+    <string name="record_center_range_all">الكل</string>
+    <string name="record_center_range_days">آخر %1$d يومًا</string>
+    <string name="record_center_today">اليوم</string>
+    <string name="record_center_yesterday">أمس</string>
+    <string name="record_center_days_ago">قبل %1$d يومًا</string>
+    <string name="record_center_delete_confirm_title">حذف السجل</string>
+    <string name="record_center_delete_confirm_message">هل تريد حذف هذا السجل؟ لا يمكن التراجع عن ذلك.</string>
+    <string name="record_center_confirm">تأكيد</string>
+    <string name="record_center_cancel">إلغاء</string>
+    <string name="record_center_save_success">تم الحفظ</string>
+    <string name="record_center_range_all_label">كل السجلات</string>
+    <string name="record_center_ai_insight">تحليل الذكاء الاصطناعي</string>
+    <string name="record_center_ai_insight_hint">دع الذكاء الاصطناعي يفسّر اتجاه سجلاتك في هذه الفترة</string>
+    <string name="record_center_ai_insight_generate">إنشاء تحليل</string>
+    <string name="record_center_ai_insight_regenerate">إعادة الإنشاء</string>
+    <string name="record_center_ai_insight_retry">إعادة المحاولة</string>
+    <string name="record_center_ai_insight_loading">جارٍ إنشاء التحليل…</string>
+    <string name="record_center_ai_insight_error">تعذّر إنشاء التحليل، يرجى المحاولة لاحقًا</string>
+    <string name="record_center_ai_insight_points_hint">%1$d نقطة لكل تحليل</string>
+    <string name="record_center_profile_title">المعلومات الأساسية</string>
+    <string name="record_center_profile_hint">تساعد الذكاء الاصطناعي على تقديم تحليل أنسب لك</string>
+    <string name="record_center_profile_unset">غير محدد، اضغط للإكمال</string>
+    <string name="record_center_profile_gender_male">ذكر</string>
+    <string name="record_center_profile_gender_female">أنثى</string>
+    <string name="record_center_profile_field_gender">الجنس</string>
+    <string name="record_center_profile_field_age">العمر</string>
+    <string name="record_center_profile_field_height">الطول (سم)</string>
+    <string name="record_center_profile_field_weight">الوزن (كغ)</string>
+    <string name="record_center_profile_age_years">%1$d سنة</string>
+    <string name="record_center_profile_invalid">يرجى إدخال أرقام صحيحة</string>
+    <string name="record_center_empty_go_ai">سجّل مع مساعد الذكاء الاصطناعي</string>
+    <string name="record_center_empty_go_ai_description">أخبر الذكاء الاصطناعي بما تشعر به وسيملأ السجل نيابةً عنك</string>
+    <string name="record_center_empty_title">لا توجد سجلات صحية بعد</string>
+    <string name="record_center_empty_description">أضف سجلًا يدويًا، أو أخبر الذكاء الاصطناعي بما تشعر به ودعه يسجّل عنك</string>
+    <string name="record_center_empty_range_title">لا توجد سجلات في هذه الفترة</string>
+    <string name="record_center_empty_range_description">غيّر الفترة أعلاه، أو أضف سجلًا يدويًا</string>
+    <string name="record_center_add_manually">إضافة يدوية</string>
+    <string name="record_center_add_manually_description">خصّص القيمة والوقت</string>
+    <string name="record_center_ai_assist_title">مساعد السجلات الصحية</string>
+    <string name="record_center_ai_assist_prompt">أنت مساعد السجلات الصحية للمستخدم. عندما يصف المستخدم بيانات صحية بلغة طبيعية (مثل \"ضغط الدم 120/80 اليوم\" أو \"سكر صائم 5.2\")، فسجّلها بالأداة add_health_record. بعد التسجيل، أكّد بإيجاز النوع والقيمة والوقت. استخدم الوقت الحالي عندما لا يحدد المستخدم وقتًا.</string>
+    <string name="record_center_ai_assist_fill_in">ضغط دمي اليوم 120/80، احفظه في سجلاتي الصحية</string>
+    <string name="record_center_cd_switch_to_grid">التبديل إلى عرض الشبكة</string>
+    <string name="record_center_cd_switch_to_list">التبديل إلى عرض القائمة</string>
+    <string name="record_center_error_unknown_type">نوع سجل غير معروف: %1$s</string>
+    <string name="record_center_error_missing_field">حقل مطلوب مفقود: %1$s</string>
+    <string name="record_center_error_unknown_field">حقل غير معروف: %1$s</string>
+    <string name="record_center_error_out_of_range">%1$s خارج النطاق (%2$s ~ %3$s)</string>
+    <string name="record_center_error_not_found">السجل غير موجود</string>
+    <string name="record_center_error_invalid_number">يرجى إدخال رقم صالح</string>
+    <string name="record_center_error_required">مطلوب</string>
+    <string name="record_center_error_out_of_range_short">خارج النطاق (%1$s ~ %2$s)</string>
+    <string name="record_center_log_created">تمت إضافة السجل الصحي</string>
+    <string name="record_center_log_updated">تم تحديث السجل الصحي</string>
+    <string name="record_center_log_deleted">تم حذف السجل الصحي</string>
+    <string name="agent_tool_add_health_record_title">إضافة سجل صحي</string>
+    <string name="agent_tool_add_health_record_summary">سجّل مؤشرًا صحيًا مثل ضغط الدم أو الوزن</string>
+    <string name="agent_tool_add_health_record_description">أضف سجلات صحية. الوضع الفردي: مرّر record_type وvalues في المستوى الأعلى (happened_at/note اختياريان). الوضع الدفعي: مرّر مصفوفة records لإضافة عدة سجلات دفعة واحدة؛ يأخذ كل عنصر الحقول نفسها، وتُعالَج العناصر بشكل مستقل حتى لا تؤثر الإخفاقات الجزئية في البقية. يجب أن تكون values كائن JSON يربط مفاتيح الحقول بأرقام؛ وتعتمد مفاتيح الحقول والوحدات على record_type. أنواع السجلات المدعومة وحقولها:</string>
+    <string name="agent_tool_add_health_record_param_records">الوضع الدفعي: مصفوفة من عناصر السجلات، كل عنصر يحوي record_type وvalues (happened_at/note اختياريان). عند وجودها، يُتجاهل record_type/values في المستوى الأعلى</string>
+    <string name="agent_tool_add_health_record_param_record_type">مفتاح نوع السجل، أحد قيم التعداد</string>
+    <string name="agent_tool_add_health_record_param_values">قيم الحقول ككائن JSON يربط مفاتيح الحقول بأرقام، مثل {\"systolic\": 120, \"diastolic\": 80}</string>
+    <string name="agent_tool_add_health_record_param_happened_at">وقت إجراء القياس بالمللي ثانية منذ الحقبة الزمنية؛ القيمة الافتراضية هي الآن</string>
+    <string name="agent_tool_add_health_record_param_note">ملاحظة اختيارية</string>
+    <string name="agent_tool_add_health_record_success">تم الحفظ</string>
+    <string name="agent_tool_add_health_record_failed">تعذّرت إضافة السجل الصحي: %1$s</string>
+    <string name="agent_tool_add_health_record_batch_empty">لا يجوز أن تكون records فارغة</string>
+    <string name="agent_tool_add_health_record_batch_success_count">نجح %1$d</string>
+    <string name="agent_tool_add_health_record_batch_failure_count">فشل %1$d</string>
+    <string name="agent_tool_add_health_record_batch_section_success">السجلات المحفوظة</string>
+    <string name="agent_tool_add_health_record_batch_section_failure">السجلات الفاشلة</string>
+    <string-array name="agent_tool_add_health_record_keywords">
+        <item>سجل صحي</item>
+        <item>ضغط الدم</item>
+        <item>معدل نبضات القلب</item>
+        <item>الوزن</item>
+        <item>سكر الدم</item>
+        <item>مؤشر كتلة الجسم</item>
+    </string-array>
+    <string-array name="agent_tool_add_health_record_examples">
+        <item>سجّل ضغط دمي 120 على 80</item>
+        <item>سجّل الوزن 65.5 كغ</item>
+        <item>أضف سكر دم صائم 5.6</item>
+    </string-array>
+    <string name="agent_tool_query_health_records_title">استعلام عن السجلات الصحية</string>
+    <string name="agent_tool_query_health_records_summary">استعلم عن السجلات والإحصاءات الأخيرة لمؤشر صحي</string>
+    <string name="agent_tool_query_health_records_description">استعلم عن السجلات الصحية من النوع المحدد خلال آخر N يومًا (30 افتراضيًا)، مع إحصاءات المتوسط/الأقصى/الأدنى لكل حقل مرسوم. أنواع السجلات المدعومة وحقولها:</string>
+    <string name="agent_tool_query_health_records_param_record_type">مفتاح نوع السجل، أحد قيم التعداد</string>
+    <string name="agent_tool_query_health_records_param_days">عدد الأيام التي سيتم الرجوع إليها، 30 افتراضيًا</string>
+    <string name="agent_tool_query_health_records_empty">لا توجد سجلات في هذه الفترة</string>
+    <string name="agent_tool_query_health_records_failed">تعذّر الاستعلام عن السجلات الصحية: %1$s</string>
+    <string name="agent_tool_query_health_records_section_stats">الإحصاءات</string>
+    <string name="agent_tool_query_health_records_section_records">السجلات</string>
+    <string-array name="agent_tool_query_health_records_keywords">
+        <item>السجلات الصحية</item>
+        <item>سجل ضغط الدم</item>
+        <item>اتجاه الوزن</item>
+        <item>إحصاءات سكر الدم</item>
+    </string-array>
+    <string-array name="agent_tool_query_health_records_examples">
+        <item>اعرض ضغط دمي هذا الشهر</item>
+        <item>كيف كان وزني خلال آخر 30 يومًا</item>
+        <item>متوسط معدل نبضات القلب هذا الأسبوع</item>
+    </string-array>
+    <string name="agent_tool_get_health_summary_title">الملخص الصحي</string>
+    <string name="agent_tool_get_health_summary_summary">أحدث قيمة لكل نوع من أنواع السجلات الصحية</string>
+    <string name="agent_tool_get_health_summary_description">احصل على أحدث سجل لكل نوع من أنواع السجلات الصحية، مع الوحدات والنطاقات المرجعية.</string>
+    <string name="agent_tool_get_health_summary_empty">لا توجد سجلات صحية بعد</string>
+    <string name="agent_tool_get_health_summary_failed">تعذّر الحصول على الملخص الصحي: %1$s</string>
+    <string-array name="agent_tool_get_health_summary_keywords">
+        <item>ملخص صحي</item>
+        <item>أحدث البيانات الصحية</item>
+        <item>نظرة عامة على الصحة</item>
+    </string-array>
+    <string-array name="agent_tool_get_health_summary_examples">
+        <item>أعطني نظرة عامة على بياناتي الصحية</item>
+        <item>ما هي أحدث قياساتي</item>
+    </string-array>
+    <string name="agent_tool_record_center_open_link">فتح السجلات الصحية</string>
+    <string name="agent_tool_record_center_field_optional"> (اختياري)</string>
+    <string name="agent_tool_record_center_unknown_error">خطأ غير معروف</string>
+</resources>

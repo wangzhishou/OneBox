@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">كشف عيوب الشاشة</string>
+    <string name="dead_pixel_test_description">استخدم تدوير الألوان الصافية لكشف أعطال الشاشة والنقاط المحترقة</string>
+    <string name="dead_pixel_color_white">أبيض</string>
+    <string name="dead_pixel_color_black">أسود</string>
+    <string name="dead_pixel_color_red">أحمر</string>
+    <string name="dead_pixel_color_green">أخضر</string>
+    <string name="dead_pixel_color_blue">أزرق</string>
+    <string name="dead_pixel_hint">انقر لتغيير اللون. ..يمكن التبديل بين الشريحة اليمنى واليسرى ذهابًا وإيابًا.</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">إظهار الشبكة</string>
+    <string name="dead_pixel_grid_off">إخفاء الشبكة</string>
+    <string name="dead_pixel_auto_play">تدوير تلقائي</string>
+    <string name="dead_pixel_auto_stop">أوقفه!</string>
+    <string name="dead_pixel_fullscreen">اختبار بملء الشاشة</string>
+    <string name="dead_pixel_exit_fullscreen">الخروج من ملء الشاشة</string>
+    <string name="dead_pixel_guide_title">كيف نكشف الضرر؟</string>
+    <string name="dead_pixel_guide_content">ستعرض الشاشة خمسة ألوان صافية بالتتابع: الأبيض والأسود والأحمر والأخضر والأزرق.\n\n• خلفية بيضاء: ابحث عن بقع داكنة سوداء (بكسلات ميتة)\n• خلفية سوداء: ابحث عن بقع مضيئة (بكسلات عالقة)\n• خلفيات ملونة: ابحث عن بكسلات شاذة بألوان أخرى\n\nانقر على الشاشة للانتقال إلى اللون التالي، أو شغّل التدوير التلقائي. وللحصول على أفضل النتائج، أجرِ الاختبار في بيئة خافتة الإضاءة.</string>
+    <string name="dead_pixel_guide_start">بدء الاختبار</string>
+</resources>

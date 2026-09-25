@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">كانسة الألغام</string>
+    <string name="minesweeper_restart">إعادة البدء</string>
+    <string name="minesweeper_sound_on">الصوت مفعّل</string>
+    <string name="minesweeper_sound_off">الصوت متوقف</string>
+    <string name="minesweeper_mode_dig">وضع الحفر</string>
+    <string name="minesweeper_mode_flag">وضع التعليم</string>
+    <string name="minesweeper_hint_dig">اضغط لفتح خلية</string>
+    <string name="minesweeper_hint_flag">اضغط لوضع علامة على لغم</string>
+    <string name="minesweeper_time">الوقت</string>
+    <string name="minesweeper_mines_left">الألغام</string>
+    <string name="minesweeper_won">تم التنظيف</string>
+    <string name="minesweeper_lost">انفجار</string>
+    <string name="minesweeper_play_again">العب مجددًا</string>
+    <string name="minesweeper_result_detail">%1$d ث</string>
+    <string name="minesweeper_fullscreen">ملء الشاشة</string>
+    <string name="minesweeper_exit_fullscreen">الخروج من ملء الشاشة</string>
+    <string name="minesweeper_share">مشاركة</string>
+</resources>

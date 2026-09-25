@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="id_photo_title">صورة الهوية</string>
+    <string name="id_photo_tab_selected_images">الصورة المحددة ( %d )</string>
+    <string name="id_photo_tab_select_size">اختيار المقاس</string>
+    <string name="id_photo_export_settings">إعدادات التصدير</string>
+    <string name="id_photo_background_color">لون الخلفية</string>
+    <string name="id_photo_export_format">تنسيق التصدير</string>
+    <string name="id_photo_quality">الجودة</string>
+    <string name="id_photo_quality_tip">كلما ارتفعت الجودة، زاد حجم الملف، ويُوصى بأكثر من 90%</string>
+    <string name="id_photo_print_info">ملاحظات الطباعة</string>
+    <string name="id_photo_print_info_tip">عند الطباعة بدقة 300 DPI، يكون حجم الإخراج هو المقاس القياسي للمستند</string>
+    <string name="id_photo_export_target_size">حجم التصدير</string>
+    <string name="id_photo_export_source_size">حجم المصدر</string>
+    <string name="id_photo_export_estimated_size">الحجم التقديري</string>
+    <string name="id_photo_export_size_unavailable">--</string>
+    <string name="id_photo_export_size_approx">~%1$s</string>
+    <string name="id_photo_export_dimensions">%1$d × %2$d بكسل</string>
+    <string name="id_photo_size_template">قالب المقاس</string>
+    <string name="id_photo_edit_size">تعديل الأبعاد</string>
+    <string name="id_photo_add_size">إضافة مقاس</string>
+    <string name="id_photo_manage_size">إدارة المقاسات</string>
+    <string name="id_photo_select_size">اختيار المقاس</string>
+    <string name="id_photo_select_background">اختيار لون الخلفية</string>
+    <string name="id_photo_crop">اقتصاص</string>
+    <string name="id_photo_save">حفظ</string>
+    <string name="id_photo_delete">حذف</string>
+    <string name="id_photo_selected">محدد</string>
+    <string name="id_photo_select_image_hint">يرجى اختيار صورة</string>
+    <string name="id_photo_background_label">الخلفية:</string>
+    <string name="id_photo_bg_white">أبيض</string>
+    <string name="id_photo_bg_blue">أزرق</string>
+    <string name="id_photo_bg_red">أحمر</string>
+    <string name="id_photo_bg_gradient_blue">أزرق متدرج</string>
+    <string name="id_photo_reset_default">استعادة الإعدادات الافتراضية</string>
+    <string name="id_photo_delete_count">حذف (%d)</string>
+    <string name="id_photo_cancel">إلغاء</string>
+    <string name="id_photo_edit">تعديل</string>
+    <string name="id_photo_add">إضافة</string>
+    <string name="id_photo_create">إنشاء</string>
+    <string name="id_photo_field_name">الاسم</string>
+    <string name="id_photo_field_width_mm">العرض (مم)</string>
+    <string name="id_photo_field_height_mm">الارتفاع (مم)</string>
+    <string name="id_photo_field_width_px">العرض (بكسل)</string>
+    <string name="id_photo_field_height_px">الارتفاع (بكسل)</string>
+    <string name="id_photo_field_description_optional">الوصف (اختياري)</string>
+    <string name="id_photo_resolution_sufficient">دقة الصورة كافية (%1$d×%2$d)</string>
+    <string name="id_photo_resolution_insufficient">⚠️ دقة الصورة منخفضة وقد تؤثر على جودة الطباعة (%1$d×%2$d &lt; %3$d×%4$d)</string>
+    <string name="id_photo_preset_size_one_inch">1 بوصة</string>
+    <string name="id_photo_preset_size_small_one_inch">1 بوصة صغيرة</string>
+    <string name="id_photo_preset_size_large_one_inch">1 بوصة كبيرة</string>
+    <string name="id_photo_preset_size_two_inch">2 بوصة</string>
+    <string name="id_photo_preset_size_small_two_inch">2 بوصة صغيرة</string>
+    <string name="id_photo_preset_size_large_two_inch">2 بوصة كبيرة</string>
+    <string name="id_photo_preset_size_us_visa">تأشيرة الولايات المتحدة</string>
+    <string name="id_photo_preset_size_korea_visa">تأشيرة كوريا</string>
+    <string name="id_photo_preset_size_drivers_license">رخصة القيادة</string>
+    <string name="id_photo_preset_size_social_security">بطاقة الضمان الاجتماعي</string>
+    <string name="id_photo_preset_size_civil_service">اختبار الخدمة المدنية</string>
+    <string name="id_photo_preset_size_putonghua">اختبار إتقان اللغة الصينية</string>
+    <string name="id_photo_preset_size_gaokao">التسجيل في اختبار الغاوكاو</string>
+    <string name="id_photo_preset_size_ncre">اختبار تصنيف الحاسوب الوطني</string>
+    <string name="id_photo_preset_size_teacher_cert">شهادة المعلمين</string>
+    <string name="id_photo_preset_size_nurse">اختبار ترخيص التمريض</string>
+    <string name="id_photo_preset_size_accounting">شهادة المحاسبة</string>
+    <string name="id_photo_preset_size_tax_advisor">شهادة مستشار الضرائب</string>
+    <string name="id_photo_preset_size_judicial">اختبار القضاء الوطني</string>
+    <string name="id_photo_preset_size_health_professional">تأهيل المهنيين الصحيين</string>
+    <string name="id_photo_preset_size_insurance">رخصة وكيل التأمين</string>
+    <string name="id_photo_preset_size_tour_guide">رخصة المرشد السياحي</string>
+    <string name="id_photo_preset_size_chsi">تشسي/شيويه شين</string>
+    <string name="id_photo_preset_size_id_card">بطاقة الهوية</string>
+    <string name="id_photo_preset_size_desc_one_inch">يُستخدم عادة لبطاقات الهوية ورخص القيادة</string>
+    <string name="id_photo_preset_size_desc_small_one_inch">يُستخدم عادة للسير الذاتية والتسجيل في الاختبارات</string>
+    <string name="id_photo_preset_size_desc_large_one_inch">يُستخدم عادة لجوازات السفر وتصاريح السفر إلى هونغ كونغ وماكاو</string>
+    <string name="id_photo_preset_size_desc_two_inch">يُستخدم عادة لجوازات السفر والتأشيرات</string>
+    <string name="id_photo_preset_size_desc_small_two_inch">يُستخدم عادة لجوازات السفر الصينية</string>
+    <string name="id_photo_preset_size_desc_large_two_inch">يُستخدم عادة لبعض التأشيرات</string>
+    <string name="id_photo_preset_size_desc_us_visa">لطلبات تأشيرة الولايات المتحدة</string>
+    <string name="id_photo_preset_size_desc_korea_visa">لطلبات تأشيرة كوريا</string>
+    <string name="id_photo_preset_size_desc_drivers_license">لرخص القيادة</string>
+    <string name="id_photo_preset_size_desc_social_security">لبطاقات الضمان الاجتماعي</string>
+    <string name="id_photo_preset_size_desc_civil_service">لاختبارات الخدمة المدنية</string>
+    <string name="id_photo_preset_size_desc_putonghua">لاختبار إتقان اللغة الصينية</string>
+    <string name="id_photo_preset_size_desc_gaokao">للتسجيل في اختبار الغاوكاو</string>
+    <string name="id_photo_preset_size_desc_ncre">لاختبار تصنيف الحاسوب الوطني</string>
+    <string name="id_photo_preset_size_desc_teacher_cert">للتسجيل في شهادة المعلمين</string>
+    <string name="id_photo_preset_size_desc_nurse">للتسجيل في اختبار ترخيص التمريض</string>
+    <string name="id_photo_preset_size_desc_accounting">لاختبارات شهادة المحاسبة الأولية</string>
+    <string name="id_photo_preset_size_desc_tax_advisor">لاختبارات شهادة مستشار الضرائب</string>
+    <string name="id_photo_preset_size_desc_judicial">لاختبار القضاء الوطني</string>
+    <string name="id_photo_preset_size_desc_health_professional">لاختبارات تأهيل المهنيين الصحيين</string>
+    <string name="id_photo_preset_size_desc_insurance">لرخص وكلاء التأمين</string>
+    <string name="id_photo_preset_size_desc_tour_guide">لرخص المرشدين السياحيين</string>
+    <string name="id_photo_preset_size_desc_chsi">لجمع الصور لدى تشسي/شيويه شين</string>
+    <string name="id_photo_preset_size_desc_id_card">لبطاقات الهوية من الجيل الثاني</string>
+    <string name="id_photo_tab_beauty">تجميل بلمسة واحدة</string>
+    <string name="id_photo_beauty_light">خفيف</string>
+    <string name="id_photo_beauty_standard">قياسي</string>
+    <string name="id_photo_beauty_deep">قوي</string>
+    <string name="id_photo_beauty_points_tip">~%d نقطة في كل استخدام</string>
+    <string name="id_photo_ai_process_failed">فشلت معالجة الذكاء الاصطناعي، يرجى المحاولة لاحقًا</string>
+    <string name="id_photo_beauty">تجميل البورتريه بالذكاء الاصطناعي</string>
+    <string name="id_photo_bg_replace">استبدال الخلفية بالذكاء الاصطناعي</string>
+    <string name="id_photo_bg_original">الأصلية</string>
+    <string name="id_photo_bg_transparent">شفافة</string>
+    <string name="id_photo_beauty_apply">تطبيق</string>
+    <string name="id_photo_beauty_group_skin">الجلد</string>
+    <string name="id_photo_beauty_group_flaw">إزالة العيوب</string>
+    <string name="id_photo_beauty_group_reshape">نحت الوجه</string>
+    <string name="id_photo_beauty_group_eye">تحسين العينين</string>
+    <string name="id_photo_beauty_group_hair">الشعر</string>
+    <string name="id_photo_beauty_group_teeth">الأسنان</string>
+    <string name="id_photo_beauty_group_body">نحت الجسم</string>
+    <string name="id_photo_bp_face_smooth">التنعيم</string>
+    <string name="id_photo_bp_face_smooth_gray">تنعيم رمادي محايد</string>
+    <string name="id_photo_bp_face_smooth_fine">تنعيم عالي ومنخفض التردد</string>
+    <string name="id_photo_bp_face_smooth_new">تنعيم ملامح الوجه</string>
+    <string name="id_photo_bp_skin_white">التفتيح</string>
+    <string name="id_photo_bp_skin_bright">الإشراق</string>
+    <string name="id_photo_bp_skin_red">الاحمرار الوردي</string>
+    <string name="id_photo_bp_skin_sharpen">صفاء البشرة</string>
+    <string name="id_photo_bp_face_color_same">توحيد لون البشرة</string>
+    <string name="id_photo_bp_skin_prefer">درجة دافئة وباردة</string>
+    <string name="id_photo_bp_face_highlight">إبراز الوجه</string>
+    <string name="id_photo_bp_face_shadow">ظل الوجه</string>
+    <string name="id_photo_bp_remove_face_flaw">عيوب الوجه</string>
+    <string name="id_photo_bp_remove_dark_circles">الهالات السوداء</string>
+    <string name="id_photo_bp_remove_eye_around_wrinkles">تجاعيد العينين</string>
+    <string name="id_photo_bp_remove_forehead_wrinkles">تجاعيد الجبهة</string>
+    <string name="id_photo_bp_remove_laugh_line">خطوط الابتسامة</string>
+    <string name="id_photo_bp_remove_neck_wrinkles">تجاعيد الرقبة</string>
+    <string name="id_photo_bp_remove_double_chin">الذقن المزدوج</string>
+    <string name="id_photo_bp_remove_lip_wrinkles">تجاعيد الشفاه</string>
+    <string name="id_photo_bp_remove_face_glossy">لمعان الدهون</string>
+    <string name="id_photo_bp_remove_face_moles">إزالة الشامات</string>
+    <string name="id_photo_bp_face_small">تصغير الوجه</string>
+    <string name="id_photo_bp_face_thin">نحافة الوجه</string>
+    <string name="id_photo_bp_face_v">وجه بشكل V</string>
+    <string name="id_photo_bp_jaw_width">خط الفك</string>
+    <string name="id_photo_bp_cheekbone_width">الوجنتان</string>
+    <string name="id_photo_bp_face_width">عرض الوجه</string>
+    <string name="id_photo_bp_forehead_height">الجبهة</string>
+    <string name="id_photo_bp_chin_height">طول الذقن</string>
+    <string name="id_photo_bp_face_symmetry">تماثل الوجه</string>
+    <string name="id_photo_bp_eyebrow_thickness">سماكة الحاجبين</string>
+    <string name="id_photo_bp_eyebrow_distance">المسافة بين الحاجبين</string>
+    <string name="id_photo_bp_eyebrow_height">ارتفاع الحاجبين</string>
+    <string name="id_photo_bp_eye_scale">حجم العينين</string>
+    <string name="id_photo_bp_eye_distance">المسافة بين العينين</string>
+    <string name="id_photo_bp_eye_angle">زاوية العينين</string>
+    <string name="id_photo_bp_nose_scale">حجم الأنف</string>
+    <string name="id_photo_bp_nose_height">ارتفاع الأنف</string>
+    <string name="id_photo_bp_nose_bridge">جسر الأنف</string>
+    <string name="id_photo_bp_nose_wing">جناحا الأنف</string>
+    <string name="id_photo_bp_nose_tip">طرف الأنف</string>
+    <string name="id_photo_bp_mouth_scale">حجم الفم</string>
+    <string name="id_photo_bp_mouth_width">عرض الفم</string>
+    <string name="id_photo_bp_mouth_position">موضع الفم</string>
+    <string name="id_photo_bp_shiny_eye">إشراق العينين</string>
+    <string name="id_photo_bp_remove_eye_streaks">احمرار العينين</string>
+    <string name="id_photo_bp_fill_hair_part">تعبئة فرق الشعر</string>
+    <string name="id_photo_bp_calvaria_height">ارتفاع قمة الرأس</string>
+    <string name="id_photo_bp_hairline_height">خط الشعر</string>
+    <string name="id_photo_bp_remove_white_hair">الشعر الأبيض</string>
+    <string name="id_photo_bp_remove_burst_hair">الشعر المتطاير</string>
+    <string name="id_photo_bp_teeth_white">تبييض الأسنان</string>
+    <string name="id_photo_bp_teeth_repair">إصلاح الأسنان</string>
+    <string name="id_photo_bp_ai_body_thin">نحت الجسم بالذكاء الاصطناعي</string>
+    <string name="id_photo_bp_body_thin">تنحيف الجسم</string>
+    <string name="id_photo_bp_head_small">تصغير الرأس</string>
+    <string name="id_photo_bp_neck_length">طول الرقبة</string>
+    <string name="id_photo_bp_neck_thin">تنحيف الرقبة</string>
+    <string name="id_photo_bp_arm_thin">تنحيف الذراعين</string>
+    <string name="id_photo_bp_waist_thin">تنحيف الخصر</string>
+    <string name="id_photo_bp_leg_thin">تنحيف الساقين</string>
+    <string name="id_photo_bp_leg_long">إطالة الساقين</string>
+    <string name="id_photo_bp_body_heighten">زيادة الطول</string>
+    <string name="id_photo_bp_desc_face_smooth">كلما زادت القيمة زاد نعومة البشرة وترطيبها</string>
+    <string name="id_photo_bp_desc_face_smooth_gray">كلما زادت القيمة زاد توحيد سطوع البشرة</string>
+    <string name="id_photo_bp_desc_face_smooth_fine">كلما زادت القيمة زادت نعومة البشرة</string>
+    <string name="id_photo_bp_desc_face_smooth_new">كلما زادت القيمة زادت نعومة ملامح الوجه ونعومتها</string>
+    <string name="id_photo_bp_desc_skin_white">كلما زادت القيمة زاد بياض البشرة</string>
+    <string name="id_photo_bp_desc_skin_bright">كلما زادت القيمة زاد إشراق البشرة</string>
+    <string name="id_photo_bp_desc_skin_red">كلما زادت القيمة زاد تورد البشرة</string>
+    <string name="id_photo_bp_desc_skin_sharpen">كلما زادت القيمة زاد وضوح ملمس البشرة</string>
+    <string name="id_photo_bp_desc_face_color_same">كلما زادت القيمة زاد توحيد لون بشرة الوجه</string>
+    <string name="id_photo_bp_desc_skin_prefer">القيمة السالبة أبرد والموجبة أدفأ</string>
+    <string name="id_photo_bp_desc_face_highlight">كلما زادت القيمة زاد إبراز الوجه</string>
+    <string name="id_photo_bp_desc_face_shadow">كلما زادت القيمة زاد عمق ظل الوجه</string>
+    <string name="id_photo_bp_desc_remove_face_flaw">كلما زادت القيمة زادت إزالة عيوب البشرة</string>
+    <string name="id_photo_bp_desc_remove_dark_circles">كلما زادت القيمة خفّت الهالات السوداء</string>
+    <string name="id_photo_bp_desc_remove_eye_around_wrinkles">كلما زادت القيمة خفّت تجاعيد محيط العينين</string>
+    <string name="id_photo_bp_desc_remove_forehead_wrinkles">كلما زادت القيمة خفّت تجاعيد الجبهة</string>
+    <string name="id_photo_bp_desc_remove_laugh_line">كلما زادت القيمة خفّت خطوط الابتسامة</string>
+    <string name="id_photo_bp_desc_remove_neck_wrinkles">كلما زادت القيمة زادت إزالة تجاعيد الرقبة</string>
+    <string name="id_photo_bp_desc_remove_double_chin">كلما زادت القيمة قلّ ظهور الذقن المزدوج</string>
+    <string name="id_photo_bp_desc_remove_lip_wrinkles">كلما زادت القيمة خفّت تجاعيد الشفاه</string>
+    <string name="id_photo_bp_desc_remove_face_glossy">كلما زادت القيمة قلّ لمعان الدهون</string>
+    <string name="id_photo_bp_desc_remove_face_moles">شغّله لإزالة شامات الوجه</string>
+    <string name="id_photo_bp_desc_face_small">كلما زادت القيمة صغر الوجه</string>
+    <string name="id_photo_bp_desc_face_thin">كلما زادت القيمة زادت نحافة الوجه</string>
+    <string name="id_photo_bp_desc_face_v">كلما زادت القيمة زاد حدة خط V</string>
+    <string name="id_photo_bp_desc_jaw_width">كلما زادت القيمة زادت نحافة خط الفك</string>
+    <string name="id_photo_bp_desc_cheekbone_width">كلما زادت القيمة قلّ بروز الوجنتين</string>
+    <string name="id_photo_bp_desc_face_width">كلما زادت القيمة زاد اتساع الوجه</string>
+    <string name="id_photo_bp_desc_forehead_height">كلما زادت القيمة زاد ارتفاع الجبهة</string>
+    <string name="id_photo_bp_desc_chin_height">أعلى = ذقن أطول</string>
+    <string name="id_photo_bp_desc_face_symmetry">أعلى = وجه أكثر تناسقًا</string>
+    <string name="id_photo_bp_desc_eyebrow_thickness">أعلى = حواجب أكثر كثافة</string>
+    <string name="id_photo_bp_desc_eyebrow_distance">أعلى = تباعد أوسع بين الحاجبين</string>
+    <string name="id_photo_bp_desc_eyebrow_height">أعلى = حواجب أعلى</string>
+    <string name="id_photo_bp_desc_eye_scale">أعلى = عينان أكبر</string>
+    <string name="id_photo_bp_desc_eye_distance">أعلى = تباعد أوسع بين العينين</string>
+    <string name="id_photo_bp_desc_eye_angle">أعلى = زوايا عين أكثر ارتفاعًا</string>
+    <string name="id_photo_bp_desc_nose_scale">أعلى = أنف أكبر</string>
+    <string name="id_photo_bp_desc_nose_height">أعلى = أنف أطول</string>
+    <string name="id_photo_bp_desc_nose_bridge">أعلى = جسر أنف أعلى</string>
+    <string name="id_photo_bp_desc_nose_wing">أعلى = جانبا أنف أوسع</string>
+    <string name="id_photo_bp_desc_nose_tip">أعلى = طرف أنف أكبر</string>
+    <string name="id_photo_bp_desc_mouth_scale">أعلى = فم أكبر</string>
+    <string name="id_photo_bp_desc_mouth_width">أعلى = فم أوسع</string>
+    <string name="id_photo_bp_desc_mouth_position">أعلى = موضع فم أعلى</string>
+    <string name="id_photo_bp_desc_shiny_eye">أعلى = عينان أكثر إشراقًا</string>
+    <string name="id_photo_bp_desc_remove_eye_streaks">أعلى = إزالة أقوى لعروق العين الحمراء</string>
+    <string name="id_photo_bp_desc_fill_hair_part">أعلى = تعبئة أقوى لفرق الشعر</string>
+    <string name="id_photo_bp_desc_calvaria_height">أعلى = قمة رأس أعلى</string>
+    <string name="id_photo_bp_desc_hairline_height">أعلى = خط شعر أعلى</string>
+    <string name="id_photo_bp_desc_remove_white_hair">أعلى = إزالة أقوى للشعر الأبيض</string>
+    <string name="id_photo_bp_desc_remove_burst_hair">أعلى = إزالة أقوى للشعر المتطاير</string>
+    <string name="id_photo_bp_desc_teeth_white">أعلى = أسنان أكثر بياضًا</string>
+    <string name="id_photo_bp_desc_teeth_repair">فعّلها لإصلاح عيوب الأسنان</string>
+    <string name="id_photo_bp_desc_ai_body_thin">أعلى = جسم أنحف (الذكاء الاصطناعي)</string>
+    <string name="id_photo_bp_desc_body_thin">أعلى = جسم أنحف</string>
+    <string name="id_photo_bp_desc_head_small">أعلى = رأس أصغر</string>
+    <string name="id_photo_bp_desc_neck_length">أعلى = رقبة أطول</string>
+    <string name="id_photo_bp_desc_neck_thin">أعلى = رقبة أنحف</string>
+    <string name="id_photo_bp_desc_arm_thin">أعلى = ذراعان أنحف</string>
+    <string name="id_photo_bp_desc_waist_thin">أعلى = خصر أنحف</string>
+    <string name="id_photo_bp_desc_leg_thin">أعلى = ساقان أنحف</string>
+    <string name="id_photo_bp_desc_leg_long">أعلى = ساقان أطول</string>
+    <string name="id_photo_bp_desc_body_heighten">أعلى = قامة أطول</string>
+</resources>

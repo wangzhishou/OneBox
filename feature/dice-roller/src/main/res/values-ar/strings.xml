@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">ارمِ النرد.</string>
+    <string name="dice_roller_roll">حرّكه.</string>
+    <string name="dice_roller_history">السجل</string>
+    <string name="dice_roller_history_empty">لا يوجد سجل.</string>
+    <string name="dice_roller_clear_history">مسح السجل</string>
+    <string name="dice_roller_clear_confirm">هل تؤكد مسح كل السجلات؟</string>
+    <string name="dice_roller_confirm">تأكيد.</string>
+    <string name="dice_roller_cancel">إلغاء</string>
+    <string name="dice_roller_count">عدد أحجار النرد</string>
+    <string name="dice_roller_type">نوع النرد</string>
+    <string name="dice_roller_total">مجموع النقاط</string>
+    <string name="dice_roller_shake_hint">حرّك هاتفك أو اضغط \"Screech.\"</string>
+    <string name="dice_roller_result_prefix">النتائج:</string>
+    <string name="dice_roller_description">نرد الطاولة.</string>
+</resources>

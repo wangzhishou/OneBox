@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_2048_title">2048</string>
+    <string name="game_2048_current_score">النتيجة الحالية</string>
+    <string name="game_2048_best_score">أفضل نتيجة</string>
+    <string name="game_2048_new_game">لعبة جديدة</string>
+    <string name="game_2048_game_over">انتهت اللعبة</string>
+    <string name="game_2048_you_win">لقد وصلت إلى 2048!</string>
+    <string name="game_2048_no_moves">لا توجد حركات متاحة</string>
+    <string name="game_2048_reached_2048">يمكنك المتابعة للحصول على نتيجة أعلى</string>
+    <string name="game_2048_continue">متابعة</string>
+    <string name="game_2048_new_best_score">رقم قياسي جديد!</string>
+</resources>

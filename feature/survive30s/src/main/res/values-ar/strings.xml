@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">الصمود 30 ثانية</string>
+    <string name="survive_30s_ready">هل أنت مستعد؟</string>
+    <string name="survive_30s_instruction">اسحب الكرة الزرقاء لتفادي العوائق\nتحرّك بحرية في كل الاتجاهات. اصمد 30 ثانية لتفوز!</string>
+    <string name="survive_30s_instruction_bonus">التفادي عن قرب يبني الشحنة. كل 3 تفاديات قريبة تمنحك درعًا واحدًا، والدرع يصد عنك ضربة واحدة.</string>
+    <string name="survive_30s_start">بدء</string>
+    <string name="survive_30s_game_over">انتهت اللعبة!</string>
+    <string name="survive_30s_survived_time">الصمود: %.1f ث</string>
+    <string name="survive_30s_new_record">رقم قياسي جديد!</string>
+    <string name="survive_30s_win">لقد فزت!</string>
+    <string name="survive_30s_win_desc">لقد صمدت 30 ثانية!</string>
+    <string name="survive_30s_retry">إعادة المحاولة</string>
+    <string name="survive_30s_best_time">الأفضل: %.1f ث</string>
+    <string name="survive_30s_phase">المرحلة</string>
+    <string name="survive_30s_phase_warmup">الإحماء</string>
+    <string name="survive_30s_phase_rush">الاندفاع</string>
+    <string name="survive_30s_phase_storm">العاصفة</string>
+    <string name="survive_30s_shield">الدرع</string>
+    <string name="survive_30s_charge">الشحنة</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">قريب</string>
+    <string name="survive_30s_near_miss_count">التفاديات القريبة: %1$d</string>
+    <string name="survive_30s_danger_low">مستقر الآن. حافظ على مساحتك.</string>
+    <string name="survive_30s_danger_medium">الضغط يتزايد. كن مستعدًا للانطلاق عرضيًا.</string>
+    <string name="survive_30s_danger_high">خطر! اجمع الشحنة بتفاديات قريبة أو انطلق فورًا.</string>
+    <string name="survive_30s_back">رجوع</string>
+    <string name="survive_30s_paused">متوقفة مؤقتًا</string>
+    <string name="survive_30s_pause_desc">توقف تلقائي في الخلفية. تقدمك محفوظ.</string>
+    <string name="survive_30s_resume">استئناف</string>
+</resources>

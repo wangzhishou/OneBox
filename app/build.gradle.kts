@@ -175,7 +175,7 @@ android {
         resValue("string", "com.crashlytics.RequireBuildId", "false")
         buildConfigField("String", "FLAVOR", "\"google\"")
         dimension = "app"
-        // 海外包: 英文 + 简体中文 + 西班牙语 + 巴西葡萄牙语 + 印尼语 + 印地语 + 俄语 + 土耳其语 + 日语 + 韩语 + 菲律宾语 + 德语, 更多语种翻译就绪后再放开
+        // 海外包: 英文 + 简体中文 + 西班牙语 + 巴西葡萄牙语 + 印尼语 + 印地语 + 俄语 + 土耳其语 + 日语 + 韩语 + 菲律宾语 + 德语 + 阿拉伯语, 更多语种翻译就绪后再放开
         // 完整列表参考 https://support.google.com/googleplay/android-developer/answer/9888077
         androidResources {
             localeFilters += listOf(
@@ -192,6 +192,7 @@ android {
                 "ko",        // 韩语
                 "fil",       // 菲律宾语
                 "de",        // 德语
+                "ar",        // 阿拉伯语 (RTL)
             )
         }
         // 海外后端域名 (Cloud Run), 从 keystore.properties 读取, 不入库
@@ -234,6 +235,7 @@ android {
                 "ko",        // 韩语
                 "fil",       // 菲律宾语
                 "de",        // 德语
+                "ar",        // 阿拉伯语 (RTL)
             )
         }
         // 硬编码海外生产域名(公开信息), 不依赖 keystore.properties

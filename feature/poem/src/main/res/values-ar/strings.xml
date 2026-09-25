@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">الشعر الصيني</string>
+    <string name="poem_latest">الأحدث</string>
+    <string name="poem_generate">قصيدة جديدة</string>
+    <string name="poem_generate_random">عشوائي</string>
+    <string name="poem_generating_pinyin">جارٍ توليد البينيين…</string>
+    <string name="poem_ai_pinyin">بينيين بالذكاء الاصطناعي</string>
+    <string name="poem_pinyin_done">البينيين جاهز</string>
+    <string name="poem_recite">إلقاء</string>
+    <string name="poem_recite_stop">إيقاف الإلقاء</string>
+    <string name="poem_search">بحث</string>
+    <string name="poem_history">السجل</string>
+    <string name="poem_ai_insight">تحليل بالذكاء الاصطناعي</string>
+    <string name="poem_favorite">إضافة إلى المفضلة</string>
+    <string name="poem_favorited">في المفضلة</string>
+    <string name="poem_retry">إعادة المحاولة</string>
+    <string name="poem_load_failed">فشل التحميل. يرجى المحاولة لاحقًا.</string>
+    <string name="poem_generating_insight">جارٍ توليد التحليل…</string>
+    <string name="poem_generating_translation">جارٍ توليد الترجمة…</string>
+    <string name="poem_insight_title">تحليل شعري</string>
+    <string name="poem_translation_title">ترجمة حديثة</string>
+    <string name="poem_regenerate">إعادة التوليد</string>
+    <string name="poem_insight_empty_hint">انقر لتوليد تحليل وفهم المعنى الأعمق للأبيات</string>
+    <string name="poem_translation_empty_hint">انقر لتوليد ترجمة حديثة وفهم معنى الأبيات اليوم</string>
+    <string name="poem_generate_click">انقر للتوليد</string>
+    <string name="poem_history_title">السجل</string>
+    <string name="poem_clear_history">مسح</string>
+    <string name="poem_clear_history_confirm">مسح كل السجل؟ سيتم الاحتفاظ بالقصائد المفضلة.</string>
+    <string name="poem_confirm">تأكيد</string>
+    <string name="poem_cancel">إلغاء</string>
+    <string name="poem_empty_title">لم تُولَّد أي قصيدة بعد</string>
+    <string name="poem_empty_subtitle">انقر على الزر أدناه للبدء</string>
+    <string name="poem_search_hint">ابحث عن أبيات أو شعراء أو كلمات مفتاحية</string>
+    <string name="poem_filter_dynasty">السلالة</string>
+    <string name="poem_filter_type">النوع الشعري</string>
+    <string name="poem_filter_author">الشاعر</string>
+    <string name="poem_filter_all">الكل</string>
+    <string name="poem_search_results">نتائج البحث</string>
+    <string name="poem_result_count">%1$d قصيدة</string>
+    <string name="poem_search_empty">لم يتم العثور على نتائج</string>
+    <string name="poem_history_empty">لا يوجد سجل بعد</string>
+    <string name="poem_favorites_only">المفضلة فقط</string>
+    <string name="poem_delete">حذف</string>
+    <string name="agent_tool_search_poem_title">البحث في القصائد</string>
+    <string name="agent_tool_search_poem_summary">ابحث في القصائد الصينية الكلاسيكية بالكلمات المفتاحية</string>
+    <string name="agent_tool_search_poem_description">ابحث في القصائد الصينية الكلاسيكية بالكلمات المفتاحية، مع مطابقة العناوين والشعراء ونصوص الأبيات. الكلمات المفتاحية المكوّنة من 3 أحرف أو أكثر تستخدم البحث النصي الكامل؛ أما الكلمات الأقصر (مثل اسم شاعر من حرفين) فتستخدم أخذ عينات مُرشَّحة. يعيد معرّف القصيدة والعنوان والشاعر والسلالة ومقتطفًا. استدعِ get_poem_detail بالمعرّف أو العنوان للحصول على النص الكامل.</string>
+    <string name="agent_tool_search_poem_param_query">كلمة البحث: جزء من بيت أو عنوان قصيدة أو اسم شاعر</string>
+    <string name="agent_tool_search_poem_param_max_results">الحد الأقصى للنتائج، من 1 إلى 20، الافتراضي 10</string>
+    <string name="agent_tool_search_poem_query_required">يجب ألا تكون قيمة query فارغة</string>
+    <string name="agent_tool_search_poem_empty">لا توجد قصائد مطابقة لـ \"%1$s\"</string>
+    <string name="agent_tool_search_poem_failed">فشل البحث في القصائد: %1$s</string>
+    <string-array name="agent_tool_search_poem_keywords">
+        <item>قصيدة</item>
+        <item>شعر</item>
+        <item>بيت شعري</item>
+        <item>شاعر</item>
+        <item>قصائد قديمة</item>
+        <item>أبيات شعرية</item>
+    </string-array>
+    <string-array name="agent_tool_search_poem_examples">
+        <item>ابحث عن قصائد عن القمر</item>
+        <item>اعثر على قصائد للشاعر Li Bai</item>
+        <item>ما القصائد القديمة التي تتحدث عن القمر</item>
+    </string-array>
+    <string name="agent_tool_get_poem_detail_title">تفاصيل القصيدة</string>
+    <string name="agent_tool_get_poem_detail_summary">النص الكامل لقصيدة، مع الترجمة والتحليل عند توفرهما</string>
+    <string name="agent_tool_get_poem_detail_description">احصل على النص الكامل لقصيدة صينية كلاسيكية، مع ترجمتها الحديثة وتحليلها المولَّدين بالذكاء الاصطناعي إن كانا قد وُلِّدا سابقًا. مرِّر poem_id (من نتائج search_poem) أو عنوان القصيدة، ويمكن إضافة المؤلف لإزالة الالتباس. تُحفظ القصائد المُستدعاة عبر الشبكة في المكتبة المحلية حتى يعمل رابط صفحة التفاصيل.</string>
+    <string name="agent_tool_get_poem_detail_param_poem_id">معرّف القصيدة، كما يعيده search_poem</string>
+    <string name="agent_tool_get_poem_detail_param_title">عنوان القصيدة، يُستخدم عند جهل poem_id</string>
+    <string name="agent_tool_get_poem_detail_param_author">اسم الشاعر، اختياري، يُستخدم مع العنوان لإزالة الالتباس</string>
+    <string name="agent_tool_get_poem_detail_id_or_title_required">مرِّر poem_id أو title</string>
+    <string name="agent_tool_get_poem_detail_not_found">لم يتم العثور على القصيدة: %1$s</string>
+    <string name="agent_tool_get_poem_detail_failed">فشل الحصول على تفاصيل القصيدة: %1$s</string>
+    <string-array name="agent_tool_get_poem_detail_keywords">
+        <item>تفاصيل القصيدة</item>
+        <item>النص الكامل</item>
+        <item>الترجمة</item>
+        <item>التحليل</item>
+        <item>تفاصيل الشعر</item>
+        <item>النص الكامل</item>
+    </string-array>
+    <string-array name="agent_tool_get_poem_detail_examples">
+        <item>اعرض النص الكامل لـ 静夜思</item>
+        <item>أحضر القصيدة ذات المعرّف 123</item>
+        <item>أعطني النص الكامل لقصيدة 静夜思 وترجمتها</item>
+    </string-array>
+    <string name="agent_tool_query_poem_favorites_title">القصائد المفضلة</string>
+    <string name="agent_tool_query_poem_favorites_summary">اسرد القصائد المضافة إلى المفضلة محليًا</string>
+    <string name="agent_tool_query_poem_favorites_description">اسرد القصائد التي أضافها المستخدم إلى المفضلة محليًا، مع المعرّف والعنوان والشاعر والسلالة ومقتطف. محلي فقط، دون حاجة إلى الشبكة.</string>
+    <string name="agent_tool_query_poem_favorites_param_max_results">الحد الأقصى للنتائج، من 1 إلى 50، الافتراضي 20</string>
+    <string name="agent_tool_query_poem_favorites_empty">لا توجد قصائد في المفضلة بعد</string>
+    <string name="agent_tool_query_poem_favorites_failed">فشل استعلام القصائد المفضلة: %1$s</string>
+    <string-array name="agent_tool_query_poem_favorites_keywords">
+        <item>القصائد المفضلة</item>
+        <item>المفضلة</item>
+        <item>قصائد مفضلة</item>
+        <item>مجموعة القصائد المفضلة</item>
+    </string-array>
+    <string-array name="agent_tool_query_poem_favorites_examples">
+        <item>اسرد قصائدي المفضلة</item>
+        <item>ما القصائد التي أضفتها إلى المفضلة</item>
+    </string-array>
+    <string name="agent_tool_poem_open_detail_link">اقرأ القصيدة</string>
+    <string name="agent_tool_poem_open_search_link">افتح البحث في القصائد</string>
+    <string name="agent_tool_poem_open_home_link">افتح الشعر الصيني</string>
+    <string name="agent_tool_poem_unknown_error">خطأ غير معروف</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">وصف مترجم</string>
+    <string name="copy">نسخ</string>
+    <string name="create_widget">إنشاء أدوات صغيرة</string>
+    <string name="run">تشغيل</string>
+    <string name="save">حفظ</string>
+    <string name="mermaid_tab_diagram">مخطط</string>
+    <string name="mermaid_tab_code">الكود</string>
+    <string name="mermaid_fullscreen">ملء الشاشة</string>
+    <string name="a2ui_parse_failed">فشل تحليل A2UI</string>
+    <string name="a2ui_parse_failed_hint">انسخ المصدر وتحقق من تنسيق JSON أو صياغة التعبير.</string>
+</resources>

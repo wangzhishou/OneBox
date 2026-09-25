@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">مُوجِّه النظام الافتراضي للمحادثة</string>
+    <string name="sys_prompt_default_desc">قواعد النظام الافتراضية للمحادثة</string>
+    <string name="sys_prompt_agent_create_title">مُوجِّه نظام إنشاء الوكلاء</string>
+    <string name="sys_prompt_agent_create_desc">مُوجِّه نظام مدمج لإنشاء الوكلاء</string>
+    <string name="sys_prompt_prompt_create_title">مُوجِّه نظام إنشاء المُوجِّهات</string>
+    <string name="sys_prompt_prompt_create_desc">مُوجِّه نظام مدمج لإنشاء المُوجِّهات</string>
+    <string name="sys_prompt_bazi_title">مُوجِّه نظام تحليل مخطط با زي</string>
+    <string name="sys_prompt_bazi_desc">مُوجِّه نظام مدمج لتحليل مخطط با زي (الأعمدة الأربعة)</string>
+    <string name="sys_prompt_xiangqi_title">مُوجِّه نظام نقلات الشطرنج الصيني</string>
+    <string name="sys_prompt_xiangqi_desc">مُوجِّه نظام مدمج لمباريات الشطرنج الصيني مع النماذج اللغوية</string>
+    <string name="sys_prompt_iching_title">مُوجِّه نظام تفسير كتاب التغييرات</string>
+    <string name="sys_prompt_iching_desc">تعليمات النظام المستخدمة لتفسير سؤال ورمز سداسي وخطوط متغيّرة</string>
+    <string name="sys_prompt_mode_ask_title">بروتوكول وضع ASK للاستعلام فقط</string>
+    <string name="sys_prompt_mode_ask_desc">مُوجِّه بروتوكول التنفيذ لوضع الاستعلام</string>
+    <string name="sys_prompt_mode_plan_title">بروتوكول وضع PLAN للتخطيط فقط</string>
+    <string name="sys_prompt_mode_plan_desc">مُوجِّه بروتوكول التنفيذ لوضع التخطيط</string>
+    <string name="sys_prompt_mode_agent_title">بروتوكول وضع AGENT للتنفيذ</string>
+    <string name="sys_prompt_mode_agent_desc">مُوجِّه بروتوكول التنفيذ لوضع الوكيل</string>
+    <string name="sys_prompt_duel_title">قوالب مُوجِّهات المبارزة والتفاعل بالذكاء الاصطناعي</string>
+    <string name="sys_prompt_duel_desc">تعليمات النظام وقواعد الأدوار وقوالب إرشاد الأدوار لمبارزات وتفاعلات الذكاء الاصطناعي</string>
+    <string name="sys_prompt_memory_global_title">إرشادات ملف الذاكرة</string>
+    <string name="sys_prompt_memory_global_desc">مقدّمة تُدرج قبل قسم ملف المستخدم في ذاكرة الذكاء الاصطناعي</string>
+    <string name="sys_prompt_memory_recent_title">إرشادات سجل الذاكرة الأخير</string>
+    <string name="sys_prompt_memory_recent_desc">مقدّمة تُدرج قبل قسم السجل الأخير في ذاكرة الذكاء الاصطناعي (تشير إلى أداة memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">إرشادات سجل الذاكرة الأخير (دون أدوات)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">النسخة الاحتياطية المستخدمة عندما لا يدعم النموذج استدعاء الأدوات</string>
+    <string name="sys_prompt_skills_guidance_title">إرشادات قائمة المهارات</string>
+    <string name="sys_prompt_skills_guidance_desc">مقدّمة تُدرج قبل قائمة المهارات المتاحة</string>
+    <string name="activity_log_habit_app_title">متتبّع العادات</string>
+    <string name="activity_log_habit_created">عادة جديدة: %1$s</string>
+    <string name="activity_log_habit_check_in">تسجيل حضور: %1$s</string>
+</resources>

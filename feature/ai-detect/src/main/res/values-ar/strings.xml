@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">كشف النص</string>
+    <string name="ai_detect_image_tab">كشف الصور</string>
+    <string name="ai_detect_text_hint">الصق النص أو اكتبه للكشف عنه…</string>
+    <string name="ai_detect_button">كشف</string>
+    <string name="ai_detect_detecting">جارٍ الكشف…</string>
+    <string name="ai_detect_upload_hint">اضغط لرفع صورة أو لصقها…</string>
+    <string name="ai_detect_upload_format">يدعم JPG / PNG / WebP، بحجم أكبر من 300×300، حتى 10MB</string>
+    <string name="ai_detect_change_image">تغيير الصورة</string>
+    <string name="ai_detect_probability_label">احتمال الذكاء الاصطناعي</string>
+    <string name="ai_detect_verdict_likely_ai">مرجّح أنه من إنشاء الذكاء الاصطناعي</string>
+    <string name="ai_detect_verdict_maybe_ai">قد يكون من إنشاء الذكاء الاصطناعي</string>
+    <string name="ai_detect_verdict_likely_human">مرجّح أنه من إنشاء بشري</string>
+    <string name="ai_detect_recheck">إعادة الكشف</string>
+    <string name="ai_detect_view_detail">عرض التفاصيل</string>
+    <string name="ai_detect_collapse_detail">إخفاء التفاصيل</string>
+    <string name="ai_detect_segment_human">بشري</string>
+    <string name="ai_detect_segment_ai">الذكاء الاصطناعي</string>
+    <string name="ai_detect_segment_suspected">ذكاء اصطناعي مشتبه به</string>
+    <string name="ai_detect_labels_ratio_title">نسب التصنيفات</string>
+    <string name="ai_detect_image_confidence_detail">يمنح النموذج هذه الصورة ثقة بنسبة %1$d%% في أنها من إنشاء الذكاء الاصطناعي. وكلما زادت القيمة، زاد احتمال أن تكون من إنشائه.</string>
+    <string name="ai_detect_history">سجل الكشف</string>
+    <string name="ai_detect_history_empty">لا توجد سجلات كشف بعد</string>
+    <string name="ai_detect_clear_all">مسح الكل</string>
+    <string name="ai_detect_clear_confirm">هل تريد مسح جميع سجلات الكشف؟</string>
+    <string name="ai_detect_confirm">تأكيد</string>
+    <string name="ai_detect_cancel">إلغاء</string>
+    <string name="ai_detect_delete">حذف</string>
+    <string name="ai_detect_type_text">نص</string>
+    <string name="ai_detect_type_image">صورة</string>
+    <string name="ai_detect_detail_title">تفاصيل الكشف</string>
+    <string name="ai_detect_error_image_too_large">يجب أن يكون حجم الصورة أقل من 10MB</string>
+    <string name="ai_detect_error_image_too_small">يجب أن تكون الصورة أكبر من 300×300</string>
+    <string name="ai_detect_error_image_unreadable">تعذّر قراءة الصورة</string>
+    <string name="ai_detect_error_network">فشل الكشف، يُرجى المحاولة مرة أخرى لاحقًا</string>
+    <string name="agent_tool_detect_ai_text_title">كشف النص بالذكاء الاصطناعي</string>
+    <string name="agent_tool_detect_ai_text_summary">يكشف ما إذا كان نص ما مرجّحًا أن يكون من إنشاء الذكاء الاصطناعي، ويعيد احتمال الذكاء الاصطناعي والحكم والتصنيفات لكل مقطع</string>
+    <string name="agent_tool_detect_ai_text_param_text">محتوى النص العادي المطلوب كشفه</string>
+    <string name="agent_tool_detect_ai_text_error_args">معلمات غير صالحة: يجب أن يكون النص سلسلة غير فارغة</string>
+    <string name="agent_tool_detect_ai_image_title">كشف الصور بالذكاء الاصطناعي</string>
+    <string name="agent_tool_detect_ai_image_summary">يكشف ما إذا كانت صورة ما مرجّحة أن تكون من إنشاء الذكاء الاصطناعي، ويعيد ثقة إنشاء الذكاء الاصطناعي والحكم</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">معرّف URI للصورة المطلوب كشفها؛ يدعم content:// وfile://، ويمكن الحصول عليه من مرفقات المحادثة أو من الأداة browse_files</string>
+    <string name="agent_tool_detect_ai_image_error_args">معلمات غير صالحة: يجب أن يكون image_uri سلسلة غير فارغة</string>
+</resources>

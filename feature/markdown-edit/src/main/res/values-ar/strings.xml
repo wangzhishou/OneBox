@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">إدراج كتلة شيفرة</string>
+    <string name="code_label">شيفرة</string>
+    <string name="enter_code_hint">أدخل الشيفرة...</string>
+    <string name="select_language">اللغة:</string>
+    <string name="search_language">بحث عن لغة</string>
+    <string name="search_language_hint">اكتب اسم لغة...</string>
+    <string name="or_enter_image_url">أو أدخل رابط صورة:</string>
+    <string name="image_description_label">وصف الصورة</string>
+    <string name="image_description_hint">النص البديل للصورة</string>
+    <string name="image_url_label">رابط الصورة</string>
+    <string name="link_text_placeholder">النص المعروض</string>
+    <string name="resize_image">تغيير حجم الصورة</string>
+    <string name="width">العرض</string>
+    <string name="original_width">العرض الأصلي: %1$dpx</string>
+    <string name="markdown_placeholder">ابدأ الكتابة...</string>
+</resources>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lifetime_title">الساعة الرملية للزمن</string>
+    <string name="lifetime_loading">جارٍ حساب وقتك…</string>
+    <string name="lifetime_time_card_label">الرحلة حتى الآن</string>
+    <string name="lifetime_remaining_time_label">الوقت المتبقي</string>
+    <string name="lifetime_unit_years">سنوات</string>
+    <string name="lifetime_unit_months">أشهر</string>
+    <string name="lifetime_unit_days">أيام</string>
+    <string name="lifetime_unit_hours">ساعات</string>
+    <string name="lifetime_unit_minutes">دقائق</string>
+    <string name="lifetime_unit_seconds">ثوانٍ</string>
+    <string name="lifetime_life_journey">رحلة الحياة</string>
+    <string name="lifetime_progress_label">التقدّم</string>
+    <string name="lifetime_remaining_estimate">يتبقى نحو %1$d سنة</string>
+    <string name="lifetime_milestone_section">الذكريات</string>
+    <string name="lifetime_countdown_section">العدّ التنازلي</string>
+    <string name="lifetime_frequency_section">تكرار الحياة</string>
+    <string name="lifetime_add_event">إضافة علامة حياة</string>
+    <string name="lifetime_add_milestone">إضافة ذكرى</string>
+    <string name="lifetime_edit_milestone">تعديل الذكرى</string>
+    <string name="lifetime_event_name_label">اسم الحدث</string>
+    <string name="lifetime_milestone_name_hint">اسم الذكرى</string>
+    <string name="lifetime_event_name_placeholder">الأكل</string>
+    <string name="lifetime_choose_icon">اختيار أيقونة</string>
+    <string name="lifetime_frequency_label">التكرار</string>
+    <string name="lifetime_unit_label">الوحدة</string>
+    <string name="lifetime_times_per_period">عدد المرات في الفترة</string>
+    <string name="lifetime_add_to_timeline">تسجيل علامة حياة</string>
+    <string name="lifetime_default_times_per_period">1</string>
+    <string name="lifetime_validation_event_name_required">أدخل اسم الحدث</string>
+    <string name="lifetime_validation_times_per_period_required">أدخل قيمة أكبر من 0</string>
+    <string name="lifetime_validation_milestone_name_required">أدخل اسم الذكرى</string>
+    <string name="lifetime_validation_milestone_target_date_required">اختر التاريخ المستهدف</string>
+    <string name="lifetime_select_birthday">اختر تاريخ الميلاد</string>
+    <string name="lifetime_confirm">تأكيد</string>
+    <string name="lifetime_cancel">إلغاء</string>
+    <string name="lifetime_settings">تعيين نقطة البداية</string>
+    <string name="lifetime_birth_date">تاريخ الميلاد</string>
+    <string name="lifetime_target_age">العمر المتوقع</string>
+    <string name="lifetime_target_age_description">يحدّد العمر المتوقع تصوّر الساعة الرملية للزمن، وهو يعبّر عن رؤيتك الشخصية لحياة مُرضية.</string>
+    <string name="lifetime_tap_to_change">انقر للتغيير</string>
+    <string name="lifetime_update_settings">إدخال الساعة الرملية للزمن</string>
+    <string name="lifetime_hide_progress">إخفاء تقدّم الحياة</string>
+    <string name="lifetime_welcome_title">الساعة الرملية للزمن</string>
+    <string name="lifetime_welcome_subtitle">الوقت لا ينتظر أحدًا، لكن يمكنك أن تخلّده.</string>
+    <string name="lifetime_welcome_start">ابدأ</string>
+    <string name="lifetime_demo_hint">بيانات تجريبية — انقر لتعيين تاريخ ميلادك الحقيقي</string>
+    <string name="lifetime_demo_action">تعيين</string>
+    <string name="lifetime_empty_events_title">لا توجد علامات حياة بعد</string>
+    <string name="lifetime_empty_events_subtitle">أضف الأشياء التي تهمّك، مثل الأكل والقراءة والسفر…</string>
+    <string name="lifetime_empty_milestones_title">لا توجد ذكريات بعد</string>
+    <string name="lifetime_empty_milestones_subtitle">التخرّج + 1000 يوم، عيد الميلاد الثلاثين… سجّل لحظاتك المهمة</string>
+    <string name="lifetime_empty_countdown_title">لا يوجد عدّ تنازلي بعد</string>
+    <string name="lifetime_empty_countdown_subtitle">تُضاف أعياد الأشهر الثلاثة القادمة تلقائيًا. أضف أيامك المهمة بنفسك.</string>
+    <string name="lifetime_recommend_events_title">علامات حياة مقترحة لك</string>
+    <string name="lifetime_event_date">تاريخ الحدث</string>
+    <string name="lifetime_select_date">اختر التاريخ</string>
+    <string name="lifetime_event_picker_title">اختر علامة حياة</string>
+    <string name="lifetime_event_picker_add">إضافة</string>
+    <string name="lifetime_event_picker_recommended">مقترح</string>
+    <string name="lifetime_event_picker_preset">أحداث جاهزة</string>
+    <string name="lifetime_event_picker_custom">علامات حياتي</string>
+    <string name="lifetime_event_added">تمت الإضافة</string>
+    <string name="lifetime_event_saved">تمت إضافة علامة الحياة</string>
+    <string name="lifetime_event_updated">تم تحديث علامة الحياة</string>
+    <string name="lifetime_event_deleted">تم حذف علامة الحياة</string>
+    <string name="lifetime_frequency_one_time">مرة واحدة</string>
+    <string name="lifetime_frequency_daily">يوميًا</string>
+    <string name="lifetime_frequency_weekly">أسبوعيًا</string>
+    <string name="lifetime_frequency_monthly">شهريًا</string>
+    <string name="lifetime_frequency_yearly">سنويًا</string>
+    <string name="lifetime_frequency_progress">انقضى %1$d%% من العمر</string>
+    <string name="lifetime_card_flip_hint">انقر للقلب</string>
+    <string name="lifetime_completed_label">مكتمل</string>
+    <string name="lifetime_remaining_label">المتبقي</string>
+    <string name="lifetime_milestone_target_date">التاريخ المستهدف</string>
+    <string name="lifetime_milestone_target_days">الأيام المستهدفة</string>
+    <string name="lifetime_milestone_start_date">تاريخ البدء</string>
+    <string name="lifetime_milestone_note">ملاحظة</string>
+    <string name="lifetime_action_frequency_events">التكرار</string>
+    <string name="lifetime_action_milestones">الذكرى</string>
+    <string name="lifetime_action_countdown">العدّ التنازلي</string>
+    <string name="lifetime_milestone_days_until">يتبقى %1$d يومًا</string>
+    <string name="lifetime_milestone_days_today">اليوم</string>
+    <string name="lifetime_milestone_days_past">قبل %1$d يومًا</string>
+    <string name="lifetime_delete_confirm_title">تأكيد الحذف</string>
+    <string name="lifetime_delete_confirm_message">لا يمكن التراجع عن هذا. هل أنت متأكد من حذف هذه الذكرى؟</string>
+    <string name="lifetime_delete">حذف</string>
+    <string name="lifetime_note_placeholder">ما معنى هذه الذكرى بالنسبة لك…</string>
+    <string name="lifetime_milestone_name_placeholder">التخرّج + 1000 يوم</string>
+    <string name="lifetime_milestone_note_placeholder">اختياري: دوّن معنى هذه الذكرى…</string>
+    <string name="lifetime_note_edit">تعديل الملاحظة</string>
+    <string name="lifetime_note_delete">حذف الملاحظة</string>
+    <string name="lifetime_note_add">إضافة ملاحظة</string>
+    <string name="lifetime_note_dialog_title">ملاحظة</string>
+    <string name="lifetime_note_save">حفظ</string>
+    <string name="lifetime_note_empty">لا توجد ملاحظة</string>
+    <string name="lifetime_insight_current_title">رؤية اليوم</string>
+    <string name="lifetime_insight_refresh">تحديث</string>
+    <string name="lifetime_insight_loading">الذكاء الاصطناعي يفكّر…</string>
+    <string name="lifetime_insight_empty">لا توجد رؤية بعد، انقر تحديث للإنشاء</string>
+    <string name="lifetime_insight_history_title">سجل الرؤى</string>
+    <string name="lifetime_insight_history_empty">لا يوجد سجل</string>
+    <string name="lifetime_add_countdown">إضافة عدّ تنازلي</string>
+    <string name="lifetime_countdown_detail_title">تفاصيل العدّ التنازلي</string>
+    <string name="lifetime_countdown_name_label">اسم العدّ التنازلي</string>
+    <string name="lifetime_countdown_name_placeholder">يوم الراتب، ذكرى الزواج، مكافأة…</string>
+    <string name="lifetime_countdown_target_date">التاريخ المستهدف</string>
+    <string name="lifetime_countdown_lunar_target">التكرار حسب التقويم القمري (يتكرر سنويًا)</string>
+    <string name="lifetime_countdown_lunar_target_help">استخدمه لأعياد الميلاد القمرية والأعياد التقليدية والمناسبات السنوية الأخرى.</string>
+    <string name="lifetime_countdown_note_placeholder">اختياري: دوّن معنى هذا العدّ التنازلي…</string>
+    <string name="lifetime_countdown_holiday_badge">عيد</string>
+    <string name="lifetime_countdown_holiday_hint">يُضاف تلقائيًا من التقويم. يمكنك حذفه وإضافة نسختك الخاصة.</string>
+    <string name="lifetime_event_picker_delete">حذف</string>
+    <string name="lifetime_add">إضافة</string>
+    <string name="lifetime_date_ymd">%2$d/%3$d/%1$d</string>
+    <string name="lifetime_lunar_date">قمري %1$s %2$s%3$s</string>
+    <string name="lifetime_frequency_value_label">%1$s %2$d %3$s</string>
+    <string name="lifetime_status_today">اليوم</string>
+    <string name="lifetime_status_days_until">بقي %1$d يومًا</string>
+    <string name="lifetime_status_days_past">قبل %1$d يومًا</string>
+    <string name="lifetime_status_months_until">بقي %1$d شهرًا</string>
+    <string name="lifetime_status_months_past">قبل %1$d شهرًا</string>
+    <string name="lifetime_status_years_until">بقي %1$d سنة</string>
+    <string name="lifetime_status_years_past">قبل %1$d سنة</string>
+    <string name="lifetime_preset_name_spring_festival">عيد الربيع</string>
+    <string name="lifetime_preset_name_lantern_festival">مهرجان الفوانيس</string>
+    <string name="lifetime_preset_name_longtaitou">مهرجان لونغتاي تو</string>
+    <string name="lifetime_preset_name_shangsi">مهرجان شانغسي</string>
+    <string name="lifetime_preset_name_dragon_boat">مهرجان قوارب التنين</string>
+    <string name="lifetime_preset_name_qixi">مهرجان تشي شي</string>
+    <string name="lifetime_preset_name_zhongyuan">مهرجان تشونغ يوان</string>
+    <string name="lifetime_preset_name_mid_autumn">مهرجان منتصف الخريف</string>
+    <string name="lifetime_preset_name_double_ninth">مهرجان التاسع المزدوج</string>
+    <string name="lifetime_preset_name_hanyi">مهرجان هان يي</string>
+    <string name="lifetime_preset_name_xiayuan">مهرجان شيا يوان</string>
+    <string name="lifetime_preset_name_laba">مهرجان لابا</string>
+    <string name="lifetime_preset_name_little_new_year">السنة الجديدة الصغيرة</string>
+    <string name="lifetime_preset_name_chinese_new_years_eve">ليلة رأس السنة الصينية</string>
+    <string name="lifetime_preset_name_new_years_day">رأس السنة الميلادية</string>
+    <string name="lifetime_preset_name_valentines">عيد الحب</string>
+    <string name="lifetime_preset_name_womens_day">يوم المرأة العالمي</string>
+    <string name="lifetime_preset_name_arbor_day">يوم الشجرة</string>
+    <string name="lifetime_preset_name_consumer_rights_day">يوم حقوق المستهلك</string>
+    <string name="lifetime_preset_name_april_fools">يوم كذبة أبريل</string>
+    <string name="lifetime_preset_name_earth_day">يوم الأرض</string>
+    <string name="lifetime_preset_name_labor_day">عيد العمال</string>
+    <string name="lifetime_preset_name_youth_day">يوم الشباب</string>
+    <string name="lifetime_preset_name_nurses_day">يوم الممرضين</string>
+    <string name="lifetime_preset_name_childrens_day">يوم الطفل</string>
+    <string name="lifetime_preset_name_environment_day">يوم البيئة العالمي</string>
+    <string name="lifetime_preset_name_party_founding_day">ذكرى تأسيس الحزب الشيوعي الصيني</string>
+    <string name="lifetime_preset_name_army_day">يوم الجيش</string>
+    <string name="lifetime_preset_name_victory_day">يوم النصر على اليابان</string>
+    <string name="lifetime_preset_name_teachers_day">يوم المعلم</string>
+    <string name="lifetime_preset_name_national_day">العيد الوطني</string>
+    <string name="lifetime_preset_name_singles_day">يوم العزّاب</string>
+    <string name="lifetime_preset_name_national_memorial_day">يوم الذكرى الوطنية</string>
+    <string name="lifetime_preset_name_christmas_eve">ليلة عيد الميلاد</string>
+    <string name="lifetime_preset_name_christmas">عيد الميلاد</string>
+    <string name="lifetime_preset_name_halloween">الهالوين</string>
+    <string name="lifetime_preset_name_thanksgiving">عيد الشكر</string>
+    <string name="lifetime_preset_name_black_friday">الجمعة السوداء</string>
+    <string name="lifetime_preset_name_mothers_day">عيد الأم</string>
+    <string name="lifetime_preset_name_fathers_day">عيد الأب</string>
+    <string name="lifetime_preset_name_new_years_eve">ليلة رأس السنة</string>
+    <string name="lifetime_preset_name_eating">الوجبات</string>
+    <string name="lifetime_preset_name_sleeping">النوم</string>
+    <string name="lifetime_preset_name_journaling">تدوين اليوميات</string>
+    <string name="lifetime_preset_name_exercise">التمارين</string>
+    <string name="lifetime_preset_name_reading">القراءة</string>
+    <string name="lifetime_preset_name_movies">الأفلام</string>
+    <string name="lifetime_preset_name_travel">السفر</string>
+    <string name="lifetime_event_unit_times">مرة</string>
+    <string name="lifetime_event_unit_meals">وجبة</string>
+    <string name="lifetime_event_unit_entries">تدوينة</string>
+    <string name="lifetime_event_unit_books">كتاب</string>
+    <string name="lifetime_event_unit_movies">فيلم</string>
+    <string name="lifetime_event_unit_episodes">حلقة</string>
+    <string name="lifetime_event_unit_km">كم</string>
+    <string name="lifetime_event_unit_meters">م</string>
+    <string name="lifetime_event_unit_steps">خطوة</string>
+    <string name="lifetime_event_unit_minutes">دقيقة</string>
+    <string name="lifetime_event_unit_hours">ساعة</string>
+    <string name="lifetime_event_unit_items">عنصر</string>
+    <string name="lifetime_event_unit_cups">كوب</string>
+    <string name="lifetime_event_unit_bottles">زجاجة</string>
+    <string name="lifetime_event_unit_packs">عبوة</string>
+    <string name="lifetime_event_unit_boxes">علبة</string>
+    <string name="agent_tool_lifetime_unknown_error">خطأ غير معروف</string>
+    <string name="agent_tool_lifetime_open_link">فتح أحداث العمر</string>
+    <string name="agent_tool_lifetime_invalid_date">تاريخ غير صالح \"%1$s\". استخدم الصيغة yyyy-MM-dd، مثل 2026-12-31.</string>
+    <string name="agent_tool_lifetime_invalid_type">نوع غير صالح \"%1$s\". استخدم العدّ التنازلي أو المحطة.</string>
+    <string name="agent_tool_lifetime_label_target_date">التاريخ المستهدف</string>
+    <string name="agent_tool_lifetime_label_note">ملاحظة</string>
+    <string name="agent_tool_lifetime_section_countdown">العدّ التنازلي</string>
+    <string name="agent_tool_lifetime_section_milestone">المحطات</string>
+    <string name="agent_tool_lifetime_days_left">%1$d يومًا متبقية</string>
+    <string name="agent_tool_lifetime_days_ago">قبل %1$d يومًا</string>
+    <string name="agent_tool_lifetime_today">اليوم</string>
+    <string name="agent_tool_lifetime_reached">تم الوصول</string>
+    <string name="agent_tool_lifetime_date_unknown">التاريخ غير محدد</string>
+    <string name="agent_tool_add_countdown_event_title">إضافة حدث عدّ تنازلي</string>
+    <string name="agent_tool_add_countdown_event_summary">أنشئ حدث عدّ تنازلي باسم وتاريخ مستهدف.</string>
+    <string name="agent_tool_add_countdown_event_description">أنشئ حدث عدّ تنازلي في وحدة أحداث العمر. الحقلان `name` و`target_date` مطلوبان؛ والتاريخ المستهدف تاريخ ميلادي لمرة واحدة (yyyy-MM-dd) — لا يُدعم العدّ التنازلي المتكرر أو حسب التقويم القمري. `note` اختياري.</string>
+    <string name="agent_tool_add_countdown_event_param_name">اسم العدّ التنازلي، مطلوب، مثال: \"امتحان القبول الجامعي\".</string>
+    <string name="agent_tool_add_countdown_event_param_target_date">التاريخ المستهدف، yyyy-MM-dd، مثال: 2026-12-31.</string>
+    <string name="agent_tool_add_countdown_event_param_note">ملاحظة اختيارية للعدّ التنازلي.</string>
+    <string name="agent_tool_add_countdown_event_name_required">المعامل name مطلوب ولا يمكن أن يكون فارغًا.</string>
+    <string name="agent_tool_add_countdown_event_failed">فشل إضافة حدث العدّ التنازلي: %1$s</string>
+    <string-array name="agent_tool_add_countdown_event_keywords">
+        <item>العدّ التنازلي</item>
+        <item>الأيام المهمة</item>
+        <item>الذكرى السنوية</item>
+        <item>الأيام المتبقية</item>
+        <item>الموعد النهائي</item>
+        <item>اليوم الكبير</item>
+    </string-array>
+    <string-array name="agent_tool_add_countdown_event_examples">
+        <item>أضف عدًّا تنازليًا: رأس السنة 2027-01-01</item>
+        <item>أضف عدًّا تنازليًا: اختبار القبول الجامعي 2027-06-07</item>
+        <item>أضف عدًّا تنازليًا: ذكرى الزفاف 2026-10-01</item>
+    </string-array>
+    <string name="agent_tool_add_life_milestone_title">إضافة محطة حياتية</string>
+    <string name="agent_tool_add_life_milestone_summary">سجّل محطة حياتية شخصية بالاسم والتاريخ المستهدف.</string>
+    <string name="agent_tool_add_life_milestone_description">أنشئ محطة شخصية في وحدة المسار الزمني (مثل تاريخ هدف أو يوم لا يُنسى). المعاملان `name` و`target_date` (بصيغة yyyy-MM-dd) مطلوبان، و`note` اختياري.</string>
+    <string name="agent_tool_add_life_milestone_param_name">اسم المحطة، مطلوب، مثل \"أول ماراثون\".</string>
+    <string name="agent_tool_add_life_milestone_param_target_date">التاريخ المستهدف، yyyy-MM-dd، مثل 2027-05-01.</string>
+    <string name="agent_tool_add_life_milestone_param_note">ملاحظة اختيارية للمحطة.</string>
+    <string name="agent_tool_add_life_milestone_name_required">المعامل name مطلوب ولا يمكن أن يكون فارغًا.</string>
+    <string name="agent_tool_add_life_milestone_failed">فشل إضافة المحطة الحياتية: %1$s</string>
+    <string-array name="agent_tool_add_life_milestone_keywords">
+        <item>محطة</item>
+        <item>هدف</item>
+        <item>حدث حياتي</item>
+        <item>إنجاز</item>
+        <item>غاية</item>
+        <item>خطة</item>
+    </string-array>
+    <string-array name="agent_tool_add_life_milestone_examples">
+        <item>سجّل محطة: أول ماراثون في 2026-11-15</item>
+        <item>سجّل محطة: ركضت أول ماراثون لي 2026-11-15</item>
+        <item>أضف محطة حياتية: شراء منزل 2027-05-01</item>
+    </string-array>
+    <string name="agent_tool_query_life_events_title">استعلام عن أحداث الحياة</string>
+    <string name="agent_tool_query_life_events_summary">اعرض أحداث العدّ التنازلي والمحطات الحياتية مع الأيام المتبقية.</string>
+    <string name="agent_tool_query_life_events_description">استعلم عن أحداث العدّ التنازلي والمحطات الشخصية في وحدة المسار الزمني. يرشّح `type` النتيجة: countdown أو milestone أو all (الافتراضي). ويحدّ `limit` عدد المدخلات لكل نوع (الافتراضي 20، والأقصى 50). يتضمن كل مدخل معرّفه (لأداة delete_lifetime_entry) والاسم والتاريخ المستهدف والأيام المتبقية.</string>
+    <string name="agent_tool_query_life_events_param_type">مرشّح نوع المدخل: countdown أو milestone أو all (الافتراضي).</string>
+    <string name="agent_tool_query_life_events_param_limit">الحد الأقصى للمدخلات لكل نوع، من 1 إلى 50، الافتراضي 20.</string>
+    <string name="agent_tool_query_life_events_empty">لا توجد مدخلات بعد</string>
+    <string name="agent_tool_query_life_events_failed">فشل الاستعلام عن أحداث الحياة: %1$s</string>
+    <string-array name="agent_tool_query_life_events_keywords">
+        <item>العدّ التنازلي</item>
+        <item>محطة</item>
+        <item>استعلام</item>
+        <item>عرض الأحداث</item>
+        <item>القادمة</item>
+        <item>كم يومًا بقي</item>
+    </string-array>
+    <string-array name="agent_tool_query_life_events_examples">
+        <item>ما العدّادات التنازلية التي لديّ؟</item>
+        <item>ما العدّادات التنازلية المتبقية لديّ؟</item>
+        <item>اعرض كل محطاتي الحياتية</item>
+        <item>كم يومًا بقي حتى العدّ التنازلي التالي؟</item>
+    </string-array>
+    <string name="agent_tool_delete_lifetime_entry_title">حذف حدث حياتي</string>
+    <string name="agent_tool_delete_lifetime_entry_summary">احذف حدث عدّ تنازلي أو محطة حياتية بالمعرّف.</string>
+    <string name="agent_tool_delete_lifetime_entry_description">احذف حدث عدّ تنازلي أو محطة شخصية من وحدة المسار الزمني. المعاملان `type` (countdown أو milestone) و`id` مطلوبان، ويأتي المعرّف من نتائج query_life_events. الحذف لا يمكن التراجع عنه.</string>
+    <string name="agent_tool_delete_lifetime_entry_param_type">نوع المدخل: countdown أو milestone.</string>
+    <string name="agent_tool_delete_lifetime_entry_param_id">معرّف المدخل، من نتائج query_life_events.</string>
+    <string name="agent_tool_delete_lifetime_entry_id_required">المعامل id مطلوب ويجب أن يكون رقمًا.</string>
+    <string name="agent_tool_delete_lifetime_entry_not_found">لا يوجد مدخل بالمعرّف %1$d.</string>
+    <string name="agent_tool_delete_lifetime_entry_deleted">تم حذف \"%1$s\".</string>
+    <string name="agent_tool_delete_lifetime_entry_confirm_title">حذف حدث حياتي</string>
+    <string name="agent_tool_delete_lifetime_entry_confirm_presentation">احذف حدث عدّ تنازلي أو محطة حياتية. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="agent_tool_delete_lifetime_entry_failed">فشل حذف الحدث الحياتي: %1$s</string>
+    <string-array name="agent_tool_delete_lifetime_entry_keywords">
+        <item>حذف</item>
+        <item>إزالة</item>
+        <item>العدّ التنازلي</item>
+        <item>محطة</item>
+        <item>مسح</item>
+        <item>بالمعرّف</item>
+    </string-array>
+    <string-array name="agent_tool_delete_lifetime_entry_examples">
+        <item>احذف العدّ التنازلي ذا المعرّف 3</item>
+        <item>احذف المحطة 5</item>
+    </string-array>
+</resources>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="household_title">مدير المستلزمات</string>
+    <string name="household_tab_list">المستلزمات</string>
+    <string name="household_tab_locations">الأماكن</string>
+    <string name="household_tab_stats">الإحصاءات</string>
+    <string name="household_empty_guide_title">لا توجد مستلزمات بعد</string>
+    <string name="household_empty_guide_message">أضف مستلزمًا يدويًا، أو دع الذكاء الاصطناعي يسجّله لك</string>
+    <string name="household_add_manually">إضافة يدوية</string>
+    <string name="household_add_with_ai">اطلب من الذكاء الاصطناعي التسجيل</string>
+    <string name="household_ai_assist_title">مساعد مدير المستلزمات</string>
+    <string name="household_ai_assist_fill_in">سجّل دواء البرد في علبة الأدوية بالغرفة، ينتهي في يونيو 2027</string>
+    <string name="household_ai_assist_prompt">أنت مساعد مستلزمات المنزل لدى المستخدم. عندما يخبرك المستخدم بمستلزم ومكان تخزينه (وربما تاريخ انتهاء صلاحيته)، سجّله بالأداة add_household_item، مثل \"ضع دواء البرد في علبة الأدوية بالغرفة، ينتهي في يونيو 2027\". وعندما يسأل المستخدم عن مكان شيء ما، ابحث عنه بالأداة find_household_item. وعندما يريد نقل شيء ما، استخدم move_household_item. أكّد كل إجراء بإيجاز بعد تسجيله.</string>
+    <string name="household_search_hint">ابحث بالاسم أو الفئة أو الملاحظة</string>
+    <string name="household_expired_days">انتهت الصلاحية قبل %1$d يوم</string>
+    <string name="household_days_left">بقي %1$d يوم</string>
+    <string name="household_expires_today">ينتهي اليوم</string>
+    <string name="household_add_item">إضافة مستلزم</string>
+    <string name="household_manage_locations">إدارة الأماكن</string>
+    <string name="household_empty_items">لا توجد مستلزمات بعد. اضغط + للإضافة.</string>
+    <string name="household_empty_search">لا توجد مستلزمات مطابقة</string>
+    <string name="household_breadcrumb_home">الكل</string>
+    <string name="household_view_list">عرض قائمة</string>
+    <string name="household_view_grid">عرض شبكي</string>
+    <string name="household_uncategorized">غير مصنّف</string>
+    <string name="household_no_location">بلا مكان</string>
+    <string name="household_delete_item">حذف</string>
+    <string name="household_edit_item">تعديل</string>
+    <string name="household_editor_add_title">إضافة مستلزم</string>
+    <string name="household_editor_edit_title">تعديل المستلزم</string>
+    <string name="household_editor_name_label">الاسم</string>
+    <string name="household_editor_name_hint">مثال: دواء البرد</string>
+    <string name="household_editor_category_label">الفئة</string>
+    <string name="household_category_medicine">أدوية</string>
+    <string name="household_category_beauty">الجمال والعناية بالبشرة</string>
+    <string name="household_category_daily">المستلزمات اليومية</string>
+    <string name="household_category_food">الطعام والشراب</string>
+    <string name="household_category_clothing">الملابس</string>
+    <string name="household_category_digital">الأجهزة الإلكترونية</string>
+    <string name="household_category_books">الكتب</string>
+    <string name="household_category_stationery">القرطاسية</string>
+    <string name="household_category_home_goods">مستلزمات المنزل</string>
+    <string name="household_category_cleaning">مواد التنظيف</string>
+    <string name="household_category_baby">الأطفال والرضّع</string>
+    <string name="household_category_sports">الرياضة واللياقة</string>
+    <string name="household_category_pet">مستلزمات الحيوانات الأليفة</string>
+    <string name="household_category_tools">الأدوات</string>
+    <string name="household_category_accessories">الإكسسوارات</string>
+    <string name="household_category_other">أخرى</string>
+    <string name="household_category_small_legacy">مستلزمات صغيرة</string>
+    <string name="household_category_big_legacy">مستلزمات كبيرة</string>
+    <string name="household_category_custom_hint">فئة مخصّصة</string>
+    <string name="household_editor_location_label">المكان</string>
+    <string name="household_editor_location_none">بلا مكان</string>
+    <string name="household_editor_location_pick">اختر المكان</string>
+    <string name="household_editor_expire_label">تاريخ الانتهاء</string>
+    <string name="household_editor_expire_pick">اختر التاريخ</string>
+    <string name="household_editor_expire_clear">مسح</string>
+    <string name="household_editor_photo_label">صورة</string>
+    <string name="household_editor_photo_add">إضافة صورة</string>
+    <string name="household_editor_photo_remove">إزالة الصورة</string>
+    <string name="household_editor_note_label">ملاحظة (اختياري)</string>
+    <string name="household_editor_note_hint">طريقة الاستخدام، المواصفات، إلخ.</string>
+    <string name="household_save">حفظ</string>
+    <string name="household_cancel">إلغاء</string>
+    <string name="household_confirm">حسنًا</string>
+    <string name="household_item_added">تمت إضافة المستلزم</string>
+    <string name="household_location_added">تمت إضافة المكان</string>
+    <string name="household_saved">تم الحفظ</string>
+    <string name="household_stats_total_items">إجمالي المستلزمات</string>
+    <string name="household_stats_location_count">الأماكن</string>
+    <string name="household_stats_expiring_soon">قاربة الانتهاء</string>
+    <string name="household_stats_unit_item">مستلزم</string>
+    <string name="household_stats_unit_location">الإجمالي</string>
+    <string name="household_stats_added_this_month">+%1$d هذا الشهر</string>
+    <string name="household_stats_category_share">حسب الفئة</string>
+    <string name="household_stats_location_distribution">حسب المكان (المستلزمات)</string>
+    <string name="household_stats_activity">ملخّص النشاط</string>
+    <string name="household_stats_recent_added">أُضيفت حديثًا</string>
+    <string name="household_stats_upcoming_expiry">قاربة الانتهاء</string>
+    <string name="household_stats_total_count">%1$d\nالإجمالي</string>
+    <string name="household_stats_items_count">%1$d</string>
+    <string name="household_stats_other">أخرى</string>
+    <string name="household_stats_empty">لا توجد بيانات بعد</string>
+    <string name="household_stats_expire_prefix">%1$s, </string>
+    <string name="household_stats_expire_suffix"></string>
+    <string name="household_locations_title">إدارة الأماكن</string>
+    <string name="household_location_add_root">مكان جديد</string>
+    <string name="household_location_add_child">إضافة مكان فرعي</string>
+    <string name="household_location_rename">إعادة تسمية</string>
+    <string name="household_location_delete">حذف</string>
+    <string name="household_location_name_hint">اسم المكان</string>
+    <string name="household_location_pick_icon">اختر أيقونة</string>
+    <string name="household_location_delete_blocked">يحتوي هذا المكان على أماكن فرعية أو مستلزمات، أزلها أولًا</string>
+    <string name="household_locations_empty">لا توجد أماكن بعد</string>
+    <string name="household_location_expand">توسيع</string>
+    <string name="household_location_collapse">طيّ</string>
+    <string name="household_loc_home">المنزل</string>
+    <string name="household_loc_living_room">غرفة المعيشة</string>
+    <string name="household_loc_master_bedroom">غرفة النوم الرئيسية</string>
+    <string name="household_loc_second_bedroom">غرفة النوم الثانية</string>
+    <string name="household_loc_kitchen">المطبخ</string>
+    <string name="household_loc_bathroom">الحمّام</string>
+    <string name="household_loc_study">غرفة المكتب</string>
+    <string name="household_loc_balcony">الشرفة</string>
+    <string name="household_loc_storage_room">غرفة التخزين</string>
+    <string name="household_loc_company">المكتب</string>
+    <string name="household_loc_desk">المكتب</string>
+    <string name="household_loc_meeting_room">قاعة الاجتماعات</string>
+    <string name="household_loc_pantry">المؤونة</string>
+    <string name="household_loc_locker">خزانة</string>
+    <string name="household_log_item_created">تمت إضافة المستلزم: %1$s</string>
+    <string name="household_log_item_updated">تم تحديث المستلزم: %1$s</string>
+    <string name="household_log_item_deleted">تم حذف المستلزم: %1$s</string>
+    <string name="household_log_item_moved">تم نقل المستلزم: %1$s</string>
+    <string name="household_log_location_created">تمت إضافة المكان: %1$s</string>
+    <string name="household_log_location_renamed">تمت إعادة تسمية المكان: %1$s</string>
+    <string name="household_log_location_deleted">تم حذف المكان: %1$s</string>
+    <string name="agent_tool_add_household_item_title">إضافة مستلزم</string>
+    <string name="agent_tool_add_household_item_summary">تسجيل مستلزم مع مكان تخزينه</string>
+    <string name="agent_tool_add_household_item_description">تسجيل مستلزم: الاسم، ومسار مكان التخزين، وفئة اختيارية، وتاريخ الانتهاء، وملاحظة. يُعاد استخدام الأماكن التي تحمل الاسم نفسه (حتى المتداخلة منها)، وتُنشأ المستويات الناقصة تلقائيًا.</string>
+    <string name="agent_tool_add_household_item_param_name">اسم المستلزم، مثل \"دواء البرد\"</string>
+    <string name="agent_tool_add_household_item_param_location_path">مسار مكان التخزين، مع فصل المقاطع بـ \"/\" أو \"&gt;\"، مثل \"المنزل/غرفة النوم/علبة الأدوية\". يُعاد استخدام الأماكن التي تحمل الاسم نفسه، وتُنشأ الأماكن الناقصة</string>
+    <string name="agent_tool_add_household_item_param_category">الفئة، نص حر، مثل: أدوية / مستلزمات صغيرة / مستلزمات كبيرة</string>
+    <string name="agent_tool_add_household_item_param_expire_date">تاريخ الانتهاء، بصيغة yyyy-MM-dd، اختياري</string>
+    <string name="agent_tool_add_household_item_param_note">ملاحظة اختيارية</string>
+    <string name="agent_tool_add_household_item_failed">فشل إضافة المستلزم: %1$s</string>
+    <string-array name="agent_tool_add_household_item_keywords">
+        <item>منزلي</item>
+        <item>مستلزم</item>
+        <item>التخزين</item>
+        <item>إضافة مستلزم</item>
+    </string-array>
+    <string-array name="agent_tool_add_household_item_examples">
+        <item>سجّل دواء البرد في علبة الأدوية بغرفة النوم، ينتهي في يونيو 2027</item>
+        <item>أضف شاحن الاحتياط إلى درج مكتب الدراسة</item>
+    </string-array>
+    <string name="agent_tool_find_household_item_title">البحث عن مستلزم</string>
+    <string name="agent_tool_find_household_item_summary">معرفة مكان تخزين مستلزم</string>
+    <string name="agent_tool_find_household_item_description">بحث تقريبي عن المستلزمات بالاسم أو الفئة أو الملاحظة. يُعيد كل نتيجة مع مسار مكانها الكامل وحالة الانتهاء والملاحظة.</string>
+    <string name="agent_tool_find_household_item_param_query">كلمة البحث، وتُطابَق مع الاسم والفئة والملاحظة</string>
+    <string name="agent_tool_find_household_item_empty">لا توجد مستلزمات مطابقة</string>
+    <string name="agent_tool_find_household_item_failed">فشل البحث عن المستلزم: %1$s</string>
+    <string-array name="agent_tool_find_household_item_keywords">
+        <item>منزلي</item>
+        <item>بحث</item>
+        <item>أين يوجد</item>
+        <item>المكان</item>
+    </string-array>
+    <string-array name="agent_tool_find_household_item_examples">
+        <item>أين دواء البرد؟</item>
+        <item>ابحث عن شاحن الاحتياط</item>
+    </string-array>
+    <string name="agent_tool_move_household_item_title">نقل مستلزم</string>
+    <string name="agent_tool_move_household_item_summary">تغيير مكان تخزين المستلزم</string>
+    <string name="agent_tool_move_household_item_description">نقل مستلزم إلى مسار مكان تخزين جديد. يُعثر على المستلزم بالاسم بمطابقة تقريبية، ويُنشأ مسار المكان مستوى بمستوى إن كان ناقصًا.</string>
+    <string name="agent_tool_move_household_item_param_name">اسم المستلزم، بمطابقة تقريبية</string>
+    <string name="agent_tool_move_household_item_param_location_path">مسار مكان التخزين الجديد، مع فصل المقاطع بـ \"/\" أو \"&gt;\"</string>
+    <string name="agent_tool_move_household_item_not_found">لم يتم العثور على المستلزم: %1$s</string>
+    <string name="agent_tool_move_household_item_failed">فشل نقل المستلزم: %1$s</string>
+    <string-array name="agent_tool_move_household_item_keywords">
+        <item>منزلي</item>
+        <item>نقل</item>
+        <item>تغيير المكان</item>
+    </string-array>
+    <string-array name="agent_tool_move_household_item_examples">
+        <item>انقل دواء البرد إلى درج غرفة المعيشة</item>
+    </string-array>
+    <string name="agent_tool_household_label_name">الاسم</string>
+    <string name="agent_tool_household_label_location">المكان</string>
+    <string name="agent_tool_household_label_category">الفئة</string>
+    <string name="agent_tool_household_label_expiry">تاريخ الانتهاء</string>
+    <string name="agent_tool_household_label_note">ملاحظة</string>
+    <string name="agent_tool_household_expiry_expired">انتهت الصلاحية قبل %1$d يوم</string>
+    <string name="agent_tool_household_expiry_days_left">بقي %1$d يوم</string>
+    <string name="agent_tool_household_expiry_today">ينتهي اليوم</string>
+    <string name="agent_tool_household_expiry_none">لا يوجد تاريخ انتهاء</string>
+    <string name="agent_tool_household_open_link">فتح مدير المستلزمات</string>
+    <string name="agent_tool_household_edit_link">عرض المستلزم</string>
+    <string name="agent_tool_household_unknown_error">خطأ غير معروف</string>
+</resources>

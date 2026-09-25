@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_title">اختيار التاريخ</string>
+    <string name="date_picker_confirm">تأكيد</string>
+    <string name="date_picker_cancel">إلغاء</string>
+    <string name="date_picker_edit">تعديل</string>
+    <string name="date_picker_select_year_month">اختيار السنة والشهر</string>
+    <string name="date_picker_year_input">السنة</string>
+    <string name="date_picker_current_year">السنة الحالية</string>
+    <string name="blessing_effect_merit_plus_one">الحظ +1</string>
+    <string name="date_picker_month_format">%d</string>
+    <string name="date_picker_previous_month">الشهر السابق</string>
+    <string name="date_picker_next_month">الشهر التالي</string>
+    <string name="date_picker_year_format">%d</string>
+    <string name="date_picker_year_month_format">%1$d-%2$02d</string>
+    <string name="date_picker_date_format">%1$d-%2$02d-%3$02d</string>
+    <string name="date_picker_weekday_sun">الأحد</string>
+    <string name="date_picker_weekday_mon">الاثنين</string>
+    <string name="date_picker_weekday_tue">الثلاثاء</string>
+    <string name="date_picker_weekday_wed">الأربعاء</string>
+    <string name="date_picker_weekday_thu">الخميس</string>
+    <string name="date_picker_weekday_fri">الجمعة</string>
+    <string name="date_picker_weekday_sat">السبت</string>
+    <string name="time_range_picker_title">اختيار النطاق الزمني</string>
+    <string name="time_picker_title">اختيار الوقت</string>
+    <string name="time_range_picker_start_time">وقت البدء</string>
+    <string name="time_range_picker_end_time">وقت الانتهاء</string>
+    <string name="time_range_picker_hour">الساعة</string>
+    <string name="time_range_picker_minute">الدقيقة</string>
+    <string name="time_range_picker_hint">نصيحة: أدخل الساعة (0-23) والدقيقة (0-59)</string>
+    <string name="date_range_picker_title">اختيار نطاق التواريخ</string>
+    <string name="date_range_start">تاريخ البدء</string>
+    <string name="date_range_end">تاريخ الانتهاء</string>
+    <string name="week_selector_week_title">%1$d-%2$02d · الأسبوع %3$d</string>
+    <string name="icon_picker_icon_count">%1$d أيقونة</string>
+    <string name="icon_picker_title">اختيار أيقونة</string>
+    <string name="icon_picker_search_hint">البحث عن اسم أيقونة…</string>
+    <string name="icon_picker_tab_app">التطبيقات</string>
+    <string name="icon_picker_tab_material">الشائعة</string>
+    <string name="icon_picker_tab_all">الكل</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>الاثنين</item>
+        <item>الثلاثاء</item>
+        <item>الأربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+        <item>الأحد</item>
+    </string-array>
+</resources>
