@@ -92,7 +92,8 @@ data class BottomNavigationBarStyle(
     val containerGlassStyle: GlassStyle = GlassStyle.Regular,
     val containerShape: Shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     val outerHorizontalPadding: Dp = 0.dp,
-    val innerHorizontalPadding: Dp = 3.dp,
+    /** 容器内容左右的内边距:胶囊贴合文字后,避免多 tab 时首尾胶囊顶到容器边缘 */
+    val innerHorizontalPadding: Dp = 10.dp,
     val outerTopPadding: Dp = 2.dp,
     val innerTopPadding: Dp = 4.dp,
     val selectedItemGlassStyle: GlassStyle = GlassStyle.Dense,

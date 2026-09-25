@@ -2,6 +2,7 @@ package com.shifenmiao.common.components
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,6 +61,8 @@ fun OperateBar(
 
     Row(
         modifier = Modifier.fillMaxWidth(),
+        // 徽章 fill=false 只按内容占位,剩余空间由 SpaceBetween 分配,保证评论入口始终右对齐
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         CategoryTagBadge(
