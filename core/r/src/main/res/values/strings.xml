@@ -1756,6 +1756,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">No AI engine is available. Please configure an API token in engine settings, or switch to an engine with an available proxy, before sending.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Open settings</string>
     <string name="ai_chat_empty_response_error">The model returned nothing to display. Try again — if it keeps failing, switch engines or check protocol compatibility.</string>
+    <string name="ai_empty_response_error">The model returned no content. Please try again.</string>
     <string name="ai_chat_stream_interrupted">Connection interrupted before the response completed. Please try again.</string>
 
     <!-- AI content / execution details -->

@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">Kullanılabilir AI motoru yok. Göndermeden önce motor ayarlarında bir API belirteci yapılandırın veya kullanılabilir bir proxy\'si olan bir motora geçin.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Ayarları aç</string>
     <string name="ai_chat_empty_response_error">Model görüntülenecek bir şey döndürmedi. Tekrar deneyin — sorun devam ederse motor değiştirin veya protokol uyumluluğunu kontrol edin.</string>
+    <string name="ai_empty_response_error">Model hiçbir içerik döndürmedi. Lütfen tekrar deneyin.</string>
     <string name="ai_content_notice_short">AI tarafından oluşturuldu</string>
     <string name="ai_execution_input_label">Girdi parametreleri</string>
     <string name="ai_execution_output_label">Yürütme sonucu</string>

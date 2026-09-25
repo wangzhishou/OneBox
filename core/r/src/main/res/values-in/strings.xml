@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">Tidak ada mesin AI yang tersedia. Harap konfigurasi token API di pengaturan mesin, atau beralih ke mesin dengan proxy yang tersedia, sebelum mengirim.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Buka pengaturan</string>
     <string name="ai_chat_empty_response_error">Model tidak mengembalikan apa pun untuk ditampilkan. Coba lagi — jika terus gagal, ganti mesin atau periksa kompatibilitas protokol.</string>
+    <string name="ai_empty_response_error">Model tidak mengembalikan konten. Silakan coba lagi.</string>
     <string name="ai_content_notice_short">Dihasilkan AI</string>
     <string name="ai_execution_input_label">Parameter masukan</string>
     <string name="ai_execution_output_label">Hasil eksekusi</string>

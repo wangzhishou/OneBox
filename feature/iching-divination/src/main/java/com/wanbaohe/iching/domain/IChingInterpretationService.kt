@@ -3,6 +3,7 @@ package com.wanbaohe.iching.domain
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AIPromptResult
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.chat_prompt.dao.PromptDao
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
@@ -121,13 +122,21 @@ class IChingInterpretationService @Inject constructor(
         }
     }
 
-    /** 优先读「系统提示词管理」中的预置提示词,取不到时按当前 locale 回退到内置默认值 */
+    /** 优先读「系统提示词管理」中的预置提示词,取不到时按应用语言回退到内置默认值 */
     private suspend fun systemPrompt(): String =
         promptDao.getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_ICHING_INTERPRETATION)
             ?.prompt
             ?.trim()
             ?.takeIf(String::isNotBlank)
-            ?: if (textLibrary.isChinese) DEFAULT_SYSTEM_PROMPT else DEFAULT_SYSTEM_PROMPT_EN
+            ?: if (textLibrary.isChinese) {
+                DEFAULT_SYSTEM_PROMPT
+            } else {
+                // 卦辞原文只有中/英两版, 但白话解读应当跟随界面语言:
+                // 以前非中文一律给英文解读, 土耳其语用户拿到的就是英文。
+                DEFAULT_SYSTEM_PROMPT_EN + "\n\n" + AiLanguagePrompt.outputInCurrentLanguage(
+                    "the interpretation and its Markdown section headings"
+                )
+            }
 
     private companion object {
         const val DEFAULT_SYSTEM_PROMPT = """你是一位严谨、温和的《易经》文化解读助手。请基于用户所问事项、本卦和变爻,用简体中文给出参考性解读,输出 Markdown 格式,依次包含"卦象总述""事业""感情""财运""健康"小节,各部分简洁清晰、紧扣所问。不得声称能预测确定未来,不得替代医疗、法律或投资专业意见。"""

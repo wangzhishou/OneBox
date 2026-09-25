@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">No hay ningún motor de IA disponible. Configure un token de API en la configuración del motor, o cambie a un motor con un proxy disponible, antes de enviar.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Abrir configuración</string>
     <string name="ai_chat_empty_response_error">El modelo no devolvió nada que mostrar. Inténtelo de nuevo; si sigue fallando, cambie de motor o verifique la compatibilidad del protocolo.</string>
+    <string name="ai_empty_response_error">El modelo no devolvió ningún contenido. Vuelve a intentarlo.</string>
     <string name="ai_content_notice_short">Generado por IA</string>
     <string name="ai_execution_input_label">Parámetros de entrada</string>
     <string name="ai_execution_output_label">Resultado de la ejecución</string>

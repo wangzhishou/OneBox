@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">사용 가능한 AI 엔진이 없습니다. 보내기 전에 엔진 설정에서 API 토큰을 구성하거나, 사용 가능한 프록시가 있는 엔진으로 전환하세요.</string>
     <string name="ai_chat_engine_unavailable_banner_action">설정 열기</string>
     <string name="ai_chat_empty_response_error">모델이 표시할 내용을 반환하지 않았습니다. 다시 시도하세요. 계속 실패하면 엔진을 전환하거나 프로토콜 호환성을 확인하세요.</string>
+    <string name="ai_empty_response_error">모델이 내용을 반환하지 않았습니다. 다시 시도해 주세요.</string>
     <string name="ai_content_notice_short">AI 생성</string>
     <string name="ai_execution_input_label">입력 매개변수</string>
     <string name="ai_execution_output_label">실행 결과</string>

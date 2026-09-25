@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">Нет доступного AI-движка. Перед отправкой настройте API-токен в настройках движка или переключитесь на движок с доступным прокси.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Открыть настройки</string>
     <string name="ai_chat_empty_response_error">Модель не вернула ничего для отображения. Попробуйте снова — если проблема сохраняется, смените движок или проверьте совместимость протокола.</string>
+    <string name="ai_empty_response_error">Модель не вернула содержимое. Попробуйте ещё раз.</string>
     <string name="ai_content_notice_short">Сгенерировано ИИ</string>
     <string name="ai_execution_input_label">Входные параметры</string>
     <string name="ai_execution_output_label">Результат выполнения</string>

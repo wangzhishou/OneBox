@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">Keine KI-Engine verfügbar. Bitte konfigurieren Sie einen API-Token in den Engine-Einstellungen oder wechseln Sie zu einer Engine mit verfügbarem Proxy, bevor Sie senden.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Einstellungen öffnen</string>
     <string name="ai_chat_empty_response_error">Das Modell hat nichts zum Anzeigen zurückgegeben. Versuchen Sie es erneut – falls es weiterhin fehlschlägt, wechseln Sie die Engine oder prüfen Sie die Protokollkompatibilität.</string>
+    <string name="ai_empty_response_error">Das Modell hat keinen Inhalt zurückgegeben. Bitte versuchen Sie es erneut.</string>
     <string name="ai_content_notice_short">KI-generiert</string>
     <string name="ai_execution_input_label">Eingabeparameter</string>
     <string name="ai_execution_output_label">Ausführungsergebnis</string>

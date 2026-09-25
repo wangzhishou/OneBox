@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">कोई AI इंजन उपलब्ध नहीं है। भेजने से पहले कृपया इंजन सेटिंग्स में API टोकन कॉन्फ़िगर करें, या उपलब्ध प्रॉक्सी वाले इंजन पर स्विच करें।</string>
     <string name="ai_chat_engine_unavailable_banner_action">सेटिंग्स खोलें</string>
     <string name="ai_chat_empty_response_error">मॉडल ने प्रदर्शित करने के लिए कुछ भी नहीं लौटाया। पुनः प्रयास करें — यदि यह लगातार विफल रहता है, तो इंजन बदलें या प्रोटोकॉल संगतता जांचें।</string>
+    <string name="ai_empty_response_error">मॉडल ने कोई सामग्री नहीं लौटाई। कृपया पुनः प्रयास करें।</string>
     <string name="ai_content_notice_short">AI-जनित</string>
     <string name="ai_execution_input_label">इनपुट पैरामीटर</string>
     <string name="ai_execution_output_label">निष्पादन परिणाम</string>

@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">利用可能なAIエンジンがありません。送信する前に、エンジン設定でAPIトークンを設定するか、利用可能なプロキシがあるエンジンに切り替えてください。</string>
     <string name="ai_chat_engine_unavailable_banner_action">設定を開く</string>
     <string name="ai_chat_empty_response_error">モデルが表示する内容を返しませんでした。もう一度お試しください。それでも失敗する場合は、エンジンを切り替えるか、プロトコルの互換性を確認してください。</string>
+    <string name="ai_empty_response_error">モデルが内容を返しませんでした。もう一度お試しください。</string>
     <string name="ai_content_notice_short">AI生成</string>
     <string name="ai_execution_input_label">入力パラメータ</string>
     <string name="ai_execution_output_label">実行結果</string>

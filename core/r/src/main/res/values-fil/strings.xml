@@ -1522,6 +1522,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">Walang available na AI engine. Pakiconfigure ang API token sa mga setting ng engine, o lumipat sa engine na may available na proxy, bago magpadala.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Buksan ang mga setting</string>
     <string name="ai_chat_empty_response_error">Walang ibinalik ang modelo para ipakita. Subukan muli — kung patuloy na nabibigo, lumipat ng engine o suriin ang compatibility ng protocol.</string>
+    <string name="ai_empty_response_error">Walang ibinalik na nilalaman ang modelo. Pakisubukan muli.</string>
     <string name="ai_content_notice_short">Ginawa ng AI</string>
     <string name="ai_execution_input_label">Input parameters</string>
     <string name="ai_execution_output_label">Resulta ng pagpapatupad</string>

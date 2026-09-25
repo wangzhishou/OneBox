@@ -834,6 +834,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message">目前沒有可用的 AI 引擎。請先在引擎設定中測試直連成功，或切換到有代理可用的引擎後再傳送。</string>
     <string name="ai_chat_engine_unavailable_toast">目前沒有可用的 AI 引擎，請先完成引擎設定</string>
     <string name="ai_chat_empty_response_error">模型沒有回傳可顯示的內容，請重試一次；如果仍然失敗，可切換引擎或檢查目前協定相容性。</string>
+    <string name="ai_empty_response_error">模型沒有回傳內容，請重試。</string>
     <string name="ai_chat_stream_interrupted">連線中斷，回答未完成。請重試。</string>
     <string name="blog_title">查看文章詳情</string>
     <string name="blog_escription">查看文章更多</string>

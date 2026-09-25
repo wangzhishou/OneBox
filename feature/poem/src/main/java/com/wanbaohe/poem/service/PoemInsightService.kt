@@ -5,8 +5,10 @@ import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AIPromptResult
 import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.common.utils.BaseUtils
+import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.poem.repo.PoemRepository
+import com.shifenmiao.interfaces.singleton.AppContext
 import com.t8rin.logger.makeLog
 import com.wanbaohe.poem.model.Poem
 import javax.inject.Inject
@@ -45,7 +47,9 @@ class PoemInsightService @Inject constructor(
         }
         val content = result.content.trim()
         if (content.isBlank()) {
-            return GenerationResult.Failed("AI 返回内容为空")
+            return GenerationResult.Failed(
+                AppContext.getString(CoreR.string.ai_empty_response_error)
+            )
         }
         poemRepository.updateAiInsight(id = poem.id, insight = content)
         chargePoints(result, buildInput(poem), "诗意解读")
@@ -71,7 +75,9 @@ class PoemInsightService @Inject constructor(
         }
         val content = result.content.trim()
         if (content.isBlank()) {
-            return GenerationResult.Failed("AI 返回内容为空")
+            return GenerationResult.Failed(
+                AppContext.getString(CoreR.string.ai_empty_response_error)
+            )
         }
         poemRepository.updatePinyin(id = poem.id, pinyin = content)
         chargePoints(result, buildInput(poem), "拼音标注")
@@ -91,7 +97,9 @@ class PoemInsightService @Inject constructor(
         }
         val content = result.content.trim()
         if (content.isBlank()) {
-            return GenerationResult.Failed("AI 返回内容为空")
+            return GenerationResult.Failed(
+                AppContext.getString(CoreR.string.ai_empty_response_error)
+            )
         }
         poemRepository.updateTranslation(id = poem.id, translation = content)
         chargePoints(result, buildInput(poem), "现代翻译")

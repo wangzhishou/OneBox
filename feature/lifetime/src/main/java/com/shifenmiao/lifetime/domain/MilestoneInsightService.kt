@@ -2,6 +2,8 @@ package com.shifenmiao.lifetime.domain
 
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AiLanguagePrompt
+import com.shifenmiao.core.R as CoreR
+import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.lifetime.data.MilestoneAiInsightRepository
 import com.shifenmiao.lifetime.domain.model.PersonalMilestone
 import javax.inject.Inject
@@ -39,7 +41,9 @@ class MilestoneInsightService @Inject constructor(
         }
         val content = result.content.trim()
         if (content.isBlank()) {
-            return GenerationResult.Failed("AI 返回内容为空")
+            return GenerationResult.Failed(
+                AppContext.getString(CoreR.string.ai_empty_response_error)
+            )
         }
         insightRepository.addInsight(milestoneId = milestone.id, content = content)
         return GenerationResult.Success(content)

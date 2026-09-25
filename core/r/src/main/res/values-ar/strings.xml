@@ -1624,6 +1624,7 @@
     <string name="ai_chat_engine_unavailable_dialog_message_overseas">لا يتوفّر أي محرّك ذكاء اصطناعي. يُرجى إعداد رمز API في إعدادات المحرّك، أو التبديل إلى محرّك يتوفّر له وكيل، قبل الإرسال.</string>
     <string name="ai_chat_engine_unavailable_banner_action">فتح الإعدادات</string>
     <string name="ai_chat_empty_response_error">لم يُعِد النموذج أي محتوى للعرض. حاول مجددًا — وإذا استمر الفشل، بدّل المحرّك أو تحقّق من توافق البروتوكول.</string>
+    <string name="ai_empty_response_error">لم يُرجع النموذج أي محتوى. يُرجى المحاولة مرة أخرى.</string>
     <string name="ai_chat_stream_interrupted">انقطع الاتصال قبل اكتمال الرد. يرجى المحاولة مرة أخرى.</string>
     <string name="ai_content_notice_short">من إنشاء الذكاء الاصطناعي</string>
     <string name="ai_execution_input_label">معاملات الإدخال</string>
