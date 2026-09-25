@@ -47,16 +47,18 @@ git remote add upstream https://github.com/wangzhishou/OneBox.git
 
 ```bash
 ./gradlew :app:assembleFossUniversalDebug                 # the variant CI checks
-./gradlew :app:assembleOneboxUniversalDebug               # a domestic-channel build
-./gradlew :feature:ai:compileOneboxUniversalDebugKotlin   # one module, much faster
+./gradlew :app:assembleGoogleUniversalDebug               # recommended local build (Google / Play channel)
+./gradlew :feature:ai:compileGoogleUniversalDebugKotlin   # one module, much faster
 ```
+
+`google` is the overseas / Play flavor and the default local build target; swap `Google` for `Onebox`, `Xiaomi`, `Huawei`, … when you need a domestic channel.
 
 `foss` is the fully-FOSS flavor: no Google Play Services, no Firebase, no WeChat or Alipay SDKs, and it needs no keystore. It is the cheapest variant that still exercises the whole module graph, which is why pull requests are verified against it.
 
 If you hit `InjectProcessingStep was unable to process ... could not be resolved`, that is a KSP/Hilt cache problem, not your code:
 
 ```bash
-./gradlew clean :feature:app:kspOneboxUniversalDebugKotlin
+./gradlew clean :feature:app:kspGoogleUniversalDebugKotlin
 ```
 
 ### Keys are optional

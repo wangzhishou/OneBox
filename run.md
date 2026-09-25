@@ -17,16 +17,18 @@
 
 本项目 `app` 模块有 2 个 flavor 维度：`app` + `abi`（见 `app/build.gradle.kts`）。
 
-- app flavors：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox`
+- app flavors：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google` / `foss`
 - abi flavors：`arm64` / `universal`（仅 64 位）
 - buildTypes：`Debug` / `Release`
 
 最终 Variant 名称形如：`<AppFlavor><AbiFlavor><BuildType>`（首字母大写驼峰）
 
+> **渠道偏好（2026-09 起）**：本地构建/验证默认使用 **`google`（海外 / Play 渠道）** 变体；需要国内渠道时把变体名里的 `Google` 换成 `Onebox` / `Xiaomi` / `Yyb` / `Oppo` / `Vivo` / `Huawei`。
+
 示例：
 
-- `HuaweiArm64Debug`
-- `OneboxUniversalRelease`
+- `GoogleUniversalDebug`
+- `GoogleArm64Release`
 
 ## 先查任务名（推荐）
 
@@ -58,19 +60,19 @@
 ./gradlew :app:assembleDebug
 ```
 
-构建指定 APK（推荐直接指定 Variant，输出更可控）：
+构建指定 APK（推荐直接指定 Variant，输出更可控；默认 `google` 渠道）：
 
 ```bash
+./gradlew :app:assembleGoogleUniversalDebug
+./gradlew :app:assembleGoogleArm64Release
 ./gradlew :app:assembleHuaweiArm64Debug
-./gradlew :app:assembleOneboxUniversalDebug
-./gradlew :app:assembleOneboxArm64Release
 ```
 
 构建 AAB（Play 上架常用）：
 
 ```bash
-./gradlew :app:bundleOneboxArm64Release
-./gradlew :app:bundleOneboxUniversalRelease
+./gradlew :app:bundleGoogleArm64Release
+./gradlew :app:bundleGoogleUniversalRelease
 ```
 
 构建所有 Release 变体（通常很慢）：
@@ -107,14 +109,14 @@ adb devices -l
 ## 安装到设备（ADB 已连接）
 
 ```bash
+./gradlew :app:installGoogleUniversalDebug
 ./gradlew :app:installHuaweiArm64Debug
-./gradlew :app:installOneboxUniversalDebug
 ```
 
 有些环境下也可以直接跑根任务（不带 `:app:` 前缀），以 `tasks --group=install` 的结果为准：
 
 ```bash
-./gradlew installHuaweiArm64Debug
+./gradlew installGoogleUniversalDebug
 ```
 
 ## 检查与诊断
@@ -122,7 +124,7 @@ adb devices -l
 Lint：
 
 ```bash
-./gradlew :app:lintHuaweiArm64Debug
+./gradlew :app:lintGoogleUniversalDebug
 ```
 
 ## 常用排错参数（复制到命令末尾）
@@ -136,7 +138,7 @@ Lint：
 示例：
 
 ```bash
-./gradlew :app:assembleHuaweiArm64Debug --stacktrace --info
+./gradlew :app:assembleGoogleUniversalDebug --stacktrace --info
 adb pull /data/data/<pkg>/cache/startup_trace.log，查看启动性能日志
 ```
 

@@ -117,7 +117,7 @@ git clone --depth=1 https://github.com/wangzhishou/OneBox.git
 ### Common Commands
 
 ```bash
-./gradlew :app:assembleOneboxUniversalDebug   # single-variant debug APK
+./gradlew :app:assembleGoogleUniversalDebug   # single-variant debug APK (google = default channel)
 ./gradlew tasks --group=assemble              # list all assemble tasks
 ./gradlew :app:tasks
 ```
@@ -130,10 +130,11 @@ The `app` module uses two flavor dimensions:
   (`foss` is the fully-FOSS build: no GMS, Firebase, WeChat or Alipay SDKs; this is the variant CI verifies)
 - `abi`: `arm64` / `universal` (64-bit only)
 
-Task names combine them, e.g.:
+**Build and verify with the `google` (overseas / Play) flavor by default**; pick a domestic flavor only when it is actually needed. Task names combine the two dimensions, e.g.:
 
+- `:app:assembleGoogleUniversalDebug`
+- `:app:assembleGoogleArm64Release`
 - `:app:assembleHuaweiArm64Debug`
-- `:app:installOneboxUniversalDebug`
 
 See `run.md` for more command examples.
 

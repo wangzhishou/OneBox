@@ -104,7 +104,7 @@ AI 理解、执行、反馈,一气呵成。
 ### 常用命令
 
 ```bash
-./gradlew :app:assembleOneboxUniversalDebug   # 单变体 debug 包
+./gradlew :app:assembleGoogleUniversalDebug   # 单变体 debug 包
 ./gradlew tasks --group=assemble              # 查看全部打包任务
 ./gradlew :app:tasks
 ```
@@ -113,13 +113,15 @@ AI 理解、执行、反馈,一气呵成。
 
 `app` 模块使用两个 flavor 维度：
 
-- `app`：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google`
+- `app`：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google` / `foss`
+  （`foss` 为完全 FOSS 构建：无 GMS、Firebase、微信/支付宝 SDK，也是 CI 校验的变体）
 - `abi`：`arm64` / `universal`（仅 64 位）
 
-因此最终任务名会组合为：
+**默认使用 `google`（海外 / Play 渠道）变体做构建与验证**，确需国内渠道时再替换。最终任务名会组合为：
 
+- `:app:assembleGoogleUniversalDebug`
+- `:app:assembleGoogleArm64Release`
 - `:app:assembleHuaweiArm64Debug`
-- `:app:installOneboxUniversalDebug`
 
 更完整的命令示例与变体验证方式，请查看 `run.md`。
 
