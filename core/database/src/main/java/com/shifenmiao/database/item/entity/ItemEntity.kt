@@ -41,6 +41,11 @@ data class ItemEntity(
     @ColumnInfo(name = "placeholder") val placeholder: String = "",
     @ColumnInfo(name = "icon_path") val iconPath: String? = null,
     @ColumnInfo(name = "icon_name") val iconName: String? = null,
+    /**
+     * 搜索关键词(Strapi 非本地化字段 keywords):英文名 + 同义词 + 常用拉丁转写,空格分隔。
+     * 同步时以 CMS 值为准;CMS 为空时保留本地兜底值(见 ItemKeywordDefaults)。
+     */
+    @ColumnInfo(name = "keywords", defaultValue = "") val keywords: String = "",
     @ColumnInfo(name = "recommend", defaultValue = "0") val recommend: Boolean = false,
     @ColumnInfo(name = "vip_level", defaultValue = "0") val vipLevel: Int = 0,
     @ColumnInfo(name = "is_highlighted", defaultValue = "0") val isHighlighted: Boolean = false,

@@ -1,5 +1,6 @@
 package com.shifenmiao.common.sync
 
+import com.shifenmiao.model.search.ItemKeywordDefaults
 import androidx.room.withTransaction
 import com.shifenmiao.base.utils.CoreUtils
 import com.shifenmiao.common.BuildConfig
@@ -102,6 +103,8 @@ class ItemSyncManager @Inject constructor(
      */
     fun syncAllOnAppLaunch() {
         if (!appLaunchSyncCalled.compareAndSet(false, true)) return
+        // 与同步间隔无关:老安装不重新同步时,也要立刻能用英文/别名搜到条目
+        scope.launch(ioDispatcher) { backfillKeywordDefaultsIfNeeded() }
         val currentVersionCode = BuildConfig.VersionCode.toIntOrNull() ?: 0
         if (currentVersionCode > 0 &&
             AppSharedStorage.loadLastKnownVersionCode() != currentVersionCode
@@ -120,6 +123,22 @@ class ItemSyncManager @Inject constructor(
             }.getOrElse { error ->
                 makeLog { "syncAllOnAppLaunch failed: ${error.message}" }
             }
+        }
+    }
+
+    /**
+     * 把本地兜底关键词写进还是空值的条目,只跑一次(MMKV 标记)。
+     * CMS 后续填了 keywords 会在同步时覆盖;本方法不会覆盖已有非空值。
+     */
+    private suspend fun backfillKeywordDefaultsIfNeeded() {
+        if (AppSharedStorage.isItemKeywordDefaultsSeeded()) return
+        runCatching {
+            appDatabase.itemEntityDao().backfillKeywords(ItemKeywordDefaults.byDocumentId)
+        }.onSuccess {
+            AppSharedStorage.markItemKeywordDefaultsSeeded()
+            makeLog { "keyword defaults backfilled: ${ItemKeywordDefaults.byDocumentId.size}" }
+        }.onFailure { error ->
+            makeLog { "keyword defaults backfill failed: ${error.message}" }
         }
     }
 

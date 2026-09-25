@@ -1,5 +1,6 @@
 package com.shifenmiao.database.utils
 
+import com.shifenmiao.model.search.ItemKeywordDefaults
 import com.shifenmiao.database.agent.entity.ItemAgentEntity
 import com.shifenmiao.database.item.entity.ItemDataEntity
 import com.shifenmiao.database.item.entity.ItemDataKind
@@ -98,6 +99,8 @@ object DataBaseUtils {
             placeholder = dataItem.placeholder.orEmpty(),
             iconPath = getImageThumbnailPath(dataItem.icon),
             iconName = dataItem.iconName.orEmpty(),
+            keywords = dataItem.keywords?.takeIf { it.isNotBlank() }
+                ?: ItemKeywordDefaults[dataItem.documentId],
             recommend = dataItem.recommend,
             vipLevel = dataItem.vipLevel ?: 0,
             isHighlighted = dataItem.isHighlighted,

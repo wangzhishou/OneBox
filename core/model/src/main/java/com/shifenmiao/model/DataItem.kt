@@ -27,6 +27,8 @@ data class DataItem(
     val listType: Int? = null,
     val icon: StrapiImage? = null,
     val iconName: String? = null,
+    /** 搜索关键词(非本地化,空格分隔;客户端搜索按子串匹配) */
+    val keywords: String? = null,
     val recommend: Boolean = false,
     val agent: Agent? = null,
     val prompt: ChatPrompt? = null,

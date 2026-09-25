@@ -50,6 +50,7 @@ object AppSharedStorage {
     private const val UPDATE_PROMPT_DISMISSED_TAG = "update_prompt_dismissed_tag"
     private const val UPDATE_PROMPT_DISMISSED_AT = "update_prompt_dismissed_at"
     private const val CURRENCY_CODE = "currency_code"
+    private const val ITEM_KEYWORD_DEFAULTS_SEEDED = "item_keyword_defaults_seeded"
 
     // ─── 启动关键设置 key（DataStore → MMKV 镜像缓存） ────────────────────────
     private const val S_FONT_SCALE = "s_font_scale"
@@ -628,6 +629,12 @@ object AppSharedStorage {
      */
     fun loadLanguageUserChosen(): Boolean =
         load(LANGUAGE_USER_CHOSEN, false) ?: false
+
+    // ─── 条目搜索关键词兜底表(一次性回填) ─────────────────────────────────
+
+    fun isItemKeywordDefaultsSeeded(): Boolean = load(ITEM_KEYWORD_DEFAULTS_SEEDED, false) ?: false
+
+    fun markItemKeywordDefaultsSeeded() = save(ITEM_KEYWORD_DEFAULTS_SEEDED, true)
 
     // ─── 记账/金额展示币种 ─────────────────────────────────────────────────
 

@@ -111,7 +111,7 @@ import java.io.InputStreamReader
         SkillEntity::class,
         ConversationMemoryPolicyEntity::class,
     ],
-    version = Release140Migrations.VERSION
+    version = Release141Migrations.VERSION
 )
 @TypeConverters(Converters::class, SourceTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -303,7 +303,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     currentDbName
                 )
-                    .addMigrations(MIGRATION_1_2, *Release140Migrations.app)
+                    .addMigrations(MIGRATION_1_2, *Release140Migrations.app, *Release141Migrations.app)
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {

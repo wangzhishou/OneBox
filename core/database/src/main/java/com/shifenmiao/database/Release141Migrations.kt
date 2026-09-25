@@ -9,13 +9,20 @@ import androidx.sqlite.db.SupportSQLiteDatabase
  * 1.4.0 已发布基线（以 tag 1.4.0 为准）：FeatureDatabase=140。因此 140 之前的变更
  * 保留在 [Release140Migrations] 中不再改动，本文件只承载 140 → 141 的增量。
  *
- * 本次新增：五子棋 / 国际象棋各三张表（game / ply / ai_task）。
+ * 本次新增：
+ * - AppDatabase:item 表新增 keywords 列(搜索关键词);
+ * - FeatureDatabase:五子棋 / 国际象棋各三张表（game / ply / ai_task）。
  * CREATE 语句必须与 schemas/.../141.json 的 createSql 完全一致
  * （Room 迁移校验不接受多余的 DEFAULT 子句、索引必须含 UNIQUE 标记），
  * 否则启动时会抛 Migration didn't properly handle。
  */
 internal object Release141Migrations {
     const val VERSION = 141
+
+    /** AppDatabase 140 -> 141:item 表新增搜索关键词列 */
+    val app: Array<Migration> = arrayOf(
+        migration(140, ::migrateApp140To141),
+    )
 
     val feature: Array<Migration> = arrayOf(
         migration(140, ::migrateFeature140To141),
@@ -26,6 +33,11 @@ internal object Release141Migrations {
         migrate: (SupportSQLiteDatabase) -> Unit,
     ): Migration = object : Migration(fromVersion, VERSION) {
         override fun migrate(db: SupportSQLiteDatabase) = migrate.invoke(db)
+    }
+
+    private fun migrateApp140To141(db: SupportSQLiteDatabase) {
+        // ALTER 的 DEFAULT 必须与 ItemEntity 的 defaultValue 一致,否则 Room 启动校验不过。
+        db.execSQL("ALTER TABLE `item` ADD COLUMN `keywords` TEXT NOT NULL DEFAULT ''")
     }
 
     private fun migrateFeature140To141(db: SupportSQLiteDatabase) {

@@ -90,6 +90,10 @@ interface ItemEntityDao {
             list_type = :listType,
             icon_path = :iconPath,
             icon_name = :iconName,
+            keywords = CASE
+                WHEN :keywords IS NULL OR :keywords = '' THEN keywords
+                ELSE :keywords
+            END,
             recommend = :recommend,
             remote_id = :remoteId,
             vip_level = :vipLevel,
@@ -115,6 +119,7 @@ interface ItemEntityDao {
         listType: Int,
         iconPath: String?,
         iconName: String?,
+        keywords: String?,
         recommend: Boolean,
         remoteId: Int?,
         vipLevel: Int,
@@ -152,6 +157,7 @@ interface ItemEntityDao {
                 listType = item.listType,
                 iconPath = item.iconPath,
                 iconName = item.iconName,
+                keywords = item.keywords,
                 recommend = item.recommend,
                 remoteId = item.remoteId,
                 vipLevel = item.vipLevel,
@@ -664,6 +670,7 @@ interface ItemEntityDao {
         WHERE item.title LIKE :searchString
            OR item.description LIKE :searchString
            OR item.icon_name LIKE :iconSearchString
+           OR item.keywords LIKE :searchString
     """
     )
     fun searchByTitleOrDescriptionWithStats(
@@ -700,6 +707,26 @@ interface ItemEntityDao {
 
     @Query("DELETE FROM item")
     suspend fun deleteAllItems()
+
+    /**
+     * 一次性把本地兜底关键词写入还没有词的空条目(仅在 CMS 未提供 keywords 时生效,
+     * 之后 CMS 填词会覆盖;不会覆盖已有的非空值)。
+     */
+    @Query(
+        """
+        UPDATE item SET keywords = :keywords
+        WHERE document_id = :documentId
+          AND (keywords IS NULL OR keywords = '')
+        """
+    )
+    suspend fun backfillKeywordsForDocument(documentId: String, keywords: String): Int
+
+    @Transaction
+    suspend fun backfillKeywords(defaults: Map<String, String>) {
+        defaults.forEach { (documentId, keywords) ->
+            if (keywords.isNotBlank()) backfillKeywordsForDocument(documentId, keywords)
+        }
+    }
 
     @Query("SELECT name FROM category WHERE source = :source")
     suspend fun getCategoryNamesBySource(source: Source = Source.REMOTE): List<String>

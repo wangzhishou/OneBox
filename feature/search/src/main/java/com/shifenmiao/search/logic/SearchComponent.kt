@@ -90,6 +90,7 @@ class SearchComponent @AssistedInject internal constructor(
         val descLower = item.item.description.lowercase()
         // 英文标识符(FileBrowser / Crop / PdfTools…):去掉空格后比较,命中权重低于本地化标题
         val iconLower = item.item.iconName.orEmpty().lowercase()
+        val keywordsLower = item.item.keywords.lowercase()
         val queryCompact = queryLower.replace(" ", "")
         var score = 0
         when {
@@ -98,6 +99,8 @@ class SearchComponent @AssistedInject internal constructor(
             iconLower == queryCompact -> score += 250
             titleLower.contains(queryLower) -> score += 200
             queryCompact.isNotEmpty() && iconLower.contains(queryCompact) -> score += 150
+            // CMS 关键词(英文名/同义词/拉丁转写)命中:排在同义词层级
+            keywordsLower.contains(queryLower) -> score += 130
             descLower.contains(queryLower) -> score += 100
         }
         if (item.item.recommend) score += 50
