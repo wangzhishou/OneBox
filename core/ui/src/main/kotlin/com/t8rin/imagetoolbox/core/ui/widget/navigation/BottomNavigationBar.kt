@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Badge
@@ -96,6 +97,8 @@ data class BottomNavigationBarStyle(
     val innerTopPadding: Dp = 4.dp,
     val selectedItemGlassStyle: GlassStyle = GlassStyle.Dense,
     val tabItemShape: Shape = RoundedCornerShape(12.dp),
+    /** 选中胶囊的最大宽度:文字短时胶囊贴合文字,超长不突破该上限,内部跑马灯滚动 */
+    val tabMaxWidth: Dp = 96.dp,
     val tabHorizontalPadding: Dp = 12.dp,
     val tabVerticalPadding: Dp = 5.dp,
     val tabIconSize: Dp = 22.dp,
@@ -242,6 +245,7 @@ private fun BottomNavigationTabItem(
 
     Box(
         modifier = Modifier
+            .fillMaxWidth()
             .fillMaxHeight()
             .clickable(
                 enabled = item.enabled,
@@ -257,6 +261,7 @@ private fun BottomNavigationTabItem(
     ) {
         Column(
             modifier = Modifier
+                .widthIn(max = style.tabMaxWidth)
                 .clip(style.tabItemShape)
                 .indication(interactionSource, ripple(bounded = true))
                 .then(
@@ -298,10 +303,8 @@ private fun BottomNavigationTabItem(
                 text = item.label,
                 style = tabTextStyle,
                 maxLines = 1,
-                // 标签超长时限制在格子宽度内滚动,避免被中心按钮/邻项裁成残词
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .basicMarquee(),
+                // 胶囊贴合文字宽度;超出 tabMaxWidth/格子宽度时截断并跑马灯滚动
+                modifier = Modifier.basicMarquee(),
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Clip,
                 color = if (isSelected) selectedContentColor else unselectedContentColor,

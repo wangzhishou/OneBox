@@ -1,7 +1,7 @@
 package com.shifenmiao.common.components
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,7 +60,6 @@ fun OperateBar(
 
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         CategoryTagBadge(
@@ -68,10 +67,11 @@ fun OperateBar(
             backgroundColor = resolvedTagBackgroundColor,
             textColor = resolvedTagTextColor,
             onClick = onTagClick,
+            // 占满剩余空间但不强制撑满:短分类贴合文字,长分类截断后由徽章内文字跑马灯滚动
+            modifier = Modifier.weight(1f, fill = false),
         )
-        Spacer(modifier = Modifier.weight(1f))
         if (showComment) {
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             CommentCountChip(
                 count = resolvedCommentCount,
                 iconTint = supportingContentColor,
@@ -137,10 +137,11 @@ private fun CategoryTagBadge(
     backgroundColor: Color,
     textColor: Color,
     onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
 ) {
     val shape = RoundedCornerShape(16.dp)
-    val modifier = if (onClick != null) {
-        Modifier
+    val badgeModifier = if (onClick != null) {
+        modifier
             .glassBackground(
                 style = GlassStyle.Thick,
                 color = backgroundColor,
@@ -148,14 +149,14 @@ private fun CategoryTagBadge(
             )
             .clickable(onClick = onClick)
     } else {
-        Modifier.glassBackground(
+        modifier.glassBackground(
             style = GlassStyle.Thick,
             color = backgroundColor,
             shape = shape,
         )
     }
     Row(
-        modifier = modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+        modifier = badgeModifier.padding(horizontal = 10.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -163,8 +164,10 @@ private fun CategoryTagBadge(
             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
             color = textColor,
             maxLines = 1,
-            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-            modifier = Modifier.widthIn(max = 140.dp),
+            // 分类名超长时截断并跑马灯滚动,不再挤压右侧评论入口
+            modifier = Modifier
+                .widthIn(max = 140.dp)
+                .basicMarquee(),
         )
     }
 }
