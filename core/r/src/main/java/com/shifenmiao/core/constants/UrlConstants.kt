@@ -100,6 +100,15 @@ object UrlConstants {
      */
     const val GITCODE_REPO = "https://gitcode.com/wangzhishou/OneBox"
 
+    /** 海外社区: Discord 邀请链(公开) */
+    const val DISCORD_INVITE = "https://discord.gg/7j4hEBYGWv"
+
+    /** 海外社区: X (Twitter) 主页(公开) */
+    const val X_PROFILE = "https://x.com/OneBoxAndroid"
+
+    /** 海外社区: YouTube 频道(公开) */
+    const val YOUTUBE_CHANNEL = "https://www.youtube.com/@OneBoxAndroid"
+
     /** 是否显示备案号/备案查询入口，按渠道隔离（国内 true / google false） */
     const val SHOW_BEI_AN_ENTRY = UrlConstantsFlavor.SHOW_BEI_AN_ENTRY
 

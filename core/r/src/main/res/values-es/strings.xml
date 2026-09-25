@@ -268,6 +268,12 @@
     <string name="community_wechat_group_subtitle">Escanea el código QR para unirte</string>
     <string name="community_wechat_group_loading">Cargando código QR del grupo...</string>
     <string name="community_wechat_group_error">Error al cargar el código QR</string>
+    <string name="community_discord">Discord</string>
+    <string name="community_discord_subtitle">Únete al servidor de Discord</string>
+    <string name="community_x">X (Twitter)</string>
+    <string name="community_x_subtitle">@OneBoxAndroid</string>
+    <string name="community_youtube">YouTube</string>
+    <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">Apoyar al desarrollador / Donar puntos</string>
     <string name="profile_item_auth_code">Protección con contraseña</string>
     <string name="profile_item_clear">Limpiar caché</string>

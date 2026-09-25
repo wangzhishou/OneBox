@@ -300,6 +300,12 @@
     <string name="community_wechat_group_subtitle">掃碼加入微信群</string>
     <string name="community_wechat_group_loading">載入群組 QR Code 中...</string>
     <string name="community_wechat_group_error">QR Code 載入失敗</string>
+    <string name="community_discord">Discord</string>
+    <string name="community_discord_subtitle">加入 Discord 伺服器</string>
+    <string name="community_x">X (Twitter)</string>
+    <string name="community_x_subtitle">@OneBoxAndroid</string>
+    <string name="community_youtube">YouTube</string>
+    <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">支持作者/打賞積分</string>
     <string name="profile_item_auth_code">密碼保護</string>
     <string name="profile_item_clear">清理快取</string>

@@ -268,6 +268,12 @@
     <string name="community_wechat_group_subtitle">QRコードをスキャンして参加</string>
     <string name="community_wechat_group_loading">グループQRコードを読み込み中...</string>
     <string name="community_wechat_group_error">QRコードの読み込みに失敗しました</string>
+    <string name="community_discord">Discord</string>
+    <string name="community_discord_subtitle">Discord サーバーに参加</string>
+    <string name="community_x">X (Twitter)</string>
+    <string name="community_x_subtitle">@OneBoxAndroid</string>
+    <string name="community_youtube">YouTube</string>
+    <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">開発者を支援 / ポイントを寄付</string>
     <string name="profile_item_auth_code">パスワード保護</string>
     <string name="profile_item_clear">キャッシュをクリア</string>

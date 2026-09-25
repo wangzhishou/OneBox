@@ -1,5 +1,6 @@
 package com.wanbaohe.profile.screen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,9 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import com.shifenmiao.base.utils.ActionUtils
@@ -35,13 +34,16 @@ import com.shifenmiao.common.ui.WeChatConfirmDialog
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.Constants
 import com.shifenmiao.core.constants.Strings
+import com.shifenmiao.core.constants.UrlConstants
+import com.shifenmiao.model.channel.FlavorType
 import com.shifenmiao.storage.RemoteConfigStorage
+import com.t8rin.imagetoolbox.core.resources.icons.Add
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.wanbaohe.profile.ui.AboutCardDivider
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.wanbaohe.profile.ui.AboutGlassListItem
 import com.wanbaohe.profile.ui.AboutSectionTitle
-import com.t8rin.imagetoolbox.core.resources.icons.Add
-import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 
 @Composable
 fun CommunityScreen(
@@ -49,12 +51,24 @@ fun CommunityScreen(
     onGoBack: () -> Unit = {},
 ) {
     val context = LocalContext.current
+    val isOverseas = remember { FlavorType.fromName().isOverseas }
 
     val showWechatTipsDialog = remember { mutableStateOf(false) }
     WeChatConfirmDialog(showWechatTipsDialog)
 
     val remoteConfig = remember { RemoteConfigStorage.getRemoteConfig() }
     val wechatGroupQrcodeUrl = remoteConfig.wechatGroupQrcodeUrl
+
+    val openUrl: (String) -> Unit = remember(context) {
+        { url ->
+            runCatching {
+                context.startActivity(
+                    Intent(Intent.ACTION_VIEW, url.toUri())
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            }
+        }
+    }
 
     BaseScreen(
         title = stringResource(id = R.string.community_title),
@@ -69,41 +83,11 @@ fun CommunityScreen(
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            item {
-                AboutSectionTitle(
-                    text = stringResource(R.string.profile_group_support),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 4.dp),
-                )
-            }
-
-            item {
-                AboutGlassCard {
-                    AboutGlassListItem(
-                        headlineText = stringResource(R.string.community_qq_group),
-                        trailingText = stringResource(R.string.community_qq_group_subtitle),
-                        trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                        onClick = {
-                            ActionUtils.joinQQGroup(context, Constants.QQ_GROUP_KEY)
-                        },
-                    )
-                    AboutCardDivider()
-                    AboutGlassListItem(
-                        headlineText = stringResource(R.string.community_wechat_public),
-                        trailingText = Strings.WECHAT_ACCOUNT,
-                        trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                        onClick = {
-                            showWechatTipsDialog.value = true
-                        },
-                    )
-                }
-            }
-
-            if (!wechatGroupQrcodeUrl.isNullOrBlank()) {
+            if (isOverseas) {
+                // 海外渠道: Discord / X / YouTube
                 item {
                     AboutSectionTitle(
-                        text = stringResource(R.string.community_wechat_group),
+                        text = stringResource(R.string.profile_group_support),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 4.dp),
@@ -112,27 +96,95 @@ fun CommunityScreen(
 
                 item {
                     AboutGlassCard {
-                        Column(
+                        AboutGlassListItem(
+                            headlineText = stringResource(R.string.community_discord),
+                            trailingText = stringResource(R.string.community_discord_subtitle),
+                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
+                            onClick = { openUrl(UrlConstants.DISCORD_INVITE) },
+                        )
+                        AboutCardDivider()
+                        AboutGlassListItem(
+                            headlineText = stringResource(R.string.community_x),
+                            trailingText = stringResource(R.string.community_x_subtitle),
+                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
+                            onClick = { openUrl(UrlConstants.X_PROFILE) },
+                        )
+                        AboutCardDivider()
+                        AboutGlassListItem(
+                            headlineText = stringResource(R.string.community_youtube),
+                            trailingText = stringResource(R.string.community_youtube_subtitle),
+                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
+                            onClick = { openUrl(UrlConstants.YOUTUBE_CHANNEL) },
+                        )
+                    }
+                }
+            } else {
+                // 国内渠道: QQ 群 / 微信公众号 / 微信群
+                item {
+                    AboutSectionTitle(
+                        text = stringResource(R.string.profile_group_support),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 4.dp),
+                    )
+                }
+
+                item {
+                    AboutGlassCard {
+                        AboutGlassListItem(
+                            headlineText = stringResource(R.string.community_qq_group),
+                            trailingText = stringResource(R.string.community_qq_group_subtitle),
+                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
+                            onClick = {
+                                ActionUtils.joinQQGroup(context, Constants.QQ_GROUP_KEY)
+                            },
+                        )
+                        AboutCardDivider()
+                        AboutGlassListItem(
+                            headlineText = stringResource(R.string.community_wechat_public),
+                            trailingText = Strings.WECHAT_ACCOUNT,
+                            trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            onClick = {
+                                showWechatTipsDialog.value = true
+                            },
+                        )
+                    }
+                }
+
+                if (!wechatGroupQrcodeUrl.isNullOrBlank()) {
+                    item {
+                        AboutSectionTitle(
+                            text = stringResource(R.string.community_wechat_group),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(
-                                text = stringResource(R.string.community_wechat_group_subtitle),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                .padding(start = 4.dp),
+                        )
+                    }
+
+                    item {
+                        AboutGlassCard {
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = 12.dp),
-                                textAlign = TextAlign.Center,
-                            )
+                                    .padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.community_wechat_group_subtitle),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 12.dp),
+                                    textAlign = TextAlign.Center,
+                                )
 
-                            WeChatGroupQrcodeImage(
-                                imageUrl = wechatGroupQrcodeUrl,
-                            )
+                                WeChatGroupQrcodeImage(
+                                    imageUrl = wechatGroupQrcodeUrl,
+                                )
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
                         }
                     }
                 }

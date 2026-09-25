@@ -133,9 +133,9 @@ fun ProfileContent(
     }
     // 仅打包了多语言资源的渠道(如 google)展示语言切换入口, 由渠道 buildConfigField 控制
     val showLanguageSetting = channelConfig.showLanguageSetting
-    // 支付全关的渠道(google)隐藏"请喝咖啡"购买入口; QQ/微信社区入口仅国内渠道展示
+    // 支付全关的渠道(google)隐藏"请喝咖啡"购买入口; 社区入口全渠道展示, 页内按国内/海外展示不同社交账号
     val showDonateSetting = channelConfig.enablePayment
-    val showCommunitySetting = channelConfig.enableWechat
+    val showCommunitySetting = true
     // Ko-fi 打赏入口仅海外渠道(google / foss)展示; 国内渠道走 Donate 积分/支付体系
     val showSupportDevSetting = FlavorType.fromName().isOverseas
     val itemModifier = Modifier

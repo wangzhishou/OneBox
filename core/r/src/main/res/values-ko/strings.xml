@@ -268,6 +268,12 @@
     <string name="community_wechat_group_subtitle">QR 코드를 스캔하여 가입</string>
     <string name="community_wechat_group_loading">그룹 QR 코드 로딩 중...</string>
     <string name="community_wechat_group_error">QR 코드를 불러오지 못했습니다</string>
+    <string name="community_discord">Discord</string>
+    <string name="community_discord_subtitle">Discord 서버 참여</string>
+    <string name="community_x">X (Twitter)</string>
+    <string name="community_x_subtitle">@OneBoxAndroid</string>
+    <string name="community_youtube">YouTube</string>
+    <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">개발자 지원 / 포인트 기부</string>
     <string name="profile_item_auth_code">비밀번호 보호</string>
     <string name="profile_item_clear">캐시 지우기</string>

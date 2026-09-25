@@ -268,6 +268,12 @@
     <string name="community_wechat_group_subtitle">Pindai kode QR untuk bergabung</string>
     <string name="community_wechat_group_loading">Memuat kode QR grup...</string>
     <string name="community_wechat_group_error">Gagal memuat kode QR</string>
+    <string name="community_discord">Discord</string>
+    <string name="community_discord_subtitle">Gabung server Discord</string>
+    <string name="community_x">X (Twitter)</string>
+    <string name="community_x_subtitle">@OneBoxAndroid</string>
+    <string name="community_youtube">YouTube</string>
+    <string name="community_youtube_subtitle">@OneBoxAndroid</string>
     <string name="profile_item_donate">Dukung Pengembang / Donasi Poin</string>
     <string name="profile_item_auth_code">Proteksi Kata Sandi</string>
     <string name="profile_item_clear">Bersihkan Cache</string>
