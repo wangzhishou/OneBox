@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="teleprompter_title">Theatrics</string>
+<resources><string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">My Script</string>
     <string name="teleprompter_recent_scripts">Latest communications</string>
     <string name="teleprompter_scripts_total">Total   %d Scripts</string>

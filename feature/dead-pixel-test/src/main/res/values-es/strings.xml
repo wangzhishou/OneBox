@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">Detección de daños en la pantalla</string>
-    <string name="dead_pixel_test_description">Usa rotación de colores puros para detectar fallos en la pantalla y puntos de tarjeta</string>
+    <string name="dead_pixel_test">Prueba de píxeles muertos</string>
+    <string name="dead_pixel_test_description">Ciclo de colores a pantalla completa para detectar píxeles muertos o atascados.</string>
     <string name="dead_pixel_color_white">Blanco</string>
     <string name="dead_pixel_color_black">Negro</string>
     <string name="dead_pixel_color_red">Rojo</string>

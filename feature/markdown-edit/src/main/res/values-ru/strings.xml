@@ -12,7 +12,7 @@
     <string name="image_url_label">URL изображения</string>
     <string name="link_text_placeholder">Текст для отображения</string>
     <string name="resize_image">Изменить размер изображения</string>
-    <string name="width">Ширина</string>
+    <string name="markdown_image_resize_width">Ширина</string>
     <string name="original_width">Исходная ширина: %1$dpx</string>
     <string name="markdown_placeholder">Начните вводить...</string>
 </resources>

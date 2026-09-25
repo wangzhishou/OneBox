@@ -19,7 +19,7 @@
 
     <!-- Image resize dialog -->
     <string name="resize_image">Resize Image</string>
-    <string name="width">Width</string>
+    <string name="markdown_image_resize_width">Width</string>
     <string name="original_width">Original width: %1$dpx</string>
 
     <!-- Editor placeholder -->

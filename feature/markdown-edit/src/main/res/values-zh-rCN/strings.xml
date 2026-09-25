@@ -19,7 +19,7 @@
 
     <!-- 图片缩放弹窗 -->
     <string name="resize_image">调整图片大小</string>
-    <string name="width">宽度</string>
+    <string name="markdown_image_resize_width">宽度</string>
     <string name="original_width">原始宽度: %1$dpx</string>
 
     <!-- 编辑器占位符 -->

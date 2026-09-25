@@ -12,7 +12,7 @@
     <string name="image_url_label">URL ng larawan</string>
     <string name="link_text_placeholder">Tekstong ipapakita</string>
     <string name="resize_image">Baguhin ang laki ng Larawan</string>
-    <string name="width">Lapad</string>
+    <string name="markdown_image_resize_width">Lapad</string>
     <string name="original_width">Orihinal na lapad: %1$dpx</string>
     <string name="markdown_placeholder">Magsimulang mag-type...</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dice_roller_title">주사위를 던지세요.</string>
+    <string name="dice_roller_title">주사위 굴리기</string>
     <string name="dice_roller_roll">흔들어 보세요.</string>
     <string name="dice_roller_history">기록</string>
     <string name="dice_roller_history_empty">기록이 없습니다.</string>
@@ -13,5 +13,5 @@
     <string name="dice_roller_total">총점</string>
     <string name="dice_roller_shake_hint">휴대폰을 흔들거나 \"흔들기\"를 클릭하세요.</string>
     <string name="dice_roller_result_prefix">결과:</string>
-    <string name="dice_roller_description">테이블 주사위.</string>
+    <string name="dice_roller_description">테이블탑 주사위 D4/D6/D8/D10/D12/D20</string>
 </resources>

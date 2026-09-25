@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="teleprompter_title">Театральность</string>
+    <string name="teleprompter_title">Телесуфлер</string>
     <string name="teleprompter_my_scripts">Мой сценарий</string>
     <string name="teleprompter_recent_scripts">Последние сообщения</string>
     <string name="teleprompter_scripts_total">Всего %d сценариев</string>

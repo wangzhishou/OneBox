@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dice_roller_title">サイコロを振る。</string>
+    <string name="dice_roller_title">サイコロ</string>
     <string name="dice_roller_roll">振ってください。</string>
     <string name="dice_roller_history">履歴</string>
     <string name="dice_roller_history_empty">履歴はありません。</string>
@@ -13,5 +13,5 @@
     <string name="dice_roller_total">合計ポイント</string>
     <string name="dice_roller_shake_hint">携帯電話を振るか、「振る」をクリックしてください。</string>
     <string name="dice_roller_result_prefix">結果：</string>
-    <string name="dice_roller_description">テーブルサイコロ。</string>
+    <string name="dice_roller_description">テーブルトーク用ダイス D4/D6/D8/D10/D12/D20</string>
 </resources>

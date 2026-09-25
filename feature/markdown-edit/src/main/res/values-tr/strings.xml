@@ -12,7 +12,7 @@
     <string name="image_url_label">Görsel URL\'si</string>
     <string name="link_text_placeholder">Görüntülenecek metin</string>
     <string name="resize_image">Görseli Yeniden Boyutlandır</string>
-    <string name="width">Genişlik</string>
+    <string name="markdown_image_resize_width">Genişlik</string>
     <string name="original_width">Orijinal genişlik: %1$dpx</string>
     <string name="markdown_placeholder">Yazmaya başlayın...</string>
 </resources>

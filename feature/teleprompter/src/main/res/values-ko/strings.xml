@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="teleprompter_title">연극</string>
+    <string name="teleprompter_title">텔레프롬프터</string>
     <string name="teleprompter_my_scripts">내 대본</string>
     <string name="teleprompter_recent_scripts">최근 통신</string>
     <string name="teleprompter_scripts_total">총 %d개 대본</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="teleprompter_title">Teatralidade</string>
+    <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Meu Roteiro</string>
     <string name="teleprompter_recent_scripts">Comunicações recentes</string>
     <string name="teleprompter_scripts_total">Total de %d roteiros</string>

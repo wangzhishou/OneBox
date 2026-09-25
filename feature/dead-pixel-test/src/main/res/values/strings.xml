@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources><!-- 屏幕坏点检测 -->
-    <string name="dead_pixel_test">Screen Badness Detection</string>
-    <string name="dead_pixel_test_description">Use pure-colour rotation to detect screen failures and card points</string>
+    <string name="dead_pixel_test">Dead Pixel Test</string>
+    <string name="dead_pixel_test_description">Full-screen color cycling to detect dead or stuck pixels.</string>
 
     <!-- 测试颜色名称 -->
     <string name="dead_pixel_color_white">White</string>

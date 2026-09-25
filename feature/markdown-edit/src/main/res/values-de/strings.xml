@@ -12,7 +12,7 @@
     <string name="image_url_label">Bild-URL</string>
     <string name="link_text_placeholder">Anzuzeigender Text</string>
     <string name="resize_image">Bildgröße ändern</string>
-    <string name="width">Breite</string>
+    <string name="markdown_image_resize_width">Breite</string>
     <string name="original_width">Originalbreite: %1$dpx</string>
     <string name="markdown_placeholder">Tippen starten...</string>
 </resources>

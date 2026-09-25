@@ -22,7 +22,7 @@
     <string name="new_task">Yeni Görev</string>
     <string name="click_to_view_details">Ayrıntıları görmek için tıklayın...</string>
     <string name="picker_tips">Seçenekleri göstermek için resme uzun basın.</string>
-    <string name="image">Resim</string>
+    <string name="image">Görsel</string>
     <string name="pdf">PDF</string>
     <string name="share_markdown">Markdown Paylaş</string>
     <string name="next_poll_in_seconds">Sonraki soru turu:</string>

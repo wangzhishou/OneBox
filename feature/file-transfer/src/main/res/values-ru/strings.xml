@@ -27,7 +27,6 @@
     <string name="scan_qr_code">Сканировать QR-код</string>
     <string name="qr_code_hint">Отсканируйте QR-код браузером или введите адрес вручную на компьютере</string>
     <string name="connected_clients">Подключено: %d</string>
-    <string name="no_connection">Подключений пока нет</string>
     <string name="file_transfer_wifi_connected">Wi-Fi подключен</string>
     <string name="file_transfer_wifi_disconnected">Wi-Fi не подключен</string>
     <string name="file_transfer_ip_prefix">IP: %s</string>

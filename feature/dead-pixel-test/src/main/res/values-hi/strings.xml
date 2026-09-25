@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">स्क्रीन खराबी का पता लगाना</string>
-    <string name="dead_pixel_test_description">स्क्रीन की विफलताओं और कार्ड पॉइंट्स का पता लगाने के लिए शुद्ध रंग घुमाव का उपयोग करें</string>
+    <string name="dead_pixel_test">डेड पिक्सेल टेस्ट</string>
+    <string name="dead_pixel_test_description">डेड या स्टक पिक्सेल का पता लगाने के लिए फुल-स्क्रीन रंग चक्रण।</string>
     <string name="dead_pixel_color_white">सफेद</string>
     <string name="dead_pixel_color_black">काला</string>
     <string name="dead_pixel_color_red">लाल</string>

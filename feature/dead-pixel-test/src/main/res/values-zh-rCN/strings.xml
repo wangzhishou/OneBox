@@ -2,7 +2,7 @@
 <resources>
     <!-- 屏幕坏点检测 -->
     <string name="dead_pixel_test">屏幕坏点检测</string>
-    <string name="dead_pixel_test_description">使用纯色轮播检测屏幕坏点与卡点</string>
+    <string name="dead_pixel_test_description">纯色轮播，快速检测屏幕死点与卡点</string>
 
     <!-- 测试颜色名称 -->
     <string name="dead_pixel_color_white">白色</string>

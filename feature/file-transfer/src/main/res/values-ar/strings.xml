@@ -27,7 +27,6 @@
     <string name="scan_qr_code">مسح رمز QR</string>
     <string name="qr_code_hint">امسح رمز QR بالمتصفح أو اكتب العنوان يدويًا على الكمبيوتر</string>
     <string name="connected_clients">المتصلون: %d</string>
-    <string name="no_connection">لا توجد اتصالات بعد</string>
     <string name="file_transfer_wifi_connected">Wi-Fi متصل</string>
     <string name="file_transfer_wifi_disconnected">Wi-Fi غير متصل</string>
     <string name="file_transfer_ip_prefix">IP: %s</string>

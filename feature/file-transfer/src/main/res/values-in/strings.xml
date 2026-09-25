@@ -27,7 +27,6 @@
     <string name="scan_qr_code">Pindai Kode QR</string>
     <string name="qr_code_hint">Pindai kode QR dengan browser atau ketik alamat secara manual di komputer Anda</string>
     <string name="connected_clients">Terhubung: %d</string>
-    <string name="no_connection">Belum ada koneksi</string>
     <string name="file_transfer_wifi_connected">Wi-Fi terhubung</string>
     <string name="file_transfer_wifi_disconnected">Wi-Fi tidak terhubung</string>
     <string name="file_transfer_ip_prefix">IP: %s</string>

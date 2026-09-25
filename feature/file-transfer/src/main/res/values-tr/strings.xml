@@ -27,7 +27,6 @@
     <string name="scan_qr_code">QR Kodu Tara</string>
     <string name="qr_code_hint">QR kodunu bir tarayıcıyla tarayın veya bilgisayarınızda adresi manuel olarak yazın</string>
     <string name="connected_clients">Bağlı: %d</string>
-    <string name="no_connection">Henüz bağlantı yok</string>
     <string name="file_transfer_wifi_connected">Wi-Fi bağlı</string>
     <string name="file_transfer_wifi_disconnected">Wi-Fi bağlı değil</string>
     <string name="file_transfer_ip_prefix">IP: %s</string>

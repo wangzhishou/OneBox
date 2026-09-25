@@ -12,7 +12,7 @@
     <string name="image_url_label">رابط الصورة</string>
     <string name="link_text_placeholder">النص المعروض</string>
     <string name="resize_image">تغيير حجم الصورة</string>
-    <string name="width">العرض</string>
+    <string name="markdown_image_resize_width">العرض</string>
     <string name="original_width">العرض الأصلي: %1$dpx</string>
     <string name="markdown_placeholder">ابدأ الكتابة...</string>
 </resources>

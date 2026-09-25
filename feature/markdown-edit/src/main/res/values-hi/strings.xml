@@ -12,7 +12,7 @@
     <string name="image_url_label">छवि URL</string>
     <string name="link_text_placeholder">प्रदर्शित करने के लिए पाठ</string>
     <string name="resize_image">छवि का आकार बदलें</string>
-    <string name="width">चौड़ाई</string>
+    <string name="markdown_image_resize_width">चौड़ाई</string>
     <string name="original_width">मूल चौड़ाई: %1$dpx</string>
     <string name="markdown_placeholder">टाइप करना शुरू करें...</string>
 </resources>

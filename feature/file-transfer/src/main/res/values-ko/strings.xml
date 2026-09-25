@@ -27,7 +27,6 @@
     <string name="scan_qr_code">QR 코드 스캔</string>
     <string name="qr_code_hint">브라우저로 QR 코드를 스캔하거나 컴퓨터에서 주소를 직접 입력하세요</string>
     <string name="connected_clients">연결됨: %d</string>
-    <string name="no_connection">연결 없음</string>
     <string name="file_transfer_wifi_connected">Wi-Fi 연결됨</string>
     <string name="file_transfer_wifi_disconnected">Wi-Fi 연결 안 됨</string>
     <string name="file_transfer_ip_prefix">IP: %s</string>

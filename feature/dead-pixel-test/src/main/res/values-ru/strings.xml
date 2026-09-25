@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">Обнаружение дефектов экрана</string>
-    <string name="dead_pixel_test_description">Используйте вращение чистых цветов для обнаружения неисправностей экрана и битых пикселей</string>
+    <string name="dead_pixel_test">Тест битых пикселей</string>
+    <string name="dead_pixel_test_description">Полноэкранная смена цветов для обнаружения битых или застрявших пикселей.</string>
     <string name="dead_pixel_color_white">Белый</string>
     <string name="dead_pixel_color_black">Черный</string>
     <string name="dead_pixel_color_red">Красный</string>

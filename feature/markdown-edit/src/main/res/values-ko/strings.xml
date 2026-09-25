@@ -12,7 +12,7 @@
     <string name="image_url_label">이미지 URL</string>
     <string name="link_text_placeholder">표시할 텍스트</string>
     <string name="resize_image">이미지 크기 조정</string>
-    <string name="width">너비</string>
+    <string name="markdown_image_resize_width">너비</string>
     <string name="original_width">원본 너비: %1$dpx</string>
     <string name="markdown_placeholder">입력 시작...</string>
 </resources>

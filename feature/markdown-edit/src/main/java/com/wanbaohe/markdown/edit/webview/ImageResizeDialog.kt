@@ -68,7 +68,7 @@ fun ImageResizeDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(MarkdownR.string.width),
+                        text = stringResource(MarkdownR.string.markdown_image_resize_width),
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(

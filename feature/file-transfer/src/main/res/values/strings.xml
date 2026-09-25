@@ -38,7 +38,6 @@
     <string name="scan_qr_code">Scan QR Code</string>
     <string name="qr_code_hint">Scan the QR code with a browser or type the address manually on your computer</string>
     <string name="connected_clients">Connected: %d</string>
-    <string name="no_connection">No connections yet</string>
 
     <!-- Wi-Fi / network -->
     <string name="file_transfer_wifi_connected">Wi-Fi connected</string>

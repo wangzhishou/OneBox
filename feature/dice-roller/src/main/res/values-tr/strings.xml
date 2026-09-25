@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dice_roller_title">Zarı at.</string>
+    <string name="dice_roller_title">Zar Atma</string>
     <string name="dice_roller_roll">Salla.</string>
     <string name="dice_roller_history">Geçmiş</string>
     <string name="dice_roller_history_empty">Geçmiş kayıt yok.</string>
@@ -13,5 +13,5 @@
     <string name="dice_roller_total">Toplam puan</string>
     <string name="dice_roller_shake_hint">Telefonunu salla veya \"Salla\"ya tıkla.</string>
     <string name="dice_roller_result_prefix">Sonuçlar:</string>
-    <string name="dice_roller_description">Masa zarı.</string>
+    <string name="dice_roller_description">Masaüstü zarları D4/D6/D8/D10/D12/D20</string>
 </resources>

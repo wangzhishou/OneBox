@@ -27,7 +27,6 @@
     <string name="scan_qr_code">掃描二維碼存取</string>
     <string name="qr_code_hint">使用電腦瀏覽器掃描二維碼或輸入網址存取</string>
     <string name="connected_clients">已連線: %d</string>
-    <string name="no_connection">暫無連線</string>
     <string name="file_transfer_wifi_connected">WiFi 已連線</string>
     <string name="file_transfer_wifi_disconnected">WiFi 未連線</string>
     <string name="file_transfer_ip_prefix">IP：%s</string>

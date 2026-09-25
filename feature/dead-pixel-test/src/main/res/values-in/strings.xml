@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">Deteksi Kerusakan Layar</string>
-    <string name="dead_pixel_test_description">Gunakan rotasi warna solid untuk mendeteksi kegagalan layar dan titik kartu</string>
+    <string name="dead_pixel_test">Tes Piksel Mati</string>
+    <string name="dead_pixel_test_description">Siklus warna layar penuh untuk mendeteksi piksel mati atau macet.</string>
     <string name="dead_pixel_color_white">Putih</string>
     <string name="dead_pixel_color_black">Hitam</string>
     <string name="dead_pixel_color_red">Merah</string>

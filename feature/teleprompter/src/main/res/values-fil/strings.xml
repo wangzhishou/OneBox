@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="teleprompter_title">Teatro</string>
+    <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Aking Script</string>
     <string name="teleprompter_recent_scripts">Pinakabagong komunikasyon</string>
     <string name="teleprompter_scripts_total">Kabuuan   %d na Script</string>

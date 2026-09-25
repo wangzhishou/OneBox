@@ -22,7 +22,7 @@
     <string name="new_task">새 작업</string>
     <string name="click_to_view_details">클릭하여 세부 정보 보기...</string>
     <string name="picker_tips">사진을 길게 눌러 옵션을 표시합니다.</string>
-    <string name="image">사진</string>
+    <string name="image">이미지</string>
     <string name="pdf">PDF</string>
     <string name="share_markdown">Markdown 공유</string>
     <string name="next_poll_in_seconds">다음 질문:</string>

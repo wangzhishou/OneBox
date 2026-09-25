@@ -12,7 +12,7 @@
     <string name="image_url_label">URL gambar</string>
     <string name="link_text_placeholder">Teks untuk ditampilkan</string>
     <string name="resize_image">Ubah Ukuran Gambar</string>
-    <string name="width">Lebar</string>
+    <string name="markdown_image_resize_width">Lebar</string>
     <string name="original_width">Lebar asli: %1$dpx</string>
     <string name="markdown_placeholder">Mulai mengetik...</string>
 </resources>

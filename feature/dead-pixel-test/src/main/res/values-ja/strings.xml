@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">屏幕坏点检测</string>
-    <string name="dead_pixel_test_description">使用纯色旋转检测屏幕故障和坏点</string>
+    <string name="dead_pixel_test">ドット抜けテスト</string>
+    <string name="dead_pixel_test_description">全画面の色循環でドット抜けや輝点を検出します。</string>
     <string name="dead_pixel_color_white">白色</string>
     <string name="dead_pixel_color_black">黑色</string>
     <string name="dead_pixel_color_red">红色</string>

@@ -27,7 +27,6 @@
     <string name="scan_qr_code">I-scan ang QR Code</string>
     <string name="qr_code_hint">I-scan ang QR code gamit ang browser o i-type ang address nang manu-mano sa iyong computer</string>
     <string name="connected_clients">Nakakonekta: %d</string>
-    <string name="no_connection">Wala pang koneksyon</string>
     <string name="file_transfer_wifi_connected">Nakakonekta sa Wi-Fi</string>
     <string name="file_transfer_wifi_disconnected">Hindi nakakonekta sa Wi-Fi</string>
     <string name="file_transfer_ip_prefix">IP: %s</string>

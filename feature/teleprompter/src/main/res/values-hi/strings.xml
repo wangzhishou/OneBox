@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="teleprompter_title">नाटकीयता</string>
+    <string name="teleprompter_title">टेलीप्रॉम्प्टर</string>
     <string name="teleprompter_my_scripts">मेरी स्क्रिप्ट</string>
     <string name="teleprompter_recent_scripts">नवीनतम संचार</string>
     <string name="teleprompter_scripts_total">कुल %d स्क्रिप्ट</string>

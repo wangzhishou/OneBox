@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">Erkennung von Bildschirmfehlern</string>
-    <string name="dead_pixel_test_description">Verwenden Sie die Drehung mit reinen Farben, um Bildschirmfehler und Kartenpunkte zu erkennen</string>
+    <string name="dead_pixel_test">Dead-Pixel-Test</string>
+    <string name="dead_pixel_test_description">Vollbild-Farbwechsel zur Erkennung toter oder hängender Pixel.</string>
     <string name="dead_pixel_color_white">Weiß</string>
     <string name="dead_pixel_color_black">Schwarz</string>
     <string name="dead_pixel_color_red">Rot</string>

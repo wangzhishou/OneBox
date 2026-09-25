@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">كشف عيوب الشاشة</string>
-    <string name="dead_pixel_test_description">استخدم تدوير الألوان الصافية لكشف أعطال الشاشة والنقاط المحترقة</string>
+    <string name="dead_pixel_test">اختبار البكسلات الميتة</string>
+    <string name="dead_pixel_test_description">تعاقب الألوان على كامل الشاشة لكشف البكسلات الميتة أو العالقة.</string>
     <string name="dead_pixel_color_white">أبيض</string>
     <string name="dead_pixel_color_black">أسود</string>
     <string name="dead_pixel_color_red">أحمر</string>

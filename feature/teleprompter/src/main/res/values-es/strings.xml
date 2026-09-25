@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="teleprompter_title">Teatralidad</string>
+    <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Mi guion</string>
     <string name="teleprompter_recent_scripts">Últimas comunicaciones</string>
     <string name="teleprompter_scripts_total">Total   %d guiones</string>

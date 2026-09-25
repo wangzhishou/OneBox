@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources><string name="dice_roller_title">Throw the dice.</string>
+<resources><string name="dice_roller_title">Dice Roller</string>
     <string name="dice_roller_roll">Shake it.</string>
     <string name="dice_roller_history">History</string>
     <string name="dice_roller_history_empty">There is no historical record.</string>
@@ -12,5 +12,5 @@
     <string name="dice_roller_total">Total points</string>
     <string name="dice_roller_shake_hint">Shake your cell phone or click "Screech."</string>
     <string name="dice_roller_result_prefix">Results:</string>
-    <string name="dice_roller_description">Table dice.</string>
+    <string name="dice_roller_description">Tabletop dice D4/D6/D8/D10/D12/D20</string>
 </resources>

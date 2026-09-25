@@ -12,7 +12,7 @@
     <string name="image_url_label">圖片網址</string>
     <string name="link_text_placeholder">顯示的文字</string>
     <string name="resize_image">調整圖片大小</string>
-    <string name="width">寬度</string>
+    <string name="markdown_image_resize_width">寬度</string>
     <string name="original_width">原始寬度: %1$dpx</string>
     <string name="markdown_placeholder">輸入內容...</string>
 </resources>

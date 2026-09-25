@@ -27,7 +27,6 @@
     <string name="scan_qr_code">Escanear Código QR</string>
     <string name="qr_code_hint">Escaneie o código QR com um navegador ou digite o endereço manualmente no seu computador</string>
     <string name="connected_clients">Conectado: %d</string>
-    <string name="no_connection">Nenhuma conexão ainda</string>
     <string name="file_transfer_wifi_connected">Wi-Fi conectado</string>
     <string name="file_transfer_wifi_disconnected">Wi-Fi não conectado</string>
     <string name="file_transfer_ip_prefix">IP: %s</string>

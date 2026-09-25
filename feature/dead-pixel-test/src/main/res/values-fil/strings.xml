@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">Pag-detect ng Pinsala sa Screen</string>
-    <string name="dead_pixel_test_description">Gamitin ang purong kulay na pag-ikot upang matukoy ang mga sira sa screen at mga card point</string>
+    <string name="dead_pixel_test">Pagsusuri ng Patay na Pixel</string>
+    <string name="dead_pixel_test_description">Full-screen na pag-ikot ng kulay upang matukoy ang patay o stuck na pixel.</string>
     <string name="dead_pixel_color_white">Puti</string>
     <string name="dead_pixel_color_black">Itim</string>
     <string name="dead_pixel_color_red">Pula</string>

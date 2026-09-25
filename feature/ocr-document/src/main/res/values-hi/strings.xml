@@ -22,7 +22,7 @@
     <string name="new_task">नया कार्य</string>
     <string name="click_to_view_details">विवरण देखने के लिए क्लिक करें...</string>
     <string name="picker_tips">विकल्प दिखाने के लिए चित्र पर लंबे समय तक दबाएं।</string>
-    <string name="image">चित्र</string>
+    <string name="image">छवि</string>
     <string name="pdf">PDF</string>
     <string name="share_markdown">मार्कडाउन साझा करें</string>
     <string name="next_poll_in_seconds">अगले दौर के प्रश्न:</string>

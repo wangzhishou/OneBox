@@ -38,7 +38,6 @@
     <string name="scan_qr_code">扫描二维码访问</string>
     <string name="qr_code_hint">使用电脑浏览器扫描二维码或输入地址访问</string>
     <string name="connected_clients">已连接: %d</string>
-    <string name="no_connection">暂无连接</string>
 
     <!-- WiFi/网络 -->
     <string name="file_transfer_wifi_connected">WiFi 已连接</string>

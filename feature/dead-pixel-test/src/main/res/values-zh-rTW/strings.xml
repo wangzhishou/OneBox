@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dead_pixel_test">螢幕壞點檢測</string>
-    <string name="dead_pixel_test_description">使用純色輪播檢測螢幕壞點與卡點</string>
+    <string name="dead_pixel_test_description">純色輪播，快速檢測螢幕死點與卡點</string>
     <string name="dead_pixel_color_white">白色</string>
     <string name="dead_pixel_color_black">黑色</string>
     <string name="dead_pixel_color_red">紅色</string>

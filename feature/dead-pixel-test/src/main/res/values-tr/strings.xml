@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">Ekran Kusuru Tespiti</string>
-    <string name="dead_pixel_test_description">Ekran arızalarını ve noktalarını tespit etmek için saf renk döndürme kullanın</string>
+    <string name="dead_pixel_test">Ölü Piksel Testi</string>
+    <string name="dead_pixel_test_description">Ölü veya sıkışmış pikselleri tespit etmek için tam ekran renk döngüsü.</string>
     <string name="dead_pixel_color_white">Beyaz</string>
     <string name="dead_pixel_color_black">Siyah</string>
     <string name="dead_pixel_color_red">Kırmızı</string>

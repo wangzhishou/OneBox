@@ -12,7 +12,7 @@
     <string name="image_url_label">URL de la imagen</string>
     <string name="link_text_placeholder">Texto a mostrar</string>
     <string name="resize_image">Redimensionar imagen</string>
-    <string name="width">Ancho</string>
+    <string name="markdown_image_resize_width">Ancho</string>
     <string name="original_width">Ancho original: %1$dpx</string>
     <string name="markdown_placeholder">Empieza a escribir...</string>
 </resources>

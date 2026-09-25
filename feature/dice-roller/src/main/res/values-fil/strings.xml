@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dice_roller_title">Ihagis ang dice.</string>
+    <string name="dice_roller_title">Pagtapon ng Dado</string>
     <string name="dice_roller_roll">Iling ito.</string>
     <string name="dice_roller_history">Kasaysayan</string>
     <string name="dice_roller_history_empty">Walang tala ng kasaysayan.</string>
@@ -13,5 +13,5 @@
     <string name="dice_roller_total">Kabuuang puntos</string>
     <string name="dice_roller_shake_hint">Iling ang iyong cell phone o i-click ang \"Screech.\"</string>
     <string name="dice_roller_result_prefix">Mga resulta:</string>
-    <string name="dice_roller_description">Table dice.</string>
+    <string name="dice_roller_description">Tabletop dice D4/D6/D8/D10/D12/D20</string>
 </resources>

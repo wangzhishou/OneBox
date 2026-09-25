@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dead_pixel_test">화면 불량 감지</string>
-    <string name="dead_pixel_test_description">순수 색상 회전을 사용하여 화면 불량 및 카드 포인트 감지</string>
+    <string name="dead_pixel_test">불량 화소 테스트</string>
+    <string name="dead_pixel_test_description">전체 화면 색상 순환으로 불량 또는 고정 화소를 감지합니다.</string>
     <string name="dead_pixel_color_white">흰색</string>
     <string name="dead_pixel_color_black">검은색</string>
     <string name="dead_pixel_color_red">빨간색</string>
