@@ -41,34 +41,44 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineContentPaste
 
 @Composable
 fun InvitationCodeAction(
-    loginComponent: LoginComponent
+    loginComponent: LoginComponent,
+    compact: Boolean = false
 ) {
     val loginState = LocalLoginState.current
 
     val showDialog = remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .clickable {
-                if (loginState.isLogin) {
-                    showDialog.value = true
-                } else {
-                    AppToastHost.showToast(AppContext.getString(R.string.login_first))
-                }
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = stringResource(R.string.profile_user_info_invitation_code),
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-            style = MaterialTheme.typography.labelMedium,
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Icon(
-            modifier = Modifier.size(16.dp),
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PersonAdd,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+    val onClick = {
+        if (loginState.isLogin) {
+            showDialog.value = true
+        } else {
+            AppToastHost.showToast(AppContext.getString(R.string.login_first))
+        }
+    }
+    // 展开态: 图标+文字标签(与消息中心入口风格统一); 折叠态: 纯图标按钮
+    if (compact) {
+        IconButton(onClick = onClick) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PersonAdd,
+                contentDescription = stringResource(R.string.profile_user_info_invitation_code),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+    } else {
+        Column(
+            modifier = Modifier.clickable(onClick = onClick),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.PersonAdd,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            Text(
+                text = stringResource(R.string.profile_user_info_invitation_code),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
     }
 
     if (showDialog.value) {

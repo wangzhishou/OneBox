@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -97,6 +99,7 @@ fun ProfileScreen(
         title = {
             ProfileUserSection(
                 loginComponent = loginComponent,
+                collapsedFraction = scrollBehavior.state.collapsedFraction,
                 onEditProfile = {
                     if (loginState.isLogin) {
                         onNavigate(Screen.UserInfo())
@@ -316,7 +319,8 @@ fun ProfileContent(
 private fun ProfileUserSection(
     onEditProfile: () -> Unit,
     onNavigateToVipLevel: () -> Unit,
-    loginComponent: LoginComponent
+    loginComponent: LoginComponent,
+    collapsedFraction: Float = 0f
 ) {
     val loginState = LocalLoginState.current
     Row(
@@ -354,17 +358,21 @@ private fun ProfileUserSection(
                 )
             }
         }
+        // 顶栏折叠后收成纯图标, 展开时为图标+文字标签, 两个入口风格统一
+        val compact = collapsedFraction > 0.5f
         InvitationCodeAction(
-            loginComponent = loginComponent
+            loginComponent = loginComponent,
+            compact = compact
         )
-        Spacer(modifier = Modifier.width(4.dp))
-        MessageCenterAction()
+        Spacer(modifier = Modifier.width(if (compact) 4.dp else 16.dp))
+        MessageCenterAction(compact = compact)
     }
 }
 
-/** 消息中心入口图标按钮:未读数 >0 时右上角红点,进入个人中心/返回时(ON_RESUME)刷新未读数 */
+/** 消息中心入口:未读数 >0 时图标右上角红点,进入个人中心/返回时(ON_RESUME)刷新未读数;
+ *  展开态图标+文字标签,折叠态纯图标 */
 @Composable
-private fun MessageCenterAction() {
+private fun MessageCenterAction(compact: Boolean = false) {
     val context = LocalComponentActivity.current
     val onNavigate = LocalOnNavigate.current
     val scope = rememberCoroutineScope()
@@ -375,6 +383,10 @@ private fun MessageCenterAction() {
         ).notificationRepository()
     }
     val lifecycleOwner = LocalLifecycleOwner.current
+    // 首次组合立即刷一次(进程冷启动后 ON_RESUME 先于组合触发, 仅靠观察者会漏刷)
+    LaunchedEffect(Unit) {
+        notificationRepository.refreshUnreadCount()
+    }
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -385,21 +397,38 @@ private fun MessageCenterAction() {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
     val unreadCount by notificationRepository.unreadCount.collectAsState()
-    Box {
-        IconButton(onClick = { onNavigate(Screen.Notification) }) {
+    val bellWithBadge: @Composable () -> Unit = {
+        Box {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNotifications,
                 contentDescription = stringResource(R.string.notification_center),
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
+            if (unreadCount > 0) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(x = 3.dp, y = (-3).dp)
+                        .size(8.dp)
+                        .background(MaterialTheme.colorScheme.error, CircleShape)
+                )
+            }
         }
-        if (unreadCount > 0) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 8.dp, end = 8.dp)
-                    .size(8.dp)
-                    .background(MaterialTheme.colorScheme.error, CircleShape)
+    }
+    if (compact) {
+        IconButton(onClick = { onNavigate(Screen.Notification) }) {
+            bellWithBadge()
+        }
+    } else {
+        Column(
+            modifier = Modifier.clickable { onNavigate(Screen.Notification) },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            bellWithBadge()
+            Text(
+                text = stringResource(R.string.notification_center),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }
