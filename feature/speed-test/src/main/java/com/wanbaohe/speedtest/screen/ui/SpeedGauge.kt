@@ -138,6 +138,13 @@ fun SpeedGauge(
     // 发光颜色（低透明度主色）
     val glowColor = primaryColor.copy(alpha = 0.18f)
 
+    // 开始按钮填充用品牌色（primary → secondary），内容用 onPrimary 保证对比度：
+    // getPrimaryColor() 取的是 onPrimaryContainer（文字色），直接当填充会和内容同色而"隐形"。
+    val actionGradient = Brush.linearGradient(
+        listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
+    )
+    val onActionColor = MaterialTheme.colorScheme.onPrimary
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -234,7 +241,7 @@ fun SpeedGauge(
                             Modifier.size(88.dp)
                                 .graphicsLayer { scaleX = breathScale; scaleY = breathScale }
                                 .clip(CircleShape)
-                                .background(Brush.linearGradient(listOf(primaryColor, secondaryColor)))
+                                .background(actionGradient)
                                 .clickable(role = Role.Button, onClick = onClick),
                             contentAlignment = Alignment.Center
                         ) {
@@ -242,7 +249,7 @@ fun SpeedGauge(
                                 Icons.Filled.PlayArrow,
                                 stringResource(R.string.speed_test_start),
                                 Modifier.size(36.dp),
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                tint = onActionColor
                             )
                         }
                         Spacer(Modifier.height(10.dp))

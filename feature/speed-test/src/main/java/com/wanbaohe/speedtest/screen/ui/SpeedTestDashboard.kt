@@ -171,14 +171,26 @@ internal fun SpeedTestDashboard(
                             Button(
                                 onClick = onStart,
                                 modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)
-                                    .background(Brush.linearGradient(listOf(primary, MaterialTheme.colorScheme.secondary)), CircleShape),
+                                    .background(
+                                        Brush.linearGradient(
+                                            listOf(
+                                                MaterialTheme.colorScheme.primary,
+                                                MaterialTheme.colorScheme.secondary
+                                            )
+                                        ),
+                                        CircleShape
+                                    ),
                                 shape = CircleShape,
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Color.Transparent,
-                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
                                 )
                             ) {
-                                Text(stringResource(R.string.speed_test_restart), fontSize = 16.sp)
+                                Text(
+                                    stringResource(R.string.speed_test_restart),
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
                             }
                             HistoryButton(onShowHistory)
                         }
