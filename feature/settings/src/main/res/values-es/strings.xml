@@ -215,7 +215,7 @@
     <string name="ai_engine_file_upload_strategy_title">Estrategia de carga de archivos</string>
     <string name="ai_engine_file_upload_strategy_base64">Base64 en línea</string>
     <string name="ai_engine_file_upload_strategy_cloud">Almacenamiento en la nube</string>
-    <string name="ai_engine_cloud_storage_config_hint">Configure primero su conexión de almacenamiento en la nube en la página de gestión de almacenamiento en la nube.</string>
+    <string name="ai_engine_cloud_storage_config_hint">Configura primero tu conexión de almacenamiento en la nube en la página de gestión de almacenamiento en la nube.</string>
     <string name="ai_engine_cloud_storage_go_config">Configurar</string>
     <string name="ai_engine_cloud_storage_connection_label">Elegir conexión de almacenamiento en la nube</string>
     <string name="ai_engine_cloud_storage_bucket_label">Depósito</string>
@@ -227,7 +227,7 @@
     <string name="tts_settings_connection_section">Conexión directa</string>
     <string name="tts_settings_model_section">Configuración del modelo</string>
     <string name="tts_settings_api_url_label">URL del endpoint</string>
-    <string name="tts_settings_api_url_hint">Ingrese la URL completa de la solicitud; la aplicación ya no agrega la ruta automáticamente.</string>
+    <string name="tts_settings_api_url_hint">Ingresa la URL completa de la solicitud; la aplicación ya no agrega la ruta automáticamente.</string>
     <string name="tts_settings_openai_endpoint_placeholder">https://api.openai.com/v1/audio/speech</string>
     <string name="tts_settings_mimo_endpoint_placeholder">https://api.xiaomimimo.com/v1/chat/completions</string>
     <string name="tts_settings_api_token_label">Token de API</string>

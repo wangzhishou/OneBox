@@ -129,8 +129,16 @@ class ItemSyncManager @Inject constructor(
     /**
      * 把本地兜底关键词写进还是空值的条目,只跑一次(MMKV 标记)。
      * CMS 后续填了 keywords 会在同步时覆盖;本方法不会覆盖已有非空值。
+     * 另:每次启动都会先做一次历史默认词刷新(见 [ItemKeywordDefaults.stalePrevious]),
+     * 让老安装在升级后也能立刻用上新增的搜索别名。
      */
     private suspend fun backfillKeywordDefaultsIfNeeded() {
+        ItemKeywordDefaults.stalePrevious.forEach { (documentId, stale) ->
+            val fresh = ItemKeywordDefaults.byDocumentId[documentId] ?: return@forEach
+            runCatching {
+                appDatabase.itemEntityDao().refreshStaleKeywordsForDocument(documentId, stale, fresh)
+            }
+        }
         if (AppSharedStorage.isItemKeywordDefaultsSeeded()) return
         runCatching {
             appDatabase.itemEntityDao().backfillKeywords(ItemKeywordDefaults.byDocumentId)

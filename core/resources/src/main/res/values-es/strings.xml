@@ -99,7 +99,7 @@
     <string name="issue_tracker">Seguimiento de problemas</string>
     <string name="help_translate">Ayudar a traducir</string>
     <string name="about_app">Acerca de la aplicación</string>
-    <string name="issue_tracker_sub">Envíe informes de errores y solicitudes de funciones aquí</string>
+    <string name="issue_tracker_sub">Envía informes de errores y solicitudes de funciones aquí</string>
     <string name="search_here">Buscar aquí</string>
     <string name="help_translate_sub">Corrija errores de traducción o localice el proyecto a otros idiomas</string>
     <string name="nothing_found_by_search">Sin resultados de búsqueda</string>
@@ -109,11 +109,11 @@
     <string name="values">Valores</string>
     <string name="permission">Permiso</string>
     <string name="grant">Otorgar</string>
-    <string name="permission_sub">La aplicación necesita acceso a su almacenamiento para guardar archivos. ¡Se debe otorgar el permiso!</string>
+    <string name="permission_sub">La aplicación necesita acceso al almacenamiento del dispositivo para guardar archivos. ¡Se debe otorgar el permiso!</string>
     <string name="grant_permission_manual">La aplicación necesita este permiso para funcionar, por favor concédalo manualmente</string>
     <string name="border_thickness">Grosor del borde</string>
     <string name="surface">Superficie</string>
-    <string name="donation_sub">Esta aplicación es completamente gratuita. Si desea apoyar su desarrollo, toque aquí</string>
+    <string name="donation_sub">Esta aplicación es completamente gratuita. Si quieres apoyar su desarrollo, toca aquí</string>
     <string name="fab_alignment">Alineación del botón flotante</string>
     <string name="check_updates">Buscar actualizaciones</string>
     <string name="check_updates_sub">Si está habilitado, el diálogo de actualización se mostrará al iniciar la aplicación</string>
@@ -1236,7 +1236,7 @@
     <string name="equalize_histogram_adaptive_hsl">Ecualizar histograma adaptativo (HSL)</string>
     <string name="equalize_histogram_adaptive_hsv">Ecualizar histograma adaptativo (HSV)</string>
     <string name="color_blind_scheme">Esquema para daltonismo</string>
-    <string name="color_blind_scheme_sub">Elija un modo para ajustar los colores del tema para una variante específica de daltonismo</string>
+    <string name="color_blind_scheme_sub">Elige un modo para ajustar los colores del tema para una variante específica de daltonismo</string>
     <string name="protanomaly_sub">Dificultad para distinguir tonos rojos y verdes</string>
     <string name="deuteranomaly_sub">Dificultad para distinguir tonos verdes y rojos</string>
     <string name="tritanomaly_sub">Dificultad para distinguir tonos azules y amarillos</string>
@@ -1347,7 +1347,7 @@
     <string name="edgy_amber">Ámbar audaz</string>
     <string name="save_empty_lut">Obtener una imagen LUT neutra</string>
     <string name="drop_blues">Azules apagados</string>
-    <string name="save_empty_lut_sub">Primero, aplique un filtro a una LUT neutra (tabla de consulta de color) usando su editor de imágenes favorito; puede obtener una aquí. Para que esto funcione, el color de cada píxel no debe depender de otros píxeles (por ejemplo, los efectos de desenfoque no están permitidos). Una vez listo, use su nueva imagen LUT como entrada para el filtro LUT 512x512.</string>
+    <string name="save_empty_lut_sub">Primero, aplica un filtro a una LUT neutra (tabla de consulta de color) usando tu editor de imágenes favorito; puedes obtener una aquí. Para que esto funcione, el color de cada píxel no debe depender de otros píxeles (por ejemplo, los efectos de desenfoque no están permitidos). Una vez listo, usa tu nueva imagen LUT como entrada para el filtro LUT 512x512.</string>
     <string name="kodak">Kodak</string>
     <string name="pop_art">Arte pop</string>
     <string name="golden_forest">Bosque dorado</string>
@@ -1366,7 +1366,7 @@
     <string name="gif_type_to_webp_sub">Convertir una imagen GIF en una animación WEBP</string>
     <string name="webp_tools">Herramientas WEBP</string>
     <string name="webp_type_to_image">WEBP a imágenes</string>
-    <string name="select_webp_image_to_start">Seleccione una imagen WEBP para comenzar</string>
+    <string name="select_webp_image_to_start">Selecciona una imagen WEBP para comenzar</string>
     <string name="webp_tools_sub">Convierta imágenes en animaciones WEBP, o extraiga fotogramas de una animación WEBP dada</string>
     <string name="default_draw_color">Color de dibujo predeterminado</string>
     <string name="default_draw_path_mode">Modo de ruta de dibujo predeterminado</string>
@@ -1440,7 +1440,7 @@
     <string name="morphological_gradient">Gradiente morfológico</string>
     <string name="use_circle_kernel">Usar núcleo circular</string>
     <string name="opening">Apertura</string>
-    <string name="closing">Cierre</string>
+    <string name="closing">Cerrando</string>
     <string name="top_hat">Sombrero de copa</string>
     <string name="black_hat">Sombrero negro</string>
     <string name="line_style">Estilo de línea</string>

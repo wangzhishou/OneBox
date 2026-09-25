@@ -721,6 +721,19 @@ interface ItemEntityDao {
     )
     suspend fun backfillKeywordsForDocument(documentId: String, keywords: String): Int
 
+    /**
+     * 把仍是历史默认词的行刷新为新默认词(幂等:刷新后不再命中 stale)。
+     * 只在 keywords 精确等于旧默认值时改写,不会覆盖 CMS 或用户已有的其他词。
+     */
+    @Query(
+        """
+        UPDATE item SET keywords = :keywords
+        WHERE document_id = :documentId
+          AND keywords = :stale
+        """
+    )
+    suspend fun refreshStaleKeywordsForDocument(documentId: String, stale: String, keywords: String): Int
+
     @Transaction
     suspend fun backfillKeywords(defaults: Map<String, String>) {
         defaults.forEach { (documentId, keywords) ->

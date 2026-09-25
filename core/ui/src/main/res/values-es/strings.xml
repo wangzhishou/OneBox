@@ -24,7 +24,7 @@
     <string name="time_range_picker_end_time">Hora de fin</string>
     <string name="time_range_picker_hour">Hora</string>
     <string name="time_range_picker_minute">Minuto</string>
-    <string name="time_range_picker_hint">Consejo: Ingrese hora (0-23) y minuto (0-59)</string>
+    <string name="time_range_picker_hint">Consejo: Ingresa hora (0-23) y minuto (0-59)</string>
     <string name="date_range_picker_title">Seleccionar rango de fechas</string>
     <string name="date_range_start">Fecha de inicio</string>
     <string name="date_range_end">Fecha de fin</string>

@@ -465,7 +465,7 @@
     <string name="code_number">6 dígitos</string>
     <string name="phone_placeholder">Teléfono: 139xxxxxxxx</string>
     <string name="get_code_ed">Enviado</string>
-    <string name="login_bind_phone_desc">De acuerdo con <a href="https://www.cac.gov.cn/2022-06/14/c_1656821626455324.htm">las regulaciones chinas</a>, se requiere la verificación del número de teléfono para proteger la seguridad de su cuenta. Estamos comprometidos a proteger su privacidad.</string>
+    <string name="login_bind_phone_desc">De acuerdo con <a href="https://www.cac.gov.cn/2022-06/14/c_1656821626455324.htm">las regulaciones chinas</a>, se requiere la verificación del número de teléfono para proteger la seguridad de tu cuenta. Estamos comprometidos a proteger tu privacidad.</string>
     <string name="phone_login">Teléfono</string>
     <string name="please_enter_correct_phone_number_and_verification_code">El número de teléfono o el código de verificación es incorrecto.</string>
     <string name="profile_invitation_code_success">+%s puntos</string>
@@ -551,7 +551,7 @@
     <string name="ai_history_message_count">%1$d mensajes</string>
     <string name="ai_history_delete_message">Eliminar esta sesión también eliminará todos los mensajes que contiene. ¿Continuar?</string>
     <string name="ai_history_rename_title">Renombrar sesión</string>
-    <string name="ai_history_rename_hint">Ingrese un nuevo título</string>
+    <string name="ai_history_rename_hint">Escribe un nuevo título</string>
     <string name="ai_history_rename_empty">Por favor ingrese un título</string>
     <string name="confirm">Aceptar</string>
     <string name="free">Gratis</string>
@@ -710,9 +710,9 @@
     <string name="manage">Gestionar</string>
     <string name="done">Listo</string>
     <string name="prompt_save">Guardar</string>
-    <string name="prompt_sensitive_words_hit">Esta solicitud puede contener contenido prohibido y no puede procesarse. Intente preguntar sobre temas permitidos.</string>
+    <string name="prompt_sensitive_words_hit">Esta solicitud puede contener contenido prohibido y no puede procesarse. Intenta preguntar sobre temas permitidos.</string>
     <string name="prompt_sensitive_words_check_failed">La verificación de contenido falló. Inténtelo de nuevo más tarde.</string>
-    <string name="prompt_name_duplicate">El nombre ya existe. Elija otro.</string>
+    <string name="prompt_name_duplicate">El nombre ya existe. Elige otro.</string>
     <string name="prompt_save_failed">Error al guardar. Inténtelo de nuevo más tarde.</string>
     <string name="login_agreement_title">Acuerdo de servicio y privacidad</string>
     <string name="test_ai_engine_connection">Probar conexión API</string>
@@ -733,11 +733,11 @@
     <string name="feedback_submit">Enviar</string>
     <string name="feedback_title_hint">Título</string>
     <string name="feedback_content_hint">Descripción</string>
-    <string name="feedback_placeholder">Describa el problema en detalle para que podamos ayudarle más rápido~</string>
+    <string name="feedback_placeholder">Describe el problema en detalle para que podamos ayudarte más rápido~</string>
     <string name="fields_required">Por favor, complete los campos obligatorios.</string>
     <string name="feedback_failed">Error en el envío. Inténtelo de nuevo más tarde.</string>
     <string name="feedback_onSuccess">¡Comentario recibido! Gracias por ayudarnos a mejorar ❤️</string>
-    <string name="feedback_title_placeholder">Describa brevemente el problema</string>
+    <string name="feedback_title_placeholder">Describe brevemente el problema</string>
     <string name="upload_failure">Error al subir. Inténtelo de nuevo más tarde.</string>
     <string name="upload_cancel">Cancelado</string>
     <string name="feedback_upload_image">Subir imagen</string>
@@ -750,7 +750,7 @@
     <string name="profile_item_wechat_service">Servicio al cliente de WeChat</string>
     <string name="message_card_tag">Historial de chat</string>
     <string name="search_result">Resultados de búsqueda</string>
-    <string name="ai_chat_empty_message">Por favor, escriba su pregunta.</string>
+    <string name="ai_chat_empty_message">Por favor, escribe tu pregunta.</string>
     <string name="blog_title">Ver artículo</string>
     <string name="blog_escription">Leer más</string>
     <string name="no_app_to_open_file">Error al abrir. Error desconocido o permisos faltantes.</string>
@@ -1456,7 +1456,7 @@
     <string name="system_prompt_friendly_reminder_message">Cambiar una indicación del sistema puede afectar el comportamiento de funciones de IA como el chat y los agentes. Si es posible, haga una copia de seguridad del contenido original antes de editarlo.</string>
     <string name="system_prompt_read_only_hint">Nivel VIP demasiado bajo. Solo vista.</string>
     <string name="system_prompt_edit_vip_required_title">VIP requerido</string>
-    <string name="system_prompt_edit_vip_required_message">Editar indicaciones del sistema requiere nivel VIP 2 o superior. Mejore para personalizar sus indicaciones de IA del sistema.</string>
+    <string name="system_prompt_edit_vip_required_message">Editar indicaciones del sistema requiere nivel VIP 2 o superior. Mejora para personalizar tus indicaciones de IA del sistema.</string>
     <string name="system_prompt_edit_vip_upgrade">Mejorar</string>
     <string name="vip_level_title">Nivel VIP</string>
     <string name="vip_level_description">Ver beneficios y progreso del nivel.</string>
@@ -1467,11 +1467,11 @@
     <string name="vip_level_recharge_amount">Gastado ≥ ¥%s</string>
     <string name="vip_level_recharge_from_zero">Gastado ¥%s</string>
     <string name="vip_level_0_name">Novato</string>
-    <string name="vip_level_0_desc">Acaba de llegar: comience su viaje</string>
+    <string name="vip_level_0_desc">Acaba de llegar: comienza tu viaje</string>
     <string name="vip_level_1_name">Aprendiz</string>
     <string name="vip_level_1_desc">Probando las aguas, explorando OneBox</string>
     <string name="vip_level_2_name">Principiante</string>
-    <string name="vip_level_2_desc">Encontrando su camino, descubriendo más</string>
+    <string name="vip_level_2_desc">Encontrando tu camino, descubriendo más</string>
     <string name="vip_level_3_name">Intermedio</string>
     <string name="vip_level_3_desc">Dominando lo básico, desbloqueando funciones avanzadas</string>
     <string name="vip_level_4_name">Avanzado</string>
@@ -1517,9 +1517,9 @@
     <string name="ai_chat_engine_unavailable_dialog_title">No se puede enviar el mensaje</string>
     <string name="ai_chat_engine_unavailable_dialog_message">No hay ningún motor de IA disponible. Pruebe una conexión directa que funcione en la configuración del motor, o cambie a un motor con un proxy disponible, antes de enviar.</string>
     <string name="ai_chat_engine_unavailable_banner_title">No hay motor de IA disponible</string>
-    <string name="ai_chat_engine_unavailable_banner_desc">El motor de trabajo actual no tiene conexión directa probada ni proxy disponible. Toque para abrir la configuración.</string>
-    <string name="ai_chat_engine_unavailable_banner_desc_overseas">El motor actual no tiene token de API configurado ni proxy disponible. Toque para abrir la configuración.</string>
-    <string name="ai_chat_engine_unavailable_dialog_message_overseas">No hay ningún motor de IA disponible. Configure un token de API en la configuración del motor, o cambie a un motor con un proxy disponible, antes de enviar.</string>
+    <string name="ai_chat_engine_unavailable_banner_desc">El motor de trabajo actual no tiene conexión directa probada ni proxy disponible. Toca para abrir la configuración.</string>
+    <string name="ai_chat_engine_unavailable_banner_desc_overseas">El motor actual no tiene token de API configurado ni proxy disponible. Toca para abrir la configuración.</string>
+    <string name="ai_chat_engine_unavailable_dialog_message_overseas">No hay ningún motor de IA disponible. Configura un token de API en la configuración del motor, o cambia a un motor con un proxy disponible, antes de enviar.</string>
     <string name="ai_chat_engine_unavailable_banner_action">Abrir configuración</string>
     <string name="ai_chat_empty_response_error">El modelo no devolvió nada que mostrar. Inténtelo de nuevo; si sigue fallando, cambie de motor o verifique la compatibilidad del protocolo.</string>
     <string name="ai_empty_response_error">El modelo no devolvió ningún contenido. Vuelve a intentarlo.</string>

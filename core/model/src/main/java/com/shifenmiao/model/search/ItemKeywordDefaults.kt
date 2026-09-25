@@ -81,7 +81,7 @@ object ItemKeywordDefaults {
         "p3tjyg9urxnj73q1o6xzaktb" to "blessing wall luck wish daily fortune tap",
         "pfxuavgudnf6nsw3hghr4wk8" to "dead pixel detector test stuck screen display defect dead pixel stuck pixel",
         "pjbxsdezmjnwblqj9fei4h6i" to "tactful replies reply response polite communication answer",
-        "pkf9r8am3fo54ffpp7t7db3h" to "handheld banner marquee ticker led scroll text big",
+        "pkf9r8am3fo54ffpp7t7db3h" to "handheld banner marquee ticker led scroll text big marquesina",
         "posytk5rt72z1ob2206n08iu" to "expert consultation panel advice perspective multi",
         "q2z7ei64ktmbyqlbealca3s8" to "decision wheel screen spin random decide roulette picker lottery",
         "qjauny2vx4vuhkwk7xf04s84" to "resize with constraints limit aspect ratio max",
@@ -123,6 +123,15 @@ object ItemKeywordDefaults {
         "z7yoj9bpqb82rniz69wiuttg" to "image watermark watermarking logo brand stamp copyright",
         "ze9msqblirql5b7uui4qcvfy" to "cross-domain borrowing cross domain borrowing analogy inspiration innovation",
         "zl676n2ogcuvkxjvvpwas3hg" to "password vault credential secure login autofill",
+    )
+
+    /**
+     * 历史默认词 → 需要被 [byDocumentId] 新值替换的条目。
+     * 兜底写入只跑一次(MMKV 标记),已装机用户的 keywords 停留在旧默认值上;
+     * 同步启动时用本表把仍持有旧默认值的行刷新为新值(CMS 填过的词值不同,不会命中)。
+     */
+    val stalePrevious: Map<String, String> = mapOf(
+        "pkf9r8am3fo54ffpp7t7db3h" to "handheld banner marquee ticker led scroll text big",
     )
 
     operator fun get(documentId: String?): String =

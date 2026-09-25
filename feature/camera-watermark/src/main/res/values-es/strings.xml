@@ -32,7 +32,7 @@
     <string name="camera_watermark_text_color">Color del texto</string>
     <string name="camera_watermark_background_color">Color de fondo</string>
     <string name="camera_watermark_template_name">Nombre de la plantilla</string>
-    <string name="camera_watermark_template_name_hint">Ingrese el nombre de la plantilla</string>
+    <string name="camera_watermark_template_name_hint">Ingresa el nombre de la plantilla</string>
     <string name="camera_watermark_model_name">Modelo del dispositivo</string>
     <string name="camera_watermark_lens_info">Información de la lente</string>
     <string name="camera_watermark_datetime">Hora de captura</string>
@@ -49,8 +49,8 @@
     <string name="camera_watermark_export_success">Guardado correctamente</string>
     <string name="camera_watermark_export_failed">Error al guardar</string>
     <string name="camera_watermark_batch_save_result">Se guardaron correctamente %1$d/%2$d imágenes</string>
-    <string name="camera_watermark_select_image_hint">Seleccione una imagen</string>
-    <string name="camera_watermark_empty_placeholder">Seleccione una foto para agregar una marca de agua de cámara</string>
+    <string name="camera_watermark_select_image_hint">Selecciona una imagen</string>
+    <string name="camera_watermark_empty_placeholder">Selecciona una foto para agregar una marca de agua de cámara</string>
     <string name="camera_watermark_style_leica">Leica Clásico</string>
     <string name="camera_watermark_style_wanbaohe">OneBox</string>
     <string name="camera_watermark_style_xiaomi">Xiaomi</string>

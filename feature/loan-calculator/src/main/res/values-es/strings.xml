@@ -6,7 +6,7 @@
     <string name="loan_calc_term_label">Plazo del préstamo</string>
     <string name="loan_calc_term_hint">Selección</string>
     <string name="loan_calc_rate_label">Tasa de interés anual (%)</string>
-    <string name="loan_calc_rate_hint">Ingrese la tasa de interés anual</string>
+    <string name="loan_calc_rate_hint">Ingresa la tasa de interés anual</string>
     <string name="loan_calc_method_label">Método de pago</string>
     <string name="loan_calc_method_hint">Selección</string>
     <string name="loan_calc_start">Comenzar cálculo</string>
@@ -28,11 +28,11 @@
     <string name="loan_result_principal_col">Capital</string>
     <string name="loan_result_interest_col">Interés</string>
     <string name="loan_result_remaining_col">Capital restante</string>
-    <string name="loan_input_error_amount">Ingrese un monto de préstamo válido</string>
-    <string name="loan_input_error_term">Seleccione el período del préstamo</string>
-    <string name="loan_input_error_rate">Ingrese una tasa de interés anual válida</string>
+    <string name="loan_input_error_amount">Ingresa un monto de préstamo válido</string>
+    <string name="loan_input_error_term">Selecciona el período del préstamo</string>
+    <string name="loan_input_error_rate">Ingresa una tasa de interés anual válida</string>
     <string name="loan_input_error_method">Por favor, elija cómo pagar.</string>
     <string name="loan_term_months">%1$d meses</string>
     <string name="loan_term_years">%1$d años (%2$d meses)</string>
-    <string name="loan_term_picker_title">Seleccione el plazo del préstamo</string>
+    <string name="loan_term_picker_title">Selecciona el plazo del préstamo</string>
 </resources>

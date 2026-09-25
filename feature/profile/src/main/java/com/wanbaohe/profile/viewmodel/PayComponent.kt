@@ -126,7 +126,8 @@ class PayComponent @AssistedInject internal constructor(
         }
         val detailsList = billing.queryPlayProducts(catalog.map { it.productId })
         if (detailsList.isEmpty()) {
-            onPlayProductsLoadFailed(billing.lastErrorMessage())
+            // Play 侧价格查询失败是"加载失败"而非"支付失败",不复用 pay_error 文案
+            onPlayProductsLoadFailed(resourceProvider.getString(R.string.google_play_products_load_failed))
             return
         }
         val detailsById = detailsList.associateBy { it.productId }

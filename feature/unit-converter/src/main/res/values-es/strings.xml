@@ -20,7 +20,7 @@
     <string name="unit_converter_clear">Borrar</string>
     <string name="unit_converter_backspace">Retroceso</string>
     <string name="unit_converter_equals">Calcular</string>
-    <string name="unit_converter_reference_subtitle">Revise rápidamente valores de referencia comunes para la entrada actual</string>
+    <string name="unit_converter_reference_subtitle">Revisa rápidamente valores de referencia comunes para la entrada actual</string>
     <string name="unit_converter_relative_path">Ruta de relación</string>
     <string name="unit_converter_relative_path_placeholder">Yo</string>
     <string name="unit_converter_relative_identity">Mi identidad</string>

@@ -61,10 +61,10 @@
     <string name="bookkeeping_backup_success">Copia de seguridad completada</string>
     <string name="bookkeeping_backup_failed">Error en la copia de seguridad</string>
     <string name="bookkeeping_restore_success">Restauración completa: %1$d categorías, %2$d registros</string>
-    <string name="bookkeeping_restore_failed">La restauración falló. Verifique el archivo de respaldo.</string>
+    <string name="bookkeeping_restore_failed">La restauración falló. Revisa el archivo de respaldo.</string>
     <string name="bookkeeping_restore_empty_categories">El archivo de respaldo no contiene datos de categorías</string>
     <string name="bookkeeping_restore_picker_title">Elegir archivo de respaldo</string>
-    <string name="bookkeeping_visual_hint">Mejore el contraste y la jerarquía para que su libro de cuentas sea más fácil de leer</string>
+    <string name="bookkeeping_visual_hint">Mejora el contraste y la jerarquía para que tu libro de cuentas sea más fácil de leer</string>
     <string name="bookkeeping_delete_confirm_title">Confirmar eliminación</string>
     <string name="bookkeeping_delete_confirm_message">¿Está seguro de que desea eliminar este registro? Esta acción no se puede deshacer.</string>
     <string name="bookkeeping_income_composition">Desglose de ingresos</string>
