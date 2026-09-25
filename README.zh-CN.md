@@ -17,10 +17,10 @@
 
 <table>
   <tr>
-    <td><img src=".github/readme/zh/01.webp" width="180" alt="工具" /></td>
-    <td><img src=".github/readme/zh/02.webp" width="180" alt="AI 助手" /></td>
-    <td><img src=".github/readme/zh/03.webp" width="180" alt="隐私" /></td>
-    <td><a href="https://youtube.com/shorts/3hM2e1LspoY"><img src=".github/readme/intro-zh.jpg" width="180" alt="视频介绍(YouTube Shorts)" /></a></td>
+    <td><img src=".github/readme/zh/01.webp" width="180" alt="90+ 工具一个 App 全装下" /></td>
+    <td><img src=".github/readme/zh/02.webp" width="180" alt="说句话 AI 帮你干活" /></td>
+    <td><img src=".github/readme/zh/03.webp" width="180" alt="记账说一句话就好" /></td>
+    <td><a href="https://www.youtube.com/shorts/DSCKCWa0L2g"><img src=".github/readme/intro-zh.jpg" width="180" alt="视频介绍(YouTube Shorts)" /></a></td>
   </tr>
 </table>
 
@@ -255,6 +255,12 @@ GitHub Release 只挂海外包（google/foss 各 universal + arm64），国内 6
 
 ## 交流与反馈
 
+App 内「我的 → 加入社区」是与下面一致的入口：
+
+- **海外社区**
+  - **Discord**：[加入服务器](https://discord.gg/7j4hEBYGWv) —— 聊天、晒用法、抢先体验
+  - **X(Twitter)**：[@OneBoxAndroid](https://x.com/OneBoxAndroid)
+  - **YouTube**：[@OneBoxAndroid](https://www.youtube.com/@OneBoxAndroid) —— 介绍视频与功能演示
 - **QQ 群**：[点击加入](https://qm.qq.com/q/1JOfn5KCue56UhXT1fRe6NgCLJB5sHFO)
 - **微信群**：扫码加入（群二维码有时效，会定期更新；若失效请先提 Issue 提醒）
 

@@ -14,16 +14,14 @@
   [![Ko-fi](https://img.shields.io/badge/Ko--fi-donate-ff5e5b?logo=ko-fi&logoColor=white)](https://ko-fi.com/wangzhishou)
 </div>
 
-> **Built on [ImageToolbox](https://github.com/T8RIN/ImageToolbox).** OneBox started as a fork of T8RIN's image engine and grew into a full app: the image-processing core deliberately stays close to upstream so the diff stays reviewable, while the agent runtime, the 90+ tool screens and the app shell are new work. Upstream Apache-2.0 notices are preserved in the files they came from.
-
 ## Screenshots
 
 <table>
   <tr>
-    <td><img src=".github/readme/en/01.webp" width="180" alt="Tools" /></td>
-    <td><img src=".github/readme/en/02.webp" width="180" alt="AI Assistant" /></td>
-    <td><img src=".github/readme/en/03.webp" width="180" alt="Privacy" /></td>
-    <td><a href="https://youtube.com/shorts/dD9qCHK-hP4"><img src=".github/readme/intro-en.jpg" width="180" alt="Intro video (YouTube Shorts)" /></a></td>
+    <td><img src=".github/readme/en/01.webp" width="180" alt="90+ tools in one app" /></td>
+    <td><img src=".github/readme/en/02.webp" width="180" alt="Say the word, AI does it" /></td>
+    <td><img src=".github/readme/en/03.webp" width="180" alt="Bookkeeping by voice" /></td>
+    <td><a href="https://youtube.com/shorts/eGkwoe3puSw"><img src=".github/readme/intro-en.jpg" width="180" alt="Intro video (YouTube Shorts)" /></a></td>
   </tr>
 </table>
 
@@ -231,6 +229,11 @@ Every bit of support turns directly into better features and a more stable servi
 
 ## Community & Feedback
 
+The same links are in the app under **Profile → Join Community** (overseas builds show Discord / X / YouTube, domestic builds show the QQ and WeChat groups):
+
+- **Discord**: [discord.gg/7j4hEBYGWv](https://discord.gg/7j4hEBYGWv) — chat, show & tell, early builds
+- **X (Twitter)**: [@OneBoxAndroid](https://x.com/OneBoxAndroid)
+- **YouTube**: [@OneBoxAndroid](https://www.youtube.com/@OneBoxAndroid) — intro videos and feature demos
 - **Bug reports & feature requests**: [GitHub Issues](https://github.com/wangzhishou/OneBox/issues)
 - **Questions, ideas, show & tell**: [GitHub Discussions](https://github.com/wangzhishou/OneBox/discussions)
 - **Security problems**: report them privately, see [SECURITY.md](SECURITY.md) — please do not open a public issue
@@ -251,7 +254,7 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md). No keystores, API keys or backend
 
 ## License
 
-Apache-2.0, see `LICENSE`. Upstream ImageToolbox code (T8RIN, Apache-2.0) keeps its original copyright notices in the files it appears in — see the note at the top of this README.
+Apache-2.0, see `LICENSE`. The project is a fork of [ImageToolbox](https://github.com/T8RIN/ImageToolbox) (T8RIN, Apache-2.0): the image-processing core deliberately stays close to upstream so the diff stays reviewable, and upstream copyright notices are preserved in the files they came from.
 
 ## Feature Gallery
 
