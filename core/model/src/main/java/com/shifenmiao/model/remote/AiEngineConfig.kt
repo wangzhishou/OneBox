@@ -26,8 +26,9 @@ object AiEngineConfig {
      * v9: 新增 Pikafish 象棋引擎预制(经 Go 网关 /xiangqi/engine/bestmove 远程走棋)。
      * v10: 合并 name 大小写不同但 identityKey 相同的引擎行(如 DeepSeek/deepseek),
      *      修复模型选择 LazyColumn key 重复崩溃。
+     * v11: Google 渠道新增 Requesty 预制引擎(OpenAI 兼容, 用户自带 token 直连)。
      */
-    const val FLAVOR_PRESET_VERSION = 10
+    const val FLAVOR_PRESET_VERSION = 11
 
     /** 引入"清理 Google 渠道预制引擎代理"迁移的版本号 */
     const val PRESET_VERSION_CLEAR_GOOGLE_PROXY = 2
@@ -89,6 +90,7 @@ object AiEngineConfig {
             AiProvider.Claude.value,
             AiProvider.QWen.value,
             AiProvider.OpenRouter.value,
+            AiProvider.Requesty.value,
             AiProvider.ZhiPu.value,
             AiProvider.MinMax.value,
             AiProvider.Jev.value,

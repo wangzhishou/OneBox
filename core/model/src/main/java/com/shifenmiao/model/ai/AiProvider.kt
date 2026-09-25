@@ -23,6 +23,7 @@ sealed class AiProvider(val value: String) : Parcelable {
     @Parcelize @Serializable data object MinMax : AiProvider("minmax")
     @Parcelize @Serializable data object ZhiPu : AiProvider("zhipu")
     @Parcelize @Serializable data object OpenRouter : AiProvider("openrouter")
+    @Parcelize @Serializable data object Requesty : AiProvider("requesty")
     @Parcelize @Serializable data object Gemini : AiProvider("gemini")
     @Parcelize @Serializable data object Grok : AiProvider("grok")
     @Parcelize @Serializable data object Claude : AiProvider("claude")
@@ -63,6 +64,7 @@ sealed class AiProvider(val value: String) : Parcelable {
                 MinMax.value -> MinMax
                 ZhiPu.value -> ZhiPu
                 OpenRouter.value -> OpenRouter
+                Requesty.value -> Requesty
                 Gemini.value -> Gemini
                 Grok.value -> Grok
                 Claude.value -> Claude

@@ -191,6 +191,12 @@ object UrlConstants {
     const val OPENROUTER_TEXT_COMPLETIONS_ENDPOINT = "v1/chat/completions"
 
     /**
+     * Requesty 聚合平台(OpenAI 兼容协议)
+     */
+    const val REQUESTY_AI_BASE_URL: String = "https://router.requesty.ai/"
+    const val REQUESTY_TEXT_COMPLETIONS_ENDPOINT = "v1/chat/completions"
+
+    /**
      * KIMI AI
      */
     const val KIMI_AI_BASE_URL: String = "https://api.moonshot.cn/"
