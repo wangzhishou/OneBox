@@ -372,6 +372,25 @@ data class AiModel(
                     canUseTempApi = false
                 )
 
+                AiProvider.Requesty -> AiModel(
+                    name = "openai/gpt-4o-mini",
+                    title = AppContext.getString(R.string.ai_model_default_requesty_title),
+                    description = "",
+                    canUploadFile = false,
+                    canNetwork = false,
+                    temperature = 0.7,
+                    topP = 0.95,
+                    free = false,
+                    provider = AiProvider.Requesty,
+                    basePoints = 0.3f,
+                    maxTokens = 2048,
+                    canReasoning = false,
+                    canEdit = false,
+                    canImage = false,
+                    canVideo = false,
+                    canUseTempApi = false
+                )
+
                 AiProvider.ZhiPu -> AiModel(
                     name = "glm-5.3-flash",
                     title = AppContext.getString(R.string.ai_model_default_zhipu_title),
