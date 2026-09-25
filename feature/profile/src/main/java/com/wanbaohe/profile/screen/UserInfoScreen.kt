@@ -1,5 +1,7 @@
 package com.wanbaohe.profile.screen
 
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -384,10 +386,16 @@ fun UserInfoScreen(
                                     text = stringResource(R.string.profile_user_info_Logout),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurface,
+                                    // 长语种下宁可省略号,也不要被 trailing 挤成一列竖排
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
                                 )
                             },
                             trailingContent = {
                                 Row(
+                                    // ListItem 先量 trailing:M3 的 headline 是 weight(1f),
+                                    // 这里不封顶的话长提示(hi/de/ru…)会把标题压成一个字符宽
+                                    modifier = Modifier.widthIn(max = 200.dp),
                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
@@ -395,6 +403,11 @@ fun UserInfoScreen(
                                         text = stringResource(R.string.profile_Logout_desc),
                                         color = MaterialTheme.colorScheme.secondary,
                                         style = MaterialTheme.typography.bodyMedium,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        textAlign = TextAlign.End,
+                                        // 加权(不填充)让文字只占剩余宽度,保住右侧图标
+                                        modifier = Modifier.weight(1f, fill = false),
                                     )
                                     Icon(
                                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDeleteForever,
