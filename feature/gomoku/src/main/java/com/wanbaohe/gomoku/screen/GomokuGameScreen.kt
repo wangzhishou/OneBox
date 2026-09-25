@@ -179,6 +179,25 @@ fun GomokuGameScreen(
         )
     }
 
+    // 重新开局确认
+    if (component.showRestartConfirm) {
+        AlertDialog(
+            onDismissRequest = { component.showRestartConfirm = false },
+            title = { Text(stringResource(R.string.gomoku_restart_confirm_title)) },
+            text = { Text(stringResource(R.string.gomoku_restart_confirm_message)) },
+            confirmButton = {
+                TextButton(onClick = component::restart) {
+                    Text(stringResource(R.string.gomoku_confirm))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { component.showRestartConfirm = false }) {
+                    Text(stringResource(R.string.gomoku_cancel))
+                }
+            },
+        )
+    }
+
     // 重命名
     if (component.showRenameDialog) {
         var renameText by remember { mutableStateOf(state.title) }
@@ -587,7 +606,7 @@ private fun GameActionBar(
         add(BoardGameAction(icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo, onClick = component::redo))
         add(BoardGameAction(icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAnalytics, onClick = component::openAnalysis))
         add(BoardGameAction(icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare, onClick = onExport))
-        add(BoardGameAction(icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh, onClick = component::restart))
+        add(BoardGameAction(icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh, onClick = { component.showRestartConfirm = true }))
         if (playable && state.mode != GameMode.LLM_VS_LLM) {
             add(BoardGameAction(icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFlag, onClick = { component.showResignConfirm = true }))
         }

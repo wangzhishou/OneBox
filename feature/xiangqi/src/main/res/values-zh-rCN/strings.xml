@@ -249,6 +249,9 @@
     <string name="xiangqi_resign">认输</string>
     <string name="xiangqi_resign_confirm_title">确认认输？</string>
     <string name="xiangqi_resign_confirm_message">认输后本局将判负，确定要认输吗？</string>
+    <string name="xiangqi_restart_confirm_title">重新开局？</string>
+    <string name="xiangqi_restart_confirm_message">当前对局会保存到棋库，并开启一局新对局。确定重新开局吗？</string>
+    <string name="xiangqi_game_over_back">返回</string>
     <string name="xiangqi_opponent_resigned">对手已认输</string>
     <string name="xiangqi_resign_result">认输</string>
     <string name="xiangqi_rename_game">重命名</string>

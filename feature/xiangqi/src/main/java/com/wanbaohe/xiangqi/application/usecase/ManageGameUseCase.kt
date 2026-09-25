@@ -1,7 +1,6 @@
 package com.wanbaohe.xiangqi.application.usecase
 
 import com.wanbaohe.xiangqi.application.dto.GameDetail
-import com.wanbaohe.xiangqi.application.port.outbound.AiTaskStore
 import com.wanbaohe.xiangqi.application.port.outbound.GameStore
 import com.wanbaohe.xiangqi.application.port.outbound.MoveStore
 import com.wanbaohe.xiangqi.domain.FenCodec
@@ -10,6 +9,7 @@ import com.wanbaohe.xiangqi.domain.GameArbiter
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.Side
 import com.shifenmiao.database.activity.ActivityLogRecorder
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,7 +17,6 @@ import javax.inject.Singleton
 class ManageGameUseCase @Inject constructor(
     private val gameStore: GameStore,
     private val moveStore: MoveStore,
-    private val aiTaskStore: AiTaskStore,
     private val query: GameQueryUseCase,
     private val activityLogRecorder: ActivityLogRecorder,
 ) {
@@ -76,13 +75,18 @@ class ManageGameUseCase @Inject constructor(
         return query.getById(gameId)
     }
 
+    /**
+     * 重新开局 = 以原局配置(模式/执子方/初始局面/联机房间)**新建**一条对局。
+     * 旧局原样保留：终局留在棋库作历史,进行中的局仍是可继续的暂停/进行中记录,
+     * 不伪造认输结果。返回新局详情(未开局时重开无意义,直接返回原局)。
+     */
     suspend fun restart(gameId: String): GameDetail? {
         val game = gameStore.getById(gameId) ?: return null
+        if (game.status == GameStatus.NOT_STARTED) return query.getById(gameId)
         val now = System.currentTimeMillis()
-        moveStore.deleteByGame(gameId)
-        aiTaskStore.deleteByGame(gameId)
-        gameStore.update(
+        val newGameId = gameStore.insert(
             game.copy(
+                id = UUID.randomUUID().toString(),
                 currentFen = game.initialFen,
                 currentPly = 0,
                 status = GameStatus.NOT_STARTED,
@@ -90,11 +94,11 @@ class ManageGameUseCase @Inject constructor(
                 winnerSide = "",
                 startedAt = 0L,
                 lastMoveAt = 0L,
+                lastPlayedAt = 0L,
                 updatedAt = now,
-                lastPlayedAt = now,
             ),
         )
-        return query.getById(gameId)
+        return query.getById(newGameId)
     }
 
     suspend fun rename(gameId: String, newTitle: String): GameDetail? {

@@ -251,6 +251,9 @@
     <string name="xiangqi_resign">Resign</string>
     <string name="xiangqi_resign_confirm_title">Confirm resign?</string>
     <string name="xiangqi_resign_confirm_message">You will lose this game. Are you sure you want to resign?</string>
+    <string name="xiangqi_restart_confirm_title">Restart game?</string>
+    <string name="xiangqi_restart_confirm_message">The current game will be saved to the library, and a new game will start. Continue?</string>
+    <string name="xiangqi_game_over_back">Back</string>
     <string name="xiangqi_opponent_resigned">Opponent resigned</string>
     <string name="xiangqi_resign_result">Resigned</string>
     <string name="xiangqi_rename_game">Rename</string>

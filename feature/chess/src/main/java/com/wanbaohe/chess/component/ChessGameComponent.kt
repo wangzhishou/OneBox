@@ -103,6 +103,7 @@ class ChessGameComponent @AssistedInject constructor(
         private set
 
     var showResignConfirm by mutableStateOf(false)
+    var showRestartConfirm by mutableStateOf(false)
     var showRenameDialog by mutableStateOf(false)
 
     val allAiEngines: StateFlow<List<AiEngine>> =
@@ -208,7 +209,14 @@ class ChessGameComponent @AssistedInject constructor(
 
     fun restart() {
         cancelAiRequest()
-        componentScope.launch { manageGame.restart(gameId) }
+        componentScope.launch {
+            val detail = manageGame.restart(gameId) ?: return@launch
+            // 重开会新建对局记录:切到 Routing 层替换当前页,让新局用全新组件状态开局
+            if (detail.id != gameId) {
+                onNavigate(Screen.ChessRouter(Screen.ChessRouter.Type.Game(detail.id)))
+            }
+        }
+        showRestartConfirm = false
     }
 
     fun start() {

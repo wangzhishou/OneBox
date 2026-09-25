@@ -197,6 +197,25 @@ fun XiangqiGameScreen(
         )
     }
 
+    // 重新开局确认
+    if (component.showRestartConfirm) {
+        AlertDialog(
+            onDismissRequest = { component.showRestartConfirm = false },
+            title = { Text(stringResource(R.string.xiangqi_restart_confirm_title)) },
+            text = { Text(stringResource(R.string.xiangqi_restart_confirm_message)) },
+            confirmButton = {
+                androidx.compose.material3.TextButton(onClick = component::restart) {
+                    Text(stringResource(R.string.xiangqi_confirm))
+                }
+            },
+            dismissButton = {
+                androidx.compose.material3.TextButton(onClick = { component.showRestartConfirm = false }) {
+                    Text(stringResource(R.string.xiangqi_cancel))
+                }
+            },
+        )
+    }
+
     // Rename dialog
     if (component.showRenameDialog) {
         var renameText by remember { mutableStateOf(state.title) }
@@ -451,8 +470,10 @@ private fun GameBoardArea(
                     },
                     restartLabel = stringResource(R.string.xiangqi_game_over_restart),
                     reviewLabel = stringResource(R.string.xiangqi_game_over_review),
+                    backLabel = stringResource(R.string.xiangqi_game_over_back),
                     onRestart = component::restart,
                     onReview = component::openAnalysis,
+                    onBack = component.onGoBack,
                     emphasizeResult = state.status != GameStatus.DRAW,
                 )
             }
@@ -476,7 +497,7 @@ private fun GameActionBar(
         onRedo = component::redo,
         onAnalysis = component::openAnalysis,
         onExport = onExport,
-        onRestart = component::restart,
+        onRestart = { component.showRestartConfirm = true },
         onResign = { component.showResignConfirm = true },
         onRename = { component.showRenameDialog = true },
         onToggleFullscreen = { immersiveState?.toggle() },

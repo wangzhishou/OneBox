@@ -166,11 +166,23 @@ class GomokuRouterComponent @AssistedInject constructor(
     }
 
     fun openLibrary() { navigation.pushToFront(Route.Library) }
-    fun openGame(gameId: String) { selectedGameId = gameId; navigation.pushNew(Route.Game(gameId)) }
+    fun openGame(gameId: String) {
+        selectedGameId = gameId
+        // 已在某个对局页时(如终局后「再来一局」)替换栈顶而不是叠一层,
+        // 避免返回时落回上一局的只读终局页
+        if (childStack.value.active.configuration is Route.Game) {
+            navigation.replaceCurrent(Route.Game(gameId))
+        } else {
+            navigation.pushNew(Route.Game(gameId))
+        }
+    }
     fun openAnalysis(gameId: String, initialPly: Int = -1) { selectedGameId = gameId; navigation.pushNew(Route.Analysis(gameId, initialPly)) }
     fun joinOnlineRoom(roomId: String) { pendingJoinRoomId = roomId.trim() }
     fun clearPendingJoinRoom() { pendingJoinRoomId = "" }
-    fun navigateBack() { navigation.pop() }
+    fun navigateBack() {
+        // 栈底兜底:replaceCurrent 打开的对局页内层栈只有一项,pop 是空操作,此时退出模块
+        if (childStack.value.items.size > 1) navigation.pop() else onGoBack()
+    }
 
     fun navigateBackFrom(route: Route) {
         when {

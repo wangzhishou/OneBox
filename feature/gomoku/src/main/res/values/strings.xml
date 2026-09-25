@@ -33,6 +33,8 @@
     <string name="gomoku_resign_result">Game resigned</string>
     <string name="gomoku_resign_confirm_title">Resign?</string>
     <string name="gomoku_resign_confirm_message">You will lose this game. Continue?</string>
+    <string name="gomoku_restart_confirm_title">Restart game?</string>
+    <string name="gomoku_restart_confirm_message">The current game will be saved to the library, and a new game will start. Continue?</string>
     <string name="gomoku_start_action">Start</string>
     <string name="gomoku_resume_action">Resume</string>
     <string name="gomoku_game_over_review">Review</string>
