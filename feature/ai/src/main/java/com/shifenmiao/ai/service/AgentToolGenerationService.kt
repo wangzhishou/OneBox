@@ -6,6 +6,7 @@ import com.google.gson.JsonObject
 import com.shifenmiao.core.R
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -200,15 +201,15 @@ class AgentToolGenerationService @Inject constructor(
         relatedTools: List<ToolCatalogItem>
     ): String {
         return buildString {
-            appendLine("目标功能: ${request.toolPurpose}")
-            appendLine("工具名提示: ${request.toolNameHint.orEmpty()}")
-            appendLine("期望分类: ${request.desiredCategory.orEmpty()}")
-            appendLine("是否交互式: ${request.isInteractive?.toString().orEmpty()}")
-            appendLine("入参说明: ${request.inputSchemaNotes.orEmpty()}")
-            appendLine("返回约定: ${request.outputContractNotes.orEmpty()}")
-            appendLine("相关工具提示: ${request.relatedToolNames.joinToString()}")
+            appendLine("Target capability: ${request.toolPurpose}")
+            appendLine("Tool name hint: ${request.toolNameHint.orEmpty()}")
+            appendLine("Expected category: ${request.desiredCategory.orEmpty()}")
+            appendLine("Interactive: ${request.isInteractive?.toString().orEmpty()}")
+            appendLine("Input schema notes: ${request.inputSchemaNotes.orEmpty()}")
+            appendLine("Output contract notes: ${request.outputContractNotes.orEmpty()}")
+            appendLine("Related tool hints: ${request.relatedToolNames.joinToString()}")
             appendLine()
-            appendLine("当前可参考工具目录（节选）:")
+            appendLine("Existing tools for reference (excerpt):")
             relatedTools.forEach { tool ->
                 appendLine(
                     "- ${tool.name} | ${tool.title} | ${tool.category.name} | " +
@@ -301,7 +302,9 @@ class AgentToolGenerationService @Inject constructor(
 7. 如果工具有副作用，优先把 riskLevel 提高，并决定是否 requiresConfirmation。
 8. 优先推荐低风险、可组合、可查询优先的工具设计，不要把职责做得过大。
 9. 不要输出 Markdown，不要省略字段。
-""".trimIndent()
+""".trimIndent() + "\n\n" + AiLanguagePrompt.outputInCurrentLanguage(
+            "the tool title, summary, description, keywords and examples"
+        )
     }
 
     private data class AgentToolDraftPayload(

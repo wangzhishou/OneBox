@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
@@ -230,7 +231,7 @@ class DecisionWheelEditorComponent @AssistedInject internal constructor(
             }
             val result = aiPromptExecutor.execute(
                 input = prompt,
-                systemPrompt = AI_SYSTEM_PROMPT
+                systemPrompt = aiSystemPrompt()
             )
             val names = parseOptionNames(result.content)
             _uiState.update {
@@ -344,12 +345,15 @@ class DecisionWheelEditorComponent @AssistedInject internal constructor(
         /** 匹配 "1." "2、" "- " "• " "* " 这类列表前缀 */
         private val LIST_PREFIX = Regex("^([0-9]{1,2}\\s*[.、)．:]\\s*|[-•*·]\\s*)")
 
-        private val AI_SYSTEM_PROMPT = """
-你是一个决策转盘的选项生成器。用户会描述一个场景，你只负责给出候选选项。
-要求：
-1. 每行一个选项，不要编号、不要加引号、不要 Markdown、不要任何解释。
-2. 给 6-12 个，彼此差异明显，单个选项控制在 8 个字以内。
-3. 只输出选项本身，其他一个字都不要写。
+        /** 选项名直接画在转盘上, 跟随应用语言; "8 个字以内" 对外语改为按词计的等价限制。 */
+        private fun aiSystemPrompt(): String = """
+You generate candidate options for a decision wheel. The user describes a scenario; you only supply the candidate options.
+Requirements:
+1. One option per line. No numbering, no quotes, no Markdown, no explanations.
+2. Give 6-12 options that are clearly distinct from each other, each kept short (at most ~8 characters in Chinese, or 2-4 words in other languages).
+3. Output only the options themselves, nothing else.
+
+${AiLanguagePrompt.outputInCurrentLanguage("the options")}
 """.trimIndent()
     }
 

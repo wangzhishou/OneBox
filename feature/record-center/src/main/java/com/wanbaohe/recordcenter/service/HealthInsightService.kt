@@ -1,6 +1,7 @@
 package com.wanbaohe.recordcenter.service
 
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.database.recordcenter.entity.HealthRecordEntity
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.recordcenter.data.HealthProfile
@@ -42,7 +43,7 @@ class HealthInsightService @Inject constructor(
     ): GenerationResult {
         val input = buildInput(definition, records, rangeLabel, profile)
         val result = aiExecutor.execute(
-            systemPrompt = SYSTEM_PROMPT,
+            systemPrompt = systemPrompt(),
             input = input,
             // 扣费由 RecordListComponent 在成功后按其固定额度处理,避免重复扣
             billing = AIPromptExecutor.PromptBilling.EXTERNAL,
@@ -66,29 +67,29 @@ class HealthInsightService @Inject constructor(
         profile?.takeIf { it.isSet }?.let { p ->
             val parts = mutableListOf<String>()
             when (p.gender) {
-                HealthProfile.Gender.MALE -> parts += "男性"
-                HealthProfile.Gender.FEMALE -> parts += "女性"
+                HealthProfile.Gender.MALE -> parts += "male"
+                HealthProfile.Gender.FEMALE -> parts += "female"
                 HealthProfile.Gender.UNSET -> {}
             }
-            p.age?.let { parts += "${it}岁" }
-            p.heightCm?.let { parts += "身高${RecordFieldsCodec.formatValue(it)}cm" }
-            p.weightKg?.let { parts += "体重${RecordFieldsCodec.formatValue(it)}kg" }
+            p.age?.let { parts += "age $it" }
+            p.heightCm?.let { parts += "height ${RecordFieldsCodec.formatValue(it)}cm" }
+            p.weightKg?.let { parts += "weight ${RecordFieldsCodec.formatValue(it)}kg" }
             if (parts.isNotEmpty()) {
-                append("用户基本信息:").append(parts.joinToString(",")).append('\n')
+                append("User profile: ").append(parts.joinToString(", ")).append('\n')
             }
         }
-        append("记录类型:").append(AppContext.getString(definition.titleRes)).append('\n')
+        append("Record type: ").append(AppContext.getString(definition.titleRes)).append('\n')
         definition.referenceRangeRes?.let {
-            append("参考范围:").append(AppContext.getString(it)).append('\n')
+            append("Reference range: ").append(AppContext.getString(it)).append('\n')
         }
-        append("字段:").append(
-            definition.fields.joinToString("、") { field ->
+        append("Fields: ").append(
+            definition.fields.joinToString(", ") { field ->
                 if (field.unit.isEmpty()) AppContext.getString(field.labelRes)
                 else "${AppContext.getString(field.labelRes)}(${field.unit})"
             }
         ).append('\n')
-        append("时间范围:").append(rangeLabel).append('\n')
-        append("记录(最新在前):\n")
+        append("Time range: ").append(rangeLabel).append('\n')
+        append("Records (newest first):\n")
         records.sortedByDescending { it.happenedAt }
             .take(MAX_RECORDS)
             .forEach { entity ->
@@ -119,9 +120,14 @@ class HealthInsightService @Inject constructor(
 
         private val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/M/d HH:mm")
 
-        private const val SYSTEM_PROMPT =
-            "你是一位谨慎的健康顾问。请根据用户提供的健康记录数据,用不超过150字解读数据趋势," +
-                "指出可能的异常,并给出日常生活建议。语言口语化,分2-3段。" +
-                "最后必须声明:以上仅供参考,不构成医疗诊断。直接输出正文,不要加标题或多余说明。"
+        /** 解读正文展示给用户, 跟随应用语言; 结语免责声明也必须同语言, 否则等于没声明。 */
+        private fun systemPrompt(): String =
+            "You are a cautious health advisor. Based on the health records provided, interpret the " +
+                "trends in no more than 150 characters (Chinese) or roughly 80-100 words (other languages), " +
+                "point out possible anomalies and give everyday-life suggestions. Use plain, conversational " +
+                "language, in 2-3 short paragraphs. You MUST end with a disclaimer stating that this is " +
+                "for reference only and does not constitute a medical diagnosis. Output the text only, " +
+                "with no title and no extra explanation.\n\n" +
+                AiLanguagePrompt.outputInCurrentLanguage("the interpretation and the closing disclaimer")
     }
 }

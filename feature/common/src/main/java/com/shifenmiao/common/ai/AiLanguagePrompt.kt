@@ -45,5 +45,5 @@ object AiLanguagePrompt {
      */
     fun outputInCurrentLanguage(subject: String): String =
         "[Language] Write $subject in ${currentLanguageName()} (${currentLanguageTag()}), " +
-            "regardless of the language used in the conversation above."
+            "regardless of the language used in the input."
 }

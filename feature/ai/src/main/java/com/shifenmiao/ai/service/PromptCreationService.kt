@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.core.R
 import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
@@ -64,12 +65,29 @@ class PromptCreationService @Inject constructor(
     suspend fun buildSystemPrompt(): String {
         val preset = appDatabase.chatPromptDao()
             .getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_CHAT_PROMPT_CREATE)
-        val basePrompt = preset?.prompt ?: FALLBACK_CHAT_PROMPT_SYSTEM_PROMPT
+        val basePrompt = preset?.prompt ?: loadRawPrompt()
         return buildString {
             appendLine(basePrompt)
             appendLine()
             appendLine(PROMPT_OUTPUT_CONTRACT)
+            appendLine()
+            // 生成的标题/说明/提示词与分类名都要跟用户语言:
+            // 分类名会经 resolveSuggestedCategoryIds 直接落库, 写死中文会在外语库里
+            // 凭空建出一批中文分类, 也对不上本地已有的本地化分类。
+            appendLine(
+                AiLanguagePrompt.outputInCurrentLanguage(
+                    "the title, description, placeholder, prompt text and suggested category names"
+                )
+            )
         }
+    }
+
+    /** 与 AgentCreationService 一致: 预设缺失时读 raw(默认英文, zh 有中文变体)。 */
+    private fun loadRawPrompt(): String {
+        return context.resources
+            .openRawResource(com.shifenmiao.database.R.raw.prompt_prompt_create)
+            .bufferedReader()
+            .use { it.readText() }
     }
 
     fun extractJson(raw: String): String {
@@ -410,10 +428,10 @@ class PromptCreationService @Inject constructor(
         return buildString {
             appendLine(userGoal)
             if (categoryHints.isNotEmpty()) {
-                appendLine("分类提示: ${categoryHints.joinToString()}")
+                appendLine("Category hints: ${categoryHints.joinToString()}")
             }
             if (toolHints.isNotEmpty()) {
-                appendLine("工具提示: ${toolHints.joinToString()}")
+                appendLine("Tool hints: ${toolHints.joinToString()}")
             }
         }
     }
@@ -441,32 +459,26 @@ class PromptCreationService @Inject constructor(
     }
 
     companion object {
-        private val FALLBACK_CHAT_PROMPT_SYSTEM_PROMPT = """
-你是一个AI提示词/角色扮演生成器。根据用户描述生成一个完整的ChatPrompt JSON对象。
-输出格式：一个严格合法的JSON对象，包含 id, title, description, prompt, placeholder, templates 字段。
-prompt是核心字段，必须详细、专业。只输出纯JSON。
-""".trimIndent()
-
         private val PROMPT_OUTPUT_CONTRACT = """
-请使用如下顶层结构输出，并且只输出 JSON：
+Use the following top-level structure and output JSON only:
 {
   "prompt_template": {
     "id": 0,
-    "title": "提示词标题",
-    "description": "提示词说明",
-    "prompt": "完整系统提示词",
-    "placeholder": "输入提示",
+    "title": "<prompt title>",
+    "description": "<prompt description>",
+    "prompt": "<full system prompt>",
+    "placeholder": "<input placeholder>",
     "templates": "{}"
   },
-  "suggested_categories": ["分类1", "分类2"],
+  "suggested_categories": ["<category 1>", "<category 2>"],
   "suggested_tools": []
 }
 
-要求：
-1. `suggested_categories` 给 1-3 个中文分类名，尽量短。
-2. `suggested_tools` 固定返回空数组 []，不要推荐任何工具；工具绑定由用户在创建后手动选择。
-3. `prompt_template.prompt` 必须完整可用，适合作为会话模板直接保存。
-4. 不要输出注释、解释、Markdown 代码块。
+Requirements:
+1. `suggested_categories`: 1-3 short category names. When one of the category hints in the user's request already fits, reuse that exact name instead of inventing a new one.
+2. `suggested_tools`: always return an empty array []. Do not recommend any tool; the user binds tools manually after creation.
+3. `prompt_template.prompt` must be complete and directly usable as a conversation template.
+4. Do not output comments, explanations or markdown code fences.
 """.trimIndent()
     }
 }

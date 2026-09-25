@@ -1,6 +1,7 @@
 package com.shifenmiao.lifetime.domain
 
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.lifetime.data.MilestoneAiInsightRepository
 import com.shifenmiao.lifetime.domain.model.PersonalMilestone
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class MilestoneInsightService @Inject constructor(
     suspend fun generateAndSave(milestone: PersonalMilestone): GenerationResult {
         val prompt = buildPrompt(milestone)
         val result = aiExecutor.execute(
-            systemPrompt = SYSTEM_PROMPT,
+            systemPrompt = systemPrompt(),
             input = prompt,
             // 自动触发的一句话文案,有意保持免费
             billing = AIPromptExecutor.PromptBilling.EXTERNAL,
@@ -45,9 +46,11 @@ class MilestoneInsightService @Inject constructor(
     }
 
     private fun buildPrompt(milestone: PersonalMilestone): String {
-        val dateText = milestone.targetDate?.let { "${it.year}年${it.monthValue}月${it.dayOfMonth}日" } ?: "未定"
-        val noteText = milestone.note?.takeIf { it.isNotBlank() } ?: "无"
-        return "用户的里程碑：${milestone.name}，目标日期：$dateText，备注：$noteText"
+        val dateText = milestone.targetDate
+            ?.let { "%04d-%02d-%02d".format(it.year, it.monthValue, it.dayOfMonth) }
+            ?: "unspecified"
+        val noteText = milestone.note?.takeIf { it.isNotBlank() } ?: "none"
+        return "User's milestone: ${milestone.name}\nTarget date: $dateText\nNote: $noteText"
     }
 
     sealed interface GenerationResult {
@@ -56,7 +59,12 @@ class MilestoneInsightService @Inject constructor(
     }
 
     companion object {
-        private const val SYSTEM_PROMPT =
-            "你是一个富有哲理的时间思考者。请针对用户的里程碑事件，用一句话给出简短、温暖、有洞察力的评论，不超过30个字。"
+        /** 文案直接展示在里程碑卡片上, 跟随应用语言; 中文长度限制不适用于外语, 故给出按词计的等价量。 */
+        private fun systemPrompt(): String =
+            "You are a philosophical thinker about time. Write ONE short, warm, insightful comment " +
+                "on the user's milestone: a single sentence, at most ~30 characters in Chinese or " +
+                "roughly 10-15 words in other languages. Output the comment only, with no title and " +
+                "no extra explanation.\n\n" +
+                AiLanguagePrompt.outputInCurrentLanguage("the comment")
     }
 }

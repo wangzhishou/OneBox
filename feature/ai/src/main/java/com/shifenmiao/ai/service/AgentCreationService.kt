@@ -6,6 +6,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
 import com.shifenmiao.common.ai.AIPromptExecutor
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
 import com.shifenmiao.core.R
@@ -69,10 +70,17 @@ class AgentCreationService @Inject constructor(
 ) {
 
     suspend fun buildSystemPrompt(): String {
-        return appDatabase.chatPromptDao()
+        val basePrompt = appDatabase.chatPromptDao()
             .getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_AGENT_CREATE)
             ?.prompt
             ?: loadRawPrompt()
+        // 预设(默认英文, zh 有中文变体)之外补一条语言指令:
+        // A2UI 表单里的分区标题/字段 label/选项/按钮与分类名都是用户可见文案,
+        // 不指定语言时模型会跟着用户输入的语言跑, 与界面语言不一致。
+        return basePrompt + "\n\n" + AiLanguagePrompt.outputInCurrentLanguage(
+            "the title, description, prompt, all user-visible form text " +
+                "(labels, options, buttons) and suggested category names"
+        )
     }
 
     private fun loadRawPrompt(): String {
@@ -490,10 +498,10 @@ class AgentCreationService @Inject constructor(
         return buildString {
             appendLine(userGoal)
             if (categoryHints.isNotEmpty()) {
-                appendLine("分类提示: ${categoryHints.joinToString()}")
+                appendLine("Category hints: ${categoryHints.joinToString()}")
             }
             if (toolHints.isNotEmpty()) {
-                appendLine("工具提示: ${toolHints.joinToString()}")
+                appendLine("Tool hints: ${toolHints.joinToString()}")
             }
         }
     }

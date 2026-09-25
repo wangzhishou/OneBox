@@ -3,6 +3,7 @@ package com.wanbaohe.poem.service
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.common.ai.AIPromptResult
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.poem.repo.PoemRepository
@@ -33,7 +34,7 @@ class PoemInsightService @Inject constructor(
     ): GenerationResult {
         val result = aiExecutor.executeStreaming(
             input = buildInput(poem),
-            systemPrompt = SYSTEM_PROMPT,
+            systemPrompt = insightSystemPrompt(),
             onDelta = onDelta,
             onReasoningDelta = onReasoningDelta,
             // 本 Service 自己按 chargePoints() 扣费,避免重复扣
@@ -131,13 +132,13 @@ class PoemInsightService @Inject constructor(
     }
 
     private fun buildInput(poem: Poem): String = buildString {
-        append("标题:").append(poem.title).append('\n')
-        append("朝代:").append(poem.dynasty).append('\n')
-        append("作者:").append(poem.author).append('\n')
+        append("Title: ").append(poem.title).append('\n')
+        append("Dynasty: ").append(poem.dynasty).append('\n')
+        append("Author: ").append(poem.author).append('\n')
         if (poem.type.isNotBlank()) {
-            append("体裁:").append(poem.type).append('\n')
+            append("Genre: ").append(poem.type).append('\n')
         }
-        append("正文:\n").append(poem.content.joinToString("\n"))
+        append("Content:\n").append(poem.content.joinToString("\n"))
     }
 
     sealed interface GenerationResult {
@@ -146,9 +147,21 @@ class PoemInsightService @Inject constructor(
     }
 
     companion object {
-        private const val SYSTEM_PROMPT =
-            "你是一位古典文学鉴赏家。请用 200 字左右赏析用户给出的诗词,解读其意境、艺术手法与情感,语言优美简洁,直接输出赏析正文,不要加标题或多余说明。"
+        /**
+         * 赏析正文是用户可见长文, 跟随应用语言: 中文用户拿到原来的中文赏析,
+         * 外语用户在诗词原文仍是中文的前提下至少能读懂解读。
+         */
+        private fun insightSystemPrompt(): String =
+            "You are a connoisseur of classical Chinese literature. " +
+                "Write a ~200-word appreciation of the poem given by the user, covering its imagery, " +
+                "artistic technique and emotion. Output the appreciation text only, with no title " +
+                "and no extra explanation.\n\n" +
+                AiLanguagePrompt.outputInCurrentLanguage("the appreciation")
 
+        /**
+         * 拼音标注/现代汉语翻译的输出形态本身就是中文(拼音、白话译文),
+         * 属于这两个功能定义的组成部分, 因此固定用中文指令、不跟随界面语言。
+         */
         private const val PINYIN_SYSTEM_PROMPT =
             "你是汉语拼音专家。请为用户给出的古诗词逐字标注拼音。严格要求:每句诗占一行;行内每个汉字的拼音用单个空格分隔;标点符号不占位、不输出;拼音必须带声调符号(如 shān、lǐ);只返回拼音文本,不要输出原文、序号或任何其他内容。"
 
