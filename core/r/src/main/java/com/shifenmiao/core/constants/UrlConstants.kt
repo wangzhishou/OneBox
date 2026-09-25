@@ -174,6 +174,7 @@ object UrlConstants {
      */
     const val OPENAI_BASE_URL: String = "https://api.openai.com/"
     const val OPENAI_TEXT_COMPLETIONS_ENDPOINT = "v1/chat/completions"
+    const val OPENAI_IMAGE_GENERATIONS_ENDPOINT = "v1/images/generations"
 
     /**
      * Google Gemini(OpenAI 兼容端点)

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">OpenAI API key is missing. Set it up in image generation settings first.</string>
+</resources>

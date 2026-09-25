@@ -1,6 +1,7 @@
 package com.shifenmiao.imagegeneration.loader
 
 import android.content.Context
+import android.util.Base64
 import com.shifenmiao.imagegeneration.model.ImageGenerationRequest
 import com.shifenmiao.imagegeneration.model.ImageProviderConfig
 import com.shifenmiao.imagegeneration.service.ImageGenerationManager
@@ -125,36 +126,67 @@ class ImageGenerationLoaderImpl private constructor(
         ?.firstOrNull { it.isFile && it.length() > 0L && it.name.startsWith("$cacheKey.") }
 
     private fun download(cacheDirectory: File, url: String, cacheKey: String): File {
+        if (url.startsWith(DATA_URI_PREFIX)) {
+            return persistDataUri(cacheDirectory, url, cacheKey)
+        }
         val request = Request.Builder().url(url).get().build()
         client.newCall(request).execute().use { response ->
             check(response.isSuccessful) { "Image download failed: HTTP ${response.code}" }
             val body = response.body
             val mediaType = body.contentType()
             check(mediaType?.type == "image") { "Generated content is not an image" }
-            cacheDirectory.mkdirs()
-            check(cacheDirectory.isDirectory) { "Failed to create generated image cache directory" }
-
-            val extension = extensionFor(mediaType.subtype)
-            val target = File(cacheDirectory, "$cacheKey.$extension")
-            val temporary = File(cacheDirectory, "$cacheKey.${UUID.randomUUID()}.part")
-            val backup = File(cacheDirectory, "$cacheKey.${UUID.randomUUID()}.bak")
-            try {
-                FileOutputStream(temporary).use { output ->
-                    body.byteStream().use { input -> input.copyTo(output) }
-                    output.fd.sync()
-                }
-                check(temporary.length() > 0L) { "Generated image is empty" }
-                if (target.exists()) check(target.renameTo(backup)) { "Failed to prepare generated image cache replacement" }
-                check(temporary.renameTo(target)) { "Failed to commit generated image cache" }
-                backup.delete()
-                return target
-            } catch (e: Exception) {
-                if (!target.exists() && backup.exists()) backup.renameTo(target)
-                throw e
-            } finally {
-                temporary.delete()
-                backup.delete()
+            return commitFile(cacheDirectory, cacheKey, extensionFor(mediaType.subtype)) { output ->
+                body.byteStream().use { input -> input.copyTo(output) }
             }
+        }
+    }
+
+    /**
+     * gpt-image-1 等只回 b64_json 的 provider 会把结果包成 data: URI,
+     * OkHttp 无法下载,直接解码 base64 落盘。
+     */
+    private fun persistDataUri(cacheDirectory: File, dataUri: String, cacheKey: String): File {
+        val commaIndex = dataUri.indexOf(',')
+        require(commaIndex > 0) { "Malformed generated image data URI" }
+        val meta = dataUri.substring(DATA_URI_PREFIX.length, commaIndex)
+        val mimeType = meta.substringBefore(';')
+        require(mimeType.startsWith("image/")) { "Generated content is not an image" }
+        require(meta.substringAfter(';', "").equals("base64", ignoreCase = true)) {
+            "Generated image data URI must be base64 encoded"
+        }
+        val bytes = Base64.decode(dataUri.substring(commaIndex + 1), Base64.DEFAULT)
+        val extension = extensionFor(mimeType.substringAfter('/'))
+        return commitFile(cacheDirectory, cacheKey, extension) { output -> output.write(bytes) }
+    }
+
+    /** 临时文件 + 备份两阶段提交,避免中断留下半截缓存文件。 */
+    private fun commitFile(
+        cacheDirectory: File,
+        cacheKey: String,
+        extension: String,
+        write: (FileOutputStream) -> Unit,
+    ): File {
+        cacheDirectory.mkdirs()
+        check(cacheDirectory.isDirectory) { "Failed to create generated image cache directory" }
+        val target = File(cacheDirectory, "$cacheKey.$extension")
+        val temporary = File(cacheDirectory, "$cacheKey.${UUID.randomUUID()}.part")
+        val backup = File(cacheDirectory, "$cacheKey.${UUID.randomUUID()}.bak")
+        try {
+            FileOutputStream(temporary).use { output ->
+                write(output)
+                output.fd.sync()
+            }
+            check(temporary.length() > 0L) { "Generated image is empty" }
+            if (target.exists()) check(target.renameTo(backup)) { "Failed to prepare generated image cache replacement" }
+            check(temporary.renameTo(target)) { "Failed to commit generated image cache" }
+            backup.delete()
+            return target
+        } catch (e: Exception) {
+            if (!target.exists() && backup.exists()) backup.renameTo(target)
+            throw e
+        } finally {
+            temporary.delete()
+            backup.delete()
         }
     }
 
@@ -194,6 +226,7 @@ class ImageGenerationLoaderImpl private constructor(
 
     private companion object {
         const val CACHE_VERSION = "v1"
+        const val DATA_URI_PREFIX = "data:"
 
         /** 工作目录下存放生成图片的子目录,用户在文件管理器中可直接查看。 */
         const val GENERATED_IMAGES_DIRECTORY = "generated-images"
