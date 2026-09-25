@@ -3,6 +3,7 @@ package com.shifenmiao.ai.utils
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.shifenmiao.base.utils.StringUtils
+import com.shifenmiao.common.ai.AiLanguagePrompt
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
@@ -40,10 +41,8 @@ import com.shifenmiao.ai.context.ContextWindowManager
 import com.shifenmiao.network.AiRequestUrlResolver
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.storage.TokenStorage
-import com.t8rin.imagetoolbox.core.utils.LocaleUtils
 import com.t8rin.logger.makeLog
 import java.util.Date
-import java.util.Locale
 
 object AiUtils {
 
@@ -194,15 +193,9 @@ object AiUtils {
     /**
      * 在系统提示词尾部告知模型用户的系统语言环境, 使其默认按用户语言回复。
      * 发送时拼装、不落库, 对历史会话同样生效。
+     * 文案统一维护在 [AiLanguagePrompt], 后台单轮提示词也复用同一份。
      */
-    private fun buildSystemLanguageDirective(): String {
-        val tag = LocaleUtils.getCurrentLocaleTag()
-        val languageName = runCatching {
-            Locale.forLanguageTag(tag).getDisplayLanguage(Locale.ENGLISH)
-        }.getOrNull().takeUnless { it.isNullOrBlank() } ?: tag
-        return "\n\n[User context] The user's system language is $languageName ($tag). " +
-            "Respond in that language unless the user explicitly asks for another language."
-    }
+    private fun buildSystemLanguageDirective(): String = AiLanguagePrompt.systemDirective()
 
     /**
      * 向后兼容：旧代码仍可拿到 Chat Completions 风格消息列表，
