@@ -1751,4 +1751,7 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="time_due_tomorrow">Due bukas</string>
     <string name="time_due_in_days">Due sa %d araw</string>
     <string name="time_due_on">Due: %s</string>
+    <string name="notification_center">Mga Notification</string>
+    <string name="notification_center_description">Mga sagot sa komento, mga sagot sa feedback, at mga mensahe ng system</string>
+    <string name="profile_item_message_center">Mga Notification</string>
 </resources>

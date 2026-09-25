@@ -1751,4 +1751,7 @@
     <string name="time_due_tomorrow">Yarın son gün</string>
     <string name="time_due_in_days">%d gün içinde son gün</string>
     <string name="time_due_on">Son tarih: %s</string>
+    <string name="notification_center">Bildirimler</string>
+    <string name="notification_center_description">Yorum yanıtları, geri bildirim yanıtları ve sistem mesajları</string>
+    <string name="profile_item_message_center">Bildirimler</string>
 </resources>

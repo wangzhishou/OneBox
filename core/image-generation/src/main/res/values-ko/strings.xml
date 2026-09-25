@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">OpenAI API 키가 없습니다. 먼저 이미지 생성 설정에서 입력해 주세요.</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">Belum ada notifikasi</string>
+    <string name="notification_mark_all_read">Tandai semua dibaca</string>
+    <string name="notification_login_hint">Masuk untuk melihat balasan komentar, balasan masukan, dan pesan sistem</string>
+    <string name="notification_load_failed">Gagal memuat notifikasi</string>
+    <string name="notification_retry">Coba Lagi</string>
+    <string name="notification_type_comment_reply">Balasan Komentar</string>
+    <string name="notification_type_system">Sistem</string>
+    <string name="notification_type_feedback_reply">Balasan Masukan</string>
+</resources>

@@ -1741,4 +1741,7 @@
     <string name="time_due_tomorrow">明日期限</string>
     <string name="time_due_in_days">%d日後に期限</string>
     <string name="time_due_on">期限: %s</string>
+    <string name="notification_center">通知</string>
+    <string name="notification_center_description">コメント返信・フィードバック返信・システムメッセージ</string>
+    <string name="profile_item_message_center">通知</string>
 </resources>

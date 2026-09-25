@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">OpenAI API-Schlüssel fehlt. Richte ihn zuerst in den Einstellungen für die Bilderzeugung ein.</string>
+</resources>

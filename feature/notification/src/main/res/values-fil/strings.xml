@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">Wala pang notification</string>
+    <string name="notification_mark_all_read">Markahan lahat bilang nabasa</string>
+    <string name="notification_login_hint">Mag-login para makita ang mga sagot sa komento, mga sagot sa feedback, at mga mensahe ng system</string>
+    <string name="notification_load_failed">Hindi na-load ang mga notification</string>
+    <string name="notification_retry">Subukan Muli</string>
+    <string name="notification_type_comment_reply">Sagot sa Komento</string>
+    <string name="notification_type_system">Sistema</string>
+    <string name="notification_type_feedback_reply">Sagot sa Feedback</string>
+</resources>

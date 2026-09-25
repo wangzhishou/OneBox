@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">لا توجد إشعارات بعد</string>
+    <string name="notification_mark_all_read">تعليم الكل كمقروء</string>
+    <string name="notification_login_hint">سجّل الدخول لعرض ردود التعليقات وردود الملاحظات ورسائل النظام</string>
+    <string name="notification_load_failed">تعذّر تحميل الإشعارات</string>
+    <string name="notification_retry">إعادة المحاولة</string>
+    <string name="notification_type_comment_reply">رد على تعليق</string>
+    <string name="notification_type_system">النظام</string>
+    <string name="notification_type_feedback_reply">رد على ملاحظة</string>
+</resources>

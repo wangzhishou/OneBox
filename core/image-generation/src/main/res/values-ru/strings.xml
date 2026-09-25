@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">Ключ OpenAI API не указан. Сначала настройте его в настройках генерации изображений.</string>
+</resources>

@@ -1751,4 +1751,7 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="time_due_tomorrow">Vence amanhã</string>
     <string name="time_due_in_days">Vence em %d dias</string>
     <string name="time_due_on">Vence: %s</string>
+    <string name="notification_center">Notificações</string>
+    <string name="notification_center_description">Respostas a comentários, respostas ao feedback e mensagens do sistema</string>
+    <string name="profile_item_message_center">Notificações</string>
 </resources>

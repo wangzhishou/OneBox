@@ -1771,4 +1771,7 @@
     <string name="time_due_tomorrow">Срок завтра</string>
     <string name="time_due_in_days">Срок через %d дней</string>
     <string name="time_due_on">Срок: %s</string>
+    <string name="notification_center">Уведомления</string>
+    <string name="notification_center_description">Ответы на комментарии, ответы на отзывы и системные сообщения</string>
+    <string name="profile_item_message_center">Уведомления</string>
 </resources>

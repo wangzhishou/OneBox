@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">Уведомлений пока нет</string>
+    <string name="notification_mark_all_read">Прочитать все</string>
+    <string name="notification_login_hint">Войдите, чтобы видеть ответы на комментарии, ответы на отзывы и системные сообщения</string>
+    <string name="notification_load_failed">Не удалось загрузить уведомления</string>
+    <string name="notification_retry">Повторить</string>
+    <string name="notification_type_comment_reply">Ответ на комментарий</string>
+    <string name="notification_type_system">Система</string>
+    <string name="notification_type_feedback_reply">Ответ на отзыв</string>
+</resources>

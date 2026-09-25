@@ -1741,4 +1741,7 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="time_due_tomorrow">Jatuh tempo besok</string>
     <string name="time_due_in_days">Jatuh tempo dalam %d hari</string>
     <string name="time_due_on">Jatuh tempo: %s</string>
+    <string name="notification_center">Notifikasi</string>
+    <string name="notification_center_description">Balasan komentar, balasan masukan, dan pesan sistem</string>
+    <string name="profile_item_message_center">Notifikasi</string>
 </resources>

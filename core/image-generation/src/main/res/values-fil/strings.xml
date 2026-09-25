@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">Nawawala ang OpenAI API key. I-set up muna ito sa mga setting ng image generation</string>
+</resources>

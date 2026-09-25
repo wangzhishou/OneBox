@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">아직 알림이 없습니다</string>
+    <string name="notification_mark_all_read">모두 읽음 처리</string>
+    <string name="notification_login_hint">로그인하면 댓글 답글, 피드백 답변, 시스템 메시지를 확인할 수 있습니다</string>
+    <string name="notification_load_failed">알림을 불러오지 못했습니다</string>
+    <string name="notification_retry">재시도</string>
+    <string name="notification_type_comment_reply">댓글 답글</string>
+    <string name="notification_type_system">시스템</string>
+    <string name="notification_type_feedback_reply">피드백 답변</string>
+</resources>

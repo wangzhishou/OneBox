@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">مفتاح OpenAI API مفقود. اضبطه أولًا في إعدادات توليد الصور.</string>
+</resources>

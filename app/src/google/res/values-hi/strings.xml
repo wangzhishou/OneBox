@@ -4,4 +4,6 @@
     <string name="app_name">OneBox</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">संदेश</string>
+    <string name="push_channel_comment_reply_desc">टिप्पणी उत्तर, प्रतिक्रिया उत्तर और सिस्टम सूचनाएं</string>
 </resources>

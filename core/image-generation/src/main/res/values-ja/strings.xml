@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">OpenAI APIキーが設定されていません。先に画像生成の設定で設定してください。</string>
+</resources>

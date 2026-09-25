@@ -1751,4 +1751,7 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="time_due_tomorrow">Morgen fällig</string>
     <string name="time_due_in_days">In %d Tagen fällig</string>
     <string name="time_due_on">Fällig: %s</string>
+    <string name="notification_center">Benachrichtigungen</string>
+    <string name="notification_center_description">Antworten auf Kommentare und Feedback sowie Systemnachrichten</string>
+    <string name="profile_item_message_center">Benachrichtigungen</string>
 </resources>

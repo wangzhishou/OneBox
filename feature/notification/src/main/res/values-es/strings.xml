@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">Aún no hay notificaciones</string>
+    <string name="notification_mark_all_read">Marcar todo como leído</string>
+    <string name="notification_login_hint">Inicia sesión para ver las respuestas a tus comentarios, a tus sugerencias y los mensajes del sistema</string>
+    <string name="notification_load_failed">No se pudieron cargar las notificaciones</string>
+    <string name="notification_retry">Reintentar</string>
+    <string name="notification_type_comment_reply">Respuesta a comentario</string>
+    <string name="notification_type_system">Sistema</string>
+    <string name="notification_type_feedback_reply">Respuesta a sugerencia</string>
+</resources>

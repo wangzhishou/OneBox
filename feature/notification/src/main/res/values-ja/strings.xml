@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">通知はまだありません</string>
+    <string name="notification_mark_all_read">すべて既読にする</string>
+    <string name="notification_login_hint">ログインすると、コメント返信・フィードバック返信・システムメッセージを確認できます</string>
+    <string name="notification_load_failed">通知を読み込めませんでした</string>
+    <string name="notification_retry">再試行</string>
+    <string name="notification_type_comment_reply">コメント返信</string>
+    <string name="notification_type_system">システム</string>
+    <string name="notification_type_feedback_reply">フィードバック返信</string>
+</resources>

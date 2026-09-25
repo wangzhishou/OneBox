@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">Henüz bildirim yok</string>
+    <string name="notification_mark_all_read">Tümünü okundu işaretle</string>
+    <string name="notification_login_hint">Yorum yanıtlarını, geri bildirim yanıtlarını ve sistem mesajlarını görmek için giriş yapın</string>
+    <string name="notification_load_failed">Bildirimler yüklenemedi</string>
+    <string name="notification_retry">Tekrar Dene</string>
+    <string name="notification_type_comment_reply">Yorum Yanıtı</string>
+    <string name="notification_type_system">Sistem</string>
+    <string name="notification_type_feedback_reply">Geri Bildirim Yanıtı</string>
+</resources>

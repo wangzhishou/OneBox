@@ -1751,4 +1751,7 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="time_due_tomorrow">Vence mañana</string>
     <string name="time_due_in_days">Vence en %d días</string>
     <string name="time_due_on">Vence: %s</string>
+    <string name="notification_center">Notificaciones</string>
+    <string name="notification_center_description">Respuestas a comentarios, respuestas a sugerencias y mensajes del sistema</string>
+    <string name="profile_item_message_center">Notificaciones</string>
 </resources>

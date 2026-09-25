@@ -1741,4 +1741,7 @@
     <string name="time_due_tomorrow">내일 마감</string>
     <string name="time_due_in_days">%d일 후 마감</string>
     <string name="time_due_on">마감: %s</string>
+    <string name="notification_center">알림</string>
+    <string name="notification_center_description">댓글 답글, 피드백 답변, 시스템 메시지</string>
+    <string name="profile_item_message_center">알림</string>
 </resources>

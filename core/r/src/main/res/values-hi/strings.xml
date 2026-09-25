@@ -1751,4 +1751,7 @@
     <string name="time_due_tomorrow">कल देय</string>
     <string name="time_due_in_days">%d दिन में देय</string>
     <string name="time_due_on">देय: %s</string>
+    <string name="notification_center">सूचनाएं</string>
+    <string name="notification_center_description">टिप्पणी उत्तर, प्रतिक्रिया उत्तर और सिस्टम संदेश</string>
+    <string name="profile_item_message_center">सूचनाएं</string>
 </resources>

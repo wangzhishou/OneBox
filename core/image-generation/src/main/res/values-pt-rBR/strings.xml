@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">A chave de API da OpenAI está ausente. Configure-a primeiro nas configurações de geração de imagens.</string>
+</resources>

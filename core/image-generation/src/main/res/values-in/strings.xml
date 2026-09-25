@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">Kunci API OpenAI belum diatur. Atur dulu di pengaturan pembuatan gambar.</string>
+</resources>

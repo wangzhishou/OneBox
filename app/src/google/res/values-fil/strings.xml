@@ -4,4 +4,6 @@
     <string name="app_name">OneBox</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">Mga Mensahe</string>
+    <string name="push_channel_comment_reply_desc">Mga sagot sa komento, mga sagot sa feedback, at mga notification ng system</string>
 </resources>

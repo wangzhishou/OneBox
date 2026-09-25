@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">अभी कोई सूचना नहीं</string>
+    <string name="notification_mark_all_read">सभी पढ़ी हुई चिह्नित करें</string>
+    <string name="notification_login_hint">टिप्पणी उत्तर, प्रतिक्रिया उत्तर और सिस्टम संदेश देखने के लिए लॉग इन करें</string>
+    <string name="notification_load_failed">सूचनाएं लोड नहीं हो सकीं</string>
+    <string name="notification_retry">पुनः प्रयास करें</string>
+    <string name="notification_type_comment_reply">टिप्पणी उत्तर</string>
+    <string name="notification_type_system">सिस्टम</string>
+    <string name="notification_type_feedback_reply">प्रतिक्रिया उत्तर</string>
+</resources>

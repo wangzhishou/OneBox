@@ -1019,6 +1019,9 @@
     <string name="record_center_description">تابع ضغط الدم والوزن والمزيد في مكان واحد.</string>
     <string name="habit_tracker">متتبّع العادات</string>
     <string name="habit_tracker_description">متابعة العادات اليومية وإحصاءاتها</string>
+    <string name="notification_center">الإشعارات</string>
+    <string name="notification_center_description">ردود التعليقات وردود الملاحظات ورسائل النظام</string>
+    <string name="profile_item_message_center">الإشعارات</string>
     <string name="data_restore_success">تمت استعادة قاعدة البيانات. سيعيد التطبيق التشغيل خلال 3 ثوانٍ.</string>
     <string name="data_backup_success">تم النسخ الاحتياطي بنجاح! حُفظ في مجلد %1$s.</string>
     <string name="lifetime">ساعة الحياة</string>

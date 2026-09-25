@@ -4,4 +4,6 @@
     <string name="app_name">OneBox</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">Mesajlar</string>
+    <string name="push_channel_comment_reply_desc">Yorum yanıtları, geri bildirim yanıtları ve sistem bildirimleri</string>
 </resources>

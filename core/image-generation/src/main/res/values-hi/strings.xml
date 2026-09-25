@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">OpenAI API कुंजी मौजूद नहीं है। पहले इमेज जनरेशन सेटिंग्स में इसे सेट करें।</string>
+</resources>

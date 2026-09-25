@@ -4,4 +4,6 @@
     <string name="app_name">OneBox</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">메시지</string>
+    <string name="push_channel_comment_reply_desc">댓글 답글, 피드백 답변, 시스템 알림</string>
 </resources>
