@@ -2,6 +2,7 @@ package com.shifenmiao.storage
 
 import android.os.Parcelable
 import com.shifenmiao.core.constants.Constants
+import com.shifenmiao.model.money.AppCurrency
 import com.shifenmiao.model.theme.ThemeDefaults
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +49,7 @@ object AppSharedStorage {
     private const val LANGUAGE_USER_CHOSEN = "language_user_chosen"
     private const val UPDATE_PROMPT_DISMISSED_TAG = "update_prompt_dismissed_tag"
     private const val UPDATE_PROMPT_DISMISSED_AT = "update_prompt_dismissed_at"
+    private const val CURRENCY_CODE = "currency_code"
 
     // ─── 启动关键设置 key（DataStore → MMKV 镜像缓存） ────────────────────────
     private const val S_FONT_SCALE = "s_font_scale"
@@ -102,6 +104,14 @@ object AppSharedStorage {
 
     private val _startEntryScreenId = MutableStateFlow(loadStartEntryScreenId())
     val startEntryScreenId: StateFlow<Int?> get() = _startEntryScreenId
+
+    /**
+     * 记账/金额展示币种。未设置过时按渠道+语言推导(国内人民币,海外跟随语言),
+     * 用户在「记账 → 设置 → 币种」显式选择后以存储值为准。
+     */
+    private val _currency = MutableStateFlow(AppCurrency.effective(load(CURRENCY_CODE, "") ?: ""))
+
+    val currency: StateFlow<AppCurrency> get() = _currency
 
     fun saveIsDisableRobot(isDisableRobot: Boolean) {
         save(IS_DISABLE_ROBOT, isDisableRobot)
@@ -618,6 +628,13 @@ object AppSharedStorage {
      */
     fun loadLanguageUserChosen(): Boolean =
         load(LANGUAGE_USER_CHOSEN, false) ?: false
+
+    // ─── 记账/金额展示币种 ─────────────────────────────────────────────────
+
+    fun saveCurrency(currency: AppCurrency) {
+        save(CURRENCY_CODE, currency.code)
+        _currency.value = currency
+    }
 
     fun saveLanguageUserChosen(chosen: Boolean) {
         save(LANGUAGE_USER_CHOSEN, chosen)
