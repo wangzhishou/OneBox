@@ -376,7 +376,7 @@
     <string name="pay_error">भुगतान त्रुटि</string>
     <string name="webview_title_ai_help">सहायता</string>
     <string name="webview_title_feedback">प्रतिक्रिया</string>
-    <string name="ai_chat_description">बैदू, अलीबाबा क्यूवेन, मूनशॉट और अधिक से LLM API का समर्थन करता है।</string>
+    <string name="ai_chat_description">Baidu, Alibaba Qwen, Moonshot और अन्य के LLM API का समर्थन करता है।</string>
     <string name="ai_chat_menu_new_conversation">नई चैट</string>
     <string name="search_hint">फ़ंक्शन खोजें, जैसे AI, मार्की, कैलेंडर…</string>
     <string name="no_search_result">कोई परिणाम नहीं मिला!</string>
@@ -496,7 +496,7 @@
     <string name="switch_ai_models">मॉडल बदलें</string>
     <string name="ai_chat_model_settings">उन्नत सेटिंग्स</string>
     <string name="ai_chat_model_select">मॉडल चुनें</string>
-    <string name="popular">विशेष रुप से प्रदर्शित</string>
+    <string name="popular">विशेष रूप से प्रदर्शित</string>
     <string name="see_random">शफ़ल</string>
     <string name="ai_chat_placeholder_title">नमस्ते! मैं आपका निजी AI सहायक हूँ 👋</string>
     <string name="ai_chat_placeholder_content">मैं आपको कॉपी लिखने, रचनात्मक विचारों पर मंथन करने, कभी भी आपसे चैट करने और तरह-तरह के सवालों के जवाब देने में मदद कर सकता हूँ!</string>
@@ -628,7 +628,7 @@
     <string name="favorite_title">पसंदीदा</string>
     <string name="favorite_empty_toast">अभी तक कोई पसंदीदा नहीं। कार्ड जोड़ने के लिए उसे देर तक दबाएं।</string>
     <string name="cancel_favorite">पसंदीदा हटाएं</string>
-    <string name="favorite_featured_title">विशेष रुप से प्रदर्शित</string>
+    <string name="favorite_featured_title">विशेष रूप से प्रदर्शित</string>
     <string name="favorite_mine_title">मेरा</string>
     <string name="record_tab_title">नोट्स</string>
     <string name="home_empty_title">अभी कोई %1$s नहीं है</string>
