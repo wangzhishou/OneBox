@@ -8,10 +8,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.t8rin.imagetoolbox.core.domain.remote.AnalyticsManager
 import com.t8rin.imagetoolbox.core.settings.domain.SettingsProvider
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 
@@ -20,6 +24,7 @@ class SearchComponent @AssistedInject internal constructor(
     @Assisted val onGoBack: () -> Unit,
     settingsProvider: SettingsProvider,
     val appDatabase: AppDatabase,
+    private val analyticsManager: AnalyticsManager,
     dispatchersHolder: DispatchersHolder
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -58,6 +63,7 @@ class SearchComponent @AssistedInject internal constructor(
 
 
     fun onSearchQueryChange(text: String) {
+        scheduleSearchTermReport(text)
         if (text.isEmpty()) {
             _searchItemList.value = emptyList()
             return
@@ -82,6 +88,31 @@ class SearchComponent @AssistedInject internal constructor(
     fun recordClick(itemId: Int) {
         CoroutineScope(ioDispatcher).launch {
             appDatabase.itemEntityDao().recordClick(itemId, System.currentTimeMillis())
+        }
+    }
+
+    private var searchReportJob: Job? = null
+
+    // 本次搜索页会话内已上报过的词,避免重复上报
+    private val reportedSearchTerms = mutableSetOf<String>()
+
+    /**
+     * 防抖上报搜索词(仅 google 渠道经 Firebase Analytics 生效,其余渠道 no-op):
+     * 停止输入 1.5s 后才上报,短于 2 个字符不上报,同一会话同一词只报一次
+     */
+    private fun scheduleSearchTermReport(text: String) {
+        searchReportJob?.cancel()
+        val term = text.trim().lowercase()
+        if (term.length < 2 || !reportedSearchTerms.add(term)) return
+        searchReportJob = CoroutineScope(ioDispatcher).launch {
+            delay(SEARCH_REPORT_DELAY_MS)
+            analyticsManager.logEvent(
+                "search",
+                mapOf(
+                    "search_term" to term.take(100),
+                    "result_count" to _searchItemList.value.size
+                )
+            )
         }
     }
 
@@ -147,6 +178,10 @@ class SearchComponent @AssistedInject internal constructor(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
         ): SearchComponent
+    }
+
+    private companion object {
+        const val SEARCH_REPORT_DELAY_MS = 1500L
     }
 
 }
