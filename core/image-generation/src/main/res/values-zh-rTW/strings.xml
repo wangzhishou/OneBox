@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">未填寫 OpenAI API 金鑰，請先在圖片生成設定頁完成設定後再生成</string>
+</resources>
