@@ -18,9 +18,9 @@
 
 <table>
   <tr>
-    <td><img src=".github/readme/en/01.webp?v=2" width="180" alt="90+ tools in one app" /></td>
-    <td><img src=".github/readme/en/02.webp?v=2" width="180" alt="Say the word, AI does it" /></td>
-    <td><img src=".github/readme/en/03.webp?v=2" width="180" alt="Bookkeeping by voice" /></td>
+    <td><img src=".github/readme/en/01.webp?v=3" width="180" alt="90+ tools in one app" /></td>
+    <td><img src=".github/readme/en/02.webp?v=3" width="180" alt="Say the word, AI does it" /></td>
+    <td><img src=".github/readme/en/03.webp?v=3" width="180" alt="Bookkeeping by voice" /></td>
     <td><a href="https://youtube.com/shorts/eGkwoe3puSw"><img src=".github/readme/intro-en.jpg?v=2" width="180" alt="Intro video (YouTube Shorts)" /></a></td>
   </tr>
 </table>

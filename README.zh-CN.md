@@ -17,9 +17,9 @@
 
 <table>
   <tr>
-    <td><img src=".github/readme/zh/01.webp?v=2" width="180" alt="90+ 工具一个 App 全装下" /></td>
-    <td><img src=".github/readme/zh/02.webp?v=2" width="180" alt="说句话 AI 帮你干活" /></td>
-    <td><img src=".github/readme/zh/03.webp?v=2" width="180" alt="记账说一句话就好" /></td>
+    <td><img src=".github/readme/zh/01.webp?v=3" width="180" alt="90+ 工具一个 App 全装下" /></td>
+    <td><img src=".github/readme/zh/02.webp?v=3" width="180" alt="说句话 AI 帮你干活" /></td>
+    <td><img src=".github/readme/zh/03.webp?v=3" width="180" alt="记账说一句话就好" /></td>
     <td><a href="https://www.youtube.com/shorts/DSCKCWa0L2g"><img src=".github/readme/intro-zh.jpg?v=2" width="180" alt="视频介绍(YouTube Shorts)" /></a></td>
   </tr>
 </table>
