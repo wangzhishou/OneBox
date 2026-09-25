@@ -1744,4 +1744,11 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="notification_center">Notifikasi</string>
     <string name="notification_center_description">Balasan komentar, balasan masukan, dan pesan sistem</string>
     <string name="profile_item_message_center">Notifikasi</string>
+    <string name="profile_item_ai_memory">Memori AI</string>
+    <string name="profile_item_ai_skill">Skill AI</string>
+    <string name="profile_item_local_models">Model di Perangkat</string>
+    <string name="profile_item_analytics">Laporan Penggunaan &amp; Kerusakan</string>
+    <string name="profile_item_analytics_sub">Bagikan statistik penggunaan anonim dan laporan kerusakan untuk membantu meningkatkan aplikasi</string>
+    <string name="profile_item_support_dev_sub">Traktir saya kopi di Ko-fi ☕</string>
+    <string name="profile_item_support_dev">Dukung Pengembang</string>
 </resources>

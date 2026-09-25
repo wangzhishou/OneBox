@@ -1754,4 +1754,11 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="notification_center">Notificaciones</string>
     <string name="notification_center_description">Respuestas a comentarios, respuestas a sugerencias y mensajes del sistema</string>
     <string name="profile_item_message_center">Notificaciones</string>
+    <string name="profile_item_ai_memory">Memoria de IA</string>
+    <string name="profile_item_ai_skill">Habilidades de IA</string>
+    <string name="profile_item_local_models">Modelos en el dispositivo</string>
+    <string name="profile_item_analytics">Estadísticas de uso e informes de fallos</string>
+    <string name="profile_item_analytics_sub">Comparte estadísticas de uso anónimas e informes de fallos para ayudar a mejorar la app</string>
+    <string name="profile_item_support_dev_sub">Invítame a un café en Ko-fi ☕</string>
+    <string name="profile_item_support_dev">Apoya al desarrollador</string>
 </resources>

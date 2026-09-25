@@ -1754,4 +1754,11 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="notification_center">Notificações</string>
     <string name="notification_center_description">Respostas a comentários, respostas ao feedback e mensagens do sistema</string>
     <string name="profile_item_message_center">Notificações</string>
+    <string name="profile_item_ai_memory">Memória da IA</string>
+    <string name="profile_item_ai_skill">Habilidades da IA</string>
+    <string name="profile_item_local_models">Modelos no dispositivo</string>
+    <string name="profile_item_analytics">Uso e relatórios de falhas</string>
+    <string name="profile_item_analytics_sub">Compartilhe estatísticas de uso anônimas e relatórios de falhas para ajudar a melhorar o app</string>
+    <string name="profile_item_support_dev_sub">Pague-me um café no Ko-fi ☕</string>
+    <string name="profile_item_support_dev">Apoie o desenvolvedor</string>
 </resources>

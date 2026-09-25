@@ -1754,4 +1754,11 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="notification_center">Benachrichtigungen</string>
     <string name="notification_center_description">Antworten auf Kommentare und Feedback sowie Systemnachrichten</string>
     <string name="profile_item_message_center">Benachrichtigungen</string>
+    <string name="profile_item_ai_memory">KI-Gedächtnis</string>
+    <string name="profile_item_ai_skill">Skills</string>
+    <string name="profile_item_local_models">Lokale Modelle</string>
+    <string name="profile_item_analytics">Nutzungs- &amp; Absturzdaten</string>
+    <string name="profile_item_analytics_sub">Teile anonyme Nutzungsdaten und Absturzberichte, um die App zu verbessern</string>
+    <string name="profile_item_support_dev_sub">Spendier mir einen Kaffee auf Ko-fi ☕</string>
+    <string name="profile_item_support_dev">Entwickler unterstützen</string>
 </resources>

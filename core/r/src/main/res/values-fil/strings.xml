@@ -1754,4 +1754,11 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="notification_center">Mga Notification</string>
     <string name="notification_center_description">Mga sagot sa komento, mga sagot sa feedback, at mga mensahe ng system</string>
     <string name="profile_item_message_center">Mga Notification</string>
+    <string name="profile_item_ai_memory">Memory ng AI</string>
+    <string name="profile_item_ai_skill">Mga skill ng AI</string>
+    <string name="profile_item_local_models">Mga Modelo sa Device</string>
+    <string name="profile_item_analytics">Paggamit at Ulat ng Pag-crash</string>
+    <string name="profile_item_analytics_sub">Ibahagi ang anonymous na stats ng paggamit at mga ulat ng pag-crash para makatulong sa pagpapabuti ng app.</string>
+    <string name="profile_item_support_dev_sub">Bilhan mo ako ng kape sa Ko-fi ☕</string>
+    <string name="profile_item_support_dev">Suportahan ang Developer</string>
 </resources>

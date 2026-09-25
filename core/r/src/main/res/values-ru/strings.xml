@@ -1774,4 +1774,11 @@
     <string name="notification_center">Уведомления</string>
     <string name="notification_center_description">Ответы на комментарии, ответы на отзывы и системные сообщения</string>
     <string name="profile_item_message_center">Уведомления</string>
+    <string name="profile_item_ai_memory">Память ИИ</string>
+    <string name="profile_item_ai_skill">Навыки ИИ</string>
+    <string name="profile_item_local_models">Модели на устройстве</string>
+    <string name="profile_item_analytics">Статистика и отчёты о сбоях</string>
+    <string name="profile_item_analytics_sub">Делитесь анонимной статистикой и отчётами о сбоях, чтобы помочь улучшить приложение</string>
+    <string name="profile_item_support_dev_sub">Угостите меня кофе на Ko-fi ☕</string>
+    <string name="profile_item_support_dev">Поддержать разработчика</string>
 </resources>

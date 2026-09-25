@@ -1754,4 +1754,11 @@
     <string name="notification_center">सूचनाएं</string>
     <string name="notification_center_description">टिप्पणी उत्तर, प्रतिक्रिया उत्तर और सिस्टम संदेश</string>
     <string name="profile_item_message_center">सूचनाएं</string>
+    <string name="profile_item_ai_memory">AI मेमोरी</string>
+    <string name="profile_item_ai_skill">AI स्किल</string>
+    <string name="profile_item_local_models">डिवाइस पर मॉडल</string>
+    <string name="profile_item_analytics">उपयोग और क्रैश रिपोर्टिंग</string>
+    <string name="profile_item_analytics_sub">ऐप को बेहतर बनाने में मदद के लिए अनाम उपयोग आंकड़े और क्रैश रिपोर्ट साझा करें।</string>
+    <string name="profile_item_support_dev_sub">Ko-fi पर मुझे एक कॉफ़ी खरीदें ☕</string>
+    <string name="profile_item_support_dev">डेवलपर का समर्थन करें</string>
 </resources>

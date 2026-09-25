@@ -1744,4 +1744,11 @@
     <string name="notification_center">알림</string>
     <string name="notification_center_description">댓글 답글, 피드백 답변, 시스템 메시지</string>
     <string name="profile_item_message_center">알림</string>
+    <string name="profile_item_ai_memory">AI 메모리</string>
+    <string name="profile_item_ai_skill">AI 스킬</string>
+    <string name="profile_item_local_models">온디바이스 모델</string>
+    <string name="profile_item_analytics">사용량 및 충돌 보고</string>
+    <string name="profile_item_analytics_sub">앱 개선을 위해 익명 사용 통계와 충돌 보고서를 공유해 주세요</string>
+    <string name="profile_item_support_dev_sub">Ko-fi에서 커피 한 잔으로 개발자를 응원해 주세요 ☕</string>
+    <string name="profile_item_support_dev">개발자 지원하기</string>
 </resources>

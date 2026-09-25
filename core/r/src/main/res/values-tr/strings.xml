@@ -1754,4 +1754,11 @@
     <string name="notification_center">Bildirimler</string>
     <string name="notification_center_description">Yorum yanıtları, geri bildirim yanıtları ve sistem mesajları</string>
     <string name="profile_item_message_center">Bildirimler</string>
+    <string name="profile_item_ai_memory">AI Belleği</string>
+    <string name="profile_item_ai_skill">AI Becerileri</string>
+    <string name="profile_item_local_models">Cihaz Üstü Modeller</string>
+    <string name="profile_item_analytics">Kullanım ve Çökme Bildirimi</string>
+    <string name="profile_item_analytics_sub">Uygulamayı geliştirmemize yardımcı olmak için anonim kullanım istatistiklerini ve çökme raporlarını paylaşın</string>
+    <string name="profile_item_support_dev_sub">Ko-fi\'da bana bir kahve ısmarla ☕</string>
+    <string name="profile_item_support_dev">Geliştiriciyi Destekle</string>
 </resources>
