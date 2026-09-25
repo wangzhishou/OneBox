@@ -64,8 +64,11 @@ class SearchComponent @AssistedInject internal constructor(
         }
         CoroutineScope(ioDispatcher).launch {
             val formattedSearchString = "%$text%"
+            // 英文标识符(iconName)不含空格,去掉查询里的空格以便 "file browser" 命中 FileBrowser
+            val iconSearchString = "%${text.replace(" ", "")}%"
             val queryLower = text.lowercase()
-            appDatabase.itemEntityDao().searchByTitleOrDescriptionWithStats(formattedSearchString)
+            appDatabase.itemEntityDao()
+                .searchByTitleOrDescriptionWithStats(formattedSearchString, iconSearchString)
                 .distinctUntilChanged().collect { items ->
                     _searchItemList.value = items.sortedWith(
                         compareByDescending<ItemWithCategoriesAndStats> { scoreSearchItem(it, queryLower) }
@@ -85,11 +88,16 @@ class SearchComponent @AssistedInject internal constructor(
     private fun scoreSearchItem(item: ItemWithCategoriesAndStats, queryLower: String): Int {
         val titleLower = item.item.title.lowercase()
         val descLower = item.item.description.lowercase()
+        // 英文标识符(FileBrowser / Crop / PdfTools…):去掉空格后比较,命中权重低于本地化标题
+        val iconLower = item.item.iconName.orEmpty().lowercase()
+        val queryCompact = queryLower.replace(" ", "")
         var score = 0
         when {
             titleLower == queryLower -> score += 400
             titleLower.startsWith(queryLower) -> score += 300
+            iconLower == queryCompact -> score += 250
             titleLower.contains(queryLower) -> score += 200
+            queryCompact.isNotEmpty() && iconLower.contains(queryCompact) -> score += 150
             descLower.contains(queryLower) -> score += 100
         }
         if (item.item.recommend) score += 50

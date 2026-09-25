@@ -648,15 +648,28 @@ interface ItemEntityDao {
     )
     fun searchByTitleOrDescription(searchString: String): Flow<List<ItemWithCategories>>
 
+    /**
+     * 全局搜索:标题 / 描述(当前语种)之外,同时匹配 [ItemEntity.iconName]
+     * (Strapi 非本地化字段,始终是英文标识符,如 FileBrowser / Crop / PdfTools),
+     * 这样 hi/de/ja 等语种下输入 crop、pdf、resize 等英文词也能命中。
+     *
+     * [iconSearchString] 由调用方去掉空格后再拼 % 通配符(FileBrowser 可被 "file browser" 命中);
+     * SQLite 的 LIKE 对 ASCII 默认不区分大小写。
+     */
     @Transaction
     @Query(
         """
         SELECT DISTINCT item.* FROM item
         INNER JOIN item_category ON item.id = item_category.item_id
-        WHERE item.title LIKE :searchString OR item.description LIKE :searchString
+        WHERE item.title LIKE :searchString
+           OR item.description LIKE :searchString
+           OR item.icon_name LIKE :iconSearchString
     """
     )
-    fun searchByTitleOrDescriptionWithStats(searchString: String): Flow<List<ItemWithCategoriesAndStats>>
+    fun searchByTitleOrDescriptionWithStats(
+        searchString: String,
+        iconSearchString: String,
+    ): Flow<List<ItemWithCategoriesAndStats>>
 
     // ── 详情页查询 ────────────────────────────────────────────────────────
 

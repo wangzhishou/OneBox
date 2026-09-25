@@ -29,7 +29,12 @@ class ItemScreenCatalogRepository @Inject constructor(
         val items = if (query.isBlank()) {
             itemDao.getItemsByCategoryIdFlow().firstOrNull().orEmpty()
         } else {
-            itemDao.searchByTitleOrDescriptionWithStats("%${query.trim()}%").firstOrNull().orEmpty()
+            val keyword = query.trim()
+            itemDao.searchByTitleOrDescriptionWithStats(
+                searchString = "%$keyword%",
+                // 英文标识符(iconName)无空格,便于 "file browser" 命中 FileBrowser
+                iconSearchString = "%${keyword.replace(" ", "")}%",
+            ).firstOrNull().orEmpty()
         }
         return items.asSequence()
             .filter { listItemType == null || it.item.listType == listItemType.id }
