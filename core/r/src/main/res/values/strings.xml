@@ -1074,6 +1074,9 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="record_center_description">Track blood pressure, weight and more in one place.</string>
     <string name="habit_tracker">Habit Tracker</string>
     <string name="habit_tracker_description">Daily habit check-ins and stats</string>
+    <string name="notification_center">Notifications</string>
+    <string name="notification_center_description">Comment replies, feedback replies and system messages</string>
+    <string name="profile_item_message_center">Notifications</string>
     <string name="data_restore_success">Database restored. The app will restart in 3 seconds.</string>
     <string name="data_backup_success">Backup successful! Saved to %1$s folder.</string>
     <string name="lifetime">Life Clock</string>

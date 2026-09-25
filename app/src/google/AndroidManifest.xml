@@ -8,6 +8,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- FCM 推送通知权限(TIRAMISU+ 运行时申请一次, 见 NotificationPermissionPrompter) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <!-- 移除微信客户端可见性 query (海外用户无微信) -->
     <queries tools:node="remove" />
 
@@ -72,6 +75,15 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-2510840726350411~8152485979" />
+
+        <!-- FCM 推送接收服务(data-only 消息自行构建通知) -->
+        <service
+            android:name=".push.OneBoxFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 

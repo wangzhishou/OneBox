@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">No notifications yet</string>
+    <string name="notification_mark_all_read">Mark all read</string>
+    <string name="notification_login_hint">Log in to view comment replies, feedback replies and system messages</string>
+    <string name="notification_load_failed">Failed to load notifications</string>
+    <string name="notification_retry">Retry</string>
+    <string name="notification_type_comment_reply">Comment Reply</string>
+    <string name="notification_type_system">System</string>
+    <string name="notification_type_feedback_reply">Feedback Reply</string>
+</resources>

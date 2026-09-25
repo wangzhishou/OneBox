@@ -9,4 +9,6 @@
     <string name="app_name">万宝盒</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">消息通知</string>
+    <string name="push_channel_comment_reply_desc">评论回复、反馈回复与系统通知</string>
 </resources>

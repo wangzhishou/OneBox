@@ -25,6 +25,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineHelp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNote
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineNotifications
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSync
@@ -50,6 +51,7 @@ sealed class ProfileSetting(
     data object SettingGroup : ProfileSetting(
         groupTitle = R.string.profile_group_support,
         settingsList = listOf(
+            MessageCenter,
             Help,
             Donate,
             Community
@@ -95,6 +97,13 @@ sealed class ProfileSetting(
         id = 1,
         title = R.string.profile_setting_help,
         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHelp
+    )
+
+    // 消息中心入口(全渠道), 未读角标由 NotificationRepository.unreadCount 驱动
+    data object MessageCenter : ProfileSetting(
+        id = 32,
+        title = R.string.profile_item_message_center,
+        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNotifications
     )
 
     data object QQGroup : ProfileSetting(

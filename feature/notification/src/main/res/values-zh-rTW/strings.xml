@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">暫無訊息</string>
+    <string name="notification_mark_all_read">全部已讀</string>
+    <string name="notification_login_hint">登入後可查看評論回覆、意見回覆與系統通知</string>
+    <string name="notification_load_failed">訊息載入失敗</string>
+    <string name="notification_retry">重試</string>
+    <string name="notification_type_comment_reply">評論回覆</string>
+    <string name="notification_type_system">系統通知</string>
+    <string name="notification_type_feedback_reply">意見回覆</string>
+</resources>

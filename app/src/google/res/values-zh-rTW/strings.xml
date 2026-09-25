@@ -4,4 +4,6 @@
     <string name="app_name">萬寶盒</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">訊息通知</string>
+    <string name="push_channel_comment_reply_desc">評論回覆、意見回覆與系統通知</string>
 </resources>

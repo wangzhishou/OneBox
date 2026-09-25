@@ -469,6 +469,10 @@ object AppNavigationRegistry {
                 screen = Screen.SkillManagement,
                 aliases = listOf("skill_management", "ai_skills", "skill_settings", "技能管理", "AI技能")
             ),
+            staticScreen(
+                screen = Screen.Notification,
+                aliases = listOf("notification", "notifications", "message_center", "消息中心", "消息", "通知")
+            ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
                 routeKey = "mark_todo_router",

@@ -18,6 +18,10 @@ import com.shifenmiao.network.model.comment.CommentEnvelope
 import com.shifenmiao.network.model.comment.CommentListResponse
 import com.shifenmiao.network.model.comment.CreateCommentRequest
 import com.shifenmiao.network.model.comment.UpdateCommentRequest
+import com.shifenmiao.network.model.notification.FcmTokenDeleteRequest
+import com.shifenmiao.network.model.notification.FcmTokenRequest
+import com.shifenmiao.network.model.notification.UnreadCountResponse
+import com.shifenmiao.network.model.notification.UserNotificationListResponse
 import com.shifenmiao.model.aidetect.AiDetectImageRequest
 import com.shifenmiao.model.aidetect.AiDetectImageResponse
 import com.shifenmiao.model.aidetect.AiDetectTextRequest
@@ -64,6 +68,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -414,4 +419,42 @@ interface ApiService {
         @Path("commentId") commentId: Int,
         @Body body: UpdateCommentRequest,
     ): Response<CommentEnvelope>
+
+    // ─────────────── 消息中心 (go-proxy, 需 JWT) ───────────────
+
+    /** 通知列表(read 传 null 表示不过滤) */
+    @GET("/api/user-notifications")
+    suspend fun listUserNotifications(
+        @Query("page") page: Int = 1,
+        @Query("pageSize") pageSize: Int = 20,
+        @Query("read") read: Boolean? = null,
+    ): Response<UserNotificationListResponse>
+
+    /** 单条标记已读 */
+    @POST("/api/user-notifications/{id}/read")
+    suspend fun markNotificationRead(
+        @Path("id") id: Int,
+    ): Response<Any>
+
+    /** 全部标记已读 */
+    @POST("/api/user-notifications/read-all")
+    suspend fun markAllNotificationsRead(): Response<Any>
+
+    /** 未读数 */
+    @GET("/api/user-notifications/unread-count")
+    suspend fun unreadNotificationCount(): Response<UnreadCountResponse>
+
+    // ─────────────── FCM 推送 token (go-proxy, 需登录 JWT) ───────────────
+
+    /** 上报/绑定 FCM token */
+    @POST("user/fcm-token")
+    suspend fun uploadFcmToken(
+        @Body body: FcmTokenRequest,
+    ): Response<Any>
+
+    /** 解绑 FCM token(DELETE 带 body 需显式 hasBody) */
+    @HTTP(method = "DELETE", path = "user/fcm-token", hasBody = true)
+    suspend fun deleteFcmToken(
+        @Body body: FcmTokenDeleteRequest,
+    ): Response<Any>
 }

@@ -8,4 +8,6 @@
     <string name="app_name">OneBox</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">Messages</string>
+    <string name="push_channel_comment_reply_desc">Comment replies, feedback replies and system notifications</string>
 </resources>

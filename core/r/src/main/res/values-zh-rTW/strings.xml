@@ -1057,6 +1057,9 @@
     <string name="record_center_description">統一記錄和管理血壓、體重等健康指標</string>
     <string name="habit_tracker">習慣打卡</string>
     <string name="habit_tracker_description">每日習慣打卡與資料統計</string>
+    <string name="notification_center">訊息中心</string>
+    <string name="notification_center_description">評論回覆、意見回覆與系統通知</string>
+    <string name="profile_item_message_center">訊息中心</string>
     <string name="data_restore_success">資料庫恢復成功，3秒後將重啟應用程式.</string>
     <string name="data_backup_success">資料備份成功！ 已儲存到 %1$s 資料夾</string>
     <string name="lifetime">時光沙漏</string>

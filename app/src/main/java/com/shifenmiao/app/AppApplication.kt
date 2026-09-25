@@ -174,6 +174,7 @@ class AppApplication : BaseApplication() {
             WebViewPool.initWhenIdle()
             injectBaseComponent()
             tryInvokeGoogleChannelInitializer()
+            tryUploadFcmToken()
             StartupTrace.mark("background_init.completed")
         }
     }
@@ -235,6 +236,22 @@ class AppApplication : BaseApplication() {
             method.invoke(instance, this)
         }.onFailure {
             android.util.Log.w("AppApplication", "GoogleChannelInitializer invoke failed", it)
+        }
+    }
+
+    /**
+     * google 渠道 FCM token 冷启动补报 (src/google/ 源集, 反射调用)。
+     * 必须在 MMKV.initialize 之后调用(只挂在 startBackgroundInitIfNeeded 里);
+     * 国内 flavor 没有该类, runCatching 静默跳过。
+     */
+    private fun tryUploadFcmToken() {
+        runCatching {
+            val cls = Class.forName("com.shifenmiao.app.push.FcmTokenUploader")
+            val instance = cls.getDeclaredField("INSTANCE").get(null)
+            val method = cls.getMethod("tryUpload", android.content.Context::class.java)
+            method.invoke(instance, this)
+        }.onFailure {
+            android.util.Log.w("AppApplication", "FcmTokenUploader invoke failed", it)
         }
     }
 

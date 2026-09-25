@@ -589,6 +589,7 @@ dependencies {
     "googleImplementation"(platform(libs.firebase.bom))
     "googleImplementation"(libs.firebase.crashlytics.ktx)
     "googleImplementation"(libs.firebase.analytics)
+    "googleImplementation"(libs.firebase.messaging)
 }
 
 allprojects {

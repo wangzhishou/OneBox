@@ -52,5 +52,6 @@ dependencies {
     implementation(projects.feature.settings)
     implementation(projects.feature.common)
     implementation(projects.feature.login)
+    implementation(projects.feature.notification)
     implementation(projects.feature.webview)
 }

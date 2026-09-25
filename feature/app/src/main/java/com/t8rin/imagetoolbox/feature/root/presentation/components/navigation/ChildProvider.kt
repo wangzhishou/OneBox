@@ -1039,6 +1039,14 @@ class ChildProvider @Inject constructor(
             )
         )
 
+        is Screen.Notification -> NavigationChild.Notification(
+            lifeFactories.get().notificationComponentFactory(
+                componentContext = componentContext,
+                onGoBack = ::navigateBack,
+                onNavigate = ::navigateTo,
+            )
+        )
+
         is Screen.HouseholdItems -> NavigationChild.HouseholdItems(
             lifeFactories.get().householdItemsComponentFactory(
                 componentContext = componentContext,

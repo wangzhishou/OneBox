@@ -339,6 +339,7 @@ class LoginComponent @AssistedInject internal constructor(
                 callbackHolder.invokeSuccessOnce(response)
                 onSuccess(response)
                 if (!onlyUpdate) {
+                    invokeGooglePushAfterLogin()
                     endLogin()
                     detectBindPhone()
                 }
@@ -356,6 +357,26 @@ class LoginComponent @AssistedInject internal constructor(
 
     private fun updateUserState(login: Login) {
         loginStateHolder.updateLoginState(login)
+    }
+
+    /**
+     * google 渠道登录成功后的推送接入: 立即上报 FCM token(含补报未登录期间的 pending token)
+     * 并申请一次 POST_NOTIFICATIONS 权限。
+     * 两个类只在 app 模块 src/google 源集存在, 国内/foss 渠道反射找不到类即 no-op。
+     */
+    private fun invokeGooglePushAfterLogin() {
+        runCatching {
+            val cls = Class.forName("com.shifenmiao.app.push.FcmTokenUploader")
+            // Kotlin object: 取 INSTANCE 作为接收者, 与 AppApplication 反射约定一致
+            val instance = cls.getDeclaredField("INSTANCE").get(null)
+            cls.getMethod("tryUpload", android.content.Context::class.java)
+                .invoke(instance, AppContext.getContext())
+        }
+        runCatching {
+            val cls = Class.forName("com.shifenmiao.app.push.NotificationPermissionPrompter")
+            val instance = cls.getDeclaredField("INSTANCE").get(null)
+            cls.getMethod("maybeRequest").invoke(instance)
+        }
     }
 
     private fun startLogin() {
