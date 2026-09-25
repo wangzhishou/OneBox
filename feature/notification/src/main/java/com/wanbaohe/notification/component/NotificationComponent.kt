@@ -2,6 +2,7 @@ package com.wanbaohe.notification.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.network.model.comment.MyComment
 import com.shifenmiao.network.model.notification.UserNotification
 import com.shifenmiao.storage.TokenStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
@@ -11,6 +12,8 @@ import com.wanbaohe.notification.service.NotificationRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,20 +25,26 @@ data class NotificationUiState(
     val isLoading: Boolean = false,
     /** 下拉刷新中 */
     val isRefreshing: Boolean = false,
-    /** 分页追加中 */
-    val isLoadingMore: Boolean = false,
     /** 首屏加载失败(展示错误态) */
     val isError: Boolean = false,
-    val items: List<UserNotification> = emptyList(),
-    val page: Int = 0,
-    val pageCount: Int = 1,
+    /** 「我发表的评论」section */
+    val myComments: List<MyComment> = emptyList(),
+    val myCommentsPage: Int = 0,
+    val myCommentsPageCount: Int = 1,
+    val isLoadingMoreMyComments: Boolean = false,
+    /** 「用户回复」section(通知 type=comment_reply) */
+    val replies: List<UserNotification> = emptyList(),
+    val repliesPage: Int = 0,
+    val repliesPageCount: Int = 1,
+    val isLoadingMoreReplies: Boolean = false,
 )
 
 /**
- * 消息中心 Component — 列表分页追加 + 已读操作编排。
+ * 消息中心 Component — 「我发表的评论」+「用户回复」双 section 分页 + 已读操作编排。
  *
  * 未读数由 [NotificationRepository.unreadCount] 全局共享,
  * 标记已读/全部已读直接同步给个人中心角标。
+ * 「用户回复」只拉取 comment_reply 类型通知,卡片点击即标已读。
  */
 class NotificationComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -56,7 +65,7 @@ class NotificationComponent @AssistedInject internal constructor(
                 _uiState.value = _uiState.value.copy(isLoggedIn = false)
                 return@launch
             }
-            loadPage(page = 1, isRefresh = false)
+            loadFirstPages(isRefresh = false)
             repository.refreshUnreadCount()
         }
     }
@@ -66,7 +75,7 @@ class NotificationComponent @AssistedInject internal constructor(
         ActionUtils.showLogin(source = "notification_center") {
             _uiState.value = _uiState.value.copy(isLoggedIn = true)
             componentScope.launch {
-                loadPage(page = 1, isRefresh = false)
+                loadFirstPages(isRefresh = false)
                 repository.refreshUnreadCount()
             }
         }
@@ -75,25 +84,30 @@ class NotificationComponent @AssistedInject internal constructor(
     fun refresh() {
         if (!_uiState.value.isLoggedIn || _uiState.value.isRefreshing) return
         componentScope.launch {
-            loadPage(page = 1, isRefresh = true)
+            loadFirstPages(isRefresh = true)
             repository.refreshUnreadCount()
         }
     }
 
+    /** 滚动到底部附近时,对还有下一页的 section 各自追加一页 */
     fun loadMore() {
         val state = _uiState.value
-        if (!state.isLoggedIn || state.isLoading || state.isRefreshing || state.isLoadingMore) return
-        if (state.page >= state.pageCount) return
+        if (!state.isLoggedIn || state.isLoading || state.isRefreshing) return
         componentScope.launch {
-            loadPage(page = state.page + 1, isRefresh = false)
+            if (!state.isLoadingMoreMyComments && state.myCommentsPage < state.myCommentsPageCount) {
+                loadMyCommentsPage(state.myCommentsPage + 1)
+            }
+            if (!state.isLoadingMoreReplies && state.repliesPage < state.repliesPageCount) {
+                loadRepliesPage(state.repliesPage + 1)
+            }
         }
     }
 
-    /** 点击单条:已读的忽略,未读的乐观更新后调接口 */
+    /** 点击回复卡片:已读的忽略,未读的乐观更新后调接口 */
     fun markRead(item: UserNotification) {
         if (item.read) return
         _uiState.value = _uiState.value.copy(
-            items = _uiState.value.items.map {
+            replies = _uiState.value.replies.map {
                 if (it.id == item.id) it.copy(read = true) else it
             }
         )
@@ -103,48 +117,87 @@ class NotificationComponent @AssistedInject internal constructor(
     }
 
     fun markAllRead() {
-        if (_uiState.value.items.none { !it.read }) return
+        if (_uiState.value.replies.none { !it.read }) return
         _uiState.value = _uiState.value.copy(
-            items = _uiState.value.items.map { it.copy(read = true) }
+            replies = _uiState.value.replies.map { it.copy(read = true) }
         )
         componentScope.launch {
             repository.markAllRead()
         }
     }
 
-    private suspend fun loadPage(page: Int, isRefresh: Boolean) {
-        val firstPage = page == 1
-        _uiState.value = _uiState.value.copy(
-            isLoading = firstPage && !isRefresh && _uiState.value.items.isEmpty(),
+    /** 首屏 / 刷新:两个 section 的第一页并发拉取,两个都失败且都为空才算错误态 */
+    private suspend fun loadFirstPages(isRefresh: Boolean) {
+        val state = _uiState.value
+        val showLoading = !isRefresh && state.myComments.isEmpty() && state.replies.isEmpty()
+        _uiState.value = state.copy(
+            isLoading = showLoading,
             isRefreshing = isRefresh,
-            isLoadingMore = !firstPage,
             isError = false,
         )
-        repository.fetchNotifications(page = page)
-            .onSuccess { response ->
-                val merged = if (firstPage) {
-                    response.data
-                } else {
-                    _uiState.value.items + response.data
+        coroutineScope {
+            val myCommentsDeferred = async { repository.fetchMyComments(page = 1) }
+            val repliesDeferred = async {
+                repository.fetchNotifications(page = 1, type = UserNotification.TYPE_COMMENT_REPLY)
+            }
+            val myCommentsResult = myCommentsDeferred.await()
+            val repliesResult = repliesDeferred.await()
+
+            var newState = _uiState.value
+            myCommentsResult
+                .onSuccess { response ->
+                    newState = newState.copy(
+                        myComments = response.data.distinctBy { it.id },
+                        myCommentsPage = response.meta.pagination.page,
+                        myCommentsPageCount = response.meta.pagination.pageCount,
+                    )
                 }
+            repliesResult
+                .onSuccess { response ->
+                    newState = newState.copy(
+                        replies = response.data.distinctBy { it.id },
+                        repliesPage = response.meta.pagination.page,
+                        repliesPageCount = response.meta.pagination.pageCount,
+                    )
+                }
+            val bothFailed = myCommentsResult.isFailure && repliesResult.isFailure
+            _uiState.value = newState.copy(
+                isLoading = false,
+                isRefreshing = false,
+                isError = bothFailed && newState.myComments.isEmpty() && newState.replies.isEmpty(),
+            )
+        }
+    }
+
+    private suspend fun loadMyCommentsPage(page: Int) {
+        _uiState.value = _uiState.value.copy(isLoadingMoreMyComments = true)
+        repository.fetchMyComments(page = page)
+            .onSuccess { response ->
                 _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    isRefreshing = false,
-                    isLoadingMore = false,
-                    isError = false,
-                    items = merged.distinctBy { it.id },
-                    page = response.meta.pagination.page,
-                    pageCount = response.meta.pagination.pageCount,
+                    isLoadingMoreMyComments = false,
+                    myComments = (_uiState.value.myComments + response.data).distinctBy { it.id },
+                    myCommentsPage = response.meta.pagination.page,
+                    myCommentsPageCount = response.meta.pagination.pageCount,
                 )
             }
             .onFailure {
+                _uiState.value = _uiState.value.copy(isLoadingMoreMyComments = false)
+            }
+    }
+
+    private suspend fun loadRepliesPage(page: Int) {
+        _uiState.value = _uiState.value.copy(isLoadingMoreReplies = true)
+        repository.fetchNotifications(page = page, type = UserNotification.TYPE_COMMENT_REPLY)
+            .onSuccess { response ->
                 _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    isRefreshing = false,
-                    isLoadingMore = false,
-                    // 已有列表数据时追加失败不打断浏览,仅首屏展示错误态
-                    isError = _uiState.value.items.isEmpty(),
+                    isLoadingMoreReplies = false,
+                    replies = (_uiState.value.replies + response.data).distinctBy { it.id },
+                    repliesPage = response.meta.pagination.page,
+                    repliesPageCount = response.meta.pagination.pageCount,
                 )
+            }
+            .onFailure {
+                _uiState.value = _uiState.value.copy(isLoadingMoreReplies = false)
             }
     }
 

@@ -17,6 +17,7 @@ import com.shifenmiao.network.model.comment.Comment
 import com.shifenmiao.network.model.comment.CommentEnvelope
 import com.shifenmiao.network.model.comment.CommentListResponse
 import com.shifenmiao.network.model.comment.CreateCommentRequest
+import com.shifenmiao.network.model.comment.MyCommentListResponse
 import com.shifenmiao.network.model.comment.UpdateCommentRequest
 import com.shifenmiao.network.model.notification.FcmTokenDeleteRequest
 import com.shifenmiao.network.model.notification.FcmTokenRequest
@@ -409,6 +410,13 @@ interface ApiService {
         @Body body: CreateCommentRequest,
     ): Response<CommentEnvelope>
 
+    /** 我发表的评论(消息中心"我发表的评论" section,需 JWT) */
+    @GET("api/comments/mine")
+    suspend fun listMyComments(
+        @Query("page") page: Int = 1,
+        @Query("pageSize") pageSize: Int = 20,
+    ): Response<MyCommentListResponse>
+
     @DELETE("api/comments/admin/{commentId}")
     suspend fun adminDeleteComment(
         @Path("commentId") commentId: Int,
@@ -422,12 +430,13 @@ interface ApiService {
 
     // ─────────────── 消息中心 (go-proxy, 需 JWT) ───────────────
 
-    /** 通知列表(read 传 null 表示不过滤) */
+    /** 通知列表(read / type 传 null 表示不过滤) */
     @GET("/api/user-notifications")
     suspend fun listUserNotifications(
         @Query("page") page: Int = 1,
         @Query("pageSize") pageSize: Int = 20,
         @Query("read") read: Boolean? = null,
+        @Query("type") type: String? = null,
     ): Response<UserNotificationListResponse>
 
     /** 单条标记已读 */

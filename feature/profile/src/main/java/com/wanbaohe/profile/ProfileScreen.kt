@@ -2,8 +2,10 @@ package com.wanbaohe.profile
 
 import android.net.Uri
 import android.os.Environment
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,15 +17,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -32,6 +40,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
 import com.shifenmiao.base.ui.ConfirmDialog
 import com.shifenmiao.base.utils.ActionUtils
@@ -41,6 +52,7 @@ import com.shifenmiao.common.components.DatabaseBackupRestoreSection
 import com.shifenmiao.common.logic.AppComponent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMedal
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineNotifications
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.core.BuildConfig
@@ -60,12 +72,14 @@ import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxGroupDivider
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneSecondaryButton
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
+import com.wanbaohe.notification.di.NotificationEntryPoint
 import com.wanbaohe.profile.components.InvitationCodeAction
 import com.wanbaohe.profile.model.ProfileSetting
 import com.wanbaohe.profile.screen.vipLevelList
 import com.wanbaohe.profile.settingItem.ProfileGroup
 import com.wanbaohe.profile.settingItem.ProfileSettingItem
 import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.launch
 import java.io.File
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLogout
 
@@ -343,6 +357,51 @@ private fun ProfileUserSection(
         InvitationCodeAction(
             loginComponent = loginComponent
         )
+        Spacer(modifier = Modifier.width(4.dp))
+        MessageCenterAction()
+    }
+}
+
+/** 消息中心入口图标按钮:未读数 >0 时右上角红点,进入个人中心/返回时(ON_RESUME)刷新未读数 */
+@Composable
+private fun MessageCenterAction() {
+    val context = LocalComponentActivity.current
+    val onNavigate = LocalOnNavigate.current
+    val scope = rememberCoroutineScope()
+    val notificationRepository = remember {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            NotificationEntryPoint::class.java
+        ).notificationRepository()
+    }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                scope.launch { notificationRepository.refreshUnreadCount() }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+    val unreadCount by notificationRepository.unreadCount.collectAsState()
+    Box {
+        IconButton(onClick = { onNavigate(Screen.Notification) }) {
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNotifications,
+                contentDescription = stringResource(R.string.notification_center),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+        }
+        if (unreadCount > 0) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 8.dp, end = 8.dp)
+                    .size(8.dp)
+                    .background(MaterialTheme.colorScheme.error, CircleShape)
+            )
+        }
     }
 }
 

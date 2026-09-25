@@ -8,4 +8,11 @@
     <string name="notification_type_comment_reply">評論回覆</string>
     <string name="notification_type_system">系統通知</string>
     <string name="notification_type_feedback_reply">意見回覆</string>
+    <string name="notification_section_my_comments">我發表的評論</string>
+    <string name="notification_section_replies">用戶回覆</string>
+    <string name="notification_you_commented">你在《%1$s》中發表評論：</string>
+    <string name="notification_you_commented_fallback">你在評論中說道：</string>
+    <string name="notification_replied_to_you">%1$s 回覆了你的評論：</string>
+    <string name="notification_from_source">來自: %1$s</string>
+    <string name="notification_replier_anonymous">用戶</string>
 </resources>

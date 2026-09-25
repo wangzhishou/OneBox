@@ -30,6 +30,14 @@ data class UserNotification(
     val createdAt: Long = 0,
     val updatedAt: Long = 0,
     val publishedAt: Long? = null,
+    /** 回复人昵称(comment_reply 类型时由 go-proxy 追加) */
+    val replierName: String = "",
+    /** 回复人头像 URL(comment_reply 类型时由 go-proxy 追加) */
+    val replierAvatar: String = "",
+    /** 来源博客标题 */
+    val sourceTitle: String = "",
+    /** 来源博客 documentId */
+    val sourceDocumentId: String? = null,
 ) {
     companion object {
         const val TYPE_COMMENT_REPLY = "comment_reply"

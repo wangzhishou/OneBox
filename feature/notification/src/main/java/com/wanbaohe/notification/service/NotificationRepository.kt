@@ -1,6 +1,7 @@
 package com.wanbaohe.notification.service
 
 import com.shifenmiao.network.api.ApiService
+import com.shifenmiao.network.model.comment.MyCommentListResponse
 import com.shifenmiao.network.model.notification.UserNotificationListResponse
 import com.shifenmiao.storage.TokenStorage
 import kotlinx.coroutines.Dispatchers
@@ -30,12 +31,28 @@ class NotificationRepository @Inject constructor(
     suspend fun fetchNotifications(
         page: Int,
         pageSize: Int = DEFAULT_PAGE_SIZE,
+        type: String? = null,
     ): Result<UserNotificationListResponse> = withContext(Dispatchers.IO) {
         runCatching {
-            val response = apiService.listUserNotifications(page = page, pageSize = pageSize)
+            val response = apiService.listUserNotifications(page = page, pageSize = pageSize, type = type)
             val body = response.body()
             if (!response.isSuccessful || body == null) {
                 error("fetch notifications failed: ${response.code()}")
+            }
+            body
+        }
+    }
+
+    /** 我发表的评论(消息中心"我发表的评论" section) */
+    suspend fun fetchMyComments(
+        page: Int,
+        pageSize: Int = DEFAULT_PAGE_SIZE,
+    ): Result<MyCommentListResponse> = withContext(Dispatchers.IO) {
+        runCatching {
+            val response = apiService.listMyComments(page = page, pageSize = pageSize)
+            val body = response.body()
+            if (!response.isSuccessful || body == null) {
+                error("fetch my comments failed: ${response.code()}")
             }
             body
         }

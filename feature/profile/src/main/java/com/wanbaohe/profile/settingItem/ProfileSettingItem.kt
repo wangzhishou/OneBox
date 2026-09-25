@@ -5,15 +5,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Badge
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,8 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
 import com.shifenmiao.base.manager.DataBaseManager
 import com.shifenmiao.base.manager.StorageManager
@@ -46,7 +40,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
 import com.t8rin.imagetoolbox.core.utils.appContext
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
-import com.wanbaohe.notification.di.NotificationEntryPoint
 import com.wanbaohe.profile.model.ProfileSetting
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
@@ -168,43 +161,6 @@ fun ProfileSettingItem(
                 onclick = {
                     navigateFeedback()
                 }
-            )
-        }
-
-        ProfileSetting.MessageCenter -> {
-            val notificationRepository = remember {
-                EntryPointAccessors.fromApplication(
-                    context = context.applicationContext,
-                    entryPoint = NotificationEntryPoint::class.java,
-                ).notificationRepository()
-            }
-            // 进入个人中心 / 从消息中心返回(ON_RESUME)时刷新未读数
-            val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-            DisposableEffect(lifecycleOwner) {
-                val observer = LifecycleEventObserver { _, event ->
-                    if (event == Lifecycle.Event.ON_RESUME) {
-                        scope.launch { notificationRepository.refreshUnreadCount() }
-                    }
-                }
-                lifecycleOwner.lifecycle.addObserver(observer)
-                onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-            }
-            val unreadCount by notificationRepository.unreadCount.collectAsState()
-            BaseSettingItem(
-                modifier,
-                settingsComponent = settingsComponent,
-                setting = setting,
-                themeIndex = themeIndex,
-                onclick = {
-                    onNavigate(Screen.Notification)
-                },
-                trailingContent = if (unreadCount > 0) {
-                    {
-                        Badge {
-                            Text(text = if (unreadCount > 99) "99+" else unreadCount.toString())
-                        }
-                    }
-                } else null
             )
         }
 
