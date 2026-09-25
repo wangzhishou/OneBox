@@ -70,7 +70,7 @@
     <string name="created_time_unknown">बनाया गया: —</string>
     <string name="recents_empty_message">हाल की विज़िट का कोई रिकॉर्ड नहीं</string>
     <string name="cd_clear_recents">हाल की विज़िट साफ़ करें</string>
-    <string name="search_hint">इस फ़ोल्डर में खोजें</string>
+    <string name="file_browser_search_hint">इस फ़ोल्डर में खोजें</string>
     <string name="cd_open_search">खोज खोलें</string>
     <string name="cd_close_search">खोज बंद करें</string>
     <string name="cd_clear_search">खोज सामग्री साफ़ करें</string>

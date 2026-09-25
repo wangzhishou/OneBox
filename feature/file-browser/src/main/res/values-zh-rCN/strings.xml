@@ -102,7 +102,7 @@
     <string name="dialog_clear_recents_message">确定要清空所有最近访问记录吗？此操作不可撤销。</string>
 
     <!-- Search -->
-    <string name="search_hint">搜索当前文件夹</string>
+    <string name="file_browser_search_hint">搜索当前文件夹</string>
     <string name="cd_open_search">打开搜索</string>
     <string name="cd_close_search">关闭搜索</string>
     <string name="cd_clear_search">清空搜索内容</string>

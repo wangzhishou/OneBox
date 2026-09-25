@@ -70,7 +70,7 @@
     <string name="created_time_unknown">Creado: –</string>
     <string name="recents_empty_message">No hay registros de visitas recientes</string>
     <string name="cd_clear_recents">Borrar visitas recientes</string>
-    <string name="search_hint">Buscar en esta carpeta</string>
+    <string name="file_browser_search_hint">Buscar en esta carpeta</string>
     <string name="cd_open_search">Abrir búsqueda</string>
     <string name="cd_close_search">Cerrar búsqueda</string>
     <string name="cd_clear_search">Borrar contenido de búsqueda</string>

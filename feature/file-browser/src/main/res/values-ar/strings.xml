@@ -66,7 +66,7 @@
     <string name="created_time_unknown">تاريخ الإنشاء:  </string>
     <string name="recents_empty_message">لا يوجد سجل للزيارات الأخيرة</string>
     <string name="cd_clear_recents">مسح الزيارات الأخيرة</string>
-    <string name="search_hint">منظّم آخر</string>
+    <string name="file_browser_search_hint">البحث في المجلد الحالي</string>
     <string name="cd_open_search">فتح البحث</string>
     <string name="cd_close_search">إغلاق البحث</string>
     <string name="cd_clear_search">إفراغ محتوى البحث</string>

@@ -99,7 +99,7 @@
     <string name="cd_clear_recents">Clean up recent visits</string>
 
     <!-- Search -->
-    <string name="search_hint">Other Organiser</string>
+    <string name="file_browser_search_hint">Search in current folder</string>
     <string name="cd_open_search">Open Search</string>
     <string name="cd_close_search">Close Search</string>
     <string name="cd_clear_search">Empty Search Contents</string>

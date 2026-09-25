@@ -68,7 +68,7 @@
     <string name="cd_clear_recents">清空最近存取</string>
     <string name="dialog_clear_recents_title">清空最近存取</string>
     <string name="dialog_clear_recents_message">確定要清空所有最近存取記錄嗎？此操作無法復原。</string>
-    <string name="search_hint">搜尋目前資料夾</string>
+    <string name="file_browser_search_hint">搜尋目前資料夾</string>
     <string name="cd_open_search">開啟搜尋</string>
     <string name="cd_close_search">關閉搜尋</string>
     <string name="cd_clear_search">清空搜尋內容</string>

@@ -70,7 +70,7 @@
     <string name="created_time_unknown">생성일: —</string>
     <string name="recents_empty_message">최근 방문 기록 없음</string>
     <string name="cd_clear_recents">최근 항목 비우기</string>
-    <string name="search_hint">현재 폴더 검색</string>
+    <string name="file_browser_search_hint">현재 폴더 검색</string>
     <string name="cd_open_search">검색 열기</string>
     <string name="cd_close_search">검색 닫기</string>
     <string name="cd_clear_search">검색 내용 지우기</string>

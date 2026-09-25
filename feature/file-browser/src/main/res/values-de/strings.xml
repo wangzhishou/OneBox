@@ -70,7 +70,7 @@
     <string name="created_time_unknown">Erstellt: –</string>
     <string name="recents_empty_message">Keine zuletzt besuchten Elemente</string>
     <string name="cd_clear_recents">Zuletzt besucht leeren</string>
-    <string name="search_hint">Diesen Ordner durchsuchen</string>
+    <string name="file_browser_search_hint">Diesen Ordner durchsuchen</string>
     <string name="cd_open_search">Suche öffnen</string>
     <string name="cd_close_search">Suche schließen</string>
     <string name="cd_clear_search">Suchinhalt löschen</string>

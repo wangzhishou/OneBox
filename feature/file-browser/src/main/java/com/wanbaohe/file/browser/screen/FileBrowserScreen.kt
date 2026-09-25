@@ -281,7 +281,7 @@ fun FileBrowserScreen(
                 value = searchQuery.value,
                 onValueChange = { value -> searchQuery.value = value },
                 singleLine = true,
-                placeholder = { Text(stringResource(R.string.search_hint)) },
+                placeholder = { Text(stringResource(R.string.file_browser_search_hint)) },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
                 colors = AppTheme.colors.getOutlinedTextFieldColors(),
                 shape = MaterialTheme.shapes.medium,

@@ -70,7 +70,7 @@
     <string name="created_time_unknown">Dibuat: —</string>
     <string name="recents_empty_message">Tidak ada riwayat kunjungan terakhir</string>
     <string name="cd_clear_recents">Hapus kunjungan terakhir</string>
-    <string name="search_hint">Cari di folder saat ini</string>
+    <string name="file_browser_search_hint">Cari di folder saat ini</string>
     <string name="cd_open_search">Buka pencarian</string>
     <string name="cd_close_search">Tutup pencarian</string>
     <string name="cd_clear_search">Hapus isi pencarian</string>

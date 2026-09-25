@@ -70,7 +70,7 @@
     <string name="created_time_unknown">Ginawa: —</string>
     <string name="recents_empty_message">Walang record ng mga kamakailang binisita</string>
     <string name="cd_clear_recents">Burahin ang mga kamakailang binisita</string>
-    <string name="search_hint">Maghanap sa kasalukuyang folder</string>
+    <string name="file_browser_search_hint">Maghanap sa kasalukuyang folder</string>
     <string name="cd_open_search">Buksan ang Paghahanap</string>
     <string name="cd_close_search">Isara ang Paghahanap</string>
     <string name="cd_clear_search">Burahin ang Nilalaman ng Paghahanap</string>

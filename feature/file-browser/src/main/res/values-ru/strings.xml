@@ -70,7 +70,7 @@
     <string name="created_time_unknown">Создано: —</string>
     <string name="recents_empty_message">Нет записей о недавних посещениях</string>
     <string name="cd_clear_recents">Очистить недавние</string>
-    <string name="search_hint">Поиск в текущей папке</string>
+    <string name="file_browser_search_hint">Поиск в текущей папке</string>
     <string name="cd_open_search">Открыть поиск</string>
     <string name="cd_close_search">Закрыть поиск</string>
     <string name="cd_clear_search">Очистить поиск</string>

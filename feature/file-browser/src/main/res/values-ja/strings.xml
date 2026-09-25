@@ -70,7 +70,7 @@
     <string name="created_time_unknown">作成日時：—</string>
     <string name="recents_empty_message">最近の閲覧履歴はありません</string>
     <string name="cd_clear_recents">最近開いた項目を消去</string>
-    <string name="search_hint">このフォルダ内を検索</string>
+    <string name="file_browser_search_hint">このフォルダ内を検索</string>
     <string name="cd_open_search">検索を開く</string>
     <string name="cd_close_search">検索を閉じる</string>
     <string name="cd_clear_search">検索内容を消去</string>

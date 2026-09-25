@@ -70,7 +70,7 @@
     <string name="created_time_unknown">Oluşturulma: —</string>
     <string name="recents_empty_message">Son ziyaret kaydı yok</string>
     <string name="cd_clear_recents">Son ziyaret edilenleri temizle</string>
-    <string name="search_hint">Bu klasörde ara</string>
+    <string name="file_browser_search_hint">Bu klasörde ara</string>
     <string name="cd_open_search">Aramayı aç</string>
     <string name="cd_close_search">Aramayı kapat</string>
     <string name="cd_clear_search">Arama içeriğini temizle</string>
