@@ -141,7 +141,7 @@
     <string name="sobel_edge">Drahtgitter</string>
     <string name="start">Start</string>
     <string name="spin_again">Erneut drehen</string>
-    <string name="result_is">Ergebnis ist</string>
+    <string name="result_is">Als Ergebnis,</string>
     <string name="end">Ende</string>
     <string name="box_blur">Box-Unschärfe</string>
     <string name="bilaterial_blur">Bilaterale Unschärfe</string>
@@ -866,7 +866,7 @@
     <string name="compression_type">Komprimierungstyp</string>
     <string name="speed_sub">Steuert die Dekodierungsgeschwindigkeit des generierten Bildes – dies hilft, es schneller zu öffnen. %1$d bedeutet die langsamste Dekodierungsgeschwindigkeit und %2$d die schnellste. Diese Einstellung kann die Ausgabebildgröße erhöhen</string>
     <string name="sorting">Sortieren</string>
-    <string name="sort_by_date">Nach Datum sortieren</string>
+    <string name="sort_by_date">Nach Änderungsdatum sortieren</string>
     <string name="sort_by_date_reversed">Nach Datum sortieren (umgekehrt)</string>
     <string name="sort_by_name">Nach Name sortieren</string>
     <string name="sort_by_name_reversed">Nach Name sortieren (umgekehrt)</string>
@@ -1648,7 +1648,7 @@
     <string name="password">Passwort</string>
     <string name="unlock">Entsperren</string>
     <string name="pdf_is_protected">PDF ist geschützt</string>
-    <string name="sort_by_size">Größe</string>
+    <string name="sort_by_size">Nach Größe sortieren</string>
     <string name="sort_by_size_reversed">Größe (umgekehrt)</string>
     <string name="sort_by_mime_type">MIME-Typ</string>
     <string name="sort_by_mime_type_reversed">MIME-Typ (umgekehrt)</string>
@@ -1930,7 +1930,7 @@
     <string name="cant_remove_all">Nicht alle Seiten können entfernt werden</string>
     <string name="pages_short">Seiten</string>
     <string name="blessing_wall">Segenswand</string>
-    <string name="blessing_wall_sub">Ein tägliches Tippen · Glück folgt</string>
+    <string name="blessing_wall_sub">Ein täglicher Tipp · Glück folgt</string>
     <string name="sticker_panel_title">Sticker</string>
     <string name="sticker_category_emoji">Emoji</string>
     <string name="sticker_category_decor">Deko</string>

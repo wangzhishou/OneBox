@@ -317,6 +317,7 @@
     <string name="profile_edit_profile">编辑资料</string>
     <string name="profile_stats_functions">功能</string>
     <string name="profile_stats_points">积分</string>
+    <string name="profile_stats_points_play_hint">玩游戏赚积分</string>
     <string name="profile_stats_files">文件</string>
     <string name="profile_boot_button">免费提需求，反馈问题</string>
     <string name="profile_setting_help">使用有问题？点我看看</string>
@@ -376,7 +377,7 @@
     <string name="json_exception">数据解析错误：\n %s ···</string>
     <string name="load_failure">网络加载数据失败：\n %s ···</string>
     <string name="url_error_tips">网址必须是‘http’或‘https’开头，反斜杠‘/’结束</string>
-    <string name="temperature">采样温度设置</string>
+    <string name="temperature">色温</string>
     <string name="ai_temperature">采样温度设置</string>
     <string name="ai_temperature_desc">较高的值（如 0.7）将使输出更加随机，而较低的值（如 0.2）将使其更加集中和确定性</string>
     <string name="ai_cannot_proxy">该模型本APP不支持代理</string>
@@ -387,7 +388,7 @@
     <string name="ai_top_p">概率质量</string>
     <string name="ai_top_p_desc">影响输出文本的多样性，取值越大，生成文本的多样性越强</string>
     <string name="default_folder">Documents/OneBox</string>
-    <string name="unspecified">Unspecified</string>
+    <string name="unspecified">未指定</string>
     <string name="ai_save_path">存储路径</string>
     <string name="save_path_dialog_title">文件另存为</string>
     <string name="ai_question">问题：</string>
@@ -670,7 +671,7 @@
     <string name="ai_history_rename_title">重命名会话</string>
     <string name="ai_history_rename_hint">输入新的会话标题</string>
     <string name="ai_history_rename_empty">请输入会话标题</string>
-    <string name="confirm">确认</string>
+    <string name="confirm">确定</string>
     <string name="free">免费</string>
     <string name="token_price">每1000个字大约消耗 %s 积分</string>
     <string name="max_length_error">字数超出了限制</string>
@@ -826,9 +827,9 @@
     <string name="preview">预览</string>
     <string name="prompt_prompt">功能指令</string>
     <string name="select_groups">分类选择</string>
-    <string name="title">标题名称</string>
+    <string name="title">职位</string>
     <string name="prompt_create">提示词</string>
-    <string name="cancel">你的操作已取消</string>
+    <string name="cancel">取消</string>
     <string name="settings">设置</string>
     <string name="profile_group_ai_settings">AI 设置</string>
     <string name="profile_item_ai_feature_settings">功能开关</string>
@@ -1059,8 +1060,8 @@
     <string name="item_note_description">记录点点滴滴</string>
     <string name="decision_wheel_title">决策转盘</string>
     <string name="decision_wheel_description">转盘随机抉择需要做的事情。例如：今天吃什么</string>
-    <string name="file_transfer_title">文件传输助手</string>
-    <string name="file_transfer_description">局域网内电脑和手机之间文件传输</string>
+    <string name="file_transfer_title">文件传输</string>
+    <string name="file_transfer_description">通过浏览器访问手机文件</string>
     <string name="cloud_storage_title">远程存储</string>
     <string name="cloud_storage_description">支持SMB、WebDAV、S3等协议的存储文件</string>
     <string name="reorderable_category">管理分类</string>
@@ -1354,11 +1355,11 @@
     <string name="gradient_style_neon_cyber">电子梦境</string>
     <string name="custom_background">自定义背景</string>
     <string name="custom_background_pick">选择背景图片</string>
-    <string name="custom_background_clear">清除自定义背景</string>
+    <string name="custom_background_clear">清除</string>
     <string name="custom_background_overlay_alpha">遮罩透明度</string>
 
     <!-- Theme Presets -->
-    <string name="theme_preset_section">主题风格</string>
+    <string name="theme_preset_section">选择主题</string>
     <string name="theme_preset_create">新建主题</string>
     <string name="theme_preset_create_title">新建主题</string>
     <string name="theme_preset_name_hint">主题名称</string>
@@ -1386,19 +1387,19 @@
     <string name="theme_preset_copy_suffix">的副本</string>
     <string name="theme_settings_title">主题设置</string>
     <string name="theme_settings_description">自定义颜色、玻璃效果和背景风格</string>
-    <string name="theme_preset_new">+ 新建</string>
-    <string name="theme_preset_primary_color">主要颜色</string>
-    <string name="theme_preset_secondary_color">次要颜色</string>
-    <string name="theme_preset_tertiary_color">三级颜色</string>
-    <string name="theme_preset_surface_color">表面颜色</string>
-    <string name="theme_preset_preview_gradient">预览%s背景</string>
-    <string name="theme_discard_title">放弃修改？</string>
-    <string name="theme_discard_message">当前修改尚未保存，退出将恢复到之前的主题设置</string>
+    <string name="theme_preset_new">新建</string>
+    <string name="theme_preset_primary_color">主色</string>
+    <string name="theme_preset_secondary_color">次要色</string>
+    <string name="theme_preset_tertiary_color">第三色</string>
+    <string name="theme_preset_surface_color">背景色</string>
+    <string name="theme_preset_preview_gradient">预览：%s</string>
+    <string name="theme_discard_title">放弃修改</string>
+    <string name="theme_discard_message">确定要放弃当前未保存的修改吗？</string>
     <string name="theme_discard_confirm">放弃</string>
     <string name="theme_discard_dismiss">继续编辑</string>
     <string name="theme_color_picker_done">完成</string>
-    <string name="theme_delete_confirm_title">确认删除</string>
-    <string name="theme_delete_confirm_message">确定要删除主题「%s」吗？此操作无法撤销。</string>
+    <string name="theme_delete_confirm_title">删除主题</string>
+    <string name="theme_delete_confirm_message">确定要删除主题"%s"吗？此操作不可撤销。</string>
     <string name="theme_delete_confirm_ok">删除</string>
     <string name="theme_delete_confirm_cancel">取消</string>
 
@@ -1910,8 +1911,8 @@
     <string name="blessing_wall">祈福墙</string>
     <string name="poem">中国古诗词</string>
     <string name="poem_sub">每日一诗 · AI 解读</string>
-    <string name="poem_search">诗词搜索</string>
-    <string name="poem_history">诗词历史</string>
+    <string name="poem_search">搜索</string>
+    <string name="poem_history">历史</string>
     <string name="blessing_wall_sub">每日一点 · 好运相伴</string>
     <string name="profile_item_open_source">开源项目</string>
     <string name="profile_item_open_source_sub">查看源码，欢迎 Star 与反馈</string>

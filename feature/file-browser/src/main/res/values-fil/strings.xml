@@ -24,10 +24,10 @@
     <string name="sort_date">Oras</string>
     <string name="sort_size">Laki</string>
     <string name="sort_type">Uri</string>
-    <string name="file_size_bytes">%s B</string>
-    <string name="file_size_kb">%s KB</string>
-    <string name="file_size_mb">%s MB</string>
-    <string name="file_size_gb">%s GB</string>
+    <string name="file_size_bytes">%d B</string>
+    <string name="file_size_kb">%.1f KB</string>
+    <string name="file_size_mb">%.1f MB</string>
+    <string name="file_size_gb">%.1f GB</string>
     <string name="file_items_count">%d item</string>
     <string name="folder_label">Folder</string>
     <string name="file_label">File</string>
@@ -39,7 +39,7 @@
     <string name="error_loading_message">Hindi na-load ang listahan ng mga file</string>
     <string name="error_file_not_found">Hindi Natagpuan ang File</string>
     <string name="error_permission_denied">Tinanggihan ang Pahintulot</string>
-    <string name="retry">Subukang Muli</string>
+    <string name="retry">Subukan muli</string>
     <string name="loading">Naglo-load…</string>
     <string name="root_path">Root na Direktoryo</string>
     <string name="storage_path">Storage</string>

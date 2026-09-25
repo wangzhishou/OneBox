@@ -6,7 +6,7 @@
     <string name="close">닫기</string>
     <string name="smth_went_wrong">오류가 발생했습니다: %1$s</string>
     <string name="size">크기 %1$s</string>
-    <string name="loading">로딩 중…</string>
+    <string name="loading">로드 중…</string>
     <string name="image_too_large_preview">이미지가 너무 커서 미리보기할 수 없지만, 저장은 됩니다</string>
     <string name="width">너비 %1$s</string>
     <string name="quality">품질</string>
@@ -141,7 +141,7 @@
     <string name="sobel_edge">와이어프레임</string>
     <string name="start">시작</string>
     <string name="spin_again">다시 돌리기</string>
-    <string name="result_is">결과는</string>
+    <string name="result_is">결과적으로,</string>
     <string name="end">종료</string>
     <string name="box_blur">박스 블러</string>
     <string name="bilaterial_blur">양측 블러</string>
@@ -864,7 +864,7 @@
     <string name="compression_type">압축 유형</string>
     <string name="speed_sub">생성된 이미지의 디코딩 속도를 제어합니다 — 더 빠르게 열 수 있도록 도와줍니다. %1$d은(는) 가장 느린 디코딩 속도를 의미하고 %2$d은(는) 가장 빠른 속도를 의미합니다. 이 설정은 출력 이미지 크기를 증가시킬 수 있습니다</string>
     <string name="sorting">정렬</string>
-    <string name="sort_by_date">날짜순 정렬</string>
+    <string name="sort_by_date">수정 시간순 정렬</string>
     <string name="sort_by_date_reversed">날짜순 정렬(역순)</string>
     <string name="sort_by_name">이름순 정렬</string>
     <string name="sort_by_name_reversed">이름순 정렬(역순)</string>
@@ -1646,7 +1646,7 @@
     <string name="password">비밀번호</string>
     <string name="unlock">잠금 해제</string>
     <string name="pdf_is_protected">PDF가 보호되어 있습니다</string>
-    <string name="sort_by_size">크기</string>
+    <string name="sort_by_size">크기순 정렬</string>
     <string name="sort_by_size_reversed">크기 (역순)</string>
     <string name="sort_by_mime_type">MIME 유형</string>
     <string name="sort_by_mime_type_reversed">MIME 유형 (역순)</string>
@@ -1762,7 +1762,7 @@
     <string name="lock_screen">잠금 화면</string>
     <string name="built_in">내장</string>
     <string name="wallpapers_export">배경화면 내보내기</string>
-    <string name="refresh">새로 고침</string>
+    <string name="refresh">새로고침</string>
     <string name="wallpapers_export_sub">현재 홈 화면, 잠금 화면 및 내장 배경화면 가져오기</string>
     <string name="allow_access_to_all_files_for_wp">모든 파일에 대한 접근 허용 — 배경화면을 가져오는 데 필요합니다</string>
     <string name="allow_read_media_images_for_wp">외부 저장소 관리 권한만으로는 충분하지 않습니다 — 이미지에 대한 접근을 허용해야 하며, \"모두 허용\"을 선택했는지 확인하세요</string>
@@ -1928,7 +1928,7 @@
     <string name="cant_remove_all">모든 페이지를 제거할 수 없습니다</string>
     <string name="pages_short">페이지</string>
     <string name="blessing_wall">축복의 벽</string>
-    <string name="blessing_wall_sub">매일 탭 · 행운이 따릅니다</string>
+    <string name="blessing_wall_sub">매일 탭 · 행운이 따르네</string>
     <string name="sticker_panel_title">스티커</string>
     <string name="sticker_category_emoji">이모티콘</string>
     <string name="sticker_category_decor">장식</string>

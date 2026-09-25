@@ -141,7 +141,7 @@
     <string name="sobel_edge">ワイヤーフレーム</string>
     <string name="start">開始</string>
     <string name="spin_again">もう一度回す</string>
-    <string name="result_is">結果は</string>
+    <string name="result_is">結果として、</string>
     <string name="end">終了</string>
     <string name="box_blur">ボックスブラー</string>
     <string name="bilaterial_blur">バイラテラルブラー</string>
@@ -865,7 +865,7 @@
     <string name="compression_type">圧縮タイプ</string>
     <string name="speed_sub">生成画像のデコード速度を制御します — これにより、より速く開くことができます。%1$dは最も遅いデコード速度を意味し、%2$dは最も速い速度を意味します。この設定は出力画像サイズを増やす可能性があります</string>
     <string name="sorting">並べ替え</string>
-    <string name="sort_by_date">日付で並べ替え</string>
+    <string name="sort_by_date">更新日時で並べ替え</string>
     <string name="sort_by_date_reversed">日付で並べ替え（逆順）</string>
     <string name="sort_by_name">名前で並べ替え</string>
     <string name="sort_by_name_reversed">名前で並べ替え（逆順）</string>
@@ -1647,7 +1647,7 @@
     <string name="password">パスワード</string>
     <string name="unlock">ロック解除</string>
     <string name="pdf_is_protected">PDFは保護されています</string>
-    <string name="sort_by_size">サイズ</string>
+    <string name="sort_by_size">サイズで並べ替え</string>
     <string name="sort_by_size_reversed">サイズ（逆順）</string>
     <string name="sort_by_mime_type">MIMEタイプ</string>
     <string name="sort_by_mime_type_reversed">MIMEタイプ（逆順）</string>

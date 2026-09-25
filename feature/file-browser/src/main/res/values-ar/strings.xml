@@ -20,10 +20,10 @@
     <string name="sort_date">الوقت</string>
     <string name="sort_size">الحجم</string>
     <string name="sort_type">النوع</string>
-    <string name="file_size_bytes">%s B</string>
-    <string name="file_size_kb">%s KB</string>
-    <string name="file_size_mb">%s MB</string>
-    <string name="file_size_gb">%s GB</string>
+    <string name="file_size_bytes">%d بايت</string>
+    <string name="file_size_kb">%.1f كيلوبايت</string>
+    <string name="file_size_mb">%.1f ميجابايت</string>
+    <string name="file_size_gb">%.1f جيجابايت</string>
     <string name="file_items_count">العنصر   %d </string>
     <string name="folder_label">مجلد</string>
     <string name="file_label">مستند</string>

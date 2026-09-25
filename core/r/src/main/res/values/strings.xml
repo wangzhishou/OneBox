@@ -295,6 +295,7 @@
     <string name="profile_edit_profile">Edit Profile</string>
     <string name="profile_stats_functions">Functions</string>
     <string name="profile_stats_points">Points</string>
+    <string name="profile_stats_points_play_hint">Play to earn points</string>
     <string name="profile_stats_files">Files</string>
     <string name="profile_boot_button">Request Features / Report Issues</string>
     <string name="profile_setting_help">Need help? Tap here</string>
@@ -366,7 +367,7 @@
     <string name="ai_question">Question:</string>
     <string name="ai_answer">Answer</string>
     <string name="ai_chat_delete_message">Confirm deletion to keep your data safe.</string>
-    <string name="delete_item_confirm_message">Delete "%1$s"?</string>
+    <string name="delete_item_confirm_message">Are you sure you want to delete \"%1$s\"?</string>
 
 
     <string name="copy_errors">Copy Error</string>
@@ -642,12 +643,12 @@
     <string name="ai_history_rename_title">Rename Session</string>
     <string name="ai_history_rename_hint">Enter a new title</string>
     <string name="ai_history_rename_empty">Please enter a title</string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">OK</string>
     <string name="free">Free</string>
     <string name="token_price">Approx. %s points per 1000 characters</string>
     <string name="max_length_error">Character limit exceeded</string>
     <string name="clear">Clear</string>
-    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="copied_to_clipboard">Copyed to clipboard</string>
     <string name="edit">Edit</string>
     <string name="copy">Copy</string>
     <string name="error_unknown_element_type">Data parsing error. Try updating the app or clearing the cache.</string>
@@ -716,7 +717,7 @@
     <string name="ai_default_name">AI Assistant</string>
     <string name="search_in_progress">Searching…</string>
     <string name="need_update_new_version">Update to the latest version to use this feature.</string>
-    <string name="favorite">Favorites</string>
+    <string name="favorite">Favorite</string>
     <string name="favorite_description">Favorites</string>
     <string name="see_all">See All</string>
     <string name="local_tips">Works offline, free to use</string>
@@ -794,7 +795,7 @@
     <string name="select_groups">Select Categories</string>
     <string name="title">Title</string>
     <string name="prompt_create">Prompt</string>
-    <string name="cancel">Cancelled</string>
+    <string name="cancel">Cancel</string>
     <string name="settings">Settings</string>
     <string name="profile_group_ai_settings">AI Settings</string>
     <string name="profile_item_ai_service_and_models">Services &amp; Models</string>
@@ -1014,7 +1015,7 @@
     <string name="decision_wheel_title">Decision Wheel</string>
     <string name="decision_wheel_description">Spin the wheel to make random decisions. E.g., What\'s for dinner?</string>
     <string name="file_transfer_title">File Transfer</string>
-    <string name="file_transfer_description">Transfer files between your computer and phone over LAN.</string>
+    <string name="file_transfer_description">Access your phone files from a browser</string>
     <string name="cloud_storage_title">Cloud Storage Browser</string>
     <string name="cloud_storage_description">Access and manage buckets and objects across multi-cloud object storage.</string>
     <string name="reorderable_category">Manage Categories</string>
@@ -1056,7 +1057,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="file_browser_escription">Browse files and folders, view and edit images.</string>
     <string name="file_not_found">Folder not found</string>
 
-    <string name="need_required_permissions_to_save_file">Storage permission required to save files.</string>
+    <string name="need_required_permissions_to_save_file">Storage permission is required to save files</string>
     <string name="all_files_access_permission_title">Enable "All Files Access"</string>
     <string name="all_files_access_permission_description">This permission is needed for full file browsing, management, and transfer features. Some features may not work without it.</string>
     <string name="go_to_grant">Grant Permission</string>
@@ -1264,7 +1265,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <!-- I Ching Divination -->
     <string name="iching_divination_title">I Ching Divination</string>
     <string name="iching_divination_description">Cast six lines by shaking your phone and explore the hexagram with AI</string>
-    <string name="iching_history_title">I Ching History</string>
+    <string name="iching_history_title">Casting history</string>
     <string name="iching_history_description">Review saved questions, hexagrams, changing lines, and AI interpretations</string>
 
     <!-- Teleprompter -->
@@ -1276,8 +1277,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_detect_description">Detect whether text or images are AI-generated.</string>
 
     <!-- Glass / Background -->
-    <string name="glass_alpha_effect">Glass Effect</string>
-    <string name="liquid_glass_effect">Liquid Glass Effect</string>
+    <string name="glass_alpha_effect">Frosted Glass</string>
+    <string name="liquid_glass_effect">Liquid Glass</string>
     <string name="mesh_gradient_background">Gradient Background</string>
     <string name="gradient_style_label">Background Style</string>
     <string name="gradient_style_classic">Classic</string>
@@ -1290,21 +1291,21 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="gradient_style_lavender">Lavender Field</string>
     <string name="gradient_style_warm_glow">Caramel Glow</string>
     <string name="gradient_style_ethereal">Silk Mist</string>
-    <string name="gradient_style_neon_cyber">Electric Dream</string>
+    <string name="gradient_style_neon_cyber">Cyber Dream</string>
     <string name="custom_background">Custom Background</string>
-    <string name="custom_background_pick">Pick Image</string>
-    <string name="custom_background_clear">Clear Custom Background</string>
+    <string name="custom_background_pick">Pick Background Image</string>
+    <string name="custom_background_clear">Clear</string>
     <string name="custom_background_overlay_alpha">Overlay Opacity</string>
 
     <!-- Theme Presets -->
-    <string name="theme_preset_section">Choose Theme</string>
+    <string name="theme_preset_section">Choose a Theme</string>
     <string name="theme_preset_create">New Theme</string>
     <string name="theme_preset_create_title">New Theme</string>
     <string name="theme_preset_name_hint">Theme name</string>
     <string name="theme_preset_save">Save</string>
     <string name="theme_preset_cancel">Cancel</string>
     <string name="theme_preset_delete">Delete</string>
-    <string name="theme_preset_copy">Copy Theme</string>
+    <string name="theme_preset_copy">Duplicate Theme</string>
     <string name="theme_preset_glass_alpha">Glass Opacity</string>
     <string name="theme_preset_color_section">Color Scheme</string>
     <string name="theme_preset_glass_section">Glass Effect</string>
@@ -1325,19 +1326,19 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="theme_preset_copy_suffix"> Copy</string>
     <string name="theme_settings_title">Theme Settings</string>
     <string name="theme_settings_description">Customize colors, glass effects, and backgrounds.</string>
-    <string name="theme_preset_new">+ New</string>
+    <string name="theme_preset_new">New</string>
     <string name="theme_preset_primary_color">Primary</string>
     <string name="theme_preset_secondary_color">Secondary</string>
     <string name="theme_preset_tertiary_color">Tertiary</string>
-    <string name="theme_preset_surface_color">Surface</string>
-    <string name="theme_preset_preview_gradient">Preview %s background</string>
-    <string name="theme_discard_title">Discard changes?</string>
-    <string name="theme_discard_message">You have unsaved changes. Exiting will revert to the previous theme.</string>
+    <string name="theme_preset_surface_color">Background</string>
+    <string name="theme_preset_preview_gradient">Preview: %s</string>
+    <string name="theme_discard_title">Discard Changes</string>
+    <string name="theme_discard_message">Discard all unsaved changes?</string>
     <string name="theme_discard_confirm">Discard</string>
     <string name="theme_discard_dismiss">Keep Editing</string>
     <string name="theme_color_picker_done">Done</string>
-    <string name="theme_delete_confirm_title">Confirm Delete</string>
-    <string name="theme_delete_confirm_message">Delete theme "%s"? This cannot be undone.</string>
+    <string name="theme_delete_confirm_title">Delete Theme</string>
+    <string name="theme_delete_confirm_message">Delete theme \"%s\"? This action cannot be undone.</string>
     <string name="theme_delete_confirm_ok">Delete</string>
     <string name="theme_delete_confirm_cancel">Cancel</string>
 
@@ -1423,8 +1424,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_model_tag_speed">Speed</string>
     <string name="ai_model_tag_fast">Fast</string>
     <string name="ai_model_tag_code">Code</string>
-    <string name="ai_engine_capability_fast">Fast Models</string>
-    <string name="ai_engine_capability_code">Code Models</string>
+    <string name="ai_engine_capability_fast">Fast Model</string>
+    <string name="ai_engine_capability_code">Code Model</string>
     <string name="ai_model_tag_reasoning">Reasoning</string>
     <string name="ai_model_tag_vision">Vision</string>
     <string name="ai_model_tag_context">Long Context</string>
@@ -1734,7 +1735,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <!-- Password protection global lock screen -->
     <string name="auth_code_title">Access Verification</string>
     <string name="auth_code_settings_title">Password Protection</string>
-    <string name="auth_code_settings_subtitle">Verify identity before sensitive actions</string>
+    <string name="auth_code_settings_subtitle">Verify your identity before sensitive operations</string>
 
     <string name="a2ui_screen">A2UI Renderer</string>
     <string name="a2ui_screen_description">Dynamic UI rendering via A2UI protocol</string>
@@ -1929,8 +1930,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="blessing_wall">Blessing Wall</string>
     <string name="poem">Chinese Poetry</string>
     <string name="poem_sub">A poem a day · AI insight</string>
-    <string name="poem_search">Poetry Search</string>
-    <string name="poem_history">Poetry History</string>
+    <string name="poem_search">Search</string>
+    <string name="poem_history">History</string>
     <string name="blessing_wall_sub">A daily tap · Good luck follows</string>
 
     <string name="profile_item_open_source">Open Source Project</string>

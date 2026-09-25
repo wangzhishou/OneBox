@@ -22,7 +22,7 @@
     <string name="close">關閉</string>
     <string name="smth_went_wrong">發生錯誤：%1$s</string>
     <string name="size">大小 %1$s</string>
-    <string name="loading">載入中……</string>
+    <string name="loading">載入中…</string>
     <string name="image_too_large_preview">圖片太大，無法預覽，但仍然會嘗試儲存</string>
     <string name="width">寬 %1$s</string>
     <string name="quality">品質</string>
@@ -156,7 +156,7 @@
     <string name="crosshatch">掃描線</string>
     <string name="sobel_edge">線框</string>
     <string name="start">開始</string>
-    <string name="spin_again">再轉一次</string>
+    <string name="spin_again">重新旋轉</string>
     <string name="result_is">結果是</string>
     <string name="end">結束</string>
     <string name="box_blur">方框模糊</string>
@@ -882,9 +882,9 @@
     <string name="compression_type">壓縮方式</string>
     <string name="speed_sub">控制產生圖片的解碼速度，這將有助於更快地開啟產生圖片，%1$d 表示最慢的解碼速度，而 %2$d 表示最快的解碼速度，此設定可能會增加輸出圖片的大小</string>
     <string name="sorting">篩選</string>
-    <string name="sort_by_date">按日期排序</string>
+    <string name="sort_by_date">依修改時間排序</string>
     <string name="sort_by_date_reversed">按日期排序（反向）</string>
-    <string name="sort_by_name">按名稱排序</string>
+    <string name="sort_by_name">依名稱排序</string>
     <string name="sort_by_name_reversed">按名稱排序（反向）</string>
     <string name="pick_multiple_media">選擇多種媒體</string>
     <string name="pick">選取</string>
@@ -1158,7 +1158,7 @@
     <string name="no_template_filters">未新增模板濾鏡</string>
     <string name="template">模板</string>
     <string name="scanned_qr_code_isnt_filter_template">掃描的二維碼不是有效的濾鏡模板</string>
-    <string name="scan_qr_code">掃描二維碼</string>
+    <string name="scan_qr_code">掃描二維碼存取</string>
     <string name="added_filter_template">已新增濾鏡模板，名稱為\"%1$s\" (%2$d)</string>
     <string name="min">最小</string>
     <string name="grant_camera_permission_to_scan_qr_code">在設定中授予相機掃描二維碼的權限</string>
@@ -1514,7 +1514,7 @@
     <string name="material_2_sub">基於 Material 2 的滑桿，不具現代感，簡單且直接</string>
     <string name="fancy_sub">帶有動畫效果的訂製精美滑桿，這是這款應用程式的預設設定</string>
     <string name="material_you_slider_sub">現代基於 Material You 設計的滑桿，充滿未來感、新穎獨特，方便易用</string>
-    <string name="apply">接受</string>
+    <string name="apply">應用程式</string>
     <string name="center_align_dialog_buttons">置中對話框按鈕</string>
     <string name="open_source_licenses">開源授權條款</string>
     <string name="open_source_licenses_sub">檢視此應用程式中所使用的開源函式庫的授權條款</string>
@@ -1672,7 +1672,7 @@
     <string name="password">密碼</string>
     <string name="unlock">解鎖</string>
     <string name="pdf_is_protected">PDF已受保護</string>
-    <string name="sort_by_size">大小</string>
+    <string name="sort_by_size">依大小排序</string>
     <string name="sort_by_size_reversed">大小（反向）</string>
     <string name="sort_by_mime_type">MIME 類型</string>
     <string name="sort_by_mime_type_reversed">MIME 類型（反向）</string>

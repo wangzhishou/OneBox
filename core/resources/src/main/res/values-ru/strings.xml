@@ -140,8 +140,8 @@
     <string name="crosshatch">Штриховка</string>
     <string name="sobel_edge">Каркас</string>
     <string name="start">Начать</string>
-    <string name="spin_again">Крутить снова</string>
-    <string name="result_is">Результат:</string>
+    <string name="spin_again">Повернуть снова</string>
+    <string name="result_is">В результате,</string>
     <string name="end">Конец</string>
     <string name="box_blur">Размытие по коробке</string>
     <string name="bilaterial_blur">Двустороннее размытие</string>
@@ -866,7 +866,7 @@
     <string name="compression_type">Тип сжатия</string>
     <string name="speed_sub">Управляет скоростью декодирования сгенерированного изображения — это помогает открывать его быстрее. %1$d означает самую медленную скорость декодирования, а %2$d — самую быструю. Этот параметр может увеличить размер выходного изображения</string>
     <string name="sorting">Сортировка</string>
-    <string name="sort_by_date">Сортировать по дате</string>
+    <string name="sort_by_date">Сортировать по дате изменения</string>
     <string name="sort_by_date_reversed">Сортировать по дате (обратно)</string>
     <string name="sort_by_name">Сортировать по имени</string>
     <string name="sort_by_name_reversed">Сортировать по имени (обратно)</string>
@@ -1648,7 +1648,7 @@
     <string name="password">Пароль</string>
     <string name="unlock">Разблокировать</string>
     <string name="pdf_is_protected">PDF защищён</string>
-    <string name="sort_by_size">Размер</string>
+    <string name="sort_by_size">Сортировать по размеру</string>
     <string name="sort_by_size_reversed">Размер (обратный)</string>
     <string name="sort_by_mime_type">MIME-тип</string>
     <string name="sort_by_mime_type_reversed">MIME-тип (обратный)</string>
@@ -1930,7 +1930,7 @@
     <string name="cant_remove_all">Не удается удалить все страницы</string>
     <string name="pages_short">Страницы</string>
     <string name="blessing_wall">Стена благословений</string>
-    <string name="blessing_wall_sub">Ежедневное касание · Удача следует за вами</string>
+    <string name="blessing_wall_sub">Одно касание в день · Удача рядом</string>
     <string name="sticker_panel_title">Стикеры</string>
     <string name="sticker_category_emoji">Эмодзи</string>
     <string name="sticker_category_decor">Декор</string>

@@ -141,7 +141,7 @@
     <string name="sobel_edge">Kerangka kawat</string>
     <string name="start">Mulai</string>
     <string name="spin_again">Putar lagi</string>
-    <string name="result_is">Hasilnya adalah</string>
+    <string name="result_is">Sebagai hasilnya,</string>
     <string name="end">Selesai</string>
     <string name="box_blur">Blur kotak</string>
     <string name="bilaterial_blur">Blur bilateral</string>
@@ -866,7 +866,7 @@
     <string name="compression_type">Jenis kompresi</string>
     <string name="speed_sub">Mengontrol kecepatan decoding gambar yang dihasilkan — ini membantu membukanya lebih cepat. %1$d berarti kecepatan decoding paling lambat, dan %2$d berarti paling cepat. Pengaturan ini dapat meningkatkan ukuran gambar keluaran</string>
     <string name="sorting">Urutkan</string>
-    <string name="sort_by_date">Urutkan berdasarkan tanggal</string>
+    <string name="sort_by_date">Urutkan berdasarkan waktu diubah</string>
     <string name="sort_by_date_reversed">Urutkan berdasarkan tanggal (terbalik)</string>
     <string name="sort_by_name">Urutkan berdasarkan nama</string>
     <string name="sort_by_name_reversed">Urutkan berdasarkan nama (terbalik)</string>
@@ -1142,7 +1142,7 @@
     <string name="no_template_filters">Belum ada template filter yang ditambahkan</string>
     <string name="template">Template</string>
     <string name="scanned_qr_code_isnt_filter_template">Kode QR yang dipindai bukan template filter yang valid</string>
-    <string name="scan_qr_code">Pindai kode QR</string>
+    <string name="scan_qr_code">Pindai Kode QR</string>
     <string name="added_filter_template">Templat filter bernama \"%1$s\" ditambahkan (%2$d)</string>
     <string name="min">Min</string>
     <string name="grant_camera_permission_to_scan_qr_code">Beri izin kamera di pengaturan untuk memindai kode QR</string>
@@ -1648,7 +1648,7 @@
     <string name="password">Kata sandi</string>
     <string name="unlock">Buka kunci</string>
     <string name="pdf_is_protected">PDF dilindungi</string>
-    <string name="sort_by_size">Ukuran</string>
+    <string name="sort_by_size">Urutkan berdasarkan ukuran</string>
     <string name="sort_by_size_reversed">Ukuran (terbalik)</string>
     <string name="sort_by_mime_type">Tipe MIME</string>
     <string name="sort_by_mime_type_reversed">Tipe MIME (terbalik)</string>
@@ -1930,7 +1930,7 @@
     <string name="cant_remove_all">Tidak dapat menghapus semua halaman</string>
     <string name="pages_short">Halaman</string>
     <string name="blessing_wall">Dinding Berkah</string>
-    <string name="blessing_wall_sub">Ketukan harian · Keberuntungan menyertai</string>
+    <string name="blessing_wall_sub">Ketuk setiap hari · Keberuntungan mengikuti</string>
     <string name="sticker_panel_title">Stiker</string>
     <string name="sticker_category_emoji">Emoji</string>
     <string name="sticker_category_decor">Dekorasi</string>

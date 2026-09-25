@@ -139,9 +139,9 @@
     <string name="vibrance">वाइब्रेंस</string>
     <string name="crosshatch">क्रॉसहैच</string>
     <string name="sobel_edge">वायरफ्रेम</string>
-    <string name="start">प्रारंभ</string>
+    <string name="start">शुरू करें</string>
     <string name="spin_again">फिर से घुमाएं</string>
-    <string name="result_is">परिणाम है</string>
+    <string name="result_is">परिणामस्वरूप,</string>
     <string name="end">समाप्त</string>
     <string name="box_blur">बॉक्स ब्लर</string>
     <string name="bilaterial_blur">बाइलेटरल ब्लर</string>
@@ -866,9 +866,9 @@
     <string name="compression_type">संपीड़न प्रकार</string>
     <string name="speed_sub">उत्पन्न छवि की डिकोडिंग गति को नियंत्रित करता है — यह इसे तेज़ी से खोलने में मदद करता है। %1$d का अर्थ है सबसे धीमी डिकोडिंग गति, और %2$d का अर्थ है सबसे तेज़। यह सेटिंग आउटपुट छवि आकार बढ़ा सकती है</string>
     <string name="sorting">क्रमबद्ध करें</string>
-    <string name="sort_by_date">दिनांक के अनुसार क्रमबद्ध करें</string>
+    <string name="sort_by_date">संशोधन समय से क्रमबद्ध करें</string>
     <string name="sort_by_date_reversed">दिनांक के अनुसार क्रमबद्ध करें (उल्टा)</string>
-    <string name="sort_by_name">नाम के अनुसार क्रमबद्ध करें</string>
+    <string name="sort_by_name">नाम से क्रमबद्ध करें</string>
     <string name="sort_by_name_reversed">नाम के अनुसार क्रमबद्ध करें (उल्टा)</string>
     <string name="pick_multiple_media">एकाधिक मीडिया चुनें</string>
     <string name="pick">चुनें</string>
@@ -1648,7 +1648,7 @@
     <string name="password">पासवर्ड</string>
     <string name="unlock">अनलॉक करें</string>
     <string name="pdf_is_protected">PDF सुरक्षित है</string>
-    <string name="sort_by_size">आकार</string>
+    <string name="sort_by_size">आकार से क्रमबद्ध करें</string>
     <string name="sort_by_size_reversed">आकार (उल्टा)</string>
     <string name="sort_by_mime_type">MIME प्रकार</string>
     <string name="sort_by_mime_type_reversed">MIME प्रकार (उल्टा)</string>
@@ -1764,7 +1764,7 @@
     <string name="lock_screen">लॉक स्क्रीन</string>
     <string name="built_in">अंतर्निहित</string>
     <string name="wallpapers_export">वॉलपेपर निर्यात</string>
-    <string name="refresh">ताज़ा करें</string>
+    <string name="refresh">रीफ़्रेश करें</string>
     <string name="wallpapers_export_sub">वर्तमान होम स्क्रीन, लॉक स्क्रीन और अंतर्निहित वॉलपेपर प्राप्त करें</string>
     <string name="allow_access_to_all_files_for_wp">सभी फ़ाइलों तक पहुंच की अनुमति दें — वॉलपेपर लाने के लिए यह आवश्यक है</string>
     <string name="allow_read_media_images_for_wp">बाहरी स्टोरेज प्रबंधन अनुमति अकेले पर्याप्त नहीं है — आपको अपनी छवियों तक पहुंच की अनुमति देनी होगी, कृपया सुनिश्चित करें कि आप \"सभी की अनुमति दें\" चुनें</string>
@@ -1930,7 +1930,7 @@
     <string name="cant_remove_all">सभी पृष्ठ हटाए नहीं जा सकते</string>
     <string name="pages_short">पृष्ठ</string>
     <string name="blessing_wall">आशीर्वाद दीवार</string>
-    <string name="blessing_wall_sub">दैनिक टैप · शुभकामनाएँ साथ चलती हैं</string>
+    <string name="blessing_wall_sub">रोज़ एक टैप · सौभाग्य साथ चले</string>
     <string name="sticker_panel_title">स्टिकर</string>
     <string name="sticker_category_emoji">इमोजी</string>
     <string name="sticker_category_decor">डेकोर</string>

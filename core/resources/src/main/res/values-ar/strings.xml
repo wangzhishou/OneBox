@@ -19,10 +19,10 @@
     <string name="something_went_wrong">حدث خطأ ما</string>
     <string name="button_retry">إعادة المحاولة</string>
     <string name="pick_image">إختر صورة للبدء</string>
-    <string name="close">أغلِق</string>
+    <string name="close">إغلاق</string>
     <string name="smth_went_wrong">حدث خطأ ما: %1$s</string>
     <string name="size">الحجم %1$s</string>
-    <string name="loading">تحميل…</string>
+    <string name="loading">جارٍ التحميل...</string>
     <string name="image_too_large_preview">الصورة أكبر من تُعايَن، ولكن ستُحفَظ بأي حال.</string>
     <string name="width">العرض %1$s</string>
     <string name="quality">الجودة</string>
@@ -90,7 +90,7 @@
     <string name="reset_image_sub">سيتم التراجع عن تغييرات الصورة لوضعها الاساسي</string>
     <string name="restart_app">أعد تشغيل التطبيق</string>
     <string name="clear">مسح</string>
-    <string name="settings">الاعدادات</string>
+    <string name="settings">الإعدادات</string>
     <string name="night_mode">الوضع الليلي</string>
     <string name="dark">مظلم</string>
     <string name="light">مضيء</string>
@@ -121,7 +121,7 @@
     <string name="nothing_found_by_search">لم يتم العثور على شيء من خلال الاستعلام الخاص بك</string>
     <string name="dynamic_colors_sub">إذا تم تمكينه ، اعتماد ألوان التطبيق لألوان الخلفية</string>
     <string name="failed_to_save">فشل حفظ %d صورة (صور)</string>
-    <string name="add">أضيف</string>
+    <string name="add">إضافة</string>
     <string name="values">القيم</string>
     <string name="permission">إذن</string>
     <string name="grant">منح</string>
@@ -155,9 +155,9 @@
     <string name="vibrance">حيوية</string>
     <string name="crosshatch">تظليل متقاطع</string>
     <string name="sobel_edge">حافة سوبل</string>
-    <string name="start">يبدأ</string>
-    <string name="spin_again">أدر مرة أخرى</string>
-    <string name="result_is">النتيجة هي</string>
+    <string name="start">ابدأ</string>
+    <string name="spin_again">تدوير مرة أخرى</string>
+    <string name="result_is">والنتيجة هي،</string>
     <string name="end">نهاية</string>
     <string name="box_blur">مربع طمس</string>
     <string name="bilaterial_blur">طمس ثنائي الجوهر</string>
@@ -308,7 +308,7 @@
     <string name="skip">يتخطى</string>
     <string name="secondary_customization">التخصيص الثانوي</string>
     <string name="fallback_option">الخيار الاحتياطي</string>
-    <string name="copy">ينسخ</string>
+    <string name="copy">نسخ</string>
     <string name="warning_bytes">يمكن أن يكون الحفظ في وضع %1$s غير مستقر ، لأنه تنسيق غير ضياع</string>
     <string name="edit_screenshot">تحرير لقطة الشاشة</string>
     <string name="aspect_ratio">نسبة الأبعاد</string>
@@ -880,9 +880,9 @@
     <string name="compression_type">نوع الضغط</string>
     <string name="speed_sub">يتحكم في سرعة فك تشفير الصورة الناتجة، وهذا من شأنه أن يساعد في فتح الصورة الناتجة بشكل أسرع، قيمة %1$d تعني أبطأ عملية فك تشفير، بينما %2$d - الأسرع، قد يؤدي هذا الإعداد إلى زيادة حجم الصورة الناتجة</string>
     <string name="sorting">الفرز</string>
-    <string name="sort_by_date">رتب حسب التاريخ</string>
+    <string name="sort_by_date">الترتيب حسب وقت التعديل</string>
     <string name="sort_by_date_reversed">رتب حسب التاريخ(معكوس)</string>
-    <string name="sort_by_name">فرز حسب الاسم</string>
+    <string name="sort_by_name">الترتيب حسب الاسم</string>
     <string name="sort_by_name_reversed">فرز حسب الاسم (معكوس)</string>
     <string name="pick_multiple_media">اختر صور متعددة</string>
     <string name="pick">اختر</string>
@@ -1670,7 +1670,7 @@
     <string name="password">كلمة المرور</string>
     <string name="unlock">فتح</string>
     <string name="pdf_is_protected">ملف PDF محمي</string>
-    <string name="sort_by_size">الحجم</string>
+    <string name="sort_by_size">الترتيب حسب الحجم</string>
     <string name="sort_by_size_reversed">الحجم (عكسي)</string>
     <string name="sort_by_mime_type">نوع MIME</string>
     <string name="sort_by_mime_type_reversed">نوع MIME (عكسي)</string>

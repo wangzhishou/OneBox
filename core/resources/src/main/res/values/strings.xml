@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="app_name">万宝盒</string>
-    <string name="app_launcher_name">万宝盒</string>
+    <string name="app_name">OneBox</string>
+    <string name="app_launcher_name">OneBox</string>
     <string name="default_folder">Documents/OneBox</string>
     <string name="telegram">Telegram</string>
     <string name="github">GitHub</string>
@@ -22,7 +22,7 @@
     <string name="close">Close</string>
     <string name="smth_went_wrong">An error occurred: %1$s</string>
     <string name="size">Size %1$s</string>
-    <string name="loading">Loading…</string>
+    <string name="loading">Loading...</string>
     <string name="image_too_large_preview">The image is too large to preview, but it will still be saved</string>
     <string name="width">Width %1$s</string>
     <string name="quality">Quality</string>
@@ -156,8 +156,8 @@
     <string name="crosshatch">Crosshatch</string>
     <string name="sobel_edge">Wireframe</string>
     <string name="start">Start</string>
-    <string name="spin_again">Spin again</string>
-    <string name="result_is">Result is</string>
+    <string name="spin_again">Rotate again</string>
+    <string name="result_is">As a result,</string>
     <string name="end">End</string>
     <string name="box_blur">Box blur</string>
     <string name="bilaterial_blur">Bilateral blur</string>
@@ -882,9 +882,9 @@
     <string name="compression_type">Compression type</string>
     <string name="speed_sub">Controls the decoding speed of the generated image — this helps open it faster. %1$d means the slowest decode speed, and %2$d means the fastest. This setting may increase the output image size</string>
     <string name="sorting">Sort</string>
-    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_date">Sort by Change Time</string>
     <string name="sort_by_date_reversed">Sort by date (reversed)</string>
-    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_name">Sort by Name</string>
     <string name="sort_by_name_reversed">Sort by name (reversed)</string>
     <string name="pick_multiple_media">Pick multiple media</string>
     <string name="pick">Pick</string>
@@ -1158,7 +1158,7 @@
     <string name="no_template_filters">No template filters added</string>
     <string name="template">Template</string>
     <string name="scanned_qr_code_isnt_filter_template">The scanned QR code is not a valid filter template</string>
-    <string name="scan_qr_code">Scan QR code</string>
+    <string name="scan_qr_code">Scan QR Code</string>
     <string name="added_filter_template">Added filter template named \"%1$s\" (%2$d)</string>
     <string name="min">Min</string>
     <string name="grant_camera_permission_to_scan_qr_code">Grant camera permission in settings to scan QR codes</string>
@@ -1672,7 +1672,7 @@
     <string name="password">Password</string>
     <string name="unlock">Unlock</string>
     <string name="pdf_is_protected">PDF is protected</string>
-    <string name="sort_by_size">Size</string>
+    <string name="sort_by_size">Sort by Size</string>
     <string name="sort_by_size_reversed">Size (reversed)</string>
     <string name="sort_by_mime_type">MIME type</string>
     <string name="sort_by_mime_type_reversed">MIME type (reversed)</string>

@@ -24,10 +24,10 @@
     <string name="sort_date">Waktu</string>
     <string name="sort_size">Ukuran</string>
     <string name="sort_type">Jenis</string>
-    <string name="file_size_bytes">%s B</string>
-    <string name="file_size_kb">%s KB</string>
-    <string name="file_size_mb">%s MB</string>
-    <string name="file_size_gb">%s GB</string>
+    <string name="file_size_bytes">%d B</string>
+    <string name="file_size_kb">%.1f KB</string>
+    <string name="file_size_mb">%.1f MB</string>
+    <string name="file_size_gb">%.1f GB</string>
     <string name="file_items_count">%d item</string>
     <string name="folder_label">Folder</string>
     <string name="file_label">Berkas</string>

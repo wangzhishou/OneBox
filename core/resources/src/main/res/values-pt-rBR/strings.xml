@@ -141,7 +141,7 @@
     <string name="sobel_edge">Wireframe</string>
     <string name="start">Iniciar</string>
     <string name="spin_again">Girar novamente</string>
-    <string name="result_is">O resultado é</string>
+    <string name="result_is">Como resultado,</string>
     <string name="end">Fim</string>
     <string name="box_blur">Desfoque de caixa</string>
     <string name="bilaterial_blur">Desfoque bilateral</string>
@@ -866,7 +866,7 @@
     <string name="compression_type">Tipo de compressão</string>
     <string name="speed_sub">Controla a velocidade de decodificação da imagem gerada — isso ajuda a abri-la mais rápido. %1$d significa a velocidade de decodificação mais lenta, e %2$d significa a mais rápida. Esta configuração pode aumentar o tamanho da imagem de saída</string>
     <string name="sorting">Ordenar</string>
-    <string name="sort_by_date">Ordenar por data</string>
+    <string name="sort_by_date">Ordenar por data de modificação</string>
     <string name="sort_by_date_reversed">Ordenar por data (reversa)</string>
     <string name="sort_by_name">Ordenar por nome</string>
     <string name="sort_by_name_reversed">Ordenar por nome (reverso)</string>
@@ -1142,7 +1142,7 @@
     <string name="no_template_filters">Nenhum modelo de filtro adicionado</string>
     <string name="template">Modelo</string>
     <string name="scanned_qr_code_isnt_filter_template">O código QR escaneado não é um modelo de filtro válido</string>
-    <string name="scan_qr_code">Escanear código QR</string>
+    <string name="scan_qr_code">Escanear Código QR</string>
     <string name="added_filter_template">Modelo de filtro adicionado chamado \"%1$s\" (%2$d)</string>
     <string name="min">Mín</string>
     <string name="grant_camera_permission_to_scan_qr_code">Conceda permissão de câmera nas configurações para escanear códigos QR</string>
@@ -1648,7 +1648,7 @@
     <string name="password">Senha</string>
     <string name="unlock">Desbloquear</string>
     <string name="pdf_is_protected">O PDF está protegido</string>
-    <string name="sort_by_size">Tamanho</string>
+    <string name="sort_by_size">Ordenar por tamanho</string>
     <string name="sort_by_size_reversed">Tamanho (reverso)</string>
     <string name="sort_by_mime_type">Tipo MIME</string>
     <string name="sort_by_mime_type_reversed">Tipo MIME (reverso)</string>
@@ -1930,7 +1930,7 @@
     <string name="cant_remove_all">Não é possível remover todas as páginas</string>
     <string name="pages_short">Páginas</string>
     <string name="blessing_wall">Mural de Bênçãos</string>
-    <string name="blessing_wall_sub">Um toque diário · Boa sorte acompanha</string>
+    <string name="blessing_wall_sub">Um toque por dia · A sorte te acompanha</string>
     <string name="sticker_panel_title">Adesivos</string>
     <string name="sticker_category_emoji">Emoji</string>
     <string name="sticker_category_decor">Decoração</string>

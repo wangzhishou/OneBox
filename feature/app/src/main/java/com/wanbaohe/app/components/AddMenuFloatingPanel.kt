@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.shifenmiao.base.ui.shapes.BubbleShape
 import com.t8rin.imagetoolbox.core.resources.icons.ChatPlus
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
@@ -436,6 +438,12 @@ private fun AddMenuGridItem(
             style = MaterialTheme.typography.labelMedium,
             color = contentColor,
             maxLines = 1,
+            // 葡语等长标签按可用宽度自动降字号，避免被 Ellipsis 截断（与底栏同一做法）
+            autoSize = TextAutoSize.StepBased(
+                minFontSize = 9.sp,
+                maxFontSize = MaterialTheme.typography.labelMedium.fontSize,
+                stepSize = 0.5.sp,
+            ),
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
         )

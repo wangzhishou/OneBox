@@ -24,10 +24,10 @@
     <string name="sort_date">Время</string>
     <string name="sort_size">Размер</string>
     <string name="sort_type">Тип</string>
-    <string name="file_size_bytes">%s B</string>
-    <string name="file_size_kb">%s KB</string>
-    <string name="file_size_mb">%s MB</string>
-    <string name="file_size_gb">%s GB</string>
+    <string name="file_size_bytes">%d Б</string>
+    <string name="file_size_kb">%.1f КБ</string>
+    <string name="file_size_mb">%.1f МБ</string>
+    <string name="file_size_gb">%.1f ГБ</string>
     <string name="file_items_count">Элементов: %d</string>
     <string name="folder_label">Папка</string>
     <string name="file_label">Файл</string>
@@ -39,7 +39,7 @@
     <string name="error_loading_message">Не удалось загрузить список файлов</string>
     <string name="error_file_not_found">Файл не найден</string>
     <string name="error_permission_denied">Доступ запрещён</string>
-    <string name="retry">Повторить</string>
+    <string name="retry">Попробовать снова</string>
     <string name="loading">Загрузка…</string>
     <string name="root_path">Корневой каталог</string>
     <string name="storage_path">Хранилище</string>

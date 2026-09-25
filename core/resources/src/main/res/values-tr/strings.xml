@@ -140,8 +140,8 @@
     <string name="crosshatch">Çapraz tarama</string>
     <string name="sobel_edge">Tel kafes</string>
     <string name="start">Başlat</string>
-    <string name="spin_again">Tekrar döndür</string>
-    <string name="result_is">Sonuç</string>
+    <string name="spin_again">Tekrar Döndür</string>
+    <string name="result_is">Sonuç olarak,</string>
     <string name="end">Bitiş</string>
     <string name="box_blur">Kutu bulanıklığı</string>
     <string name="bilaterial_blur">İki taraflı bulanıklık</string>
@@ -865,7 +865,7 @@
     <string name="compression_type">Sıkıştırma türü</string>
     <string name="speed_sub">Oluşturulan görüntünün kod çözme hızını kontrol eder — bu, daha hızlı açılmasına yardımcı olur. %1$d en yavaş kod çözme hızı, %2$d ise en hızlı anlamına gelir. Bu ayar çıktı görüntü boyutunu artırabilir</string>
     <string name="sorting">Sırala</string>
-    <string name="sort_by_date">Tarihe göre sırala</string>
+    <string name="sort_by_date">Değiştirilme zamanına göre sırala</string>
     <string name="sort_by_date_reversed">Tarihe göre sırala (ters)</string>
     <string name="sort_by_name">Ada göre sırala</string>
     <string name="sort_by_name_reversed">Ada göre sırala (ters)</string>
@@ -1141,7 +1141,7 @@
     <string name="no_template_filters">Şablon filtresi eklenmedi</string>
     <string name="template">Şablon</string>
     <string name="scanned_qr_code_isnt_filter_template">Taranan QR kod geçerli bir şablon filtresi değil</string>
-    <string name="scan_qr_code">QR kod tara</string>
+    <string name="scan_qr_code">QR Kodu Tara</string>
     <string name="added_filter_template">\"%1$s\" adlı filtre şablonu eklendi (%2$d)</string>
     <string name="min">Min</string>
     <string name="grant_camera_permission_to_scan_qr_code">QR kodları taramak için ayarlardan kamera izni verin</string>
@@ -1647,7 +1647,7 @@
     <string name="password">Şifre</string>
     <string name="unlock">Kilidi aç</string>
     <string name="pdf_is_protected">PDF korumalı</string>
-    <string name="sort_by_size">Boyut</string>
+    <string name="sort_by_size">Boyuta göre sırala</string>
     <string name="sort_by_size_reversed">Boyut (ters)</string>
     <string name="sort_by_mime_type">MIME türü</string>
     <string name="sort_by_mime_type_reversed">MIME türü (ters)</string>
@@ -1929,7 +1929,7 @@
     <string name="cant_remove_all">Tüm sayfalar kaldırılamıyor</string>
     <string name="pages_short">Sayfalar</string>
     <string name="blessing_wall">Bereket Duvarı</string>
-    <string name="blessing_wall_sub">Günlük dokunuş · İyi şans peşini bırakmaz</string>
+    <string name="blessing_wall_sub">Her gün bir dokunuş · İyi şanslar seni bulur</string>
     <string name="sticker_panel_title">Çıkartmalar</string>
     <string name="sticker_category_emoji">Emoji</string>
     <string name="sticker_category_decor">Süsleme</string>

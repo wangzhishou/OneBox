@@ -22,7 +22,7 @@
     <string name="close">关闭</string>
     <string name="smth_went_wrong">发生错误：%1$s</string>
     <string name="size">大小 %1$s</string>
-    <string name="loading">载入中……</string>
+    <string name="loading">加载中…</string>
     <string name="image_too_large_preview">图片太大，无法预览，但仍然会尝试保存</string>
     <string name="width">宽 %1$s</string>
     <string name="quality">质量</string>
@@ -156,7 +156,7 @@
     <string name="crosshatch">扫描线</string>
     <string name="sobel_edge">线框</string>
     <string name="start">开始</string>
-    <string name="spin_again">再转一次</string>
+    <string name="spin_again">重新旋转</string>
     <string name="result_is">结果是</string>
     <string name="end">结束</string>
     <string name="box_blur">方框模糊</string>
@@ -882,7 +882,7 @@
     <string name="compression_type">压缩方式</string>
     <string name="speed_sub">控制生成图片的解码速度，这将有助于更快地打开生成图片，%1$d 表示最慢的解码速度，而 %2$d 表示最快的解码速度，此设置可能会增加输出图片的大小</string>
     <string name="sorting">筛选</string>
-    <string name="sort_by_date">按日期排序</string>
+    <string name="sort_by_date">按修改时间排序</string>
     <string name="sort_by_date_reversed">按日期排序（反向）</string>
     <string name="sort_by_name">按名称排序</string>
     <string name="sort_by_name_reversed">按名称排序（反向）</string>
@@ -1158,7 +1158,7 @@
     <string name="no_template_filters">未添加模板滤镜</string>
     <string name="template">模板</string>
     <string name="scanned_qr_code_isnt_filter_template">扫描的二维码不是有效的滤镜模板</string>
-    <string name="scan_qr_code">扫描二维码</string>
+    <string name="scan_qr_code">扫描二维码访问</string>
     <string name="added_filter_template">已添加滤镜模板，名称为\"%1$s\" (%2$d)</string>
     <string name="min">最小</string>
     <string name="grant_camera_permission_to_scan_qr_code">在设置中授予相机扫描二维码的权限</string>
@@ -1514,7 +1514,7 @@
     <string name="material_2_sub">基于 Material 2 的滑块，不具现代感，简单且直接</string>
     <string name="fancy_sub">带有动画效果的定制的精美滑块，这是这款应用程序的默认设置</string>
     <string name="material_you_slider_sub">现代基于 Material You 设计的滑块，充满未来感、新颖独特，方便易用</string>
-    <string name="apply">接受</string>
+    <string name="apply">应用</string>
     <string name="center_align_dialog_buttons">居中对话框按钮</string>
     <string name="open_source_licenses">开源许可证</string>
     <string name="open_source_licenses_sub">查看此应用中所使用的开源库的许可证</string>
@@ -1672,7 +1672,7 @@
     <string name="password">密码</string>
     <string name="unlock">解锁</string>
     <string name="pdf_is_protected">PDF已受保护</string>
-    <string name="sort_by_size">大小</string>
+    <string name="sort_by_size">按大小排序</string>
     <string name="sort_by_size_reversed">大小（反向）</string>
     <string name="sort_by_mime_type">MIME 类型</string>
     <string name="sort_by_mime_type_reversed">MIME 类型（反向）</string>

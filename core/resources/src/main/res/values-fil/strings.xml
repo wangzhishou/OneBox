@@ -74,7 +74,7 @@
     <string name="reset_image_sub">Ang mga pagbabago sa imahe ay babalik sa kanilang mga unang halaga</string>
     <string name="restart_app">I-restart ang app</string>
     <string name="clear">I-clear</string>
-    <string name="settings">Mga setting</string>
+    <string name="settings">Mga Setting</string>
     <string name="night_mode">Mode ng gabi</string>
     <string name="dark">Madilim</string>
     <string name="light">Maliwanag</string>
@@ -141,7 +141,7 @@
     <string name="sobel_edge">Wireframe</string>
     <string name="start">Simulan</string>
     <string name="spin_again">Iikot muli</string>
-    <string name="result_is">Ang resulta ay</string>
+    <string name="result_is">Bilang resulta,</string>
     <string name="end">Tapos</string>
     <string name="box_blur">Box blur</string>
     <string name="bilaterial_blur">Bilateral blur</string>
@@ -866,9 +866,9 @@
     <string name="compression_type">Uri ng compression</string>
     <string name="speed_sub">Kinokontrol ang bilis ng pag-decode ng nabuong imahe — nakakatulong ito upang mabuksan ito nang mas mabilis. Ang %1$d ay nangangahulugang pinakamabagal na bilis ng decode, at ang %2$d ay nangangahulugang pinakamabilis. Ang setting na ito ay maaaring magpataas ng laki ng output na imahe</string>
     <string name="sorting">Ayusin</string>
-    <string name="sort_by_date">Ayusin ayon sa petsa</string>
+    <string name="sort_by_date">Isaayos ayon sa oras ng pagbabago</string>
     <string name="sort_by_date_reversed">Ayusin ayon sa petsa (baligtad)</string>
-    <string name="sort_by_name">Ayusin ayon sa pangalan</string>
+    <string name="sort_by_name">Isaayos ayon sa pangalan</string>
     <string name="sort_by_name_reversed">Ayusin ayon sa pangalan (baligtad)</string>
     <string name="pick_multiple_media">Pumili ng maraming media</string>
     <string name="pick">Pumili</string>
@@ -1142,7 +1142,7 @@
     <string name="no_template_filters">Walang idinagdag na template filter</string>
     <string name="template">Template</string>
     <string name="scanned_qr_code_isnt_filter_template">Ang na-scan na QR code ay hindi valid na template filter</string>
-    <string name="scan_qr_code">I-scan ang QR code</string>
+    <string name="scan_qr_code">I-scan ang QR Code</string>
     <string name="added_filter_template">Idinagdag ang filter template na pinangalanang \"%1$s\" (%2$d)</string>
     <string name="min">Min</string>
     <string name="grant_camera_permission_to_scan_qr_code">Ibigay ang pahintulot sa camera sa mga setting upang i-scan ang mga QR code</string>
@@ -1648,7 +1648,7 @@
     <string name="password">Password</string>
     <string name="unlock">I-unlock</string>
     <string name="pdf_is_protected">Protektado ang PDF</string>
-    <string name="sort_by_size">Laki</string>
+    <string name="sort_by_size">Isaayos ayon sa laki</string>
     <string name="sort_by_size_reversed">Laki (baligtad)</string>
     <string name="sort_by_mime_type">MIME type</string>
     <string name="sort_by_mime_type_reversed">MIME type (baligtad)</string>
@@ -1930,7 +1930,7 @@
     <string name="cant_remove_all">Hindi maalis ang lahat ng pahina</string>
     <string name="pages_short">Mga Pahina</string>
     <string name="blessing_wall">Pader ng Pagpapala</string>
-    <string name="blessing_wall_sub">Isang araw-araw na tap · Sumusunod ang suwerte</string>
+    <string name="blessing_wall_sub">Araw-araw na pag-tap · Susunod ang suwerte</string>
     <string name="sticker_panel_title">Mga sticker</string>
     <string name="sticker_category_emoji">Emoji</string>
     <string name="sticker_category_decor">Dekorasyon</string>

@@ -481,7 +481,7 @@ private fun ProfileStatsRow(
             },
             modifier = Modifier
                 .weight(1f)
-                .height(100.dp),
+                .height(120.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
@@ -515,6 +515,11 @@ private fun ProfileStatsRow(
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                    Text(
+                        text = stringResource(R.string.profile_stats_points_play_hint),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                    )
                 }
             }
         }
@@ -526,7 +531,7 @@ private fun ProfileStatsRow(
             },
             modifier = Modifier
                 .weight(1f)
-                .height(100.dp),
+                .height(120.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer
