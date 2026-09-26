@@ -1,6 +1,8 @@
 package com.wanbaohe.xiangqi.router.screenLogic
 
 import com.arkivanov.decompose.ComponentContext
+import com.wanbaohe.xiangqi.data.local.LocalXiangqiEngine
+import com.wanbaohe.xiangqi.data.local.XiangqiEngineWeights
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -72,6 +74,8 @@ class XiangqiRouterComponent @AssistedInject constructor(
     aiEngineCatalogManager: AIEngineCatalogManager,
     private val gameQuery: GameQueryUseCase,
     private val promptDao: PromptDao,
+    private val localEngine: LocalXiangqiEngine,
+    private val engineWeights: XiangqiEngineWeights,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -130,6 +134,29 @@ class XiangqiRouterComponent @AssistedInject constructor(
 
     private val _runningSettingsActions = MutableStateFlow<Set<SettingsAction>>(emptySet())
     val runningSettingsActions: StateFlow<Set<SettingsAction>> = _runningSettingsActions.asStateFlow()
+
+    /**
+     * 端侧象棋引擎(离线引擎)对设置页暴露的状态。
+     *
+     * [isPackaged] 是编译期事实(离线构建没放 jniLibs 时恒为 false),运行期不变;
+     * 安装状态由 [XiangqiEngineWeights] 单例持有,所以退出设置页不会中断下载。
+     */
+    val isLocalEnginePackaged: Boolean = localEngine.isPackaged()
+    val localEngineInstallState: StateFlow<XiangqiEngineWeights.InstallState> = engineWeights.state
+
+    fun downloadLocalEngine() {
+        engineWeights.startDownload()
+    }
+
+    fun cancelLocalEngineDownload() {
+        engineWeights.cancelDownload()
+    }
+
+    /** 先回收引擎进程再删权重:进程可能还持有该文件的映射 */
+    fun deleteLocalEngine() {
+        localEngine.release()
+        engineWeights.deleteWeights()
+    }
 
     val libraryComponent: XiangqiLibraryComponent = libraryFactory(
         componentContext = componentContext.childContext("xiangqi_library_shared"),

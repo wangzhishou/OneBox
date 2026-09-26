@@ -266,4 +266,14 @@
     <string name="xiangqi_tts_default_checkmate">将死！</string>
     <string name="xiangqi_tts_default_draw">和棋！</string>
     <string name="xiangqi_new_ai_create">AI 创建棋局</string>
+    <string name="xiangqi_settings_local_engine_title">离线引擎</string>
+    <string name="xiangqi_settings_local_engine_subtitle">内置象棋引擎与神经网络，没有网络也能有强对手。</string>
+    <string name="xiangqi_local_engine_unavailable">当前构建未内置该引擎。</string>
+    <string name="xiangqi_local_engine_not_installed">尚未下载。下载一次（%1$s）后即可离线对弈。</string>
+    <string name="xiangqi_local_engine_installed">已就绪（%1$s），对局不再依赖服务端引擎。</string>
+    <string name="xiangqi_local_engine_downloading">正在下载… %1$d%%</string>
+    <string name="xiangqi_local_engine_download">下载</string>
+    <string name="xiangqi_local_engine_delete">删除</string>
+    <string name="xiangqi_local_engine_delete_confirm_title">删除离线引擎数据？</string>
+    <string name="xiangqi_local_engine_delete_confirm_message">将删除 %1$s 的神经网络文件，之后可以重新下载。</string>
 </resources>

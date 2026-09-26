@@ -14,6 +14,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Switch
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.model.tts.TTSConfig
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
@@ -40,6 +44,10 @@ import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
 import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiSource
 import com.wanbaohe.xiangqi.data.XiangqiTTSTemplates
+import com.wanbaohe.xiangqi.data.local.XiangqiEngineWeights
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDeleteForever
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownloadForOffline
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.wanbaohe.xiangqi.ui.XiangqiAiPickerBottomSheet
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
@@ -58,7 +66,9 @@ fun XiangqiSettingsScreen(
     val aiConfig by component.xiangqiAiConfig.collectAsState()
     val ttsConfig by component.ttsConfig.collectAsState(initial = TTSConfig())
     val runningSettingsActions by component.runningSettingsActions.collectAsState()
+    val localEngineState by component.localEngineInstallState.collectAsState()
     var pickingSlot by remember { mutableStateOf<AiSlot?>(null) }
+    var confirmingEngineDelete by remember { mutableStateOf(false) }
 
     val pickingSlotValue = pickingSlot
     if (pickingSlotValue != null) {
@@ -84,6 +94,35 @@ fun XiangqiSettingsScreen(
             onDismiss = { pickingSlot = null },
         )
     }
+
+    EnhancedAlertDialog(
+        visible = confirmingEngineDelete,
+        onDismissRequest = { confirmingEngineDelete = false },
+        title = { Text(text = stringResource(R.string.xiangqi_local_engine_delete_confirm_title)) },
+        text = {
+            Text(
+                text = stringResource(
+                    R.string.xiangqi_local_engine_delete_confirm_message,
+                    formatEngineSize(XiangqiEngineWeights.EXPECTED_BYTES),
+                )
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    confirmingEngineDelete = false
+                    component.deleteLocalEngine()
+                }
+            ) {
+                Text(text = stringResource(CoreR.string.button_confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { confirmingEngineDelete = false }) {
+                Text(text = stringResource(CoreR.string.button_cancel))
+            }
+        },
+    )
 
     Column(
         modifier = modifier
@@ -239,6 +278,20 @@ fun XiangqiSettingsScreen(
         }
 
         SettingsSection(
+            title = stringResource(R.string.xiangqi_settings_local_engine_title),
+            subtitle = stringResource(R.string.xiangqi_settings_local_engine_subtitle),
+            icon = { Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownloadForOffline, contentDescription = null) },
+        ) {
+            LocalEngineRow(
+                packaged = component.isLocalEnginePackaged,
+                state = localEngineState,
+                onDownload = component::downloadLocalEngine,
+                onCancel = component::cancelLocalEngineDownload,
+                onDelete = { confirmingEngineDelete = true },
+            )
+        }
+
+        SettingsSection(
             title = stringResource(R.string.xiangqi_settings_prompt_title),
             subtitle = stringResource(R.string.xiangqi_settings_prompt_subtitle),
             icon = { Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRecordVoiceOver, contentDescription = null) },
@@ -255,6 +308,91 @@ fun XiangqiSettingsScreen(
         Spacer(modifier = Modifier.height(24.dp))
     }
 }
+
+
+/**
+ * 离线引擎三态行：未下载 → 下载；下载中 → 进度 + 取消；已装 → 体积 + 删除。
+ *
+ * [packaged] 为编译期事实：没把引擎二进制打进包的构建（如本仓库未 vendor 源码时）直接说明不可用，
+ * 不给下载入口 —— 免得用户下完 10.74MB 权重却发现引擎本身没在包里。
+ */
+@Composable
+private fun LocalEngineRow(
+    packaged: Boolean,
+    state: XiangqiEngineWeights.InstallState,
+    onDownload: () -> Unit,
+    onCancel: () -> Unit,
+    onDelete: () -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        when {
+            !packaged -> Text(
+                text = stringResource(R.string.xiangqi_local_engine_unavailable),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            state is XiangqiEngineWeights.InstallState.Downloading -> {
+                val fraction =
+                    if (state.total > 0) (state.downloaded.toFloat() / state.total).coerceIn(0f, 1f) else 0f
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.xiangqi_local_engine_downloading, (fraction * 100).toInt()),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    Text(
+                        text = formatEngineSize(state.downloaded) + " / " + formatEngineSize(state.total),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                LinearProgressIndicator(
+                    progress = { fraction },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                GlassTonalButton(onClick = onCancel) {
+                    Text(stringResource(CoreR.string.button_cancel))
+                }
+            }
+
+            state is XiangqiEngineWeights.InstallState.Installed -> {
+                Text(
+                    text = stringResource(
+                        R.string.xiangqi_local_engine_installed,
+                        formatEngineSize(state.bytes),
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                GlassTonalButton(onClick = onDelete) {
+                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDeleteForever, contentDescription = null)
+                    Text(stringResource(R.string.xiangqi_local_engine_delete))
+                }
+            }
+
+            else -> {
+                Text(
+                    text = stringResource(
+                        R.string.xiangqi_local_engine_not_installed,
+                        formatEngineSize(XiangqiEngineWeights.EXPECTED_BYTES),
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                GlassTonalButton(onClick = onDownload) {
+                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload, contentDescription = null)
+                    Text(stringResource(R.string.xiangqi_local_engine_download))
+                }
+            }
+        }
+    }
+}
+
+/** 权重体积展示：够用即可，不做本地化单位（与本地模型页的 "~585MB" 风格一致） */
+private fun formatEngineSize(bytes: Long): String =
+    "%.1f MB".format(bytes / 1048576.0)
 
 
 @Composable

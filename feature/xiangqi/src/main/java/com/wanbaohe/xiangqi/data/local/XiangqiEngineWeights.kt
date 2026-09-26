@@ -2,9 +2,17 @@ package com.wanbaohe.xiangqi.data.local
 
 import android.content.Context
 import android.util.Log
+import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
@@ -37,21 +45,96 @@ class XiangqiEngineWeights @Inject constructor(
 
     fun installedFile(): File = File(directory, FILE_NAME)
 
+    /**
+     * 实际使用的下载地址:优先取 RemoteConfig 下发的值(见
+     * [com.shifenmiao.model.remote.RemoteConfig.xiangqiEngineWeightsUrl]),
+     * 未下发或为空时回退到内置常量。
+     *
+     * 每次调用都实时读,不缓存:远程配置是本地 MMKV 读取,开销可忽略,
+     * 而缓存会让「刚在后台改了地址」在本次进程内不生效。
+     */
+    fun downloadUrl(): String =
+        RemoteConfigStorage.getRemoteConfig().xiangqiEngineWeightsUrl
+            ?.takeIf { it.isNotBlank() }
+            ?: DEFAULT_DOWNLOAD_URL
+
+    /** 已安装权重的字节数;未安装返回 0 */
+    fun installedBytes(): Long = installedFile().let { if (it.isFile) it.length() else 0L }
+
     /** 只做便宜的检查(存在 + 长度对);完整 sha256 校验在下载完成时做一次 */
     fun isInstalled(): Boolean = installedFile().let { it.isFile && it.length() == EXPECTED_BYTES }
 
+    /** 安装状态,供设置页观察 */
+    sealed interface InstallState {
+        data object NotInstalled : InstallState
+        data class Downloading(val downloaded: Long, val total: Long) : InstallState
+        data class Installed(val bytes: Long) : InstallState
+    }
+
+    /**
+     * 下载跑在**单例自己的作用域**里,而不是页面的 componentScope:
+     * 10.74MB 的下载不该因为用户退出设置页而中断(退出即取消会白费流量)。
+     */
+    private val scope = CoroutineScope(SupervisorJob() + ioDispatcher)
+    private var downloadJob: Job? = null
+
+    private val _state = MutableStateFlow(refreshState())
+    val state: StateFlow<InstallState> = _state.asStateFlow()
+
+    /** 开始下载;已在下载中或已安装返回 false(调用方可据此不做重复动作) */
+    fun startDownload(): Boolean {
+        if (downloadJob?.isActive == true) return false
+        if (isInstalled()) {
+            _state.value = InstallState.Installed(installedBytes())
+            return false
+        }
+        downloadJob = scope.launch {
+            _state.value = InstallState.Downloading(0L, EXPECTED_BYTES)
+            val file = ensureInstalled { downloaded, total ->
+                _state.value = InstallState.Downloading(downloaded, total)
+            }
+            _state.value = refreshState()
+            if (file == null) Log.w(TAG, "权重下载未完成, 端侧引擎暂不可用")
+        }
+        return true
+    }
+
+    fun cancelDownload() {
+        downloadJob?.cancel()
+        downloadJob = null
+        _state.value = refreshState()
+    }
+
+    /**
+     * 删除已装权重(释放约 10.74MB)。
+     * 调用方应先回收引擎进程 —— 进程可能还 mmap 着这个权重文件。
+     */
+    fun deleteWeights() {
+        downloadJob?.cancel()
+        downloadJob = null
+        installedFile().takeIf { it.exists() }?.delete()
+        _state.value = refreshState()
+    }
+
+    private fun refreshState(): InstallState =
+        if (isInstalled()) InstallState.Installed(installedBytes()) else InstallState.NotInstalled
+
     /**
      * 确保权重就绪:已装直接返回;未装则下载并校验。
+     * [onProgress] 以 (已下载, 总字节数) 回调,总长未知时传 -1。
      * 失败(网络/校验)返回 null —— 调用方应当退回其它引擎,不要重试到卡住对局。
      */
-    suspend fun ensureInstalled(): File? = withContext(ioDispatcher) {
+    suspend fun ensureInstalled(
+        onProgress: ((downloaded: Long, total: Long) -> Unit)? = null,
+    ): File? = withContext(ioDispatcher) {
         val target = installedFile()
         if (isInstalled()) return@withContext target
 
         val temp = File(directory, "$FILE_NAME.download")
         try {
-            Log.i(TAG, "开始下载象棋权重: $DOWNLOAD_URL")
-            val downloaded = download(DOWNLOAD_URL, temp)
+            val url = downloadUrl()
+            Log.i(TAG, "开始下载象棋权重: $url")
+            val downloaded = download(url, temp, onProgress)
             if (downloaded != EXPECTED_BYTES) {
                 Log.w(TAG, "权重长度不符: 期望 $EXPECTED_BYTES, 实际 $downloaded")
                 return@withContext null
@@ -78,7 +161,11 @@ class XiangqiEngineWeights @Inject constructor(
         }
     }
 
-    private fun download(url: String, destination: File): Long {
+    private fun download(
+        url: String,
+        destination: File,
+        onProgress: ((downloaded: Long, total: Long) -> Unit)?,
+    ): Long {
         val connection = (URL(url).openConnection() as HttpURLConnection).apply {
             connectTimeout = CONNECT_TIMEOUT_MS
             readTimeout = READ_TIMEOUT_MS
@@ -90,6 +177,7 @@ class XiangqiEngineWeights @Inject constructor(
             val total = connection.contentLengthLong
             var received = 0L
             var lastLoggedPercent = -1
+            onProgress?.invoke(0L, total)
             connection.inputStream.use { input ->
                 destination.outputStream().use { output ->
                     val buffer = ByteArray(64 * 1024)
@@ -98,6 +186,7 @@ class XiangqiEngineWeights @Inject constructor(
                         if (read == -1) break
                         output.write(buffer, 0, read)
                         received += read
+                        onProgress?.invoke(received, total)
                         if (total > 0) {
                             val percent = (received * 100 / total).toInt()
                             if (percent / 25 > lastLoggedPercent / 25) {
@@ -135,11 +224,10 @@ class XiangqiEngineWeights @Inject constructor(
         const val FILE_NAME = "xiangqi-83f16c17fe26.nnue"
 
         /**
-         * 来源同 R2 上现有的 LiteRT-LM 模型对象(同一公开域名与 `models/` 前缀)。国内渠道也走这里
-         * (本仓库音效/模型既有做法);
-         * 若国内实测速度不理想,可在此按 flavor 切到阿里云 OSS 镜像 —— 刻意收在这一个常量里。
+         * 内置兜底地址(RemoteConfig 未下发时使用)。国内渠道同用此默认值;
+         * 若国内实测速度不理想,不必发版 —— 在 CMS 下发 `xiangqiEngineWeightsUrl` 即可切到镜像。
          */
-        const val DOWNLOAD_URL = "https://images.oneboxable.com/models/$FILE_NAME"
+        const val DEFAULT_DOWNLOAD_URL = "https://images.oneboxable.com/models/$FILE_NAME"
 
         const val EXPECTED_BYTES = 11_261_915L
         const val SHA256 = "83f16c17fe266f8d0904cb7cd8997777ee6a618a82b5d7fd32d52f570c760a25"

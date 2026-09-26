@@ -239,6 +239,20 @@ data class RemoteConfig(
      * 中国古诗词接口地址，动态下发
      */
     val poemApiUrl: String? = null,
+
+    /**
+     * 端侧象棋引擎(Fairy-Stockfish)NNUE 权重的下载地址，动态下发。
+     *
+     * 不写死在代码里是为了留出换源余地:国内直连 Cloudflare R2 若速度不理想、或某个域名
+     * 不可达,可以在 CMS 侧改一个值就切到镜像(OSS/CDN),无需发版。
+     * 国内外是两套后端(api.wanbaohe.com / api.oneboxable.com),同一个 key 可以各下发各的地址。
+     *
+     * 只下发 URL、不包含校验信息:换源时文件内容不变,权重长度与 sha256 仍由客户端常量校验
+     * (权重文件名内嵌 sha256,换文件必然要发版,不属于远程配置要解决的场景)。
+     * 未下发或为空时回退 `XiangqiEngineWeights.DEFAULT_DOWNLOAD_URL`(feature/xiangqi)。
+     */
+    val xiangqiEngineWeightsUrl: String? = null,
+
     /**
      * 设置ai token的权限,动态下发
      */
@@ -357,6 +371,7 @@ data class RemoteConfig(
         enableAgentSensitiveCheck = mergeField(net.enableAgentSensitiveCheck, enableAgentSensitiveCheck),
         wechatGroupQrcodeUrl = mergeField(net.wechatGroupQrcodeUrl, wechatGroupQrcodeUrl) { !it.isNullOrBlank() },
         poemApiUrl = mergeField(net.poemApiUrl, poemApiUrl) { !it.isNullOrBlank() },
+        xiangqiEngineWeightsUrl = mergeField(net.xiangqiEngineWeightsUrl, xiangqiEngineWeightsUrl) { !it.isNullOrBlank() },
         canSetAiToken = mergeField(net.canSetAiToken, canSetAiToken),
         aigcSubjectUscc = mergeField(net.aigcSubjectUscc, aigcSubjectUscc) { !it.isNullOrBlank() },
         survive30sWinPoints = mergeField(net.survive30sWinPoints, survive30sWinPoints),
@@ -418,6 +433,7 @@ data class RemoteConfig(
                 enableAgentSensitiveCheck == other.enableAgentSensitiveCheck &&
                 wechatGroupQrcodeUrl == other.wechatGroupQrcodeUrl &&
                 poemApiUrl == other.poemApiUrl &&
+                xiangqiEngineWeightsUrl == other.xiangqiEngineWeightsUrl &&
                 canSetAiToken == other.canSetAiToken &&
                 aigcSubjectUscc == other.aigcSubjectUscc &&
                 survive30sWinPoints == other.survive30sWinPoints &&
@@ -465,6 +481,7 @@ data class RemoteConfig(
             enableAgentSensitiveCheck,
             wechatGroupQrcodeUrl,
             poemApiUrl,
+            xiangqiEngineWeightsUrl,
             canSetAiToken,
             aigcSubjectUscc,
             survive30sWinPoints,

@@ -210,3 +210,65 @@ resolver 里,别散落在调用点。
 3. **引擎选择项**:把「本地引擎」作为可选项暴露到象棋 AI 选择器(当前只是远端失败时的兜底)。
 4. **进程回收**:空闲一段时间或内存压力时 `release()`,避免常驻一个后端进程。
 5. **国内下载速度实测**:R2 拉 10.74MB 是否可接受;必要时按 flavor 切 OSS 镜像。
+
+## 8. 下载入口 + RemoteConfig 下载地址(已完成)
+
+### 下载地址走 RemoteConfig
+
+新增字段 `RemoteConfig.xiangqiEngineWeightsUrl`(`core/model/.../remote/RemoteConfig.kt`),
+并接进 `mergeWithNetwork` / `equals` / `hashCode`。消费点在
+`XiangqiEngineWeights.downloadUrl()`:每次下载都实时读,取不到就回退内置常量
+`DEFAULT_DOWNLOAD_URL`。
+
+服务端**不需要改 Strapi schema**:`remote-config` 内容类型的 `config` 是 `json` 字段,
+在对应渠道那条记录的 `config` 里加一个 key 即可,例如:
+
+```json
+{ "xiangqiEngineWeightsUrl": "https://<镜像域名>/models/xiangqi-83f16c17fe26.nnue" }
+```
+
+几点约定与注意:
+
+- 字段名即 JSON key —— `RemoteConfig` 全类没有用 `@SerialName`,所以 key 必须是
+  `xiangqiEngineWeightsUrl`(驼峰);
+- 国内外是两套后端(`api.wanbaohe.com` / `api.oneboxable.com`),**同一个 key 可以各下发各的**,
+  所以国内要换镜像不必写 flavor 分支代码;
+- **只下发 URL,不下发校验值**:换源时文件内容不变,长度与 sha256 仍由客户端常量校验。
+  换权重文件本身属于要发版的改动(文件名内嵌 sha256),不是远程配置要解决的场景;
+- **生效时机**:客户端读的是本地缓存的 remote config,所以改完 CMS 要等客户端下一次同步
+  (启动同步间隔 `appLaunchSyncIntervalSeconds`,当前 3 天)才生效。域名突然被墙这类急事,
+  要么等同步,要么走应用内手动刷新入口;
+- 下载那一刻才读地址 —— 不会出现「打开 App 时缓存了旧地址,之后改 CMS 也没用」的错觉,
+  但已经下到一半的下载不会中途换源。
+
+### 下载入口与进度 UI
+
+位置:**中国象棋 → 设置 → 离线引擎**(`XiangqiSettingsScreen` 的 `LocalEngineRow`),三态:
+
+| 状态 | 展示 |
+|---|---|
+| 未内置(该构建没打包引擎) | 「当前构建未内置该引擎。」—— 不给下载入口,免得下完权重发现引擎不在包里 |
+| 未下载 | 「尚未下载。下载一次(10.7 MB)后即可离线对弈。」+ 下载按钮 |
+| 下载中 | 「正在下载… N%」+ 已下载/总大小 + 进度条 + 取消按钮 |
+| 已就绪 | 「已就绪(10.7 MB),对局不再依赖服务端引擎。」+ 删除按钮(带确认弹窗) |
+
+两个实现取舍:
+
+1. **下载跑在 `XiangqiEngineWeights` 单例自己的作用域**,不是页面的 `componentScope` ——
+   10.74MB 不该因为用户退出设置页而中断(退出即取消等于白费流量)。页面只观察
+   `InstallState`。
+2. **移除了走棋路径里的静默下载**:原来 `PikafishMoveChooser` 会在开局走棋时后台偷下 10.74MB,
+   现在下载只由用户在设置页显式发起。代价是「没下过就用不上离线引擎」,这是有意的
+   (不偷跑流量);后续如需可在「远端失败且未装权重」时给一次提示。
+
+### 本轮实测(模拟器 arm64 / Android 16)
+
+- 未下载态 → 点下载 → 抓到了「正在下载… 0%」+ 进度条 + 取消;
+- 日志:25% / 50% / 75% / 100%,`11,261,915` 字节,sha256 校验通过;
+- 完成后显示「已就绪(10.7 MB)」+ 删除按钮;点删除 → 确认弹窗 → 回到「尚未下载」,
+  且 `files/local_engines/` 目录确实被清空。
+
+**未做实测的一项**:RemoteConfig 覆盖值这条路径没有做端到端实测 —— debug 版的 API 走
+本地 HTTPS 代理(`127.0.0.1:18080`)且远端配置缓存为空,没有可注入的入口。
+目前只有代码层面的保证(字段存在于模型、`mergeWithNetwork` 已接入、读取处编译通过,
+key 名与序列化一致)。建议在 CMS 配一个值后用真机确认一次。

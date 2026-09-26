@@ -268,4 +268,14 @@
     <string name="xiangqi_tts_default_checkmate">Checkmate!</string>
     <string name="xiangqi_tts_default_draw">Draw!</string>
     <string name="xiangqi_new_ai_create">AI create game</string>
+    <string name="xiangqi_settings_local_engine_title">Offline engine</string>
+    <string name="xiangqi_settings_local_engine_subtitle">A built-in Xiangqi engine with a neural network, so a strong opponent stays available without a network connection.</string>
+    <string name="xiangqi_local_engine_unavailable">Not included in this build.</string>
+    <string name="xiangqi_local_engine_not_installed">Not downloaded yet. Download once (%1$s) to play offline.</string>
+    <string name="xiangqi_local_engine_installed">Ready (%1$s). Games no longer depend on the server engine.</string>
+    <string name="xiangqi_local_engine_downloading">Downloading… %1$d%%</string>
+    <string name="xiangqi_local_engine_download">Download</string>
+    <string name="xiangqi_local_engine_delete">Delete</string>
+    <string name="xiangqi_local_engine_delete_confirm_title">Delete offline engine data?</string>
+    <string name="xiangqi_local_engine_delete_confirm_message">The %1$s network file will be removed. You can download it again later.</string>
 </resources>
