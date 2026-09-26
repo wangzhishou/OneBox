@@ -4,6 +4,8 @@ androidMinSdk = "24"
 androidTargetSdk = "37"
 androidCompileSdk = "37"
 androidCompileSdkExtension = "-"
+# NDK 版本单一来源:app 模块与 feature:xiangqi 的端侧引擎构建任务都引用它
+androidNdk = "28.1.13356709"
 
 eddsa = "0.3.0"
 nanohttpd = "2.3.1"

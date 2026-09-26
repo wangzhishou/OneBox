@@ -1,0 +1,8 @@
+# 上游 Makefile 是就地编译的:对象文件、依赖表与产出的可执行文件都不入库
+# (二进制由 feature/xiangqi/build.gradle.kts 的 buildFairyStockfish 任务从源码编译产出)
+*.o
+.depend
+libfairystockfish.so
+fairy-stockfish
+stockfish
+*.nnue

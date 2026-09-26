@@ -39,9 +39,9 @@ fastlane/.venv/
 # gh-aw 的 run 日志/审计产物 (gh aw audit 下载, 单次十几 MB, 不入库)
 .github/aw/logs/
 
-# 端侧象棋引擎(技术验证):Fairy-Stockfish 是 GPL-3.0 第三方二进制/源码,
-# 未决定 vendor 进仓库前一律不入库 —— 分发 GPL 二进制必须能提供对应源码,
-# 且 F-Droid 要求从仓库源码可复现构建(F-Droid 也不接受预编译 .so)。
-# 详见 docs/spike-xiangqi-local-engine.md
+# 端侧象棋引擎:Fairy-Stockfish 源码已 vendor 在 feature/xiangqi/third_party/(GPL-3.0),
+# 二进制由构建期从源码编译到 feature/xiangqi/build/generated/fairyStockfish(build/ 已忽略),
+# 因此这里不再需要放预编译产物 —— 保留此条只是防止有人把 .so 手工丢进来。
+# 详见 docs/spike-xiangqi-local-engine.md 与 third_party/fairy-stockfish/README.onebox.md
 feature/xiangqi/src/main/jniLibs/
 

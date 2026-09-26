@@ -272,3 +272,47 @@ resolver 里,别散落在调用点。
 本地 HTTPS 代理(`127.0.0.1:18080`)且远端配置缓存为空,没有可注入的入口。
 目前只有代码层面的保证(字段存在于模型、`mergeWithNetwork` 已接入、读取处编译通过,
 key 名与序列化一致)。建议在 CMS 配一个值后用真机确认一次。
+
+## 9. 落地形态:vendor 源码 + 构建期编译(已完成)
+
+按「提交推送后可用」的要求,把它做成了可持续的形态 —— 关键取舍是
+**提交源码、不提交二进制**:
+
+| | 做法 | 为什么 |
+|---|---|---|
+| 引擎源码 | vendor 到 `feature/xiangqi/third_party/fairy-stockfish/`(GPL-3.0,commit 固定) | GPL 要求分发二进制时能提供对应源码;F-Droid 也要求从仓库源码可复现构建 |
+| 引擎二进制 | 由 `feature/xiangqi/build.gradle.kts` 的 `buildFairyStockfish` 任务从源码编译到 `build/generated/fairyStockfish/<abi>/`(`.gitignore` 覆盖) | 不进仓库:预编译 `.so` 会同时破坏 GPL 合规与 F-Droid 校验 |
+| NNUE 权重 | 仍在 R2(10.74MB),运行时下载到 `filesDir/local_engines/` | 数据不是代码;既不进仓库也不进 APK,首装体积只增加约 1.5MB |
+
+构建任务要点(踩过的坑都在注释里):`largeboards=yes` 必须有(否则象棋变体被整个编译掉)、
+`KERNEL=Linux OS=Android` 必须显式给(macOS 上会被当成 Darwin)、`-static-libstdc++`
+(Android 不提供 `libc++_shared.so` 作公开库,而这是要 exec 的可执行文件)、
+产物是 PIE 可执行文件但命名 `lib*.so` 以便 AGP 按 ABI 打包并解压到可执行目录。
+
+几个工程细节:
+
+- 编译在 `build/fairyStockfish-work/` 的副本里进行 —— 上游 Makefile 是就地编译的,
+  直接在 vendor 目录里编会往仓库树里丢 `*.o`;vendor 目录另有一份 `.gitignore` 兜底;
+- 任务声明了源码目录为输入、产物目录为输出,所以源码不变时不会重编(Gradle 缓存命中);
+- jniLibs 目录通过 `androidComponents.onVariants { it.sources.jniLibs?.addStaticSourceDirectory(...) }`
+  挂上 —— **不能用 `android.sourceSets.jniLibs.srcDir`**,在本项目的 AGP 9 + 约定插件组合下
+  会抛 `ClassCastException(DefaultAndroidLibrarySourceSet_Decorated -> AndroidLibrarySourceSet)`;
+- 该任务标记了 `notCompatibleWithConfigurationCache`(NDK 目录只能在执行期解析,
+  与 app 模块覆盖 `libc++_shared.so` 的任务同一处理方式),因此构建日志里那句
+  「Configuration cache entry discarded with 1 problem」是既有现象,不是新增问题;
+- NDK 版本改为 `libs.versions.toml` 的 `androidNdk` 单一来源,app 与本模块共用。
+
+### 本轮实测
+
+- `buildFairyStockfish` 从源码编译成功:**1564 KB**(strip 后);
+- APK 内确认存在 `lib/arm64-v8a/libfairystockfish.so`(1,602,464 字节);
+- 真机(模拟器 arm64 / Android 16)在 **App 自己的沙箱内**执行该产物:
+  `run-as <pkg>` → 正常启动、`id name Fairy-Stockfish 260926 LB`、
+  `info string NNUE evaluation using .../xiangqi-83f16c17fe26.nnue enabled`、返回 bestmove。
+
+### 已知影响与后续
+
+- **CI 构建时间**:引擎只在源码/参数变化时重编(有输入输出声明 + Gradle 缓存),
+  首次构建会多约 1~1.5 分钟;若 CI 上成为瓶颈,可考虑接入 remote build cache;
+- **新增 ABI 时**要同步改 `feature/xiangqi/build.gradle.kts` 的 `engineAbi` 与工具链三元组;
+- 权重仍在 R2、下载入口在设置页(第 8 节),这两条不受本次改动影响。

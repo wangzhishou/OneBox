@@ -118,7 +118,8 @@ android {
     }
 
     // 指定 NDK 版本：r28+ 才支持 16 KB 页大小
-    ndkVersion = "28.1.13356709"
+    // 版本值统一放在 gradle/libs.versions.toml(feature:xiangqi 的端侧引擎构建任务也用它)
+    ndkVersion = libs.versions.androidNdk.get()
 
     externalNativeBuild {
         cmake {
