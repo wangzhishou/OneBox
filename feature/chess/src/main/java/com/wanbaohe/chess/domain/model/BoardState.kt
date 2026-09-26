@@ -27,8 +27,12 @@ data class BoardState(
         val nextBoard = board.toMutableList()
         nextBoard[move.from.index] = null
 
-        // 吃过路兵:被吃的兵不在目标格上
-        if (move.piece.type == PieceType.PAWN && enPassant == move.to && move.captured == null &&
+        // 吃过路兵:被吃的兵不在目标格上。
+        // enPassant 目标格必定为空(是上一手兵进两格时跨过的那一格),所以「兵斜走进目标格」
+        // 只可能是吃过路兵。这里不能再看 move.captured:MoveGenerator 与 GameArbiter 都会
+        // 把被吃的兵填进 captured,曾经以 captured == null 为条件导致该分支永不成立,
+        // 吃过路兵后棋盘上会多留一个兵。
+        if (move.piece.type == PieceType.PAWN && enPassant == move.to &&
             move.from.file != move.to.file
         ) {
             nextBoard[BoardPoint(move.to.file, move.from.rank).index] = null
