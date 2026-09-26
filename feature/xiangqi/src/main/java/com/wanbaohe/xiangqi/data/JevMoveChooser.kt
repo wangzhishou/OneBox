@@ -151,8 +151,8 @@ class JevMoveChooser @Inject constructor(
             }
         }
 
-        return HeuristicMoveFallback.decision(legalMoves)
-            ?.copy(reason = "jev: ${lastError ?: "failed"}", fallbackUsed = true)
+        return HeuristicMoveFallback.decision(boardState, legalMoves)
+            ?.withFailureReason("jev: ${lastError ?: "failed"}")
     }
 }
 

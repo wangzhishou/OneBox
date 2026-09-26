@@ -56,7 +56,7 @@ class LlmMoveChooser @Inject constructor(
             }
         }
 
-        return HeuristicMoveFallback.decision(legalMoves)
+        return HeuristicMoveFallback.decision(boardState, legalMoves)
     }
 
     private fun parseSelectedMove(content: String, legalMoves: List<XiangqiMove>): XiangqiMove? {

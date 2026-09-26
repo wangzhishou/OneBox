@@ -18,7 +18,7 @@ import javax.inject.Singleton
  * 服务端五子棋引擎走棋(当前内置 Rapfi,接口可按 [engineId] 扩展多引擎)。
  * 经 Go 网关 `POST /gomoku/engine/bestmove`,把 `bestmove` 坐标(如 "H8")映射回 [legalMoves]。
  *
- * 失败时回退到 [GomokuMoveFallback] 并在 reason 标明原因(不静默伪装引擎着法)。
+ * 失败时回退到 [GomokuMoveFallback]（端侧浅层搜索）并在 reason 标明原因(不静默伪装引擎着法)。
  */
 @Singleton
 class EngineMoveChooser @Inject constructor(

@@ -18,7 +18,7 @@ import javax.inject.Singleton
  * 服务端 UCI/UCCI 象棋引擎走棋（当前内置 Pikafish，接口可按 [engineId] 扩展多引擎）。
  * 经 Go 网关 `POST /xiangqi/engine/bestmove`，把 `bestmove` 映射回 [legalMoves]。
  *
- * 失败时回退到 [HeuristicMoveFallback] 并在 reason 标明原因（不静默伪装引擎着法）。
+ * 失败时回退到 [HeuristicMoveFallback]（端侧浅层搜索）并在 reason 标明原因（不静默伪装引擎着法）。
  */
 @Singleton
 class PikafishMoveChooser @Inject constructor(
@@ -60,14 +60,14 @@ class PikafishMoveChooser @Inject constructor(
         val body = outcome.getOrNull()
         if (body == null) {
             val reason = "$engineId: ${outcome.exceptionOrNull()?.message ?: "failed"}"
-            return HeuristicMoveFallback.decision(legalMoves)
-                ?.copy(reason = reason, fallbackUsed = true)
+            return HeuristicMoveFallback.decision(boardState, legalMoves)
+                ?.withFailureReason(reason)
         }
 
         val selected = matchMove(body.bestmove, legalMoves)
         if (selected == null) {
-            return HeuristicMoveFallback.decision(legalMoves)
-                ?.copy(reason = "$engineId: unmapped bestmove=${body.bestmove}", fallbackUsed = true)
+            return HeuristicMoveFallback.decision(boardState, legalMoves)
+                ?.withFailureReason("$engineId: unmapped bestmove=${body.bestmove}")
         }
 
         val scoreText = when {

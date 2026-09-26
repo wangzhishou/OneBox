@@ -1,25 +1,57 @@
 package com.wanbaohe.gomoku.data
 
 import com.wanbaohe.gomoku.application.port.outbound.MoveDecision
+import com.wanbaohe.gomoku.data.search.GomokuSearch
 import com.wanbaohe.gomoku.domain.GameArbiter
 import com.wanbaohe.gomoku.domain.model.BoardPoint
 import com.wanbaohe.gomoku.domain.model.BoardState
 import com.wanbaohe.gomoku.domain.model.GomokuMove
 import com.wanbaohe.gomoku.domain.model.Side
+import kotlinx.coroutines.CancellationException
 
 /**
- * LLM 不可用时的本地启发式兜底:成五 > 堵对方成五 > 连四/活三形状评分,
- * 再按离中心远近微调(五子棋中心子力连接面最大)。
+ * LLM / 服务端引擎全链路失败时的本地兜底。
+ *
+ * 主路径是 [GomokuSearch] 的浅层搜索(候选点裁剪 + 迭代加深 alpha-beta),能看见活三/冲四
+ * 这类两步手段;搜索万一抛异常(理论上不该发生)再退到「成五 > 堵五 > 连子形状评分」的
+ * 单层启发式,保证任何情况下都能给出合法着法。
  */
 internal object GomokuMoveFallback {
 
     private val DIRECTIONS = listOf(1 to 0, 0 to 1, 1 to 1, 1 to -1)
 
-    fun decision(
+    suspend fun decision(
         boardState: BoardState,
         legalMoves: List<GomokuMove>,
     ): MoveDecision? {
         if (legalMoves.isEmpty()) return null
+
+        val searched = try {
+            GomokuSearch.findBestMove(boardState, legalMoves)
+        } catch (cancellation: CancellationException) {
+            // 协程取消必须原样上抛,否则离开对局页后兜底还在后台空转
+            throw cancellation
+        } catch (_: Throwable) {
+            null
+        }
+
+        if (searched != null) {
+            return MoveDecision(
+                move = searched.move,
+                reason = "local-search d=${searched.depth} score=${searched.score} " +
+                    "n=${searched.nodes} t=${searched.elapsedMs}ms",
+                rawResponse = "local-search",
+                fallbackUsed = true,
+            )
+        }
+        return greedy(boardState, legalMoves)
+    }
+
+    /** 最后的保命路径:单层启发式,不搜索 */
+    private fun greedy(
+        boardState: BoardState,
+        legalMoves: List<GomokuMove>,
+    ): MoveDecision? {
         val side = boardState.sideToMove
         val opponent = side.opposite()
 

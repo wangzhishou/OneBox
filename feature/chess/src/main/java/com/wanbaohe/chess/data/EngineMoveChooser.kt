@@ -18,7 +18,7 @@ import javax.inject.Singleton
  * 服务端国际象棋引擎走棋(当前内置 Stockfish,接口可按 [engineId] 扩展多引擎)。
  * 经 Go 网关 `POST /chess/engine/bestmove`,把 `bestmove`(UCI,如 "e2e4"/升变 "e7e8q")映射回 [legalMoves]。
  *
- * 失败时回退到 [ChessMoveFallback] 并在 reason 标明原因(不静默伪装引擎着法)。
+ * 失败时回退到 [ChessMoveFallback]（端侧浅层搜索）并在 reason 标明原因(不静默伪装引擎着法)。
  */
 @Singleton
 class EngineMoveChooser @Inject constructor(

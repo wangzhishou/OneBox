@@ -1,23 +1,51 @@
 package com.wanbaohe.chess.data
 
 import com.wanbaohe.chess.application.port.outbound.MoveDecision
+import com.wanbaohe.chess.data.search.ChessSearch
 import com.wanbaohe.chess.domain.model.BoardPoint
 import com.wanbaohe.chess.domain.model.BoardState
 import com.wanbaohe.chess.domain.model.ChessMove
 import com.wanbaohe.chess.domain.model.PieceType
+import kotlinx.coroutines.CancellationException
 
 /**
- * LLM 不可用时的本地启发式兜底:优先吃子(按子力价值差),其次升变,
- * 再次向中心靠拢(中心格子力覆盖最大)。
+ * LLM / 服务端引擎全链路失败时的本地兜底。
+ *
+ * 主路径是 [ChessSearch] 的浅层搜索(迭代加深 alpha-beta + 战术静态搜索),离线时能正常对弈;
+ * 搜索万一抛异常(理论上不该发生)再退到「优先吃子、其次升变、再次向中心靠拢」的贪心挑法,
+ * 保证任何情况下都给出合法着法。
  */
 internal object ChessMoveFallback {
 
-    fun decision(
+    suspend fun decision(
         boardState: BoardState,
         legalMoves: List<ChessMove>,
     ): MoveDecision? {
         if (legalMoves.isEmpty()) return null
 
+        val searched = try {
+            ChessSearch.findBestMove(boardState, legalMoves)
+        } catch (cancellation: CancellationException) {
+            // 协程取消必须原样上抛,否则离开对局页后兜底还在后台空转
+            throw cancellation
+        } catch (_: Throwable) {
+            null
+        }
+
+        if (searched != null) {
+            return MoveDecision(
+                move = searched.move,
+                reason = "local-search d=${searched.depth} score=${searched.score} " +
+                    "n=${searched.nodes} t=${searched.elapsedMs}ms",
+                rawResponse = "local-search",
+                fallbackUsed = true,
+            )
+        }
+        return greedy(legalMoves)
+    }
+
+    /** 最后的保命路径:不搜索,直接按吃子价值 / 升变 / 向中心挑一手 */
+    private fun greedy(legalMoves: List<ChessMove>): MoveDecision? {
         // 吃子:被吃子价值 - 攻击子价值*0.1(小换大优先)
         val capture = legalMoves.filter { it.captured != null }
             .maxByOrNull { (it.captured?.value ?: 0) * 10 - it.piece.value }

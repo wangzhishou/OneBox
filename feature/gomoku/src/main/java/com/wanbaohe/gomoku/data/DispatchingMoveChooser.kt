@@ -16,7 +16,8 @@ import javax.inject.Singleton
  * - [GomokuAiSource.WorkingModel] → 聊天 LLM(全局快速工作模型)
  * - [GomokuAiSource.RemoteEngine] → 服务端五子棋引擎(当前内置 Rapfi)
  *
- * LLM / 远程引擎失败分别由 [LlmMoveChooser] / [EngineMoveChooser] 内部经 [GomokuMoveFallback] 本地兜底。
+ * LLM / 远程引擎失败分别由 [LlmMoveChooser] / [EngineMoveChooser] 内部经 [GomokuMoveFallback] 本地兜底;
+ * 兜底主路径是端侧浅层搜索([com.wanbaohe.gomoku.data.search.GomokuSearch]),离线时仍可正常对弈。
  */
 @Singleton
 class DispatchingMoveChooser @Inject constructor(
