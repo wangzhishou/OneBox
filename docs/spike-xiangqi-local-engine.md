@@ -165,3 +165,48 @@ resolver 里,别散落在调用点。
    实际差距是否值得这套复杂度。
 3. **兜底改进已经够用一阵**:新搜索已是明确的提升(6:0),且零包体零许可成本。
    端侧强引擎属于「离线也要强棋力」的产品决策,不是修 bug。
+
+## 7. App 内技术验证结果(已完成)
+
+按「先只做技术验证、GPL 源码暂不入库」执行:引擎二进制放本地并加 `.gitignore`,
+在 debug APK + arm64 模拟器(Android 16)上把 App 内全链路跑通。
+
+### 验证到的(每一步都有实证)
+
+| 环节 | 证据 |
+|---|---|
+| 引擎随包并由 AGP 按 ABI 打包 | APK 内含 `lib/arm64-v8a/libfairystockfish.so`,1,602,464 字节 |
+| **App 沙箱内可执行**(Android 10+ 关注点) | native 库目录权限 `-rwxr-xr-x`,用 `run-as <pkg>` 直接执行成功并正常 `uciok`/`readyok` |
+| App 内从 R2 下载权重 | 日志:进度 25/50/75/100%,`11,261,915` 字节,sha256 校验通过,落到 `files/local_engines/` |
+| UCI 进程封装在 App 内启动 + 加载权重 | 日志:`LocalXiangqiEngine: 端侧象棋引擎就绪 net=xiangqi-83f16c17fe26.nnue` |
+| 引擎出招并被采纳、坐标换算正确 | 引擎以 depth 15 / cp=312 出招,实际是**炮隔自家兵跳吃我刚过河的兵**——一步正确的战术着法,证明 1-based↔0-based 换算无误 |
+| UI 正确标注来源 | 对局页底部显示「引擎不可用,已改用本地兜底着法 / 原因:`local-engine cp=312 depth=15 \| pikafish: http 400`」 |
+
+验证时远端恰好不通(debug 版 API 指向 `127.0.0.1:18080` 本地代理),因此**天然覆盖了「远端不可用」
+这条主路径**——这正是本地引擎要解决的场景。
+
+### 实现形态:子进程 UCI,而不是 JNI 内嵌
+
+引擎本身就是 UCI 程序,`Position`/`Search`/`Thread` 这些内部 API 并非为嵌入设计;
+子进程还能把第三方 native 崩溃隔离在 App 之外(内嵌崩溃就是闪退)。
+产物做成 `lib*.so` 形式的 PIE 可执行文件,由 AGP 按 ABI 打包,安装时解压到可执行的 native 库目录。
+
+### 代码位置与「不入库」的边界
+
+- 自有代码(未提交,见分支 `spike/fairy-stockfish-android` 的工作区):
+  `feature/xiangqi/.../data/local/LocalXiangqiEngine.kt`(UCI 进程封装 + 坐标换算)、
+  `.../data/local/XiangqiEngineWeights.kt`(R2 下载 + sha256 校验),
+  `PikafishMoveChooser` 里插入回退顺序「本地引擎 → 自研浅层搜索」。
+- **GPL 侧一律不入库**:`feature/xiangqi/src/main/jniLibs/` 已加进 `.gitignore`。
+  副作用是这份代码在没有二进制的仓库里是**惰性的**:`isPackaged()` 为 false →
+  不下载也不调用,自动退回浅层搜索,不会让别人的构建或对局出问题。
+
+### 正式落地前还缺的
+
+1. **vendor 源码 + 用 CMake/AGP 从源码构建**(F-Droid 要求可复现,不接受预编译 .so;
+   同时也要在此处补 GPL-3.0 声明与源码获取方式)。
+2. **下载入口与进度 UI**:现在靠「开局走棋时后台静默下载」,用户不知道在用流量下 10.74MB;
+   应改为设置页显式入口 + 进度/失败提示。
+3. **引擎选择项**:把「本地引擎」作为可选项暴露到象棋 AI 选择器(当前只是远端失败时的兜底)。
+4. **进程回收**:空闲一段时间或内存压力时 `release()`,避免常驻一个后端进程。
+5. **国内下载速度实测**:R2 拉 10.74MB 是否可接受;必要时按 flavor 切 OSS 镜像。
