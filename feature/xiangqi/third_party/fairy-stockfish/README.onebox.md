@@ -1,7 +1,7 @@
 # Fairy-Stockfish(vendored)
 
 本目录是 [Fairy-Stockfish](https://github.com/fairy-stockfish/Fairy-Stockfish) 的 **源码副本**,用于
-给中国象棋提供离线强引擎(见 `docs/spike-xiangqi-local-engine.md`)。
+给中国象棋提供离线强引擎(见 `docs/xiangqi-local-engine.md`)。
 
 ## 来源与许可
 
@@ -28,7 +28,7 @@
 `build/generated/fairyStockfish/arm64-v8a/libfairystockfish.so`(因此 `feature/xiangqi/src/main/jniLibs/`
 与生成目录都在 `.gitignore` 里)。
 
-关键构建参数(踩坑记录见 `docs/spike-xiangqi-local-engine.md` 第 1 节):
+关键构建参数(踩坑记录见 `docs/xiangqi-local-engine.md` 第 1 节):
 
 ```
 make -C <src> build ARCH=armv8 COMP=ndk KERNEL=Linux OS=Android \
@@ -50,5 +50,5 @@ make -C <src> build ARCH=armv8 COMP=ndk KERNEL=Linux OS=Android \
 1. 从上游 checkout 目标 commit,把 `src/` 下的 `*.cpp`/`*.h`/`Makefile`(含 `nnue/`、`syzygy/`、
    `incbin/` 子目录)覆盖到本目录,同时更新 `Copying.txt`/`AUTHORS`;
 2. 更新本文档表格里的 commit 与日期;
-3. 若上游改了默认网络名或变体注册方式,同步检查 `docs/spike-xiangqi-local-engine.md` 里的相关结论;
+3. 若上游改了默认网络名或变体注册方式,同步检查 `docs/xiangqi-local-engine.md` 里的相关结论;
 4. 重新构建并**在真机上验证**:权重能加载(`NNUE evaluation using ... enabled`)、能正常出招。

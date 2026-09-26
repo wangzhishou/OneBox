@@ -45,6 +45,9 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
     inputs.property("minSdk", minSdk)
     inputs.property("engineBuildFlags", "largeboards=yes nnue=no static-libstdc++")
     outputs.dir(outputDir)
+    // 产物是纯编译结果, 允许 build cache 复用:CI 的 tag 构建是 8 渠道 × 2 ABI 的矩阵,
+    // 每个 job 都重编一次引擎太浪费(setup-gradle 已开远端 build cache)
+    outputs.cacheIf { true }
 
     // NDK 目录只能在执行期解析(与 app 模块覆盖 libc++_shared 的任务同一处理方式):
     // 配置期解析会让未安装 NDK 的机器连 sync 都过不去
@@ -78,7 +81,7 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
 
         // largeboards=yes 是必须的:xiangqi 变体在 variant.cpp 里被 #ifdef LARGEBOARDS 包着;
         // KERNEL/OS 也必须显式给,否则 macOS 上会按 Darwin 加 -arch,非 Android 分支还会加
-        // bionic 没有的 -lpthread(详见 docs/spike-xiangqi-local-engine.md 第 1 节)。
+        // bionic 没有的 -lpthread(详见 docs/xiangqi-local-engine.md 第 1 节)。
         run(
             "make", "-C", workDir.absolutePath, "build",
             "ARCH=armv8", "COMP=ndk", "KERNEL=Linux", "OS=Android",

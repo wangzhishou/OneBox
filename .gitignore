@@ -42,6 +42,6 @@ fastlane/.venv/
 # 端侧象棋引擎:Fairy-Stockfish 源码已 vendor 在 feature/xiangqi/third_party/(GPL-3.0),
 # 二进制由构建期从源码编译到 feature/xiangqi/build/generated/fairyStockfish(build/ 已忽略),
 # 因此这里不再需要放预编译产物 —— 保留此条只是防止有人把 .so 手工丢进来。
-# 详见 docs/spike-xiangqi-local-engine.md 与 third_party/fairy-stockfish/README.onebox.md
+# 详见 docs/xiangqi-local-engine.md 与 third_party/fairy-stockfish/README.onebox.md
 feature/xiangqi/src/main/jniLibs/
 
