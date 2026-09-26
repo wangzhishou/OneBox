@@ -66,12 +66,34 @@ Fairy-Stockfish 是**变体引擎**,一个 `.so` 同时覆盖国际象棋与中�
 | 象棋 NNUE 权重 | 10.74 MB | 数据文件,可运行时下载,不进 APK |
 | `variants.ini` | 不需要 | 象棋是内置变体 |
 
+### 权重已上传 R2(可直接使用)
+
+```
+https://images.oneboxable.com/models/xiangqi-83f16c17fe26.nnue
+11,261,915 字节 (10.74 MB)
+sha256 83f16c17fe266f8d0904cb7cd8997777ee6a618a82b5d7fd32d52f570c760a25
+```
+
+- bucket `onebox-images`,key `models/xiangqi-83f16c17fe26.nnue`,与现有
+  `models/*.litertlm` 同一前缀、同一公开域名;
+- 已验证:公开 URL 返回 200 且 `content-length` 与 sha256 均与本地一致;
+- 文件名内嵌 sha256 前 12 位,便于将来发新权重时并存而不覆盖旧客户端;
+- 上传方式:`wrangler r2 object put onebox-images/models/<key> --file=<path> --remote`
+  (凭据取 `~/.onebox-secrets/cloudflare/r2.env` 的 `CF_API_TOKEN`)。
+  注意第一次 `put` 曾出现「无报错但对象不存在」,重跑一次才成功 —— 上传后务必回读校验。
+
+**渠道覆盖**:引擎是普通 arm64 `.so`,不依赖 GMS/Play 服务,也不涉及 Play 的动态代码政策
+(我们是把代码打进包,不是下载代码),所以 6 个国内渠道 + google + foss 都能带。
+权重走 R2 也是本仓库既有做法(音效与 LiteRT-LM 模型都放 `images.oneboxable.com`)。
+唯一需要实测的是**国内网络拉 10.74MB 的 R2 速度**(既有先例都是小文件);
+若不理想,可镜像到阿里云 OSS 并按 flavor 切换下载源 —— 建议一开始就把 URL 收在一个
+resolver 里,别散落在调用点。
+
 权重是**数据不是代码**,所以有两种分发方式,都不需要 Play Feature Delivery:
 
-- **外挂(推荐)**:`.so` 随包(约 1.6MB,APK 压缩后更小),权重按需下载到 `filesDir`。
+- **外挂(推荐)**:`.so` 随包(约 0.92MB),权重按需下载到 `filesDir`。
   可直接复用现有的 `LocalModelManagementScreen` + `LocalModelDownloader`(它已经在做
-  「从 `images.oneboxable.com` 下载模型文件到本地」这件事),也可以托管到自己的对象存储
-  —— 权重许可允许再分发。
+  「从 `images.oneboxable.com` 下载模型文件到本地」这件事),权重许可也允许自行再分发。
 - **内嵌**:照官方 specialized release 的做法,把权重改名成 `evaluate.h` 里的
   `EvalFileDefaultName` 再 `nnue=yes` 构建,得到一个自带权重的单文件。
   好处是没有「权重缺失」状态;代价是每次引擎更新都要重新打包权重。
