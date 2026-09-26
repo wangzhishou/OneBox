@@ -1,0 +1,7 @@
+• New: Gomoku and International Chess with AI opponents
+• Rebuilt Chinese Chess game and replay screens
+• New: keyword search across all tools
+• Bookkeeping now supports your local currency
+• Redesigned Notification Center with push notifications
+• New: Arabic support and more image generation engines
+• Bug fixes and performance improvements

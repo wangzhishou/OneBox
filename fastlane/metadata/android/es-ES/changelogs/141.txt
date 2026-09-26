@@ -1,0 +1,7 @@
+• Nuevo: Gomoku y Ajedrez Internacional con rivales IA
+• Rediseño del Ajedrez Chino: partida y repetición
+• Nuevo: búsqueda por palabras clave en todas las herramientas
+• Contabilidad ahora admite tu moneda local
+• Centro de notificaciones rediseñado con notificaciones push
+• Nuevo: soporte de árabe y más motores de generación de imágenes
+• Corrección de errores y mejoras de rendimiento

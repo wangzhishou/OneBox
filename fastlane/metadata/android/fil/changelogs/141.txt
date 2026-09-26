@@ -1,0 +1,7 @@
+• Bago: Gomoku at International Chess na may AI na kalaban
+• Na-redesign ang Chinese Chess game at replay screen
+• Bago: keyword search sa lahat ng tool
+• Sinusuportahan na ng bookkeeping ang lokal na currency
+• Na-redesign ang notification center, may push notifications
+• Bago: suporta sa Arabic at mas maraming image generation engine
+• Mga pag-aayos ng bug at pagpapabuti ng performance

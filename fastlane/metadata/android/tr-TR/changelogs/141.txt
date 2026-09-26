@@ -1,0 +1,7 @@
+• Yeni: Yapay zekâ rakipli Gomoku ve Uluslararası Satranç
+• Çin Satrancı oyun ve tekrar ekranları yenilendi
+• Yeni: tüm araçlarda anahtar kelime araması
+• Gelir-gider artık yerel para biriminizi destekliyor
+• Bildirim merkezi yenilendi, push bildirimleri eklendi
+• Yeni: Arapça desteği ve daha fazla görsel üretim motoru
+• Hata düzeltmeleri ve performans iyileştirmeleri

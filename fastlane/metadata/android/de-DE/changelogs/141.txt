@@ -1,0 +1,7 @@
+• Neu: Gomoku und Internationales Schach gegen KI-Gegner
+• Chinesisches Schach: Partie- und Replay-Ansicht überarbeitet
+• Neu: Keyword-Suche über alle Tools
+• Haushaltsbuch unterstützt jetzt deine Landeswährung
+• Benachrichtigungscenter überarbeitet, mit Push-Nachrichten
+• Neu: Arabisch-Unterstützung und weitere Bildgeneratoren
+• Fehlerbehebungen und Leistungsverbesserungen

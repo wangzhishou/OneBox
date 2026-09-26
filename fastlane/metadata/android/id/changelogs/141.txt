@@ -1,0 +1,7 @@
+• Baru: Gomoku dan Catur Internasional dengan lawan AI
+• Catur Tiongkok dirombak: permainan dan tayangan ulang
+• Baru: pencarian kata kunci di semua alat
+• Pembukuan kini mendukung mata uang lokal Anda
+• Pusat notifikasi dirombak dengan notifikasi push
+• Baru: dukungan bahasa Arab dan mesin pembuat gambar lainnya
+• Perbaikan bug dan peningkatan performa

@@ -1,0 +1,7 @@
+• Novo: Gomoku e Xadrez Internacional com oponentes de IA
+• Xadrez Chinês reformulado: partida e replay
+• Novo: busca por palavras-chave em todas as ferramentas
+• Contabilidade agora aceita sua moeda local
+• Central de notificações reformulada com notificações push
+• Novo: suporte a árabe e mais motores de geração de imagens
+• Correções de bugs e melhorias de desempenho
