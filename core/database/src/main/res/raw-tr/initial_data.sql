@@ -120,7 +120,7 @@ INSERT INTO "item" ("id","remote_id","source","list_type","title","description",
 INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (1,'Oluştur','c08zag2vssli40cmc8o0gdnn',0,0,1790377942019);
 INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (2,'Kişisel Asistan','gm8k96cqnsu59noi8ce8kkmr',0,0,1790377940036);
 INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (3,'Öğrenme ve Gelişim','vahyhxh0nqlzdwnsqtjmlan9',0,0,1790377941819);
-INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (4,'Eğlence ve boş zaman.','dcvdrnt71y0d7w9c7y7izeed',0,0,1790377941945);
+INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (4,'Eğlence ve boş zaman','dcvdrnt71y0d7w9c7y7izeed',0,0,1790377941945);
 INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (5,'BT Teknolojisi','mtixsjcfkahy9bem4ha5rzt4',0,0,1790377940064);
 INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (6,'Günlük Kullanım','arfof76zmn0mnedzgfw6lz5q',0,0,1790377942054);
 INSERT INTO "category" ("id","name","document_id","can_edit","source","updated_at") VALUES (7,'Görüntü işleme','khrkmz3ss1k9b6bj0i8ufytw',0,0,1790377936675);
