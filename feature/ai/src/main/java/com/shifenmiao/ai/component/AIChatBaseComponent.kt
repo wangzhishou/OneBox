@@ -226,13 +226,24 @@ open class AIChatBaseComponent @AssistedInject internal constructor(
 
     private fun initListenerConversation() {
         componentScope.launch {
-            aiEngineManager.currentAIModel.collectLatest { currentAIModel ->
-                if (_conversation.value.entryType != AIConversationEntryType.DUEL) {
-                    _conversation.value = _conversation.value.copy(
-                        engine = aiEngineManager.getCurrentAiEngine()
-                    )
+            // 必须绕一次 Main 派发,不能直接用 componentScope 的 Main.immediate。
+            //
+            // 本 launch 是在基类 init 里发起的:immediate 会让它就地同步执行,于是
+            // currentAIModel 的首个值会**在构造过程中**立刻回调虚方法 onModelChanged;
+            // 而子类 AIChatComponent 的构造参数 localLlmSessionManager 要到基类构造返回后
+            // 才赋值,那时读它必然 NPE(1.4.1 引入端侧模型预热后线上出现的崩溃,
+            // 引入提交 645a2fcf;1.4.0 时 onModelChanged 还是空实现,故不复现)。
+            // 走 Main 派发可确保整个构造过程先结束 —— 同 BaseComponent KDoc 的建议,
+            // 也与本类 initReady() 的处理一致。
+            withContext(Dispatchers.Main) {
+                aiEngineManager.currentAIModel.collectLatest { currentAIModel ->
+                    if (_conversation.value.entryType != AIConversationEntryType.DUEL) {
+                        _conversation.value = _conversation.value.copy(
+                            engine = aiEngineManager.getCurrentAiEngine()
+                        )
+                    }
+                    onModelChanged(currentAIModel)
                 }
-                onModelChanged(currentAIModel)
             }
         }
     }
