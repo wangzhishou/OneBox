@@ -78,7 +78,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
  * - [BackdropState.Solid]:有背景层但玻璃关闭,画不透明 surface 实色底。
  */
 @Composable
-private fun rememberBackdropState(): BackdropState {
+private fun currentBackdropState(): BackdropState {
     val settingsState = LocalSettingsState.current
     val hasBackdrop = settingsState.isMeshGradientBackgroundEnabled ||
         settingsState.customBackgroundImageUri != null
@@ -161,7 +161,7 @@ fun BottomNavigationBar(
     val bottomBarHeight = remember(height, systemBarsBottom) {
         height + systemBarsBottom
     }
-    val backdropState = rememberBackdropState()
+    val backdropState = currentBackdropState()
     AnimatedVisibility(
         visible = showBar,
         enter = slideInVertically(initialOffsetY = { it }),
@@ -278,7 +278,7 @@ private fun BottomNavigationTabItem(
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val backdropState = rememberBackdropState()
+    val backdropState = currentBackdropState()
     val defaultSelectedBg = MaterialTheme.colorScheme.primaryContainer
     val defaultSelectedContent = MaterialTheme.colorScheme.onPrimaryContainer
     val selectedBgColor = item.selectedContainerColor ?: defaultSelectedBg
@@ -374,7 +374,7 @@ private fun CenterActionButton(
     style: BottomNavigationBarStyle,
     onClick: (() -> Unit)?,
 ) {
-    val backdropState = rememberBackdropState()
+    val backdropState = currentBackdropState()
     val rotation by animateFloatAsState(
         targetValue = if (action.expanded) 45f else 0f,
         animationSpec = tween(300),

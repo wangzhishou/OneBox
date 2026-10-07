@@ -864,20 +864,37 @@ internal fun flatGlassContainerColor(
     // None = 明确不用玻璃、要一层实底(如分段按钮行的底板),不参与玻璃的覆盖率折算
     if (style == GlassStyle.None) return color.withGlassBaseAlpha(glassBaseAlpha)
     val baseColor = if (color != Color.Unspecified) color else colorScheme.surfaceContainerLow
-    val colors = createGlassDecorationColors(
-        style = style,
-        colorSchemeSurface = colorScheme.surface,
-        colorSchemeOutline = colorScheme.outline,
-        colorSchemePrimary = colorScheme.primary,
-        colorSchemeSurfaceTint = colorScheme.surfaceTint,
-        colorSchemeScrim = colorScheme.scrim,
-        baseColor = baseColor,
-        backgroundAlpha = (backgroundAlpha * glassBaseAlpha).coerceIn(0f, 1f),
-        glassBaseAlpha = glassBaseAlpha,
-        isLight = colorScheme.surface.luminance() > 0.5f,
-        isTintedSurface = color != Color.Unspecified,
-        isLiquidGlass = settingsState.isLiquidGlassEnabled,
-    )
+    val scaledBackgroundAlpha = (backgroundAlpha * glassBaseAlpha).coerceIn(0f, 1f)
+    val isLight = colorScheme.surface.luminance() > 0.5f
+    val isTintedSurface = color != Color.Unspecified
+    val isLiquidGlass = settingsState.isLiquidGlassEnabled
+    // 与玻璃态一致地缓存:配色推导含几十次 blendARGB,不缓存的话每次重组、每个卡片
+    // 都要重算一遍并重新分配一个 GlassDecorationColors —— 热路径上白白多出这些开销。
+    val colors = remember(
+        baseColor,
+        colorScheme,
+        style,
+        scaledBackgroundAlpha,
+        glassBaseAlpha,
+        isLight,
+        isTintedSurface,
+        isLiquidGlass,
+    ) {
+        createGlassDecorationColors(
+            style = style,
+            colorSchemeSurface = colorScheme.surface,
+            colorSchemeOutline = colorScheme.outline,
+            colorSchemePrimary = colorScheme.primary,
+            colorSchemeSurfaceTint = colorScheme.surfaceTint,
+            colorSchemeScrim = colorScheme.scrim,
+            baseColor = baseColor,
+            backgroundAlpha = scaledBackgroundAlpha,
+            glassBaseAlpha = glassBaseAlpha,
+            isLight = isLight,
+            isTintedSurface = isTintedSurface,
+            isLiquidGlass = isLiquidGlass,
+        )
+    }
     // 与玻璃态同样的叠放顺序:先底,再染色层;压成单色后既能当底色也能交给 M3 组件
     return colors.tintColor.compositeOver(colors.fillColor)
 }

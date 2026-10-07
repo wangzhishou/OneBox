@@ -573,7 +573,6 @@ private fun GlassSegmentedButton(
     selectionLayer: (@Composable BoxScope.() -> Unit)? = null,
     label: @Composable () -> Unit,
 ) {
-    val glassBaseAlpha = LocalSettingsState.current.glassBaseAlpha
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val pressedScale by animateFloatAsState(
