@@ -41,7 +41,11 @@ fun GlassIconButton(
             onClick = onClick,
             modifier = modifier,
             enabled = enabled,
-            colors = colors,
+            colors = colors.copy(
+                containerColor = flatGlassContainerColor(
+                    color = colors.containerColor(enabled = enabled)
+                )
+            ),
             interactionSource = interactionSource,
             content = content,
         )
@@ -102,7 +106,11 @@ fun GlassFilledIconButton(
             modifier = modifier,
             enabled = enabled,
             shape = shape,
-            colors = colors,
+            colors = colors.copy(
+                containerColor = flatGlassContainerColor(
+                    color = colors.containerColor(enabled = enabled)
+                )
+            ),
             interactionSource = interactionSource,
             content = content,
         )
@@ -165,7 +173,11 @@ fun GlassOutlinedIconButton(
             modifier = modifier,
             enabled = enabled,
             shape = shape,
-            colors = colors,
+            colors = colors.copy(
+                containerColor = flatGlassContainerColor(
+                    color = colors.containerColor(enabled = enabled)
+                )
+            ),
             border = border,
             interactionSource = interactionSource,
             content = content,

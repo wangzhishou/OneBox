@@ -811,19 +811,83 @@ private fun Modifier.controlSurfaceDecoration(
     }
 }
 
+/**
+ * 玻璃关闭时的"平涂"底面 —— 复用玻璃管线同一套覆盖率,只是不画模糊、高光与描边。
+ *
+ * 玻璃态容器并不是"纯色 + 模糊":底色只按约 4% 的覆盖率铺一层([GlassStyle.Regular]),
+ * 上面再叠一层染色层,所以看上去是淡淡的一抹;分类色(primary/secondary/tertiary)
+ * 因此也不会抢主题。
+ *
+ * 而"关闭玻璃"的原实现是直接把容器色**不透明**画出来,于是同一个 primaryContainer
+ * 在开关两侧的浓淡差了二十多倍 —— 关掉玻璃后彩色卡片会突然变得很跳。这里让关闭态
+ * 复用同一套覆盖率公式(含 [LocalSettingsState.glassBaseAlpha] 的影响),
+ * 保证开关两侧的色彩浓淡一致,全局 Glass 组件都走这一条路径。
+ */
+@Composable
+internal fun Modifier.glassFlatSurface(
+    shape: Shape,
+    color: Color = Color.Unspecified,
+    style: GlassStyle = GlassStyle.Regular,
+    backgroundAlpha: Float = style.backgroundAlpha,
+): Modifier {
+    if (style == GlassStyle.Transparent) {
+        return clip(shape).background(Color.Transparent, shape)
+    }
+    return clip(shape).background(
+        color = flatGlassContainerColor(
+            color = color,
+            style = style,
+            backgroundAlpha = backgroundAlpha,
+        ),
+        shape = shape,
+    )
+}
+
+/**
+ * 平涂底色的**颜色**版本 —— 给那些把颜色交给 M3 组件(Button/Chip/IconButton 的
+ * `containerColor`)的降级分支复用,语义与 [glassFlatSurface] 完全一致:
+ * 玻璃的底 + 染色两层按同一套覆盖率压成一个颜色,不含模糊、高光与描边。
+ */
+@Composable
+internal fun flatGlassContainerColor(
+    color: Color = Color.Unspecified,
+    style: GlassStyle = GlassStyle.Regular,
+    backgroundAlpha: Float = style.backgroundAlpha,
+): Color {
+    if (style == GlassStyle.Transparent) return Color.Transparent
+    val settingsState = LocalSettingsState.current
+    val colorScheme = MaterialTheme.colorScheme
+    val glassBaseAlpha = settingsState.glassBaseAlpha.coerceIn(0f, 1f)
+    val baseColor = if (color != Color.Unspecified) color else colorScheme.surfaceContainerLow
+    val colors = createGlassDecorationColors(
+        style = style,
+        colorSchemeSurface = colorScheme.surface,
+        colorSchemeOutline = colorScheme.outline,
+        colorSchemePrimary = colorScheme.primary,
+        colorSchemeSurfaceTint = colorScheme.surfaceTint,
+        colorSchemeScrim = colorScheme.scrim,
+        baseColor = baseColor,
+        backgroundAlpha = (backgroundAlpha * glassBaseAlpha).coerceIn(0f, 1f),
+        glassBaseAlpha = glassBaseAlpha,
+        isLight = colorScheme.surface.luminance() > 0.5f,
+        isTintedSurface = color != Color.Unspecified,
+        isLiquidGlass = settingsState.isLiquidGlassEnabled,
+    )
+    // 与玻璃态同样的叠放顺序:先底,再染色层;压成单色后既能当底色也能交给 M3 组件
+    return colors.tintColor.compositeOver(colors.fillColor)
+}
+
 @Composable
 private fun Modifier.fallbackGlassBackground(
     shape: Shape,
     color: Color,
     style: GlassStyle,
 ): Modifier {
-    val glassBaseAlpha = LocalSettingsState.current.glassBaseAlpha
-    val fallbackColor = when {
-        style == GlassStyle.Transparent -> Color.Transparent
-        color != Color.Unspecified -> color
-        else -> MaterialTheme.colorScheme.surfaceContainerLow
-    }.withGlassBaseAlpha(glassBaseAlpha)
-    return clip(shape).background(fallbackColor, shape)
+    return glassFlatSurface(
+        shape = shape,
+        color = color,
+        style = style,
+    )
 }
 
 @Composable

@@ -62,7 +62,9 @@ fun GlassAssistChip(
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
                 shape = shape,
-                colors = colors,
+                colors = colors.copy(
+                    containerColor = flatGlassContainerColor(color = colors.containerColor)
+                ),
                 elevation = elevation,
                 border = border,
                 horizontalArrangement = horizontalArrangement,
@@ -140,7 +142,9 @@ fun GlassSuggestionChip(
                 enabled = enabled,
                 icon = icon,
                 shape = shape,
-                colors = colors,
+                colors = colors.copy(
+                    containerColor = flatGlassContainerColor(color = colors.containerColor)
+                ),
                 elevation = elevation,
                 border = border,
                 horizontalArrangement = horizontalArrangement,

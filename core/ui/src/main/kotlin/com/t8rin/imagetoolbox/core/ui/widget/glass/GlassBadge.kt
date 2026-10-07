@@ -45,7 +45,7 @@ fun GlassBadge(
     if (!settingsState.isGlassAlphaEnabled) {
         Badge(
             modifier = modifier,
-            containerColor = containerColor,
+            containerColor = flatGlassContainerColor(color = containerColor),
             contentColor = contentColor,
             content = content,
         )

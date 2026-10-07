@@ -72,7 +72,8 @@ fun GlassTextFieldContainer(
         Row(
             modifier = modifier
                 .clip(shape)
-                .background(resolvedColor.withGlassBaseAlpha(settingsState.glassBaseAlpha), shape)
+                // 关闭玻璃只是不画模糊/高光/描边,底色浓淡与玻璃态一致
+                .background(flatGlassContainerColor(color = resolvedColor), shape)
                 .padding(contentPadding),
             horizontalArrangement = horizontalArrangement,
             verticalAlignment = verticalAlignment,

@@ -70,7 +70,8 @@ fun GlassButton(
             enabled = enabled,
             shape = shape,
             colors = colors ?: ButtonDefaults.buttonColors(
-                containerColor = color,
+                // 关闭玻璃只是不画模糊/高光/描边,底色浓淡与玻璃态一致
+                containerColor = flatGlassContainerColor(color = color),
                 contentColor = contentColor,
             ),
             elevation = elevation,

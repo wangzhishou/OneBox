@@ -601,7 +601,8 @@ private fun GlassSegmentedButton(
                         scaleX = pressedScale
                         scaleY = pressedScale
                     }
-                    .background(unselectedColor.withGlassBaseAlpha(glassBaseAlpha), shape)
+                    // 关闭玻璃只是不画模糊/高光/描边,底色浓淡与玻璃态一致
+                    .background(flatGlassContainerColor(color = unselectedColor), shape)
                     .clickable(
                         onClick = onClick,
                         indication = null, // 取消默认点击效果，使用玻璃样式自带的高亮
@@ -630,7 +631,7 @@ private fun GlassSegmentedButton(
                 scaleX = pressedScale
                 scaleY = pressedScale
             }
-            .background(unselectedColor.withGlassBaseAlpha(glassBaseAlpha), shape)
+            .background(flatGlassContainerColor(color = unselectedColor), shape)
             .clickable(
                 onClick = onClick,
                 indication = null,
