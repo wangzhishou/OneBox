@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -56,6 +57,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
@@ -131,6 +133,9 @@ fun BottomNavigationBar(
     val bottomBarHeight = remember(height, systemBarsBottom) {
         height + systemBarsBottom
     }
+    // 「玻璃质感背景透明」关闭时,底栏退化成不透明 surface 容器,与页面连成一体;
+    // 只有开启玻璃时才画毛玻璃背景。(与 BaseScreen / AdaptiveLayoutScreen 的判定一致)
+    val isGlassActive = LocalSettingsState.current.isGlassAlphaEnabled
     AnimatedVisibility(
         visible = showBar,
         enter = slideInVertically(initialOffsetY = { it }),
@@ -147,10 +152,19 @@ fun BottomNavigationBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(bottomBarHeight)
-                    .glassBackground(
-                        style = style.containerGlassStyle,
-                        shape = style.containerShape,
-                        color = MaterialTheme.colorScheme.surface,
+                    .then(
+                        if (isGlassActive) {
+                            Modifier.glassBackground(
+                                style = style.containerGlassStyle,
+                                shape = style.containerShape,
+                                color = MaterialTheme.colorScheme.surface,
+                            )
+                        } else {
+                            Modifier.background(
+                                color = MaterialTheme.colorScheme.surface,
+                                shape = style.containerShape,
+                            )
+                        }
                     )
                     .let { if (navigationBarsPadding) it.navigationBarsPadding() else it }
                     .let { if (imePadding) it.imePadding() else it }
@@ -237,6 +251,7 @@ private fun BottomNavigationTabItem(
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val isGlassActive = LocalSettingsState.current.isGlassAlphaEnabled
     val defaultSelectedBg = MaterialTheme.colorScheme.primaryContainer
     val defaultSelectedContent = MaterialTheme.colorScheme.onPrimaryContainer
     val selectedBgColor = item.selectedContainerColor ?: defaultSelectedBg
@@ -267,11 +282,18 @@ private fun BottomNavigationTabItem(
                 .indication(interactionSource, ripple(bounded = true))
                 .then(
                     if (isSelected) {
-                        Modifier.glassBackground(
-                            style = style.selectedItemGlassStyle,
-                            color = selectedBgColor,
-                            shape = style.tabItemShape,
-                        )
+                        if (isGlassActive) {
+                            Modifier.glassBackground(
+                                style = style.selectedItemGlassStyle,
+                                color = selectedBgColor,
+                                shape = style.tabItemShape,
+                            )
+                        } else {
+                            Modifier.background(
+                                color = selectedBgColor,
+                                shape = style.tabItemShape,
+                            )
+                        }
                     } else {
                         Modifier
                     }
@@ -325,6 +347,7 @@ private fun CenterActionButton(
     style: BottomNavigationBarStyle,
     onClick: (() -> Unit)?,
 ) {
+    val isGlassActive = LocalSettingsState.current.isGlassAlphaEnabled
     val rotation by animateFloatAsState(
         targetValue = if (action.expanded) 45f else 0f,
         animationSpec = tween(300),
@@ -349,9 +372,18 @@ private fun CenterActionButton(
         Box(
             modifier = Modifier
                 .size(style.centerButtonSize)
-                .glassDense(
-                    shape = CircleShape,
-                    color = selectedBgColor,
+                .then(
+                    if (isGlassActive) {
+                        Modifier.glassDense(
+                            shape = CircleShape,
+                            color = selectedBgColor,
+                        )
+                    } else {
+                        Modifier.background(
+                            color = selectedBgColor,
+                            shape = CircleShape,
+                        )
+                    }
                 ),
             contentAlignment = Alignment.Center,
         ) {
