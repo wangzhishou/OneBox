@@ -3,7 +3,7 @@
     <string name="app_name">萬寶盒</string>
     <string name="app_copyright">Copyright © 2024萬寶盒</string>
     <string name="app_description">一個 App，90+ 工具：圖像處理、AI 聊天、效率工具、小遊戲——全部裝進一個盒子。</string>
-    <string name="app_description_download_des">\n\n下載：https://www.wanbaohe.com/download\n開源：https://github.com/wangzhishou/OneBox</string>
+    <string name="app_description_download_des">\n\n下載：https://gitcode.com/wangzhishou/OneBox/releases\n開源：https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">萬寶盒</string>
     <string name="app_slogan">萬能寶盒萬事萬物皆可AI</string>
     <string name="dialog_title">提示</string>
