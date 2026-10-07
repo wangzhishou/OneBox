@@ -47,13 +47,188 @@ AI 理解、执行、反馈,一气呵成。
 - **自带 Key,零成本用 AI**:填入任意 OpenAI 兼容服务的 API Key 即可解锁全部 AI 能力——接上 Gemini、OpenRouter 等的免费额度,AI 助手和 Agent 零成本跑起来。(自定义引擎在海外版与自行构建的版本中完全开放;中国商店版为 VIP 能力)
 - **代码透明,隐私可见**:所有代码公开可查——数据如何在本地处理、哪些信息绝不上传,一目了然。你不再需要“相信”我们,而是可以亲自验证。
 
-## 核心特性
+## 功能总览
 
-- **图片与媒体工具**：包含裁剪、拼图、滤镜、抠图、格式转换、EXIF 编辑、文档扫描、二维码扫描等多个功能模块。
-- **AI 能力**：提供 AI 对话、Agent 工具调用、AI 图片相关能力，并支持本地/远程 AI 引擎配置。
-- **效率与生活工具**：包含文件浏览、文件传输、Markdown 编辑、记事/待办、日历、记账、单位换算、提词器等模块。
-- **DSH 客户端**：在手机上指挥电脑里运行的 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Agent——扫码配对、端到端加密,支持局域网直连与云端中继。电脑端配合开源插件 [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge) 使用(`dsh plugin add onebox-dsh-bridge`)。
-- **自适应顶层导航**：竖屏使用抽屉 + 底部栏，横屏使用 navigation rail，并由 `feature/app` 统一编排壳层与全局状态。
+万宝盒共 **104 个功能模块**。本地工具全程本机执行,只有与所选大模型的对话会联网。下表按分类列出全部模块——模块名对应仓库里的 `feature/*` 目录。
+
+### AI 与智能
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/ai` | AI 聊天与智能体 | 多模型对话、双模型对决、Prompt 执行、Agent 工具调用、Token 统计 |
+| `feature/ai-image` | AI 绘图 | 文字描述生成图片,支持分享 / 复制 / 编辑 |
+| `feature/ai-detect` | AI 检测 | 检测一段文本或一张图片是否由 AI 生成 |
+| `feature/dsh-client` | DSH 客户端 | 在手机上指挥电脑里的 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Agent——扫码配对、端到端加密,支持局域网直连与云端中继(电脑端配合 [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge) 插件) |
+| `feature/visual-automation` | 视觉自动化 | 截屏传给 AI 多模态模型,实现基于截图的 UI 自动化操作 |
+
+### 图像查看与编辑
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/image-viewer` | 图片查看器 | 全屏沉浸式查看,多图滑动浏览、双击/捏合缩放(最大 5 倍)、网络图片下载 |
+| `feature/image-preview` | 图片预览 | 多图预览与管理,是进入编辑 / 裁剪 / 滤镜等子功能的入口 |
+| `feature/single-edit` | 单图编辑 | 一站式编辑:裁剪、滤镜、绘制、色调曲线,支持尺寸调整、格式与质量、原图对比 |
+| `feature/draw` | 画笔绘制 | 自由画布:钢笔/霓虹笔/荧光笔/模糊/像素化/文字/贴纸/斑点修复,形状路径与泛洪填充 |
+| `feature/markup-layers` | 图片创作 | 图层系统创作:多图层(增删/排序/合并/混合/不透明度)+ 画笔/文字/形状/贴纸 |
+| `feature/crop` | 图片裁剪 | 默认裁剪(带旋转)、无旋转裁剪、自由角点裁剪,多种形状轮廓与宽高比 |
+| `feature/image-stitch` | 图片拼接 | 水平/垂直/网格拼接,可配置对齐方式、间距、渐隐边缘 |
+| `feature/image-splitting` | 图片分割 | 按行×列网格把单张图片拆成多张子图 |
+| `feature/image-stacking` | 图片叠加 | 将多张图片按层叠方式合成一张图 |
+| `feature/image-cutting` | 图片裁切 | 按水平/垂直起止百分比精确裁切指定区域,支持反选 |
+| `feature/compare` | 图片对比 | 并排或叠加对比两张图片,滑块对比与像素级差异高亮 |
+| `feature/load-net-image` | 网络图片加载 | 输入 URL 自动解析页面图片资源,支持预览与下载 |
+| `feature/pick-color` | 图片取色 | 点击/拖拽拾取像素颜色,支持平移与放大模式 |
+| `feature/collage-maker` | 拼图制作 | 最多 10 张图片拼贴,多种模板布局、间距、圆角、背景色 |
+| `feature/text-card` | 图文卡片 | 把文字语录做成精美卡片,支持纸张背景、图层与 AI 配图 |
+
+### 滤镜与特效
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/filters` | 图片滤镜 | 100+ 种滤镜(模糊、色彩、艺术、边缘检测、变形等),支持滤镜蒙版局部应用 |
+| `feature/gradient-maker` | 渐变生成 | 纯渐变/渐变叠加/Mesh 渐变,可配置渐变类型与颜色停止点 |
+| `feature/mesh-gradients` | Mesh 渐变 | Mesh 渐变收藏/浏览,在线下载渐变资源包,可跳转编辑器 |
+| `feature/noise-generation` | 噪声纹理 | 基于 FastNoiseLite 的程序化噪声纹理(OpenSimplex2/Perlin/Value 等) |
+| `feature/ascii-art` | ASCII 艺术 | 把图片转换成 ASCII 字符组成的文本艺术画 |
+| `feature/color-tools` | 颜色工具 | 颜色信息(HEX/RGB/HSL)、和谐关系分析、阴影/渐变生成、直方图分析 |
+| `feature/palette-tools` | 调色板提取 | 从图片提取主色调生成调色板,支持 Material You 风格与自定义导出 |
+
+### 格式转换与压缩
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/format-conversion` | 格式转换 | JPEG/PNG/WebP 等格式互转,质量调节、EXIF 保留、批量处理 |
+| `feature/resize-convert` | 尺寸调整转换 | 尺寸调整 + 格式转换一体,宽高/预设/缩放模式,批量处理 |
+| `feature/weight-resize` | 按大小压缩 | 按目标文件大小压缩图片,实时显示压缩前后大小对比 |
+| `feature/limits-resize` | 限制尺寸缩放 | 在最大宽高限制内缩放,跳过/重编码/缩放三种模式 |
+| `feature/gif-tools` | GIF 工具 | 多图合成 GIF,可配置帧率、重复次数、尺寸,逐帧预览 |
+| `feature/apng-tools` | APNG 工具 | 多图合成 APNG,可配置帧延迟、重复次数 |
+| `feature/webp-tools` | WebP 工具 | 多图合成 WebP 动图,可配置帧延迟、重复次数 |
+| `feature/svg-maker` | SVG 生成器 | 将位图转换为 SVG 矢量格式 |
+| `feature/zip` | 压缩归档 | 将图片打包为 ZIP |
+
+### 元数据与编码
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/edit-exif` | 编辑 EXIF | 查看和修改相机型号、拍摄时间、GPS 坐标、版权信息等 |
+| `feature/delete-exif` | 删除 EXIF | 批量剥离 EXIF 保护隐私,也可添加新 EXIF 数据 |
+| `feature/base64-tools` | Base64 工具 | 图片与 Base64 字符串双向转换 |
+| `feature/checksum-tools` | 校验和工具 | 多种哈希算法计算与比对文件/文本校验值 |
+
+### 文档处理
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/pdf-tools` | PDF 工具箱 | 预览、图片转 PDF、PDF 转图片、合并、拆分、压缩、旋转、页面管理 |
+| `feature/ocr-document` | OCR 识别 | OCR 文档识别与格式转换,任务状态追踪、结果预览与导出 |
+| `feature/document-scanner` | 文档扫描 | 扫描纸质文档生成图片 / PDF |
+| `feature/markdown-edit` | Markdown 编辑器 | 所见即所得编辑,支持导出 PDF |
+| `feature/code-editor` | 代码编辑器 | 语法高亮、文件读写与历史记录 |
+
+### 水印与证件
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/watermarking` | 图片水印 | 文字/图片/数字隐写/印章水印,可配置位置/旋转/透明度/平铺 |
+| `feature/camera-watermark` | 相机水印 | 为照片添加时间/地点/设备等水印信息 |
+| `feature/id-photo` | 证件照 | 标准证件照尺寸裁剪,支持背景更换与批量导出 |
+| `feature/wallpapers-export` | 壁纸导出 | 读取并保存系统壁纸与锁屏壁纸 |
+
+### 二维码与扫描
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/scan-qr-code` | 二维码工具 | 扫描(摄像头/图片)与生成二维码/条码,涵盖文本/URL/WiFi/联系人等类型 |
+
+### 测量与实用工具
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/unit-converter` | 单位转换 | 长度/重量/温度/面积/体积/速度/时间等多种物理量换算 |
+| `feature/compass` | 电子罗盘 | 罗经盘与指南针双表盘,实时方位、二十四山坐向、磁偏角与校准提示 |
+| `feature/measurement` | 测量工具 | 屏幕直尺与量角器,支持厘米/英寸切换 |
+| `feature/altitude` | 海拔测量 | 通过 GPS 获取当前海拔,支持历史记录 |
+| `feature/speed-test` | 网络测速 | 测量下载/上传速度,仪表盘动画展示 |
+| `feature/calendar` | 万年历 | 日历查看、黄历宜忌、八字排盘、公农历转换 |
+| `feature/schedule` | 日程管理 | 创建/管理日程事件,系统日历同步与提醒通知 |
+| `feature/teleprompter` | 提词器 | 文稿编辑 + 全屏播放,滚动速度/字号/颜色调节 |
+| `feature/dead-pixel-test` | 坏点检测 | 纯色色板全屏检测屏幕坏点,支持颜色切换与网格叠加 |
+| `feature/marquee` | 跑马灯 | 全屏滚动文字,LED 风格与字幕模式 |
+| `feature/audio-cover-extractor` | 音频封面提取 | 从音频文件提取专辑封面图片 |
+
+### 加密与安全
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/cipher` | 图片加密 | 图片加密/解密,支持密码输入与加密类型切换 |
+| `feature/password-vault` | 密码保险箱 | 本地加密存储管理账号密码,支持分类筛选与搜索 |
+
+### 生活效率
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/bookkeeping` | 记账本 | 日常收支记录与统计图表分析,可让 AI 代记账 |
+| `feature/marktodo` | 待办事项 | 按主题管理待办任务,支持标签、优先级、截止日与筛选排序 |
+| `feature/habit-tracker` | 习惯打卡 | 自定义习惯每日打卡,带提醒、连续天数与打卡率统计 |
+| `feature/household-items` | 物品管理 | 记录物品存放位置、保质期与备注,可让 AI 代记代查 |
+| `feature/period` | 经期记录 | 记录经期起止、流量、症状与心情,自动预测下次经期 |
+| `feature/record-center` | 健康记录 | 统一记录血压、体重、血糖等 12 类指标,看趋势与 AI 解读 |
+| `feature/loan-calculator` | 贷款计算器 | 等额本息/等额本金,计算月供、总利息与还款计划 |
+| `feature/lifetime` | 人生时间线 | 记录重要事件与里程碑,时间轴展示生命历程 |
+| `feature/decision-wheel` | 决定转盘 | 自定义选项的随机转盘,帮助做选择 |
+| `feature/blessing-wall` | 祝福墙 | 展示/编辑祝福语卡片,支持背景音乐与分享 |
+| `feature/poem` | 中国古诗词 | 随机赏诗/关键词搜索/AI 解读,本地历史与收藏 |
+| `feature/iching-divination` | 易经六爻 | 摇一摇起六爻卦,查看本卦、变卦、动爻与 AI 解卦 |
+
+### 游戏娱乐
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/game2048` | 2048 | 经典数字滑动合并 |
+| `feature/xiangqi` | 中国象棋 | 人机对弈/在线对战/棋谱库/残局分析 |
+| `feature/gomoku` | 五子棋 | 15×15 棋盘、人机对弈(LLM)、AI 对战、棋谱库、复盘分析 |
+| `feature/chess` | 国际象棋 | 标准规则(易位/过路兵/升变)、人机对弈(LLM)、棋谱库、复盘分析 |
+| `feature/minesweeper` | 扫雷 | 多种难度、计时、旗帜标记 |
+| `feature/sudoku` | 数独 | 三档难度、提示、撤销、计时、战绩统计 |
+| `feature/survive30s` | 生存 30 秒 | 限时躲避障碍物小游戏 |
+| `feature/dice-roller` | 投骰子 | D4/D6/D8/D10/D12/D20 多种骰子 |
+
+### 社交与内容
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/online` | 内容广场 | 应用推荐/笔记/小程序等多 Tab 聚合 |
+| `feature/blog` | 博客与反馈 | 查看文章、创建用户反馈 |
+| `feature/profile` | 个人中心 | VIP 等级、数据备份恢复、关于我们 |
+| `feature/notification` | 消息中心 | 通知列表与未读角标 |
+| `feature/ad-watch` | 广告看看看 | 看激励广告赚积分,每日有次数上限 |
+
+### 文件与传输
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/file-browser` | 文件浏览器 | 目录导航/搜索/排序/多选操作 |
+| `feature/file-transfer` | 文件传输 | 局域网文件传输,二维码配对、加密传输 |
+| `feature/cloud-storage` | 云存储 | 云端文件浏览/上传/下载/删除 |
+| `feature/media-picker` | 媒体选择器 | 供其他工具复用的图片/视频选择能力 |
+
+### 系统与框架
+
+| 模块 | 功能 | 简介 |
+| --- | --- | --- |
+| `feature/app` | 应用主壳 | 入口导航框架,竖屏抽屉+底栏、横屏导航栏的自适应布局 |
+| `feature/settings` | 设置中心 | AI 引擎/主题/显示/TTS/系统 Prompt/授权码等配置 |
+| `feature/common` | 公共基础 | 通用 UI 基座、数据同步、分类管理 |
+| `feature/search` | 全局搜索 | 搜索功能/内容/消息,快速导航 |
+| `feature/quick-tiles` | 快捷磁贴 | 通知栏快捷操作(截屏/取色/扫码等) |
+| `feature/webview` | 内置浏览器 | 网页浏览,支持多标签页、书签与历史记录 |
+| `feature/login` | 登录注册 | 用户认证流程与用户协议 |
+| `feature/wechat` | 微信集成 | 微信 SDK 授权登录与支付回调 |
+| `feature/demo` | 组件展示 | 开发者调试用功能入口网格 |
+| `feature/libraries-info` | 开源许可 | 第三方开源库许可证列表 |
+| `feature/library-details` | 库详情 | 单个开源库许可证详情 |
+| `feature/boardgame` | 棋类 UI 公共库 | 棋类通用界面组件,供五子棋/国际象棋复用 |
 
 ## 技术栈
 
@@ -95,10 +270,10 @@ AI 理解、执行、反馈,一气呵成。
 
 ### 环境建议
 
-- 使用仓库根目录下的 **Gradle Wrapper 9.5.1**
+- 使用仓库根目录下的 **Gradle Wrapper 9.7.0**
 - 本仓库的 build-logic 与 CI 均以 **JDK 17** 为目标
 - Android 构建目标：**Compile SDK 37 / Target SDK 37 / Min SDK 24**
-- 当前构建工具版本：**Kotlin 2.4.0 / AGP 9.3.0**
+- 当前构建工具版本：**Kotlin 2.4.0 / AGP 9.3.1**
 - 版本信息以 `gradle/libs.versions.toml` 和 `gradle/wrapper/gradle-wrapper.properties` 为准，避免重复维护过期说明
 
 ### 常用命令

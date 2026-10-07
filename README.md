@@ -50,11 +50,186 @@ It understands, acts, and reports back — in one flow.
 
 ## Features
 
-- **Image & media tools**: crop, collage, filters, background removal, format conversion, EXIF editing, document scanning, QR scanning, and more.
-- **AI capabilities**: AI chat, agent tool-calling, AI image features, with configurable local/remote AI engines.
-- **Productivity & daily tools**: file browser, file transfer, Markdown editor, notes/to-do, calendar, bookkeeping, unit converter, teleprompter, and more.
-- **DSH client**: drive a [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) agent running on your computer right from your phone — scan-to-pair, end-to-end encrypted, works over LAN or the cloud relay. Computer side: the open-source [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge) plugin (`dsh plugin add onebox-dsh-bridge`).
-- **Adaptive top-level navigation**: drawer + bottom bar in portrait, navigation rail in landscape; the shell and global state are orchestrated by `feature/app`.
+OneBox ships **104 feature modules**. Local tools run entirely on-device; only the conversation with your chosen AI model goes online. The tables below list every module — names refer to the `feature/*` directories in this repo.
+
+### AI & Assistant
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/ai` | AI Chat & Agent | Multi-model chat, dual-model duels, prompt execution, and an agent that invokes in-app tools, with token stats |
+| `feature/ai-image` | AI Image | Text-to-image generation, with share / copy / edit |
+| `feature/ai-detect` | AI Detector | Check whether a text or an image is AI-generated |
+| `feature/dsh-client` | DSH Client | Drive a [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) agent on your computer — scan-to-pair, end-to-end encrypted, LAN or cloud relay (computer side: [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge)) |
+| `feature/visual-automation` | Visual Automation | Feed screenshots to a multimodal model for screenshot-based UI automation |
+
+### Image Viewing & Editing
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/image-viewer` | Image Viewer | Immersive viewer with swipe browsing, double-tap / pinch zoom (up to 5×), online image download |
+| `feature/image-preview` | Image Preview | Preview and manage images; the entry point to edit / crop / filter flows |
+| `feature/single-edit` | Single Edit | All-in-one editor: crop, filters, draw, curves, resize, format & quality, before/after compare |
+| `feature/draw` | Draw | Free-form canvas: pen / neon / highlighter / blur / pixelate / text / stickers / healing, shapes and flood fill |
+| `feature/markup-layers` | Layers | Layer-based creation: add / order / merge / blend / opacity, brushes, text, shapes, export settings |
+| `feature/crop` | Crop | Crop with rotation, free-corner crop, shaped outlines and aspect ratios |
+| `feature/image-stitch` | Image Stitch | Horizontal / vertical / grid stitching with alignment, spacing and fading edges |
+| `feature/image-splitting` | Image Split | Split one image into a rows × columns grid of tiles |
+| `feature/image-stacking` | Image Stacking | Overlay multiple images into a single composite |
+| `feature/image-cutting` | Image Cut | Precise cut by horizontal / vertical start–end percentages, with invert |
+| `feature/compare` | Compare | Side-by-side or overlay diff of two images, slider and pixel-level highlight |
+| `feature/load-net-image` | Net Image Loader | Paste a URL to parse, preview and download images from the page |
+| `feature/pick-color` | Color Picker | Tap / drag to pick pixel colors, with pan and zoom modes |
+| `feature/collage-maker` | Collage Maker | Collages of up to 10 photos with templates, spacing, rounded corners, backgrounds |
+| `feature/text-card` | Text Cards | Turn quotes into beautiful cards with paper backgrounds, layers and AI illustrations |
+
+### Filters & Effects
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/filters` | Filters | 100+ filters (blur, color, artistic, edge, warp) with mask-based partial application |
+| `feature/gradient-maker` | Gradient Maker | Pure / overlay / mesh gradients with configurable color stops |
+| `feature/mesh-gradients` | Mesh Gradients | Browse and download mesh-gradient packs, jump into the editor |
+| `feature/noise-generation` | Noise Textures | Procedural noise via FastNoiseLite (OpenSimplex2 / Perlin / Value…) |
+| `feature/ascii-art` | ASCII Art | Convert images into character-based text art |
+| `feature/color-tools` | Color Tools | Color info (HEX / RGB / HSL), harmonies, shades / gradients, histogram analysis |
+| `feature/palette-tools` | Palette Extract | Extract palettes from images, Material You style, custom palette export |
+
+### Conversion & Compression
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/format-conversion` | Format Convert | JPEG / PNG / WebP conversion with quality control, EXIF retention, batch processing |
+| `feature/resize-convert` | Resize & Convert | Resize + convert in one pass: width / height / preset / scale modes, batch |
+| `feature/weight-resize` | Compress by Size | Compress to a target file size, with before/after size comparison |
+| `feature/limits-resize` | Limit Resize | Scale within max width / height; skip / re-encode / scale modes |
+| `feature/gif-tools` | GIF Tools | Multi-image GIFs with frame rate, repeat count, size and per-frame preview |
+| `feature/apng-tools` | APNG Tools | Multi-image APNGs with frame delay and repeat count |
+| `feature/webp-tools` | WebP Tools | Multi-image animated WebP with frame delay and repeat count |
+| `feature/svg-maker` | SVG Maker | Convert bitmaps into SVG vector graphics |
+| `feature/zip` | ZIP Archive | Pack images into a ZIP archive |
+
+### Metadata & Encoding
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/edit-exif` | Edit EXIF | View and modify camera model, capture time, GPS, copyright… |
+| `feature/delete-exif` | Delete EXIF | Batch-strip EXIF for privacy, or add new EXIF data |
+| `feature/base64-tools` | Base64 Tools | Two-way image ↔ Base64 conversion |
+| `feature/checksum-tools` | Checksum Tools | Compute and compare file / text hashes with multiple algorithms |
+
+### Documents & Text
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/pdf-tools` | PDF Toolbox | Preview, image → PDF, PDF → image, merge, split, compress, rotate, page management |
+| `feature/ocr-document` | OCR | OCR recognition and format conversion with task tracking, preview and export |
+| `feature/document-scanner` | Document Scanner | Scan paper documents into images / PDF |
+| `feature/markdown-edit` | Markdown Editor | WYSIWYG Markdown editing, export to PDF |
+| `feature/code-editor` | Code Editor | Syntax highlighting, file I/O and history |
+
+### Watermark & ID Photo
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/watermarking` | Watermark | Text / image / steganographic / stamp watermarks with position, rotation, opacity, tiling |
+| `feature/camera-watermark` | Camera Watermark | Stamp photos with time / location / device watermarks |
+| `feature/id-photo` | ID Photo | Standard ID-photo sizes, background replacement, batch export |
+| `feature/wallpapers-export` | Wallpaper Export | Read and save the system and lock-screen wallpapers |
+
+### Scanning & QR
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/scan-qr-code` | QR Tools | Scan (camera / image) and generate QR & barcodes: text, URL, WiFi, contacts… |
+
+### Measurement & Utilities
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/unit-converter` | Unit Converter | Length, weight, temperature, area, volume, speed, time and more |
+| `feature/compass` | Compass | Compass & luopan dials with bearings, magnetic declination and calibration hints |
+| `feature/measurement` | Ruler | On-screen ruler and protractor, cm / inch |
+| `feature/altitude` | Altitude | GPS altitude with history |
+| `feature/speed-test` | Speed Test | Download / upload speed with a gauge animation |
+| `feature/calendar` | Calendar | Calendar with Chinese almanac, bazi chart and lunar conversion |
+| `feature/schedule` | Schedule | Events with system-calendar sync and reminders |
+| `feature/teleprompter` | Teleprompter | Script editing + fullscreen playback with speed / font / color controls |
+| `feature/dead-pixel-test` | Dead Pixel Test | Fullscreen solid colors with color switching and grid overlay |
+| `feature/marquee` | Marquee | Fullscreen scrolling text, LED style and subtitle modes |
+| `feature/audio-cover-extractor` | Cover Extractor | Extract album covers from audio files |
+
+### Security & Encryption
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/cipher` | Image Cipher | Encrypt / decrypt images with passwords |
+| `feature/password-vault` | Password Vault | Local encrypted account & password storage with categories and search |
+
+### Life & Productivity
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/bookkeeping` | Bookkeeping | Income / expense tracking with charts — the AI can log bills for you |
+| `feature/marktodo` | To-do | Topic-based tasks with tags, priorities, due dates and filters |
+| `feature/habit-tracker` | Habit Tracker | Daily check-ins with reminders, streaks and completion stats |
+| `feature/household-items` | Item Tracker | Track where things are stored, expiry dates and notes; AI can log & query |
+| `feature/period` | Period Tracker | Log periods, flow, symptoms and mood; predicts the next cycle |
+| `feature/record-center` | Health Records | 12 metric types (blood pressure, weight, glucose…), trends and AI insights |
+| `feature/loan-calculator` | Loan Calculator | Equal-payment / equal-principal loans: monthly payment, total interest, schedule |
+| `feature/lifetime` | Lifetime | A timeline of life events and milestones |
+| `feature/decision-wheel` | Decision Wheel | Custom random spinner to help you choose |
+| `feature/blessing-wall` | Blessing Wall | Greeting cards with background music and sharing |
+| `feature/poem` | Chinese Poetry | Random poems, keyword search, AI interpretation, history & favorites |
+| `feature/iching-divination` | I Ching | Shake to cast a hexagram, with changing lines and AI interpretation |
+
+### Games
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/game2048` | 2048 | The classic sliding-tile merge game |
+| `feature/xiangqi` | Chinese Chess | Vs AI, online play, game library, endgame analysis |
+| `feature/gomoku` | Gomoku | 15×15 board, vs LLM, AI battles, game library, review |
+| `feature/chess` | Chess | Full rules (castling / en passant / promotion), vs LLM, game library, review |
+| `feature/minesweeper` | Minesweeper | Multiple difficulties, timer, flags |
+| `feature/sudoku` | Sudoku | Three difficulties, hints, undo, timer, stats |
+| `feature/survive30s` | Survive 30s | Dodge obstacles for 30 seconds |
+| `feature/dice-roller` | Dice Roller | D4 / D6 / D8 / D10 / D12 / D20 dice |
+
+### Content & Community
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/online` | Discover | Content square aggregating recommended apps, notes and mini-programs |
+| `feature/blog` | Blog & Feedback | Read articles and send feedback |
+| `feature/profile` | Profile | VIP level, data backup & restore, about |
+| `feature/notification` | Notifications | Message center with unread badges |
+| `feature/ad-watch` | Watch & Earn | Watch rewarded ads to earn points, with a daily cap |
+
+### Files & Transfer
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/file-browser` | File Browser | Directory navigation, search, sort, multi-select operations |
+| `feature/file-transfer` | File Transfer | LAN file transfer with QR pairing and encryption |
+| `feature/cloud-storage` | Cloud Storage | Browse, upload, download and delete cloud files |
+| `feature/media-picker` | Media Picker | Image / video picking shared by the other tools |
+
+### App Shell & System
+
+| Module | Feature | Description |
+| --- | --- | --- |
+| `feature/app` | App Shell | Entry navigation with adaptive layout: drawer + bottom bar in portrait, navigation rail in landscape |
+| `feature/settings` | Settings | AI engines, themes, display, TTS, system prompts and more |
+| `feature/common` | Common | Shared UI base, data sync and category management |
+| `feature/search` | Global Search | Search features, content and messages, with quick navigation |
+| `feature/quick-tiles` | Quick Tiles | Quick-settings tiles: screenshot, color picker, scan… |
+| `feature/webview` | Web Browser | Built-in browser with tabs, bookmarks and history |
+| `feature/login` | Sign In | Auth flows and user agreement |
+| `feature/wechat` | WeChat Integration | WeChat SDK sign-in and payment callbacks |
+| `feature/demo` | Demo | Developer component showcase grid |
+| `feature/libraries-info` | Open-source Licenses | License list of all third-party libraries |
+| `feature/library-details` | License Details | Per-library license details |
+| `feature/boardgame` | Board Game UI Kit | Shared board-game UI scaffolding reused by gomoku / chess |
 
 ## Tech Stack
 
