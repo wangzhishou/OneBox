@@ -854,10 +854,15 @@ internal fun flatGlassContainerColor(
     style: GlassStyle = GlassStyle.Regular,
     backgroundAlpha: Float = style.backgroundAlpha,
 ): Color {
+    // 透明 = 不画底(调用方用 Color.Transparent 表示"这个控件不要背景")。
+    // 必须原样放行:blendARGB 会把透明当成黑色参与混色,洗出一块灰底。
+    if (color == Color.Transparent) return Color.Transparent
     if (style == GlassStyle.Transparent) return Color.Transparent
     val settingsState = LocalSettingsState.current
     val colorScheme = MaterialTheme.colorScheme
     val glassBaseAlpha = settingsState.glassBaseAlpha.coerceIn(0f, 1f)
+    // None = 明确不用玻璃、要一层实底(如分段按钮行的底板),不参与玻璃的覆盖率折算
+    if (style == GlassStyle.None) return color.withGlassBaseAlpha(glassBaseAlpha)
     val baseColor = if (color != Color.Unspecified) color else colorScheme.surfaceContainerLow
     val colors = createGlassDecorationColors(
         style = style,
