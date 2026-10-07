@@ -1,0 +1,6 @@
+• Neu: Sudoku — drei Schwierigkeitsgrade, Hinweise, Rückgängig, Timer, Statistiken
+• Aufgaben neu: Themenkarten, Tags, Kalender-Sync; KI richtet Listen auf einmal ein
+• Aufzeichnungen neu: Tabs Aufzeichnungen / Trends / Ich, flüssigeres Scrollen
+• KI erstellt jetzt Entscheidungsräder, importiert Schriftarten, entpackt Dateien
+• 11 neue Schriftarten; ID-Fotogrößen regional voreingestellt
+• Lokalisierte Presets, Badge-Fixes; Fehlerbehebungen, bessere Leistung

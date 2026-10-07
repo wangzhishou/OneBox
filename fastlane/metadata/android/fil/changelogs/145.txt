@@ -1,0 +1,6 @@
+• Bago: Sudoku — tatlong hirap, hints, undo, timer at stats
+• To-do na-redesign: theme cards, tags, calendar sync; AI ayos ng lists nang sabay
+• Records hub: Records / Trends / Mine tabs, mas smooth ang scroll
+• Kaya na ng AI gumawa ng decision wheels, mag-import ng fonts, mag-unzip
+• 11 bagong fonts; ID photo sizes naka-preset sa rehiyon mo
+• Localized presets, badge fixes; bug fixes at performance improvements

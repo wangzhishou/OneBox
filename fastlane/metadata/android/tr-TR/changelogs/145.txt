@@ -1,0 +1,6 @@
+• Yeni: Sudoku — üç zorluk, ipuçları, geri alma, zamanlayıcı, istatistikler
+• Yapılacaklar yenilendi: tema kartları, etiketler, takvim; YZ listeleri tek seferde kurar
+• Kayıt merkezi: Kayıtlar / Eğilimler / Ben sekmeleri, akıcı kaydırma
+• YZ artık karar çarkları oluşturur, yazı tipi içe aktarır, arşiv açar
+• 11 yeni yazı tipi; kimlik fotoğrafı boyutları bölgenize göre
+• Yerelleştirilmiş ön ayarlar, rozet düzeltmeleri; hata düzeltmeleri ve iyileştirmeler

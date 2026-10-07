@@ -1,0 +1,6 @@
+• Novo: Sudoku — três dificuldades, dicas, desfazer, cronômetro e estatísticas
+• Tarefas renovadas: cartões por tema, etiquetas e calendário; a IA prepara listas de uma vez
+• Registros renovados: abas Registros / Tendências / Eu, rolagem mais suave
+• A IA cria roletas de decisão, importa fontes e descompacta arquivos
+• 11 fontes novas; fotos de identidade com tamanhos da sua região
+• Presets localizados, correções do selo; correções de bugs e melhorias

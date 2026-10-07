@@ -1,0 +1,6 @@
+• Baru: Sudoku — tiga tingkat kesulitan, petunjuk, urungkan, timer, statistik
+• To-do baru: kartu tema, tag, sinkron kalender; AI siapkan daftar sekaligus
+• Pusat catatan: tab Catatan / Tren / Saya, gulir lebih halus
+• AI kini membuat roda keputusan, mengimpor font, mengekstrak file
+• 11 font baru; ukuran foto ID prasetel sesuai wilayah
+• Prasetel terlokalkan, perbaikan lencana; perbaikan bug dan peningkatan performa

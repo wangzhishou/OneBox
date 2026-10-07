@@ -1,0 +1,6 @@
+• New: Sudoku game — three difficulties, hints, undo, timer and stats
+• To-do redesigned: theme cards, tags and calendar sync; AI sets up lists in one go
+• Records hub rebuilt: Records / Trends / Mine tabs, smoother scrolling
+• AI can now create decision wheels, import fonts and unzip files
+• 11 new downloadable fonts; ID photo sizes preset for your region
+• Fully localized presets, badge fixes; bug fixes and improvements
