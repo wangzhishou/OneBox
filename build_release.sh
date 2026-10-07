@@ -191,7 +191,7 @@ fi
 
 # ---- Crashlytics mapping 上传 (仅 google 渠道) ---------------------------------
 # google release 经 R8 混淆，但未应用 Crashlytics 插件，需手动上传 mapping.txt:
-#   mapping 文件: app/build/outputs/mapping/Google<Abc>Release/mapping.txt
+#   mapping 文件: app/build/outputs/mapping/googleArm64Release/mapping.txt (首字母小写, camelCase)
 #   resource 文件: app/build/crashlytics/mappingfileid-<abi>.xml
 #     (Gradle 任务 :app:writeCrashlyticsMappingFileIds 生成, id 与注入 APK 的一致)
 # 上传失败不阻断发布, 但该版本崩溃堆栈将保持混淆, 需手动补传
