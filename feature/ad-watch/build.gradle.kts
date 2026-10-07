@@ -32,7 +32,6 @@ dependencies {
 
     // MMKV (by ABI, 每日观看计数持久化)
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
 
     // AdMob 激励广告仅 google 渠道, GroMore 聚合激励广告仅国内 6 渠道, foss 不携带广告 SDK
     "googleApi"(libs.play.services.ads)

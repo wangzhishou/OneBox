@@ -18,7 +18,7 @@
 本项目 `app` 模块有 2 个 flavor 维度：`app` + `abi`（见 `app/build.gradle.kts`）。
 
 - app flavors：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google` / `foss`
-- abi flavors：`arm64` / `universal`（仅 64 位）
+- abi flavors：`arm64`（仅 64 位）
 - buildTypes：`Debug` / `Release`
 
 最终 Variant 名称形如：`<AppFlavor><AbiFlavor><BuildType>`（首字母大写驼峰）
@@ -27,7 +27,7 @@
 
 示例：
 
-- `GoogleUniversalDebug`
+- `GoogleArm64Debug`
 - `GoogleArm64Release`
 
 ## 先查任务名（推荐）
@@ -63,7 +63,7 @@
 构建指定 APK（推荐直接指定 Variant，输出更可控；默认 `google` 渠道）：
 
 ```bash
-./gradlew :app:assembleGoogleUniversalDebug
+./gradlew :app:assembleGoogleArm64Debug
 ./gradlew :app:assembleGoogleArm64Release
 ./gradlew :app:assembleHuaweiArm64Debug
 ```
@@ -72,7 +72,6 @@
 
 ```bash
 ./gradlew :app:bundleGoogleArm64Release
-./gradlew :app:bundleGoogleUniversalRelease
 ```
 
 构建所有 Release 变体（通常很慢）：
@@ -109,14 +108,14 @@ adb devices -l
 ## 安装到设备（ADB 已连接）
 
 ```bash
-./gradlew :app:installGoogleUniversalDebug
+./gradlew :app:installGoogleArm64Debug
 ./gradlew :app:installHuaweiArm64Debug
 ```
 
 有些环境下也可以直接跑根任务（不带 `:app:` 前缀），以 `tasks --group=install` 的结果为准：
 
 ```bash
-./gradlew installGoogleUniversalDebug
+./gradlew installGoogleArm64Debug
 ```
 
 ## 检查与诊断
@@ -124,7 +123,7 @@ adb devices -l
 Lint：
 
 ```bash
-./gradlew :app:lintGoogleUniversalDebug
+./gradlew :app:lintGoogleArm64Debug
 ```
 
 ## 常用排错参数（复制到命令末尾）
@@ -138,7 +137,7 @@ Lint：
 示例：
 
 ```bash
-./gradlew :app:assembleGoogleUniversalDebug --stacktrace --info
+./gradlew :app:assembleGoogleArm64Debug --stacktrace --info
 adb pull /data/data/<pkg>/cache/startup_trace.log，查看启动性能日志
 ```
 

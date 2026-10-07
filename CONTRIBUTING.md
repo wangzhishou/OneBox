@@ -46,9 +46,9 @@ git remote add upstream https://github.com/wangzhishou/OneBox.git
 ### Build
 
 ```bash
-./gradlew :app:assembleFossUniversalDebug                 # the variant CI checks
-./gradlew :app:assembleGoogleUniversalDebug               # recommended local build (Google / Play channel)
-./gradlew :feature:ai:compileGoogleUniversalDebugKotlin   # one module, much faster
+./gradlew :app:assembleFossArm64Debug                     # the variant CI checks
+./gradlew :app:assembleGoogleArm64Debug                   # recommended local build (Google / Play channel)
+./gradlew :feature:ai:compileGoogleArm64DebugKotlin       # one module, much faster
 ```
 
 `google` is the overseas / Play flavor and the default local build target; swap `Google` for `Onebox`, `Xiaomi`, `Huawei`, … when you need a domestic channel.
@@ -58,7 +58,7 @@ git remote add upstream https://github.com/wangzhishou/OneBox.git
 If you hit `InjectProcessingStep was unable to process ... could not be resolved`, that is a KSP/Hilt cache problem, not your code:
 
 ```bash
-./gradlew clean :feature:app:kspGoogleUniversalDebugKotlin
+./gradlew clean :feature:app:kspGoogleArm64DebugKotlin
 ```
 
 ### Keys are optional
@@ -89,7 +89,7 @@ Be aware before you write any: this project has almost no test culture, delibera
 1. Branch from `main`. Name the branch after what you are fixing.
 2. Keep the PR to one concern. A rename plus a behaviour change plus a formatting pass is three PRs.
 3. Describe what changed and **how you verified it**.
-4. CI builds `:app:assembleFossUniversalDebug` on every PR. A red PR will not be reviewed until it is green.
+4. CI builds `:app:assembleFossArm64Debug` on every PR. A red PR will not be reviewed until it is green.
 5. The maintainer is one person in UTC+8. Expect a first response within a few days. If a week passes with no reply, a ping is welcome, not rude.
 6. PRs are squash-merged, so do not worry about cleaning up branch history.
 

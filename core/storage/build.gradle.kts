@@ -12,7 +12,6 @@ dependencies {
      * mmkv
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
 
     implementation(libs.datastore.preferences.android)
 

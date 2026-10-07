@@ -53,5 +53,5 @@ jobs:
 
       # 选 foss: 不含 GMS / Firebase / 微信 / 支付宝 SDK, 也不需要 keystore,
       # 但仍然会编译全部 127 个模块, 是最便宜又不缺覆盖的变体。
-      - name: Assemble foss universal debug
-        run: ./gradlew :app:assembleFossUniversalDebug --stacktrace
+      - name: Assemble foss arm64 debug
+        run: ./gradlew :app:assembleFossArm64Debug --stacktrace

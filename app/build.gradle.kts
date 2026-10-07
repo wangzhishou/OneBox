@@ -266,16 +266,6 @@ android {
             // Crashlytics 反混淆 id, 仅 google flavor 的 SDK 会读; 国内包无 Firebase, 资源闲置
             resValue("string", "com.google.firebase.crashlytics.mapping_file_id", crashlyticsMappingFileId("arm64"))
         }
-
-        create("universal") {
-            dimension = "abi"
-            ndk {
-                abiFilters.clear()
-                abiFilters.add("arm64-v8a")
-            }
-            manifestPlaceholders["flavorAbi"] = "universal"
-            resValue("string", "com.google.firebase.crashlytics.mapping_file_id", crashlyticsMappingFileId("universal"))
-        }
     }
 
 
@@ -477,10 +467,9 @@ base {
 // 由 build_release.sh 在 google release 构建后用于手动上传
 val writeCrashlyticsMappingFileIds by tasks.registering {
     val outputDir = layout.buildDirectory.dir("crashlytics")
-    // 配置期算好两个 id, doLast 只捕获普通 Map, 避免引用脚本对象破坏 configuration cache
+    // 配置期算好 id, doLast 只捕获普通 Map, 避免引用脚本对象破坏 configuration cache
     val idByAbi = mapOf(
         "arm64" to crashlyticsMappingFileId("arm64"),
-        "universal" to crashlyticsMappingFileId("universal"),
     )
     outputs.dir(outputDir)
     doLast {
@@ -527,7 +516,6 @@ dependencies {
      * mmkv
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
     api(libs.coil)
     api(libs.coil.network)
     api(libs.ktor)

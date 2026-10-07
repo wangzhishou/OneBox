@@ -19,7 +19,7 @@ android.ndkVersion = libs.versions.androidNdk.get()
  * 产物是 **PIE 可执行文件但命名为 `libfairystockfish.so`**:AGP 会按 ABI 打包它,
  * 安装时解压到可执行的 native 库目录,App 侧以 UCI 子进程驱动(见 `LocalXiangqiEngine`)。
  *
- * 只产出 arm64-v8a —— 两个 abi flavor 的 abiFilters 都是 arm64-v8a;若将来新增 ABI,
+ * 只产出 arm64-v8a —— abi 维度只有 arm64 一个 flavor;若将来新增 ABI,
  * 这里与 [engineAbi] 一起改。
  */
 val engineAbi = "arm64-v8a"
@@ -45,7 +45,7 @@ val buildFairyStockfish = tasks.register("buildFairyStockfish") {
     inputs.property("minSdk", minSdk)
     inputs.property("engineBuildFlags", "largeboards=yes nnue=no static-libstdc++")
     outputs.dir(outputDir)
-    // 产物是纯编译结果, 允许 build cache 复用:CI 的 tag 构建是 8 渠道 × 2 ABI 的矩阵,
+    // 产物是纯编译结果, 允许 build cache 复用:CI 的 tag 构建是 8 渠道 × 1 ABI 的矩阵,
     // 每个 job 都重编一次引擎太浪费(setup-gradle 已开远端 build cache)
     outputs.cacheIf { true }
 

@@ -58,7 +58,6 @@ dependencies {
      * mmkv
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
 
     /**
      * 数据库

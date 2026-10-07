@@ -28,7 +28,7 @@ from push_listing import make_service, resolve_key
 HERE = os.path.dirname(os.path.abspath(__file__))
 META = os.path.join(HERE, "metadata", "android")
 DEFAULT_AAB_GLOB = os.path.join(
-    HERE, "..", "app", "build", "outputs", "bundle", "googleUniversalRelease", "*.aab"
+    HERE, "..", "app", "build", "outputs", "bundle", "googleArm64Release", "*.aab"
 )
 VERSIONS_TOML = os.path.join(HERE, "..", "gradle", "libs.versions.toml")
 NOTES_LIMIT = 500

@@ -104,7 +104,7 @@ AI 理解、执行、反馈,一气呵成。
 ### 常用命令
 
 ```bash
-./gradlew :app:assembleGoogleUniversalDebug   # 单变体 debug 包
+./gradlew :app:assembleGoogleArm64Debug       # 单变体 debug 包
 ./gradlew tasks --group=assemble              # 查看全部打包任务
 ./gradlew :app:tasks
 ```
@@ -115,11 +115,11 @@ AI 理解、执行、反馈,一气呵成。
 
 - `app`：`xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google` / `foss`
   （`foss` 为完全 FOSS 构建：无 GMS、Firebase、微信/支付宝 SDK，也是 CI 校验的变体）
-- `abi`：`arm64` / `universal`（仅 64 位）
+- `abi`：`arm64`（仅 64 位）
 
 **默认使用 `google`（海外 / Play 渠道）变体做构建与验证**，确需国内渠道时再替换。最终任务名会组合为：
 
-- `:app:assembleGoogleUniversalDebug`
+- `:app:assembleGoogleArm64Debug`
 - `:app:assembleGoogleArm64Release`
 - `:app:assembleHuaweiArm64Debug`
 
@@ -142,14 +142,14 @@ AI 理解、执行、反馈,一气呵成。
 
 ### 多渠道发布打包
 
-项目根目录提供 `build_release.sh` 脚本，用于本地一次性打出 **7 渠道 × 2 架构 (arm64 / universal，仅 64 位) = 14 个 Release APK**，统一归集到 `release/` 目录，并生成 `release/manifest.txt` 汇总清单。
+项目根目录提供 `build_release.sh` 脚本，用于本地一次性打出 **7 渠道 × 1 架构 (arm64，仅 64 位) = 7 个 Release APK**，统一归集到 `release/` 目录，并生成 `release/manifest.txt` 汇总清单。
 
 文件名沿用 Gradle 生成的 `OneBox-<version>-<渠道>-<架构>-release.apk`（如 `OneBox-1.2.3-xiaomi-arm64-release.apk`）。
 
 **常用命令**
 
 ```bash
-./build_release.sh                                # 全部 14 个
+./build_release.sh                                # 全部 7 个
 ./build_release.sh --channel xiaomi huawei        # 指定渠道
 ./build_release.sh --abi arm64                    # 只打 arm64 (7 个)
 ./build_release.sh --channel onebox --abi arm64   # 单个组合
@@ -162,7 +162,7 @@ AI 理解、执行、反馈,一气呵成。
 | 参数 | 说明 |
 | --- | --- |
 | `--channel <a> [b...]` | 只构建指定渠道 (可空格分隔多个) |
-| `--abi <arm64\|universal>` | 只构建指定架构 (可空格分隔多个) |
+| `--abi <arm64>` | 只构建指定架构 (可空格分隔多个) |
 | `--no-offline` | 覆盖离线模式配置，允许联网拉依赖（本仓库默认在线） |
 | `--clean` | 构建前先执行 `clean` |
 | `--skip-build` | 跳过 `gradlew`，只把已有 `app/build/outputs/apk/...` 复制到 `release/` |
@@ -206,7 +206,7 @@ git push gitcode --tags
 ./scripts/publish_gitcode_release.py --tag 1.4.0 --dir release --abi arm64
 ```
 
-GitHub Release 只挂海外包（google/foss 各 universal + arm64），国内 6 渠道包只进 GitCode。
+GitHub Release 只挂海外包（google/foss 各 arm64），国内 6 渠道包只进 GitCode。
 **GitCode 仓库必须公开**，否则匿名 API 返回 403。
 
 ## AI / Agent 能力边界

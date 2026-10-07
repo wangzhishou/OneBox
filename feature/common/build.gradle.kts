@@ -15,7 +15,6 @@ dependencies {
      * mmkv
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
 
     implementation(projects.core.theme)
     implementation(projects.core.model)

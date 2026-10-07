@@ -215,7 +215,7 @@ def main() -> int:
     parser.add_argument("--apk", nargs="*", help="要上传的 APK 路径(可多个)")
     parser.add_argument("--dir", help="从目录里收集 APK(会递归查找)")
     parser.add_argument("--channels", nargs="*", default=DOMESTIC_CHANNELS, help="只上传这些渠道的包")
-    parser.add_argument("--abi", help="只上传该架构的包,如 arm64 / universal")
+    parser.add_argument("--abi", help="只上传该架构的包,如 arm64")
     parser.add_argument("--body", default="", help="release 说明(默认用 tag)")
     parser.add_argument("--overwrite", action="store_true", help="覆盖 GitCode 上已有的同名附件")
     parser.add_argument("--dry-run", action="store_true", help="只打印将要执行的动作")

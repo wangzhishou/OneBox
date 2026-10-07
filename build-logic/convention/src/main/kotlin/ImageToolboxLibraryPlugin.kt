@@ -64,13 +64,6 @@ class ImageToolboxLibraryPlugin : Plugin<Project> {
                             abiFilters.add("arm64-v8a")
                         }
                     }
-                    create("universal") {
-                        dimension = "abi"
-                        ndk {
-                            abiFilters.clear()
-                            abiFilters.add("arm64-v8a")
-                        }
-                    }
                 }
 
                 val properties = Properties()

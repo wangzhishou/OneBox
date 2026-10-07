@@ -115,7 +115,7 @@ git clone --depth=1 https://github.com/wangzhishou/OneBox.git
 ### Common Commands
 
 ```bash
-./gradlew :app:assembleGoogleUniversalDebug   # single-variant debug APK (google = default channel)
+./gradlew :app:assembleGoogleArm64Debug       # single-variant debug APK (google = default channel)
 ./gradlew tasks --group=assemble              # list all assemble tasks
 ./gradlew :app:tasks
 ```
@@ -126,11 +126,11 @@ The `app` module uses two flavor dimensions:
 
 - `app`: `xiaomi` / `yyb` / `oppo` / `vivo` / `huawei` / `onebox` / `google` / `foss`
   (`foss` is the fully-FOSS build: no GMS, Firebase, WeChat or Alipay SDKs; this is the variant CI verifies)
-- `abi`: `arm64` / `universal` (64-bit only)
+- `abi`: `arm64` (64-bit only)
 
 **Build and verify with the `google` (overseas / Play) flavor by default**; pick a domestic flavor only when it is actually needed. Task names combine the two dimensions, e.g.:
 
-- `:app:assembleGoogleUniversalDebug`
+- `:app:assembleGoogleArm64Debug`
 - `:app:assembleGoogleArm64Release`
 - `:app:assembleHuaweiArm64Debug`
 
@@ -153,10 +153,10 @@ Both target files are git-ignored; never commit real values.
 
 ### Multi-channel Release Builds
 
-`build_release.sh` builds **7 channels × 2 ABIs (arm64 / universal, 64-bit only) = 14 release APKs** into `release/` with a `release/manifest.txt` summary. Examples:
+`build_release.sh` builds **7 channels × 1 ABI (arm64, 64-bit only) = 7 release APKs** into `release/` with a `release/manifest.txt` summary. Examples:
 
 ```bash
-./build_release.sh                                # all 14
+./build_release.sh                                # all 7
 ./build_release.sh --channel xiaomi huawei        # selected channels
 ./build_release.sh --abi arm64                    # 64-bit only
 ./build_release.sh --no-offline --clean           # fetch deps online + clean first

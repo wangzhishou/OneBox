@@ -24,10 +24,9 @@ on:
         description: ABI flavor
         type: choice
         required: true
-        default: universal
+        default: arm64
         options:
           - arm64
-          - universal
       build_type:
         description: Build type
         type: choice
@@ -48,7 +47,7 @@ on:
 
 env:
   DEFAULT_APP_FLAVOR: google
-  DEFAULT_ABI_FLAVOR: universal
+  DEFAULT_ABI_FLAVOR: arm64
   DEFAULT_BUILD_TYPE: debug
 
 concurrency:
@@ -62,15 +61,15 @@ jobs:
       should_publish_release: ${{ steps.compute.outputs.should_publish_release }}
       release_tag: ${{ steps.compute.outputs.release_tag }}
 
-    # tag 推送: 海外(google/foss)各出 universal + arm64, 国内 6 渠道各出 arm64(给 GitCode 当国内更新源);
+    # tag 推送: 海外(google/foss)各出 arm64, 国内 6 渠道各出 arm64(给 GitCode 当国内更新源);
     # 手动触发: 单个所选变体(include 为空, 行为与以前完全一致)
     strategy:
       fail-fast: false
       matrix:
         app_flavor: ${{ github.event_name == 'push' && fromJSON('["google","foss"]') || fromJSON(format('["{0}"]', inputs.app_flavor || 'google')) }}
-        abi_flavor: ${{ github.event_name == 'push' && fromJSON('["universal","arm64"]') || fromJSON(format('["{0}"]', inputs.abi_flavor || 'universal')) }}
+        abi_flavor: ${{ github.event_name == 'push' && fromJSON('["arm64"]') || fromJSON(format('["{0}"]', inputs.abi_flavor || 'arm64')) }}
         # 国内渠道用 include 追加(不覆盖上面的组合): arm64 一个架构足够 ——
-        # 手机端全是 arm64, 且 arm64/universal 两个 abi flavor 的 abiFilters 都是 arm64-v8a。
+        # 手机端全是 arm64, 且 abi 维度只有 arm64 这一个 flavor。
         include: ${{ github.event_name == 'push' && fromJSON('[{"app_flavor":"xiaomi","abi_flavor":"arm64"},{"app_flavor":"yyb","abi_flavor":"arm64"},{"app_flavor":"oppo","abi_flavor":"arm64"},{"app_flavor":"vivo","abi_flavor":"arm64"},{"app_flavor":"huawei","abi_flavor":"arm64"},{"app_flavor":"onebox","abi_flavor":"arm64"}]') || fromJSON('[]') }}
 
     runs-on: ubuntu-latest
@@ -156,7 +155,7 @@ jobs:
 
           BUILD_TYPE_CAPITALIZED="$(capitalize "$BUILD_TYPE")"
           VARIANT_NAME="$(capitalize "$APP_FLAVOR")$(capitalize "$ABI_FLAVOR")$BUILD_TYPE_CAPITALIZED"
-          # AGP 输出目录是 flavor 组合的 camelCase: 第一个小写, 后续首字母大写 (googleUniversal)
+          # AGP 输出目录是 flavor 组合的 camelCase: 第一个小写, 后续首字母大写 (googleArm64)
           VARIANT_DIR="${APP_FLAVOR}$(capitalize "$ABI_FLAVOR")"
           APK_DIR="app/build/outputs/apk/$VARIANT_DIR/$BUILD_TYPE"
           OUTPUT_APK_NAME="OneBox-${ARTIFACT_SUFFIX}-${APP_FLAVOR}-${ABI_FLAVOR}-${BUILD_TYPE}.apk"
@@ -275,7 +274,7 @@ jobs:
             exit 0
           fi
 
-          # VARIANT_DIR 由前面的步骤算出, 已是 AGP 产物目录的小写首字母形式 (googleUniversal)
+          # VARIANT_DIR 由前面的步骤算出, 已是 AGP 产物目录的小写首字母形式 (googleArm64)
           MAPPING="app/build/outputs/mapping/${VARIANT_DIR}Release/mapping.txt"
           if [[ ! -f "$MAPPING" ]]; then
             MAPPING="$(find app/build/outputs/mapping -maxdepth 2 -type f -name mapping.txt \

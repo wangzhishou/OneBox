@@ -21,7 +21,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.junit)

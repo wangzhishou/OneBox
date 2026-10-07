@@ -13,7 +13,6 @@ dependencies {
      * mmkv
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
     //Di
     implementation(libs.dagger.hilt.android)
     /**

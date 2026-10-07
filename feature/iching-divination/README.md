@@ -16,8 +16,8 @@ Lines use values 6–9 and are stored bottom-to-top. AI text is explicitly prese
 ## Verification
 
 ```bash
-./gradlew :feature:iching-divination:testOneboxUniversalDebugUnitTest
-./gradlew :feature:app:compileOneboxUniversalDebugKotlin
+./gradlew :feature:iching-divination:testOneboxArm64DebugUnitTest
+./gradlew :feature:app:compileOneboxArm64DebugKotlin
 ```
 
 ## Data source

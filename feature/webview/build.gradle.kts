@@ -40,7 +40,6 @@ dependencies {
      * mmkv
      */
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
 
     // Coil SVG decoder for mermaid SVG rendering
     implementation(libs.coilSvg)

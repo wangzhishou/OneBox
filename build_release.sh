@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # -----------------------------------------------------------------------------
-# build_release.sh — 打各个渠道的 Release 包 (仅 64 位: arm64 / universal)
+# build_release.sh — 打各个渠道的 Release 包 (仅 64 位: arm64)
 #
 # 用法:
-#   ./build_release.sh                       # 7 渠道 × 2 架构 = 14 个 APK
+#   ./build_release.sh                       # 7 渠道 × 1 架构 = 7 个 APK
 #   ./build_release.sh --channel xiaomi huawei
 #   ./build_release.sh --abi arm64
 #   ./build_release.sh --channel onebox --abi arm64
@@ -25,7 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 ALL_CHANNELS=("xiaomi" "yyb" "oppo" "vivo" "huawei" "onebox" "google")
-ALL_ABIS=("arm64" "universal")
+ALL_ABIS=("arm64")
 OUT_DIR="release"
 GRADLE="./gradlew"
 KEYSTORE_FILE="keystore.properties"
@@ -167,7 +167,7 @@ MANIFEST="$OUT_DIR/manifest.txt"
 FOUND=0
 for c in "${CHANNELS[@]}"; do
     for a in "${ABIS[@]}"; do
-        variant_dir="app/build/outputs/apk/${c}${a}/release"
+        variant_dir="app/build/outputs/apk/${c}$(to_pascal <<< "$a")/release"
         # 取该目录下第一个 .apk（正常只有一个 release apk）
         apk="$(find "$variant_dir" -maxdepth 1 -name '*.apk' -type f 2>/dev/null | head -n1 || true)"
         if [[ -z "$apk" ]]; then
@@ -216,7 +216,7 @@ for c in data.get("client", []):
         echo "  [跳过] 未能从 google-services.json 解析 com.shifenmiao.app 的 mobilesdk_app_id"
     else
         for a in "${ABIS[@]}"; do
-            # AGP 产物目录首字母小写 (googleUniversalRelease); macOS 大小写不敏感所以
+            # AGP 产物目录首字母小写 (googleArm64Release); macOS 大小写不敏感所以
             # 之前写成 Google 也能命中, 但脚本若在 Linux 上跑就会找不到文件
             variant="google$(to_pascal <<< "$a")Release"
             mapping="app/build/outputs/mapping/$variant/mapping.txt"

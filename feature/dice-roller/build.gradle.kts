@@ -19,6 +19,5 @@ dependencies {
 
     // MMKV (按 ABI)
     "arm64Api"(libs.com.tencent.mmkv)
-    "universalApi"(libs.com.tencent.mmkv)
 }
 

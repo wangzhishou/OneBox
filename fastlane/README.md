@@ -63,7 +63,7 @@ python3 -m venv .venv && .venv/bin/pip install google-api-python-client google-a
 `push_release.py` 把本地构建的 AAB 上传并发布到指定轨道(内部 edits.insert → bundles.upload → tracks.update → edits.commit,失败自动 delete edit 回滚;版本名形如 `130 (1.3.0)`,changelog 取 `metadata/android/<locale>/changelogs/<versionCode>.txt`,单条 ≤500 字符):
 
 ```bash
-./gradlew :app:bundleGoogleUniversalRelease                        # 构建 AAB(在 android/ 下)
+./gradlew :app:bundleGoogleArm64Release                            # 构建 AAB(在 android/ 下)
 .venv/bin/python push_release.py --dry-run    # 预览(默认最新 AAB + production)
 .venv/bin/python push_release.py              # 正式发布
 ```
