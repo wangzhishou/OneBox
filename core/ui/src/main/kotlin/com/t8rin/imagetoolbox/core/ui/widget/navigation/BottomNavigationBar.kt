@@ -63,6 +63,34 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
 
+/**
+ * 底栏是否该有自己的底色。
+ *
+ * 只有页面铺了背景层(渐变背景 / 自定义背景图)时才需要 —— 此时底栏要压住背后的
+ * 色块或图片,否则内容会从底栏位置透出来。纯色页面下底栏不画任何底色,与页面
+ * 完全连成一体。
+ *
+ * 判定与 [com.t8rin.imagetoolbox.core.ui.widget.glass.effectiveGlassBorderAlpha]
+ * 的"没有背景层就不画描边"保持一致。
+ *
+ * - [BackdropState.None]:无背景层,不画底;
+ * - [BackdropState.Glass]:有背景层且玻璃开关打开,画毛玻璃;
+ * - [BackdropState.Solid]:有背景层但玻璃关闭,画不透明 surface 实色底。
+ */
+@Composable
+private fun rememberBackdropState(): BackdropState {
+    val settingsState = LocalSettingsState.current
+    val hasBackdrop = settingsState.isMeshGradientBackgroundEnabled ||
+        settingsState.customBackgroundImageUri != null
+    return when {
+        !hasBackdrop -> BackdropState.None
+        settingsState.isGlassAlphaEnabled -> BackdropState.Glass
+        else -> BackdropState.Solid
+    }
+}
+
+private enum class BackdropState { None, Glass, Solid }
+
 @Immutable
 data class BottomNavItem(
     val id: String,
@@ -133,9 +161,7 @@ fun BottomNavigationBar(
     val bottomBarHeight = remember(height, systemBarsBottom) {
         height + systemBarsBottom
     }
-    // 「玻璃质感背景透明」关闭时,底栏退化成不透明 surface 容器,与页面连成一体;
-    // 只有开启玻璃时才画毛玻璃背景。(与 BaseScreen / AdaptiveLayoutScreen 的判定一致)
-    val isGlassActive = LocalSettingsState.current.isGlassAlphaEnabled
+    val backdropState = rememberBackdropState()
     AnimatedVisibility(
         visible = showBar,
         enter = slideInVertically(initialOffsetY = { it }),
@@ -153,14 +179,15 @@ fun BottomNavigationBar(
                     .fillMaxWidth()
                     .height(bottomBarHeight)
                     .then(
-                        if (isGlassActive) {
-                            Modifier.glassBackground(
+                        when (backdropState) {
+                            BackdropState.None -> Modifier
+                            BackdropState.Glass -> Modifier.glassBackground(
                                 style = style.containerGlassStyle,
                                 shape = style.containerShape,
                                 color = MaterialTheme.colorScheme.surface,
                             )
-                        } else {
-                            Modifier.background(
+
+                            BackdropState.Solid -> Modifier.background(
                                 color = MaterialTheme.colorScheme.surface,
                                 shape = style.containerShape,
                             )
@@ -251,7 +278,7 @@ private fun BottomNavigationTabItem(
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isGlassActive = LocalSettingsState.current.isGlassAlphaEnabled
+    val backdropState = rememberBackdropState()
     val defaultSelectedBg = MaterialTheme.colorScheme.primaryContainer
     val defaultSelectedContent = MaterialTheme.colorScheme.onPrimaryContainer
     val selectedBgColor = item.selectedContainerColor ?: defaultSelectedBg
@@ -282,7 +309,7 @@ private fun BottomNavigationTabItem(
                 .indication(interactionSource, ripple(bounded = true))
                 .then(
                     if (isSelected) {
-                        if (isGlassActive) {
+                        if (backdropState == BackdropState.Glass) {
                             Modifier.glassBackground(
                                 style = style.selectedItemGlassStyle,
                                 color = selectedBgColor,
@@ -347,7 +374,7 @@ private fun CenterActionButton(
     style: BottomNavigationBarStyle,
     onClick: (() -> Unit)?,
 ) {
-    val isGlassActive = LocalSettingsState.current.isGlassAlphaEnabled
+    val backdropState = rememberBackdropState()
     val rotation by animateFloatAsState(
         targetValue = if (action.expanded) 45f else 0f,
         animationSpec = tween(300),
@@ -373,7 +400,7 @@ private fun CenterActionButton(
             modifier = Modifier
                 .size(style.centerButtonSize)
                 .then(
-                    if (isGlassActive) {
+                    if (backdropState == BackdropState.Glass) {
                         Modifier.glassDense(
                             shape = CircleShape,
                             color = selectedBgColor,
