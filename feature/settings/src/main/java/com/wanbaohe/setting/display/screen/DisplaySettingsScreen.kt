@@ -191,7 +191,7 @@ fun StartEntrySettingItem(onBeforeNavigate: (() -> Unit)? = null) {
             Text(
                 text = stringResource(R.string.profile_start_entry),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         GlassSegmentedButtonRow(
@@ -254,12 +254,12 @@ fun ThemeSettingItem() {
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDarkMode,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = stringResource(R.string.profile_item_day_night_mode),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         val options = listOf(
@@ -333,12 +333,12 @@ fun LayoutSettingItem() {
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQuickTiles,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = stringResource(R.string.profile_item_display),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         val options = listOf(
@@ -396,12 +396,12 @@ fun PointsSettingItem() {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = stringResource(R.string.profile_item_show_points_tip),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         GlassSwitch(
@@ -435,12 +435,12 @@ fun QuickSettingItem(appComponent: AppComponent, isMe: Boolean = false) {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVibration,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = stringResource(R.string.profile_item_quick_setting),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         GlassSwitch(
@@ -482,12 +482,12 @@ fun ConfettiSettingItem(component: DisplaySettingsComponent) {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCelebration,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = stringResource(R.string.profile_item_confetti),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         GlassSwitch(
@@ -526,12 +526,12 @@ fun DebugEnvironmentSettingItem(appComponent: AppComponent) {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineScience,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = stringResource(R.string.profile_item_debug_environment),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         GlassSwitch(
@@ -573,12 +573,12 @@ fun DisableRobotSettingItem(appComponent: AppComponent) {
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRobot,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = stringResource(R.string.profile_item_disable_robot),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         val options = listOf(
@@ -630,12 +630,12 @@ fun MiniProgramSettingItem() {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = stringResource(R.string.mini_program_remember_choice),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         GlassSwitch(
@@ -689,12 +689,12 @@ private fun FontFamilySettingSection(settingsComponent: SettingsComponent) {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFont,
             contentDescription = null,
             modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = stringResource(R.string.profile_item_font_family),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         Text(
@@ -769,12 +769,12 @@ private fun FontSizeSettingSection(settingsComponent: SettingsComponent) {
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFont,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = stringResource(R.string.profile_item_font_size),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.weight(1f)
             )
             AnimatedContent(
@@ -842,12 +842,12 @@ fun FontSizeQuickSettingItem() {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFont,
             contentDescription = null,
             modifier = Modifier.size(20.dp),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             text = stringResource(R.string.profile_item_font_size),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         AnimatedContent(

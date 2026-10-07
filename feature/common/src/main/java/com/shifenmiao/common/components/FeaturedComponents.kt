@@ -285,7 +285,7 @@ fun LocalArticleCard(
     modifier: Modifier = Modifier,
 ) {
     val theme = sectionThemeForIndex(themeIndex)
-    val contentColor = MaterialTheme.colorScheme.onSurface
+    val contentColor = MaterialTheme.colorScheme.onSurfaceVariant
     val editButtonTint = sectionIconColor(theme)
     val deleteTheme = sectionThemeForIndex(themeIndex + 1)
     val deleteButtonTint = sectionIconColor(deleteTheme)
@@ -434,7 +434,7 @@ fun sectionOnColor(theme: SectionTheme): Color = when (theme) {
     SectionTheme.PRIMARY -> MaterialTheme.colorScheme.onPrimaryContainer
     SectionTheme.SECONDARY -> MaterialTheme.colorScheme.onSecondaryContainer
     SectionTheme.TERTIARY -> MaterialTheme.colorScheme.onTertiaryContainer
-    SectionTheme.SURFACE -> MaterialTheme.colorScheme.onSurface
+    SectionTheme.SURFACE -> MaterialTheme.colorScheme.onSurfaceVariant
 }
 
 @Composable

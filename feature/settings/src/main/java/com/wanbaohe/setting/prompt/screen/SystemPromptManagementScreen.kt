@@ -65,7 +65,7 @@ fun SystemPromptManagementContent(
                 Text(
                     text = prompt.title ?: "",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = prompt.description ?: "",

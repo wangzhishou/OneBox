@@ -165,7 +165,7 @@ fun SkillManagementContent(
                     Text(
                         text = stringResource(SettingsR.string.skill_global_switch_title),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
                         text = stringResource(SettingsR.string.skill_global_switch_subtitle),
@@ -254,7 +254,7 @@ fun SkillManagementContent(
                         Text(
                             text = skill.name,
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Text(
                             text = skill.description,

@@ -104,7 +104,7 @@ fun MemoryManagementContent(
                     Text(
                         text = stringResource(SettingsR.string.memory_global_switch_title),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
                         text = stringResource(SettingsR.string.memory_global_switch_subtitle),
@@ -354,7 +354,7 @@ private fun MemoryEntryCard(
             text = entry.content,
             style = MaterialTheme.typography.bodyMedium,
             color = if (entry.enabled) {
-                MaterialTheme.colorScheme.onSurface
+                MaterialTheme.colorScheme.onSurfaceVariant
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             },

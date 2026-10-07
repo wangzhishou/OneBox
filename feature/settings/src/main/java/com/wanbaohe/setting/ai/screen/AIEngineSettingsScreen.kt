@@ -281,7 +281,7 @@ private fun EngineListCard(
                     if (brandIcon != null) {
                         OneBoxLeadingIconBadge(
                             icon = brandIcon,
-                            iconTint = MaterialTheme.colorScheme.onSurface,
+                            iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
                             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                         )
                     } else {
@@ -301,7 +301,7 @@ private fun EngineListCard(
                         Text(
                             text = engine.title,
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         // 副标题展示当前选中模型名(品牌名 + 模型名, 不再展示引擎简介)
                         Text(

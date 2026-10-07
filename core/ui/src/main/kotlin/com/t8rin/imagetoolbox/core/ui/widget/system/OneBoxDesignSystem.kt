@@ -118,7 +118,8 @@ fun OneBoxSectionCard(
         shape = OneBoxDesignSystem.sectionCardShape,
         containerAlpha = 0.22f,
         colors = androidx.compose.material3.CardDefaults.cardColors(
-            containerColor = containerColor
+            containerColor = containerColor,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
     ) {
         Column(

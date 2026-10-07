@@ -172,7 +172,7 @@ fun AuthCodeSettingsScreen(component: AuthCodeSettingsComponent) {
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = FontWeight.Medium
                                         ),
-                                        color = MaterialTheme.colorScheme.onSurface,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
                                 },
                                 leadingContent = {
@@ -228,7 +228,7 @@ fun AuthCodeSettingsScreen(component: AuthCodeSettingsComponent) {
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = FontWeight.Medium
                                         ),
-                                        color = MaterialTheme.colorScheme.onSurface,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
                                 },
                                 leadingContent = {
@@ -373,7 +373,7 @@ private fun StatusRow(loading: Boolean, hasCode: Boolean) {
         Text(
             text = stringResource(SettingsR.string.auth_code_settings_title),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
@@ -408,7 +408,7 @@ private fun ProtectedItemsSection(
                 Text(
                     text = stringResource(SettingsR.string.auth_code_settings_section_protected),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium,
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -474,7 +474,7 @@ private fun ProtectedItemRow(
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Medium
                 ),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1
             )
         },

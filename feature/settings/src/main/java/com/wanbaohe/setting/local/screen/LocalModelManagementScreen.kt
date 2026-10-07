@@ -275,7 +275,7 @@ private fun RecommendedModelCard(
                 Text(
                     text = stringResource(model.displayNameRes),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = stringResource(model.descriptionRes),
@@ -365,7 +365,7 @@ private fun DownloadedModelCard(
                 Text(
                     text = model.fileName,
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = sizeText,

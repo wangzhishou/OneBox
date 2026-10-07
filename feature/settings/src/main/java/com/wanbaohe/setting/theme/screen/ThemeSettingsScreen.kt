@@ -559,7 +559,7 @@ private fun ThemeNameCard(
                     Text(
                         text = name,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.weight(1f),
                     )
                 }
@@ -608,7 +608,7 @@ private fun ColorSchemeCard(
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             Row(
@@ -791,7 +791,7 @@ private fun GlassEffectCard(
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
@@ -829,7 +829,7 @@ private fun GlassEffectCard(
                         Text(
                             text = stringResource(R.string.theme_preset_glass_alpha),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = FontWeight.Medium,
                         )
                         Text(
@@ -865,7 +865,7 @@ private fun GlassEffectCard(
                                 Text(
                                     text = stringResource(R.string.theme_preset_glass_border_alpha),
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontWeight = FontWeight.Medium,
                                 )
                                 Text(
@@ -961,7 +961,7 @@ private fun GradientBackgroundCard(
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.SemiBold,
                         ),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 GlassSwitch(
@@ -1053,7 +1053,7 @@ private fun GradientBackgroundCard(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibility,
                                 contentDescription = null,
                                 modifier = Modifier.size(14.dp),
-                                tint = MaterialTheme.colorScheme.onSurface,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Text(
                                 text = stringResource(
@@ -1061,7 +1061,7 @@ private fun GradientBackgroundCard(
                                     selectedLabel,
                                 ),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -1138,7 +1138,7 @@ private fun CustomBackgroundCard(
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.SemiBold,
                         ),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 if (hasCustomBg) {
@@ -1254,7 +1254,7 @@ private fun CustomBackgroundCard(
                     Text(
                         text = stringResource(R.string.custom_background_overlay_alpha),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Medium,
                     )
                     Text(
@@ -1419,7 +1419,7 @@ private fun NightModeCard(
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
@@ -1509,14 +1509,14 @@ private fun ColorSystemCard(
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
             Text(
                 text = stringResource(R.string.theme_palette_style_label),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium,
             )
 
@@ -1582,7 +1582,7 @@ private fun ColorSystemCard(
                 Text(
                     text = stringResource(R.string.theme_contrast_label),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
@@ -1652,8 +1652,8 @@ private fun SwitchRow(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = if (enabled) MaterialTheme.colorScheme.onSurface
-            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+            color = if (enabled) MaterialTheme.colorScheme.onSurfaceVariant
+            else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
             modifier = Modifier.weight(1f),
         )
         GlassSwitch(

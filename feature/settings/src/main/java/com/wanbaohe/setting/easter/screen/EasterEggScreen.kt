@@ -153,7 +153,7 @@ fun EasterEggScreen(component: EasterEggComponent) {
                 Text(
                     text = stringResource(CoreR.string.startup_trace_overlay_title),
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = stringResource(CoreR.string.startup_trace_overlay_toggle_desc),

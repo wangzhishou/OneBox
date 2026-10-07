@@ -172,7 +172,7 @@ fun SystemPromptDetailScreen(
                 Text(
                     text = prompt?.title ?: "",
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Bold
                 )
             },
@@ -284,7 +284,7 @@ private fun SystemPromptFriendlyReminder(
                 Text(
                     text = stringResource(R.string.system_prompt_friendly_reminder_title),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = stringResource(R.string.system_prompt_friendly_reminder_message),

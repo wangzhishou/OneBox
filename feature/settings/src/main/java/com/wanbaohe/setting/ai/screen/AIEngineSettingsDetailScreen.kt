@@ -934,7 +934,7 @@ private fun ServerConnectivityCard(
                     Text(
                         text = stringResource(R.string.ai_engine_auth_type_label),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
 
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1456,7 +1456,7 @@ private fun CapabilitySwitchRow(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         },
         contained = true,
@@ -1497,7 +1497,7 @@ private fun ParameterSliderRow(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.weight(1f),
             )
             Box(

@@ -333,7 +333,7 @@ internal fun TTSSettingsContent(
                 enabled = !isActionRunning,
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                contentColor = MaterialTheme.colorScheme.onSurface,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             ) {
                 Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
@@ -538,7 +538,7 @@ private fun MimoVoicePicker(
                         color = if (isSelected) {
                             MaterialTheme.colorScheme.primary
                         } else {
-                            MaterialTheme.colorScheme.onSurface
+                            MaterialTheme.colorScheme.onSurfaceVariant
                         },
                     )
                 }

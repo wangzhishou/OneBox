@@ -140,7 +140,7 @@ private fun WorkingEngineSummaryCard(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
                     text = description,
@@ -161,7 +161,7 @@ private fun WorkingEngineSummaryCard(
                     Text(
                         text = stringResource(R.string.ai_working_model_current_engine, engine.title),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     // 代理中转链路按模型倍率扣积分,模型名后追加倍率; Jev 不展示倍率(不暴露中转概念)
                     val modelText = stringResource(
