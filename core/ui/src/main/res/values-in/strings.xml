@@ -5,6 +5,9 @@
     <string name="date_picker_edit">Edit</string>
     <string name="date_picker_select_year_month">Pilih Tahun dan Bulan</string>
     <string name="date_picker_year_input">Tahun</string>
+    <string name="date_picker_year_label">Tahun</string>
+    <string name="date_picker_month_label">Bulan</string>
+    <string name="date_picker_day_label">Hari</string>
     <string name="date_picker_current_year">Tahun berjalan</string>
     <string name="blessing_effect_merit_plus_one">Keberuntungan +1</string>
     <string name="date_picker_month_format">%d</string>

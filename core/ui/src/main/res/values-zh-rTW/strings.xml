@@ -6,6 +6,9 @@
     <string name="date_picker_edit">編輯</string>
     <string name="date_picker_select_year_month">選擇年月</string>
     <string name="date_picker_year_input">年份</string>
+    <string name="date_picker_year_label">年</string>
+    <string name="date_picker_month_label">月</string>
+    <string name="date_picker_day_label">日</string>
     <string name="date_picker_current_year">今年</string>
     <string name="blessing_effect_merit_plus_one">好運 +1</string>
     <string name="date_picker_month_format">%d月</string>

@@ -6,6 +6,9 @@
     <string name="date_picker_edit">تعديل</string>
     <string name="date_picker_select_year_month">اختيار السنة والشهر</string>
     <string name="date_picker_year_input">السنة</string>
+    <string name="date_picker_year_label">السنة</string>
+    <string name="date_picker_month_label">الشهر</string>
+    <string name="date_picker_day_label">اليوم</string>
     <string name="date_picker_current_year">السنة الحالية</string>
     <string name="blessing_effect_merit_plus_one">الحظ +1</string>
     <string name="date_picker_month_format">%d</string>

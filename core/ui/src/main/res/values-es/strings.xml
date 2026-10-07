@@ -5,6 +5,9 @@
     <string name="date_picker_edit">Editar</string>
     <string name="date_picker_select_year_month">Seleccionar año y mes</string>
     <string name="date_picker_year_input">Año</string>
+    <string name="date_picker_year_label">Año</string>
+    <string name="date_picker_month_label">Mes</string>
+    <string name="date_picker_day_label">Día</string>
     <string name="date_picker_current_year">Año actual</string>
     <string name="blessing_effect_merit_plus_one">Suerte +1</string>
     <string name="date_picker_month_format">%d</string>

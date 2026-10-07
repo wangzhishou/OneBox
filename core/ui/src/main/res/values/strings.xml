@@ -6,6 +6,9 @@
     <string name="date_picker_edit">Edit</string>
     <string name="date_picker_select_year_month">Select Year and Month</string>
     <string name="date_picker_year_input">Year</string>
+    <string name="date_picker_year_label">Year</string>
+    <string name="date_picker_month_label">Month</string>
+    <string name="date_picker_day_label">Day</string>
     <string name="date_picker_current_year">Current year</string>
     <string name="blessing_effect_merit_plus_one">Luck +1</string>
     <string name="date_picker_month_format">%d</string>

@@ -5,6 +5,9 @@
     <string name="date_picker_edit">I-edit</string>
     <string name="date_picker_select_year_month">Pumili ng Taon at Buwan</string>
     <string name="date_picker_year_input">Taon</string>
+    <string name="date_picker_year_label">Taon</string>
+    <string name="date_picker_month_label">Buwan</string>
+    <string name="date_picker_day_label">Araw</string>
     <string name="date_picker_current_year">Kasalukuyang taon</string>
     <string name="blessing_effect_merit_plus_one">Suwerte +1</string>
     <string name="date_picker_month_format">%d</string>

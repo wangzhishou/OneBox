@@ -338,7 +338,7 @@ private fun DateInputFields(
                         onYearChange(it)
                     }
                 },
-                label = { Text("年") },
+                label = { Text(stringResource(R.string.date_picker_year_label)) },
                 modifier = Modifier.weight(1.2f),
                 singleLine = true,
                 keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
@@ -356,7 +356,7 @@ private fun DateInputFields(
                         onMonthChange(it)
                     }
                 },
-                label = { Text("月") },
+                label = { Text(stringResource(R.string.date_picker_month_label)) },
                 modifier = Modifier.weight(1f),
                 singleLine = true,
                 keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
@@ -374,7 +374,7 @@ private fun DateInputFields(
                         onDayChange(it)
                     }
                 },
-                label = { Text("日") },
+                label = { Text(stringResource(R.string.date_picker_day_label)) },
                 modifier = Modifier.weight(1f),
                 singleLine = true,
                 keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(

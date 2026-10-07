@@ -5,6 +5,9 @@
     <string name="date_picker_edit">संपादित करें</string>
     <string name="date_picker_select_year_month">वर्ष और माह चुनें</string>
     <string name="date_picker_year_input">वर्ष</string>
+    <string name="date_picker_year_label">वर्ष</string>
+    <string name="date_picker_month_label">माह</string>
+    <string name="date_picker_day_label">दिन</string>
     <string name="date_picker_current_year">चालू वर्ष</string>
     <string name="blessing_effect_merit_plus_one">भाग्य +1</string>
     <string name="date_picker_month_format">%d</string>

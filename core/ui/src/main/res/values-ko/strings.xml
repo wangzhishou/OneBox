@@ -5,6 +5,9 @@
     <string name="date_picker_edit">편집</string>
     <string name="date_picker_select_year_month">연도와 월 선택</string>
     <string name="date_picker_year_input">연도</string>
+    <string name="date_picker_year_label">년</string>
+    <string name="date_picker_month_label">월</string>
+    <string name="date_picker_day_label">일</string>
     <string name="date_picker_current_year">올해</string>
     <string name="blessing_effect_merit_plus_one">행운 +1</string>
     <string name="date_picker_month_format">%d</string>
