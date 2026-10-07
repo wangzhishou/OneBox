@@ -102,7 +102,7 @@ private fun AddImageButton(
             .fillMaxHeight()
             .width(68.dp)
             .background(
-                MaterialTheme.colorScheme.surfaceContainer,
+                MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = shape
             ),
         contentAlignment = Alignment.CenterStart

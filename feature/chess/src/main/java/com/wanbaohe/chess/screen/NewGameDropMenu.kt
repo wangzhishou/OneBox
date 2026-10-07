@@ -109,7 +109,7 @@ fun NewGameDropMenu(
             ) {
                 Surface(
                     shape = bubbleShape,
-                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     shadowElevation = 2.dp,
                     modifier = Modifier.width(220.dp),
                 ) {

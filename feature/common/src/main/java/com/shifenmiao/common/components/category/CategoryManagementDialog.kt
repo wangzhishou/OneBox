@@ -79,7 +79,7 @@ interface ManageableItem {
  *
  * 设计说明：
  * - 列表使用 3 列 LazyVerticalGrid + sh.calvin.reorderable 的 grid 拖拽
- * - 每个 cell 是一块色块（surfaceContainer），无 border、无 divider
+ * - 每个 cell 是一块色块（surfaceContainerLow），无 border、无 divider
  * - 顶部一行：drag handle + 操作按钮（编辑 / 删除 / 确认 / 取消）
  * - 中部：分类名（maxLines = 1, ellipsis）
  * - "添加新分类"按钮放在 grid 上方，让操作入口在视觉上前置
@@ -261,7 +261,7 @@ fun <T : ManageableItem> CategoryManagementDialog(
  * │                         │
  * └─────────────────────────┘
  *
- * 不画 border，仅用 surfaceContainer 色块 + 圆角；拖拽时切到 surfaceContainerHighest 提示。
+ * 不画 border，仅用 surfaceContainerLow 色块 + 圆角；拖拽时切到 surfaceContainerHighest 提示。
  */
 @Composable
 private fun <T : ManageableItem> CategoryGridCell(

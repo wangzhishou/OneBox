@@ -54,9 +54,9 @@ class RowSelectorRenderer @Inject constructor() : A2uiComponentRenderer {
         val enabled = context.resolveBoolean(component.properties["enabled"]) ?: true
         val spacing = context.resolveInt(component.properties["spacing"])?.dp ?: 8.dp
         val padding = context.resolveInt(component.properties["padding"])?.dp ?: 0.dp
-        val textColor = MaterialTheme.colorScheme.onSurface
+        val textColor = MaterialTheme.colorScheme.onSurfaceVariant
         val selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer
-        val containerColor = MaterialTheme.colorScheme.surfaceContainer
+        val containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         val selectedContainerColor = MaterialTheme.colorScheme.primaryContainer
         val iconColor = MaterialTheme.colorScheme.onPrimaryContainer
 

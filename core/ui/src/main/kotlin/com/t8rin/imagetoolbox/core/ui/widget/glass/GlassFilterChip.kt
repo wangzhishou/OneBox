@@ -53,7 +53,7 @@ fun GlassFilterChip(
     glassBorderWidth: Dp = 0.9.dp,
     @Suppress("UNUSED_PARAMETER")
     selectedColor: Color = Color.Unspecified,
-    glassContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    glassContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     glassSelectedContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
 ) {
     val settingsState = LocalSettingsState.current

@@ -117,7 +117,7 @@ fun ColorPickerSheet(
 
                 val containerColor by animateColorAsState(
                     if (inFavorite) MaterialTheme.colorScheme.tertiaryContainer
-                    else MaterialTheme.colorScheme.surfaceContainer
+                    else MaterialTheme.colorScheme.surfaceContainerLow
                 )
                 val contentColor by animateColorAsState(
                     if (inFavorite) MaterialTheme.colorScheme.onTertiaryContainer

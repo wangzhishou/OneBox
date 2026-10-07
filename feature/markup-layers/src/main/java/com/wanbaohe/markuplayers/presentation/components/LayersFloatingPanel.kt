@@ -81,12 +81,12 @@ internal fun LayersFloatingPanel(
                 .fillMaxWidth()
                 // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
                 .background(
-                    color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
                     shape = ShapeDefaults.extraLarge
                 )
                 .glassDense(
                     shape = ShapeDefaults.extraLarge,
-                    color = MaterialTheme.colorScheme.surfaceContainer
+                    color = MaterialTheme.colorScheme.surfaceContainerLow
                 )
                 .padding(horizontal = 8.dp, vertical = 6.dp)
         ) {
@@ -230,7 +230,7 @@ private fun CompactLayerRow(
                 shape = ShapeDefaults.small,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainer,
+                } else MaterialTheme.colorScheme.surfaceContainerLow,
                 resultPadding = 0.dp
             )
             .clickable(

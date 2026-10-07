@@ -157,7 +157,7 @@ private fun DateRangeChip(
         style = GlassStyle.Regular,
         glassBorderWidth = 0.dp,
         glassSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        glassContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
     )
 }
 
@@ -190,7 +190,7 @@ private fun TimeFilterChip(
         style = GlassStyle.Regular,
         glassBorderWidth = 0.dp,
         glassSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        glassContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
     )
 }
 

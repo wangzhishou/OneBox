@@ -236,7 +236,7 @@ private fun BackgroundLayerRow(component: TextCardComponent) {
             modifier = Modifier
                 .size(36.dp)
                 .clip(ShapeDefaults.small)
-                .background(MaterialTheme.colorScheme.surfaceContainer)
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             when (val bg = component.background) {
                 is BackgroundSpec.Gradient -> Box(
@@ -290,7 +290,7 @@ private fun LayerThumb(
         modifier = Modifier
             .size(36.dp)
             .clip(ShapeDefaults.small)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
         when (layer.kind) {
             ElementLayer.Kind.Text -> Icon(

@@ -90,7 +90,7 @@ private fun addMenuItemBackground(theme: AddMenuItemTheme): Color = when (theme)
     AddMenuItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
     AddMenuItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
     AddMenuItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
-    AddMenuItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer
+    AddMenuItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow
 }
 
 @Composable

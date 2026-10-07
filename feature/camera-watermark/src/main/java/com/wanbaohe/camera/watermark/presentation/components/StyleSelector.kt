@@ -71,7 +71,7 @@ fun StyleSelector(
                     .fillMaxHeight()
                     .width(68.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
                     ),
                 contentAlignment = Alignment.CenterStart
             ) {

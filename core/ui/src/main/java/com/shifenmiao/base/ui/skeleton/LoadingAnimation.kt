@@ -53,7 +53,7 @@ fun Modifier.shimmerLoading(
 
 private fun getColors(isLightMode: Boolean): List<Color> {
     return if (isLightMode) {
-        val color = AppTheme.colorScheme.surfaceContainer
+        val color = AppTheme.colorScheme.surfaceContainerLow
         listOf(
             color.copy(0.4f),
             color.copy(1f),

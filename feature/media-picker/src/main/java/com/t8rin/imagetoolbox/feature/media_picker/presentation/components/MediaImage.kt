@@ -103,7 +103,7 @@ fun MediaImage(
     Box(
         modifier = modifier
             .clip(ShapeDefaults.extraSmall)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .then(
                 if (canClick) {
                     Modifier.hapticsCombinedClickable(
@@ -259,7 +259,7 @@ fun MediaImage(
                         .clip(CircleShape)
                         .background(
                             animateColorAsState(
-                                if (isSelected) MaterialTheme.colorScheme.surfaceContainer
+                                if (isSelected) MaterialTheme.colorScheme.surfaceContainerLow
                                 else Color.Transparent
                             ).value
                         )

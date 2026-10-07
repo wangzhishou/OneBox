@@ -276,14 +276,14 @@ fun FileReorderVerticalList(
                                         .matchParentSize()
                                         .background(
                                             MaterialTheme.colorScheme
-                                                .surfaceContainer
+                                                .surfaceContainerLow
                                                 .copy(alpha)
                                         ),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
                                         text = "${index + 1}",
-                                        color = MaterialTheme.colorScheme.onSurface,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         fontSize = 20.sp,
                                         fontWeight = FontWeight.Bold
                                     )

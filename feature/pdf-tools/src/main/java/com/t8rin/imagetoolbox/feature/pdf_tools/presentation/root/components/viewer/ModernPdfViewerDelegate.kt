@@ -102,7 +102,7 @@ internal class ModernPdfViewerDelegate : PdfViewerFragment() {
                     0f, 0f,
                     0f, 0f
                 )
-                setColor(colorScheme.surfaceContainer.toArgb())
+                setColor(colorScheme.surfaceContainerLow.toArgb())
             }
         }
 

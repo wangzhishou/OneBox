@@ -123,7 +123,7 @@ private fun StartEntryGridCell(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .glassBackground(
-                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     shape = RoundedCornerShape(16.dp),
                     borderWidth = 0.9.dp,
                     style = GlassStyle.Dense

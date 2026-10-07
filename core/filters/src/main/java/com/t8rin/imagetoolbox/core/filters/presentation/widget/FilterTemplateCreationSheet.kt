@@ -209,7 +209,7 @@ fun FilterTemplateCreationSheet(
                     )
                     .background(
                         color = MaterialTheme.colorScheme
-                            .surfaceContainer
+                            .surfaceContainerLow
                             .copy(0.8f)
                     )
                     .shimmer(component.previewBitmap == null && component.isImageLoading),

@@ -77,7 +77,7 @@ internal fun effectiveGlassBorderAlpha(): Float {
 private const val NEUTRAL_GLASS_DEEPEN = 0.045f
 private const val NEUTRAL_GLASS_TINT_BOOST = 1.30f
 
-/** RGB 通道极差不超过它就算"中性玻璃"(surfaceContainer / surfaceContainerLow 一类)。 */
+/** RGB 通道极差不超过它就算"中性玻璃"(surfaceContainerLow 一类)。 */
 private const val NEUTRAL_GLASS_MAX_CHANNEL_SPREAD = 12f
 
 /**

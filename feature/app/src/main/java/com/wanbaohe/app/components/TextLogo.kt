@@ -67,12 +67,12 @@ fun TextLogo() {
                             text = if (BuildConfig.DEBUG) "$titleText-" + BuildConfig.FLAVOR.uppercase(
                                 LocalLocale.current.platformLocale
                             ) else titleText,
-                            color = MaterialTheme.colorScheme.onSurface.copy(0.68f),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.68f),
                             fontSize = 9.sp
                         )
                     },
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(0.5f),
-                    contentColor = MaterialTheme.colorScheme.onSurface.copy(0.68f),
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f),
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.68f),
                     modifier = Modifier
                         .padding(horizontal = 2.dp)
                         .padding(bottom = 12.dp)

@@ -240,13 +240,13 @@ internal fun PdfPagesRemoveGrid(
                                 modifier = Modifier
                                     .matchParentSize()
                                     .background(
-                                        MaterialTheme.colorScheme.surfaceContainer.copy(0.6f)
+                                        MaterialTheme.colorScheme.surfaceContainerLow.copy(0.6f)
                                     ),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = "${index + 1}",
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold
                                 )

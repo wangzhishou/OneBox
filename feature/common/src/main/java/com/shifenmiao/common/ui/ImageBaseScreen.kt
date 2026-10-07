@@ -384,7 +384,7 @@ fun ImageEmptyPlaceholder(
     ) {
         GlassSurface(
             shape = MaterialTheme.shapes.large,
-            color = MaterialTheme.colorScheme.surfaceContainer
+            color = MaterialTheme.colorScheme.surfaceContainerLow
         ) {
             Column(
                 modifier = Modifier.clip(MaterialTheme.shapes.large)

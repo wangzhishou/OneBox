@@ -239,7 +239,7 @@ fun ExportSettingsSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(ShapeDefaults.large)
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                        .background(MaterialTheme.colorScheme.surfaceContainerLow)
                         .clickable {
                             onSettingsChange(
                                 settings.copy(shareAfterSave = !settings.shareAfterSave)
@@ -341,7 +341,7 @@ private fun SelectableCard(
             .background(
                 if (selected) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainer
+                } else MaterialTheme.colorScheme.surfaceContainerLow
             )
             .then(
                 if (selected) {
@@ -461,7 +461,7 @@ private fun ExportInfoRow(
         modifier = Modifier
             .fillMaxWidth()
             .clip(ShapeDefaults.large)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         ExportInfoItem(

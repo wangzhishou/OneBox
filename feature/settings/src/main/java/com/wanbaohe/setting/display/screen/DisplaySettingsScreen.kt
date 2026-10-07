@@ -231,7 +231,7 @@ fun StartEntrySettingItem(onBeforeNavigate: (() -> Unit)? = null) {
                 )
             },
             rowStyle = GlassStyle.None,
-            rowColor = MaterialTheme.colorScheme.surfaceContainer,
+            rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }
 }
@@ -310,7 +310,7 @@ fun ThemeSettingItem() {
                 }
             },
             rowStyle = GlassStyle.None,
-            rowColor = MaterialTheme.colorScheme.surfaceContainer,
+            rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }
 }
@@ -379,7 +379,7 @@ fun LayoutSettingItem() {
                 }
             },
             rowStyle = GlassStyle.None,
-            rowColor = MaterialTheme.colorScheme.surfaceContainer,
+            rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }
 }
@@ -613,7 +613,7 @@ fun DisableRobotSettingItem(appComponent: AppComponent) {
                 )
             },
             rowStyle = GlassStyle.None,
-            rowColor = MaterialTheme.colorScheme.surfaceContainer,
+            rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         )
     }
 }

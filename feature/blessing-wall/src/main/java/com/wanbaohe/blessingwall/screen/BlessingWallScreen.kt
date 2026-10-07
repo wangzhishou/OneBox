@@ -261,8 +261,8 @@ fun BlessingWallScreen(component: BlessingWallComponent) {
             accent = colorScheme.tertiary,
         ),
         BlessingPalette(
-            buttonContainer = colorScheme.surfaceContainer,
-            buttonContent = colorScheme.onSurface,
+            buttonContainer = colorScheme.surfaceContainerLow,
+            buttonContent = colorScheme.onSurfaceVariant,
             accent = colorScheme.onSurface,
         ),
     )
@@ -548,8 +548,8 @@ private fun BlessingPage(
             dismissButton = {
                 GlassButton(
                     onClick = { isWishEditorVisible = false },
-                    color = MaterialTheme.colorScheme.surfaceContainer,
-                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ) {
                     Text(stringResource(com.t8rin.imagetoolbox.core.ui.R.string.date_picker_cancel))
                 }
@@ -611,8 +611,8 @@ private fun BlessingPage(
             dismissButton = {
                 GlassButton(
                     onClick = { isTabTextEditorVisible = false },
-                    color = MaterialTheme.colorScheme.surfaceContainer,
-                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 ) {
                     Text(stringResource(com.t8rin.imagetoolbox.core.ui.R.string.date_picker_cancel))
                 }

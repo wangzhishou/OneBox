@@ -33,7 +33,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 
 fun ColorScheme.outlineVariant(
     luminance: Float = 0.3f,
-    onTopOf: Color = surfaceContainer
+    onTopOf: Color = surfaceContainerLow
 ) = onSecondaryContainer
     .copy(alpha = luminance)
     .compositeOver(onTopOf)

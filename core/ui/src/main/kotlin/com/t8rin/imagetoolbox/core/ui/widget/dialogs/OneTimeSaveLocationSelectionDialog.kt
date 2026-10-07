@@ -277,7 +277,7 @@ fun OneTimeSaveLocationSelectionDialog(
                                 else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRadioUnchecked,
                                 containerColor = takeColorFromScheme {
                                     if (selected) surface
-                                    else surfaceContainer
+                                    else surfaceContainerLow
                                 }
                             )
                         },
@@ -322,7 +322,7 @@ fun OneTimeSaveLocationSelectionDialog(
                             horizontal = OneBoxDesignSystem.microSpacing,
                             vertical = OneBoxDesignSystem.microSpacing
                         ),
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
 
                 if (formatForFilenameSelection != null) {
@@ -351,7 +351,7 @@ fun OneTimeSaveLocationSelectionDialog(
                                 horizontal = OneBoxDesignSystem.microSpacing,
                                 vertical = OneBoxDesignSystem.microSpacing
                             ),
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     )
                 }
 
@@ -372,7 +372,7 @@ fun OneTimeSaveLocationSelectionDialog(
                             horizontal = OneBoxDesignSystem.microSpacing,
                             vertical = OneBoxDesignSystem.microSpacing
                         ),
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
             }
         }

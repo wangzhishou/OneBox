@@ -1208,12 +1208,12 @@ private fun ZoomCapsule(
             modifier = Modifier
                 // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
                 .background(
-                    color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                    color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
                     shape = ShapeDefaults.circle
                 )
                 .glassDense(
                     shape = ShapeDefaults.circle,
-                    color = MaterialTheme.colorScheme.surfaceContainer
+                    color = MaterialTheme.colorScheme.surfaceContainerLow
                 )
                 .padding(horizontal = 4.dp, vertical = 2.dp)
         ) {
@@ -1264,12 +1264,12 @@ private fun EditorSideBar(
         modifier = modifier
             // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
                 shape = ShapeDefaults.extraLarge
             )
             .glassDense(
                 shape = ShapeDefaults.extraLarge,
-                color = MaterialTheme.colorScheme.surfaceContainer
+                color = MaterialTheme.colorScheme.surfaceContainerLow
             )
             .padding(horizontal = 4.dp, vertical = 8.dp)
     ) {

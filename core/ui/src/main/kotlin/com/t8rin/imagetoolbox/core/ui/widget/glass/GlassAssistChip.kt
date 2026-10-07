@@ -47,7 +47,7 @@ fun GlassAssistChip(
     contentPadding: PaddingValues = AssistChipDefaults.ContentPadding,
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
-    glassContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    glassContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current
@@ -126,7 +126,7 @@ fun GlassSuggestionChip(
     contentPadding: PaddingValues = SuggestionChipDefaults.ContentPadding,
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
-    glassContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    glassContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current

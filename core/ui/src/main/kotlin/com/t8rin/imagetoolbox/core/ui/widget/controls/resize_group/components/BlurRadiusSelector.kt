@@ -36,7 +36,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.BlurCircular
 fun BlurRadiusSelector(
     modifier: Modifier,
     value: Int,
-    color: Color = MaterialTheme.colorScheme.surfaceContainer,
+    color: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     valueRange: ClosedFloatingPointRange<Float> = 5f..100f,
     onValueChange: (Int) -> Unit,
     shape: Shape = ShapeDefaults.default

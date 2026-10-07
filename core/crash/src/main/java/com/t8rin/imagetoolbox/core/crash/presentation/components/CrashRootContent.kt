@@ -241,7 +241,7 @@ internal fun CrashRootContent(component: CrashComponent) {
                             }
                         }
                     },
-                    color = MaterialTheme.colorScheme.surfaceContainer
+                    color = MaterialTheme.colorScheme.surfaceContainerLow
                 )
                 Spacer(modifier = Modifier.height(80.dp))
             }

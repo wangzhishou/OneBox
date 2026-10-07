@@ -295,7 +295,7 @@ class DuelHtmlExporter {
         val onPrimaryContainer = colorScheme.onPrimaryContainer.toArgb().toHexColor()
         val tertiary = colorScheme.tertiary.toArgb().toHexColor()
         val onTertiary = colorScheme.onTertiary.toArgb().toHexColor()
-        val surfaceContainer = colorScheme.surfaceContainer.toArgb().toHexColor()
+        val surfaceContainerLow = colorScheme.surfaceContainerLow.toArgb().toHexColor()
         val surfaceContainerHigh = colorScheme.surfaceContainerHigh.toArgb().toHexColor()
         val outline = colorScheme.outline.toArgb().toHexColor()
         val outlineVariant = colorScheme.outlineVariant.toArgb().toHexColor()
@@ -347,7 +347,7 @@ body {
   gap: 0.875rem;
 }
 .prompt-card {
-  background: ${surfaceContainer}CC;
+  background: ${surfaceContainerLow}CC;
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border: 1px solid ${outlineVariant}66;
   border-radius: 1rem;
@@ -402,7 +402,7 @@ body {
   left: 0;
   right: 0;
   height: 2em;
-  background: linear-gradient(transparent, ${surfaceContainer}CC);
+  background: linear-gradient(transparent, ${surfaceContainerLow}CC);
   pointer-events: none;
 }
 .prompt-text.expanded {

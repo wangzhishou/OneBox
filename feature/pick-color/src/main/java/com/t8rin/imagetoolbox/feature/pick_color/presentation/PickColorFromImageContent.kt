@@ -95,7 +95,7 @@ fun PickColorFromImageContent(
             containerColor = takeColorFromScheme {
                 if (settingsState.magnifierEnabled) {
                     secondary
-                } else surfaceContainer
+                } else surfaceContainerLow
             },
             contentColor = takeColorFromScheme {
                 if (settingsState.magnifierEnabled) {

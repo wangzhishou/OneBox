@@ -196,7 +196,7 @@ private fun CastForm(question: String, onQuestionChange: (String) -> Unit, onCas
                 maxLines = 5,
                 shape = RoundedCornerShape(20.dp),
                 style = GlassStyle.Medium,
-                glassColor = MaterialTheme.colorScheme.surfaceContainer,
+                glassColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 glassBorderWidth = 0.8.dp,
                 modifier = Modifier.fillMaxWidth(),
             )

@@ -136,7 +136,7 @@ private fun EmptyStateActionCard(
                 color = if (action.emphasized) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainer
+                    MaterialTheme.colorScheme.surfaceContainerLow
                 },
             )
             .padding(horizontal = 14.dp, vertical = 10.dp),

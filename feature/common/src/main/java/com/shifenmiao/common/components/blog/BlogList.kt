@@ -85,7 +85,7 @@ fun BlogList(
                                     .fillMaxWidth()
                                     .padding(16.dp),
                                 text = stringResource(id = R.string.load_no_more),
-                                textColor = MaterialTheme.colorScheme.surfaceContainer
+                                textColor = MaterialTheme.colorScheme.surfaceContainerLow
                             )
                         }
                     }

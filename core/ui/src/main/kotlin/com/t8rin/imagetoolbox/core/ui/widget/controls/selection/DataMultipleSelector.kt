@@ -271,9 +271,9 @@ fun <T : Any> DataMultipleSelector(
 
                     shape = shape,
                     colors = FilterChipDefaults.filterChipColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                         selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        labelColor = MaterialTheme.colorScheme.onSurface,
+                        labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         selectedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer

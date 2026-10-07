@@ -153,7 +153,7 @@ fun NewChatInput(
 
     val isMorePanelOpen = inputState.value.inputMore
     val containerShape = RoundedCornerShape(28.dp)
-    val containerColor = MaterialTheme.colorScheme.surfaceContainer
+    val containerColor = MaterialTheme.colorScheme.surfaceContainerLow
     AnimatedVisibility(
         visible = chatUIState.pageState != PageState.INITIALIZING,
         enter = fadeIn(),

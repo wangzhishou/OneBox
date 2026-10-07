@@ -167,7 +167,7 @@ fun OneBoxThemedIconBadge(
         0 -> MaterialTheme.colorScheme.primaryContainer to MaterialTheme.colorScheme.onPrimaryContainer
         1 -> MaterialTheme.colorScheme.secondaryContainer to MaterialTheme.colorScheme.onSecondaryContainer
         2 -> MaterialTheme.colorScheme.tertiaryContainer to MaterialTheme.colorScheme.onTertiaryContainer
-        else -> MaterialTheme.colorScheme.surfaceContainer to MaterialTheme.colorScheme.onSurfaceVariant
+        else -> MaterialTheme.colorScheme.surfaceContainerLow to MaterialTheme.colorScheme.onSurfaceVariant
     }
     OneBoxLeadingIconBadge(
         icon = icon,
@@ -345,8 +345,8 @@ fun OneBoxPillButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     leadingIcon: (@Composable () -> Unit)? = null,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
 ) {

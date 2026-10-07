@@ -143,7 +143,7 @@ private fun BackgroundTargetRow(component: MarkupLayersComponent) {
                 shape = ShapeDefaults.large,
                 color = if (isTarget) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainer,
+                } else MaterialTheme.colorScheme.surfaceContainerLow,
                 resultPadding = 0.dp
             )
             .clickable { component.selectLayer(null) }
@@ -249,7 +249,7 @@ private fun LayerRow(
                 shape = ShapeDefaults.large,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainer,
+                } else MaterialTheme.colorScheme.surfaceContainerLow,
                 resultPadding = 0.dp
             )
             .clickable(enabled = !locked, onClick = onSelect)

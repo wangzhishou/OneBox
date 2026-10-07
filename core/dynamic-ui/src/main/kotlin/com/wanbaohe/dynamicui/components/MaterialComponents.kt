@@ -355,7 +355,7 @@ private fun CardRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext, 
     val containerColor = rememberResolvedString(node.props["containerColor"], scope, itemContext)
         .takeIf { it.isNotBlank() }
         ?.let(ModifierRegistry::parseColor)
-        ?: MaterialTheme.colorScheme.surfaceContainer
+        ?: MaterialTheme.colorScheme.surfaceContainerLow
     val clickAction = node.actions["onClick"]
     if (clickAction != null) {
         GlassCard(
@@ -1239,9 +1239,9 @@ private fun RowSelectorRenderer(
     val selectedMap = remember(node.id) { mutableStateMapOf<Int, String>() }
     val showCustomInput = remember(node.id) { mutableStateOf(false) }
 
-    val textColor = ModifierRegistry.parseColor(node.propString("textColor")) ?: MaterialTheme.colorScheme.onSurface
+    val textColor = ModifierRegistry.parseColor(node.propString("textColor")) ?: MaterialTheme.colorScheme.onSurfaceVariant
     val selectedTextColor = ModifierRegistry.parseColor(node.propString("selectedTextColor")) ?: MaterialTheme.colorScheme.onPrimaryContainer
-    val containerColor = ModifierRegistry.parseColor(node.propString("containerColor")) ?: MaterialTheme.colorScheme.surfaceContainer
+    val containerColor = ModifierRegistry.parseColor(node.propString("containerColor")) ?: MaterialTheme.colorScheme.surfaceContainerLow
     val selectedContainerColor = ModifierRegistry.parseColor(node.propString("selectedContainerColor")) ?: MaterialTheme.colorScheme.primaryContainer
     val iconColor = ModifierRegistry.parseColor(node.propString("iconColor")) ?: MaterialTheme.colorScheme.primary
     val textStyle = parseTextStyle(node.propString("textStyle"))
@@ -1359,9 +1359,9 @@ private fun ColumnSelectorRenderer(
     val selectedMap = remember(node.id) { mutableStateMapOf<Int, String>() }
     val showCustomInput = remember(node.id) { mutableStateOf(false) }
 
-    val textColor = ModifierRegistry.parseColor(node.propString("textColor")) ?: MaterialTheme.colorScheme.onSurface
+    val textColor = ModifierRegistry.parseColor(node.propString("textColor")) ?: MaterialTheme.colorScheme.onSurfaceVariant
     val selectedTextColor = ModifierRegistry.parseColor(node.propString("selectedTextColor")) ?: MaterialTheme.colorScheme.onPrimaryContainer
-    val containerColor = ModifierRegistry.parseColor(node.propString("containerColor")) ?: MaterialTheme.colorScheme.surfaceContainer
+    val containerColor = ModifierRegistry.parseColor(node.propString("containerColor")) ?: MaterialTheme.colorScheme.surfaceContainerLow
     val selectedContainerColor = ModifierRegistry.parseColor(node.propString("selectedContainerColor")) ?: MaterialTheme.colorScheme.primaryContainer
     val iconColor = ModifierRegistry.parseColor(node.propString("iconColor")) ?: MaterialTheme.colorScheme.primary
     val textStyle = parseTextStyle(node.propString("textStyle"))

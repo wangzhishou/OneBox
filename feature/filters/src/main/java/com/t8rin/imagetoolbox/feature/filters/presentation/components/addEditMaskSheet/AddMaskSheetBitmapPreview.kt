@@ -87,7 +87,7 @@ internal fun AddMaskSheetBitmapPreview(
             )
             .background(
                 color = MaterialTheme.colorScheme
-                    .surfaceContainer
+                    .surfaceContainerLow
                     .copy(0.8f)
             )
     ) { (imageBitmap, preview, loading) ->

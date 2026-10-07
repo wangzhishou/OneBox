@@ -312,7 +312,7 @@ internal fun QrParamsSelector(
                         )
                     },
                     title = stringResource(R.string.pixel_shape),
-                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
+                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     activeButtonColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 val frameShape = value.frameShape
@@ -349,7 +349,7 @@ internal fun QrParamsSelector(
                         )
                     },
                     title = stringResource(R.string.frame_shape),
-                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
+                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     activeButtonColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
 
@@ -386,7 +386,7 @@ internal fun QrParamsSelector(
                             }
                         },
                         title = stringResource(R.string.corners),
-                        inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
+                        inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerLow,
                         activeButtonColor = MaterialTheme.colorScheme.tertiaryContainer
                     )
                 }
@@ -409,7 +409,7 @@ internal fun QrParamsSelector(
                         )
                     },
                     title = stringResource(R.string.ball_shape),
-                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
+                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     activeButtonColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 EnhancedButtonGroup(
@@ -438,7 +438,7 @@ internal fun QrParamsSelector(
                         )
                     },
                     title = stringResource(R.string.error_correction_level),
-                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
+                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     activeButtonColor = MaterialTheme.colorScheme.secondaryContainer
                 )
                 EnhancedButtonGroup(
@@ -467,7 +467,7 @@ internal fun QrParamsSelector(
                         )
                     },
                     title = stringResource(R.string.mask_pattern),
-                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
+                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerLow,
                     activeButtonColor = MaterialTheme.colorScheme.secondaryContainer
                 )
             }

@@ -358,7 +358,7 @@ fun EmojiSelectionSheet(
                         title = stringResource(R.string.enable_emoji),
                         containerColor = animateColorAsState(
                             if (emojiEnabled) MaterialTheme.colorScheme.primaryContainer
-                            else MaterialTheme.colorScheme.surfaceContainer
+                            else MaterialTheme.colorScheme.surfaceContainerLow
                         ).value,
                         modifier = Modifier
                             .fillMaxWidth()

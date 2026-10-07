@@ -43,15 +43,15 @@ class AppColors {
         checkedIconColor = MaterialTheme.colorScheme.primaryContainer,
         checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
         uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.68f),
-        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainer,
+        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerLow,
         uncheckedBorderColor = Color.Transparent,
         uncheckedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
     )
 
     @Composable
     fun getSuggestionChipColors() = SuggestionChipDefaults.suggestionChipColors().copy(
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        labelColor = MaterialTheme.colorScheme.onSurface,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 
     @Composable
@@ -83,7 +83,7 @@ class AppColors {
 
     @Composable
     fun getInactiveContainerColor(): Color {
-        return MaterialTheme.colorScheme.surfaceContainer
+        return MaterialTheme.colorScheme.surfaceContainerLow
     }
 
     @Composable
@@ -208,8 +208,8 @@ class AppColors {
     @Composable
     fun getFilterChipColors(): SelectableChipColors {
         return FilterChipDefaults.filterChipColors().copy(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-            labelColor = MaterialTheme.colorScheme.onSurface,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
             selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
         )

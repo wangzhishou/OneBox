@@ -365,7 +365,7 @@ private fun CreationConfigTabRow(
             )
         },
         rowStyle = GlassStyle.None,
-        rowColor = MaterialTheme.colorScheme.surfaceContainer,
+        rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
         selectedColor = MaterialTheme.colorScheme.primaryContainer,
         selectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,

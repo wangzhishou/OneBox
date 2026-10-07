@@ -213,7 +213,7 @@ private fun CreationActionCard(
             .glassThin(
                 shape = shape,
                 color = if (emphasized) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.surfaceContainer,
+                else MaterialTheme.colorScheme.surfaceContainerLow,
             )
             .padding(
                 horizontal = if (compact) 10.dp else 14.dp,

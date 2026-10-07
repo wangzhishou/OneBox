@@ -88,7 +88,7 @@ fun QualitySelector(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
     shape: Shape = ShapeDefaults.extraLarge,
-    inactiveButtonColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    inactiveButtonColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     activeButtonColor: Color = MaterialTheme.colorScheme.secondary,
     autoCoerce: Boolean = true
 ) {

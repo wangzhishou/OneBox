@@ -113,12 +113,12 @@ private fun AiFeatureCard(
             .clip(ShapeDefaults.default)
             // 与浮动面板同款:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.92f),
+                color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
                 shape = ShapeDefaults.default
             )
             .glassDense(
                 shape = ShapeDefaults.default,
-                color = MaterialTheme.colorScheme.surfaceContainer
+                color = MaterialTheme.colorScheme.surfaceContainerLow
             )
             .clickable(onClick = onClick)
     ) {

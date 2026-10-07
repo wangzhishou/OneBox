@@ -116,7 +116,7 @@ internal fun MediaPickerHavePermissions(
                     .drawHorizontalStroke()
                     .glassBackground(
                         style = GlassStyle.Medium,
-                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
                         borderWidth = 0.dp,
                     )
             ) {
@@ -220,7 +220,7 @@ internal fun MediaPickerHavePermissions(
                                                     .background(
                                                         MaterialTheme
                                                             .colorScheme
-                                                            .surfaceContainer
+                                                            .surfaceContainerLow
                                                             .copy(0.6f)
                                                     ),
                                                 contentAlignment = Alignment.Center

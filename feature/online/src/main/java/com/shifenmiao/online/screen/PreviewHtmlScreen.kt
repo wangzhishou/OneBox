@@ -73,7 +73,7 @@ fun PreviewHtmlScreen(
                     },
                     colors = AppTheme.colors.filledIconButtonColors().copy(
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     ),
                     glassBorderWidth = 0.dp,
                     style = GlassStyle.Thin
@@ -114,7 +114,7 @@ fun PreviewHtmlScreen(
                 },
                 colors = AppTheme.colors.filledIconButtonColors().copy(
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 ),
                 glassBorderWidth = 0.dp,
                 style = GlassStyle.Thin

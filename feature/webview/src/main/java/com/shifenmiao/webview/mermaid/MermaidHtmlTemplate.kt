@@ -287,7 +287,7 @@ $escapedCode
                     background: '${colors.surface.toHex()}',
                     mainBkg: '${colors.surfaceContainerHigh.toHex()}',
                     nodeBorder: '${colors.outline.toHex()}',
-                    clusterBkg: '${colors.surfaceContainer.toHex()}',
+                    clusterBkg: '${colors.surfaceContainerLow.toHex()}',
                     titleColor: '${colors.onSurface.toHex()}',
                     edgeLabelBackground: '${colors.surfaceContainerHighest.toHex()}',
                     actorTextColor: '${colors.onSurface.toHex()}',

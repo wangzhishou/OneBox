@@ -21,7 +21,7 @@ class Prism4jThemeMaterial3 : Prism4jThemeBase() {
 
     // 构造函数不需要参数，颜色从 AppTheme 获取
     override fun background(): Int {
-        return AppTheme.colorScheme.surfaceContainer.toArgb()
+        return AppTheme.colorScheme.surfaceContainerLow.toArgb()
     }
 
     override fun textColor(): Int {

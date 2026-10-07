@@ -103,7 +103,7 @@ internal fun HiddenWatermarkInfo(
                                             .background(
                                                 color = MaterialTheme.colorScheme.secondaryContainer
                                                     .copy(0.5f)
-                                                    .compositeOver(MaterialTheme.colorScheme.surfaceContainer)
+                                                    .compositeOver(MaterialTheme.colorScheme.surfaceContainerLow)
                                             )
                                             .padding(8.dp)
                                     )

@@ -204,13 +204,13 @@ internal fun PdfPagesRearrangeGrid(
                                 modifier = Modifier
                                     .matchParentSize()
                                     .background(
-                                        MaterialTheme.colorScheme.surfaceContainer.copy(alpha)
+                                        MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha)
                                     ),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = "${uri.index + 1}",
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold
                                 )

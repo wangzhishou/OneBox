@@ -804,8 +804,8 @@ private fun DateInputRow(
             singleLine = true,
             isError = isYearError,
             colors = AppTheme.colors.getOutlinedTextFieldColors().copy(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
                 focusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.7f)
             ),
@@ -823,8 +823,8 @@ private fun DateInputRow(
             singleLine = true,
             isError = isMonthError,
             colors = AppTheme.colors.getOutlinedTextFieldColors().copy(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
                 focusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.7f)
             ),
@@ -842,8 +842,8 @@ private fun DateInputRow(
             singleLine = true,
             isError = isDayError,
             colors = AppTheme.colors.getOutlinedTextFieldColors().copy(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
                 focusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.7f)
             ),

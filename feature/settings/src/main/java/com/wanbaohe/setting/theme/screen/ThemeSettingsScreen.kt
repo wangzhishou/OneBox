@@ -1011,7 +1011,7 @@ private fun GradientBackgroundCard(
                                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                     selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                     selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                                     labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                 ),
                                 border = FilterChipDefaults.filterChipBorder(
@@ -1453,7 +1453,7 @@ private fun NightModeCard(
                     }
                 },
                 rowStyle = GlassStyle.None,
-                rowColor = MaterialTheme.colorScheme.surfaceContainer,
+                rowColor = MaterialTheme.colorScheme.surfaceContainerLow,
             )
         }
     }
@@ -1550,7 +1550,7 @@ private fun ColorSystemCard(
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                             selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                             labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         ),
                         border = FilterChipDefaults.filterChipBorder(

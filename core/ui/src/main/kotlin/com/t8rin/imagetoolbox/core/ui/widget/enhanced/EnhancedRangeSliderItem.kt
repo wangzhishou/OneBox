@@ -105,7 +105,7 @@ fun EnhancedRangeSliderItem(
     additionalContent: (@Composable () -> Unit)? = null,
 ) {
     val internalColor = contentColor
-        ?: if (color == MaterialTheme.colorScheme.surfaceContainer) {
+        ?: if (color == MaterialTheme.colorScheme.surfaceContainerLow) {
             contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceVariant)
         } else contentColorFor(backgroundColor = color)
 

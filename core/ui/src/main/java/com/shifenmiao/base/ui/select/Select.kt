@@ -73,7 +73,7 @@ private fun SelectBaseTypeHead(
             modifier = Modifier.padding(
                 top = AppTheme.dimens.paddingSmall,
             ),
-            color = MaterialTheme.colorScheme.surfaceContainer
+            color = MaterialTheme.colorScheme.surfaceContainerLow
         )
     }
 }

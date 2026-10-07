@@ -35,14 +35,14 @@ fun TabButton(
     unselectedTextStyle: TextStyle = MaterialTheme.typography.labelMedium
 ) {
     val backgroundColor = if (isSelected) {
-        MaterialTheme.colorScheme.surfaceContainer
+        MaterialTheme.colorScheme.surfaceContainerLow
     } else {
         Color.Transparent
     }
     val textColor = if (isSelected) {
         MaterialTheme.colorScheme.onSurfaceVariant
     } else {
-        MaterialTheme.colorScheme.onSurface
+        MaterialTheme.colorScheme.onSurfaceVariant
     }
     val shape = MaterialTheme.shapes.small.copy(
         bottomStart = CornerSize(0.dp),

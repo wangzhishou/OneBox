@@ -427,7 +427,7 @@ private fun StatFilterItem(
                 color = if (isSelected) {
                     accentColor.copy(alpha = 0.22f)
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainer
+                    MaterialTheme.colorScheme.surfaceContainerLow
                 },
                 shape = RoundedCornerShape(OneBoxDesignSystem.mediumRadius)
             )

@@ -91,7 +91,7 @@ fun BoxScope.EnhancedLoadingIndicator(
                 EnhancedCircularProgressIndicator(
                     modifier = Modifier.size(this.maxWidth),
                     color = MaterialTheme.colorScheme.secondary.copy(0.3f),
-                    trackColor = MaterialTheme.colorScheme.surfaceContainer
+                    trackColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
                 val progressAnimated by animateFloatAsState(targetValue = progress)
                 EnhancedCircularProgressIndicator(

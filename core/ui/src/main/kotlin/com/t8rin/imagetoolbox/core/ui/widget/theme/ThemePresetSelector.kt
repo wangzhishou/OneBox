@@ -258,7 +258,7 @@ fun ThemePresetCard(
     onCopy: (() -> Unit)? = null,
 ) {
     val containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
-    else MaterialTheme.colorScheme.surfaceContainer
+    else MaterialTheme.colorScheme.surfaceContainerLow
 
     val shape = MaterialTheme.shapes.medium
     Column(
@@ -429,7 +429,7 @@ fun CreateThemeCard(onClick: () -> Unit) {
             .clip(shape)
             .clickable { onClick() }
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = shape
             )
             .padding(vertical = 8.dp, horizontal = 4.dp)

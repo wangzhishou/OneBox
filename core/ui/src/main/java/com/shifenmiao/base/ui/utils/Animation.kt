@@ -118,7 +118,7 @@ object Animation {
             modifier = Modifier
                 .matchParentSize()
                 .clip(MaterialTheme.shapes.large)
-                .background(MaterialTheme.colorScheme.surfaceContainer.copy(0.5f))
+                .background(MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f))
                 .shimmerLoading(true)
         )
     }

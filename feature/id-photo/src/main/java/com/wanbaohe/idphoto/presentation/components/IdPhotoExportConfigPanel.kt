@@ -244,7 +244,7 @@ fun IdPhotoExportInfoRow(
         modifier = modifier
             .fillMaxWidth()
             .clip(ShapeDefaults.large)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         ExportInfoItem(

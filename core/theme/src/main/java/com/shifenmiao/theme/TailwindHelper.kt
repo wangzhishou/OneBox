@@ -26,7 +26,7 @@ object TailwindHelper {
                                 'on-surface': '${colorScheme.onSurface.toArgb().toHex()}',
                                 'on-surface-variant': '${colorScheme.onSurfaceVariant.toArgb().toHex()}',
                                 'surface-variant': '${colorScheme.surfaceVariant.toArgb().toHex()}',
-                                'surface-container': '${colorScheme.surfaceContainer.toArgb().toHex()}',
+                                'surface-container': '${colorScheme.surfaceContainerLow.toArgb().toHex()}',
                                 'surface-container-high': '${colorScheme.surfaceContainerHigh.toArgb().toHex()}',
                                 'surface-container-highest': '${colorScheme.surfaceContainerHighest.toArgb().toHex()}',
                                 'outline': '${colorScheme.outline.toArgb().toHex()}',

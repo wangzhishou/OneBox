@@ -78,7 +78,7 @@ fun <T> GenericScrollableTabRow(
     val verticalPadding = 2.dp
     val tabSpacing = 7.dp
 
-    val unselectedBg = MaterialTheme.colorScheme.surfaceContainer
+    val unselectedBg = MaterialTheme.colorScheme.surfaceContainerLow
     val selectedBg = MaterialTheme.colorScheme.primaryContainer
     val selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer
     val unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant

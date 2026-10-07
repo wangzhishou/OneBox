@@ -62,7 +62,7 @@ fun Picker(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    MaterialTheme.colorScheme.surfaceContainer,
+                    MaterialTheme.colorScheme.surfaceContainerLow,
                     shape = MaterialTheme.shapes.extraLarge.copy(
                         bottomStart = CornerSize(0.0.dp),
                         bottomEnd = CornerSize(0.0.dp)
@@ -189,15 +189,15 @@ fun Mask() {
     Column {
         MaskItem(
             verticalGradientColors = listOf(
-                MaterialTheme.colorScheme.surfaceContainer.copy(0.9f),
-                MaterialTheme.colorScheme.surfaceContainer.copy(0.6f)
+                MaterialTheme.colorScheme.surfaceContainerLow.copy(0.9f),
+                MaterialTheme.colorScheme.surfaceContainerLow.copy(0.6f)
             )
         )
         Box(modifier = Modifier.height(56.dp))
         MaskItem(
             verticalGradientColors = listOf(
-                MaterialTheme.colorScheme.surfaceContainer.copy(0.6f),
-                MaterialTheme.colorScheme.surfaceContainer.copy(0.9f)
+                MaterialTheme.colorScheme.surfaceContainerLow.copy(0.6f),
+                MaterialTheme.colorScheme.surfaceContainerLow.copy(0.9f)
             )
         )
     }

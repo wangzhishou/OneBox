@@ -404,7 +404,7 @@ class HtmlExporter {
         val secondary = colorScheme.secondary.toArgb().toHexColor()
         val primaryContainer = colorScheme.primaryContainer.toArgb().toHexColor()
         val onPrimaryContainer = colorScheme.onPrimaryContainer.toArgb().toHexColor()
-        val surfaceContainer = colorScheme.surfaceContainer.toArgb().toHexColor()
+        val surfaceContainerLow = colorScheme.surfaceContainerLow.toArgb().toHexColor()
         val surfaceContainerHigh = colorScheme.surfaceContainerHigh.toArgb().toHexColor()
         val surfaceContainerHighest = colorScheme.surfaceContainerHighest.toArgb().toHexColor()
         val outline = colorScheme.outline.toArgb().toHexColor()
@@ -449,7 +449,7 @@ body::before {
 
 /* Prompt — glass style */
 .prompt-block {
-  background: ${surfaceContainer}80;
+  background: ${surfaceContainerLow}80;
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   border: 1px solid ${outlineVariant}60;
   border-radius: 1rem;
@@ -576,7 +576,7 @@ p code, li code {
 /* Copy button */
 .code-copy-btn {
   position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.25rem 0.625rem;
-  border-radius: 0.375rem; border: none; background: $surfaceContainer;
+  border-radius: 0.375rem; border: none; background: $surfaceContainerLow;
   color: $onSurfaceVariant; font-size: 0.75rem; cursor: pointer;
   opacity: 0; transition: opacity 0.2s; z-index: 10;
 }
@@ -716,7 +716,7 @@ tailwind.config = {
         'on-surface': '${colorScheme.onSurface.toArgb().toHexColor()}',
         'on-surface-variant': '${colorScheme.onSurfaceVariant.toArgb().toHexColor()}',
         'surface-variant': '${colorScheme.surfaceVariant.toArgb().toHexColor()}',
-        'surface-container': '${colorScheme.surfaceContainer.toArgb().toHexColor()}',
+        'surface-container': '${colorScheme.surfaceContainerLow.toArgb().toHexColor()}',
         'surface-container-high': '${colorScheme.surfaceContainerHigh.toArgb().toHexColor()}',
         'surface-container-highest': '${colorScheme.surfaceContainerHighest.toArgb().toHexColor()}',
         'outline': '${colorScheme.outline.toArgb().toHexColor()}',

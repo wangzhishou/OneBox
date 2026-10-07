@@ -225,7 +225,7 @@ fun ResizeTypeSelector(
                             .padding(8.dp)
                     )
                 },
-                inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer
+                inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerLow
             )
         }
         AnimatedVisibility(

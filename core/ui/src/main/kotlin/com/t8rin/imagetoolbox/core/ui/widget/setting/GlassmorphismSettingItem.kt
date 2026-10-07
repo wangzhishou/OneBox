@@ -325,7 +325,7 @@ fun GradientBackgroundStyleSettingItem(
                         selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                         selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                         labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                     border = FilterChipDefaults.filterChipBorder(

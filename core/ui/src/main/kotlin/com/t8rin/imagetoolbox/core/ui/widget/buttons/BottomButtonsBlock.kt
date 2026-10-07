@@ -185,7 +185,7 @@ fun BottomButtonsBlock(
                                 enabled = enableHorizontalStroke
                             )
                             .glassBackground(
-                                color = MaterialTheme.colorScheme.surfaceContainer
+                                color = MaterialTheme.colorScheme.surfaceContainerLow
                             ),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically

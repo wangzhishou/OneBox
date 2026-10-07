@@ -187,7 +187,7 @@ fun CityPicker(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    MaterialTheme.colorScheme.surfaceContainer,
+                    MaterialTheme.colorScheme.surfaceContainerLow,
                     shape = MaterialTheme.shapes.extraLarge.copy(
                         bottomStart = CornerSize(0.0.dp),
                         bottomEnd = CornerSize(0.0.dp)

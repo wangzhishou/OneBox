@@ -325,7 +325,7 @@ private fun LibrariesScaffold(
             LibraryScaffoldLayout(
                 modifier = libraryModifier
                     .glassMedium(
-                        color = MaterialTheme.colorScheme.surfaceContainer
+                        color = MaterialTheme.colorScheme.surfaceContainerLow
                     )
                     .clickable(
                         interactionSource = interactionSource

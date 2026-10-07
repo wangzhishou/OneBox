@@ -378,7 +378,7 @@ private fun CollapsibleTabSection(
             state = pagerState,
             modifier = Modifier
                 .background(
-                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                     shape = if (pagerState.currentPage == 0) {
                         MaterialTheme.shapes.medium.copy(
                             topStart = CornerSize(0.dp)

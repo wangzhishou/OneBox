@@ -274,7 +274,7 @@ fun MaterialYouPaletteGroup(
             modifier = Modifier.height(IntrinsicSize.Max)
         ) {
             MaterialYouPaletteItem(
-                color = colorScheme.surfaceContainer,
+                color = colorScheme.surfaceContainerLow,
                 colorScheme = colorScheme,
                 name = "Surface Container",
                 onCopy = onCopy,

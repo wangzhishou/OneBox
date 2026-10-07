@@ -189,7 +189,7 @@ private fun RowScope.WallpaperItem(
                                 .clip(CircleShape)
                                 .background(
                                     animateColorAsState(
-                                        if (isSelected) MaterialTheme.colorScheme.surfaceContainer
+                                        if (isSelected) MaterialTheme.colorScheme.surfaceContainerLow
                                         else Color.Transparent
                                     ).value
                                 )

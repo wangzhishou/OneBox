@@ -70,7 +70,7 @@ fun GradientSizeSelector(
                 ),
             colors = RoundedTextFieldColors(
                 isError = false,
-                containerColor = MaterialTheme.colorScheme.surfaceContainer
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
             )
         )
         RoundedTextField(
@@ -95,7 +95,7 @@ fun GradientSizeSelector(
                 ),
             colors = RoundedTextFieldColors(
                 isError = false,
-                containerColor = MaterialTheme.colorScheme.surfaceContainer
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLow
             )
         )
     }

@@ -252,7 +252,7 @@ internal fun CompareScreenContent(
                                     top = true
                                 )
                                 .flatGlassContainer(
-                                    color = MaterialTheme.colorScheme.surfaceContainer,
+                                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                                     shape = RectangleShape,
                                     borderColor = Color.Transparent
                                 )

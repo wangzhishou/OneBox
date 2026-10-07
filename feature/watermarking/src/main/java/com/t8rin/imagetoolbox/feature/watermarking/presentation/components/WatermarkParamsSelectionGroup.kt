@@ -49,7 +49,7 @@ fun WatermarkParamsSelectionGroup(
 ) {
     ExpandableItem(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainer,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
         visibleContent = {
             TitleItem(
                 text = stringResource(id = R.string.properties),

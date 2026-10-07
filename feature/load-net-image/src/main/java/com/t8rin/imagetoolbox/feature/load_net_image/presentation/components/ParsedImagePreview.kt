@@ -83,7 +83,7 @@ internal fun ParsedImagePreview(
                         .glassBackground(
                             style = GlassStyle.Thin,
                             shape = MaterialTheme.shapes.small,
-                            color = MaterialTheme.colorScheme.surfaceContainer,
+                            color = MaterialTheme.colorScheme.surfaceContainerLow,
                             borderWidth = 0.dp,
                         ),
                     horizontalAlignment = Alignment.CenterHorizontally,

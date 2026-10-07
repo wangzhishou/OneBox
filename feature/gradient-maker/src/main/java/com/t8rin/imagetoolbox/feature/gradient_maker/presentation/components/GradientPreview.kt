@@ -56,7 +56,7 @@ internal fun GradientPreview(
         if (brush == null) 1f
         else gradientAlpha
     )
-    val solidBrush = SolidColor(MaterialTheme.colorScheme.surfaceContainer)
+    val solidBrush = SolidColor(MaterialTheme.colorScheme.surfaceContainerLow)
     AnimatedContent(
         targetState = if (allowPickingImage == true) {
             imageAspectRatio
