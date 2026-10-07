@@ -344,7 +344,7 @@ fun GradientBackgroundStyleSettingItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable { imagePicker.pickImage() }

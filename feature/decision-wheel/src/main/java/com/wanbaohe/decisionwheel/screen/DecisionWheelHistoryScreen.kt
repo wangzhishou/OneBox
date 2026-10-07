@@ -270,7 +270,7 @@ private fun HistoryRow(record: WheelHistoryEntity) {
         containerAlpha = OneBoxDesignSystem.sectionGlassStyle.backgroundAlpha,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )
     ) {
         Row(

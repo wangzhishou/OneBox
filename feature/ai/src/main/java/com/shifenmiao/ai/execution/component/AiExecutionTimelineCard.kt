@@ -103,7 +103,7 @@ fun AiExecutionTimelineCard(
             .glassCardSegment(
                 segment = GlassCardSegment.Middle,
                 shape = RoundedCornerShape(0.dp),
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
             .padding(horizontal = 10.dp, vertical = 6.dp)
     ) {

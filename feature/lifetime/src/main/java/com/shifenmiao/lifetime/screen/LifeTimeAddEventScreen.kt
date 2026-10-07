@@ -118,7 +118,7 @@ fun LifeTimeAddEventScreen(
                 shape = OneBoxDesignSystem.sectionCardShape,
                 containerAlpha = 0.22f,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
             ) {
                 Column(
@@ -143,7 +143,7 @@ fun LifeTimeAddEventScreen(
                 shape = OneBoxDesignSystem.sectionCardShape,
                 containerAlpha = 0.22f,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
             ) {
                 Column(

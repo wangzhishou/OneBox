@@ -1524,7 +1524,7 @@ private fun DuelRobotFooter() {
             .glassCardSegment(
                 segment = GlassCardSegment.Bottom,
                 shape = RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp),
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
     )
 }
@@ -1592,7 +1592,7 @@ private fun DuelRobotMessageHeader(
             .glassCardSegment(
                 segment = GlassCardSegment.Top,
                 shape = RoundedCornerShape(0.dp, 12.dp, 0.dp, 0.dp),
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
     )
     Row(

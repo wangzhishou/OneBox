@@ -107,7 +107,7 @@ fun OneBoxSectionHeader(
 fun OneBoxSectionCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentPadding: PaddingValues = PaddingValues(OneBoxDesignSystem.cardPadding),
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
     content: @Composable ColumnScope.() -> Unit,

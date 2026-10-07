@@ -29,7 +29,7 @@ internal val MarkdownImageMaxHeight = 320.dp
  *
  * 提供：
  * - 最大高度限制
- * - surfaceContainer 背景 + 16.dp 圆角
+ * - surfaceContainerLow 背景 + 16.dp 圆角
  * - 图片按宽度铺满、等比缩放
  * - 默认加载/错误占位
  *
@@ -59,7 +59,7 @@ internal fun MarkdownImage(
         modifier = modifier
             .heightIn(max = MarkdownImageMaxHeight)
             .clip(RoundedCornerShape(MarkdownImageCornerRadius))
-            .background(MaterialTheme.colorScheme.surfaceContainer),
+            .background(MaterialTheme.colorScheme.surfaceContainerLow),
         contentAlignment = Alignment.Center
     ) {
         RemoteImage(

@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,11 +32,11 @@ fun CustomChatCard(
         colors = CardDefaults.cardColors(
             containerColor = when {
                 isHuman -> MaterialTheme.colorScheme.primaryContainer
-                else -> MaterialTheme.colorScheme.surfaceContainer
+                else -> MaterialTheme.colorScheme.surfaceContainerLow
             },
             contentColor = when {
                 isHuman -> MaterialTheme.colorScheme.onPrimaryContainer
-                else -> MaterialTheme.colorScheme.contentColorFor(MaterialTheme.colorScheme.surfaceContainer)
+                else -> MaterialTheme.colorScheme.onSurfaceVariant
             }
         ),
         content = content

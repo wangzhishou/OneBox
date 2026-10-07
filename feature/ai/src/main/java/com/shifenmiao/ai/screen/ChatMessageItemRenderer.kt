@@ -274,7 +274,7 @@ private fun DefaultRobotVerticalSpace(item: MessageUiModel.RobotVerticalSpace) {
             .height(item.height)
             .glassCardSegment(
                 segment = GlassCardSegment.Middle,
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
     )
 }

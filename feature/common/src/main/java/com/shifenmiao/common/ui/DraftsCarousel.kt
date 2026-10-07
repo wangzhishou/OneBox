@@ -141,7 +141,7 @@ private fun DraftCard(
             containerColor = if (isActive) {
                 MaterialTheme.colorScheme.primaryContainer
             } else {
-                MaterialTheme.colorScheme.surfaceContainer
+                MaterialTheme.colorScheme.surfaceContainerLow
             }
         ),
         containerAlpha = if (isActive) GlassStyle.Dense.backgroundAlpha else GlassStyle.Regular.backgroundAlpha,

@@ -60,7 +60,7 @@ internal fun effectiveGlassBorderAlpha(): Float {
 }
 
 /**
- * 日间"中性玻璃"(底色几乎无色, 如 surfaceContainer 卡片)的加深量与染色层倍数。
+ * 日间"中性玻璃"(底色几乎无色, 如 surfaceContainerLow 卡片)的加深量与染色层倍数。
  *
  * 此前这里是把底色往白里带, 想让卡片"比页面更白"。方向错了: 页面本身已经接近纯白,
  * 白色叠加最多只能再亮 2~3/255 —— 实测中性卡片只比页面亮 0.6~3, 用户反馈"很淡, 根本
@@ -77,7 +77,7 @@ internal fun effectiveGlassBorderAlpha(): Float {
 private const val NEUTRAL_GLASS_DEEPEN = 0.045f
 private const val NEUTRAL_GLASS_TINT_BOOST = 1.30f
 
-/** RGB 通道极差不超过它就算"中性玻璃"(surfaceContainer 一类)。 */
+/** RGB 通道极差不超过它就算"中性玻璃"(surfaceContainer / surfaceContainerLow 一类)。 */
 private const val NEUTRAL_GLASS_MAX_CHANNEL_SPREAD = 12f
 
 /**
@@ -273,7 +273,7 @@ private fun createGlassDecorationColors(
     isTintedSurface: Boolean,
     isLiquidGlass: Boolean,
 ): GlassDecorationColors {
-    // 日间的中性玻璃(底色几乎无色, 如 surfaceContainer 卡片)走"填充式": 拿容器色往 scrim
+    // 日间的中性玻璃(底色几乎无色, 如 surfaceContainerLow 卡片)走"填充式": 拿容器色往 scrim
     // 压一档, 让卡片略深于页面 —— 近白页面上往白里提是没有空间的(见 NEUTRAL_GLASS_DEEPEN)。
     // 彩色玻璃保持原样(按 surfaceTint / primary 轻微染一下), 保留各自的分类色 ——
     // 一起洗白会让卡片和页面完全同色。

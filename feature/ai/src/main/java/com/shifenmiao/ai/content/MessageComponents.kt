@@ -404,7 +404,7 @@ fun RobotMessageHeader(robotContainerHeader: MessageUiModel.RobotContainerHeader
             .glassCardSegment(
                 segment = GlassCardSegment.Top,
                 shape = RoundedCornerShape(0.dp, 16.dp, 0.dp, 0.dp),
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
             .padding(top = 2.dp)
     )
@@ -463,7 +463,7 @@ fun RobotMessageFooter(
             .glassCardSegment(
                 segment = GlassCardSegment.Bottom,
                 shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
     )
     val localNavigator = LocalUrlNavigator.current
@@ -478,7 +478,7 @@ fun RobotMessageFooter(
             modifier = Modifier.glassCardSegment(
                 segment = GlassCardSegment.Middle,
                 shape = RoundedCornerShape(0.dp),
-                color = MaterialTheme.colorScheme.surfaceContainer
+                color = MaterialTheme.colorScheme.surfaceContainerLow
             ),
             message = robotContainerFooter.messageEntity,
             onDelete = aiChatComponent::deleteMessage,
@@ -553,7 +553,7 @@ fun RobotMessageContent(
                 .fillMaxWidth()
                 .glassCardSegment(
                     segment = GlassCardSegment.Middle,
-                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                 )
                 .padding(horizontal = 12.dp)
         ) {
@@ -588,7 +588,7 @@ fun RobotMessageMarkdownBlock(
             .fillMaxWidth()
             .glassCardSegment(
                 segment = GlassCardSegment.Middle,
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
             .padding(horizontal = 12.dp, vertical = verticalPadding)
     ) {
@@ -607,7 +607,7 @@ fun RobotMessageMarkdownBlock(
 @Composable
 fun RobotReasoningHeader(
     reasoningHeader: MessageUiModel.RobotReasoningHeader,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     val isExpandedReasoningChat = AppSharedStorage.isExpandedReasoningChat.collectAsState()
@@ -730,7 +730,7 @@ private fun ReasoningCollapseFooter(
 fun RobotReasoningContent(
     reasoningContent: MessageUiModel.RobotReasoningContent,
     codeBlockClickListener: CodeBlockClickListener,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     leftLine: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.32f),
 ) {
@@ -906,7 +906,7 @@ fun RobotReasoningBlock(
 @Composable
 fun RobotDirectErrorContent(
     errorMessage: String,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -942,7 +942,7 @@ fun RobotDirectErrorContent(
 
 @Composable
 fun ChatLoadingIndicator(
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow
 ) {
     Box(
         modifier = Modifier
@@ -969,7 +969,7 @@ fun ChatErrorMessage(
             .fillMaxSize()
             .glassCardSegment(
                 segment = GlassCardSegment.Middle,
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
             .padding(horizontal = 12.dp)
     ) {

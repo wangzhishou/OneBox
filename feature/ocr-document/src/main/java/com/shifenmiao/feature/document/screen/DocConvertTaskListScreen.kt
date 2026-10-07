@@ -429,7 +429,7 @@ private fun DocConvertTaskItem(
     val containerColor = when (task.status) {
         OcrTaskStatus.SUCCESS.value -> MaterialTheme.colorScheme.primaryContainer
         OcrTaskStatus.FAILED.value -> MaterialTheme.colorScheme.errorContainer
-        else -> MaterialTheme.colorScheme.surfaceContainer
+        else -> MaterialTheme.colorScheme.surfaceContainerLow
     }
     val contentColor = when (task.status) {
         OcrTaskStatus.SUCCESS.value -> MaterialTheme.colorScheme.onPrimaryContainer

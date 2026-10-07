@@ -61,7 +61,7 @@ fun LifeTimeAddCountdownScreen(
     val dateCardContainerColor = if (shouldShowDateError) {
         MaterialTheme.colorScheme.errorContainer
     } else {
-        MaterialTheme.colorScheme.surfaceContainer
+        MaterialTheme.colorScheme.surfaceContainerLow
     }
     val datePlaceholderColor = if (shouldShowDateError) {
         MaterialTheme.colorScheme.error
@@ -122,7 +122,7 @@ fun LifeTimeAddCountdownScreen(
                 shape = OneBoxDesignSystem.sectionCardShape,
                 containerAlpha = 0.22f,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
             ) {
                 Column(
@@ -203,7 +203,7 @@ fun LifeTimeAddCountdownScreen(
                 shape = OneBoxDesignSystem.sectionCardShape,
                 containerAlpha = 0.22f,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
             ) {
                 Row(

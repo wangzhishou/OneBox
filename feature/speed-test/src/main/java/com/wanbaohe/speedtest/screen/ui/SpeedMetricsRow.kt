@@ -75,7 +75,7 @@ private fun MetricCard(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         ),
         containerAlpha = 0.92f,
         borderWidth = 0.5.dp

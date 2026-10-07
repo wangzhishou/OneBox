@@ -79,7 +79,7 @@ private const val ACTION_GRID_COLUMNS = 3
 /**
  * 铺满整张卡片的动作面板:动作按网格排列,每个动作是 icon + 文字同在一个
  * 带底色容器内的可点击区块,右上角为关闭按钮,点击空白区域也可收起。
- * 遮罩与操作块均为 0.97 近实底,遮罩固定 surfaceContainer 色。
+ * 遮罩与操作块均为 0.97 近实底,遮罩固定 surfaceContainerLow 色。
  */
 @Composable
 private fun ActionGridOverlay(
@@ -111,8 +111,8 @@ private fun ActionGridOverlay(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(shape)
-                // 整片遮罩固定 surfaceContainer, 0.97 近实底(玻璃管线会二次衰减 alpha, 达不到不透)
-                .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.97f), shape)
+                // 整片遮罩固定 surfaceContainerLow, 0.97 近实底(玻璃管线会二次衰减 alpha, 达不到不透)
+                .background(MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.97f), shape)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,

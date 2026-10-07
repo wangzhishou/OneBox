@@ -105,7 +105,7 @@ fun preferenceItemContainerColor(theme: PreferenceItemTheme): Color = when (them
     PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
     PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
     PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer.copy(alpha = AppTheme.dimens.containerAlpha)
+    PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = AppTheme.dimens.containerAlpha)
 }
 
 @Composable
@@ -175,7 +175,7 @@ fun TypeSelectionCard(
         PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
         PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f)
         PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.65f)
-        PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.65f)
+        PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.65f)
     }
 
     Card(

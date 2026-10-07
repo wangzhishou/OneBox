@@ -480,7 +480,7 @@ private fun RecordItemRow(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
             borderWidth = 0.dp,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
             containerAlpha = 0.58f,
         ) {
             Row(

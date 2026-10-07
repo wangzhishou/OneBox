@@ -58,13 +58,13 @@ fun MineTab(
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        // 最外层背景:glassThin + surfaceContainer,比 GlassCard 更轻薄
+        // 最外层背景:glassThin + surfaceContainerLow,比 GlassCard 更轻薄
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .glassThin(
                     shape = RoundedCornerShape(16.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
                 )
                 .padding(16.dp),
         ) {

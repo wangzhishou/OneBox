@@ -325,7 +325,7 @@ private fun PromptWorkCard(
                                         Brush.verticalGradient(
                                             colors = listOf(
                                                 Color.Transparent,
-                                                MaterialTheme.colorScheme.surfaceContainer
+                                                MaterialTheme.colorScheme.surfaceContainerLow
                                             )
                                         )
                                     )

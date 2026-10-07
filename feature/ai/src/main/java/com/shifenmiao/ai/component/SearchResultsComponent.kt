@@ -64,7 +64,7 @@ fun RobotSearchResultsBlock(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(
                 vertical = AppTheme.dimens.paddingNormal,
                 horizontal = AppTheme.dimens.spaceNormal

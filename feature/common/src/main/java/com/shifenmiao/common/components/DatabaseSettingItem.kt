@@ -28,7 +28,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
 /**
  * 简单的两列「备份 / 恢复」按钮行，不包含任何业务逻辑。
  *
- * 背景与「我的」页设置卡片、胶囊按钮共用 glassMedium + surfaceContainer。
+ * 背景与「我的」页设置卡片、胶囊按钮共用 glassMedium + surfaceContainerLow。
  *
  * @param onClicked 0 = 备份, 1 = 恢复
  */
@@ -74,7 +74,7 @@ private fun DatabaseActionButton(
                 onClick = onClick,
             )
             .glassMedium(
-                color = MaterialTheme.colorScheme.surfaceContainer,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
                 shape = shape,
             )
             .padding(vertical = 12.dp),

@@ -492,7 +492,7 @@ private fun OcrTaskItem(
         }
 
         else -> {
-            MaterialTheme.colorScheme.surfaceContainer
+            MaterialTheme.colorScheme.surfaceContainerLow
         }
     }
     val contentColor = when (task.status) {

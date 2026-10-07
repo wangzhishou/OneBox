@@ -302,7 +302,7 @@ fun LocalArticleCard(
         onClick = onClick,
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )
     ) {
         Column(
@@ -426,7 +426,7 @@ fun sectionGradient(theme: SectionTheme): Color = when (theme) {
     SectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
     SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
     SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer.copy(alpha = AppTheme.dimens.containerAlpha)
+    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = AppTheme.dimens.containerAlpha)
 }
 
 @Composable
@@ -450,5 +450,5 @@ fun sectionIconContainerColor(theme: SectionTheme): Color = when (theme) {
     SectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
     SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f)
     SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.65f)
-    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.65f)
+    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.65f)
 }

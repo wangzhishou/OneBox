@@ -56,7 +56,7 @@ fun LifeTimeAddMilestoneScreen(
     val dateCardContainerColor = if (shouldShowTargetDateError) {
         MaterialTheme.colorScheme.errorContainer
     } else {
-        MaterialTheme.colorScheme.surfaceContainer
+        MaterialTheme.colorScheme.surfaceContainerLow
     }
     val datePlaceholderColor = if (shouldShowTargetDateError) {
         MaterialTheme.colorScheme.error
@@ -117,7 +117,7 @@ fun LifeTimeAddMilestoneScreen(
                 shape = OneBoxDesignSystem.sectionCardShape,
                 containerAlpha = 0.22f,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
             ) {
                 Column(

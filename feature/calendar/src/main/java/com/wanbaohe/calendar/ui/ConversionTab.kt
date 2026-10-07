@@ -95,7 +95,7 @@ fun ConversionTab(
 
     val colorScheme = MaterialTheme.colorScheme
     val pageBg = colorScheme.surface
-    val cardBg = colorScheme.surfaceContainer
+    val cardBg = colorScheme.surfaceContainerLow
     val accentPrimary = colorScheme.primary
     val accentSecondary = colorScheme.tertiary
 

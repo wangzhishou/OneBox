@@ -663,7 +663,7 @@ private fun FotoCard(foto: FotoData, solarYear: Int) {
                         .fillMaxWidth()
                         .glassBackground(
                             shape = RoundedCornerShape(12.dp),
-                            color = MaterialTheme.colorScheme.surfaceContainer
+                            color = MaterialTheme.colorScheme.surfaceContainerLow
                         )
                         .padding(14.dp)
                 ) {
@@ -799,7 +799,7 @@ private fun TaoCard(tao: TaoData, solarYear: Int) {
                         .fillMaxWidth()
                         .glassBackground(
                             shape = RoundedCornerShape(12.dp),
-                            color = MaterialTheme.colorScheme.surfaceContainer
+                            color = MaterialTheme.colorScheme.surfaceContainerLow
                         )
                         .padding(14.dp)
                 ) {
@@ -829,7 +829,7 @@ private fun FotoTaoInfoBlock(
             .fillMaxWidth()
             .glassBackground(
                 shape = RoundedCornerShape(14.dp),
-                color = MaterialTheme.colorScheme.surfaceContainer
+                color = MaterialTheme.colorScheme.surfaceContainerLow
             )
             .padding(14.dp)
     ) {
