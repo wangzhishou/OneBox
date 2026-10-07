@@ -758,6 +758,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.Compass,
                     Screen.DeadPixelTest,
                     Screen.Minesweeper,
+                    Screen.Sudoku,
                     Screen.Community,
                     Screen.MeasurementTools,
                     Screen.XiangqiRouter(),
@@ -779,5 +780,5 @@ internal object ScreenConstantsImpl : ScreenConstants {
         typedEntries.flatMap { it.entries }.sortedBy { it.id }
     }
 
-    override val FEATURES_COUNT = 81
+    override val FEATURES_COUNT = 82
 }
