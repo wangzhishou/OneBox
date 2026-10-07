@@ -756,7 +756,7 @@ private fun ActionButton(
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStopCircle,
                 contentDescription = stringResource(R.string.ai_duel_stop),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(iconSize)
             )
         }

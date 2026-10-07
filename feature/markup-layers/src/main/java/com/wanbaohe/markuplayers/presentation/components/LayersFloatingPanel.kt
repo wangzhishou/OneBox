@@ -152,7 +152,7 @@ private fun PanelHeader(
                 icon = Icons.Outlined.Add,
                 contentDescription = stringResource(R.string.markup_add_layer),
                 onClick = { addMenuVisible = true },
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             AddLayerDropdownMenu(
                 expanded = addMenuVisible,
@@ -247,7 +247,7 @@ private fun CompactLayerRow(
             contentDescription = stringResource(R.string.markup_layer_toggle_visible),
             onClick = onToggleVisible,
             tint = if (layer.transform.visible) {
-                MaterialTheme.colorScheme.onSurface
+                MaterialTheme.colorScheme.onSurfaceVariant
             } else MaterialTheme.colorScheme.onSurfaceVariant
         )
         LayerThumbnail(layer = layer, size = 28.dp)
@@ -293,7 +293,7 @@ private fun BackgroundRow(component: MarkupLayersComponent) {
             text = stringResource(R.string.markup_layer_background),
             style = MaterialTheme.typography.labelSmall,
             color = if (isTarget) {
-                MaterialTheme.colorScheme.onSurface
+                MaterialTheme.colorScheme.onSurfaceVariant
             } else MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .weight(1f)
@@ -353,7 +353,7 @@ private fun PanelActionRow(component: MarkupLayersComponent) {
     val selected = component.layers.firstOrNull { it.id == component.selectedLayerId }
     val canModify = selected != null && !selected.transform.locked
     val actionTint = if (canModify) {
-        MaterialTheme.colorScheme.onSurface
+        MaterialTheme.colorScheme.onSurfaceVariant
     } else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
 
     HorizontalDivider(

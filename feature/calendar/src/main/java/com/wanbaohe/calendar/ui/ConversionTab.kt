@@ -144,7 +144,7 @@ fun ConversionTab(
                 Text(
                     text = stringResource(R.string.convert_page_title),
                     style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -196,7 +196,7 @@ fun ConversionTab(
                         Text(
                             text = inputTitle,
                             style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         IconButton(onClick = { showDatePicker = true }) {
                             Icon(
@@ -247,7 +247,7 @@ fun ConversionTab(
                     Text(
                         text = selectedHourSlot.displayName,
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = " ${selectedHourSlot.timeRange}",
@@ -299,7 +299,7 @@ fun ConversionTab(
                         Text(
                             text = stringResource(R.string.leap_month_label),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = colorScheme.onSurface
+                            color = colorScheme.onSurfaceVariant
                         )
                         GlassSwitch(
                             checked = state.isConvertLunarLeapMonth,
@@ -361,7 +361,7 @@ fun ConversionTab(
                     Text(
                         text = buildHeadline(state = state, result = result),
                         style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -542,7 +542,7 @@ private fun BuddhistCalendarCard(
                     stringResource(R.string.buddhist_year_value, buddhistYear)
                 },
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -696,7 +696,7 @@ private fun DaoistCalendarCard(
                     stringResource(R.string.daoist_year_value, daoistYear)
                 },
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -876,7 +876,7 @@ private fun ResultGridItem(
         Text(
             text = value,
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
@@ -914,7 +914,7 @@ private fun ConvertResultRow(label: String, value: String) {
         Text(
             text = value,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

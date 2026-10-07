@@ -135,7 +135,7 @@ internal fun PdfPagesRearrangeGrid(
             EnhancedButton(
                 onClick = { onReorder(data.value.sortedBy { it.index }) },
                 containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 contentPadding = PaddingValues(start = 8.dp, end = 12.dp),
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp)

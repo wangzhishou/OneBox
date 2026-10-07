@@ -671,7 +671,7 @@ private fun AIInterpretationSection(state: IChingUiState, onGenerate: () -> Unit
                     // 流式/完成态统一走通用 Markdown 渲染(块签名复用,流式也不退化为纯文本)
                     StreamingMarkdownContent(
                         content = state.aiContent,
-                        contentColor = MaterialTheme.colorScheme.onSurface,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }

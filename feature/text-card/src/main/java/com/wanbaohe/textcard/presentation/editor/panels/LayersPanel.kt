@@ -367,7 +367,7 @@ private fun LayerAction(
         imageVector = icon,
         contentDescription = contentDescription,
         tint = if (enabled) {
-            MaterialTheme.colorScheme.onSurface
+            MaterialTheme.colorScheme.onSurfaceVariant
         } else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
         modifier = Modifier
             .padding(start = 8.dp)

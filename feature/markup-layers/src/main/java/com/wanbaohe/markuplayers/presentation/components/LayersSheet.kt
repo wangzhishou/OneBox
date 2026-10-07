@@ -162,7 +162,7 @@ private fun BackgroundTargetRow(component: MarkupLayersComponent) {
             text = stringResource(R.string.markup_layer_background),
             style = MaterialTheme.typography.bodyMedium,
             color = if (isTarget) {
-                MaterialTheme.colorScheme.onSurface
+                MaterialTheme.colorScheme.onSurfaceVariant
             } else MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
@@ -324,7 +324,7 @@ private fun LayerStateToggles(
             contentDescription = stringResource(R.string.markup_layer_toggle_visible),
             onClick = onToggleVisible,
             tint = if (visible) {
-                MaterialTheme.colorScheme.onSurface
+                MaterialTheme.colorScheme.onSurfaceVariant
             } else MaterialTheme.colorScheme.onSurfaceVariant
         )
         LayerIconButton(
@@ -460,7 +460,7 @@ private fun LayerActionButton(
     onClick: () -> Unit,
 ) {
     val contentColor = if (enabled) {
-        MaterialTheme.colorScheme.onSurface
+        MaterialTheme.colorScheme.onSurfaceVariant
     } else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

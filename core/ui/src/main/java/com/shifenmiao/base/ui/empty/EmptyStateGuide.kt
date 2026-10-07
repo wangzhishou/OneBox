@@ -90,7 +90,7 @@ fun EmptyStateGuide(
             text = title,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(8.dp))
@@ -171,7 +171,7 @@ private fun EmptyStateActionCard(
                 color = if (action.emphasized) {
                     MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
-                    MaterialTheme.colorScheme.onSurface
+                    MaterialTheme.colorScheme.onSurfaceVariant
                 },
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,

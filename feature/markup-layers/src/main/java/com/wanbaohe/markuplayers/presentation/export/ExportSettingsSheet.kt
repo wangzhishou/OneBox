@@ -360,7 +360,7 @@ private fun SelectableCard(
             style = MaterialTheme.typography.titleSmall,
             color = if (selected) {
                 MaterialTheme.colorScheme.primary
-            } else MaterialTheme.colorScheme.onSurface
+            } else MaterialTheme.colorScheme.onSurfaceVariant
         )
         if (subtitle.isNotEmpty()) {
             Spacer(Modifier.height(2.dp))

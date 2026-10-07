@@ -91,7 +91,7 @@ fun OneBoxSectionHeader(
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         if (!supporting.isNullOrBlank()) {
             Text(

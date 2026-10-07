@@ -123,7 +123,7 @@ fun <T : ManageableItem> CategoryManagementDialog(
                         text = title,
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     IconButton(
                         onClick = onDismiss,
@@ -392,7 +392,7 @@ private fun <T : ManageableItem> CategoryGridCell(
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.basicMarquee(),
                     )
                 }
@@ -535,7 +535,7 @@ fun <T : ManageableItem> CategoryItemRow(
                         minLines = 1,
                         maxLines = 1,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

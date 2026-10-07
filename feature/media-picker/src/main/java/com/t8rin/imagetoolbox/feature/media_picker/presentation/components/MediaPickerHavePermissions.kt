@@ -229,7 +229,7 @@ internal fun MediaPickerHavePermissions(
                                                     text = album.count.toString(),
                                                     style = MaterialTheme.typography.headlineLarge.copy(
                                                         fontSize = 20.sp,
-                                                        color = MaterialTheme.colorScheme.onSurface,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                                         fontWeight = FontWeight.Bold
                                                     )
                                                 )

@@ -135,7 +135,7 @@ private fun AddImageButton(
                 Text(
                     modifier = Modifier.basicMarquee(),
                     text = stringResource(R.string.common_more_options),
-                    color = MaterialTheme.colorScheme.onSurface.copy(0.68f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.68f),
                     fontSize = 9.sp
                 )
             }

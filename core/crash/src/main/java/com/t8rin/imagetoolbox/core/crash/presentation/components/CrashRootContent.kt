@@ -119,7 +119,7 @@ internal fun CrashRootContent(component: CrashComponent) {
                 Text(
                     text = stringResource(R.string.something_went_wrong_emphasis),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(16.dp)
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -217,13 +217,13 @@ internal fun CrashRootContent(component: CrashComponent) {
                                 top = 16.dp,
                                 bottom = 16.dp
                             ),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         AutoSizeText(
                             text = crashInfo.exceptionName,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Start,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier
                                 .padding(16.dp)
                                 .weight(1f)

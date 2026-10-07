@@ -115,7 +115,7 @@ fun CategoryDetailScreen(
             Text(
                 modifier = Modifier.basicMarquee(),
                 text = uiState.category?.title ?: "",
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
         actions = {
@@ -300,7 +300,7 @@ private fun CategoryHeaderCard(
                         text = category.title,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -443,7 +443,7 @@ private fun StatFilterItem(
             color = if (isSelected) {
                 accentColor
             } else {
-                MaterialTheme.colorScheme.onSurface
+                MaterialTheme.colorScheme.onSurfaceVariant
             }
         )
         Text(
@@ -635,7 +635,7 @@ private fun TaskCardContent(
                     text = task.title,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = contentAlpha),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = contentAlpha),
                     textDecoration = if (task.isCompleted) TextDecoration.LineThrough else null,
                     modifier = Modifier.weight(1f)
                 )

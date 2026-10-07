@@ -59,7 +59,7 @@ fun TextLogo() {
                             .calculateStartPadding(layoutDirection)
                     ),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Badge(
                     content = {
