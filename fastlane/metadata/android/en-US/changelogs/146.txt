@@ -1,0 +1,3 @@
+• Glass and theme color fixes: flat fill keeps transparency semantics, colored cards no longer override the theme
+• Bottom navigation tint now follows the background layer, more consistent when toggling glass
+• Store description download link now points to the domestic release page (dead link fixed)

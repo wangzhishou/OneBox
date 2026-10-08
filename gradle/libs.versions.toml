@@ -9,8 +9,8 @@ androidNdk = "28.1.13356709"
 
 eddsa = "0.3.0"
 nanohttpd = "2.3.1"
-versionName = "1.4.5"
-versionCode = "145"
+versionName = "1.4.6"
+versionCode = "146"
 gitVersion = "000"
 jvmTarget = "17"
 
