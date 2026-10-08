@@ -14,7 +14,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 
 @Composable
 fun ModalBottomSheetLogin(
-    loginComponent: LoginComponent
+    loginComponent: LoginComponent,
+    onNavigateToAddEngine: (() -> Unit)? = null
 ) {
     val loginState = LocalLoginState.current
     if (loginState.showLogin) {
@@ -48,7 +49,8 @@ fun ModalBottomSheetLogin(
                         onGoBack = {
                             loginComponent.hideLoginModal()
                         },
-                        loginComponent = loginComponent
+                        loginComponent = loginComponent,
+                        onNavigateToAddEngine = onNavigateToAddEngine
                     )
                 }
 

@@ -85,6 +85,14 @@ fun BuyCoffeeDialogModalSheet(
             onNavigateToAdWatch = {
                 appComponent.hideBuyCoffeeDialogModalSheet()
                 appComponent.onNavigate(com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AdWatch)
+            },
+            onNavigateToAddEngine = {
+                appComponent.hideBuyCoffeeDialogModalSheet()
+                appComponent.onNavigate(
+                    com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings(
+                        com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings.Type.AddEngine()
+                    )
+                )
             }
         ) {
             NeedCoffeeTextInfo()

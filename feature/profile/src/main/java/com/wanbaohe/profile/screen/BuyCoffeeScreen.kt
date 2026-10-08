@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,12 +37,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.base.utils.StringUtils
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -51,12 +55,16 @@ import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.model.pay.PrePayResponse
 import com.shifenmiao.model.pay.alipay.PayPrice
 import com.shifenmiao.model.pay.google.PlayProduct
+import com.shifenmiao.model.remote.AiEngineConfig
 import com.shifenmiao.pay.PaymentMethod
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSlideshow
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
+import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
 import com.wanbaohe.profile.components.AnimatedViewPager
 import com.wanbaohe.profile.components.AppTextInfo
 import com.wanbaohe.profile.components.PlayProductSlider
@@ -64,7 +72,6 @@ import com.wanbaohe.profile.viewmodel.PayComponent
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWorkspacePremium
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShoppingCheckout
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 
 @Composable
 fun BuyCoffeeScreen(
@@ -74,6 +81,7 @@ fun BuyCoffeeScreen(
     onGoBack: () -> Unit = {},
     onNavigateToVipLevel: () -> Unit = {},
     onNavigateToAdWatch: () -> Unit = {},
+    onNavigateToAddEngine: () -> Unit = {},
 ) {
     BuyCoffeeContainer(
         loginComponent = loginComponent,
@@ -81,6 +89,7 @@ fun BuyCoffeeScreen(
         onGoBack = onGoBack,
         onNavigateToVipLevel = onNavigateToVipLevel,
         onNavigateToAdWatch = onNavigateToAdWatch,
+        onNavigateToAddEngine = onNavigateToAddEngine,
     )
     BackHandler {
         appComponent.onGoBack()
@@ -94,6 +103,7 @@ fun BuyCoffeeContainer(
     onGoBack: () -> Unit,
     onNavigateToVipLevel: () -> Unit = {},
     onNavigateToAdWatch: () -> Unit = {},
+    onNavigateToAddEngine: () -> Unit = {},
 ) {
     BaseScreen(
         title = stringResource(id = R.string.buy_coffee_title),
@@ -106,6 +116,7 @@ fun BuyCoffeeContainer(
             payComponent = payComponent,
             onNavigateToVipLevel = onNavigateToVipLevel,
             onNavigateToAdWatch = onNavigateToAdWatch,
+            onNavigateToAddEngine = onNavigateToAddEngine,
         )
     }
 }
@@ -117,6 +128,7 @@ fun ColumnScope.BuyCoffeeBody(
     payComponent: PayComponent,
     onNavigateToVipLevel: () -> Unit = {},
     onNavigateToAdWatch: () -> Unit = {},
+    onNavigateToAddEngine: () -> Unit = {},
     topContent: @Composable LazyItemScope.() -> Unit = {
         AppTextInfo()
     }
@@ -187,7 +199,58 @@ fun ColumnScope.BuyCoffeeBody(
         item {
             topContent()
         }
+        // 免费双列:「看广告赚积分」(google=AdMob/国内=穿山甲, foss 无广告)
+        // + 「自带 API Key」(BYOK 直连不扣积分, 仅渠道能力放开或管理员可见), 各半宽卡片
+        val canAddEngine = AiEngineConfig.getCapabilities().canAddEngine || LoginUtils.isAdmin()
+        if (payComponent.rewardedAdEnabled || canAddEngine) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.dimens.paddingNormal),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    if (payComponent.rewardedAdEnabled) {
+                        FreePathCard(
+                            modifier = Modifier.weight(1f),
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSlideshow,
+                            title = stringResource(id = R.string.ad_watch_earn_entry),
+                            subtitle = stringResource(id = R.string.ad_watch_earn_subtitle),
+                            onClick = onNavigateToAdWatch,
+                        )
+                    }
+                    if (canAddEngine) {
+                        FreePathCard(
+                            modifier = Modifier.weight(1f),
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKey,
+                            title = stringResource(id = R.string.byok_entry_title),
+                            subtitle = stringResource(id = R.string.byok_entry_subtitle),
+                            onClick = onNavigateToAddEngine,
+                        )
+                    }
+                }
+            }
+        }
         item {
+            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.dimens.paddingNormal),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.donate_earn_points),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(start = AppTheme.dimens.paddingNormal)
+                        .weight(1f),
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                )
+            }
             Spacer(modifier = Modifier.height(AppTheme.dimens.paddingLarge))
             if (payComponent.playBillingEnabled) {
                 // google 渠道: Play 商品(本地化价格 + 积分), 替换人民币硬编码档位
@@ -214,56 +277,8 @@ fun ColumnScope.BuyCoffeeBody(
             }
             Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
         }
-        if (payComponent.rewardedAdEnabled) {
-            // 「看广告赚积分」入口: google 渠道走 AdMob, 国内渠道走穿山甲 (foss 无广告)
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.dimens.paddingNormal)
-                        .glassRegular(
-                            shape = RoundedCornerShape(16.dp),
-                            color = MaterialTheme.colorScheme.surfaceContainerHigh
-                        )
-                        .clickable { onNavigateToAdWatch() }
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.ad_watch_earn_entry),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(18.dp),
-                    )
-                }
-            }
-        }
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.dimens.paddingNormal),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(id = R.string.donate_mode),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .padding(start = AppTheme.dimens.paddingNormal)
-                        .weight(1f),
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                )
-            }
-            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
+            // 支付方式选择(国内 微信/支付宝, google 渠道仅 Google Play), 不带分组标题
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -332,6 +347,44 @@ fun ColumnScope.BuyCoffeeBody(
                 }
             }
         }
+    }
+}
+
+/** 免费路径卡片: 半宽竖向卡片, 图标徽章 + 主/副标题, 玻璃质感, 留白宽松 */
+@Composable
+private fun FreePathCard(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .glassRegular(
+                shape = RoundedCornerShape(20.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            )
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        OneBoxLeadingIconBadge(icon = icon)
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(
+            text = subtitle,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            minLines = 2,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 

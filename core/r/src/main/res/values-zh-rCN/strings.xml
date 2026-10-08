@@ -1628,6 +1628,12 @@
     <string name="ad_watch_title">广告看看看</string>
     <string name="ad_watch_description">看激励广告赚积分。</string>
     <string name="ad_watch_earn_entry">看广告赚积分</string>
+    <string name="ad_watch_earn_subtitle">每天看广告，免费领积分</string>
+    <string name="byok_entry_title">使用自己的 API Key</string>
+    <string name="byok_entry_subtitle">直连你的账号，不扣积分，无需登录也能用</string>
+    <string name="byok_login_hint_title">不想注册？</string>
+    <string name="byok_login_hint_subtitle">用自己的 API Key 免费使用 AI 聊天</string>
+    <string name="donate_earn_points">打赏获取积分</string>
 
     <string name="survive_30s_screen_title">撑30秒赚积分</string>
     <string name="survive_30s_screen_description">拖动小球躲避障碍，坚持30秒即为胜利！</string>

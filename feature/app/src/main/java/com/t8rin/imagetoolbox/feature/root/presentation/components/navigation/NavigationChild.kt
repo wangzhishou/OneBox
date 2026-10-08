@@ -796,7 +796,10 @@ sealed interface NavigationChild {
             payComponent = payComponent,
             onGoBack = appComponent.onGoBack,
             onNavigateToVipLevel = { appComponent.onNavigate(Screen.VipLevel()) },
-            onNavigateToAdWatch = { appComponent.onNavigate(Screen.AdWatch) }
+            onNavigateToAdWatch = { appComponent.onNavigate(Screen.AdWatch) },
+            onNavigateToAddEngine = {
+                appComponent.onNavigate(Screen.AISettings(Screen.AISettings.Type.AddEngine()))
+            }
         )
     }
 

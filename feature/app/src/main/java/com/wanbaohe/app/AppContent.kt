@@ -272,7 +272,17 @@ private fun AppOverlayHost(
 
     if (showLogin) {
         LoginStateCompositionLocals(loginState = loginState) {
-            ModalBottomSheetLogin(rootComponent.loginComponent)
+            ModalBottomSheetLogin(
+                rootComponent.loginComponent,
+                onNavigateToAddEngine = {
+                    rootComponent.loginComponent.hideLoginModal()
+                    appComponent.onNavigate(
+                        com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings(
+                            com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings.Type.AddEngine()
+                        )
+                    )
+                }
+            )
         }
     }
 

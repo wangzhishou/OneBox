@@ -27,7 +27,8 @@ import com.shifenmiao.theme.AppTheme
 @Composable
 fun LoginBottomSheet(
     onGoBack: () -> Unit,
-    loginComponent: LoginComponent
+    loginComponent: LoginComponent,
+    onNavigateToAddEngine: (() -> Unit)? = null
 ) {
     val loginState = LocalLoginState.current
     val isUserAgreementChecked = remember { mutableStateOf(false) }
@@ -70,7 +71,8 @@ fun LoginBottomSheet(
                     loginComponent = loginComponent,
                     isUserAgreementChecked = isUserAgreementChecked,
                     showAgreementDialog = showAgreementDialog,
-                    setConfirmAction = { action -> currentConfirmAction.value = action }
+                    setConfirmAction = { action -> currentConfirmAction.value = action },
+                    onNavigateToAddEngine = onNavigateToAddEngine
                 )
 
             }

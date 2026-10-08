@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ButtonColors
@@ -34,12 +35,18 @@ import com.shifenmiao.base.ui.BoxHorizontalDivider
 import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.base.ui.button.SecondaryButton
 import com.shifenmiao.base.utils.CoreUtils
+import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.core.R
 import com.shifenmiao.model.login.LoginState
+import com.shifenmiao.model.remote.AiEngineConfig
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
+import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineProfile
@@ -51,7 +58,8 @@ fun LoginOther(
     loginComponent: LoginComponent,
     isUserAgreementChecked: MutableState<Boolean>,
     showAgreementDialog: MutableState<Boolean>,
-    setConfirmAction: (((() -> Unit)) -> Unit)
+    setConfirmAction: (((() -> Unit)) -> Unit),
+    onNavigateToAddEngine: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     val channelConfig: ChannelConfig = remember(context) {
@@ -175,6 +183,44 @@ fun LoginOther(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
+        }
+
+        // 「自带 API Key」逃生口: BYOK 直连不扣积分、免登录, 仅渠道能力放开或管理员可见
+        if (onNavigateToAddEngine != null &&
+            (AiEngineConfig.getCapabilities().canAddEngine || LoginUtils.isAdmin())
+        ) {
+            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingLarge))
+            OneBoxListItem(
+                headlineContent = {
+                    Text(
+                        text = stringResource(id = R.string.byok_login_hint_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                },
+                subtitle = {
+                    Text(
+                        text = stringResource(id = R.string.byok_login_hint_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                },
+                leadingContent = {
+                    OneBoxLeadingIconBadge(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKey
+                    )
+                },
+                trailingContent = {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(18.dp),
+                    )
+                },
+                contained = true,
+                onClick = onNavigateToAddEngine,
+            )
         }
     }
 }

@@ -1560,6 +1560,12 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ad_watch_title">Ad Watch</string>
     <string name="ad_watch_description">Watch rewarded ads to earn points.</string>
     <string name="ad_watch_earn_entry">Watch ads to earn points</string>
+    <string name="ad_watch_earn_subtitle">Watch a short ad, get free points every day</string>
+    <string name="byok_entry_title">Use your own API key</string>
+    <string name="byok_entry_subtitle">Connects to your own account — no points spent, works without sign-in</string>
+    <string name="byok_login_hint_title">Don\'t want to sign up?</string>
+    <string name="byok_login_hint_subtitle">Use your own API key for free AI chat</string>
+    <string name="donate_earn_points">Donate to earn points</string>
 
     <string name="survive_30s_screen_title">Survive 30 Seconds</string>
     <string name="survive_30s_screen_description">Drag the ball to dodge obstacles. Survive 30 seconds to win!</string>

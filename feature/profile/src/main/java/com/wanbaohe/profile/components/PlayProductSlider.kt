@@ -62,7 +62,7 @@ internal fun PlayProductSlider(
     if (products.isEmpty()) {
         // 加载中给转圈占位; 加载失败(含设备不支持结算)展示失败原因, 避免一直转圈
         Row(
-            modifier = modifier.height(180.dp),
+            modifier = modifier.height(200.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -109,7 +109,7 @@ internal fun PlayProductSlider(
     }
 
     HorizontalPager(
-        modifier = modifier.height(180.dp),
+        modifier = modifier.height(200.dp),
         state = pagerState,
         contentPadding = PaddingValues(horizontal = pageSize),
         verticalAlignment = Alignment.CenterVertically,
@@ -122,7 +122,7 @@ internal fun PlayProductSlider(
             product = products[thisPageIndex],
         )
     }
-    Spacer(modifier = Modifier.height(AppTheme.dimens.paddingNormal))
+    Spacer(modifier = Modifier.height(AppTheme.dimens.paddingLarge))
 
     SecondaryScrollableTabRow(
         selectedTabIndex = currentPageIndex,
@@ -151,7 +151,10 @@ internal fun PlayProductSlider(
                         }
                     ),
                 text = {
-                    Row(horizontalArrangement = Arrangement.Center) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+                    ) {
                         if (pagerState.currentPage == index) {
                             Icon(
                                 modifier = Modifier.size(16.dp),
@@ -196,13 +199,13 @@ private fun PlayProductCard(
                 .padding(AppTheme.dimens.paddingNormal)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             Text(
                 text = product.formattedPrice,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
-            Spacer(modifier = Modifier.height(8.dp))
             if (tier != null) {
                 Text(
                     text = stringResource(id = tier.name),
@@ -210,7 +213,6 @@ private fun PlayProductCard(
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 Icon(
                     modifier = Modifier.size(48.dp),
                     imageVector = tier.icon,
@@ -225,7 +227,6 @@ private fun PlayProductCard(
                     textAlign = TextAlign.Center
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(id = R.string.play_points_desc, product.points),
                 style = MaterialTheme.typography.labelSmall,

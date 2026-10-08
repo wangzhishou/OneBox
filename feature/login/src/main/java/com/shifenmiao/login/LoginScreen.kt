@@ -89,7 +89,16 @@ fun LoginScreen(
                     loginComponent = loginComponent,
                     isUserAgreementChecked = isUserAgreementChecked,
                     showAgreementDialog = showAgreementDialog,
-                    setConfirmAction = { action -> currentConfirmAction.value = action }
+                    setConfirmAction = { action -> currentConfirmAction.value = action },
+                    onNavigateToAddEngine = {
+                        // 先退出登录页再进新增引擎页, 返回时直达原页面
+                        onGoBack()
+                        appComponent.onNavigate(
+                            com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings(
+                                com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings.Type.AddEngine()
+                            )
+                        )
+                    }
                 )
             }
         }
