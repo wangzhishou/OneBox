@@ -4,6 +4,8 @@ import android.content.Context
 import com.arkivanov.decompose.ComponentContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.game2048.data.Game2048Storage
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -66,6 +68,12 @@ class Game2048Component @AssistedInject internal constructor(
                 isGameOver = gameOver,
                 isWon = won,
             )
+        }
+
+        // 首次拼出 2048 = 唯一一次通关时刻,上报给应用内评分弹层
+        // (真正弹不弹由 InAppReviewPrompt 的次数门槛/冷却/Play 配额决定)
+        if (won && !current.isWon) {
+            ReviewPromptHost.notifySuccess(ReviewPromptTrigger.GAME_WIN)
         }
     }
 

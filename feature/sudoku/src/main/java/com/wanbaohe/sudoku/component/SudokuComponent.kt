@@ -7,6 +7,8 @@ import com.arkivanov.essenty.lifecycle.doOnStop
 import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.sudoku.data.SudokuSettings
 import com.wanbaohe.sudoku.data.SudokuSnapshot
 import com.wanbaohe.sudoku.data.SudokuStorage
@@ -381,6 +383,8 @@ class SudokuComponent @AssistedInject internal constructor(
             )
         }
         playEffect(SOUND_WIN)
+        // 完成一局 = 通关时刻,上报给应用内评分弹层(google 渠道按累计次数/冷却决定是否弹)
+        ReviewPromptHost.notifySuccess(ReviewPromptTrigger.GAME_WIN)
     }
 
     private fun appendRecord(difficulty: SudokuDifficulty, timeSec: Int, completed: Boolean) {

@@ -19,6 +19,8 @@ import com.shifenmiao.model.ai.Usage
 import com.shifenmiao.model.state.PageState
 import com.shifenmiao.storage.AIChatStorage
 import com.shifenmiao.ai.usecase.MessageListUseCase
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.t8rin.logger.makeLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -153,6 +155,10 @@ class MessagePersistenceWorker(
             userMessage = sharedState.questionMessageEntity.value.question,
             assistantMessage = persistedAnswerEntity.answer
         )
+
+        // 一轮问答完整落库 = 用户刚拿到价值,报给应用内评分弹层做门控判断
+        // (次数门槛/冷却/每安装上限都在 InAppReviewPrompt 里,失败静默,不影响落库主流程)
+        ReviewPromptHost.notifySuccess(ReviewPromptTrigger.AI_ANSWER_SUCCESS)
     }
 
     /**

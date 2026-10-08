@@ -55,6 +55,9 @@ internal val ALLOW_BETAS = booleanPreferencesKey("allow_betas")
 internal val DRAW_CONTAINER_SHADOWS = booleanPreferencesKey("ALLOW_SHADOWS_INSTEAD_OF_BORDERS")
 internal val APP_OPEN_COUNT = intPreferencesKey("APP_OPEN_COUNT")
 internal val IN_APP_REVIEW_AUTO_PROMPTED = booleanPreferencesKey("IN_APP_REVIEW_AUTO_PROMPTED")
+
+// 键名保留历史的 SAVE_COUNT:现在累计的是所有「成功时刻」(保存成功/AI 回答成功/小游戏通关)。
+// key 字符串是已落盘的持久化标识,改名会清空老用户已累计的次数,所以只改语义不改字符串。
 internal val IN_APP_REVIEW_SAVE_COUNT = intPreferencesKey("IN_APP_REVIEW_SAVE_COUNT")
 internal val IN_APP_REVIEW_PROMPT_COUNT = intPreferencesKey("IN_APP_REVIEW_PROMPT_COUNT")
 internal val IN_APP_REVIEW_LAST_PROMPT_AT = longPreferencesKey("IN_APP_REVIEW_LAST_PROMPT_AT")

@@ -437,8 +437,8 @@ fun ProfileSettingItem(
                     // 用户主动点击的入口直接跳商店详情页,保证点击必有反馈。
                     // 之前 google 渠道这里走 Play In-App Review 半屏评分层,但该 API 有配额,
                     // 配额耗尽后 launchReviewFlow 静默不弹且无任何回调,表现为"点击无反应",
-                    // App 侧无法感知,故不再用于手动入口;InAppReviewPrompt 仅保留给
-                    // AppActivity 注册的保存成功自动弹出场景(maybePromptOnSuccess)。
+                    // App 侧无法感知,故不再用于手动入口;InAppReviewPrompt 仅保留给各类成功
+                    // 时刻的自动弹出场景(保存成功/AI 回答成功/小游戏通关,见 ReviewPromptHost)。
                     openStore()
                 },
                 settingsComponent = settingsComponent

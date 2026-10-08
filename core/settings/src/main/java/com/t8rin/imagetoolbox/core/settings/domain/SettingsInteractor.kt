@@ -177,10 +177,13 @@ interface SettingsInteractor : SimpleSettingsInteractor {
 
     suspend fun setNotShowDonateDialogAgain()
 
-    /** 累计一次「文件保存成功」,应用内评分弹层的触发依据(google 渠道;只统计单文件保存,批量保存不计入) */
-    suspend fun registerSuccessfulSave()
+    /**
+     * 累计一次「成功时刻」,应用内评分弹层的触发依据(google 渠道)。
+     * 成功时刻 = 文件保存成功 / AI 回答成功落库 / 小游戏通关(见 core:ui 的 ReviewPromptTrigger)
+     */
+    suspend fun registerSuccessfulMoment()
 
-    suspend fun getSuccessfulSaveCount(): Int
+    suspend fun getSuccessfulMomentCount(): Int
 
     /** 评分层已发起弹出的次数(旧版一次性标记 IN_APP_REVIEW_AUTO_PROMPTED 折算为已弹 1 次) */
     suspend fun getInAppReviewPromptCount(): Int

@@ -9,6 +9,8 @@ import com.t8rin.imagetoolbox.core.domain.image.ImageShareProvider
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.minesweeper.logic.BOARD_COLS
 import com.wanbaohe.minesweeper.logic.BOARD_ROWS_DEFAULT
 import com.wanbaohe.minesweeper.logic.Cell
@@ -257,10 +259,7 @@ class MinesweeperComponent @AssistedInject internal constructor(
         if (revealed > CASCADE_THRESHOLD) playSound(SOUND_CASCADE) else playSound(SOUND_REVEAL)
 
         if (checkWin(board)) {
-            timerJob?.cancel()
-            audioPlayer.stopBackground()
-            _uiState.update { it.copy(board = board, gameState = GameState.WON) }
-            playSound(SOUND_WIN)
+            finishAsWon(board)
             return
         }
         _uiState.update { it.copy(board = board, gameState = GameState.PLAYING) }
@@ -302,13 +301,19 @@ class MinesweeperComponent @AssistedInject internal constructor(
             if (revealed > CASCADE_THRESHOLD) playSound(SOUND_CASCADE) else playSound(SOUND_REVEAL)
         }
         if (checkWin(board)) {
-            timerJob?.cancel()
-            audioPlayer.stopBackground()
-            _uiState.update { it.copy(board = board, gameState = GameState.WON) }
-            playSound(SOUND_WIN)
+            finishAsWon(board)
             return
         }
         _uiState.update { it.copy(board = board) }
+    }
+
+    /** 清盘:停表停背景音、翻到胜利态、出声,并上报一次「通关」成功时刻(应用内评分弹层用) */
+    private fun finishAsWon(board: MutableList<MutableList<Cell>>) {
+        timerJob?.cancel()
+        audioPlayer.stopBackground()
+        _uiState.update { it.copy(board = board, gameState = GameState.WON) }
+        playSound(SOUND_WIN)
+        ReviewPromptHost.notifySuccess(ReviewPromptTrigger.GAME_WIN)
     }
 
     private fun toggleFlag(board: MutableList<MutableList<Cell>>, r: Int, c: Int) {

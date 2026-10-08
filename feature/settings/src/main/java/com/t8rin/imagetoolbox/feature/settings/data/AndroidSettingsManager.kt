@@ -731,11 +731,11 @@ internal class AndroidSettingsManager @Inject constructor(
         it[DONATE_DIALOG_OPEN_COUNT] = -1
     }
 
-    override suspend fun registerSuccessfulSave() = edit {
+    override suspend fun registerSuccessfulMoment() = edit {
         it[IN_APP_REVIEW_SAVE_COUNT] = (it[IN_APP_REVIEW_SAVE_COUNT] ?: 0) + 1
     }
 
-    override suspend fun getSuccessfulSaveCount(): Int =
+    override suspend fun getSuccessfulMomentCount(): Int =
         dataStore.data.first()[IN_APP_REVIEW_SAVE_COUNT] ?: 0
 
     override suspend fun getInAppReviewPromptCount(): Int {

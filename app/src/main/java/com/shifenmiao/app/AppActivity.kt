@@ -15,12 +15,13 @@ import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.model.event.PermissionRequest
 import com.wanbaohe.app.AppContent
 import com.wanbaohe.core.ui.review.InAppReviewPrompt
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.wanbaohe.visual.automation.service.CurrentActivityProvider
 import dagger.hilt.android.AndroidEntryPoint
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.domain.performance.StartupTrace
 import com.t8rin.imagetoolbox.core.ui.utils.ComposeActivity
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils
 import com.t8rin.imagetoolbox.feature.root.presentation.screenLogic.RootComponent
 import javax.inject.Inject
@@ -73,11 +74,12 @@ class AppActivity : ComposeActivity() {
         )
     }
 
-    // google 渠道:文件保存成功 Toast 消失后,按累计次数+冷却节奏弹应用内评分层(国内渠道为空实现)。
+    // google 渠道:文件保存成功 / AI 回答成功 / 小游戏通关等成功时刻上报后,
+    // 按累计次数+冷却节奏弹应用内评分层(国内渠道为空实现)。
     // 持有 lambda 引用是为了 onDestroy 注销时做身份校验:极端时序下(新实例 onCreate 早于
     // 旧实例 onDestroy)无条件置空会误清新实例刚注册的 handler
-    private val successSaveHandler = {
-        InAppReviewPrompt.maybePromptOnSuccess(this)
+    private val reviewPromptHandler: (ReviewPromptTrigger) -> Unit = { trigger ->
+        InAppReviewPrompt.maybePrompt(this, trigger)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +93,7 @@ class AppActivity : ComposeActivity() {
         // 避免首帧渲染时才触发构造，阻塞 Compose 的关键路径。
         val prewarmedComponent = component
 
-        AppToastHost.successSaveHandler = successSaveHandler
+        ReviewPromptHost.bind(reviewPromptHandler)
 
         initActivityResultLauncher()
         StartupTrace.mark("AppActivity.onCreate.ready")
@@ -167,9 +169,7 @@ class AppActivity : ComposeActivity() {
         super.onDestroy()
         ContextUtils.clearCurrentActivity(this)
         currentActivityProvider.setCurrentActivity(null)
-        if (AppToastHost.successSaveHandler === successSaveHandler) {
-            AppToastHost.successSaveHandler = null
-        }
+        ReviewPromptHost.unbind(reviewPromptHandler)
     }
 
     public override fun onStart() {

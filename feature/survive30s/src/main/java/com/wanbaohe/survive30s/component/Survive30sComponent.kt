@@ -6,6 +6,8 @@ import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.tencent.mmkv.MMKV
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.wanbaohe.core.ui.review.ReviewPromptHost
+import com.wanbaohe.core.ui.review.ReviewPromptTrigger
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.wanbaohe.survive30s.engine.Player
@@ -421,6 +423,8 @@ class Survive30sComponent @AssistedInject internal constructor(
             bizId = "",
             showToast = true
         )
+        // 通关时刻上报给应用内评分弹层:奖励 Toast 消失后才会弹(见 InAppReviewPrompt 的等待逻辑)
+        ReviewPromptHost.notifySuccess(ReviewPromptTrigger.GAME_WIN)
     }
 
     // ─── 音效 ────────────────────────────────────────────────────────────────
