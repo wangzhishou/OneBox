@@ -135,7 +135,7 @@ fun CreateChoiceCard(
             )
             .glassThin(
                 shape = shape,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
             .clip(shape)
             .padding(12.dp),
@@ -213,7 +213,7 @@ private fun CreationActionCard(
             .glassThin(
                 shape = shape,
                 color = if (emphasized) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.surfaceContainerLow,
+                else MaterialTheme.colorScheme.surfaceContainerLowest,
             )
             .padding(
                 horizontal = if (compact) 10.dp else 14.dp,

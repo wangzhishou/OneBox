@@ -2,24 +2,18 @@ package com.shifenmiao.theme
 
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.DatePickerColors
-import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SelectableChipColors
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TimePickerColors
-import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import kotlin.random.Random
 
 class AppColors {
 
@@ -39,11 +33,12 @@ class AppColors {
 
     @Composable
     fun switchColors() = SwitchDefaults.colors(
-        checkedThumbColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.68f),
-        checkedIconColor = MaterialTheme.colorScheme.primaryContainer,
+        checkedThumbColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
+        checkedIconColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
-        uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.68f),
-        uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        checkedBorderColor = Color.Transparent,
+        uncheckedThumbColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        uncheckedTrackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.75f),
         uncheckedBorderColor = Color.Transparent,
         uncheckedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
     )
@@ -55,25 +50,8 @@ class AppColors {
     )
 
     @Composable
-    fun sliderColors() = SliderDefaults.colors(
-        thumbColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        activeTickColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        activeTrackColor = MaterialTheme.colorScheme.primaryContainer,
-        inactiveTrackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-        inactiveTickColor = MaterialTheme.colorScheme.surfaceContainerHighest
-    )
-
-    @Composable
     fun getPrimaryColor(): Color {
         return MaterialTheme.colorScheme.onPrimaryContainer
-    }
-
-    @Composable
-    fun getAppLinearGradientColors(): List<Color> {
-        return listOf(
-            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.3f),
-            MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.1f)
-        )
     }
 
     @Composable
@@ -138,20 +116,6 @@ class AppColors {
     }
 
     @Composable
-    fun getRandomIconColor(): Color {
-        val colors = listOf(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.primaryContainer,
-            MaterialTheme.colorScheme.secondary,
-            MaterialTheme.colorScheme.secondaryContainer,
-            MaterialTheme.colorScheme.tertiary,
-            MaterialTheme.colorScheme.tertiaryContainer
-        )
-        val randomIndex = Random.nextInt(colors.size)
-        return colors[randomIndex]
-    }
-
-    @Composable
     fun getPrimaryTextColor(): Color {
         return MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -179,25 +143,6 @@ class AppColors {
     @Composable
     fun getContainerSurfaceColor(): Color {
         return MaterialTheme.colorScheme.surfaceContainerLowest
-    }
-
-    @Composable
-    fun getDatePickerColors(): DatePickerColors {
-        return DatePickerDefaults.colors().copy(
-            selectedDayContentColor = AppTheme.colors.getOnPrimaryColor(),
-            selectedDayContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        )
-    }
-
-    @Composable
-    fun getTimePickerColors(): TimePickerColors {
-        return TimePickerDefaults.colors().copy(
-            periodSelectorSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            timeSelectorSelectedContentColor = AppTheme.colors.getOnPrimaryColor(),
-            selectorColor = MaterialTheme.colorScheme.primaryContainer,
-        )
-
     }
 
     @Composable

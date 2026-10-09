@@ -45,8 +45,8 @@ fun GlassSwitch(
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
     shape: Shape = RoundedCornerShape(50),
-    checkedGlassColor: Color = MaterialTheme.colorScheme.primary,
-    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    checkedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current
@@ -94,9 +94,9 @@ fun GlassSwitch(
             modifier = modifier.glassControlStyle(
                 style = style,
                 backgroundAlpha = if (checked) {
-                    (style.backgroundAlpha + 0.12f).coerceAtMost(1f)
+                    (style.backgroundAlpha + 0.68f).coerceAtMost(1f)
                 } else {
-                    (style.backgroundAlpha + 0.05f).coerceAtMost(1f)
+                    (style.backgroundAlpha + 0.68f).coerceAtMost(1f)
                 },
                 shape = shape,
                 color = glassColor,

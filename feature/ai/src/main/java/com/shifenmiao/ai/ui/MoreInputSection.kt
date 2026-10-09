@@ -349,7 +349,7 @@ private fun ModelSelectorChip(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = MaterialTheme.shapes.large,
             )
             .clickable(onClick = onClick)
@@ -397,7 +397,7 @@ private fun FeatureToggleChip(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = MaterialTheme.shapes.large,
             )
             .clickable(onClick = onClick)

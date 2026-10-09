@@ -90,9 +90,9 @@ fun NewTextInputField(
 
     val shape = RoundedCornerShape(if (isMultiline) 24.dp else 28.dp)
     val backgroundColor = if (isInternalFocused) {
-        MaterialTheme.colorScheme.surfaceContainerHighest
-    } else {
         MaterialTheme.colorScheme.surfaceContainerHigh
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerLow
     }
     val placeholderColor = lerp(
         MaterialTheme.colorScheme.onSurfaceVariant,
