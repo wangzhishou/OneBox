@@ -14,7 +14,7 @@ internal object UrlConstantsFlavor {
     val RELEASE_URL: String = BuildConfig.ApiBaseUrlDomestic
     val DEBUG_URL: String = BuildConfig.ApiDebugUrlDomestic
     const val USER_AGREEMENT_URL = "https://www.shifenmiao.com/privacy/agreement.html"
-    const val PRIVACY_POLICY_URL = "https://www.shifenmiao.com/privacy/example.html"
+    const val PRIVACY_POLICY_URL = "https://www.shifenmiao.com/privacy/index.html"
 
     val ACCESS_TOKEN: String = BuildConfig.GuestAccessToken
 
