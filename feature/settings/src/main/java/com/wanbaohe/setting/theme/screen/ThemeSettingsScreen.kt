@@ -385,6 +385,9 @@ fun ThemeSettingsScreen(
             onSave = {
                 // 色彩系统是即时预览(值已落盘), 保存时只把"基线"推进到当前值
                 colorSystemSnapshot.value = currentColorSystem
+                // 遮罩透明度同样是滑动即落盘, 同步清掉脏标记,
+                // 不等 SaveSuccess 事件(否则保存协程跑完前按返回会误弹"放弃修改")
+                overlayAlphaDirty = false
                 component.saveDraft()
             },
             extraActions = {

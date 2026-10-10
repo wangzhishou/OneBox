@@ -360,19 +360,24 @@ class ThemeSettingsComponent @AssistedInject internal constructor(
             is ThemeEditMode.CreatingNew, null -> draft.toPreset(id = "user_${UUID.randomUUID()}")
         }
 
+        // 内存状态同步推进到"已保存": 持久化(Room + DataStore 写盘)有几十到几百毫秒耗时,
+        // 若等协程跑完再清脏标记, 窗口期内按返回会误弹"放弃修改"
+        _editMode.value = ThemeEditMode.EditingUser(preset)
+        _editingDraft.value = preset.toDraft()
+
         componentScope.launch {
             try {
                 themeSettingService.saveUserTheme(preset)
                 themeSettingService.applyThemePreset(preset)
                 // 保存即"切到这个主题": 连它自带的日夜模式一起生效
                 themeSettingService.setNightMode(preset.nightMode)
-                // 保存后切换为 EditingUser 模式，后续保存原地更新（不再新建）
-                _editMode.value = ThemeEditMode.EditingUser(preset)
                 originalPreset = preset
                 originalNightMode = preset.nightMode
-                _editingDraft.value = preset.toDraft()
                 _events.send(ThemeSettingsEvent.SaveSuccess(preset.name))
             } catch (_: Exception) {
+                // 持久化失败: 回滚编辑模式与草稿, 页面回到"有未保存修改"状态
+                _editMode.value = mode
+                _editingDraft.value = draft
                 _events.send(ThemeSettingsEvent.SaveFailed(preset.name))
             }
         }
