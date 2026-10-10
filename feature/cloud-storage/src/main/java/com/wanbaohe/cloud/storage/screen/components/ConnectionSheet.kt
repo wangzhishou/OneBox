@@ -1,9 +1,7 @@
 package com.wanbaohe.cloud.storage.screen.components
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,10 +20,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,8 +42,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
 import com.t8rin.imagetoolbox.core.ui.widget.system.OnePrimaryButton
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneSecondaryButton
 import com.wanbaohe.cloud.storage.R
@@ -146,7 +144,9 @@ fun ConnectionSheet(
             }
 
             // 协议 Tab
-            OneBoxSectionCard {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+            ) {
                 Text(
                     text = stringResource(R.string.cloud_storage_protocol_label),
                     style = MaterialTheme.typography.titleMedium,
@@ -301,25 +301,27 @@ private fun ClearableField(
 
 @Composable
 private fun ProtocolTab(label: String, selected: Boolean, onClick: () -> Unit) {
-    Surface(
+    GlassFilterChip(
+        selected = selected,
+        onClick = onClick,
+        modifier = Modifier.height(38.dp),
         shape = RoundedCornerShape(10.dp),
-        color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.surfaceVariant,
-        modifier = Modifier
-            .height(38.dp)
-            .clickable(onClick = onClick),
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        ) {
+        label = {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
-                color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 8.dp),
             )
-        }
-    }
+        },
+        colors = FilterChipDefaults.filterChipColors(
+            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
+        border = null,
+    )
 }
 
 // ───────────────── S3 兼容族表单 ─────────────────
@@ -327,7 +329,9 @@ private fun ProtocolTab(label: String, selected: Boolean, onClick: () -> Unit) {
 @Composable
 private fun S3CompatForm(draft: androidx.compose.runtime.MutableState<S3FormDraft>) {
     val d = draft.value
-    OneBoxSectionCard {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+    ) {
         Text(
             text = stringResource(R.string.cloud_storage_vendor_label),
             style = MaterialTheme.typography.titleSmall,
@@ -430,7 +434,9 @@ private fun s3DraftFromInitial(initial: CloudStorageConnection?): S3FormDraft {
 @Composable
 private fun WebDavForm(draft: androidx.compose.runtime.MutableState<WebDavFormDraft>) {
     val d = draft.value
-    OneBoxSectionCard {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+    ) {
         ClearableField(
             value = d.displayName,
             onValueChange = { draft.value = d.copy(displayName = it) },
@@ -496,7 +502,9 @@ private fun webDavDraftFromInitial(initial: CloudStorageConnection?): WebDavForm
 @Composable
 private fun SmbForm(draft: androidx.compose.runtime.MutableState<SmbFormDraft>) {
     val d = draft.value
-    OneBoxSectionCard {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing),
+    ) {
         ClearableField(
             value = d.displayName,
             onValueChange = { draft.value = d.copy(displayName = it) },
