@@ -1,5 +1,6 @@
 package com.t8rin.imagetoolbox.core.ui.utils.content
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +11,6 @@ import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.model.webview.WebViewType
 import com.t8rin.imagetoolbox.core.domain.content.ContentType
 import com.t8rin.imagetoolbox.core.domain.content.ContentTypeResolver
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.utils.fileProviderAuthority
 import java.io.File
@@ -38,7 +38,10 @@ interface ContentRouter {
      * @param context Context（用于外部打开时创建 Intent）
      * @param onNavigate 内部导航回调，由调用方提供（通常是 push Screen 到导航栈）
      * @param allSiblings 同目录下的所有 URI（用于图片浏览器的上下文，支持左右滑动浏览）
-     * @param fallbackToExternal 当内部无法处理时，是否回退到系统 chooser
+     * @param fallbackToExternal 当内部无法处理时，是否回退到系统 chooser。
+     * 外部打开入口（Intent/DeepLink）应传 false：打不开的类型改为回退文件浏览器，
+     * 避免本 App 作为 chooser 候选被再次点回造成死循环；
+     * 文件浏览器内点击传 true，保持"抛给其它应用打开"的行为。
      * @return 是否成功处理（true = 已路由，false = 未处理）
      */
     fun route(
@@ -102,27 +105,26 @@ class DefaultContentRouter(
             }
 
             is ContentType.Unknown -> {
-                val typeHint = contentType.mimeType
-                    ?: uri.lastPathSegment?.substringAfterLast('.', "")?.let { ".$it" }
-                    ?: ""
-                AppToastHost.showToast(
-                    message = context.getString(
-                        com.t8rin.imagetoolbox.core.resources.R.string.unsupported_type,
-                        typeHint
-                    )
-                )
+                // 打不开的文件：外部入口（fallbackToExternal=false）回退到文件浏览器
+                // 定位到所在目录；文件浏览器内点击（=true）才抛给系统 chooser。
+                // 不能对外部入口抛 chooser —— 本 App 自己就在 chooser 候选里，
+                // 用户点回来会死循环，表现为"停在首页打不开"。
                 if (fallbackToExternal) {
                     openWithExternalApp(uri, context)
                 } else {
-                    false
+                    onNavigate(Screen.FileBrowser(initialUri = uri))
+                    true
                 }
             }
 
             else -> {
+                // 有类型但内部没有对应页面（音频/视频/压缩包/Office 文档）：
+                // 外部入口回退文件浏览器，内部点击才外抛系统 chooser。
                 if (fallbackToExternal) {
                     openWithExternalApp(uri, context)
                 } else {
-                    false
+                    onNavigate(Screen.FileBrowser(initialUri = uri))
+                    true
                 }
             }
         }
@@ -161,8 +163,20 @@ class DefaultContentRouter(
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
-            val chooserIntent = Intent.createChooser(intent, null)
-            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val chooserIntent = Intent.createChooser(intent, null).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                // 排除本 App 自身（release/debug 两个包名都排），
+                // 避免用户又点回我们造成"打开 -> 弹选择器 -> 再打开"死循环
+                val selfComponents = listOf(
+                    ComponentName(context, "com.shifenmiao.app.AppActivity"),
+                    ComponentName("com.shifenmiao.app", "com.shifenmiao.app.AppActivity"),
+                    ComponentName("com.shifenmiao.app.debug", "com.shifenmiao.app.AppActivity")
+                ).distinct()
+                putParcelableArrayListExtra(
+                    Intent.EXTRA_EXCLUDE_COMPONENTS,
+                    ArrayList(selfComponents)
+                )
+            }
             context.startActivity(chooserIntent)
             true
         } catch (_: Exception) {

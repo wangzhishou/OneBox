@@ -209,7 +209,9 @@ fun Intent?.handleDeeplinks(
                                         context = context,
                                         onNavigate = onNavigate,
                                         allSiblings = emptyList(),
-                                        fallbackToExternal = true
+                                        // 外部打开入口：打不开的类型回退文件浏览器，
+                                        // 不外抛 chooser（本 App 在候选里会死循环）
+                                        fallbackToExternal = false
                                     )
                                     if (handled) return@runCatching
                                 }

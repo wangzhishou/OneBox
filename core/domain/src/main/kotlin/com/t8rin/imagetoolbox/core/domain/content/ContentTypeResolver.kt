@@ -3,6 +3,7 @@ package com.t8rin.imagetoolbox.core.domain.content
 import android.content.Context
 import android.net.Uri
 import android.provider.DocumentsContract
+import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
 import com.t8rin.imagetoolbox.core.domain.content.ContentType.Companion.ARCHIVE_EXTENSIONS
 import com.t8rin.imagetoolbox.core.domain.content.ContentType.Companion.AUDIO_EXTENSIONS
@@ -32,7 +33,7 @@ class DefaultContentTypeResolver : ContentTypeResolver {
 
     override fun resolve(uri: Uri, context: Context): ContentType {
         val mimeType = resolveMimeType(uri, context)
-        val extension = resolveExtension(uri)
+        val extension = resolveExtension(uri, context)
 
         return when {
             isDirectory(uri, context) -> ContentType.Directory
@@ -76,8 +77,36 @@ class DefaultContentTypeResolver : ContentTypeResolver {
         }
     }
 
-    private fun resolveExtension(uri: Uri): String {
-        return uri.path?.substringAfterLast('.', "")?.lowercase().orEmpty()
+    /**
+     * 取文件扩展名：优先从 URI path 取；content:// 数字 ID 型 URI
+     * （如 content://media/external/file/123）path 里没有文件名，
+     * 此时查 DISPLAY_NAME 拿真实文件名再取扩展名。
+     */
+    private fun resolveExtension(uri: Uri, context: Context): String {
+        val fromPath = uri.path?.substringAfterLast('.', "")?.lowercase().orEmpty()
+        if (fromPath.isNotBlank() && fromPath.length <= 10 && !fromPath.contains('/')) {
+            return fromPath
+        }
+        return resolveDisplayName(uri, context)
+            ?.substringAfterLast('.', "")
+            ?.lowercase()
+            .orEmpty()
+    }
+
+    private fun resolveDisplayName(uri: Uri, context: Context): String? {
+        if (uri.scheme != "content") return null
+        return try {
+            context.contentResolver.query(
+                uri,
+                arrayOf(OpenableColumns.DISPLAY_NAME),
+                null, null, null
+            )?.use { cursor ->
+                val idx = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (idx != -1 && cursor.moveToFirst()) cursor.getString(idx) else null
+            }
+        } catch (_: Exception) {
+            null
+        }
     }
 
     private fun isDirectory(uri: Uri, context: Context): Boolean {
@@ -97,7 +126,7 @@ class DefaultContentTypeResolver : ContentTypeResolver {
             } ?: false
         } catch (_: Exception) {
             val mimeType = context.contentResolver.getType(uri)
-            mimeType?.contains("directory") == false
+            mimeType?.contains("directory") == true
         }
     }
 
