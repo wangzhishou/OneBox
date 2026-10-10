@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
@@ -36,13 +37,13 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.wanbaohe.boardgame.model.AiPickerItem
-import com.wanbaohe.boardgame.model.AiSourceTag
-import com.wanbaohe.boardgame.ui.AiPickerBottomSheet
 import com.wanbaohe.chess.R
 import com.wanbaohe.chess.application.port.outbound.EngineSlot
 import com.wanbaohe.chess.application.port.outbound.ChessAiSource
+import com.wanbaohe.chess.application.dto.GameAiPlayerConfig
+import com.wanbaohe.chess.presentation.displayNames
 import com.wanbaohe.chess.router.screenLogic.ChessRouterComponent
+import com.wanbaohe.chess.ui.ChessOpponentPicker
 
 private enum class AiSlot { FAST, DUEL_A, DUEL_B }
 
@@ -57,60 +58,39 @@ fun ChessSettingsScreen(
 ) {
     val settings by component.chessSettings.collectAsState()
     val fastEngine by component.currentAIEngine.collectAsState()
+    val duelA by component.duelEngineA.collectAsState()
+    val duelB by component.duelEngineB.collectAsState()
     val aiConfig by component.chessAiConfig.collectAsState()
     val runningActions by component.runningSettingsActions.collectAsState()
     var pickingSlot by remember { mutableStateOf<AiSlot?>(null) }
 
     val pickingSlotValue = pickingSlot
     if (pickingSlotValue != null) {
-        val slotTitleRes = when (pickingSlotValue) {
-            AiSlot.FAST -> R.string.chess_settings_ai_picker_title
-            AiSlot.DUEL_A -> R.string.chess_settings_ai_duel_a_picker_title
-            AiSlot.DUEL_B -> R.string.chess_settings_ai_duel_b_picker_title
+        val engines by component.allAiEngines.collectAsState()
+        val models by component.modelsByProvider.collectAsState()
+        val slot = when (pickingSlotValue) {
+            AiSlot.FAST -> EngineSlot.FAST
+            AiSlot.DUEL_A -> EngineSlot.DUEL_A
+            AiSlot.DUEL_B -> EngineSlot.DUEL_B
         }
-        val sources = ChessAiSource.presets
-        val items = sources.map { source ->
-            when (source) {
-                ChessAiSource.WorkingModel -> AiPickerItem(
-                    title = stringResource(R.string.chess_ai_source_working_model),
-                    subtitle = fastEngine.title.ifBlank { fastEngine.name },
-                    tags = listOf(
-                        AiSourceTag(stringResource(R.string.chess_ai_tag_login), androidx.compose.ui.graphics.Color(0xFFF08A5D)),
-                        AiSourceTag(stringResource(R.string.chess_ai_tag_points), androidx.compose.ui.graphics.Color(0xFF4F46E5)),
-                    ),
-                )
-                is ChessAiSource.RemoteEngine -> AiPickerItem(
-                    title = stringResource(R.string.chess_ai_source_engine_name),
-                    subtitle = stringResource(R.string.chess_ai_source_engine_desc),
-                    tags = listOf(
-                        AiSourceTag(stringResource(R.string.chess_ai_tag_free), androidx.compose.ui.graphics.Color(0xFF3D8B7A)),
-                    ),
-                    trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
-                )
-            }
+        val engine = when (slot) {
+            EngineSlot.FAST -> fastEngine
+            EngineSlot.DUEL_A -> duelA
+            EngineSlot.DUEL_B -> duelB
         }
-        val currentSource = when (pickingSlotValue) {
-            AiSlot.FAST -> aiConfig.fastSource
-            AiSlot.DUEL_A -> aiConfig.duelASource
-            AiSlot.DUEL_B -> aiConfig.duelBSource
-        }
-        AiPickerBottomSheet(
-            visible = true,
-            title = stringResource(slotTitleRes),
-            description = stringResource(R.string.chess_ai_picker_desc),
-            items = items,
-            selectedItem = items.getOrNull(sources.indexOf(currentSource)),
-            onSelected = {
-                val slot = when (pickingSlotValue) {
-                    AiSlot.FAST -> EngineSlot.FAST
-                    AiSlot.DUEL_A -> EngineSlot.DUEL_A
-                    AiSlot.DUEL_B -> EngineSlot.DUEL_B
+        ChessOpponentPicker(
+            config = GameAiPlayerConfig.capture(aiConfig.sourceFor(slot), engine),
+            workingEngine = engine,
+            allEngines = engines,
+            modelsByProvider = models,
+            onSourceSelected = { component.switchAiSource(slot, it) },
+            onModelSelected = { provider, model ->
+                when (slot) {
+                    EngineSlot.FAST -> component.switchAiModel(provider, model)
+                    EngineSlot.DUEL_A -> component.switchDuelEngineA(provider, model)
+                    EngineSlot.DUEL_B -> component.switchDuelEngineB(provider, model)
                 }
-                val index = items.indexOf(it)
-                if (index >= 0) {
-                    component.switchAiSource(slot, sources[index])
-                }
-                pickingSlot = null
+                component.switchAiSource(slot, ChessAiSource.WorkingModel)
             },
             onDismiss = { pickingSlot = null },
         )
@@ -194,27 +174,25 @@ fun ChessSettingsScreen(
         ) {
             AiSourceRow(
                 label = stringResource(R.string.chess_settings_ai_fast),
-                value = aiConfig.fastSource.displayName(fastEngine.title.ifBlank { fastEngine.name }),
+                value = GameAiPlayerConfig.capture(aiConfig.fastSource, fastEngine).displayLabel(),
                 onClick = { pickingSlot = AiSlot.FAST },
             )
             AiSourceRow(
                 label = stringResource(R.string.chess_settings_ai_duel_a),
-                value = aiConfig.duelASource.displayName(fastEngine.title.ifBlank { fastEngine.name }),
+                value = GameAiPlayerConfig.capture(aiConfig.duelASource, duelA).displayLabel(),
                 onClick = { pickingSlot = AiSlot.DUEL_A },
             )
             AiSourceRow(
                 label = stringResource(R.string.chess_settings_ai_duel_b),
-                value = aiConfig.duelBSource.displayName(fastEngine.title.ifBlank { fastEngine.name }),
+                value = GameAiPlayerConfig.capture(aiConfig.duelBSource, duelB).displayLabel(),
                 onClick = { pickingSlot = AiSlot.DUEL_B },
             )
         }
     }
 }
 
-@Composable
-private fun ChessAiSource.displayName(workingModelTitle: String): String = when (this) {
-    ChessAiSource.WorkingModel -> stringResource(R.string.chess_ai_source_working_model) + " · " + workingModelTitle
-    is ChessAiSource.RemoteEngine -> stringResource(R.string.chess_ai_source_engine_name)
+private fun GameAiPlayerConfig.displayLabel(): String = displayNames().let { (service, model) ->
+    if (model.isBlank()) service else "$service · $model"
 }
 
 @Composable
@@ -282,12 +260,17 @@ private fun AiSourceRow(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.weight(1f).padding(start = 8.dp),
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

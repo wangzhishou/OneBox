@@ -49,6 +49,7 @@ class AIPromptExecutor @Inject constructor(
     private val aiEngineManager: AIEngineManager,
     private val openAICompatibleService: OpenAICompatibleService,
     private val ownProxyAIService: OwnProxyAIService,
+    private val promptClient: AIPromptClient,
     dispatchersHolder: DispatchersHolder,
 ) : DispatchersHolder by dispatchersHolder {
 
@@ -91,46 +92,10 @@ class AIPromptExecutor @Inject constructor(
 
         billingGate(engine, input, billing)?.let { return it }
 
-        val messages = buildList {
-            if (systemPrompt.isNotBlank()) {
-                add(
-                    RequestMessage.createTextMessage(
-                        role = RoleType.SYSTEM.value,
-                        text = systemPrompt
-                    )
-                )
-            }
-            add(
-                RequestMessage.createTextMessage(
-                    role = RoleType.USER.value,
-                    text = input
-                )
-            )
-        }
-
-        val request = ChatCompletionRequest(
-            model = engine.model.name,
-            messages = messages,
-            stream = false,
-        )
-
         return try {
             val isProxyRoute = AiRequestUrlResolver.shouldUseProxyRequest(engine)
             val response = withContext(ioDispatcher) {
-                val url = AiRequestUrlResolver.resolveRequestUrl(engine)
-                if (AiRequestUrlResolver.shouldUseDirectRequest(engine)) {
-                    val authorization = AiRequestUrlResolver.resolveAuthorizationHeader(engine)
-                    openAICompatibleService.chatNoStreaming(
-                        url = url,
-                        authorization = authorization,
-                        chatCompletionRequest = request
-                    ).execute()
-                } else {
-                    ownProxyAIService.chatNoStreaming(
-                        url = url,
-                        chatCompletionRequest = request
-                    ).execute()
-                }
+                promptClient.execute(engine, input, systemPrompt)
             }
 
             if (!response.isSuccessful) {
@@ -157,7 +122,7 @@ class AIPromptExecutor @Inject constructor(
             }
 
             val chunk = try {
-                AppJson.decodeFromString<ChatCompletionChunk>(body)
+                promptClient.decodeResponse(body, engine.requestProtocol)
             } catch (e: Exception) {
                 makeLog { "AIPromptExecutor: JSON parse failed: ${e.message}" }
                 return AIPromptResult(

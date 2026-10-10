@@ -1,6 +1,8 @@
 package com.wanbaohe.gomoku.application.usecase
 
 import com.wanbaohe.gomoku.application.dto.GameDetail
+import com.wanbaohe.gomoku.application.dto.aiConfigFor
+import com.wanbaohe.gomoku.application.port.outbound.AiOpponentUnavailableException
 import com.wanbaohe.gomoku.application.port.outbound.AiTaskEntity
 import com.wanbaohe.gomoku.application.port.outbound.AiTaskStatus
 import com.wanbaohe.gomoku.application.port.outbound.AiTaskStore
@@ -9,6 +11,12 @@ import com.wanbaohe.gomoku.application.port.outbound.MoveChooser
 import com.wanbaohe.gomoku.application.port.outbound.MoveDecision
 import com.wanbaohe.gomoku.domain.FenCodec
 import com.wanbaohe.gomoku.domain.GameArbiter
+import com.wanbaohe.gomoku.domain.model.GameStatus
+import com.wanbaohe.gomoku.domain.model.PlayerType
+import com.wanbaohe.gomoku.domain.model.Side
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,17 +37,37 @@ class AiOrchestrationUseCase @Inject constructor(
     enum class StaleReason { POSITION_CHANGED, MOVE_REJECTED }
 
     suspend fun requestMove(gameId: String, slot: EngineSlot): Outcome {
-        val detail = query.getById(gameId) ?: return Outcome.Failed("Game not found")
+        val detail = query.getById(gameId) ?: return Outcome.Failed("GAME_MISSING")
+        if (detail.status != GameStatus.PLAYING) return Outcome.Stale(StaleReason.POSITION_CHANGED)
         val boardState = FenCodec.parse(detail.currentFen)
+        val playerType = if (boardState.sideToMove == Side.BLACK) detail.blackPlayerType else detail.whitePlayerType
+        if (playerType != PlayerType.LLM) return Outcome.Stale(StaleReason.POSITION_CHANGED)
         val requestFen = detail.currentFen
         val targetPly = detail.currentPly + 1
 
         saveTaskRunning(gameId, targetPly, requestFen)
+        if (detail.aiConfigFor(boardState.sideToMove)?.isSupported != true) {
+            markFailed(gameId, targetPly, requestFen, "AI_OPPONENT_UNAVAILABLE")
+            return Outcome.Failed("AI_OPPONENT_UNAVAILABLE")
+        }
 
-        val decision = callMoveChooser(boardState, requestFen, detail, slot)
-            ?: return Outcome.Failed("No legal move")
+        val decision = try {
+            callMoveChooser(boardState, requestFen, detail, slot)
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (_: AiOpponentUnavailableException) {
+            markFailed(gameId, targetPly, requestFen, "AI_OPPONENT_UNAVAILABLE")
+            return Outcome.Failed("AI_OPPONENT_UNAVAILABLE")
+        } catch (_: Exception) {
+            markFailed(gameId, targetPly, requestFen, "AI_ERROR")
+            return Outcome.Failed("AI_ERROR")
+        } ?: run {
+            markFailed(gameId, targetPly, requestFen, "AI_ERROR")
+            return Outcome.Failed("AI_ERROR")
+        }
 
-        return commitIfConsistent(gameId, requestFen, targetPly, detail.currentPly, decision)
+        currentCoroutineContext().ensureActive()
+        return commitIfConsistent(gameId, requestFen, targetPly, detail, decision)
     }
 
     suspend fun retry(gameId: String, slot: EngineSlot): Outcome = requestMove(gameId, slot)
@@ -65,29 +93,37 @@ class AiOrchestrationUseCase @Inject constructor(
         requestFen: String,
         detail: GameDetail,
         slot: EngineSlot,
-    ): MoveDecision? = moveChooser.choose(
+    ): MoveDecision? = moveChooser.chooseForGame(
         boardState = boardState,
         fen = requestFen,
         // 历史走坐标记谱: 与 legalMoves 的候选键同一种记法, 模型最终回的就是坐标
-        // 
-        history = detail.plies.takeLast(6).map { it.moveUcci.ifBlank { it.moveCn } },
+        history = detail.plies.filter { it.ply <= detail.currentPly }
+            .takeLast(6).map { it.moveUcci.ifBlank { it.moveCn } },
         legalMoves = GameArbiter.legalMoves(boardState),
         slot = slot,
+        playerConfig = detail.aiConfigFor(boardState.sideToMove),
     )
 
     private suspend fun commitIfConsistent(
         gameId: String,
         requestFen: String,
         targetPly: Int,
-        expectedCurrentPly: Int,
+        expected: GameDetail,
         decision: MoveDecision,
     ): Outcome {
         val latest = query.getById(gameId)
-        if (latest == null || latest.currentFen != requestFen || latest.currentPly != expectedCurrentPly) {
+        if (latest == null || latest.currentFen != requestFen || latest.currentPly != expected.currentPly ||
+            latest.status != GameStatus.PLAYING || latest.mode != expected.mode ||
+            latest.blackPlayerType != expected.blackPlayerType || latest.whitePlayerType != expected.whitePlayerType ||
+            latest.blackAiConfig != expected.blackAiConfig || latest.whiteAiConfig != expected.whiteAiConfig ||
+            latest.blackPlayerConfigJson != expected.blackPlayerConfigJson ||
+            latest.whitePlayerConfigJson != expected.whitePlayerConfigJson
+        ) {
             markFailed(gameId, targetPly, requestFen, "Position changed during AI request")
             return Outcome.Stale(StaleReason.POSITION_CHANGED)
         }
 
+        currentCoroutineContext().ensureActive()
         val result = playMove.commit(
             gameId = gameId,
             move = decision.move,
@@ -95,6 +131,7 @@ class AiOrchestrationUseCase @Inject constructor(
             // 远程引擎不可用时兜底是静默的，用户只会觉得"AI 变笨了"，必须让它可见。
             aiReason = decision.storedReason(),
             aiRawResponse = decision.rawResponse,
+            expectedGame = expected,
         )
 
         if (result !is PlayMoveUseCase.Result.Success || result.detail.currentPly != targetPly) {

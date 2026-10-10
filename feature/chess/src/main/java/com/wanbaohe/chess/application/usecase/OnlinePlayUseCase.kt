@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +21,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 import java.text.SimpleDateFormat
@@ -68,7 +70,7 @@ class OnlinePlayUseCase @Inject constructor(
     /* ───── Bridged outer flows (delegate to current session) ───── */
 
     val connectionState: StateFlow<ConnectionState> =
-        sessionFlow.flatMapLatest { it?.connectionState ?: emptyFlow() }
+        sessionFlow.flatMapLatest { it?.connectionState ?: flowOf(ConnectionState.IDLE) }
             .let { flow ->
                 val state = MutableStateFlow(ConnectionState.IDLE)
                 // Bridge: collect from flatMapLatest into a stable StateFlow
@@ -79,7 +81,7 @@ class OnlinePlayUseCase @Inject constructor(
             }
 
     val debugEvents: StateFlow<List<String>> =
-        sessionFlow.flatMapLatest { it?.debugEvents ?: emptyFlow() }
+        sessionFlow.flatMapLatest { it?.debugEvents ?: flowOf(emptyList()) }
             .let { flow ->
                 val state = MutableStateFlow<List<String>>(emptyList())
                 scope.launch {
@@ -96,6 +98,31 @@ class OnlinePlayUseCase @Inject constructor(
 
     private val _opponentResigned = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val opponentResigned: SharedFlow<Unit> = _opponentResigned.asSharedFlow()
+
+    private class OpponentMailbox {
+        val pending = Channel<OnlineGameEvent>(Channel.UNLIMITED)
+        val events = MutableSharedFlow<OnlineGameEvent>(extraBufferCapacity = 16)
+    }
+
+    private val opponentMailboxes = ConcurrentHashMap<String, OpponentMailbox>()
+
+    private fun mailbox(roomId: String): OpponentMailbox =
+        opponentMailboxes.computeIfAbsent(roomId) {
+            OpponentMailbox().also { mailbox ->
+                scope.launch {
+                    for (event in mailbox.pending) {
+                        mailbox.events.subscriptionCount.first { it > 0 }
+                        mailbox.events.emit(event)
+                    }
+                }
+            }
+        }
+
+    fun opponentEvents(roomId: String): SharedFlow<OnlineGameEvent> = mailbox(roomId).events.asSharedFlow()
+
+    private fun enqueueOpponentEvent(event: OnlineGameEvent) {
+        mailbox(event.roomId).pending.trySend(event)
+    }
 
     /* ───── Matchmaking (stateless REST) ───── */
 
@@ -127,20 +154,25 @@ class OnlinePlayUseCase @Inject constructor(
         connect(roomId, side, isHost, OnlineRoomConfig())
     }
 
+    @Synchronized
     fun connect(roomId: String, side: Side, isHost: Boolean, config: OnlineRoomConfig) {
         val newSession = OnlineSession(roomId, side, config)
+        val previousSession = session
         session = newSession
+        previousSession?.dispose()
         sessionFlow.value = newSession
 
         appendDebug("WS connect room=${roomId.takeLast(6)} side=${side.name} host=$isHost")
 
         signalingClient.connect(roomId, object : SignalingClient.Listener {
             override fun onRawMessage(raw: String) {
+                if (session !== newSession) return
                 appendDebug("WS <- raw ${raw.take(DebugMessageLimit)}")
             }
 
             override fun onMessage(message: OnlineMessage) {
-                val s = session ?: return
+                if (session !== newSession || (message.roomId.isNotBlank() && message.roomId != newSession.roomId)) return
+                val s = newSession
                 appendDebug("WS <- ${message.type} seq=${message.seq} ${message.coordText()}")
                 when (message.type.lowercase()) {
                     "ack" -> s.handleAck(message)
@@ -150,7 +182,12 @@ class OnlinePlayUseCase @Inject constructor(
                     }
                     "ready" -> s.handleReady(isHost)
                     "start" -> s.handleStart()
-                    "resign" -> _opponentResigned.tryEmit(Unit)
+                    "resign" -> {
+                        if (!message.senderSide.equals(s.mySide.name, ignoreCase = true)) {
+                            enqueueOpponentEvent(OnlineGameEvent.Resigned(s.roomId))
+                            _opponentResigned.tryEmit(Unit)
+                        }
+                    }
                     "disconnect" ->
                         s._connectionState.value = ConnectionState.OPPONENT_DISCONNECTED
                     "error" ->
@@ -159,7 +196,8 @@ class OnlinePlayUseCase @Inject constructor(
             }
 
             override fun onConnected() {
-                val s = session ?: return
+                if (session !== newSession) return
+                val s = newSession
                 s._connectionState.value = ConnectionState.WAITING_FOR_OPPONENT
                 appendDebug("WS connected")
                 if (!isHost) {
@@ -168,39 +206,73 @@ class OnlinePlayUseCase @Inject constructor(
             }
 
             override fun onDisconnected() {
-                val s = session ?: return
+                if (session !== newSession) return
+                val s = newSession
                 s._connectionState.value = ConnectionState.OPPONENT_DISCONNECTED
                 appendDebug("WS disconnected")
             }
 
             override fun onError(error: String) {
-                val s = session ?: return
+                if (session !== newSession) return
+                val s = newSession
                 s._connectionState.value = ConnectionState.ERROR
                 appendDebug("WS error $error")
             }
         })
     }
 
+    @Synchronized
     fun sendMove(move: ChessMove) {
         val s = session ?: return
         s.sendMove(move)
     }
 
+    fun sendMove(move: ChessMove, roomId: String, side: Side): Boolean =
+        sendToRoom(roomId, side) { it.sendMove(move) }
+
+    @Synchronized
     fun sendReady() {
         val s = session ?: return
         s.sendReady()
     }
 
+    @Synchronized
     fun sendStart() {
         val s = session ?: return
         s.sendStart()
     }
 
+    fun sendStart(roomId: String, side: Side): Boolean =
+        sendToRoom(roomId, side) { it.sendStart() }
+
+    @Synchronized
     fun sendResign() {
         val s = session ?: return
         s.sendResign()
     }
 
+    fun sendResign(roomId: String, side: Side): Boolean =
+        sendToRoom(roomId, side) { it.sendResign() }
+
+    @Synchronized
+    fun ownsSession(roomId: String, side: Side): Boolean =
+        roomId.isNotBlank() && session?.let { it.roomId == roomId && it.mySide == side } == true
+
+    @Synchronized
+    private fun sendToRoom(roomId: String, side: Side, send: (OnlineSession) -> Unit): Boolean {
+        val current = session ?: return false
+        if (!ownsSession(roomId, side)) return false
+        send(current)
+        return true
+    }
+
+    fun reportSyncFailure(event: OnlineGameEvent) = reportSyncFailure(event.roomId, event.toString())
+
+    fun reportSyncFailure(roomId: String, reason: String) {
+        appendDebug("SYNC rejected room=${roomId.takeLast(6)} event=$reason")
+    }
+
+    @Synchronized
     fun disconnect() {
         appendDebug("WS disconnect by user")
         signalingClient.disconnect()
@@ -212,6 +284,9 @@ class OnlinePlayUseCase @Inject constructor(
 
     val mySide: Side
         get() = session?.mySide ?: Side.WHITE
+
+    val currentRoomId: String
+        get() = session?.roomId.orEmpty()
 
     /* ─────────── private helpers ─────────── */
 
@@ -341,6 +416,7 @@ class OnlinePlayUseCase @Inject constructor(
         fun handleStart() {
             _connectionState.value = ConnectionState.PLAYING
             appendDebug("START received")
+            enqueueOpponentEvent(OnlineGameEvent.Started(roomId))
             _opponentStarted.tryEmit(Unit)
         }
 
@@ -357,6 +433,7 @@ class OnlinePlayUseCase @Inject constructor(
             val from = BoardPoint(message.fromFile, message.fromRank)
             val to = BoardPoint(message.toFile, message.toRank)
             appendDebug("MOVE emit ${from.file},${from.rank}->${to.file},${to.rank}")
+            enqueueOpponentEvent(OnlineGameEvent.Move(roomId, from, to))
             _opponentMoves.tryEmit(Pair(from, to))
         }
 
@@ -369,17 +446,20 @@ class OnlinePlayUseCase @Inject constructor(
         private fun scheduleRetry(seq: Int) {
             scope.launch {
                 delay(ackTimeoutMs)
-                val pending = pendingAcks[seq] ?: return@launch
-                if (pending.retries >= maxAckRetries) {
-                    pendingAcks.remove(seq)
-                    _connectionState.value = ConnectionState.ERROR
-                    appendDebug("ACK timeout seq=$seq")
-                    return@launch
+                synchronized(this@OnlinePlayUseCase) {
+                    if (session !== this@OnlineSession) return@synchronized
+                    val pending = pendingAcks[seq] ?: return@synchronized
+                    if (pending.retries >= maxAckRetries) {
+                        pendingAcks.remove(seq)
+                        _connectionState.value = ConnectionState.ERROR
+                        appendDebug("ACK timeout seq=$seq")
+                        return@synchronized
+                    }
+                    pending.retries++
+                    appendDebug("WS -> retry seq=$seq retry=${pending.retries}")
+                    signalingClient.sendMessage(pending.message)
+                    scheduleRetry(seq)
                 }
-                pending.retries++
-                appendDebug("WS -> retry seq=$seq retry=${pending.retries}")
-                signalingClient.sendMessage(pending.message)
-                scheduleRetry(seq)
             }
         }
 

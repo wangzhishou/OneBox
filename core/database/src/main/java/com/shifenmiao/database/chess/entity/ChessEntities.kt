@@ -28,6 +28,7 @@ data class ChessGameEntity(
     @ColumnInfo(name = "started_at") val startedAt: Long = 0L,
     /** 上次本局有人(玩家/AI)落子的时间,用于推算下一步的思考耗时 */
     @ColumnInfo(name = "last_move_at") val lastMoveAt: Long = 0L,
+    @ColumnInfo(name = "origin_json", defaultValue = "'{}'") val originJson: String = "{}",
     val archived: Boolean = false,
 )
 

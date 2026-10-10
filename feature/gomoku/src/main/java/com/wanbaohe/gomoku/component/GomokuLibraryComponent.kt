@@ -14,13 +14,14 @@ import com.wanbaohe.gomoku.application.usecase.ImportFailureCause
 import com.wanbaohe.gomoku.application.usecase.ImportGameUseCase
 import com.wanbaohe.gomoku.application.usecase.ImportResult
 import com.wanbaohe.gomoku.application.usecase.ManageGameUseCase
-import com.wanbaohe.gomoku.application.port.outbound.GomokuAiConfig
-import com.wanbaohe.gomoku.application.port.outbound.GomokuAiStore
+import com.wanbaohe.gomoku.application.dto.GamePreparation
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.gomoku.R
 import com.wanbaohe.gomoku.data.GomokuGameSummary
 import com.wanbaohe.gomoku.domain.model.Side
+import com.wanbaohe.gomoku.domain.FenCodec
+import com.wanbaohe.gomoku.domain.model.GameSetup
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -30,48 +31,22 @@ class GomokuLibraryComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
+    @Assisted private val onPrepareGame: (GamePreparation) -> Unit,
     private val createGame: CreateGameUseCase,
     private val gameQuery: GameQueryUseCase,
     private val importGame: ImportGameUseCase,
     private val deleteGameUseCase: DeleteGameUseCase,
     private val manageGame: ManageGameUseCase,
-    private val gomokuAiStore: GomokuAiStore,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    /**
-     * 开一局人机：Pikafish 等服务端引擎免登录免积分；
-     * 聊天 LLM / Jev 在开局前做登录 + 积分余额校验（不在此扣减）。
-     */
+    /** Offline menu choices prepare a draft; only Start creates a game. */
     fun startAiGame(title: String, aiSide: Side) {
-        componentScope.launch {
-            val config = gomokuAiStore.get()
-            if (config.requiresLoginForHumanVsAi()) {
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = "gomoku_ai",
-                    point = config.startPointsForHumanVsAi(),
-                    onSuccess = { createAiGame(title, aiSide) },
-                )
-            } else {
-                createAiGame(title, aiSide)
-            }
-        }
+        createAiGame(title, aiSide)
     }
 
-    /** 开一局 AI 对战：付费来源开局前登录 + 积分校验 */
     fun startAiVsAiGame(title: String) {
-        componentScope.launch {
-            val config = gomokuAiStore.get()
-            if (config.requiresLoginForAiVsAi()) {
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = "gomoku_ai_vs_ai",
-                    point = config.startPointsForAiVsAi(),
-                    onSuccess = { createAiVsAiGame(title) },
-                )
-            } else {
-                createAiVsAiGame(title)
-            }
-        }
+        createAiVsAiGame(title)
     }
 
 
@@ -87,24 +62,15 @@ class GomokuLibraryComponent @AssistedInject constructor(
     }
 
     fun createLocalGame(title: String) {
-        componentScope.launch {
-            val gameId = createGame.createLocal(title)
-            navigateToGame(gameId)
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.local()))
     }
 
     fun createAiGame(title: String, aiSide: Side) {
-        componentScope.launch {
-            val gameId = createGame.createHumanVsAi(title, aiSide)
-            navigateToGame(gameId)
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.humanVsAi(aiSide)))
     }
 
     fun createAiVsAiGame(title: String) {
-        componentScope.launch {
-            val gameId = createGame.createAiVsAi(title)
-            navigateToGame(gameId)
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.aiVsAi()))
     }
 
     fun createOnlineGame(
@@ -134,19 +100,17 @@ class GomokuLibraryComponent @AssistedInject constructor(
     }
 
     fun importFen(title: String, fen: String, defaultTitle: String) {
+        val board = runCatching { FenCodec.parse(fen) }.getOrNull()
+        if (board == null) ActionUtils.showToast(R.string.gomoku_invalid_fen)
+        else onPrepareGame(GamePreparation(
+            title = title.ifBlank { defaultTitle }, setup = GameSetup.local(), initialFen = FenCodec.encode(board),
+        ))
+    }
+
+    fun openSourceGame(gameId: String) {
         componentScope.launch {
-            when (val result = importGame.importFen(title, fen, defaultTitle)) {
-                is ImportResult.Failure -> ActionUtils.showToast(
-                    when (result.cause) {
-                        ImportFailureCause.INVALID_FEN -> R.string.gomoku_invalid_fen
-                        ImportFailureCause.INVALID_JSON -> R.string.gomoku_invalid_json
-                    },
-                )
-                is ImportResult.Success -> {
-                    notifyImportOutcome(result)
-                    navigateToGame(result.gameId)
-                }
-            }
+            if (gameQuery.getById(gameId) == null) ActionUtils.showToast(R.string.gomoku_game_missing)
+            else navigateToGame(gameId)
         }
     }
 
@@ -213,6 +177,7 @@ class GomokuLibraryComponent @AssistedInject constructor(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
+            onPrepareGame: (GamePreparation) -> Unit,
         ): GomokuLibraryComponent
     }
 }

@@ -3,30 +3,37 @@ package com.wanbaohe.chess.ui.board
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.chess.domain.GameArbiter
@@ -38,7 +45,7 @@ import com.wanbaohe.chess.domain.model.Side
 import kotlin.math.roundToInt
 
 // 白方用空心字形、黑方用实心字形,统一深色字色,视觉上是同一套深色轮廓棋子
-private fun Piece.glyph(): String = when (type) {
+internal fun Piece.glyph(): String = when (type) {
     PieceType.KING -> if (side == Side.WHITE) "♔" else "♚"
     PieceType.QUEEN -> if (side == Side.WHITE) "♕" else "♛"
     PieceType.ROOK -> if (side == Side.WHITE) "♖" else "♜"
@@ -65,12 +72,17 @@ fun ChessBoard(
     bottomSide: Side = Side.WHITE,
     checkNotice: String = "",
     lastMove: Pair<BoardPoint, BoardPoint>? = null,
+    onPieceDrop: ((BoardPoint, BoardPoint) -> Unit)? = null,
 ) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
     BoxWithConstraints(
-        modifier = modifier.aspectRatio(1f)
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
     ) {
+        val boardSize = minOf(maxWidth, maxHeight).coerceAtLeast(1.dp)
+        BoxWithConstraints(Modifier.size(boardSize)) {
         // 外圈留白放坐标标注;内层是真正的 8×8 棋盘
-        val padding = 22.dp
+        val padding = minOf(22.dp, boardSize / 12)
         val paddingPx = with(androidx.compose.ui.platform.LocalDensity.current) { padding.toPx() }
         // 格宽在外层作用域先算好:内层 Box lambda 里拿不到 constraints
         val cellPx = (constraints.maxWidth - paddingPx * 2) / BoardPoint.FILE_COUNT
@@ -134,6 +146,7 @@ fun ChessBoard(
                                 )
                             }
                         }
+                        }
                     }
                 }
             }
@@ -147,8 +160,8 @@ fun ChessBoard(
                     fontSize = 10.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .offset {
+                        .align(Alignment.TopStart)
+                        .absoluteOffset {
                             IntOffset(
                                 (paddingPx + i * cellPx + cellPx / 2).roundToInt() - 4.dp.roundToPx(),
                                 (paddingPx + 8 * cellPx + 2.dp.toPx()).roundToInt(),
@@ -161,7 +174,7 @@ fun ChessBoard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .align(Alignment.TopStart)
-                        .offset {
+                        .absoluteOffset {
                             IntOffset(
                                 (paddingPx / 2 - 4.dp.toPx()).roundToInt(),
                                 (paddingPx + i * cellPx + cellPx / 2 - 6.dp.toPx()).roundToInt(),
@@ -176,16 +189,47 @@ fun ChessBoard(
                     for (displayFile in 0 until BoardPoint.FILE_COUNT) {
                         val point = displayPointToBoardPoint(displayFile, displayRank, bottomSide)
                         val piece = boardState.pieceAt(point)
+                        var dragOffset by remember(boardState, point) { mutableStateOf(Offset.Zero) }
+                        var dragStart by remember(boardState, point) { mutableStateOf(Offset.Zero) }
+                        var dragging by remember(boardState, point) { mutableStateOf(false) }
 
                         Box(
                             modifier = Modifier
-                                .offset {
+                                .zIndex(if (dragging) 1f else 0f)
+                                .absoluteOffset {
                                     IntOffset(
                                         (paddingPx + displayFile * cellPx).roundToInt(),
                                         (paddingPx + displayRank * cellPx).roundToInt(),
                                     )
                                 }
                                 .size(with(androidx.compose.ui.platform.LocalDensity.current) { cellPx.toDp() })
+                                .then(
+                                    if (onPieceDrop == null || piece == null) Modifier else Modifier.pointerInput(
+                                        boardState, point, bottomSide, cellPx, onPieceDrop,
+                                    ) {
+                                        detectDragGestures(
+                                            onDragStart = {
+                                                dragStart = it
+                                                dragOffset = Offset.Zero
+                                                dragging = true
+                                            },
+                                            onDragCancel = { dragOffset = Offset.Zero; dragging = false },
+                                            onDragEnd = {
+                                                val position = dragStart + dragOffset
+                                                val targetFile = displayFile + kotlin.math.floor(position.x / cellPx).toInt()
+                                                val targetRank = displayRank + kotlin.math.floor(position.y / cellPx).toInt()
+                                                if (targetFile in 0..7 && targetRank in 0..7) {
+                                                    onPieceDrop?.invoke(point, displayPointToBoardPoint(targetFile, targetRank, bottomSide))
+                                                }
+                                                dragOffset = Offset.Zero
+                                                dragging = false
+                                            },
+                                        ) { change, amount ->
+                                            change.consume()
+                                            dragOffset += amount
+                                        }
+                                    }
+                                )
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = null,
@@ -197,13 +241,14 @@ fun ChessBoard(
                                 Text(
                                     text = piece.glyph(),
                                     fontSize = with(androidx.compose.ui.platform.LocalDensity.current) { (cellPx * 0.72f).toSp() },
-                                    color = if (piece.side == Side.WHITE) {
-                                        MaterialTheme.colorScheme.onSurface
-                                    } else {
-                                        MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.graphicsLayer {
+                                        translationX = dragOffset.x
+                                        translationY = dragOffset.y
                                     },
                                     fontWeight = FontWeight.Normal,
                                 )
+                            }
                             }
                         }
                     }
@@ -231,7 +276,7 @@ fun ChessBoard(
 }
 
 /** 棋盘坐标 → 显示坐标;bottomSide 为黑方时翻转视角(白方在底部是默认) */
-private fun displayPointToBoardPoint(displayFile: Int, displayRank: Int, bottomSide: Side): BoardPoint =
+internal fun displayPointToBoardPoint(displayFile: Int, displayRank: Int, bottomSide: Side): BoardPoint =
     if (bottomSide == Side.WHITE) {
         // 白方在底:屏幕底行是 rank 0
         BoardPoint(displayFile, BoardPoint.RANK_COUNT - 1 - displayRank)

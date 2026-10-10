@@ -1,5 +1,6 @@
 package com.wanbaohe.chess.application.port.outbound
 
+import com.wanbaohe.chess.application.dto.GameAiPlayerConfig
 import com.wanbaohe.chess.domain.model.BoardState
 import com.wanbaohe.chess.domain.model.Side
 import com.wanbaohe.chess.domain.model.ChessMove
@@ -12,7 +13,18 @@ interface MoveChooser {
         legalMoves: List<ChessMove>,
         slot: EngineSlot,
     ): MoveDecision?
+
+    suspend fun chooseForGame(
+        boardState: BoardState,
+        fen: String,
+        history: List<String>,
+        legalMoves: List<ChessMove>,
+        slot: EngineSlot,
+        playerConfig: GameAiPlayerConfig?,
+    ): MoveDecision? = choose(boardState, fen, history, legalMoves, slot)
 }
+
+class AiOpponentUnavailableException : IllegalStateException("Saved AI opponent is unavailable")
 
 enum class EngineSlot { FAST, DUEL_A, DUEL_B }
 

@@ -2,14 +2,17 @@ package com.wanbaohe.chess.data
 
 import com.shifenmiao.database.chess.dao.ChessGameDao
 import com.shifenmiao.database.chess.entity.ChessGameEntity
+import com.shifenmiao.model.ModelProvider.AppJson
 import com.wanbaohe.chess.application.port.outbound.GameEntity
 import com.wanbaohe.chess.application.port.outbound.GameStore
 import com.wanbaohe.chess.application.port.outbound.GameSummaryEntity
 import com.wanbaohe.chess.domain.model.GameMode
+import com.wanbaohe.chess.domain.model.GameOrigin
 import com.wanbaohe.chess.domain.model.GameStatus
 import com.wanbaohe.chess.domain.model.PlayerType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,6 +65,7 @@ class GameDaoAdapter @Inject constructor(
         lastMoveAt = lastMoveAt,
         lastPlayedAt = lastPlayedAt,
         updatedAt = updatedAt,
+        origin = decodeOrigin(originJson),
     )
 
     private fun ChessGameEntity.toSummaryEntity() = GameSummaryEntity(
@@ -75,6 +79,10 @@ class GameDaoAdapter @Inject constructor(
         resultText = result,
         updatedAt = updatedAt,
         plyCount = currentPly,
+        lastPlayedAt = lastPlayedAt,
+        redPlayerConfigJson = redPlayerConfigJson,
+        blackPlayerConfigJson = blackPlayerConfigJson,
+        origin = decodeOrigin(originJson),
     )
 
     private fun GameEntity.toDbEntity() = ChessGameEntity(
@@ -95,5 +103,10 @@ class GameDaoAdapter @Inject constructor(
         lastMoveAt = lastMoveAt,
         lastPlayedAt = lastPlayedAt,
         updatedAt = updatedAt,
+        originJson = origin?.let { AppJson.encodeToString(it) } ?: "{}",
     )
+
+    private fun decodeOrigin(json: String): GameOrigin? =
+        if (json.isBlank() || json == "{}") null
+        else runCatching { AppJson.decodeFromString<GameOrigin>(json) }.getOrNull()
 }

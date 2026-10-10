@@ -9,13 +9,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -55,7 +56,7 @@ fun GomokuBoard(
     BoxWithConstraints(
         modifier = modifier.aspectRatio(1f)
     ) {
-        val padding = 20.dp
+        val padding = minOf(20.dp, maxWidth * 0.055f)
         val paddingPx = with(androidx.compose.ui.platform.LocalDensity.current) { padding.toPx() }
         val cellCount = BoardPoint.FILE_COUNT - 1
         // 格距在外层 BoxWithConstraints 作用域先算好:内层 Box lambda 里拿不到 constraints
@@ -101,7 +102,7 @@ fun GomokuBoard(
             }
 
             // 棋子与交互层
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = AbsoluteAlignment.TopLeft) {
 
                 for (displayRank in 0 until BoardPoint.RANK_COUNT) {
                     for (displayFile in 0 until BoardPoint.FILE_COUNT) {
@@ -116,7 +117,7 @@ fun GomokuBoard(
                         // 点击区域(以交点为中心)
                         Box(
                             modifier = Modifier
-                                .offset {
+                                .absoluteOffset {
                                     IntOffset(
                                         (paddingPx + displayFile * gapPx - gapPx / 2).roundToInt(),
                                         (paddingPx + displayRank * gapPx - gapPx / 2).roundToInt(),
@@ -148,9 +149,9 @@ fun GomokuBoard(
                                 // 选中点(落子前瞬间的高亮)
                                 isSelected -> Box(
                                     modifier = Modifier
-                                        .size(stoneSize)
+                                        .size(stoneSize * 1.15f)
                                         .clip(CircleShape)
-                                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.25f))
+                                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                                 )
                             }
                         }
@@ -159,7 +160,7 @@ fun GomokuBoard(
                         if (stone != null) {
                             Box(
                                 modifier = Modifier
-                                    .offset {
+                                    .absoluteOffset {
                                         IntOffset(
                                             (paddingPx + displayFile * gapPx - gapPx * 0.44f).roundToInt(),
                                             (paddingPx + displayRank * gapPx - gapPx * 0.44f).roundToInt(),
@@ -194,7 +195,7 @@ private fun boardPointToDisplay(point: BoardPoint, bottomSide: Side): Pair<Int, 
 
 /** 棋子:径向渐变圆(黑深灰→纯黑,白白→浅灰),带细描边 */
 @Composable
-private fun StoneDisc(side: Side) {
+internal fun StoneDisc(side: Side) {
     val isBlack = side == Side.BLACK
     val centerColor = if (isBlack) Color(0xFF4A4A4A) else Color.White
     val edgeColor = if (isBlack) Color(0xFF101010) else Color(0xFFD9D9D9)

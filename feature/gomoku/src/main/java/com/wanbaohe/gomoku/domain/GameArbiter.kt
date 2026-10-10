@@ -20,10 +20,11 @@ private val FIVE_DIRECTIONS = listOf(
 object GameArbiter {
 
     fun legalMoves(boardState: BoardState, side: Side = boardState.sideToMove): List<GomokuMove> =
-        MoveGenerator.pseudoLegalMoves(boardState, side)
+        if (evaluateStatus(boardState) != GameStatus.PLAYING) emptyList() else MoveGenerator.pseudoLegalMoves(boardState, side)
             .map { it.copy(notationUcci = it.to.toCoordinate(), notationCn = it.to.toCoordinate()) }
 
     fun applyMove(boardState: BoardState, move: GomokuMove): MoveOutcome {
+        if (evaluateStatus(boardState) != GameStatus.PLAYING) return MoveOutcome.Rejected("Game is over")
         if (move.side != boardState.sideToMove) {
             return MoveOutcome.Rejected("Not your turn")
         }

@@ -14,8 +14,8 @@ import com.wanbaohe.chess.application.usecase.ImportFailureCause
 import com.wanbaohe.chess.application.usecase.ImportGameUseCase
 import com.wanbaohe.chess.application.usecase.ImportResult
 import com.wanbaohe.chess.application.usecase.ManageGameUseCase
-import com.wanbaohe.chess.application.port.outbound.ChessAiConfig
-import com.wanbaohe.chess.application.port.outbound.ChessAiStore
+import com.wanbaohe.chess.application.dto.GamePreparation
+import com.wanbaohe.chess.domain.model.GameSetup
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.chess.R
@@ -30,48 +30,22 @@ class ChessLibraryComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
+    @Assisted private val onPrepareGame: (GamePreparation) -> Unit,
+    @Assisted private val onBeforeModal: (() -> Unit) -> Unit,
     private val createGame: CreateGameUseCase,
     private val gameQuery: GameQueryUseCase,
     private val importGame: ImportGameUseCase,
     private val deleteGameUseCase: DeleteGameUseCase,
     private val manageGame: ManageGameUseCase,
-    private val chessAiStore: ChessAiStore,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    /**
-     * 开一局人机：Pikafish 等服务端引擎免登录免积分；
-     * 聊天 LLM / Jev 在开局前做登录 + 积分余额校验（不在此扣减）。
-     */
     fun startAiGame(title: String, aiSide: Side) {
-        componentScope.launch {
-            val config = chessAiStore.get()
-            if (config.requiresLoginForHumanVsAi()) {
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = "chess_ai",
-                    point = config.startPointsForHumanVsAi(),
-                    onSuccess = { createAiGame(title, aiSide) },
-                )
-            } else {
-                createAiGame(title, aiSide)
-            }
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.humanVsAi(aiSide)))
     }
 
-    /** 开一局 AI 对战：付费来源开局前登录 + 积分校验 */
     fun startAiVsAiGame(title: String) {
-        componentScope.launch {
-            val config = chessAiStore.get()
-            if (config.requiresLoginForAiVsAi()) {
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = "chess_ai_vs_ai",
-                    point = config.startPointsForAiVsAi(),
-                    onSuccess = { createAiVsAiGame(title) },
-                )
-            } else {
-                createAiVsAiGame(title)
-            }
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.aiVsAi()))
     }
 
 
@@ -87,25 +61,18 @@ class ChessLibraryComponent @AssistedInject constructor(
     }
 
     fun createLocalGame(title: String) {
-        componentScope.launch {
-            val gameId = createGame.createLocal(title)
-            navigateToGame(gameId)
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.local()))
     }
 
     fun createAiGame(title: String, aiSide: Side) {
-        componentScope.launch {
-            val gameId = createGame.createHumanVsAi(title, aiSide)
-            navigateToGame(gameId)
-        }
+        startAiGame(title, aiSide)
     }
 
     fun createAiVsAiGame(title: String) {
-        componentScope.launch {
-            val gameId = createGame.createAiVsAi(title)
-            navigateToGame(gameId)
-        }
+        startAiVsAiGame(title)
     }
+
+    fun prepareForModal(onReady: () -> Unit) { onBeforeModal(onReady) }
 
     fun createOnlineGame(
         roomId: String,
@@ -195,6 +162,13 @@ class ChessLibraryComponent @AssistedInject constructor(
         onNavigate(Screen.ChessRouter(Screen.ChessRouter.Type.Analysis(gameId)))
     }
 
+    fun openSourceGame(gameId: String) {
+        componentScope.launch {
+            if (gameQuery.getById(gameId) == null) ActionUtils.showToast(R.string.chess_game_missing)
+            else navigateToGame(gameId)
+        }
+    }
+
     fun deleteGame(gameId: String) {
         componentScope.launch { deleteGameUseCase.delete(gameId) }
     }
@@ -213,6 +187,8 @@ class ChessLibraryComponent @AssistedInject constructor(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
+            onPrepareGame: (GamePreparation) -> Unit,
+            onBeforeModal: (() -> Unit) -> Unit,
         ): ChessLibraryComponent
     }
 }

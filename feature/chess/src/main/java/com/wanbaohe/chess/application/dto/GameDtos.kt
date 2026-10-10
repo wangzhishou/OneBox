@@ -1,6 +1,7 @@
 package com.wanbaohe.chess.application.dto
 
 import com.wanbaohe.chess.domain.model.GameMode
+import com.wanbaohe.chess.domain.model.GameOrigin
 import com.wanbaohe.chess.domain.model.GameStatus
 import com.wanbaohe.chess.domain.model.PlayerType
 import com.wanbaohe.chess.domain.model.Side
@@ -16,6 +17,10 @@ data class GameSummary(
     val updatedAt: Long,
     /** 已走着法数，历史卡片展示用。 */
     val plyCount: Int,
+    val lastPlayedAt: Long = 0L,
+    val whiteAiConfig: GameAiPlayerConfig? = null,
+    val blackAiConfig: GameAiPlayerConfig? = null,
+    val origin: GameOrigin? = null,
 )
 
 data class GameDetail(
@@ -41,6 +46,11 @@ data class GameDetail(
     val lastMoveAt: Long,
     val plies: List<PlyRecord>,
     val onlineMetadata: OnlineGameMetadata = OnlineGameMetadata(),
+    val whiteAiConfig: GameAiPlayerConfig? = null,
+    val blackAiConfig: GameAiPlayerConfig? = null,
+    val origin: GameOrigin? = null,
+    val whitePlayerConfigJson: String = "{}",
+    val blackPlayerConfigJson: String = "{}",
 )
 
 data class OnlineGameMetadata(

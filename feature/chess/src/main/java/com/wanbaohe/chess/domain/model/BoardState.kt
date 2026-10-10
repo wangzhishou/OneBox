@@ -79,6 +79,11 @@ data class BoardState(
                 if (move.from == BoardPoint(7, 7) || move.to == BoardPoint(7, 7)) drop('k')
             }
         }
+        // A rook captured on the opposite home corner also loses its castling right.
+        if (move.to == BoardPoint(0, 0)) drop('Q')
+        if (move.to == BoardPoint(7, 0)) drop('K')
+        if (move.to == BoardPoint(0, 7)) drop('q')
+        if (move.to == BoardPoint(7, 7)) drop('k')
         return rights.ifEmpty { "-" }
     }
 

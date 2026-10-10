@@ -4,6 +4,7 @@ import android.content.Context
 import com.shifenmiao.common.ai.AIPromptExecutor
 import com.shifenmiao.database.chat_prompt.dao.PromptDao
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
+import com.shifenmiao.model.ai.AiEngine
 import com.wanbaohe.chess.application.port.outbound.EngineSlot
 import com.wanbaohe.chess.application.port.outbound.MoveChooser
 import com.wanbaohe.chess.application.port.outbound.MoveDecision
@@ -28,6 +29,15 @@ class LlmMoveChooser @Inject constructor(
         history: List<String>,
         legalMoves: List<ChessMove>,
         slot: EngineSlot,
+    ): MoveDecision? = chooseWithEngine(boardState, fen, history, legalMoves, slot, null)
+
+    suspend fun chooseWithEngine(
+        boardState: BoardState,
+        fen: String,
+        history: List<String>,
+        legalMoves: List<ChessMove>,
+        slot: EngineSlot,
+        engine: AiEngine?,
     ): MoveDecision? {
         if (legalMoves.isEmpty()) return null
 
@@ -42,6 +52,7 @@ class LlmMoveChooser @Inject constructor(
                 engineMode = engineMode,
                 // 对局内每步都要调用,按量扣分会让棋局不可玩:有意保持免费
                 billing = AIPromptExecutor.PromptBilling.EXTERNAL,
+                engineOverride = engine,
             )
             if (!result.isSuccess) return@repeat
 

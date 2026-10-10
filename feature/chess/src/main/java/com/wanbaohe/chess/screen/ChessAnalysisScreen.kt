@@ -3,12 +3,14 @@ package com.wanbaohe.chess.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -32,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
@@ -45,6 +48,7 @@ import com.wanbaohe.chess.application.dto.NotationRows
 import com.wanbaohe.chess.application.dto.PlyRecord
 import com.wanbaohe.chess.component.ChessAnalysisComponent
 import com.wanbaohe.chess.data.TextExportLabels
+import com.wanbaohe.chess.domain.model.GameMode
 import com.wanbaohe.chess.presentation.localizedGameResultText
 import com.wanbaohe.chess.ui.board.ChessBoard
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
@@ -129,18 +133,18 @@ private fun ChessAnalysisContent(
 
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ChessBoard(
-            boardState = state.boardState,
-            selectedPoint = null,
-            candidateTargets = emptySet(),
-            onCellTap = { _, _ -> },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-        )
+        Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+            ChessBoard(
+                boardState = state.boardState,
+                selectedPoint = null,
+                candidateTargets = emptySet(),
+                onCellTap = { _, _ -> },
+                modifier = Modifier.padding(vertical = 4.dp),
+            )
+        }
 
         ReplayControls(
             isAutoPlaying = state.isAutoPlaying,
@@ -156,26 +160,35 @@ private fun ChessAnalysisContent(
                 text = resultText,
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
 
         // 未终局的局从卡片「复盘」进来后，必须有路回对局页；已结束的局没有可继续的下法
-        if (resultText.isBlank()) {
-            GlassTonalButton(
-                onClick = component::openCurrentGame,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (resultText.isBlank()) {
+                GlassTonalButton(
+                    onClick = component::openCurrentGame,
+                    modifier = Modifier.weight(1f),
                 ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Text(stringResource(R.string.chess_analysis_back_to_game))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Text(stringResource(R.string.chess_analysis_back_to_game), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }
                 }
+            }
+            if (state.mode != GameMode.ONLINE_PVP) GlassTonalButton(
+                onClick = component::practiceFromHere, enabled = state.isLoaded, modifier = Modifier.weight(1f),
+            ) {
+                Text(stringResource(R.string.chess_setup_practice_from_here), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
 
@@ -183,7 +196,7 @@ private fun ChessAnalysisContent(
             // weight 让面板占据剩余高度：棋盘与导出入口固定，只有着法表内部滚动。
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(0.8f),
             style = GlassStyle.Medium,
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -253,6 +266,9 @@ private fun AnalysisPanelHeader(
                 fontSize = 20.sp,
             ),
             color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -262,6 +278,9 @@ private fun AnalysisPanelHeader(
                 text = pluralStringResource(R.plurals.chess_ply_count, moveCount, moveCount),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.widthIn(max = 96.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             // 声音总开关：关掉后这一步的音效和背景音乐一起停
             GlassTonalIconButton(onClick = onToggleSound) {

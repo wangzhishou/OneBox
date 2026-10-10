@@ -1,12 +1,17 @@
 package com.wanbaohe.gomoku.application.usecase
 
 import com.wanbaohe.gomoku.application.dto.GameDetail
+import com.wanbaohe.gomoku.application.dto.GameAiPlayerConfig
 import com.wanbaohe.gomoku.application.port.outbound.GameEntity
 import com.wanbaohe.gomoku.application.port.outbound.GameStore
 import com.wanbaohe.gomoku.application.port.outbound.MoveStore
 import com.wanbaohe.gomoku.domain.FenCodec
 import com.wanbaohe.gomoku.domain.GameArbiter
 import com.wanbaohe.gomoku.domain.GameResultResolver
+import com.wanbaohe.gomoku.domain.SetupPositionValidator
+import com.wanbaohe.gomoku.domain.model.BoardState
+import com.wanbaohe.gomoku.domain.model.GameMode
+import com.wanbaohe.gomoku.domain.model.PlayerType
 import com.wanbaohe.gomoku.domain.model.GameStatus
 import com.wanbaohe.gomoku.domain.model.Side
 import java.util.UUID
@@ -27,6 +32,7 @@ class ManageGameUseCase @Inject constructor(
         if (GameResultResolver.resultText(game.status).isNotEmpty()) return query.getById(gameId)
         val now = System.currentTimeMillis()
         val status = GameArbiter.evaluateStatus(FenCodec.parse(game.currentFen))
+        if (status != GameStatus.PLAYING) return query.getById(gameId)
         gameStore.update(
             game.copy(
                 status = status,
@@ -47,6 +53,7 @@ class ManageGameUseCase @Inject constructor(
         if (game.status != GameStatus.PLAYING) {
             return query.getById(gameId)
         }
+
         gameStore.update(
             game.copy(
                 status = GameStatus.PAUSED,
@@ -56,8 +63,45 @@ class ManageGameUseCase @Inject constructor(
         return query.getById(gameId)
     }
 
+    suspend fun resumeAfterEditing(gameId: String, editingStartedAt: Long): GameDetail? {
+        val game = gameStore.getById(gameId) ?: return null
+        if (game.status != GameStatus.PAUSED) return query.getById(gameId)
+        val now = System.currentTimeMillis()
+        gameStore.update(
+            game.copy(
+                status = GameArbiter.evaluateStatus(FenCodec.parse(game.currentFen)),
+                lastMoveAt = if (game.lastMoveAt > 0L)
+                    game.lastMoveAt + (now - editingStartedAt).coerceAtLeast(0L) else now,
+                updatedAt = now,
+            ),
+        )
+        return query.getById(gameId)
+    }
+
+    suspend fun updateInitialPosition(gameId: String, board: BoardState): GameDetail? {
+        val game = gameStore.getById(gameId) ?: return null
+        check(game.mode != GameMode.ONLINE_PVP)
+        check(game.status == GameStatus.NOT_STARTED && game.startedAt == 0L && game.currentPly == 0)
+        require(SetupPositionValidator.validate(board) == null)
+        val fen = FenCodec.encode(board.copy(moveNumber = 1))
+        gameStore.update(game.copy(initialFen = fen, currentFen = fen, updatedAt = System.currentTimeMillis()))
+        return query.getById(gameId)
+    }
+
+    suspend fun updateAiConfig(gameId: String, side: Side, config: GameAiPlayerConfig): GameDetail? {
+        val game = gameStore.getById(gameId) ?: return null
+        val playerType = if (side == Side.BLACK) game.blackPlayerType else game.whitePlayerType
+        check(game.mode != GameMode.ONLINE_PVP && playerType == PlayerType.LLM)
+        require(config.isSupported)
+        val next = if (side == Side.WHITE) game.copy(redPlayerConfigJson = config.encode())
+            else game.copy(blackPlayerConfigJson = config.encode())
+        gameStore.update(next.copy(updatedAt = System.currentTimeMillis()))
+        return query.getById(gameId)
+    }
+
     suspend fun undo(gameId: String, steps: Int = 1): GameDetail? {
         val game = gameStore.getById(gameId) ?: return null
+        if (steps <= 0 || game.mode == GameMode.ONLINE_PVP) return query.getById(gameId)
         val targetPly = (game.currentPly - steps).coerceAtLeast(0)
         val targetFen = resolveFenAtPly(game, targetPly)
         updateGameToPly(game, targetPly, targetFen)
@@ -66,6 +110,7 @@ class ManageGameUseCase @Inject constructor(
 
     suspend fun redo(gameId: String, steps: Int = 1): GameDetail? {
         val game = gameStore.getById(gameId) ?: return null
+        if (steps <= 0 || game.mode == GameMode.ONLINE_PVP) return query.getById(gameId)
         val plies = moveStore.getByGame(gameId)
         val targetPly = (game.currentPly + steps).coerceAtMost(plies.size)
         val targetFen = if (targetPly == 0) game.initialFen
@@ -166,7 +211,7 @@ class ManageGameUseCase @Inject constructor(
         // 认输是「非盘面终局」:悔棋/重做只能改变局面,不能推翻"已经认输"这件事。
         // 直接采用 evaluateStatus 会把 RESIGNED 顶成 PLAYING,并把结果字段洗成空。
         val keepExplicitResult = GameResultResolver.isExplicitTerminal(game.status)
-        val status = if (keepExplicitResult) game.status else evaluated
+        val status = GameResultResolver.statusAfterHistoryChange(game.status, evaluated)
         gameStore.update(
             game.copy(
                 currentPly = targetPly,
@@ -178,6 +223,7 @@ class ManageGameUseCase @Inject constructor(
                 else GameResultResolver.winnerSide(status),
                 updatedAt = now,
                 lastPlayedAt = now,
+                lastMoveAt = now,
             ),
         )
     }

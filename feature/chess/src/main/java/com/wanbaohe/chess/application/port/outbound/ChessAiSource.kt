@@ -28,7 +28,7 @@ sealed interface ChessAiSource {
     val startPoints: Int
         get() = if (requiresPoints) START_POINTS else 0
 
-    /** 全局「快速工作模型」聊天 LLM(跟聊天共用 FAST/工作槽,不在此另存模型) */
+    /** 聊天 LLM；新局从工作槽取默认值，开局后独立保存服务与模型身份。 */
     data object WorkingModel : ChessAiSource
 
     /**

@@ -13,4 +13,7 @@ dependencies {
     implementation(projects.core.tts)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization.json)
+
+    testImplementation(kotlin("test"))
+    testImplementation(libs.junit)
 }

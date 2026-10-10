@@ -5,7 +5,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.essenty.lifecycle.doOnStart
+import com.arkivanov.essenty.lifecycle.doOnStop
 import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
@@ -17,10 +20,14 @@ import com.wanbaohe.chess.application.usecase.AudioFeedbackUseCase
 import com.wanbaohe.chess.application.usecase.ExportGameUseCase
 import com.wanbaohe.chess.application.usecase.GameQueryUseCase
 import com.wanbaohe.chess.application.usecase.SettingsUseCase
+import com.wanbaohe.chess.application.usecase.ManageGameUseCase
+import com.wanbaohe.chess.application.dto.GamePreparation
+import com.wanbaohe.chess.application.dto.GameDetail
 import com.wanbaohe.chess.data.ChessPlyRecord
 import com.wanbaohe.chess.data.TextExportLabels
 import com.wanbaohe.chess.domain.FenCodec
 import com.wanbaohe.chess.domain.model.BoardState
+import com.wanbaohe.chess.domain.model.GameMode
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -45,6 +52,9 @@ data class ChessAnalysisUiState(
     val isAutoPlaying: Boolean = false,
     /** 声音总开关：关掉之后音效和背景音乐一起静音 */
     val isSoundOn: Boolean = true,
+    val initialFen: String = FenCodec.INITIAL_FEN,
+    val mode: GameMode = GameMode.LOCAL_PVP,
+    val isLoaded: Boolean = false,
 )
 
 class ChessAnalysisComponent @AssistedInject constructor(
@@ -53,12 +63,14 @@ class ChessAnalysisComponent @AssistedInject constructor(
     @Assisted initialPly: Int,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
+    @Assisted private val onPrepareGame: (GamePreparation) -> Unit,
     private val gameQuery: GameQueryUseCase,
     private val exportGame: ExportGameUseCase,
     private val audioFeedback: AudioFeedbackUseCase,
     private val settingsUseCase: SettingsUseCase,
     private val soundPlayer: SoundPlayer,
     private val audioPlayer: NetworkAudioPlayer,
+    private val manageGame: ManageGameUseCase,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -67,6 +79,9 @@ class ChessAnalysisComponent @AssistedInject constructor(
 
     private var targetInitialPly by mutableIntStateOf(initialPly)
     private var autoPlayJob: Job? = null
+    private var isVisible = lifecycle.state >= Lifecycle.State.STARTED
+    private var visibilityEpoch = 0L
+    private var replaySource: GameDetail? = null
 
     /**
      * 声音开关（复盘页顶上的小喇叭）。
@@ -89,7 +104,7 @@ class ChessAnalysisComponent @AssistedInject constructor(
     }
 
     private suspend fun startBackgroundMusic(settings: AudioSettings) {
-        if (!settings.soundEnabled) return
+        if (!isVisible || !settings.soundEnabled) return
         // 用户没填就用内置的 24s 循环 BGM，别让复盘页干着
         val url = settings.backgroundMusicUrl.ifBlank { ChessAudioDefaults.BACKGROUND }
         runCatching { soundPlayer.playBackground(url) }
@@ -104,6 +119,7 @@ class ChessAnalysisComponent @AssistedInject constructor(
     }
 
     fun startAutoPlay() {
+        if (!isVisible || !uiState.isLoaded) return
         stopAutoPlay()
         if (uiState.currentPly >= uiState.maxPly) {
             goToStart()
@@ -136,15 +152,27 @@ class ChessAnalysisComponent @AssistedInject constructor(
         componentScope.launch {
             val settings = settingsUseCase.current()
             uiState = uiState.copy(isSoundOn = settings.soundEnabled)
-            startBackgroundMusic(settings)
+        }
+        componentContext.lifecycle.doOnStart {
+            isVisible = true
+            componentScope.launch { startBackgroundMusic(settingsUseCase.current()) }
         }
         componentContext.lifecycle.doOnDestroy {
             audioPlayer.stopBackground()
             audioPlayer.stopEffect()
         }
+        componentContext.lifecycle.doOnStop {
+            isVisible = false
+            visibilityEpoch++
+            stopAutoPlay()
+            audioPlayer.stopBackground()
+            audioPlayer.stopEffect()
+        }
         componentScope.launch {
+            manageGame.pauseOffline(gameId)
             gameQuery.observeById(gameId).collect { detail ->
                 detail ?: return@collect
+                replaySource = detail
                 val plies = detail.plies
                 val maxPly = plies.maxOfOrNull { it.ply } ?: 0
                 val target = if (targetInitialPly >= 0) {
@@ -156,6 +184,9 @@ class ChessAnalysisComponent @AssistedInject constructor(
                 uiState = uiState.copy(
                     resultText = detail.resultText,
                     title = detail.title,
+                    initialFen = detail.initialFen,
+                    mode = detail.mode,
+                    isLoaded = true,
                 )
                 updatePly(
                     plies,
@@ -170,23 +201,23 @@ class ChessAnalysisComponent @AssistedInject constructor(
 
     fun goToStart() {
         stopAutoPlay()
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, 0)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, 0)
     }
 
     fun goPrev() {
         stopAutoPlay()
         val target = (uiState.currentPly - 1).coerceAtLeast(0)
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, target, play = target > 0)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, target, play = target > 0)
     }
 
     fun goNext() {
         val target = (uiState.currentPly + 1).coerceAtMost(uiState.maxPly)
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, target, play = target > uiState.currentPly)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, target, play = target > uiState.currentPly)
     }
 
     fun goToEnd() {
         stopAutoPlay()
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, uiState.maxPly)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, uiState.maxPly)
     }
 
     /**
@@ -199,7 +230,7 @@ class ChessAnalysisComponent @AssistedInject constructor(
         val target = ply.coerceIn(0, uiState.maxPly)
         updatePly(
             uiState.plies,
-            uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN,
+            uiState.initialFen,
             uiState.title,
             target,
             play = target > 0,
@@ -207,7 +238,22 @@ class ChessAnalysisComponent @AssistedInject constructor(
     }
 
     fun openCurrentGame() {
+        stopAutoPlay()
         onNavigate(Screen.ChessRouter(Screen.ChessRouter.Type.Game(gameId)))
+    }
+
+    fun practiceFromHere() {
+        if (!isVisible || !uiState.isLoaded || uiState.mode == GameMode.ONLINE_PVP) return
+        stopAutoPlay()
+        val board = uiState.boardState
+        val ply = uiState.currentPly
+        val epoch = visibilityEpoch
+        val source = replaySource ?: return
+        componentScope.launch {
+            val preparation = manageGame.preparePractice(source, board, ply)
+            if (!isVisible || visibilityEpoch != epoch) return@launch
+            onPrepareGame(preparation)
+        }
     }
 
     fun exportFen() {
@@ -269,7 +315,7 @@ class ChessAnalysisComponent @AssistedInject constructor(
         val record = plies.firstOrNull { it.ply == targetPly } ?: return
         componentScope.launch {
             val settings = settingsUseCase.current()
-            audioFeedback.playForMove(record.beforeFen, record.afterFen, settings)
+            if (isVisible) audioFeedback.playForMove(record.beforeFen, record.afterFen, settings)
         }
     }
 
@@ -281,6 +327,7 @@ class ChessAnalysisComponent @AssistedInject constructor(
             initialPly: Int,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
+            onPrepareGame: (GamePreparation) -> Unit,
         ): ChessAnalysisComponent
     }
 }

@@ -17,10 +17,10 @@ interface ChessGameDao {
     @Query("SELECT * FROM chess_game WHERE archived = 0 ORDER BY last_played_at DESC")
     fun observeGames(): Flow<List<ChessGameEntity>>
 
-    @Query("SELECT * FROM chess_game WHERE id = :gameId LIMIT 1")
+    @Query("SELECT * FROM chess_game WHERE id = :gameId AND archived = 0 LIMIT 1")
     fun observeGame(gameId: String): Flow<ChessGameEntity?>
 
-    @Query("SELECT * FROM chess_game WHERE id = :gameId LIMIT 1")
+    @Query("SELECT * FROM chess_game WHERE id = :gameId AND archived = 0 LIMIT 1")
     suspend fun getGame(gameId: String): ChessGameEntity?
 
     @Query("UPDATE chess_game SET archived = 1 WHERE id = :gameId")

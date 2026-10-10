@@ -20,6 +20,7 @@ import com.wanbaohe.gomoku.screen.GomokuEmptyQuickPanel
 import com.wanbaohe.gomoku.screen.GomokuGameScreen
 import com.wanbaohe.gomoku.screen.GomokuLibraryScreen
 import com.wanbaohe.gomoku.screen.GomokuSettingsScreen
+import com.wanbaohe.gomoku.screen.GomokuPlayHomeScreen
 import com.wanbaohe.gomoku.screen.NewGameDropMenu
 import com.wanbaohe.gomoku.screen.OnlineMatchScreen
 import dagger.hilt.android.EntryPointAccessors
@@ -65,12 +66,12 @@ fun GomokuRouterScreen(component: GomokuRouterComponent) {
                 .firstOrNull { it.name == tab.id }
                 ?.let(component::selectTab)
         },
-        onGoBack = component.onGoBack,
+        onGoBack = component::navigateBack,
         onBack = {
             when {
                 component.canPop(activeRoute) -> component.navigateBackFrom(activeRoute)
                 activeTab != GomokuRouterComponent.Tab.Play -> component.selectTab(GomokuRouterComponent.Tab.Play)
-                else -> component.onGoBack()
+                else -> component.navigateBack()
             }
         },
         headerActions = if (activeTab != GomokuRouterComponent.Tab.Settings) {
@@ -85,12 +86,7 @@ fun GomokuRouterScreen(component: GomokuRouterComponent) {
         ) { child ->
             val contentModifier = Modifier.fillMaxSize()
             when (val instance = child.instance) {
-                GomokuRouterComponent.Child.PlayHome -> GomokuEmptyQuickPanel(
-                    component = component.libraryComponent,
-                    headline = stringResource(R.string.gomoku_empty_play_title),
-                    subline = stringResource(R.string.gomoku_empty_play_message),
-                    modifier = contentModifier,
-                )
+                GomokuRouterComponent.Child.PlayHome -> GomokuPlayHomeScreen(component, contentModifier)
 
                 GomokuRouterComponent.Child.AnalysisHome -> GomokuEmptyQuickPanel(
                     component = component.libraryComponent,

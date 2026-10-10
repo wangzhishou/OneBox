@@ -3,12 +3,14 @@ package com.wanbaohe.gomoku.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,6 +21,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
@@ -64,11 +68,13 @@ fun GomokuAnalysisScreen(
 ) {
     val state = component.uiState
     var exportDialog by remember { mutableStateOf(false) }
+    var showOrigin by remember { mutableStateOf(false) }
     val exportLabels = TextExportLabels(
         header = stringResource(R.string.gomoku_export_header),
         titleLabel = stringResource(R.string.gomoku_export_title_label),
         initialFenLabel = stringResource(R.string.gomoku_export_initial_fen_label),
         resultLabel = stringResource(R.string.gomoku_export_result_label),
+        sourceLabel = stringResource(R.string.gomoku_setup_source),
     )
     // 结果文案在 UI 层本地化后传给导出，导出层不依赖 Android 资源。
     // 用落库的 resultText（整局恒定），不是回放进度推出来的盘面状态。
@@ -80,6 +86,7 @@ fun GomokuAnalysisScreen(
             modifier = contentModifier,
             onExport = { exportDialog = true },
             resultText = resultText,
+            onShowOrigin = { showOrigin = true },
         )
     }
 
@@ -106,6 +113,10 @@ fun GomokuAnalysisScreen(
             },
         )
     }
+    state.origin?.let { origin ->
+        if (showOrigin) GomokuOriginDialog(origin,
+            { showOrigin = false; component.openSourceGame() }, { showOrigin = false })
+    }
 }
 
 @Composable
@@ -114,6 +125,7 @@ private fun GomokuAnalysisContent(
     modifier: Modifier,
     onExport: () -> Unit,
     resultText: String,
+    onShowOrigin: () -> Unit,
 ) {
     val state = component.uiState
     val rows = remember(state.plies) { NotationRows.of(state.plies) }
@@ -128,19 +140,13 @@ private fun GomokuAnalysisContent(
     }
 
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        GomokuBoard(
-            boardState = state.boardState,
-            selectedPoint = null,
-            candidateTargets = emptySet(),
-            onCellTap = { _, _ -> },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-        )
+        Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+            GomokuBoard(state.boardState, null, emptySet(), { _, _ -> })
+        }
 
         ReplayControls(
             isAutoPlaying = state.isAutoPlaying,
@@ -156,34 +162,16 @@ private fun GomokuAnalysisContent(
                 text = resultText,
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-        }
-
-        // 未终局的局从卡片「复盘」进来后，必须有路回对局页；已结束的局没有可继续的下法
-        if (resultText.isBlank()) {
-            GlassTonalButton(
-                onClick = component::openCurrentGame,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Text(stringResource(R.string.gomoku_analysis_back_to_game))
-                }
-            }
         }
 
         GlassSurface(
             // weight 让面板占据剩余高度：棋盘与导出入口固定，只有着法表内部滚动。
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(0.65f),
             style = GlassStyle.Medium,
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -222,6 +210,20 @@ private fun GomokuAnalysisContent(
                 }
             }
         }
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            TextButton(onClick = component::openCurrentGame, modifier = Modifier.weight(1f), enabled = state.isLoaded) {
+                Text(stringResource(R.string.gomoku_analysis_back_to_game), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            GlassTonalButton(onClick = component::practiceFromHere, modifier = Modifier.weight(1.3f), enabled = component.canPracticeFromHere) {
+                Text(stringResource(R.string.gomoku_practice_from_here), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            if (state.origin != null) {
+                TextButton(onClick = onShowOrigin, modifier = Modifier.weight(0.7f)) {
+                    Text(stringResource(R.string.gomoku_setup_source), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+            }
+        }
     }
 }
 
@@ -253,6 +255,9 @@ private fun AnalysisPanelHeader(
                 fontSize = 20.sp,
             ),
             color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -262,6 +267,9 @@ private fun AnalysisPanelHeader(
                 text = pluralStringResource(R.plurals.gomoku_ply_count, moveCount, moveCount),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.widthIn(max = 72.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             // 声音总开关：关掉后这一步的音效和背景音乐一起停
             GlassTonalIconButton(onClick = onToggleSound) {

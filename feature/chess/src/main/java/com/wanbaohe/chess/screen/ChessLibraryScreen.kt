@@ -9,6 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -25,6 +29,7 @@ import com.wanbaohe.chess.domain.model.GameMode
 import com.wanbaohe.chess.domain.model.GameStatus
 import com.wanbaohe.chess.domain.model.PlayerType
 import com.wanbaohe.chess.presentation.localizedGameResultText
+import com.wanbaohe.chess.presentation.displayNames
 
 @Composable
 fun ChessLibraryScreen(
@@ -86,6 +91,8 @@ private fun ChessLibraryContent(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(component.games, key = { it.id }) { item ->
+            var showOrigin by remember(item.id) { mutableStateOf(false) }
+            val origin = item.origin
             GameCard(
                 data = item.toCardData(),
                 labels = labels,
@@ -100,6 +107,11 @@ private fun ChessLibraryContent(
                 onAnalysis = { component.openAnalysis(item.id) },
                 onDelete = { component.deleteGame(item.id) },
                 onRename = { newTitle -> component.renameGame(item.id, newTitle) },
+                sourceLabel = origin?.let { stringResource(R.string.chess_setup_source_ply, it.ply) }.orEmpty(),
+                onShowSource = if (origin != null) ({ showOrigin = true }) else null,
+            )
+            if (showOrigin && origin != null) ChessOriginDialog(
+                origin, { showOrigin = false; component.openSourceGame(origin.gameId) }, { showOrigin = false },
             )
         }
         item { Spacer(modifier = Modifier.height(80.dp)) }
@@ -117,12 +129,16 @@ private fun ChessGameSummary.toCardData(): GameCardData {
     }
 
     val blackName = when {
-        blackPlayerType == PlayerType.LLM -> stringResource(R.string.chess_player_ai)
+        blackPlayerType == PlayerType.LLM -> blackAiConfig?.displayNames()?.let { (service, model) ->
+            if (model.isBlank()) service else "$service · $model"
+        }.orEmpty().ifBlank { stringResource(R.string.chess_player_ai) }
         isLocal -> stringResource(R.string.chess_player_local_black)
         else -> stringResource(R.string.chess_player_you)
     }
     val whiteName = when {
-        whitePlayerType == PlayerType.LLM -> stringResource(R.string.chess_player_ai)
+        whitePlayerType == PlayerType.LLM -> whiteAiConfig?.displayNames()?.let { (service, model) ->
+            if (model.isBlank()) service else "$service · $model"
+        }.orEmpty().ifBlank { stringResource(R.string.chess_player_ai) }
         isLocal -> stringResource(R.string.chess_player_local_white)
         else -> stringResource(R.string.chess_player_you)
     }
@@ -132,7 +148,7 @@ private fun ChessGameSummary.toCardData(): GameCardData {
         statusText = when (status) {
             GameStatus.NOT_STARTED -> stringResource(R.string.chess_library_status_not_started)
             GameStatus.PAUSED -> stringResource(R.string.chess_library_status_paused)
-            GameStatus.PLAYING -> stringResource(R.string.chess_library_status_in_progress)
+            GameStatus.PLAYING, GameStatus.CHECK -> stringResource(R.string.chess_library_status_in_progress)
             else -> stringResource(R.string.chess_library_status_game_over)
         },
         modeBadge = modeText,

@@ -1,6 +1,7 @@
 package com.wanbaohe.gomoku.application.dto
 
 import com.wanbaohe.gomoku.domain.model.GameMode
+import com.wanbaohe.gomoku.domain.model.GameOrigin
 import com.wanbaohe.gomoku.domain.model.GameStatus
 import com.wanbaohe.gomoku.domain.model.PlayerType
 import com.wanbaohe.gomoku.domain.model.Side
@@ -16,6 +17,10 @@ data class GameSummary(
     val updatedAt: Long,
     /** 已走着法数，历史卡片展示用。 */
     val plyCount: Int,
+    val lastPlayedAt: Long = 0L,
+    val blackAiConfig: GameAiPlayerConfig? = null,
+    val whiteAiConfig: GameAiPlayerConfig? = null,
+    val origin: GameOrigin? = null,
 )
 
 data class GameDetail(
@@ -41,6 +46,11 @@ data class GameDetail(
     val lastMoveAt: Long,
     val plies: List<PlyRecord>,
     val onlineMetadata: OnlineGameMetadata = OnlineGameMetadata(),
+    val blackPlayerConfigJson: String = "{}",
+    val whitePlayerConfigJson: String = "{}",
+    val blackAiConfig: GameAiPlayerConfig? = null,
+    val whiteAiConfig: GameAiPlayerConfig? = null,
+    val origin: GameOrigin? = null,
 )
 
 data class OnlineGameMetadata(
@@ -55,7 +65,7 @@ data class PlyRecord(
     val ply: Int,
     val moveUcci: String,
     val moveCn: String,
-    /** 行棋方。文本棋谱与回放着法表必须按它分组，不能按 ply 的奇偶/位置配对（黑先残局会整体错位）。 */
+    /** 行棋方。文本棋谱与回放着法表必须按它分组，不能按 ply 的奇偶/位置配对（白先练习会整体错位）。 */
     val moverSide: Side,
     val beforeFen: String,
     val afterFen: String,
@@ -96,7 +106,7 @@ object NotationRows {
         plies.forEach { ply ->
             when (ply.moverSide) {
                 Side.BLACK -> {
-                    if (black != null) flush()
+                    if (black != null || white != null) flush()
                     black = ply
                 }
                 Side.WHITE -> {
@@ -115,4 +125,5 @@ data class ExportLabels(
     val titleLabel: String,
     val initialFenLabel: String,
     val resultLabel: String,
+    val sourceLabel: String = "",
 )

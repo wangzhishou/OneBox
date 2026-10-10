@@ -17,10 +17,10 @@ interface GomokuGameDao {
     @Query("SELECT * FROM gomoku_game WHERE archived = 0 ORDER BY last_played_at DESC")
     fun observeGames(): Flow<List<GomokuGameEntity>>
 
-    @Query("SELECT * FROM gomoku_game WHERE id = :gameId LIMIT 1")
+    @Query("SELECT * FROM gomoku_game WHERE id = :gameId AND archived = 0 LIMIT 1")
     fun observeGame(gameId: String): Flow<GomokuGameEntity?>
 
-    @Query("SELECT * FROM gomoku_game WHERE id = :gameId LIMIT 1")
+    @Query("SELECT * FROM gomoku_game WHERE id = :gameId AND archived = 0 LIMIT 1")
     suspend fun getGame(gameId: String): GomokuGameEntity?
 
     @Query("UPDATE gomoku_game SET archived = 1 WHERE id = :gameId")

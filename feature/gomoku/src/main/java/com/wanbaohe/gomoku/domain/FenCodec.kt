@@ -16,12 +16,16 @@ object FenCodec {
 
     fun parse(fen: String): BoardState {
         val parts = fen.trim().split(Regex("\\s+"))
-        require(parts.size >= 2) { "Invalid FEN: side to move is missing" }
+        require(parts.size in 2..3) { "Invalid FEN: expected board, side and optional move number" }
+        val moveNumber = parts.getOrNull(2)?.let {
+            requireNotNull(it.toIntOrNull()) { "Invalid FEN: invalid move number" }
+        } ?: 1
+        require(moveNumber >= 1) { "Invalid FEN: move number must be positive" }
 
         return BoardState(
             board = parseBoard(parts.first()),
             sideToMove = parseSide(parts[1]),
-            moveNumber = parts.getOrNull(2)?.toIntOrNull() ?: 1,
+            moveNumber = moveNumber,
         )
     }
 
@@ -42,28 +46,30 @@ object FenCodec {
     }
 
     private fun parseRank(rankFen: String): List<Side?> {
-        val cells = buildList {
-            var emptyRun = 0
-            fun flushEmptyRun() {
-                if (emptyRun > 0) {
-                    repeat(emptyRun) { add(null) }
-                    emptyRun = 0
-                }
-            }
-            rankFen.forEach { char ->
-                when {
-                    char.isDigit() -> emptyRun = emptyRun * 10 + char.digitToInt()
-                    else -> {
-                        flushEmptyRun()
-                        when (char) {
-                            'b' -> add(Side.BLACK)
-                            'w' -> add(Side.WHITE)
-                            else -> error("Unsupported FEN cell: $char")
-                        }
+        val cells = buildList<Side?> {
+            var index = 0
+            while (index < rankFen.length) {
+                val char = rankFen[index]
+                if (char in '0'..'9') {
+                    val start = index
+                    while (index < rankFen.length && rankFen[index] in '0'..'9') index++
+                    val run = requireNotNull(rankFen.substring(start, index).toIntOrNull()) {
+                        "Invalid FEN: invalid empty run"
                     }
+                    require(run in 1..BoardPoint.FILE_COUNT && size + run <= BoardPoint.FILE_COUNT) {
+                        "Invalid FEN: empty run is too wide"
+                    }
+                    repeat(run) { add(null) }
+                } else {
+                    add(when (char) {
+                        'b' -> Side.BLACK
+                        'w' -> Side.WHITE
+                        else -> throw IllegalArgumentException("Unsupported FEN cell: $char")
+                    })
+                    require(size <= BoardPoint.FILE_COUNT) { "Invalid FEN: rank is too wide" }
+                    index++
                 }
             }
-            flushEmptyRun()
         }
         require(cells.size == BoardPoint.FILE_COUNT) {
             "Invalid FEN: expected ${BoardPoint.FILE_COUNT} files in rank '$rankFen'"
@@ -95,6 +101,9 @@ object FenCodec {
         if (emptyCount > 0) append(emptyCount)
     }
 
-    private fun parseSide(value: String): Side =
-        if (value.lowercase() == "w") Side.WHITE else Side.BLACK
+    private fun parseSide(value: String): Side = when (value.lowercase()) {
+        "b" -> Side.BLACK
+        "w" -> Side.WHITE
+        else -> throw IllegalArgumentException("Invalid FEN: unsupported side")
+    }
 }

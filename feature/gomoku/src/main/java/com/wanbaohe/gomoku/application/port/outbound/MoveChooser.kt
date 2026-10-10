@@ -1,5 +1,6 @@
 package com.wanbaohe.gomoku.application.port.outbound
 
+import com.wanbaohe.gomoku.application.dto.GameAiPlayerConfig
 import com.wanbaohe.gomoku.domain.model.BoardState
 import com.wanbaohe.gomoku.domain.model.Side
 import com.wanbaohe.gomoku.domain.model.GomokuMove
@@ -12,7 +13,18 @@ interface MoveChooser {
         legalMoves: List<GomokuMove>,
         slot: EngineSlot,
     ): MoveDecision?
+
+    suspend fun chooseForGame(
+        boardState: BoardState,
+        fen: String,
+        history: List<String>,
+        legalMoves: List<GomokuMove>,
+        slot: EngineSlot,
+        playerConfig: GameAiPlayerConfig?,
+    ): MoveDecision? = choose(boardState, fen, history, legalMoves, slot)
 }
+
+class AiOpponentUnavailableException : IllegalStateException()
 
 enum class EngineSlot { FAST, DUEL_A, DUEL_B }
 

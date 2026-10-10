@@ -1,12 +1,12 @@
 package com.wanbaohe.gomoku.router.screenLogic
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
-import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
@@ -31,6 +31,19 @@ import com.wanbaohe.gomoku.application.port.outbound.GomokuAiConfig
 import com.wanbaohe.gomoku.application.port.outbound.GomokuAiSource
 import com.wanbaohe.gomoku.application.port.outbound.GomokuAiStore
 import com.wanbaohe.gomoku.application.usecase.GameQueryUseCase
+import com.wanbaohe.gomoku.application.usecase.CreateGameUseCase
+import com.wanbaohe.gomoku.application.dto.GameAiPlayerConfig
+import com.wanbaohe.gomoku.application.dto.GamePreparation
+import com.wanbaohe.gomoku.application.dto.engineSlotFor
+import com.wanbaohe.gomoku.domain.BoardSetupDraft
+import com.wanbaohe.gomoku.domain.FenCodec
+import com.wanbaohe.gomoku.domain.SetupPositionValidator
+import com.wanbaohe.gomoku.domain.model.GameMode
+import com.wanbaohe.gomoku.domain.model.PlayerType
+import com.wanbaohe.gomoku.domain.model.Side
+import com.wanbaohe.gomoku.component.GomokuGameUiState
+import com.wanbaohe.gomoku.presentation.displayNames
+import com.shifenmiao.base.utils.ActionUtils
 import com.wanbaohe.gomoku.application.usecase.SettingsUseCase
 import com.wanbaohe.gomoku.component.GomokuAnalysisComponent
 import com.wanbaohe.gomoku.component.GomokuGameComponent
@@ -46,7 +59,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.StateFlow
@@ -69,8 +81,9 @@ class GomokuRouterComponent @AssistedInject constructor(
     private val ttsService: TTSService,
     private val aiEngineManager: AIEngineManager,
     private val gomokuAiStore: GomokuAiStore,
-    aiEngineCatalogManager: AIEngineCatalogManager,
+    private val aiEngineCatalogManager: AIEngineCatalogManager,
     private val gameQuery: GameQueryUseCase,
+    private val createGame: CreateGameUseCase,
     private val promptDao: PromptDao,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
@@ -131,13 +144,172 @@ class GomokuRouterComponent @AssistedInject constructor(
     private val _runningSettingsActions = MutableStateFlow<Set<SettingsAction>>(emptySet())
     val runningSettingsActions: StateFlow<Set<SettingsAction>> = _runningSettingsActions.asStateFlow()
 
+    var preparation by mutableStateOf(GamePreparation())
+        private set
+    var preparationSetupDraft by mutableStateOf<BoardSetupDraft?>(null)
+        private set
+    var isStartingPreparation by mutableStateOf(false)
+        private set
+    var isRestoringRecentGame by mutableStateOf(type == null)
+        private set
+    private var preparationTouched = false
+
+    fun prepareGame(game: GamePreparation) {
+        preparationTouched = true
+        pauseBeforeLeavingGame {
+            preparation = game
+            preparationSetupDraft = null
+            selectedGameId = null
+            navigation.pushToFront(Route.PlayHome)
+        }
+    }
+
+    fun preparationAiConfig(side: Side): GameAiPlayerConfig {
+        preparation.aiConfigFor(side)?.let { return it }
+        val slot = preparation.setup.mode.engineSlotFor(side)
+        val engine = when (slot) {
+            EngineSlot.FAST -> aiEngineManager.getFastAiEngine()
+            EngineSlot.DUEL_A -> aiEngineManager.getDuelEngineA()
+            EngineSlot.DUEL_B -> aiEngineManager.getDuelEngineB()
+        }
+        return GameAiPlayerConfig.capture(gomokuAiConfig.value.sourceFor(slot), engine)
+    }
+
+    fun preparationUiState(): GomokuGameUiState {
+        val black = preparationAiConfig(Side.BLACK).displayNames()
+        val white = preparationAiConfig(Side.WHITE).displayNames()
+        return GomokuGameUiState(
+            title = preparation.title,
+            mode = preparation.setup.mode,
+            boardState = FenCodec.parse(preparation.initialFen),
+            initialFen = preparation.initialFen,
+            blackPlayerType = preparation.setup.playerTypeFor(Side.BLACK),
+            whitePlayerType = preparation.setup.playerTypeFor(Side.WHITE),
+            blackAiServiceName = black.first,
+            blackAiModelName = black.second,
+            whiteAiServiceName = white.first,
+            whiteAiModelName = white.second,
+            blackAiConfig = preparationAiConfig(Side.BLACK),
+            whiteAiConfig = preparationAiConfig(Side.WHITE),
+            isLoaded = !isRestoringRecentGame,
+            isUpdating = isStartingPreparation,
+            origin = preparation.origin,
+        )
+    }
+
+    fun switchPreparationAi(side: Side, source: GomokuAiSource) {
+        if (isStartingPreparation || source == preparationAiConfig(side).takeIf { it.isSupported }?.source) return
+        preparationTouched = true
+        val slot = preparation.setup.mode.engineSlotFor(side)
+        val engine = when (slot) {
+            EngineSlot.FAST -> aiEngineManager.getFastAiEngine()
+            EngineSlot.DUEL_A -> aiEngineManager.getDuelEngineA()
+            EngineSlot.DUEL_B -> aiEngineManager.getDuelEngineB()
+        }
+        preparation = preparation.withAiConfig(side, GameAiPlayerConfig.capture(source, engine))
+        switchAiSource(slot, source)
+    }
+
+    fun switchPreparationModel(side: Side, engine: AiEngine, model: AiModel) {
+        if (isStartingPreparation) return
+        val config = GameAiPlayerConfig.capture(GomokuAiSource.WorkingModel, engine.copy(model = model))
+        if (!config.isSupported) return
+        val slot = preparation.setup.mode.engineSlotFor(side)
+        when (slot) {
+            EngineSlot.FAST -> aiEngineManager.switchFastModel(engine, model)
+            EngineSlot.DUEL_A -> aiEngineManager.setDuelEngineA(engine.copy(model = model))
+            EngineSlot.DUEL_B -> aiEngineManager.setDuelEngineB(engine.copy(model = model))
+        }
+        preparationTouched = true
+        preparation = preparation.withAiConfig(side, config)
+        switchAiSource(slot, GomokuAiSource.WorkingModel)
+    }
+
+    fun beginPreparationSetup() {
+        if (isStartingPreparation || isRestoringRecentGame) return
+        preparationTouched = true
+        preparationSetupDraft = BoardSetupDraft(FenCodec.parse(preparation.initialFen))
+    }
+
+    fun updatePreparationSetup(draft: BoardSetupDraft) { preparationSetupDraft = draft }
+    fun cancelPreparationSetup() { preparationSetupDraft = null }
+    fun finishPreparationSetup() {
+        val draft = preparationSetupDraft ?: return
+        if (draft.hasChanges) {
+            if (SetupPositionValidator.validate(draft.startPosition()) != null) {
+                ActionUtils.showToast(R.string.gomoku_invalid_fen)
+                return
+            }
+            preparation = preparation.copy(initialFen = FenCodec.encode(draft.startPosition()))
+        }
+        preparationSetupDraft = null
+    }
+
+    fun startPreparation() {
+        if (isStartingPreparation || isRestoringRecentGame || preparationSetupDraft != null) return
+        val draft = preparation
+        if (SetupPositionValidator.validate(FenCodec.parse(draft.initialFen)) != null) {
+            ActionUtils.showToast(R.string.gomoku_invalid_fen)
+            return
+        }
+        preparationTouched = true
+        isStartingPreparation = true
+        componentScope.launch {
+            val resolved = createGame.resolvePreparation(draft)
+            val configs = Side.entries.filter { resolved.setup.playerTypeFor(it) == PlayerType.LLM }
+                .mapNotNull { resolved.aiConfigFor(it) }
+            if (configs.any { config ->
+                    !config.isSupported || (config.source == GomokuAiSource.WorkingModel &&
+                        aiEngineCatalogManager.getEngineByNameAndProtocol(config.engineName, config.engineProtocol)
+                            ?.hasAvailableChatRoute() != true)
+                }
+            ) {
+                isStartingPreparation = false
+                ActionUtils.showToast(R.string.gomoku_ai_opponent_unavailable)
+                return@launch
+            }
+            val start = {
+                componentScope.launch {
+                    try {
+                        if (preparation == draft && childStack.value.active.configuration == Route.PlayHome &&
+                            lifecycle.state >= Lifecycle.State.STARTED
+                        ) {
+                            val title = resolved.title.ifBlank { AppContext.getString(when {
+                                resolved.origin != null -> R.string.gomoku_setup_practice
+                                resolved.setup.mode == GameMode.LOCAL_PVP -> R.string.gomoku_mode_local
+                                resolved.setup.mode == GameMode.LLM_VS_LLM -> R.string.gomoku_mode_ai_vs_ai
+                                else -> R.string.gomoku_mode_ai
+                            }) }
+                            val gameId = createGame.createPrepared(resolved.copy(title = title))
+                            openGame(gameId, startImmediately = true)
+                        }
+                    } finally {
+                        isStartingPreparation = false
+                    }
+                }
+                Unit
+            }
+            if (configs.any { it.source.requiresLogin }) {
+                ActionUtils.ensureLoginAndCheckPoints(
+                    source = "gomoku_preparation",
+                    point = configs.maxOf { it.source.startPoints },
+                    onLoginFailure = { isStartingPreparation = false },
+                    onPointsFailure = { isStartingPreparation = false },
+                    onSuccess = start,
+                )
+            } else start()
+        }
+    }
+
     val libraryComponent: GomokuLibraryComponent = libraryFactory(
         componentContext = componentContext.childContext("gomoku_library_shared"),
         onGoBack = ::navigateBack,
         onNavigate = ::handleInternalNavigation,
+        onPrepareGame = ::prepareGame,
     )
 
     private val navigation = StackNavigation<Route>()
+    private val gamesToStart = mutableSetOf<String>()
 
     val childStack: Value<ChildStack<Route, Child>> = childStack(
         source = navigation,
@@ -147,7 +319,13 @@ class GomokuRouterComponent @AssistedInject constructor(
         childFactory = ::createChild,
     )
 
-    private var selectedGameId: String? = type.initialGameId()
+    private var selectedGameId: String? = childStack.value.items.asReversed().firstNotNullOfOrNull {
+        when (val route = it.configuration) {
+            is Route.Game -> route.gameId
+            is Route.Analysis -> route.gameId
+            else -> null
+        }
+    }
 
     var pendingJoinRoomId by mutableStateOf(type.initialJoinRoomId())
         private set
@@ -157,38 +335,63 @@ class GomokuRouterComponent @AssistedInject constructor(
     }
 
     fun selectTab(tab: Tab) {
+        when (val route = childStack.value.active.configuration) {
+            is Route.Game -> selectedGameId = route.gameId
+            is Route.Analysis -> selectedGameId = route.gameId
+            else -> Unit
+        }
         when (tab) {
             Tab.Play -> openPlayTab()
             Tab.Analyze -> openAnalyzeTab()
             Tab.Library -> openLibrary()
-            Tab.Settings -> navigation.pushToFront(Route.Settings)
+            Tab.Settings -> pauseBeforeLeavingGame { navigation.pushToFront(Route.Settings) }
         }
     }
 
-    fun openLibrary() { navigation.pushToFront(Route.Library) }
-    fun openGame(gameId: String) {
+    fun openLibrary() { pauseBeforeLeavingGame { navigation.pushToFront(Route.Library) } }
+    fun openGame(gameId: String, startImmediately: Boolean = false) {
         selectedGameId = gameId
-        // 已在某个对局页时(如终局后「再来一局」)替换栈顶而不是叠一层,
-        // 避免返回时落回上一局的只读终局页
-        if (childStack.value.active.configuration is Route.Game) {
-            navigation.replaceCurrent(Route.Game(gameId))
-        } else {
-            navigation.pushNew(Route.Game(gameId))
+        val route = Route.Game(gameId)
+        if (childStack.value.active.configuration == route) return
+        if (startImmediately) gamesToStart.add(gameId)
+        pauseBeforeLeavingGame {
+            if (childStack.value.active.configuration is Route.Game &&
+                childStack.value.items.none { it.configuration == route }
+            ) navigation.replaceCurrent(route) else navigation.pushToFront(route)
         }
     }
-    fun openAnalysis(gameId: String, initialPly: Int = -1) { selectedGameId = gameId; navigation.pushNew(Route.Analysis(gameId, initialPly)) }
+    fun openAnalysis(gameId: String, initialPly: Int = -1) {
+        selectedGameId = gameId
+        pauseBeforeLeavingGame { navigation.pushToFront(Route.Analysis(gameId, initialPly)) }
+    }
     fun joinOnlineRoom(roomId: String) { pendingJoinRoomId = roomId.trim() }
     fun clearPendingJoinRoom() { pendingJoinRoomId = "" }
     fun navigateBack() {
-        // 栈底兜底:replaceCurrent 打开的对局页内层栈只有一项,pop 是空操作,此时退出模块
-        if (childStack.value.items.size > 1) navigation.pop() else onGoBack()
+        val child = childStack.value.active.instance
+        if (child is Child.Game && child.component.setupDraft != null) {
+            child.component.cancelSetup()
+            return
+        }
+        if (preparationSetupDraft != null && child == Child.PlayHome) {
+            cancelPreparationSetup()
+            return
+        }
+        pauseBeforeLeavingGame {
+            if (childStack.value.items.size > 1) navigation.pop() else onGoBack()
+        }
     }
 
     fun navigateBackFrom(route: Route) {
-        when {
-            route is Route.Game || route is Route.Analysis -> navigation.pop()
-            childStack.value.items.size > 1 -> navigation.pop()
-            else -> onGoBack()
+        navigateBack()
+    }
+
+    fun exitModule() { pauseBeforeLeavingGame(onGoBack) }
+
+    private fun pauseBeforeLeavingGame(action: () -> Unit) {
+        when (val child = childStack.value.active.instance) {
+            is Child.Game -> child.component.pauseBeforeNavigating(action)
+            is Child.Analysis -> { child.component.stopAutoPlay(); action() }
+            else -> action()
         }
     }
 
@@ -222,17 +425,17 @@ class GomokuRouterComponent @AssistedInject constructor(
     }
 
     fun openAiModelSettings() {
-        onNavigate(Screen.AISettings(Screen.AISettings.Type.WorkingModel))
+        pauseBeforeLeavingGame { onNavigate(Screen.AISettings(Screen.AISettings.Type.WorkingModel)) }
     }
     fun openGomokuPromptSettings() {
         componentScope.launch {
             val prompt = promptDao.getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_GOMOKU_MOVE)
             if (prompt != null) {
-                onNavigate(Screen.SystemPromptDetail(promptId = prompt.id))
+                pauseBeforeLeavingGame { onNavigate(Screen.SystemPromptDetail(promptId = prompt.id)) }
             }
         }
     }
-    fun openTTSConfigSettings() { onNavigate(Screen.TTSSettings) }
+    fun openTTSConfigSettings() { pauseBeforeLeavingGame { onNavigate(Screen.TTSSettings) } }
 
     fun generateTTS(template: GomokuTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.GenerateTTS(template.tag)) {
@@ -332,37 +535,49 @@ class GomokuRouterComponent @AssistedInject constructor(
         Route.AnalysisHome -> Child.AnalysisHome
         Route.Library -> Child.Library(libraryComponent)
         Route.Settings -> Child.Settings
-        is Route.Game -> Child.Game(gameFactory(context, route.gameId, ::navigateBack, ::handleInternalNavigation))
-        is Route.Analysis -> Child.Analysis(analysisFactory(context, route.gameId, route.initialPly, ::navigateBack, ::handleInternalNavigation))
+        is Route.Game -> Child.Game(gameFactory(
+            context, route.gameId, ::navigateBack, ::handleInternalNavigation, ::prepareGame, gamesToStart.remove(route.gameId),
+        ))
+        is Route.Analysis -> Child.Analysis(analysisFactory(
+            context, route.gameId, route.initialPly, ::navigateBack, ::handleInternalNavigation, ::prepareGame,
+        ))
     }
 
     private fun openPlayTab(clearSelectedGame: Boolean = false) {
         if (clearSelectedGame) selectedGameId = null
         val gameId = selectedGameId
-        if (gameId == null) navigation.pushToFront(Route.PlayHome)
-        else navigation.pushNew(Route.Game(gameId))
+        val route = if (gameId == null) Route.PlayHome else Route.Game(gameId)
+        if (childStack.value.active.configuration == route) return
+        pauseBeforeLeavingGame { navigation.pushToFront(route) }
     }
 
     private fun maybeOpenRecentGame() {
-        if (type != null) return
+        if (type != null || selectedGameId != null || childStack.value.active.configuration != Route.PlayHome) {
+            isRestoringRecentGame = false
+            return
+        }
         componentScope.launch {
-            gameQuery.observeAll()
-                .filter { it.isNotEmpty() }
-                .first()
-                .let { games ->
-                    val mostRecent = games.maxByOrNull { it.updatedAt }
-                    if (mostRecent != null) {
-                        selectedGameId = mostRecent.id
-                        navigation.replaceCurrent(Route.Game(mostRecent.id))
-                    }
-                }
+            val recent = GameQueryUseCase.mostRecentUnfinishedHumanAiGame(gameQuery.observeAll().first())
+            if (recent != null && !preparationTouched && childStack.value.active.configuration == Route.PlayHome) {
+                selectedGameId = recent.id
+                navigation.replaceCurrent(Route.Game(recent.id))
+            }
+            isRestoringRecentGame = false
         }
     }
 
     private fun openAnalyzeTab() {
-        val gameId = selectedGameId
-        if (gameId == null) navigation.pushToFront(Route.AnalysisHome)
-        else navigation.pushNew(Route.Analysis(gameId))
+        val child = childStack.value.active.instance
+        val gameId = when (child) {
+            is Child.Game -> child.component.gameId
+            is Child.Analysis -> child.component.gameId
+            else -> selectedGameId
+        }
+        when {
+            child is Child.Game && child.component.gameId == gameId -> child.component.openAnalysis()
+            gameId == null -> pauseBeforeLeavingGame { navigation.pushToFront(Route.AnalysisHome) }
+            else -> openAnalysis(gameId)
+        }
     }
 
     private fun handleInternalNavigation(screen: Screen) {
@@ -374,7 +589,7 @@ class GomokuRouterComponent @AssistedInject constructor(
                 is Screen.GomokuRouter.Type.Analysis -> openAnalysis(target.gameId, target.initialPly)
                 is Screen.GomokuRouter.Type.JoinOnlineRoom -> joinOnlineRoom(target.roomId)
             }
-            else -> onNavigate(screen)
+            else -> pauseBeforeLeavingGame { onNavigate(screen) }
         }
     }
 
@@ -384,12 +599,6 @@ class GomokuRouterComponent @AssistedInject constructor(
         Screen.GomokuRouter.Type.Library -> Route.Library
         is Screen.GomokuRouter.Type.JoinOnlineRoom -> Route.PlayHome
         null -> Route.PlayHome
-    }
-
-    private fun Screen.GomokuRouter.Type?.initialGameId(): String? = when (this) {
-        is Screen.GomokuRouter.Type.Game -> gameId
-        is Screen.GomokuRouter.Type.Analysis -> gameId
-        else -> null
     }
 
     private fun Screen.GomokuRouter.Type?.initialJoinRoomId(): String = when (this) {

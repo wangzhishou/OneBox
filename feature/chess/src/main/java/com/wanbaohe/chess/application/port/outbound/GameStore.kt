@@ -1,6 +1,7 @@
 package com.wanbaohe.chess.application.port.outbound
 
 import com.wanbaohe.chess.domain.model.GameMode
+import com.wanbaohe.chess.domain.model.GameOrigin
 import com.wanbaohe.chess.domain.model.GameStatus
 import com.wanbaohe.chess.domain.model.PlayerType
 import kotlinx.coroutines.flow.Flow
@@ -32,6 +33,7 @@ data class GameEntity(
     val lastMoveAt: Long,
     val lastPlayedAt: Long,
     val updatedAt: Long,
+    val origin: GameOrigin? = null,
 )
 
 data class GameSummaryEntity(
@@ -45,4 +47,8 @@ data class GameSummaryEntity(
     val updatedAt: Long,
     /** 已走着法数（`chess_game.current_ply`），历史卡片用于展示手数。 */
     val plyCount: Int,
+    val lastPlayedAt: Long = 0L,
+    val redPlayerConfigJson: String = "{}",
+    val blackPlayerConfigJson: String = "{}",
+    val origin: GameOrigin? = null,
 )

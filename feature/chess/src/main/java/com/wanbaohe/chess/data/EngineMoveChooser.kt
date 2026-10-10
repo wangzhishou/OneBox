@@ -11,6 +11,7 @@ import com.wanbaohe.chess.application.port.outbound.MoveDecision
 import com.wanbaohe.chess.domain.model.BoardState
 import com.wanbaohe.chess.domain.model.ChessMove
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,14 +50,17 @@ class EngineMoveChooser @Inject constructor(
                     baseUrl = NetworkBuilder.getBaseUrl(),
                     path = UrlConstants.CHESS_ENGINE_PROXY_PATH,
                 )
-                val response = boardGameEngineService.bestMove(url = url, body = request).execute()
+                val response = boardGameEngineService.bestMove(url = url, body = request).awaitEngineResponse()
                 if (!response.isSuccessful) {
                     return@runCatching Result.failure(IllegalStateException("http ${response.code()}"))
                 }
                 val body = response.body()
                     ?: return@runCatching Result.failure(IllegalStateException("empty body"))
                 Result.success(body)
-            }.getOrElse { Result.failure(it) }
+            }.getOrElse {
+                if (it is CancellationException) throw it
+                Result.failure(it)
+            }
         }
 
         val body = outcome.getOrNull()

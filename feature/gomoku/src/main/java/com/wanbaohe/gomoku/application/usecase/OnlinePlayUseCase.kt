@@ -13,22 +13,52 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.ConcurrentHashMap
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
+
+sealed interface OnlineGameEvent {
+    val roomId: String
+    val mySide: Side
+
+    data class Started(
+        override val roomId: String,
+        override val mySide: Side,
+        val initialFen: String = "",
+    ) : OnlineGameEvent
+
+    data class Move(
+        override val roomId: String,
+        override val mySide: Side,
+        val point: BoardPoint,
+        val seq: Int = 0,
+    ) : OnlineGameEvent
+
+    data class Resigned(
+        override val roomId: String,
+        override val mySide: Side,
+    ) : OnlineGameEvent
+}
 
 /**
  * Orchestrates online match-making and in-game peer communication.
@@ -62,13 +92,14 @@ class OnlinePlayUseCase @Inject constructor(
     @Volatile
     private var session: OnlineSession? = null
 
+    private val sessionLock = Any()
     private val sessionFlow: MutableStateFlow<OnlineSession?> =
         MutableStateFlow(null)
 
     /* ───── Bridged outer flows (delegate to current session) ───── */
 
     val connectionState: StateFlow<ConnectionState> =
-        sessionFlow.flatMapLatest { it?.connectionState ?: emptyFlow() }
+        sessionFlow.flatMapLatest { it?.connectionState ?: flowOf(ConnectionState.IDLE) }
             .let { flow ->
                 val state = MutableStateFlow(ConnectionState.IDLE)
                 // Bridge: collect from flatMapLatest into a stable StateFlow
@@ -79,7 +110,7 @@ class OnlinePlayUseCase @Inject constructor(
             }
 
     val debugEvents: StateFlow<List<String>> =
-        sessionFlow.flatMapLatest { it?.debugEvents ?: emptyFlow() }
+        sessionFlow.flatMapLatest { it?.debugEvents ?: flowOf(emptyList()) }
             .let { flow ->
                 val state = MutableStateFlow<List<String>>(emptyList())
                 scope.launch {
@@ -96,6 +127,57 @@ class OnlinePlayUseCase @Inject constructor(
 
     private val _opponentResigned = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val opponentResigned: SharedFlow<Unit> = _opponentResigned.asSharedFlow()
+
+    private class OpponentMailbox {
+        private val pending = ArrayDeque<OnlineGameEvent>()
+        private val changes = MutableStateFlow(0L)
+        private val deliveryMutex = Mutex()
+
+        fun enqueue(event: OnlineGameEvent) = synchronized(pending) {
+            pending.addLast(event)
+            changes.value += 1
+        }
+
+        private fun firstPending(): OnlineGameEvent? = synchronized(pending) { pending.firstOrNull() }
+
+        fun complete(event: OnlineGameEvent) = synchronized(pending) {
+            if (pending.firstOrNull() === event) pending.removeFirst()
+        }
+
+        val events: Flow<OnlineGameEvent> = flow {
+            deliveryMutex.withLock {
+                while (true) {
+                    currentCoroutineContext().ensureActive()
+                    changes.first { firstPending() != null }
+                    val event = requireNotNull(firstPending())
+                    // Keep the head until the collector finishes persistence. Cancellation
+                    // or a failed write leaves it available for the next subscription.
+                    emit(event)
+                    complete(event)
+                }
+            }
+        }
+    }
+
+    private val opponentMailboxes = ConcurrentHashMap<String, OpponentMailbox>()
+
+    private fun mailbox(roomId: String): OpponentMailbox =
+        opponentMailboxes.computeIfAbsent(roomId) { OpponentMailbox() }
+
+    /**
+     * Ordered, buffered, at-least-once delivery for one room. Collectors must persist
+     * each event before returning; do not buffer or launch-and-forget the handler.
+     */
+    fun opponentEvents(roomId: String): Flow<OnlineGameEvent> {
+        require(roomId.isNotBlank()) { "An online room is required" }
+        return mailbox(roomId).events
+    }
+
+    // Complete inside accepted NonCancellable persistence so cancellation when
+    // returning to the collector cannot replay a move already saved to the board.
+    internal fun completeOpponentEvent(event: OnlineGameEvent) {
+        mailbox(event.roomId).complete(event)
+    }
 
     /* ───── Matchmaking (stateless REST) ───── */
 
@@ -128,98 +210,133 @@ class OnlinePlayUseCase @Inject constructor(
     }
 
     fun connect(roomId: String, side: Side, isHost: Boolean, config: OnlineRoomConfig) {
-        val newSession = OnlineSession(roomId, side, config)
-        session = newSession
-        sessionFlow.value = newSession
+        synchronized(sessionLock) {
+            val newSession = OnlineSession(roomId, side, config, gameType)
+            val oldSession = session
+            session = newSession
+            oldSession?.dispose()
+            sessionFlow.value = newSession
 
-        appendDebug("WS connect room=${roomId.takeLast(6)} side=${side.name} host=$isHost")
+            appendDebug("WS connect room=${roomId.takeLast(6)} side=${side.name} host=$isHost")
 
-        signalingClient.connect(roomId, object : SignalingClient.Listener {
-            override fun onRawMessage(raw: String) {
-                appendDebug("WS <- raw ${raw.take(DebugMessageLimit)}")
-            }
-
-            override fun onMessage(message: OnlineMessage) {
-                val s = session ?: return
-                appendDebug("WS <- ${message.type} seq=${message.seq} ${message.coordText()}")
-                when (message.type.lowercase()) {
-                    "ack" -> s.handleAck(message)
-                    "move" -> {
-                        s.sendAck(message)
-                        s.handleOpponentMove(message)
+            signalingClient.connect(roomId, object : SignalingClient.Listener {
+                override fun onRawMessage(raw: String) {
+                    synchronized(sessionLock) {
+                        if (session !== newSession) return
+                        appendDebug("WS <- raw ${raw.take(DebugMessageLimit)}")
                     }
-                    "ready" -> s.handleReady(isHost)
-                    "start" -> s.handleStart()
-                    "resign" -> _opponentResigned.tryEmit(Unit)
-                    "disconnect" ->
-                        s._connectionState.value = ConnectionState.OPPONENT_DISCONNECTED
-                    "error" ->
-                        s._connectionState.value = ConnectionState.ERROR
                 }
-            }
 
-            override fun onConnected() {
-                val s = session ?: return
-                s._connectionState.value = ConnectionState.WAITING_FOR_OPPONENT
-                appendDebug("WS connected")
-                if (!isHost) {
-                    s.sendReady()
+                override fun onMessage(message: OnlineMessage) {
+                    synchronized(sessionLock) {
+                        if (session !== newSession ||
+                            (message.roomId.isNotBlank() && message.roomId != newSession.roomId) ||
+                            (message.gameType.isNotBlank() && message.gameType != newSession.gameType)
+                        ) return
+                        val s = newSession
+                        appendDebug("WS <- ${message.type} seq=${message.seq} ${message.coordText()}")
+                        when (message.type.lowercase()) {
+                            "ack" -> s.handleAck(message)
+                            "move" -> s.handleOpponentMove(message)
+                            "ready" -> s.handleReady(isHost)
+                            "start" -> if (s.isOpponent(message)) s.handleStart(message.fen)
+                            "resign" -> if (s.isOpponent(message)) s.handleResign()
+                            "disconnect" ->
+                                s._connectionState.value = ConnectionState.OPPONENT_DISCONNECTED
+                            "error" ->
+                                s._connectionState.value = ConnectionState.ERROR
+                        }
+                    }
                 }
-            }
 
-            override fun onDisconnected() {
-                val s = session ?: return
-                s._connectionState.value = ConnectionState.OPPONENT_DISCONNECTED
-                appendDebug("WS disconnected")
-            }
+                override fun onConnected() {
+                    synchronized(sessionLock) {
+                        if (session !== newSession) return
+                        val s = newSession
+                        s._connectionState.value = ConnectionState.WAITING_FOR_OPPONENT
+                        appendDebug("WS connected")
+                        if (!isHost) s.sendReady()
+                    }
+                }
 
-            override fun onError(error: String) {
-                val s = session ?: return
-                s._connectionState.value = ConnectionState.ERROR
-                appendDebug("WS error $error")
-            }
-        })
+                override fun onDisconnected() {
+                    synchronized(sessionLock) {
+                        if (session !== newSession) return
+                        newSession._connectionState.value = ConnectionState.OPPONENT_DISCONNECTED
+                        appendDebug("WS disconnected")
+                    }
+                }
+
+                override fun onError(error: String) {
+                    synchronized(sessionLock) {
+                        if (session !== newSession) return
+                        newSession._connectionState.value = ConnectionState.ERROR
+                        appendDebug("WS error $error")
+                    }
+                }
+            })
+        }
     }
 
     fun sendMove(move: GomokuMove) {
-        val s = session ?: return
-        s.sendMove(move)
+        synchronized(sessionLock) { session?.sendMove(move) }
     }
 
+    fun sendMove(move: GomokuMove, roomId: String, side: Side): Boolean =
+        sendToRoom(roomId, side) { it.sendMove(move) }
+
     fun sendReady() {
-        val s = session ?: return
-        s.sendReady()
+        synchronized(sessionLock) { session?.sendReady() }
     }
 
     fun sendStart() {
-        val s = session ?: return
-        s.sendStart()
+        synchronized(sessionLock) { session?.sendStart() }
     }
+
+    fun sendStart(roomId: String, side: Side): Boolean =
+        sendToRoom(roomId, side) { it.sendStart() }
 
     fun sendResign() {
-        val s = session ?: return
-        s.sendResign()
+        synchronized(sessionLock) { session?.sendResign() }
     }
 
+    fun sendResign(roomId: String, side: Side): Boolean =
+        sendToRoom(roomId, side) { it.sendResign() }
+
+    private fun sendToRoom(roomId: String, side: Side, send: (OnlineSession) -> Unit): Boolean =
+        synchronized(sessionLock) {
+            val current = session ?: return@synchronized false
+            if (current.roomId != roomId || current.mySide != side) return@synchronized false
+            send(current)
+            true
+        }
+
     fun disconnect() {
-        appendDebug("WS disconnect by user")
-        signalingClient.disconnect()
-        val old = session
-        session = null
-        sessionFlow.value = null
-        old?.dispose()
+        synchronized(sessionLock) {
+            appendDebug("WS disconnect by user")
+            val old = session
+            session = null
+            sessionFlow.value = null
+            old?.dispose()
+            signalingClient.disconnect()
+        }
     }
 
     val mySide: Side
         get() = session?.mySide ?: Side.BLACK
 
+    val currentRoomId: String
+        get() = session?.roomId.orEmpty()
+
     /* ─────────── private helpers ─────────── */
 
     private fun appendDebug(message: String) {
-        val time = DebugTimeFormat.format(Date())
-        val s = session
-        if (s != null) {
-            s._debugEvents.value = (s._debugEvents.value + "$time $message").takeLast(MaxDebugEvents)
+        synchronized(sessionLock) {
+            val time = synchronized(DebugTimeFormat) { DebugTimeFormat.format(Date()) }
+            val s = session
+            if (s != null) {
+                s._debugEvents.value = (s._debugEvents.value + "$time $message").takeLast(MaxDebugEvents)
+            }
         }
     }
 
@@ -233,6 +350,7 @@ class OnlinePlayUseCase @Inject constructor(
         val roomId: String,
         val mySide: Side,
         val config: OnlineRoomConfig,
+        val gameType: String,
     ) {
         val _connectionState = MutableStateFlow(ConnectionState.CONNECTING)
         val connectionState: StateFlow<ConnectionState> = _connectionState.asStateFlow()
@@ -336,26 +454,45 @@ class OnlinePlayUseCase @Inject constructor(
             appendDebug("READY sent=$hasSentReady received=$hasReceivedReady")
         }
 
-        fun handleStart() {
+        fun handleStart(initialFen: String) {
             _connectionState.value = ConnectionState.PLAYING
             appendDebug("START received")
+            mailbox(roomId).enqueue(OnlineGameEvent.Started(roomId, mySide, initialFen))
             _opponentStarted.tryEmit(Unit)
         }
 
+        fun handleResign() {
+            mailbox(roomId).enqueue(OnlineGameEvent.Resigned(roomId, mySide))
+            _opponentResigned.tryEmit(Unit)
+        }
+
+        fun isOpponent(message: OnlineMessage): Boolean {
+            if (message.senderSide.isBlank()) return true
+            if (message.senderSide.equals(mySide.name, ignoreCase = true)) return false
+            if (message.senderSide.equals(mySide.opposite().name, ignoreCase = true)) return true
+            _connectionState.value = ConnectionState.ERROR
+            appendDebug("Invalid sender side: ${message.senderSide}")
+            return false
+        }
+
         fun handleOpponentMove(message: OnlineMessage) {
-            if (message.senderSide.equals(mySide.name, ignoreCase = true)) {
-                appendDebug("MOVE self echo ignored seq=${message.seq}")
+            if (!isOpponent(message)) {
+                appendDebug("MOVE ignored sender=${message.senderSide} seq=${message.seq}")
                 return
             }
-            val dedupeKey = message.dedupeKey()
-            if (message.seq > 0 && !handledMoveSeqs.add(dedupeKey)) {
-                appendDebug("MOVE duplicate ignored key=$dedupeKey")
+            if (message.seq > 0 && handledMoveSeqs.contains(message.seq)) {
+                appendDebug("MOVE duplicate ignored key=${message.seq}")
+                sendAck(message)
                 return
             }
             // 五子棋只用落点(from* 槽位),to* 回填同值保持 Pair 形态
             val point = BoardPoint(message.fromFile, message.fromRank)
             appendDebug("MOVE emit ${point.file},${point.rank}")
+            mailbox(roomId).enqueue(OnlineGameEvent.Move(roomId, mySide, point, message.seq))
+            if (message.seq > 0) handledMoveSeqs.add(message.seq)
             _opponentMoves.tryEmit(Pair(point, point))
+            // ACK only after the ordered mailbox owns the message.
+            sendAck(message)
         }
 
         fun dispose() {
@@ -367,17 +504,20 @@ class OnlinePlayUseCase @Inject constructor(
         private fun scheduleRetry(seq: Int) {
             scope.launch {
                 delay(ackTimeoutMs)
-                val pending = pendingAcks[seq] ?: return@launch
-                if (pending.retries >= maxAckRetries) {
-                    pendingAcks.remove(seq)
-                    _connectionState.value = ConnectionState.ERROR
-                    appendDebug("ACK timeout seq=$seq")
-                    return@launch
+                synchronized(sessionLock) {
+                    if (session !== this@OnlineSession) return@launch
+                    val pending = pendingAcks[seq] ?: return@launch
+                    if (pending.retries >= maxAckRetries) {
+                        pendingAcks.remove(seq)
+                        _connectionState.value = ConnectionState.ERROR
+                        appendDebug("ACK timeout seq=$seq")
+                        return@launch
+                    }
+                    pending.retries++
+                    appendDebug("WS -> retry seq=$seq retry=${pending.retries}")
+                    signalingClient.sendMessage(pending.message)
+                    scheduleRetry(seq)
                 }
-                pending.retries++
-                appendDebug("WS -> retry seq=$seq retry=${pending.retries}")
-                signalingClient.sendMessage(pending.message)
-                scheduleRetry(seq)
             }
         }
 
@@ -389,9 +529,6 @@ class OnlinePlayUseCase @Inject constructor(
                 Side.WHITE -> seqCounter * 2
             }
         }
-
-        private fun OnlineMessage.dedupeKey(): Int =
-            if (senderSide == Side.WHITE.name) -seq else seq
     }
 
     private fun OnlineMessage.coordText(): String =

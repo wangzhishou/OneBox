@@ -21,7 +21,7 @@ private val ATTACK_KING = ATTACK_ORTHOGONAL + ATTACK_DIAGONAL
 
 /**
  * Pure function arbiter。legalMoves = 伪合法着法过滤自陷将军后补全记谱;
- * 终局判定:将死(无合法着+被将)/逼和(无合法着+未被将)/50 回合和。
+ * 终局判定:将死(无合法着+被将)/逼和(无合法着+未被将)/子力不足/50 回合和。
  * 不做三次重复局面判和(二期)。
  */
 object GameArbiter {
@@ -64,10 +64,25 @@ object GameArbiter {
             moves.isEmpty() && inCheck -> GameStatus.WHITE_WINS
             // 无合法着 + 未被将 = 逼和
             moves.isEmpty() -> GameStatus.DRAW
+            isInsufficientMaterial(boardState) -> GameStatus.DRAW
             boardState.halfMoveClock >= DRAW_HALF_MOVE_CLOCK -> GameStatus.DRAW
             inCheck -> GameStatus.CHECK
             else -> GameStatus.PLAYING
         }
+    }
+
+    fun isInsufficientMaterial(boardState: BoardState): Boolean {
+        val nonKings = boardState.board.withIndex().filter { (_, piece) ->
+            piece != null && piece.type != PieceType.KING
+        }
+        if (nonKings.isEmpty()) return true
+        if (nonKings.any { (_, piece) ->
+                piece?.type == PieceType.PAWN || piece?.type == PieceType.ROOK || piece?.type == PieceType.QUEEN
+            }
+        ) return false
+        if (nonKings.size == 1) return true
+        return nonKings.all { it.value?.type == PieceType.BISHOP } &&
+            nonKings.map { (index, _) -> (index % 8 + index / 8) % 2 }.distinct().size == 1
     }
 
     fun isInCheck(boardState: BoardState, side: Side): Boolean {

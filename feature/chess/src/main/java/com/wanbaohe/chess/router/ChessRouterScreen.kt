@@ -18,6 +18,7 @@ import com.wanbaohe.chess.router.screenLogic.ChessRouterComponent
 import com.wanbaohe.chess.screen.ChessAnalysisScreen
 import com.wanbaohe.chess.screen.ChessEmptyQuickPanel
 import com.wanbaohe.chess.screen.ChessGameScreen
+import com.wanbaohe.chess.screen.ChessPlayHomeScreen
 import com.wanbaohe.chess.screen.ChessLibraryScreen
 import com.wanbaohe.chess.screen.ChessSettingsScreen
 import com.wanbaohe.chess.screen.NewGameDropMenu
@@ -65,12 +66,12 @@ fun ChessRouterScreen(component: ChessRouterComponent) {
                 .firstOrNull { it.name == tab.id }
                 ?.let(component::selectTab)
         },
-        onGoBack = component.onGoBack,
+        onGoBack = component::navigateBack,
         onBack = {
             when {
                 component.canPop(activeRoute) -> component.navigateBackFrom(activeRoute)
                 activeTab != ChessRouterComponent.Tab.Play -> component.selectTab(ChessRouterComponent.Tab.Play)
-                else -> component.onGoBack()
+                else -> component.navigateBack()
             }
         },
         headerActions = if (activeTab != ChessRouterComponent.Tab.Settings) {
@@ -85,10 +86,8 @@ fun ChessRouterScreen(component: ChessRouterComponent) {
         ) { child ->
             val contentModifier = Modifier.fillMaxSize()
             when (val instance = child.instance) {
-                ChessRouterComponent.Child.PlayHome -> ChessEmptyQuickPanel(
-                    component = component.libraryComponent,
-                    headline = stringResource(R.string.chess_empty_play_title),
-                    subline = stringResource(R.string.chess_empty_play_message),
+                ChessRouterComponent.Child.PlayHome -> ChessPlayHomeScreen(
+                    component = component,
                     modifier = contentModifier,
                 )
 

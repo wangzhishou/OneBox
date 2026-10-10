@@ -6,6 +6,7 @@ import com.wanbaohe.gomoku.application.port.outbound.GameEntity
 import com.wanbaohe.gomoku.application.port.outbound.GameStore
 import com.wanbaohe.gomoku.application.port.outbound.GameSummaryEntity
 import com.wanbaohe.gomoku.domain.model.GameMode
+import com.wanbaohe.gomoku.domain.model.GameOrigin
 import com.wanbaohe.gomoku.domain.model.GameStatus
 import com.wanbaohe.gomoku.domain.model.PlayerType
 import kotlinx.coroutines.flow.Flow
@@ -62,6 +63,7 @@ class GameDaoAdapter @Inject constructor(
         lastMoveAt = lastMoveAt,
         lastPlayedAt = lastPlayedAt,
         updatedAt = updatedAt,
+        origin = GameOrigin.decode(originJson),
     )
 
     private fun GomokuGameEntity.toSummaryEntity() = GameSummaryEntity(
@@ -75,6 +77,10 @@ class GameDaoAdapter @Inject constructor(
         resultText = result,
         updatedAt = updatedAt,
         plyCount = currentPly,
+        lastPlayedAt = lastPlayedAt,
+        redPlayerConfigJson = redPlayerConfigJson,
+        blackPlayerConfigJson = blackPlayerConfigJson,
+        origin = GameOrigin.decode(originJson),
     )
 
     private fun GameEntity.toDbEntity() = GomokuGameEntity(
@@ -95,5 +101,6 @@ class GameDaoAdapter @Inject constructor(
         lastMoveAt = lastMoveAt,
         lastPlayedAt = lastPlayedAt,
         updatedAt = updatedAt,
+        originJson = origin?.encode() ?: "{}",
     )
 }

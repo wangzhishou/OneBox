@@ -11,8 +11,9 @@ class DeleteGameUseCase @Inject constructor(
     private val gameStore: GameStore,
     private val moveStore: MoveStore,
     private val aiTaskStore: AiTaskStore,
+    private val mutationLock: GameMutationLock,
 ) {
-    suspend fun delete(gameId: String) {
+    suspend fun delete(gameId: String): Unit = mutationLock.withGame(gameId) {
         moveStore.deleteByGame(gameId)
         aiTaskStore.deleteByGame(gameId)
         gameStore.archive(gameId)

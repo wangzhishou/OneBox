@@ -33,4 +33,7 @@ dependencies {
     // Coil 3
     api(libs.coil)
     api(libs.coil.compose)
+
+    testImplementation(kotlin("test"))
+    testImplementation(libs.junit)
 }

@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.Icons
@@ -59,6 +60,8 @@ fun GameCard(
     onDelete: () -> Unit,
     onRename: (String) -> Unit,
     modifier: Modifier = Modifier,
+    sourceLabel: String = "",
+    onShowSource: (() -> Unit)? = null,
 ) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showRenameDialog by remember { mutableStateOf(false) }
@@ -144,6 +147,16 @@ fun GameCard(
                         text = data.resultText,
                         style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
                         color = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+            }
+
+            if (onShowSource != null && sourceLabel.isNotBlank()) {
+                TextButton(onClick = onShowSource, modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = sourceLabel,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

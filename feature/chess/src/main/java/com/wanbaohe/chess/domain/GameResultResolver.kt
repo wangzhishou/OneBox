@@ -54,4 +54,13 @@ object GameResultResolver {
 
     /** 是否为需要显式记录胜方的非盘面终局。悔棋/重做据此保留结果,不得被盘面状态覆盖。 */
     fun isExplicitTerminal(status: GameStatus): Boolean = status == GameStatus.RESIGNED
+
+    fun statusAfterHistoryChange(previous: GameStatus, evaluated: GameStatus): GameStatus = when {
+        isExplicitTerminal(previous) -> previous
+        previous == GameStatus.PAUSED &&
+            (evaluated == GameStatus.PLAYING || evaluated == GameStatus.CHECK) -> GameStatus.PAUSED
+        previous == GameStatus.NOT_STARTED &&
+            (evaluated == GameStatus.PLAYING || evaluated == GameStatus.CHECK) -> GameStatus.NOT_STARTED
+        else -> evaluated
+    }
 }

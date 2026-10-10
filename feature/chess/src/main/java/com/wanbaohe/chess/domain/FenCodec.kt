@@ -17,15 +17,33 @@ object FenCodec {
 
     fun parse(fen: String): BoardState {
         val parts = fen.trim().split(Regex("\\s+"))
-        require(parts.size >= 2) { "Invalid FEN: side to move is missing" }
+        require(parts.size == 6 || parts.size == 2) { "Invalid FEN: expected six fields" }
+        require(parts[1] == "w" || parts[1] == "b") { "Invalid FEN: side must be w or b" }
+        val rights = parts.getOrNull(2) ?: "-"
+        require(rights == "-" || (rights.isNotEmpty() && rights.all { it in "KQkq" } &&
+            rights.toSet().size == rights.length)) { "Invalid FEN: castling rights" }
+        val epText = parts.getOrNull(3) ?: "-"
+        val ep = if (epText == "-") null else requireNotNull(BoardPoint.fromCoordinate(epText)) {
+            "Invalid FEN: en-passant square"
+        }
+        require(ep == null || ep.rank == if (parts[1] == "w") 5 else 2) {
+            "Invalid FEN: en-passant rank"
+        }
+        val halfMove = parts.getOrNull(4)?.let {
+            requireNotNull(it.toIntOrNull()) { "Invalid FEN: halfmove clock" }
+        } ?: 0
+        val fullMove = parts.getOrNull(5)?.let {
+            requireNotNull(it.toIntOrNull()) { "Invalid FEN: fullmove number" }
+        } ?: 1
+        require(halfMove >= 0 && fullMove >= 1) { "Invalid FEN: move counters" }
 
         return BoardState(
             board = parseBoard(parts.first()),
-            sideToMove = if (parts[1].lowercase() == "b") Side.BLACK else Side.WHITE,
-            castlingRights = parts.getOrNull(2)?.takeIf { it.isNotBlank() } ?: "-",
-            enPassant = parts.getOrNull(3)?.takeIf { it != "-" }?.let { BoardPoint.fromCoordinate(it) },
-            halfMoveClock = parts.getOrNull(4)?.toIntOrNull() ?: 0,
-            fullMoveNumber = parts.getOrNull(5)?.toIntOrNull() ?: 1,
+            sideToMove = if (parts[1] == "b") Side.BLACK else Side.WHITE,
+            castlingRights = if (rights == "-") "-" else "KQkq".filter { it in rights },
+            enPassant = ep,
+            halfMoveClock = halfMove,
+            fullMoveNumber = fullMove,
         )
     }
 
@@ -50,7 +68,7 @@ object FenCodec {
     private fun parseRank(rankFen: String): List<Piece?> {
         val cells = buildList {
             rankFen.forEach { char ->
-                if (char.isDigit()) {
+                if (char in '1'..'8') {
                     repeat(char.digitToInt()) { add(null) }
                 } else {
                     add(char.toPiece())
@@ -97,7 +115,7 @@ object FenCodec {
             'b' -> PieceType.BISHOP
             'n' -> PieceType.KNIGHT
             'p' -> PieceType.PAWN
-            else -> error("Unsupported FEN piece: $this")
+            else -> throw IllegalArgumentException("Unsupported FEN piece: $this")
         }
         return Piece(side, type)
     }

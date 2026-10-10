@@ -9,6 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +28,8 @@ import com.wanbaohe.gomoku.data.GomokuGameSummary
 import com.wanbaohe.gomoku.domain.model.GameMode
 import com.wanbaohe.gomoku.domain.model.GameStatus
 import com.wanbaohe.gomoku.domain.model.PlayerType
+import com.wanbaohe.gomoku.domain.model.GameOrigin
+import com.wanbaohe.gomoku.presentation.displayNames
 import com.wanbaohe.gomoku.presentation.localizedGameResultText
 
 @Composable
@@ -58,6 +64,7 @@ private fun GomokuLibraryContent(
     component: GomokuLibraryComponent,
     modifier: Modifier,
 ) {
+    var selectedOrigin by remember { mutableStateOf<GameOrigin?>(null) }
     if (component.games.isEmpty()) {
         GomokuEmptyQuickPanel(
             component = component,
@@ -100,9 +107,15 @@ private fun GomokuLibraryContent(
                 onAnalysis = { component.openAnalysis(item.id) },
                 onDelete = { component.deleteGame(item.id) },
                 onRename = { newTitle -> component.renameGame(item.id, newTitle) },
+                sourceLabel = if (item.origin != null) stringResource(R.string.gomoku_setup_source) else "",
+                onShowSource = item.origin?.let { origin -> { selectedOrigin = origin } },
             )
         }
         item { Spacer(modifier = Modifier.height(80.dp)) }
+    }
+    selectedOrigin?.let { origin ->
+        GomokuOriginDialog(origin,
+            { selectedOrigin = null; component.openSourceGame(origin.gameId) }, { selectedOrigin = null })
     }
 }
 
@@ -117,12 +130,18 @@ private fun GomokuGameSummary.toCardData(): GameCardData {
     }
 
     val blackName = when {
-        blackPlayerType == PlayerType.LLM -> stringResource(R.string.gomoku_player_ai)
+        blackPlayerType == PlayerType.LLM -> blackAiConfig?.displayNames()?.let {
+            listOf(it.first, it.second).filter(String::isNotBlank).joinToString(" · ")
+        }?.takeIf(String::isNotBlank) ?: stringResource(R.string.gomoku_player_ai)
+        blackPlayerType == PlayerType.REMOTE -> stringResource(R.string.gomoku_player_remote)
         isLocal -> stringResource(R.string.gomoku_player_local_black)
         else -> stringResource(R.string.gomoku_player_you)
     }
     val whiteName = when {
-        whitePlayerType == PlayerType.LLM -> stringResource(R.string.gomoku_player_ai)
+        whitePlayerType == PlayerType.LLM -> whiteAiConfig?.displayNames()?.let {
+            listOf(it.first, it.second).filter(String::isNotBlank).joinToString(" · ")
+        }?.takeIf(String::isNotBlank) ?: stringResource(R.string.gomoku_player_ai)
+        whitePlayerType == PlayerType.REMOTE -> stringResource(R.string.gomoku_player_remote)
         isLocal -> stringResource(R.string.gomoku_player_local_white)
         else -> stringResource(R.string.gomoku_player_you)
     }

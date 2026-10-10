@@ -25,6 +25,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,12 +63,14 @@ import androidx.compose.ui.platform.LocalContext
 fun NewGameDropMenu(
     component: GomokuLibraryComponent,
     modifier: Modifier = Modifier,
+    label: String? = null,
+    openAbove: Boolean = false,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var importFen by remember { mutableStateOf(false) }
     var importJson by remember { mutableStateOf(false) }
     var showOnlineMatch by remember { mutableStateOf(false) }
-    val onNavigate = LocalOnNavigate.current
+    val onNavigate = component.onNavigate
     val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
     val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_20)
 
@@ -80,10 +86,14 @@ fun NewGameDropMenu(
             animationSpec = tween(300),
             label = "menu_rotation",
         )
-        IconButton(onClick = { expanded = !expanded }) {
+        if (label != null) {
+            TextButton(onClick = { expanded = !expanded }) {
+                Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+        } else IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.gomoku_more_modes),
                 modifier = Modifier.rotate(rotation),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -93,16 +103,16 @@ fun NewGameDropMenu(
             val density = LocalDensity.current
             val bubbleShape = BubbleShape(
                 arrowSize = 8.dp,
-                arrowDirection = BubbleShape.ArrowDirection.Top,
+                arrowDirection = if (openAbove) BubbleShape.ArrowDirection.Bottom else BubbleShape.ArrowDirection.Top,
                 arrowAlignment = BubbleShape.ArrowAlignment.End,
                 arrowOffset = 20.dp,
                 cornerRadius = 8.dp,
             )
             Popup(
-                alignment = Alignment.TopEnd,
+                alignment = if (openAbove) Alignment.BottomEnd else Alignment.TopEnd,
                 offset = IntOffset(
                     x = with(density) { 4.dp.roundToPx() },
-                    y = with(density) { 40.dp.roundToPx() },
+                    y = with(density) { (if (openAbove) (-48).dp else 40.dp).roundToPx() },
                 ),
                 onDismissRequest = { expanded = false },
                 properties = PopupProperties(focusable = true),
@@ -114,7 +124,7 @@ fun NewGameDropMenu(
                     modifier = Modifier.width(220.dp),
                 ) {
                     Column(
-                        modifier = Modifier.padding(
+                        modifier = Modifier.verticalScroll(rememberScrollState()).padding(
                             start = 8.dp,
                             end = 8.dp,
                             top = 14.dp,
@@ -339,6 +349,8 @@ private fun MenuItem(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
@@ -36,12 +37,11 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.wanbaohe.boardgame.model.AiPickerItem
-import com.wanbaohe.boardgame.model.AiSourceTag
-import com.wanbaohe.boardgame.ui.AiPickerBottomSheet
 import com.wanbaohe.gomoku.R
 import com.wanbaohe.gomoku.application.port.outbound.EngineSlot
 import com.wanbaohe.gomoku.application.port.outbound.GomokuAiSource
+import com.wanbaohe.gomoku.application.dto.GameAiPlayerConfig
+import com.wanbaohe.gomoku.ui.GomokuOpponentPicker
 import com.wanbaohe.gomoku.router.screenLogic.GomokuRouterComponent
 
 private enum class AiSlot { FAST, DUEL_A, DUEL_B }
@@ -57,60 +57,39 @@ fun GomokuSettingsScreen(
 ) {
     val settings by component.gomokuSettings.collectAsState()
     val fastEngine by component.currentAIEngine.collectAsState()
+    val duelA by component.duelEngineA.collectAsState()
+    val duelB by component.duelEngineB.collectAsState()
     val aiConfig by component.gomokuAiConfig.collectAsState()
     val runningActions by component.runningSettingsActions.collectAsState()
     var pickingSlot by remember { mutableStateOf<AiSlot?>(null) }
 
     val pickingSlotValue = pickingSlot
     if (pickingSlotValue != null) {
-        val slotTitleRes = when (pickingSlotValue) {
-            AiSlot.FAST -> R.string.gomoku_settings_ai_picker_title
-            AiSlot.DUEL_A -> R.string.gomoku_settings_ai_duel_a_picker_title
-            AiSlot.DUEL_B -> R.string.gomoku_settings_ai_duel_b_picker_title
+        val slot = when (pickingSlotValue) {
+            AiSlot.FAST -> EngineSlot.FAST
+            AiSlot.DUEL_A -> EngineSlot.DUEL_A
+            AiSlot.DUEL_B -> EngineSlot.DUEL_B
         }
-        val sources = GomokuAiSource.presets
-        val items = sources.map { source ->
-            when (source) {
-                GomokuAiSource.WorkingModel -> AiPickerItem(
-                    title = stringResource(R.string.gomoku_ai_source_working_model),
-                    subtitle = fastEngine.title.ifBlank { fastEngine.name },
-                    tags = listOf(
-                        AiSourceTag(stringResource(R.string.gomoku_ai_tag_login), androidx.compose.ui.graphics.Color(0xFFF08A5D)),
-                        AiSourceTag(stringResource(R.string.gomoku_ai_tag_points), androidx.compose.ui.graphics.Color(0xFF4F46E5)),
-                    ),
-                )
-                is GomokuAiSource.RemoteEngine -> AiPickerItem(
-                    title = stringResource(R.string.gomoku_ai_source_engine_name),
-                    subtitle = stringResource(R.string.gomoku_ai_source_engine_desc),
-                    tags = listOf(
-                        AiSourceTag(stringResource(R.string.gomoku_ai_tag_free), androidx.compose.ui.graphics.Color(0xFF3D8B7A)),
-                    ),
-                    trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
-                )
-            }
+        val engine = when (slot) {
+            EngineSlot.FAST -> fastEngine
+            EngineSlot.DUEL_A -> duelA
+            EngineSlot.DUEL_B -> duelB
         }
-        val currentSource = when (pickingSlotValue) {
-            AiSlot.FAST -> aiConfig.fastSource
-            AiSlot.DUEL_A -> aiConfig.duelASource
-            AiSlot.DUEL_B -> aiConfig.duelBSource
-        }
-        AiPickerBottomSheet(
-            visible = true,
-            title = stringResource(slotTitleRes),
-            description = stringResource(R.string.gomoku_ai_picker_desc),
-            items = items,
-            selectedItem = items.getOrNull(sources.indexOf(currentSource)),
-            onSelected = {
-                val slot = when (pickingSlotValue) {
-                    AiSlot.FAST -> EngineSlot.FAST
-                    AiSlot.DUEL_A -> EngineSlot.DUEL_A
-                    AiSlot.DUEL_B -> EngineSlot.DUEL_B
+        val engines by component.allAiEngines.collectAsState()
+        val models by component.modelsByProvider.collectAsState()
+        GomokuOpponentPicker(
+            config = GameAiPlayerConfig.capture(aiConfig.sourceFor(slot), engine),
+            workingEngine = engine,
+            allEngines = engines,
+            modelsByProvider = models,
+            onSourceSelected = { component.switchAiSource(slot, it) },
+            onModelSelected = { selected, model ->
+                when (slot) {
+                    EngineSlot.FAST -> component.switchAiModel(selected, model)
+                    EngineSlot.DUEL_A -> component.switchDuelEngineA(selected, model)
+                    EngineSlot.DUEL_B -> component.switchDuelEngineB(selected, model)
                 }
-                val index = items.indexOf(it)
-                if (index >= 0) {
-                    component.switchAiSource(slot, sources[index])
-                }
-                pickingSlot = null
+                component.switchAiSource(slot, GomokuAiSource.WorkingModel)
             },
             onDismiss = { pickingSlot = null },
         )
@@ -194,17 +173,17 @@ fun GomokuSettingsScreen(
         ) {
             AiSourceRow(
                 label = stringResource(R.string.gomoku_settings_ai_fast),
-                value = aiConfig.fastSource.displayName(fastEngine.title.ifBlank { fastEngine.name }),
+                value = aiConfig.fastSource.displayName(fastEngine.model.title.ifBlank { fastEngine.model.name }),
                 onClick = { pickingSlot = AiSlot.FAST },
             )
             AiSourceRow(
                 label = stringResource(R.string.gomoku_settings_ai_duel_a),
-                value = aiConfig.duelASource.displayName(fastEngine.title.ifBlank { fastEngine.name }),
+                value = aiConfig.duelASource.displayName(duelA.model.title.ifBlank { duelA.model.name }),
                 onClick = { pickingSlot = AiSlot.DUEL_A },
             )
             AiSourceRow(
                 label = stringResource(R.string.gomoku_settings_ai_duel_b),
-                value = aiConfig.duelBSource.displayName(fastEngine.title.ifBlank { fastEngine.name }),
+                value = aiConfig.duelBSource.displayName(duelB.model.title.ifBlank { duelB.model.name }),
                 onClick = { pickingSlot = AiSlot.DUEL_B },
             )
         }
@@ -231,6 +210,9 @@ private fun SettingSwitchRow(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
         Switch(
             checked = checked,
@@ -261,7 +243,7 @@ private fun PreviewButton(
         } else {
             Icon(icon, contentDescription = null, modifier = Modifier.size(16.dp))
         }
-        Text(label, modifier = Modifier.padding(start = 6.dp), maxLines = 1)
+        Text(label, modifier = Modifier.padding(start = 6.dp).weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -282,12 +264,17 @@ private fun AiSourceRow(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f),
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary,
             maxLines = 1,
+            modifier = Modifier.weight(1f),
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

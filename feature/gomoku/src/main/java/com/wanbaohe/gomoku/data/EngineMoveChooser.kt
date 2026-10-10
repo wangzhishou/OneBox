@@ -10,7 +10,9 @@ import com.wanbaohe.gomoku.application.port.outbound.EngineSlot
 import com.wanbaohe.gomoku.application.port.outbound.MoveDecision
 import com.wanbaohe.gomoku.domain.model.BoardState
 import com.wanbaohe.gomoku.domain.model.GomokuMove
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
+import retrofit2.awaitResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,14 +51,17 @@ class EngineMoveChooser @Inject constructor(
                     baseUrl = NetworkBuilder.getBaseUrl(),
                     path = UrlConstants.GOMOKU_ENGINE_PROXY_PATH,
                 )
-                val response = boardGameEngineService.bestMove(url = url, body = request).execute()
+                val response = boardGameEngineService.bestMove(url = url, body = request).awaitResponse()
                 if (!response.isSuccessful) {
                     return@runCatching Result.failure(IllegalStateException("http ${response.code()}"))
                 }
                 val body = response.body()
                     ?: return@runCatching Result.failure(IllegalStateException("empty body"))
                 Result.success(body)
-            }.getOrElse { Result.failure(it) }
+            }.getOrElse {
+                if (it is CancellationException) throw it
+                Result.failure(it)
+            }
         }
 
         val body = outcome.getOrNull()
