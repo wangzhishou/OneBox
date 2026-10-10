@@ -50,6 +50,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 
 /**
  * 搜索结果展示组件
@@ -64,7 +66,7 @@ fun RobotSearchResultsBlock(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+            .flatGlassCardSegment(segment = GlassCardSegment.Middle)
             .padding(
                 vertical = AppTheme.dimens.paddingNormal,
                 horizontal = AppTheme.dimens.spaceNormal
@@ -367,4 +369,3 @@ private fun SearchCitationCard(
         }
     }
 }
-

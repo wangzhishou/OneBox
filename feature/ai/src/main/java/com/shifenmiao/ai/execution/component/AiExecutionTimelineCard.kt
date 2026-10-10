@@ -59,7 +59,7 @@ import com.shifenmiao.ai.execution.model.ExecutionStepStatus
 import com.shifenmiao.ai.execution.model.ExecutionStepUiModel
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
@@ -100,7 +100,7 @@ fun AiExecutionTimelineCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 shape = RoundedCornerShape(0.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,

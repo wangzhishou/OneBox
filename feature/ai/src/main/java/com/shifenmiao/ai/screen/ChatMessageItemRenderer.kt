@@ -24,7 +24,7 @@ import com.shifenmiao.ai.component.UserMessageMarkdownBlock
 import com.shifenmiao.ai.component.UserMessageTextContent
 import com.shifenmiao.ai.model.MessageUiModel
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
 
 /**
@@ -272,10 +272,9 @@ private fun DefaultRobotVerticalSpace(item: MessageUiModel.RobotVerticalSpace) {
         modifier = Modifier
             .fillMaxWidth()
             .height(item.height)
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
     )
 }
-

@@ -84,7 +84,7 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassCardSegment
 import com.t8rin.imagetoolbox.core.utils.appContext
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
@@ -401,7 +401,7 @@ fun RobotMessageHeader(robotContainerHeader: MessageUiModel.RobotContainerHeader
             .padding(top = 2.dp)
             .fillMaxWidth()
             .height(18.dp)
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Top,
                 shape = RoundedCornerShape(0.dp, 16.dp, 0.dp, 0.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -460,7 +460,7 @@ fun RobotMessageFooter(
             .fillMaxWidth()
             .padding(bottom = 24.dp)
             .height(12.dp)
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Bottom,
                 shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -475,7 +475,7 @@ fun RobotMessageFooter(
         exit = fadeOut(animationSpec = tween(200))
     ) {
         AIUsageBar(
-            modifier = Modifier.glassCardSegment(
+            modifier = Modifier.flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 shape = RoundedCornerShape(0.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow
@@ -551,7 +551,7 @@ fun RobotMessageContent(
         RichText(
             modifier = Modifier
                 .fillMaxWidth()
-                .glassCardSegment(
+                .flatGlassCardSegment(
                     segment = GlassCardSegment.Middle,
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                 )
@@ -586,7 +586,7 @@ fun RobotMessageMarkdownBlock(
     RichText(
         modifier = Modifier
             .fillMaxWidth()
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
@@ -616,7 +616,7 @@ fun RobotReasoningHeader(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = backgroundColor,
             )
@@ -627,20 +627,22 @@ fun RobotReasoningHeader(
                 bottom = if (expanded) 0.dp else 6.dp
             )
     ) {
-        GlassSurface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = if (expanded) {
-                RoundedCornerShape(
-                    topStart = 16.dp,
-                    topEnd = 16.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 0.dp
-                )
-            } else {
-                RoundedCornerShape(16.dp)
-            },
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-            borderWidth = 0.dp,
+        Box(
+            modifier = Modifier.fillMaxWidth().flatGlassCardSegment(
+                segment = if (expanded) GlassCardSegment.Top else GlassCardSegment.Solo,
+                shape = if (expanded) {
+                    RoundedCornerShape(
+                        topStart = 16.dp,
+                        topEnd = 16.dp,
+                        bottomStart = 0.dp,
+                        bottomEnd = 0.dp
+                    )
+                } else {
+                    RoundedCornerShape(16.dp)
+                },
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                borderWidth = 0.dp,
+            ),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -738,17 +740,19 @@ fun RobotReasoningContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .glassCardSegment(
+                .flatGlassCardSegment(
                     segment = GlassCardSegment.Middle,
                     color = backgroundColor,
                 )
                 .padding(start = 10.dp, end = 10.dp, top = 0.dp, bottom = 6.dp)
         ) {
-            GlassSurface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                borderWidth = 0.0.dp,
+            Box(
+                modifier = Modifier.fillMaxWidth().flatGlassCardSegment(
+                    segment = GlassCardSegment.Bottom,
+                    shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    borderWidth = 0.dp,
+                ),
             ) {
                 val lineWidth = 2.dp
                 Box(
@@ -804,7 +808,7 @@ fun RobotReasoningContent(
 fun RobotReasoningBlock(
     reasoningBlock: MessageUiModel.RobotReasoningBlock,
     codeBlockClickListener: CodeBlockClickListener,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     leftLine: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.32f),
 ) {
@@ -832,7 +836,7 @@ fun RobotReasoningBlock(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = backgroundColor,
             )
@@ -840,10 +844,11 @@ fun RobotReasoningBlock(
     ) {
         Box(
             modifier = Modifier.fillMaxWidth()
-                .glassCardSegment(
-                    segment = GlassCardSegment.Middle,
-                    color = backgroundColor,
+                .flatGlassCardSegment(
+                    segment = if (reasoningBlock.isLast) GlassCardSegment.Bottom else GlassCardSegment.Middle,
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
                     shape = surfaceShape,
+                    borderWidth = 0.dp,
                 ),
         ) {
             val lineWidth = 2.dp
@@ -912,9 +917,8 @@ fun RobotDirectErrorContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
-                shape = RoundedCornerShape(16.dp),
                 color = backgroundColor,
             )
             .padding(horizontal = 12.dp, vertical = 8.dp)
@@ -947,7 +951,7 @@ fun ChatLoadingIndicator(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = backgroundColor,
             )
@@ -967,7 +971,7 @@ fun ChatErrorMessage(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             )

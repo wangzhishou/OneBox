@@ -1006,6 +1006,59 @@ fun Modifier.glassTextField(
     )
 }
 
+/**
+ * Uniform translucent fill for lazy-list card segments, with highlights only on the outer contour.
+ * Uses the glass palette and opacity settings without per-item reflections or depth gradients.
+ */
+@Composable
+fun Modifier.flatGlassCardSegment(
+    segment: GlassCardSegment,
+    shape: Shape = segment.toShape(),
+    color: Color = MaterialTheme.colorScheme.surfaceContainerLow,
+    style: GlassStyle = GlassStyle.Thick,
+    borderWidth: Dp = 0.7.dp,
+): Modifier {
+    val settings = LocalSettingsState.current
+    if (!settings.isGlassAlphaEnabled || style == GlassStyle.None ||
+        style == GlassStyle.Transparent || color == Color.Transparent
+    ) {
+        return fallbackGlassBackground(shape = shape, color = color, style = style)
+    }
+    val scheme = MaterialTheme.colorScheme
+    val baseAlpha = settings.glassBaseAlpha.coerceIn(0f, 1f)
+    val fill = flatGlassContainerColor(color = color, style = style)
+    val borderAlpha = effectiveGlassBorderAlpha()
+    val edgeColor = Color.White.copy(alpha = 0.18f * baseAlpha * borderAlpha)
+        .compositeOver(scheme.outlineVariant.copy(alpha = 0.14f * baseAlpha * borderAlpha))
+    val hasTop = segment == GlassCardSegment.Top || segment == GlassCardSegment.Solo
+    val hasBottom = segment == GlassCardSegment.Bottom || segment == GlassCardSegment.Solo
+    return clip(shape).drawWithCache {
+        val outline = shape.createOutline(size, layoutDirection, this)
+        val strokeWidth = borderWidth.toPx().coerceAtLeast(0f)
+        // Move internal horizontal edges outside the clip; adjoining items retain only side edges.
+        val topExtension = if (hasTop) 0f else strokeWidth * 2f
+        val bottomExtension = if (hasBottom) 0f else strokeWidth * 2f
+        val edgePath = Path().apply {
+            addOutline(
+                shape.createOutline(
+                    Size(size.width, size.height + topExtension + bottomExtension),
+                    layoutDirection,
+                    this@drawWithCache,
+                )
+            )
+            translate(Offset(0f, -topExtension))
+        }
+        val stroke = Stroke(width = strokeWidth * 2f)
+        onDrawWithContent {
+            drawOutline(outline, color = fill)
+            drawContent()
+            if (strokeWidth > 0f && edgeColor.alpha > 0f) {
+                drawPath(edgePath, color = edgeColor, style = stroke)
+            }
+        }
+    }
+}
+
 @Composable
 fun Modifier.glassCardSegment(
     segment: GlassCardSegment,

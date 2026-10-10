@@ -106,6 +106,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.drop
@@ -1521,7 +1522,7 @@ private fun DuelRobotFooter() {
             .fillMaxWidth()
             .padding(bottom = 15.dp)
             .height(12.dp)
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Bottom,
                 shape = RoundedCornerShape(0.dp, 0.dp, 12.dp, 12.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -1589,7 +1590,7 @@ private fun DuelRobotMessageHeader(
             .padding(top = 6.dp)
             .fillMaxWidth()
             .height(12.dp)
-            .glassCardSegment(
+            .flatGlassCardSegment(
                 segment = GlassCardSegment.Top,
                 shape = RoundedCornerShape(0.dp, 12.dp, 0.dp, 0.dp),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
