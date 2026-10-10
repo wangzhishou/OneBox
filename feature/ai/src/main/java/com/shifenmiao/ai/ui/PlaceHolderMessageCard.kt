@@ -169,8 +169,10 @@ fun PlaceHolderMessageCard(
         }
 
         else -> {
+            // 外层 LazyColumn 的 contentPadding 已提供 16dp 水平边距(与标题栏/输入框一致),
+            // 这里只保留垂直 padding,水平不再叠加,避免卡片比消息流内缩一档
             Column(
-                modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
+                modifier = Modifier.padding(vertical = AppTheme.dimens.paddingNormal),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
             ) {
                 GlassSurface(
