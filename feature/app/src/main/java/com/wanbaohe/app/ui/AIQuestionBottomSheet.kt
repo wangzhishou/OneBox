@@ -1,5 +1,6 @@
 package com.wanbaohe.app.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,12 @@ fun AIQuestionBottomSheet(
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { onCancel() },
+        // Agent 正在挂起等待表单结果: 滑动/点遮罩不能被动取消(cancelable=false),
+        // 只能点「取消」按钮主动取消, 否则误触会让 Agent 收到 cancelled 后瞎编继续。
+        cancelable = false,
+        // sheet 自身的返回键处理会触发 onDismiss(=取消), 关掉它;
+        // 返回键改由下方内容区的空 BackHandler 消费, 防止穿透到 App 层误触导航/退出。
+        enableBackHandler = false,
         enableBottomContentWeight = false,
         title = {},
         confirmButton = {
@@ -51,6 +58,8 @@ fun AIQuestionBottomSheet(
             }
         }
     ) {
+        // 消费返回键: 表单挂起期间返回键不做事(不取消表单、不穿透到 App 导航)。
+        BackHandler(enabled = true) { /* no-op */ }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
