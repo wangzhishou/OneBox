@@ -1,12 +1,13 @@
 package com.shifenmiao.ai.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
@@ -33,11 +34,12 @@ import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +60,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.halilibo.richtext.ui.material3.RichMarkdown
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.logic.ChatInputComponent
@@ -82,6 +85,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.screenIconByModule
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -98,6 +102,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
 
 private const val CHAT_QUICK_START_VISIBLE_COUNT = 4
 private const val CHAT_QUICK_START_REFRESH_THRESHOLD = 8
+private const val QUICK_START_STAGGER_DELAY_MILLIS = 45L
 
 @Composable
 fun PlaceHolderMessageCard(
@@ -168,7 +173,7 @@ fun PlaceHolderMessageCard(
                 modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
             ) {
-                Surface(
+                GlassSurface(
                     color = MaterialTheme.colorScheme.surfaceContainerLow,
                     shape = MaterialTheme.shapes.large
                 ) {
@@ -188,7 +193,7 @@ fun PlaceHolderMessageCard(
                             )
                             Text(
                                 text = stringResource(id = R.string.ai_chat_placeholder_title),
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                                 color = AppTheme.colors.getPrimaryTextColor()
                             )
                         }
@@ -474,10 +479,10 @@ fun ChatQuickStartSection(
         AnimatedContent(
             targetState = refreshNonce,
             transitionSpec = {
-                (fadeIn(animationSpec = tween(220)) + scaleIn(animationSpec = tween(220), initialScale = 0.96f))
-                    .togetherWith(
-                        fadeOut(animationSpec = tween(160)) + scaleOut(animationSpec = tween(160), targetScale = 0.96f)
-                    )
+                // 新一轮卡片的入场动画由各项自身交错完成,这里只负责旧一轮的退出
+                EnterTransition.None togetherWith (
+                    fadeOut(animationSpec = tween(160)) + scaleOut(animationSpec = tween(160), targetScale = 0.96f)
+                )
             },
             label = "ChatQuickStartSwitcher"
         ) { refreshRound ->
@@ -487,21 +492,43 @@ fun ChatQuickStartSection(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                displayedStarters.chunked(2).forEach { rowItems ->
+                displayedStarters.chunked(2).forEachIndexed { rowIndex, rowItems ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(IntrinsicSize.Max),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        rowItems.forEach { item ->
-                            ChatQuickStartCard(
-                                item = item,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight(),
-                                onClick = { onSuggestionClick(item.text) }
-                            )
+                        rowItems.forEachIndexed { columnIndex, item ->
+                            key(refreshRound, item.text) {
+                                val itemIndex = rowIndex * 2 + columnIndex
+                                val entranceProgress = remember { Animatable(0f) }
+                                LaunchedEffect(Unit) {
+                                    delay(QUICK_START_STAGGER_DELAY_MILLIS * itemIndex)
+                                    entranceProgress.animateTo(
+                                        targetValue = 1f,
+                                        animationSpec = tween(
+                                            durationMillis = 280,
+                                            easing = FastOutSlowInEasing
+                                        )
+                                    )
+                                }
+                                ChatQuickStartCard(
+                                    item = item,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
+                                        .graphicsLayer {
+                                            alpha = entranceProgress.value
+                                            val scale = 0.92f + 0.08f * entranceProgress.value
+                                            scaleX = scale
+                                            scaleY = scale
+                                            translationY =
+                                                (1f - entranceProgress.value) * 12.dp.toPx()
+                                        },
+                                    onClick = { onSuggestionClick(item.text) }
+                                )
+                            }
                         }
                         if (rowItems.size == 1) {
                             Spacer(modifier = Modifier.weight(1f))
@@ -520,7 +547,7 @@ private fun ChatQuickStartCard(
     onClick: () -> Unit
 ) {
     val moduleIcon = remember(item.module) { screenIconByModule(item.module) }
-    Surface(
+    GlassSurface(
         onClick = onClick,
         modifier = modifier,
         color = MaterialTheme.colorScheme.surfaceContainerLow,
