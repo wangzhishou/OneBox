@@ -95,9 +95,9 @@ private fun addMenuItemBackground(theme: AddMenuItemTheme): Color = when (theme)
 
 @Composable
 private fun addMenuItemContentColor(theme: AddMenuItemTheme): Color = when (theme) {
-    AddMenuItemTheme.PRIMARY -> MaterialTheme.colorScheme.primary
-    AddMenuItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondary
-    AddMenuItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiary
+    AddMenuItemTheme.PRIMARY -> MaterialTheme.colorScheme.onPrimaryContainer
+    AddMenuItemTheme.SECONDARY -> MaterialTheme.colorScheme.onSecondaryContainer
+    AddMenuItemTheme.TERTIARY -> MaterialTheme.colorScheme.onTertiaryContainer
     AddMenuItemTheme.SURFACE -> MaterialTheme.colorScheme.onSurfaceVariant
 }
 
