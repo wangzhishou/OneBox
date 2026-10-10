@@ -574,8 +574,6 @@
     <string name="ai_chat_jump_to_latest_message">رسالة جديدة، انقر للعرض</string>
     <string name="ai_chat_message_limit_notice">تُعرض آخر 50 رسالة فقط. الرسائل الأقدم محفوظة في الأرشيف.</string>
     <string name="ai_chat_status_model">النموذج</string>
-    <string name="ai_mode_agent">الوكيل</string>
-    <string name="ai_mode_ask">اسأل</string>
     <string name="ai_chat_status_mode">الوضع</string>
     <string name="ai_chat_status_online">البحث في الويب</string>
     <string name="ai_chat_status_standard">قياسي</string>

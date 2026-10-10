@@ -10,12 +10,8 @@
     <string name="sys_prompt_bazi_desc">BaZi (Dört Sütun) grafik analizi için yerleşik sistem komutu</string>
     <string name="sys_prompt_xiangqi_title">Xiangqi Hamle Sistem Komutu</string>
     <string name="sys_prompt_xiangqi_desc">LLM Xiangqi (Çin satrancı) maçları için yerleşik sistem komutu</string>
-    <string name="sys_prompt_mode_ask_title">ASK Sadece Soru-Cevap Modu Protokolü</string>
-    <string name="sys_prompt_mode_ask_desc">Ask modu için yürütme protokolü komutu</string>
-    <string name="sys_prompt_mode_plan_title">PLAN Sadece Planlama Modu Protokolü</string>
-    <string name="sys_prompt_mode_plan_desc">Plan modu için yürütme protokolü komutu</string>
-    <string name="sys_prompt_mode_agent_title">AGENT Yürütme Modu Protokolü</string>
-    <string name="sys_prompt_mode_agent_desc">Ajan modu için yürütme protokolü komutu</string>
+    <string name="sys_prompt_mode_agent_title">Yürütme Protokolü</string>
+    <string name="sys_prompt_mode_agent_desc">Asistanı araçları kullanmaya ve görevleri tamamlamaya yönlendiren sistem komutu</string>
     <string name="sys_prompt_duel_title">AI Düello/Etkileşim Komut Şablonları</string>
     <string name="sys_prompt_duel_desc">AI düelloları ve etkileşimleri için sistem talimatları, rol kuralları ve sıra yönlendirme şablonları</string>
     <!-- Habit tracker activity log entries -->

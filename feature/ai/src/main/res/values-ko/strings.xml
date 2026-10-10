@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">source_uri 매개변수가 없습니다(zip 압축 파일 경로)</string>
     <string name="agent_tool_unzip_file_failed">압축 해제 실패: %1$s</string>
     <string name="ai_input_file">파일</string>
-    <string name="ai_chat_working_mode_ask_title">질문</string>
-    <string name="ai_chat_working_mode_ask_description">직접 답변하고, 필요한 경우에만 기능 탐색 수행</string>
-    <string name="ai_chat_working_mode_plan_title">계획</string>
-    <string name="ai_chat_working_mode_plan_description">먼저 조사한 후 계획 수립; 조회만 하고 실행하지 않음</string>
-    <string name="ai_chat_working_mode_agent_title">실행</string>
-    <string name="ai_chat_working_mode_agent_description">도구를 호출하여 작업을 진행하고 실제 결과에 따라 계속 진행</string>
     <string name="agent_tool_process_file_title">파일 읽기</string>
     <string name="agent_tool_process_file_summary">줄 범위로 로컬 텍스트 파일 하나를 읽고, 키워드를 검색하여 줄 번호가 있는 구조화된 결과를 반환</string>
     <string name="agent_tool_process_file_param_file_path">작업 공간 내 로컬 파일 경로 또는 URI.</string>

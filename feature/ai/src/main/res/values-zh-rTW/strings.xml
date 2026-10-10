@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">缺少 source_uri 參數(zip 壓縮包路徑)</string>
     <string name="agent_tool_unzip_file_failed">解壓失敗:%1$s</string>
     <string name="ai_input_file">檔案</string>
-    <string name="ai_chat_working_mode_ask_title">提問</string>
-    <string name="ai_chat_working_mode_ask_description">直接回答，必要時再做能力探索</string>
-    <string name="ai_chat_working_mode_plan_title">規劃</string>
-    <string name="ai_chat_working_mode_plan_description">先調研再規劃，只查不執行</string>
-    <string name="ai_chat_working_mode_agent_title">執行</string>
-    <string name="ai_chat_working_mode_agent_description">呼叫工具推進任務，並基於真實結果繼續</string>
     <string name="agent_tool_process_file_title">讀取檔案</string>
     <string name="agent_tool_process_file_summary">依行範圍精讀單一本機文字檔、搜尋關鍵字並回傳帶行號的結構化結果</string>
     <string name="agent_tool_process_file_param_file_path">工作區內的本機檔案路徑或 URI。</string>

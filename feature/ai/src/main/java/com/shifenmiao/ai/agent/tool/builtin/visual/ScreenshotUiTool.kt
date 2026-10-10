@@ -8,7 +8,6 @@ import com.shifenmiao.model.parseLooseJsonObject
 import com.shifenmiao.model.ai.AttachedMedia
 import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
 import com.wanbaohe.visual.automation.service.ScreenshotSnapshot
 import com.wanbaohe.visual.automation.service.VisualAutomationService

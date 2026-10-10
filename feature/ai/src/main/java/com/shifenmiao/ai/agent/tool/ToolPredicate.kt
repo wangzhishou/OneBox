@@ -2,7 +2,6 @@ package com.shifenmiao.ai.agent.tool
 
 import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.Conversation
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 
 /**
@@ -37,7 +36,6 @@ fun interface ToolPredicate {
  */
 data class ToolFilterContext(
     val conversation: Conversation,
-    val workingMode: ChatWorkingMode,
     /** 当前引擎的请求协议，端侧推理为 [AiRequestProtocol.LOCAL_ON_DEVICE] */
     val protocol: AiRequestProtocol,
     val boundToolNames: Set<String>?,

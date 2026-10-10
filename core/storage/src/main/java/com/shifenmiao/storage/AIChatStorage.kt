@@ -1,7 +1,6 @@
 package com.shifenmiao.storage
 
 import com.shifenmiao.model.ai.Conversation
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +23,6 @@ object AIChatStorage {
     private const val IS_ENABLE_REASONING = "is_enable_reasoning"
     private const val IS_ENABLE_CONVERSATION_TITLE_SUMMARY = "is_enable_conversation_title_summary"
     private const val MAX_AGENT_ITERATIONS = "max_agent_iterations"
-    private const val LAST_CHAT_WORKING_MODE = "last_chat_working_mode"
     private const val IS_ENABLE_MEMORY = "is_enable_memory"
     private const val IS_ENABLE_SKILLS = "is_enable_skills"
     private const val IS_ENABLE_CONTEXT_COMPACTION = "is_enable_context_compaction"
@@ -37,8 +35,6 @@ object AIChatStorage {
     val isEnableConversationTitleSummary: StateFlow<Boolean> get() = _isEnableConversationTitleSummary
     private val _maxAgentIterations = MutableStateFlow(loadMaxAgentIterations())
     val maxAgentIterations: StateFlow<Int> get() = _maxAgentIterations
-    private val _lastChatWorkingMode = MutableStateFlow(loadLastChatWorkingMode())
-    val lastChatWorkingMode: StateFlow<ChatWorkingMode?> get() = _lastChatWorkingMode
     private val _isEnableMemory = MutableStateFlow(loadIsEnableMemory())
     val isEnableMemory: StateFlow<Boolean> get() = _isEnableMemory
     private val _isEnableSkills = MutableStateFlow(loadIsEnableSkills())
@@ -107,20 +103,6 @@ object AIChatStorage {
         return sanitizeMaxAgentIterations(
             mmkv.decodeInt(MAX_AGENT_ITERATIONS, DEFAULT_MAX_AGENT_ITERATIONS)
         )
-    }
-
-    /**
-     * 记录用户上次显式选择的聊天工作模式（ASK/PLAN/AGENT），
-     * 新会话（尚无会话级策略）默认沿用该模式。
-     */
-    fun saveLastChatWorkingMode(mode: ChatWorkingMode) {
-        mmkv.encode(LAST_CHAT_WORKING_MODE, mode.name)
-        _lastChatWorkingMode.value = mode
-    }
-
-    fun loadLastChatWorkingMode(): ChatWorkingMode? {
-        val saved = mmkv.decodeString(LAST_CHAT_WORKING_MODE) ?: return null
-        return runCatching { ChatWorkingMode.valueOf(saved) }.getOrNull()
     }
 
     fun saveIsEnableMemory(enabled: Boolean) {

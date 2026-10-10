@@ -12,12 +12,8 @@
     <string name="sys_prompt_xiangqi_desc">مُوجِّه نظام مدمج لمباريات الشطرنج الصيني مع النماذج اللغوية</string>
     <string name="sys_prompt_iching_title">مُوجِّه نظام تفسير كتاب التغييرات</string>
     <string name="sys_prompt_iching_desc">تعليمات النظام المستخدمة لتفسير سؤال ورمز سداسي وخطوط متغيّرة</string>
-    <string name="sys_prompt_mode_ask_title">بروتوكول وضع ASK للاستعلام فقط</string>
-    <string name="sys_prompt_mode_ask_desc">مُوجِّه بروتوكول التنفيذ لوضع الاستعلام</string>
-    <string name="sys_prompt_mode_plan_title">بروتوكول وضع PLAN للتخطيط فقط</string>
-    <string name="sys_prompt_mode_plan_desc">مُوجِّه بروتوكول التنفيذ لوضع التخطيط</string>
-    <string name="sys_prompt_mode_agent_title">بروتوكول وضع AGENT للتنفيذ</string>
-    <string name="sys_prompt_mode_agent_desc">مُوجِّه بروتوكول التنفيذ لوضع الوكيل</string>
+    <string name="sys_prompt_mode_agent_title">بروتوكول التنفيذ</string>
+    <string name="sys_prompt_mode_agent_desc">موجّه النظام الذي يوجّه المساعد لاستخدام الأدوات وإنجاز المهام</string>
     <string name="sys_prompt_duel_title">قوالب مُوجِّهات المبارزة والتفاعل بالذكاء الاصطناعي</string>
     <string name="sys_prompt_duel_desc">تعليمات النظام وقواعد الأدوار وقوالب إرشاد الأدوار لمبارزات وتفاعلات الذكاء الاصطناعي</string>
     <string name="sys_prompt_memory_global_title">إرشادات ملف الذاكرة</string>

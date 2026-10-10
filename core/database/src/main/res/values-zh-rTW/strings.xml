@@ -12,12 +12,8 @@
     <string name="sys_prompt_xiangqi_desc">用於中國象棋 LLM 人機對弈的系統預設提示詞</string>
     <string name="sys_prompt_iching_title">易經六爻解讀系統提示詞</string>
     <string name="sys_prompt_iching_desc">用於結合所問事項、卦象和動爻生成針對性解讀</string>
-    <string name="sys_prompt_mode_ask_title">ASK 僅問答模式執行協定</string>
-    <string name="sys_prompt_mode_ask_desc">Ask 模式下的執行協定提示詞</string>
-    <string name="sys_prompt_mode_plan_title">PLAN 僅規劃模式執行協定</string>
-    <string name="sys_prompt_mode_plan_desc">Plan 模式下的執行協定提示詞</string>
-    <string name="sys_prompt_mode_agent_title">AGENT 執行模式執行協定</string>
-    <string name="sys_prompt_mode_agent_desc">Agent 模式下的執行協定提示詞</string>
+    <string name="sys_prompt_mode_agent_title">執行協定</string>
+    <string name="sys_prompt_mode_agent_desc">驅動助手呼叫工具、完成任務的系統提示詞</string>
     <string name="sys_prompt_duel_title">AI 對聊/互動 prompt 範本</string>
     <string name="sys_prompt_duel_desc">AI 對聊/互動中使用的系統指令、角色發言規則與回合引導語範本</string>
     <string name="activity_log_habit_app_title">習慣打卡</string>

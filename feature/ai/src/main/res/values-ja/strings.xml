@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">source_uri パラメータ（zip アーカイブのパス）がありません</string>
     <string name="agent_tool_unzip_file_failed">解凍に失敗しました: %1$s</string>
     <string name="ai_input_file">ファイル</string>
-    <string name="ai_chat_working_mode_ask_title">質問</string>
-    <string name="ai_chat_working_mode_ask_description">直接回答し、必要な場合のみ機能検出を行う</string>
-    <string name="ai_chat_working_mode_plan_title">計画</string>
-    <string name="ai_chat_working_mode_plan_description">まず調査してから計画を立てる。参照のみで実行はしない</string>
-    <string name="ai_chat_working_mode_agent_title">実行</string>
-    <string name="ai_chat_working_mode_agent_description">ツールを呼び出してタスクを進め、実際の結果に基づいて続行する</string>
     <string name="agent_tool_process_file_title">ファイルを読む</string>
     <string name="agent_tool_process_file_summary">行範囲でローカルのテキストファイルを読み、キーワードを検索して、構造化された行番号付きの結果を返す</string>
     <string name="agent_tool_process_file_param_file_path">ワークスペース内のローカルファイルパスまたはURI。</string>

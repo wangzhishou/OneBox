@@ -30,7 +30,7 @@ data class ToolBindingEntity(
     object OwnerType {
         const val AGENT = "AGENT"
         const val PROMPT = "PROMPT"
-        // CHAT / ASSISTANT 旧 owner_type 已废弃 (首轮默认统一走 bootstrapModes 兜底),
+        // CHAT / ASSISTANT 旧 owner_type 已废弃 (首轮默认统一走 bootstrap 兜底),
         // 常量一并删除. 旧行由 AppDatabase.MIGRATION_2_3 清理.
     }
 }

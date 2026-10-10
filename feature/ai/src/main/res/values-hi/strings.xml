@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">source_uri पैरामीटर अनुपलब्ध है (zip आर्काइव का पथ)</string>
     <string name="agent_tool_unzip_file_failed">एक्सट्रैक्ट विफल: %1$s</string>
     <string name="ai_input_file">फ़ाइल</string>
-    <string name="ai_chat_working_mode_ask_title">पूछें</string>
-    <string name="ai_chat_working_mode_ask_description">सीधे उत्तर दें, क्षमता खोज केवल आवश्यकता होने पर करें</string>
-    <string name="ai_chat_working_mode_plan_title">योजना</string>
-    <string name="ai_chat_working_mode_plan_description">पहले जांचें फिर योजना बनाएं; केवल देखें, निष्पादित न करें</string>
-    <string name="ai_chat_working_mode_agent_title">निष्पादित करें</string>
-    <string name="ai_chat_working_mode_agent_description">कार्य को आगे बढ़ाने के लिए टूल का उपयोग करें और वास्तविक परिणामों के आधार पर जारी रखें</string>
     <string name="agent_tool_process_file_title">फ़ाइल पढ़ें</string>
     <string name="agent_tool_process_file_summary">पंक्ति सीमा द्वारा एक स्थानीय टेक्स्ट फ़ाइल पढ़ें, कीवर्ड खोजें और संरचित पंक्ति-संख्या वाले परिणाम लौटाएं</string>
     <string name="agent_tool_process_file_param_file_path">कार्यक्षेत्र के भीतर स्थानीय फ़ाइल पथ या URI।</string>

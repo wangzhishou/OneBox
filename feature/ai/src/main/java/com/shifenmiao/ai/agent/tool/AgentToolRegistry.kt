@@ -224,7 +224,8 @@ class AgentToolRegistry @Inject constructor(
     // 工具目录的唯一权威来源是这里的 in-memory 注册表.
     // 历史上有 ToolCatalogRepository 把目录序列化到 DB 缓存, 但
     // 1) [ToolCatalogItem] 全部字段在编译期就确定, 无运行时可变状态;
-    // 2) DB round-trip 会丢失 per-mode 信息 (如 [ChatWorkingMode] 集合退化为 Boolean);
+    // 2) 目录结构随代码演进 (聊天工作模式删除后 bootstrapModes 已降级为
+    //    [ToolCatalogItem.bootstrap]), DB 快照只会成为需要迁移的历史包袱;
     // 3) 注册表最多几十个工具, 重建 O(n) 远低于一次 IO 查询.
     // 因此下面的查询全部走 in-memory, 不再依赖 DB.
 

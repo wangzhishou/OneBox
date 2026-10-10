@@ -390,7 +390,7 @@ GitHub Release 只挂海外包（google/foss 各 arm64），国内 6 渠道包�
 
 - `feature/ai/`：AI 对话、Agent Loop、工具调用执行、交互式工具桥接
 - `feature/common/`：AI 引擎目录、引擎同步、共享管理器
-- `feature/settings/`：AI 引擎、模型与工作模式配置入口
+- `feature/settings/`：AI 引擎与工作模型配置入口
 
 其中工具调用链路基于：
 

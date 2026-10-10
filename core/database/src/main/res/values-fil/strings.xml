@@ -10,12 +10,8 @@
     <string name="sys_prompt_bazi_desc">Built-in na system prompt para sa pagsusuri ng BaZi (Apat na Haligi) chart</string>
     <string name="sys_prompt_xiangqi_title">System Prompt sa Paglipat ng Xiangqi</string>
     <string name="sys_prompt_xiangqi_desc">Built-in na system prompt para sa mga laban ng LLM Xiangqi (Chinese chess)</string>
-    <string name="sys_prompt_mode_ask_title">Protokol ng ASK na Q&amp;A-Lamang na Mode</string>
-    <string name="sys_prompt_mode_ask_desc">Protokol na prompt para sa pagpapatupad ng Ask mode</string>
-    <string name="sys_prompt_mode_plan_title">Protokol ng PLAN na Pagpaplano-Lamang na Mode</string>
-    <string name="sys_prompt_mode_plan_desc">Protokol na prompt para sa pagpapatupad ng Plan mode</string>
-    <string name="sys_prompt_mode_agent_title">Protokol ng AGENT na Mode ng Pagpapatupad</string>
-    <string name="sys_prompt_mode_agent_desc">Protokol na prompt para sa pagpapatupad ng Agent mode</string>
+    <string name="sys_prompt_mode_agent_title">Protokol ng Pagpapatupad</string>
+    <string name="sys_prompt_mode_agent_desc">System prompt na gumagabay sa assistant na gumamit ng mga tool at tapusin ang mga gawain</string>
     <string name="sys_prompt_duel_title">Mga Template ng Prompt para sa AI Duel/Interaksyon</string>
     <string name="sys_prompt_duel_desc">Mga tagubilin ng system, mga panuntunan sa papel, at mga template ng gabay sa pagliko para sa mga AI duel at interaksyon</string>
     <!-- Habit tracker activity log entries -->

@@ -5,9 +5,7 @@ import com.shifenmiao.database.ai.entity.ConversationToolPolicyEntity
 import com.shifenmiao.model.ModelProvider.AppJson
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ConversationToolPolicy
-import com.shifenmiao.storage.AIChatStorage
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import javax.inject.Inject
@@ -52,43 +50,12 @@ class ConversationToolPolicyRepository @Inject constructor(
 
     private fun ConversationToolPolicy.normalize(): ConversationToolPolicy {
         return copy(
-            workingMode = workingMode,
             selectedToolNames = selectedToolNames
                 .map(String::trim)
                 .filter(String::isNotEmpty)
                 .distinct()
                 .sorted()
         )
-    }
-
-    fun defaultWorkingMode(conversation: Conversation): ChatWorkingMode {
-        return when (conversation.entryType) {
-            AIConversationEntryType.AGENT,
-            AIConversationEntryType.PROMPT,
-            AIConversationEntryType.ASSISTANT, -> ChatWorkingMode.AGENT
-            AIConversationEntryType.QA,
-            AIConversationEntryType.STREAM_QA,
-            AIConversationEntryType.DUEL,
-            AIConversationEntryType.CHAT -> ChatWorkingMode.ASK
-        }
-    }
-
-    /**
-     * 新会话（尚无会话级策略）生效的默认工作模式。
-     *
-     * 聊天类会话（硬编码默认为 ASK 且非 DUEL）优先沿用用户上次显式选择
-     * 并全局记忆的模式（[AIChatStorage.saveLastChatWorkingMode]）；
-     * AGENT / PROMPT / ASSISTANT / DUEL 保持各自硬编码默认，
-     * 避免被聊天页的选择带偏。
-     */
-    fun effectiveDefaultWorkingMode(conversation: Conversation): ChatWorkingMode {
-        val typeDefault = defaultWorkingMode(conversation)
-        if (typeDefault != ChatWorkingMode.ASK ||
-            conversation.entryType == AIConversationEntryType.DUEL
-        ) {
-            return typeDefault
-        }
-        return AIChatStorage.loadLastChatWorkingMode() ?: typeDefault
     }
 
     private fun buildScopeKey(conversation: Conversation): String {

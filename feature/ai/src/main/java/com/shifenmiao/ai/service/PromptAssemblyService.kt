@@ -102,7 +102,6 @@ class PromptAssemblyService(
         val conversation = toolConfigResolver.currentConversation()
         val context = ToolFilterContext(
             conversation = conversation,
-            workingMode = effectiveConfig.policy.workingMode,
             protocol = conversation.engine.requestProtocol,
             boundToolNames = effectiveConfig.boundToolNames,
             selectedToolNames = effectiveConfig.policy.selectedToolNames,
@@ -120,18 +119,15 @@ class PromptAssemblyService(
 
     /**
      * 构建带有系统 prompt 的有效对话。
-     *
-     * @param planInjection PLAN→AGENT 切换时注入的计划文本
      */
     suspend fun buildEffectiveConversation(
         baseConversation: Conversation,
         preResolvedConfig: ToolConfigResolver.EffectiveToolConfig? = null,
-        planInjection: String = "",
     ): Conversation {
         val effectiveToolConfig = preResolvedConfig ?: toolConfigResolver.resolve()
         val promptBudget = systemPromptRepository.calculatePromptBudget(baseConversation.engine.model)
 
-        // 记忆/技能注入与 planInjection 同构：门控判定后取 fragment，关闭即不注入。
+        // 记忆/技能注入：门控判定后取 fragment，关闭即不注入。
         // 模型不支持工具调用时：SKILLS 层不注入（正文无法加载，清单无意义）；
         // MEMORY 层保留但省略提示不带 memory_get 指引。
         val memoryFragment = if (effectiveToolConfig.memoryEnabled) {
@@ -150,8 +146,6 @@ class PromptAssemblyService(
 
         val composition = systemPromptRepository.composeConversationPrompt(
             conversation = baseConversation,
-            workingMode = effectiveToolConfig.policy.workingMode,
-            taskPrompt = planInjection,
             memoryFragment = memoryFragment,
             skillsFragment = skillsFragment,
             tokenBudget = promptBudget

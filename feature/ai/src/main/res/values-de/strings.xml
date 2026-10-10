@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">Der Parameter source_uri fehlt (Pfad des ZIP-Archivs)</string>
     <string name="agent_tool_unzip_file_failed">Entpacken fehlgeschlagen: %1$s</string>
     <string name="ai_input_file">Datei</string>
-    <string name="ai_chat_working_mode_ask_title">Fragen</string>
-    <string name="ai_chat_working_mode_ask_description">Direkt antworten, Fähigkeitserkennung nur bei Bedarf</string>
-    <string name="ai_chat_working_mode_plan_title">Planen</string>
-    <string name="ai_chat_working_mode_plan_description">Zuerst untersuchen, dann planen; nur nachschlagen, nicht ausführen</string>
-    <string name="ai_chat_working_mode_agent_title">Ausführen</string>
-    <string name="ai_chat_working_mode_agent_description">Tools aufrufen, um die Aufgabe voranzutreiben und basierend auf echten Ergebnissen fortzufahren</string>
     <string name="agent_tool_process_file_title">Datei lesen</string>
     <string name="agent_tool_process_file_summary">Eine einzelne lokale Textdatei nach Zeilenbereich lesen, Schlüsselwörter suchen und strukturierte Ergebnisse mit Zeilennummern zurückgeben</string>
     <string name="agent_tool_process_file_param_file_path">Lokaler Dateipfad oder URI im Arbeitsbereich.</string>

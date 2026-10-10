@@ -534,8 +534,6 @@
     <string name="ai_chat_jump_to_latest_message">Pesan baru, ketuk untuk melihat</string>
     <string name="ai_chat_message_limit_notice">Hanya 50 pesan terakhir yang ditampilkan. Pesan yang lebih lama diarsipkan.</string>
     <string name="ai_chat_status_model">Model</string>
-    <string name="ai_mode_agent">Agen</string>
-    <string name="ai_mode_ask">Tanya</string>
     <string name="ai_chat_status_mode">Mode</string>
     <string name="ai_chat_status_online">Pencarian Web</string>
     <string name="ai_chat_status_standard">Standar</string>

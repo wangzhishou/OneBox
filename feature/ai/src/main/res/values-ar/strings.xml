@@ -334,12 +334,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">المعامل source_uri مفقود (مسار أرشيف zip)</string>
     <string name="agent_tool_unzip_file_failed">فشل فك الضغط: %1$s</string>
     <string name="ai_input_file">ملف</string>
-    <string name="ai_chat_working_mode_ask_title">اسأل</string>
-    <string name="ai_chat_working_mode_ask_description">الإجابة مباشرةً، مع استكشاف القدرات عند الحاجة فقط</string>
-    <string name="ai_chat_working_mode_plan_title">خطّط</string>
-    <string name="ai_chat_working_mode_plan_description">البحث أولًا ثم التخطيط؛ الاطلاع فقط دون تنفيذ</string>
-    <string name="ai_chat_working_mode_agent_title">نفّذ</string>
-    <string name="ai_chat_working_mode_agent_description">استدعاء الأدوات لدفع المهمة قدمًا والمتابعة بناءً على النتائج الفعلية</string>
     <string name="agent_tool_process_file_title">قراءة ملف</string>
     <string name="agent_tool_process_file_summary">قراءة ملف نصي محلي واحد حسب نطاق الأسطر، والبحث عن كلمات مفتاحية، وإرجاع نتائج منظّمة مرقّمة الأسطر</string>
     <string name="agent_tool_process_file_param_file_path">مسار الملف المحلي أو URI الخاص به داخل مساحة العمل.</string>

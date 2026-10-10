@@ -182,8 +182,11 @@ abstract class AppDatabase : RoomDatabase() {
          * v12 新增 AI 记忆/技能注入引导语预置(档案/近期日志及其无工具降级版/技能清单), 需重刷写入。
          * v13 Agent 工作模式 prompt 引导 discover_tools 首次调用关键词给全(意图拆分/中英同义词/任务链预联想),
          *     并收敛无效重搜, 需重刷覆盖旧版。
+         * v14 删除提问(Ask)/规划(Plan)工作模式, 收敛为单一 Agent 模式,
+         *     需重刷并一次性清理 system_working_mode_ask/plan 旧预置行。
+         * v15 执行协议预置改名(单模式后去掉标题/描述里的"模式"字样), 需重刷覆盖旧文案。
          */
-        private const val SYSTEM_PRESET_VERSION = 13
+        private const val SYSTEM_PRESET_VERSION = 15
 
         /**
          * 预置技能版本号：递增会强制重新 upsert skill 表的 BUNDLED 行。
@@ -367,6 +370,10 @@ abstract class AppDatabase : RoomDatabase() {
                                     val lastVersion = AppSharedStorage.loadSystemPresetVersion()
                                     if (lastVersion != dbVersion) {
                                         ensureSystemPresets(db, context)
+                                        // v14 一次性清理已删除的 Ask/Plan 工作模式预置行（系统 key 存 placeholder 列）
+                                        db.execSQL(
+                                            "DELETE FROM item_prompt WHERE placeholder IN ('system_working_mode_ask','system_working_mode_plan')"
+                                        )
                                         AppSharedStorage.saveSystemPresetVersion(dbVersion)
                                     }
                                 } catch (e: Exception) {
@@ -555,22 +562,6 @@ abstract class AppDatabase : RoomDatabase() {
                                 displayTitle = ctx.getString(R.string.sys_prompt_iching_title),
                                 description = ctx.getString(R.string.sys_prompt_iching_desc),
                                 promptText = loadRawPrompt(ctx, R.raw.prompt_iching_interpretation)
-                            )
-                            upsertSystemPreset(
-                                db = db,
-                                now = now,
-                                systemKey = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_ASK,
-                                displayTitle = ctx.getString(R.string.sys_prompt_mode_ask_title),
-                                description = ctx.getString(R.string.sys_prompt_mode_ask_desc),
-                                promptText = loadRawPrompt(ctx, R.raw.chat_working_mode_ask)
-                            )
-                            upsertSystemPreset(
-                                db = db,
-                                now = now,
-                                systemKey = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_PLAN,
-                                displayTitle = ctx.getString(R.string.sys_prompt_mode_plan_title),
-                                description = ctx.getString(R.string.sys_prompt_mode_plan_desc),
-                                promptText = loadRawPrompt(ctx, R.raw.chat_working_mode_plan)
                             )
                             upsertSystemPreset(
                                 db = db,

@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">Parâmetro source_uri ausente (caminho do arquivo zip)</string>
     <string name="agent_tool_unzip_file_failed">Falha ao extrair: %1$s</string>
     <string name="ai_input_file">Arquivo</string>
-    <string name="ai_chat_working_mode_ask_title">Perguntar</string>
-    <string name="ai_chat_working_mode_ask_description">Responder diretamente, fazer descoberta de capacidade apenas quando necessário</string>
-    <string name="ai_chat_working_mode_plan_title">Planejar</string>
-    <string name="ai_chat_working_mode_plan_description">Investigar primeiro e depois planejar; apenas consultar, não executar</string>
-    <string name="ai_chat_working_mode_agent_title">Executar</string>
-    <string name="ai_chat_working_mode_agent_description">Invocar ferramentas para avançar na tarefa e continuar com base nos resultados reais</string>
     <string name="agent_tool_process_file_title">Ler Arquivo</string>
     <string name="agent_tool_process_file_summary">Ler um único arquivo de texto local por intervalo de linhas, pesquisar palavras-chave e retornar resultados estruturados com números de linha</string>
     <string name="agent_tool_process_file_param_file_path">Caminho do arquivo local ou URI dentro do espaço de trabalho.</string>

@@ -63,7 +63,7 @@ data class AgentToolDraftMetadata(
     val description: String,
     val category: String,
     val riskLevel: String,
-    val bootstrapModes: List<String>,
+    val bootstrap: Boolean = false,
     val visibleToUser: Boolean,
     val requiresConfirmation: Boolean,
     val isInteractive: Boolean,
@@ -257,7 +257,7 @@ class AgentToolGenerationService @Inject constructor(
       "description": "面向 LLM 的详细描述",
       "category": "SYSTEM|DEVICE|FORM|FILE|KNOWLEDGE|NETWORK|BUSINESS|IMAGE",
       "riskLevel": "SAFE|SENSITIVE|DANGEROUS",
-      "bootstrapModes": ["ASK", "PLAN", "AGENT"],
+      "bootstrap": false,
       "visibleToUser": true,
       "requiresConfirmation": false,
       "isInteractive": false,
@@ -314,7 +314,7 @@ class AgentToolGenerationService @Inject constructor(
 3. Kotlin 草案必须基于 `AgentTool` 或 `InteractiveAgentTool`。
 4. 默认放到 `feature/ai/.../agent/tool/builtin/`，除非场景明确要求其他模块。
 5. 描述、keywords、examples、strings key、arrays key、raw file 名都要完整。
-6. `bootstrapModes` 表示该工具在哪些工作模式下会进入首轮 tools；大多数普通工具应返回空数组，仅 discover_tools / discover_apps / route 类工具才进入首轮。
+6. `bootstrap` 表示该工具是否进入首轮 tools；大多数普通工具应返回 false，仅 discover_tools / discover_apps / route 类工具才进入首轮。
 7. 如果工具有副作用，优先把 riskLevel 提高，并决定是否 requiresConfirmation。
 8. 优先推荐低风险、可组合、可查询优先的工具设计，不要把职责做得过大。
 9. 不要输出 Markdown，不要省略字段。

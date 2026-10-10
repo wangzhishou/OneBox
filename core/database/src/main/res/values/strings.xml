@@ -13,12 +13,8 @@
     <string name="sys_prompt_xiangqi_desc">Built-in system prompt for LLM Xiangqi (Chinese chess) matches</string>
     <string name="sys_prompt_iching_title">I Ching Interpretation System Prompt</string>
     <string name="sys_prompt_iching_desc">System instructions used to interpret a question, hexagram, and changing lines</string>
-    <string name="sys_prompt_mode_ask_title">ASK Q&amp;A-Only Mode Protocol</string>
-    <string name="sys_prompt_mode_ask_desc">Execution protocol prompt for Ask mode</string>
-    <string name="sys_prompt_mode_plan_title">PLAN Planning-Only Mode Protocol</string>
-    <string name="sys_prompt_mode_plan_desc">Execution protocol prompt for Plan mode</string>
-    <string name="sys_prompt_mode_agent_title">AGENT Execution Mode Protocol</string>
-    <string name="sys_prompt_mode_agent_desc">Execution protocol prompt for Agent mode</string>
+    <string name="sys_prompt_mode_agent_title">Execution Protocol</string>
+    <string name="sys_prompt_mode_agent_desc">System prompt that drives the assistant to use tools and complete tasks</string>
     <string name="sys_prompt_duel_title">AI Duel/Interaction Prompt Templates</string>
     <string name="sys_prompt_duel_desc">System instructions, role rules, and turn guidance templates for AI duels and interactions</string>
     <string name="sys_prompt_memory_global_title">Memory Profile Guidance</string>

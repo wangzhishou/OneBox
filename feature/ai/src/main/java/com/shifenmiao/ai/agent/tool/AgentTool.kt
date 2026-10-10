@@ -3,7 +3,6 @@ package com.shifenmiao.ai.agent.tool
 import com.shifenmiao.ai.agent.callback.ToolCallback
 import com.shifenmiao.model.ai.ToolParameters
 import com.shifenmiao.model.event.PermissionRequest
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
@@ -39,13 +38,13 @@ interface ToolCatalogMetadata {
         get() = emptyList()
 
     /**
-     * 首轮注入到 LLM 的工作模式集合。
+     * 是否首轮注入到 LLM。
      *
-     * 例如 discover_tools / discover_apps 这类路由/发现工具通常会在 Ask / Plan / Agent 三种模式下都进入首轮，
+     * 例如 discover_tools / discover_apps 这类路由/发现工具会进入首轮，
      * 普通业务工具则默认不进入首轮，等待 discover_tools / discover_apps 或用户显式授权后再放开。
      */
-    val bootstrapModes: Set<ChatWorkingMode>
-        get() = emptySet()
+    val bootstrap: Boolean
+        get() = false
 
     /** 是否在用户可见的工具中心目录中展示。false 表示隐藏但对 LLM 仍可用 */
     val visibleToUser: Boolean
@@ -361,7 +360,7 @@ interface AgentTool : ToolCatalogMetadata, ToolSecurityPolicy, ToolExecutionConf
             keywords = keywords,
             examples = examples,
             dependencies = dependencies,
-            bootstrapModes = bootstrapModes,
+            bootstrap = bootstrap,
             visibleToUser = visibleToUser,
             isDiscoveryTool = isDiscoveryTool,
             requiresConfirmation = requiresConfirmation,

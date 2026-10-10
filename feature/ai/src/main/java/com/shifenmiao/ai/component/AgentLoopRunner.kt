@@ -60,7 +60,6 @@ class AgentLoopRunner(
     private val imageDao: ImageDao,
     private val streamCollector: StreamCollector,
     private val remoteRequestProvider: RemoteRequestProvider,
-    private val modeTransitionManager: ModeTransitionManager,
     private val applicationContext: Context,
     private val agentLoopInterceptors: Set<AgentLoopInterceptor>,
 ) {
@@ -252,20 +251,18 @@ class AgentLoopRunner(
     /**
      * 构建上下文消息列表。
      *
-     * 将数据库消息转换为 LLM 消息格式，并注入模式切换标记。
+     * 将数据库消息转换为 LLM 消息格式。
      */
     suspend fun buildContextMessages(
         conversation: Conversation,
         sourceMessages: List<MessageEntity>,
     ): MutableList<LlmMessage> {
-        val messages = AiUtils.buildLlmMessages(
+        return AiUtils.buildLlmMessages(
             conversation,
             sourceMessages,
             contentReader = contentReader,
             imageDao = imageDao,
         ).toMutableList()
-        modeTransitionManager.injectTransitionMarker(messages)
-        return messages
     }
 
     /**

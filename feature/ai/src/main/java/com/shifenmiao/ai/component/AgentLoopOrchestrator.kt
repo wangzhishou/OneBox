@@ -77,7 +77,6 @@ class AgentLoopOrchestrator(
     private val interactionOwnerId: String,
     private val ownsInteractiveRuntimeLifecycle: Boolean,
     private val promptAssemblyService: PromptAssemblyService,
-    private val modeTransitionManager: ModeTransitionManager,
     private val agentLoopRunner: AgentLoopRunner,
     /** Agent Loop 完成后的持久化回调（工具调用链落库），由 AIChatComponent 注入 */
     private val onAgentLoopCompletion: suspend (toolCallsChainJson: String, questionMessages: List<MessageEntity>) -> Unit,
@@ -132,11 +131,9 @@ class AgentLoopOrchestrator(
         baseConversation: Conversation,
         preResolvedConfig: ToolConfigResolver.EffectiveToolConfig? = null
     ): Conversation {
-        val planInjection = modeTransitionManager.extractPlanForInjection()
         return promptAssemblyService.buildEffectiveConversation(
             baseConversation = baseConversation,
-            preResolvedConfig = preResolvedConfig,
-            planInjection = planInjection
+            preResolvedConfig = preResolvedConfig
         )
     }
 
@@ -151,7 +148,7 @@ class AgentLoopOrchestrator(
             .filter { name -> allTools.any { it.name == name } }
             .distinct()
         val bootstrapToolNames = allTools
-            .filter { policy.workingMode in it.bootstrapModes }
+            .filter { it.bootstrap }
             .map { it.name }
         val systemTools = allTools.filter { it.category == ToolCategory.SYSTEM }
         val disabledSystemToolTitles = systemTools
@@ -161,7 +158,6 @@ class AgentLoopOrchestrator(
         // 全局关闭时面板中的会话行禁用（不靠 effectiveToolConfig 的合并值反推）
         val memoryPolicy = conversationMemoryPolicyRepository.getPolicy(sharedState.conversation.value.id)
         return ToolCenterUiState(
-            workingMode = policy.workingMode,
             allTools = allTools,
             bootstrapToolNames = bootstrapToolNames,
             enabledToolNames = enabledSet,
@@ -204,18 +200,6 @@ class AgentLoopOrchestrator(
                 conversationId = sharedState.conversation.value.id,
                 enabled = enabled
             )
-            toolConfigResolver.clearCache()
-            _toolCenterUiState.value = buildToolCenterUiState()
-        }
-    }
-
-    fun setWorkingMode(workingMode: com.shifenmiao.model.ai.tool.ChatWorkingMode) {
-        sharedState.componentScope.launch(sharedState.ioDispatcher) {
-            modeTransitionManager.switchMode(
-                conversation = sharedState.conversation.value,
-                targetMode = workingMode,
-                currentAnswerText = sharedState.answerMessageEntity.value.answer
-            ) ?: return@launch
             toolConfigResolver.clearCache()
             _toolCenterUiState.value = buildToolCenterUiState()
         }
@@ -411,7 +395,6 @@ class AgentLoopOrchestrator(
     fun reset() {
         agentLoopExecutor.reset(agentLoopSession)
         interactiveToolBridge.clearPendingRequestOwnedBy(interactionOwnerId)
-        modeTransitionManager.reset()
         pausedAgentLoopContext = null
         toolCallsChainJson = ""
         toolConfigResolver.clearCache()

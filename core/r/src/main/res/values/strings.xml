@@ -624,8 +624,6 @@
     <string name="ai_chat_jump_to_latest_message">New message, tap to view</string>
     <string name="ai_chat_message_limit_notice">Only the last 50 messages are shown. Older messages are archived.</string>
     <string name="ai_chat_status_model">Model</string>
-    <string name="ai_mode_agent">Agent</string>
-    <string name="ai_mode_ask">Ask</string>
     <string name="ai_chat_status_mode">Mode</string>
     <string name="ai_chat_status_online">Web Search</string>
     <string name="ai_chat_status_standard">Standard</string>

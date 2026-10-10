@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.storage.AIChatStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.model.MimeType

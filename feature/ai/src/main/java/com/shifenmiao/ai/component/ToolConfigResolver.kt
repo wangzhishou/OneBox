@@ -14,16 +14,15 @@ import com.shifenmiao.model.ai.tool.ConversationToolPolicy
  * 职责：
  * 1. 解析当前会话的有效工具配置（[EffectiveToolConfig]）
  * 2. 请求级缓存，避免同一请求内多次 DB 查询
- * 3. 工作模式快照，防止请求过程中的竞态条件
- * 4. 工具绑定同步 (AGENT / PROMPT 持久化场景)
+ * 3. 工具绑定同步 (AGENT / PROMPT 持久化场景)
  *
  * 缓存生命周期：
  * - [snapshot] 在请求开始时调用，缓存配置
- * - [clearCache] 在请求结束或模式变更时调用
+ * - [clearCache] 在请求结束或配置变更时调用
  *
- * 首轮默认策略 (统一为 [AgentTool] 的 [com.shifenmiao.model.ai.tool.ToolCatalogItem.bootstrapModes] 兜底):
+ * 首轮默认策略 (统一为 [AgentTool] 的 [com.shifenmiao.model.ai.tool.ToolCatalogItem.bootstrap] 兜底):
  * - boundToolNames (AGENT override / PROMPT scope) 有 → 用它
- * - 否则 → 所有 visible tools 中 `defaultWorkingMode in bootstrapModes` 的子集
+ * - 否则 → 所有 visible tools 中 `bootstrap == true` 的子集
  * - 首次访问时通过 [shouldBootstrapDefaults] 把这份默认集烘焙进
  *   [com.shifenmiao.model.ai.tool.ConversationToolPolicy.selectedToolNames]
  *
@@ -76,7 +75,7 @@ class ToolConfigResolver(
     /**
      * 解析有效工具配置。有请求级快照时直接返回缓存值，否则从 DB 实时计算。
      *
-     * 优先级链：boundToolNames → promptScopedToolNames → bootstrapModes (in-memory)
+     * 优先级链：boundToolNames → promptScopedToolNames → bootstrap (in-memory)
      */
     suspend fun resolve(): EffectiveToolConfig {
         cachedConfig?.let { return it }
@@ -92,7 +91,6 @@ class ToolConfigResolver(
     suspend fun resolveFresh(): EffectiveToolConfig {
         val conversation = conversationProvider()
         val boundToolNames = resolveBoundToolNames()
-        val defaultWorkingMode = conversationToolPolicyRepository.effectiveDefaultWorkingMode(conversation)
         val promptScopedToolNames = if (boundToolNames == null) {
             promptTemplateToolService.getPromptScopedToolNames(conversation.promptId)
         } else {
@@ -103,14 +101,14 @@ class ToolConfigResolver(
         }
         // 首轮默认集:
         //   - 有显式 binding (AGENT override / PROMPT scope) → 用 binding
-        //   - 否则 → in-memory 工具中 `workingMode in bootstrapModes` 的子集
+        //   - 否则 → in-memory 工具中 `bootstrap == true` 的子集
         // 不再有 "SYSTEM 分类" 特殊通道; [ToolCategory.SYSTEM] 仅为工具中心 UI 分组.
         val defaultEnabledToolNames = when {
             boundToolNames != null -> boundToolNames.toList().sorted()
             promptScopedToolNames != null -> promptScopedToolNames.toList().sorted()
             else -> {
                 agentToolRegistry.getVisibleTools()
-                    .filter { defaultWorkingMode in it.bootstrapModes }
+                    .filter { it.bootstrap }
                     .map { it.name }
                     .sorted()
             }
@@ -123,7 +121,6 @@ class ToolConfigResolver(
             conversationToolPolicyRepository.savePolicy(
                 conversation = conversation,
                 policy = ConversationToolPolicy(
-                    workingMode = defaultWorkingMode,
                     selectedToolNames = defaultEnabledToolNames
                 )
             )
@@ -131,7 +128,6 @@ class ToolConfigResolver(
         val effectiveStoredPolicy = storedPolicy
             ?: conversationToolPolicyRepository.getPolicy(conversation)
         val policy = effectiveStoredPolicy ?: ConversationToolPolicy(
-            workingMode = defaultWorkingMode,
             selectedToolNames = defaultEnabledToolNames
         )
         // 记忆/技能门控：全局 MMKV AND 会话表（判定规则收拢在 ConversationMemoryPolicyRepository）
@@ -157,7 +153,7 @@ class ToolConfigResolver(
         return config
     }
 
-    /** 清除缓存。在请求结束或工作模式变更时调用。 */
+    /** 清除缓存。在请求结束或工具配置变更时调用。 */
     fun clearCache() {
         cachedConfig = null
     }
@@ -166,7 +162,8 @@ class ToolConfigResolver(
      * 同步当前 scope 的默认绑定（用户在工具中心手动开关工具时调用）。
      *
      * 只服务于 AGENT / PROMPT (它们的 binding 是首轮默认的来源之一).
-     * CHAT / ASSISTANT 已统一走 [bootstrapModes] 兜底, 不再持久化.
+     * CHAT / ASSISTANT 已统一走 [com.shifenmiao.model.ai.tool.ToolCatalogItem.bootstrap] 兜底,
+     * 不再持久化.
      */
     suspend fun syncDefaultBindings(conversation: Conversation, enabledToolNames: List<String>) {
         when (conversation.entryType) {

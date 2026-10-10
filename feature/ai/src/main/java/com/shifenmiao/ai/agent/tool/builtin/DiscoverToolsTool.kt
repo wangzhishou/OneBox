@@ -10,7 +10,6 @@ import com.shifenmiao.ai.agent.tool.ContextAwareAgentTool
 import com.shifenmiao.model.ModelProvider.AppJson
 import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
@@ -49,7 +48,7 @@ class DiscoverToolsTool @Inject constructor(
     override val examples: List<String> =
         textProvider.array(R.array.agent_tool_discover_tools_examples)
 
-    override val bootstrapModes: Set<ChatWorkingMode> = ChatWorkingMode.entries.toSet()
+    override val bootstrap: Boolean = true
 
     override val visibleToUser: Boolean = true
 

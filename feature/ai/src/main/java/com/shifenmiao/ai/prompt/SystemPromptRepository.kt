@@ -5,7 +5,6 @@ import com.shifenmiao.database.AppDatabase
 import com.shifenmiao.database.chat_prompt.entity.PromptEntity
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.model.ai.Conversation
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,7 +29,6 @@ class SystemPromptRepository @Inject constructor(
         interactionProtocol: String = "",
         agentExecutionProtocol: String = "",
         agentRole: String = "",
-        taskPrompt: String = "",
         userOverride: String = "",
         environmentContext: String = "",
         memoryFragment: String = "",
@@ -75,11 +73,6 @@ class SystemPromptRepository @Inject constructor(
                     required = false
                 ),
                 PromptLayer(
-                    type = PromptLayerType.TASK_PROMPT,
-                    content = taskPrompt,
-                    required = false
-                ),
-                PromptLayer(
                     type = PromptLayerType.USER_OVERRIDE,
                     content = userOverride,
                     required = false
@@ -91,9 +84,7 @@ class SystemPromptRepository @Inject constructor(
 
     suspend fun composeConversationPrompt(
         conversation: Conversation,
-        workingMode: ChatWorkingMode,
         userOverride: String? = null,
-        taskPrompt: String = "",
         memoryFragment: String? = null,
         skillsFragment: String? = null,
         tokenBudget: Int = 0
@@ -102,26 +93,16 @@ class SystemPromptRepository @Inject constructor(
             title = PromptEntity.SYSTEM_PROMPT_KEY_DEFAULT_PROMPT,
             fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.prompt_system_default)
         )
-        val agentExecutionProtocol = when (workingMode) {
-            ChatWorkingMode.ASK -> getSystemPrompt(
-                title = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_ASK,
-                fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.chat_working_mode_ask)
-            )
-            ChatWorkingMode.PLAN -> getSystemPrompt(
-                title = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_PLAN,
-                fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.chat_working_mode_plan)
-            )
-            ChatWorkingMode.AGENT -> getSystemPrompt(
-                title = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_AGENT,
-                fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.chat_working_mode_agent)
-            )
-        }
+        // 聊天工作模式已收敛为单一 Agent 模式，执行协议固定取 agent 协议
+        val agentExecutionProtocol = getSystemPrompt(
+            title = PromptEntity.SYSTEM_PROMPT_KEY_WORKING_MODE_AGENT,
+            fallback = textProvider.rawAsync(com.shifenmiao.database.R.raw.chat_working_mode_agent)
+        )
         val composition = composeToolAwarePrompt(
             systemRules = systemRules,
             interactionProtocol = "",
             agentExecutionProtocol = agentExecutionProtocol,
             agentRole = conversation.prompt,
-            taskPrompt = taskPrompt,
             userOverride = userOverride.orEmpty(),
             environmentContext = environmentContextProvider.buildContextText(),
             memoryFragment = memoryFragment.orEmpty(),

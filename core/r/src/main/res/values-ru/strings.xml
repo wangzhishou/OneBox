@@ -534,8 +534,6 @@
     <string name="ai_chat_jump_to_latest_message">Новое сообщение, нажмите для просмотра</string>
     <string name="ai_chat_message_limit_notice">Показываются только последние 50 сообщений. Более старые сообщения архивируются.</string>
     <string name="ai_chat_status_model">Модель</string>
-    <string name="ai_mode_agent">Агент</string>
-    <string name="ai_mode_ask">Спросить</string>
     <string name="ai_chat_status_mode">Режим</string>
     <string name="ai_chat_status_online">Веб-поиск</string>
     <string name="ai_chat_status_standard">Стандартный</string>

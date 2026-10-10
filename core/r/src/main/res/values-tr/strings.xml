@@ -534,8 +534,6 @@
     <string name="ai_chat_jump_to_latest_message">Yeni mesaj, görüntülemek için dokunun</string>
     <string name="ai_chat_message_limit_notice">Yalnızca son 50 mesaj gösterilir. Daha eski mesajlar arşivlenir.</string>
     <string name="ai_chat_status_model">Model</string>
-    <string name="ai_mode_agent">Ajan</string>
-    <string name="ai_mode_ask">Sor</string>
     <string name="ai_chat_status_mode">Mod</string>
     <string name="ai_chat_status_online">Web Arama</string>
     <string name="ai_chat_status_standard">Standart</string>

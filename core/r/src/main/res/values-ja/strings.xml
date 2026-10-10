@@ -534,8 +534,6 @@
     <string name="ai_chat_jump_to_latest_message">新しいメッセージがあります。タップして表示</string>
     <string name="ai_chat_message_limit_notice">最新の50件のメッセージのみ表示されます。古いメッセージはアーカイブされます。</string>
     <string name="ai_chat_status_model">モデル</string>
-    <string name="ai_mode_agent">エージェント</string>
-    <string name="ai_mode_ask">質問</string>
     <string name="ai_chat_status_mode">モード</string>
     <string name="ai_chat_status_online">ウェブ検索</string>
     <string name="ai_chat_status_standard">標準</string>

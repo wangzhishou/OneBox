@@ -364,12 +364,6 @@
 
     <!-- AI 聊天输入区域 -->
     <string name="ai_input_file">文件</string>
-    <string name="ai_chat_working_mode_ask_title">提问</string>
-    <string name="ai_chat_working_mode_ask_description">直接回答，必要时再做能力发现</string>
-    <string name="ai_chat_working_mode_plan_title">规划</string>
-    <string name="ai_chat_working_mode_plan_description">先调研再规划，只查不执行</string>
-    <string name="ai_chat_working_mode_agent_title">执行</string>
-    <string name="ai_chat_working_mode_agent_description">调用工具推进任务，并基于真实结果继续</string>
 
     <!-- 文件处理工具 -->
     <string name="agent_tool_process_file_title">读取文件</string>

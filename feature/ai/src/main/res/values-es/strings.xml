@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">Falta el parámetro source_uri (ruta del archivo comprimido zip)</string>
     <string name="agent_tool_unzip_file_failed">Error al descomprimir: %1$s</string>
     <string name="ai_input_file">Archivo</string>
-    <string name="ai_chat_working_mode_ask_title">Preguntar</string>
-    <string name="ai_chat_working_mode_ask_description">Responder directamente, solo descubrir capacidades cuando sea necesario</string>
-    <string name="ai_chat_working_mode_plan_title">Planificar</string>
-    <string name="ai_chat_working_mode_plan_description">Investigar primero y luego planificar; solo consultar, no ejecutar</string>
-    <string name="ai_chat_working_mode_agent_title">Ejecutar</string>
-    <string name="ai_chat_working_mode_agent_description">Invocar herramientas para avanzar en la tarea y continuar según los resultados reales</string>
     <string name="agent_tool_process_file_title">Leer archivo</string>
     <string name="agent_tool_process_file_summary">Leer un solo archivo de texto local por rango de líneas, buscar palabras clave y devolver resultados estructurados con números de línea</string>
     <string name="agent_tool_process_file_param_file_path">Ruta de archivo local o URI dentro del espacio de trabajo.</string>

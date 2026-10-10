@@ -364,12 +364,6 @@
 
     <!-- AI chat input area -->
     <string name="ai_input_file">File</string>
-    <string name="ai_chat_working_mode_ask_title">Ask</string>
-    <string name="ai_chat_working_mode_ask_description">Answer directly, do capability discovery only when needed</string>
-    <string name="ai_chat_working_mode_plan_title">Plan</string>
-    <string name="ai_chat_working_mode_plan_description">Investigate first then plan; only look up, do not execute</string>
-    <string name="ai_chat_working_mode_agent_title">Execute</string>
-    <string name="ai_chat_working_mode_agent_description">Invoke tools to advance the task and continue based on real results</string>
 
     <!-- File processing tools -->
     <string name="agent_tool_process_file_title">Read File</string>

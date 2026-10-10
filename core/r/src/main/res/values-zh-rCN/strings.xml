@@ -652,8 +652,6 @@
     <string name="ai_chat_jump_to_latest_message">有新消息，点击查看</string>
     <string name="ai_chat_message_limit_notice">仅加载最近 50 条消息，更早消息已归档</string>
     <string name="ai_chat_status_model">模型</string>
-    <string name="ai_mode_agent">Agent</string>
-    <string name="ai_mode_ask">Ask</string>
     <string name="ai_chat_status_mode">模式</string>
     <string name="ai_chat_status_online">联网</string>
     <string name="ai_chat_status_standard">标准</string>

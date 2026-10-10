@@ -10,12 +10,8 @@
     <string name="sys_prompt_bazi_desc">사주(四柱) 분석을 위한 내장 시스템 프롬프트</string>
     <string name="sys_prompt_xiangqi_title">샹치 이동 시스템 프롬프트</string>
     <string name="sys_prompt_xiangqi_desc">LLM 샹치(중국 장기) 대국을 위한 내장 시스템 프롬프트</string>
-    <string name="sys_prompt_mode_ask_title">ASK 질문 전용 모드 프로토콜</string>
-    <string name="sys_prompt_mode_ask_desc">Ask 모드 실행을 위한 프로토콜 프롬프트</string>
-    <string name="sys_prompt_mode_plan_title">PLAN 계획 전용 모드 프로토콜</string>
-    <string name="sys_prompt_mode_plan_desc">Plan 모드 실행을 위한 프로토콜 프롬프트</string>
-    <string name="sys_prompt_mode_agent_title">AGENT 실행 모드 프로토콜</string>
-    <string name="sys_prompt_mode_agent_desc">Agent 모드 실행을 위한 프로토콜 프롬프트</string>
+    <string name="sys_prompt_mode_agent_title">실행 프로토콜</string>
+    <string name="sys_prompt_mode_agent_desc">어시스턴트가 도구를 사용해 작업을 완료하도록 하는 시스템 프롬프트</string>
     <string name="sys_prompt_duel_title">AI 대결/상호작용 프롬프트 템플릿</string>
     <string name="sys_prompt_duel_desc">AI 대결 및 상호작용을 위한 시스템 지침, 역할 규칙 및 턴 안내 템플릿</string>
     <!-- Habit tracker activity log entries -->

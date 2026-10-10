@@ -4,7 +4,6 @@ import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.database.item.dao.CategoryDao
 import com.shifenmiao.database.item.entity.Category
 import com.shifenmiao.model.Source
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -47,7 +46,7 @@ class CreationMetaService @Inject constructor(
             .toSet()
 
         val tools = agentToolRegistry.getVisibleTools()
-            .filter { ChatWorkingMode.AGENT in it.bootstrapModes }
+            .filter { it.bootstrap }
             .map { it.name }
             .toSet()
 

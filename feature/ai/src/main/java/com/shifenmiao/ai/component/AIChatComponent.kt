@@ -58,7 +58,6 @@ import com.shifenmiao.model.ai.Usage
 import com.shifenmiao.model.ai.event.MainClickEvent
 import com.shifenmiao.model.ai.event.MainClickEventFrom
 import com.shifenmiao.model.ai.event.MainShowType
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.unified.LlmStreamEvent
 import com.shifenmiao.model.event.AppEventBus
 import com.shifenmiao.model.state.PageState
@@ -219,10 +218,6 @@ open class AIChatComponent @AssistedInject internal constructor(
         toolPredicates = toolPredicates,
     )
 
-    private val modeTransitionManager = ModeTransitionManager(
-        conversationToolPolicyRepository = conversationToolPolicyRepository,
-    )
-
     private val agentLoopRunner = AgentLoopRunner(
         agentLoopExecutor = agentLoopExecutor,
         agentToolRegistry = agentToolRegistry,
@@ -245,7 +240,6 @@ open class AIChatComponent @AssistedInject internal constructor(
         remoteRequestProvider = { conversation, request ->
             messageRemoteMediator.fetchWithDirectRequest(conversation, request)
         },
-        modeTransitionManager = modeTransitionManager,
         applicationContext = appContext,
         agentLoopInterceptors = agentLoopInterceptors,
     )
@@ -266,7 +260,6 @@ open class AIChatComponent @AssistedInject internal constructor(
         interactionOwnerId = interactionOwnerId,
         ownsInteractiveRuntimeLifecycle = ownsInteractiveRuntimeLifecycle,
         promptAssemblyService = promptAssemblyService,
-        modeTransitionManager = modeTransitionManager,
         agentLoopRunner = agentLoopRunner,
         onAgentLoopCompletion = { toolCallsChainJson, questionMessages ->
             messagePersistenceWorker.calculateUsageIfNull(null, questionMessages)
@@ -425,10 +418,6 @@ open class AIChatComponent @AssistedInject internal constructor(
 
     fun setSkillsEnabled(enabled: Boolean) =
         agentLoopOrchestrator.setSkillsEnabled(enabled)
-
-    fun setWorkingMode(workingMode: ChatWorkingMode) {
-        agentLoopOrchestrator.setWorkingMode(workingMode)
-    }
 
     fun pushPromptToRemote(
         onSuccess: () -> Unit = {},

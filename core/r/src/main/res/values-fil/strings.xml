@@ -534,8 +534,6 @@
     <string name="ai_chat_jump_to_latest_message">Bagong mensahe, i-tap para tingnan</string>
     <string name="ai_chat_message_limit_notice">Ang huling 50 mensahe lamang ang ipinapakita. Ang mga mas lumang mensahe ay naka-archive.</string>
     <string name="ai_chat_status_model">Modelo</string>
-    <string name="ai_mode_agent">Ahente</string>
-    <string name="ai_mode_ask">Itanong</string>
     <string name="ai_chat_status_mode">Mode</string>
     <string name="ai_chat_status_online">Paghahanap sa Web</string>
     <string name="ai_chat_status_standard">Karaniwan</string>

@@ -10,12 +10,8 @@
     <string name="sys_prompt_bazi_desc">八字（四柱推命）チャート分析用の組み込みシステムプロンプト</string>
     <string name="sys_prompt_xiangqi_title">シャンチー（中国将棋）手順システムプロンプト</string>
     <string name="sys_prompt_xiangqi_desc">LLMシャンチー（中国将棋）対局用の組み込みシステムプロンプト</string>
-    <string name="sys_prompt_mode_ask_title">ASK Q&amp;A専用モードプロトコル</string>
-    <string name="sys_prompt_mode_ask_desc">Askモード用の実行プロトコルプロンプト</string>
-    <string name="sys_prompt_mode_plan_title">PLAN計画専用モードプロトコル</string>
-    <string name="sys_prompt_mode_plan_desc">Planモード用の実行プロトコルプロンプト</string>
-    <string name="sys_prompt_mode_agent_title">AGENT実行モードプロトコル</string>
-    <string name="sys_prompt_mode_agent_desc">Agentモード用の実行プロトコルプロンプト</string>
+    <string name="sys_prompt_mode_agent_title">実行プロトコル</string>
+    <string name="sys_prompt_mode_agent_desc">アシスタントがツールを使ってタスクを完了するためのシステムプロンプト</string>
     <string name="sys_prompt_duel_title">AI対決・対話プロンプトテンプレート</string>
     <string name="sys_prompt_duel_desc">AI対決・対話用のシステム指示、役割ルール、ターンガイダンステンプレート</string>
     <!-- Habit tracker activity log entries -->

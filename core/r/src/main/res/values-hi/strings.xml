@@ -534,8 +534,6 @@
     <string name="ai_chat_jump_to_latest_message">नया संदेश, देखने के लिए टैप करें</string>
     <string name="ai_chat_message_limit_notice">केवल अंतिम 50 संदेश दिखाए जाते हैं। पुराने संदेश संग्रहीत हैं।</string>
     <string name="ai_chat_status_model">मॉडल</string>
-    <string name="ai_mode_agent">एजेंट</string>
-    <string name="ai_mode_ask">पूछें</string>
     <string name="ai_chat_status_mode">मोड</string>
     <string name="ai_chat_status_online">वेब खोज</string>
     <string name="ai_chat_status_standard">मानक</string>

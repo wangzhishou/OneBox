@@ -102,7 +102,6 @@ fun PlaceHolderMessageCard(
     chatInputComponent: ChatInputComponent
 ) {
     val currentAIModel = appComponent.aiEngineManager.currentAIModel.collectAsState().value
-    val toolCenterUiState = aiChatComponent.toolCenterUiState.collectAsState().value
     val promptCardState = aiChatComponent.promptCardState.collectAsState().value
     val promptBadgeLabel = if (promptCardState.isSystemPrompt) {
         stringResource(R.string.ai_prompt_badge_system)
@@ -180,10 +179,6 @@ fun PlaceHolderMessageCard(
                         text = stringResource(R.string.ai_chat_quick_start_title),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface
-                    )
-                    ChatWorkingModeSelector(
-                        currentMode = toolCenterUiState.workingMode,
-                        onModeSelected = aiChatComponent::setWorkingMode,
                     )
                     Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
 

@@ -10,12 +10,8 @@
     <string name="sys_prompt_bazi_desc">Встроенный системный промпт для анализа карты Бацзы (Четыре столпа)</string>
     <string name="sys_prompt_xiangqi_title">Системный промпт хода в сянци</string>
     <string name="sys_prompt_xiangqi_desc">Встроенный системный промпт для матчей по сянци (китайские шахматы) с LLM</string>
-    <string name="sys_prompt_mode_ask_title">Протокол режима только вопросов и ответов ASK</string>
-    <string name="sys_prompt_mode_ask_desc">Промпт протокола выполнения для режима Ask</string>
-    <string name="sys_prompt_mode_plan_title">Протокол режима только планирования PLAN</string>
-    <string name="sys_prompt_mode_plan_desc">Промпт протокола выполнения для режима Plan</string>
-    <string name="sys_prompt_mode_agent_title">Протокол режима выполнения AGENT</string>
-    <string name="sys_prompt_mode_agent_desc">Промпт протокола выполнения для режима Agent</string>
+    <string name="sys_prompt_mode_agent_title">Протокол выполнения</string>
+    <string name="sys_prompt_mode_agent_desc">Системный промпт, который направляет ассистента использовать инструменты и выполнять задачи</string>
     <string name="sys_prompt_duel_title">Шаблоны промптов для AI-дуэлей и взаимодействий</string>
     <string name="sys_prompt_duel_desc">Шаблоны системных инструкций, правил ролей и руководств по ходам для AI-дуэлей и взаимодействий</string>
     <!-- Habit tracker activity log entries -->

@@ -53,11 +53,7 @@ data class PromptEntity(
         const val SYSTEM_PROMPT_KEY_CHESS_MOVE = "system_chess_move"
         /** 系统预置标识：易经卜卦解读提示词 */
         const val SYSTEM_PROMPT_KEY_ICHING_INTERPRETATION = "system_iching_interpretation"
-        /** 系统预置标识：ASK 仅问答模式执行协议 */
-        const val SYSTEM_PROMPT_KEY_WORKING_MODE_ASK = "system_working_mode_ask"
-        /** 系统预置标识：PLAN 仅规划模式执行协议 */
-        const val SYSTEM_PROMPT_KEY_WORKING_MODE_PLAN = "system_working_mode_plan"
-        /** 系统预置标识：AGENT 执行模式执行协议 */
+        /** 系统预置标识：执行协议(历史命名,三工作模式时代遗留;单模式后语义=执行协议,key 不变以免旧行成孤儿) */
         const val SYSTEM_PROMPT_KEY_WORKING_MODE_AGENT = "system_working_mode_agent"
         /** 系统预置标识：AI 对聊/互动 prompt 模板集合 */
         const val SYSTEM_PROMPT_KEY_DUEL_TEMPLATES = "system_duel_templates"

@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">source_uri parametresi eksik (zip arşivinin yolu)</string>
     <string name="agent_tool_unzip_file_failed">Çıkarma başarısız oldu: %1$s</string>
     <string name="ai_input_file">Dosya</string>
-    <string name="ai_chat_working_mode_ask_title">Sor</string>
-    <string name="ai_chat_working_mode_ask_description">Doğrudan yanıtla, yetenek keşfini yalnızca gerektiğinde yap</string>
-    <string name="ai_chat_working_mode_plan_title">Planla</string>
-    <string name="ai_chat_working_mode_plan_description">Önce araştır, sonra planla; yalnızca bak, çalıştırma</string>
-    <string name="ai_chat_working_mode_agent_title">Çalıştır</string>
-    <string name="ai_chat_working_mode_agent_description">Görevi ilerletmek için araçları çağır ve gerçek sonuçlara göre devam et</string>
     <string name="agent_tool_process_file_title">Dosya Oku</string>
     <string name="agent_tool_process_file_summary">Satır aralığına göre tek bir yerel metin dosyası oku, anahtar kelimeleri ara ve yapılandırılmış satır numaralı sonuçlar döndür</string>
     <string name="agent_tool_process_file_param_file_path">Çalışma alanı içindeki yerel dosya yolu veya URI.</string>

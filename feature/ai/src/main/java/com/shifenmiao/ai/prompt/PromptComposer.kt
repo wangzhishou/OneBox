@@ -43,11 +43,6 @@ enum class PromptLayerType(
         title = "Skills",
         priority = 35
     ),
-    TASK_PROMPT(
-        key = "task_prompt",
-        title = "Task Prompt",
-        priority = 15
-    ),
     USER_OVERRIDE(
         key = "user_override",
         title = "User Override",

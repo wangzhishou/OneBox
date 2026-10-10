@@ -598,8 +598,6 @@
     <string name="ai_chat_jump_to_latest_message">有新訊息，點擊查看</string>
     <string name="ai_chat_message_limit_notice">僅載入最近 50 則訊息，更早訊息已封存</string>
     <string name="ai_chat_status_model">模型</string>
-    <string name="ai_mode_agent">Agent</string>
-    <string name="ai_mode_ask">Ask</string>
     <string name="ai_chat_status_mode">模式</string>
     <string name="ai_chat_status_online">聯網</string>
     <string name="ai_chat_status_standard">標準</string>

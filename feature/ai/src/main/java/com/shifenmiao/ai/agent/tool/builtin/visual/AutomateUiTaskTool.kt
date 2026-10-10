@@ -7,7 +7,6 @@ import com.shifenmiao.ai.agent.tool.AgentToolTextProvider
 import com.shifenmiao.ai.agent.tool.InteractiveAgentTool
 import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
 import com.shifenmiao.model.automation.AIAction
 import com.wanbaohe.visual.automation.service.AutomationTaskResult

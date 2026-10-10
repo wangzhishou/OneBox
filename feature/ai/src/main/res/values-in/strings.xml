@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">Parameter source_uri hilang (jalur arsip zip)</string>
     <string name="agent_tool_unzip_file_failed">Ekstraksi gagal: %1$s</string>
     <string name="ai_input_file">File</string>
-    <string name="ai_chat_working_mode_ask_title">Tanya</string>
-    <string name="ai_chat_working_mode_ask_description">Jawab langsung, lakukan penemuan kemampuan hanya jika diperlukan</string>
-    <string name="ai_chat_working_mode_plan_title">Rencana</string>
-    <string name="ai_chat_working_mode_plan_description">Selidiki dulu lalu rencanakan; hanya cari, jangan eksekusi</string>
-    <string name="ai_chat_working_mode_agent_title">Eksekusi</string>
-    <string name="ai_chat_working_mode_agent_description">Panggil alat untuk memajukan tugas dan lanjutkan berdasarkan hasil nyata</string>
     <string name="agent_tool_process_file_title">Baca File</string>
     <string name="agent_tool_process_file_summary">Baca satu file teks lokal berdasarkan rentang baris, cari kata kunci dan kembalikan hasil bernomor baris terstruktur</string>
     <string name="agent_tool_process_file_param_file_path">Jalur file lokal atau URI di dalam ruang kerja.</string>

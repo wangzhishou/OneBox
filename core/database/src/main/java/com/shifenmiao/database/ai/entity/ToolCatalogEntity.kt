@@ -18,8 +18,10 @@ import androidx.room.PrimaryKey
  *
  * Schema 注意点 (与历史上 v1 实现的差异):
  * - 集合字段 (keywords / examples / dependencies / bootstrapModes) 全部以 JSON 数组存储,
- *   避免历史上 [enabledByDefault: Boolean] 那种有损压缩. bootstrapModes 必须能区分 per-mode 信息
- *   (例如 `navigate_app_screen` 只在 AGENT 模式 bootstrap, 不能退化为 "所有模式都 bootstrap").
+ *   避免历史上 [enabledByDefault: Boolean] 那种有损压缩.
+ *   注: 聊天工作模式 (Ask/Plan/Agent) 已删除并收敛为单一 Agent 模式, 运行时工具模型的
+ *   bootstrapModes 已降级为 `bootstrap: Boolean`; 本表为孤儿遗留表, 列保持不动以避免 Room 迁移,
+ *   bootstrap_modes_json 列不再反映运行时语义.
  * - 工具元数据 (name/title/.../version) 全部是 [com.shifenmiao.model.ai.tool.ToolCatalogItem]
  *   的无损镜像, 导出/导入必须 1:1 往返.
  */

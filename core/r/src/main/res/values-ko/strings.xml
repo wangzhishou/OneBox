@@ -534,8 +534,6 @@
     <string name="ai_chat_jump_to_latest_message">새 메시지, 탭하여 보기</string>
     <string name="ai_chat_message_limit_notice">최근 50개의 메시지만 표시됩니다. 이전 메시지는 보관됩니다.</string>
     <string name="ai_chat_status_model">모델</string>
-    <string name="ai_mode_agent">에이전트</string>
-    <string name="ai_mode_ask">질문</string>
     <string name="ai_chat_status_mode">모드</string>
     <string name="ai_chat_status_online">웹 검색</string>
     <string name="ai_chat_status_standard">표준</string>

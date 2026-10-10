@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">Kulang ang parameter na source_uri (path ng zip archive)</string>
     <string name="agent_tool_unzip_file_failed">Nabigo ang pag-unzip: %1$s</string>
     <string name="ai_input_file">File</string>
-    <string name="ai_chat_working_mode_ask_title">Magtanong</string>
-    <string name="ai_chat_working_mode_ask_description">Sagutin nang direkta, gawin ang pagtuklas ng kakayahan kung kinakailangan lamang</string>
-    <string name="ai_chat_working_mode_plan_title">Plano</string>
-    <string name="ai_chat_working_mode_plan_description">Magsaliksik muna pagkatapos magplano; tumingin lamang, huwag isagawa</string>
-    <string name="ai_chat_working_mode_agent_title">Isagawa</string>
-    <string name="ai_chat_working_mode_agent_description">Gamitin ang mga tool upang isulong ang gawain at magpatuloy batay sa aktwal na mga resulta</string>
     <string name="agent_tool_process_file_title">Basahin ang File</string>
     <string name="agent_tool_process_file_summary">Basahin ang isang lokal na text file ayon sa hanay ng linya, maghanap ng mga keyword at magbalik ng nakabalangkas na mga resulta na may numero ng linya</string>
     <string name="agent_tool_process_file_param_file_path">Lokal na file path o URI sa loob ng workspace.</string>

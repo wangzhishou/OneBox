@@ -333,12 +333,6 @@
     <string name="agent_tool_unzip_file_missing_source_uri">Отсутствует параметр source_uri (путь к zip-архиву)</string>
     <string name="agent_tool_unzip_file_failed">Ошибка распаковки: %1$s</string>
     <string name="ai_input_file">Файл</string>
-    <string name="ai_chat_working_mode_ask_title">Спросить</string>
-    <string name="ai_chat_working_mode_ask_description">Отвечать напрямую, поиск возможностей только при необходимости</string>
-    <string name="ai_chat_working_mode_plan_title">План</string>
-    <string name="ai_chat_working_mode_plan_description">Сначала исследовать, затем планировать; только просмотр, без выполнения</string>
-    <string name="ai_chat_working_mode_agent_title">Выполнить</string>
-    <string name="ai_chat_working_mode_agent_description">Использовать инструменты для продвижения задачи и продолжать на основе реальных результатов</string>
     <string name="agent_tool_process_file_title">Читать файл</string>
     <string name="agent_tool_process_file_summary">Читать один локальный текстовый файл по диапазону строк, искать ключевые слова и возвращать структурированные результаты с номерами строк</string>
     <string name="agent_tool_process_file_param_file_path">Локальный путь к файлу или URI в рабочей области.</string>

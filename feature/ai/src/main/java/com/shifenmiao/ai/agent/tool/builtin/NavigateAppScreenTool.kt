@@ -13,7 +13,6 @@ import com.shifenmiao.common.handle.ItemScreenAction
 import com.shifenmiao.model.ModelProvider.AppJson
 import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ToolCategory
 import com.shifenmiao.model.ai.tool.ToolRiskLevel
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallbackResult

@@ -10,12 +10,8 @@
     <string name="sys_prompt_bazi_desc">Integrierter Systemprompt zur Bazi-Analyse (Vier Säulen)</string>
     <string name="sys_prompt_xiangqi_title">Systemprompt für Xiangqi-Züge</string>
     <string name="sys_prompt_xiangqi_desc">Integrierter Systemprompt für LLM-Xiangqi-Spiele (chinesisches Schach)</string>
-    <string name="sys_prompt_mode_ask_title">ASK-Protokoll für reine Fragen und Antworten</string>
-    <string name="sys_prompt_mode_ask_desc">Ausführungsprotokoll-Prompt für den Ask-Modus</string>
-    <string name="sys_prompt_mode_plan_title">PLAN-Protokoll für reine Planung</string>
-    <string name="sys_prompt_mode_plan_desc">Ausführungsprotokoll-Prompt für den Plan-Modus</string>
-    <string name="sys_prompt_mode_agent_title">AGENT-Ausführungsmodus-Protokoll</string>
-    <string name="sys_prompt_mode_agent_desc">Ausführungsprotokoll-Prompt für den Agent-Modus</string>
+    <string name="sys_prompt_mode_agent_title">Ausführungsprotokoll</string>
+    <string name="sys_prompt_mode_agent_desc">System-Prompt, das den Assistenten anleitet, Werkzeuge zu nutzen und Aufgaben zu erledigen</string>
     <string name="sys_prompt_duel_title">KI-Duell-/Interaktions-Promptvorlagen</string>
     <string name="sys_prompt_duel_desc">Systemanweisungen, Rollenregeln und Zugführungsvorlagen für KI-Duelle und Interaktionen</string>
     <!-- Habit tracker activity log entries -->

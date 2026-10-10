@@ -1,6 +1,5 @@
 package com.shifenmiao.ai.component
 
-import com.shifenmiao.model.ai.tool.ChatWorkingMode
 import com.shifenmiao.model.ai.tool.ToolCatalogItem
 
 /**
@@ -9,7 +8,6 @@ import com.shifenmiao.model.ai.tool.ToolCatalogItem
  */
 data class ToolCenterUiState(
     val isLoading: Boolean = false,
-    val workingMode: ChatWorkingMode = ChatWorkingMode.PLAN,
     val allTools: List<ToolCatalogItem> = emptyList(),
     val bootstrapToolNames: List<String> = emptyList(),
     val enabledToolNames: List<String> = emptyList(),
