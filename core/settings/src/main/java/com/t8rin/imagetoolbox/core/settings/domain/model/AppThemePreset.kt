@@ -10,7 +10,8 @@ import com.shifenmiao.model.theme.ThemeDefaults
  * @param colorTupleString           四色元组字符串: "primary*secondary*tertiary*surface" (ARGB int)。
  * @param nightMode                  该主题预设绑定的日夜模式
  * @param isDynamicColors            是否使用壁纸动态取色（"千色千面"模式）
- * @param isGlassmorphismEnabled     是否开启玻璃透明
+ * @param isGlassmorphismEnabled     是否开启玻璃透明（默认关闭：玻璃是重特效，
+ *                                   默认给实心 M3 界面保流畅，需要的人在主题设置里主动开）
  * @param isLiquidGlassEnabled       是否开启液态玻璃
  * @param isMeshGradientBackgroundEnabled 是否开启渐变背景
  * @param gradientBackgroundStyle    渐变背景风格
@@ -27,7 +28,7 @@ data class AppThemePreset(
     val colorTupleString: String,
     val nightMode: NightMode = NightMode.System,
     val isDynamicColors: Boolean = false,
-    val isGlassmorphismEnabled: Boolean = true,
+    val isGlassmorphismEnabled: Boolean = false,
     val isLiquidGlassEnabled: Boolean = false,
     val isMeshGradientBackgroundEnabled: Boolean = true,
     val gradientBackgroundStyle: GradientBackgroundStyle = GradientBackgroundStyle.Sunset,
@@ -66,13 +67,17 @@ data class AppThemePreset(
 
         // ── 内置主题 ──
 
-        /** 默认主题 */
+        /**
+         * 默认主题「千色千面」(壁纸动态取色)。
+         * 刻意不带玻璃透明: 首启要的是流畅, 玻璃是用户自己到主题设置里打开的加特效。
+         * 其余内置预设保留各自的玻璃观感(卡片上有透明角标提示), 由用户主动点选。
+         */
         val Default = AppThemePreset(
             id = "builtin_dynamic",
             name = "千色千面",
             colorTupleString = "",
             isDynamicColors = true,
-            isGlassmorphismEnabled = true,
+            isGlassmorphismEnabled = false,
             isLiquidGlassEnabled = false,
             isMeshGradientBackgroundEnabled = false,
             gradientBackgroundStyle = GradientBackgroundStyle.Classic,

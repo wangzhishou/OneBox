@@ -559,8 +559,9 @@ object AppSharedStorage {
     fun loadStartupSelectedFont(): String =
         load(S_SELECTED_FONT, "0") ?: "0"  // default: System(0)
 
+    /** 与 SettingsState.Default 保持一致: 玻璃透明默认关闭, 首帧前也不闪一下玻璃 */
     fun loadStartupIsGlassmorphismEnabled(): Boolean =
-        load(S_GLASSMORPHISM_ENABLED, true) ?: true
+        load(S_GLASSMORPHISM_ENABLED, false) ?: false
 
     fun loadStartupIsLiquidGlassEnabled(): Boolean =
         load(S_LIQUID_GLASS_ENABLED, false) ?: false

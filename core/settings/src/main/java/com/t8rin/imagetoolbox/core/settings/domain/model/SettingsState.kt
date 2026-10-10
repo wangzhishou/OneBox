@@ -250,7 +250,10 @@ data class SettingsState(
                 snowfallMode = SnowfallMode.Auto,
                 defaultImageFormat = null,
                 defaultQuality = Quality.Base(),
-                isGlassmorphismEnabled = true,
+                // 玻璃透明默认关闭: 它是全局重特效(每个玻璃容器各一次背景采样/模糊),
+                // 中低端机上是首屏与滑动掉帧的主要来源。首启给实心 M3 界面,
+                // 想要玻璃观感的用户在 主题设置 → 玻璃效果 里主动打开。
+                isGlassmorphismEnabled = false,
                 isLiquidGlassEnabled = false,
                 isMeshGradientBackgroundEnabled = false,
                 customBackgroundImageUri = null,
