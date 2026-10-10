@@ -813,8 +813,14 @@ class ChildProvider @Inject constructor(
             aiChatComponent = this.globalAIChatComponent.apply {
                 // 空态引导等入口带入会话参数时，开启引导会话并预填输入框；
                 // 底部 Tab 正常打开（默认参数）不影响当前会话。
+                // 引导信号必须以 entryType=ASSISTANT 为准: 各引导入口(棋类 AI 创建、
+                // 首页 AI 创建等)都显式携带 ASSISTANT; 而默认构造的 Conversation()
+                // 是 CHAT 且 title 默认非空("AI 聊天"), 只看 title 会导致 Tab child
+                // 每次重建都把进行中的会话重置(用户消息被清空成"消息内容缺失")。
                 val guide = config.conversation
-                if (guide.title.isNotBlank() || !guide.template.isNullOrBlank()) {
+                if (guide.entryType == AIConversationEntryType.ASSISTANT &&
+                    (guide.title.isNotBlank() || !guide.template.isNullOrBlank())
+                ) {
                     startGuidedConversation(guide)
                 }
             }
