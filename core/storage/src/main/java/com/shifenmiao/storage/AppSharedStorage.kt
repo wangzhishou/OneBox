@@ -15,8 +15,8 @@ object AppSharedStorage {
 
     /**
      * 按语言隔离的 MMKV（"app_<locale>"）：存放与分库数据绑定/按语言下发的内容——
-     * 条目/分类同步水位线、系统预置 prompt 版本、工具目录快照版本、远程配置检查时间。
-     * 这些 key 不进 memoryCache，避免跨语言串味（MMKV mmap 直读足够快）。
+     * 条目/分类同步水位线、系统预置 prompt 版本、预置播种 flag（习惯/关键词兜底）、
+     * 远程配置检查时间。这些 key 不进 memoryCache，避免跨语言串味（MMKV mmap 直读足够快）。
      */
     private val localeMmkv: MMKV get() = localizedMmkv(MMKVName.APP_SHARED)
 
@@ -617,14 +617,14 @@ object AppSharedStorage {
         localeMmkv.encode(ID_PHOTO_PRESET_CATALOG, catalogId)
     }
 
-    // ─── 习惯打卡预置播种 flag ───────────────────────────────────────────────
+    // ─── 习惯打卡预置播种 flag（按语言隔离：预置习惯写入各语言自己的 Room 库） ──────────
 
-    /** 预置习惯是否已播种过(只播一次,用户删光也不再播) */
+    /** 预置习惯在当前语言库是否已播种过(每种语言各播一次,该语言下用户删光也不再播) */
     fun loadHabitPresetsSeeded(): Boolean =
-        load(HABIT_PRESETS_SEEDED, false) ?: false
+        localeMmkv.decodeBool(HABIT_PRESETS_SEEDED, false)
 
     fun saveHabitPresetsSeeded(seeded: Boolean) {
-        save(HABIT_PRESETS_SEEDED, seeded)
+        localeMmkv.encode(HABIT_PRESETS_SEEDED, seeded)
     }
 
     // ─── 语言切换重启提醒 ──────────────────────────────────────────────────
@@ -645,11 +645,14 @@ object AppSharedStorage {
     fun loadLanguageUserChosen(): Boolean =
         load(LANGUAGE_USER_CHOSEN, false) ?: false
 
-    // ─── 条目搜索关键词兜底表(一次性回填) ─────────────────────────────────
+    // ─── 条目搜索关键词兜底表(一次性回填,按语言隔离:回填的是各语言自己的 item 表) ────
 
-    fun isItemKeywordDefaultsSeeded(): Boolean = load(ITEM_KEYWORD_DEFAULTS_SEEDED, false) ?: false
+    fun isItemKeywordDefaultsSeeded(): Boolean =
+        localeMmkv.decodeBool(ITEM_KEYWORD_DEFAULTS_SEEDED, false)
 
-    fun markItemKeywordDefaultsSeeded() = save(ITEM_KEYWORD_DEFAULTS_SEEDED, true)
+    fun markItemKeywordDefaultsSeeded() {
+        localeMmkv.encode(ITEM_KEYWORD_DEFAULTS_SEEDED, true)
+    }
 
     // ─── 记账/金额展示币种 ─────────────────────────────────────────────────
 

@@ -124,8 +124,8 @@ class HabitService @Inject constructor(
     /**
      * 首次进入播种 6 个预置习惯。
      *
-     * 双条件:持久化 flag 未置 + 习惯表为空;flag 一旦置位,
-     * 即使用户之后删光全部习惯也不再播种。名称走模块字符串资源,随系统语言。
+     * 双条件:按语言隔离的持久化 flag 未置 + 当前语言的习惯表为空;flag 一旦置位,
+     * 即使该语言下用户之后删光全部习惯也不再播种。名称走模块字符串资源,随系统语言。
      */
     suspend fun seedPresetHabitsIfNeeded() {
         if (AppSharedStorage.loadHabitPresetsSeeded()) return
