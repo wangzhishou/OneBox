@@ -181,22 +181,19 @@ fun PlaceHolderMessageCard(
                         modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
                         verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(22.dp)
-                            )
-                            Text(
-                                text = stringResource(id = R.string.ai_chat_placeholder_title),
-                                style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
-                                color = AppTheme.colors.getPrimaryTextColor()
-                            )
-                        }
+                        // 机器人图标独占一行: 标题里 12/14 语言自带 👋 emoji,
+                        // 同行放图标会显得重复,长标题还会把 emoji 挤到下一行落单
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.ai_chat_placeholder_title),
+                            style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
+                            color = AppTheme.colors.getPrimaryTextColor()
+                        )
                         Text(
                             text = stringResource(id = R.string.ai_chat_placeholder_content),
                             style = MaterialTheme.typography.bodyLarge,
