@@ -14,8 +14,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -31,6 +33,7 @@ import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -161,41 +164,45 @@ fun PlaceHolderMessageCard(
         }
 
         else -> {
-            CustomChatCard(
-                isHuman = false,
-                showAvatar = false
+            Column(
+                modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
             ) {
-                Column(
-                    modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                    shape = MaterialTheme.shapes.large
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    Column(
+                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
                     ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(22.dp)
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(22.dp)
+                            )
+                            Text(
+                                text = stringResource(id = R.string.ai_chat_placeholder_title),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = AppTheme.colors.getPrimaryTextColor()
+                            )
+                        }
                         Text(
-                            text = stringResource(id = R.string.ai_chat_placeholder_title),
+                            text = stringResource(id = R.string.ai_chat_placeholder_content),
                             style = MaterialTheme.typography.bodyLarge,
                             color = AppTheme.colors.getPrimaryTextColor()
                         )
                     }
-                    Text(
-                        text = stringResource(id = R.string.ai_chat_placeholder_content),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = AppTheme.colors.getPrimaryTextColor()
-                    )
-                    Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-
-                    ChatQuickStartSection(
-                        onSuggestionClick = onSuggestionClick
-                    )
                 }
+
+                ChatQuickStartSection(
+                    onSuggestionClick = onSuggestionClick
+                )
             }
         }
     }
@@ -482,13 +489,17 @@ fun ChatQuickStartSection(
             ) {
                 displayedStarters.chunked(2).forEach { rowItems ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         rowItems.forEach { item ->
                             ChatQuickStartCard(
                                 item = item,
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 onClick = { onSuggestionClick(item.text) }
                             )
                         }
@@ -509,31 +520,39 @@ private fun ChatQuickStartCard(
     onClick: () -> Unit
 ) {
     val moduleIcon = remember(item.module) { screenIconByModule(item.module) }
-    GlassSurface(
-        modifier = modifier
-            .clip(MaterialTheme.shapes.large)
-            .clickable(onClick = onClick),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    Surface(
+        onClick = onClick,
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
         shape = MaterialTheme.shapes.large
     ) {
-        Column(
+        Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Icon(
-                imageVector = moduleIcon
-                    ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = moduleIcon
+                        ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
             Text(
                 text = item.text,
+                modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                minLines = 2,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
