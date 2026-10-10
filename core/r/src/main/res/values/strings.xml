@@ -592,8 +592,7 @@
     <string name="ai_prompt_status_live">Current Version</string>
     <string name="ai_prompt_working_snapshot_desc">This conversation continues with the prompt snapshot saved when the session was created, keeping the context stable.</string>
     <string name="ai_prompt_working_live_desc">This conversation works with the latest content of this prompt, which is best for starting a new task.</string>
-    <string name="ai_chat_quick_start_title">Try Starting With</string>
-    <string name="ai_chat_quick_start_subtitle">Tap to fill the input, then hit Send to refine further</string>
+    <string name="ai_chat_quick_start_title">Try these</string>
     <string name="ai_prompt_placeholder_title">Prompt Content</string>
     <string name="ai_prompt_badge_system">System</string>
     <string name="ai_prompt_placeholder_loading_desc">Loading this prompt. If it still does not appear after a while, the prompt may have been deleted or failed to sync.</string>

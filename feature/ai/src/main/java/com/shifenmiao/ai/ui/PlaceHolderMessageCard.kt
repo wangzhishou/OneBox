@@ -14,7 +14,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,12 +68,16 @@ import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.Source
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.model.remote.ChatQuickStartItem
+import com.shifenmiao.model.remote.defaultChatQuickStartItems
+import com.shifenmiao.model.remote.defaultChatQuickStartPrompts
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.screenIconByModule
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -83,8 +86,10 @@ import java.util.Locale
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
 
@@ -164,21 +169,26 @@ fun PlaceHolderMessageCard(
                     modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.ai_chat_placeholder_title),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = AppTheme.colors.getPrimaryTextColor()
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(22.dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.ai_chat_placeholder_title),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = AppTheme.colors.getPrimaryTextColor()
+                        )
+                    }
                     Text(
                         text = stringResource(id = R.string.ai_chat_placeholder_content),
                         style = MaterialTheme.typography.bodyLarge,
                         color = AppTheme.colors.getPrimaryTextColor()
-                    )
-                    Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-                    Text(
-                        text = stringResource(R.string.ai_chat_quick_start_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
 
@@ -399,29 +409,13 @@ private fun ChatSessionStatusBar(
 fun ChatQuickStartSection(
     onSuggestionClick: (String) -> Unit
 ) {
-    val fallbackStarters = listOf(
-        stringResource(R.string.ai_chat_quick_start_1),
-        stringResource(R.string.ai_chat_quick_start_2),
-        stringResource(R.string.ai_chat_quick_start_3),
-        stringResource(R.string.ai_chat_quick_start_4),
-        stringResource(R.string.ai_chat_quick_start_5),
-        stringResource(R.string.ai_chat_quick_start_6),
-        stringResource(R.string.ai_chat_quick_start_7),
-        stringResource(R.string.ai_chat_quick_start_8),
-        stringResource(R.string.ai_chat_quick_start_9),
-        stringResource(R.string.ai_chat_quick_start_10),
-        stringResource(R.string.ai_chat_quick_start_11),
-        stringResource(R.string.ai_chat_quick_start_12),
-        stringResource(R.string.ai_chat_quick_start_13),
-        stringResource(R.string.ai_chat_quick_start_14),
-        stringResource(R.string.ai_chat_quick_start_15),
-        stringResource(R.string.ai_chat_quick_start_16),
+    val remoteConfig = RemoteConfigStorage.getRemoteConfig()
+    val starters = remoteConfig.chatQuickStartItems.toAvailableQuickStartItems(
+        fallbackPrompts = remoteConfig.chatQuickStartPrompts,
+        localFallback = defaultChatQuickStartItems()
     )
-    val starters = RemoteConfigStorage.getRemoteConfig()
-        .chatQuickStartPrompts
-        .toAvailableQuickStartPrompts(fallback = fallbackStarters)
     var visibleStarters by remember(starters) {
-        mutableStateOf(pickQuickStartPrompts(starters))
+        mutableStateOf(pickQuickStartItems(starters))
     }
     var refreshNonce by rememberSaveable(starters) {
         mutableIntStateOf(0)
@@ -445,10 +439,10 @@ fun ChatQuickStartSection(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(R.string.ai_chat_quick_start_subtitle),
+                text = stringResource(R.string.ai_chat_quick_start_title),
                 modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.outline
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
             )
             if (showRefreshButton) {
                 Icon(
@@ -457,8 +451,8 @@ fun ChatQuickStartSection(
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.small)
                         .clickable {
-                            visibleStarters = pickQuickStartPrompts(
-                                prompts = starters,
+                            visibleStarters = pickQuickStartItems(
+                                items = starters,
                                 previous = visibleStarters
                             )
                             refreshNonce += 1
@@ -483,29 +477,97 @@ fun ChatQuickStartSection(
             val displayedStarters = remember(refreshRound, visibleStarters) {
                 visibleStarters
             }
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                displayedStarters.forEach { starter ->
-                    GlassSurface(
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.large)
-                            .clickable { onSuggestionClick(starter) },
-                        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                        shape = MaterialTheme.shapes.large
+                displayedStarters.chunked(2).forEach { rowItems ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text(
-                            text = starter,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                        rowItems.forEach { item ->
+                            ChatQuickStartCard(
+                                item = item,
+                                modifier = Modifier.weight(1f),
+                                onClick = { onSuggestionClick(item.text) }
+                            )
+                        }
+                        if (rowItems.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+private fun ChatQuickStartCard(
+    item: ChatQuickStartItem,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    val moduleIcon = remember(item.module) { screenIconByModule(item.module) }
+    GlassSurface(
+        modifier = modifier
+            .clip(MaterialTheme.shapes.large)
+            .clickable(onClick = onClick),
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        shape = MaterialTheme.shapes.large
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = moduleIcon
+                    ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+            Text(
+                text = item.text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                minLines = 2,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+private fun List<ChatQuickStartItem>?.toAvailableQuickStartItems(
+    fallbackPrompts: List<String>?,
+    localFallback: List<ChatQuickStartItem>
+): List<ChatQuickStartItem> {
+    val normalizedItems = this.orEmpty()
+        .map { it.copy(text = it.text.trim()) }
+        .filter { it.text.isNotEmpty() }
+        .distinct()
+
+    if (normalizedItems.isNotEmpty()) {
+        return normalizedItems
+    }
+
+    val normalizedPrompts = fallbackPrompts.toAvailableQuickStartPrompts(fallback = emptyList())
+    // 旧字段的默认值就是本地化默认列表,等于默认列表说明服务端并未显式下发,
+    // 此时应落到带 module 的 localFallback,否则兜底卡片永远拿不到模块图标
+    val isLocalizedDefault = normalizedPrompts.isNotEmpty() &&
+        normalizedPrompts == defaultChatQuickStartPrompts()
+            .map(String::trim)
+            .filter(String::isNotEmpty)
+            .distinct()
+    if (normalizedPrompts.isNotEmpty() && !isLocalizedDefault) {
+        return normalizedPrompts.map { ChatQuickStartItem(text = it) }
+    }
+
+    return localFallback
+        .map { it.copy(text = it.text.trim()) }
+        .filter { it.text.isNotEmpty() }
+        .distinct()
 }
 
 private fun List<String>?.toAvailableQuickStartPrompts(fallback: List<String>): List<String> {
@@ -524,16 +586,16 @@ private fun List<String>?.toAvailableQuickStartPrompts(fallback: List<String>): 
         .distinct()
 }
 
-private fun pickQuickStartPrompts(
-    prompts: List<String>,
-    previous: List<String>? = null,
+private fun pickQuickStartItems(
+    items: List<ChatQuickStartItem>,
+    previous: List<ChatQuickStartItem>? = null,
     visibleCount: Int = CHAT_QUICK_START_VISIBLE_COUNT
-): List<String> {
-    if (prompts.size <= visibleCount) {
-        return prompts.take(visibleCount)
+): List<ChatQuickStartItem> {
+    if (items.size <= visibleCount) {
+        return items.take(visibleCount)
     }
 
-    var next = prompts.shuffled().take(visibleCount)
+    var next = items.shuffled().take(visibleCount)
     if (previous.isNullOrEmpty()) {
         return next
     }
@@ -542,7 +604,7 @@ private fun pickQuickStartPrompts(
         if (next != previous) {
             return next
         }
-        next = prompts.shuffled().take(visibleCount)
+        next = items.shuffled().take(visibleCount)
     }
 
     return next

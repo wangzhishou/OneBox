@@ -542,8 +542,7 @@
     <string name="ai_prompt_status_live">الإصدار الحالي</string>
     <string name="ai_prompt_working_snapshot_desc">تستمر هذه المحادثة وفق لقطة المُوجِّه المحفوظة عند إنشاء الجلسة، ما يحافظ على ثبات السياق.</string>
     <string name="ai_prompt_working_live_desc">تعمل هذه المحادثة بأحدث محتوى لهذا المُوجِّه، وهو الأنسب لبدء مهمة جديدة.</string>
-    <string name="ai_chat_quick_start_title">جرّب أن تبدأ بـ</string>
-    <string name="ai_chat_quick_start_subtitle">انقر لملء حقل الإدخال، ثم اضغط إرسال للتحسين أكثر</string>
+    <string name="ai_chat_quick_start_title">جرّب هذه</string>
     <string name="ai_prompt_placeholder_title">محتوى المُوجِّه</string>
     <string name="ai_prompt_badge_system">النظام</string>
     <string name="ai_prompt_placeholder_loading_desc">جارٍ تحميل هذا المُوجِّه. إذا لم يظهر بعد قليل، فقد يكون محذوفاً أو فشلت مزامنته.</string>

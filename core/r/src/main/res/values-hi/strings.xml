@@ -507,8 +507,7 @@
     <string name="ai_prompt_status_live">वर्तमान संस्करण</string>
     <string name="ai_prompt_working_snapshot_desc">यह वार्तालाप सत्र बनाते समय सहेजे गए प्रॉम्प्ट स्नैपशॉट के साथ जारी रहता है, जिससे संदर्भ स्थिर रहता है।</string>
     <string name="ai_prompt_working_live_desc">यह वार्तालाप इस प्रॉम्प्ट की नवीनतम सामग्री के साथ काम करता है, जो नया कार्य शुरू करने के लिए सर्वोत्तम है।</string>
-    <string name="ai_chat_quick_start_title">इससे शुरू करने का प्रयास करें</string>
-    <string name="ai_chat_quick_start_subtitle">इनपुट भरने के लिए टैप करें, फिर और परिष्कृत करने के लिए भेजें दबाएँ</string>
+    <string name="ai_chat_quick_start_title">ये आज़माएं</string>
     <string name="ai_chat_quick_start_1">दोपहर का खाना 28 का था, इसे डाइनिंग में दर्ज करें</string>
     <string name="ai_chat_quick_start_2">इस आवश्यकता को एक नोट और व्यावहारिक कार्य सूची में बदलें</string>
     <string name="ai_chat_quick_start_3">इस छवि में QR कोड या बारकोड पढ़ें और बताएं कि यह क्या है</string>

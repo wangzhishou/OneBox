@@ -113,6 +113,20 @@ data class RemoteConfig(
     val chatQuickStartPrompts: List<String>? = defaultChatQuickStartPrompts(),
 
     /**
+     * AI 聊天快速开始条目(文案 + 模块标识),支持远程下发。
+     *
+     * 与旧字段 [chatQuickStartPrompts] 并存:老客户端不认识本字段(AppJson ignoreUnknownKeys),
+     * 会继续用旧字段渲染 chip;新客户端在本字段非空时优先用它渲染卡片(按 module 取 Screen
+     * 同款图标),否则回退旧字段/本地兜底。module 为 Screen 的 simpleName
+     * (见 core:ui 的 ScreenUtils.simpleName(),如 "QR_Code"、"Bookkeeping"),
+     * null = 通用文案,用默认图标。
+     *
+     * 注意:下标 16-20 的预填词约定(笔记/网址/象棋/五子棋/国际象棋)仍只挂在旧字段
+     * [chatQuickStartPrompts] 上,本字段不参与下标语义,服务端下发时两条字段各自维护。
+     */
+    val chatQuickStartItems: List<ChatQuickStartItem>? = null,
+
+    /**
      *  网络超时时间, 单位分钟
      */
     val timeOut: Long? = 3L,
@@ -351,6 +365,7 @@ data class RemoteConfig(
         defaultEngines = mergeField(net.defaultEngines, defaultEngines),
         aiCanSetting = mergeField(net.aiCanSetting, aiCanSetting),
         chatQuickStartPrompts = mergeField(net.chatQuickStartPrompts, chatQuickStartPrompts),
+        chatQuickStartItems = mergeField(net.chatQuickStartItems, chatQuickStartItems),
         timeOut = mergeField(net.timeOut, timeOut),
         aiPromptSuffix = mergeField(net.aiPromptSuffix, aiPromptSuffix),
         cacheTimeout = mergeField(net.cacheTimeout, cacheTimeout),
@@ -405,6 +420,7 @@ data class RemoteConfig(
                 defaultEngines == other.defaultEngines &&
                 aiCanSetting == other.aiCanSetting &&
                 chatQuickStartPrompts == other.chatQuickStartPrompts &&
+                chatQuickStartItems == other.chatQuickStartItems &&
                 timeOut == other.timeOut &&
                 aiPromptSuffix == other.aiPromptSuffix &&
                 cacheTimeout == other.cacheTimeout &&
@@ -453,6 +469,7 @@ data class RemoteConfig(
             defaultEngines,
             aiCanSetting,
             chatQuickStartPrompts,
+            chatQuickStartItems,
             timeOut,
             aiPromptSuffix,
             cacheTimeout,
@@ -492,6 +509,20 @@ data class RemoteConfig(
         )
     }
 }
+
+/**
+ * AI 聊天快速开始条目:文案 + 模块标识。
+ *
+ * 与旧版纯文案(chatQuickStartPrompts)相比多了 [module]:Screen 的 simpleName
+ * (见 core:ui 的 ScreenUtils.simpleName(),如 "QR_Code"、"Bookkeeping"),
+ * 客户端按它取对应模块同款图标;null = 通用文案,用默认图标。
+ */
+@Parcelize
+@Serializable
+data class ChatQuickStartItem(
+    val text: String,
+    val module: String? = null
+) : Parcelable
 
 @Parcelize
 @Serializable
@@ -572,7 +603,7 @@ data class RemoteConfigListResponse(
     val meta: Meta = Meta()
 ) : Parcelable
 
-private fun defaultChatQuickStartPrompts(): List<String> = listOf(
+fun defaultChatQuickStartPrompts(): List<String> = listOf(
     AppContext.getString(R.string.ai_chat_quick_start_1),
     AppContext.getString(R.string.ai_chat_quick_start_2),
     AppContext.getString(R.string.ai_chat_quick_start_3),
@@ -594,5 +625,34 @@ private fun defaultChatQuickStartPrompts(): List<String> = listOf(
     AppContext.getString(R.string.ai_chat_quick_start_19),
     AppContext.getString(R.string.ai_chat_quick_start_20),
     AppContext.getString(R.string.ai_chat_quick_start_21),
+)
+
+/**
+ * [RemoteConfig.chatQuickStartItems] 的本地兜底:与 [defaultChatQuickStartPrompts] 同源的 21 条,
+ * 逐条标注模块标识(module 取值 = Screen 的 simpleName,见 core:ui 的 ScreenUtils.simpleName();
+ * 能确定归属模块的给对应值,通用文案给 null 用默认图标)。
+ */
+fun defaultChatQuickStartItems(): List<ChatQuickStartItem> = listOf(
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_1), module = "Bookkeeping"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_2), module = "MarkTodoRouter"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_3), module = "QR_Code"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_4), module = "Checksum_Tools"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_5), module = "Limit_Resize"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_6), module = "FileBrowser"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_7)),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_8)),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_9), module = "CloudStorage"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_10)),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_11), module = "XiangqiRouter"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_12), module = "PDF_Tools"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_13), module = "RecordCenter"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_14), module = "Period"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_15), module = "Teleprompter"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_16)),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_17), module = "CreateNote"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_18), module = "CreateHtml"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_19), module = "XiangqiRouter"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_20), module = "GomokuRouter"),
+    ChatQuickStartItem(AppContext.getString(R.string.ai_chat_quick_start_21), module = "ChessRouter"),
 )
 

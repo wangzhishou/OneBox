@@ -507,8 +507,7 @@
     <string name="ai_prompt_status_live">Текущая версия</string>
     <string name="ai_prompt_working_snapshot_desc">Этот разговор продолжается со снимком промпта, сохраненным при создании сессии, что обеспечивает стабильный контекст.</string>
     <string name="ai_prompt_working_live_desc">Этот разговор работает с последним содержимым этого промпта, что лучше всего подходит для начала новой задачи.</string>
-    <string name="ai_chat_quick_start_title">Попробуйте начать с</string>
-    <string name="ai_chat_quick_start_subtitle">Нажмите, чтобы заполнить поле ввода, затем отправьте для уточнения</string>
+    <string name="ai_chat_quick_start_title">Попробуйте</string>
     <string name="ai_chat_quick_start_1">Обед стоил 28, запиши в категорию питания</string>
     <string name="ai_chat_quick_start_2">Преврати это требование в заметку и практичный список задач</string>
     <string name="ai_chat_quick_start_3">Прочитай QR-код или штрих-код на этом изображении и объясни, что это</string>

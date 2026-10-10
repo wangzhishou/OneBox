@@ -507,8 +507,7 @@
     <string name="ai_prompt_status_live">현재 버전</string>
     <string name="ai_prompt_working_snapshot_desc">이 대화는 세션이 생성될 때 저장된 프롬프트 스냅샷으로 계속되며, 컨텍스트를 안정적으로 유지합니다.</string>
     <string name="ai_prompt_working_live_desc">이 대화는 이 프롬프트의 최신 내용으로 작업하며, 새 작업을 시작할 때 가장 적합합니다.</string>
-    <string name="ai_chat_quick_start_title">시작해 보세요</string>
-    <string name="ai_chat_quick_start_subtitle">탭하여 입력을 채우고, 보내기를 눌러 더 다듬으세요</string>
+    <string name="ai_chat_quick_start_title">이것을 시도해 보세요</string>
     <string name="ai_chat_quick_start_1">점심에 28 썼어, 식비로 기록해줘</string>
     <string name="ai_chat_quick_start_2">이 요구사항을 메모와 실용적인 할 일 목록으로 바꿔줘</string>
     <string name="ai_chat_quick_start_3">이 이미지의 QR 코드 또는 바코드를 읽고 무엇인지 설명해줘</string>

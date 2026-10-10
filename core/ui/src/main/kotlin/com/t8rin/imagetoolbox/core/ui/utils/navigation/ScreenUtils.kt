@@ -378,6 +378,10 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.BlessingWallRecord -> "BlessingWallRecord"
     is Screen.Poem -> "Poem"
     is Screen.PoemSearch -> "PoemSearch"
+    is Screen.CloudStorage -> "CloudStorage"
+    is Screen.XiangqiRouter -> "XiangqiRouter"
+    is Screen.GomokuRouter -> "GomokuRouter"
+    is Screen.ChessRouter -> "ChessRouter"
     Main -> ""
     else -> ""
 }
@@ -533,6 +537,20 @@ internal fun Screen.twoToneIcon(): ImageVector? = when (this) {
 
     is RecognizeText -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ImageToText
     else -> icon()
+}
+
+/**
+ * 按模块标识(Screen simpleName,不区分大小写)取模块同款图标。
+ *
+ * 供远程下发的"文案 + 模块"类配置(如 AI 助手欢迎页快捷指令 chatQuickStartItems)
+ * 按模块挂图标;模块标识查不到对应 Screen、或该 Screen 无图标时返回 null,
+ * 由调用方回退到默认图标。
+ */
+fun screenIconByModule(module: String?): ImageVector? {
+    if (module.isNullOrBlank()) return null
+    return Screen.entries
+        .firstOrNull { it.simpleName().equals(module, ignoreCase = true) }
+        ?.icon()
 }
 
 internal object UriSerializer : KSerializer<AndroidUri> {

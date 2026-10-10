@@ -507,8 +507,7 @@
     <string name="ai_prompt_status_live">現在のバージョン</string>
     <string name="ai_prompt_working_snapshot_desc">この会話は、セッション作成時に保存されたプロンプトスナップショットで続行され、コンテキストが安定します。</string>
     <string name="ai_prompt_working_live_desc">この会話はこのプロンプトの最新コンテンツで動作し、新しいタスクを開始するのに最適です。</string>
-    <string name="ai_chat_quick_start_title">まずはこれで始めてみて</string>
-    <string name="ai_chat_quick_start_subtitle">タップして入力を埋め、送信を押してさらに調整</string>
+    <string name="ai_chat_quick_start_title">これを試してみて</string>
     <string name="ai_chat_quick_start_1">昼食に28かかったので、食費として記録して</string>
     <string name="ai_chat_quick_start_2">この要件をメモと実用的なタスクリストに変換して</string>
     <string name="ai_chat_quick_start_3">この画像のQRコードまたはバーコードを読み取り、それが何かを説明して</string>

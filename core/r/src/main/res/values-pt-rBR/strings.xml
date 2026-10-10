@@ -507,8 +507,7 @@
     <string name="ai_prompt_status_live">Versão atual</string>
     <string name="ai_prompt_working_snapshot_desc">Esta conversa continua com o instantâneo do prompt salvo quando a sessão foi criada, mantendo o contexto estável.</string>
     <string name="ai_prompt_working_live_desc">Esta conversa funciona com o conteúdo mais recente deste prompt, o que é melhor para iniciar uma nova tarefa.</string>
-    <string name="ai_chat_quick_start_title">Experimente começar com</string>
-    <string name="ai_chat_quick_start_subtitle">Toque para preencher a entrada e depois envie para refinar mais</string>
+    <string name="ai_chat_quick_start_title">Experimente estas</string>
     <string name="ai_chat_quick_start_1">O almoço custou 28, registre em alimentação</string>
     <string name="ai_chat_quick_start_2">Transforme este requisito em uma nota e uma lista de tarefas prática</string>
     <string name="ai_chat_quick_start_3">Leia o QR code ou código de barras nesta imagem e explique o que é</string>

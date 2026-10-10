@@ -569,8 +569,7 @@
     <string name="ai_prompt_status_live">目前版本</string>
     <string name="ai_prompt_working_snapshot_desc">本次對話繼續使用建立工作階段時儲存下來的 Prompt 快照，便於保持上下文一致。</string>
     <string name="ai_prompt_working_live_desc">本次對話會按這個 Prompt 的目前內容工作，適合直接開始新的任務。</string>
-    <string name="ai_chat_quick_start_title">不妨這樣開始</string>
-    <string name="ai_chat_quick_start_subtitle">點一下填入輸入框，再按傳送即可繼續細化</string>
+    <string name="ai_chat_quick_start_title">試試這些</string>
     <string name="ai_prompt_placeholder_title">提示詞內容</string>
     <string name="ai_prompt_badge_system">系統</string>
     <string name="ai_prompt_placeholder_loading_desc">正在載入這個 Prompt 的內容。如果長時間未顯示，可能是該 Prompt 已被刪除或同步失敗。</string>

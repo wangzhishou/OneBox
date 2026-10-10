@@ -620,8 +620,7 @@
     <string name="ai_prompt_status_live">当前版本</string>
     <string name="ai_prompt_working_snapshot_desc">本次对话继续使用创建会话时保存下来的 Prompt 快照，便于保持上下文一致。</string>
     <string name="ai_prompt_working_live_desc">本次对话会按这个 Prompt 的当前内容工作，适合直接开始新的任务。</string>
-    <string name="ai_chat_quick_start_title">不妨这样开始</string>
-    <string name="ai_chat_quick_start_subtitle">点一下填入输入框，再按发送即可继续细化</string>
+    <string name="ai_chat_quick_start_title">试试这些</string>
     <string name="ai_prompt_placeholder_title">提示词内容</string>
     <string name="ai_prompt_badge_system">系统</string>
     <string name="ai_prompt_placeholder_loading_desc">正在加载这个 Prompt 的内容。如果长时间未显示，可能是该 Prompt 已被删除或同步失败。</string>

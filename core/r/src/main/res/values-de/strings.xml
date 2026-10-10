@@ -507,8 +507,7 @@
     <string name="ai_prompt_status_live">Aktuelle Version</string>
     <string name="ai_prompt_working_snapshot_desc">Diese Unterhaltung wird mit dem beim Erstellen der Sitzung gespeicherten Prompt-Schnappschuss fortgesetzt, wodurch der Kontext stabil bleibt.</string>
     <string name="ai_prompt_working_live_desc">Diese Unterhaltung arbeitet mit dem neuesten Inhalt dieses Prompts, was am besten für den Start einer neuen Aufgabe geeignet ist.</string>
-    <string name="ai_chat_quick_start_title">Versuchen Sie, mit Folgendem zu beginnen</string>
-    <string name="ai_chat_quick_start_subtitle">Tippen Sie, um die Eingabe zu füllen, und senden Sie dann, um weiter zu verfeinern</string>
+    <string name="ai_chat_quick_start_title">Das ausprobieren</string>
     <string name="ai_chat_quick_start_1">Ein Mittagessen für 28, buche es unter Gastronomie</string>
     <string name="ai_chat_quick_start_2">Wandle diese Anforderung in eine Notiz und praktische Aufgabenliste um</string>
     <string name="ai_chat_quick_start_3">Lese den QR-Code oder Barcode in diesem Bild und erkläre, was es ist</string>
