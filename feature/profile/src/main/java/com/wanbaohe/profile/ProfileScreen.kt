@@ -72,7 +72,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxGroupDivider
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneSecondaryButton
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
 import com.wanbaohe.notification.di.NotificationEntryPoint
@@ -237,7 +236,8 @@ fun ProfileContent(
                                         (showSupportDevSetting || it != ProfileSetting.SupportDeveloper)
                                 }
                             }
-                            itemsList.forEachIndexed { index, setting ->
+                            // 分组内不画分隔线: 卡片底色已把行与行分开, 再加 0.5dp 的线只会让卡面显得脏
+                            itemsList.forEach { setting ->
                                 ProfileSettingItem(
                                     itemModifier,
                                     settingsComponent,
@@ -245,9 +245,6 @@ fun ProfileContent(
                                     appComponent,
                                     themeIndex = globalThemeIndex++
                                 )
-                                if (itemsList.size > 1 && index < itemsList.lastIndex) {
-                                    OneBoxGroupDivider()
-                                }
                             }
                         } else {
                             ProfileSettingItem(

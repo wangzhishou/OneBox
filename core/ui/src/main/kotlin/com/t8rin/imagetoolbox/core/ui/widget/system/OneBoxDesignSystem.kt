@@ -274,6 +274,11 @@ fun OneBoxListItem(
     }
 }
 
+/**
+ * 分组卡片内的行分隔线。
+ *
+ * 「我的」页刻意不用它 —— 那页的卡片靠底色区分行, 画线反而显脏, 不要给 ProfileScreen 加回来。
+ */
 @Composable
 fun OneBoxGroupDivider(
     modifier: Modifier = Modifier,
