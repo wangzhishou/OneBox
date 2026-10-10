@@ -1,18 +1,19 @@
 package com.wanbaohe.boardgame.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -21,11 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.Avatar
@@ -34,8 +32,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.boardgame.model.PlayerBarData
 
 /**
- * 双方玩家条(上/下两侧 + VS 徽章),棋种无关。
- * 上下两侧行棋方显示「轮到」角标与激活描边;激活侧可点击(如换 AI 模型)。
+ * 双方玩家信息保持在同一行，行棋方显示动态描边。
  */
 @Composable
 fun PlayersBar(
@@ -53,7 +50,7 @@ fun PlayersBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             PlayerBarItem(
@@ -64,7 +61,7 @@ fun PlayersBar(
             )
             VsBadge(
                 label = vsLabel,
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
             PlayerBarItem(
                 data = bottom,
@@ -88,23 +85,39 @@ private fun PlayerBarItem(
     } else {
         Modifier
     }
-    val content: @Composable () -> Unit = {
-        if (mirrored && data.isActiveTurn) {
-            TurnBadge(label = turnLabel)
-            Spacer(modifier = Modifier.width(6.dp))
-        }
+    val content: @Composable RowScope.() -> Unit = {
         if (!mirrored) {
             Avatar(username = data.name, avatar = data.avatarUrl, size = 34.dp, isLogin = true)
             Spacer(modifier = Modifier.width(8.dp))
         }
-        Column(horizontalAlignment = if (mirrored) Alignment.End else Alignment.Start) {
-            Text(
-                text = data.name,
-                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = if (mirrored) Alignment.End else Alignment.Start,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Text(
+                    text = data.name,
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = if (mirrored) TextAlign.End else TextAlign.Start,
+                    modifier = Modifier.weight(1f),
+                )
+                if (data.onClick != null && data.actionLabel.isNotBlank()) {
+                    Text(
+                        text = data.actionLabel,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.widthIn(max = 56.dp),
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(2.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
@@ -115,17 +128,13 @@ private fun PlayerBarItem(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = data.subtitle,
+                    text = data.subtitle.ifBlank { if (data.isActiveTurn) turnLabel else "" },
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-        }
-        if (!mirrored && data.isActiveTurn) {
-            Spacer(modifier = Modifier.width(6.dp))
-            TurnBadge(label = turnLabel)
         }
         if (mirrored) {
             Spacer(modifier = Modifier.width(8.dp))
@@ -139,11 +148,7 @@ private fun PlayerBarItem(
                 .then(clickableModifier)
                 .clip(RoundedCornerShape(14.dp))
                 .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                    shape = RoundedCornerShape(14.dp),
-                )
+                .animatedTurnBorder()
                 .padding(horizontal = 10.dp, vertical = 8.dp),
             contentAlignment = if (mirrored) Alignment.CenterEnd else Alignment.CenterStart,
         ) {
@@ -180,42 +185,6 @@ private fun VsBadge(
             text = label,
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
             color = MaterialTheme.colorScheme.onSecondaryContainer,
-        )
-    }
-}
-
-/** 行棋方的"轮到"角标:虚线描边小胶囊 */
-@Composable
-private fun TurnBadge(
-    label: String,
-    modifier: Modifier = Modifier,
-) {
-    val primary = MaterialTheme.colorScheme.primary
-    Box(
-        modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f),
-                shape = RoundedCornerShape(50),
-            )
-            .drawBehind {
-                drawRoundRect(
-                    color = primary,
-                    style = Stroke(
-                        width = 1.5.dp.toPx(),
-                        pathEffect = PathEffect.dashPathEffect(
-                            floatArrayOf(5.dp.toPx(), 3.dp.toPx()),
-                        ),
-                    ),
-                    cornerRadius = CornerRadius(size.height / 2, size.height / 2),
-                )
-            }
-            .padding(horizontal = 10.dp, vertical = 3.dp),
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold),
-            color = primary,
-            maxLines = 1,
         )
     }
 }

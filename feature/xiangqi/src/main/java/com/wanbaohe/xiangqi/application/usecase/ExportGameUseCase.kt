@@ -6,6 +6,8 @@ import com.wanbaohe.xiangqi.application.dto.NotationRows
 import com.wanbaohe.xiangqi.application.dto.PlyRecord
 import org.json.JSONArray
 import org.json.JSONObject
+import com.shifenmiao.model.ModelProvider.AppJson
+import kotlinx.serialization.encodeToString
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -55,6 +57,9 @@ class ExportGameUseCase @Inject constructor(
             .put("result", detail.resultText)
             .put("winnerSide", detail.winnerSide)
             .put("moves", moves)
+            .apply {
+                detail.origin?.let { put("origin", JSONObject(AppJson.encodeToString(it))) }
+            }
             .toString(2)
     }
 

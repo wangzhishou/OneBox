@@ -1,6 +1,7 @@
 package com.wanbaohe.xiangqi.application.dto
 
 import com.wanbaohe.xiangqi.domain.model.GameMode
+import com.wanbaohe.xiangqi.domain.model.GameOrigin
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.PlayerType
 import com.wanbaohe.xiangqi.domain.model.Side
@@ -16,6 +17,10 @@ data class GameSummary(
     val updatedAt: Long,
     /** 已走着法数，历史卡片展示用。 */
     val plyCount: Int,
+    val lastPlayedAt: Long,
+    val redAiConfig: GameAiPlayerConfig? = null,
+    val blackAiConfig: GameAiPlayerConfig? = null,
+    val origin: GameOrigin? = null,
 )
 
 data class GameDetail(
@@ -41,7 +46,13 @@ data class GameDetail(
     val lastMoveAt: Long,
     val plies: List<PlyRecord>,
     val onlineMetadata: OnlineGameMetadata = OnlineGameMetadata(),
+    val redAiConfig: GameAiPlayerConfig? = null,
+    val blackAiConfig: GameAiPlayerConfig? = null,
+    val origin: GameOrigin? = null,
 )
+
+fun GameDetail.aiConfigFor(side: Side): GameAiPlayerConfig? =
+    if (side == Side.RED) redAiConfig else blackAiConfig
 
 data class OnlineGameMetadata(
     val roomId: String = "",

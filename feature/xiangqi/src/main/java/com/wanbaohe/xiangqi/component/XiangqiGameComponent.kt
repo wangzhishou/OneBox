@@ -4,6 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.doOnStart
+import com.arkivanov.essenty.lifecycle.doOnStop
 import com.shifenmiao.common.manager.AIEngineCatalogManager
 import com.shifenmiao.common.manager.AIEngineManager
 import com.shifenmiao.model.ai.AiEngine
@@ -12,6 +15,12 @@ import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.xiangqi.application.dto.GameDetail
+import com.wanbaohe.xiangqi.application.dto.GameAiPlayerConfig
+import com.wanbaohe.xiangqi.application.dto.GamePreparation
+import com.wanbaohe.xiangqi.application.dto.engineSlotFor
+import com.wanbaohe.xiangqi.application.dto.prepareFrom
+import com.shifenmiao.base.utils.ActionUtils
+import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.xiangqi.application.port.outbound.AudioSettings
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
 import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiConfig
@@ -31,6 +40,9 @@ import com.wanbaohe.xiangqi.data.local.LocalXiangqiEngine
 import com.wanbaohe.xiangqi.data.local.XiangqiEngineWeights
 import com.wanbaohe.xiangqi.domain.FenCodec
 import com.wanbaohe.xiangqi.domain.GameArbiter
+import com.wanbaohe.xiangqi.domain.BoardSetupDraft
+import com.wanbaohe.xiangqi.domain.HumanAiHistory
+import com.wanbaohe.xiangqi.domain.SetupPositionValidator
 import com.wanbaohe.xiangqi.domain.GameReducer
 import com.wanbaohe.xiangqi.domain.InteractionState
 import com.wanbaohe.xiangqi.domain.model.BoardState
@@ -38,15 +50,23 @@ import com.wanbaohe.xiangqi.domain.model.BoardPoint
 import com.wanbaohe.xiangqi.domain.GameAction
 import com.wanbaohe.xiangqi.domain.model.ConnectionState
 import com.wanbaohe.xiangqi.domain.model.GameMode
+import com.wanbaohe.xiangqi.domain.model.GameOrigin
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.OnlineRoomConfig
 import com.wanbaohe.xiangqi.domain.model.PlayerType
 import com.wanbaohe.xiangqi.domain.model.Side
 import com.wanbaohe.xiangqi.domain.model.XiangqiMove
+import com.wanbaohe.xiangqi.presentation.displayNames
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -81,6 +101,13 @@ data class XiangqiGameUiState(
      * [GameResultResolver.resignWinnerCode] 存的是**胜方**，认输方是其对面。
      */
     val winnerSide: String = "",
+    val initialFen: String = FenCodec.INITIAL_FEN,
+    val startedAt: Long = 0L,
+    val isLoaded: Boolean = false,
+    val isUpdating: Boolean = false,
+    val redAiConfig: GameAiPlayerConfig? = null,
+    val blackAiConfig: GameAiPlayerConfig? = null,
+    val origin: GameOrigin? = null,
 )
 
 /**
@@ -92,6 +119,8 @@ class XiangqiGameComponent @AssistedInject constructor(
     @Assisted val gameId: String,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
+    @Assisted private val onPrepareGame: (GamePreparation) -> Unit,
+    @Assisted private val startImmediately: Boolean,
     private val gameQuery: GameQueryUseCase,
     private val playMove: PlayMoveUseCase,
     private val manageGame: ManageGameUseCase,
@@ -113,7 +142,91 @@ class XiangqiGameComponent @AssistedInject constructor(
 
     var showResignConfirm by mutableStateOf(false)
     var showRestartConfirm by mutableStateOf(false)
+    var showStandardGameConfirm by mutableStateOf(false)
     var showRenameDialog by mutableStateOf(false)
+    var setupDraft by mutableStateOf<BoardSetupDraft?>(null)
+        private set
+
+    private var setupPreviousStatus = GameStatus.NOT_STARTED
+    private var editingStartedAt = 0L
+    private var setupPauseJob: Job? = null
+    private var suppressAiRequests = false
+    private var isVisible by mutableStateOf(lifecycle.state >= Lifecycle.State.STARTED)
+    private var isNavigatingAway by mutableStateOf(false)
+
+    val canSetup: Boolean
+        get() = isVisible && !isNavigatingAway &&
+            uiState.isLoaded && !uiState.isUpdating && !uiState.isAiThinking &&
+            uiState.mode != GameMode.ONLINE_PVP &&
+            (uiState.status.isTerminal() || uiState.status == GameStatus.NOT_STARTED ||
+                (uiState.mode != GameMode.LLM_VS_LLM && isHumanTurn()))
+
+    fun beginSetup() {
+        if (!canSetup) {
+            ActionUtils.showToast(R.string.xiangqi_setup_wait_for_turn)
+            return
+        }
+        setupPreviousStatus = uiState.status
+        editingStartedAt = System.currentTimeMillis()
+        suppressAiRequests = true
+        cancelAiRequest()
+        setupDraft = BoardSetupDraft(uiState.boardState)
+        setupPauseJob = componentScope.launch {
+            awaitPendingMoves()
+            manageGame.pause(gameId)
+        }
+    }
+
+    fun updateSetup(draft: BoardSetupDraft) {
+        setupDraft = draft
+    }
+
+    fun cancelSetup() {
+        if (setupDraft == null || uiState.isUpdating) return
+        uiState = uiState.copy(isUpdating = true)
+        componentScope.launch {
+            setupPauseJob?.join()
+            if (setupPreviousStatus.isPlayable() && isVisible && !isNavigatingAway) {
+                manageGame.resumeAfterEditing(gameId, editingStartedAt)
+                if (!isVisible || isNavigatingAway) manageGame.pause(gameId)
+            }
+            setupDraft = null
+            suppressAiRequests = !isVisible || isNavigatingAway
+            uiState = uiState.copy(isUpdating = false)
+        }
+    }
+
+    fun finishSetup() {
+        val draft = setupDraft ?: return
+        if (!draft.hasChanges) {
+            cancelSetup()
+            return
+        }
+        if (SetupPositionValidator.validate(draft.startPosition()) != null) {
+            ActionUtils.showToast(R.string.xiangqi_setup_invalid)
+            return
+        }
+        if (uiState.isUpdating) return
+        uiState = uiState.copy(isUpdating = true)
+        componentScope.launch {
+            setupPauseJob?.join()
+            val detail = gameQuery.getById(gameId)
+            if (detail == null) {
+                uiState = uiState.copy(isUpdating = false)
+                ActionUtils.showToast(R.string.xiangqi_game_not_found)
+                return@launch
+            }
+            if (detail.status == GameStatus.NOT_STARTED) {
+                manageGame.updateInitialPosition(gameId, draft.startPosition())
+                setupDraft = null
+                suppressAiRequests = false
+            } else {
+                setupDraft = null
+                onPrepareGame(detail.prepareFrom(draft.startPosition()))
+            }
+            uiState = uiState.copy(isUpdating = false)
+        }
+    }
 
     /** 终局结果浮层是否展示；可关闭以便就地复盘，再点结果区可重新打开 */
     var showGameOverOverlay by mutableStateOf(true)
@@ -170,22 +283,41 @@ class XiangqiGameComponent @AssistedInject constructor(
         .stateIn(componentScope, SharingStarted.WhileSubscribed(5_000), XiangqiAiConfig())
 
     private var aiRequestJob: Job? = null
+    private var aiCleanupJob: Job? = null
+    private var moveCommitJob: Deferred<PlayMoveUseCase.Result>? = null
     private var lastRequestedFen: String? = null
     private var audioSettings: AudioSettings = AudioSettings()
     private var onlineMovesObserved = false
 
     init {
+        lifecycle.doOnStart {
+            isVisible = true
+            isNavigatingAway = false
+            requestAiMove()
+        }
+        lifecycle.doOnStop {
+            isVisible = false
+            suppressAiRequests = true
+            cancelAiRequest()
+            if (uiState.isLoaded && uiState.mode != GameMode.ONLINE_PVP) {
+                componentScope.launch {
+                    awaitPendingMoves()
+                    manageGame.pause(gameId)?.let(::applyPosition)
+                }
+            }
+        }
         collectSettings()
         collectAiEngines()
         collectAiConfig()
-        pauseOnStartup()
         observeGame()
     }
 
     fun onCellTap(file: Int, rank: Int) {
-        if (uiState.isAiThinking) return
+        if (!isVisible || isNavigatingAway) return
+        if (!uiState.isLoaded || uiState.isAiThinking || uiState.isUpdating || setupDraft != null) return
         if (!uiState.status.isPlayable()) return
         if (!isLocalOnlineTurn()) return
+        if (!isHumanTurn()) return
 
         val boardBefore = uiState.boardState
         val next = GameReducer.reduce(
@@ -197,17 +329,29 @@ class XiangqiGameComponent @AssistedInject constructor(
         uiState = uiState.copy(interaction = next)
 
         next.pendingMove?.let { pending ->
+            uiState = uiState.copy(isUpdating = true)
+            val commit = componentScope.async(start = CoroutineStart.LAZY) {
+                playMove.commit(gameId, pending)
+            }
+            moveCommitJob = commit
             componentScope.launch {
-                when (playMove.commit(gameId, pending)) {
+                val result = try {
+                    commit.await()
+                } finally {
+                    if (moveCommitJob === commit) moveCommitJob = null
+                }
+                when (result) {
                     is PlayMoveUseCase.Result.Success -> {
+                        applyPosition(result.detail)
                         playSound(boardBefore, pending)
                         if (uiState.mode == GameMode.ONLINE_PVP) {
                             onlinePlay.sendMove(pending)
                         }
-                        uiState = uiState.copy(interaction = InteractionState())
+                        uiState = uiState.copy(interaction = InteractionState(), isUpdating = false)
+                        requestAiMove()
                     }
                     is PlayMoveUseCase.Result.Rejected -> {
-                        uiState = uiState.copy(interaction = InteractionState())
+                        uiState = uiState.copy(interaction = InteractionState(), isUpdating = false)
                     }
                 }
             }
@@ -215,36 +359,126 @@ class XiangqiGameComponent @AssistedInject constructor(
     }
 
     fun undo() {
-        if (uiState.mode == GameMode.ONLINE_PVP) return
+        if (!canUndo) return
+        val targetPly = uiState.currentPly - undoSteps()
+        suppressAiRequests = true
         cancelAiRequest()
-        val steps = if (uiState.mode == GameMode.HUMAN_VS_LLM) 2 else 1
-        componentScope.launch { manageGame.undo(gameId, steps) }
+        uiState = uiState.copy(isUpdating = true, interaction = InteractionState())
+        componentScope.launch {
+            awaitPendingMoves()
+            val current = gameQuery.getById(gameId)
+            finishHistoryChange(
+                current?.let { manageGame.undo(gameId, (it.currentPly - targetPly).coerceAtLeast(0)) },
+            )
+        }
     }
 
     fun redo() {
-        if (uiState.mode == GameMode.ONLINE_PVP) return
+        if (!canRedo) return
+        val targetPly = uiState.currentPly + redoSteps()
+        suppressAiRequests = true
         cancelAiRequest()
-        val steps = if (uiState.mode == GameMode.HUMAN_VS_LLM) 2 else 1
-        componentScope.launch { manageGame.redo(gameId, steps) }
+        uiState = uiState.copy(isUpdating = true, interaction = InteractionState())
+        componentScope.launch {
+            awaitPendingMoves()
+            val current = gameQuery.getById(gameId)
+            finishHistoryChange(
+                current?.let { manageGame.redo(gameId, (targetPly - it.currentPly).coerceAtLeast(0)) },
+            )
+        }
     }
 
+    private fun finishHistoryChange(detail: GameDetail?) {
+        suppressAiRequests = !isVisible || isNavigatingAway
+        if (detail == null) {
+            uiState = uiState.copy(isUpdating = false)
+            ActionUtils.showToast(R.string.xiangqi_game_not_found)
+            return
+        }
+        applyPosition(detail)
+        uiState = uiState.copy(isUpdating = false, errorMessage = "")
+        requestAiMove()
+    }
+
+    private fun applyPosition(detail: GameDetail) {
+        val board = FenCodec.parse(detail.currentFen)
+        uiState = uiState.copy(
+            boardState = board,
+            legalMoves = GameArbiter.legalMoves(board),
+            currentPly = detail.currentPly,
+            history = detail.plies,
+            status = detail.status,
+            winnerSide = detail.winnerSide,
+        )
+    }
+
+    val canUndo: Boolean get() = isVisible && !isNavigatingAway && uiState.isLoaded && !uiState.isUpdating &&
+        uiState.mode != GameMode.ONLINE_PVP && setupDraft == null && undoSteps() > 0
+    val canRedo: Boolean get() = isVisible && !isNavigatingAway && uiState.isLoaded && !uiState.isUpdating &&
+        uiState.mode != GameMode.ONLINE_PVP && setupDraft == null && redoSteps() > 0
+
+    private fun humanSide(): Side = if (uiState.redPlayerType == PlayerType.HUMAN) Side.RED else Side.BLACK
+    private fun isHumanTurn(): Boolean = when (uiState.boardState.sideToMove) {
+        Side.RED -> uiState.redPlayerType == PlayerType.HUMAN
+        Side.BLACK -> uiState.blackPlayerType == PlayerType.HUMAN
+    }
+
+    private fun undoSteps(): Int = if (uiState.mode == GameMode.HUMAN_VS_LLM) {
+        HumanAiHistory.undoSteps(uiState.history.map { it.moverSide }, uiState.currentPly, humanSide())
+    } else if (uiState.currentPly > 0) 1 else 0
+
+    private fun redoSteps(): Int = if (uiState.mode == GameMode.HUMAN_VS_LLM) {
+        HumanAiHistory.redoSteps(uiState.history.map { it.moverSide }, uiState.currentPly, humanSide())
+    } else if (uiState.currentPly < uiState.history.size) 1 else 0
+
     fun restart() {
+        if (uiState.mode != GameMode.ONLINE_PVP) suppressAiRequests = true
         cancelAiRequest()
         componentScope.launch {
-            val detail = manageGame.restart(gameId) ?: return@launch
-            // 重开会新建对局记录:切到 Routing 层替换当前页,让新局用全新组件状态开局
-            if (detail.id != gameId) {
-                onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Game(detail.id)))
+            awaitPendingMoves()
+            if (uiState.mode == GameMode.ONLINE_PVP) {
+                val detail = manageGame.restart(gameId) ?: return@launch
+                if (detail.id != gameId) onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Game(detail.id)))
+            } else {
+                manageGame.pause(gameId)
+                val detail = gameQuery.getById(gameId)
+                if (detail == null) {
+                    ActionUtils.showToast(R.string.xiangqi_game_not_found)
+                    return@launch
+                }
+                onPrepareGame(
+                    detail.prepareFrom(FenCodec.parse(detail.initialFen))
+                        .copy(title = detail.title, origin = detail.origin),
+                )
             }
         }
         showRestartConfirm = false
     }
 
     fun start() {
-        if (uiState.mode == GameMode.ONLINE_PVP) {
-            onlinePlay.sendStart()
+        if (!isVisible || isNavigatingAway || !uiState.isLoaded || uiState.isUpdating) return
+        uiState = uiState.copy(isUpdating = true)
+        withAiAccess(onFailure = { uiState = uiState.copy(isUpdating = false) }) {
+            componentScope.launch {
+                awaitPendingMoves()
+                if (!isVisible || isNavigatingAway) {
+                    uiState = uiState.copy(isUpdating = false)
+                    return@launch
+                }
+                suppressAiRequests = false
+                if (uiState.mode == GameMode.ONLINE_PVP) onlinePlay.sendStart()
+                val detail = manageGame.start(gameId)
+                if ((!isVisible || isNavigatingAway) && uiState.mode != GameMode.ONLINE_PVP) {
+                    manageGame.pause(gameId)
+                } else if (detail != null) {
+                    applyPosition(detail)
+                } else {
+                    ActionUtils.showToast(R.string.xiangqi_game_not_found)
+                }
+                uiState = uiState.copy(isUpdating = false)
+                requestAiMove()
+            }
         }
-        componentScope.launch { manageGame.start(gameId) }
     }
 
     fun exportFen() {
@@ -271,40 +505,61 @@ class XiangqiGameComponent @AssistedInject constructor(
     fun dismissError() { uiState = uiState.copy(errorMessage = "") }
 
     fun retryAiMove() {
+        if (!uiState.status.isPlayable() || isHumanTurn() || setupDraft != null || uiState.isUpdating) return
         cancelAiRequest()
-        componentScope.launch { requestAiMove() }
+        withAiAccess { requestAiMove() }
     }
 
     fun switchAiModelForSide(side: Side, engine: AiEngine, model: AiModel) {
-        when (uiState.mode) {
-            GameMode.LLM_VS_LLM -> {
-                if (side == Side.RED) aiEngineManager.setDuelEngineA(engine.copy(model = model))
-                else aiEngineManager.setDuelEngineB(engine.copy(model = model))
-            }
-            GameMode.HUMAN_VS_LLM -> aiEngineManager.switchFastModel(engine, model)
-            GameMode.LOCAL_PVP -> Unit
-            GameMode.ONLINE_PVP -> Unit
-        }
-        refreshAiDisplay()
+        ActionUtils.ensureLoginAndCheckPoints(
+            source = "xiangqi_switch_model",
+            point = XiangqiAiSource.WorkingModel.startPoints,
+            onSuccess = {
+                when (uiState.mode) {
+                    GameMode.LLM_VS_LLM -> {
+                        if (side == Side.RED) aiEngineManager.setDuelEngineA(engine.copy(model = model))
+                        else aiEngineManager.setDuelEngineB(engine.copy(model = model))
+                    }
+                    GameMode.HUMAN_VS_LLM -> aiEngineManager.switchFastModel(engine, model)
+                    GameMode.LOCAL_PVP, GameMode.ONLINE_PVP -> Unit
+                }
+                saveAiConfig(side, GameAiPlayerConfig.capture(XiangqiAiSource.WorkingModel, engine.copy(model = model)))
+            },
+        )
     }
 
     fun switchAiSourceForSide(side: Side, source: XiangqiAiSource) {
-        val slot = when (uiState.mode) {
-            GameMode.LLM_VS_LLM -> if (side == Side.RED) EngineSlot.DUEL_A else EngineSlot.DUEL_B
-            else -> EngineSlot.FAST
+        if (source == currentSourceForSide(side)) return
+        if (source.requiresLogin) {
+            ActionUtils.ensureLoginAndCheckPoints(
+                source = "xiangqi_switch_ai",
+                point = source.startPoints,
+                onSuccess = { saveAiConfig(side, GameAiPlayerConfig.capture(source, currentEngineForSide(side))) },
+            )
+        } else {
+            saveAiConfig(side, GameAiPlayerConfig.capture(source, currentEngineForSide(side)))
         }
+    }
+
+    private fun saveAiConfig(side: Side, config: GameAiPlayerConfig) {
+        suppressAiRequests = true
+        cancelAiRequest()
+        uiState = uiState.copy(isUpdating = true)
         componentScope.launch {
-            xiangqiAiStore.update(xiangqiAiStore.get().withSource(slot, source))
+            awaitPendingMoves()
+            manageGame.updateAiConfig(gameId, side, config)
+            xiangqiAiStore.update(xiangqiAiStore.get().withSource(uiState.mode.engineSlotFor(side), config.source))
+            uiState = if (side == Side.RED) uiState.copy(redAiConfig = config, isUpdating = false, errorMessage = "")
+                else uiState.copy(blackAiConfig = config, isUpdating = false, errorMessage = "")
             refreshAiDisplay()
+            suppressAiRequests = !isVisible || isNavigatingAway
+            requestAiMove()
         }
     }
 
     fun currentSourceForSide(side: Side): XiangqiAiSource {
-        val slot = when (uiState.mode) {
-            GameMode.LLM_VS_LLM -> if (side == Side.RED) EngineSlot.DUEL_A else EngineSlot.DUEL_B
-            else -> EngineSlot.FAST
-        }
-        return currentAiConfig.value.sourceFor(slot)
+        val config = if (side == Side.RED) uiState.redAiConfig else uiState.blackAiConfig
+        return config?.source ?: currentAiConfig.value.sourceFor(uiState.mode.engineSlotFor(side))
     }
 
     val currentAIEngine: StateFlow<AiEngine> = aiEngineManager.fastAIEngine
@@ -319,16 +574,92 @@ class XiangqiGameComponent @AssistedInject constructor(
         onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Analysis(gameId, uiState.currentPly)))
     }
 
+    fun pauseBeforeNavigating(onPaused: () -> Unit) {
+        isNavigatingAway = true
+        suppressAiRequests = true
+        cancelAiRequest()
+        componentScope.launch {
+            awaitPendingMoves()
+            if (uiState.mode != GameMode.ONLINE_PVP) {
+                manageGame.pause(gameId)?.let(::applyPosition)
+            }
+            onPaused()
+        }
+    }
+
+    fun openSourceGame() {
+        val origin = uiState.origin ?: return
+        componentScope.launch {
+            if (gameQuery.getById(origin.gameId) == null) {
+                ActionUtils.showToast(R.string.xiangqi_game_missing)
+            } else {
+                onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Game(origin.gameId)))
+            }
+        }
+    }
+
+    fun prepareStandardGame() {
+        showStandardGameConfirm = false
+        if (uiState.mode == GameMode.ONLINE_PVP) return
+        suppressAiRequests = true
+        cancelAiRequest()
+        componentScope.launch {
+            awaitPendingMoves()
+            manageGame.pause(gameId)
+            val detail = gameQuery.getById(gameId)
+            if (detail == null) {
+                ActionUtils.showToast(R.string.xiangqi_game_not_found)
+                return@launch
+            }
+            onPrepareGame(detail.prepareFrom(FenCodec.parse(FenCodec.INITIAL_FEN)).copy(origin = null))
+        }
+    }
+
+    private fun withAiAccess(onFailure: () -> Unit = {}, onSuccess: () -> Unit) {
+        val sources = buildList {
+            if (uiState.redPlayerType == PlayerType.LLM) add(currentSourceForSide(Side.RED))
+            if (uiState.blackPlayerType == PlayerType.LLM) add(currentSourceForSide(Side.BLACK))
+        }
+        if (sources.any { it == XiangqiAiSource.LocalEngine } &&
+            (!isLocalEnginePackaged || localEngineInstallState.value !is XiangqiEngineWeights.InstallState.Installed)
+        ) {
+            ActionUtils.showToast(R.string.xiangqi_setup_local_engine_required)
+            onFailure()
+            return
+        }
+        if (sources.any { it.requiresLogin }) {
+            ActionUtils.ensureLoginAndCheckPoints(
+                source = "xiangqi_start",
+                point = sources.maxOf { it.startPoints },
+                onLoginFailure = {
+                    ActionUtils.showToast(com.shifenmiao.core.R.string.login_failed)
+                    onFailure()
+                },
+                onPointsFailure = onFailure,
+                onSuccess = onSuccess,
+            )
+        } else {
+            onSuccess()
+        }
+    }
+
     fun resign() {
         if (uiState.mode == GameMode.ONLINE_PVP) {
             onlinePlay.sendResign()
         }
         val resigningSide = if (uiState.mode == GameMode.ONLINE_PVP) {
             uiState.onlineMySide
+        } else if (uiState.mode == GameMode.HUMAN_VS_LLM) {
+            humanSide()
         } else {
             uiState.boardState.sideToMove
         }
-        componentScope.launch { manageGame.resign(gameId, resigningSide) }
+        suppressAiRequests = true
+        cancelAiRequest()
+        componentScope.launch {
+            awaitPendingMoves()
+            manageGame.resign(gameId, resigningSide)
+        }
         showResignConfirm = false
     }
 
@@ -341,12 +672,35 @@ class XiangqiGameComponent @AssistedInject constructor(
 
     private fun observeGame() {
         componentScope.launch {
+            val existing = gameQuery.getById(gameId)
+            if (existing != null) {
+                val defaults = xiangqiAiStore.get()
+                for (side in Side.entries) {
+                    val playerType = if (side == Side.RED) existing.redPlayerType else existing.blackPlayerType
+                    val config = if (side == Side.RED) existing.redAiConfig else existing.blackAiConfig
+                    if (playerType == PlayerType.LLM && config == null) {
+                        val slot = existing.mode.engineSlotFor(side)
+                        val engine = when (slot) {
+                            EngineSlot.FAST -> aiEngineManager.getFastAiEngine()
+                            EngineSlot.DUEL_A -> aiEngineManager.getDuelEngineA()
+                            EngineSlot.DUEL_B -> aiEngineManager.getDuelEngineB()
+                        }
+                        manageGame.updateAiConfig(gameId, side, GameAiPlayerConfig.capture(defaults.sourceFor(slot), engine))
+                    }
+                }
+            }
+            if (startImmediately && !suppressAiRequests) manageGame.start(gameId) else manageGame.pause(gameId)
+            if (suppressAiRequests && existing?.mode != GameMode.ONLINE_PVP) manageGame.pause(gameId)
             gameQuery.observeById(gameId).collect { detail ->
-                detail ?: return@collect
+                if (detail == null) {
+                    cancelAiRequest()
+                    uiState = uiState.copy(isLoaded = false, errorMessage = AppContext.getString(R.string.xiangqi_game_not_found))
+                    return@collect
+                }
                 val boardState = FenCodec.parse(detail.currentFen)
                 val legalMoves = GameArbiter.legalMoves(boardState)
-                val redInfo = resolveAiDisplay(detail.mode, detail.redPlayerType, Side.RED)
-                val blackInfo = resolveAiDisplay(detail.mode, detail.blackPlayerType, Side.BLACK)
+                val redInfo = resolveAiDisplay(detail.mode, detail.redPlayerType, Side.RED, detail.redAiConfig)
+                val blackInfo = resolveAiDisplay(detail.mode, detail.blackPlayerType, Side.BLACK, detail.blackAiConfig)
 
                 val previousStatus = uiState.status
                 val becameTerminal = previousStatus.isPlayable() && detail.status.isTerminal()
@@ -383,6 +737,12 @@ class XiangqiGameComponent @AssistedInject constructor(
                     onlineConnectionState = onlinePlay.connectionState.value,
                     onlineDebugEvents = onlinePlay.debugEvents.value,
                     winnerSide = detail.winnerSide,
+                    initialFen = detail.initialFen,
+                    startedAt = detail.startedAt,
+                    isLoaded = true,
+                    redAiConfig = detail.redAiConfig,
+                    blackAiConfig = detail.blackAiConfig,
+                    origin = detail.origin,
                 )
 
                 if (detail.mode == GameMode.ONLINE_PVP && !onlineMovesObserved) {
@@ -397,8 +757,6 @@ class XiangqiGameComponent @AssistedInject constructor(
 
                 if (shouldRequestAi(detail, boardState)) {
                     requestAiMove()
-                } else if (!isCurrentSideAi(detail)) {
-                    cancelAiRequest()
                 }
             }
         }
@@ -463,40 +821,68 @@ class XiangqiGameComponent @AssistedInject constructor(
     }
 
     private fun requestAiMove() {
+        if (!isVisible || isNavigatingAway || suppressAiRequests || setupDraft != null ||
+            !uiState.isLoaded || !uiState.status.isPlayable() || isHumanTurn() ||
+            aiRequestJob?.isActive == true
+        ) return
         val currentFen = FenCodec.encode(uiState.boardState)
         if (lastRequestedFen == currentFen) return
         lastRequestedFen = currentFen
         uiState = uiState.copy(isAiThinking = true, errorMessage = "")
 
-        aiRequestJob = componentScope.launch {
+        val job = componentScope.launch(start = CoroutineStart.LAZY) {
+            val requestJob = currentCoroutineContext()[Job]
+            awaitPendingMoves()
+            currentCoroutineContext().ensureActive()
             val slot = when (uiState.mode) {
                 GameMode.LLM_VS_LLM ->
                     if (uiState.boardState.sideToMove == Side.RED) EngineSlot.DUEL_A else EngineSlot.DUEL_B
                 else -> EngineSlot.FAST
             }
-            when (val outcome = aiOrchestration.requestMove(gameId, slot)) {
-                is AiOrchestrationUseCase.Outcome.Committed -> {
-                    val lastPly = outcome.detail.plies.lastOrNull()
-                    if (lastPly != null) {
-                        audioFeedback.playForMove(lastPly.beforeFen, lastPly.afterFen, audioSettings)
+            var continueAi = false
+            try {
+                when (val outcome = aiOrchestration.requestMove(gameId, slot)) {
+                    is AiOrchestrationUseCase.Outcome.Committed -> {
+                        applyPosition(outcome.detail)
+                        val lastPly = outcome.detail.plies.firstOrNull { it.ply == outcome.detail.currentPly }
+                        if (lastPly != null) {
+                            audioFeedback.playForMove(lastPly.beforeFen, lastPly.afterFen, audioSettings)
+                        }
+                        continueAi = true
                     }
-                    uiState = uiState.copy(isAiThinking = false)
+                    is AiOrchestrationUseCase.Outcome.Stale -> {
+                        continueAi = outcome.reason == AiOrchestrationUseCase.StaleReason.POSITION_CHANGED
+                        if (!continueAi) uiState = uiState.copy(errorMessage = "AI_ERROR")
+                    }
+                    is AiOrchestrationUseCase.Outcome.Failed -> {
+                        uiState = uiState.copy(errorMessage = outcome.reason)
+                    }
                 }
-                is AiOrchestrationUseCase.Outcome.Stale -> {
+            } finally {
+                if (aiRequestJob === requestJob) {
+                    aiRequestJob = null
+                    if (continueAi) lastRequestedFen = null
                     uiState = uiState.copy(isAiThinking = false)
-                }
-                is AiOrchestrationUseCase.Outcome.Failed -> {
-                    uiState = uiState.copy(isAiThinking = false, errorMessage = outcome.reason)
                 }
             }
-            if (lastRequestedFen == currentFen) lastRequestedFen = null
+            if (continueAi) {
+                val latest = gameQuery.getById(gameId)
+                if (latest != null && shouldRequestAi(latest, FenCodec.parse(latest.currentFen))) {
+                    applyPosition(latest)
+                    requestAiMove()
+                }
+            }
         }
+        aiRequestJob = job
+        job.start()
     }
 
     private fun shouldRequestAi(detail: GameDetail, boardState: com.wanbaohe.xiangqi.domain.model.BoardState): Boolean {
         val currentFen = FenCodec.encode(boardState)
         val playable = detail.status.isPlayable()
-        return playable && isCurrentSideAi(detail) && lastRequestedFen != currentFen
+        return isVisible && !isNavigatingAway && !suppressAiRequests && setupDraft == null &&
+            aiRequestJob?.isActive != true &&
+            playable && isCurrentSideAi(detail) && lastRequestedFen != currentFen
     }
 
     private fun isCurrentSideAi(detail: GameDetail): Boolean = when (
@@ -507,26 +893,35 @@ class XiangqiGameComponent @AssistedInject constructor(
     }
 
     private fun cancelAiRequest() {
-        aiRequestJob?.cancel()
+        val previousRequest = aiRequestJob
+        val previousCleanup = aiCleanupJob
+        previousRequest?.cancel()
         aiRequestJob = null
         lastRequestedFen = null
-        componentScope.launch { aiOrchestration.clearTasks(gameId) }
+        uiState = uiState.copy(isAiThinking = false)
+        aiCleanupJob = componentScope.launch {
+            previousCleanup?.join()
+            previousRequest?.cancelAndJoin()
+            aiOrchestration.clearTasks(gameId)
+        }
     }
 
-    private fun resolveAiDisplay(mode: GameMode, playerType: PlayerType, side: Side): Pair<String, String> {
+    private suspend fun awaitPendingMoves() {
+        moveCommitJob?.join()
+        aiCleanupJob?.join()
+    }
+
+    private fun resolveAiDisplay(
+        mode: GameMode,
+        playerType: PlayerType,
+        side: Side,
+        config: GameAiPlayerConfig? = if (side == Side.RED) uiState.redAiConfig else uiState.blackAiConfig,
+    ): Pair<String, String> {
         if (playerType != PlayerType.LLM) return "" to ""
-        val source = currentSourceForSide(side)
-        return when (source) {
-            XiangqiAiSource.WorkingModel -> {
-                val engine = aiEngineManager.getFastAiEngine()
-                (engine.title.ifBlank { engine.name }) to (engine.model.title.ifBlank { engine.model.name })
-            }
-            XiangqiAiSource.Jev -> "Jev" to ""
-            XiangqiAiSource.LocalEngine ->
-                com.shifenmiao.interfaces.singleton.AppContext
-                    .getString(R.string.xiangqi_ai_source_local_engine) to ""
-            is XiangqiAiSource.RemoteEngine -> source.engineId to ""
-        }
+        return (config ?: GameAiPlayerConfig.capture(
+            currentAiConfig.value.sourceFor(mode.engineSlotFor(side)),
+            currentEngineForSide(side),
+        )).displayNames()
     }
 
     private fun refreshAiDisplay() {
@@ -566,10 +961,6 @@ class XiangqiGameComponent @AssistedInject constructor(
         }
     }
 
-    private fun pauseOnStartup() {
-        componentScope.launch { manageGame.pause(gameId) }
-    }
-
     private suspend fun playSound(boardBefore: com.wanbaohe.xiangqi.domain.model.BoardState, move: XiangqiMove) {
         val after = boardBefore.withPieceMoved(move)
         audioFeedback.playForMove(
@@ -596,6 +987,8 @@ class XiangqiGameComponent @AssistedInject constructor(
             gameId: String,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
+            onPrepareGame: (GamePreparation) -> Unit,
+            startImmediately: Boolean,
         ): XiangqiGameComponent
     }
 }

@@ -3,6 +3,7 @@ package com.wanbaohe.xiangqi.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,6 +41,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.xiangqi.R
+import com.wanbaohe.xiangqi.domain.model.GameMode
 import com.wanbaohe.xiangqi.application.dto.NotationRow
 import com.wanbaohe.xiangqi.application.dto.NotationRows
 import com.wanbaohe.xiangqi.application.dto.PlyRecord
@@ -132,15 +134,14 @@ private fun XiangqiAnalysisContent(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        XiangqiBoard(
-            boardState = state.boardState,
-            selectedPoint = null,
-            candidateTargets = emptySet(),
-            onCellTap = { _, _ -> },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-        )
+        Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+            XiangqiBoard(
+                boardState = state.boardState,
+                selectedPoint = null,
+                candidateTargets = emptySet(),
+                onCellTap = { _, _ -> },
+            )
+        }
 
         ReplayControls(
             isAutoPlaying = state.isAutoPlaying,
@@ -160,21 +161,17 @@ private fun XiangqiAnalysisContent(
         }
 
         // 未终局的局从卡片「复盘」进来后，必须有路回对局页；已结束的局没有可继续的下法
-        if (resultText.isBlank()) {
-            GlassTonalButton(
-                onClick = component::openCurrentGame,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Text(stringResource(R.string.xiangqi_analysis_back_to_game))
+        if (resultText.isBlank() || state.mode != GameMode.ONLINE_PVP) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (resultText.isBlank()) {
+                    GlassTonalButton(onClick = component::openCurrentGame, modifier = Modifier.weight(1f)) {
+                        Text(stringResource(R.string.xiangqi_analysis_back_to_game), maxLines = 1)
+                    }
+                }
+                if (state.mode != GameMode.ONLINE_PVP) {
+                    GlassTonalButton(onClick = component::practiceFromHere, modifier = Modifier.weight(1f)) {
+                        Text(stringResource(R.string.xiangqi_setup_practice_here), maxLines = 1)
+                    }
                 }
             }
         }
@@ -183,7 +180,7 @@ private fun XiangqiAnalysisContent(
             // weight 让面板占据剩余高度：棋盘与导出入口固定，只有着法表内部滚动。
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(0.65f),
             style = GlassStyle.Medium,
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {

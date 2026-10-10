@@ -38,6 +38,7 @@ import com.wanbaohe.xiangqi.screen.NewGameDropMenu
 import com.wanbaohe.xiangqi.screen.XiangqiAnalysisScreen
 import com.wanbaohe.xiangqi.screen.XiangqiEmptyQuickPanel
 import com.wanbaohe.xiangqi.screen.XiangqiGameScreen
+import com.wanbaohe.xiangqi.screen.XiangqiPlayHomeScreen
 import com.wanbaohe.xiangqi.screen.XiangqiLibraryScreen
 import com.wanbaohe.xiangqi.screen.XiangqiSettingsScreen
 import androidx.compose.runtime.remember
@@ -83,14 +84,17 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
         BackHandler(enabled = true) {
             when {
                 immersiveState.isImmersive -> immersiveState.exitImmersive()
-                component.canPop(activeRoute) -> component.navigateBackFrom(activeRoute)
+                component.canPop(activeRoute) -> component.navigateBack()
                 activeTab != XiangqiRouterComponent.Tab.Play -> component.selectTab(XiangqiRouterComponent.Tab.Play)
-                else -> component.onGoBack()
+                else -> component.navigateBack()
             }
         }
         BaseScreen(
             title = stringResource(R.string.xiangqi_library_title),
-            onGoBack = component.onGoBack,
+            onGoBack = {
+                if (immersiveState.isImmersive) immersiveState.exitImmersive()
+                else component.navigateBack()
+            },
             isBackHandler = false,
             showNavigationBarsPadding = false,
             immersiveModeState = immersiveState,
@@ -100,9 +104,6 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
                 }
             },
         ) {
-        // 之前的"自动打开最近对局"逻辑会让系统返回键无法停在 EmptyQuickPanel,
-        // 改为完全由用户主动选择历史 / FAB 进入对局。
-
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -117,10 +118,8 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
             ) { child ->
                 val contentModifier = Modifier.fillMaxSize()
                 when (val instance = child.instance) {
-                        XiangqiRouterComponent.Child.PlayHome -> XiangqiEmptyQuickPanel(
-                            component = component.libraryComponent,
-                            headline = stringResource(R.string.xiangqi_empty_play_title),
-                            subline = stringResource(R.string.xiangqi_empty_play_message),
+                        XiangqiRouterComponent.Child.PlayHome -> XiangqiPlayHomeScreen(
+                            component = component,
                             modifier = contentModifier,
                         )
 

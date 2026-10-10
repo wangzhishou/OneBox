@@ -76,8 +76,10 @@ class AIPromptExecutor @Inject constructor(
         engineMode: EngineMode = EngineMode.DEFAULT,
         billing: PromptBilling = PromptBilling.MANAGED,
         billingDesc: String = "",
+        engineOverride: AiEngine? = null,
     ): AIPromptResult {
-        val engine = resolveEngine(engineMode) ?: return onDeviceEngineError()
+        val engine = engineOverride ?: resolveEngine(engineMode) ?: return onDeviceEngineError()
+        if (engine.requestProtocol == AiRequestProtocol.LOCAL_ON_DEVICE) return onDeviceEngineError()
 
         if (engine.name.isBlank()) {
             return AIPromptResult(
@@ -187,6 +189,7 @@ class AIPromptExecutor @Inject constructor(
                 isProxyRoute = isProxyRoute,
             ).also { billingCharge(engine, billing, input, it, billingDesc) }
         } catch (t: Throwable) {
+            currentCoroutineContext().ensureActive()
             makeLog { "AIPromptExecutor: Request failed: ${t.message}" }
             AIPromptResult(
                 content = "",

@@ -49,6 +49,7 @@ import com.wanbaohe.xiangqi.domain.model.GameMode
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.PlayerType
 import com.wanbaohe.xiangqi.presentation.localizedGameResultText
+import com.wanbaohe.xiangqi.presentation.displayNames
 import java.text.DateFormat
 import java.util.Date
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
@@ -117,6 +118,7 @@ private fun XiangqiLibraryContent(
                 onAnalysis = { component.openAnalysis(item.id) },
                 onDelete = { component.deleteGame(item.id) },
                 onRename = { newTitle -> component.renameGame(item.id, newTitle) },
+                onContinueSource = { item.origin?.let { component.openSourceGame(it.gameId) } },
             )
         }
         item { Spacer(modifier = Modifier.height(80.dp)) }
@@ -130,11 +132,13 @@ private fun GameCard(
     onAnalysis: () -> Unit,
     onDelete: () -> Unit,
     onRename: (String) -> Unit,
+    onContinueSource: () -> Unit,
 ) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showRenameDialog by remember { mutableStateOf(false) }
+    var showOrigin by remember { mutableStateOf(false) }
     val isLocal = item.mode == GameMode.LOCAL_PVP
-    val modeText = when (item.mode) {
+    val modeText = if (item.origin != null) stringResource(R.string.xiangqi_setup_practice) else when (item.mode) {
         GameMode.LOCAL_PVP -> stringResource(R.string.xiangqi_mode_local)
         GameMode.ONLINE_PVP -> stringResource(R.string.xiangqi_mode_online)
         GameMode.LLM_VS_LLM -> stringResource(R.string.xiangqi_mode_ai_vs_ai)
@@ -142,12 +146,16 @@ private fun GameCard(
     }
 
     val redName = when {
-        item.redPlayerType == PlayerType.LLM -> stringResource(R.string.xiangqi_player_ai)
+        item.redPlayerType == PlayerType.LLM ->
+            item.redAiConfig?.displayNames()?.let { (service, model) -> model.ifBlank { service } }
+                ?: stringResource(R.string.xiangqi_player_ai)
         isLocal -> stringResource(R.string.xiangqi_player_local_red)
         else -> stringResource(R.string.xiangqi_player_you)
     }
     val blackName = when {
-        item.blackPlayerType == PlayerType.LLM -> stringResource(R.string.xiangqi_player_ai)
+        item.blackPlayerType == PlayerType.LLM ->
+            item.blackAiConfig?.displayNames()?.let { (service, model) -> model.ifBlank { service } }
+                ?: stringResource(R.string.xiangqi_player_ai)
         isLocal -> stringResource(R.string.xiangqi_player_local_black)
         else -> stringResource(R.string.xiangqi_player_you)
     }
@@ -232,6 +240,14 @@ private fun GameCard(
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = item.title, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold), color = MaterialTheme.colorScheme.onSurface)
             Spacer(modifier = Modifier.height(4.dp))
+            if (item.origin != null) {
+                Text(
+                    text = stringResource(R.string.xiangqi_setup_source) + ": " + item.origin.title,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable { showOrigin = true },
+                )
+            }
             Text(
                 text = when (item.status) {
                     GameStatus.NOT_STARTED -> stringResource(R.string.xiangqi_library_status_not_started)
@@ -322,6 +338,15 @@ private fun GameCard(
                 }
             }
         }
+    }
+
+    val origin = item.origin
+    if (showOrigin && origin != null) {
+        XiangqiOriginDialog(
+            origin = origin,
+            onContinueSource = { showOrigin = false; onContinueSource() },
+            onDismiss = { showOrigin = false },
+        )
     }
 
     if (showDeleteConfirm) {

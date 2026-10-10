@@ -6,6 +6,9 @@ import com.wanbaohe.xiangqi.domain.GameResultCode
 import com.wanbaohe.xiangqi.domain.model.GameSetup
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.Side
+import com.wanbaohe.xiangqi.domain.model.GameOrigin
+import com.shifenmiao.model.ModelProvider.AppJson
+import kotlinx.serialization.SerializationException
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
@@ -89,7 +92,18 @@ class ImportGameUseCase @Inject constructor(
             }
 
         val gameTitle = title.ifBlank { parsed.optString("title").ifBlank { defaultTitle } }
-        val gameId = createGame.create(gameTitle, GameSetup.local(), initialFen)
+        val origin = try {
+            parsed.optJSONObject("origin")?.let {
+                AppJson.decodeFromString<GameOrigin>(it.toString()).also { value -> FenCodec.parse(value.fen) }
+            }
+        } catch (error: SerializationException) {
+            return ImportResult.Failure(ImportFailureCause.INVALID_JSON, error.message.orEmpty())
+        } catch (error: IllegalArgumentException) {
+            return ImportResult.Failure(ImportFailureCause.INVALID_JSON, error.message.orEmpty())
+        } catch (error: IllegalStateException) {
+            return ImportResult.Failure(ImportFailureCause.INVALID_JSON, error.message.orEmpty())
+        }
+        val gameId = createGame.create(gameTitle, GameSetup.local(), initialFen, origin = origin)
 
         val movesArray = parsed.optJSONArray("moves") ?: JSONArray()
         val skipped = mutableListOf<SkippedPly>()

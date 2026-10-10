@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.aspectRatio
@@ -18,10 +19,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -49,6 +55,7 @@ fun XiangqiBoard(
     bottomSide: Side = Side.RED,
     riverNotice: String = "",
     lastMove: Pair<BoardPoint, BoardPoint>? = null,
+    onPieceDrop: ((BoardPoint, BoardPoint) -> Unit)? = null,
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -56,11 +63,45 @@ fun XiangqiBoard(
     ) {
         val boardMaxWidth = constraints.maxWidth
         val boardMaxHeight = constraints.maxHeight
-        val padding = 28.dp
-        val paddingPx = with(androidx.compose.ui.platform.LocalDensity.current) { padding.toPx() }
+        val paddingPx = minOf(
+            with(androidx.compose.ui.platform.LocalDensity.current) { 28.dp.toPx() },
+            boardMaxWidth / 18f,
+            boardMaxHeight / 20f,
+        )
+        var dragFrom by remember { mutableStateOf<BoardPoint?>(null) }
+        var dragPosition by remember { mutableStateOf<Offset?>(null) }
+        val dropPiece by rememberUpdatedState(onPieceDrop)
         
         GlassSurface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().pointerInput(boardState, bottomSide, onPieceDrop != null) {
+                if (onPieceDrop == null || size.width == 0 || size.height == 0) return@pointerInput
+                fun pointAt(offset: Offset): BoardPoint? {
+                    val file = ((offset.x - paddingPx) / ((size.width - paddingPx * 2) / 8f)).roundToInt()
+                    val rank = ((offset.y - paddingPx) / ((size.height - paddingPx * 2) / 9f)).roundToInt()
+                    if (file !in 0..8 || rank !in 0..9) return null
+                    return displayPointToBoardPoint(file, rank, bottomSide)
+                }
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        dragFrom = pointAt(offset)?.takeIf { boardState.pieceAt(it) != null }
+                        dragPosition = offset.takeIf { dragFrom != null }
+                    },
+                    onDrag = { change, amount ->
+                        if (dragFrom != null) {
+                            change.consume()
+                            dragPosition = dragPosition?.plus(amount)
+                        }
+                    },
+                    onDragEnd = {
+                        val from = dragFrom
+                        val to = dragPosition?.let(::pointAt)
+                        dragFrom = null
+                        dragPosition = null
+                        if (from != null && to != null) dropPiece?.invoke(from, to)
+                    },
+                    onDragCancel = { dragFrom = null; dragPosition = null },
+                )
+            },
             style = GlassStyle.Medium,
         ) {
                 val lineColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
@@ -144,8 +185,8 @@ fun XiangqiBoard(
             
             // Draw Pieces and interaction overlays
             Box(modifier = Modifier.fillMaxSize()) {
-                val boardWidthPx = boardMaxWidth - with(androidx.compose.ui.platform.LocalDensity.current) { padding.toPx() } * 2
-                val boardHeightPx = boardMaxHeight - with(androidx.compose.ui.platform.LocalDensity.current) { padding.toPx() } * 2
+                val boardWidthPx = boardMaxWidth - paddingPx * 2
+                val boardHeightPx = boardMaxHeight - paddingPx * 2
                 val hGapPx = boardHeightPx / 9f
                 val vGapPx = boardWidthPx / 8f
                 
@@ -193,10 +234,10 @@ fun XiangqiBoard(
                         }
 
                         // The Piece itself
-                        if (piece != null) {
+                        if (piece != null && point != dragFrom) {
                             Box(
                                 modifier = Modifier
-                                    .offset { IntOffset((paddingPx + displayFile * vGapPx - vGapPx * 0.425f).roundToInt(), (paddingPx + displayRank * hGapPx - hGapPx * 0.425f).roundToInt()) }
+                                    .offset { IntOffset((paddingPx + displayFile * vGapPx - vGapPx * 0.425f).roundToInt(), (paddingPx + displayRank * hGapPx - vGapPx * 0.425f).roundToInt()) }
                                     .size(pieceSize)
                             ) {
                                 PieceDisc(
@@ -205,6 +246,18 @@ fun XiangqiBoard(
                                 )
                             }
                         }
+                    }
+                }
+                val draggedPiece = dragFrom?.let(boardState::pieceAt)
+                val position = dragPosition
+                if (draggedPiece != null && position != null) {
+                    val diameter = vGapPx * 0.85f
+                    Box(
+                        modifier = Modifier
+                            .offset { IntOffset((position.x - diameter / 2).roundToInt(), (position.y - diameter / 2).roundToInt()) }
+                            .size(with(androidx.compose.ui.platform.LocalDensity.current) { diameter.toDp() }),
+                    ) {
+                        PieceDisc(draggedPiece, true)
                     }
                 }
                 if (riverNotice.isNotBlank()) {
@@ -256,20 +309,12 @@ private fun LastMoveRing(
 }
 
 @Composable
-private fun PieceDisc(
+internal fun PieceDisc(
     piece: Piece,
     selected: Boolean,
 ) {
     val isRed = piece.side == Side.RED
-    val text = when (piece.type) {
-        PieceType.KING -> if (isRed) "帅" else "将"
-        PieceType.ADVISOR -> if (isRed) "仕" else "士"
-        PieceType.BISHOP -> if (isRed) "相" else "象"
-        PieceType.KNIGHT -> if (isRed) "傌" else "馬"
-        PieceType.ROOK -> if (isRed) "俥" else "車"
-        PieceType.CANNON -> if (isRed) "炮" else "砲"
-        PieceType.PAWN -> if (isRed) "兵" else "卒"
-    }
+    val text = pieceLabel(piece)
     
     val primaryColor = MaterialTheme.colorScheme.primary
     val secondaryColor = MaterialTheme.colorScheme.error
@@ -279,7 +324,7 @@ private fun PieceDisc(
     val activeBorder = if (selected) primaryColor else MaterialTheme.colorScheme.outlineVariant
     val activeGlow = if (selected) primaryColor.copy(alpha = 0.6f) else Color.Transparent
 
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .shadow(if (selected) 8.dp else 4.dp, CircleShape, ambientColor = if (selected) activeGlow else Color.Black)
@@ -302,7 +347,18 @@ private fun PieceDisc(
             text = text,
             color = pieceColor,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
+            fontSize = minOf(20f, maxWidth.value * 0.6f).sp,
         )
     }
+
+}
+
+internal fun pieceLabel(piece: Piece): String = when (piece.type) {
+    PieceType.KING -> if (piece.side == Side.RED) "帅" else "将"
+    PieceType.ADVISOR -> if (piece.side == Side.RED) "仕" else "士"
+    PieceType.BISHOP -> if (piece.side == Side.RED) "相" else "象"
+    PieceType.KNIGHT -> if (piece.side == Side.RED) "傌" else "馬"
+    PieceType.ROOK -> if (piece.side == Side.RED) "俥" else "車"
+    PieceType.CANNON -> if (piece.side == Side.RED) "炮" else "砲"
+    PieceType.PAWN -> if (piece.side == Side.RED) "兵" else "卒"
 }

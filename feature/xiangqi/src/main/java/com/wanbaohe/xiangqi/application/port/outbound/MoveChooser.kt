@@ -1,5 +1,6 @@
 package com.wanbaohe.xiangqi.application.port.outbound
 
+import com.wanbaohe.xiangqi.application.dto.GameAiPlayerConfig
 import com.wanbaohe.xiangqi.domain.model.BoardState
 import com.wanbaohe.xiangqi.domain.model.Side
 import com.wanbaohe.xiangqi.domain.model.XiangqiMove
@@ -12,9 +13,20 @@ interface MoveChooser {
         legalMoves: List<XiangqiMove>,
         slot: EngineSlot,
     ): MoveDecision?
+
+    suspend fun chooseForGame(
+        boardState: BoardState,
+        fen: String,
+        history: List<String>,
+        legalMoves: List<XiangqiMove>,
+        slot: EngineSlot,
+        playerConfig: GameAiPlayerConfig?,
+    ): MoveDecision? = choose(boardState, fen, history, legalMoves, slot)
 }
 
 enum class EngineSlot { FAST, DUEL_A, DUEL_B }
+
+class AiOpponentUnavailableException : IllegalStateException()
 
 data class MoveDecision(
     val move: XiangqiMove,

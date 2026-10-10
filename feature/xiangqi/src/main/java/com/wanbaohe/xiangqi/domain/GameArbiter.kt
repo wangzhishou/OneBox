@@ -93,7 +93,7 @@ object GameArbiter {
         return !isInCheck(next, side)
     }
 
-    private fun kingsFacing(boardState: BoardState): Boolean {
+    fun kingsFacing(boardState: BoardState): Boolean {
         val redKing = findKing(boardState, Side.RED) ?: return false
         val blackKing = findKing(boardState, Side.BLACK) ?: return false
         return redKing.file == blackKing.file && clearBetween(boardState, redKing, blackKing)

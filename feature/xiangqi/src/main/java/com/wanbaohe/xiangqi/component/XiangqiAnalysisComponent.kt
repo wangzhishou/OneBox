@@ -17,10 +17,16 @@ import com.wanbaohe.xiangqi.application.usecase.AudioFeedbackUseCase
 import com.wanbaohe.xiangqi.application.usecase.ExportGameUseCase
 import com.wanbaohe.xiangqi.application.usecase.GameQueryUseCase
 import com.wanbaohe.xiangqi.application.usecase.SettingsUseCase
+import com.wanbaohe.xiangqi.application.usecase.ManageGameUseCase
+import com.wanbaohe.xiangqi.application.dto.GamePreparation
+import com.wanbaohe.xiangqi.application.dto.prepareFrom
 import com.wanbaohe.xiangqi.data.XiangqiPlyRecord
 import com.wanbaohe.xiangqi.data.TextExportLabels
 import com.wanbaohe.xiangqi.domain.FenCodec
 import com.wanbaohe.xiangqi.domain.model.BoardState
+import com.wanbaohe.xiangqi.domain.model.GameMode
+import com.shifenmiao.base.utils.ActionUtils
+import com.wanbaohe.xiangqi.R
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -45,6 +51,8 @@ data class XiangqiAnalysisUiState(
     val isAutoPlaying: Boolean = false,
     /** 声音总开关：关掉之后音效和背景音乐一起静音 */
     val isSoundOn: Boolean = true,
+    val initialFen: String = FenCodec.INITIAL_FEN,
+    val mode: GameMode = GameMode.LOCAL_PVP,
 )
 
 class XiangqiAnalysisComponent @AssistedInject constructor(
@@ -53,12 +61,14 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
     @Assisted initialPly: Int,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
+    @Assisted private val onPrepareGame: (GamePreparation) -> Unit,
     private val gameQuery: GameQueryUseCase,
     private val exportGame: ExportGameUseCase,
     private val audioFeedback: AudioFeedbackUseCase,
     private val settingsUseCase: SettingsUseCase,
     private val soundPlayer: SoundPlayer,
     private val audioPlayer: NetworkAudioPlayer,
+    private val manageGame: ManageGameUseCase,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
@@ -156,6 +166,8 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
                 uiState = uiState.copy(
                     resultText = detail.resultText,
                     title = detail.title,
+                    initialFen = detail.initialFen,
+                    mode = detail.mode,
                 )
                 updatePly(
                     plies,
@@ -170,23 +182,23 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
 
     fun goToStart() {
         stopAutoPlay()
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, 0)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, 0)
     }
 
     fun goPrev() {
         stopAutoPlay()
         val target = (uiState.currentPly - 1).coerceAtLeast(0)
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, target, play = target > 0)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, target, play = target > 0)
     }
 
     fun goNext() {
         val target = (uiState.currentPly + 1).coerceAtMost(uiState.maxPly)
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, target, play = target > uiState.currentPly)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, target, play = target > uiState.currentPly)
     }
 
     fun goToEnd() {
         stopAutoPlay()
-        updatePly(uiState.plies, uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN, uiState.title, uiState.maxPly)
+        updatePly(uiState.plies, uiState.initialFen, uiState.title, uiState.maxPly)
     }
 
     /**
@@ -199,7 +211,7 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
         val target = ply.coerceIn(0, uiState.maxPly)
         updatePly(
             uiState.plies,
-            uiState.plies.firstOrNull()?.beforeFen ?: FenCodec.INITIAL_FEN,
+            uiState.initialFen,
             uiState.title,
             target,
             play = target > 0,
@@ -208,6 +220,22 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
 
     fun openCurrentGame() {
         onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Game(gameId)))
+    }
+
+    fun practiceFromHere() {
+        if (uiState.mode == GameMode.ONLINE_PVP) return
+        stopAutoPlay()
+        val board = uiState.boardState
+        val ply = uiState.currentPly
+        componentScope.launch {
+            manageGame.pause(gameId)
+            val detail = gameQuery.getById(gameId)
+            if (detail == null) {
+                ActionUtils.showToast(R.string.xiangqi_game_not_found)
+                return@launch
+            }
+            onPrepareGame(detail.prepareFrom(board, ply))
+        }
     }
 
     fun exportFen() {
@@ -281,6 +309,7 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
             initialPly: Int,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
+            onPrepareGame: (GamePreparation) -> Unit,
         ): XiangqiAnalysisComponent
     }
 }

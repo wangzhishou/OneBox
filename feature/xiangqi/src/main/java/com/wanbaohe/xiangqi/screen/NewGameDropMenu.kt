@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +60,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistoryEdu
 fun NewGameDropMenu(
     component: XiangqiLibraryComponent,
     modifier: Modifier = Modifier,
+    label: String? = null,
+    openAbove: Boolean = false,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var importFen by remember { mutableStateOf(false) }
@@ -80,29 +83,33 @@ fun NewGameDropMenu(
             animationSpec = tween(300),
             label = "menu_rotation",
         )
-        IconButton(onClick = { expanded = !expanded }) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                contentDescription = null,
-                modifier = Modifier.rotate(rotation),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+        if (label != null) {
+            TextButton(onClick = { expanded = !expanded }) { Text(label) }
+        } else {
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
+                    contentDescription = stringResource(R.string.xiangqi_more_play_modes),
+                    modifier = Modifier.rotate(rotation),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
 
         if (expanded) {
             val density = LocalDensity.current
             val bubbleShape = BubbleShape(
                 arrowSize = 8.dp,
-                arrowDirection = BubbleShape.ArrowDirection.Top,
+                arrowDirection = if (openAbove) BubbleShape.ArrowDirection.Bottom else BubbleShape.ArrowDirection.Top,
                 arrowAlignment = BubbleShape.ArrowAlignment.End,
                 arrowOffset = 20.dp,
                 cornerRadius = 8.dp,
             )
             Popup(
-                alignment = Alignment.TopEnd,
+                alignment = if (openAbove) Alignment.BottomEnd else Alignment.TopEnd,
                 offset = IntOffset(
                     x = with(density) { 4.dp.roundToPx() },
-                    y = with(density) { 40.dp.roundToPx() },
+                    y = with(density) { (if (openAbove) (-48).dp else 40.dp).roundToPx() },
                 ),
                 onDismissRequest = { expanded = false },
                 properties = PopupProperties(focusable = true),

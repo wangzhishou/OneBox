@@ -14,8 +14,8 @@ import com.wanbaohe.xiangqi.application.usecase.ImportFailureCause
 import com.wanbaohe.xiangqi.application.usecase.ImportGameUseCase
 import com.wanbaohe.xiangqi.application.usecase.ImportResult
 import com.wanbaohe.xiangqi.application.usecase.ManageGameUseCase
-import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiConfig
-import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiStore
+import com.wanbaohe.xiangqi.application.dto.GamePreparation
+import com.wanbaohe.xiangqi.domain.model.GameSetup
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.xiangqi.R
@@ -30,48 +30,23 @@ class XiangqiLibraryComponent @AssistedInject constructor(
     @Assisted componentContext: ComponentContext,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onNavigate: (Screen) -> Unit,
+    @Assisted private val onPrepareGame: (GamePreparation) -> Unit,
     private val createGame: CreateGameUseCase,
     private val gameQuery: GameQueryUseCase,
     private val importGame: ImportGameUseCase,
     private val deleteGameUseCase: DeleteGameUseCase,
     private val manageGame: ManageGameUseCase,
-    private val xiangqiAiStore: XiangqiAiStore,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 
-    /**
-     * 开一局人机：Pikafish 等服务端引擎免登录免积分；
-     * 聊天 LLM / Jev 在开局前做登录 + 积分余额校验（不在此扣减）。
-     */
+    /** Choose the opponent on the preparation board before creating a game. */
     fun startAiGame(title: String, aiSide: Side) {
-        componentScope.launch {
-            val config = xiangqiAiStore.get()
-            if (config.requiresLoginForHumanVsAi()) {
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = "xiangqi_ai",
-                    point = config.startPointsForHumanVsAi(),
-                    onSuccess = { createAiGame(title, aiSide) },
-                )
-            } else {
-                createAiGame(title, aiSide)
-            }
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.humanVsAi(aiSide)))
     }
 
-    /** 开一局 AI 对战：付费来源开局前登录 + 积分校验 */
+    /** Both AI seats can be configured before starting. */
     fun startAiVsAiGame(title: String) {
-        componentScope.launch {
-            val config = xiangqiAiStore.get()
-            if (config.requiresLoginForAiVsAi()) {
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = "xiangqi_ai_vs_ai",
-                    point = config.startPointsForAiVsAi(),
-                    onSuccess = { createAiVsAiGame(title) },
-                )
-            } else {
-                createAiVsAiGame(title)
-            }
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.aiVsAi()))
     }
 
 
@@ -87,10 +62,7 @@ class XiangqiLibraryComponent @AssistedInject constructor(
     }
 
     fun createLocalGame(title: String) {
-        componentScope.launch {
-            val gameId = createGame.createLocal(title)
-            navigateToGame(gameId)
-        }
+        onPrepareGame(GamePreparation(title = title, setup = GameSetup.local()))
     }
 
     fun createAiGame(title: String, aiSide: Side) {
@@ -191,6 +163,16 @@ class XiangqiLibraryComponent @AssistedInject constructor(
         onNavigate(Screen.XiangqiRouter(Screen.XiangqiRouter.Type.Analysis(gameId)))
     }
 
+    fun openSourceGame(gameId: String) {
+        componentScope.launch {
+            if (gameQuery.getById(gameId) == null) {
+                ActionUtils.showToast(R.string.xiangqi_game_missing)
+            } else {
+                navigateToGame(gameId)
+            }
+        }
+    }
+
     fun deleteGame(gameId: String) {
         componentScope.launch { deleteGameUseCase.delete(gameId) }
     }
@@ -209,6 +191,7 @@ class XiangqiLibraryComponent @AssistedInject constructor(
             componentContext: ComponentContext,
             onGoBack: () -> Unit,
             onNavigate: (Screen) -> Unit,
+            onPrepareGame: (GamePreparation) -> Unit,
         ): XiangqiLibraryComponent
     }
 }

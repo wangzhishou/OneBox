@@ -2,14 +2,17 @@ package com.wanbaohe.xiangqi.data
 
 import com.shifenmiao.database.xiangqi.dao.XiangqiGameDao
 import com.shifenmiao.database.xiangqi.entity.XiangqiGameEntity
+import com.shifenmiao.model.ModelProvider.AppJson
 import com.wanbaohe.xiangqi.application.port.outbound.GameEntity
 import com.wanbaohe.xiangqi.application.port.outbound.GameStore
 import com.wanbaohe.xiangqi.application.port.outbound.GameSummaryEntity
 import com.wanbaohe.xiangqi.domain.model.GameMode
+import com.wanbaohe.xiangqi.domain.model.GameOrigin
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.PlayerType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -61,6 +64,7 @@ class GameDaoAdapter @Inject constructor(
         lastMoveAt = lastMoveAt,
         lastPlayedAt = lastPlayedAt,
         updatedAt = updatedAt,
+        origin = decodeOrigin(originJson),
     )
 
     private fun XiangqiGameEntity.toSummaryEntity() = GameSummaryEntity(
@@ -73,6 +77,10 @@ class GameDaoAdapter @Inject constructor(
         resultText = result,
         updatedAt = updatedAt,
         plyCount = currentPly,
+        lastPlayedAt = lastPlayedAt,
+        redPlayerConfigJson = redPlayerConfigJson,
+        blackPlayerConfigJson = blackPlayerConfigJson,
+        origin = decodeOrigin(originJson),
     )
 
     private fun GameEntity.toDbEntity() = XiangqiGameEntity(
@@ -93,5 +101,9 @@ class GameDaoAdapter @Inject constructor(
         lastMoveAt = lastMoveAt,
         lastPlayedAt = lastPlayedAt,
         updatedAt = updatedAt,
+        originJson = origin?.let { AppJson.encodeToString(it) } ?: "{}",
     )
+
+    private fun decodeOrigin(json: String): GameOrigin? =
+        if (json == "{}") null else AppJson.decodeFromString<GameOrigin>(json)
 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * @param subtitle 副标题(如「红方 · deepseek-chat」「黑方」)
  * @param avatarUrl 头像 URL,空串则显示首字母占位
  * @param indicatorColor 棋子颜色指示小圆点
- * @param isActiveTurn 是否当前行棋方(「轮到」角标 + 高亮描边)
+ * @param isActiveTurn 是否当前行棋方(动态高亮描边)
  * @param onClick 点击回调(如 AI 方弹出模型选择),null 不可点
  */
 data class PlayerBarData(
@@ -20,6 +20,7 @@ data class PlayerBarData(
     val indicatorColor: Color,
     val isActiveTurn: Boolean = false,
     val onClick: (() -> Unit)? = null,
+    val actionLabel: String = "",
 )
 
 /** 操作栏动作项(悔棋/重做/分析/分享/重开/认输/重命名/全屏等) */

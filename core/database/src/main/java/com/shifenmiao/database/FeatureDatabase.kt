@@ -159,7 +159,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
         HouseholdItemEntity::class,
         PeriodRecordEntity::class,
     ],
-    version = Release145Migrations.VERSION,
+    version = Release146Migrations.VERSION,
     exportSchema = true
 )
 @TypeConverters(MarkTodoTypeConverters::class)
@@ -421,6 +421,7 @@ abstract class FeatureDatabase : RoomDatabase() {
                         *Release140Migrations.feature,
                         *Release141Migrations.feature,
                         *Release145Migrations.feature,
+                        *Release146Migrations.feature,
                     )
                     .fallbackToDestructiveMigration(true)
                     .addCallback(object : Callback() {

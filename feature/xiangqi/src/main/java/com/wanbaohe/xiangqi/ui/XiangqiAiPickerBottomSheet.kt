@@ -66,6 +66,7 @@ fun XiangqiAiPickerBottomSheet(
     onDismiss: () -> Unit,
     onDownloadLocalEngine: () -> Unit,
     onCancelLocalEngineDownload: () -> Unit,
+    onPickWorkingModel: (() -> Unit)? = null,
 ) {
     var confirmingLocalDownload by remember { mutableStateOf(false) }
     var pendingAutoSelectLocal by remember { mutableStateOf(false) }
@@ -128,6 +129,11 @@ fun XiangqiAiPickerBottomSheet(
                         }
                     },
                 )
+                if (source == XiangqiAiSource.WorkingModel && onPickWorkingModel != null) {
+                    TextButton(onClick = onPickWorkingModel) {
+                        Text(stringResource(R.string.xiangqi_settings_pick_ai_model))
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(24.dp))
         }

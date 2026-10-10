@@ -1,11 +1,14 @@
 package com.wanbaohe.xiangqi.application.usecase
 
 import com.wanbaohe.xiangqi.application.dto.GameDetail
+import com.wanbaohe.xiangqi.application.dto.GameAiPlayerConfig
 import com.wanbaohe.xiangqi.application.port.outbound.GameStore
 import com.wanbaohe.xiangqi.application.port.outbound.MoveStore
 import com.wanbaohe.xiangqi.domain.FenCodec
 import com.wanbaohe.xiangqi.domain.GameResultResolver
 import com.wanbaohe.xiangqi.domain.GameArbiter
+import com.wanbaohe.xiangqi.domain.SetupPositionValidator
+import com.wanbaohe.xiangqi.domain.model.BoardState
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.Side
 import com.shifenmiao.database.activity.ActivityLogRecorder
@@ -56,6 +59,38 @@ class ManageGameUseCase @Inject constructor(
                 updatedAt = System.currentTimeMillis(),
             ),
         )
+        return query.getById(gameId)
+    }
+
+    suspend fun resumeAfterEditing(gameId: String, editingStartedAt: Long): GameDetail? {
+        val game = gameStore.getById(gameId) ?: return null
+        if (game.status != GameStatus.PAUSED) return query.getById(gameId)
+        val now = System.currentTimeMillis()
+        gameStore.update(
+            game.copy(
+                status = GameArbiter.evaluateStatus(FenCodec.parse(game.currentFen)),
+                lastMoveAt = if (game.lastMoveAt > 0L)
+                    game.lastMoveAt + (now - editingStartedAt).coerceAtLeast(0L) else now,
+                updatedAt = now,
+            ),
+        )
+        return query.getById(gameId)
+    }
+
+    suspend fun updateInitialPosition(gameId: String, board: BoardState): GameDetail? {
+        val game = gameStore.getById(gameId) ?: return null
+        check(game.status == GameStatus.NOT_STARTED && game.startedAt == 0L && game.currentPly == 0)
+        require(SetupPositionValidator.validate(board) == null)
+        val fen = FenCodec.encode(board.copy(halfMoveClock = 0, fullMoveNumber = 1))
+        gameStore.update(game.copy(initialFen = fen, currentFen = fen, updatedAt = System.currentTimeMillis()))
+        return query.getById(gameId)
+    }
+
+    suspend fun updateAiConfig(gameId: String, side: Side, config: GameAiPlayerConfig): GameDetail? {
+        val game = gameStore.getById(gameId) ?: return null
+        val next = if (side == Side.RED) game.copy(redPlayerConfigJson = config.encode())
+            else game.copy(blackPlayerConfigJson = config.encode())
+        gameStore.update(next.copy(updatedAt = System.currentTimeMillis()))
         return query.getById(gameId)
     }
 
@@ -187,7 +222,7 @@ class ManageGameUseCase @Inject constructor(
         // 认输是「非盘面终局」：悔棋/重做只能改变局面，不能推翻"已经认输"这件事。
         // 直接采用 evaluateStatus 会把 RESIGNED 顶成 PLAYING/CHECK，并把结果字段洗成空。
         val keepExplicitResult = GameResultResolver.isExplicitTerminal(game.status)
-        val status = if (keepExplicitResult) game.status else evaluated
+        val status = GameResultResolver.statusAfterHistoryChange(game.status, evaluated)
         gameStore.update(
             game.copy(
                 currentPly = targetPly,
@@ -199,6 +234,7 @@ class ManageGameUseCase @Inject constructor(
                 else GameResultResolver.winnerSide(status),
                 updatedAt = now,
                 lastPlayedAt = now,
+                lastMoveAt = now,
             ),
         )
     }

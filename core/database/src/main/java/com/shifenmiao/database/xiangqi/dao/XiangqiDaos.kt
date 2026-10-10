@@ -17,10 +17,10 @@ interface XiangqiGameDao {
     @Query("SELECT * FROM xiangqi_game WHERE archived = 0 ORDER BY last_played_at DESC")
     fun observeGames(): Flow<List<XiangqiGameEntity>>
 
-    @Query("SELECT * FROM xiangqi_game WHERE id = :gameId LIMIT 1")
+    @Query("SELECT * FROM xiangqi_game WHERE id = :gameId AND archived = 0 LIMIT 1")
     fun observeGame(gameId: String): Flow<XiangqiGameEntity?>
 
-    @Query("SELECT * FROM xiangqi_game WHERE id = :gameId LIMIT 1")
+    @Query("SELECT * FROM xiangqi_game WHERE id = :gameId AND archived = 0 LIMIT 1")
     suspend fun getGame(gameId: String): XiangqiGameEntity?
 
     @Query("UPDATE xiangqi_game SET archived = 1 WHERE id = :gameId")

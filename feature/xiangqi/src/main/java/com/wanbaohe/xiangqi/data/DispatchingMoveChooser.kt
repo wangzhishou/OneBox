@@ -1,5 +1,8 @@
 package com.wanbaohe.xiangqi.data
 
+import com.shifenmiao.common.manager.AIEngineCatalogManager
+import com.wanbaohe.xiangqi.application.dto.GameAiPlayerConfig
+import com.wanbaohe.xiangqi.application.port.outbound.AiOpponentUnavailableException
 import com.wanbaohe.xiangqi.application.port.outbound.EngineSlot
 import com.wanbaohe.xiangqi.application.port.outbound.MoveChooser
 import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
@@ -28,6 +31,7 @@ class DispatchingMoveChooser @Inject constructor(
     private val jevMoveChooser: JevMoveChooser,
     private val pikafishMoveChooser: PikafishMoveChooser,
     private val localEngineMoveChooser: LocalEngineMoveChooser,
+    private val aiEngineCatalogManager: AIEngineCatalogManager,
 ) : MoveChooser {
 
     override suspend fun choose(
@@ -36,16 +40,30 @@ class DispatchingMoveChooser @Inject constructor(
         history: List<String>,
         legalMoves: List<XiangqiMove>,
         slot: EngineSlot,
+    ): MoveDecision? = chooseForGame(boardState, fen, history, legalMoves, slot, null)
+
+    override suspend fun chooseForGame(
+        boardState: BoardState,
+        fen: String,
+        history: List<String>,
+        legalMoves: List<XiangqiMove>,
+        slot: EngineSlot,
+        playerConfig: GameAiPlayerConfig?,
     ): MoveDecision? {
-        val source = xiangqiAiStore.get().sourceFor(slot)
+        val source = playerConfig?.source ?: xiangqiAiStore.get().sourceFor(slot)
         return when (source) {
-            XiangqiAiSource.WorkingModel -> llmMoveChooser.choose(
-                boardState = boardState,
-                fen = fen,
-                history = history,
-                legalMoves = legalMoves,
-                slot = slot,
-            )
+            XiangqiAiSource.WorkingModel -> {
+                if (playerConfig == null) {
+                    llmMoveChooser.choose(boardState, fen, history, legalMoves, slot)
+                } else {
+                    val model = playerConfig.model ?: throw AiOpponentUnavailableException()
+                    val engine = aiEngineCatalogManager.getEngineByNameAndProtocol(
+                        playerConfig.engineName,
+                        playerConfig.engineProtocol,
+                    ) ?: throw AiOpponentUnavailableException()
+                    llmMoveChooser.chooseWithEngine(boardState, fen, history, legalMoves, slot, engine.copy(model = model))
+                }
+            }
             XiangqiAiSource.Jev -> jevMoveChooser.choose(
                 boardState = boardState,
                 fen = fen,

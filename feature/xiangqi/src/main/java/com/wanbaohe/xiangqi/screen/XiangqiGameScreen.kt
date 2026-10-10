@@ -10,13 +10,16 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +29,10 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -52,13 +58,14 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.components.Avatar
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.ui.ImmersiveModeState
-import com.wanbaohe.xiangqi.ui.XiangqiAiPickerBottomSheet
+import com.wanbaohe.xiangqi.ui.XiangqiOpponentPicker
 import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
@@ -74,6 +81,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.xiangqi.BuildConfig
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.port.outbound.MoveDecision
+import com.wanbaohe.xiangqi.application.dto.GameAiPlayerConfig
 import com.wanbaohe.xiangqi.component.XiangqiGameComponent
 import com.wanbaohe.xiangqi.component.XiangqiGameUiState
 import com.wanbaohe.xiangqi.data.TextExportLabels
@@ -101,6 +109,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import com.wanbaohe.boardgame.ui.BoardGameOverOverlay
 import com.wanbaohe.boardgame.ui.BoardStartOverlay
+import com.wanbaohe.boardgame.ui.animatedTurnBorder
 import kotlinx.coroutines.delay
 
 @Composable
@@ -110,7 +119,25 @@ fun XiangqiGameScreen(
     showChrome: Boolean = true,
 ) {
     val state = component.uiState
+    val setup = component.setupDraft
+    if (setup != null) {
+        val preparingInitial = state.status == GameStatus.NOT_STARTED && state.startedAt == 0L
+        XiangqiSetupScreen(
+            draft = setup,
+            onDraftChange = component::updateSetup,
+            onCancel = component::cancelSetup,
+            onConfirm = component::finishSetup,
+            confirmLabel = stringResource(
+                if (preparingInitial) R.string.xiangqi_setup_apply else R.string.xiangqi_setup_new_game,
+            ),
+            modifier = modifier,
+            busy = state.isUpdating,
+            preservesOriginal = !preparingInitial,
+        )
+        return
+    }
     var exportDialog by remember { mutableStateOf(false) }
+    var showOrigin by remember { mutableStateOf(false) }
     var pickingSide by remember { mutableStateOf<Side?>(null) }
     val exportLabels = TextExportLabels(
         header = stringResource(R.string.xiangqi_export_header),
@@ -152,6 +179,7 @@ fun XiangqiGameScreen(
             captureController = captureController,
             onExport = { exportDialog = true },
             onPickAiFor = { side -> pickingSide = side },
+            onShowOrigin = { showOrigin = true },
         )
     }
 
@@ -220,6 +248,32 @@ fun XiangqiGameScreen(
         )
     }
 
+    if (component.showStandardGameConfirm) {
+        AlertDialog(
+            onDismissRequest = { component.showStandardGameConfirm = false },
+            title = { Text(stringResource(R.string.xiangqi_standard_game)) },
+            text = { Text(stringResource(R.string.xiangqi_standard_game_confirm)) },
+            confirmButton = {
+                androidx.compose.material3.TextButton(onClick = component::prepareStandardGame) {
+                    Text(stringResource(R.string.xiangqi_confirm))
+                }
+            },
+            dismissButton = {
+                androidx.compose.material3.TextButton(onClick = { component.showStandardGameConfirm = false }) {
+                    Text(stringResource(R.string.xiangqi_cancel))
+                }
+            },
+        )
+    }
+    val origin = state.origin
+    if (showOrigin && origin != null) {
+        XiangqiOriginDialog(
+            origin = origin,
+            onContinueSource = { showOrigin = false; component.openSourceGame() },
+            onDismiss = { showOrigin = false },
+        )
+    }
+
     // Rename dialog
     if (component.showRenameDialog) {
         var renameText by remember { mutableStateOf(state.title) }
@@ -256,17 +310,20 @@ fun XiangqiGameScreen(
         val currentSource = component.currentSourceForSide(pickingSideValue)
         val workingModel by component.currentAIEngine.collectAsState()
         val localEngineState by component.localEngineInstallState.collectAsState()
-        XiangqiAiPickerBottomSheet(
-            visible = true,
-            selected = currentSource,
-            workingModelTitle = workingModel.title.ifBlank { workingModel.name },
-            title = stringResource(R.string.xiangqi_settings_ai_picker_title),
+        val engines by component.allAiEngines.collectAsState()
+        val models by component.modelsByProvider.collectAsState()
+        val storedConfig = if (pickingSideValue == Side.RED) state.redAiConfig else state.blackAiConfig
+        XiangqiOpponentPicker(
+            config = storedConfig ?: GameAiPlayerConfig.capture(currentSource, component.currentEngineForSide(pickingSideValue)),
+            workingEngine = if (state.mode == GameMode.LLM_VS_LLM) component.currentEngineForSide(pickingSideValue) else workingModel,
+            allEngines = engines,
+            modelsByProvider = models,
             localEnginePackaged = component.isLocalEnginePackaged,
             localEngineState = localEngineState,
-            onSelected = { source ->
+            onSourceSelected = { source ->
                 component.switchAiSourceForSide(pickingSideValue, source)
-                pickingSide = null
             },
+            onModelSelected = { engine, model -> component.switchAiModelForSide(pickingSideValue, engine, model) },
             onDismiss = { pickingSide = null },
             onDownloadLocalEngine = component::downloadLocalEngine,
             onCancelLocalEngineDownload = component::cancelLocalEngineDownload,
@@ -281,25 +338,13 @@ private fun XiangqiGameContent(
     captureController: com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController,
     onExport: () -> Unit,
     onPickAiFor: (Side) -> Unit,
+    onShowOrigin: () -> Unit,
 ) {
     val state = component.uiState
-    val loginState = LocalLoginState.current
     val immersiveState = LocalXiangqiImmersiveModeState.current
 
     val playable = state.status == GameStatus.PLAYING || state.status == GameStatus.CHECK
-    val humanDisplayName = BaseUtils.getDisplayName(loginState.nickname, loginState.username)
-        .ifBlank { stringResource(R.string.xiangqi_player_you) }
-    val humanAvatarUrl = loginState.avatar.orEmpty()
-    val redAiService =
-        state.redAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) }
-    val redAiModel =
-        state.redAiModelName.ifBlank { stringResource(R.string.xiangqi_settings_empty_value) }
-    val blackAiService =
-        state.blackAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) }
-    val blackAiModel =
-        state.blackAiModelName.ifBlank { stringResource(R.string.xiangqi_settings_empty_value) }
     val bottomSide = if (state.mode == GameMode.ONLINE_PVP) state.onlineMySide else Side.RED
-    val topSide = bottomSide.opposite()
     // 当前局面的最后一手(撤销后随之回退),棋盘上用以明示上一步
     val lastMove = state.history.getOrNull(state.currentPly - 1)?.let { parseUcciMove(it.moveUcci) }
     // AI 兜底 ("AI_FALLBACK") 已经合法落子完成,不必再多一张提示卡;
@@ -323,138 +368,54 @@ private fun XiangqiGameContent(
     val showDebugPanel = BuildConfig.DEBUG && state.mode == GameMode.ONLINE_PVP
 
     BoxWithConstraints(modifier = modifier) {
-        // 高度允许时棋盘按可用高度自适应并水平居中;高度不够则回退为整宽棋盘 + 整页滚动
-        val chromeHeight = 32.dp + 52.dp + 16.dp + 60.dp + 16.dp +
-            (if (showErrorCard) StatusCardHeight + 16.dp else 0.dp) +
-            (if (showDebugPanel) 156.dp else 0.dp) +
-            (if (localSwapPly != null) StatusCardHeight + 16.dp else 0.dp) +
-            (if (fallbackPly != null && localSwapPly == null) FallbackCardHeight + 16.dp else 0.dp)
-        val boardAvailable = maxHeight - chromeHeight
-        val adaptive = boardAvailable != Dp.Infinity && boardAvailable >= MinAdaptiveBoardHeight
-
-        if (adaptive) {
+        val statusDetailsHeight = minOf(180.dp, maxHeight / 3)
+        Column(
+            modifier = Modifier.fillMaxSize().padding(vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.weight(1f).capturable(captureController),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                XiangqiPlayersRow(
+                    state = state,
+                    onPickAiFor = onPickAiFor,
+                    onShowOrigin = onShowOrigin,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                )
+                GameBoardArea(
+                    component = component,
+                    state = state,
+                    bottomSide = bottomSide,
+                    lastMove = lastMove,
+                    modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 8.dp),
+                )
+            }
+            GameActionBar(component, state, immersiveState, onExport, playable, onShowOrigin)
+            if (showErrorCard || showDebugPanel || localSwapPly != null || fallbackPly != null) {
+                // Status details can scroll; board controls and the outer tabs stay visible.
                 Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .capturable(captureController),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                        .fillMaxWidth()
+                        .heightIn(max = statusDetailsHeight)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    PlayersBar(
-                        state = state,
-                        topSide = topSide,
-                        bottomSide = bottomSide,
-                        humanDisplayName = humanDisplayName,
-                        humanAvatarUrl = humanAvatarUrl,
-                        onlineOpponentName = state.onlineOpponentName,
-                        onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
-                        redAiService = redAiService,
-                        redAiModel = redAiModel,
-                        blackAiService = blackAiService,
-                        blackAiModel = blackAiModel,
-                        playable = playable,
-                        onPickAiFor = onPickAiFor,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp),
-                    )
-                    GameBoardArea(
-                        component = component,
-                        state = state,
-                        bottomSide = bottomSide,
-                        lastMove = lastMove,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                            .padding(horizontal = 8.dp),
-                    )
+                    if (showErrorCard) ErrorStatusCard(component, state, onPickAiFor)
+                    if (showDebugPanel) OnlineDebugPanel(state = state)
+                    if (localSwapPly != null) {
+                        LocalEngineSwapCard(
+                            state = state,
+                            swapPly = localSwapPly,
+                            onDismiss = component::dismissLocalSwapNotice,
+                            onPickAiFor = onPickAiFor,
+                        )
+                    } else if (fallbackPly != null) {
+                        FallbackStatusCard(state, fallbackPly, onPickAiFor)
+                    }
                 }
-                GameActionBar(component, state, immersiveState, onExport, playable)
-                if (showErrorCard) {
-                    ErrorStatusCard(component, state, onPickAiFor)
-                }
-                if (showDebugPanel) {
-                    OnlineDebugPanel(state = state)
-                }
-                if (localSwapPly != null) {
-                    LocalEngineSwapCard(
-                        state = state,
-                        swapPly = localSwapPly,
-                        onDismiss = component::dismissLocalSwapNotice,
-                        onRetry = component::retryAiMove,
-                        onPickAiFor = onPickAiFor,
-                    )
-                } else if (fallbackPly != null) {
-                    FallbackStatusCard(state, fallbackPly, onPickAiFor)
-                }
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Column(
-                    modifier = Modifier.capturable(captureController),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    PlayersBar(
-                        state = state,
-                        topSide = topSide,
-                        bottomSide = bottomSide,
-                        humanDisplayName = humanDisplayName,
-                        humanAvatarUrl = humanAvatarUrl,
-                        onlineOpponentName = state.onlineOpponentName,
-                        onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
-                        redAiService = redAiService,
-                        redAiModel = redAiModel,
-                        blackAiService = blackAiService,
-                        blackAiModel = blackAiModel,
-                        playable = playable,
-                        onPickAiFor = onPickAiFor,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp),
-                    )
-                    GameBoardArea(
-                        component = component,
-                        state = state,
-                        bottomSide = bottomSide,
-                        lastMove = lastMove,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp),
-                    )
-                }
-                GameActionBar(component, state, immersiveState, onExport, playable)
-                if (showErrorCard) {
-                    ErrorStatusCard(component, state, onPickAiFor)
-                }
-                if (showDebugPanel) {
-                    OnlineDebugPanel(state = state)
-                }
-                if (localSwapPly != null) {
-                    LocalEngineSwapCard(
-                        state = state,
-                        swapPly = localSwapPly,
-                        onDismiss = component::dismissLocalSwapNotice,
-                        onRetry = component::retryAiMove,
-                        onPickAiFor = onPickAiFor,
-                    )
-                } else if (fallbackPly != null) {
-                    FallbackStatusCard(state, fallbackPly, onPickAiFor)
-                }
-                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }
@@ -480,7 +441,7 @@ private fun GameBoardArea(
                 riverNotice = if (state.status == GameStatus.CHECK) stringResource(R.string.xiangqi_check) else "",
                 lastMove = lastMove,
             )
-            if (state.status == GameStatus.NOT_STARTED || state.status == GameStatus.PAUSED) {
+            if (state.isLoaded && (state.status == GameStatus.NOT_STARTED || state.status == GameStatus.PAUSED)) {
                 BoardStartOverlay(
                     startLabel = stringResource(
                         if (state.status == GameStatus.PAUSED) {
@@ -605,6 +566,7 @@ private fun GameActionBar(
     immersiveState: ImmersiveModeState?,
     onExport: () -> Unit,
     playable: Boolean,
+    onShowOrigin: () -> Unit,
 ) {
     ActionBar(
         modifier = Modifier
@@ -619,7 +581,14 @@ private fun GameActionBar(
         onRename = { component.showRenameDialog = true },
         onToggleFullscreen = { immersiveState?.toggle() },
         isImmersive = immersiveState?.isImmersive == true,
-        allowUndoRedo = state.mode != GameMode.ONLINE_PVP,
+        undoEnabled = component.canUndo,
+        redoEnabled = component.canRedo,
+        onSetup = component::beginSetup,
+        setupEnabled = component.canSetup,
+        onStandardGame = { component.showStandardGameConfirm = true },
+        showStandardGame = state.mode != GameMode.ONLINE_PVP,
+        onShowOrigin = onShowOrigin.takeIf { state.origin != null },
+        enabled = state.isLoaded && !state.isUpdating,
         showResign = playable && state.mode != GameMode.LLM_VS_LLM,
     )
 }
@@ -630,8 +599,10 @@ private fun ErrorStatusCard(
     state: XiangqiGameUiState,
     onPickAiFor: (Side) -> Unit,
 ) {
+    val aiTurn = state.isLoaded && !state.isUpdating &&
+        state.playerTypeFor(state.boardState.sideToMove) == PlayerType.LLM
     StatusCard(
-        title = stringResource(R.string.xiangqi_ai_failed),
+        title = stringResource(if (state.isLoaded) R.string.xiangqi_ai_failed else R.string.xiangqi_game_not_found),
         subtitle = when (state.errorMessage) {
             "AI_ERROR" -> stringResource(R.string.xiangqi_ai_failed)
             else -> state.errorMessage
@@ -643,6 +614,7 @@ private fun ErrorStatusCard(
             ) {
                 GlassTonalButton(
                     onClick = component::retryAiMove,
+                    enabled = aiTurn,
                     modifier = Modifier.weight(1f),
                 ) {
                     Text(stringResource(R.string.xiangqi_retry_ai), maxLines = 1)
@@ -650,6 +622,7 @@ private fun ErrorStatusCard(
                 GlassTonalButton(
                     // 与象棋设置共用 XiangqiAiPicker, 不跳全局 AI 设置
                     onClick = { onPickAiFor(state.boardState.sideToMove) },
+                    enabled = aiTurn,
                     modifier = Modifier.weight(1f),
                 ) {
                     Text(stringResource(R.string.xiangqi_switch_ai_model), maxLines = 1)
@@ -707,7 +680,6 @@ private fun LocalEngineSwapCard(
     state: XiangqiGameUiState,
     swapPly: XiangqiPlyRecord,
     onDismiss: () -> Unit,
-    onRetry: () -> Unit,
     onPickAiFor: (Side) -> Unit,
 ) {
     val reason = MoveDecision.stripMarkers(swapPly.aiReason).ifBlank { "unknown" }
@@ -737,12 +709,6 @@ private fun LocalEngineSwapCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                GlassTonalButton(
-                    onClick = onRetry,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text(stringResource(R.string.xiangqi_retry_ai), maxLines = 1)
-                }
                 GlassTonalButton(
                     onClick = onDismiss,
                     modifier = Modifier.weight(1f),
@@ -822,6 +788,35 @@ private fun XiangqiGameUiState.playerTypeFor(side: Side): PlayerType {
 }
 
 @Composable
+internal fun XiangqiPlayersRow(
+    state: XiangqiGameUiState,
+    onPickAiFor: (Side) -> Unit,
+    modifier: Modifier = Modifier,
+    onShowOrigin: () -> Unit = {},
+) {
+    val login = LocalLoginState.current
+    val bottomSide = if (state.mode == GameMode.ONLINE_PVP) state.onlineMySide else Side.RED
+    PlayersBar(
+        state = state,
+        topSide = bottomSide.opposite(),
+        bottomSide = bottomSide,
+        humanDisplayName = BaseUtils.getDisplayName(login.nickname, login.username)
+            .ifBlank { stringResource(R.string.xiangqi_player_you) },
+        humanAvatarUrl = login.avatar.orEmpty(),
+        onlineOpponentName = state.onlineOpponentName,
+        onlineOpponentAvatarUrl = state.onlineOpponentAvatarUrl,
+        redAiService = state.redAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) },
+        redAiModel = state.redAiModelName,
+        blackAiService = state.blackAiServiceName.ifBlank { stringResource(R.string.xiangqi_player_ai) },
+        blackAiModel = state.blackAiModelName,
+        playable = state.status == GameStatus.PLAYING || state.status == GameStatus.CHECK,
+        onPickAiFor = onPickAiFor,
+        onShowOrigin = onShowOrigin,
+        modifier = modifier,
+    )
+}
+
+@Composable
 private fun PlayersBar(
     state: XiangqiGameUiState,
     topSide: Side,
@@ -836,6 +831,7 @@ private fun PlayersBar(
     blackAiModel: String,
     playable: Boolean,
     onPickAiFor: (Side) -> Unit,
+    onShowOrigin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     GlassSurface(
@@ -846,7 +842,7 @@ private fun PlayersBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             PlayerBarItem(
@@ -864,7 +860,12 @@ private fun PlayersBar(
                 mirrored = false,
                 modifier = Modifier.weight(1f),
             )
-            VsBadge(modifier = Modifier.padding(horizontal = 8.dp))
+            VsBadge(
+                modifier = Modifier.padding(horizontal = 4.dp)
+                    .then(if (state.origin != null) Modifier.clickable(onClick = onShowOrigin) else Modifier),
+                label = if (state.origin != null) stringResource(R.string.xiangqi_setup_source)
+                    else stringResource(R.string.xiangqi_vs_short),
+            )
             PlayerBarItem(
                 side = bottomSide,
                 state = state,
@@ -910,7 +911,16 @@ private fun PlayerBarItem(
         aiServiceName = aiServiceName,
     )
     val active = playable && isActiveTurn
-    val subtitle = resolvePlayerSubtitle(
+    val subtitle = if (active) {
+        stringResource(
+            when {
+                playerType == PlayerType.LLM && state.isAiThinking -> R.string.xiangqi_ai_thinking
+                playerType == PlayerType.HUMAN && state.mode == GameMode.HUMAN_VS_LLM -> R.string.xiangqi_your_turn
+                side == Side.RED -> R.string.xiangqi_turn_red
+                else -> R.string.xiangqi_turn_black
+            },
+        )
+    } else resolvePlayerSubtitle(
         side = side,
         playerType = playerType,
         gameMode = state.mode,
@@ -928,28 +938,42 @@ private fun PlayerBarItem(
         MaterialTheme.colorScheme.onSurface
     }
 
-    val clickableModifier = if (playerType == PlayerType.LLM) {
+    val canPick = playerType == PlayerType.LLM && state.isLoaded && !state.isUpdating
+    val clickableModifier = if (canPick) {
         Modifier.clickable { onPickAiFor(side) }
     } else {
         Modifier
     }
-    val content: @Composable () -> Unit = {
-        if (mirrored && active) {
-            TurnBadge()
-            Spacer(modifier = Modifier.width(6.dp))
-        }
+    val content: @Composable RowScope.() -> Unit = {
         if (!mirrored) {
             Avatar(username = displayName, avatar = avatarUrl, size = 34.dp, isLogin = true)
             Spacer(modifier = Modifier.width(8.dp))
         }
-        Column(horizontalAlignment = if (mirrored) Alignment.End else Alignment.Start) {
-            Text(
-                text = displayName,
-                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+        Column(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = if (mirrored) Alignment.End else Alignment.Start,
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = displayName,
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = if (mirrored) TextAlign.End else TextAlign.Start,
+                    modifier = Modifier.weight(1f),
+                )
+                if (canPick) {
+                    Text(
+                        text = stringResource(R.string.xiangqi_change_opponent),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.widthIn(max = 56.dp),
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(2.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
@@ -968,10 +992,6 @@ private fun PlayerBarItem(
                 )
             }
         }
-        if (!mirrored && active) {
-            Spacer(modifier = Modifier.width(6.dp))
-            TurnBadge()
-        }
         if (mirrored) {
             Spacer(modifier = Modifier.width(8.dp))
             Avatar(username = displayName, avatar = avatarUrl, size = 34.dp, isLogin = true)
@@ -984,11 +1004,7 @@ private fun PlayerBarItem(
                 .then(clickableModifier)
                 .clip(RoundedCornerShape(14.dp))
                 .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                    shape = RoundedCornerShape(14.dp),
-                )
+                .animatedTurnBorder()
                 .padding(horizontal = 10.dp, vertical = 8.dp),
             contentAlignment = if (mirrored) Alignment.CenterEnd else Alignment.CenterStart,
         ) {
@@ -1011,7 +1027,7 @@ private fun PlayerBarItem(
 }
 
 @Composable
-private fun VsBadge(modifier: Modifier = Modifier) {
+private fun VsBadge(modifier: Modifier = Modifier, label: String = stringResource(R.string.xiangqi_vs_short)) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(50))
@@ -1019,7 +1035,7 @@ private fun VsBadge(modifier: Modifier = Modifier) {
             .padding(horizontal = 10.dp, vertical = 4.dp),
     ) {
         Text(
-            text = stringResource(R.string.xiangqi_vs_short),
+            text = label,
             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
             color = MaterialTheme.colorScheme.onSecondaryContainer,
         )
@@ -1122,7 +1138,6 @@ private fun aiModelForSide(side: Side, redAiModel: String, blackAiModel: String)
 
 private val StatusCardHeight = 140.dp
 private val FallbackCardHeight = 92.dp
-private val MinAdaptiveBoardHeight = 280.dp
 
 @Composable
 private fun StatusCard(
@@ -1225,9 +1240,17 @@ private fun ActionBar(
     onRename: () -> Unit,
     onToggleFullscreen: () -> Unit,
     isImmersive: Boolean,
-    allowUndoRedo: Boolean,
+    undoEnabled: Boolean,
+    redoEnabled: Boolean,
+    onSetup: () -> Unit,
+    setupEnabled: Boolean,
+    onStandardGame: () -> Unit,
+    showStandardGame: Boolean,
+    onShowOrigin: (() -> Unit)?,
+    enabled: Boolean,
     showResign: Boolean,
 ) {
+    var more by remember { mutableStateOf(false) }
     GlassSurface(
         modifier = modifier,
         style = GlassStyle.Medium,
@@ -1235,66 +1258,74 @@ private fun ActionBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
+                .padding(horizontal = 8.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            GlassTonalIconButton(onClick = onUndo, enabled = allowUndoRedo) {
+            GlassTonalIconButton(onClick = onUndo, enabled = undoEnabled) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.xiangqi_undo),
                     modifier = Modifier.size(20.dp),
                 )
             }
-            GlassTonalIconButton(onClick = onRedo, enabled = allowUndoRedo) {
+            GlassTonalIconButton(onClick = onRedo, enabled = redoEnabled) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.xiangqi_redo),
                     modifier = Modifier.size(20.dp),
                 )
             }
-            GlassTonalIconButton(onClick = onAnalysis) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAnalytics,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                )
-            }
-            GlassTonalIconButton(onClick = onExport) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                )
-            }
-            GlassTonalIconButton(onClick = onRestart) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                )
-            }
-            if (showResign) {
-                GlassTonalIconButton(onClick = onResign) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFlag,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
-            }
-            GlassTonalIconButton(onClick = onRename) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                )
+            GlassTonalButton(onClick = onSetup, enabled = setupEnabled) {
+                Text(stringResource(R.string.xiangqi_setup_action))
             }
             GlassTonalIconButton(onClick = onToggleFullscreen) {
                 Icon(
                     imageVector = if (isImmersive) Icons.Outlined.FullscreenExit else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Fullscreen,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.xiangqi_fullscreen),
                     modifier = Modifier.size(20.dp),
                 )
+            }
+            Box {
+                GlassTonalIconButton(onClick = { more = true }, enabled = enabled) {
+                    Icon(Icons.Outlined.MoreVert, stringResource(R.string.xiangqi_more_actions), Modifier.size(20.dp))
+                }
+                DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.xiangqi_analyze)) },
+                        onClick = { more = false; onAnalysis() },
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.xiangqi_export)) },
+                        onClick = { more = false; onExport() },
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.xiangqi_game_over_restart)) },
+                        onClick = { more = false; onRestart() },
+                    )
+                    if (showStandardGame) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.xiangqi_standard_game)) },
+                            onClick = { more = false; onStandardGame() },
+                        )
+                    }
+                    onShowOrigin?.let { showOrigin ->
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.xiangqi_setup_source)) },
+                            onClick = { more = false; showOrigin() },
+                        )
+                    }
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.xiangqi_rename_game)) },
+                        onClick = { more = false; onRename() },
+                    )
+                    if (showResign) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.xiangqi_resign)) },
+                            onClick = { more = false; onResign() },
+                        )
+                    }
+                }
             }
         }
     }

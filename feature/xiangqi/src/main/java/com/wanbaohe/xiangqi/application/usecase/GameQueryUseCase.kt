@@ -1,6 +1,7 @@
 package com.wanbaohe.xiangqi.application.usecase
 
 import com.wanbaohe.xiangqi.application.dto.GameDetail
+import com.wanbaohe.xiangqi.application.dto.GameAiPlayerConfig
 import com.wanbaohe.xiangqi.application.dto.GameSummary
 import com.wanbaohe.xiangqi.application.dto.OnlineGameMetadata
 import com.wanbaohe.xiangqi.application.dto.PlyRecord
@@ -8,6 +9,8 @@ import com.wanbaohe.xiangqi.application.port.outbound.GameStore
 import com.wanbaohe.xiangqi.application.port.outbound.MoveStore
 import com.wanbaohe.xiangqi.domain.model.GameMode
 import com.wanbaohe.xiangqi.domain.model.Side
+import com.wanbaohe.xiangqi.domain.model.PlayerType
+import com.wanbaohe.xiangqi.domain.model.GameStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
@@ -20,6 +23,13 @@ class GameQueryUseCase @Inject constructor(
     private val gameStore: GameStore,
     private val moveStore: MoveStore,
 ) {
+    companion object {
+        fun mostRecentUnfinishedHumanAiGame(games: List<GameSummary>): GameSummary? =
+            games.filter {
+                it.mode == GameMode.HUMAN_VS_LLM && it.resultText.isEmpty() &&
+                    it.status in setOf(GameStatus.PLAYING, GameStatus.CHECK, GameStatus.PAUSED)
+            }.maxByOrNull { it.lastPlayedAt }
+    }
 
     fun observeAll(): Flow<List<GameSummary>> = gameStore.observeAll()
         .combine(flowOf(Unit)) { games, _ ->
@@ -48,6 +58,12 @@ class GameQueryUseCase @Inject constructor(
         resultText = resultText,
         updatedAt = updatedAt,
         plyCount = plyCount,
+        lastPlayedAt = lastPlayedAt,
+        redAiConfig = if (redPlayerType == PlayerType.LLM)
+            GameAiPlayerConfig.decode(redPlayerConfigJson) else null,
+        blackAiConfig = if (blackPlayerType == PlayerType.LLM)
+            GameAiPlayerConfig.decode(blackPlayerConfigJson) else null,
+        origin = origin,
     )
 
     private fun com.wanbaohe.xiangqi.application.port.outbound.GameEntity.toDetail(
@@ -68,6 +84,11 @@ class GameQueryUseCase @Inject constructor(
         lastMoveAt = lastMoveAt,
         plies = plies.map { it.toRecord() },
         onlineMetadata = toOnlineMetadata(),
+        redAiConfig = if (redPlayerType == PlayerType.LLM)
+            GameAiPlayerConfig.decode(redPlayerConfigJson) else null,
+        blackAiConfig = if (blackPlayerType == PlayerType.LLM)
+            GameAiPlayerConfig.decode(blackPlayerConfigJson) else null,
+        origin = origin,
     )
 
     private fun com.wanbaohe.xiangqi.application.port.outbound.GameEntity.toOnlineMetadata(): OnlineGameMetadata {
