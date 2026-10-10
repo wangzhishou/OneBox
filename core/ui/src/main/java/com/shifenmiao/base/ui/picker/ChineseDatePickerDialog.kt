@@ -468,7 +468,7 @@ private fun MonthNavigator(
                 Icon(
                     com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
                     contentDescription = stringResource(R.string.date_picker_next_month),
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }
