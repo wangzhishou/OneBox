@@ -550,14 +550,15 @@ private fun ChatQuickStartCard(
         color = MaterialTheme.colorScheme.surfaceContainerLow,
         shape = MaterialTheme.shapes.large
     ) {
-        Row(
+        // 图标独占一行置顶: 文案拿满卡片宽度,长文案少折行;
+        // 同行图标不再随文案长度上下漂移,网格阅读起点对齐
+        Column(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(32.dp)
                     .background(
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
                         shape = CircleShape
@@ -569,12 +570,11 @@ private fun ChatQuickStartCard(
                         ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
             Text(
                 text = item.text,
-                modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
