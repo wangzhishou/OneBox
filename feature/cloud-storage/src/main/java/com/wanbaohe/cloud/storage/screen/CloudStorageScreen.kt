@@ -307,7 +307,9 @@ fun CloudStorageScreen(
             }
         }
 
-        if (selectedItems.isNotEmpty()) {
+        // 未连接云存储时不展示底部操作栏: 上传/新建目录都无处可去, 引导用户走空态里的添加入口
+        val hasConnection = currentConnection != null
+        if (hasConnection && selectedItems.isNotEmpty()) {
             OneBoxBottomActionBar(
                 primaryText = stringResource(R.string.cloud_storage_delete_selected_action, selectedItems.size),
                 onPrimaryClick = { pendingDeleteItems = selectedItems.values.toList() },
@@ -324,7 +326,7 @@ fun CloudStorageScreen(
                     }
                 },
             )
-        } else {
+        } else if (hasConnection) {
             OneBoxBottomActionBar(
                 primaryText = stringResource(R.string.cloud_storage_upload_action),
                 onPrimaryClick = { uploadLauncher.launch(arrayOf("*/*")) },
