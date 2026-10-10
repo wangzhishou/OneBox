@@ -413,13 +413,10 @@ fun RobotMessageHeader(robotContainerHeader: MessageUiModel.RobotContainerHeader
         modifier = Modifier.padding(0.dp, 6.dp),
     ) {
         Column {
-            val titleColor =
-                if (robotContainerHeader.modelSubtitle.isNotBlank()) MaterialTheme.colorScheme.onSurface
-                else MaterialTheme.colorScheme.onSurfaceVariant
             Text(
                 text = robotContainerHeader.modelName,
                 style = MaterialTheme.typography.labelMedium,
-                color = titleColor
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             if (robotContainerHeader.modelSubtitle.isNotBlank()) {
                 Text(
@@ -549,6 +546,7 @@ fun RobotMessageContent(
 ) {
     if (robotContent.answerAstNode != null) {
         RichText(
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .fillMaxWidth()
                 .flatGlassCardSegment(
@@ -584,6 +582,7 @@ fun RobotMessageMarkdownBlock(
     }
 
     RichText(
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier
             .fillMaxWidth()
             .flatGlassCardSegment(
@@ -640,7 +639,7 @@ fun RobotReasoningHeader(
                 } else {
                     RoundedCornerShape(16.dp)
                 },
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 borderWidth = 0.dp,
             ),
         ) {
@@ -664,7 +663,7 @@ fun RobotReasoningHeader(
                     Text(
                         text = stringResource(R.string.ai_reasoning_time, reasoningHeader.time),
                         style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = contentColor,
                     )
                     if (!expanded && reasoningHeader.preview.isNotBlank()) {
                         Text(
@@ -750,7 +749,7 @@ fun RobotReasoningContent(
                 modifier = Modifier.fillMaxWidth().flatGlassCardSegment(
                     segment = GlassCardSegment.Bottom,
                     shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     borderWidth = 0.dp,
                 ),
             ) {
@@ -758,7 +757,7 @@ fun RobotReasoningContent(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 22.dp, end = 14.dp, top = 2.dp, bottom = 12.dp)
+                        .padding(start = 22.dp, end = 14.dp, top = 2.dp, bottom = 14.dp)
                         .drawBehind {
                             val widthPx = lineWidth.toPx()
                             val topOffsetPx = 2.dp.toPx()
@@ -846,7 +845,7 @@ fun RobotReasoningBlock(
             modifier = Modifier.fillMaxWidth()
                 .flatGlassCardSegment(
                     segment = if (reasoningBlock.isLast) GlassCardSegment.Bottom else GlassCardSegment.Middle,
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = surfaceShape,
                     borderWidth = 0.dp,
                 ),
@@ -856,7 +855,11 @@ fun RobotReasoningBlock(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 22.dp, end = 14.dp)
+                        .padding(
+                            start = 22.dp,
+                            end = 14.dp,
+                            bottom = if (reasoningBlock.isLast) contentBottomPadding else 0.dp
+                        )
                         .drawBehind {
                             val widthPx = lineWidth.toPx()
                             drawRoundRect(
@@ -882,7 +885,7 @@ fun RobotReasoningBlock(
                             .padding(
                                 start = 12.dp,
                                 top = contentTopPadding,
-                                bottom = contentBottomPadding
+                                bottom = if (reasoningBlock.isLast) 0.dp else contentBottomPadding
                             )
                     ) {
                         CompositionLocalProvider(

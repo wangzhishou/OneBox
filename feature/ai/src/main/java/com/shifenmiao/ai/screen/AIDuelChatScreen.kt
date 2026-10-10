@@ -1615,7 +1615,7 @@ private fun DuelRobotMessageHeader(
             Text(
                 text = robotContainerHeader.modelName,
                 style = MaterialTheme.typography.labelMedium,
-                color = if (showRoleAvatar) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             if (robotContainerHeader.modelSubtitle.isNotBlank()) {
                 Text(

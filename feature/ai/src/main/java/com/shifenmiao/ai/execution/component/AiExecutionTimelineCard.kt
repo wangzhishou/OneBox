@@ -61,7 +61,6 @@ import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
 import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 import com.shifenmiao.core.R
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
@@ -107,7 +106,7 @@ fun AiExecutionTimelineCard(
             )
             .padding(horizontal = 10.dp, vertical = 6.dp)
     ) {
-        GlassSurface(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
@@ -117,9 +116,13 @@ fun AiExecutionTimelineCard(
                         onExpandedChange?.invoke(expanded)
                     }
                 }
-                .animateContentSize(),
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh
+                .animateContentSize()
+                .flatGlassCardSegment(
+                    segment = GlassCardSegment.Solo,
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    borderWidth = 0.dp,
+                ),
         ) {
             Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
                 Row(
@@ -133,7 +136,7 @@ fun AiExecutionTimelineCard(
                             text = uiModel.title,
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         uiModel.summary?.takeIf { it.isNotBlank() }?.let {
                             Spacer(modifier = Modifier.height(2.dp))
@@ -150,7 +153,7 @@ fun AiExecutionTimelineCard(
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -425,7 +428,7 @@ private fun DeepLinkActionCard(item: DeepLinkItemUiModel) {
                 color = if (primary) {
                     MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
-                    MaterialTheme.colorScheme.onSurface
+                    MaterialTheme.colorScheme.onSurfaceVariant
                 },
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -590,7 +593,7 @@ private fun ToolCallDetailBlock(
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontFamily = FontFamily.Monospace,
                 ),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         if (isJson) {
@@ -646,9 +649,9 @@ private fun StepStatusNode(status: ExecutionStepStatus) {
 @Composable
 private fun stepTextColor(status: ExecutionStepStatus): Color {
     return when (status) {
-        ExecutionStepStatus.DONE -> MaterialTheme.colorScheme.onSurface
-        ExecutionStepStatus.RUNNING -> MaterialTheme.colorScheme.onSurface
-        ExecutionStepStatus.WAITING_USER -> MaterialTheme.colorScheme.onSurface
+        ExecutionStepStatus.DONE -> MaterialTheme.colorScheme.onSurfaceVariant
+        ExecutionStepStatus.RUNNING -> MaterialTheme.colorScheme.onSurfaceVariant
+        ExecutionStepStatus.WAITING_USER -> MaterialTheme.colorScheme.onSurfaceVariant
         ExecutionStepStatus.FAILED -> MaterialTheme.colorScheme.error
         ExecutionStepStatus.PENDING -> MaterialTheme.colorScheme.onSurfaceVariant
     }
