@@ -78,6 +78,13 @@ class MmkvBrowserRepository @Inject constructor() : BrowserRepository {
         mmkv.encode(KEY_SETTINGS, json.encodeToString(settings))
     }
 
+    override fun isBookmarkMigrationDone(): Boolean =
+        mmkv.decodeBool(KEY_BOOKMARKS_MIGRATED, false)
+
+    override fun markBookmarkMigrationDone() {
+        mmkv.encode(KEY_BOOKMARKS_MIGRATED, true)
+    }
+
     override fun clearAll() {
         mmkv.removeValuesForKeys(
             arrayOf(KEY_TABS, KEY_BOOKMARKS, KEY_BOOKMARK_FOLDERS, KEY_HISTORY, KEY_SETTINGS)
@@ -91,6 +98,7 @@ class MmkvBrowserRepository @Inject constructor() : BrowserRepository {
         private const val KEY_BOOKMARK_FOLDERS = "browser_bookmark_folders"
         private const val KEY_HISTORY = "browser_history"
         private const val KEY_SETTINGS = "browser_settings"
+        private const val KEY_BOOKMARKS_MIGRATED = "bookmarks_migrated_to_room"
 
         private val defaultHistory: List<HistoryItem>
             get() {

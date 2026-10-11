@@ -1,6 +1,8 @@
 package com.shifenmiao.webview.browser
 
+import com.shifenmiao.interfaces.bookmark.UrlBookmarkService
 import com.shifenmiao.interfaces.browser.BrowserAutomationService
+import com.shifenmiao.webview.browser.bookmark.UrlBookmarkServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,4 +20,8 @@ abstract class BrowserModule {
     @Binds
     @Singleton
     abstract fun bindBrowserAutomationService(impl: BrowserAutomationServiceImpl): BrowserAutomationService
+
+    @Binds
+    @Singleton
+    abstract fun bindUrlBookmarkService(impl: UrlBookmarkServiceImpl): UrlBookmarkService
 }

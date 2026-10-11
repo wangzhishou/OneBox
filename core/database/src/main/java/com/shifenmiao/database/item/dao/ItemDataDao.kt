@@ -164,6 +164,10 @@ interface ItemDataDao {
     @Query("SELECT item_id FROM item_data_link WHERE data_id = :dataId")
     suspend fun getItemIdsByDataId(dataId: Int): List<Int>
 
+    /** 批量反查：哪些 item 已有 data 快照（书签列表的 hasSnapshot 标记用）。 */
+    @Query("SELECT item_id FROM item_data_link WHERE item_id IN (:itemIds)")
+    suspend fun getLinkedItemIds(itemIds: List<Int>): List<Int>
+
     // ── 删除 ──
 
     @Query("DELETE FROM item_data WHERE id = :id")

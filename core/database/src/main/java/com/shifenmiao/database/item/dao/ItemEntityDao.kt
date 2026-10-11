@@ -914,6 +914,24 @@ interface ItemEntityDao {
     )
     fun getLocalOfflineItems(): Flow<List<ItemWithCategories>>
 
+    // ── 网址收藏（浏览器书签）：listType + source 直查，不走 item_category JOIN ──
+    // 注意：不能用 INNER JOIN item_category，否则无分类的本地条目会整体不可见。
+
+    @Transaction
+    @Query("SELECT * FROM item WHERE list_type = :listType AND source = :source ORDER BY created_at DESC, id ASC")
+    fun observeItemsByListTypeAndSource(listType: Int, source: Source): Flow<List<ItemWithCategories>>
+
+    @Transaction
+    @Query("SELECT * FROM item WHERE list_type = :listType AND source = :source ORDER BY created_at DESC, id ASC")
+    suspend fun getItemsByListTypeAndSource(listType: Int, source: Source): List<ItemWithCategories>
+
+    @Query("SELECT * FROM item WHERE list_type = :listType AND source = :source AND url = :url LIMIT 1")
+    suspend fun getItemByUrlAndSource(listType: Int, source: Source, url: String): ItemEntity?
+
+    /** 没有任何分类关联的条目（分类被删除后的孤儿回收用）。 */
+    @Query("SELECT * FROM item WHERE list_type = :listType AND source = :source AND id NOT IN (SELECT item_id FROM item_category)")
+    suspend fun getUncategorizedItems(listType: Int, source: Source): List<ItemEntity>
+
     /** 最近访问：click_time > 0，按时间倒序限 20 */
     @Transaction
     @Query(

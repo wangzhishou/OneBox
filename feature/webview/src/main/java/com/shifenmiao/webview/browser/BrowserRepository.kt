@@ -18,6 +18,10 @@ interface BrowserRepository {
     fun loadSettings(): BrowserSettings
     fun saveSettings(settings: BrowserSettings)
 
+    /** 书签迁移标记：旧 MMKV 书签是否已迁入 Room 网址收藏。 */
+    fun isBookmarkMigrationDone(): Boolean
+    fun markBookmarkMigrationDone()
+
     fun clearAll()
 
     companion object {

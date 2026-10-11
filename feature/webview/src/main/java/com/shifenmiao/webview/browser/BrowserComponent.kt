@@ -7,6 +7,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.shifenmiao.base.utils.ImageUtils
 import com.shifenmiao.database.activity.ActivityLogRecorder
+import com.shifenmiao.interfaces.bookmark.UrlBookmark
+import com.shifenmiao.interfaces.bookmark.UrlBookmarkService
 import com.shifenmiao.interfaces.browser.BrowserAutomationService
 import com.shifenmiao.interfaces.browser.BrowserController
 import com.shifenmiao.interfaces.browser.BrowserTabInfo
@@ -35,6 +37,7 @@ class BrowserComponent @AssistedInject internal constructor(
     @Assisted val initialUrl: String = "",
     dispatchersHolder: DispatchersHolder,
     private val repository: BrowserRepository,
+    private val bookmarkService: UrlBookmarkService,
     private val fileController: FileController,
     private val activityLogRecorder: ActivityLogRecorder,
     private val automationService: BrowserAutomationService,
@@ -46,8 +49,6 @@ class BrowserComponent @AssistedInject internal constructor(
     private val _state = MutableStateFlow(
         BrowserState(
             tabs = repository.loadTabs(),
-            bookmarks = repository.loadBookmarks(),
-            bookmarkFolders = repository.loadBookmarkFolders(),
             history = repository.loadHistory(),
             settings = repository.loadSettings(),
         )
@@ -56,6 +57,8 @@ class BrowserComponent @AssistedInject internal constructor(
 
     init {
         initializeTabs(initialUrl)
+        observeUrlBookmarks()
+        observeBookmarkCategories()
         automationService.attach(this)
         componentContext.lifecycle.doOnDestroy {
             automationService.detach()
@@ -65,6 +68,44 @@ class BrowserComponent @AssistedInject internal constructor(
             navigator.detach()
         }
     }
+
+    /** 书签与「网址收藏」共用 Room 存储，由 Flow 驱动 state，写操作无需手动刷新。 */
+    private fun observeUrlBookmarks() {
+        componentScope.launch {
+            bookmarkService.observeBookmarks().collect { bookmarks ->
+                _state.update { it.copy(bookmarks = bookmarks.map(::toBookmarkItem)) }
+            }
+        }
+    }
+
+    private fun observeBookmarkCategories() {
+        componentScope.launch {
+            bookmarkService.observeCategories().collect { categories ->
+                _state.update {
+                    it.copy(
+                        bookmarkFolders = categories.mapIndexed { index, category ->
+                            BookmarkFolder(
+                                id = category.id.toString(),
+                                name = category.name,
+                                order = index,
+                                canEdit = category.canEdit,
+                                isLocal = category.isLocal,
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun toBookmarkItem(bookmark: UrlBookmark) = BookmarkItem(
+        id = bookmark.itemId.toString(),
+        url = bookmark.url,
+        title = bookmark.title,
+        folderId = bookmark.categoryIds.firstOrNull()?.toString() ?: "",
+        favicon = bookmark.url.toFaviconUrl(),
+        timestamp = bookmark.createdAt,
+    )
 
     private fun initializeTabs(url: String) {
         val currentTabs = _state.value.tabs
@@ -241,85 +282,53 @@ class BrowserComponent @AssistedInject internal constructor(
     fun toggleBookmark() {
         val url = _state.value.currentUrl
         if (url.isEmpty()) return
-        val existing = _state.value.bookmarks.find { it.url == url }
-        if (existing != null) {
-            _state.update { it.copy(bookmarks = it.bookmarks.filter { b -> b.url != url }) }
-        } else {
-            val item = BookmarkItem(
-                id = uuid(),
-                url = url,
-                title = _state.value.currentTitle.ifEmpty { url },
-                favicon = url.toFaviconUrl()
-            )
-            _state.update { it.copy(bookmarks = it.bookmarks + item) }
+        val title = _state.value.currentTitle.ifEmpty { url }
+        componentScope.launch(ioDispatcher) {
+            if (bookmarkService.findByUrl(url) != null) {
+                bookmarkService.removeByUrl(url)
+            } else {
+                bookmarkService.saveBookmark(url, title)
+            }
         }
-        repository.saveBookmarks(_state.value.bookmarks)
     }
 
     fun addBookmark(url: String, title: String, folderId: String = "") {
         if (url.isEmpty()) return
-        val existing = _state.value.bookmarks.find { it.url == url }
-        if (existing != null) {
-            _state.update {
-                it.copy(bookmarks = it.bookmarks.map { b ->
-                    if (b.url == url) b.copy(title = title.ifEmpty { b.title }, folderId = folderId)
-                    else b
-                })
-            }
-        } else {
-            val item = BookmarkItem(
-                id = uuid(),
+        componentScope.launch(ioDispatcher) {
+            bookmarkService.saveBookmark(
                 url = url,
                 title = title.ifEmpty { url },
-                folderId = folderId,
-                favicon = url.toFaviconUrl()
+                categoryId = folderId.toLongOrNull(),
             )
-            _state.update { it.copy(bookmarks = it.bookmarks + item) }
         }
-        repository.saveBookmarks(_state.value.bookmarks)
     }
 
     fun removeBookmark(bookmarkId: String) {
-        _state.update { it.copy(bookmarks = it.bookmarks.filter { b -> b.id != bookmarkId }) }
-        repository.saveBookmarks(_state.value.bookmarks)
+        val itemId = bookmarkId.toLongOrNull() ?: return
+        componentScope.launch(ioDispatcher) {
+            bookmarkService.removeBookmark(itemId)
+        }
     }
 
     fun addBookmarkFolder(name: String) {
-        val folder = BookmarkFolder(
-            id = uuid(),
-            name = name,
-            order = _state.value.bookmarkFolders.size
-        )
-        _state.update { it.copy(bookmarkFolders = it.bookmarkFolders + folder) }
-        repository.saveBookmarkFolders(_state.value.bookmarkFolders)
+        if (name.isBlank()) return
+        componentScope.launch(ioDispatcher) {
+            bookmarkService.createCategory(name)
+        }
     }
 
     fun renameBookmarkFolder(folderId: String, newName: String) {
-        _state.update {
-            it.copy(bookmarkFolders = it.bookmarkFolders.map { f ->
-                if (f.id == folderId) f.copy(name = newName) else f
-            })
+        val categoryId = folderId.toLongOrNull() ?: return
+        componentScope.launch(ioDispatcher) {
+            bookmarkService.renameCategory(categoryId, newName)
         }
-        repository.saveBookmarkFolders(_state.value.bookmarkFolders)
     }
 
     fun deleteBookmarkFolder(folderId: String) {
-        _state.update {
-            it.copy(
-                bookmarkFolders = it.bookmarkFolders.filter { f -> f.id != folderId },
-                bookmarks = it.bookmarks.map { b ->
-                    if (b.folderId == folderId) b.copy(folderId = "") else b
-                }
-            )
+        val categoryId = folderId.toLongOrNull() ?: return
+        componentScope.launch(ioDispatcher) {
+            bookmarkService.deleteCategory(categoryId)
         }
-        repository.saveBookmarkFolders(_state.value.bookmarkFolders)
-        repository.saveBookmarks(_state.value.bookmarks)
-    }
-
-    fun reorderBookmarkFolders(folders: List<BookmarkFolder>) {
-        val reordered = folders.mapIndexed { index, folder -> folder.copy(order = index) }
-        _state.update { it.copy(bookmarkFolders = reordered) }
-        repository.saveBookmarkFolders(reordered)
     }
 
     fun clearHistory() {
@@ -402,11 +411,11 @@ class BrowserComponent @AssistedInject internal constructor(
         navigator.clearCache()
         repository.clearAll()
         val defaultTab = BrowserTab(id = uuid(), isActive = true)
+        // 书签已迁入 Room 网址收藏体系，不属于浏览器私有数据，清浏览数据不动它
         _state.update {
             it.copy(
                 tabs = listOf(defaultTab),
                 activeTabId = defaultTab.id,
-                bookmarks = emptyList(),
                 history = emptyList(),
                 settings = BrowserSettings(),
                 currentUrl = "",

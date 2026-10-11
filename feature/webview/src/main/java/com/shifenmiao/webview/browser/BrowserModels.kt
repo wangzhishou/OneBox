@@ -17,7 +17,10 @@ data class BrowserTab(
 data class BookmarkFolder(
     val id: String,
     val name: String,
-    val order: Int = 0
+    val order: Int = 0,
+    /** 全局分类池语义：远端/系统分类不可改名删除 */
+    val canEdit: Boolean = true,
+    val isLocal: Boolean = true,
 )
 
 @Serializable

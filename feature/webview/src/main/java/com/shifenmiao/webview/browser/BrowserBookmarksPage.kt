@@ -52,11 +52,11 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePublic
 private data class BookmarkFolderItem(
     val folder: BookmarkFolder
 ) : ManageableItem {
-    override val id: Int get() = folder.id.hashCode()
+    override val id: Int get() = folder.id.toIntOrNull() ?: folder.id.hashCode()
     override val name: String get() = folder.name
     override val order: Int get() = folder.order
-    override val canEdit: Boolean? get() = true
-    override val source: Source get() = Source.LOCAL
+    override val canEdit: Boolean? get() = folder.canEdit
+    override val source: Source get() = if (folder.isLocal) Source.LOCAL else Source.REMOTE
 }
 
 @Composable
@@ -133,9 +133,8 @@ fun BrowserBookmarksPage(component: BrowserComponent) {
             onAdd = { name -> component.addBookmarkFolder(name) },
             onDelete = { item -> component.deleteBookmarkFolder(item.folder.id) },
             onRename = { item, newName -> component.renameBookmarkFolder(item.folder.id, newName) },
-            onReorder = { items ->
-                component.reorderBookmarkFolders(items.map { it.folder })
-            }
+            // 分类池无顺序字段（按更新时间排序），拖拽排序不再持久化
+            onReorder = { }
         )
     }
 }
