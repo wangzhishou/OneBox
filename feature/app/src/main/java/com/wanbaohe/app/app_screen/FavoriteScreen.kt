@@ -61,7 +61,6 @@ import com.shifenmiao.base.ui.icon.BuildCustomIcon
 import com.shifenmiao.common.components.ClickInfoType
 import com.shifenmiao.common.components.FeaturedGrid
 import com.shifenmiao.common.components.SectionTheme
-import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
 import com.shifenmiao.common.components.sectionIconContainerColor
 import com.shifenmiao.common.handle.LocalUrlNavigator
@@ -681,8 +680,6 @@ private fun ActivityLogTimelineItem(
     isLastInDay: Boolean,
     onDeleteRequested: () -> Unit
 ) {
-    val theme = recordSectionTheme(entry.category)
-    val accent = sectionIconColor(theme)
     Column(modifier = Modifier.fillMaxWidth()) {
         if (showDateHeader) {
             Text(
@@ -700,13 +697,11 @@ private fun ActivityLogTimelineItem(
         ) {
             TimelineRail(
                 timeText = recordTimeFormat.format(entry.createdAt),
-                accent = accent,
                 isFirstInDay = isFirstInDay,
                 isLastInDay = isLastInDay
             )
             ActivityLogCard(
                 entry = entry,
-                theme = theme,
                 onDeleteRequested = onDeleteRequested,
                 modifier = Modifier
                     .weight(1f)
@@ -716,15 +711,15 @@ private fun ActivityLogTimelineItem(
     }
 }
 
-/** 左轨：时间文本 + 彩色圆点 + 连接线（组内首/尾截断） */
+/** 左轨：时间文本 + 圆点 + 连接线（组内首/尾截断），配色与卡片同属 surfaceContainer 家族 */
 @Composable
 private fun TimelineRail(
     timeText: String,
-    accent: Color,
     isFirstInDay: Boolean,
     isLastInDay: Boolean
 ) {
-    val lineColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+    val railColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val lineColor = railColor.copy(alpha = 0.28f)
     Box(
         modifier = Modifier
             .width(railWidth)
@@ -744,7 +739,7 @@ private fun TimelineRail(
         Text(
             text = timeText,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = railColor,
             maxLines = 1,
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -758,7 +753,7 @@ private fun TimelineRail(
                     top = railDotCenterY - railDotSize / 2
                 )
                 .size(railDotSize)
-                .background(accent, CircleShape)
+                .background(railColor, CircleShape)
         )
     }
 }
@@ -767,7 +762,6 @@ private fun TimelineRail(
 @Suppress("DEPRECATION")
 private fun ActivityLogCard(
     entry: ActivityLogEntry,
-    theme: SectionTheme,
     onDeleteRequested: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -792,10 +786,10 @@ private fun ActivityLogCard(
         content = {
             ActivityLogCardContent(
                 entry = entry,
-                theme = theme,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .glassRegular(shape = shape, color = sectionGradient(theme))
+                    // 操作记录卡片底色走中性 surfaceContainer（色调由玻璃管线接管）
+                    .glassRegular(shape = shape, color = MaterialTheme.colorScheme.surfaceContainer)
                     .clickable {
                         logScope.launch {
                             ActivityLogNavigator.resolve(entry, dataDraftHelper)?.let { screen ->
@@ -812,11 +806,9 @@ private fun ActivityLogCard(
 @Composable
 private fun ActivityLogCardContent(
     entry: ActivityLogEntry,
-    theme: SectionTheme,
     modifier: Modifier = Modifier
 ) {
     val localUrlNavigator = LocalUrlNavigator.current
-    val accent = sectionIconColor(theme)
     val topLabel = entry.appTitle.trim()
     var rowTitle = entry.title.trim()
     if (rowTitle.isEmpty() && entry.description.isBlank()) {
@@ -829,7 +821,7 @@ private fun ActivityLogCardContent(
                 text = topLabel,
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = accent,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -844,8 +836,9 @@ private fun ActivityLogCardContent(
                 modifier = Modifier
                     .size(46.dp)
                     .glassMedium(
+                        // 与卡片同色相，靠 GlassStyle 阶梯（Medium > Regular）比卡片深一档
                         shape = RoundedCornerShape(12.dp),
-                        color = sectionIconContainerColor(theme),
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -853,7 +846,7 @@ private fun ActivityLogCardContent(
                     imageVector = recordCategoryIcon(entry.category),
                     contentDescription = null,
                     modifier = Modifier.size(22.dp),
-                    tint = accent
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
@@ -895,32 +888,12 @@ private fun ActivityLogCardContent(
 }
 
 /**
- * 各活动分类的卡片主题色 — 复用精选卡片的 SectionTheme 体系，
- * 圆点 / 标签 / 图标用 sectionIconColor，卡片底色用 sectionGradient。
+ * 各活动分类的图标。
+ *
+ * 操作记录分区不再按分类染色：卡片、文字、时间轴、图标全部走中性
+ * surfaceContainer 家族（surfaceContainer 打底 + onSurface / onSurfaceVariant 做内容色），
+ * 分类只靠图标形状区分。
  */
-private fun recordSectionTheme(category: ActivityCategory): SectionTheme = when (category) {
-    ActivityCategory.AI_CHAT -> SectionTheme.PRIMARY
-    ActivityCategory.AI_DUEL -> SectionTheme.SECONDARY
-    ActivityCategory.AI_AGENT -> SectionTheme.TERTIARY
-    ActivityCategory.IMAGE_EDIT -> SectionTheme.SECONDARY
-    ActivityCategory.FILE_CONVERT -> SectionTheme.TERTIARY
-    ActivityCategory.NOTE_EDIT -> SectionTheme.PRIMARY
-    ActivityCategory.HTML_EDIT -> SectionTheme.SECONDARY
-    ActivityCategory.AUDIO_EDIT -> SectionTheme.TERTIARY
-    ActivityCategory.BLOG_POST -> SectionTheme.PRIMARY
-    ActivityCategory.OCR_DOCUMENT -> SectionTheme.SECONDARY
-    ActivityCategory.BOOKKEEPING -> SectionTheme.TERTIARY
-    ActivityCategory.RECORD_CENTER -> SectionTheme.PRIMARY
-    ActivityCategory.TODO -> SectionTheme.PRIMARY
-    ActivityCategory.XIANGQI -> SectionTheme.SECONDARY
-    ActivityCategory.TELEPROMPTER -> SectionTheme.TERTIARY
-    ActivityCategory.HABIT -> SectionTheme.PRIMARY
-    ActivityCategory.POEM -> SectionTheme.SECONDARY
-    ActivityCategory.HOUSEHOLD -> SectionTheme.SECONDARY
-    ActivityCategory.PERIOD -> SectionTheme.SECONDARY
-    ActivityCategory.OTHER -> SectionTheme.SURFACE
-}
-
 private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (category) {
     ActivityCategory.AI_CHAT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat
     ActivityCategory.AI_DUEL -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiDuelChat
