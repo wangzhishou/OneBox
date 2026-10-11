@@ -1,10 +1,14 @@
 package com.wanbaohe.markuplayers.presentation.export
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -44,6 +49,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import kotlin.math.roundToInt
+import androidx.compose.ui.graphics.Color as ComposeColor
 
 /**
  * 导出保存设置面板(设计稿「导出/保存」):
@@ -64,7 +70,27 @@ fun ExportSettingsSheet(
     onDismiss: () -> Unit,
     onSettingsChange: (ExportSettings) -> Unit,
     onSave: () -> Unit,
+    canOverwriteOriginal: Boolean = false,
+    validationError: String? = null,
+    saveLocation: String? = null,
+    onChooseSaveLocation: (() -> Unit)? = null,
 ) {
+    val localError = settings.validationError(sourceSize?.width ?: 0, sourceSize?.height ?: 0)
+    val errorText = validationError ?: localError?.let { error ->
+        stringResource(
+            when (error) {
+                ExportValidationError.InvalidSourceSize -> R.string.studio_export_invalid_source
+                ExportValidationError.InvalidCustomSize -> R.string.studio_export_invalid_dimensions
+                ExportValidationError.InvalidQuality -> R.string.studio_export_invalid_quality
+                ExportValidationError.UnsupportedFormat -> R.string.studio_export_invalid_format
+                ExportValidationError.TransparentJpegBackground -> R.string.studio_export_opaque_background
+                ExportValidationError.FileSizeTooSmall -> R.string.studio_export_size_too_small
+            }
+        )
+    } ?: if (!canOverwriteOriginal && !settings.saveCopy) {
+        stringResource(R.string.studio_export_copy_required)
+    } else null
+
     EnhancedModalBottomSheet(
         visible = visible,
         onDismiss = { onDismiss() },
@@ -79,6 +105,7 @@ fun ExportSettingsSheet(
         confirmButton = {
             ConfirmButton(
                 text = stringResource(R.string.markup_save),
+                enabled = errorText == null,
                 onClick = onSave
             )
         },
@@ -109,6 +136,50 @@ fun ExportSettingsSheet(
                     estimateBitmap = estimateBitmap
                 )
 
+                if (errorText != null) {
+                    Text(
+                        text = errorText,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
+                SectionLabel(text = stringResource(R.string.studio_export_purpose))
+                ExportPurposePreset.entries.chunked(2).forEach { presets ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        presets.forEach { preset ->
+                            SelectableCard(
+                                label = stringResource(
+                                    when (preset) {
+                                        ExportPurposePreset.Sharing -> R.string.studio_export_preset_sharing
+                                        ExportPurposePreset.Avatar -> R.string.studio_export_preset_avatar
+                                        ExportPurposePreset.Wallpaper -> R.string.studio_export_preset_wallpaper
+                                        ExportPurposePreset.Print -> R.string.studio_export_preset_print
+                                    }
+                                ),
+                                subtitle = stringResource(
+                                    R.string.studio_export_preset_long_edge, preset.longEdge
+                                ),
+                                selected = false,
+                                enabled = sourceSize != null && sourceSize.width > 0 && sourceSize.height > 0,
+                                onClick = {
+                                    sourceSize?.let {
+                                        onSettingsChange(
+                                            settings.withPurposePreset(preset, it.width, it.height)
+                                        )
+                                    }
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+                }
+                Text(
+                    text = stringResource(R.string.studio_export_presets_keep_ratio),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
                 SectionLabel(text = stringResource(R.string.markup_export_format))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     ExportSettings.supportedFormats.forEach { format ->
@@ -118,6 +189,49 @@ fun ExportSettingsSheet(
                             onClick = { onSettingsChange(settings.copy(format = format)) },
                             modifier = Modifier.weight(1f)
                         )
+                    }
+                }
+
+                if (settings.format == ImageFormat.Jpg) {
+                    Text(
+                        text = stringResource(R.string.studio_export_jpeg_alpha_warning),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        listOf(
+                            Color.WHITE to R.string.studio_export_color_white,
+                            Color.BLACK to R.string.studio_export_color_black,
+                            Color.LTGRAY to R.string.studio_export_color_gray,
+                            0xFFFFF4DE.toInt() to R.string.studio_export_color_cream
+                        ).forEach { (color, label) ->
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.clickable {
+                                    onSettingsChange(settings.copy(jpegBackgroundColor = color))
+                                }
+                            ) {
+                                Box(
+                                    Modifier
+                                        .size(36.dp)
+                                        .background(ComposeColor(color), ShapeDefaults.large)
+                                        .border(
+                                            if (settings.jpegBackgroundColor == color) 3.dp else 1.dp,
+                                            if (settings.jpegBackgroundColor == color) {
+                                                MaterialTheme.colorScheme.primary
+                                            } else MaterialTheme.colorScheme.outline,
+                                            ShapeDefaults.large
+                                        )
+                                )
+                                Text(
+                                    text = stringResource(label),
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
+                        }
                     }
                 }
 
@@ -231,48 +345,111 @@ fun ExportSettingsSheet(
                             modifier = Modifier.weight(1f)
                         )
                     }
-                }
-
-                SectionLabel(text = stringResource(R.string.markup_export_more))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .glassBackground(
-                            style = GlassStyle.Regular,
-                            shape = ShapeDefaults.large,
-                            color = MaterialTheme.colorScheme.surfaceContainer
-                        )
-                        .clickable {
-                            onSettingsChange(
-                                settings.copy(shareAfterSave = !settings.shareAfterSave)
-                            )
-                        }
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(R.string.markup_export_share_after),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        Text(
-                            text = stringResource(R.string.markup_export_share_after_sub),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    Switch(
-                        checked = settings.shareAfterSave,
-                        onCheckedChange = {
-                            onSettingsChange(settings.copy(shareAfterSave = it))
-                        }
+                    Text(
+                        text = stringResource(R.string.studio_export_custom_fit),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+
+                GlassOutlinedTextField(
+                    value = settings.maxFileSizeBytes?.div(1024)?.toString().orEmpty(),
+                    onValueChange = { text ->
+                        val kilobytes = text.filter(Char::isDigit).take(10).toLongOrNull()
+                        onSettingsChange(settings.copy(maxFileSizeBytes = kilobytes?.times(1024)))
+                    },
+                    label = { Text(stringResource(R.string.studio_export_file_size_limit)) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = stringResource(
+                        if (settings.format is ImageFormat.Png) {
+                            R.string.studio_export_png_limit_hint
+                        } else R.string.studio_export_lossy_limit_hint
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                SectionLabel(text = stringResource(R.string.markup_export_more))
+                if (canOverwriteOriginal) {
+                    ExportSwitchRow(
+                        label = stringResource(R.string.studio_export_save_copy),
+                        subtitle = stringResource(
+                            if (settings.saveCopy) R.string.studio_export_save_copy_hint
+                            else R.string.studio_export_overwrite_warning
+                        ),
+                        checked = settings.saveCopy,
+                        onCheckedChange = { onSettingsChange(settings.copy(saveCopy = it)) }
+                    )
+                } else {
+                    Text(
+                        text = stringResource(R.string.studio_export_copy_required),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                if (onChooseSaveLocation != null) {
+                    SelectableCard(
+                        label = stringResource(R.string.studio_export_save_location),
+                        subtitle = saveLocation ?: stringResource(R.string.studio_export_choose_location),
+                        selected = false,
+                        enabled = settings.saveCopy,
+                        onClick = onChooseSaveLocation,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else if (saveLocation != null) {
+                    Text(
+                        text = stringResource(R.string.studio_export_location_value, saveLocation),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                ExportSwitchRow(
+                    label = stringResource(R.string.markup_export_share_after),
+                    subtitle = stringResource(R.string.markup_export_share_after_sub),
+                    checked = settings.shareAfterSave,
+                    onCheckedChange = {
+                        onSettingsChange(settings.copy(shareAfterSave = it))
+                    }
+                )
 
                 Spacer(Modifier.height(8.dp))
             }
         }
     )
+}
+
+@Composable
+private fun ExportSwitchRow(
+    label: String,
+    subtitle: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = ShapeDefaults.large,
+                color = MaterialTheme.colorScheme.surfaceContainer
+            )
+            .clickable { onCheckedChange(!checked) }
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(label, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
 }
 
 @Composable
@@ -336,6 +513,7 @@ private fun SelectableCard(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -356,7 +534,7 @@ private fun SelectableCard(
                     )
                 } else Modifier
             )
-            .clickable(onClick = onClick)
+            .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 4.dp, vertical = 10.dp)
     ) {
         Text(
@@ -403,7 +581,7 @@ private fun linkedHeight(
     sourceSize: IntSize?
 ): Int {
     if (width <= 0 || sourceSize == null || sourceSize.width <= 0) return 0
-    return (width.toLong() * sourceSize.height / sourceSize.width).toInt().coerceAtLeast(1)
+    return (width.toDouble() * sourceSize.height / sourceSize.width).roundToInt().coerceAtLeast(1)
 }
 
 /** 高变动时按原图比例联动宽度 */
@@ -412,7 +590,7 @@ private fun linkedWidth(
     sourceSize: IntSize?
 ): Int {
     if (height <= 0 || sourceSize == null || sourceSize.height <= 0) return 0
-    return (height.toLong() * sourceSize.width / sourceSize.height).toInt().coerceAtLeast(1)
+    return (height.toDouble() * sourceSize.width / sourceSize.height).roundToInt().coerceAtLeast(1)
 }
 
 /** 顶部信息行:导出尺寸 / 源文件大小 / 预估导出大小,三项均拿不到时显示「--」 */
@@ -444,7 +622,7 @@ private fun ExportInfoRow(
     // 分辨率;设置/底图变化时 produceState 自动取消重算,期间保留上一次结果避免闪烁
     val estimatedBytes by produceState<Long?>(
         initialValue = null,
-        estimateBitmap, settings.format, settings.quality, targetSize
+        estimateBitmap, settings.format, settings.quality, settings.jpegBackgroundColor, targetSize
     ) {
         val bitmap = estimateBitmap
         val target = targetSize
@@ -453,7 +631,9 @@ private fun ExportInfoRow(
             return@produceState
         }
         value = withContext(Dispatchers.Default) {
-            estimateEncodedSize(bitmap, settings.format, settings.quality, target)
+            estimateEncodedSize(
+                bitmap, settings.format, settings.quality, settings.jpegBackgroundColor, target
+            )
         }
     }
     val estimatedText = estimatedBytes?.let {
@@ -517,6 +697,7 @@ private fun exportTargetSize(
     sourceSize: IntSize?
 ): IntSize? {
     sourceSize ?: return null
+    if (settings.validationError(sourceSize.width, sourceSize.height) != null) return null
     val info = settings.toImageInfo(sourceSize.width, sourceSize.height)
     return IntSize(info.width, info.height)
 }
@@ -526,14 +707,31 @@ private fun estimateEncodedSize(
     bitmap: Bitmap,
     format: ImageFormat,
     quality: Int,
+    jpegBackgroundColor: Int,
     targetSize: IntSize,
 ): Long? = runCatching {
-    val output = ByteArrayOutputStream()
-    bitmap.compress(format.toCompressFormat(), quality, output)
-    val pixels = bitmap.width.toLong() * bitmap.height
-    if (pixels <= 0) return null
-    val bytesPerPixel = output.size().toDouble() / pixels
-    (bytesPerPixel * targetSize.width * targetSize.height).toLong()
+    val flattened = if (format == ImageFormat.Jpg) {
+        Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888).apply {
+            Canvas(this).apply {
+                drawColor(jpegBackgroundColor)
+                drawBitmap(bitmap, 0f, 0f, null)
+            }
+            setHasAlpha(false)
+        }
+    } else null
+    try {
+        ByteArrayOutputStream().use { output ->
+            if (!(flattened ?: bitmap).compress(format.toCompressFormat(), quality, output)) {
+                return null
+            }
+            val pixels = bitmap.width.toLong() * bitmap.height
+            if (pixels <= 0) return null
+            val bytesPerPixel = output.size().toDouble() / pixels
+            (bytesPerPixel * targetSize.width * targetSize.height).toLong()
+        }
+    } finally {
+        flattened?.recycle()
+    }
 }.getOrNull()
 
 private fun ImageFormat.toCompressFormat(): Bitmap.CompressFormat = when (this) {

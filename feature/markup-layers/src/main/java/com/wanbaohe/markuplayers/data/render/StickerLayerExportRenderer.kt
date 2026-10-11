@@ -11,7 +11,6 @@ import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import com.wanbaohe.markuplayers.domain.render.LayerExportRenderer
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.runBlocking
 import java.io.File
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -35,11 +34,9 @@ class StickerLayerExportRenderer @Inject constructor(
         imageHeight: Int,
         filtered: Bitmap?,
     ) {
-        val type = layer.type as? LayerType.Sticker ?: return
+        if (layer.type !is LayerType.Sticker) return
         val baseSize = imageWidth * STICKER_EXPORT_BASE_RATIO
-        // 带滤镜时直接使用调用方预算的过滤后位图(与解码结果同尺寸);
-        // 否则 draw 非挂起函数,解码走 runBlocking(调用方 applier 已在 IO 线程)
-        val bitmap = filtered ?: runBlocking { decodeBitmap(type, baseSize) } ?: return
+        val bitmap = checkNotNull(filtered) { "Sticker content must be decoded before export" }
 
         // 保持贴纸宽高比(与预览侧 ContentScale.Fit 一致):长边对齐 baseSize,中心不变
         drawCentered(canvas, bitmap, baseSize)
@@ -53,6 +50,7 @@ class StickerLayerExportRenderer @Inject constructor(
         type: LayerType.Sticker,
         baseSizePx: Float,
     ): Bitmap? {
+        require(baseSizePx.isFinite() && baseSizePx > 0f) { "Sticker decode size must be positive" }
         val data: Any = when (val source = type.source) {
             is StickerSource.Emoji -> EmojiAssets.pathAt(source.emojiIndex, context)
                 ?.let { "file:///android_asset/$it" }

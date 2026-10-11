@@ -54,6 +54,7 @@ class BaiduImageProcessRepository @Inject constructor(
         op: ImageProcessOp,
         bitmap: Bitmap,
         rect: ImageProcessRect? = null,
+        maxResultPixels: Long? = null,
     ): Result<Bitmap> = try {
         val encoded = withContext(encodingDispatcher) { encodeWithinLimit(prepare(bitmap)) }
         val response = call(op, encoded, rect)
@@ -72,6 +73,14 @@ class BaiduImageProcessRepository @Inject constructor(
         }
         val bytes = Base64.decode(resultBase64, Base64.DEFAULT)
         val decoded = withContext(decodingDispatcher) {
+            maxResultPixels?.let { limit ->
+                require(limit > 0) { "Invalid image processing budget" }
+                val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
+                require(bounds.outWidth > 0 && bounds.outHeight > 0 &&
+                    bounds.outWidth.toLong() * bounds.outHeight <= limit
+                ) { "AI result exceeds this device's image processing budget" }
+            }
             BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
         } ?: error("结果图解码失败")
         "process success: op=$op path=${op.path} ${decoded.width}x${decoded.height} logId=${body.logId}"

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">Load an image with valid dimensions before exporting.</string>
+    <string name="studio_export_invalid_dimensions">Enter a positive width and height.</string>
+    <string name="studio_export_invalid_quality">Quality must be between 10 and 100.</string>
+    <string name="studio_export_invalid_format">This export format is not supported.</string>
+    <string name="studio_export_opaque_background">Choose an opaque background for JPG.</string>
+    <string name="studio_export_size_too_small">The limit must be at least 1 KB. Smaller limits cannot reliably hold an encoded image.</string>
+    <string name="studio_export_purpose">Size presets</string>
+    <string name="studio_export_preset_sharing">Sharing</string>
+    <string name="studio_export_preset_avatar">Avatar · crop first</string>
+    <string name="studio_export_preset_wallpaper">Wallpaper · crop first</string>
+    <string name="studio_export_preset_print">Large image</string>
+    <string name="studio_export_preset_long_edge">Long edge up to %1$d px</string>
+    <string name="studio_export_presets_keep_ratio">Presets keep the current image ratio and never enlarge it. Crop first if an avatar or wallpaper needs a specific ratio.</string>
+    <string name="studio_export_jpeg_alpha_warning">JPG cannot preserve transparency. Transparent pixels will be filled with the selected background color.</string>
+    <string name="studio_export_color_white">White</string>
+    <string name="studio_export_color_black">Black</string>
+    <string name="studio_export_color_gray">Gray</string>
+    <string name="studio_export_color_cream">Cream</string>
+    <string name="studio_export_custom_fit">Width and height define a maximum bounding box. The image keeps its ratio; it is never stretched.</string>
+    <string name="studio_export_file_size_limit">Maximum file size (KB, empty = no limit)</string>
+    <string name="studio_export_png_limit_hint">PNG is lossless: quality cannot reduce its size. The actual encoded file must fit the limit or export will fail.</string>
+    <string name="studio_export_lossy_limit_hint">The actual file size is checked. Quality may be reduced down to 10; if the limit still cannot be met, export fails without silently resizing.</string>
+    <string name="studio_export_save_copy">Save a copy</string>
+    <string name="studio_export_save_copy_hint">The external original and private project assets stay unchanged.</string>
+    <string name="studio_export_overwrite_warning">This replaces the external original. The change cannot be undone.</string>
+    <string name="studio_export_copy_required">This document is exported as a copy. Private project assets are never overwritten.</string>
+    <string name="studio_export_save_location">Save location</string>
+    <string name="studio_export_choose_location">Choose a folder or file</string>
+    <string name="studio_export_location_value">Save location: %1$s</string>
+    <string name="studio_recipe_title">Recipes and batch</string>
+    <string name="studio_recipe_subtitle">Reuse local edits on other photos. Cloud AI actions are not included; batch exports always save copies.</string>
+    <string name="studio_recipe_name">Recipe name</string>
+    <string name="studio_recipe_save_current">Save current edits as a recipe</string>
+    <string name="studio_recipe_library">Saved recipes</string>
+    <string name="studio_recipe_empty">No recipes yet. Save the current edits to start a library.</string>
+    <string name="studio_recipe_apply">Apply</string>
+    <string name="studio_recipe_delete">Delete recipe</string>
+    <string name="studio_recipe_selected">Selected for batch</string>
+    <string name="studio_recipe_choose">Select for batch</string>
+    <string name="studio_recipe_batch_images">Batch images</string>
+    <string name="studio_recipe_pick_images">Choose multiple images</string>
+    <string name="studio_recipe_images_selected">%1$d images selected</string>
+    <string name="studio_recipe_run_batch">Run selected recipe</string>
+    <string name="studio_recipe_cancel_batch">Cancel batch</string>
+    <string name="studio_recipe_batch_progress">%1$d of %2$d processed</string>
+    <string name="studio_recipe_batch_result">%1$d saved, %2$d failed</string>
+    <string name="studio_recipe_batch_cancelled">Cancelled after %1$d of %2$d images. Remaining images were not processed.</string>
+    <string name="studio_recipe_batch_failures">Images that could not be saved</string>
+    <string name="studio_recipe_batch_done">Batch finished</string>
+    <string name="studio_recipe_batch_partial">Batch stopped before all images were processed.</string>
+    <string name="studio_recipe_batch_local_only">Only local adjustments, filters, masks, overlays, and export settings are replayed. Originals are never modified.</string>
+    <string name="studio_recipe_error">Recipe error: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

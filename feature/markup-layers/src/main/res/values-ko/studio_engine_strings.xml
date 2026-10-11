@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">제목 없는 프로젝트</string>
+    <string name="studio_project_save_failed">프로젝트를 저장할 수 없습니다: %1$s</string>
+    <string name="studio_project_saved">프로젝트 저장됨</string>
+    <string name="studio_project_load_failed">프로젝트를 열 수 없습니다: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d은(는) 이 기기의 처리 한도를 초과합니다. 더 작은 내보내기 해상도를 선택하세요.</string>
+    <string name="studio_image_read_failed">이 이미지를 읽을 수 없습니다</string>
+    <string name="studio_image_dimensions_failed">원본 이미지 크기를 확인할 수 없습니다</string>
+    <string name="studio_task_loading">이미지 불러오는 중</string>
+    <string name="studio_task_rendering">이미지 렌더링 중</string>
+    <string name="studio_task_transforming">자르기 및 회전 적용 중</string>
+    <string name="studio_task_ai">AI로 이미지 처리 중</string>
+    <string name="studio_task_ai_download">AI 결과 저장 중</string>
+    <string name="studio_task_mask">마스크 미리보기 준비 중</string>
+    <string name="studio_processing_failed">이미지 처리 실패: %1$s</string>
+    <string name="studio_mask_target_required">이미지, 스티커 또는 그리기 레이어, 또는 배경 이미지를 선택하세요</string>
+    <string name="studio_recipe_saved">레시피 저장됨</string>
+    <string name="studio_recipe_failed">레시피 작업 실패: %1$s</string>
+    <string name="studio_batch_finished">%1$d개 이미지 저장됨, %2$d개 실패</string>
+    <string name="studio_ai_image_target_required">이미지 레이어 또는 배경 이미지를 선택하세요</string>
+    <string name="studio_ai_edit_unsupported">선택한 이미지 제공자가 이미지 편집을 지원하지 않습니다. 설정에서 편집 가능한 제공자를 선택하세요.</string>
+    <string name="studio_merge_locked">병합하기 전에 아래 레이어의 잠금을 해제하세요</string>
+    <string name="studio_merge_blended">블렌드 모드 레이어를 편집 가능하게 유지하거나, 대신 합성 이미지를 내보내세요</string>
+</resources>

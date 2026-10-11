@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Untitled project</string>
+    <string name="studio_project_save_failed">Could not save the project: %1$s</string>
+    <string name="studio_project_saved">Project saved</string>
+    <string name="studio_project_load_failed">Could not open the project: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d exceeds this device\'s processing budget. Choose a smaller export resolution.</string>
+    <string name="studio_image_read_failed">Could not read this image</string>
+    <string name="studio_image_dimensions_failed">Could not determine the original image dimensions</string>
+    <string name="studio_task_loading">Loading image</string>
+    <string name="studio_task_rendering">Rendering image</string>
+    <string name="studio_task_transforming">Applying crop and rotation</string>
+    <string name="studio_task_ai">Processing image with AI</string>
+    <string name="studio_task_ai_download">Saving the AI result</string>
+    <string name="studio_task_mask">Preparing the mask preview</string>
+    <string name="studio_processing_failed">Image processing failed: %1$s</string>
+    <string name="studio_mask_target_required">Select an image, sticker or drawing layer, or the background image</string>
+    <string name="studio_recipe_saved">Recipe saved</string>
+    <string name="studio_recipe_failed">Recipe operation failed: %1$s</string>
+    <string name="studio_batch_finished">%1$d images saved, %2$d failed</string>
+    <string name="studio_ai_image_target_required">Select an image layer or the background image</string>
+    <string name="studio_ai_edit_unsupported">The selected image provider does not support image editing. Choose an editing-capable provider in settings.</string>
+    <string name="studio_merge_locked">Unlock the layer below before merging</string>
+    <string name="studio_merge_blended">Keep blend-mode layers editable, or export the composite image instead</string>
+</resources>

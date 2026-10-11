@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Projeto sem título</string>
+    <string name="studio_project_save_failed">Não foi possível salvar o projeto: %1$s</string>
+    <string name="studio_project_saved">Projeto salvo</string>
+    <string name="studio_project_load_failed">Não foi possível abrir o projeto: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d excede o orçamento de processamento deste dispositivo. Escolha uma resolução de exportação menor.</string>
+    <string name="studio_image_read_failed">Não foi possível ler esta imagem</string>
+    <string name="studio_image_dimensions_failed">Não foi possível determinar as dimensões originais da imagem</string>
+    <string name="studio_task_loading">Carregando imagem</string>
+    <string name="studio_task_rendering">Renderizando imagem</string>
+    <string name="studio_task_transforming">Aplicando corte e rotação</string>
+    <string name="studio_task_ai">Processando imagem com IA</string>
+    <string name="studio_task_ai_download">Salvando o resultado da IA</string>
+    <string name="studio_task_mask">Preparando a prévia da máscara</string>
+    <string name="studio_processing_failed">Falha no processamento da imagem: %1$s</string>
+    <string name="studio_mask_target_required">Selecione uma imagem, adesivo ou camada de desenho, ou a imagem de fundo</string>
+    <string name="studio_recipe_saved">Receita salva</string>
+    <string name="studio_recipe_failed">Falha na operação da receita: %1$s</string>
+    <string name="studio_batch_finished">%1$d imagens salvas, %2$d falharam</string>
+    <string name="studio_ai_image_target_required">Selecione uma camada de imagem ou a imagem de fundo</string>
+    <string name="studio_ai_edit_unsupported">O provedor de imagens selecionado não oferece suporte à edição de imagens. Escolha um provedor compatível com edição nas configurações.</string>
+    <string name="studio_merge_locked">Desbloqueie a camada abaixo antes de mesclar</string>
+    <string name="studio_merge_blended">Mantenha as camadas com modo de mesclagem editáveis ou exporte a imagem composta</string>
+</resources>

@@ -1,42 +1,53 @@
 package com.wanbaohe.markuplayers.domain.history
 
-import com.wanbaohe.markuplayers.domain.model.MarkupLayer
+import com.t8rin.imagetoolbox.core.filters.presentation.serialization.UiFilterCodec
+import com.wanbaohe.markuplayers.domain.model.LayerEffect
+import com.wanbaohe.markuplayers.domain.model.LayerMask
+import com.wanbaohe.markuplayers.domain.model.LayerType
+import com.wanbaohe.markuplayers.domain.project.MarkupDocument
 
 /**
- * 快照式 undo/redo:每次图层操作(增/删/改/排序)前先 [snapshot] 记录当前状态。
- * 纯 JVM 实现,与 Compose 解耦。
+ * Snapshot the complete document before an edit, including base edits and export preferences.
+ * A gesture can take one pre-edit snapshot and apply any number of transient updates.
  */
 class LayerHistory(
     private val maxSize: Int = 50,
 ) {
 
-    private val undoStack = ArrayDeque<List<MarkupLayer>>()
-    private val redoStack = ArrayDeque<List<MarkupLayer>>()
+    init {
+        require(maxSize in 1..50) { "History capacity must be between 1 and 50" }
+    }
+
+    private val undoStack = ArrayDeque<MarkupDocument>()
+    private val redoStack = ArrayDeque<MarkupDocument>()
 
     val canUndo: Boolean get() = undoStack.isNotEmpty()
     val canRedo: Boolean get() = redoStack.isNotEmpty()
 
-    /** 在即将修改图层列表前调用,记录修改前的快照 */
-    fun snapshot(layers: List<MarkupLayer>) {
-        undoStack.addLast(layers)
-        if (undoStack.size > maxSize) undoStack.removeFirst()
+    fun snapshot(document: MarkupDocument) {
+        pushUndo(document)
         redoStack.clear()
     }
 
-    /**
-     * 撤销:返回上一个快照;[current] 为当前图层列表(压入 redo 栈)。
-     * 无可撤销时返回 null。
-     */
-    fun undo(current: List<MarkupLayer>): List<MarkupLayer>? {
+    /** Replace a coalesced edit's pre-edit snapshot; an empty history is left unchanged. */
+    fun replaceLastSnapshot(document: MarkupDocument): Boolean {
+        if (undoStack.isEmpty()) return false
+        val frozen = document.frozen()
+        undoStack.removeLast()
+        undoStack.addLast(frozen)
+        redoStack.clear()
+        return true
+    }
+
+    fun undo(current: MarkupDocument): MarkupDocument? {
         if (undoStack.isEmpty()) return null
-        redoStack.addLast(current)
+        redoStack.addLast(current.frozen())
         return undoStack.removeLast()
     }
 
-    /** 重做:返回下一个快照;无可重做时返回 null */
-    fun redo(current: List<MarkupLayer>): List<MarkupLayer>? {
+    fun redo(current: MarkupDocument): MarkupDocument? {
         if (redoStack.isEmpty()) return null
-        undoStack.addLast(current)
+        pushUndo(current)
         return redoStack.removeLast()
     }
 
@@ -44,4 +55,35 @@ class LayerHistory(
         undoStack.clear()
         redoStack.clear()
     }
+
+    private fun pushUndo(document: MarkupDocument) {
+        undoStack.addLast(document.frozen())
+        if (undoStack.size > maxSize) undoStack.removeFirst()
+    }
+
+    private fun MarkupDocument.frozen(): MarkupDocument = copy(
+        baseEffects = baseEffects.frozenEffects(),
+        baseMask = baseMask?.frozen(),
+        layers = layers.map { layer ->
+            layer.copy(
+                type = when (val type = layer.type) {
+                    is LayerType.Draw -> type.copy(
+                        strokes = type.strokes.map { it.copy(points = it.points.toList()) }
+                    )
+                    is LayerType.Text -> type.copy(decorations = type.decorations.toSet())
+                    else -> type
+                },
+                filter = layer.filter?.let(UiFilterCodec::snapshot),
+                effects = layer.effects.frozenEffects(),
+                mask = layer.mask?.frozen(),
+                imageHistory = layer.imageHistory.toList(),
+            )
+        },
+    )
+
+    private fun List<LayerEffect>.frozenEffects(): List<LayerEffect> =
+        map { it.copy(filter = UiFilterCodec.snapshot(it.filter)) }
+
+    private fun LayerMask.frozen(): LayerMask =
+        copy(strokes = strokes.map { it.copy(points = it.points.toList()) })
 }

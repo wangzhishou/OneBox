@@ -1,5 +1,6 @@
 package com.wanbaohe.markuplayers.presentation.home
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -40,17 +42,16 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.markuplayers.R
 
-/**
- * 空白画布创建面板:预设尺寸 chips(1:1 / 4:3 / 16:9 / 自定义宽高)
- * + 背景选择(滚动色板 [ColorSelectionRow] 取色 / 透明,默认透明)+ 创建。确认经 [onCreate] 交给
- * [com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent.startWithBlankCanvas],
- * backgroundColor 为 null 表示透明底。
- */
+/** Dimensions are validated before allocating a bitmap; null background means transparency. */
 @Composable
 fun BlankCanvasSheet(
     visible: Boolean,
     onDismiss: () -> Unit,
     onCreate: (width: Int, height: Int, backgroundColor: Int?) -> Unit,
+    isCreating: Boolean = false,
+    creationError: String? = null,
+    maxCanvasSide: Int = 8192,
+    maxCanvasPixels: Long = 24_000_000L,
 ) {
     // selectedPreset == canvasPresets.size 时为自定义
     var selectedPreset by rememberSaveable { mutableStateOf(0) }
@@ -66,10 +67,12 @@ fun BlankCanvasSheet(
         resolvedWidth = customWidth.toIntOrNull() ?: 0
         resolvedHeight = customHeight.toIntOrNull() ?: 0
     } else {
-        val preset = canvasPresets[selectedPreset]
+        val preset = canvasPresets[selectedPreset.coerceIn(canvasPresets.indices)]
         resolvedWidth = preset.width
         resolvedHeight = preset.height
     }
+    val validSides = resolvedWidth in 1..maxCanvasSide && resolvedHeight in 1..maxCanvasSide
+    val validPixels = validSides && resolvedWidth.toLong() * resolvedHeight <= maxCanvasPixels
 
     EnhancedModalBottomSheet(
         visible = visible,
@@ -94,27 +97,23 @@ fun BlankCanvasSheet(
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    canvasPresets.forEachIndexed { index, preset ->
-                        PresetChip(
-                            label = preset.ratioLabel,
-                            dimensions = stringResource(
-                                R.string.markup_export_dimensions,
-                                preset.width,
-                                preset.height
-                            ),
-                            selected = selectedPreset == index,
-                            onClick = { selectedPreset = index },
-                            modifier = Modifier.weight(1f)
-                        )
+                (0..canvasPresets.size).toList().chunked(3).forEach { row ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        row.forEach { index ->
+                            val preset = canvasPresets.getOrNull(index)
+                            PresetChip(
+                                label = stringResource(
+                                    preset?.ratioLabelRes ?: R.string.markup_blank_canvas_custom
+                                ),
+                                dimensions = preset?.let {
+                                    stringResource(R.string.markup_export_dimensions, it.width, it.height)
+                                },
+                                selected = selectedPreset == index,
+                                onClick = { selectedPreset = index },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                     }
-                    PresetChip(
-                        label = stringResource(R.string.markup_blank_canvas_custom),
-                        dimensions = null,
-                        selected = isCustom,
-                        onClick = { selectedPreset = canvasPresets.size },
-                        modifier = Modifier.weight(1f)
-                    )
                 }
 
                 if (isCustom) {
@@ -129,7 +128,7 @@ fun BlankCanvasSheet(
                             modifier = Modifier.weight(1f)
                         )
                         Text(
-                            text = "×",
+                            text = stringResource(R.string.studio_dimension_separator),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -138,6 +137,28 @@ fun BlankCanvasSheet(
                             value = customHeight,
                             onValueChange = { customHeight = it },
                             modifier = Modifier.weight(1f)
+                        )
+                    }
+                    when {
+                        !validSides -> Text(
+                            text = stringResource(R.string.studio_blank_invalid_size, maxCanvasSide),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        !validPixels -> Text(
+                            text = stringResource(
+                                R.string.studio_blank_pixel_limit,
+                                maxCanvasPixels
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                    creationError?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 }
@@ -169,8 +190,11 @@ fun BlankCanvasSheet(
 
                 // 创建为主操作,走项目封装的实心确认按钮
                 ConfirmButton(
-                    text = stringResource(R.string.markup_blank_canvas_create),
-                    enabled = resolvedWidth > 0 && resolvedHeight > 0,
+                    text = stringResource(
+                        if (isCreating) R.string.studio_blank_creating
+                        else R.string.markup_blank_canvas_create
+                    ),
+                    enabled = validPixels && !isCreating,
                     onClick = {
                         onCreate(
                             resolvedWidth,
@@ -199,7 +223,7 @@ private fun PresetChip(
         onClick = onClick,
         selectedColor = MaterialTheme.colorScheme.secondaryContainer,
         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-        modifier = modifier
+        modifier = modifier.heightIn(min = 48.dp)
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = label, maxLines = 1)
@@ -246,7 +270,7 @@ private fun SizeField(
 ) {
     GlassOutlinedTextField(
         value = value,
-        onValueChange = { onValueChange(it.filter(Char::isDigit).take(4)) },
+        onValueChange = { onValueChange(it.filter(Char::isDigit).take(5)) },
         label = { Text(label) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -255,13 +279,15 @@ private fun SizeField(
 }
 
 private class CanvasPreset(
-    val ratioLabel: String,
+    @StringRes val ratioLabelRes: Int,
     val width: Int,
     val height: Int,
 )
 
 private val canvasPresets = listOf(
-    CanvasPreset("1:1", 1080, 1080),
-    CanvasPreset("4:3", 1440, 1080),
-    CanvasPreset("16:9", 1920, 1080)
+    CanvasPreset(R.string.studio_ratio_square, 1080, 1080),
+    CanvasPreset(R.string.studio_ratio_landscape, 1440, 1080),
+    CanvasPreset(R.string.studio_ratio_wide, 1920, 1080),
+    CanvasPreset(R.string.studio_ratio_portrait, 1080, 1440),
+    CanvasPreset(R.string.studio_ratio_story, 1080, 1920)
 )

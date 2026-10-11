@@ -61,7 +61,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotateLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRotateRight
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
@@ -96,8 +95,6 @@ import androidx.compose.ui.graphics.ColorMatrix as ComposeColorMatrix
 fun CropToolScreen(component: MarkupLayersComponent) {
     val session = remember { CropSessionState() }
     val close = { component.setActiveTool(null) }
-    // 自由旋转角 ≠0 时可见图层会被烘焙进底图并清空图层列表(不可再单独编辑),先弹确认
-    var showBakeLayersDialog by remember { mutableStateOf(false) }
     val applyTransform = {
         if (!session.isUntouched) {
             component.applyBaseTransform(
@@ -110,19 +107,10 @@ fun CropToolScreen(component: MarkupLayersComponent) {
         }
         close()
     }
-    val confirm = {
-        if (session.freeRotation != 0f &&
-            component.layers.any { it.transform.visible }
-        ) {
-            showBakeLayersDialog = true
-        } else {
-            applyTransform()
-        }
-    }
     BackHandler(onBack = close)
 
     Column(modifier = Modifier.fillMaxSize()) {
-        CropTopBar(onCancel = close, onReset = session::reset, onConfirm = confirm)
+        CropTopBar(onCancel = close, onReset = session::reset, onConfirm = applyTransform)
         CropCanvasArea(
             component = component,
             session = session,
@@ -141,28 +129,6 @@ fun CropToolScreen(component: MarkupLayersComponent) {
         )
     }
 
-    // 烘焙确认对话框:确认后继续应用变换,取消则仅关窗、留在裁剪页(零副作用)
-    EnhancedAlertDialog(
-        visible = showBakeLayersDialog,
-        onDismissRequest = { showBakeLayersDialog = false },
-        title = { Text(stringResource(R.string.markup_crop_bake_title)) },
-        text = { Text(stringResource(R.string.markup_crop_bake_message)) },
-        dismissButton = {
-            CancelButton(
-                text = stringResource(R.string.markup_cancel),
-                onClick = { showBakeLayersDialog = false }
-            )
-        },
-        confirmButton = {
-            ConfirmButton(
-                text = stringResource(R.string.markup_confirm),
-                onClick = {
-                    showBakeLayersDialog = false
-                    applyTransform()
-                }
-            )
-        }
-    )
 }
 
 /** 裁剪会话状态:均为 pending 值,确认前不触碰 component */

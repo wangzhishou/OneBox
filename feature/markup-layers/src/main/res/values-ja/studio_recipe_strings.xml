@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">エクスポート前に有効なサイズの画像を読み込んでください。</string>
+    <string name="studio_export_invalid_dimensions">正の幅と高さを入力してください。</string>
+    <string name="studio_export_invalid_quality">品質は10から100の間で指定してください。</string>
+    <string name="studio_export_invalid_format">このエクスポート形式はサポートされていません。</string>
+    <string name="studio_export_opaque_background">JPGには不透明な背景を選択してください。</string>
+    <string name="studio_export_size_too_small">上限は最低1 KB必要です。それ未満ではエンコードされた画像を確実に保持できません。</string>
+    <string name="studio_export_purpose">サイズプリセット</string>
+    <string name="studio_export_preset_sharing">共有</string>
+    <string name="studio_export_preset_avatar">アバター・先にトリミング</string>
+    <string name="studio_export_preset_wallpaper">壁紙・先にトリミング</string>
+    <string name="studio_export_preset_print">大画像</string>
+    <string name="studio_export_preset_long_edge">長辺を最大%1$d pxまで</string>
+    <string name="studio_export_presets_keep_ratio">プリセットは現在の画像比率を維持し、拡大はしません。アバターや壁紙に特定の比率が必要な場合は先にトリミングしてください。</string>
+    <string name="studio_export_jpeg_alpha_warning">JPGは透明を保持できません。透明なピクセルは選択した背景色で塗りつぶされます。</string>
+    <string name="studio_export_color_white">白</string>
+    <string name="studio_export_color_black">黒</string>
+    <string name="studio_export_color_gray">グレー</string>
+    <string name="studio_export_color_cream">クリーム</string>
+    <string name="studio_export_custom_fit">幅と高さは最大の境界ボックスを定義します。画像は比率を維持し、引き伸ばされることはありません。</string>
+    <string name="studio_export_file_size_limit">最大ファイルサイズ（KB、空欄=無制限）</string>
+    <string name="studio_export_png_limit_hint">PNGは可逆圧縮のため、品質でサイズを縮小できません。実際にエンコードされたファイルが上限内に収まらない場合、エクスポートは失敗します。</string>
+    <string name="studio_export_lossy_limit_hint">実際のファイルサイズが確認されます。品質は10まで下げられる場合があります。それでも上限を満たせない場合、暗黙的にリサイズせずエクスポートは失敗します。</string>
+    <string name="studio_export_save_copy">コピーを保存</string>
+    <string name="studio_export_save_copy_hint">外部の元ファイルとプライベートプロジェクトのアセットは変更されません。</string>
+    <string name="studio_export_overwrite_warning">外部の元ファイルを置き換えます。この変更は元に戻せません。</string>
+    <string name="studio_export_copy_required">このドキュメントはコピーとしてエクスポートされます。プライベートプロジェクトのアセットは上書きされません。</string>
+    <string name="studio_export_save_location">保存先</string>
+    <string name="studio_export_choose_location">フォルダまたはファイルを選択</string>
+    <string name="studio_export_location_value">保存先: %1$s</string>
+    <string name="studio_recipe_title">レシピとバッチ</string>
+    <string name="studio_recipe_subtitle">ローカル編集を他の写真に再利用します。クラウドAIアクションは含まれず、バッチ書き出しは常にコピーを保存します。</string>
+    <string name="studio_recipe_name">レシピ名</string>
+    <string name="studio_recipe_save_current">現在の編集をレシピとして保存</string>
+    <string name="studio_recipe_library">保存済みレシピ</string>
+    <string name="studio_recipe_empty">レシピはまだありません。現在の編集を保存してライブラリを作成しましょう。</string>
+    <string name="studio_recipe_apply">適用</string>
+    <string name="studio_recipe_delete">レシピを削除</string>
+    <string name="studio_recipe_selected">バッチ用に選択済み</string>
+    <string name="studio_recipe_choose">バッチ用に選択</string>
+    <string name="studio_recipe_batch_images">バッチ画像</string>
+    <string name="studio_recipe_pick_images">複数の画像を選択</string>
+    <string name="studio_recipe_images_selected">%1$d枚の画像を選択中</string>
+    <string name="studio_recipe_run_batch">選択したレシピを実行</string>
+    <string name="studio_recipe_cancel_batch">バッチをキャンセル</string>
+    <string name="studio_recipe_batch_progress">%2$d件中%1$d件を処理済み</string>
+    <string name="studio_recipe_batch_result">%1$d件保存、%2$d件失敗</string>
+    <string name="studio_recipe_batch_cancelled">%2$d枚中%1$d枚でキャンセルしました。残りの画像は処理されていません。</string>
+    <string name="studio_recipe_batch_failures">保存できなかった画像</string>
+    <string name="studio_recipe_batch_done">バッチ完了</string>
+    <string name="studio_recipe_batch_partial">すべての画像を処理する前にバッチが停止しました。</string>
+    <string name="studio_recipe_batch_local_only">ローカル調整、フィルター、マスク、オーバーレイ、書き出し設定のみが再適用されます。元の画像は変更されません。</string>
+    <string name="studio_recipe_error">レシピエラー: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

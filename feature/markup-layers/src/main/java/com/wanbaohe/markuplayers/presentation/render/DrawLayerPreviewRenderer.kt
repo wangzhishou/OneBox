@@ -46,7 +46,8 @@ object DrawLayerPreviewRenderer : LayerPreviewRenderer {
         filteredBitmap: Bitmap?,
     ) {
         val type = layer.type as? LayerType.Draw ?: return
-        if (type.strokes.isEmpty()) return
+        if (layer.requiresBitmapProcessing && filteredBitmap == null) return
+        if (type.strokes.isEmpty() && filteredBitmap == null) return
 
         val density = LocalDensity.current
         Canvas(

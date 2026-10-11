@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">未命名專案</string>
+    <string name="studio_project_save_failed">專案儲存失敗：%1$s</string>
+    <string name="studio_project_saved">專案已儲存</string>
+    <string name="studio_project_load_failed">專案開啟失敗：%1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d 超出目前裝置的處理預算，請選擇較小的匯出解析度。</string>
+    <string name="studio_image_read_failed">無法讀取這張圖片</string>
+    <string name="studio_image_dimensions_failed">無法確定原圖尺寸</string>
+    <string name="studio_task_loading">正在讀取圖片</string>
+    <string name="studio_task_rendering">正在合成圖片</string>
+    <string name="studio_task_transforming">正在套用裁切和旋轉</string>
+    <string name="studio_task_ai">正在處理 AI 圖片</string>
+    <string name="studio_task_ai_download">正在儲存 AI 結果</string>
+    <string name="studio_task_mask">正在準備遮罩預覽</string>
+    <string name="studio_processing_failed">圖片處理失敗：%1$s</string>
+    <string name="studio_mask_target_required">請選擇圖片、貼圖、畫筆圖層或背景圖</string>
+    <string name="studio_recipe_saved">預設集已儲存</string>
+    <string name="studio_recipe_failed">預設集操作失敗：%1$s</string>
+    <string name="studio_batch_finished">已儲存 %1$d 張，失敗 %2$d 張</string>
+    <string name="studio_ai_image_target_required">請選擇圖片圖層或背景圖</string>
+    <string name="studio_ai_edit_unsupported">目前的圖像服務不支援圖片編輯，請在設定中選擇支援編輯的服務。</string>
+    <string name="studio_merge_locked">請先解鎖下方圖層再合併</string>
+    <string name="studio_merge_blended">請保留混合模式圖層的可編輯狀態，或直接匯出合成圖片。</string>
+</resources>

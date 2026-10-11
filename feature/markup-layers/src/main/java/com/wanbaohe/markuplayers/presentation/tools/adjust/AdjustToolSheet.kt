@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,14 +36,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.wanbaohe.markuplayers.R
-import com.wanbaohe.markuplayers.presentation.components.layerDisplayName
+import com.wanbaohe.markuplayers.presentation.components.EditorTargetSelector
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import kotlin.math.roundToInt
 
 /**
  * 「调色」底部 Tab 的独立面板:内容复用 [AdjustPanelContent]。
  * 作用目标 = 当前选中图层(写入图层 adjustments,进 undo 历史);
- * 未选中图层时作用于背景图(组件级状态,不进 undo),顶部目标指示行标明。
+ * 未选中图层时作用于背景图;图层和背景图的改动均可撤销。
  * 预览经 colorFilter 实时生效,导出时按目标烘焙。
  */
 @Composable
@@ -49,6 +52,7 @@ fun AdjustToolSheet(
     component: MarkupLayersComponent,
     onDismiss: () -> Unit,
 ) {
+    val candidateLayerId = remember(visible) { component.selectedLayerId }
     EnhancedModalBottomSheet(
         visible = visible,
         onDismiss = { onDismiss() },
@@ -57,6 +61,7 @@ fun AdjustToolSheet(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
@@ -64,21 +69,9 @@ fun AdjustToolSheet(
                     text = stringResource(R.string.markup_tool_adjust),
                     style = MaterialTheme.typography.titleMedium
                 )
-                // 目标指示:选中图层 →「当前图层:<图层名>」,未选中 →「背景图」
-                val targetLayer = component.selectedLayer
-                Text(
-                    text = if (targetLayer != null) {
-                        stringResource(
-                            R.string.markup_target_current_layer,
-                            layerDisplayName(targetLayer, component.layers)
-                        )
-                    } else {
-                        stringResource(R.string.markup_target_background)
-                    },
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                EditorTargetSelector(
+                    component = component,
+                    candidateLayerId = candidateLayerId
                 )
                 Spacer(Modifier.height(4.dp))
                 AdjustPanelContent(component = component)
@@ -100,6 +93,7 @@ fun AdjustPanelContent(
     modifier: Modifier = Modifier,
 ) {
     val adjustments = component.targetAdjustments
+    val enabled = component.selectedLayer?.transform?.locked != true
     Column(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier.fillMaxWidth()
@@ -108,6 +102,7 @@ fun AdjustPanelContent(
             icon = Icons.Outlined.LineSunny,
             label = stringResource(R.string.markup_adjust_brightness),
             value = adjustments.brightness,
+            enabled = enabled,
             onDragStart = component::beginAdjustmentsChange,
             onValueChange = {
                 component.updateBaseAdjustments(adjustments.copy(brightness = it))
@@ -117,6 +112,7 @@ fun AdjustPanelContent(
             icon = Icons.Outlined.LineContrast,
             label = stringResource(R.string.markup_adjust_contrast),
             value = adjustments.contrast,
+            enabled = enabled,
             onDragStart = component::beginAdjustmentsChange,
             onValueChange = {
                 component.updateBaseAdjustments(adjustments.copy(contrast = it))
@@ -126,6 +122,7 @@ fun AdjustPanelContent(
             icon = Icons.Outlined.LineWaterDrop,
             label = stringResource(R.string.markup_adjust_saturation),
             value = adjustments.saturation,
+            enabled = enabled,
             onDragStart = component::beginAdjustmentsChange,
             onValueChange = {
                 component.updateBaseAdjustments(adjustments.copy(saturation = it))
@@ -135,7 +132,8 @@ fun AdjustPanelContent(
             Spacer(Modifier.weight(1f))
             TextButton(
                 onClick = component::resetBaseAdjustments,
-                enabled = !adjustments.isNeutral
+                enabled = enabled && !adjustments.isNeutral,
+                modifier = Modifier.heightIn(min = 48.dp)
             ) {
                 Text(stringResource(R.string.markup_reset))
             }
@@ -148,29 +146,34 @@ private fun AdjustSliderRow(
     icon: ImageVector,
     label: String,
     value: Int,
+    enabled: Boolean,
     onDragStart: () -> Unit,
     onValueChange: (Int) -> Unit,
 ) {
     // 拖动会话跟踪:首次变更记快照(beginAdjustmentsChange),抬起复位
     var dragging by remember { mutableStateOf(false) }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(18.dp)
-        )
-        Spacer(Modifier.width(8.dp))
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(76.dp)
-        )
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = if (value > 0) stringResource(R.string.studio_signed_value, value) else value.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.End,
+                modifier = Modifier.width(40.dp)
+            )
+        }
         EnhancedSlider(
             value = value.toFloat(),
             onValueChange = {
@@ -182,14 +185,8 @@ private fun AdjustSliderRow(
             },
             onValueChangeFinished = { dragging = false },
             valueRange = -100f..100f,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = if (value > 0) "+$value" else "$value",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.End,
-            modifier = Modifier.width(40.dp)
+            enabled = enabled,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
         )
     }
 }

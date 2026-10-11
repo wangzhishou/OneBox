@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Proyecto sin título</string>
+    <string name="studio_project_save_failed">No se pudo guardar el proyecto: %1$s</string>
+    <string name="studio_project_saved">Proyecto guardado</string>
+    <string name="studio_project_load_failed">No se pudo abrir el proyecto: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d supera el presupuesto de procesamiento de este dispositivo. Elige una resolución de exportación menor.</string>
+    <string name="studio_image_read_failed">No se pudo leer esta imagen</string>
+    <string name="studio_image_dimensions_failed">No se pudieron determinar las dimensiones originales de la imagen</string>
+    <string name="studio_task_loading">Cargando imagen</string>
+    <string name="studio_task_rendering">Renderizando imagen</string>
+    <string name="studio_task_transforming">Aplicando recorte y rotación</string>
+    <string name="studio_task_ai">Procesando imagen con IA</string>
+    <string name="studio_task_ai_download">Guardando el resultado de la IA</string>
+    <string name="studio_task_mask">Preparando la vista previa de la máscara</string>
+    <string name="studio_processing_failed">Error al procesar la imagen: %1$s</string>
+    <string name="studio_mask_target_required">Selecciona una imagen, pegatina o capa de dibujo, o la imagen de fondo</string>
+    <string name="studio_recipe_saved">Receta guardada</string>
+    <string name="studio_recipe_failed">Error en la operación de la receta: %1$s</string>
+    <string name="studio_batch_finished">%1$d imágenes guardadas, %2$d fallidas</string>
+    <string name="studio_ai_image_target_required">Selecciona una capa de imagen o la imagen de fondo</string>
+    <string name="studio_ai_edit_unsupported">El proveedor de imágenes seleccionado no admite la edición de imágenes. Elige un proveedor compatible con la edición en los ajustes.</string>
+    <string name="studio_merge_locked">Desbloquea la capa inferior antes de combinar</string>
+    <string name="studio_merge_blended">Mantén las capas con modo de fusión editables, o exporta la imagen compuesta en su lugar</string>
+</resources>

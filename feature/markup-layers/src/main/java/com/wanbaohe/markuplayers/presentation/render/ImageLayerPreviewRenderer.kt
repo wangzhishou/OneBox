@@ -29,6 +29,7 @@ object ImageLayerPreviewRenderer : LayerPreviewRenderer {
         filteredBitmap: Bitmap?,
     ) {
         val type = layer.type as? LayerType.Image ?: return
+        if (layer.requiresBitmapProcessing && filteredBitmap == null) return
         val baseWidth = with(LocalDensity.current) {
             (canvasWidthPx * IMAGE_LAYER_BASE_WIDTH_RATIO).toDp()
         }

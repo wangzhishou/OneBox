@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Unbenanntes Projekt</string>
+    <string name="studio_project_save_failed">Projekt konnte nicht gespeichert werden: %1$s</string>
+    <string name="studio_project_saved">Projekt gespeichert</string>
+    <string name="studio_project_load_failed">Projekt konnte nicht geöffnet werden: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d überschreitet das Verarbeitungsbudget dieses Geräts. Wähle eine kleinere Exportauflösung.</string>
+    <string name="studio_image_read_failed">Dieses Bild konnte nicht gelesen werden</string>
+    <string name="studio_image_dimensions_failed">Die ursprünglichen Bildabmessungen konnten nicht ermittelt werden</string>
+    <string name="studio_task_loading">Bild wird geladen</string>
+    <string name="studio_task_rendering">Bild wird gerendert</string>
+    <string name="studio_task_transforming">Zuschneiden und Drehen wird angewendet</string>
+    <string name="studio_task_ai">Bild wird mit KI verarbeitet</string>
+    <string name="studio_task_ai_download">KI-Ergebnis wird gespeichert</string>
+    <string name="studio_task_mask">Maskenvorschau wird vorbereitet</string>
+    <string name="studio_processing_failed">Bildverarbeitung fehlgeschlagen: %1$s</string>
+    <string name="studio_mask_target_required">Wähle ein Bild, einen Sticker oder eine Zeichenebene oder das Hintergrundbild</string>
+    <string name="studio_recipe_saved">Rezept gespeichert</string>
+    <string name="studio_recipe_failed">Rezeptvorgang fehlgeschlagen: %1$s</string>
+    <string name="studio_batch_finished">%1$d Bilder gespeichert, %2$d fehlgeschlagen</string>
+    <string name="studio_ai_image_target_required">Wähle eine Bildebene oder das Hintergrundbild</string>
+    <string name="studio_ai_edit_unsupported">Der ausgewählte Bildanbieter unterstützt keine Bildbearbeitung. Wähle in den Einstellungen einen bearbeitungsfähigen Anbieter.</string>
+    <string name="studio_merge_locked">Entsperre die darunterliegende Ebene vor dem Zusammenführen</string>
+    <string name="studio_merge_blended">Halte Ebenen mit Mischmodus bearbeitbar oder exportiere stattdessen das zusammengesetzte Bild</string>
+</resources>

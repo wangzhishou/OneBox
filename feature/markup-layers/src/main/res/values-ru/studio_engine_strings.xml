@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Проект без названия</string>
+    <string name="studio_project_save_failed">Не удалось сохранить проект: %1$s</string>
+    <string name="studio_project_saved">Проект сохранён</string>
+    <string name="studio_project_load_failed">Не удалось открыть проект: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d превышает вычислительные возможности этого устройства. Выберите меньшее разрешение экспорта.</string>
+    <string name="studio_image_read_failed">Не удалось прочитать это изображение</string>
+    <string name="studio_image_dimensions_failed">Не удалось определить исходные размеры изображения</string>
+    <string name="studio_task_loading">Загрузка изображения</string>
+    <string name="studio_task_rendering">Отрисовка изображения</string>
+    <string name="studio_task_transforming">Применение обрезки и поворота</string>
+    <string name="studio_task_ai">Обработка изображения с помощью ИИ</string>
+    <string name="studio_task_ai_download">Сохранение результата ИИ</string>
+    <string name="studio_task_mask">Подготовка предпросмотра маски</string>
+    <string name="studio_processing_failed">Не удалось обработать изображение: %1$s</string>
+    <string name="studio_mask_target_required">Выберите изображение, стикер или слой рисунка, либо фоновое изображение</string>
+    <string name="studio_recipe_saved">Рецепт сохранён</string>
+    <string name="studio_recipe_failed">Не удалось выполнить операцию с рецептом: %1$s</string>
+    <string name="studio_batch_finished">Сохранено изображений: %1$d, не удалось: %2$d</string>
+    <string name="studio_ai_image_target_required">Выберите слой изображения или фоновое изображение</string>
+    <string name="studio_ai_edit_unsupported">Выбранный источник изображений не поддерживает редактирование. Выберите в настройках источник с поддержкой редактирования.</string>
+    <string name="studio_merge_locked">Разблокируйте нижний слой перед объединением</string>
+    <string name="studio_merge_blended">Оставьте слои с режимами наложения редактируемыми или экспортируйте составное изображение</string>
+</resources>

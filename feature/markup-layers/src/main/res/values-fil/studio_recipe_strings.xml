@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">Mag-load ng larawan na may wastong sukat bago i-export.</string>
+    <string name="studio_export_invalid_dimensions">Maglagay ng positibong lapad at taas.</string>
+    <string name="studio_export_invalid_quality">Ang kalidad ay dapat nasa pagitan ng 10 at 100.</string>
+    <string name="studio_export_invalid_format">Hindi sinusuportahan ang format ng export na ito.</string>
+    <string name="studio_export_opaque_background">Pumili ng opaque na background para sa JPG.</string>
+    <string name="studio_export_size_too_small">Ang limitasyon ay dapat hindi bababa sa 1 KB. Ang mas maliit na limitasyon ay hindi mapagkakatiwalaang makakapag-hold ng naka-encode na larawan.</string>
+    <string name="studio_export_purpose">Mga preset ng sukat</string>
+    <string name="studio_export_preset_sharing">Pagbabahagi</string>
+    <string name="studio_export_preset_avatar">Avatar · i-crop muna</string>
+    <string name="studio_export_preset_wallpaper">Wallpaper · i-crop muna</string>
+    <string name="studio_export_preset_print">Malaking larawan</string>
+    <string name="studio_export_preset_long_edge">Mahabang gilid hanggang %1$d px</string>
+    <string name="studio_export_presets_keep_ratio">Pinapanatili ng mga preset ang kasalukuyang ratio ng larawan at hindi ito pinalalaki. I-crop muna kung ang avatar o wallpaper ay nangangailangan ng partikular na ratio.</string>
+    <string name="studio_export_jpeg_alpha_warning">Hindi mapapanatili ng JPG ang transparency. Ang mga transparent na pixel ay pupunan ng napiling kulay ng background.</string>
+    <string name="studio_export_color_white">Puti</string>
+    <string name="studio_export_color_black">Itim</string>
+    <string name="studio_export_color_gray">Abuhin</string>
+    <string name="studio_export_color_cream">Krema</string>
+    <string name="studio_export_custom_fit">Ang lapad at taas ay tumutukoy sa maximum na bounding box. Pinapanatili ng larawan ang ratio nito; hindi ito binabatak.</string>
+    <string name="studio_export_file_size_limit">Maximum na laki ng file (KB, walang laman = walang limitasyon)</string>
+    <string name="studio_export_png_limit_hint">Ang PNG ay lossless: hindi mababawasan ng kalidad ang laki nito. Ang aktwal na naka-encode na file ay dapat kasya sa limitasyon o mabibigo ang export.</string>
+    <string name="studio_export_lossy_limit_hint">Sinusuri ang aktwal na laki ng file. Maaaring bawasan ang kalidad hanggang 10; kung hindi pa rin maabot ang limitasyon, mabibigo ang export nang hindi tahimik na nagbabago ng sukat.</string>
+    <string name="studio_export_save_copy">Mag-save ng kopya</string>
+    <string name="studio_export_save_copy_hint">Ang panlabas na orihinal at pribadong asset ng proyekto ay hindi nagbabago.</string>
+    <string name="studio_export_overwrite_warning">Pinapalitan nito ang panlabas na orihinal. Hindi na maibabalik ang pagbabago.</string>
+    <string name="studio_export_copy_required">Ang dokumentong ito ay ini-export bilang kopya. Ang mga pribadong asset ng proyekto ay hindi kailanman nao-overwrite.</string>
+    <string name="studio_export_save_location">Lokasyon ng save</string>
+    <string name="studio_export_choose_location">Pumili ng folder o file</string>
+    <string name="studio_export_location_value">Lokasyon ng save: %1$s</string>
+    <string name="studio_recipe_title">Mga recipe at batch</string>
+    <string name="studio_recipe_subtitle">Gamitin muli ang mga lokal na pag-edit sa iba pang mga larawan. Hindi kasama ang mga aksyon ng Cloud AI; ang mga batch export ay laging nagse-save ng mga kopya.</string>
+    <string name="studio_recipe_name">Pangalan ng recipe</string>
+    <string name="studio_recipe_save_current">I-save ang kasalukuyang mga pag-edit bilang recipe</string>
+    <string name="studio_recipe_library">Mga naka-save na recipe</string>
+    <string name="studio_recipe_empty">Wala pang recipe. I-save ang kasalukuyang mga pag-edit upang magsimula ng library.</string>
+    <string name="studio_recipe_apply">Ilapat</string>
+    <string name="studio_recipe_delete">Tanggalin ang recipe</string>
+    <string name="studio_recipe_selected">Napili para sa batch</string>
+    <string name="studio_recipe_choose">Piliin para sa batch</string>
+    <string name="studio_recipe_batch_images">Mga larawan sa batch</string>
+    <string name="studio_recipe_pick_images">Pumili ng maraming larawan</string>
+    <string name="studio_recipe_images_selected">%1$d larawan ang napili</string>
+    <string name="studio_recipe_run_batch">Patakbuhin ang napiling recipe</string>
+    <string name="studio_recipe_cancel_batch">Kanselahin ang batch</string>
+    <string name="studio_recipe_batch_progress">%1$d ng %2$d ang naproseso</string>
+    <string name="studio_recipe_batch_result">%1$d ang na-save, %2$d ang nabigo</string>
+    <string name="studio_recipe_batch_cancelled">Kinansela pagkatapos ng %1$d ng %2$d larawan. Hindi naproseso ang natitirang mga larawan.</string>
+    <string name="studio_recipe_batch_failures">Mga larawang hindi ma-save</string>
+    <string name="studio_recipe_batch_done">Tapos na ang batch</string>
+    <string name="studio_recipe_batch_partial">Huminto ang batch bago maproseso ang lahat ng larawan.</string>
+    <string name="studio_recipe_batch_local_only">Mga lokal na adjustment, filter, mask, overlay, at export setting lamang ang inuulit. Hindi kailanman binabago ang mga orihinal.</string>
+    <string name="studio_recipe_error">Error sa recipe: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

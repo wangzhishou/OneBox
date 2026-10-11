@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,6 +25,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,35 +42,44 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.base.ui.button.CancelButton
+import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.resources.icons.AutoFixHigh
 import com.t8rin.imagetoolbox.core.resources.icons.CameraAlt
 import com.t8rin.imagetoolbox.core.resources.icons.ContentPaste
+import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Image
+import com.t8rin.imagetoolbox.core.resources.icons.ImageOverlay
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
+import com.t8rin.imagetoolbox.core.resources.icons.Transparency
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.ImagePickerMode
+import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.rememberClipboardData
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
+import com.wanbaohe.markuplayers.presentation.tools.EditorTools
+import com.wanbaohe.markuplayers.domain.render.ImageMemoryBudget
+import java.text.DateFormat
+import java.util.Date
 
-/**
- * 空状态首页(设计稿「图片创作」):
- * 居中大卡片 + 相册/相机/粘贴/空白画布导入入口,下方「最近项目」横排缩略图
- * (公共最近访问表:打开图片/保存成功时记录,uri 去重,组件内 Flow 持续观察)。
- * 设计稿的「示例图」入口因项目无现成示例图资源,本期省略。
- * 顶栏走 [BaseScreen]:不传 actions,右上角显示默认 actionIcon(TopAppBarEmoji)。
- */
+/** New images, durable editable projects, and recent image files are separate entry points. */
 @Composable
 fun MarkupHomeContent(
     component: MarkupLayersComponent
@@ -86,6 +97,7 @@ fun MarkupHomeContent(
     )
     val clipboardUris by rememberClipboardData()
     var showBlankCanvasSheet by rememberSaveable { mutableStateOf(false) }
+    val canvasBudget = remember { ImageMemoryBudget() }
 
     BaseScreen(
         title = {
@@ -156,8 +168,16 @@ fun MarkupHomeContent(
                                 )
                             }
                         )
+                        Spacer(Modifier.height(16.dp))
+                        QuickTasksSection(
+                            component = component,
+                            setImage = setImage,
+                            onMakeCover = { showBlankCanvasSheet = true }
+                        )
                         Spacer(Modifier.height(24.dp))
-                        RecentProjectsSection(
+                        SavedProjectsSection(component = component)
+                        Spacer(Modifier.height(24.dp))
+                        RecentImagesSection(
                             projects = component.recentProjects,
                             onProjectClick = setImage
                         )
@@ -170,8 +190,9 @@ fun MarkupHomeContent(
     BlankCanvasSheet(
         visible = showBlankCanvasSheet,
         onDismiss = { showBlankCanvasSheet = false },
+        isCreating = component.isImageLoading,
+        maxCanvasPixels = canvasBudget.maxWorkingPixels,
         onCreate = { width, height, backgroundColor ->
-            showBlankCanvasSheet = false
             component.startWithBlankCanvas(
                 width = width,
                 height = height,
@@ -276,9 +297,208 @@ private fun ImportEntry(
     }
 }
 
-/** 最近项目:横排缩略图圆角卡片,点按直接以该图进入编辑;加载失败的项剔除 */
 @Composable
-private fun RecentProjectsSection(
+private fun QuickTasksSection(
+    component: MarkupLayersComponent,
+    setImage: (Uri) -> Unit,
+    onMakeCover: () -> Unit,
+) {
+    // 任务化入口:选图后自动进入对应工具(AI 面板);取消选图时清除待进入状态
+    val taskPicker = rememberImagePicker(
+        picker = Picker.Single,
+        onFailure = { component.requestToolOnOpen(null) },
+        onSuccess = { uris: List<Uri> -> uris.firstOrNull()?.let(setImage) }
+    )
+    val pickForAi: () -> Unit = {
+        component.requestToolOnOpen(EditorTools.ID_AI)
+        taskPicker.pickImage()
+    }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.studio_quick_tasks),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(Modifier.height(8.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            QuickTaskEntry(
+                icon = Icons.Filled.Transparency,
+                label = stringResource(R.string.studio_task_remove_bg),
+                onClick = pickForAi,
+                modifier = Modifier.weight(1f)
+            )
+            QuickTaskEntry(
+                icon = Icons.Outlined.AutoFixHigh,
+                label = stringResource(R.string.studio_task_repair_photo),
+                onClick = pickForAi,
+                modifier = Modifier.weight(1f)
+            )
+            QuickTaskEntry(
+                icon = Icons.Outlined.ImageOverlay,
+                label = stringResource(R.string.studio_task_make_cover),
+                onClick = onMakeCover,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun QuickTaskEntry(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .clip(ShapeDefaults.default)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 8.dp, vertical = 12.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+private fun SavedProjectsSection(component: MarkupLayersComponent) {
+    var deleteProjectId by rememberSaveable { mutableStateOf<String?>(null) }
+    var deleteProjectName by rememberSaveable { mutableStateOf("") }
+    val dateFormat = remember {
+        DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+    }
+
+    Text(
+        text = stringResource(R.string.studio_projects),
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+    Spacer(Modifier.height(12.dp))
+    if (component.projects.isEmpty()) {
+        Text(
+            text = stringResource(R.string.studio_projects_empty),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    } else {
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            items(component.projects, key = { it.id }) { project ->
+                val openDescription = stringResource(R.string.studio_project_open, project.name)
+                Column(
+                    modifier = Modifier
+                        .size(width = 176.dp, height = 220.dp)
+                        .clip(ShapeDefaults.default)
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                ) {
+                    Picture(
+                        model = project.thumbnailPath,
+                        contentDescription = openDescription,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(112.dp)
+                            .clickable { component.openProject(project.id) }
+                    )
+                    Text(
+                        text = project.name,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                    )
+                    Text(
+                        text = stringResource(
+                            R.string.studio_project_updated,
+                            dateFormat.format(Date(project.updatedAt))
+                        ),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(horizontal = 12.dp)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 4.dp, end = 4.dp)
+                    ) {
+                        TextButton(
+                            onClick = { component.openProject(project.id) },
+                            modifier = Modifier
+                                .weight(1f)
+                                .heightIn(min = 48.dp)
+                                .semantics { contentDescription = openDescription }
+                        ) {
+                            Text(
+                                text = stringResource(R.string.studio_project_layers, project.layerCount),
+                                maxLines = 1
+                            )
+                        }
+                        EnhancedIconButton(
+                            onClick = {
+                                deleteProjectId = project.id
+                                deleteProjectName = project.name
+                            },
+                            modifier = Modifier.size(48.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = stringResource(
+                                    R.string.studio_project_delete,
+                                    project.name
+                                ),
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+    EnhancedAlertDialog(
+        visible = deleteProjectId != null,
+        onDismissRequest = { deleteProjectId = null },
+        title = { Text(stringResource(R.string.studio_project_delete_title)) },
+        text = { Text(stringResource(R.string.studio_project_delete_message, deleteProjectName)) },
+        dismissButton = {
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = { deleteProjectId = null }
+            )
+        },
+        confirmButton = {
+            ConfirmButton(
+                text = stringResource(R.string.markup_delete),
+                onClick = {
+                    deleteProjectId?.let(component::deleteProject)
+                    deleteProjectId = null
+                }
+            )
+        }
+    )
+}
+
+/** Recent image files start a new project, unlike the editable projects above. */
+@Composable
+private fun RecentImagesSection(
     projects: List<RecentAccessEntity>,
     onProjectClick: (Uri) -> Unit,
 ) {
@@ -288,14 +508,14 @@ private fun RecentProjectsSection(
     }
 
     Text(
-        text = stringResource(R.string.markup_recent_projects),
+        text = stringResource(R.string.studio_recent_files),
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
     Spacer(Modifier.height(12.dp))
     if (visibleProjects.isEmpty()) {
         Text(
-            text = stringResource(R.string.markup_recent_projects_empty),
+            text = stringResource(R.string.studio_recent_files_empty),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

@@ -3,25 +3,34 @@ package com.wanbaohe.markuplayers.presentation.components
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,27 +44,39 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Add
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Visibility
 import com.t8rin.imagetoolbox.core.resources.icons.VisibilityOff
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.longPress
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.press
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
+import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
+import android.net.Uri
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerBlendMode
+import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
+import com.shifenmiao.base.ui.button.CancelButton
+import com.shifenmiao.base.ui.button.ConfirmButton
 import kotlin.math.roundToInt
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -63,17 +84,17 @@ import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Merge
+import androidx.compose.material.icons.outlined.GroupWork
+import androidx.compose.material.icons.outlined.LinkOff
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.LockOpen
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
-/**
- * 图层面板(设计稿「图层管理 Tab」完整版):
- * 倒序图层列表(缩略图/显隐/锁定/不透明度/混合模式/长按拖拽排序)
- * + 底部五操作(添加/删除/合并/上移/下移)。
- */
+/** Phone-first layer management; detailed controls stay off the canvas. */
 @Composable
 internal fun LayersSheet(
     visible: Boolean,
@@ -108,24 +129,40 @@ internal fun LayersSheet(
             }
         },
         sheetContent = {
-            if (component.layers.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .navigationBarsPadding()
+                    .imePadding()
+                    .padding(bottom = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Text(
-                    text = stringResource(R.string.markup_layers_empty),
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = stringResource(R.string.studio_layers_multiselect_hint),
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
-            } else {
-                LayerReorderList(component = component)
+                if (component.selectedLayerIds.isNotEmpty()) {
+                    LayerBatchActions(component)
+                }
+                if (component.layers.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.markup_layers_empty),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                } else {
+                    LayerReorderList(component = component)
+                }
+                BackgroundTargetRow(component = component)
+                component.selectedLayer?.let { layer ->
+                    SelectedLayerProperties(component = component, layer = layer)
+                }
+                LayerActionBar(component = component)
             }
-            // 背景层行:点击 = 取消图层选中(滤镜/调节目标回到背景图),无选中时高亮
-            BackgroundTargetRow(component = component)
-            LayerActionBar(
-                component = component,
-                onAddText = onAddText,
-                onAddSticker = onAddSticker,
-                onAddImage = onAddImage
-            )
         }
     )
 }
@@ -189,7 +226,7 @@ private fun LayerReorderList(component: MarkupLayersComponent) {
         state = listState,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
-            .heightIn(max = 380.dp)
+            .heightIn(max = 288.dp)
             .padding(horizontal = 16.dp)
     ) {
         itemsIndexed(
@@ -203,7 +240,7 @@ private fun LayerReorderList(component: MarkupLayersComponent) {
                 LayerRow(
                     layer = layer,
                     layers = layers,
-                    isSelected = layer.id == component.selectedLayerId,
+                    isSelected = layer.id in component.selectedLayerIds,
                     isDragging = isDragging,
                     dragHandleModifier = Modifier.longPressDraggableHandle(
                         onDragStarted = { haptics.longPress() },
@@ -214,11 +251,9 @@ private fun LayerReorderList(component: MarkupLayersComponent) {
                     onSelect = {
                         if (!layer.transform.locked) component.selectLayer(layer.id)
                     },
+                    onToggleSelection = { component.toggleLayerSelection(layer.id) },
                     onToggleVisible = { component.toggleLayerVisible(layer.id) },
                     onToggleLocked = { component.toggleLayerLocked(layer.id) },
-                    onAlphaDragStart = component::beginLayerAlphaChange,
-                    onAlphaChange = { component.updateLayerAlphaTransient(layer.id, it) },
-                    onBlendModeChange = { component.setLayerBlendMode(layer.id, it) }
                 )
             }
         }
@@ -233,13 +268,13 @@ private fun LayerRow(
     isDragging: Boolean,
     dragHandleModifier: Modifier,
     onSelect: () -> Unit,
+    onToggleSelection: () -> Unit,
     onToggleVisible: () -> Unit,
     onToggleLocked: () -> Unit,
-    onAlphaDragStart: () -> Unit,
-    onAlphaChange: (Float) -> Unit,
-    onBlendModeChange: (LayerBlendMode) -> Unit,
 ) {
     val locked = layer.transform.locked
+    val displayName = layerDisplayName(layer, layers)
+    val selectDescription = stringResource(R.string.studio_layer_select, displayName)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -253,13 +288,15 @@ private fun LayerRow(
                 resultPadding = 0.dp
             )
             .clickable(enabled = !locked, onClick = onSelect)
-            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
-        LayerStateToggles(
-            visible = layer.transform.visible,
-            locked = locked,
-            onToggleVisible = onToggleVisible,
-            onToggleLocked = onToggleLocked
+        Checkbox(
+            checked = isSelected,
+            enabled = !locked,
+            onCheckedChange = { onToggleSelection() },
+            modifier = Modifier
+                .size(48.dp)
+                .semantics { contentDescription = selectDescription }
         )
         LayerThumbnail(
             layer = layer,
@@ -267,46 +304,36 @@ private fun LayerRow(
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = layerDisplayName(layer, layers),
+                text = displayName,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            if (locked) {
                 Text(
-                    text = stringResource(R.string.markup_layer_opacity),
+                    text = stringResource(R.string.studio_layer_locked),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                LayerOpacitySlider(
-                    alpha = layer.transform.alpha,
-                    enabled = !locked,
-                    onDragStart = onAlphaDragStart,
-                    onAlphaChange = onAlphaChange,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 6.dp)
-                )
-                Text(
-                    text = "${(layer.transform.alpha * 100).roundToInt()}%",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.width(36.dp)
-                )
             }
         }
-        BlendModeDropdown(
-            current = layer.transform.blendMode,
-            enabled = !locked,
-            onChange = onBlendModeChange
+        LayerStateToggles(
+            visible = layer.transform.visible,
+            locked = locked,
+            onToggleVisible = onToggleVisible,
+            onToggleLocked = onToggleLocked
         )
-        Icon(
-            imageVector = MaterialIcons.Rounded.DragHandle,
-            contentDescription = stringResource(R.string.markup_drag_reorder),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = dragHandleModifier.padding(4.dp)
-        )
+        Box(
+            modifier = dragHandleModifier.size(48.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = MaterialIcons.Rounded.DragHandle,
+                contentDescription = stringResource(R.string.markup_drag_reorder),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
+            )
+        }
     }
 }
 
@@ -338,7 +365,7 @@ private fun LayerStateToggles(
     }
 }
 
-/** 混合模式下拉:本期只有「正常」,结构预留扩展 */
+/** Only one properties dropdown is present; rows never open nested menus. */
 @Composable
 private fun BlendModeDropdown(
     current: LayerBlendMode,
@@ -353,7 +380,8 @@ private fun BlendModeDropdown(
                 .clip(ShapeDefaults.small)
                 .background(MaterialTheme.colorScheme.surfaceContainer)
                 .clickable(enabled = enabled) { expanded = true }
-                .padding(horizontal = 8.dp, vertical = 4.dp)
+                .heightIn(min = 48.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
             Text(
                 text = blendModeName(current),
@@ -386,15 +414,332 @@ private fun BlendModeDropdown(
 @Composable
 private fun blendModeName(mode: LayerBlendMode): String = when (mode) {
     LayerBlendMode.Normal -> stringResource(R.string.markup_blend_normal)
+    LayerBlendMode.Multiply -> stringResource(R.string.studio_blend_multiply)
+    LayerBlendMode.Screen -> stringResource(R.string.studio_blend_screen)
+    LayerBlendMode.Overlay -> stringResource(R.string.studio_blend_overlay)
+    LayerBlendMode.Darken -> stringResource(R.string.studio_blend_darken)
+    LayerBlendMode.Lighten -> stringResource(R.string.studio_blend_lighten)
 }
 
-/** 底部五操作:添加/删除/合并/上移/下移,无选中或选中项锁定时对应按钮置灰 */
+@Composable
+private fun LayerBatchActions(component: MarkupLayersComponent) {
+    val selected = component.layers.filter { it.id in component.selectedLayerIds }
+    val editable = selected.filterNot { it.transform.locked }
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        Text(
+            text = stringResource(R.string.studio_layers_selected, selected.size),
+            style = MaterialTheme.typography.labelLarge
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.horizontalScroll(rememberScrollState())
+        ) {
+            LayerActionButton(
+                icon = Icons.Rounded.ContentCopy,
+                labelRes = R.string.studio_layers_duplicate,
+                enabled = editable.isNotEmpty(),
+                onClick = component::duplicateSelectedLayers
+            )
+            LayerActionButton(
+                icon = Icons.Outlined.Delete,
+                labelRes = R.string.studio_layers_delete,
+                enabled = editable.isNotEmpty(),
+                onClick = component::removeSelectedLayers
+            )
+            LayerActionButton(
+                icon = MaterialIcons.Outlined.GroupWork,
+                labelRes = R.string.studio_layers_group,
+                enabled = editable.size > 1,
+                onClick = component::groupSelectedLayers
+            )
+            LayerActionButton(
+                icon = MaterialIcons.Outlined.LinkOff,
+                labelRes = R.string.studio_layers_ungroup,
+                enabled = editable.any { it.groupId != null },
+                onClick = component::ungroupSelectedLayers
+            )
+        }
+    }
+}
+
+@Composable
+private fun SelectedLayerProperties(component: MarkupLayersComponent, layer: MarkupLayer) {
+    var expanded by rememberSaveable(layer.id) { mutableStateOf(false) }
+    var showRename by rememberSaveable(layer.id) { mutableStateOf(false) }
+    var name by rememberSaveable(layer.id) { mutableStateOf("") }
+    var nudgeStep by rememberSaveable { mutableStateOf(1) }
+    val displayName = layerDisplayName(layer, component.layers)
+    val enabled = !layer.transform.locked
+    DisposableEffect(layer.id) {
+        onDispose { component.endLayerTransformChange() }
+    }
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
+        TextButton(
+            onClick = { expanded = !expanded },
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+        ) {
+            Text(stringResource(R.string.studio_layer_properties))
+            Icon(
+                imageVector = if (expanded) MaterialIcons.Outlined.KeyboardArrowUp
+                else MaterialIcons.Outlined.KeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        if (expanded) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = displayName,
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+                TextButton(
+                    enabled = enabled,
+                    onClick = {
+                        name = displayName
+                        showRename = true
+                    }
+                ) {
+                    Text(stringResource(R.string.studio_layer_rename))
+                }
+            }
+            if (layer.type is LayerType.Image) {
+                val replacePicker = rememberImagePicker { uri: Uri ->
+                    component.replaceImageLayerAsset(layer.id, uri)
+                }
+                TextButton(
+                    enabled = enabled,
+                    onClick = { replacePicker.pickImage() },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                ) {
+                    Text(stringResource(R.string.studio_layer_replace_image))
+                }
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(R.string.markup_layer_opacity),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                LayerOpacitySlider(
+                    alpha = layer.transform.alpha,
+                    enabled = enabled,
+                    onDragStart = component::beginLayerAlphaChange,
+                    onAlphaChange = { component.updateLayerAlphaTransient(layer.id, it) },
+                    modifier = Modifier.weight(1f).padding(horizontal = 8.dp)
+                )
+                Text(
+                    text = stringResource(R.string.studio_percent, (layer.transform.alpha * 100).roundToInt()),
+                    style = MaterialTheme.typography.labelMedium
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(R.string.markup_layer_blend_mode),
+                    style = MaterialTheme.typography.labelMedium
+                )
+                BlendModeDropdown(
+                    current = layer.transform.blendMode,
+                    enabled = enabled,
+                    onChange = { component.setLayerBlendMode(layer.id, it) }
+                )
+            }
+            Text(
+                text = stringResource(R.string.studio_layer_align),
+                style = MaterialTheme.typography.labelLarge
+            )
+            Row {
+                TextButton(
+                    enabled = enabled,
+                    onClick = { component.alignLayer(layer.id, horizontal = true, position = 0.5f) },
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp)
+                ) { Text(stringResource(R.string.studio_layer_align_x)) }
+                TextButton(
+                    enabled = enabled,
+                    onClick = { component.alignLayer(layer.id, horizontal = false, position = 0.5f) },
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp)
+                ) { Text(stringResource(R.string.studio_layer_align_y)) }
+            }
+            Text(
+                text = stringResource(R.string.studio_layer_nudge),
+                style = MaterialTheme.typography.labelLarge
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                listOf(1, 10).forEach { step ->
+                    EnhancedChip(
+                        selected = nudgeStep == step,
+                        onClick = { nudgeStep = step },
+                        selectedColor = MaterialTheme.colorScheme.secondaryContainer,
+                        modifier = Modifier.heightIn(min = 48.dp)
+                    ) { Text(stringResource(R.string.studio_layer_nudge_step, step)) }
+                }
+                Spacer(Modifier.weight(1f))
+            }
+            Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
+                LayerIconButton(
+                    icon = MaterialIcons.Outlined.KeyboardArrowLeft,
+                    contentDescription = stringResource(R.string.studio_layer_nudge_left),
+                    enabled = enabled,
+                    onClick = { component.nudgeLayer(layer.id, -nudgeStep, 0) }
+                )
+                LayerIconButton(
+                    icon = MaterialIcons.Outlined.KeyboardArrowUp,
+                    contentDescription = stringResource(R.string.studio_layer_nudge_up),
+                    enabled = enabled,
+                    onClick = { component.nudgeLayer(layer.id, 0, -nudgeStep) }
+                )
+                LayerIconButton(
+                    icon = MaterialIcons.Outlined.KeyboardArrowDown,
+                    contentDescription = stringResource(R.string.studio_layer_nudge_down),
+                    enabled = enabled,
+                    onClick = { component.nudgeLayer(layer.id, 0, nudgeStep) }
+                )
+                LayerIconButton(
+                    icon = MaterialIcons.Outlined.KeyboardArrowRight,
+                    contentDescription = stringResource(R.string.studio_layer_nudge_right),
+                    enabled = enabled,
+                    onClick = { component.nudgeLayer(layer.id, nudgeStep, 0) }
+                )
+            }
+            Row {
+                TextButton(
+                    enabled = enabled,
+                    onClick = { component.flipLayer(layer.id, horizontal = true) },
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp)
+                ) { Text(stringResource(R.string.markup_crop_flip_horizontal)) }
+                TextButton(
+                    enabled = enabled,
+                    onClick = { component.flipLayer(layer.id, horizontal = false) },
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp)
+                ) { Text(stringResource(R.string.markup_crop_flip_vertical)) }
+            }
+            TransformPropertySlider(
+                label = stringResource(R.string.studio_layer_scale_label),
+                valueText = stringResource(R.string.studio_scale_value, layer.transform.scale),
+                value = layer.transform.scale.coerceIn(0.1f, 10f),
+                valueRange = 0.1f..10f,
+                enabled = enabled,
+                onStart = component::beginLayerTransformChange,
+                onChange = {
+                    component.updateLayerTransformTransient(layer.id, layer.transform.copy(scale = it))
+                },
+                onEnd = {
+                    component.layers.firstOrNull { it.id == layer.id }?.let {
+                        component.updateLayerTransformTransient(it.id, component.snapLayerTransform(it.transform))
+                    }
+                    component.endLayerTransformChange()
+                }
+            )
+            val rotation = ((layer.transform.rotation + 180f) % 360f + 360f) % 360f - 180f
+            TransformPropertySlider(
+                label = stringResource(R.string.studio_layer_rotation_label),
+                valueText = stringResource(R.string.studio_degrees_value, rotation),
+                value = rotation,
+                valueRange = -180f..180f,
+                enabled = enabled,
+                onStart = component::beginLayerTransformChange,
+                onChange = {
+                    component.updateLayerTransformTransient(layer.id, layer.transform.copy(rotation = it))
+                },
+                onEnd = {
+                    component.layers.firstOrNull { it.id == layer.id }?.let {
+                        component.updateLayerTransformTransient(it.id, component.snapLayerTransform(it.transform))
+                    }
+                    component.endLayerTransformChange()
+                }
+            )
+            Text(
+                text = stringResource(R.string.studio_layer_transform_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+    EnhancedAlertDialog(
+        visible = showRename,
+        onDismissRequest = { showRename = false },
+        title = { Text(stringResource(R.string.studio_layer_rename)) },
+        text = {
+            GlassOutlinedTextField(
+                value = name,
+                onValueChange = { name = it.take(120) },
+                label = { Text(stringResource(R.string.studio_layer_name)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        dismissButton = {
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = { showRename = false }
+            )
+        },
+        confirmButton = {
+            ConfirmButton(
+                text = stringResource(R.string.markup_confirm),
+                enabled = name.isNotBlank(),
+                onClick = {
+                    component.renameLayer(layer.id, name.trim())
+                    showRename = false
+                }
+            )
+        }
+    )
+}
+
+@Composable
+private fun TransformPropertySlider(
+    label: String,
+    valueText: String,
+    value: Float,
+    valueRange: ClosedFloatingPointRange<Float>,
+    enabled: Boolean,
+    onStart: () -> Unit,
+    onChange: (Float) -> Unit,
+    onEnd: () -> Unit,
+) {
+    var dragging by remember { mutableStateOf(false) }
+    Column {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = label, style = MaterialTheme.typography.labelMedium, modifier = Modifier.weight(1f))
+            Text(text = valueText, style = MaterialTheme.typography.labelMedium)
+        }
+        EnhancedSlider(
+            value = value,
+            enabled = enabled,
+            valueRange = valueRange,
+            onValueChange = {
+                if (!dragging) {
+                    dragging = true
+                    onStart()
+                }
+                onChange(it)
+            },
+            onValueChangeFinished = {
+                dragging = false
+                onEnd()
+            },
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+        )
+    }
+}
+
+/** Z-order controls operate on the primary layer; batch actions are separate. */
 @Composable
 private fun LayerActionBar(
     component: MarkupLayersComponent,
-    onAddText: () -> Unit,
-    onAddSticker: () -> Unit,
-    onAddImage: () -> Unit,
 ) {
     val layers = component.layers
     val selectedIndex = layers.indexOfFirst { it.id == component.selectedLayerId }
@@ -409,28 +754,6 @@ private fun LayerActionBar(
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
-        var addMenuVisible by rememberSaveable { mutableStateOf(false) }
-        Box {
-            LayerActionButton(
-                icon = Icons.Outlined.Add,
-                labelRes = R.string.markup_add_layer,
-                enabled = true,
-                onClick = { addMenuVisible = true }
-            )
-            AddLayerDropdownMenu(
-                expanded = addMenuVisible,
-                onDismiss = { addMenuVisible = false },
-                onAddText = onAddText,
-                onAddSticker = onAddSticker,
-                onAddImage = onAddImage
-            )
-        }
-        LayerActionButton(
-            icon = Icons.Outlined.Delete,
-            labelRes = R.string.markup_delete_layer,
-            enabled = canModify,
-            onClick = { selected?.let { component.removeLayer(it.id) } }
-        )
         LayerActionButton(
             icon = MaterialIcons.Outlined.Merge,
             labelRes = R.string.markup_merge_layer,
@@ -465,6 +788,7 @@ private fun LayerActionButton(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .defaultMinSize(minWidth = 48.dp, minHeight = 48.dp)
             .clip(ShapeDefaults.default)
             .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 6.dp, vertical = 6.dp)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Proyek tanpa judul</string>
+    <string name="studio_project_save_failed">Tidak dapat menyimpan proyek: %1$s</string>
+    <string name="studio_project_saved">Proyek disimpan</string>
+    <string name="studio_project_load_failed">Tidak dapat membuka proyek: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d melebihi kapasitas pemrosesan perangkat ini. Pilih resolusi ekspor yang lebih kecil.</string>
+    <string name="studio_image_read_failed">Tidak dapat membaca gambar ini</string>
+    <string name="studio_image_dimensions_failed">Tidak dapat menentukan dimensi gambar asli</string>
+    <string name="studio_task_loading">Memuat gambar</string>
+    <string name="studio_task_rendering">Merender gambar</string>
+    <string name="studio_task_transforming">Menerapkan potong dan rotasi</string>
+    <string name="studio_task_ai">Memproses gambar dengan AI</string>
+    <string name="studio_task_ai_download">Menyimpan hasil AI</string>
+    <string name="studio_task_mask">Menyiapkan pratinjau mask</string>
+    <string name="studio_processing_failed">Pemrosesan gambar gagal: %1$s</string>
+    <string name="studio_mask_target_required">Pilih gambar, stiker, atau lapisan gambar, atau gambar latar belakang</string>
+    <string name="studio_recipe_saved">Resep disimpan</string>
+    <string name="studio_recipe_failed">Operasi resep gagal: %1$s</string>
+    <string name="studio_batch_finished">%1$d gambar disimpan, %2$d gagal</string>
+    <string name="studio_ai_image_target_required">Pilih lapisan gambar atau gambar latar belakang</string>
+    <string name="studio_ai_edit_unsupported">Penyedia gambar yang dipilih tidak mendukung pengeditan gambar. Pilih penyedia yang mendukung pengeditan di pengaturan.</string>
+    <string name="studio_merge_locked">Buka kunci lapisan di bawahnya sebelum menggabungkan</string>
+    <string name="studio_merge_blended">Biarkan lapisan mode campuran tetap dapat diedit, atau ekspor gambar komposit sebagai gantinya</string>
+</resources>

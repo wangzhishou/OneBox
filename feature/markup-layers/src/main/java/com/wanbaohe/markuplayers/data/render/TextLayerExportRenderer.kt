@@ -55,12 +55,11 @@ class TextLayerExportRenderer @Inject constructor(
         // 以最长行的实测宽度作为布局宽,保证内容块紧贴文字(居中以内容为准);
         // 有 widthRatio 时按框宽折行(拖边/角改框,文字重排,字号不变)
         val contentWidth = type.widthRatio?.let {
-            (it * imageWidth).roundToInt().coerceIn(1, imageWidth)
+            (it * imageWidth).roundToInt().coerceAtLeast(1)
         } ?: type.text.split('\n')
             .maxOf { paint.measureText(it) }
             .roundToInt()
             .coerceAtLeast(1)
-            .coerceAtMost(imageWidth)
 
         val alignment = when (type.alignment) {
             LayerType.Text.TextAlignment.Left -> Layout.Alignment.ALIGN_NORMAL
@@ -121,9 +120,15 @@ class TextLayerExportRenderer @Inject constructor(
             null -> null
         } ?: Typeface.DEFAULT
 
-        val style = (if (LayerType.Text.Decoration.Bold in decorations) Typeface.BOLD else 0) or
-            (if (LayerType.Text.Decoration.Italic in decorations) Typeface.ITALIC else 0)
+        val bold = LayerType.Text.Decoration.Bold in decorations
+        val italic = LayerType.Text.Decoration.Italic in decorations
+        val style = when {
+            bold && italic -> Typeface.BOLD_ITALIC
+            bold -> Typeface.BOLD
+            italic -> Typeface.ITALIC
+            else -> null
+        }
 
-        return if (style != 0) Typeface.create(base, style) else base
+        return style?.let { Typeface.create(base, it) } ?: base
     }
 }

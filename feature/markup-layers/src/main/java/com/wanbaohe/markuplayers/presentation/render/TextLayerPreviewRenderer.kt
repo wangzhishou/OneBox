@@ -3,7 +3,7 @@ package com.wanbaohe.markuplayers.presentation.render
 import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -93,7 +93,7 @@ object TextLayerPreviewRenderer : LayerPreviewRenderer {
                 // 有 widthRatio 时固定框宽,Compose 自动折行(与导出侧 StaticLayout 一致)
                 .then(
                     type.widthRatio?.let {
-                        Modifier.width(with(density) { (it * canvasWidthPx).toDp() })
+                        Modifier.requiredWidth(with(density) { (it * canvasWidthPx).toDp() })
                     } ?: Modifier
                 )
                 .background(

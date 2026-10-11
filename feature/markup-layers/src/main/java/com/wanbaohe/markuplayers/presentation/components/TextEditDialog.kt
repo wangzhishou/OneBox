@@ -313,6 +313,7 @@ private fun TextEditFontSheet(
     val settingsManager = LocalSettingsManager.current
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val wrongFontMessage = stringResource(CoreR.string.wrong_font)
     val exportFontsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/zip"),
         onResult = { uri ->
@@ -344,7 +345,7 @@ private fun TextEditFontSheet(
                     AppToastHost.showConfetti()
                 } else {
                     AppToastHost.showToast(
-                        message = context.getString(CoreR.string.wrong_font),
+                        message = wrongFontMessage,
                         icon = Icons.Outlined.LineText
                     )
                 }

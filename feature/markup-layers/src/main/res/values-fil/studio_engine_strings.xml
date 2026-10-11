@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Walang pamagat na proyekto</string>
+    <string name="studio_project_save_failed">Hindi ma-save ang proyekto: %1$s</string>
+    <string name="studio_project_saved">Na-save ang proyekto</string>
+    <string name="studio_project_load_failed">Hindi mabuksan ang proyekto: %1$s</string>
+    <string name="studio_processing_limit">Ang %1$d × %2$d ay lumalampas sa processing budget ng device na ito. Pumili ng mas maliit na export resolution.</string>
+    <string name="studio_image_read_failed">Hindi mabasa ang larawang ito</string>
+    <string name="studio_image_dimensions_failed">Hindi matukoy ang orihinal na dimensyon ng larawan</string>
+    <string name="studio_task_loading">Naglo-load ng larawan</string>
+    <string name="studio_task_rendering">Nagre-render ng larawan</string>
+    <string name="studio_task_transforming">Inilalapat ang crop at rotation</string>
+    <string name="studio_task_ai">Pinoproseso ang larawan gamit ang AI</string>
+    <string name="studio_task_ai_download">Sine-save ang resulta ng AI</string>
+    <string name="studio_task_mask">Inihahanda ang preview ng mask</string>
+    <string name="studio_processing_failed">Nabigo ang pagproseso ng larawan: %1$s</string>
+    <string name="studio_mask_target_required">Pumili ng larawan, sticker o drawing layer, o ang background na larawan</string>
+    <string name="studio_recipe_saved">Na-save ang recipe</string>
+    <string name="studio_recipe_failed">Nabigo ang operasyon ng recipe: %1$s</string>
+    <string name="studio_batch_finished">%1$d larawan ang na-save, %2$d ang nabigo</string>
+    <string name="studio_ai_image_target_required">Pumili ng image layer o ang background na larawan</string>
+    <string name="studio_ai_edit_unsupported">Hindi sinusuportahan ng napiling image provider ang pag-edit ng larawan. Pumili ng provider na may kakayahang mag-edit sa settings.</string>
+    <string name="studio_merge_locked">I-unlock ang layer sa ibaba bago mag-merge</string>
+    <string name="studio_merge_blended">Panatilihing naka-editable ang mga blend-mode layer, o i-export na lang ang composite na larawan</string>
+</resources>

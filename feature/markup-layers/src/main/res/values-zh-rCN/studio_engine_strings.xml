@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">未命名项目</string>
+    <string name="studio_project_save_failed">项目保存失败：%1$s</string>
+    <string name="studio_project_saved">项目已保存</string>
+    <string name="studio_project_load_failed">项目打开失败：%1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d 超出当前设备的处理预算，请选择较小的导出分辨率。</string>
+    <string name="studio_image_read_failed">无法读取这张图片</string>
+    <string name="studio_image_dimensions_failed">无法确定原图尺寸</string>
+    <string name="studio_task_loading">正在读取图片</string>
+    <string name="studio_task_rendering">正在合成图片</string>
+    <string name="studio_task_transforming">正在应用裁剪和旋转</string>
+    <string name="studio_task_ai">正在处理 AI 图片</string>
+    <string name="studio_task_ai_download">正在保存 AI 结果</string>
+    <string name="studio_task_mask">正在准备蒙版预览</string>
+    <string name="studio_processing_failed">图片处理失败：%1$s</string>
+    <string name="studio_mask_target_required">请选择图片、贴纸、画笔图层或背景图</string>
+    <string name="studio_recipe_saved">配方已保存</string>
+    <string name="studio_recipe_failed">配方操作失败：%1$s</string>
+    <string name="studio_batch_finished">已保存 %1$d 张，失败 %2$d 张</string>
+    <string name="studio_ai_image_target_required">请选择图片图层或背景图</string>
+    <string name="studio_ai_edit_unsupported">当前图像服务不支持图片编辑，请在设置中选择支持编辑的服务。</string>
+    <string name="studio_merge_locked">请先解锁下方图层再合并</string>
+    <string name="studio_merge_blended">请保留混合模式图层的可编辑状态，或直接导出合成图片。</string>
+</resources>

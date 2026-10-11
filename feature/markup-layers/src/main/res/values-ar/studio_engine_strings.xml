@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">مشروع بلا عنوان</string>
+    <string name="studio_project_save_failed">تعذر حفظ المشروع: %1$s</string>
+    <string name="studio_project_saved">تم حفظ المشروع</string>
+    <string name="studio_project_load_failed">تعذر فتح المشروع: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d يتجاوز ميزانية المعالجة لهذا الجهاز. اختر دقة تصدير أصغر.</string>
+    <string name="studio_image_read_failed">تعذر قراءة هذه الصورة</string>
+    <string name="studio_image_dimensions_failed">تعذر تحديد أبعاد الصورة الأصلية</string>
+    <string name="studio_task_loading">جارٍ تحميل الصورة</string>
+    <string name="studio_task_rendering">جارٍ عرض الصورة</string>
+    <string name="studio_task_transforming">جارٍ تطبيق القص والتدوير</string>
+    <string name="studio_task_ai">جارٍ معالجة الصورة بالذكاء الاصطناعي</string>
+    <string name="studio_task_ai_download">جارٍ حفظ نتيجة الذكاء الاصطناعي</string>
+    <string name="studio_task_mask">جارٍ تحضير معاينة القناع</string>
+    <string name="studio_processing_failed">فشلت معالجة الصورة: %1$s</string>
+    <string name="studio_mask_target_required">اختر صورة أو ملصقًا أو طبقة رسم، أو صورة الخلفية</string>
+    <string name="studio_recipe_saved">تم حفظ الوصفة</string>
+    <string name="studio_recipe_failed">فشلت عملية الوصفة: %1$s</string>
+    <string name="studio_batch_finished">تم حفظ %1$d صورة، وفشل %2$d</string>
+    <string name="studio_ai_image_target_required">اختر طبقة صورة أو صورة الخلفية</string>
+    <string name="studio_ai_edit_unsupported">موفر الصور المحدد لا يدعم تحرير الصور. اختر موفرًا يدعم التحرير من الإعدادات.</string>
+    <string name="studio_merge_locked">افتح قفل الطبقة السفلية قبل الدمج</string>
+    <string name="studio_merge_blended">أبقِ طبقات وضع الدمج قابلة للتحرير، أو صدّر الصورة المركبة بدلاً من ذلك</string>
+</resources>

@@ -74,7 +74,7 @@ internal fun LayersFloatingPanel(
 ) {
     val layers = component.layers
 
-    Column(modifier = modifier.width(160.dp)) {
+    Column(modifier = modifier.width(240.dp)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -134,6 +134,7 @@ private fun PanelHeader(
                 .weight(1f)
                 .clip(ShapeDefaults.small)
                 .clickable(onClick = onExpand)
+                .heightIn(min = 48.dp)
                 .padding(vertical = 4.dp)
         )
         LayerIconButton(
@@ -179,7 +180,7 @@ private fun CompactLayerList(component: MarkupLayersComponent) {
     LazyColumn(
         state = listState,
         verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.heightIn(max = 116.dp)
+        modifier = Modifier.heightIn(max = 168.dp)
     ) {
         // 显示倒序(顶层在上)
         itemsIndexed(
@@ -193,7 +194,7 @@ private fun CompactLayerList(component: MarkupLayersComponent) {
                 CompactLayerRow(
                     layer = layer,
                     layers = layers,
-                    isSelected = layer.id == component.selectedLayerId,
+                    isSelected = layer.id in component.selectedLayerIds,
                     onSelect = { component.selectLayer(layer.id) },
                     onToggleVisible = { component.toggleLayerVisible(layer.id) },
                     dragModifier = Modifier.longPressDraggableHandle(
@@ -273,6 +274,7 @@ private fun BackgroundRow(component: MarkupLayersComponent) {
                 resultPadding = 0.dp
             )
             .clickable { component.selectLayer(null) }
+            .heightIn(min = 48.dp)
             .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
         Picture(
@@ -327,7 +329,7 @@ private fun SelectedLayerOpacity(
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = "${(alpha * 100).roundToInt()}%",
+                text = stringResource(R.string.studio_percent, (alpha * 100).roundToInt()),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -345,8 +347,9 @@ private fun SelectedLayerOpacity(
 /** 底部操作行:删除/复制选中图层,无选中或选中项锁定时置灰 */
 @Composable
 private fun PanelActionRow(component: MarkupLayersComponent) {
-    val selected = component.layers.firstOrNull { it.id == component.selectedLayerId }
-    val canModify = selected != null && !selected.transform.locked
+    val canModify = component.layers.any {
+        it.id in component.selectedLayerIds && !it.transform.locked
+    }
     val actionTint = if (canModify) {
         MaterialTheme.colorScheme.onSurfaceVariant
     } else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
@@ -360,15 +363,17 @@ private fun PanelActionRow(component: MarkupLayersComponent) {
     ) {
         LayerIconButton(
             icon = Icons.Rounded.ContentCopy,
-            contentDescription = stringResource(R.string.markup_duplicate_layer),
-            onClick = { if (canModify) component.duplicateLayer(selected.id) },
-            tint = actionTint
+            contentDescription = stringResource(R.string.studio_layers_duplicate),
+            onClick = component::duplicateSelectedLayers,
+            tint = actionTint,
+            enabled = canModify
         )
         LayerIconButton(
             icon = Icons.Outlined.Delete,
-            contentDescription = stringResource(R.string.markup_delete_layer),
-            onClick = { if (canModify) component.removeLayer(selected.id) },
-            tint = actionTint
+            contentDescription = stringResource(R.string.studio_layers_delete),
+            onClick = component::removeSelectedLayers,
+            tint = actionTint,
+            enabled = canModify
         )
     }
 }

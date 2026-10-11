@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import android.graphics.RectF
 import com.wanbaohe.markuplayers.domain.model.BrushType
 import com.wanbaohe.markuplayers.domain.model.DrawStroke
 import com.wanbaohe.markuplayers.domain.model.DrawStrokeGeometry
@@ -35,15 +36,15 @@ class DrawLayerExportRenderer @Inject constructor() : LayerExportRenderer {
         filtered: Bitmap?,
     ) {
         val type = layer.type as? LayerType.Draw ?: return
-        if (type.strokes.isEmpty() || imageWidth <= 0 || imageHeight <= 0) return
+        if ((type.strokes.isEmpty() && filtered == null) || imageWidth <= 0 || imageHeight <= 0) return
 
         // 带滤镜时直接使用调用方预算的过滤后笔画位图(与笔画位图同尺寸)
         val layerBitmap = filtered ?: renderStrokesBitmap(type.strokes, imageWidth, imageHeight)
 
         canvas.drawBitmap(
             layerBitmap,
-            -imageWidth / 2f,
-            -imageHeight / 2f,
+            null,
+            RectF(-imageWidth / 2f, -imageHeight / 2f, imageWidth / 2f, imageHeight / 2f),
             Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
         )
     }
@@ -57,6 +58,7 @@ class DrawLayerExportRenderer @Inject constructor() : LayerExportRenderer {
         imageWidth: Int,
         imageHeight: Int,
     ): Bitmap {
+        require(imageWidth > 0 && imageHeight > 0) { "Draw content dimensions must be positive" }
         val layerBitmap = Bitmap.createBitmap(imageWidth, imageHeight, Bitmap.Config.ARGB_8888)
         val layerCanvas = Canvas(layerBitmap)
         strokes.forEach { stroke ->

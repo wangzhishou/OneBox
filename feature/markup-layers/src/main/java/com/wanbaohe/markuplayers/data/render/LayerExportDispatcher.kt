@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
+import com.wanbaohe.markuplayers.domain.model.LayerBlendMode
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.render.LayerExportRenderer
 import com.wanbaohe.markuplayers.presentation.tools.adjust.toColorMatrixValues
@@ -15,8 +16,8 @@ import kotlin.math.roundToInt
 /**
  * 导出渲染调度器:统一处理图层的定位/缩放/旋转/不透明度/可见性与调色,
  * 再把"以内容中心为原点"的画布交给具体渲染器绘制内容。
- * 图层自带滤镜([MarkupLayer.filter])时,过滤后位图由调用方预算并经
- * [filteredLayers] 传入(layerId → 位图),调度器只负责透传给渲染器。
+ * 位图内容先由 applier 解码并处理效果/蒙版,[filteredLayers] 是已处理的局部内容,
+ * 不是含定位/调色的画布截图。缺少所需处理结果会显式失败。
  * 新增图层类型时在构造参数里加一行对应渲染器即可。
  */
 @Singleton
@@ -45,38 +46,55 @@ class LayerExportDispatcher @Inject constructor(
     ) {
         val transform = layer.transform
         if (!transform.visible) return
-        val renderer = renderers.firstOrNull {
+        require(imageWidth > 0 && imageHeight > 0) { "Export dimensions must be positive" }
+        require(
+            transform.centerX.isFinite() && transform.centerY.isFinite() &&
+                transform.rotation.isFinite() && transform.scale.isFinite() &&
+                transform.scale > 0f && transform.alpha.isFinite()
+        ) { "Layer transform must have finite coordinates, alpha and positive scale" }
+        val renderer = checkNotNull(renderers.firstOrNull {
             it.supportedType.isInstance(layer.type)
-        } ?: return
+        }) { "No export renderer for ${layer.type::class.simpleName}" }
+        val filtered = filteredLayers[layer.id]
+        check(!layer.requiresBitmapProcessing || filtered != null) {
+            "Missing processed bitmap for layer ${layer.id}"
+        }
 
         canvas.save()
-        canvas.translate(
-            transform.centerX * imageWidth,
-            transform.centerY * imageHeight
-        )
-        if (transform.rotation != 0f) canvas.rotate(transform.rotation)
-        if (transform.scale != 1f) canvas.scale(transform.scale, transform.scale)
+        try {
+            canvas.translate(
+                transform.centerX * imageWidth,
+                transform.centerY * imageHeight
+            )
+            if (transform.rotation != 0f) canvas.rotate(transform.rotation)
+            canvas.scale(
+                transform.scale * if (transform.flipHorizontal) -1f else 1f,
+                transform.scale * if (transform.flipVertical) -1f else 1f
+            )
 
-        // 不透明度与调色(图层自身 adjustments)合成一个 saveLayer 的 Paint:
-        // 内容先绘进离屏层,restore 时统一带 alpha/colorFilter 合成,与预览侧
-        // graphicsLayer(alpha + colorFilter) 的观感一致
-        val layerPaint = Paint().apply {
-            alpha = (transform.alpha.coerceIn(0f, 1f) * 255).roundToInt()
-            if (!layer.adjustments.isNeutral) {
-                colorFilter = ColorMatrixColorFilter(
-                    ColorMatrix(layer.adjustments.toColorMatrixValues())
-                )
+            val layerPaint = Paint().apply {
+                alpha = (transform.alpha.coerceIn(0f, 1f) * 255).roundToInt()
+                setLayerBlendMode(transform.blendMode)
+                if (!layer.adjustments.isNeutral) {
+                    colorFilter = ColorMatrixColorFilter(
+                        ColorMatrix(layer.adjustments.toColorMatrixValues())
+                    )
+                }
             }
-        }
-        val filtered = filteredLayers[layer.id]
-        if (transform.alpha < 1f || !layer.adjustments.isNeutral) {
-            canvas.saveLayer(null, layerPaint)
-            renderer.draw(canvas, layer, imageWidth, imageHeight, filtered)
+            if (transform.alpha < 1f || !layer.adjustments.isNeutral ||
+                transform.blendMode != LayerBlendMode.Normal
+            ) {
+                canvas.saveLayer(null, layerPaint)
+                try {
+                    renderer.draw(canvas, layer, imageWidth, imageHeight, filtered)
+                } finally {
+                    canvas.restore()
+                }
+            } else {
+                renderer.draw(canvas, layer, imageWidth, imageHeight, filtered)
+            }
+        } finally {
             canvas.restore()
-        } else {
-            renderer.draw(canvas, layer, imageWidth, imageHeight, filtered)
         }
-
-        canvas.restore()
     }
 }

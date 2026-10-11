@@ -11,7 +11,9 @@ package com.wanbaohe.markuplayers.domain.model
  * @param alpha 不透明度 0..1
  * @param visible 是否可见
  * @param locked 是否锁定(锁定后不可选中/变换)
- * @param blendMode 混合模式,本期仅 [LayerBlendMode.Normal]
+ * @param blendMode 与下方所有已合成图层的混合模式
+ * @param flipHorizontal 内容中心水平翻转,先于 rotation
+ * @param flipVertical 内容中心垂直翻转,先于 rotation
  */
 data class LayerTransform(
     val centerX: Float = 0.5f,
@@ -22,9 +24,15 @@ data class LayerTransform(
     val visible: Boolean = true,
     val locked: Boolean = false,
     val blendMode: LayerBlendMode = LayerBlendMode.Normal,
+    val flipHorizontal: Boolean = false,
+    val flipVertical: Boolean = false,
 )
 
 enum class LayerBlendMode {
     Normal,
-    // 预留扩展:Multiply, Screen, Overlay ...
+    Multiply,
+    Screen,
+    Overlay,
+    Darken,
+    Lighten,
 }

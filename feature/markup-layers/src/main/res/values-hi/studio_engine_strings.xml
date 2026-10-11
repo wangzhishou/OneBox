@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">अनाम प्रोजेक्ट</string>
+    <string name="studio_project_save_failed">प्रोजेक्ट सहेजा नहीं जा सका: %1$s</string>
+    <string name="studio_project_saved">प्रोजेक्ट सहेजा गया</string>
+    <string name="studio_project_load_failed">प्रोजेक्ट खोला नहीं जा सका: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d इस डिवाइस की प्रोसेसिंग क्षमता से अधिक है। छोटा निर्यात रिज़ॉल्यूशन चुनें।</string>
+    <string name="studio_image_read_failed">यह छवि पढ़ी नहीं जा सकी</string>
+    <string name="studio_image_dimensions_failed">मूल छवि के आयाम निर्धारित नहीं किए जा सके</string>
+    <string name="studio_task_loading">छवि लोड हो रही है</string>
+    <string name="studio_task_rendering">छवि रेंडर हो रही है</string>
+    <string name="studio_task_transforming">क्रॉप और रोटेशन लागू हो रहा है</string>
+    <string name="studio_task_ai">AI से छवि प्रोसेस हो रही है</string>
+    <string name="studio_task_ai_download">AI परिणाम सहेजा जा रहा है</string>
+    <string name="studio_task_mask">मास्क पूर्वावलोकन तैयार हो रहा है</string>
+    <string name="studio_processing_failed">छवि प्रोसेसिंग विफल: %1$s</string>
+    <string name="studio_mask_target_required">एक छवि, स्टिकर या ड्रॉइंग लेयर, या पृष्ठभूमि छवि चुनें</string>
+    <string name="studio_recipe_saved">रेसिपी सहेजी गई</string>
+    <string name="studio_recipe_failed">रेसिपी संचालन विफल: %1$s</string>
+    <string name="studio_batch_finished">%1$d छवियाँ सहेजी गईं, %2$d विफल</string>
+    <string name="studio_ai_image_target_required">एक छवि लेयर या पृष्ठभूमि छवि चुनें</string>
+    <string name="studio_ai_edit_unsupported">चयनित छवि प्रदाता छवि संपादन का समर्थन नहीं करता। सेटिंग्स में संपादन-सक्षम प्रदाता चुनें।</string>
+    <string name="studio_merge_locked">मर्ज करने से पहले नीचे की लेयर अनलॉक करें</string>
+    <string name="studio_merge_blended">ब्लेंड-मोड लेयर को संपादन योग्य रखें, या इसके बजाय संयुक्त छवि निर्यात करें</string>
+</resources>

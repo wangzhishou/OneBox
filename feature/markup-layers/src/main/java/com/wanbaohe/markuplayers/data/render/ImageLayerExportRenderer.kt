@@ -4,11 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.render.LayerExportRenderer
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
@@ -16,9 +14,7 @@ import kotlin.reflect.KClass
  * 图片图层导出:imageData 经 ImageGetter 解码,
  * 基础宽度 = 原图宽 × 0.4(与预览侧一致),高度按图片宽高比自适应。
  */
-class ImageLayerExportRenderer @Inject constructor(
-    private val imageGetter: ImageGetter<Bitmap>,
-) : LayerExportRenderer {
+class ImageLayerExportRenderer @Inject constructor() : LayerExportRenderer {
 
     override val supportedType: KClass<out LayerType> = LayerType.Image::class
 
@@ -29,10 +25,8 @@ class ImageLayerExportRenderer @Inject constructor(
         imageHeight: Int,
         filtered: Bitmap?,
     ) {
-        val type = layer.type as? LayerType.Image ?: return
-        // 带滤镜时直接使用调用方预算的过滤后位图(与源图同尺寸);
-        // 否则 draw 非挂起函数,解码走 runBlocking(调用方 applier 已在 IO 线程)
-        val bitmap = filtered ?: runBlocking { imageGetter.getImage(data = type.imageData) } ?: return
+        if (layer.type !is LayerType.Image) return
+        val bitmap = checkNotNull(filtered) { "Image content must be decoded before export" }
 
         val baseWidth = imageWidth * 0.4f
         val scale = baseWidth / bitmap.width

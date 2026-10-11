@@ -60,7 +60,7 @@ fun CanvasBackgroundSheet(
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.markup_canvas_background),
+                    text = stringResource(R.string.studio_workspace_background),
                     style = MaterialTheme.typography.titleMedium
                 )
 

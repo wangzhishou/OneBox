@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">Adsız proje</string>
+    <string name="studio_project_save_failed">Proje kaydedilemedi: %1$s</string>
+    <string name="studio_project_saved">Proje kaydedildi</string>
+    <string name="studio_project_load_failed">Proje açılamadı: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d bu cihazın işlem bütçesini aşıyor. Daha küçük bir dışa aktarma çözünürlüğü seçin.</string>
+    <string name="studio_image_read_failed">Bu görüntü okunamadı</string>
+    <string name="studio_image_dimensions_failed">Orijinal görüntü boyutları belirlenemedi</string>
+    <string name="studio_task_loading">Görüntü yükleniyor</string>
+    <string name="studio_task_rendering">Görüntü oluşturuluyor</string>
+    <string name="studio_task_transforming">Kırpma ve döndürme uygulanıyor</string>
+    <string name="studio_task_ai">Görüntü yapay zeka ile işleniyor</string>
+    <string name="studio_task_ai_download">Yapay zeka sonucu kaydediliyor</string>
+    <string name="studio_task_mask">Maske önizlemesi hazırlanıyor</string>
+    <string name="studio_processing_failed">Görüntü işleme başarısız oldu: %1$s</string>
+    <string name="studio_mask_target_required">Bir görüntü, çıkartma veya çizim katmanı ya da arka plan görüntüsü seçin</string>
+    <string name="studio_recipe_saved">Tarif kaydedildi</string>
+    <string name="studio_recipe_failed">Tarif işlemi başarısız oldu: %1$s</string>
+    <string name="studio_batch_finished">%1$d görüntü kaydedildi, %2$d başarısız oldu</string>
+    <string name="studio_ai_image_target_required">Bir görüntü katmanı veya arka plan görüntüsü seçin</string>
+    <string name="studio_ai_edit_unsupported">Seçilen görüntü sağlayıcısı görüntü düzenlemeyi desteklemiyor. Ayarlardan düzenleme destekli bir sağlayıcı seçin.</string>
+    <string name="studio_merge_locked">Birleştirmeden önce alttaki katmanın kilidini açın</string>
+    <string name="studio_merge_blended">Karışım modu katmanlarını düzenlenebilir tutun veya bunun yerine bileşik görüntüyü dışa aktarın</string>
+</resources>

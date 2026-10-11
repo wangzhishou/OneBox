@@ -17,6 +17,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.wanbaohe.markuplayers.R
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.Gradient
+import androidx.compose.material.icons.outlined.Tune
 
 /** 编辑器工具。新增工具:在这里登记一行,再在 EditorScaffold 挂对应行为 */
 data class EditorTool(
@@ -47,6 +49,8 @@ object EditorTools {
     const val ID_AI = "ai"
     const val ID_AI_GENERATE = "ai_generate"
     const val ID_LAYERS = "layers"
+    const val ID_MASK = "mask"
+    const val ID_EFFECTS = "effects"
 
     val all: List<EditorTool> = listOf(
         EditorTool(
@@ -92,6 +96,20 @@ object EditorTools {
             placement = EditorTool.Placement.SideBar,
             mode = EditorTool.Mode.FullScreen
         ),
+        EditorTool(
+            id = ID_MASK,
+            titleRes = R.string.studio_mask,
+            icon = MaterialIcons.Outlined.Gradient,
+            placement = EditorTool.Placement.SideBar,
+            mode = EditorTool.Mode.Sheet
+        ),
+        EditorTool(
+            id = ID_EFFECTS,
+            titleRes = R.string.studio_effects,
+            icon = MaterialIcons.Outlined.Tune,
+            placement = EditorTool.Placement.Hidden,
+            mode = EditorTool.Mode.Sheet
+        ),
         // AI 生成图片:侧栏入口,开共享 AiGenerateImageSheet(文生图;选中图片图层时图生图)
         EditorTool(
             id = ID_AI_GENERATE,
@@ -129,7 +147,7 @@ object EditorTools {
             placement = EditorTool.Placement.BottomTab,
             mode = EditorTool.Mode.Sheet
         ),
-        // 「图层」Tab:右侧浮动图层面板的显隐开关(完整 LayersSheet 由面板内「展开」打开)
+        // Phones open LayersSheet directly; wide layouts retain the compact floating panel.
         EditorTool(
             id = ID_LAYERS,
             titleRes = R.string.markup_tool_layers,

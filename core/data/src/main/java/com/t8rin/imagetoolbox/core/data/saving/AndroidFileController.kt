@@ -164,7 +164,9 @@ internal class AndroidFileController @Inject constructor(
                 }
             }
 
-            if (settingsState.overwriteFiles) {
+            val overwriteOriginal =
+                (saveTarget as? ImageSaveTarget)?.overwriteOriginal ?: settingsState.overwriteFiles
+            if (overwriteOriginal) {
                 runCatching {
                     if (originalUri == Uri.EMPTY) throw IllegalStateException()
 

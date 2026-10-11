@@ -2,7 +2,13 @@ package com.wanbaohe.markuplayers.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -21,18 +27,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.ui.theme.toColor
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.presentation.render.LayerPreviewRenderers
+import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.Brush
 import androidx.compose.material.icons.outlined.Category
@@ -191,7 +200,62 @@ internal fun LayerOpacitySlider(
     )
 }
 
-/** 图层面板用的小号图标按钮(不占 48dp 最小触控区) */
+/** Target switches retain the initially selected layer while editing the background. */
+@Composable
+internal fun EditorTargetSelector(
+    component: MarkupLayersComponent,
+    candidateLayerId: String?,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+) {
+    val candidate = component.layers.firstOrNull { it.id == candidateLayerId }
+    val target = component.selectedLayer
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = if (target != null) {
+                stringResource(R.string.markup_target_current_layer, layerDisplayName(target, component.layers))
+            } else stringResource(R.string.markup_target_background),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        if (candidate != null) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                EnhancedChip(
+                    selected = target == null,
+                    onClick = if (enabled) ({ component.selectLayer(null) }) else null,
+                    selectedColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.markup_target_background),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                EnhancedChip(
+                    selected = target?.id == candidate.id,
+                    onClick = if (enabled) ({ component.selectLayer(candidate.id) }) else null,
+                    selectedColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                    modifier = Modifier.weight(1f).heightIn(min = 48.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.studio_target_layer),
+                        maxLines = 1
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** Small visual icons retain a full mobile touch target. */
 @Composable
 internal fun LayerIconButton(
     icon: ImageVector,
@@ -199,19 +263,20 @@ internal fun LayerIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     tint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    enabled: Boolean = true,
 ) {
     Box(
         modifier = modifier
-            .size(28.dp)
+            .size(48.dp)
             .clip(CircleShape)
-            .clickable(onClick = onClick),
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = tint,
-            modifier = Modifier.size(18.dp)
+            tint = if (enabled) tint else tint.copy(alpha = 0.4f),
+            modifier = Modifier.size(20.dp)
         )
     }
 }

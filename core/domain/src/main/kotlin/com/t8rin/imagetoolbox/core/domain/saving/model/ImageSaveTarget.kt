@@ -35,7 +35,9 @@ data class ImageSaveTarget(
     override val extension: String = imageFormat.extension,
     val readFromUriInsteadOfData: Boolean = false,
     val presetInfo: Preset? = null,
-    val canSkipIfLarger: Boolean = false
+    val canSkipIfLarger: Boolean = false,
+    /** null keeps the global preference; false always saves a separate file. */
+    val overwriteOriginal: Boolean? = null
 ) : SaveTarget {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -52,6 +54,7 @@ data class ImageSaveTarget(
         if (!data.contentEquals(other.data)) return false
         if (mimeType != other.mimeType) return false
         if (extension != other.extension) return false
+        if (overwriteOriginal != other.overwriteOriginal) return false
 
         return true
     }
@@ -66,6 +69,7 @@ data class ImageSaveTarget(
         result = 31 * result + data.contentHashCode()
         result = 31 * result + mimeType.hashCode()
         result = 31 * result + extension.hashCode()
+        result = 31 * result + (overwriteOriginal?.hashCode() ?: 0)
         return result
     }
 

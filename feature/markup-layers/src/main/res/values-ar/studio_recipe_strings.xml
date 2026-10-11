@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">حمّل صورة بأبعاد صالحة قبل التصدير.</string>
+    <string name="studio_export_invalid_dimensions">أدخل عرضًا وارتفاعًا موجبين.</string>
+    <string name="studio_export_invalid_quality">يجب أن تكون الجودة بين 10 و100.</string>
+    <string name="studio_export_invalid_format">تنسيق التصدير هذا غير مدعوم.</string>
+    <string name="studio_export_opaque_background">اختر خلفية معتمة لـ JPG.</string>
+    <string name="studio_export_size_too_small">يجب أن يكون الحد 1 كيلوبايت على الأقل. لا يمكن للحدود الأصغر أن تحتوي صورة مُرمَّزة بشكل موثوق.</string>
+    <string name="studio_export_purpose">إعدادات الحجم المسبقة</string>
+    <string name="studio_export_preset_sharing">المشاركة</string>
+    <string name="studio_export_preset_avatar">صورة رمزية · اقتص أولاً</string>
+    <string name="studio_export_preset_wallpaper">خلفية · اقتص أولاً</string>
+    <string name="studio_export_preset_print">صورة كبيرة</string>
+    <string name="studio_export_preset_long_edge">الضلع الأطول حتى %1$d بكسل</string>
+    <string name="studio_export_presets_keep_ratio">تحافظ الإعدادات المسبقة على نسبة الصورة الحالية ولا تكبّرها أبدًا. اقتص أولاً إذا كانت الصورة الرمزية أو الخلفية تحتاج إلى نسبة محددة.</string>
+    <string name="studio_export_jpeg_alpha_warning">لا يمكن لـ JPG الحفاظ على الشفافية. سيتم ملء البكسلات الشفافة بلون الخلفية المحدد.</string>
+    <string name="studio_export_color_white">أبيض</string>
+    <string name="studio_export_color_black">أسود</string>
+    <string name="studio_export_color_gray">رمادي</string>
+    <string name="studio_export_color_cream">كريمي</string>
+    <string name="studio_export_custom_fit">يحدد العرض والارتفاع مربعًا محيطًا أقصى. تحافظ الصورة على نسبتها؛ ولا تُمدَّد أبدًا.</string>
+    <string name="studio_export_file_size_limit">الحد الأقصى لحجم الملف (كيلوبايت، فارغ = بلا حد)</string>
+    <string name="studio_export_png_limit_hint">PNG بلا فقدان: لا يمكن للجودة تقليل حجمه. يجب أن يتناسب الملف المُرمَّز الفعلي مع الحد وإلا سيفشل التصدير.</string>
+    <string name="studio_export_lossy_limit_hint">يتم التحقق من حجم الملف الفعلي. قد تُخفَّض الجودة حتى 10؛ إذا تعذّر تحقيق الحد، يفشل التصدير دون تغيير الحجم بصمت.</string>
+    <string name="studio_export_save_copy">حفظ نسخة</string>
+    <string name="studio_export_save_copy_hint">يبقى الأصل الخارجي وأصول المشروع الخاصة دون تغيير.</string>
+    <string name="studio_export_overwrite_warning">يستبدل هذا الأصل الخارجي. لا يمكن التراجع عن التغيير.</string>
+    <string name="studio_export_copy_required">يُصدَّر هذا المستند كنسخة. لا تُستبدل أصول المشروع الخاصة أبدًا.</string>
+    <string name="studio_export_save_location">موقع الحفظ</string>
+    <string name="studio_export_choose_location">اختر مجلدًا أو ملفًا</string>
+    <string name="studio_export_location_value">موقع الحفظ: %1$s</string>
+    <string name="studio_recipe_title">الوصفات والدفعات</string>
+    <string name="studio_recipe_subtitle">أعد استخدام التعديلات المحلية على صور أخرى. لا يتم تضمين إجراءات الذكاء الاصطناعي السحابي؛ تصدير الدفعات يحفظ نسخًا دائمًا.</string>
+    <string name="studio_recipe_name">اسم الوصفة</string>
+    <string name="studio_recipe_save_current">حفظ التعديلات الحالية كوصفة</string>
+    <string name="studio_recipe_library">الوصفات المحفوظة</string>
+    <string name="studio_recipe_empty">لا توجد وصفات بعد. احفظ التعديلات الحالية لبدء المكتبة.</string>
+    <string name="studio_recipe_apply">تطبيق</string>
+    <string name="studio_recipe_delete">حذف الوصفة</string>
+    <string name="studio_recipe_selected">محدد للدفعة</string>
+    <string name="studio_recipe_choose">تحديد للدفعة</string>
+    <string name="studio_recipe_batch_images">صور الدفعة</string>
+    <string name="studio_recipe_pick_images">اختيار صور متعددة</string>
+    <string name="studio_recipe_images_selected">تم تحديد %1$d صورة</string>
+    <string name="studio_recipe_run_batch">تشغيل الوصفة المحددة</string>
+    <string name="studio_recipe_cancel_batch">إلغاء الدفعة</string>
+    <string name="studio_recipe_batch_progress">تمت معالجة %1$d من %2$d</string>
+    <string name="studio_recipe_batch_result">تم حفظ %1$d، فشل %2$d</string>
+    <string name="studio_recipe_batch_cancelled">تم الإلغاء بعد %1$d من %2$d صورة. لم تتم معالجة الصور المتبقية.</string>
+    <string name="studio_recipe_batch_failures">الصور التي تعذر حفظها</string>
+    <string name="studio_recipe_batch_done">انتهت الدفعة</string>
+    <string name="studio_recipe_batch_partial">توقفت الدفعة قبل معالجة جميع الصور.</string>
+    <string name="studio_recipe_batch_local_only">يتم إعادة تطبيق التعديلات المحلية والفلاتر والأقنعة والتراكبات وإعدادات التصدير فقط. لا يتم تعديل الصور الأصلية أبدًا.</string>
+    <string name="studio_recipe_error">خطأ في الوصفة: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

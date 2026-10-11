@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">Muat gambar dengan dimensi yang valid sebelum mengekspor.</string>
+    <string name="studio_export_invalid_dimensions">Masukkan lebar dan tinggi yang positif.</string>
+    <string name="studio_export_invalid_quality">Kualitas harus antara 10 dan 100.</string>
+    <string name="studio_export_invalid_format">Format ekspor ini tidak didukung.</string>
+    <string name="studio_export_opaque_background">Pilih latar belakang buram untuk JPG.</string>
+    <string name="studio_export_size_too_small">Batas harus minimal 1 KB. Batas yang lebih kecil tidak dapat menampung gambar terenkode dengan andal.</string>
+    <string name="studio_export_purpose">Prasetel ukuran</string>
+    <string name="studio_export_preset_sharing">Berbagi</string>
+    <string name="studio_export_preset_avatar">Avatar · potong dulu</string>
+    <string name="studio_export_preset_wallpaper">Wallpaper · potong dulu</string>
+    <string name="studio_export_preset_print">Gambar besar</string>
+    <string name="studio_export_preset_long_edge">Sisi terpanjang hingga %1$d px</string>
+    <string name="studio_export_presets_keep_ratio">Prasetel mempertahankan rasio gambar saat ini dan tidak pernah memperbesarnya. Potong dulu jika avatar atau wallpaper memerlukan rasio tertentu.</string>
+    <string name="studio_export_jpeg_alpha_warning">JPG tidak dapat mempertahankan transparansi. Piksel transparan akan diisi dengan warna latar belakang yang dipilih.</string>
+    <string name="studio_export_color_white">Putih</string>
+    <string name="studio_export_color_black">Hitam</string>
+    <string name="studio_export_color_gray">Abu-abu</string>
+    <string name="studio_export_color_cream">Krem</string>
+    <string name="studio_export_custom_fit">Lebar dan tinggi menentukan kotak pembatas maksimum. Gambar mempertahankan rasionya; tidak pernah diregangkan.</string>
+    <string name="studio_export_file_size_limit">Ukuran file maksimum (KB, kosong = tanpa batas)</string>
+    <string name="studio_export_png_limit_hint">PNG bersifat lossless: kualitas tidak dapat mengurangi ukurannya. File terenkode yang sebenarnya harus sesuai batas atau ekspor akan gagal.</string>
+    <string name="studio_export_lossy_limit_hint">Ukuran file sebenarnya diperiksa. Kualitas dapat diturunkan hingga 10; jika batas masih tidak terpenuhi, ekspor gagal tanpa mengubah ukuran secara diam-diam.</string>
+    <string name="studio_export_save_copy">Simpan salinan</string>
+    <string name="studio_export_save_copy_hint">Asli eksternal dan aset proyek privat tetap tidak berubah.</string>
+    <string name="studio_export_overwrite_warning">Ini menggantikan asli eksternal. Perubahan tidak dapat dibatalkan.</string>
+    <string name="studio_export_copy_required">Dokumen ini diekspor sebagai salinan. Aset proyek privat tidak pernah ditimpa.</string>
+    <string name="studio_export_save_location">Lokasi penyimpanan</string>
+    <string name="studio_export_choose_location">Pilih folder atau file</string>
+    <string name="studio_export_location_value">Lokasi penyimpanan: %1$s</string>
+    <string name="studio_recipe_title">Resep dan batch</string>
+    <string name="studio_recipe_subtitle">Gunakan ulang pengeditan lokal pada foto lain. Tindakan Cloud AI tidak disertakan; ekspor batch selalu menyimpan salinan.</string>
+    <string name="studio_recipe_name">Nama resep</string>
+    <string name="studio_recipe_save_current">Simpan pengeditan saat ini sebagai resep</string>
+    <string name="studio_recipe_library">Resep tersimpan</string>
+    <string name="studio_recipe_empty">Belum ada resep. Simpan pengeditan saat ini untuk memulai pustaka.</string>
+    <string name="studio_recipe_apply">Terapkan</string>
+    <string name="studio_recipe_delete">Hapus resep</string>
+    <string name="studio_recipe_selected">Dipilih untuk batch</string>
+    <string name="studio_recipe_choose">Pilih untuk batch</string>
+    <string name="studio_recipe_batch_images">Gambar batch</string>
+    <string name="studio_recipe_pick_images">Pilih beberapa gambar</string>
+    <string name="studio_recipe_images_selected">%1$d gambar dipilih</string>
+    <string name="studio_recipe_run_batch">Jalankan resep terpilih</string>
+    <string name="studio_recipe_cancel_batch">Batalkan batch</string>
+    <string name="studio_recipe_batch_progress">%1$d dari %2$d diproses</string>
+    <string name="studio_recipe_batch_result">%1$d tersimpan, %2$d gagal</string>
+    <string name="studio_recipe_batch_cancelled">Dibatalkan setelah %1$d dari %2$d gambar. Gambar yang tersisa tidak diproses.</string>
+    <string name="studio_recipe_batch_failures">Gambar yang tidak dapat disimpan</string>
+    <string name="studio_recipe_batch_done">Batch selesai</string>
+    <string name="studio_recipe_batch_partial">Batch dihentikan sebelum semua gambar diproses.</string>
+    <string name="studio_recipe_batch_local_only">Hanya penyesuaian lokal, filter, masker, overlay, dan pengaturan ekspor yang diputar ulang. Asli tidak pernah diubah.</string>
+    <string name="studio_recipe_error">Kesalahan resep: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

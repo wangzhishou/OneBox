@@ -12,11 +12,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.calculateCentroidSize
-import androidx.compose.foundation.gestures.calculatePan
-import androidx.compose.foundation.gestures.calculateRotation
-import androidx.compose.foundation.gestures.calculateZoom
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
@@ -26,9 +21,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,41 +34,35 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
-import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeHandles
-import com.t8rin.imagetoolbox.core.ui.widget.editor.HANDLE_SIZE
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
-import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.OpenInFull
+import androidx.compose.material.icons.outlined.RotateRight
+import androidx.compose.material.icons.outlined.SwapHoriz
 
 /**
- * 图层选中框:在 BoxWithConstraints 画布(与底图同尺寸)内渲染单个图层,
- * 支持点选与双指缩放/旋转/拖动,选中时显示蚂蚁线边框。
- *
- * 归一化换算方案:图层位置存的是相对底图宽高的归一化中心点
- * ([LayerTransform.centerX]/[LayerTransform.centerY])。内容 Box 先对齐画布中心,
- * 再经 graphicsLayer 平移 (center-0.5)×画布尺寸、并按 transform 缩放/旋转,
- * 与导出侧 Canvas.translate(center)→rotate→scale 的变换顺序完全同构,所见即所得。
- * 手势期间只更新本地状态保持流畅,全部手指抬起后经 [onTransformEnd] 一次性提交。
- *
- * 文字层(且未锁定、已选中)可经 [resizeConfig] 挂 8 向框尺寸手柄
- * (共享 chrome,core/ui widget/editor):拖边/角改框宽,文字重排,字号不变;
- * 手柄 onDragStart 经 BoxResizeConfig.onGestureStart 回调(宿主在这里记 undo 快照)。
- *
- * @param tapSelectable 是否响应点选手势。铺满画布的图层(如画笔)应传 false,
- * 否则会拦截画布的「点空白取消选择」
- * @param onDelete 非空时选中态显示删除按钮(红色 X,同图文卡片元素框):
- * 文字层(带 8 向尺寸手柄)放底部居中独立位,其余图层放选中框外侧右上角
+ * One finger moves the selected layer. Explicit handles resize/rotate; multi-touch is never
+ * consumed here, so the canvas can take over even in the middle of a layer drag.
  */
 @Composable
 fun BoxWithConstraintsScope.EditBox(
@@ -80,175 +71,340 @@ fun BoxWithConstraintsScope.EditBox(
     onSelect: () -> Unit,
     onTransformEnd: (LayerTransform) -> Unit,
     modifier: Modifier = Modifier,
+    onTransformStart: () -> Unit = {},
+    onTransformChange: ((LayerTransform) -> Unit)? = null,
     onEditRequest: (() -> Unit)? = null,
     onDelete: (() -> Unit)? = null,
     tapSelectable: Boolean = true,
+    gesturesEnabled: Boolean = true,
+    showHandles: Boolean = true,
+    canvasScale: Float = 1f,
     resizeConfig: BoxResizeConfig? = null,
     content: @Composable BoxScope.() -> Unit,
 ) {
     if (!transform.visible) return
-
     val canvasWidth = constraints.maxWidth.toFloat()
     val canvasHeight = constraints.maxHeight.toFloat()
+    var localTransform by remember { mutableStateOf(transform) }
+    var changing by remember { mutableStateOf(false) }
+    var boxSize by remember { mutableStateOf(IntSize.Zero) }
+    var elementCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    val currentOnSelect by rememberUpdatedState(onSelect)
+    val currentOnEdit by rememberUpdatedState(onEditRequest)
+    val currentOnStart by rememberUpdatedState(onTransformStart)
+    val currentOnChange by rememberUpdatedState(onTransformChange)
+    val currentOnEnd by rememberUpdatedState(onTransformEnd)
+    val canTransform = gesturesEnabled && isSelected && !transform.locked
 
-    var localTransform by remember(transform) { mutableStateOf(transform) }
-    var boxSizePx by remember { mutableStateOf(IntSize.Zero) }
-
-    val canTransform = isSelected && !transform.locked
+    LaunchedEffect(transform) {
+        if (!changing) localTransform = transform
+    }
+    val finish = {
+        if (changing) {
+            changing = false
+            currentOnEnd(localTransform)
+        }
+    }
+    val start = {
+        changing = true
+        currentOnStart()
+    }
+    val update: (LayerTransform) -> Unit = {
+        localTransform = it
+        currentOnChange?.invoke(it)
+    }
 
     Box(
         modifier = modifier
             .align(Alignment.Center)
-            .onSizeChanged { boxSizePx = it }
+            .onSizeChanged { boxSize = it }
+            .onGloballyPositioned { elementCoordinates = it }
             .graphicsLayer {
                 scaleX = localTransform.scale
                 scaleY = localTransform.scale
                 rotationZ = localTransform.rotation
                 translationX = (localTransform.centerX - 0.5f) * canvasWidth
                 translationY = (localTransform.centerY - 0.5f) * canvasHeight
-                alpha = localTransform.alpha
             }
-            .pointerInput(transform.locked, tapSelectable) {
-                // tapSelectable=false 时(如铺满画布的画笔图层)点按穿透到外层,
-                // 保留「点空白取消选择」,图层改由图层面板选中
-                if (transform.locked || !tapSelectable) return@pointerInput
-                detectTapGestures(
-                    onTap = {
-                        if (isSelected) onEditRequest?.invoke() else onSelect()
-                    }
-                )
-            }
-            .pointerInput(canTransform, canvasWidth, canvasHeight) {
-                if (!canTransform) return@pointerInput
+            .pointerInput(canTransform, tapSelectable, gesturesEnabled, canvasWidth, canvasHeight) {
+                if (!gesturesEnabled || transform.locked || (!canTransform && !tapSelectable)) {
+                    return@pointerInput
+                }
                 awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    // 手动实现 transform 手势检测(detectTransformGestures 无结束回调):
-                    // 越过 touchSlop 后开始应用增量,全部手指抬起后一次性提交
-                    var pastTouchSlop = false
+                    val down = awaitFirstDown(requireUnconsumed = false)
+                    if (down.isConsumed) return@awaitEachGesture
                     var pan = Offset.Zero
-                    var zoom = 1f
-                    var rotation = 0f
-                    while (true) {
-                        val event = awaitPointerEvent()
-                        if (event.changes.any { it.isConsumed }) break
-                        val zoomChange = event.calculateZoom()
-                        val rotationChange = event.calculateRotation()
-                        val panChange = event.calculatePan()
-                        if (!pastTouchSlop) {
-                            zoom *= zoomChange
-                            rotation += rotationChange
-                            pan += panChange
-                            val centroidSize = event.calculateCentroidSize(useCurrent = false)
-                            val zoomMotion = abs(1 - zoom) * centroidSize
-                            val rotationMotion =
-                                abs(rotation * Math.PI.toFloat() * centroidSize / 180f)
-                            val panMotion = pan.getDistance()
-                            if (zoomMotion > viewConfiguration.touchSlop ||
-                                rotationMotion > viewConfiguration.touchSlop ||
-                                panMotion > viewConfiguration.touchSlop
+                    var moved = false
+                    var canceled = false
+                    try {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            if (event.changes.size > 1 || event.changes.any { it.isConsumed }) {
+                                canceled = true
+                                break
+                            }
+                            val change = event.changes.first()
+                            val delta = change.positionChange()
+                            pan += delta
+                            if (canTransform && !moved &&
+                                pan.getDistance() * localTransform.scale * canvasScale >
+                                viewConfiguration.touchSlop
                             ) {
-                                pastTouchSlop = true
+                                moved = true
+                                start()
+                            }
+                            if (moved && delta != Offset.Zero) {
+                                val canvasPan = (delta * localTransform.scale)
+                                    .rotateBy(localTransform.rotation)
+                                update(
+                                    localTransform.copy(
+                                        centerX = (localTransform.centerX + canvasPan.x / canvasWidth)
+                                            .coerceIn(0f, 1f),
+                                        centerY = (localTransform.centerY + canvasPan.y / canvasHeight)
+                                            .coerceIn(0f, 1f)
+                                    )
+                                )
+                                change.consume()
+                            }
+                            if (!change.pressed) {
+                                if (!moved && !canceled && tapSelectable &&
+                                    pan.getDistance() * localTransform.scale * canvasScale <=
+                                    viewConfiguration.touchSlop
+                                ) {
+                                    change.consume()
+                                    if (isSelected) currentOnEdit?.invoke() else currentOnSelect()
+                                }
+                                break
                             }
                         }
-                        if (pastTouchSlop &&
-                            (zoomChange != 1f || rotationChange != 0f || panChange != Offset.Zero)
-                        ) {
-                            localTransform = localTransform.applyGesture(
-                                pan = panChange,
-                                zoomChange = zoomChange,
-                                rotationChange = rotationChange,
-                                canvasWidth = canvasWidth,
-                                canvasHeight = canvasHeight
-                            )
-                            event.changes.forEach {
-                                if (it.position != it.previousPosition) it.consume()
-                            }
-                        }
-                        if (event.changes.none { it.pressed }) break
+                    } finally {
+                        finish()
                     }
-                    if (pastTouchSlop) onTransformEnd(localTransform)
                 }
             },
         contentAlignment = Alignment.Center
     ) {
-        content()
+        Box(
+            modifier = Modifier.graphicsLayer {
+                scaleX = if (localTransform.flipHorizontal) -1f else 1f
+                scaleY = if (localTransform.flipVertical) -1f else 1f
+                alpha = localTransform.alpha
+            },
+            contentAlignment = Alignment.Center,
+            content = content
+        )
+        val chromeScale = (localTransform.scale * canvasScale).coerceAtLeast(0.01f)
+        val inverseScale = 1f / chromeScale
         AnimatedBorder(
-            isVisible = isSelected,
-            scale = localTransform.scale,
+            isVisible = isSelected && gesturesEnabled,
+            scale = chromeScale,
             modifier = Modifier.matchParentSize()
         )
-        // 删除按钮(红色 X):独立 clickable,事件在子级被消费,不触发图层手势;
-        // 反缩放保持视觉尺寸恒定(同边框/手柄 chrome)。
-        // 文字层避开 8 向尺寸手柄放底部居中,其余图层放选中框外侧右上角
-        if (isSelected && !transform.locked && onDelete != null) {
-            val inverseChromeScale = 1f / localTransform.scale.coerceIn(0.1f, 10f)
-            val deleteAtBottom = resizeConfig != null
+        if (canTransform && showHandles && boxSize != IntSize.Zero) {
+            var startTransform by remember { mutableStateOf(localTransform) }
+            var centerRoot by remember { mutableStateOf(Offset.Zero) }
+            var startDistance by remember { mutableStateOf(1f) }
+            var startAngle by remember { mutableStateOf(0f) }
+
+            LayerTransformHandle(
+                icon = MaterialIcons.Outlined.OpenInFull,
+                description = stringResource(R.string.studio_layer_scale),
+                alignment = Alignment.BottomEnd,
+                offsetX = 24.dp * inverseScale,
+                offsetY = 24.dp * inverseScale,
+                inverseScale = inverseScale,
+                onStart = { root ->
+                    startTransform = localTransform
+                    centerRoot = elementCoordinates?.localToRoot(
+                        Offset(boxSize.width / 2f, boxSize.height / 2f)
+                    ) ?: root
+                    startDistance = (root - centerRoot).getDistance().coerceAtLeast(1f)
+                    start()
+                },
+                onDrag = { root ->
+                    update(
+                        startTransform.copy(
+                            scale = (startTransform.scale *
+                                (root - centerRoot).getDistance() / startDistance).coerceIn(0.1f, 10f)
+                        )
+                    )
+                },
+                onEnd = finish
+            )
+            LayerTransformHandle(
+                icon = MaterialIcons.Outlined.RotateRight,
+                description = stringResource(R.string.studio_layer_rotate),
+                alignment = Alignment.TopCenter,
+                offsetY = (-40).dp * inverseScale,
+                inverseScale = inverseScale,
+                onStart = { root ->
+                    startTransform = localTransform
+                    centerRoot = elementCoordinates?.localToRoot(
+                        Offset(boxSize.width / 2f, boxSize.height / 2f)
+                    ) ?: root
+                    startAngle = atan2(root.y - centerRoot.y, root.x - centerRoot.x)
+                    start()
+                },
+                onDrag = { root ->
+                    val angle = atan2(root.y - centerRoot.y, root.x - centerRoot.x)
+                    update(
+                        startTransform.copy(
+                            rotation = startTransform.rotation +
+                                Math.toDegrees((angle - startAngle).toDouble()).toFloat()
+                        )
+                    )
+                },
+                onEnd = finish
+            )
+            resizeConfig?.let { config ->
+                listOf(-1, 1).forEach { edge ->
+                    var startRoot by remember { mutableStateOf(Offset.Zero) }
+                    var axisRoot by remember { mutableStateOf(Offset(1f, 0f)) }
+                    var startSize by remember { mutableStateOf(IntSize.Zero) }
+                    LayerTransformHandle(
+                        icon = MaterialIcons.Outlined.SwapHoriz,
+                        description = stringResource(R.string.studio_layer_resize_width),
+                        alignment = if (edge < 0) Alignment.CenterStart else Alignment.CenterEnd,
+                        offsetX = (edge * 32).dp * inverseScale,
+                        inverseScale = inverseScale,
+                        onStart = { root ->
+                            startRoot = root
+                            startSize = boxSize
+                            startTransform = localTransform
+                            axisRoot = elementCoordinates?.let {
+                                it.localToRoot(Offset(1f, 0f)) - it.localToRoot(Offset.Zero)
+                            } ?: Offset(1f, 0f)
+                            changing = true
+                            config.onGestureStart()
+                        },
+                        onDrag = { root ->
+                            val drag = root - startRoot
+                            val projected = (drag.x * axisRoot.x + drag.y * axisRoot.y) /
+                                (axisRoot.x * axisRoot.x + axisRoot.y * axisRoot.y).coerceAtLeast(0.001f)
+                            val width = (startSize.width + edge * projected)
+                                .coerceIn(config.minWidthPx, config.maxWidthPx)
+                            val dw = startSize.width - width
+                            val shift = Offset(-edge * dw / 2f, 0f)
+                                .rotateBy(startTransform.rotation) * startTransform.scale
+                            val left = startTransform.centerX * canvasWidth -
+                                startSize.width / 2f + dw / 2f + shift.x
+                            val top = startTransform.centerY * canvasHeight -
+                                startSize.height / 2f + shift.y
+                            localTransform = startTransform.copy(
+                                centerX = ((left + width / 2f) / canvasWidth).coerceIn(0f, 1f),
+                                centerY = ((top + startSize.height / 2f) / canvasHeight).coerceIn(0f, 1f)
+                            )
+                            config.onResize(width, startSize.height.toFloat(), left, top)
+                        },
+                        onEnd = finish
+                    )
+                }
+            }
+        }
+        if (canTransform && showHandles && onDelete != null) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .align(if (deleteAtBottom) Alignment.BottomCenter else Alignment.TopEnd)
-                    .offset(
-                        x = if (deleteAtBottom) 0.dp else 12.dp,
-                        y = if (deleteAtBottom) 40.dp else (-12).dp
-                    )
+                    .align(Alignment.TopEnd)
+                    .offset(x = 24.dp * inverseScale, y = (-24).dp * inverseScale)
                     .graphicsLayer {
-                        scaleX = inverseChromeScale
-                        scaleY = inverseChromeScale
+                        scaleX = inverseScale
+                        scaleY = inverseScale
                     }
-                    .size(24.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.error)
-                    .clickable(onClick = onDelete)
+                    .clickable(role = Role.Button, onClick = onDelete)
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.Close,
-                    contentDescription = stringResource(R.string.markup_delete_layer),
-                    tint = MaterialTheme.colorScheme.onError,
-                    modifier = Modifier.size(18.dp)
-                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.size(24.dp).clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.error)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Close,
+                        contentDescription = stringResource(R.string.markup_delete_layer),
+                        tint = MaterialTheme.colorScheme.onError,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             }
-        }
-        // 文字层 8 向框尺寸手柄(共享 chrome,仅选中未锁定时出现):
-        // 手柄随图层一起被 graphicsLayer 变换(旋转/缩放时跟随图层);
-        // 手势开始经 onResizeGestureStart 记 undo 快照
-        if (resizeConfig != null && canTransform && boxSizePx != IntSize.Zero) {
-            BoxResizeHandles(
-                sizeProvider = { boxSizePx },
-                leftProvider = {
-                    localTransform.centerX * canvasWidth - boxSizePx.width / 2f
-                },
-                topProvider = {
-                    localTransform.centerY * canvasHeight - boxSizePx.height / 2f
-                },
-                inverseScale = 1f / localTransform.scale.coerceIn(0.1f, 10f),
-                config = resizeConfig,
-                rotationProvider = { localTransform.rotation },
-                scaleProvider = { localTransform.scale }
-            )
         }
     }
 }
 
-/**
- * 应用一次手势增量。detectTransformGestures 的 pan 在图层本地(已变换)坐标系,
- * 需乘缩放并按当前旋转角转回画布坐标系,再归一化到 0..1 累加进中心点。
- */
-private fun LayerTransform.applyGesture(
-    pan: Offset,
-    zoomChange: Float,
-    rotationChange: Float,
-    canvasWidth: Float,
-    canvasHeight: Float,
-): LayerTransform {
-    val newRotation = rotation + rotationChange
-    val newScale = (scale * zoomChange).coerceIn(0.1f, 10f)
-    val panInCanvas = (pan * newScale).rotateBy(newRotation)
-    return copy(
-        centerX = (centerX + panInCanvas.x / canvasWidth).coerceIn(0f, 1f),
-        centerY = (centerY + panInCanvas.y / canvasHeight).coerceIn(0f, 1f),
-        scale = newScale,
-        rotation = newRotation
-    )
+/** Root coordinates avoid feedback from a handle moving as its layer is transformed. */
+@Composable
+private fun BoxScope.LayerTransformHandle(
+    icon: ImageVector,
+    description: String,
+    alignment: Alignment,
+    inverseScale: Float,
+    offsetX: Dp = 0.dp,
+    offsetY: Dp = 0.dp,
+    onStart: (Offset) -> Unit,
+    onDrag: (Offset) -> Unit,
+    onEnd: () -> Unit,
+) {
+    var coordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    val currentOnStart by rememberUpdatedState(onStart)
+    val currentOnDrag by rememberUpdatedState(onDrag)
+    val currentOnEnd by rememberUpdatedState(onEnd)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .align(alignment)
+            .offset(offsetX, offsetY)
+            .graphicsLayer {
+                scaleX = inverseScale
+                scaleY = inverseScale
+            }
+            .size(48.dp)
+            .onGloballyPositioned { coordinates = it }
+            .semantics { contentDescription = description }
+            .pointerInput(Unit) {
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false)
+                    if (down.isConsumed) return@awaitEachGesture
+                    val startRoot = coordinates?.localToRoot(down.position) ?: down.position
+                    down.consume()
+                    var dragging = false
+                    try {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            if (event.changes.size > 1 || event.changes.any { it.isConsumed }) break
+                            val change = event.changes.first()
+                            val root = coordinates?.localToRoot(change.position) ?: change.position
+                            if (!dragging &&
+                                (root - startRoot).getDistance() > viewConfiguration.touchSlop
+                            ) {
+                                dragging = true
+                                currentOnStart(startRoot)
+                            }
+                            if (dragging && change.positionChange() != Offset.Zero) {
+                                currentOnDrag(root)
+                                change.consume()
+                            }
+                            if (!change.pressed) break
+                        }
+                    } finally {
+                        if (dragging) currentOnEnd()
+                    }
+                }
+            }
+    ) {
+        Box(
+            modifier = Modifier.size(24.dp).clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(18.dp)
+            )
+        }
+    }
 }
 
 private fun Offset.rotateBy(degrees: Float): Offset {
@@ -267,7 +423,6 @@ private fun AnimatedBorder(
 ) {
     val alpha by animateFloatAsState(if (isVisible) 1f else 0f)
     if (alpha <= 0f) return
-
     val transition = rememberInfiniteTransition()
     val phase by transition.animateFloat(
         initialValue = 0f,
@@ -277,23 +432,20 @@ private fun AnimatedBorder(
             repeatMode = RepeatMode.Restart
         )
     )
-    val pathEffect = PathEffect.dashPathEffect(
-        intervals = floatArrayOf(20f, 20f),
-        phase = phase
-    )
-
-    val density = LocalDensity.current
     val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val primaryContainer = MaterialTheme.colorScheme.primaryContainer
     Canvas(modifier = modifier) {
-        val strokeWidth = 3.dp.toPx() * (1f / scale)
-        drawRect(
-            color = primary.copy(alpha),
-            style = Stroke(width = strokeWidth)
-        )
+        val stroke = 3.dp.toPx() / scale
+        drawRect(color = primary.copy(alpha), style = Stroke(width = stroke))
         drawRect(
             color = primaryContainer.copy(alpha),
-            style = Stroke(width = strokeWidth, pathEffect = pathEffect)
+            style = Stroke(
+                width = stroke,
+                pathEffect = PathEffect.dashPathEffect(
+                    intervals = floatArrayOf(20f / scale, 20f / scale),
+                    phase = phase / scale
+                )
+            )
         )
     }
 }

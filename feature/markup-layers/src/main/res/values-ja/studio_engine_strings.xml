@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_project_untitled">無題のプロジェクト</string>
+    <string name="studio_project_save_failed">プロジェクトを保存できませんでした: %1$s</string>
+    <string name="studio_project_saved">プロジェクトを保存しました</string>
+    <string name="studio_project_load_failed">プロジェクトを開けませんでした: %1$s</string>
+    <string name="studio_processing_limit">%1$d × %2$d はこのデバイスの処理能力を超えています。より小さい書き出し解像度を選択してください。</string>
+    <string name="studio_image_read_failed">この画像を読み込めませんでした</string>
+    <string name="studio_image_dimensions_failed">元の画像サイズを特定できませんでした</string>
+    <string name="studio_task_loading">画像を読み込み中</string>
+    <string name="studio_task_rendering">画像をレンダリング中</string>
+    <string name="studio_task_transforming">切り抜きと回転を適用中</string>
+    <string name="studio_task_ai">AIで画像を処理中</string>
+    <string name="studio_task_ai_download">AIの結果を保存中</string>
+    <string name="studio_task_mask">マスクプレビューを準備中</string>
+    <string name="studio_processing_failed">画像処理に失敗しました: %1$s</string>
+    <string name="studio_mask_target_required">画像、ステッカー、描画レイヤー、または背景画像を選択してください</string>
+    <string name="studio_recipe_saved">レシピを保存しました</string>
+    <string name="studio_recipe_failed">レシピの操作に失敗しました: %1$s</string>
+    <string name="studio_batch_finished">%1$d 枚の画像を保存、%2$d 枚が失敗</string>
+    <string name="studio_ai_image_target_required">画像レイヤーまたは背景画像を選択してください</string>
+    <string name="studio_ai_edit_unsupported">選択した画像プロバイダーは画像編集に対応していません。設定で編集可能なプロバイダーを選択してください。</string>
+    <string name="studio_merge_locked">結合する前に下のレイヤーのロックを解除してください</string>
+    <string name="studio_merge_blended">ブレンドモードのレイヤーを編集可能なままにするか、代わりに合成画像を書き出してください</string>
+</resources>

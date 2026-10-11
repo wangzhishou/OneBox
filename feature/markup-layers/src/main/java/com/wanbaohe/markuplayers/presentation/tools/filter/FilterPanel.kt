@@ -6,11 +6,13 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -60,6 +63,7 @@ import com.t8rin.imagetoolbox.core.resources.R as CoreR
 fun FilterPanel(
     component: MarkupLayersComponent,
     onOpenFullCatalog: () -> Unit,
+    onOpenEffects: () -> Unit,
     onRequestRasterize: (layerId: String, filter: UiFilter<*>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -83,21 +87,32 @@ fun FilterPanel(
             .pointerInput(Unit) { detectTapGestures { } }
             .padding(vertical = 10.dp)
     ) {
-        Text(
-            text = if (targetLayer != null) {
-                stringResource(
-                    R.string.markup_target_current_layer,
-                    layerDisplayName(targetLayer, component.layers)
-                )
-            } else {
-                stringResource(R.string.markup_target_background)
-            },
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(horizontal = 12.dp)
-        )
+        ) {
+            Text(
+                text = if (targetLayer != null) {
+                    stringResource(
+                        R.string.markup_target_current_layer,
+                        layerDisplayName(targetLayer, component.layers)
+                    )
+                } else {
+                    stringResource(R.string.markup_target_background)
+                },
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
+            )
+            TextButton(
+                onClick = onOpenEffects,
+                modifier = Modifier.heightIn(min = 48.dp)
+            ) {
+                Text(stringResource(R.string.studio_effects_edit, component.targetEffects.size))
+            }
+        }
         Spacer(Modifier.height(6.dp))
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -110,7 +125,7 @@ fun FilterPanel(
                     transformation = null,
                     cacheKey = "original@$sourceHash",
                     label = stringResource(R.string.markup_filter_original),
-                    selected = targetFilter == null,
+                    selected = component.targetEffects.isEmpty(),
                     onClick = { component.selectFilter(null) }
                 )
             }
@@ -125,7 +140,8 @@ fun FilterPanel(
                     },
                     cacheKey = "${filter::class.simpleName}@$sourceHash",
                     label = stringResource(filter.title),
-                    selected = targetFilter?.let { it::class == filter::class } == true,
+                    selected = component.targetEffects.size == 1 &&
+                        targetFilter?.let { it::class == filter::class } == true,
                     onClick = {
                         val vector = vectorTarget
                         if (vector != null) {

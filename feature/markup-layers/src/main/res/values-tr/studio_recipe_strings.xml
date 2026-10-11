@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">Dışa aktarmadan önce geçerli boyutlara sahip bir görsel yükleyin.</string>
+    <string name="studio_export_invalid_dimensions">Pozitif bir genişlik ve yükseklik girin.</string>
+    <string name="studio_export_invalid_quality">Kalite 10 ile 100 arasında olmalıdır.</string>
+    <string name="studio_export_invalid_format">Bu dışa aktarma biçimi desteklenmiyor.</string>
+    <string name="studio_export_opaque_background">JPG için opak bir arka plan seçin.</string>
+    <string name="studio_export_size_too_small">Sınır en az 1 KB olmalıdır. Daha küçük sınırlar kodlanmış bir görseli güvenilir şekilde tutamaz.</string>
+    <string name="studio_export_purpose">Boyut ön ayarları</string>
+    <string name="studio_export_preset_sharing">Paylaşım</string>
+    <string name="studio_export_preset_avatar">Avatar · önce kırp</string>
+    <string name="studio_export_preset_wallpaper">Duvar kağıdı · önce kırp</string>
+    <string name="studio_export_preset_print">Büyük görsel</string>
+    <string name="studio_export_preset_long_edge">Uzun kenar en fazla %1$d piksel</string>
+    <string name="studio_export_presets_keep_ratio">Ön ayarlar mevcut görsel oranını korur ve görseli asla büyütmez. Bir avatar veya duvar kağıdı belirli bir oran gerektiriyorsa önce kırpın.</string>
+    <string name="studio_export_jpeg_alpha_warning">JPG saydamlığı koruyamaz. Saydam pikseller seçilen arka plan rengiyle doldurulur.</string>
+    <string name="studio_export_color_white">Beyaz</string>
+    <string name="studio_export_color_black">Siyah</string>
+    <string name="studio_export_color_gray">Gri</string>
+    <string name="studio_export_color_cream">Krem</string>
+    <string name="studio_export_custom_fit">Genişlik ve yükseklik bir maksimum sınırlayıcı kutu tanımlar. Görsel oranını korur; asla gerilmez.</string>
+    <string name="studio_export_file_size_limit">Maksimum dosya boyutu (KB, boş = sınır yok)</string>
+    <string name="studio_export_png_limit_hint">PNG kayıpsızdır: kalite boyutunu küçültemez. Gerçek kodlanmış dosya sınıra uymalıdır, aksi halde dışa aktarma başarısız olur.</string>
+    <string name="studio_export_lossy_limit_hint">Gerçek dosya boyutu kontrol edilir. Kalite 10\'a kadar düşürülebilir; sınır hâlâ karşılanamazsa dışa aktarma sessizce yeniden boyutlandırmadan başarısız olur.</string>
+    <string name="studio_export_save_copy">Bir kopya kaydet</string>
+    <string name="studio_export_save_copy_hint">Harici orijinal ve özel proje varlıkları değişmeden kalır.</string>
+    <string name="studio_export_overwrite_warning">Bu, harici orijinali değiştirir. Değişiklik geri alınamaz.</string>
+    <string name="studio_export_copy_required">Bu belge kopya olarak dışa aktarılır. Özel proje varlıklarının üzerine asla yazılmaz.</string>
+    <string name="studio_export_save_location">Kayıt konumu</string>
+    <string name="studio_export_choose_location">Bir klasör veya dosya seçin</string>
+    <string name="studio_export_location_value">Kayıt konumu: %1$s</string>
+    <string name="studio_recipe_title">Tarifler ve toplu işlem</string>
+    <string name="studio_recipe_subtitle">Yerel düzenlemeleri diğer fotoğraflarda yeniden kullanın. Bulut AI işlemleri dahil değildir; toplu dışa aktarmalar her zaman kopya kaydeder.</string>
+    <string name="studio_recipe_name">Tarif adı</string>
+    <string name="studio_recipe_save_current">Mevcut düzenlemeleri tarif olarak kaydet</string>
+    <string name="studio_recipe_library">Kaydedilen tarifler</string>
+    <string name="studio_recipe_empty">Henüz tarif yok. Bir kitaplık oluşturmak için mevcut düzenlemeleri kaydedin.</string>
+    <string name="studio_recipe_apply">Uygula</string>
+    <string name="studio_recipe_delete">Tarifi sil</string>
+    <string name="studio_recipe_selected">Toplu işlem için seçildi</string>
+    <string name="studio_recipe_choose">Toplu işlem için seç</string>
+    <string name="studio_recipe_batch_images">Toplu görseller</string>
+    <string name="studio_recipe_pick_images">Birden fazla görsel seç</string>
+    <string name="studio_recipe_images_selected">%1$d görsel seçildi</string>
+    <string name="studio_recipe_run_batch">Seçili tarifi çalıştır</string>
+    <string name="studio_recipe_cancel_batch">Toplu işlemi iptal et</string>
+    <string name="studio_recipe_batch_progress">%2$d görselden %1$d tanesi işlendi</string>
+    <string name="studio_recipe_batch_result">%1$d kaydedildi, %2$d başarısız oldu</string>
+    <string name="studio_recipe_batch_cancelled">%2$d görselden %1$d tanesinden sonra iptal edildi. Kalan görseller işlenmedi.</string>
+    <string name="studio_recipe_batch_failures">Kaydedilemeyen görseller</string>
+    <string name="studio_recipe_batch_done">Toplu işlem tamamlandı</string>
+    <string name="studio_recipe_batch_partial">Toplu işlem tüm görseller işlenmeden durduruldu.</string>
+    <string name="studio_recipe_batch_local_only">Yalnızca yerel ayarlamalar, filtreler, maskeler, katmanlar ve dışa aktarma ayarları yeniden oynatılır. Orijinaller asla değiştirilmez.</string>
+    <string name="studio_recipe_error">Tarif hatası: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

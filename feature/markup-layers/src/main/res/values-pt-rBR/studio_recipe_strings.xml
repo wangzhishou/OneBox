@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">Carregue uma imagem com dimensões válidas antes de exportar.</string>
+    <string name="studio_export_invalid_dimensions">Insira uma largura e altura positivas.</string>
+    <string name="studio_export_invalid_quality">A qualidade deve estar entre 10 e 100.</string>
+    <string name="studio_export_invalid_format">Este formato de exportação não é suportado.</string>
+    <string name="studio_export_opaque_background">Escolha um fundo opaco para JPG.</string>
+    <string name="studio_export_size_too_small">O limite deve ser de pelo menos 1 KB. Limites menores não conseguem conter uma imagem codificada de forma confiável.</string>
+    <string name="studio_export_purpose">Predefinições de tamanho</string>
+    <string name="studio_export_preset_sharing">Compartilhamento</string>
+    <string name="studio_export_preset_avatar">Avatar · recorte primeiro</string>
+    <string name="studio_export_preset_wallpaper">Papel de parede · recorte primeiro</string>
+    <string name="studio_export_preset_print">Imagem grande</string>
+    <string name="studio_export_preset_long_edge">Lado maior até %1$d px</string>
+    <string name="studio_export_presets_keep_ratio">As predefinições mantêm a proporção atual da imagem e nunca a ampliam. Recorte primeiro se um avatar ou papel de parede precisar de uma proporção específica.</string>
+    <string name="studio_export_jpeg_alpha_warning">JPG não consegue preservar a transparência. Pixels transparentes serão preenchidos com a cor de fundo selecionada.</string>
+    <string name="studio_export_color_white">Branco</string>
+    <string name="studio_export_color_black">Preto</string>
+    <string name="studio_export_color_gray">Cinza</string>
+    <string name="studio_export_color_cream">Creme</string>
+    <string name="studio_export_custom_fit">Largura e altura definem uma caixa delimitadora máxima. A imagem mantém sua proporção; ela nunca é esticada.</string>
+    <string name="studio_export_file_size_limit">Tamanho máximo do arquivo (KB, vazio = sem limite)</string>
+    <string name="studio_export_png_limit_hint">PNG é sem perdas: a qualidade não pode reduzir seu tamanho. O arquivo codificado real deve caber no limite ou a exportação falhará.</string>
+    <string name="studio_export_lossy_limit_hint">O tamanho real do arquivo é verificado. A qualidade pode ser reduzida até 10; se o limite ainda não puder ser atingido, a exportação falha sem redimensionar silenciosamente.</string>
+    <string name="studio_export_save_copy">Salvar uma cópia</string>
+    <string name="studio_export_save_copy_hint">O original externo e os recursos privados do projeto permanecem inalterados.</string>
+    <string name="studio_export_overwrite_warning">Isso substitui o original externo. A alteração não pode ser desfeita.</string>
+    <string name="studio_export_copy_required">Este documento é exportado como uma cópia. Os recursos privados do projeto nunca são sobrescritos.</string>
+    <string name="studio_export_save_location">Local de salvamento</string>
+    <string name="studio_export_choose_location">Escolha uma pasta ou arquivo</string>
+    <string name="studio_export_location_value">Local de salvamento: %1$s</string>
+    <string name="studio_recipe_title">Receitas e lote</string>
+    <string name="studio_recipe_subtitle">Reutilize edições locais em outras fotos. Ações de IA na nuvem não são incluídas; exportações em lote sempre salvam cópias.</string>
+    <string name="studio_recipe_name">Nome da receita</string>
+    <string name="studio_recipe_save_current">Salvar edições atuais como receita</string>
+    <string name="studio_recipe_library">Receitas salvas</string>
+    <string name="studio_recipe_empty">Nenhuma receita ainda. Salve as edições atuais para iniciar uma biblioteca.</string>
+    <string name="studio_recipe_apply">Aplicar</string>
+    <string name="studio_recipe_delete">Excluir receita</string>
+    <string name="studio_recipe_selected">Selecionado para lote</string>
+    <string name="studio_recipe_choose">Selecionar para lote</string>
+    <string name="studio_recipe_batch_images">Imagens em lote</string>
+    <string name="studio_recipe_pick_images">Escolher várias imagens</string>
+    <string name="studio_recipe_images_selected">%1$d imagens selecionadas</string>
+    <string name="studio_recipe_run_batch">Executar receita selecionada</string>
+    <string name="studio_recipe_cancel_batch">Cancelar lote</string>
+    <string name="studio_recipe_batch_progress">%1$d de %2$d processadas</string>
+    <string name="studio_recipe_batch_result">%1$d salvas, %2$d falharam</string>
+    <string name="studio_recipe_batch_cancelled">Cancelado após %1$d de %2$d imagens. As imagens restantes não foram processadas.</string>
+    <string name="studio_recipe_batch_failures">Imagens que não puderam ser salvas</string>
+    <string name="studio_recipe_batch_done">Lote concluído</string>
+    <string name="studio_recipe_batch_partial">Lote interrompido antes de todas as imagens serem processadas.</string>
+    <string name="studio_recipe_batch_local_only">Apenas ajustes locais, filtros, máscaras, sobreposições e configurações de exportação são reaplicados. Os originais nunca são modificados.</string>
+    <string name="studio_recipe_error">Erro na receita: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

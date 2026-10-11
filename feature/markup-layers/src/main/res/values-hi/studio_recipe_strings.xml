@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">निर्यात करने से पहले मान्य आयामों वाली छवि लोड करें।</string>
+    <string name="studio_export_invalid_dimensions">धनात्मक चौड़ाई और ऊँचाई दर्ज करें।</string>
+    <string name="studio_export_invalid_quality">गुणवत्ता 10 और 100 के बीच होनी चाहिए।</string>
+    <string name="studio_export_invalid_format">यह निर्यात प्रारूप समर्थित नहीं है।</string>
+    <string name="studio_export_opaque_background">JPG के लिए अपारदर्शी पृष्ठभूमि चुनें।</string>
+    <string name="studio_export_size_too_small">सीमा कम से कम 1 KB होनी चाहिए। छोटी सीमाएँ एन्कोडेड छवि को विश्वसनीय रूप से नहीं रख सकतीं।</string>
+    <string name="studio_export_purpose">आकार प्रीसेट</string>
+    <string name="studio_export_preset_sharing">साझा करना</string>
+    <string name="studio_export_preset_avatar">अवतार · पहले क्रॉप करें</string>
+    <string name="studio_export_preset_wallpaper">वॉलपेपर · पहले क्रॉप करें</string>
+    <string name="studio_export_preset_print">बड़ी छवि</string>
+    <string name="studio_export_preset_long_edge">लंबा किनारा %1$d px तक</string>
+    <string name="studio_export_presets_keep_ratio">प्रीसेट वर्तमान छवि अनुपात बनाए रखते हैं और इसे कभी बड़ा नहीं करते। यदि अवतार या वॉलपेपर को विशिष्ट अनुपात चाहिए तो पहले क्रॉप करें।</string>
+    <string name="studio_export_jpeg_alpha_warning">JPG पारदर्शिता नहीं रख सकता। पारदर्शी पिक्सेल चयनित पृष्ठभूमि रंग से भर दिए जाएँगे।</string>
+    <string name="studio_export_color_white">सफ़ेद</string>
+    <string name="studio_export_color_black">काला</string>
+    <string name="studio_export_color_gray">धूसर</string>
+    <string name="studio_export_color_cream">क्रीम</string>
+    <string name="studio_export_custom_fit">चौड़ाई और ऊँचाई अधिकतम बाउंडिंग बॉक्स परिभाषित करते हैं। छवि अपना अनुपात बनाए रखती है; इसे कभी खींचा नहीं जाता।</string>
+    <string name="studio_export_file_size_limit">अधिकतम फ़ाइल आकार (KB, खाली = कोई सीमा नहीं)</string>
+    <string name="studio_export_png_limit_hint">PNG लॉसलेस है: गुणवत्ता इसका आकार कम नहीं कर सकती। वास्तविक एन्कोडेड फ़ाइल सीमा में फिट होनी चाहिए अन्यथा निर्यात विफल हो जाएगा।</string>
+    <string name="studio_export_lossy_limit_hint">वास्तविक फ़ाइल आकार की जाँच की जाती है। गुणवत्ता 10 तक कम की जा सकती है; यदि सीमा अभी भी पूरी नहीं हो सकती, तो निर्यात चुपचाप आकार बदले बिना विफल हो जाता है।</string>
+    <string name="studio_export_save_copy">प्रतिलिपि सहेजें</string>
+    <string name="studio_export_save_copy_hint">बाहरी मूल और निजी प्रोजेक्ट संपत्तियाँ अपरिवर्तित रहती हैं।</string>
+    <string name="studio_export_overwrite_warning">यह बाहरी मूल को बदल देता है। परिवर्तन पूर्ववत नहीं किया जा सकता।</string>
+    <string name="studio_export_copy_required">यह दस्तावेज़ प्रतिलिपि के रूप में निर्यात किया जाता है। निजी प्रोजेक्ट संपत्तियाँ कभी अधिलेखित नहीं होतीं।</string>
+    <string name="studio_export_save_location">सहेजने का स्थान</string>
+    <string name="studio_export_choose_location">फ़ोल्डर या फ़ाइल चुनें</string>
+    <string name="studio_export_location_value">सहेजने का स्थान: %1$s</string>
+    <string name="studio_recipe_title">रेसिपी और बैच</string>
+    <string name="studio_recipe_subtitle">अन्य फ़ोटो पर स्थानीय संपादन पुनः उपयोग करें। क्लाउड AI क्रियाएँ शामिल नहीं हैं; बैच निर्यात हमेशा प्रतियाँ सहेजते हैं।</string>
+    <string name="studio_recipe_name">रेसिपी नाम</string>
+    <string name="studio_recipe_save_current">वर्तमान संपादन को रेसिपी के रूप में सहेजें</string>
+    <string name="studio_recipe_library">सहेजी गई रेसिपी</string>
+    <string name="studio_recipe_empty">अभी कोई रेसिपी नहीं। लाइब्रेरी शुरू करने के लिए वर्तमान संपादन सहेजें।</string>
+    <string name="studio_recipe_apply">लागू करें</string>
+    <string name="studio_recipe_delete">रेसिपी हटाएँ</string>
+    <string name="studio_recipe_selected">बैच के लिए चयनित</string>
+    <string name="studio_recipe_choose">बैच के लिए चुनें</string>
+    <string name="studio_recipe_batch_images">बैच छवियाँ</string>
+    <string name="studio_recipe_pick_images">कई छवियाँ चुनें</string>
+    <string name="studio_recipe_images_selected">%1$d छवियाँ चयनित</string>
+    <string name="studio_recipe_run_batch">चयनित रेसिपी चलाएँ</string>
+    <string name="studio_recipe_cancel_batch">बैच रद्द करें</string>
+    <string name="studio_recipe_batch_progress">%2$d में से %1$d संसाधित</string>
+    <string name="studio_recipe_batch_result">%1$d सहेजी गईं, %2$d विफल</string>
+    <string name="studio_recipe_batch_cancelled">%2$d में से %1$d छवियों के बाद रद्द किया गया। शेष छवियाँ संसाधित नहीं की गईं।</string>
+    <string name="studio_recipe_batch_failures">वे छवियाँ जो सहेजी नहीं जा सकीं</string>
+    <string name="studio_recipe_batch_done">बैच पूरा हुआ</string>
+    <string name="studio_recipe_batch_partial">सभी छवियों के संसाधित होने से पहले बैच रोक दिया गया।</string>
+    <string name="studio_recipe_batch_local_only">केवल स्थानीय समायोजन, फ़िल्टर, मास्क, ओवरले और निर्यात सेटिंग्स दोहराई जाती हैं। मूल कभी संशोधित नहीं होते।</string>
+    <string name="studio_recipe_error">रेसिपी त्रुटि: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>

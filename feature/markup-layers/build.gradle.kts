@@ -30,4 +30,8 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.imageGeneration)
     implementation(projects.feature.common)
+    implementation(libs.kotlinx.serialization.json)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.reflect)
 }

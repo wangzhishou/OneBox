@@ -6,9 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.calculateCentroidSize
+import androidx.compose.foundation.gestures.calculateCentroid
 import androidx.compose.foundation.gestures.calculatePan
-import androidx.compose.foundation.gestures.calculateRotation
 import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -22,12 +21,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -35,6 +36,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
@@ -50,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
@@ -57,10 +62,17 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -77,18 +89,18 @@ import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.BackgroundColor
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
-import com.t8rin.imagetoolbox.core.resources.icons.Dots
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
 import com.t8rin.imagetoolbox.core.resources.icons.Share
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilters
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomIn
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomOut
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
+import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiEditImage
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiGenerateImageSheet
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiStickerGeneration
@@ -111,12 +123,14 @@ import com.wanbaohe.markuplayers.domain.model.ShapeSpec
 import com.wanbaohe.markuplayers.presentation.components.EditBox
 import com.wanbaohe.markuplayers.presentation.components.LayersFloatingPanel
 import com.wanbaohe.markuplayers.presentation.components.LayersSheet
+import com.wanbaohe.markuplayers.presentation.components.layerDisplayName
 import com.wanbaohe.markuplayers.presentation.components.TextEditDialog
 import com.wanbaohe.markuplayers.presentation.draw.BrushSettingsDialog
 import com.wanbaohe.markuplayers.presentation.draw.DrawFloatingBar
 import com.wanbaohe.markuplayers.presentation.draw.DrawOverlay
 import com.wanbaohe.markuplayers.presentation.draw.DrawSessionState
 import com.wanbaohe.markuplayers.presentation.export.ExportSettingsSheet
+import com.wanbaohe.markuplayers.presentation.recipe.RecipeBatchSheet
 import com.wanbaohe.markuplayers.presentation.render.LayerPreviewRenderers
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import com.wanbaohe.markuplayers.presentation.tools.EditorTool
@@ -124,28 +138,38 @@ import com.wanbaohe.markuplayers.presentation.tools.EditorTools
 import com.wanbaohe.markuplayers.presentation.tools.adjust.AdjustToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.adjust.toColorMatrixValues
 import com.wanbaohe.markuplayers.domain.model.AiImageOp
+import com.wanbaohe.markuplayers.domain.model.AiGenerationTarget
 import com.shifenmiao.base.utils.aiImageProcessPointsCost
 import com.wanbaohe.markuplayers.presentation.tools.ai.AiRectSelectOverlay
 import com.wanbaohe.markuplayers.presentation.tools.ai.AiToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.crop.CropToolScreen
 import com.wanbaohe.markuplayers.presentation.tools.filter.FilterPanel
+import com.wanbaohe.markuplayers.presentation.tools.effects.EffectsToolSheet
+import com.wanbaohe.markuplayers.presentation.tools.mask.MaskToolSheet
 import com.wanbaohe.markuplayers.presentation.tools.shape.ShapeToolSheet
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerToolSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import kotlin.math.abs
 import kotlin.math.min
+import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
-import net.engawapg.lib.zoomable.ZoomState
-import net.engawapg.lib.zoomable.rememberZoomState
-import net.engawapg.lib.zoomable.zoomable
+import kotlinx.coroutines.withTimeoutOrNull
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.FitScreen
+import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.ZoomOutMap
 
 /**
  * 主编辑界面(设计稿「图片创作」):基于 BaseScreen,背景槽为画布背景
  * (默认主题 surface 色,可切换纯色;底图自身透明区域由图片下的棋盘格标识),
- * 顶栏(返回/撤销/重做/更多菜单) + 画布区 + 底部主 Tab 栏与保存按钮。
+ * 顶栏(返回/保存/更多菜单) + 画布区(顶部浮动控制条:缩放/撤销/重做/对比原图)
+ * + 底部主 Tab 栏与保存按钮。
  *
  * 左侧工具栏与右侧图层面板均为浮动卡片,可垂直拖动;底部「基础工具」Tab
  * 切换左侧工具栏显隐,「图层」Tab 切换浮动图层面板显隐(完整图层 Sheet 由面板内展开)。
@@ -158,30 +182,35 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
  */
 @Composable
 fun EditorScaffold(
-    component: MarkupLayersComponent
+    component: MarkupLayersComponent,
 ) {
-    var showExitDialog by rememberSaveable { mutableStateOf(false) }
     var showStickerSheet by rememberSaveable { mutableStateOf(false) }
     var showLayersSheet by rememberSaveable { mutableStateOf(false) }
     var showExportSheet by rememberSaveable { mutableStateOf(false) }
     var showShapeSheet by rememberSaveable { mutableStateOf(false) }
     var showFullFilterSheet by rememberSaveable { mutableStateOf(false) }
+    var showEffectsSheet by rememberSaveable { mutableStateOf(false) }
+    var showMaskSheet by rememberSaveable { mutableStateOf(false) }
     var showCanvasBackgroundSheet by rememberSaveable { mutableStateOf(false) }
+    var showRecipeSheet by rememberSaveable { mutableStateOf(false) }
     // AI 生成图片弹层(共享 AiGenerateImageSheet,宿主薄壳负责预检)
     var showAiGenerateSheet by rememberSaveable { mutableStateOf(false) }
+    var aiTargetAction by remember { mutableStateOf<AiTargetAction?>(null) }
+    var aiCandidateLayerId by remember { mutableStateOf<String?>(null) }
     // 图像修复框选模式:true 时画布叠加框选层(矩形相对底图归一化),底部换成取消/确认操作条
     var aiRectSelect by rememberSaveable { mutableStateOf(false) }
     var aiRect by remember { mutableStateOf(DEFAULT_AI_RECT) }
-    // 直出类 AI 能力(非框选)待确认项:处理会替换底图且不可撤销,先弹确认对话框
+    // Non-region AI operations confirm the chosen target before processing.
     var pendingAiOp by remember { mutableStateOf<AiImageOp?>(null) }
     // 文字/形状图层选滤镜的待确认项:图层 id + 待应用滤镜,确认后光栅化为图片图层再应用
-    var pendingRasterize by remember { mutableStateOf<Pair<String, UiFilter<*>>?>(null) }
+    var pendingRasterize by remember { mutableStateOf<RasterizeRequest?>(null) }
     // 底部 Tab 单一工作态:任一时刻至多一个 Tab 高亮(高亮即「当前工作态」)。
     // basic=左侧工具栏、layers=浮动图层面板、filter=滤镜横滚面板、adjust/ai=对应 Sheet;
     // 再点当前 Tab 或 Sheet dismiss 即清除(同时收起对应面板/Sheet)
     var activeBottomTab by rememberSaveable { mutableStateOf<String?>(EditorTools.ID_BASIC) }
+    val wideLayout = LocalConfiguration.current.screenWidthDp >= 840
     val sideBarVisible = activeBottomTab == EditorTools.ID_BASIC
-    val layersPanelVisible = activeBottomTab == EditorTools.ID_LAYERS
+    val layersPanelVisible = wideLayout && activeBottomTab == EditorTools.ID_LAYERS
     val filterPanelVisible = activeBottomTab == EditorTools.ID_FILTER
     // 「下一个新形状」的默认样式,由形状面板维护,关闭面板后保留
     var shapeDefaultSpec by remember { mutableStateOf(ShapeSpec.default(ShapeKind.Rectangle)) }
@@ -191,7 +220,13 @@ fun EditorScaffold(
         when {
             // 底部 Tab 互斥:已是当前 → 清除;否则设为当前(显隐/开关由 activeBottomTab 派生)
             tool.placement == EditorTool.Placement.BottomTab -> {
-                activeBottomTab = if (activeBottomTab == tool.id) null else tool.id
+                if (tool.id == EditorTools.ID_AI && activeBottomTab != tool.id) {
+                    activeBottomTab = null
+                    aiCandidateLayerId = component.selectedLayerId
+                    aiTargetAction = AiTargetAction.Process
+                } else {
+                    activeBottomTab = if (activeBottomTab == tool.id) null else tool.id
+                }
             }
 
             else -> {
@@ -204,7 +239,13 @@ fun EditorScaffold(
                     EditorTools.ID_DRAW -> component.selectLayer(null)
                     EditorTools.ID_STICKER -> showStickerSheet = true
                     EditorTools.ID_SHAPE -> showShapeSheet = true
-                    EditorTools.ID_AI_GENERATE -> showAiGenerateSheet = true
+                    EditorTools.ID_AI_GENERATE -> {
+                        component.prepareAiGeneration()
+                        aiCandidateLayerId = component.selectedLayerId
+                        aiTargetAction = AiTargetAction.Generate
+                    }
+                    EditorTools.ID_MASK -> showMaskSheet = true
+                    EditorTools.ID_EFFECTS -> showEffectsSheet = true
                     // FullScreen 工具(裁剪)由 activeToolId 驱动,下方直接切换全屏页
                 }
             }
@@ -216,6 +257,12 @@ fun EditorScaffold(
             MarkupLayer(type = LayerType.Image(imageData = uri))
         )
     }
+
+    // 批处理选图:多选相册图片,uri 列表交给 Component 暂存
+    val batchImagePicker = rememberImagePicker(
+        picker = Picker.Multiple,
+        onSuccess = { uris: List<Uri> -> component.setBatchImages(uris) }
+    )
 
     // 画笔画布内绘制模式:会话随模式进出创建/销毁,完成时才落成 Draw 图层
     val isDrawMode = component.activeToolId == EditorTools.ID_DRAW
@@ -234,13 +281,25 @@ fun EditorScaffold(
     }
     val onDrawCancel: () -> Unit = { component.setActiveTool(null) }
 
+    // 首页快捷任务:进入编辑器后自动打开指定工具(如 AI 面板),消费一次即清除
+    LaunchedEffect(component.pendingToolId) {
+        if (component.pendingToolId != null && component.hasImage) {
+            when (component.pendingToolId) {
+                EditorTools.ID_AI -> {
+                    aiCandidateLayerId = component.selectedLayerId
+                    activeBottomTab = EditorTools.ID_AI
+                }
+            }
+            component.consumePendingTool()
+        }
+    }
+
     // 返回键由 BaseScreen 处理(沉浸态先退沉浸):框选/绘制模式下返回 = 取消当前模式,否则按原逻辑退出
     val onBack = {
         when {
             aiRectSelect -> aiRectSelect = false
             isDrawMode -> onDrawCancel()
-            component.haveChanges -> showExitDialog = true
-            else -> component.resetState()
+            else -> component.closeProject()
         }
     }
 
@@ -256,9 +315,31 @@ fun EditorScaffold(
     }
 
     BaseScreen(
-        title = stringResource(R.string.markup_editor_title),
+        title = {
+            Column {
+                Text(
+                    text = component.projectName.ifBlank { stringResource(R.string.markup_editor_title) },
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
+                Text(
+                    text = component.taskLabel ?: stringResource(
+                        when {
+                            component.isProjectSaving -> R.string.studio_project_saving
+                            component.projectSaveError != null -> R.string.studio_project_save_failed_title
+                            else -> R.string.studio_project_status
+                        }
+                    ),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (component.projectSaveError != null) MaterialTheme.colorScheme.error
+                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
+            }
+        },
         onGoBack = onBack,
-        background = {
+        backgroundImage = {
             // 操作台背景:默认透出主题 surface 底色,可切换纯色(画布背景设置)
             when (val bg = component.canvasBackground) {
                 CanvasBackground.Default -> Spacer(
@@ -286,7 +367,10 @@ fun EditorScaffold(
             EditorTopBarActions(
                 component = component,
                 immersiveModeState = immersiveModeState,
-                onOpenCanvasBackground = { showCanvasBackgroundSheet = true }
+                onOpenCanvasBackground = { showCanvasBackgroundSheet = true },
+                onOpenEffects = { showEffectsSheet = true },
+                onOpenMask = { showMaskSheet = true },
+                onOpenBatch = { showRecipeSheet = true }
             )
         },
         // 底部 Tab 栏自带 navigationBarsPadding,避免叠加
@@ -314,8 +398,9 @@ fun EditorScaffold(
                 onAddImageLayer = { imageLayerPicker.pickImage() },
                 onExpandLayers = { showLayersSheet = true },
                 onOpenFullFilterCatalog = { showFullFilterSheet = true },
+                onOpenEffects = { showEffectsSheet = true },
                 onRequestRasterize = { layerId, filter ->
-                    pendingRasterize = layerId to filter
+                    pendingRasterize = RasterizeRequest(layerId, filter, append = false)
                 },
                 modifier = Modifier
                     .weight(1f)
@@ -353,7 +438,7 @@ fun EditorScaffold(
                             component = component,
                             activeBottomTab = activeBottomTab,
                             onToolClick = onToolClick,
-                            onSaveClick = { showExportSheet = true }
+                            onExportClick = { showExportSheet = true }
                         )
                     }
                 }
@@ -387,20 +472,26 @@ fun EditorScaffold(
     )
 
     LayersSheet(
-        visible = showLayersSheet,
+        visible = showLayersSheet || (!wideLayout && activeBottomTab == EditorTools.ID_LAYERS),
         component = component,
-        onDismiss = { showLayersSheet = false },
+        onDismiss = {
+            showLayersSheet = false
+            if (activeBottomTab == EditorTools.ID_LAYERS) activeBottomTab = null
+        },
         onAddText = {
             showLayersSheet = false
+            activeBottomTab = null
             component.beginTextEditSession()
             component.setActiveTool(EditorTools.ID_TEXT)
         },
         onAddSticker = {
             showLayersSheet = false
+            activeBottomTab = null
             showStickerSheet = true
         },
         onAddImage = {
             showLayersSheet = false
+            activeBottomTab = null
             imageLayerPicker.pickImage()
         }
     )
@@ -420,34 +511,59 @@ fun EditorScaffold(
         onDismiss = { if (activeBottomTab == EditorTools.ID_ADJUST) activeBottomTab = null }
     )
 
-    // 完整滤镜目录(由横滚面板「更多」进入),选中滤镜回填后关闭
+    EffectsToolSheet(
+        visible = showEffectsSheet,
+        component = component,
+        onDismiss = { showEffectsSheet = false },
+        onAddEffect = {
+            showEffectsSheet = false
+            showFullFilterSheet = true
+        }
+    )
+    MaskToolSheet(
+        visible = showMaskSheet,
+        component = component,
+        onDismiss = {
+            showMaskSheet = false
+            if (component.activeToolId == EditorTools.ID_MASK) component.setActiveTool(null)
+        }
+    )
+
+    val addPickedEffect: (UiFilter<*>) -> Unit = { filter ->
+        val vector = component.rasterizeRequiredLayer
+        if (vector != null) {
+            pendingRasterize = RasterizeRequest(vector.id, filter, append = true)
+        } else {
+            component.addEffect(filter)
+            showEffectsSheet = true
+        }
+        showFullFilterSheet = false
+    }
     AddFiltersSheet(
         component = component.addFiltersSheetComponent,
         filterTemplateCreationSheetComponent = component.filterTemplateCreationSheetComponent,
         visible = showFullFilterSheet,
         onDismiss = { showFullFilterSheet = false },
         previewBitmap = component.displayBitmap,
-        onFilterPicked = { filter ->
-            // 选中文字/形状图层时先走光栅化确认,确认后才应用滤镜
-            val vector = component.rasterizeRequiredLayer
-            if (vector != null) {
-                pendingRasterize = vector.id to filter
-            } else {
-                component.selectFilter(filter)
-            }
-            showFullFilterSheet = false
-        },
-        onFilterPickedWithParams = { filter ->
-            // TODO: 带参数滤镜暂未做参数编辑页,本期按默认参数直接应用
-            val vector = component.rasterizeRequiredLayer
-            if (vector != null) {
-                pendingRasterize = vector.id to filter
-            } else {
-                component.selectFilter(filter)
-            }
-            showFullFilterSheet = false
-        },
+        onFilterPicked = addPickedEffect,
+        onFilterPickedWithParams = addPickedEffect,
         canAddTemplates = false
+    )
+
+    AiTargetSheet(
+        component = component,
+        action = aiTargetAction,
+        candidateLayerId = aiCandidateLayerId,
+        onSelectTarget = { layerId, generationTarget ->
+            component.selectLayer(layerId)
+            if (aiTargetAction == AiTargetAction.Generate) {
+                component.setAiGenerationTarget(generationTarget ?: AiGenerationTarget.NewLayer)
+                showAiGenerateSheet = true
+            }
+            else activeBottomTab = EditorTools.ID_AI
+            aiTargetAction = null
+        },
+        onDismiss = { aiTargetAction = null }
     )
 
     AiToolSheet(
@@ -456,7 +572,7 @@ fun EditorScaffold(
         pointsCost = aiImageProcessPointsCost(),
         onOpClick = { op ->
             // 面板收起后分流:需框选的能力(图像修复)先做登录+积分预检,通过才进框选模式,
-            // 避免白框选;直出类能力会替换底图且不可撤销,先弹确认对话框,
+            // Avoid selecting a region before authentication; replacements remain undoable.
             // 确认后才做预检与处理;积分在处理成功后由组件扣除,失败不扣
             activeBottomTab = null
             if (op.needsRect) {
@@ -465,6 +581,7 @@ fun EditorScaffold(
                     point = aiImageProcessPointsCost()
                 ) {
                     aiRect = DEFAULT_AI_RECT
+                    if (component.selectedLayer != null) component.prepareMaskTarget()
                     aiRectSelect = true
                 }
             } else {
@@ -473,7 +590,7 @@ fun EditorScaffold(
         }
     )
 
-    // 直出类 AI 处理二次确认:原图将被替换且不可撤销
+    // The confirmation copy describes undoable replacement of the selected target.
     EnhancedAlertDialog(
         visible = pendingAiOp != null,
         onDismissRequest = { pendingAiOp = null },
@@ -519,10 +636,13 @@ fun EditorScaffold(
             ConfirmButton(
                 text = stringResource(R.string.markup_confirm),
                 onClick = {
-                    val (layerId, filter) = pendingRasterize ?: return@ConfirmButton
+                    val request = pendingRasterize ?: return@ConfirmButton
                     pendingRasterize = null
-                    component.rasterizeLayer(layerId) {
-                        component.selectFilter(filter)
+                    component.rasterizeLayer(request.layerId) {
+                        if (request.append) {
+                            component.addEffect(request.filter)
+                            showEffectsSheet = true
+                        } else component.selectFilter(request.filter)
                     }
                 }
             )
@@ -531,9 +651,6 @@ fun EditorScaffold(
 
     // AI 生成图片(共享 core/ui AiGenerateImageSheet;宿主薄壳负责登录+积分预检):
     // 选中图片图层时图生图编辑(成功后换图,回退走现有 undo 体系,不另建历史)
-    val aiEditTarget = component.layers.firstOrNull {
-        it.id == component.selectedLayerId && it.type is LayerType.Image
-    }
     AiGenerateImageSheet(
         visible = showAiGenerateSheet,
         title = stringResource(R.string.markup_ai_generate_title),
@@ -549,11 +666,11 @@ fun EditorScaffold(
         currentLabel = stringResource(R.string.markup_ai_edit_current),
         historyLabel = stringResource(R.string.markup_ai_edit_history),
         isGenerating = component.isAiProcessing,
-        editImage = aiEditTarget?.let { layer ->
+        editImage = component.aiEditImageUri?.let { uri ->
             AiEditImage(
-                uri = (layer.type as LayerType.Image).imageData.toString(),
-                historyUris = emptyList(),
-                onRevert = {}
+                uri = uri,
+                historyUris = component.aiImageHistory,
+                onRevert = component::revertAiImage
             )
         },
         onGenerate = { prompt ->
@@ -568,6 +685,8 @@ fun EditorScaffold(
         onDismiss = { showAiGenerateSheet = false }
     )
 
+    AiResultSheet(component = component)
+
     CanvasBackgroundSheet(
         visible = showCanvasBackgroundSheet,
         background = component.canvasBackground,
@@ -580,7 +699,9 @@ fun EditorScaffold(
         settings = component.exportSettings,
         sourceSize = component.sourceSize,
         imageUri = component.uri,
-        estimateBitmap = component.displayBitmap ?: component.bitmap,
+        estimateBitmap = component.compositePreviewBitmap
+            ?: component.displayBitmap ?: component.bitmap,
+        canOverwriteOriginal = component.canOverwriteOriginal,
         onDismiss = { showExportSheet = false },
         onSettingsChange = component::updateExportSettings,
         onSave = {
@@ -590,6 +711,31 @@ fun EditorScaffold(
                 onComplete = component::parseSaveResult
             )
         }
+    )
+
+    // 打开导出面板时先触发一次合成预览,体积估算基于含图层的合成图而非裸底图
+    LaunchedEffect(showExportSheet) {
+        if (showExportSheet) component.prepareExportPreview()
+    }
+
+    RecipeBatchSheet(
+        visible = showRecipeSheet,
+        recipes = component.recipes,
+        onDismiss = { showRecipeSheet = false },
+        onSaveCurrentRecipe = component::saveRecipeFromCurrent,
+        onApplyRecipe = { recipe ->
+            component.applyRecipe(recipe)
+            showRecipeSheet = false
+        },
+        onPickBatchImages = { batchImagePicker.pickImage() },
+        onRunBatch = component::runBatch,
+        onCancelBatch = component::cancelBatch,
+        selectedImageCount = component.batchImageCount,
+        progress = component.batchProgress,
+        report = component.batchReport,
+        error = component.recipeError,
+        canSaveCurrentRecipe = component.hasImage,
+        onDeleteRecipe = component::deleteRecipe
     )
 
     // 文字编辑 Dialog:由 Component 的文字编辑会话驱动(新建/点按已选中文字图层)
@@ -614,10 +760,147 @@ fun EditorScaffold(
         )
     }
 
-    ExitWithoutSavingDialog(
-        onExit = { component.resetState() },
-        onDismiss = { showExitDialog = false },
-        visible = showExitDialog
+}
+
+private enum class AiTargetAction { Process, Generate }
+
+private data class RasterizeRequest(
+    val layerId: String,
+    val filter: UiFilter<*>,
+    val append: Boolean,
+)
+
+@Composable
+private fun AiTargetSheet(
+    component: MarkupLayersComponent,
+    action: AiTargetAction?,
+    candidateLayerId: String?,
+    onSelectTarget: (String?, AiGenerationTarget?) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val candidate = component.layers.firstOrNull {
+        it.id == candidateLayerId && it.type is LayerType.Image && !it.transform.locked
+    }
+    EnhancedModalBottomSheet(
+        visible = action != null,
+        onDismiss = { onDismiss() },
+        sheetContent = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.studio_ai_target_title),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = stringResource(R.string.studio_ai_target_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                candidate?.let { layer ->
+                    ConfirmButton(
+                        text = stringResource(
+                            R.string.studio_ai_target_layer,
+                            layerDisplayName(layer, component.layers)
+                        ),
+                        enabled = !component.isAiProcessing &&
+                            (action != AiTargetAction.Generate || component.canAiEdit),
+                        onClick = {
+                            onSelectTarget(
+                                layer.id,
+                                if (action == AiTargetAction.Generate) AiGenerationTarget.SelectedLayer else null
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                    )
+                }
+                ConfirmButton(
+                    text = stringResource(R.string.studio_ai_target_base),
+                    enabled = !component.isAiProcessing &&
+                        (action != AiTargetAction.Generate || component.canAiEdit),
+                    onClick = {
+                        onSelectTarget(
+                            null,
+                            if (action == AiTargetAction.Generate) AiGenerationTarget.Background else null
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                )
+                if (action == AiTargetAction.Generate) {
+                    ConfirmButton(
+                        text = stringResource(R.string.studio_ai_target_generate),
+                        enabled = !component.isAiProcessing,
+                        onClick = { onSelectTarget(null, AiGenerationTarget.NewLayer) },
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                    )
+                    if (!component.canAiEdit) {
+                        Text(
+                            text = stringResource(R.string.studio_ai_provider_no_edit),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                CancelButton(
+                    text = stringResource(R.string.markup_cancel),
+                    onClick = onDismiss,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun AiResultSheet(component: MarkupLayersComponent) {
+    val result = component.pendingAiResult ?: return
+    val enabled = !component.isAiProcessing && !component.isImageLoading
+    EnhancedModalBottomSheet(
+        visible = true,
+        onDismiss = { component.discardAiResult() },
+        sheetContent = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+                    .navigationBarsPadding().padding(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.studio_ai_result_title, result.title),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Picture(
+                    model = result.imagePath,
+                    contentDescription = stringResource(R.string.studio_ai_result_preview),
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.fillMaxWidth().height(280.dp).transparencyChecker()
+                )
+                Text(
+                    text = stringResource(R.string.studio_ai_result_keep_editable),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (result.replaceBackground || result.targetLayerId != null) {
+                    ConfirmButton(
+                        text = stringResource(R.string.studio_ai_result_replace),
+                        enabled = enabled,
+                        onClick = { component.acceptAiResult(asNewLayer = false) },
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                    )
+                }
+                ConfirmButton(
+                    text = stringResource(R.string.studio_ai_result_new_layer),
+                    enabled = enabled,
+                    onClick = { component.acceptAiResult(asNewLayer = true) },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                )
+                CancelButton(
+                    text = stringResource(R.string.markup_cancel),
+                    onClick = component::discardAiResult,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                )
+            }
+        }
     )
 }
 
@@ -626,32 +909,32 @@ private fun EditorTopBarActions(
     component: MarkupLayersComponent,
     immersiveModeState: ImmersiveModeState,
     onOpenCanvasBackground: () -> Unit,
+    onOpenEffects: () -> Unit,
+    onOpenMask: () -> Unit,
+    onOpenBatch: () -> Unit,
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
+    var showRenameProject by rememberSaveable { mutableStateOf(false) }
+    var projectName by rememberSaveable { mutableStateOf("") }
+    var showSaveError by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(component.projectSaveError) {
+        if (component.projectSaveError != null) showSaveError = true
+    }
     // 「清空图层」二次确认:删除全部图层(可撤销),先弹确认对话框
     var showClearLayersDialog by remember { mutableStateOf(false) }
     EnhancedIconButton(
-        onClick = component::undo,
-        enabled = component.canUndo
+        onClick = { component.saveProject() },
+        enabled = !component.isProjectSaving
     ) {
         Icon(
-            imageVector = Icons.Outlined.LineUndo,
-            contentDescription = stringResource(R.string.markup_undo)
-        )
-    }
-    EnhancedIconButton(
-        onClick = component::redo,
-        enabled = component.canRedo
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.LineRedo,
-            contentDescription = stringResource(R.string.markup_redo)
+            imageVector = MaterialIcons.Outlined.Save,
+            contentDescription = stringResource(R.string.studio_project_save)
         )
     }
     Box {
         EnhancedIconButton(onClick = { menuExpanded = true }) {
             Icon(
-                imageVector = Icons.Rounded.Dots,
+                imageVector = MaterialIcons.Outlined.MoreVert,
                 contentDescription = stringResource(R.string.markup_more_options)
             )
         }
@@ -659,6 +942,37 @@ private fun EditorTopBarActions(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false }
         ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.studio_project_rename)) },
+                onClick = {
+                    menuExpanded = false
+                    projectName = component.projectName
+                    showRenameProject = true
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.studio_effects_edit, component.targetEffects.size)) },
+                enabled = component.activeToolId != EditorTools.ID_DRAW,
+                onClick = {
+                    menuExpanded = false
+                    onOpenEffects()
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.studio_mask)) },
+                enabled = component.activeToolId != EditorTools.ID_DRAW,
+                onClick = {
+                    menuExpanded = false
+                    onOpenMask()
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.studio_batch_recipes)) },
+                onClick = {
+                    menuExpanded = false
+                    onOpenBatch()
+                }
+            )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.markup_menu_immersive_preview)) },
                 leadingIcon = {
@@ -670,7 +984,7 @@ private fun EditorTopBarActions(
                 }
             )
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.markup_canvas_background)) },
+                text = { Text(stringResource(R.string.studio_workspace_background)) },
                 leadingIcon = {
                     Icon(Icons.Outlined.BackgroundColor, contentDescription = null)
                 },
@@ -710,12 +1024,12 @@ private fun EditorTopBarActions(
                 }
             )
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.markup_menu_clear_filter)) },
+                text = { Text(stringResource(R.string.studio_effects_clear)) },
                 leadingIcon = {
                     Icon(Icons.Outlined.LineFilters, contentDescription = null)
                 },
                 // 清除当前目标的滤镜:选中图层 → 清图层滤镜(入 undo);无选中 → 清背景图
-                enabled = component.targetFilter != null,
+                enabled = component.targetEffects.isNotEmpty(),
                 onClick = {
                     menuExpanded = false
                     component.selectFilter(null)
@@ -735,6 +1049,61 @@ private fun EditorTopBarActions(
             )
         }
     }
+
+    EnhancedAlertDialog(
+        visible = showRenameProject,
+        onDismissRequest = { showRenameProject = false },
+        title = { Text(stringResource(R.string.studio_project_rename)) },
+        text = {
+            GlassOutlinedTextField(
+                value = projectName,
+                onValueChange = { projectName = it.take(120) },
+                label = { Text(stringResource(R.string.studio_project_name)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        dismissButton = {
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = { showRenameProject = false }
+            )
+        },
+        confirmButton = {
+            ConfirmButton(
+                text = stringResource(R.string.markup_confirm),
+                enabled = projectName.isNotBlank(),
+                onClick = {
+                    component.renameProject(projectName.trim())
+                    showRenameProject = false
+                }
+            )
+        }
+    )
+    EnhancedAlertDialog(
+        visible = showSaveError && component.projectSaveError != null,
+        onDismissRequest = { showSaveError = false },
+        title = { Text(stringResource(R.string.studio_project_save_failed_title)) },
+        text = {
+            Text(stringResource(R.string.studio_project_save_error, component.projectSaveError.orEmpty()))
+        },
+        dismissButton = {
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = { showSaveError = false }
+            )
+        },
+        confirmButton = {
+            ConfirmButton(
+                text = stringResource(R.string.studio_retry),
+                enabled = !component.isProjectSaving,
+                onClick = {
+                    showSaveError = false
+                    component.saveProject()
+                }
+            )
+        }
+    )
 
     // 清空图层二次确认(确认后执行,仍可通过撤销恢复)
     EnhancedAlertDialog(
@@ -777,57 +1146,117 @@ private fun EditorCanvas(
     onAddImageLayer: () -> Unit,
     onExpandLayers: () -> Unit,
     onOpenFullFilterCatalog: () -> Unit,
+    onOpenEffects: () -> Unit,
     onRequestRasterize: (layerId: String, filter: UiFilter<*>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val zoomState = rememberZoomState(maxScale = 10f)
+    val viewport = remember { EditorViewportState() }
     val drawMode = drawSession != null
-    // 有选中(非锁定)图层时:画布手势作用于选中图层本身,画布缩放/平移让位
-    val gestureLayer = component.layers
-        .firstOrNull { it.id == component.selectedLayerId }
-        ?.takeIf {
-            !drawMode && !aiRectSelect && !it.transform.locked
-        }
-    val transformSelection = gestureLayer != null
+    val localAiTarget = aiRectSelect && component.selectedLayer != null
+    val canvasBitmap = if (localAiTarget) component.maskTargetBitmap else component.bitmap
+    val canPanSingle = drawSession == null || drawSession.isPanMode
 
     BoxWithConstraints(
         modifier = modifier
             .clipToBounds()
-            .tappable {
-                // 沉浸态下单击画布任意处退出沉浸;平时点击空白处取消图层选中;
-                // 框选模式下点按让位给框选手势,不做取消选中
-                if (immersiveModeState.isImmersive) {
-                    immersiveModeState.exitImmersive()
-                } else if (!aiRectSelect) {
-                    component.selectLayer(null)
-                }
-            }
     ) {
         val containerHeightPx = constraints.maxHeight.toFloat()
         val containerWidthPx = constraints.maxWidth.toFloat()
+        val density = LocalDensity.current
+        val paddingPx = with(density) { 16.dp.roundToPx() } * 2
+        val fittedSize = canvasBitmap?.let {
+            val fit = min(
+                (constraints.maxWidth - paddingPx).coerceAtLeast(1) / it.width.toFloat(),
+                (constraints.maxHeight - paddingPx).coerceAtLeast(1) / it.height.toFloat()
+            )
+            IntSize(
+                (it.width * fit).toInt().coerceAtLeast(1),
+                (it.height * fit).toInt().coerceAtLeast(1)
+            )
+        } ?: IntSize.Zero
+        val sourceSize = if (localAiTarget) {
+            canvasBitmap?.let { IntSize(it.width, it.height) }
+        } else component.sourceSize ?: canvasBitmap?.let { IntSize(it.width, it.height) }
+        val fittedSourceScale = sourceSize?.let {
+            min(fittedSize.width / it.width.toFloat(), fittedSize.height / it.height.toFloat())
+        }?.takeIf { it > 0f } ?: 1f
+        SideEffect {
+            viewport.configure(
+                layoutSize = Size(containerWidthPx, containerHeightPx),
+                contentSize = fittedSize,
+                actualSizeScale = 1f / fittedSourceScale
+            )
+        }
+        LaunchedEffect(sourceSize, localAiTarget) { viewport.fit() }
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                // 绘制模式下单指让位给笔画采集;浏览模式(pan)才恢复缩放/平移;
-                // 选中图层时缩放/平移让位给图层手势(下方 SelectedLayerGestureBox);
-                // 框选模式下手势全部让位给框选层
-                .zoomable(
-                    zoomState = zoomState,
-                    zoomEnabled = !aiRectSelect &&
-                        (drawSession == null || drawSession.isPanMode) && !transformSelection
-                ),
+                .pointerInput(aiRectSelect, canPanSingle, containerWidthPx, containerHeightPx) {
+                    if (aiRectSelect) return@pointerInput
+                    awaitEachGesture {
+                        awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                        var multiTouch = false
+                        var moved = false
+                        var accumulatedPan = Offset.Zero
+                        while (true) {
+                            val initial = awaitPointerEvent(PointerEventPass.Initial)
+                            if (initial.changes.count { it.pressed } >= 2) {
+                                multiTouch = true
+                                viewport.applyGesture(
+                                    pan = initial.calculatePan(),
+                                    zoom = initial.calculateZoom(),
+                                    focalPoint = initial.calculateCentroid()
+                                )
+                            }
+                            if (multiTouch) initial.changes.forEach { it.consume() }
+                            val event = awaitPointerEvent(PointerEventPass.Main)
+                            val consumed = event.changes.any { it.isConsumed }
+                            if (!multiTouch && !consumed && canPanSingle) {
+                                accumulatedPan += event.calculatePan()
+                                if (accumulatedPan.getDistance() > viewConfiguration.touchSlop) {
+                                    moved = true
+                                }
+                                if (moved) {
+                                    viewport.applyGesture(
+                                        pan = event.calculatePan(),
+                                        zoom = 1f,
+                                        focalPoint = Offset(containerWidthPx / 2f, containerHeightPx / 2f)
+                                    )
+                                    event.changes.forEach { if (it.positionChange() != Offset.Zero) it.consume() }
+                                }
+                            }
+                            if (event.changes.none { it.pressed }) {
+                                if (!multiTouch && !moved && !consumed && !drawMode && !component.isComparing) {
+                                    if (immersiveModeState.isImmersive) immersiveModeState.exitImmersive()
+                                    else component.selectLayer(null)
+                                }
+                                break
+                            }
+                        }
+                    }
+                }
+                .graphicsLayer {
+                    scaleX = viewport.scale
+                    scaleY = viewport.scale
+                    translationX = viewport.offset.x
+                    translationY = viewport.offset.y
+                },
             contentAlignment = Alignment.Center
         ) {
-            val bitmap = component.bitmap
+            val bitmap = canvasBitmap
             if (bitmap != null) {
                 // 底图(带背景滤镜预览)+ 全量图层 live 渲染;背景调节只作用于底图 Picture,
                 // 各图层自身的滤镜(过滤后位图)/调节(colorFilter)在图层渲染处应用
-                val display = component.displayBitmap ?: bitmap
+                val display = when {
+                    component.isComparing -> component.originalPreviewBitmap ?: bitmap
+                    localAiTarget -> bitmap
+                    else -> component.displayBitmap ?: bitmap
+                }
                 val imageBitmap = remember(display) { display.asImageBitmap() }
                 val baseAdjustments = component.baseAdjustments
-                val baseColorFilter = remember(baseAdjustments) {
-                    if (baseAdjustments.isNeutral) null
+                val baseColorFilter = remember(baseAdjustments, component.isComparing, localAiTarget) {
+                    if (baseAdjustments.isNeutral || component.isComparing || localAiTarget) null
                     else ColorFilter.colorMatrix(ColorMatrix(baseAdjustments.toColorMatrixValues()))
                 }
                 BoxWithConstraints(
@@ -885,23 +1314,10 @@ private fun EditorCanvas(
                                     } else Modifier
                                 )
                         )
-                        // 选中图层的画布级手势层:置于图层之下,手指不在图层上也能变换选中图层
-                        if (gestureLayer != null) {
-                            SelectedLayerGestureBox(
-                                layerId = gestureLayer.id,
-                                transform = gestureLayer.transform,
-                                canvasWidthPx = canvasWidthPx,
-                                canvasHeightPx = canvasHeightPx,
-                                onTransformStart = component::beginLayerTransformChange,
-                                onTransformChange = {
-                                    component.updateLayerTransformTransient(gestureLayer.id, it)
-                                }
-                            )
-                        }
                         // 全部图层实时渲染;每个图层应用自身的滤镜(组件预算的过滤后位图)
                         // 与调节(离屏 colorFilter),与导出侧逐图层烘焙一致
                         val liveLayers = component.layers
-                        if (liveLayers.isNotEmpty()) {
+                        if (liveLayers.isNotEmpty() && !component.isComparing && !localAiTarget) {
                             BoxWithConstraints(
                                 modifier = Modifier.matchParentSize()
                             ) {
@@ -914,7 +1330,9 @@ private fun EditorCanvas(
                                             ?.let { { onEditTextLayer(layer.id) } }
                                         EditBox(
                                             transform = layer.transform,
-                                            isSelected = component.selectedLayerId == layer.id,
+                                            isSelected = layer.id in component.selectedLayerIds &&
+                                                !drawMode && !aiRectSelect && !immersiveModeState.isImmersive,
+                                            showHandles = component.selectedLayerId == layer.id,
                                             onSelect = { component.selectLayer(layer.id) },
                                             onEditRequest = onEditRequest,
                                             // 选中框上的红色 X 删除(组件内记 undo 快照);
@@ -922,14 +1340,27 @@ private fun EditorCanvas(
                                             onDelete = if (!drawMode && !aiRectSelect) {
                                                 { component.removeLayer(layer.id) }
                                             } else null,
-                                            onTransformEnd = { newTransform ->
-                                                component.updateLayerTransform(layer.id, newTransform)
+                                            onTransformStart = component::beginLayerTransformChange,
+                                            onTransformChange = {
+                                                component.updateLayerTransformTransient(layer.id, it)
                                             },
+                                            onTransformEnd = {
+                                                component.updateLayerTransformTransient(
+                                                    layer.id,
+                                                    component.snapLayerTransform(it)
+                                                )
+                                                component.endLayerTransformChange()
+                                            },
+                                            canvasScale = viewport.scale,
+                                            gesturesEnabled = !drawMode && !aiRectSelect &&
+                                                !immersiveModeState.isImmersive,
                                             // 绘制/框选模式下图层不响应手势(纯静态渲染)
                                             tapSelectable = !drawMode && !aiRectSelect && layer.type !is LayerType.Draw,
                                             // 文字层:8 向框尺寸手柄(拖边/角改框宽,文字重排,字号不变);
                                             // 手势开始记 undo 快照,中间帧 transient(手势结束即一次 undo)
-                                            resizeConfig = textType?.let {
+                                            resizeConfig = textType?.takeIf {
+                                                !drawMode && !aiRectSelect && component.selectedLayerId == layer.id
+                                            }?.let {
                                                 BoxResizeConfig(
                                                     minWidthPx = layerCanvasWidth * 0.1f,
                                                     maxWidthPx = layerCanvasWidth,
@@ -988,7 +1419,7 @@ private fun EditorCanvas(
                             }
                         }
                         // 绘制模式:会话笔画覆盖层(含进行中笔画,橡皮擦离屏隔离)
-                        if (drawSession != null) {
+                        if (drawSession != null && !component.isComparing) {
                             DrawOverlay(
                                 session = drawSession,
                                 canvasWidthPx = canvasWidthPx,
@@ -1008,16 +1439,20 @@ private fun EditorCanvas(
             }
         }
 
-        // 缩放胶囊:仅缩放比例 ≠100% 且画布手势未被选中图层接管时显示,绘制/框选/沉浸模式下不显示
-        ZoomCapsule(
-            zoomState = zoomState,
-            // 缩放焦点 = 可视区中心,避免 +/− 时画面向左上角跳动
-            focalPoint = Offset(containerWidthPx / 2f, containerHeightPx / 2f),
-            enabled = !drawMode && !aiRectSelect && !immersiveModeState.isImmersive && !transformSelection,
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 8.dp)
-        )
+        if (!drawMode && !aiRectSelect && immersiveModeState.isUiVisible) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.TopCenter).padding(top = 8.dp)
+            ) {
+                ZoomCapsule(
+                    viewport = viewport,
+                    fittedSourceScale = fittedSourceScale,
+                    component = component
+                )
+                Spacer(Modifier.width(4.dp))
+                CompareButton(component = component)
+            }
+        }
 
         // 绘制模式:画布右侧精简浮动竖条(画笔设置/橡皮擦/撤销重做/浏览模式)
         if (drawSession != null) {
@@ -1032,12 +1467,13 @@ private fun EditorCanvas(
 
         // 滤镜横滚面板:半浮动玻璃卡片,浮在画布底部(底部 Tab 栏上方),「滤镜」Tab 控制显隐
         AnimatedVisibility(
-            visible = immersiveModeState.isUiVisible && !drawMode && filterPanelVisible,
+            visible = immersiveModeState.isUiVisible && !drawMode && filterPanelVisible && !component.isComparing,
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
             FilterPanel(
                 component = component,
                 onOpenFullCatalog = onOpenFullFilterCatalog,
+                onOpenEffects = onOpenEffects,
                 onRequestRasterize = onRequestRasterize,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -1045,7 +1481,7 @@ private fun EditorCanvas(
 
         // 左侧工具栏:浮动卡片,可垂直拖动;「基础工具」Tab 控制显隐
         AnimatedVisibility(
-            visible = immersiveModeState.isUiVisible && !drawMode && sideBarVisible,
+            visible = immersiveModeState.isUiVisible && !drawMode && sideBarVisible && !component.isComparing,
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
             VerticalDraggable(containerHeightPx = containerHeightPx) {
@@ -1059,7 +1495,7 @@ private fun EditorCanvas(
 
         // 右侧浮动图层面板:浮动卡片,可垂直拖动;「图层」Tab 控制显隐
         AnimatedVisibility(
-            visible = immersiveModeState.isUiVisible && !drawMode && layersPanelVisible,
+            visible = immersiveModeState.isUiVisible && !drawMode && layersPanelVisible && !component.isComparing,
             modifier = Modifier.align(Alignment.CenterEnd)
         ) {
             VerticalDraggable(
@@ -1079,80 +1515,52 @@ private fun EditorCanvas(
     }
 }
 
-/**
- * 选中图层的画布级手势兜底层:铺满画布、置于图层之下(z 序),
- * 双指捏合 = 缩放选中图层、双指旋转 = 旋转、单指拖动 = 移动(即便手指不在图层上)。
- * 手指直接落在选中图层上时由 EditBox 自身手势接管(事件被消费后这里即退出)。
- * 首次越过 touchSlop 时经 [onTransformStart] 记一次历史快照,手势期间经
- * [onTransformChange] transient 更新,整段手势 = 一步 undo。
- */
-@Composable
-private fun SelectedLayerGestureBox(
-    layerId: String,
-    transform: LayerTransform,
-    canvasWidthPx: Float,
-    canvasHeightPx: Float,
-    onTransformStart: () -> Unit,
-    onTransformChange: (LayerTransform) -> Unit,
-) {
-    val currentTransform by rememberUpdatedState(transform)
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(layerId, canvasWidthPx, canvasHeightPx) {
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false)
-                    // 与 EditBox 同款手动 transform 检测:越过 touchSlop 后开始应用增量
-                    var pastTouchSlop = false
-                    var pan = Offset.Zero
-                    var zoom = 1f
-                    var rotation = 0f
-                    var local = currentTransform
-                    while (true) {
-                        val event = awaitPointerEvent()
-                        if (event.changes.any { it.isConsumed }) break
-                        val zoomChange = event.calculateZoom()
-                        val rotationChange = event.calculateRotation()
-                        val panChange = event.calculatePan()
-                        if (!pastTouchSlop) {
-                            zoom *= zoomChange
-                            rotation += rotationChange
-                            pan += panChange
-                            val centroidSize = event.calculateCentroidSize(useCurrent = false)
-                            val zoomMotion = abs(1 - zoom) * centroidSize
-                            val rotationMotion =
-                                abs(rotation * Math.PI.toFloat() * centroidSize / 180f)
-                            val panMotion = pan.getDistance()
-                            if (zoomMotion > viewConfiguration.touchSlop ||
-                                rotationMotion > viewConfiguration.touchSlop ||
-                                panMotion > viewConfiguration.touchSlop
-                            ) {
-                                pastTouchSlop = true
-                                onTransformStart()
-                            }
-                        }
-                        if (pastTouchSlop &&
-                            (zoomChange != 1f || rotationChange != 0f || panChange != Offset.Zero)
-                        ) {
-                            // 本层不做缩放/旋转,pan 已在画布坐标系,直接归一化累加
-                            local = local.copy(
-                                centerX = (local.centerX + panChange.x / canvasWidthPx)
-                                    .coerceIn(0f, 1f),
-                                centerY = (local.centerY + panChange.y / canvasHeightPx)
-                                    .coerceIn(0f, 1f),
-                                scale = (local.scale * zoomChange).coerceIn(0.1f, 10f),
-                                rotation = local.rotation + rotationChange
-                            )
-                            onTransformChange(local)
-                            event.changes.forEach {
-                                if (it.position != it.previousPosition) it.consume()
-                            }
-                        }
-                        if (event.changes.none { it.pressed }) break
-                    }
-                }
-            }
-    )
+/** View-only transforms are deliberately separate from document/layer undo history. */
+private class EditorViewportState {
+    var scale by mutableFloatStateOf(1f)
+        private set
+    var offset by mutableStateOf(Offset.Zero)
+        private set
+    var minScale by mutableFloatStateOf(1f)
+        private set
+    val maxScale = 10f
+    private var layoutSize = Size.Zero
+    private var contentSize = IntSize.Zero
+
+    fun configure(layoutSize: Size, contentSize: IntSize, actualSizeScale: Float) {
+        this.layoutSize = layoutSize
+        this.contentSize = contentSize
+        minScale = min(1f, actualSizeScale).coerceAtLeast(0.01f)
+        scale = scale.coerceIn(minScale, maxScale)
+        offset = clampOffset(offset, scale)
+    }
+
+    fun fit() {
+        scale = 1f
+        offset = Offset.Zero
+    }
+
+    fun zoomTo(target: Float) {
+        applyGesture(
+            pan = Offset.Zero,
+            zoom = target.coerceIn(minScale, maxScale) / scale,
+            focalPoint = Offset(layoutSize.width / 2f, layoutSize.height / 2f)
+        )
+    }
+
+    fun applyGesture(pan: Offset, zoom: Float, focalPoint: Offset) {
+        if (!zoom.isFinite() || zoom <= 0f || contentSize == IntSize.Zero) return
+        val nextScale = (scale * zoom).coerceIn(minScale, maxScale)
+        val focal = focalPoint - Offset(layoutSize.width / 2f, layoutSize.height / 2f)
+        offset = clampOffset(focal - (focal - offset) * (nextScale / scale) + pan, nextScale)
+        scale = nextScale
+    }
+
+    private fun clampOffset(value: Offset, scale: Float): Offset {
+        val x = max(0f, (contentSize.width * scale - layoutSize.width) / 2f)
+        val y = max(0f, (contentSize.height * scale - layoutSize.height) / 2f)
+        return Offset(value.x.coerceIn(-x, x), value.y.coerceIn(-y, y))
+    }
 }
 
 /** 垂直可拖动的浮动卡片容器:本地 offset,钳制在画布区域内,会话级 remember */
@@ -1186,64 +1594,166 @@ private fun VerticalDraggable(
 }
 
 /**
- * 缩放胶囊:只在缩放比例 ≠100% 时显示(AnimatedVisibility),
- * 「−」「+」按固定步进缩放,点百分比数字动画复位到 100%。
+ * 画布顶部浮动控制条,全图标无文字:缩放(缩小/适应屏幕/实际像素/放大)+ 撤销/重做。
+ * Fit and source-pixel 100% are different operations, including for upscaled small images.
  */
 @Composable
 private fun ZoomCapsule(
-    zoomState: ZoomState,
-    focalPoint: Offset,
-    enabled: Boolean,
+    viewport: EditorViewportState,
+    fittedSourceScale: Float,
+    component: MarkupLayersComponent,
     modifier: Modifier = Modifier,
 ) {
-    val scale = zoomState.scale
-    val scope = rememberCoroutineScope()
-    val step: (Float) -> Unit = { target ->
-        scope.launch { zoomState.changeScale(target, focalPoint) }
-    }
-    AnimatedVisibility(
-        visible = enabled && abs(scale - 1f) > 0.001f,
+    val scale = viewport.scale
+    val actualScale = 1f / fittedSourceScale
+    val actualAvailable = actualScale in viewport.minScale..viewport.maxScale
+    val actualDescription = stringResource(
+        if (actualAvailable) R.string.studio_zoom_actual_description
+        else R.string.studio_zoom_actual_unavailable
+    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .glassBackground(
-                    style = GlassStyle.None,
-                    shape = ShapeDefaults.circle,
-                    color = MaterialTheme.colorScheme.surfaceContainerLow
-                )
-                .padding(horizontal = 4.dp, vertical = 2.dp)
-        ) {
-            EnhancedIconButton(
-                onClick = { step((scale - ZOOM_STEP).coerceAtLeast(1f)) },
-                enabled = scale > 1f
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.LineZoomOut,
-                    contentDescription = stringResource(R.string.markup_zoom_out),
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-            Text(
-                text = "${(scale * 100).roundToInt()}%",
-                style = MaterialTheme.typography.labelMedium,
-                modifier = Modifier
-                    .clip(ShapeDefaults.small)
-                    .clickable { step(1f) }
-                    .padding(horizontal = 6.dp, vertical = 4.dp)
+            .glassBackground(
+                style = GlassStyle.None,
+                shape = ShapeDefaults.circle,
+                color = MaterialTheme.colorScheme.surfaceContainerLow
             )
-            EnhancedIconButton(
-                onClick = { step((scale + ZOOM_STEP).coerceAtMost(zoomState.maxScale)) },
-                enabled = scale < zoomState.maxScale
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.LineZoomIn,
-                    contentDescription = stringResource(R.string.markup_zoom_in),
-                    modifier = Modifier.size(18.dp)
+            .padding(horizontal = 2.dp)
+    ) {
+        EnhancedIconButton(
+            onClick = { viewport.zoomTo(scale - ZOOM_STEP) },
+            enabled = scale > viewport.minScale,
+            modifier = Modifier.size(44.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LineZoomOut,
+                contentDescription = stringResource(R.string.markup_zoom_out),
+                modifier = Modifier.size(18.dp)
+            )
+        }
+        EnhancedIconButton(
+            onClick = viewport::fit,
+            modifier = Modifier.size(44.dp)
+        ) {
+            Icon(
+                imageVector = MaterialIcons.Outlined.FitScreen,
+                contentDescription = stringResource(R.string.studio_zoom_fit_description),
+                modifier = Modifier.size(18.dp)
+            )
+        }
+        EnhancedIconButton(
+            onClick = { viewport.zoomTo(actualScale) },
+            enabled = actualAvailable,
+            modifier = Modifier.size(44.dp)
+        ) {
+            Icon(
+                imageVector = MaterialIcons.Outlined.ZoomOutMap,
+                contentDescription = actualDescription,
+                modifier = Modifier.size(18.dp)
+            )
+        }
+        EnhancedIconButton(
+            onClick = { viewport.zoomTo(scale + ZOOM_STEP) },
+            enabled = scale < viewport.maxScale,
+            modifier = Modifier.size(44.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LineZoomIn,
+                contentDescription = stringResource(R.string.markup_zoom_in),
+                modifier = Modifier.size(18.dp)
+            )
+        }
+        // 撤销/重做:从顶栏挪入本控制条
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 2.dp)
+                .size(width = 1.dp, height = 18.dp)
+                .background(MaterialTheme.colorScheme.outlineVariant)
+        )
+        EnhancedIconButton(
+            onClick = component::undo,
+            enabled = component.canUndo,
+            modifier = Modifier.size(44.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LineUndo,
+                contentDescription = stringResource(R.string.markup_undo),
+                modifier = Modifier.size(18.dp)
+            )
+        }
+        EnhancedIconButton(
+            onClick = component::redo,
+            enabled = component.canRedo,
+            modifier = Modifier.size(44.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LineRedo,
+                contentDescription = stringResource(R.string.markup_redo),
+                modifier = Modifier.size(18.dp)
+            )
+        }
+    }
+}
+
+/** 对比原图:点按切换原图/编辑态预览;按住(超过长按阈值)松手前临时看原图,松手恢复。 */
+@Composable
+private fun CompareButton(component: MarkupLayersComponent) {
+    val enabled = component.originalPreviewBitmap != null
+    val description = stringResource(R.string.studio_compare)
+    val previewState = stringResource(
+        if (component.isComparing) R.string.studio_compare_original else R.string.studio_compare_edited
+    )
+    DisposableEffect(component) {
+        onDispose { component.setComparing(false) }
+    }
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(48.dp)
+            .glassBackground(
+                style = GlassStyle.None,
+                shape = ShapeDefaults.circle,
+                color = MaterialTheme.colorScheme.surfaceContainerLow
+            )
+            .semantics {
+                contentDescription = description
+                stateDescription = previewState
+                if (enabled) onClick {
+                    component.setComparing(!component.isComparing)
+                    true
+                }
+            }
+            .pointerInput(enabled) {
+                if (!enabled) return@pointerInput
+                detectTapGestures(
+                    onPress = {
+                        // 按下即看原图:长按则松手恢复;点按切换——原本在对比态则这次点按关回编辑态
+                        val wasComparing = component.isComparing
+                        component.setComparing(true)
+                        val quickTap = withTimeoutOrNull(
+                            viewConfiguration.longPressTimeoutMillis
+                        ) { tryAwaitRelease() } != null
+                        if (quickTap) {
+                            if (wasComparing) component.setComparing(false)
+                        } else {
+                            tryAwaitRelease()
+                            component.setComparing(false)
+                        }
+                    }
                 )
             }
-        }
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.LineCompare,
+            contentDescription = null,
+            tint = when {
+                !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                component.isComparing -> MaterialTheme.colorScheme.onPrimaryContainer
+                else -> MaterialTheme.colorScheme.onSurfaceVariant
+            },
+            modifier = Modifier.size(20.dp)
+        )
     }
 }
 
@@ -1265,6 +1775,8 @@ private fun EditorSideBar(
                 shape = ShapeDefaults.extraLarge,
                 color = MaterialTheme.colorScheme.surfaceContainerLow
             )
+            .heightIn(max = 480.dp)
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 4.dp, vertical = 8.dp)
     ) {
         EditorTools.sideBar.forEach { tool ->
@@ -1283,7 +1795,7 @@ private fun EditorBottomBar(
     component: MarkupLayersComponent,
     activeBottomTab: String?,
     onToolClick: (EditorTool) -> Unit,
-    onSaveClick: () -> Unit,
+    onExportClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -1312,8 +1824,8 @@ private fun EditorBottomBar(
         Spacer(Modifier.width(8.dp))
         // 「保存」主操作走项目封装的实心确认按钮
         ConfirmButton(
-            text = stringResource(R.string.markup_save),
-            onClick = onSaveClick
+            text = stringResource(R.string.studio_export_image),
+            onClick = onExportClick
         )
     }
 }
@@ -1402,6 +1914,7 @@ private fun EditorToolItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
+            .size(width = 64.dp, height = 56.dp)
             .clip(ShapeDefaults.default)
             .background(
                 if (isActive) {

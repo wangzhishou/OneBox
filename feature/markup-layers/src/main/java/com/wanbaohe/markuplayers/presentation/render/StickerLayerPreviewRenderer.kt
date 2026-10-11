@@ -30,6 +30,7 @@ object StickerLayerPreviewRenderer : LayerPreviewRenderer {
         filteredBitmap: Bitmap?,
     ) {
         val type = layer.type as? LayerType.Sticker ?: return
+        if (layer.requiresBitmapProcessing && filteredBitmap == null) return
         val baseSize = with(LocalDensity.current) {
             (canvasWidthPx * STICKER_BASE_WIDTH_RATIO).toDp()
         }

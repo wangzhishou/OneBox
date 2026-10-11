@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="studio_export_invalid_source">Загрузите изображение с допустимыми размерами перед экспортом.</string>
+    <string name="studio_export_invalid_dimensions">Введите положительные значения ширины и высоты.</string>
+    <string name="studio_export_invalid_quality">Качество должно быть от 10 до 100.</string>
+    <string name="studio_export_invalid_format">Этот формат экспорта не поддерживается.</string>
+    <string name="studio_export_opaque_background">Выберите непрозрачный фон для JPG.</string>
+    <string name="studio_export_size_too_small">Ограничение должно быть не менее 1 КБ. Меньшие значения не смогут надёжно вместить закодированное изображение.</string>
+    <string name="studio_export_purpose">Предустановки размера</string>
+    <string name="studio_export_preset_sharing">Общий доступ</string>
+    <string name="studio_export_preset_avatar">Аватар · сначала обрежьте</string>
+    <string name="studio_export_preset_wallpaper">Обои · сначала обрежьте</string>
+    <string name="studio_export_preset_print">Большое изображение</string>
+    <string name="studio_export_preset_long_edge">Длинная сторона до %1$d px</string>
+    <string name="studio_export_presets_keep_ratio">Предустановки сохраняют текущие пропорции изображения и никогда его не увеличивают. Сначала обрежьте, если для аватара или обоев нужны определённые пропорции.</string>
+    <string name="studio_export_jpeg_alpha_warning">JPG не сохраняет прозрачность. Прозрачные пиксели будут заполнены выбранным цветом фона.</string>
+    <string name="studio_export_color_white">Белый</string>
+    <string name="studio_export_color_black">Чёрный</string>
+    <string name="studio_export_color_gray">Серый</string>
+    <string name="studio_export_color_cream">Кремовый</string>
+    <string name="studio_export_custom_fit">Ширина и высота задают максимальную ограничивающую рамку. Изображение сохраняет пропорции и никогда не растягивается.</string>
+    <string name="studio_export_file_size_limit">Максимальный размер файла (КБ, пусто = без ограничений)</string>
+    <string name="studio_export_png_limit_hint">PNG сжимается без потерь: качество не уменьшает его размер. Фактический закодированный файл должен уложиться в ограничение, иначе экспорт не удастся.</string>
+    <string name="studio_export_lossy_limit_hint">Проверяется фактический размер файла. Качество может быть снижено до 10; если ограничение всё равно не соблюдается, экспорт завершается ошибкой без скрытого изменения размера.</string>
+    <string name="studio_export_save_copy">Сохранить копию</string>
+    <string name="studio_export_save_copy_hint">Внешний оригинал и ресурсы приватного проекта остаются без изменений.</string>
+    <string name="studio_export_overwrite_warning">Это заменит внешний оригинал. Изменение нельзя отменить.</string>
+    <string name="studio_export_copy_required">Этот документ экспортируется как копия. Ресурсы приватного проекта никогда не перезаписываются.</string>
+    <string name="studio_export_save_location">Место сохранения</string>
+    <string name="studio_export_choose_location">Выберите папку или файл</string>
+    <string name="studio_export_location_value">Место сохранения: %1$s</string>
+    <string name="studio_recipe_title">Рецепты и пакетная обработка</string>
+    <string name="studio_recipe_subtitle">Повторно используйте локальные правки на других фото. Действия облачного ИИ не включены; пакетный экспорт всегда сохраняет копии.</string>
+    <string name="studio_recipe_name">Название рецепта</string>
+    <string name="studio_recipe_save_current">Сохранить текущие правки как рецепт</string>
+    <string name="studio_recipe_library">Сохранённые рецепты</string>
+    <string name="studio_recipe_empty">Рецептов пока нет. Сохраните текущие правки, чтобы создать библиотеку.</string>
+    <string name="studio_recipe_apply">Применить</string>
+    <string name="studio_recipe_delete">Удалить рецепт</string>
+    <string name="studio_recipe_selected">Выбрано для пакета</string>
+    <string name="studio_recipe_choose">Выбрать для пакета</string>
+    <string name="studio_recipe_batch_images">Пакет изображений</string>
+    <string name="studio_recipe_pick_images">Выбрать несколько изображений</string>
+    <string name="studio_recipe_images_selected">Выбрано изображений: %1$d</string>
+    <string name="studio_recipe_run_batch">Запустить выбранный рецепт</string>
+    <string name="studio_recipe_cancel_batch">Отменить пакет</string>
+    <string name="studio_recipe_batch_progress">Обработано %1$d из %2$d</string>
+    <string name="studio_recipe_batch_result">Сохранено: %1$d, ошибок: %2$d</string>
+    <string name="studio_recipe_batch_cancelled">Отменено после %1$d из %2$d изображений. Остальные изображения не обработаны.</string>
+    <string name="studio_recipe_batch_failures">Изображения, которые не удалось сохранить</string>
+    <string name="studio_recipe_batch_done">Пакет завершён</string>
+    <string name="studio_recipe_batch_partial">Пакет остановлен до обработки всех изображений.</string>
+    <string name="studio_recipe_batch_local_only">Воспроизводятся только локальные настройки, фильтры, маски, наложения и параметры экспорта. Оригиналы никогда не изменяются.</string>
+    <string name="studio_recipe_error">Ошибка рецепта: %1$s</string>
+    <string name="studio_recipe_failure_item">%1$s\n%2$s</string>
+</resources>
