@@ -10,8 +10,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,13 +27,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,7 +51,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,8 +62,8 @@ import com.halilibo.richtext.ui.material3.RichMarkdown
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.base.provider.LocalDataDraftHelper
-import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.base.ui.CustomChatCard
+import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.common.components.SectionTheme
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
@@ -86,6 +82,15 @@ import com.shifenmiao.model.remote.defaultChatQuickStartPrompts
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
+import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.t8rin.imagetoolbox.core.resources.icons.Refresh
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -100,15 +105,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
-import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.t8rin.imagetoolbox.core.resources.icons.Refresh
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineCloudUpload
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val CHAT_QUICK_START_VISIBLE_COUNT = 4
 private const val CHAT_QUICK_START_REFRESH_THRESHOLD = 8
@@ -247,7 +244,7 @@ private fun PromptWorkCard(
         }
     }
     val updatedAtText = updatedAtMillis?.takeIf { it > 0L }?.let(::formatPromptUpdatedAt)
-    val collapsedMaxHeight = (LocalConfiguration.current.screenHeightDp / 2).dp
+    val collapsedMaxHeight = LocalWindowInfo.current.containerDpSize.height / 2
     var lastContentHeight by remember(promptId) { mutableIntStateOf(-1) }
 
     CustomChatCard(
@@ -295,16 +292,15 @@ private fun PromptWorkCard(
                         contentDescription = stringResource(R.string.edit),
                         onClick = {
                             coroutineScope.launch {
-                                val safePromptId = promptId
                                 val draftId = dataDraftHelper
                                     .getLatestByTypeAndRelatedEntityId(
                                         draftType = ListItemType.PROMPT.id,
-                                        relatedEntityId = safePromptId
+                                        relatedEntityId = promptId
                                     )
                                     ?.id
                                     ?: dataDraftHelper.createDraft(
                                         draftType = ListItemType.PROMPT.id,
-                                        relatedEntityId = safePromptId
+                                        relatedEntityId = promptId
                                     )
                                 onNavigate(Screen.CreateAIChatPrompt(draftId = draftId))
                             }
@@ -517,7 +513,7 @@ fun ChatQuickStartSection(
                                 val itemIndex = rowIndex * 2 + columnIndex
                                 val entranceProgress = remember { Animatable(0f) }
                                 LaunchedEffect(Unit) {
-                                    delay(QUICK_START_STAGGER_DELAY_MILLIS * itemIndex)
+                                    delay((QUICK_START_STAGGER_DELAY_MILLIS * itemIndex).milliseconds)
                                     entranceProgress.animateTo(
                                         targetValue = 1f,
                                         animationSpec = tween(
