@@ -67,6 +67,10 @@ import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.base.ui.CustomChatCard
+import com.shifenmiao.common.components.sectionGradient
+import com.shifenmiao.common.components.sectionIconColor
+import com.shifenmiao.common.components.sectionIconContainerColor
+import com.shifenmiao.common.components.sectionThemeForIndex
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.database.data_draft.DataDraftHelper
@@ -85,6 +89,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.screenIconByModule
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -514,6 +519,7 @@ fun ChatQuickStartSection(
                                 }
                                 ChatQuickStartCard(
                                     item = item,
+                                    themeIndex = itemIndex,
                                     modifier = Modifier
                                         .weight(1f)
                                         .fillMaxHeight()
@@ -542,14 +548,20 @@ fun ChatQuickStartSection(
 @Composable
 private fun ChatQuickStartCard(
     item: ChatQuickStartItem,
+    themeIndex: Int,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     val moduleIcon = remember(item.module) { screenIconByModule(item.module) }
+    // 复用精选卡片的轮换配色: 容器/图标按位置轮换 PRIMARY/SECONDARY/TERTIARY/SURFACE,
+    // 内容色按玻璃混合后的有效底色自动选深浅,保证任意主题下可读
+    val theme = sectionThemeForIndex(themeIndex)
+    val containerColor = sectionGradient(theme)
+    val contentColor = tintedGlassContentColor(containerColor)
     GlassSurface(
         onClick = onClick,
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = containerColor,
         shape = MaterialTheme.shapes.large
     ) {
         // 图标独占一行置顶: 文案拿满卡片宽度,长文案少折行;
@@ -562,7 +574,7 @@ private fun ChatQuickStartCard(
                 modifier = Modifier
                     .size(32.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                        color = sectionIconContainerColor(theme),
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -571,14 +583,14 @@ private fun ChatQuickStartCard(
                     imageVector = moduleIcon
                         ?: com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = sectionIconColor(theme),
                     modifier = Modifier.size(18.dp)
                 )
             }
             Text(
                 text = item.text,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = contentColor
             )
         }
     }
