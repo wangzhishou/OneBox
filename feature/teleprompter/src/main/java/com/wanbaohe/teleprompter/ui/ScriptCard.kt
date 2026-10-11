@@ -37,7 +37,6 @@ import java.util.Date
 
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
@@ -57,7 +56,6 @@ fun ScriptCard(
     GlassCard(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        style = GlassStyle.Dense,
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,

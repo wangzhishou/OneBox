@@ -32,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.lifetime.R
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
@@ -142,7 +141,6 @@ fun NoteSection(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = OneBoxDesignSystem.sectionCardShape,
-                style = GlassStyle.Thick,
             ) {
                 Text(
                     text = note?.takeIf { it.isNotBlank() } ?: stringResource(R.string.lifetime_note_empty),

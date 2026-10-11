@@ -47,7 +47,6 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 
@@ -194,7 +193,6 @@ fun TypeSelectionCard(
                 modifier = Modifier
                     .size(48.dp)
                     .glassBackground(
-                        style = GlassStyle.Dense,
                         shape = CircleShape,
                         color = iconBgColor
                     ),

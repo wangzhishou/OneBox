@@ -39,7 +39,6 @@ import com.shifenmiao.common.components.category.CategoryManagementDialog
 import com.shifenmiao.common.components.category.ManageableItem
 import com.shifenmiao.model.Source
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import androidx.compose.ui.res.stringResource
@@ -238,7 +237,6 @@ private fun BookmarkItemRow(
             .clip(RoundedCornerShape(12.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
-        style = GlassStyle.Thick,
         borderWidth = 0.5.dp
     ) {
         Row(
@@ -379,7 +377,6 @@ private fun SegmentedToggle(
     GlassCard(
         modifier = modifier,
         shape = RoundedCornerShape(50),
-        style = GlassStyle.Medium,
         borderWidth = 0.5.dp
     ) {
         Row(

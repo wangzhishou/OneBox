@@ -39,7 +39,6 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWorkspacePremium
@@ -244,7 +243,6 @@ private fun VipProgressCard(
 
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        style = GlassStyle.Dense,
         borderWidth = 0.8.dp,
     ) {
         Column(

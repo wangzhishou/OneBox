@@ -60,7 +60,6 @@ fun BrowserTopBar(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(0.dp),
-        style = GlassStyle.Thick,
         borderWidth = 0.dp
     ) {
         Row(

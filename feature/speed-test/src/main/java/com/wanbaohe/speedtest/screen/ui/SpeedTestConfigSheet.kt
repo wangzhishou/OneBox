@@ -45,7 +45,6 @@ import com.wanbaohe.speedtest.data.SpeedTestConfig
 
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
@@ -147,7 +146,6 @@ private fun ConfigItem(
             .then(
                 if (isActive) {
                     Modifier.glassBackground(
-                        style = GlassStyle.Dense,
                         shape = RoundedCornerShape(14.dp),
                         color = AppTheme.colors.getSecondaryContainerButtonColors().containerColor
                     )

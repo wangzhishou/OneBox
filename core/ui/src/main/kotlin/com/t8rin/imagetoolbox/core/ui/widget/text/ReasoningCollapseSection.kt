@@ -31,7 +31,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSwitchAccess
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 
 /**
  * 深度思考内容折叠区:整体包在 Glass 背景块里,折叠时是一行标题块,展开时背景块随内容撑开。
@@ -64,7 +63,6 @@ fun ReasoningCollapseSection(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = contentColor,
         ),
-        style = GlassStyle.Medium,
         borderWidth = 0.7.dp,
     ) {
         Column(

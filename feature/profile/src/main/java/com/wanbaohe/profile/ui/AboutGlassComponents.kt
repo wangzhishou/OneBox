@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 
 @Composable
 fun AboutSectionTitle(
@@ -44,7 +43,6 @@ fun AboutGlassCard(
 ) {
     GlassCard(
         modifier = modifier.fillMaxWidth(),
-        style = GlassStyle.Dense,
         borderWidth = 0.8.dp,
         content = content,
     )

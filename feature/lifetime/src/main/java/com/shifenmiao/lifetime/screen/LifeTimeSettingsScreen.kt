@@ -28,7 +28,6 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.component.LifeTimeSettingsComponent
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.sliders.custom_slider.CustomSlider
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
@@ -101,7 +100,6 @@ private fun BirthDateSection(
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = OneBoxDesignSystem.sectionCardShape,
-            style = GlassStyle.Dense,
             colors = androidx.compose.material3.CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceContainerLow
             ),

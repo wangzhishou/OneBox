@@ -29,7 +29,6 @@ import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.domain.LifeTimeData
 import com.shifenmiao.lifetime.domain.RemainingLifeData
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 
 enum class TimeDisplayMode {
@@ -53,7 +52,6 @@ fun MainTimeCard(
     GlassCard(
         modifier = modifier.clickable(onClick = onToggleMode),
         shape = OneBoxDesignSystem.sectionCardShape,
-        style = GlassStyle.Dense
     ) {
         Column(
             modifier = Modifier

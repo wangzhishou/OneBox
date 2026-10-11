@@ -44,7 +44,6 @@ import com.shifenmiao.database.ai.dao.TokenUsageSummary
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxGroupDivider
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
@@ -156,7 +155,6 @@ private fun HeroSummaryCard(summary: TokenUsageSummary) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.sectionCardShape,
-        style = GlassStyle.Dense,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),

@@ -46,7 +46,6 @@ import com.shifenmiao.lifetime.domain.PersonalMilestoneCalculator
 import com.shifenmiao.lifetime.ui.NoteSection
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
 import java.time.Instant
@@ -121,7 +120,6 @@ fun LifeTimeMilestoneDetailScreen(
                 GlassCard(
                     modifier = Modifier.fillMaxWidth(),
                     shape = OneBoxDesignSystem.sectionCardShape,
-                    style = GlassStyle.Dense,
                     colors = androidx.compose.material3.CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     )
@@ -206,7 +204,6 @@ private fun CurrentInsightCard(
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.sectionCardShape,
-        style = GlassStyle.Dense,
         colors = androidx.compose.material3.CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         )
@@ -311,7 +308,6 @@ private fun InsightHistoryCard(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = OneBoxDesignSystem.sectionCardShape,
-                style = GlassStyle.Dense,
             ) {
                 LazyColumn(
                     modifier = Modifier

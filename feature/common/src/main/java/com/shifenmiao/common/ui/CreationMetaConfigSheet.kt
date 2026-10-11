@@ -388,7 +388,6 @@ private fun ConfigSelectionOverviewCard(
 ) {
     GlassSurface(
         modifier = Modifier.fillMaxWidth(),
-        style = GlassStyle.Medium,
         shape = MaterialTheme.shapes.large,
     ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {

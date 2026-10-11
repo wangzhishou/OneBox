@@ -209,7 +209,6 @@ internal fun SettingsTab(
                 shape = RoundedCornerShape(28.dp),
                 borderWidth = 0.dp,
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                style = GlassStyle.Dense,
             ) {
                 Column(
                     modifier = Modifier.padding(horizontal = 18.dp, vertical = 18.dp),

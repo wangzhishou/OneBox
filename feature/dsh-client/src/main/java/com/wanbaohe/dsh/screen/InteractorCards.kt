@@ -432,7 +432,6 @@ private fun QueueDock(
             .padding(horizontal = 12.dp, vertical = 4.dp),
         shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surfaceVariant,
-        style = GlassStyle.Dense,
     ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Text(

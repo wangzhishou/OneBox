@@ -51,7 +51,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -345,7 +344,6 @@ private fun SubtitleBadge(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        style = GlassStyle.Dense
     ) {
         Text(
             text = text,

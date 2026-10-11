@@ -28,7 +28,6 @@ import com.shifenmiao.base.ui.modifier.clickableWithoutRipple
 import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.domain.RemainingLifeData
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
@@ -52,7 +51,6 @@ fun LifeProgressCard(
     GlassCard(
         modifier = modifier,
         shape = OneBoxDesignSystem.sectionCardShape,
-        style = GlassStyle.Dense
     ) {
         Column(
             modifier = Modifier

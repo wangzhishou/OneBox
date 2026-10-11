@@ -56,7 +56,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorPickerSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.camera.watermark.R
 import com.wanbaohe.camera.watermark.domain.LogoType
@@ -325,7 +324,6 @@ private fun TemplateListItem(
             .then(
                 when {
                     isSelectedForDelete -> Modifier.glassBackground(
-                        style = GlassStyle.Dense,
                         shape = MaterialTheme.shapes.medium,
                         color = MaterialTheme.colorScheme.errorContainer
                     )

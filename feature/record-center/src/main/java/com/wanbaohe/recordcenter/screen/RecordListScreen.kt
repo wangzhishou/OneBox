@@ -57,7 +57,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.charts.TrendSeries
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.recordcenter.R
 import com.wanbaohe.recordcenter.component.RecordFieldStats
@@ -371,7 +370,6 @@ private fun TrendChartCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
-        style = GlassStyle.Dense,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -430,7 +428,6 @@ private fun AiInsightCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
-        style = GlassStyle.Dense,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(
@@ -538,7 +535,6 @@ private fun StatsCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
-        style = GlassStyle.Dense,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(
@@ -619,7 +615,6 @@ private fun RecordRow(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
-        style = GlassStyle.Dense,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Row(

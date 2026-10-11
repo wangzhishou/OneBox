@@ -36,7 +36,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSearchTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
 import com.wanbaohe.poem.R
 import com.wanbaohe.poem.component.PoemSearchComponent
@@ -275,7 +274,6 @@ private fun PoemResultItem(
                                 .padding(start = 8.dp)
                                 .coloredGlass(
                                     color = MaterialTheme.colorScheme.primaryContainer,
-                                    style = GlassStyle.Thin,
                                     shape = RoundedCornerShape(6.dp),
                                     borderWidth = 0.dp,
                                 )

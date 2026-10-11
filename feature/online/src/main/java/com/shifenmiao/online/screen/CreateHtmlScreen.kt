@@ -47,7 +47,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxBottomActionBar
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
@@ -254,7 +253,6 @@ fun CreateHtmlScreen(
                     GlassCard(
                         modifier = Modifier.fillMaxWidth(),
                         shape = OneBoxDesignSystem.sectionCardShape,
-                        style = GlassStyle.Medium,
                     ) {
                         val htmlContent = uiState.data
                         val isBlank = htmlContent.isBlank()

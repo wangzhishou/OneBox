@@ -42,7 +42,6 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendar
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.recordcenter.R
 import com.wanbaohe.recordcenter.component.RecordEditorComponent
 import com.wanbaohe.recordcenter.component.RecordFieldError
@@ -166,7 +165,6 @@ fun AddRecordScreen(component: RecordEditorComponent) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         borderWidth = 0.dp,
-                        style = GlassStyle.Dense,
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                     ) {
                         Row(

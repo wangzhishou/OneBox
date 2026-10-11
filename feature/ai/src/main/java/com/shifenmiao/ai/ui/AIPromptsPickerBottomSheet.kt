@@ -45,7 +45,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 
 /**
@@ -243,7 +242,6 @@ private fun ChatPromptGridItem(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        style = GlassStyle.Thin,
         borderWidth = 0.dp,
     ) {
         Column(
@@ -336,7 +334,6 @@ private fun PromptCreateEntryCard(
         onClick = onClick,
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        style = GlassStyle.Thin,
         borderWidth = 0.dp,
     ) {
         Row(

@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import coil3.compose.SubcomposeAsyncImage
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.shifenmiao.webview.R
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 
@@ -57,7 +56,6 @@ fun BrowserHomePage(
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
-            style = GlassStyle.Medium,
             borderWidth = 0.5.dp
         ) {
             Column(

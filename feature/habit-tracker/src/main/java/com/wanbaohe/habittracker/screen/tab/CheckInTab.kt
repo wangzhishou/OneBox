@@ -273,7 +273,6 @@ private fun HabitListItem(
             modifier = Modifier
                 .size(46.dp)
                 .glassBackground(
-                    style = GlassStyle.Medium,
                     shape = RoundedCornerShape(14.dp),
                     color = habitColor,
                     borderWidth = 0.dp,

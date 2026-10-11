@@ -36,7 +36,6 @@ import com.shifenmiao.lifetime.util.countdownStatusLabel
 import com.shifenmiao.lifetime.util.localizedPresetEventName
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 
@@ -110,7 +109,6 @@ fun LifeTimeCountdownDetailScreen(
                     GlassCard(
                         modifier = Modifier.fillMaxWidth(),
                         shape = OneBoxDesignSystem.sectionCardShape,
-                        style = GlassStyle.Dense,
                     ) {
                         Text(
                             text = stringResource(R.string.lifetime_countdown_holiday_hint),
@@ -149,7 +147,6 @@ private fun CountdownHeroCard(status: CountdownStatus) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.sectionCardShape,
-        style = GlassStyle.Dense,
         colors = androidx.compose.material3.CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )

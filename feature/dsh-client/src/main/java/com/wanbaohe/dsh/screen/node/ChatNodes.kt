@@ -799,7 +799,6 @@ private fun UnknownRow(node: ChatNode.Unknown) {
         onClick = { expanded = !expanded },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        style = GlassStyle.Dense
     ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {

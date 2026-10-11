@@ -70,7 +70,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.utils.blessing.BlessingEffectType
 import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
 import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
@@ -797,7 +796,6 @@ private fun BlessingPage(
                 containerColor = palette.buttonContainer,
                 contentColor = palette.buttonContent,
             ),
-            style = GlassStyle.Thin,
             borderWidth = 0.35.dp,
         ) {
             if (cardRotation <= 90f) {

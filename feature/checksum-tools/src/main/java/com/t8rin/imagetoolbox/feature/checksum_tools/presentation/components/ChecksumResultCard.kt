@@ -32,7 +32,6 @@ import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.ui.theme.Green
 import com.t8rin.imagetoolbox.core.ui.theme.Red
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceRow
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWarning
@@ -53,7 +52,6 @@ internal fun ChecksumResultCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 0.dp),
-        style = GlassStyle.Dense,
         borderWidth = 0.5.dp,
         shape = MaterialTheme.shapes.large,
         onClick = null

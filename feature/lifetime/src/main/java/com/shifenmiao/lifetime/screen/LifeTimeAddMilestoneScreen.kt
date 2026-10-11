@@ -30,7 +30,6 @@ import com.shifenmiao.lifetime.R
 import com.shifenmiao.lifetime.component.LifeTimeAddMilestoneComponent
 import com.shifenmiao.lifetime.domain.model.PersonalMilestone
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
@@ -116,7 +115,6 @@ fun LifeTimeAddMilestoneScreen(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = OneBoxDesignSystem.sectionCardShape,
-                style = GlassStyle.Dense,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
@@ -142,7 +140,6 @@ fun LifeTimeAddMilestoneScreen(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = OneBoxDesignSystem.sectionCardShape,
-                style = GlassStyle.Dense,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
                     containerColor = dateCardContainerColor
                 ),

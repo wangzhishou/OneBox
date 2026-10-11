@@ -51,7 +51,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 
@@ -187,7 +186,6 @@ private fun SearchCitationChip(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .glassBackground(
-                style = GlassStyle.Dense,
                 shape = RoundedCornerShape(16.dp),
                 color = MaterialTheme.colorScheme.surfaceVariant
             )
