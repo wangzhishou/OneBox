@@ -187,7 +187,7 @@ fun PlaceHolderMessageCard(
             ) {
                 // 与下方 ChatQuickStartCard 同一套彩色玻璃管线: PRIMARY 染色 + GlassCard,
                 // 内容色按玻璃混合后的有效底色自动选深浅(与快捷卡片一致)
-                val greetingTint = sectionGradient(SectionTheme.PRIMARY)
+                val greetingTint = sectionGradient(SectionTheme.SURFACE)
                 val greetingContentColor = tintedGlassContentColor(greetingTint)
                 GlassCard(
                     shape = MaterialTheme.shapes.large,
