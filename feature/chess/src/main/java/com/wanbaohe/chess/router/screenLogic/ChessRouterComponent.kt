@@ -10,6 +10,7 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.essenty.lifecycle.doOnStop
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -388,6 +389,9 @@ class ChessRouterComponent @AssistedInject constructor(
             gamesToStart.clear()
         }
         maybeOpenRecentGame()
+        lifecycle.doOnStart {
+            if (childStack.value.active.configuration == Route.AnalysisHome) openRecentAnalysis()
+        }
     }
 
     fun selectTab(tab: Tab) {
@@ -412,6 +416,10 @@ class ChessRouterComponent @AssistedInject constructor(
         }
     }
     fun openAnalysis(gameId: String, initialPly: Int = -1) {
+        if (gameId.isBlank()) {
+            openRecentAnalysis()
+            return
+        }
         selectedGameId = gameId
         pauseBeforeLeavingGame { navigation.pushToFront(Route.Analysis(gameId, initialPly)) }
     }
@@ -624,8 +632,22 @@ class ChessRouterComponent @AssistedInject constructor(
 
     private fun openAnalyzeTab() {
         val gameId = selectedGameId
-        if (gameId == null) pauseBeforeLeavingGame { navigation.pushToFront(Route.AnalysisHome) }
+        if (gameId.isNullOrBlank()) openRecentAnalysis()
         else openAnalysis(gameId)
+    }
+
+    private fun openRecentAnalysis() {
+        preparationTouched = true
+        val sourceRoute = childStack.value.active.configuration
+        val sourceGameId = selectedGameId
+        componentScope.launch {
+            val recent = GameQueryUseCase.mostRecentGameForAnalysis(gameQuery.observeAll().first())
+            if (lifecycle.state < Lifecycle.State.STARTED ||
+                childStack.value.active.configuration != sourceRoute || selectedGameId != sourceGameId
+            ) return@launch
+            if (recent != null) openAnalysis(recent.id)
+            else pauseBeforeLeavingGame { navigation.pushToFront(Route.AnalysisHome) }
+        }
     }
 
     private fun handleInternalNavigation(screen: Screen) {
@@ -643,7 +665,8 @@ class ChessRouterComponent @AssistedInject constructor(
 
     private fun Screen.ChessRouter.Type?.toInitialRoute(): Route = when (this) {
         is Screen.ChessRouter.Type.Game -> Route.Game(gameId)
-        is Screen.ChessRouter.Type.Analysis -> Route.Analysis(gameId, initialPly)
+        is Screen.ChessRouter.Type.Analysis ->
+            if (gameId.isBlank()) Route.AnalysisHome else Route.Analysis(gameId, initialPly)
         Screen.ChessRouter.Type.Library -> Route.Library
         is Screen.ChessRouter.Type.JoinOnlineRoom -> Route.PlayHome
         null -> Route.PlayHome

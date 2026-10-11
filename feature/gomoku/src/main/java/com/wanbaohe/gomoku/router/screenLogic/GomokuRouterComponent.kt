@@ -2,6 +2,7 @@ package com.wanbaohe.gomoku.router.screenLogic
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -332,6 +333,9 @@ class GomokuRouterComponent @AssistedInject constructor(
 
     init {
         maybeOpenRecentGame()
+        lifecycle.doOnStart {
+            if (childStack.value.active.configuration == Route.AnalysisHome) openRecentAnalysis()
+        }
     }
 
     fun selectTab(tab: Tab) {
@@ -361,6 +365,10 @@ class GomokuRouterComponent @AssistedInject constructor(
         }
     }
     fun openAnalysis(gameId: String, initialPly: Int = -1) {
+        if (gameId.isBlank()) {
+            openRecentAnalysis()
+            return
+        }
         selectedGameId = gameId
         pauseBeforeLeavingGame { navigation.pushToFront(Route.Analysis(gameId, initialPly)) }
     }
@@ -575,8 +583,22 @@ class GomokuRouterComponent @AssistedInject constructor(
         }
         when {
             child is Child.Game && child.component.gameId == gameId -> child.component.openAnalysis()
-            gameId == null -> pauseBeforeLeavingGame { navigation.pushToFront(Route.AnalysisHome) }
+            gameId.isNullOrBlank() -> openRecentAnalysis()
             else -> openAnalysis(gameId)
+        }
+    }
+
+    private fun openRecentAnalysis() {
+        preparationTouched = true
+        val sourceRoute = childStack.value.active.configuration
+        val sourceGameId = selectedGameId
+        componentScope.launch {
+            val recent = GameQueryUseCase.mostRecentGameForAnalysis(gameQuery.observeAll().first())
+            if (lifecycle.state < Lifecycle.State.STARTED ||
+                childStack.value.active.configuration != sourceRoute || selectedGameId != sourceGameId
+            ) return@launch
+            if (recent != null) openAnalysis(recent.id)
+            else pauseBeforeLeavingGame { navigation.pushToFront(Route.AnalysisHome) }
         }
     }
 
@@ -595,7 +617,8 @@ class GomokuRouterComponent @AssistedInject constructor(
 
     private fun Screen.GomokuRouter.Type?.toInitialRoute(): Route = when (this) {
         is Screen.GomokuRouter.Type.Game -> Route.Game(gameId)
-        is Screen.GomokuRouter.Type.Analysis -> Route.Analysis(gameId, initialPly)
+        is Screen.GomokuRouter.Type.Analysis ->
+            if (gameId.isBlank()) Route.AnalysisHome else Route.Analysis(gameId, initialPly)
         Screen.GomokuRouter.Type.Library -> Route.Library
         is Screen.GomokuRouter.Type.JoinOnlineRoom -> Route.PlayHome
         null -> Route.PlayHome

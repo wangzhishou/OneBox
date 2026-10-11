@@ -34,6 +34,13 @@ fun ChessRouterScreen(component: ChessRouterComponent) {
     val childStack by component.childStack.subscribeAsState()
     val activeRoute = childStack.active.configuration
     val activeTab = component.tabOf(activeRoute)
+    val activeChild = childStack.active.instance
+    val activeGame = (activeChild as? ChessRouterComponent.Child.Game)?.component
+    val preparingSetup = activeChild == ChessRouterComponent.Child.PlayHome && component.preparationSetupDraft != null
+    val isSettingUp = preparingSetup || activeGame?.setupDraft != null
+    val cancelSetup: () -> Unit = {
+        if (preparingSetup) component.cancelPreparationSetup() else activeGame?.cancelSetup()
+    }
     val tabs = listOf(
         BoardGameTab(
             id = ChessRouterComponent.Tab.Play.name,
@@ -66,14 +73,18 @@ fun ChessRouterScreen(component: ChessRouterComponent) {
                 .firstOrNull { it.name == tab.id }
                 ?.let(component::selectTab)
         },
-        onGoBack = component::navigateBack,
+        onGoBack = {
+            if (isSettingUp) cancelSetup() else component.navigateBack()
+        },
         onBack = {
             when {
+                isSettingUp -> cancelSetup()
                 component.canPop(activeRoute) -> component.navigateBackFrom(activeRoute)
                 activeTab != ChessRouterComponent.Tab.Play -> component.selectTab(ChessRouterComponent.Tab.Play)
                 else -> component.navigateBack()
             }
         },
+        showTabs = !isSettingUp,
         headerActions = if (activeTab != ChessRouterComponent.Tab.Settings) {
             { NewGameDropMenu(component = component.libraryComponent) }
         } else {

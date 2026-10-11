@@ -1,15 +1,10 @@
 package com.wanbaohe.chess.screen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.wanbaohe.boardgame.model.PlayerBarData
@@ -33,6 +28,7 @@ internal fun ChessPlayersRow(
     onPickAiFor: (Side) -> Unit,
     onShowOrigin: () -> Unit,
     modifier: Modifier = Modifier,
+    emphasizeVs: Boolean = state.status == GameStatus.NOT_STARTED && state.startedAt == 0L,
 ) {
     val login = LocalLoginState.current
     val humanName = BaseUtils.getDisplayName(login.nickname, login.username)
@@ -72,26 +68,20 @@ internal fun ChessPlayersRow(
             isActiveTurn = active,
             onClick = if (type == PlayerType.LLM && state.isLoaded && !state.isUpdating) ({ onPickAiFor(side) }) else null,
             actionLabel = if (type == PlayerType.LLM) stringResource(R.string.chess_player_change) else "",
+            avatarIsLoggedIn = type != PlayerType.HUMAN || state.mode == GameMode.LOCAL_PVP || login.isLogin,
         )
     }
 
-    Column(modifier) {
-        PlayersBar(
-            top = player(bottom.opposite()),
-            bottom = player(bottom),
-            vsLabel = stringResource(R.string.chess_vs_short),
-            turnLabel = stringResource(R.string.chess_turn_badge),
-            modifier = Modifier.fillMaxWidth(),
-        )
-        if (state.origin != null) {
-            TextButton(onClick = onShowOrigin) {
-                Text(
-                    stringResource(R.string.chess_setup_source_ply, state.origin.ply),
-                    style = MaterialTheme.typography.labelSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
-    }
+    val origin = state.origin
+    PlayersBar(
+        top = player(bottom.opposite()),
+        bottom = player(bottom),
+        vsLabel = stringResource(R.string.chess_vs_short),
+        turnLabel = stringResource(R.string.chess_turn_badge),
+        modifier = modifier,
+        emphasizeVs = emphasizeVs,
+        onVsClick = if (origin != null) onShowOrigin else null,
+        vsActionLabel = if (origin != null) stringResource(R.string.chess_setup_source_ply, origin.ply)
+            else stringResource(R.string.chess_vs_short),
+    )
 }

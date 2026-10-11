@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.outlined.GridOn
+import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.boardgame.ui.BoardGamePillButton
+import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.chess.R
 import com.wanbaohe.chess.application.dto.engineSlotFor
 import com.wanbaohe.chess.application.port.outbound.EngineSlot
@@ -49,7 +53,6 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
             onDraftChange = component::updatePreparationSetup,
             onCancel = component::cancelPreparationSetup,
             onConfirm = component::finishPreparationSetup,
-            confirmLabel = stringResource(R.string.chess_setup_apply),
             modifier = modifier,
             bottomSide = state.bottomSide(),
         )
@@ -57,16 +60,19 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
     }
     Column(
         modifier = modifier.fillMaxSize().padding(vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ChessPlayersRow(
             state, { pickingSide = it }, { showOrigin = true },
             Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+            emphasizeVs = true,
         )
-        Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
-            ChessBoard(state.boardState, null, emptySet(), { _, _ -> }, bottomSide = state.bottomSide())
-            if (component.isRestoringRecentGame) CircularProgressIndicator()
+        Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
+            Box(contentAlignment = Alignment.Center) {
+                ChessBoard(state.boardState, null, emptySet(), { _, _ -> }, bottomSide = state.bottomSide())
+                if (component.isRestoringRecentGame) CircularProgressIndicator()
+            }
         }
         val issue = remember(state.boardState) { SetupPositionValidator.validate(state.boardState) }
         if (issue != null) Text(
@@ -76,30 +82,36 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
         )
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextButton(
+            BoardGamePillButton(
+                label = stringResource(R.string.chess_setup_action),
+                icon = Icons.Outlined.GridOn,
                 onClick = component::beginPreparationSetup,
                 enabled = state.isLoaded && !state.isUpdating,
                 modifier = Modifier.weight(1f),
-            ) {
-                Text(stringResource(R.string.chess_setup_action), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            GlassTonalButton(
+            )
+            BoardGamePillButton(
+                label = stringResource(if (state.isUpdating) R.string.chess_setup_starting else R.string.chess_start_action),
+                icon = Icons.Filled.PlayArrow,
                 onClick = component::startPreparation, enabled = state.isLoaded && !state.isUpdating && issue == null,
-                modifier = Modifier.weight(1.4f),
-            ) {
-                Text(
-                    stringResource(if (state.isUpdating) R.string.chess_setup_starting else R.string.chess_start_action),
-                    maxLines = 1, overflow = TextOverflow.Ellipsis,
-                )
-            }
+                modifier = Modifier.weight(1.6f),
+                primary = true,
+            )
             NewGameDropMenu(
                 component.libraryComponent,
                 modifier = Modifier.weight(1f),
-                label = stringResource(R.string.chess_more_play_modes),
                 openAbove = true,
+                trigger = { openMenu ->
+                    BoardGamePillButton(
+                        label = stringResource(BoardGameR.string.boardgame_more),
+                        icon = Icons.Outlined.MoreHoriz,
+                        onClick = openMenu,
+                        enabled = state.isLoaded && !state.isUpdating,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
             )
         }
     }

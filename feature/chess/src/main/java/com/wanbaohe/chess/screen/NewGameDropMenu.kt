@@ -62,6 +62,7 @@ fun NewGameDropMenu(
     modifier: Modifier = Modifier,
     label: String? = null,
     openAbove: Boolean = false,
+    trigger: (@Composable (() -> Unit) -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var importFen by remember { mutableStateOf(false) }
@@ -82,7 +83,9 @@ fun NewGameDropMenu(
             animationSpec = tween(300),
             label = "menu_rotation",
         )
-        if (label == null) IconButton(onClick = { expanded = !expanded }) {
+        if (trigger != null) {
+            trigger { expanded = !expanded }
+        } else if (label == null) IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                 contentDescription = stringResource(R.string.chess_more_play_modes),
@@ -108,7 +111,7 @@ fun NewGameDropMenu(
                 alignment = if (openAbove) Alignment.BottomEnd else Alignment.TopEnd,
                 offset = IntOffset(
                     x = with(density) { 4.dp.roundToPx() },
-                    y = with(density) { (if (openAbove) (-48).dp else 40.dp).roundToPx() },
+                    y = with(density) { (if (openAbove) (if (trigger != null) (-60).dp else (-48).dp) else 40.dp).roundToPx() },
                 ),
                 onDismissRequest = { expanded = false },
                 properties = PopupProperties(focusable = true),

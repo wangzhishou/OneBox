@@ -2,15 +2,19 @@ package com.wanbaohe.xiangqi.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.outlined.GridOn
+import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.boardgame.ui.BoardGamePillButton
+import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.dto.engineSlotFor
 import com.wanbaohe.xiangqi.domain.SetupPositionValidator
@@ -30,6 +35,7 @@ import com.wanbaohe.xiangqi.domain.model.Side
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.wanbaohe.xiangqi.ui.XiangqiOpponentPicker
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
+import com.wanbaohe.xiangqi.ui.board.xiangqiBoardAspectRatio
 
 @Composable
 fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier = Modifier) {
@@ -51,14 +57,13 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
             onDraftChange = component::updatePreparationSetup,
             onCancel = component::cancelPreparationSetup,
             onConfirm = component::finishPreparationSetup,
-            confirmLabel = stringResource(R.string.xiangqi_setup_apply),
             modifier = modifier,
         )
         return
     }
 
     Column(
-        modifier = modifier.fillMaxSize().padding(vertical = 12.dp),
+        modifier = modifier.fillMaxSize().padding(vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -68,8 +73,11 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
             onShowOrigin = { showOrigin = true },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
         )
-        Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
-            XiangqiBoard(state.boardState, null, emptySet(), { _, _ -> })
+        BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
+            XiangqiBoard(
+                state.boardState, null, emptySet(), { _, _ -> },
+                boardAspectRatio = xiangqiBoardAspectRatio(maxWidth.value, maxHeight.value),
+            )
             if (component.isRestoringRecentGame) CircularProgressIndicator()
         }
         val issue = remember(state.boardState) { SetupPositionValidator.validate(state.boardState) }
@@ -88,27 +96,34 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextButton(
+            BoardGamePillButton(
+                label = stringResource(R.string.xiangqi_setup_action),
+                icon = Icons.Outlined.GridOn,
                 onClick = component::beginPreparationSetup,
                 enabled = state.isLoaded && !state.isUpdating,
-            ) {
-                Text(stringResource(R.string.xiangqi_setup_action))
-            }
-            GlassTonalButton(
+                modifier = Modifier.weight(1f),
+            )
+            BoardGamePillButton(
+                label = stringResource(if (state.isUpdating) R.string.xiangqi_setup_starting else R.string.xiangqi_start_play),
+                icon = Icons.Filled.PlayArrow,
                 onClick = component::startPreparation,
                 enabled = state.isLoaded && !state.isUpdating && issue == null,
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    stringResource(if (state.isUpdating) R.string.xiangqi_setup_starting else R.string.xiangqi_start_play),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+                modifier = Modifier.weight(1.6f),
+                primary = true,
+            )
             NewGameDropMenu(
                 component = component.libraryComponent,
-                label = stringResource(R.string.xiangqi_more_play_modes),
+                modifier = Modifier.weight(1f),
                 openAbove = true,
+                trigger = { openMenu ->
+                    BoardGamePillButton(
+                        label = stringResource(BoardGameR.string.boardgame_more),
+                        icon = Icons.Outlined.MoreHoriz,
+                        onClick = openMenu,
+                        enabled = state.isLoaded && !state.isUpdating,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
             )
         }
     }

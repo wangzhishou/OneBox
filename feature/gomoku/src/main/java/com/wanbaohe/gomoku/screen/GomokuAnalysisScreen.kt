@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.gomoku.R
 import com.wanbaohe.gomoku.application.dto.NotationRow
@@ -51,6 +50,8 @@ import com.wanbaohe.gomoku.component.GomokuAnalysisComponent
 import com.wanbaohe.gomoku.data.TextExportLabels
 import com.wanbaohe.gomoku.presentation.localizedGameResultText
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
+import com.wanbaohe.boardgame.ui.AnalysisActionsMenu
+import com.wanbaohe.gomoku.domain.model.GameMode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
@@ -180,6 +181,11 @@ private fun GomokuAnalysisContent(
                     isSoundOn = state.isSoundOn,
                     onToggleSound = component::toggleSound,
                     onExport = onExport,
+                    onReturnToGame = component::openCurrentGame,
+                    onPractice = if (state.mode == GameMode.ONLINE_PVP) null else component::practiceFromHere,
+                    onShowOrigin = onShowOrigin.takeIf { state.origin != null },
+                    isLoaded = state.isLoaded,
+                    canPractice = component.canPracticeFromHere,
                 )
 
                 if (rows.isEmpty()) {
@@ -210,20 +216,6 @@ private fun GomokuAnalysisContent(
                 }
             }
         }
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            TextButton(onClick = component::openCurrentGame, modifier = Modifier.weight(1f), enabled = state.isLoaded) {
-                Text(stringResource(R.string.gomoku_analysis_back_to_game), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            GlassTonalButton(onClick = component::practiceFromHere, modifier = Modifier.weight(1.3f), enabled = component.canPracticeFromHere) {
-                Text(stringResource(R.string.gomoku_practice_from_here), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            if (state.origin != null) {
-                TextButton(onClick = onShowOrigin, modifier = Modifier.weight(0.7f)) {
-                    Text(stringResource(R.string.gomoku_setup_source), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
-            }
-        }
     }
 }
 
@@ -239,20 +231,24 @@ private fun AnalysisPanelHeader(
     isSoundOn: Boolean,
     onToggleSound: () -> Unit,
     onExport: () -> Unit,
+    onReturnToGame: () -> Unit,
+    onPractice: (() -> Unit)?,
+    onShowOrigin: (() -> Unit)?,
+    isLoaded: Boolean,
+    canPractice: Boolean,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 12.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(R.string.gomoku_analysis_panel_title),
-            style = MaterialTheme.typography.titleMedium.copy(
+            style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
             ),
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f),
@@ -285,13 +281,18 @@ private fun AnalysisPanelHeader(
                     modifier = Modifier.size(18.dp),
                 )
             }
-            GlassTonalIconButton(onClick = onExport) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
-                    contentDescription = stringResource(R.string.gomoku_export),
-                    modifier = Modifier.size(18.dp),
-                )
-            }
+            AnalysisActionsMenu(
+                returnLabel = stringResource(R.string.gomoku_analysis_back_to_game),
+                practiceLabel = stringResource(R.string.gomoku_practice_from_here),
+                exportLabel = stringResource(R.string.gomoku_export),
+                onReturnToGame = onReturnToGame,
+                onPractice = onPractice,
+                onExport = onExport,
+                enabled = isLoaded,
+                practiceEnabled = canPractice,
+                sourceLabel = stringResource(R.string.gomoku_setup_source),
+                onShowSource = onShowOrigin,
+            )
         }
     }
 }

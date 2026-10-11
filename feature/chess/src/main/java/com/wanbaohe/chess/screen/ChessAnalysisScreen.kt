@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.chess.R
 import com.wanbaohe.chess.application.dto.NotationRow
@@ -51,6 +50,7 @@ import com.wanbaohe.chess.data.TextExportLabels
 import com.wanbaohe.chess.domain.model.GameMode
 import com.wanbaohe.chess.presentation.localizedGameResultText
 import com.wanbaohe.chess.ui.board.ChessBoard
+import com.wanbaohe.boardgame.ui.AnalysisActionsMenu
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
@@ -165,33 +165,6 @@ private fun ChessAnalysisContent(
             )
         }
 
-        // 未终局的局从卡片「复盘」进来后，必须有路回对局页；已结束的局没有可继续的下法
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (resultText.isBlank()) {
-                GlassTonalButton(
-                    onClick = component::openCurrentGame,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    ) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMemory,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                        Text(stringResource(R.string.chess_analysis_back_to_game), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    }
-                }
-            }
-            if (state.mode != GameMode.ONLINE_PVP) GlassTonalButton(
-                onClick = component::practiceFromHere, enabled = state.isLoaded, modifier = Modifier.weight(1f),
-            ) {
-                Text(stringResource(R.string.chess_setup_practice_from_here), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-        }
-
         GlassSurface(
             // weight 让面板占据剩余高度：棋盘与导出入口固定，只有着法表内部滚动。
             modifier = Modifier
@@ -205,6 +178,9 @@ private fun ChessAnalysisContent(
                     isSoundOn = state.isSoundOn,
                     onToggleSound = component::toggleSound,
                     onExport = onExport,
+                    onReturnToGame = component::openCurrentGame,
+                    onPractice = if (state.mode == GameMode.ONLINE_PVP) null else component::practiceFromHere,
+                    isLoaded = state.isLoaded,
                 )
 
                 if (rows.isEmpty()) {
@@ -250,20 +226,22 @@ private fun AnalysisPanelHeader(
     isSoundOn: Boolean,
     onToggleSound: () -> Unit,
     onExport: () -> Unit,
+    onReturnToGame: () -> Unit,
+    onPractice: (() -> Unit)?,
+    isLoaded: Boolean,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 12.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(R.string.chess_analysis_panel_title),
-            style = MaterialTheme.typography.titleMedium.copy(
+            style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
             ),
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f),
@@ -296,13 +274,15 @@ private fun AnalysisPanelHeader(
                     modifier = Modifier.size(18.dp),
                 )
             }
-            GlassTonalIconButton(onClick = onExport) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
-                    contentDescription = stringResource(R.string.chess_export),
-                    modifier = Modifier.size(18.dp),
-                )
-            }
+            AnalysisActionsMenu(
+                returnLabel = stringResource(R.string.chess_analysis_back_to_game),
+                practiceLabel = stringResource(R.string.chess_setup_practice_from_here),
+                exportLabel = stringResource(R.string.chess_export),
+                onReturnToGame = onReturnToGame,
+                onPractice = onPractice,
+                onExport = onExport,
+                enabled = isLoaded,
+            )
         }
     }
 }

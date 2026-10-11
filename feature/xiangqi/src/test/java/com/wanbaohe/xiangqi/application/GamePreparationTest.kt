@@ -108,6 +108,33 @@ class GamePreparationTest {
         assertEquals(ai, GameQueryUseCase.mostRecentUnfinishedHumanAiGame(listOf(local, online, ai)))
     }
 
+    @Test
+    fun analysisDefaultsToTheLatestFinishedGameAcrossAllModes() {
+        val unfinished = summary("unfinished", GameStatus.PAUSED, 5)
+        for (mode in GameMode.entries) {
+            val latest = summary("latest", GameStatus.RED_WINS, 10).copy(mode = mode)
+            assertEquals(latest, GameQueryUseCase.mostRecentGameForAnalysis(listOf(unfinished, latest)))
+        }
+    }
+
+    @Test
+    fun analysisIgnoresRenamesAndFallsBackToLegacyHistoryTime() {
+        val renamed = summary("renamed", GameStatus.PAUSED, 5).copy(updatedAt = 1000)
+        val latest = summary("latest", GameStatus.RED_WINS, 10)
+        assertEquals(latest, GameQueryUseCase.mostRecentGameForAnalysis(listOf(renamed, latest)))
+        val legacy = summary("legacy", GameStatus.PAUSED, 0).copy(updatedAt = 12, plyCount = 1)
+        assertEquals(legacy, GameQueryUseCase.mostRecentGameForAnalysis(listOf(latest, legacy)))
+    }
+
+    @Test
+    fun analysisPrefersPlayedHistoryButCanReviewTheOnlySavedOpening() {
+        val played = summary("played", GameStatus.PAUSED, 5)
+        val draft = summary("draft", GameStatus.NOT_STARTED, 0).copy(updatedAt = 1000)
+        assertEquals(played, GameQueryUseCase.mostRecentGameForAnalysis(listOf(draft, played)))
+        assertEquals(draft, GameQueryUseCase.mostRecentGameForAnalysis(listOf(draft)))
+        assertNull(GameQueryUseCase.mostRecentGameForAnalysis(emptyList()))
+    }
+
     private fun summary(id: String, status: GameStatus, playedAt: Long) = GameSummary(
         id, id, GameMode.HUMAN_VS_LLM, PlayerType.HUMAN, PlayerType.LLM, status, "", playedAt, 0, playedAt,
     )

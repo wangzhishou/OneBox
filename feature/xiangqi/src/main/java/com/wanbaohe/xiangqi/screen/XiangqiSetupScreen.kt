@@ -1,8 +1,6 @@
 package com.wanbaohe.xiangqi.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -16,13 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.OpenWith
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,15 +29,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.boardgame.model.BoardGameAction
+import com.wanbaohe.boardgame.model.BoardGameSideOption
+import com.wanbaohe.boardgame.ui.ActionBar
+import com.wanbaohe.boardgame.ui.BoardGamePaletteItem
+import com.wanbaohe.boardgame.ui.BoardGamePillButton
+import com.wanbaohe.boardgame.ui.BoardGameSetupHeader
+import com.wanbaohe.boardgame.ui.BoardGameSetupHint
+import com.wanbaohe.boardgame.ui.BoardGameToolButton
+import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.domain.BoardSetupDraft
 import com.wanbaohe.xiangqi.domain.FenCodec
@@ -52,6 +59,7 @@ import com.wanbaohe.xiangqi.domain.model.PieceType
 import com.wanbaohe.xiangqi.domain.model.Side
 import com.wanbaohe.xiangqi.ui.board.PieceDisc
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
+import com.wanbaohe.xiangqi.ui.board.xiangqiBoardAspectRatio
 import com.wanbaohe.xiangqi.ui.board.pieceLabel
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.wanbaohe.xiangqi.router.LocalXiangqiImmersiveModeState
@@ -62,55 +70,45 @@ fun XiangqiSetupScreen(
     onDraftChange: (BoardSetupDraft) -> Unit,
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
-    confirmLabel: String,
     modifier: Modifier = Modifier,
     busy: Boolean = false,
     preservesOriginal: Boolean = false,
 ) {
-    BackHandler(onBack = onCancel)
     val issue = remember(draft.boardState) { SetupPositionValidator.validate(draft.startPosition()) }
     var more by remember { mutableStateOf(false) }
     val immersive = LocalXiangqiImmersiveModeState.current
+    val fontScale = LocalDensity.current.fontScale
+    BackHandler {
+        if (immersive?.isImmersive == true) immersive.exitImmersive()
+        else if (!busy) onCancel()
+    }
 
     Column(
         modifier = modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        BoardGameSetupHeader(
+            title = stringResource(R.string.xiangqi_setup_title),
+            sides = listOf(Side.RED, Side.BLACK).map { side ->
+                BoardGameSideOption(
+                    label = stringResource(if (side == Side.RED) R.string.xiangqi_setup_red_first else R.string.xiangqi_setup_black_first),
+                    indicatorColor = if (side == Side.RED) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+                    selected = draft.boardState.sideToMove == side,
+                    onClick = { onDraftChange(draft.setSideToMove(side)) },
+                )
+            },
+            enabled = !busy,
+        )
         BoxWithConstraints(Modifier.fillMaxWidth().weight(1f)) {
-            val scrollBody = maxHeight < 300.dp
+            val scrollBody = maxHeight < 300.dp || fontScale > 1.3f
             Column(
                 modifier = Modifier.fillMaxSize()
                     .then(if (scrollBody) Modifier.verticalScroll(rememberScrollState()) else Modifier),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        stringResource(R.string.xiangqi_setup_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.weight(1f),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    Side.entries.forEach { side ->
-                        TextButton(
-                            onClick = { onDraftChange(draft.setSideToMove(side)) },
-                            enabled = !busy,
-                            modifier = Modifier.weight(1f),
-                        ) {
-                            Text(
-                                stringResource(if (side == Side.RED) R.string.xiangqi_setup_red_first else R.string.xiangqi_setup_black_first),
-                                color = if (draft.boardState.sideToMove == side)
-                                    MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                    }
-                }
-                Box(
+                BoxWithConstraints(
                     modifier = Modifier.fillMaxWidth()
-                        .then(if (scrollBody) Modifier.height(180.dp) else Modifier.weight(1f)),
+                        .then(if (scrollBody) Modifier.height(280.dp) else Modifier.weight(1f)),
                     contentAlignment = Alignment.Center,
                 ) {
                     XiangqiBoard(
@@ -122,29 +120,28 @@ fun XiangqiSetupScreen(
                         },
                         onPieceDrop = if (busy || draft.tool != SetupTool.MOVE) null
                             else { from, to -> onDraftChange(draft.move(from, to)) },
+                        boardAspectRatio = xiangqiBoardAspectRatio(maxWidth.value, maxHeight.value),
                     )
                 }
-                GlassSurface(style = GlassStyle.Medium) {
-                    Column(Modifier.fillMaxWidth().padding(4.dp)) {
-                        Side.entries.forEach { side ->
+                GlassSurface(style = GlassStyle.Medium, shape = MaterialTheme.shapes.large) {
+                    Column(Modifier.fillMaxWidth().padding(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        listOf(Side.RED, Side.BLACK).forEach { side ->
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                                 PieceType.entries.forEach { type ->
                                     val piece = Piece(side, type)
-                                    Box(
+                                    val label = "${stringResource(if (side == Side.RED) R.string.xiangqi_side_red else R.string.xiangqi_side_black)} ${pieceLabel(piece)}"
+                                    val selected = draft.tool == SetupTool.PLACE && draft.placementPiece == piece
+                                    BoardGamePaletteItem(
+                                        selected = selected,
+                                        onClick = { onDraftChange(draft.selectPiece(piece)) },
+                                        enabled = !busy,
                                         modifier = Modifier
                                             .weight(1f)
                                             .height(44.dp)
-                                            .border(
-                                                width = 1.dp,
-                                                color = if (draft.tool == SetupTool.PLACE && draft.placementPiece == piece)
-                                                    MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
-                                                shape = MaterialTheme.shapes.small,
-                                            )
-                                            .clickable(enabled = !busy) { onDraftChange(draft.selectPiece(piece)) },
-                                        contentAlignment = Alignment.Center,
+                                            .semantics { contentDescription = label },
                                     ) {
                                         Box(Modifier.size(30.dp)) {
-                                            PieceDisc(piece, draft.tool == SetupTool.PLACE && draft.placementPiece == piece)
+                                            PieceDisc(piece, selected)
                                         }
                                     }
                                 }
@@ -152,60 +149,50 @@ fun XiangqiSetupScreen(
                         }
                     }
                 }
-                Text(
-                    text = if (issue != null) setupIssueText(issue) else stringResource(
-                        if (preservesOriginal) R.string.xiangqi_setup_preserves_original else R.string.xiangqi_setup_hint,
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (issue != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
-                    minLines = 2,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+                BoardGameSetupHint(
+                    text = when {
+                        issue != null -> setupIssueText(issue)
+                        preservesOriginal && draft.hasChanges -> stringResource(R.string.xiangqi_setup_preserves_original)
+                        else -> stringResource(R.string.xiangqi_setup_hint)
+                    },
+                    isError = issue != null,
                 )
             }
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+        ActionBar(
+            actions = listOf(
+                BoardGameAction(
+                    icon = Icons.Outlined.OpenWith, contentDescription = stringResource(R.string.xiangqi_setup_move),
+                    enabled = !busy, selected = draft.tool == SetupTool.MOVE,
+                    onClick = { onDraftChange(draft.selectTool(SetupTool.MOVE)) },
+                ),
+                BoardGameAction(
+                    icon = Icons.Outlined.DeleteOutline, contentDescription = stringResource(R.string.xiangqi_setup_erase),
+                    enabled = !busy, selected = draft.tool == SetupTool.ERASE,
+                    onClick = { onDraftChange(draft.selectTool(SetupTool.ERASE)) },
+                ),
+                BoardGameAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
+                    contentDescription = stringResource(R.string.xiangqi_undo),
+                    enabled = !busy && draft.undoBoards.isNotEmpty(), onClick = { onDraftChange(draft.undo()) },
+                ),
+                BoardGameAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
+                    contentDescription = stringResource(R.string.xiangqi_redo),
+                    enabled = !busy && draft.redoBoards.isNotEmpty(), onClick = { onDraftChange(draft.redo()) },
+                ),
+            ),
         ) {
-            TextButton(
-                onClick = { onDraftChange(draft.selectTool(SetupTool.MOVE)) },
-                enabled = !busy,
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    stringResource(R.string.xiangqi_setup_move),
-                    color = if (draft.tool == SetupTool.MOVE) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+            Box(Modifier.weight(1f)) {
+                BoardGameToolButton(
+                    icon = Icons.Outlined.MoreVert, label = stringResource(BoardGameR.string.boardgame_more),
+                    onClick = { more = true }, enabled = !busy, modifier = Modifier.fillMaxWidth(),
                 )
-            }
-            TextButton(
-                onClick = { onDraftChange(draft.selectTool(SetupTool.ERASE)) },
-                enabled = !busy,
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    stringResource(R.string.xiangqi_setup_erase),
-                    color = if (draft.tool == SetupTool.ERASE) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-            GlassTonalIconButton(onClick = { onDraftChange(draft.undo()) }, enabled = !busy && draft.undoBoards.isNotEmpty()) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo, stringResource(R.string.xiangqi_undo), Modifier.size(20.dp))
-            }
-            GlassTonalIconButton(onClick = { onDraftChange(draft.redo()) }, enabled = !busy && draft.redoBoards.isNotEmpty()) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo, stringResource(R.string.xiangqi_redo), Modifier.size(20.dp))
-            }
-            Box {
-                GlassTonalIconButton(onClick = { more = true }, enabled = !busy) {
-                    Icon(Icons.Outlined.MoreVert, stringResource(R.string.xiangqi_more_actions), Modifier.size(20.dp))
-                }
                 DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.xiangqi_cancel)) },
+                        onClick = { more = false; onCancel() },
+                    )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.xiangqi_setup_reset)) },
                         onClick = { more = false; onDraftChange(draft.reset()) },
@@ -230,22 +217,13 @@ fun XiangqiSetupScreen(
                 }
             }
         }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onCancel, enabled = !busy) {
-                Text(stringResource(R.string.xiangqi_cancel))
-            }
-            GlassTonalButton(
-                onClick = onConfirm,
-                enabled = !busy && (!draft.hasChanges || issue == null),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    if (draft.hasChanges) confirmLabel else stringResource(R.string.xiangqi_setup_return),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
+        BoardGamePillButton(
+            label = stringResource(R.string.xiangqi_setup_return),
+            onClick = onConfirm,
+            enabled = !busy && (!draft.hasChanges || issue == null),
+            modifier = Modifier.fillMaxWidth(),
+            primary = true,
+        )
     }
 }
 

@@ -41,6 +41,7 @@ fun BoardGameTabScaffold(
     backHandlerEnabled: Boolean = true,
     onBack: (() -> Unit)? = null,
     headerActions: (@Composable () -> Unit)? = null,
+    showTabs: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(LocalBoardGameImmersiveModeState provides immersiveState) {
@@ -51,9 +52,12 @@ fun BoardGameTabScaffold(
         BaseScreen(
             modifier = modifier,
             title = title,
-            onGoBack = onGoBack,
+            onGoBack = {
+                if (immersiveState.isImmersive) immersiveState.exitImmersive()
+                else onGoBack()
+            },
             isBackHandler = false,
-            showNavigationBarsPadding = false,
+            showNavigationBarsPadding = !showTabs,
             immersiveModeState = immersiveState,
             actions = {
                 if (!immersiveState.isImmersive) {
@@ -72,14 +76,16 @@ fun BoardGameTabScaffold(
                 content()
             }
 
-            ImmersiveBottomContent(visible = immersiveState.isUiVisible) {
-                BottomNavigationBar(
-                    items = tabs.map { BottomNavItem(id = it.id, label = it.label, icon = it.icon) },
-                    selectedItemId = selectedTabId,
-                    onItemClick = { item ->
-                        tabs.firstOrNull { it.id == item.id }?.let(onTabSelected)
-                    },
-                )
+            if (showTabs) {
+                ImmersiveBottomContent(visible = immersiveState.isUiVisible) {
+                    BottomNavigationBar(
+                        items = tabs.map { BottomNavItem(id = it.id, label = it.label, icon = it.icon) },
+                        selectedItemId = selectedTabId,
+                        onItemClick = { item ->
+                            tabs.firstOrNull { it.id == item.id }?.let(onTabSelected)
+                        },
+                    )
+                }
             }
         }
     }

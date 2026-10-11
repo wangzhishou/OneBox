@@ -56,10 +56,11 @@ fun XiangqiBoard(
     riverNotice: String = "",
     lastMove: Pair<BoardPoint, BoardPoint>? = null,
     onPieceDrop: ((BoardPoint, BoardPoint) -> Unit)? = null,
+    boardAspectRatio: Float = 9f / 10f,
 ) {
     BoxWithConstraints(
         modifier = modifier
-            .aspectRatio(9f / 10f)
+            .aspectRatio(boardAspectRatio)
     ) {
         val boardMaxWidth = constraints.maxWidth
         val boardMaxHeight = constraints.maxHeight
@@ -199,7 +200,8 @@ fun XiangqiBoard(
                         val isLastMoveFrom = point == lastMove?.first
                         val isLastMoveTo = point == lastMove?.second
                         
-                        val pieceSize = with(androidx.compose.ui.platform.LocalDensity.current) { (vGapPx * 0.85f).toDp() }
+                        val diameter = xiangqiPieceDiameter(vGapPx, hGapPx)
+                        val pieceSize = with(androidx.compose.ui.platform.LocalDensity.current) { diameter.toDp() }
                         
                         // Clickable area (centered on intersection)
                         Box(
@@ -237,7 +239,7 @@ fun XiangqiBoard(
                         if (piece != null && point != dragFrom) {
                             Box(
                                 modifier = Modifier
-                                    .offset { IntOffset((paddingPx + displayFile * vGapPx - vGapPx * 0.425f).roundToInt(), (paddingPx + displayRank * hGapPx - vGapPx * 0.425f).roundToInt()) }
+                                    .offset { IntOffset((paddingPx + displayFile * vGapPx - diameter / 2).roundToInt(), (paddingPx + displayRank * hGapPx - diameter / 2).roundToInt()) }
                                     .size(pieceSize)
                             ) {
                                 PieceDisc(
@@ -251,7 +253,7 @@ fun XiangqiBoard(
                 val draggedPiece = dragFrom?.let(boardState::pieceAt)
                 val position = dragPosition
                 if (draggedPiece != null && position != null) {
-                    val diameter = vGapPx * 0.85f
+                    val diameter = xiangqiPieceDiameter(vGapPx, hGapPx)
                     Box(
                         modifier = Modifier
                             .offset { IntOffset((position.x - diameter / 2).roundToInt(), (position.y - diameter / 2).roundToInt()) }

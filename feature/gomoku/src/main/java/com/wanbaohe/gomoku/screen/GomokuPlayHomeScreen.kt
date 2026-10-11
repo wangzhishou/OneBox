@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.outlined.GridOn
+import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.wanbaohe.boardgame.R as BoardGameR
+import com.wanbaohe.boardgame.ui.BoardGamePillButton
 import com.wanbaohe.gomoku.R
 import com.wanbaohe.gomoku.application.dto.engineSlotFor
 import com.wanbaohe.gomoku.application.port.outbound.EngineSlot
@@ -46,7 +50,8 @@ fun GomokuPlayHomeScreen(component: GomokuRouterComponent, modifier: Modifier = 
     if (setup != null) {
         GomokuSetupScreen(
             setup, component::updatePreparationSetup, component::cancelPreparationSetup, component::finishPreparationSetup,
-            stringResource(R.string.gomoku_setup_apply), modifier,
+            modifier = modifier,
+            busy = state.isUpdating,
             bottomSide = state.humanOrBottomSide(),
         )
         return
@@ -57,40 +62,53 @@ fun GomokuPlayHomeScreen(component: GomokuRouterComponent, modifier: Modifier = 
         verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        GomokuPlayersRow(state, { pickingSide = it }, Modifier.fillMaxWidth().padding(horizontal = 12.dp))
-        Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
-            GomokuBoard(state.boardState, null, emptySet(), { _, _ -> }, bottomSide = state.humanOrBottomSide())
-            if (component.isRestoringRecentGame) CircularProgressIndicator()
+        GomokuPlayersRow(
+            state, { pickingSide = it }, Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+            emphasizeVs = true,
+            onShowOrigin = if (state.origin != null) ({ showOrigin = true }) else null,
+        )
+        Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
+            Box(contentAlignment = Alignment.Center) {
+                GomokuBoard(state.boardState, null, emptySet(), { _, _ -> }, bottomSide = state.humanOrBottomSide())
+                if (component.isRestoringRecentGame) CircularProgressIndicator()
+            }
         }
         if (issue != null) {
             Text(setupIssueText(issue), maxLines = 2, overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 12.dp))
         }
-        if (state.origin != null) {
-            TextButton(onClick = { showOrigin = true }) {
-                Text(stringResource(R.string.gomoku_setup_source), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-        }
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextButton(
+            BoardGamePillButton(
+                label = stringResource(R.string.gomoku_setup_action),
+                icon = Icons.Outlined.GridOn,
                 onClick = component::beginPreparationSetup,
                 enabled = state.isLoaded && !state.isUpdating, modifier = Modifier.weight(1f),
-            ) { Text(stringResource(R.string.gomoku_setup_action), maxLines = 1, overflow = TextOverflow.Ellipsis) }
-            GlassTonalButton(
+            )
+            BoardGamePillButton(
+                label = stringResource(if (state.isUpdating) R.string.gomoku_starting else R.string.gomoku_start_play),
+                icon = Icons.Filled.PlayArrow,
                 onClick = component::startPreparation,
                 enabled = state.isLoaded && !state.isUpdating && issue == null,
-                modifier = Modifier.weight(1.5f),
-            ) {
-                Text(stringResource(if (state.isUpdating) R.string.gomoku_starting else R.string.gomoku_start_play),
-                    maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            NewGameDropMenu(component.libraryComponent, Modifier.weight(1f),
-                label = stringResource(R.string.gomoku_more_modes), openAbove = true)
+                modifier = Modifier.weight(1.6f),
+                primary = true,
+            )
+            NewGameDropMenu(
+                component.libraryComponent, Modifier.weight(1f), openAbove = true,
+                trigger = { onClick ->
+                    BoardGamePillButton(
+                        label = stringResource(BoardGameR.string.boardgame_more),
+                        icon = Icons.Outlined.MoreHoriz,
+                        onClick = onClick,
+                        enabled = state.isLoaded && !state.isUpdating,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
+            )
         }
     }
     pickingSide?.let { side ->

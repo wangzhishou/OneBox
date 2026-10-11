@@ -9,19 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.FullscreenExit
+import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -50,11 +48,13 @@ import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalImageShareProvider
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.boardgame.model.BoardGameAction
+import com.wanbaohe.boardgame.ui.ActionBar
+import com.wanbaohe.boardgame.ui.BoardGameToolButton
 import com.wanbaohe.boardgame.ui.BoardGameOverOverlay
 import com.wanbaohe.boardgame.ui.BoardStartOverlay
 import com.wanbaohe.boardgame.ui.LocalBoardGameImmersiveModeState
+import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.chess.R
 import com.wanbaohe.chess.application.port.outbound.MoveDecision
 import com.wanbaohe.chess.component.ChessGameComponent
@@ -79,9 +79,14 @@ fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier
     if (draft != null) {
         val initial = state.status == GameStatus.NOT_STARTED && state.startedAt == 0L
         ChessSetupScreen(
-            draft, component::updateSetup, component::cancelSetup, component::finishSetup,
-            confirmLabel = stringResource(if (initial) R.string.chess_setup_apply else R.string.chess_setup_new_game),
-            modifier = modifier, busy = state.isUpdating, preservesOriginal = !initial, bottomSide = state.bottomSide(),
+            draft = draft,
+            onDraftChange = component::updateSetup,
+            onCancel = component::cancelSetup,
+            onConfirm = component::finishSetup,
+            modifier = modifier,
+            busy = state.isUpdating,
+            preservesOriginal = !initial,
+            bottomSide = state.bottomSide(),
         )
         return
     }
@@ -230,16 +235,16 @@ private fun ChessGameContent(
         val compactHeight = maxHeight < 450.dp
         Column(
             Modifier.fillMaxSize().padding(vertical = 6.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(
                 Modifier.fillMaxWidth().weight(1f).capturable(capture),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 ChessPlayersRow(state, onPickAiFor, onShowOrigin, Modifier.fillMaxWidth().padding(horizontal = 12.dp))
-                Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
+                Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
                     Box(contentAlignment = Alignment.Center) {
                         ChessBoard(
                             state.boardState, state.interaction.selectedPoint, state.interaction.candidateTargets,
@@ -359,30 +364,44 @@ private fun GameActions(component: ChessGameComponent, onExport: () -> Unit) {
     val state = component.uiState
     val immersive = LocalBoardGameImmersiveModeState.current
     var more by remember { mutableStateOf(false) }
-    Row(
-        Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
+    ActionBar(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+        actions = listOf(
+            BoardGameAction(
+                icon = if (immersive?.isImmersive == true) Icons.Outlined.FullscreenExit else Icons.Outlined.Fullscreen,
+                contentDescription = stringResource(R.string.chess_fullscreen),
+                enabled = immersive != null,
+                selected = immersive?.isImmersive == true,
+                onClick = { immersive?.toggle() },
+            ),
+            BoardGameAction(
+                icon = Icons.Outlined.GridOn,
+                contentDescription = stringResource(R.string.chess_setup_action),
+                enabled = component.canSetup,
+                onClick = component::beginSetup,
+            ),
+            BoardGameAction(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
+                contentDescription = stringResource(R.string.chess_undo),
+                enabled = component.canUndo,
+                onClick = component::undo,
+            ),
+            BoardGameAction(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
+                contentDescription = stringResource(R.string.chess_redo),
+                enabled = component.canRedo,
+                onClick = component::redo,
+            ),
+        ),
     ) {
-        GlassTonalIconButton(onClick = component::undo, enabled = component.canUndo) {
-            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo, stringResource(R.string.chess_undo), Modifier.size(20.dp))
-        }
-        GlassTonalIconButton(onClick = component::redo, enabled = component.canRedo) {
-            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo, stringResource(R.string.chess_redo), Modifier.size(20.dp))
-        }
-        GlassTonalIconButton(onClick = component::beginSetup, enabled = component.canSetup) {
-            Icon(Icons.Outlined.Edit, stringResource(R.string.chess_setup_action), Modifier.size(20.dp))
-        }
-        GlassTonalIconButton(onClick = { immersive?.toggle() }, enabled = immersive != null) {
-            Icon(
-                if (immersive?.isImmersive == true) Icons.Outlined.FullscreenExit else Icons.Outlined.Fullscreen,
-                stringResource(R.string.chess_fullscreen), Modifier.size(20.dp),
+        Box(Modifier.weight(1f)) {
+            BoardGameToolButton(
+                icon = Icons.Outlined.MoreVert,
+                label = stringResource(BoardGameR.string.boardgame_more),
+                onClick = { more = true },
+                enabled = state.isLoaded && !state.isUpdating,
+                modifier = Modifier.fillMaxWidth(),
             )
-        }
-        Box {
-            GlassTonalIconButton(onClick = { more = true }, enabled = state.isLoaded && !state.isUpdating) {
-                Icon(Icons.Outlined.MoreVert, stringResource(R.string.chess_more_actions), Modifier.size(20.dp))
-            }
             DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
                 @Composable
                 fun action(label: Int, enabled: Boolean = true, click: () -> Unit) {

@@ -21,6 +21,7 @@ data class PlayerBarData(
     val isActiveTurn: Boolean = false,
     val onClick: (() -> Unit)? = null,
     val actionLabel: String = "",
+    val avatarIsLoggedIn: Boolean = true,
 )
 
 /** 操作栏动作项(悔棋/重做/分析/分享/重开/认输/重命名/全屏等) */
@@ -28,6 +29,14 @@ data class BoardGameAction(
     val icon: ImageVector,
     val contentDescription: String? = null,
     val enabled: Boolean = true,
+    val selected: Boolean = false,
+    val onClick: () -> Unit,
+)
+
+data class BoardGameSideOption(
+    val label: String,
+    val indicatorColor: Color,
+    val selected: Boolean,
     val onClick: () -> Unit,
 )
 

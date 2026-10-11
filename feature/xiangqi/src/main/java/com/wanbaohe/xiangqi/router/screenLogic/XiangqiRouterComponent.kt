@@ -1,5 +1,7 @@
 package com.wanbaohe.xiangqi.router.screenLogic
 
+import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.decompose.ComponentContext
 import com.wanbaohe.xiangqi.data.local.LocalXiangqiEngine
 import com.wanbaohe.xiangqi.data.local.XiangqiEngineWeights
@@ -362,6 +364,9 @@ class XiangqiRouterComponent @AssistedInject constructor(
 
     init {
         maybeOpenRecentGame()
+        lifecycle.doOnStart {
+            if (childStack.value.active.configuration == Route.AnalysisHome) openRecentAnalysis()
+        }
     }
 
     fun selectTab(tab: Tab) {
@@ -390,6 +395,10 @@ class XiangqiRouterComponent @AssistedInject constructor(
         }
     }
     fun openAnalysis(gameId: String, initialPly: Int = -1) {
+        if (gameId.isBlank()) {
+            openRecentAnalysis()
+            return
+        }
         selectedGameId = gameId
         pauseBeforeLeavingGame { navigation.pushToFront(Route.Analysis(gameId, initialPly)) }
     }
@@ -588,8 +597,22 @@ class XiangqiRouterComponent @AssistedInject constructor(
         val child = childStack.value.active.instance
         when {
             child is Child.Game && child.component.gameId == gameId -> child.component.openAnalysis()
-            gameId == null -> navigation.pushToFront(Route.AnalysisHome)
+            gameId.isNullOrBlank() -> openRecentAnalysis()
             else -> openAnalysis(gameId)
+        }
+    }
+
+    private fun openRecentAnalysis() {
+        preparationTouched = true
+        val sourceRoute = childStack.value.active.configuration
+        val sourceGameId = selectedGameId
+        componentScope.launch {
+            val recent = GameQueryUseCase.mostRecentGameForAnalysis(gameQuery.observeAll().first())
+            if (lifecycle.state < Lifecycle.State.STARTED ||
+                childStack.value.active.configuration != sourceRoute || selectedGameId != sourceGameId
+            ) return@launch
+            if (recent != null) openAnalysis(recent.id)
+            else pauseBeforeLeavingGame { navigation.pushToFront(Route.AnalysisHome) }
         }
     }
 
@@ -608,7 +631,8 @@ class XiangqiRouterComponent @AssistedInject constructor(
 
     private fun Screen.XiangqiRouter.Type?.toInitialRoute(): Route = when (this) {
         is Screen.XiangqiRouter.Type.Game -> Route.Game(gameId)
-        is Screen.XiangqiRouter.Type.Analysis -> Route.Analysis(gameId, initialPly)
+        is Screen.XiangqiRouter.Type.Analysis ->
+            if (gameId.isBlank()) Route.AnalysisHome else Route.Analysis(gameId, initialPly)
         Screen.XiangqiRouter.Type.Library -> Route.Library
         is Screen.XiangqiRouter.Type.JoinOnlineRoom -> Route.PlayHome
         null -> Route.PlayHome

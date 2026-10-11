@@ -8,16 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FullscreenExit
+import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -38,7 +37,6 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.utils.BaseUtils
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageInfo
-import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
@@ -48,11 +46,12 @@ import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalImageShareProvider
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.wanbaohe.boardgame.R as BoardGameR
+import com.wanbaohe.boardgame.model.BoardGameAction
 import com.wanbaohe.boardgame.model.PlayerBarData
+import com.wanbaohe.boardgame.ui.ActionBar
 import com.wanbaohe.boardgame.ui.BoardGameOverOverlay
+import com.wanbaohe.boardgame.ui.BoardGameToolButton
 import com.wanbaohe.boardgame.ui.BoardStartOverlay
 import com.wanbaohe.boardgame.ui.LocalBoardGameImmersiveModeState
 import com.wanbaohe.boardgame.ui.PlayersBar
@@ -80,8 +79,6 @@ fun GomokuGameScreen(component: GomokuGameComponent, modifier: Modifier = Modifi
     if (setup != null) {
         GomokuSetupScreen(
             setup, component::updateSetup, component::cancelSetup, component::finishSetup,
-            stringResource(if (state.startedAt == 0L && state.currentPly == 0)
-                R.string.gomoku_setup_apply else R.string.gomoku_setup_practice),
             modifier = modifier,
             busy = state.isUpdating,
             preservesOriginal = state.status != GameStatus.NOT_STARTED,
@@ -203,8 +200,11 @@ private fun GameContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(Modifier.weight(1f).capturable(capture), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            GomokuPlayersRow(state, onPickAi, Modifier.fillMaxWidth().padding(horizontal = 12.dp))
-            Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
+            GomokuPlayersRow(
+                state, onPickAi, Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                onShowOrigin = if (state.origin != null) onShowOrigin else null,
+            )
+            Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
                 Box(contentAlignment = Alignment.Center) {
                     GomokuBoard(state.boardState, state.interaction.selectedPoint, state.interaction.candidateTargets,
                         component::onCellTap, bottomSide = state.humanOrBottomSide(), lastMove = lastMove)
@@ -286,26 +286,36 @@ internal fun GomokuGameUiState.playerTypeFor(side: Side): PlayerType =
     if (side == Side.BLACK) blackPlayerType else whitePlayerType
 
 @Composable
-internal fun GomokuPlayersRow(state: GomokuGameUiState, onPickAiFor: (Side) -> Unit, modifier: Modifier = Modifier) {
+internal fun GomokuPlayersRow(
+    state: GomokuGameUiState,
+    onPickAiFor: (Side) -> Unit,
+    modifier: Modifier = Modifier,
+    emphasizeVs: Boolean = false,
+    onShowOrigin: (() -> Unit)? = null,
+) {
     val login = LocalLoginState.current
     val humanName = BaseUtils.getDisplayName(login.nickname, login.username).ifBlank { stringResource(R.string.gomoku_player_you) }
     val rightSide = state.humanOrBottomSide()
     PlayersBar(
-        top = gomokuPlayerData(state, rightSide.opposite(), humanName, login.avatar.orEmpty(), onPickAiFor),
-        bottom = gomokuPlayerData(state, rightSide, humanName, login.avatar.orEmpty(), onPickAiFor),
+        top = gomokuPlayerData(state, rightSide.opposite(), humanName, login.avatar.orEmpty(), login.isLogin, onPickAiFor),
+        bottom = gomokuPlayerData(state, rightSide, humanName, login.avatar.orEmpty(), login.isLogin, onPickAiFor),
         vsLabel = stringResource(R.string.gomoku_vs_short),
         turnLabel = stringResource(R.string.gomoku_turn_badge),
         modifier = modifier,
+        emphasizeVs = emphasizeVs,
+        onVsClick = onShowOrigin,
+        vsActionLabel = stringResource(if (onShowOrigin != null) R.string.gomoku_setup_source else R.string.gomoku_vs_short),
     )
 }
 
 @Composable
 private fun gomokuPlayerData(
-    state: GomokuGameUiState, side: Side, humanName: String, humanAvatar: String, onPickAi: (Side) -> Unit,
+    state: GomokuGameUiState, side: Side, humanName: String, humanAvatar: String,
+    humanIsLoggedIn: Boolean, onPickAi: (Side) -> Unit,
 ): PlayerBarData {
     val type = state.playerTypeFor(side)
     val sideName = stringResource(if (side == Side.BLACK) R.string.gomoku_side_black else R.string.gomoku_side_white)
-    val active = state.isLoaded && !state.isUpdating && state.status == GameStatus.PLAYING && state.boardState.sideToMove == side
+    val active = state.isLoaded && state.status == GameStatus.PLAYING && state.boardState.sideToMove == side
     val namedHuman = type == PlayerType.HUMAN && state.mode in setOf(GameMode.HUMAN_VS_LLM, GameMode.ONLINE_PVP)
     val name = when (type) {
         PlayerType.LLM -> (if (side == Side.BLACK) state.blackAiServiceName else state.whiteAiServiceName)
@@ -326,6 +336,7 @@ private fun gomokuPlayerData(
         isActiveTurn = active,
         onClick = if (type == PlayerType.LLM && state.isLoaded && !state.isUpdating) ({ onPickAi(side) }) else null,
         actionLabel = stringResource(R.string.gomoku_change_opponent),
+        avatarIsLoggedIn = !namedHuman || humanIsLoggedIn,
     )
 }
 
@@ -335,47 +346,65 @@ private fun GameControls(component: GomokuGameComponent, onExport: () -> Unit, o
     val immersive = LocalBoardGameImmersiveModeState.current
     var more by remember { mutableStateOf(false) }
     val enabled = state.isLoaded && !state.isUpdating
-    GlassSurface(Modifier.fillMaxWidth().padding(horizontal = 12.dp), style = GlassStyle.Medium) {
-        Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically) {
-            GlassTonalIconButton(onClick = component::undo, enabled = component.canUndo) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo, stringResource(R.string.gomoku_undo), Modifier.size(20.dp))
-            }
-            GlassTonalIconButton(onClick = component::redo, enabled = component.canRedo) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo, stringResource(R.string.gomoku_redo), Modifier.size(20.dp))
-            }
-            GlassTonalIconButton(onClick = component::beginSetup, enabled = component.canSetup) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit, stringResource(R.string.gomoku_setup_action), Modifier.size(20.dp))
-            }
-            GlassTonalIconButton(onClick = { immersive?.toggle() }) {
-                Icon(if (immersive?.isImmersive == true) Icons.Outlined.FullscreenExit
-                    else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Fullscreen, stringResource(R.string.gomoku_fullscreen), Modifier.size(20.dp))
-            }
-            Box {
-                GlassTonalIconButton(onClick = { more = true }, enabled = enabled) {
-                    Icon(Icons.Outlined.MoreVert, stringResource(R.string.gomoku_more_actions), Modifier.size(20.dp))
+    ActionBar(
+        actions = listOf(
+            BoardGameAction(
+                icon = if (immersive?.isImmersive == true) Icons.Outlined.FullscreenExit
+                    else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Fullscreen,
+                contentDescription = stringResource(R.string.gomoku_fullscreen),
+                enabled = immersive != null,
+                selected = immersive?.isImmersive == true,
+                onClick = { immersive?.toggle() },
+            ),
+            BoardGameAction(
+                icon = Icons.Outlined.GridOn,
+                contentDescription = stringResource(R.string.gomoku_setup_action),
+                enabled = component.canSetup,
+                onClick = component::beginSetup,
+            ),
+            BoardGameAction(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
+                contentDescription = stringResource(R.string.gomoku_undo),
+                enabled = component.canUndo,
+                onClick = component::undo,
+            ),
+            BoardGameAction(
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
+                contentDescription = stringResource(R.string.gomoku_redo),
+                enabled = component.canRedo,
+                onClick = component::redo,
+            ),
+        ),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+    ) {
+        Box(Modifier.weight(1f)) {
+            BoardGameToolButton(
+                icon = Icons.Outlined.MoreVert,
+                label = stringResource(BoardGameR.string.boardgame_more),
+                onClick = { more = true },
+                enabled = enabled,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_library_open_analysis), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    onClick = { more = false; component.openAnalysis() })
+                DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_export), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    onClick = { more = false; onExport() })
+                DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_same_position), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    onClick = { more = false; component.showRestartConfirm = true })
+                if (state.mode != GameMode.ONLINE_PVP) {
+                    DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_empty_game), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        onClick = { more = false; component.showStandardGameConfirm = true })
                 }
-                DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
-                    DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_library_open_analysis), maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                        onClick = { more = false; component.openAnalysis() })
-                    DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_export)) },
-                        onClick = { more = false; onExport() })
-                    DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_same_position), maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                        onClick = { more = false; component.showRestartConfirm = true })
-                    if (state.mode != GameMode.ONLINE_PVP) {
-                        DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_empty_game), maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                            onClick = { more = false; component.showStandardGameConfirm = true })
-                    }
-                    if (state.origin != null) {
-                        DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_setup_source)) },
-                            onClick = { more = false; onShowOrigin() })
-                    }
-                    DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_rename_game), maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                        onClick = { more = false; component.showRenameDialog = true })
-                    if (state.status == GameStatus.PLAYING && state.mode != GameMode.LLM_VS_LLM) {
-                        DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_resign_confirm_title), maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                            onClick = { more = false; component.showResignConfirm = true })
-                    }
+                if (state.origin != null) {
+                    DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_setup_source), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        onClick = { more = false; onShowOrigin() })
+                }
+                DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_rename_game), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    onClick = { more = false; component.showRenameDialog = true })
+                if (state.status == GameStatus.PLAYING && state.mode != GameMode.LLM_VS_LLM) {
+                    DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_resign_confirm_title), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        onClick = { more = false; component.showResignConfirm = true })
                 }
             }
         }

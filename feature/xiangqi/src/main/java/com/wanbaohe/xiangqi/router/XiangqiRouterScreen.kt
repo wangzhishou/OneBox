@@ -1,13 +1,11 @@
 package com.wanbaohe.xiangqi.router
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
@@ -18,20 +16,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.shifenmiao.common.ui.BaseScreen
-import com.shifenmiao.common.ui.ImmersiveBottomContent
 import com.shifenmiao.common.ui.rememberImmersiveModeState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
-import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
+import com.wanbaohe.boardgame.model.BoardGameTab
+import com.wanbaohe.boardgame.ui.BoardGameTabScaffold
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.router.screenLogic.XiangqiRouterComponent
 import com.wanbaohe.xiangqi.screen.NewGameDropMenu
@@ -57,23 +52,31 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
     val childStack by component.childStack.subscribeAsState()
     val activeRoute = childStack.active.configuration
     val activeTab = component.tabOf(activeRoute)
+    val activeGame = (childStack.active.instance as? XiangqiRouterComponent.Child.Game)?.component
+    val preparingSetup = childStack.active.instance == XiangqiRouterComponent.Child.PlayHome &&
+        component.preparationSetupDraft != null
+    val editingGame = activeGame?.setupDraft != null
+    val isSettingUp = preparingSetup || editingGame
+    val cancelSetup: () -> Unit = {
+        if (preparingSetup) component.cancelPreparationSetup() else activeGame?.cancelSetup()
+    }
     val tabs = listOf(
-        BottomNavItem(
+        BoardGameTab(
             id = XiangqiRouterComponent.Tab.Play.name,
             label = stringResource(R.string.xiangqi_tab_play),
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSportsEsports,
         ),
-        BottomNavItem(
+        BoardGameTab(
             id = XiangqiRouterComponent.Tab.Analyze.name,
             label = stringResource(R.string.xiangqi_tab_analyze),
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAnalytics,
         ),
-        BottomNavItem(
+        BoardGameTab(
             id = XiangqiRouterComponent.Tab.Library.name,
             label = stringResource(R.string.xiangqi_tab_library),
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
         ),
-        BottomNavItem(
+        BoardGameTab(
             id = XiangqiRouterComponent.Tab.Settings.name,
             label = stringResource(R.string.xiangqi_tab_settings),
             icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
@@ -81,36 +84,29 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
     )
 
     CompositionLocalProvider(LocalXiangqiImmersiveModeState provides immersiveState) {
-        BackHandler(enabled = true) {
-            when {
-                immersiveState.isImmersive -> immersiveState.exitImmersive()
-                component.canPop(activeRoute) -> component.navigateBack()
-                activeTab != XiangqiRouterComponent.Tab.Play -> component.selectTab(XiangqiRouterComponent.Tab.Play)
-                else -> component.navigateBack()
-            }
-        }
-        BaseScreen(
+        BoardGameTabScaffold(
             title = stringResource(R.string.xiangqi_library_title),
-            onGoBack = {
-                if (immersiveState.isImmersive) immersiveState.exitImmersive()
-                else component.navigateBack()
+            tabs = tabs,
+            selectedTabId = activeTab.name,
+            onTabSelected = { tab ->
+                XiangqiRouterComponent.Tab.entries.firstOrNull { it.name == tab.id }?.let(component::selectTab)
             },
-            isBackHandler = false,
-            showNavigationBarsPadding = false,
-            immersiveModeState = immersiveState,
-            actions = {
-                if (activeTab != XiangqiRouterComponent.Tab.Settings && !immersiveState.isImmersive) {
-                    NewGameDropMenu(component = component.libraryComponent)
+            onGoBack = {
+                if (isSettingUp) cancelSetup() else component.navigateBack()
+            },
+            onBack = {
+                when {
+                    isSettingUp -> cancelSetup()
+                    component.canPop(activeRoute) -> component.navigateBack()
+                    activeTab != XiangqiRouterComponent.Tab.Play -> component.selectTab(XiangqiRouterComponent.Tab.Play)
+                    else -> component.navigateBack()
                 }
             },
-        ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .clipToBounds()
-                .then(
-                    if (immersiveState.isImmersive) Modifier.statusBarsPadding() else Modifier
-                )
+            immersiveState = immersiveState,
+            showTabs = !isSettingUp,
+            headerActions = if (activeTab != XiangqiRouterComponent.Tab.Settings) {
+                { NewGameDropMenu(component = component.libraryComponent) }
+            } else null,
         ) {
             Children(
                 stack = childStack,
@@ -118,59 +114,46 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
             ) { child ->
                 val contentModifier = Modifier.fillMaxSize()
                 when (val instance = child.instance) {
-                        XiangqiRouterComponent.Child.PlayHome -> XiangqiPlayHomeScreen(
-                            component = component,
-                            modifier = contentModifier,
-                        )
+                    XiangqiRouterComponent.Child.PlayHome -> XiangqiPlayHomeScreen(
+                        component = component,
+                        modifier = contentModifier,
+                    )
 
-                        XiangqiRouterComponent.Child.AnalysisHome -> XiangqiEmptyQuickPanel(
-                            component = component.libraryComponent,
-                            headline = stringResource(R.string.xiangqi_empty_analyze_title),
-                            subline = stringResource(R.string.xiangqi_empty_analyze_message),
-                            modifier = contentModifier,
-                        )
+                    XiangqiRouterComponent.Child.AnalysisHome -> XiangqiEmptyQuickPanel(
+                        component = component.libraryComponent,
+                        headline = stringResource(R.string.xiangqi_empty_analyze_title),
+                        subline = stringResource(R.string.xiangqi_empty_analyze_message),
+                        modifier = contentModifier,
+                    )
 
-                        is XiangqiRouterComponent.Child.Library -> XiangqiLibraryScreen(
+                    is XiangqiRouterComponent.Child.Library -> XiangqiLibraryScreen(
+                        component = instance.component,
+                        modifier = contentModifier,
+                        showChrome = false,
+                    )
+
+                    is XiangqiRouterComponent.Child.Game -> key(instance.component) {
+                        XiangqiGameScreen(
                             component = instance.component,
                             modifier = contentModifier,
                             showChrome = false,
                         )
+                    }
 
-                is XiangqiRouterComponent.Child.Game -> key(instance.component) {
-                            XiangqiGameScreen(
-                        component = instance.component,
-                                modifier = contentModifier,
-                                showChrome = false,
-                            )
-                        }
-
-                is XiangqiRouterComponent.Child.Analysis -> key(instance.component) {
-                            XiangqiAnalysisScreen(
-                        component = instance.component,
-                                modifier = contentModifier,
-                                showChrome = false,
-                            )
-                        }
-
-                        XiangqiRouterComponent.Child.Settings -> XiangqiSettingsScreen(
-                            component = component,
+                    is XiangqiRouterComponent.Child.Analysis -> key(instance.component) {
+                        XiangqiAnalysisScreen(
+                            component = instance.component,
                             modifier = contentModifier,
+                            showChrome = false,
                         )
-            }
-                            }
-        }
+                    }
 
-        ImmersiveBottomContent(visible = immersiveState.isUiVisible) {
-            BottomNavigationBar(
-                items = tabs,
-                selectedItemId = activeTab.name,
-                onItemClick = { item ->
-                    XiangqiRouterComponent.Tab.entries
-                        .firstOrNull { it.name == item.id }
-                        ?.let(component::selectTab)
-                },
-            )
-        }
+                    XiangqiRouterComponent.Child.Settings -> XiangqiSettingsScreen(
+                        component = component,
+                        modifier = contentModifier,
+                    )
+                }
+            }
         }
 
         val pendingJoinRoomId = component.pendingJoinRoomId

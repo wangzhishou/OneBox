@@ -106,7 +106,7 @@
     <string name="xiangqi_continue">继续</string>
     <string name="xiangqi_analyze">回放</string>
     <string name="xiangqi_export">导出</string>
-    <string name="xiangqi_undo">悔棋</string>
+    <string name="xiangqi_undo">撤销</string>
     <string name="xiangqi_redo">重做</string>
     <string name="xiangqi_restart">重开</string>
     <string name="xiangqi_confirm">确定</string>

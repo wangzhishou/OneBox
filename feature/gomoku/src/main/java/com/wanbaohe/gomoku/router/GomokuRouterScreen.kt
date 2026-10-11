@@ -33,7 +33,15 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSportsEsports
 fun GomokuRouterScreen(component: GomokuRouterComponent) {
     val childStack by component.childStack.subscribeAsState()
     val activeRoute = childStack.active.configuration
+    val activeChild = childStack.active.instance
     val activeTab = component.tabOf(activeRoute)
+    val cancelSetup: (() -> Unit)? = when (activeChild) {
+        GomokuRouterComponent.Child.PlayHome ->
+            if (component.preparationSetupDraft != null) component::cancelPreparationSetup else null
+        is GomokuRouterComponent.Child.Game ->
+            if (activeChild.component.setupDraft != null) activeChild.component::cancelSetup else null
+        else -> null
+    }
     val tabs = listOf(
         BoardGameTab(
             id = GomokuRouterComponent.Tab.Play.name,
@@ -66,9 +74,12 @@ fun GomokuRouterScreen(component: GomokuRouterComponent) {
                 .firstOrNull { it.name == tab.id }
                 ?.let(component::selectTab)
         },
-        onGoBack = component::navigateBack,
+        onGoBack = {
+            if (cancelSetup != null) cancelSetup() else component.navigateBack()
+        },
         onBack = {
             when {
+                cancelSetup != null -> cancelSetup()
                 component.canPop(activeRoute) -> component.navigateBackFrom(activeRoute)
                 activeTab != GomokuRouterComponent.Tab.Play -> component.selectTab(GomokuRouterComponent.Tab.Play)
                 else -> component.navigateBack()
@@ -79,6 +90,7 @@ fun GomokuRouterScreen(component: GomokuRouterComponent) {
         } else {
             null
         },
+        showTabs = cancelSetup == null,
     ) {
         Children(
             stack = childStack,

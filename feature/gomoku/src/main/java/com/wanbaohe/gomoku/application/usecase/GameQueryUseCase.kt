@@ -29,6 +29,14 @@ class GameQueryUseCase @Inject constructor(
     private val moveStore: MoveStore,
 ) {
     companion object {
+        fun mostRecentGameForAnalysis(games: List<GameSummary>): GameSummary? {
+            val played = games.filter { it.lastPlayedAt > 0L || it.plyCount > 0 || it.status != GameStatus.NOT_STARTED }
+            return played.ifEmpty { games }.maxWithOrNull(
+                compareBy<GameSummary> { it.lastPlayedAt.takeIf { time -> time > 0L } ?: it.updatedAt }
+                    .thenBy { it.updatedAt },
+            )
+        }
+
         fun mostRecentUnfinishedHumanAiGame(games: List<GameSummary>): GameSummary? =
             games.filter {
                 it.mode == GameMode.HUMAN_VS_LLM && it.lastPlayedAt > 0L &&

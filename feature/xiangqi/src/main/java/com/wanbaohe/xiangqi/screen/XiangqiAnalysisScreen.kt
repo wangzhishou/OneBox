@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -33,12 +34,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.domain.model.GameMode
@@ -49,6 +50,7 @@ import com.wanbaohe.xiangqi.component.XiangqiAnalysisComponent
 import com.wanbaohe.xiangqi.data.TextExportLabels
 import com.wanbaohe.xiangqi.presentation.localizedGameResultText
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
+import com.wanbaohe.boardgame.ui.AnalysisActionsMenu
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
@@ -131,7 +133,7 @@ private fun XiangqiAnalysisContent(
 
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
@@ -157,23 +159,9 @@ private fun XiangqiAnalysisContent(
                 text = resultText,
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-        }
-
-        // 未终局的局从卡片「复盘」进来后，必须有路回对局页；已结束的局没有可继续的下法
-        if (resultText.isBlank() || state.mode != GameMode.ONLINE_PVP) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (resultText.isBlank()) {
-                    GlassTonalButton(onClick = component::openCurrentGame, modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.xiangqi_analysis_back_to_game), maxLines = 1)
-                    }
-                }
-                if (state.mode != GameMode.ONLINE_PVP) {
-                    GlassTonalButton(onClick = component::practiceFromHere, modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.xiangqi_setup_practice_here), maxLines = 1)
-                    }
-                }
-            }
         }
 
         GlassSurface(
@@ -189,6 +177,9 @@ private fun XiangqiAnalysisContent(
                     isSoundOn = state.isSoundOn,
                     onToggleSound = component::toggleSound,
                     onExport = onExport,
+                    onReturnToGame = component::openCurrentGame,
+                    onPractice = if (state.mode == GameMode.ONLINE_PVP) null else component::practiceFromHere,
+                    isLoaded = state.isLoaded,
                 )
 
                 if (rows.isEmpty()) {
@@ -234,22 +225,27 @@ private fun AnalysisPanelHeader(
     isSoundOn: Boolean,
     onToggleSound: () -> Unit,
     onExport: () -> Unit,
+    onReturnToGame: () -> Unit,
+    onPractice: (() -> Unit)?,
+    isLoaded: Boolean,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 12.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(R.string.xiangqi_analysis_panel_title),
-            style = MaterialTheme.typography.titleMedium.copy(
+            style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
             ),
             color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -259,6 +255,9 @@ private fun AnalysisPanelHeader(
                 text = pluralStringResource(R.plurals.xiangqi_ply_count, moveCount, moveCount),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.widthIn(max = 72.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             // 声音总开关：关掉后这一步的音效和背景音乐一起停
             GlassTonalIconButton(onClick = onToggleSound) {
@@ -274,13 +273,15 @@ private fun AnalysisPanelHeader(
                     modifier = Modifier.size(18.dp),
                 )
             }
-            GlassTonalIconButton(onClick = onExport) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDownload,
-                    contentDescription = stringResource(R.string.xiangqi_export),
-                    modifier = Modifier.size(18.dp),
-                )
-            }
+            AnalysisActionsMenu(
+                returnLabel = stringResource(R.string.xiangqi_analysis_back_to_game),
+                practiceLabel = stringResource(R.string.xiangqi_setup_practice_here),
+                exportLabel = stringResource(R.string.xiangqi_export),
+                onReturnToGame = onReturnToGame,
+                onPractice = onPractice,
+                onExport = onExport,
+                enabled = isLoaded,
+            )
         }
     }
 }

@@ -53,6 +53,7 @@ data class XiangqiAnalysisUiState(
     val isSoundOn: Boolean = true,
     val initialFen: String = FenCodec.INITIAL_FEN,
     val mode: GameMode = GameMode.LOCAL_PVP,
+    val isLoaded: Boolean = false,
 )
 
 class XiangqiAnalysisComponent @AssistedInject constructor(
@@ -168,6 +169,7 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
                     title = detail.title,
                     initialFen = detail.initialFen,
                     mode = detail.mode,
+                    isLoaded = true,
                 )
                 updatePly(
                     plies,

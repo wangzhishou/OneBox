@@ -10,18 +10,23 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ExpandMore
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,16 +46,19 @@ fun PlayersBar(
     vsLabel: String,
     turnLabel: String,
     modifier: Modifier = Modifier,
+    emphasizeVs: Boolean = false,
+    onVsClick: (() -> Unit)? = null,
+    vsActionLabel: String = vsLabel,
 ) {
     GlassSurface(
         modifier = modifier,
         style = GlassStyle.Medium,
-        shape = MaterialTheme.shapes.large,
+        shape = RoundedCornerShape(22.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+                .padding(horizontal = 8.dp, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             PlayerBarItem(
@@ -62,6 +70,9 @@ fun PlayersBar(
             VsBadge(
                 label = vsLabel,
                 modifier = Modifier.padding(horizontal = 4.dp),
+                emphasized = emphasizeVs,
+                onClick = onVsClick,
+                actionLabel = vsActionLabel,
             )
             PlayerBarItem(
                 data = bottom,
@@ -81,14 +92,16 @@ private fun PlayerBarItem(
     modifier: Modifier = Modifier,
 ) {
     val clickableModifier = if (data.onClick != null) {
-        Modifier.clickable { data.onClick.invoke() }
+        Modifier.clickable(onClickLabel = data.actionLabel.takeIf { it.isNotBlank() }, role = Role.Button) {
+            data.onClick.invoke()
+        }
     } else {
         Modifier
     }
     val content: @Composable RowScope.() -> Unit = {
         if (!mirrored) {
-            Avatar(username = data.name, avatar = data.avatarUrl, size = 34.dp, isLogin = true)
-            Spacer(modifier = Modifier.width(8.dp))
+            Avatar(username = data.name, avatar = data.avatarUrl, size = 32.dp, isLogin = data.avatarIsLoggedIn)
+            Spacer(modifier = Modifier.width(6.dp))
         }
         Column(
             modifier = Modifier.weight(1f),
@@ -108,13 +121,11 @@ private fun PlayerBarItem(
                     modifier = Modifier.weight(1f),
                 )
                 if (data.onClick != null && data.actionLabel.isNotBlank()) {
-                    Text(
-                        text = data.actionLabel,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.widthIn(max = 56.dp),
+                    Icon(
+                        Icons.Outlined.ExpandMore,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(14.dp),
                     )
                 }
             }
@@ -137,32 +148,25 @@ private fun PlayerBarItem(
             }
         }
         if (mirrored) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Avatar(username = data.name, avatar = data.avatarUrl, size = 34.dp, isLogin = true)
+            Spacer(modifier = Modifier.width(6.dp))
+            Avatar(username = data.name, avatar = data.avatarUrl, size = 32.dp, isLogin = data.avatarIsLoggedIn)
         }
     }
 
-    if (data.isActiveTurn) {
-        Box(
-            modifier = modifier
-                .then(clickableModifier)
-                .clip(RoundedCornerShape(14.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
-                .animatedTurnBorder()
-                .padding(horizontal = 10.dp, vertical = 8.dp),
-            contentAlignment = if (mirrored) Alignment.CenterEnd else Alignment.CenterStart,
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = if (mirrored) Arrangement.End else Arrangement.Start,
-                content = { content() },
+    Box(
+        modifier = modifier
+            .then(clickableModifier)
+            .clip(RoundedCornerShape(14.dp))
+            .then(
+                if (data.isActiveTurn) Modifier
+                    .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
+                    .animatedTurnBorder()
+                else Modifier,
             )
-        }
-    } else {
+            .padding(horizontal = 4.dp, vertical = 6.dp),
+        contentAlignment = if (mirrored) Alignment.CenterEnd else Alignment.CenterStart,
+    ) {
         Row(
-            modifier = modifier
-                .then(clickableModifier)
-                .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = if (mirrored) Arrangement.End else Arrangement.Start,
             content = { content() },
@@ -174,17 +178,32 @@ private fun PlayerBarItem(
 private fun VsBadge(
     label: String,
     modifier: Modifier = Modifier,
+    emphasized: Boolean,
+    onClick: (() -> Unit)?,
+    actionLabel: String,
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(50))
-            .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f))
-            .padding(horizontal = 10.dp, vertical = 4.dp),
+            .then(
+                if (onClick != null) Modifier.heightIn(min = 48.dp).widthIn(min = 48.dp)
+                    .clickable(onClickLabel = actionLabel, role = Role.Button, onClick = onClick)
+                else Modifier,
+            ),
+        contentAlignment = Alignment.Center,
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-        )
+        Box(
+            modifier = Modifier.clip(RoundedCornerShape(50))
+                .background(
+                    if (emphasized) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f),
+                )
+                .padding(horizontal = if (emphasized) 12.dp else 10.dp, vertical = if (emphasized) 6.dp else 3.dp),
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                color = if (emphasized) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+            )
+        }
     }
 }

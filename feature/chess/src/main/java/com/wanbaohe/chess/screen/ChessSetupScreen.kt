@@ -1,8 +1,6 @@
 package com.wanbaohe.chess.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -12,17 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.OpenWith
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,19 +27,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.boardgame.model.BoardGameAction
+import com.wanbaohe.boardgame.model.BoardGameSideOption
+import com.wanbaohe.boardgame.ui.ActionBar
+import com.wanbaohe.boardgame.ui.BoardGamePaletteItem
+import com.wanbaohe.boardgame.ui.BoardGamePillButton
+import com.wanbaohe.boardgame.ui.BoardGameSetupHeader
+import com.wanbaohe.boardgame.ui.BoardGameSetupHint
+import com.wanbaohe.boardgame.ui.BoardGameToolButton
 import com.wanbaohe.boardgame.ui.LocalBoardGameImmersiveModeState
+import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.chess.R
 import com.wanbaohe.chess.domain.BoardSetupDraft
 import com.wanbaohe.chess.domain.FenCodec
@@ -62,47 +69,54 @@ fun ChessSetupScreen(
     onDraftChange: (BoardSetupDraft) -> Unit,
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
-    confirmLabel: String,
     modifier: Modifier = Modifier,
     busy: Boolean = false,
     preservesOriginal: Boolean = false,
     bottomSide: Side = Side.WHITE,
 ) {
-    BackHandler(onBack = onCancel)
+    val immersive = LocalBoardGameImmersiveModeState.current
+    BackHandler {
+        if (immersive?.isImmersive == true) immersive.exitImmersive()
+        else if (!busy) onCancel()
+    }
     val issue = remember(draft.boardState) { SetupPositionValidator.validate(draft.startPosition()) }
     var more by remember { mutableStateOf(false) }
-    val immersive = LocalBoardGameImmersiveModeState.current
+    val warning = when {
+        issue != null -> setupIssueText(issue)
+        preservesOriginal && draft.hasChanges -> stringResource(R.string.chess_setup_preserves_original)
+        else -> stringResource(R.string.chess_setup_hint)
+    }
+    val fontScale = LocalDensity.current.fontScale
+    val paletteItemHeight = maxOf(44.dp, 36.dp * fontScale)
     Column(
-        modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 6.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        BoardGameSetupHeader(
+            title = stringResource(R.string.chess_setup_title),
+            sides = listOf(Side.WHITE, Side.BLACK).map { side ->
+                BoardGameSideOption(
+                    label = stringResource(if (side == Side.WHITE) R.string.chess_setup_white_first else R.string.chess_setup_black_first),
+                    indicatorColor = if (side == Side.WHITE) Color.White else Color.Black,
+                    selected = draft.boardState.sideToMove == side,
+                    onClick = { onDraftChange(draft.setSideToMove(side)) },
+                )
+            },
+            enabled = !busy,
+        )
         BoxWithConstraints(Modifier.fillMaxWidth().weight(1f)) {
-            val scroll = maxHeight < 320.dp
+            val paletteHeight = paletteItemHeight * 2 + 12.dp
+            val warningHeight = 40.dp * fontScale + 8.dp
+            val boardHeight = minOf(
+                maxWidth,
+                (maxHeight - paletteHeight - warningHeight - 8.dp).coerceAtLeast(minOf(maxWidth, 200.dp)),
+            )
             Column(
-                Modifier.fillMaxSize().then(if (scroll) Modifier.verticalScroll(rememberScrollState()) else Modifier),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        stringResource(R.string.chess_setup_title), style = MaterialTheme.typography.titleSmall,
-                        modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis,
-                    )
-                    Side.entries.forEach { side ->
-                        TextButton(
-                            onClick = { onDraftChange(draft.setSideToMove(side)) },
-                            enabled = !busy, modifier = Modifier.weight(1f),
-                        ) {
-                            Text(
-                                stringResource(if (side == Side.WHITE) R.string.chess_setup_white_first else R.string.chess_setup_black_first),
-                                color = if (draft.boardState.sideToMove == side) MaterialTheme.colorScheme.primary
-                                    else MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center,
-                            )
-                        }
-                    }
-                }
                 Box(
-                    Modifier.fillMaxWidth().then(if (scroll) Modifier.height(190.dp) else Modifier.weight(1f)),
+                    Modifier.fillMaxWidth().height(boardHeight),
                     contentAlignment = Alignment.Center,
                 ) {
                     ChessBoard(
@@ -115,81 +129,89 @@ fun ChessSetupScreen(
                             else { from, to -> onDraftChange(draft.move(from, to)) },
                     )
                 }
-                Side.entries.forEach { side ->
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        PieceType.entries.forEach { type ->
-                            val piece = Piece(side, type)
-                            val label = "${stringResource(if (side == Side.WHITE) R.string.chess_side_white else R.string.chess_side_black)} ${pieceLabel(type)}"
-                            Box(
-                                Modifier.weight(1f).height(40.dp)
-                                    .border(
-                                        1.dp, if (draft.tool == SetupTool.PLACE && draft.placementPiece == piece)
-                                            MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
-                                        MaterialTheme.shapes.small,
-                                    )
-                                    .semantics { contentDescription = label }
-                                    .clickable(enabled = !busy) { onDraftChange(draft.selectPiece(piece)) },
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(piece.glyph(), fontSize = 28.sp, color = MaterialTheme.colorScheme.onSurface)
+                GlassSurface(style = GlassStyle.Medium, shape = MaterialTheme.shapes.large) {
+                    Column(Modifier.fillMaxWidth().padding(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        listOf(Side.WHITE, Side.BLACK).forEach { side ->
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                PieceType.entries.forEach { type ->
+                                    val piece = Piece(side, type)
+                                    val label = "${stringResource(if (side == Side.WHITE) R.string.chess_side_white else R.string.chess_side_black)} ${pieceLabel(type)}"
+                                    BoardGamePaletteItem(
+                                        selected = draft.tool == SetupTool.PLACE && draft.placementPiece == piece,
+                                        onClick = { onDraftChange(draft.selectPiece(piece)) },
+                                        enabled = !busy,
+                                        modifier = Modifier.weight(1f).height(paletteItemHeight)
+                                            .semantics { contentDescription = label },
+                                    ) {
+                                        Text(
+                                            piece.glyph(), fontSize = 28.sp,
+                                            color = MaterialTheme.colorScheme.onSurface, maxLines = 1,
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                Text(
-                    if (issue != null) setupIssueText(issue) else stringResource(
-                        if (preservesOriginal) R.string.chess_setup_preserves_original else R.string.chess_setup_hint,
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (issue != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
-                    minLines = 2, maxLines = 2, overflow = TextOverflow.Ellipsis,
+                BoardGameSetupHint(
+                    text = warning,
+                    isError = issue != null,
                 )
             }
         }
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            listOf(SetupTool.MOVE to R.string.chess_setup_move, SetupTool.ERASE to R.string.chess_setup_erase).forEach { (tool, label) ->
-                TextButton(onClick = { onDraftChange(draft.selectTool(tool)) }, enabled = !busy, modifier = Modifier.weight(1f)) {
-                    Text(
-                        stringResource(label), maxLines = 1, overflow = TextOverflow.Ellipsis,
-                        color = if (draft.tool == tool) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-            GlassTonalIconButton(onClick = { onDraftChange(draft.undo()) }, enabled = !busy && draft.undoBoards.isNotEmpty()) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo, stringResource(R.string.chess_undo), Modifier.size(20.dp))
-            }
-            GlassTonalIconButton(onClick = { onDraftChange(draft.redo()) }, enabled = !busy && draft.redoBoards.isNotEmpty()) {
-                Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo, stringResource(R.string.chess_redo), Modifier.size(20.dp))
-            }
-            Box {
-                GlassTonalIconButton(onClick = { more = true }, enabled = !busy) {
-                    Icon(Icons.Outlined.MoreVert, stringResource(R.string.chess_more_actions), Modifier.size(20.dp))
-                }
+        ActionBar(
+            modifier = Modifier.fillMaxWidth(),
+            actions = listOf(
+                BoardGameAction(
+                    icon = Icons.Outlined.OpenWith, contentDescription = stringResource(R.string.chess_setup_move),
+                    enabled = !busy, selected = draft.tool == SetupTool.MOVE,
+                    onClick = { onDraftChange(draft.selectTool(SetupTool.MOVE)) },
+                ),
+                BoardGameAction(
+                    icon = Icons.Outlined.DeleteOutline, contentDescription = stringResource(R.string.chess_setup_erase),
+                    enabled = !busy, selected = draft.tool == SetupTool.ERASE,
+                    onClick = { onDraftChange(draft.selectTool(SetupTool.ERASE)) },
+                ),
+                BoardGameAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUndo,
+                    contentDescription = stringResource(R.string.chess_undo),
+                    enabled = !busy && draft.undoBoards.isNotEmpty(),
+                    onClick = { onDraftChange(draft.undo()) },
+                ),
+                BoardGameAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRedo,
+                    contentDescription = stringResource(R.string.chess_redo),
+                    enabled = !busy && draft.redoBoards.isNotEmpty(),
+                    onClick = { onDraftChange(draft.redo()) },
+                ),
+            ),
+        ) {
+            Box(Modifier.weight(1f)) {
+                BoardGameToolButton(
+                    icon = Icons.Outlined.MoreVert, label = stringResource(BoardGameR.string.boardgame_more),
+                    onClick = { more = true }, enabled = !busy, modifier = Modifier.fillMaxWidth(),
+                )
                 DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                    DropdownMenuItem(text = { Text(stringResource(R.string.chess_cancel)) }, enabled = !busy,
+                        onClick = { more = false; onCancel() })
                     DropdownMenuItem(text = { Text(stringResource(R.string.chess_setup_reset)) },
-                        onClick = { more = false; onDraftChange(draft.reset()) })
+                        enabled = !busy, onClick = { more = false; onDraftChange(draft.reset()) })
                     DropdownMenuItem(text = { Text(stringResource(R.string.chess_setup_clear)) },
-                        onClick = { more = false; onDraftChange(draft.clear()) })
+                        enabled = !busy, onClick = { more = false; onDraftChange(draft.clear()) })
                     DropdownMenuItem(text = { Text(stringResource(R.string.chess_export_fen)) },
-                        onClick = { more = false; Clipboard.copy(FenCodec.encode(draft.boardState), R.string.chess_copied) })
+                        enabled = !busy, onClick = { more = false; Clipboard.copy(FenCodec.encode(draft.boardState), R.string.chess_copied) })
                     if (immersive != null) DropdownMenuItem(text = { Text(stringResource(R.string.chess_fullscreen)) },
-                        onClick = { more = false; immersive.toggle() })
+                        enabled = !busy, onClick = { more = false; immersive.toggle() })
                 }
             }
         }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onCancel, enabled = !busy, modifier = Modifier.weight(1f)) {
-                Text(stringResource(R.string.chess_cancel), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-            GlassTonalButton(
-                onClick = onConfirm, enabled = !busy && (!draft.hasChanges || issue == null), modifier = Modifier.weight(2f),
-            ) {
-                Text(
-                    if (draft.hasChanges) confirmLabel else stringResource(R.string.chess_setup_return),
-                    maxLines = 1, overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
+        BoardGamePillButton(
+            label = stringResource(R.string.chess_setup_return),
+            onClick = onConfirm,
+            enabled = !busy && (!draft.hasChanges || issue == null),
+            modifier = Modifier.fillMaxWidth(),
+            primary = true,
+        )
     }
 }
 
