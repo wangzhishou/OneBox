@@ -5,11 +5,14 @@ import android.text.format.Formatter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -17,6 +20,7 @@ import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,13 +32,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -44,6 +52,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.size.Size
 import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGpsFixed
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
@@ -263,19 +272,38 @@ fun <Position> BoardGameGifExportDialog(
         onDismiss = { if (!it && !saving && !showOriginalPreview) onDismiss() },
         enableBackHandler = !showOriginalPreview,
         enableGlass = true,
-        enableBottomContentWeight = true,
         nestedScrollEnabled = true,
-        title = { Text(stringResource(R.string.boardgame_export_gif)) },
-        confirmButton = {
-            GlassTextButton(onClick = onDismiss, enabled = !saving) {
-                Text(stringResource(R.string.boardgame_export_close))
-            }
-        },
+        dragHandle = {},
     ) {
         Column(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            Box(
+                modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 48.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = stringResource(R.string.boardgame_export_gif),
+                    modifier = Modifier.padding(horizontal = 56.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                IconButton(
+                    onClick = onDismiss,
+                    enabled = !saving,
+                    modifier = Modifier.align(Alignment.CenterEnd).size(48.dp),
+                ) {
+                    Icon(
+                        Icons.Rounded.Close,
+                        stringResource(R.string.boardgame_export_close),
+                        Modifier.size(20.dp),
+                    )
+                }
+            }
             val previewHeight = minOf(180.dp, (LocalConfiguration.current.screenHeightDp * 0.25f).dp)
             val file = result
             BoardGifExportSection(
