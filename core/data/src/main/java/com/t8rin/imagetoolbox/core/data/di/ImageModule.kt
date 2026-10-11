@@ -19,12 +19,14 @@ package com.t8rin.imagetoolbox.core.data.di
 
 import android.graphics.Bitmap
 import com.t8rin.imagetoolbox.core.data.image.AndroidImageCompressor
+import com.t8rin.imagetoolbox.core.data.image.AndroidGifAnimationEncoder
 import com.t8rin.imagetoolbox.core.data.image.AndroidImageGetter
 import com.t8rin.imagetoolbox.core.data.image.AndroidImagePreviewCreator
 import com.t8rin.imagetoolbox.core.data.image.AndroidImageScaler
 import com.t8rin.imagetoolbox.core.data.image.AndroidImageTransformer
 import com.t8rin.imagetoolbox.core.data.image.AndroidShareProvider
 import com.t8rin.imagetoolbox.core.domain.image.ImageCompressor
+import com.t8rin.imagetoolbox.core.domain.image.GifAnimationEncoder
 import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
 import com.t8rin.imagetoolbox.core.domain.image.ImagePreviewCreator
 import com.t8rin.imagetoolbox.core.domain.image.ImageScaler
@@ -40,6 +42,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal interface ImageModule {
+
+    @Singleton
+    @Binds
+    fun provideGifAnimationEncoder(
+        encoder: AndroidGifAnimationEncoder
+    ): GifAnimationEncoder<Bitmap>
 
     @Singleton
     @Binds

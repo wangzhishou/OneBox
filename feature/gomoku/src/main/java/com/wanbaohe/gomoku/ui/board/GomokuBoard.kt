@@ -52,6 +52,7 @@ fun GomokuBoard(
     modifier: Modifier = Modifier,
     bottomSide: Side = Side.BLACK,
     lastMove: BoardPoint? = null,
+    forExport: Boolean = false,
 ) {
     BoxWithConstraints(
         modifier = modifier.aspectRatio(1f)
@@ -64,9 +65,10 @@ fun GomokuBoard(
 
         GlassSurface(
             modifier = Modifier.fillMaxSize(),
-            style = GlassStyle.Medium,
+            style = if (forExport) GlassStyle.None else GlassStyle.Medium,
+            color = if (forExport) Color(0xFFF3E8CE) else Color.Unspecified,
         ) {
-            val lineColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+            val lineColor = MaterialTheme.colorScheme.onSurface.copy(alpha = if (forExport) 0.65f else 0.35f)
             val starColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
 
             Canvas(modifier = Modifier.fillMaxSize()) {
@@ -137,7 +139,11 @@ fun GomokuBoard(
                                     modifier = Modifier
                                         .size(stoneSize * 1.15f)
                                         .clip(CircleShape)
-                                        .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f), CircleShape)
+                                        .border(
+                                            2.dp,
+                                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = if (forExport) 1f else 0.6f),
+                                            CircleShape,
+                                        )
                                 )
                                 // 候选落点:半透明小点
                                 isCandidate -> Box(
@@ -168,7 +174,15 @@ fun GomokuBoard(
                                     }
                                     .size(stoneSize)
                             ) {
-                                StoneDisc(side = stone)
+                                StoneDisc(side = stone, forExport = forExport)
+                                if (forExport && isLastMove) {
+                                    Box(
+                                        Modifier
+                                            .align(Alignment.Center)
+                                            .size(stoneSize * 0.24f)
+                                            .background(if (stone == Side.BLACK) Color.White else Color.Black, CircleShape),
+                                    )
+                                }
                             }
                         }
                     }
@@ -195,7 +209,7 @@ private fun boardPointToDisplay(point: BoardPoint, bottomSide: Side): Pair<Int, 
 
 /** 棋子:径向渐变圆(黑深灰→纯黑,白白→浅灰),带细描边 */
 @Composable
-internal fun StoneDisc(side: Side) {
+internal fun StoneDisc(side: Side, forExport: Boolean = false) {
     val isBlack = side == Side.BLACK
     val centerColor = if (isBlack) Color(0xFF4A4A4A) else Color.White
     val edgeColor = if (isBlack) Color(0xFF101010) else Color(0xFFD9D9D9)
@@ -204,9 +218,12 @@ internal fun StoneDisc(side: Side) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .shadow(3.dp, CircleShape)
+            .shadow(if (forExport) 0.dp else 3.dp, CircleShape)
             .clip(CircleShape)
-            .background(Brush.radialGradient(colors = listOf(centerColor, edgeColor)))
+            .then(
+                if (forExport) Modifier.background(if (isBlack) Color(0xFF222222) else Color.White)
+                else Modifier.background(Brush.radialGradient(colors = listOf(centerColor, edgeColor)))
+            )
             .border(1.dp, borderColor, CircleShape)
     )
 }

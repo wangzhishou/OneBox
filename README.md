@@ -187,9 +187,9 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | Module | Feature | Description |
 | --- | --- | --- |
 | `feature/game2048` | 2048 | The classic sliding-tile merge game |
-| `feature/xiangqi` | Chinese Chess | Vs AI, online play, game library, endgame analysis |
-| `feature/gomoku` | Gomoku | 15×15 board, vs LLM, AI battles, game library, review |
-| `feature/chess` | Chess | Full rules (castling / en passant / promotion), vs LLM, game library, review |
+| `feature/xiangqi` | Chinese Chess | Vs AI, online play, game library, endgame analysis, whole-game or clip GIF export |
+| `feature/gomoku` | Gomoku | 15×15 board, vs LLM, AI battles, game library, review, GIF export |
+| `feature/chess` | Chess | Full rules (castling / en passant / promotion), vs LLM, game library, review, GIF export |
 | `feature/minesweeper` | Minesweeper | Multiple difficulties, timer, flags |
 | `feature/sudoku` | Sudoku | Three difficulties, hints, undo, timer, stats |
 | `feature/survive30s` | Survive 30s | Dodge obstacles for 30 seconds |
@@ -229,7 +229,7 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | `feature/demo` | Demo | Developer component showcase grid |
 | `feature/libraries-info` | Open-source Licenses | License list of all third-party libraries |
 | `feature/library-details` | License Details | Per-library license details |
-| `feature/boardgame` | Board Game UI Kit | Shared board-game UI scaffolding reused by gomoku / chess |
+| `feature/boardgame` | Board Game Kit | Shared Xiangqi / Gomoku / Chess UI and replay export: clip selection, speed, preview, sharing and saving |
 
 ## Tech Stack
 

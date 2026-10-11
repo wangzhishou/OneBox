@@ -51,6 +51,11 @@ import com.wanbaohe.xiangqi.data.TextExportLabels
 import com.wanbaohe.xiangqi.presentation.localizedGameResultText
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
 import com.wanbaohe.boardgame.ui.AnalysisActionsMenu
+import com.wanbaohe.boardgame.export.BoardGameGifExportDialog
+import com.wanbaohe.boardgame.export.BoardReplaySnapshot
+import com.wanbaohe.boardgame.export.prepareBoardReplayExport
+import com.wanbaohe.xiangqi.presentation.XiangqiGifPosition
+import com.wanbaohe.xiangqi.presentation.toGifReplaySnapshot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
@@ -68,6 +73,10 @@ fun XiangqiAnalysisScreen(
 ) {
     val state = component.uiState
     var exportDialog by remember { mutableStateOf(false) }
+    var gifSnapshot by remember(component.gameId) { mutableStateOf<BoardReplaySnapshot<XiangqiGifPosition>?>(null) }
+    val gifTitle = state.title.ifBlank { stringResource(R.string.xiangqi_export_header) }
+    val redLabel = stringResource(R.string.xiangqi_side_red)
+    val blackLabel = stringResource(R.string.xiangqi_side_black)
     val exportLabels = TextExportLabels(
         header = stringResource(R.string.xiangqi_export_header),
         titleLabel = stringResource(R.string.xiangqi_export_title_label),
@@ -83,6 +92,12 @@ fun XiangqiAnalysisScreen(
             component = component,
             modifier = contentModifier,
             onExport = { exportDialog = true },
+            onGenerateGif = {
+                component.stopAutoPlay()
+                gifSnapshot = prepareBoardReplayExport {
+                    component.uiState.toGifReplaySnapshot(gifTitle, resultText, redLabel, blackLabel)
+                }
+            },
             resultText = resultText,
         )
     }
@@ -110,6 +125,25 @@ fun XiangqiAnalysisScreen(
             },
         )
     }
+    gifSnapshot?.let { snapshot ->
+        BoardGameGifExportDialog(
+            snapshot = snapshot,
+            exporter = component.gifExporter,
+            filenamePrefix = "xiangqi",
+            boardAspectRatio = 9f / 10f,
+            onDismiss = { gifSnapshot = null },
+        ) { frame, boardModifier ->
+            XiangqiBoard(
+                boardState = frame.position.boardState,
+                selectedPoint = null,
+                candidateTargets = emptySet(),
+                onCellTap = { _, _ -> },
+                modifier = boardModifier,
+                lastMove = frame.position.lastMove,
+                forExport = true,
+            )
+        }
+    }
 }
 
 @Composable
@@ -117,6 +151,7 @@ private fun XiangqiAnalysisContent(
     component: XiangqiAnalysisComponent,
     modifier: Modifier,
     onExport: () -> Unit,
+    onGenerateGif: () -> Unit,
     resultText: String,
 ) {
     val state = component.uiState
@@ -177,6 +212,7 @@ private fun XiangqiAnalysisContent(
                     isSoundOn = state.isSoundOn,
                     onToggleSound = component::toggleSound,
                     onExport = onExport,
+                    onGenerateGif = onGenerateGif,
                     onReturnToGame = component::openCurrentGame,
                     onPractice = if (state.mode == GameMode.ONLINE_PVP) null else component::practiceFromHere,
                     isLoaded = state.isLoaded,
@@ -225,6 +261,7 @@ private fun AnalysisPanelHeader(
     isSoundOn: Boolean,
     onToggleSound: () -> Unit,
     onExport: () -> Unit,
+    onGenerateGif: () -> Unit,
     onReturnToGame: () -> Unit,
     onPractice: (() -> Unit)?,
     isLoaded: Boolean,
@@ -280,6 +317,7 @@ private fun AnalysisPanelHeader(
                 onReturnToGame = onReturnToGame,
                 onPractice = onPractice,
                 onExport = onExport,
+                onGenerateGif = onGenerateGif,
                 enabled = isLoaded,
             )
         }

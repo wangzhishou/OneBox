@@ -51,6 +51,11 @@ import com.wanbaohe.gomoku.data.TextExportLabels
 import com.wanbaohe.gomoku.presentation.localizedGameResultText
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
 import com.wanbaohe.boardgame.ui.AnalysisActionsMenu
+import com.wanbaohe.boardgame.export.BoardGameGifExportDialog
+import com.wanbaohe.boardgame.export.BoardReplaySnapshot
+import com.wanbaohe.boardgame.export.prepareBoardReplayExport
+import com.wanbaohe.gomoku.presentation.GomokuGifPosition
+import com.wanbaohe.gomoku.presentation.toGifReplaySnapshot
 import com.wanbaohe.gomoku.domain.model.GameMode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
@@ -69,6 +74,10 @@ fun GomokuAnalysisScreen(
 ) {
     val state = component.uiState
     var exportDialog by remember { mutableStateOf(false) }
+    var gifSnapshot by remember(component.gameId) { mutableStateOf<BoardReplaySnapshot<GomokuGifPosition>?>(null) }
+    val gifTitle = state.title.ifBlank { stringResource(R.string.gomoku_export_header) }
+    val blackLabel = stringResource(R.string.gomoku_side_black)
+    val whiteLabel = stringResource(R.string.gomoku_side_white)
     var showOrigin by remember { mutableStateOf(false) }
     val exportLabels = TextExportLabels(
         header = stringResource(R.string.gomoku_export_header),
@@ -86,6 +95,12 @@ fun GomokuAnalysisScreen(
             component = component,
             modifier = contentModifier,
             onExport = { exportDialog = true },
+            onGenerateGif = {
+                component.stopAutoPlay()
+                gifSnapshot = prepareBoardReplayExport {
+                    component.uiState.toGifReplaySnapshot(gifTitle, resultText, blackLabel, whiteLabel)
+                }
+            },
             resultText = resultText,
             onShowOrigin = { showOrigin = true },
         )
@@ -114,6 +129,24 @@ fun GomokuAnalysisScreen(
             },
         )
     }
+    gifSnapshot?.let { snapshot ->
+        BoardGameGifExportDialog(
+            snapshot = snapshot,
+            exporter = component.gifExporter,
+            filenamePrefix = "gomoku",
+            onDismiss = { gifSnapshot = null },
+        ) { frame, boardModifier ->
+            GomokuBoard(
+                boardState = frame.position.boardState,
+                selectedPoint = null,
+                candidateTargets = emptySet(),
+                onCellTap = { _, _ -> },
+                modifier = boardModifier,
+                lastMove = frame.position.lastMove,
+                forExport = true,
+            )
+        }
+    }
     state.origin?.let { origin ->
         if (showOrigin) GomokuOriginDialog(origin,
             { showOrigin = false; component.openSourceGame() }, { showOrigin = false })
@@ -125,6 +158,7 @@ private fun GomokuAnalysisContent(
     component: GomokuAnalysisComponent,
     modifier: Modifier,
     onExport: () -> Unit,
+    onGenerateGif: () -> Unit,
     resultText: String,
     onShowOrigin: () -> Unit,
 ) {
@@ -181,6 +215,7 @@ private fun GomokuAnalysisContent(
                     isSoundOn = state.isSoundOn,
                     onToggleSound = component::toggleSound,
                     onExport = onExport,
+                    onGenerateGif = onGenerateGif,
                     onReturnToGame = component::openCurrentGame,
                     onPractice = if (state.mode == GameMode.ONLINE_PVP) null else component::practiceFromHere,
                     onShowOrigin = onShowOrigin.takeIf { state.origin != null },
@@ -231,6 +266,7 @@ private fun AnalysisPanelHeader(
     isSoundOn: Boolean,
     onToggleSound: () -> Unit,
     onExport: () -> Unit,
+    onGenerateGif: () -> Unit,
     onReturnToGame: () -> Unit,
     onPractice: (() -> Unit)?,
     onShowOrigin: (() -> Unit)?,
@@ -288,6 +324,7 @@ private fun AnalysisPanelHeader(
                 onReturnToGame = onReturnToGame,
                 onPractice = onPractice,
                 onExport = onExport,
+                onGenerateGif = onGenerateGif,
                 enabled = isLoaded,
                 practiceEnabled = canPractice,
                 sourceLabel = stringResource(R.string.gomoku_setup_source),

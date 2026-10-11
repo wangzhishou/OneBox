@@ -51,6 +51,11 @@ import com.wanbaohe.chess.domain.model.GameMode
 import com.wanbaohe.chess.presentation.localizedGameResultText
 import com.wanbaohe.chess.ui.board.ChessBoard
 import com.wanbaohe.boardgame.ui.AnalysisActionsMenu
+import com.wanbaohe.boardgame.export.BoardGameGifExportDialog
+import com.wanbaohe.boardgame.export.BoardReplaySnapshot
+import com.wanbaohe.boardgame.export.prepareBoardReplayExport
+import com.wanbaohe.chess.presentation.ChessGifPosition
+import com.wanbaohe.chess.presentation.toGifReplaySnapshot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronLeft
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
@@ -68,6 +73,10 @@ fun ChessAnalysisScreen(
 ) {
     val state = component.uiState
     var exportDialog by remember { mutableStateOf(false) }
+    var gifSnapshot by remember(component.gameId) { mutableStateOf<BoardReplaySnapshot<ChessGifPosition>?>(null) }
+    val gifTitle = state.title.ifBlank { stringResource(R.string.chess_export_header) }
+    val whiteLabel = stringResource(R.string.chess_side_white)
+    val blackLabel = stringResource(R.string.chess_side_black)
     val exportLabels = TextExportLabels(
         header = stringResource(R.string.chess_export_header),
         titleLabel = stringResource(R.string.chess_export_title_label),
@@ -83,6 +92,12 @@ fun ChessAnalysisScreen(
             component = component,
             modifier = contentModifier,
             onExport = { exportDialog = true },
+            onGenerateGif = {
+                component.stopAutoPlay()
+                gifSnapshot = prepareBoardReplayExport {
+                    component.uiState.toGifReplaySnapshot(gifTitle, resultText, whiteLabel, blackLabel)
+                }
+            },
             resultText = resultText,
         )
     }
@@ -110,6 +125,24 @@ fun ChessAnalysisScreen(
             },
         )
     }
+    gifSnapshot?.let { snapshot ->
+        BoardGameGifExportDialog(
+            snapshot = snapshot,
+            exporter = component.gifExporter,
+            filenamePrefix = "chess",
+            onDismiss = { gifSnapshot = null },
+        ) { frame, boardModifier ->
+            ChessBoard(
+                boardState = frame.position.boardState,
+                selectedPoint = null,
+                candidateTargets = emptySet(),
+                onCellTap = { _, _ -> },
+                modifier = boardModifier,
+                lastMove = frame.position.lastMove,
+                forExport = true,
+            )
+        }
+    }
 }
 
 @Composable
@@ -117,6 +150,7 @@ private fun ChessAnalysisContent(
     component: ChessAnalysisComponent,
     modifier: Modifier,
     onExport: () -> Unit,
+    onGenerateGif: () -> Unit,
     resultText: String,
 ) {
     val state = component.uiState
@@ -178,6 +212,7 @@ private fun ChessAnalysisContent(
                     isSoundOn = state.isSoundOn,
                     onToggleSound = component::toggleSound,
                     onExport = onExport,
+                    onGenerateGif = onGenerateGif,
                     onReturnToGame = component::openCurrentGame,
                     onPractice = if (state.mode == GameMode.ONLINE_PVP) null else component::practiceFromHere,
                     isLoaded = state.isLoaded,
@@ -226,6 +261,7 @@ private fun AnalysisPanelHeader(
     isSoundOn: Boolean,
     onToggleSound: () -> Unit,
     onExport: () -> Unit,
+    onGenerateGif: () -> Unit,
     onReturnToGame: () -> Unit,
     onPractice: (() -> Unit)?,
     isLoaded: Boolean,
@@ -281,6 +317,7 @@ private fun AnalysisPanelHeader(
                 onReturnToGame = onReturnToGame,
                 onPractice = onPractice,
                 onExport = onExport,
+                onGenerateGif = onGenerateGif,
                 enabled = isLoaded,
             )
         }

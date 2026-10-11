@@ -36,6 +36,8 @@ fun AnalysisActionsMenu(
     practiceEnabled: Boolean = enabled,
     sourceLabel: String = "",
     onShowSource: (() -> Unit)? = null,
+    onGenerateGif: (() -> Unit)? = null,
+    gifEnabled: Boolean = enabled,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box(modifier) {
@@ -71,6 +73,14 @@ fun AnalysisActionsMenu(
                 enabled = enabled,
                 onClick = { expanded = false; onExport() },
             )
+            if (onGenerateGif != null) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.boardgame_export_gif)) },
+                    leadingIcon = { Icon(Icons.Outlined.FileDownload, null, Modifier.size(18.dp)) },
+                    enabled = enabled && gifEnabled,
+                    onClick = { expanded = false; onGenerateGif() },
+                )
+            }
         }
     }
 }

@@ -1,4 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="boardgame_more">更多</string>
+    <string name="boardgame_export_gif">產生棋局動圖</string>
+    <string name="boardgame_export_close">關閉</string>
+    <string name="boardgame_export_position">棋盤局面</string>
+    <string name="boardgame_export_move_range">第 %1$d–%2$d 手</string>
+    <string name="boardgame_export_move_label">第 %1$d 手 · %2$s · %3$s</string>
+    <string name="boardgame_export_initial_position">起始局面</string>
+    <string name="boardgame_export_clip_end">片段結束</string>
+    <string name="boardgame_export_replay_end">回放結束</string>
+    <string name="boardgame_export_preview">產生的棋局預覽</string>
+    <string name="boardgame_export_progress">正在產生第 %1$d / %2$d 幀</string>
+    <string name="boardgame_export_cancelling">正在取消…</string>
+    <string name="boardgame_export_cancel">取消</string>
+    <string name="boardgame_export_file_info">%1$d × %2$d · %3$s · %4$s 秒</string>
+    <string name="boardgame_export_image_info">%1$d × %2$d · %3$s</string>
+    <string name="boardgame_export_share_hint">部分應用程式或發布入口會將 GIF 顯示為靜態圖。儲存原檔案可以保留動圖。</string>
+    <string name="boardgame_export_share">分享</string>
+    <string name="boardgame_export_save">儲存檔案</string>
+    <string name="boardgame_export_saving">正在儲存…</string>
+    <string name="boardgame_export_saved">棋局檔案已儲存</string>
+    <string name="boardgame_export_edit">調整匯出範圍</string>
+    <string name="boardgame_export_empty_hint">還沒有走子，可以將目前局面匯出為 PNG 棋盤圖片。</string>
+    <string name="boardgame_export_whole">整局</string>
+    <string name="boardgame_export_nearby">目前手附近</string>
+    <string name="boardgame_export_custom">自選範圍</string>
+    <string name="boardgame_export_first_move">起始手</string>
+    <string name="boardgame_export_last_move">結束手</string>
+    <string name="boardgame_export_invalid_range">請輸入棋譜中有效的手數，起始手不能晚於結束手。</string>
+    <string name="boardgame_export_selection">第 %1$d–%2$d 手 · 共 %3$d 手 · %4$s 秒</string>
+    <string name="boardgame_export_long_hint">長棋譜建議選取片段，更容易看清走法，也更方便分享；仍可選擇整局。</string>
+    <string name="boardgame_export_fast">快 · 0.4 秒</string>
+    <string name="boardgame_export_standard">標準 · 0.8 秒</string>
+    <string name="boardgame_export_slow">慢 · 1.2 秒</string>
+    <string name="boardgame_export_scrub_hint">拖動預覽 · 已走 %1$d / %2$d 手</string>
+    <string name="boardgame_export_compact">小檔案 · %1$d 像素</string>
+    <string name="boardgame_export_clear">清晰 · %1$d 像素</string>
+    <string name="boardgame_export_generate">產生 GIF</string>
+    <string name="boardgame_export_generate_image">產生棋盤圖片</string>
+    <string name="boardgame_export_invalid_replay">棋譜中存在無效局面或缺失著法，暫時無法匯出。</string>
+    <string name="boardgame_export_failed">產生失敗，請重試。</string>
+    <string name="boardgame_export_save_failed">儲存失敗，請檢查儲存位置後重試。</string>
+    <string name="boardgame_export_share_failed">無法開啟分享應用程式，可以先儲存檔案。</string>
+    <string name="boardgame_export_preview_failed">無法載入產生的預覽，請重新產生。</string>
 </resources>

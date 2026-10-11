@@ -1,4 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="boardgame_more">More</string>
+    <string name="boardgame_export_gif">Create replay GIF</string>
+    <string name="boardgame_export_close">Close</string>
+    <string name="boardgame_export_position">Board position</string>
+    <string name="boardgame_export_move_range">Moves %1$d–%2$d</string>
+    <string name="boardgame_export_move_label">%1$d. %2$s · %3$s</string>
+    <string name="boardgame_export_initial_position">Starting position</string>
+    <string name="boardgame_export_clip_end">End of clip</string>
+    <string name="boardgame_export_replay_end">End of replay</string>
+    <string name="boardgame_export_preview">Generated replay preview</string>
+    <string name="boardgame_export_progress">Creating frame %1$d / %2$d</string>
+    <string name="boardgame_export_cancelling">Cancelling…</string>
+    <string name="boardgame_export_cancel">Cancel</string>
+    <string name="boardgame_export_file_info">%1$d × %2$d · %3$s · %4$s s</string>
+    <string name="boardgame_export_image_info">%1$d × %2$d · %3$s</string>
+    <string name="boardgame_export_share_hint">Some apps or posting destinations show GIFs as still images. Save the original file to keep the animation.</string>
+    <string name="boardgame_export_share">Share</string>
+    <string name="boardgame_export_save">Save file</string>
+    <string name="boardgame_export_saving">Saving…</string>
+    <string name="boardgame_export_saved">Replay file saved</string>
+    <string name="boardgame_export_edit">Change selection</string>
+    <string name="boardgame_export_empty_hint">There are no moves yet. You can export this position as a PNG image.</string>
+    <string name="boardgame_export_whole">Whole game</string>
+    <string name="boardgame_export_nearby">Current area</string>
+    <string name="boardgame_export_custom">Custom</string>
+    <string name="boardgame_export_first_move">First move</string>
+    <string name="boardgame_export_last_move">Last move</string>
+    <string name="boardgame_export_invalid_range">Enter valid move numbers. The first move must not be after the last.</string>
+    <string name="boardgame_export_selection">Moves %1$d–%2$d · %3$d moves · %4$s s</string>
+    <string name="boardgame_export_long_hint">For a long game, a short clip is easier to watch and share. You can still choose the whole game.</string>
+    <string name="boardgame_export_fast">Fast · 0.4 s</string>
+    <string name="boardgame_export_standard">Standard · 0.8 s</string>
+    <string name="boardgame_export_slow">Slow · 1.2 s</string>
+    <string name="boardgame_export_scrub_hint">Drag to preview · %1$d / %2$d moves</string>
+    <string name="boardgame_export_compact">Compact · %1$d px</string>
+    <string name="boardgame_export_clear">Clear · %1$d px</string>
+    <string name="boardgame_export_generate">Generate GIF</string>
+    <string name="boardgame_export_generate_image">Generate board image</string>
+    <string name="boardgame_export_invalid_replay">The replay contains invalid positions or missing moves and cannot be exported.</string>
+    <string name="boardgame_export_failed">Could not create the replay. Please try again.</string>
+    <string name="boardgame_export_save_failed">Could not save the file. Check the destination and try again.</string>
+    <string name="boardgame_export_share_failed">Could not open a sharing app. You can save the file instead.</string>
+    <string name="boardgame_export_preview_failed">Could not load the generated preview. Please generate it again.</string>
 </resources>

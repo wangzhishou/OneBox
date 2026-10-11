@@ -73,6 +73,7 @@ fun ChessBoard(
     checkNotice: String = "",
     lastMove: Pair<BoardPoint, BoardPoint>? = null,
     onPieceDrop: ((BoardPoint, BoardPoint) -> Unit)? = null,
+    forExport: Boolean = false,
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
     BoxWithConstraints(
@@ -94,7 +95,8 @@ fun ChessBoard(
 
         GlassSurface(
             modifier = Modifier.fillMaxSize(),
-            style = GlassStyle.Medium,
+            style = if (forExport) GlassStyle.None else GlassStyle.Medium,
+            color = if (forExport) Color(0xFFF3E8CE) else Color.Unspecified,
         ) {
             val selectedColor = MaterialTheme.colorScheme.primaryContainer
             val lastMoveColor = MaterialTheme.colorScheme.tertiary

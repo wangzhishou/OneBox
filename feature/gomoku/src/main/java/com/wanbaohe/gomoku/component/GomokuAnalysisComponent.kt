@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.wanbaohe.boardgame.export.BoardGameGifExporter
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -75,6 +76,7 @@ class GomokuAnalysisComponent @AssistedInject constructor(
     @Assisted private val onPrepareGame: (GamePreparation) -> Unit,
     private val gameQuery: GameQueryUseCase,
     private val manageGame: ManageGameUseCase,
+    val gifExporter: BoardGameGifExporter,
     private val exportGame: ExportGameUseCase,
     private val audioFeedback: AudioFeedbackUseCase,
     private val settingsUseCase: SettingsUseCase,

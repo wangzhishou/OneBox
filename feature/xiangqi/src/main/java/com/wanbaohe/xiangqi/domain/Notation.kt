@@ -22,6 +22,20 @@ object UcciNotation {
         val rank = BoardPoint.RANK_COUNT - 1 - p.rank
         return "$file$rank"
     }
+
+    fun parseMove(text: String): Pair<BoardPoint, BoardPoint>? {
+        val move = text.trim()
+        if (move.length < 4) return null
+        fun pointAt(index: Int): BoardPoint? {
+            val file = move[index].lowercaseChar()
+            val rank = move[index + 1]
+            if (file !in 'a'..'i' || rank !in '0'..'9') return null
+            return BoardPoint(file - 'a', BoardPoint.RANK_COUNT - 1 - (rank - '0'))
+        }
+        val from = pointAt(0) ?: return null
+        val to = pointAt(2) ?: return null
+        return from to to
+    }
 }
 
 /**

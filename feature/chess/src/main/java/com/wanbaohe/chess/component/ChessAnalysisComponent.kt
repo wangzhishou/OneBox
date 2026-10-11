@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.wanbaohe.boardgame.export.BoardGameGifExporter
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -71,6 +72,7 @@ class ChessAnalysisComponent @AssistedInject constructor(
     private val soundPlayer: SoundPlayer,
     private val audioPlayer: NetworkAudioPlayer,
     private val manageGame: ManageGameUseCase,
+    val gifExporter: BoardGameGifExporter,
     dispatchersHolder: DispatchersHolder,
 ) : BaseComponent(dispatchersHolder, componentContext) {
 

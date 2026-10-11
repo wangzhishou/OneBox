@@ -57,6 +57,7 @@ fun XiangqiBoard(
     lastMove: Pair<BoardPoint, BoardPoint>? = null,
     onPieceDrop: ((BoardPoint, BoardPoint) -> Unit)? = null,
     boardAspectRatio: Float = 9f / 10f,
+    forExport: Boolean = false,
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -103,9 +104,10 @@ fun XiangqiBoard(
                     onDragCancel = { dragFrom = null; dragPosition = null },
                 )
             },
-            style = GlassStyle.Medium,
+            style = if (forExport) GlassStyle.None else GlassStyle.Medium,
+            color = if (forExport) Color(0xFFF3E8CE) else Color.Unspecified,
         ) {
-                val lineColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                val lineColor = MaterialTheme.colorScheme.onSurface.copy(alpha = if (forExport) 0.65f else 0.2f)
                 val strokeWidth = 2f
 
                 Canvas(modifier = Modifier.fillMaxSize()) {
@@ -245,6 +247,7 @@ fun XiangqiBoard(
                                 PieceDisc(
                                     piece = piece,
                                     selected = isSelected,
+                                    forExport = forExport,
                                 )
                             }
                         }
@@ -314,6 +317,7 @@ private fun LastMoveRing(
 internal fun PieceDisc(
     piece: Piece,
     selected: Boolean,
+    forExport: Boolean = false,
 ) {
     val isRed = piece.side == Side.RED
     val text = pieceLabel(piece)
@@ -329,7 +333,7 @@ internal fun PieceDisc(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .shadow(if (selected) 8.dp else 4.dp, CircleShape, ambientColor = if (selected) activeGlow else Color.Black)
+            .shadow(if (forExport) 0.dp else if (selected) 8.dp else 4.dp, CircleShape, ambientColor = if (selected) activeGlow else Color.Black)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.surface)
             .border(
@@ -340,7 +344,7 @@ internal fun PieceDisc(
         contentAlignment = Alignment.Center,
     ) {
         // Inner glow for pieces
-        Box(
+        if (!forExport) Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Brush.radialGradient(colors = listOf(glowColor.copy(alpha = 0.2f), Color.Transparent)))

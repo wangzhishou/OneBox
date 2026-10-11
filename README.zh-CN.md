@@ -186,9 +186,9 @@ AI 理解、执行、反馈,一气呵成。
 | 模块 | 功能 | 简介 |
 | --- | --- | --- |
 | `feature/game2048` | 2048 | 经典数字滑动合并 |
-| `feature/xiangqi` | 中国象棋 | 人机对弈/在线对战/棋谱库/残局分析 |
-| `feature/gomoku` | 五子棋 | 15×15 棋盘、人机对弈(LLM)、AI 对战、棋谱库、复盘分析 |
-| `feature/chess` | 国际象棋 | 标准规则(易位/过路兵/升变)、人机对弈(LLM)、棋谱库、复盘分析 |
+| `feature/xiangqi` | 中国象棋 | 人机对弈/在线对战/棋谱库/残局分析，整局或片段 GIF 导出 |
+| `feature/gomoku` | 五子棋 | 15×15 棋盘、人机对弈(LLM)、AI 对战、棋谱库、复盘分析、GIF 导出 |
+| `feature/chess` | 国际象棋 | 标准规则(易位/过路兵/升变)、人机对弈(LLM)、棋谱库、复盘分析、GIF 导出 |
 | `feature/minesweeper` | 扫雷 | 多种难度、计时、旗帜标记 |
 | `feature/sudoku` | 数独 | 三档难度、提示、撤销、计时、战绩统计 |
 | `feature/survive30s` | 生存 30 秒 | 限时躲避障碍物小游戏 |
@@ -228,7 +228,7 @@ AI 理解、执行、反馈,一气呵成。
 | `feature/demo` | 组件展示 | 开发者调试用功能入口网格 |
 | `feature/libraries-info` | 开源许可 | 第三方开源库许可证列表 |
 | `feature/library-details` | 库详情 | 单个开源库许可证详情 |
-| `feature/boardgame` | 棋类 UI 公共库 | 棋类通用界面组件,供五子棋/国际象棋复用 |
+| `feature/boardgame` | 棋类公共库 | 象棋/五子棋/国际象棋共用的界面组件及棋局动图导出：范围、速度、预览、分享与保存 |
 
 ## 技术栈
 

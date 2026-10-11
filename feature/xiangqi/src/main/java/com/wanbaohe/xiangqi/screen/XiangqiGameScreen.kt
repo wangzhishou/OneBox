@@ -74,6 +74,7 @@ import com.wanbaohe.xiangqi.component.XiangqiGameUiState
 import com.wanbaohe.xiangqi.data.TextExportLabels
 import com.wanbaohe.xiangqi.data.XiangqiPlyRecord
 import com.wanbaohe.xiangqi.domain.model.BoardPoint
+import com.wanbaohe.xiangqi.domain.UcciNotation
 import com.wanbaohe.xiangqi.domain.model.GameMode
 import com.wanbaohe.xiangqi.domain.model.GameStatus
 import com.wanbaohe.xiangqi.domain.model.PlayerType
@@ -334,7 +335,7 @@ private fun XiangqiGameContent(
     val playable = state.status == GameStatus.PLAYING || state.status == GameStatus.CHECK
     val bottomSide = if (state.mode == GameMode.ONLINE_PVP) state.onlineMySide else Side.RED
     // 当前局面的最后一手(撤销后随之回退),棋盘上用以明示上一步
-    val lastMove = state.history.getOrNull(state.currentPly - 1)?.let { parseUcciMove(it.moveUcci) }
+    val lastMove = state.history.getOrNull(state.currentPly - 1)?.let { UcciNotation.parseMove(it.moveUcci) }
     // AI 兜底 ("AI_FALLBACK") 已经合法落子完成,不必再多一张提示卡;
     // 只对真错 (AI_ERROR / 自定义错误文案) 显示并提供重试入口。
     val showErrorCard = state.errorMessage.isNotBlank() && state.errorMessage != "AI_FALLBACK"
@@ -709,22 +710,6 @@ private fun LocalEngineSwapCard(
             }
         },
     )
-}
-
-/** 把 UCCI 着法(如 "h2e2")解析为起止坐标;rank 0 是红方底线,与 [BoardPoint] 一致 */
-private fun parseUcciMove(ucci: String): Pair<BoardPoint, BoardPoint>? {
-    if (ucci.length < 4) return null
-
-    fun pointAt(index: Int): BoardPoint? {
-        val file = ucci[index].lowercaseChar()
-        val rank = ucci[index + 1]
-        if (file !in 'a'..'i' || rank !in '0'..'9') return null
-        return BoardPoint(file - 'a', BoardPoint.RANK_COUNT - 1 - (rank - '0'))
-    }
-
-    val from = pointAt(0) ?: return null
-    val to = pointAt(2) ?: return null
-    return from to to
 }
 
 @Composable
