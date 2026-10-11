@@ -44,7 +44,8 @@ fun GlassCard(
     val settingsState = LocalSettingsState.current
     val resolvedColors = colors ?: defaultGlassCardColors()
 
-    if (!settingsState.isGlassAlphaEnabled) {
+    // style == None 与 GlassSurface 对齐:同样短路到平涂路径,保证 None 在开/关玻璃两侧都是实底
+    if (!settingsState.isGlassAlphaEnabled || style == GlassStyle.None) {
         // 关闭玻璃只是不画模糊/高光/描边,底色浓淡与玻璃态保持一致 —— 否则同一个
         // primaryContainer 会从"淡淡一抹"变成不透明色块,彩色卡片一下变得抢主题。
         Card(
@@ -105,7 +106,7 @@ fun GlassCard(
     val settingsState = LocalSettingsState.current
     val resolvedColors = colors ?: defaultGlassCardColors()
 
-    if (!settingsState.isGlassAlphaEnabled) {
+    if (!settingsState.isGlassAlphaEnabled || style == GlassStyle.None) {
         Card(
             onClick = onClick,
             modifier = modifier.glassFlatSurface(

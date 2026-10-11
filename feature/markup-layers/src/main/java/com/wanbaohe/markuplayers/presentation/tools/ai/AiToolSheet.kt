@@ -25,7 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.AiImageOp
@@ -110,13 +111,8 @@ private fun AiFeatureCard(
 ) {
     Box(
         modifier = modifier
-            .clip(ShapeDefaults.default)
-            // 与浮动面板同款:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
-                shape = ShapeDefaults.default
-            )
-            .glassDense(
+            .glassBackground(
+                style = GlassStyle.None,
                 shape = ShapeDefaults.default,
                 color = MaterialTheme.colorScheme.surfaceContainerLow
             )

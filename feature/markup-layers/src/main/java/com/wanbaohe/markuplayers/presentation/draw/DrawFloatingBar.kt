@@ -24,7 +24,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFrontHand
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 
@@ -42,12 +43,8 @@ internal fun DrawFloatingBar(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier
-            // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
-                shape = ShapeDefaults.extraLarge
-            )
-            .glassDense(
+            .glassBackground(
+                style = GlassStyle.None,
                 shape = ShapeDefaults.extraLarge,
                 color = MaterialTheme.colorScheme.surfaceContainerLow
             )

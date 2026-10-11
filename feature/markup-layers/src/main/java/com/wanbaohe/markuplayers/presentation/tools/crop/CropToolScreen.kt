@@ -64,6 +64,8 @@ import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.text.marquee
@@ -855,11 +857,18 @@ private fun RatioButton(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .clip(ShapeDefaults.default)
-            .background(
+            .then(
                 if (selected) {
-                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                } else MaterialTheme.colorScheme.surfaceContainer
+                    Modifier.glassBackground(
+                        style = GlassStyle.Dense,
+                        shape = ShapeDefaults.default,
+                        color = MaterialTheme.colorScheme.primaryContainer
+                    )
+                } else {
+                    Modifier
+                        .clip(ShapeDefaults.default)
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                }
             )
             .then(
                 if (selected) {

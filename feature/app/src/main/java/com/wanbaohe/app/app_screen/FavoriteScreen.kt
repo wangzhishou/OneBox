@@ -42,7 +42,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -844,8 +843,10 @@ private fun ActivityLogCardContent(
             Box(
                 modifier = Modifier
                     .size(46.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(sectionIconContainerColor(theme).copy(alpha = 0.9f)),
+                    .glassMedium(
+                        shape = RoundedCornerShape(12.dp),
+                        color = sectionIconContainerColor(theme),
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

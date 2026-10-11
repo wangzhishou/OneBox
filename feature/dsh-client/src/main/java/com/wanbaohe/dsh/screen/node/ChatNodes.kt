@@ -59,6 +59,7 @@ import com.halilibo.richtext.ui.material3.RichText
 import com.shifenmiao.model.node.AstNode
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.screen.DeliverablesRow
 import com.wanbaohe.dsh.screen.DshSuccessGreen
@@ -142,7 +143,7 @@ private fun UserBubble(node: ChatNode.UserMessage) {
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-            containerAlpha = 0.85f
+            style = GlassStyle.None
         ) {
             Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
                 if (node.text.isNotEmpty()) {
@@ -798,7 +799,7 @@ private fun UnknownRow(node: ChatNode.Unknown) {
         onClick = { expanded = !expanded },
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        containerAlpha = 0.3f
+        style = GlassStyle.Dense
     ) {
         Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {

@@ -51,7 +51,9 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandLess
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExpandMore
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 
 /**
  * 搜索结果展示组件
@@ -184,7 +186,11 @@ private fun SearchCitationChip(
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            .glassBackground(
+                style = GlassStyle.Dense,
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant
+            )
             .clickable {
                 if (citation.url.isNotBlank()) {
                     navigator.navigate(citation.url)

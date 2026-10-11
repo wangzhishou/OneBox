@@ -17,7 +17,6 @@
 
 package com.t8rin.imagetoolbox.core.ui.widget.preferences
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +36,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -49,6 +47,8 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 
 @Composable
@@ -173,9 +173,9 @@ fun TypeSelectionCard(
     val iconColor = preferenceItemIconColor(theme)
     val iconBgColor = when (theme) {
         PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
-        PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f)
-        PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.65f)
-        PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.65f)
+        PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
+        PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
+        PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow
     }
 
     GlassCard(
@@ -193,8 +193,11 @@ fun TypeSelectionCard(
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(CircleShape)
-                    .background(iconBgColor),
+                    .glassBackground(
+                        style = GlassStyle.Dense,
+                        shape = CircleShape,
+                        color = iconBgColor
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

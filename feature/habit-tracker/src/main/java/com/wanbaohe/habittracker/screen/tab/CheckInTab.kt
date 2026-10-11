@@ -180,7 +180,7 @@ private fun SummaryCard(
         shape = RoundedCornerShape(20.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        containerAlpha = 0.92f,
+        style = GlassStyle.None,
     ) {
         Row(
             modifier = Modifier

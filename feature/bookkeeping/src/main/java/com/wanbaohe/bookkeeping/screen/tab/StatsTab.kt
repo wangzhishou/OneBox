@@ -371,11 +371,7 @@ private fun SummaryMetricCard(
         shape = RoundedCornerShape(24.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        containerAlpha = when (tone) {
-            SummaryMetricTone.NEUTRAL -> 0.94f
-            SummaryMetricTone.INCOME -> 0.98f
-            SummaryMetricTone.EXPENSE -> 0.96f
-        },
+        style = GlassStyle.None,
     ) {
         Row(
             modifier = Modifier
@@ -438,7 +434,7 @@ private fun StatsSectionCard(
         shape     = RoundedCornerShape(24.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        containerAlpha = 0.92f,
+        style = GlassStyle.None,
     ) {
         Column(
             modifier              = Modifier.fillMaxWidth().padding(18.dp),

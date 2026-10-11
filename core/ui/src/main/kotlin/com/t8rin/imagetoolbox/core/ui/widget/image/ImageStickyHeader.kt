@@ -23,7 +23,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -52,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
@@ -68,6 +68,8 @@ import com.t8rin.imagetoolbox.core.ui.theme.takeColorFromScheme
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.animateContentSizeNoClip
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.fadingEdges
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.tappable
@@ -133,7 +135,7 @@ fun LazyListScope.imageStickyHeader(
         ) {
             val color = if (backgroundColor.isSpecified) {
                 backgroundColor
-            } else MaterialTheme.colorScheme.surface.copy(alpha = 0.85f)
+            } else MaterialTheme.colorScheme.surface
 
             Column(
                 modifier = Modifier
@@ -148,7 +150,11 @@ fun LazyListScope.imageStickyHeader(
                         ).value,
                         gravity = FadingEdgesGravity.End
                     )
-                    .background(color)
+                    .glassBackground(
+                        style = GlassStyle.None,
+                        shape = RectangleShape,
+                        color = color
+                    )
                     .padding(
                         start = padding,
                         end = padding,

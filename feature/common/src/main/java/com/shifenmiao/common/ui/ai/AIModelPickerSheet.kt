@@ -429,7 +429,7 @@ private fun ModelCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        containerAlpha = if (isSelected) GlassStyle.Regular.backgroundAlpha else 0.55f,
+        style = if (isSelected) GlassStyle.Regular else GlassStyle.Dense,
     ) {
         Row(
             modifier = Modifier
@@ -661,7 +661,7 @@ fun ModelGridItem(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        containerAlpha = if (isSelected) GlassStyle.Regular.backgroundAlpha else 0.55f,
+        style = if (isSelected) GlassStyle.Regular else GlassStyle.Dense,
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),

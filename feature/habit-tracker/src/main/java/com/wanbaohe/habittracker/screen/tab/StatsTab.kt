@@ -49,6 +49,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutChartSlice
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutExpenseChart
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.habittracker.R
 import com.wanbaohe.habittracker.component.HabitTrackerComponent
 import com.wanbaohe.habittracker.model.HabitTrendPoint
@@ -200,7 +201,7 @@ private fun StatsSectionCard(
         shape = RoundedCornerShape(24.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        containerAlpha = 0.92f,
+        style = GlassStyle.None,
     ) {
         Column(
             modifier = Modifier

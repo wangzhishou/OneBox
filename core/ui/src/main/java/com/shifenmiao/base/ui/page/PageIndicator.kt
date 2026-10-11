@@ -1,6 +1,5 @@
 package com.shifenmiao.base.ui.page
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 
 
 @Composable
@@ -24,9 +25,10 @@ fun PageIndicator(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f),
-                shape = RoundedCornerShape(16.dp)
+            .glassBackground(
+                style = GlassStyle.None,
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             .padding(horizontal = 12.dp, vertical = 6.dp)
     ) {

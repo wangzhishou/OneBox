@@ -62,6 +62,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.bookkeeping.R
 import com.wanbaohe.bookkeeping.component.BookkeepingComponent
 import com.wanbaohe.bookkeeping.model.BookkeepingCategoryUi
@@ -208,7 +209,7 @@ internal fun SettingsTab(
                 shape = RoundedCornerShape(28.dp),
                 borderWidth = 0.dp,
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                containerAlpha = 0.62f,
+                style = GlassStyle.Dense,
             ) {
                 Column(
                     modifier = Modifier.padding(horizontal = 18.dp, vertical = 18.dp),
@@ -408,7 +409,7 @@ private fun CategorySectionCard(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
         borderWidth = 0.dp,
-        containerAlpha = 0.92f,
+        style = GlassStyle.None,
     ) {
         Column(
             modifier = Modifier
@@ -634,7 +635,7 @@ private fun SettingsActionCard(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         borderWidth = 0.dp,
-        containerAlpha = 0.94f,
+        style = GlassStyle.None,
         onClick = onClick,
     ) {
         Row(

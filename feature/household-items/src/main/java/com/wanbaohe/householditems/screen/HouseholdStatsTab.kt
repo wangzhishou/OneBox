@@ -296,7 +296,7 @@ private fun StatsMetricCard(
         shape = RoundedCornerShape(20.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        containerAlpha = 0.92f,
+        style = GlassStyle.None,
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
@@ -373,7 +373,7 @@ private fun StatsSectionCard(
         shape = RoundedCornerShape(24.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        containerAlpha = 0.92f,
+        style = GlassStyle.None,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(18.dp),

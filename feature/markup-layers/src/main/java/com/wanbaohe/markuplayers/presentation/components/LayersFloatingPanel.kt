@@ -1,6 +1,5 @@
 package com.wanbaohe.markuplayers.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,7 +39,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.Visibility
 import com.t8rin.imagetoolbox.core.resources.icons.VisibilityOff
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.longPress
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.press
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
@@ -78,12 +78,8 @@ internal fun LayersFloatingPanel(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
-                    shape = ShapeDefaults.extraLarge
-                )
-                .glassDense(
+                .glassBackground(
+                    style = GlassStyle.None,
                     shape = ShapeDefaults.extraLarge,
                     color = MaterialTheme.colorScheme.surfaceContainerLow
                 )

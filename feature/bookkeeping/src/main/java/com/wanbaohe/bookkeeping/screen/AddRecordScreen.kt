@@ -191,7 +191,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(16.dp),
                             borderWidth = 0.dp,
-                            containerAlpha = 0.7f,
+                            style = GlassStyle.Dense,
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
                         ) {
                             Column(
@@ -242,7 +242,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         borderWidth = 0.dp,
-                        containerAlpha = 0.4f,
+                        style = GlassStyle.Dense,
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
                     ) {
                         Row(
@@ -294,7 +294,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-                    containerAlpha = 0.8f,
+                    style = GlassStyle.None,
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
                 ) {
                     Column(
@@ -375,7 +375,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                                         shape = RoundedCornerShape(12.dp),
                                         borderWidth = 0.dp,
                                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                                        containerAlpha = 0.5f,
+                                        style = GlassStyle.Dense,
                                         onClick = { showDatePicker = true }
                                     ) {
                                         Column(
@@ -579,7 +579,7 @@ private fun KeypadButton(
         shape = RoundedCornerShape(12.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        containerAlpha = 0.4f,
+        style = GlassStyle.Dense,
         onClick = onClick
     ) {
         Box(

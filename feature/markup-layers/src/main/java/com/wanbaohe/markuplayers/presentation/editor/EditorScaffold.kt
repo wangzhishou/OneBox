@@ -93,6 +93,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.editor.AiEditImage
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiGenerateImageSheet
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiStickerGeneration
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
@@ -1206,12 +1208,8 @@ private fun ZoomCapsule(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
-                    shape = ShapeDefaults.circle
-                )
-                .glassDense(
+                .glassBackground(
+                    style = GlassStyle.None,
                     shape = ShapeDefaults.circle,
                     color = MaterialTheme.colorScheme.surfaceContainerLow
                 )
@@ -1262,12 +1260,8 @@ private fun EditorSideBar(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier
-            // 浮动容器近不透明:0.92 实色打底,玻璃层只保留边框/高光与一丝通透
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.92f),
-                shape = ShapeDefaults.extraLarge
-            )
-            .glassDense(
+            .glassBackground(
+                style = GlassStyle.None,
                 shape = ShapeDefaults.extraLarge,
                 color = MaterialTheme.colorScheme.surfaceContainerLow
             )

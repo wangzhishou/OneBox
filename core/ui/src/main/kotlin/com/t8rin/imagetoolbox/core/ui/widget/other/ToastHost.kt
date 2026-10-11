@@ -45,7 +45,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -62,7 +61,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shape
@@ -91,6 +89,8 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.requestStoragePermission
 import com.t8rin.imagetoolbox.core.ui.utils.helper.EnPreview
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.icon_shape.IconShapeContainer
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.autoElevatedBorder
 import com.t8rin.imagetoolbox.core.utils.extractMessage
@@ -252,7 +252,7 @@ fun Toast(
     containerColor: Color = ToastDefaults.color,
     contentColor: Color = ToastDefaults.contentColor,
 ) {
-    Card(
+    GlassCard(
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
             contentColor = contentColor
@@ -269,9 +269,10 @@ fun Toast(
                     if (LocalSettingsState.current.drawContainerShadows) 6.dp
                     else 0.dp
                 ).value
-            )
-            .alpha(0.95f),
-        shape = shape
+            ),
+        shape = shape,
+        style = GlassStyle.None,
+        borderWidth = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -315,7 +316,7 @@ fun ActionToast(
         return
     }
 
-    Card(
+    GlassCard(
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
             contentColor = contentColor
@@ -332,9 +333,10 @@ fun ActionToast(
                     if (LocalSettingsState.current.drawContainerShadows) 6.dp
                     else 0.dp
                 ).value
-            )
-            .alpha(0.95f),
-        shape = shape
+            ),
+        shape = shape,
+        style = GlassStyle.None,
+        borderWidth = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(

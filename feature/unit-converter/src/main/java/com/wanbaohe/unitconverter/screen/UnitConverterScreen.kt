@@ -343,7 +343,7 @@ private fun CalculatorTab(
                 topStart = 28.dp, topEnd = 28.dp,
                 bottomStart = 24.dp, bottomEnd = 24.dp
             ),
-            containerAlpha = 0.28f,
+            style = GlassStyle.Dense,
             borderWidth = 0.dp,
         ) {
             Column(
@@ -941,7 +941,7 @@ private fun ConverterKeypad(
             topStart = 28.dp, topEnd = 28.dp,
             bottomStart = 24.dp, bottomEnd = 24.dp
         ),
-        containerAlpha = 0.28f,
+        style = GlassStyle.Dense,
         borderWidth = 0.dp,
     ) {
         Column(
@@ -1193,7 +1193,7 @@ private fun UnitPickerContent(
             topStart = 28.dp, topEnd = 28.dp,
             bottomStart = 24.dp, bottomEnd = 24.dp
         ),
-        containerAlpha = 0.96f,
+        style = GlassStyle.None,
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,

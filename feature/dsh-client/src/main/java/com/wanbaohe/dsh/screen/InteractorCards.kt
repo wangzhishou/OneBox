@@ -102,9 +102,10 @@ fun InteractorSection(
 /** 归属会话短标签(交互来自非当前会话时显示,取 sessionId 前 8 位) */
 @Composable
 private fun SessionBadge(sessionId: String) {
-    Surface(
+    GlassSurface(
         shape = RoundedCornerShape(9.dp),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
+        color = MaterialTheme.colorScheme.surface,
+        style = GlassStyle.None,
     ) {
         Text(
             text = sessionId.take(8),
@@ -165,12 +166,13 @@ private fun ApprovalCard(
                 if (foreignSession) SessionBadge(approval.sessionId)
             }
             if (!approval.reason.isNullOrEmpty()) {
-                Surface(
+                GlassSurface(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
                     shape = RoundedCornerShape(10.dp),
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                    color = MaterialTheme.colorScheme.surface,
+                    style = GlassStyle.None,
                 ) {
                     Text(
                         text = approval.reason,
@@ -265,12 +267,13 @@ private fun QuestionFormCard(
                 )
             }
             if (inlineError != null) {
-                Surface(
+                GlassSurface(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
                     shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.55f)
+                    color = MaterialTheme.colorScheme.errorContainer,
+                    style = GlassStyle.None,
                 ) {
                     Text(
                         text = inlineError,
@@ -423,12 +426,13 @@ private fun QueueDock(
     items: List<QueueItem>,
     onRemove: (QueueItem) -> Unit
 ) {
-    Surface(
+    GlassSurface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 4.dp),
         shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        style = GlassStyle.Dense,
     ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Text(

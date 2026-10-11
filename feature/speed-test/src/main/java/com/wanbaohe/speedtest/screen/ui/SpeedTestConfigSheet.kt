@@ -45,6 +45,8 @@ import com.wanbaohe.speedtest.data.SpeedTestConfig
 
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
@@ -138,16 +140,23 @@ private fun ConfigItem(
     onDeleteRequest: () -> Unit
 ) {
     val primaryColor = AppTheme.colors.getPrimaryColor()
-    val bgColor = if (isActive)
-        AppTheme.colors.getSecondaryContainerButtonColors().containerColor.copy(alpha = 0.5f)
-    else
-        AppTheme.colors.getContainerSurfaceColor()
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(bgColor)
+            .then(
+                if (isActive) {
+                    Modifier.glassBackground(
+                        style = GlassStyle.Dense,
+                        shape = RoundedCornerShape(14.dp),
+                        color = AppTheme.colors.getSecondaryContainerButtonColors().containerColor
+                    )
+                } else {
+                    Modifier
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(AppTheme.colors.getContainerSurfaceColor())
+                }
+            )
             .clickable(onClick = onSelect)
             .padding(start = 16.dp, top = 10.dp, bottom = 10.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically

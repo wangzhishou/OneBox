@@ -59,6 +59,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 
@@ -484,9 +485,12 @@ private fun SelectionPreviewSection(
 
 @Composable
 private fun CategorySelectionTag(text: String) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.75f)
+    Box(
+        modifier = Modifier.glassBackground(
+            style = GlassStyle.None,
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.tertiaryContainer
+        )
     ) {
         Text(
             text = text,
@@ -848,7 +852,7 @@ fun SelectedToolSummary(
     ) {
         previewTools.forEach { tool ->
             val backgroundColor = if (tool.riskLevel == ToolRiskLevel.DANGEROUS) {
-                MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.7f)
+                MaterialTheme.colorScheme.errorContainer
             } else {
                 MaterialTheme.colorScheme.secondaryContainer
             }
@@ -857,9 +861,12 @@ fun SelectedToolSummary(
             } else {
                 MaterialTheme.colorScheme.onSecondaryContainer
             }
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                color = backgroundColor
+            Box(
+                modifier = Modifier.glassBackground(
+                    style = GlassStyle.None,
+                    shape = MaterialTheme.shapes.medium,
+                    color = backgroundColor
+                )
             ) {
                 Text(
                     text = tool.title,
@@ -871,9 +878,12 @@ fun SelectedToolSummary(
         }
         val remainCount = tools.size - previewTools.size
         if (remainCount > 0) {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colorScheme.surfaceVariant
+            Box(
+                modifier = Modifier.glassBackground(
+                    style = GlassStyle.None,
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                )
             ) {
                 Text(
                     text = stringResource(R.string.agent_bound_tools_more_count, remainCount),

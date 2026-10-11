@@ -43,6 +43,7 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTimeFilterBar
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.bookkeeping.R
 import com.wanbaohe.bookkeeping.component.BookkeepingComponent
 import com.wanbaohe.bookkeeping.model.BookkeepingRecentPreset
@@ -363,7 +364,7 @@ private fun SummaryMetricPill(
         shape = RoundedCornerShape(99.dp),
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        containerAlpha = 0.78f,
+        style = GlassStyle.Dense,
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -481,7 +482,7 @@ private fun RecordItemRow(
             shape = RoundedCornerShape(16.dp),
             borderWidth = 0.dp,
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-            containerAlpha = 0.58f,
+            style = GlassStyle.Dense,
         ) {
             Row(
                 modifier = Modifier

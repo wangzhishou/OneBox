@@ -56,6 +56,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorPickerSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.camera.watermark.R
 import com.wanbaohe.camera.watermark.domain.LogoType
 import com.wanbaohe.camera.watermark.domain.WatermarkMetadata
@@ -317,17 +319,22 @@ private fun TemplateListItem(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    val backgroundColor = when {
-        isSelectedForDelete -> MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f)
-        isSelected -> MaterialTheme.colorScheme.primaryContainer
-        else -> Color.Transparent
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(MaterialTheme.shapes.medium)
-            .background(backgroundColor)
+            .then(
+                when {
+                    isSelectedForDelete -> Modifier.glassBackground(
+                        style = GlassStyle.Dense,
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.errorContainer
+                    )
+                    isSelected -> Modifier
+                        .clip(MaterialTheme.shapes.medium)
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                    else -> Modifier.clip(MaterialTheme.shapes.medium)
+                }
+            )
             .clickable(onClick = onSelect)
             .padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
