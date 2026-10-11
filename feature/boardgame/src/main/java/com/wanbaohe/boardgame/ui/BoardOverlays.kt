@@ -15,6 +15,7 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -30,7 +31,6 @@ import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 
 /** 未开始/暂停时盖在棋盘上的开始遮罩;[startLabel] 由调用方区分「开始」/「继续」 */
@@ -72,8 +72,12 @@ fun BoxScope.BoardStartOverlay(
 }
 
 /**
- * 终局遮罩:棋盘中央浮一张不透明圆角卡片(🏆 + 🎉 装饰、结果标题/副标题、竖排按钮组),
- * 不再把文字直接压在棋子上。[resultTitle]/[resultSubtitle]/按钮文案均由调用方本地化。
+ * 终局遮罩:棋盘中央浮一张**实底**(surfaceContainerLowest,不透明)圆角卡片
+ * (🏆 + 🎉 装饰、结果标题/副标题、竖排按钮组),不再把文字直接压在棋子上。
+ * [resultTitle]/[resultSubtitle]/按钮文案均由调用方本地化。
+ *
+ * 卡片是弹层容器,按仓库约定不走玻璃管线(玻璃的底只铺约 4% 覆盖率,压在棋盘上会透出棋子,
+ * 文字糊成一团);这里直接给 M3 实色底,保证任何棋盘底色下都看得清。
  *
  * @param emphasizeResult 胜负类结果用主题强调色;和棋等中性结果传 false
  * @param backLabel/onBack 可选第三按钮(text 样式),不传则不显示
@@ -107,12 +111,13 @@ fun BoxScope.BoardGameOverOverlay(
             ),
         contentAlignment = Alignment.Center,
     ) {
-        GlassSurface(
+        Surface(
             modifier = Modifier
                 .padding(24.dp)
                 .widthIn(max = 300.dp),
             shape = MaterialTheme.shapes.extraLarge,
-            color = MaterialTheme.colorScheme.surface,
+            color = MaterialTheme.colorScheme.surfaceContainerLowest,
+            shadowElevation = 6.dp,
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 20.dp),

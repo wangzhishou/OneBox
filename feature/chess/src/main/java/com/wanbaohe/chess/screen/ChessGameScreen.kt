@@ -344,6 +344,8 @@ private fun ChessGameContent(
 private fun CompactGameOverDialog(component: ChessGameComponent, state: ChessGameUiState) {
     AlertDialog(
         onDismissRequest = component::dismissGameOverOverlay,
+        // 与竖屏的 BoardGameOverOverlay 卡片同底:弹层要实色,别让棋盘透上来
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         title = { Text(localizedGameResultText(state.status)) },
         text = {
             TextButton(onClick = component::restart, modifier = Modifier.fillMaxWidth()) {
