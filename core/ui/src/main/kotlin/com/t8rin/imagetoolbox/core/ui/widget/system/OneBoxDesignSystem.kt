@@ -285,7 +285,7 @@ fun OneBoxGroupDivider(
     HorizontalDivider(
         modifier = modifier,
         thickness = 0.5.dp,
-        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        color = MaterialTheme.colorScheme.surfaceContainer,
     )
 }
 

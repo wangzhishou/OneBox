@@ -149,13 +149,13 @@ internal class ModernPdfViewerDelegate : PdfViewerFragment() {
         pdfSearchView.invalidate()
 
         pdfView.fastScrollVerticalThumbDrawable = createFastScrollDrawable(
-            backgroundColor = colorScheme.surfaceContainerHigh.toArgb(),
+            backgroundColor = colorScheme.surfaceContainer.toArgb(),
             indicatorColor = colorScheme.onSurfaceVariant.toArgb()
         )
 
         ContextCompat.getDrawable(requireContext(), R.drawable.page_indicator_background)
             ?.mutate()?.let { pageIndicatorDrawable ->
-                pageIndicatorDrawable.setTint(colorScheme.surfaceContainerHigh.toArgb())
+                pageIndicatorDrawable.setTint(colorScheme.surfaceContainer.toArgb())
                 pdfView.fastScrollPageIndicatorBackgroundDrawable = pageIndicatorDrawable
             }
 

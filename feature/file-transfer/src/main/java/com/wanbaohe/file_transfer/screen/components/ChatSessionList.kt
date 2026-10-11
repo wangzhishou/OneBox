@@ -1,6 +1,5 @@
 package com.wanbaohe.file_transfer.screen.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.model.transfer.ChatSession
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 
 @Composable
 fun ChatSessionList(
@@ -75,15 +74,15 @@ private fun ChatSessionCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        tonalElevation = if (selected) 2.dp else 0.dp,
+    GlassSurface(
+        onClick = onClick,
         color = if (selected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surface
+            MaterialTheme.colorScheme.surfaceContainer
         },
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.clickable(onClick = onClick)
+        modifier = modifier
     ) {
         Column(
             modifier = Modifier

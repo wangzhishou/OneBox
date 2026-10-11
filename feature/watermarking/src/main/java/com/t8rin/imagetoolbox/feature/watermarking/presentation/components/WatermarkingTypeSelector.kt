@@ -58,7 +58,7 @@ fun WatermarkingTypeSelector(
         onIndexChange = {
             onValueChange(value.copy(watermarkingType = WatermarkingType.entries[it]))
         },
-        inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer
     )
 }
 

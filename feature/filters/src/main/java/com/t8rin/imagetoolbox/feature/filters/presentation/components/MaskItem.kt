@@ -260,7 +260,7 @@ fun MaskItem(
                                     )
                                 }
                                 AddFilterButton(
-                                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
                                     onClick = {
                                         showAddFilterSheet = true
                                     }

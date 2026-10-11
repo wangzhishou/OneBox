@@ -285,7 +285,7 @@ private fun IconPickButton(
                 .glassBackground(
                     style = GlassStyle.Thick,
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                 )
                 .clickable(onClick = onClick),
             contentAlignment = Alignment.Center,
@@ -423,7 +423,7 @@ private fun StepperButton(
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {

@@ -363,7 +363,7 @@ private fun FreePathCard(
         modifier = modifier
             .glassRegular(
                 shape = RoundedCornerShape(20.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             )
             .clickable(onClick = onClick)
             .padding(16.dp),
@@ -424,7 +424,7 @@ fun PaymentOptionsSelector(
                         color = if (selected) {
                             MaterialTheme.colorScheme.primaryContainer
                         } else {
-                            MaterialTheme.colorScheme.surfaceContainerHigh
+                            MaterialTheme.colorScheme.surfaceContainer
                         }
                     )
                     .selectable(

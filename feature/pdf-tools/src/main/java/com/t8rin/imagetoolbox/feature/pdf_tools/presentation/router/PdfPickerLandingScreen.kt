@@ -390,7 +390,7 @@ private fun RecentPdfChip(
             .width(140.dp)
             .flatGlassContainer(
                 shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 resultPadding = 0.dp,
             )
             .clickable(onClick = onClick)
@@ -501,7 +501,7 @@ private fun RecentDocCard(
                 modifier = Modifier
                     .size(32.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+                    .background(MaterialTheme.colorScheme.surfaceContainer),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(

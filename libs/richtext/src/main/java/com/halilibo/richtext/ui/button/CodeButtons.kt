@@ -48,7 +48,7 @@ fun CodeBlockActionButton(
                 onClick()
             }
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = shape
             )
             .padding(

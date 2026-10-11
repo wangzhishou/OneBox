@@ -82,7 +82,7 @@ fun ActionButton(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     contentDescription: String,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     size: Int = 24,
     onClick: () -> Unit

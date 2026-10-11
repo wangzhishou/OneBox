@@ -450,7 +450,7 @@ fun PlaceholderCard(
             .heightIn(216.dp)
             .glassThin(
                 shape = shape,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             )
             .clickable {
                 onClick?.invoke()
@@ -461,7 +461,7 @@ fun PlaceholderCard(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                 contentDescription = "Add",
                 tint = MaterialTheme.colorScheme.contentColorFor(
-                    MaterialTheme.colorScheme.surfaceContainerHigh
+                    MaterialTheme.colorScheme.surfaceContainer
                 ).copy(alpha = 0.3f),
                 modifier = Modifier
                     .size(48.dp)

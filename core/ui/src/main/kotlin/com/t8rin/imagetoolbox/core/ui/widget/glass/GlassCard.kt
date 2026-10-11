@@ -182,7 +182,7 @@ fun GlassCard(
 
 @Composable
 private fun defaultGlassCardColors(): CardColors = CardDefaults.cardColors(
-    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+    containerColor = MaterialTheme.colorScheme.surfaceContainer,
     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
 )
 

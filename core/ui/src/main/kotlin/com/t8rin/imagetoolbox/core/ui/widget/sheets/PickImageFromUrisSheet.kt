@@ -107,7 +107,7 @@ fun PickImageFromUrisSheet(
                             val selected = selectedUri == uri
                             val color by animateColorAsState(
                                 if (selected) MaterialTheme.colorScheme.surface
-                                else MaterialTheme.colorScheme.surfaceContainerHigh
+                                else MaterialTheme.colorScheme.surfaceContainer
                             )
                             val padding by animateDpAsState(if (selected) 12.dp else 4.dp)
                             val pictureShape = animateShape(

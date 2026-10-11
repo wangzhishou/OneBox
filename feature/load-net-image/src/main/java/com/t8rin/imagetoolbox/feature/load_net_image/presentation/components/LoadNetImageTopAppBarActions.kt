@@ -89,7 +89,7 @@ internal fun RowScope.LoadNetImageTopAppBarActions(
                         .padding(8.dp)
                         .flatGlassContainer(
                             shape = CircleShape,
-                            color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                            color = MaterialTheme.colorScheme.surfaceContainer,
                             resultPadding = 0.dp
                         ),
                     visible = pagesSize != 0

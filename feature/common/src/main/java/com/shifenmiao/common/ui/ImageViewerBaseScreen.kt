@@ -129,7 +129,7 @@ fun ViewerBackButton(
         onClick = onClick,
         modifier = modifier,
         colors = IconButtonDefaults.filledTonalIconButtonColors().copy(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.7f),
+            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f),
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     ) {
@@ -154,7 +154,7 @@ fun ViewerActionButton(
         onClick = onClick,
         modifier = modifier,
         colors = IconButtonDefaults.filledTonalIconButtonColors().copy(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.7f),
+            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f),
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     ) {

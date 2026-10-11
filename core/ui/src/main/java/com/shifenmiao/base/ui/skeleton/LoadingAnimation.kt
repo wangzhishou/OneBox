@@ -60,7 +60,7 @@ private fun getColors(isLightMode: Boolean): List<Color> {
             color.copy(0.4f)
         )
     } else {
-        val color = AppTheme.colorScheme.surfaceContainerHighest
+        val color = AppTheme.colorScheme.surfaceContainer
         listOf(
             color.copy(0.0f),
             color.copy(0.3f),

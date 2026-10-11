@@ -191,7 +191,7 @@ fun WebpToolsContent(
                 GlassSurface(
                     style = GlassStyle.Thin,
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     borderWidth = 0.dp,
                 ) {
                     Row(

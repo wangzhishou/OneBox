@@ -21,6 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.cloud.storage.R
 import com.wanbaohe.cloud.storage.model.CloudBucket
 import com.t8rin.imagetoolbox.core.resources.icons.Check
@@ -90,7 +92,7 @@ fun BucketSwitcherSheet(
                             MaterialTheme.colorScheme.onSurface
                         }
 
-                        Surface(
+                        GlassSurface(
                             onClick = {
                                 onSelect(bucket.name)
                                 onDismiss()
@@ -99,8 +101,9 @@ fun BucketSwitcherSheet(
                             color = if (isCurrent) {
                                 MaterialTheme.colorScheme.primaryContainer
                             } else {
-                                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+                                MaterialTheme.colorScheme.surfaceContainer
                             },
+                            style = GlassStyle.Regular,
                             modifier = Modifier.fillMaxWidth(),
                         ) {
                             Row(

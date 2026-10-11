@@ -489,7 +489,7 @@ fun IdPhotoScreen(
             val cropperBackground = if (component.currentBackground.isOriginal ||
                 component.currentBackground.isTransparent
             ) {
-                MaterialTheme.colorScheme.surfaceContainerHighest
+                MaterialTheme.colorScheme.surfaceContainer
             } else {
                 component.currentBackground.getColor()
             }

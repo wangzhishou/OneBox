@@ -119,7 +119,7 @@ fun MermaidCodeBlock(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
                     .glassBackground(
-                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         shape = RoundedCornerShape(8.dp)
                     ).padding(2.dp)
             ) {
@@ -352,7 +352,7 @@ private fun MermaidTabButton(
         targetValue = if (isSelected) {
             MaterialTheme.colorScheme.surface
         } else {
-            MaterialTheme.colorScheme.surfaceContainerHigh
+            MaterialTheme.colorScheme.surfaceContainer
         },
         animationSpec = tween(200),
         label = "tabBg"
@@ -400,7 +400,7 @@ internal fun MermaidActionButton(
             .clip(shape)
             .clickable(onClick = onClick)
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = shape
             )
             .padding(horizontal = 8.dp, vertical = 3.dp),

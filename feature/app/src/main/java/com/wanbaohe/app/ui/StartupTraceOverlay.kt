@@ -128,7 +128,7 @@ fun StartupTraceOverlay(
                     },
                     modifier = Modifier.size(28.dp),
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.72f),
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.72f),
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                 ) {

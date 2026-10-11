@@ -317,7 +317,7 @@ private fun CircleActionButton(
                 .size(56.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .glassBackground(
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = RoundedCornerShape(16.dp)
                 )
                 .clickable(onClick = onClick),

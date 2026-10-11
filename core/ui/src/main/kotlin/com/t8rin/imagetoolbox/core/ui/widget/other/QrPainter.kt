@@ -442,7 +442,7 @@ fun defaultQrColors(): Pair<Color, Color> {
     val backgroundColor = if (settingsState.isNightMode) {
         MaterialTheme.colorScheme.onSurface
     } else {
-        MaterialTheme.colorScheme.surfaceContainerHigh
+        MaterialTheme.colorScheme.surfaceContainer
     }
 
     val foregroundColor = if (settingsState.isNightMode) {

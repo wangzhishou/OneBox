@@ -127,7 +127,7 @@ internal fun <T : Any> FilterItemContent(
 
             is PolarCoordinatesType -> {
                 EnhancedButtonGroup(
-                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
                     items = PolarCoordinatesType.entries.map { it.translatedName },
                     selectedIndex = PolarCoordinatesType.entries.indexOf(value),
                     onIndexChange = {

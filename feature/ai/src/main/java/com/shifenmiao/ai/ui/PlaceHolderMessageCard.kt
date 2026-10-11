@@ -688,7 +688,7 @@ private fun StatusCapsule(
         color = if (highlighted) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceContainerHigh
+            MaterialTheme.colorScheme.surfaceContainer
         },
         shape = MaterialTheme.shapes.large
     ) {

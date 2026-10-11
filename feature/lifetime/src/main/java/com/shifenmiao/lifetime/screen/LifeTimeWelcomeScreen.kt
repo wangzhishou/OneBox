@@ -54,7 +54,7 @@ fun LifeTimeWelcomeScreen(
                     .size(64.dp)
                     .clip(CircleShape)
                     .background(
-                        MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.5f)
+                        MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f)
                     ),
                 contentAlignment = Alignment.Center
             ) {

@@ -76,7 +76,7 @@ private fun BackgroundColorItem(
                 .background(
                     // 「原图」「透明」无实色,用中性色垫底便于辨识
                     if (background.isOriginal || background.isTransparent) {
-                        MaterialTheme.colorScheme.surfaceContainerHighest
+                        MaterialTheme.colorScheme.surfaceContainer
                     } else {
                         background.getColor()
                     },

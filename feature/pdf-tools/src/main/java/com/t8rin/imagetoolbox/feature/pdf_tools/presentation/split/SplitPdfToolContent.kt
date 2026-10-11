@@ -106,7 +106,7 @@ fun SplitPdfToolContent(
                     .padding(8.dp)
                     .container(
                         shape = ShapeDefaults.circle,
-                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         resultPadding = 0.dp
                     ),
                 visible = selectedPagesSize != 0

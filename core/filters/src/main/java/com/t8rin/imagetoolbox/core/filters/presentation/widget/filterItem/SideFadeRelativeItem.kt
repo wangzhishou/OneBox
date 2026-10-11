@@ -89,7 +89,7 @@ internal fun SideFadeRelativeItem(
                 )
             )
             EnhancedButtonGroup(
-                inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
                 items = FadeSide.entries.map { it.translatedName },
                 selectedIndex = FadeSide.entries.indexOf(sideFade),
                 onIndexChange = {

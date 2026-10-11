@@ -268,7 +268,7 @@ fun ConversionTab(
                                 AppTheme.colors.filledTonalButtonColors()
                             } else {
                                 ButtonDefaults.filledTonalButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
                                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }

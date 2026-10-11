@@ -76,6 +76,8 @@ import com.shifenmiao.lifetime.ui.TimeDisplayMode
 import com.shifenmiao.lifetime.util.localizedEventUnit
 import com.shifenmiao.lifetime.util.localizedPresetEventName
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
@@ -207,11 +209,12 @@ private fun DemoBanner(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
+    GlassSurface(
         onClick = onClick,
         modifier = modifier,
         shape = OneBoxDesignSystem.sectionCardShape,
-        color = MaterialTheme.colorScheme.primaryContainer
+        color = MaterialTheme.colorScheme.primaryContainer,
+        style = GlassStyle.Regular
     ) {
         Row(
             modifier = Modifier

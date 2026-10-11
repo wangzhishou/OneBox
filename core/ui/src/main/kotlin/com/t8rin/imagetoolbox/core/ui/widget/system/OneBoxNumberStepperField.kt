@@ -89,7 +89,7 @@ fun OneBoxNumberStepperField(
             },
             enabled = enabled && value > valueRange.first,
             modifier = Modifier.size(30.dp),
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
             forceMinimumInteractiveComponentSize = false,
         ) {
             Icon(
@@ -142,7 +142,7 @@ fun OneBoxNumberStepperField(
             },
             enabled = enabled && value < valueRange.last,
             modifier = Modifier.size(30.dp),
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
             forceMinimumInteractiveComponentSize = false,
         ) {
             Icon(

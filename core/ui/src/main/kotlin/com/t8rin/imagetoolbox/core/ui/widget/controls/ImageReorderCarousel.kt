@@ -142,7 +142,7 @@ fun ImageReorderCarousel(
             )
             EnhancedIconButton(
                 onClick = onNeedToAddImage,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 forceMinimumInteractiveComponentSize = false,
                 modifier = Modifier

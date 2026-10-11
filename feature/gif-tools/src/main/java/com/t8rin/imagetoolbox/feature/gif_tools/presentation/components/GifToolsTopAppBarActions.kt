@@ -83,7 +83,7 @@ internal fun RowScope.GifToolsTopAppBarActions(component: GifToolsComponent) {
             .padding(8.dp)
             .flatGlassContainer(
                 shape = CircleShape,
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 resultPadding = 0.dp
             ),
         visible = isGifToImage && pagesSize != 0

@@ -96,7 +96,7 @@ private fun AddImageButton(
     onLongClick: () -> Unit = {}
 ) {
     val shape = MaterialTheme.shapes.medium
-    val background = MaterialTheme.colorScheme.surfaceContainerHighest
+    val background = MaterialTheme.colorScheme.surfaceContainer
     Box(
         modifier = Modifier
             .fillMaxHeight()

@@ -168,7 +168,7 @@ fun FileReorderVerticalList(
             Spacer(Modifier.width(16.dp))
             EnhancedIconButton(
                 onClick = onNeedToAddFile,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 forceMinimumInteractiveComponentSize = false,
                 modifier = Modifier

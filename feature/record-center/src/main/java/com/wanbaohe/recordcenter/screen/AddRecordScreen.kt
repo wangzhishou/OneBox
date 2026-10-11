@@ -166,7 +166,7 @@ fun AddRecordScreen(component: RecordEditorComponent) {
                         shape = RoundedCornerShape(12.dp),
                         borderWidth = 0.dp,
                         containerAlpha = 0.4f,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                     ) {
                         Row(
                             modifier = Modifier

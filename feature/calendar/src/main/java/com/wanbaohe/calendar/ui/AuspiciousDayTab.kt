@@ -26,9 +26,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.CardDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -266,7 +266,7 @@ private fun HeaderCard(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        colors = tintedGlassCardColors(containerColor)
     ) {
         Row(
             modifier = Modifier
@@ -323,7 +323,7 @@ private fun ItemChip(
     val bgColor = when {
         isSelected && isAvoidMode -> MaterialTheme.colorScheme.error
         isSelected -> MaterialTheme.colorScheme.primaryContainer
-        else -> MaterialTheme.colorScheme.surfaceContainerHigh
+        else -> MaterialTheme.colorScheme.surfaceContainer
     }
     val contentColor = when {
         isSelected-> MaterialTheme.colorScheme.onPrimaryContainer
@@ -398,9 +398,6 @@ private fun AuspiciousDayCard(
             .fillMaxWidth()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Column(
             modifier = Modifier

@@ -48,6 +48,8 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.utils.getString
 import com.wanbaohe.bookkeeping.R
 import com.wanbaohe.bookkeeping.component.BookkeepingComponent
@@ -144,8 +146,11 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                            .glassBackground(
+                                style = GlassStyle.Thin,
+                                shape = RoundedCornerShape(50),
+                                color = MaterialTheme.colorScheme.surfaceContainer
+                            )
                             .padding(4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -187,7 +192,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                             shape = RoundedCornerShape(16.dp),
                             borderWidth = 0.dp,
                             containerAlpha = 0.7f,
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHighest)
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
                         ) {
                             Column(
                                 modifier = Modifier.padding(24.dp),
@@ -238,7 +243,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                         shape = RoundedCornerShape(12.dp),
                         borderWidth = 0.dp,
                         containerAlpha = 0.4f,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
                     ) {
                         Row(
                             modifier = Modifier
@@ -290,7 +295,7 @@ fun AddRecordScreen(component: BookkeepingComponent) {
                         .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
                     containerAlpha = 0.8f,
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHighest)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
                 ) {
                     Column(
                         modifier = Modifier
@@ -506,8 +511,11 @@ private fun InfoPill(
     onClick: (() -> Unit)? = null,
 ) {
     val baseModifier = modifier
-        .clip(RoundedCornerShape(18.dp))
-        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+        .glassBackground(
+            style = GlassStyle.Regular,
+            shape = RoundedCornerShape(18.dp),
+            color = MaterialTheme.colorScheme.surfaceContainer
+        )
     val finalModifier = if (onClick != null) {
         baseModifier.clickable(onClick = onClick)
     } else {
@@ -570,7 +578,7 @@ private fun KeypadButton(
         modifier = modifier.height(56.dp),
         shape = RoundedCornerShape(12.dp),
         borderWidth = 0.dp,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         containerAlpha = 0.4f,
         onClick = onClick
     ) {

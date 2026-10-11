@@ -164,7 +164,7 @@ fun MarqueeScreen(
                                 Icon(
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                                     contentDescription = stringResource(id = R.string.settings_close),
-                                    tint = MaterialTheme.colorScheme.surfaceContainerHighest
+                                    tint = MaterialTheme.colorScheme.surfaceContainer
                                 )
                             }
                         }

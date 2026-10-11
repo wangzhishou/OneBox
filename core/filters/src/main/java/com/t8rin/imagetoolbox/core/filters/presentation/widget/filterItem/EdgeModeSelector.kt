@@ -45,7 +45,7 @@ internal fun EdgeModeSelector(
     val entries = BlurEdgeMode.entries
 
     EnhancedButtonGroup(
-        inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
         items = entries.map { it.translatedName },
         selectedIndex = entries.indexOf(value),
         onIndexChange = {

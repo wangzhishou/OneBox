@@ -174,7 +174,7 @@ fun GlassComponentShowcaseSheet() {
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = colorScheme.surfaceContainerHigh,
+                        containerColor = colorScheme.surfaceContainer,
                         contentColor = colorScheme.onSurface,
                     ),
                     containerAlpha = selectedMode.style.backgroundAlpha,
@@ -192,7 +192,7 @@ fun GlassComponentShowcaseSheet() {
                     enabled = true,
                     shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = colorScheme.surfaceContainerHighest,
+                        containerColor = colorScheme.surfaceContainer,
                         contentColor = colorScheme.onSurface,
                     ),
                     containerAlpha = (selectedMode.style.backgroundAlpha + 0.03f).coerceAtMost(1f),
@@ -246,10 +246,10 @@ fun GlassComponentShowcaseSheet() {
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(20.dp),
                         style = selectedMode.style,
-                        color = colorScheme.surfaceContainerHighest,
+                        color = colorScheme.surfaceContainer,
                         contentColor = colorScheme.onSurface,
                         colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = colorScheme.surfaceContainerHighest,
+                            containerColor = colorScheme.surfaceContainer,
                             contentColor = colorScheme.onSurface,
                         ),
                     ) {
@@ -261,7 +261,7 @@ fun GlassComponentShowcaseSheet() {
                     onClick = { surfaceClicks++ },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(22.dp),
-                    color = colorScheme.surfaceContainerHigh,
+                    color = colorScheme.surfaceContainer,
                     style = selectedMode.style,
                     borderWidth = 0.5.dp,
                 ) {
@@ -306,7 +306,7 @@ fun GlassComponentShowcaseSheet() {
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
                 style = selectedMode.style,
-                color = colorScheme.surfaceContainerHigh,
+                color = colorScheme.surfaceContainer,
                 borderWidth = 0.5.dp,
             ) {
                 Column(
@@ -349,7 +349,7 @@ fun GlassComponentShowcaseSheet() {
                             ),
                             style = selectedMode.style,
                             checkedGlassColor = colorScheme.primaryContainer,
-                            uncheckedGlassColor = colorScheme.surfaceContainerHighest,
+                            uncheckedGlassColor = colorScheme.surfaceContainer,
                         )
                     }
 
@@ -361,7 +361,7 @@ fun GlassComponentShowcaseSheet() {
                                 Text(text = stringResource(R.string.demo_glass_showcase_chip_primary))
                             },
                             selectedColor = colorScheme.onSecondaryContainer,
-                            glassContainerColor = colorScheme.surfaceContainerHighest,
+                            glassContainerColor = colorScheme.surfaceContainer,
                             glassSelectedContainerColor = colorScheme.primaryContainer,
                             style = if (primaryChipSelected) GlassStyle.Medium else GlassStyle.Darker,
                         )
@@ -372,7 +372,7 @@ fun GlassComponentShowcaseSheet() {
                                 Text(text = stringResource(R.string.demo_glass_showcase_chip_secondary))
                             },
                             selectedColor = colorScheme.onTertiaryContainer,
-                            glassContainerColor = colorScheme.surfaceContainerHighest,
+                            glassContainerColor = colorScheme.surfaceContainer,
                             glassSelectedContainerColor = colorScheme.secondaryContainer,
                             style = if (secondaryChipSelected) GlassStyle.Medium else GlassStyle.Darker,
                         )
@@ -394,7 +394,7 @@ fun GlassComponentShowcaseSheet() {
                 isFocused = isInputFocused,
                 style = selectedMode.style,
                 shape = RoundedCornerShape(22.dp),
-                color = colorScheme.surfaceContainerHigh,
+                color = colorScheme.surfaceContainer,
                 contentPadding = PaddingValues(horizontal = 18.dp, vertical = 14.dp),
             ) {
                 Icon(
@@ -505,7 +505,7 @@ private fun ShowcaseIntroCard(
         modifier = Modifier.fillMaxWidth(),
         style = style,
         shape = RoundedCornerShape(28.dp),
-        color = colorScheme.surfaceContainerHigh,
+        color = colorScheme.surfaceContainer,
         borderWidth = 0.5.dp,
     ) {
         Column(

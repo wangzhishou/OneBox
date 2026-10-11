@@ -25,7 +25,7 @@ fun PageIndicator(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(horizontal = 12.dp, vertical = 6.dp)

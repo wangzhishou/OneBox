@@ -332,7 +332,7 @@ internal fun TTSSettingsContent(
                 onClick = { showResetConfirmDialog = true },
                 enabled = !isActionRunning,
                 modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             ) {
                 Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh, contentDescription = null)

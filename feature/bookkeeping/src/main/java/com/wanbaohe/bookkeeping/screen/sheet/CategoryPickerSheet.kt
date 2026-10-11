@@ -1,6 +1,5 @@
 package com.wanbaohe.bookkeeping.screen.sheet
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +25,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
 import com.wanbaohe.bookkeeping.R
 import com.wanbaohe.bookkeeping.model.CategoriesGrouped
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -204,8 +204,11 @@ private fun CategoryCell(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 56.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(containerColor)
+            .coloredGlass(
+                color = containerColor,
+                style = GlassStyle.Regular,
+                shape = RoundedCornerShape(16.dp),
+            )
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center,

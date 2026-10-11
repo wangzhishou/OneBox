@@ -634,7 +634,7 @@ private fun AIAssistantPaneContent(
             }
         }
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHighest)
+        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
 
         AIChatBody(
             appComponent = appComponent,

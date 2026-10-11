@@ -172,7 +172,7 @@ private fun IconOption(
             containerColor = if (isSelected) {
                 MaterialTheme.colorScheme.secondaryContainer
             } else {
-                MaterialTheme.colorScheme.surfaceContainerHighest
+                MaterialTheme.colorScheme.surfaceContainer
             },
             contentColor = if (isSelected) {
                 MaterialTheme.colorScheme.onSecondaryContainer

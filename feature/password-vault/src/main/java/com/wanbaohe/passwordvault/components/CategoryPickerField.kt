@@ -27,10 +27,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Tune
 /**
  * 分类选择器：
  * - 顶部一行：标签 + "管理" 图标按钮（点击打开 [com.shifenmiao.common.components.category.CategoryManagementDialog]）
- * - 主体：FlowRow chip 列表，已选中高亮
- *
- * 选中态使用 [MaterialTheme.colorScheme.primaryContainer]，
- * 未选中使用 [MaterialTheme.colorScheme.surfaceContainerHighest]，对比稳定。
+ * - 主体：FlowRow chip 列表(GlassFilterChip,选中态高亮由玻璃组件内部处理)
  */
 @Composable
 fun CategoryPickerField(

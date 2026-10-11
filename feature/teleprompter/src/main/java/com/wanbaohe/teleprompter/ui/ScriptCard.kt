@@ -59,7 +59,7 @@ fun ScriptCard(
         containerAlpha = 0.3f,
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
     ) {
         Column(

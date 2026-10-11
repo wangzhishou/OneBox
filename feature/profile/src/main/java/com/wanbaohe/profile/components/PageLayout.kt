@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +20,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.pay.alipay.PayPrice
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 
 @Composable
 internal fun PageLayout(
@@ -29,10 +29,7 @@ internal fun PageLayout(
 ) {
     GlassCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f),
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        ),
+        colors = tintedGlassCardColors(MaterialTheme.colorScheme.secondaryContainer),
     ) {
         Column(
             modifier = Modifier

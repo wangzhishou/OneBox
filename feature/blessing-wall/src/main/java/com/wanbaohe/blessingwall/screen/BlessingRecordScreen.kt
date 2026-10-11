@@ -46,6 +46,8 @@ import com.shifenmiao.base.ui.calendar.MonthCalendarGrid
 import com.shifenmiao.base.ui.picker.ChineseYearMonthPickerDialog
 import com.shifenmiao.model.remote.BlessingWallTabText
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.blessingwall.R
 import com.wanbaohe.blessingwall.component.BlessingRecordComponent
 import com.wanbaohe.blessingwall.model.BlessingCalendarDayLabel
@@ -291,9 +293,10 @@ private fun DailyRecordItem(
     } ?: record.date
     val activeTypes = BlessingType.entries.filter { (record.counts[it] ?: 0) > 0 }
 
-    Surface(
+    GlassSurface(
+        style = GlassStyle.Regular,
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {

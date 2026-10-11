@@ -138,7 +138,7 @@ private fun FileIcon(
         Box(
             modifier = modifier
                 .clip(RoundedCornerShape(6.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+                .background(MaterialTheme.colorScheme.surfaceContainer),
             contentAlignment = Alignment.Center
         ) {
             AsyncImage(
@@ -163,7 +163,7 @@ private fun FileIcon(
         val tint = if (item.isDirectory) {
             MaterialTheme.colorScheme.onPrimaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceContainerHighest
+            MaterialTheme.colorScheme.surfaceContainer
         }
 
         Icon(

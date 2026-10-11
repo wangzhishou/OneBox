@@ -454,8 +454,8 @@ private fun rememberRobotDynamicProperties(visualMode: RobotVisualMode = RobotVi
             rememberLottieDynamicProperty(
                 property = LottieProperty.GRADIENT_COLOR,
                 value = arrayOf(
-                    surfaceContainerHigh.toArgb(),
-                    surfaceContainerHighest.toArgb(),
+                    surfaceContainer.toArgb(),
+                    surfaceContainer.toArgb(),
                     primaryContainer.toArgb()
                 ),
                 keyPath = arrayOf("**", "HeadBackground", "**")
@@ -463,8 +463,8 @@ private fun rememberRobotDynamicProperties(visualMode: RobotVisualMode = RobotVi
             rememberLottieDynamicProperty(
                 property = LottieProperty.GRADIENT_COLOR,
                 value = arrayOf(
-                    surfaceContainerHigh.toArgb(),
-                    surfaceContainerHighest.toArgb(),
+                    surfaceContainer.toArgb(),
+                    surfaceContainer.toArgb(),
                     primaryContainer.toArgb()
                 ),
                 keyPath = arrayOf("**", "ArmLeftShape", "**")
@@ -472,8 +472,8 @@ private fun rememberRobotDynamicProperties(visualMode: RobotVisualMode = RobotVi
             rememberLottieDynamicProperty(
                 property = LottieProperty.GRADIENT_COLOR,
                 value = arrayOf(
-                    surfaceContainerHigh.toArgb(),
-                    surfaceContainerHighest.toArgb(),
+                    surfaceContainer.toArgb(),
+                    surfaceContainer.toArgb(),
                     primaryContainer.toArgb()
                 ),
                 keyPath = arrayOf("**", "ArmRightShape", "**")
@@ -496,9 +496,9 @@ private fun rememberRobotDynamicProperties(visualMode: RobotVisualMode = RobotVi
             rememberLottieDynamicProperty(
                 property = LottieProperty.GRADIENT_COLOR,
                 value = arrayOf(
-                    surfaceContainerHigh.toArgb(),
+                    surfaceContainer.toArgb(),
                     primaryContainer.toArgb(),
-                    surfaceContainerHighest.toArgb()
+                    surfaceContainer.toArgb()
                 ),
                 keyPath = arrayOf("**", "Body", "**")
             ),

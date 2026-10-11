@@ -669,7 +669,7 @@ private fun ReplyPreview(
             .clip(RoundedCornerShape(8.dp))
             .glassBackground(
                 style = GlassStyle.Thin,
-                color = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.3f),
+                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(8.dp),
             )
             .clickable(onClick = onCancelReply)
@@ -925,7 +925,7 @@ private fun PendingImageChip(
         modifier = Modifier
             .size(64.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .border(
                 width = 1.dp,
                 color = borderColor,
@@ -1012,7 +1012,7 @@ private fun CommentAvatar(
         modifier = modifier
             .size(size)
             .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+            .background(MaterialTheme.colorScheme.surfaceContainer),
         contentAlignment = Alignment.Center,
     ) {
         AsyncImage(

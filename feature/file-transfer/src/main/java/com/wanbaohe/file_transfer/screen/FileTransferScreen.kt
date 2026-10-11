@@ -37,7 +37,6 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -75,7 +74,9 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.model.transfer.ServerState
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.file_transfer.R
@@ -353,10 +354,10 @@ fun NetworkStatusCard(
     ipAddress: String?,
     isWifiConnected: Boolean
 ) {
-    Card(
+    GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isWifiConnected)
+        colors = tintedGlassCardColors(
+            if (isWifiConnected)
                 MaterialTheme.colorScheme.primaryContainer
             else
                 MaterialTheme.colorScheme.errorContainer
@@ -452,11 +453,9 @@ fun ServerStatusCard(
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceLarge))
 
         if (serverState is ServerState.Running && accessUrl != null) {
-            Card(
+            GlassCard(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer
-                ),
+                colors = tintedGlassCardColors(MaterialTheme.colorScheme.secondaryContainer),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
                 Row(
@@ -558,11 +557,8 @@ fun ServerStatusCard(
 
 @Composable
 fun QRCodeCard(qrCodeBitmap: Bitmap?) {
-    Card(
+    GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
@@ -684,7 +680,7 @@ fun SettingsCard(
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceLarge))
 
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHighest)
+        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
 
@@ -725,7 +721,7 @@ fun SettingsCard(
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHighest)
+        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
 

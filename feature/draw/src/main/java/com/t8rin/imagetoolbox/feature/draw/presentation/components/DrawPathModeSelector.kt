@@ -101,7 +101,7 @@ fun DrawPathModeSelector(
                     }
                 }
             }.value,
-            activeButtonColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            activeButtonColor = MaterialTheme.colorScheme.surfaceContainer,
             itemContent = {
                 Icon(
                     imageVector = values[it].getIcon(),

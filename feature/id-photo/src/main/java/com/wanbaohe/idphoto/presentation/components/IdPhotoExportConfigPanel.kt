@@ -1,7 +1,6 @@
 package com.wanbaohe.idphoto.presentation.components
 
 import android.graphics.Bitmap
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,8 +23,10 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.image.model.ImageFormat
 import com.t8rin.imagetoolbox.core.domain.utils.humanFileSize
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.idphoto.R
 import com.wanbaohe.idphoto.domain.IdPhotoExportConfig
@@ -243,8 +243,11 @@ fun IdPhotoExportInfoRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .fillMaxWidth()
-            .clip(ShapeDefaults.large)
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = ShapeDefaults.large,
+                color = MaterialTheme.colorScheme.surfaceContainer
+            )
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         ExportInfoItem(

@@ -43,6 +43,8 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
@@ -182,12 +184,13 @@ fun ExpandableMarkdownContent(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                MaterialTheme.colorScheme.surfaceContainerHigh,
-                MaterialTheme.shapes.medium.copy(
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = MaterialTheme.shapes.medium.copy(
                     bottomEnd = CornerSize(0.0.dp),
                     bottomStart = CornerSize(0.0.dp)
-                )
+                ),
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             .clickable {
                 AppSharedStorage.saveIsExpandedReasoningChat(!currentExpandedReasoningChat.value)

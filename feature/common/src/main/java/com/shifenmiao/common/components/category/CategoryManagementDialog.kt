@@ -261,7 +261,7 @@ fun <T : ManageableItem> CategoryManagementDialog(
  * │                         │
  * └─────────────────────────┘
  *
- * 不画 border，仅用 surfaceContainerLow 色块 + 圆角；拖拽时切到 surfaceContainerHighest 提示。
+ * 玻璃色块 + 圆角（GlassStyle.Regular)；拖拽时切到 GlassStyle.Medium 提示。
  */
 @Composable
 private fun <T : ManageableItem> CategoryGridCell(

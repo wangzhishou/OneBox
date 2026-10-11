@@ -126,7 +126,7 @@ private fun HourlyForecastPlaceholder(currentTemp: String) {
     ) {
         itemsIndexed(slots) { _, slot ->
             val bgColor = if (slot.isCurrent) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
-            else MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.5f)
+            else MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f)
             val textColor = if (slot.isCurrent) primary else onSurface.copy(alpha = 0.6f)
 
             GlassSurface(

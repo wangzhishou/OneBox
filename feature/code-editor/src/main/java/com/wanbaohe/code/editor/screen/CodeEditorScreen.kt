@@ -190,7 +190,7 @@ fun CodeEditorScreen(
                 EnhancedDropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer
                 ) {
                     if (!component.isEditMode()) {
                         DropdownMenuItem(

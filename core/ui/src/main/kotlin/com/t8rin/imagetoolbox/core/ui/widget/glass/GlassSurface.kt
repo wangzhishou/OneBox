@@ -123,7 +123,7 @@ fun GlassSurface(
             }
 
             else -> {
-                MaterialTheme.colorScheme.surfaceContainerLow
+                MaterialTheme.colorScheme.surfaceContainer
             }
         }.withGlassBaseAlpha(settingsState.glassBaseAlpha)
         Box(

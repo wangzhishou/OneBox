@@ -103,7 +103,7 @@ internal fun ColumnScope.ZipControls(
                     shape = MaterialTheme.shapes.extraLarge,
                     color = MaterialTheme
                         .colorScheme
-                        .surfaceContainerHighest,
+                        .surfaceContainer,
                     resultPadding = 0.dp
                 )
                 .padding(16.dp)

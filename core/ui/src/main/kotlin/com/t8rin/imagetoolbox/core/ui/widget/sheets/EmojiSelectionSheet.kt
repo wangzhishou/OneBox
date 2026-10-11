@@ -248,7 +248,7 @@ fun EmojiSelectionSheet(
                                         ).value
                                     )
                                     .container(
-                                        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                        color = MaterialTheme.colorScheme.surfaceContainer,
                                         resultPadding = 0.dp,
                                         shape = shapeByInteraction(
                                             shape = ShapeDefaults.default,

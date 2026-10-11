@@ -438,7 +438,7 @@ fun CreateThemeCard(onClick: () -> Unit) {
             modifier = Modifier
                 .size(36.dp)
                 .glassBackground(
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = CircleShape
                 ),
             contentAlignment = Alignment.Center

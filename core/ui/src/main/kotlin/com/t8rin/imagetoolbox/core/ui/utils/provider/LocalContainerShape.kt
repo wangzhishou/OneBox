@@ -32,8 +32,8 @@ val LocalContainerColor = compositionLocalOf<Color?> { null }
 val SafeLocalContainerColor
     @Composable
     get() = LocalContainerColor.current?.takeOrElse {
-        MaterialTheme.colorScheme.surfaceContainerLow
-    } ?: MaterialTheme.colorScheme.surfaceContainerLow
+        MaterialTheme.colorScheme.surfaceContainer
+    } ?: MaterialTheme.colorScheme.surfaceContainer
 
 @Composable
 fun ProvideContainerDefaults(

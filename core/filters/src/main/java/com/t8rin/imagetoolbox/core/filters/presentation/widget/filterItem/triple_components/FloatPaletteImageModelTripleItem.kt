@@ -108,7 +108,7 @@ internal fun FloatPaletteImageModelTripleItem(
             }
         }
         EnhancedButtonGroup(
-            inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            inactiveButtonColor = MaterialTheme.colorScheme.surfaceContainer,
             items = entries.map { it.translatedName },
             selectedIndex = entries.indexOf(colorSpace1),
             onIndexChange = {

@@ -36,7 +36,7 @@ fun A2uiSkeletonPlaceholder(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.medium)
             .background(
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = MaterialTheme.shapes.medium
             )
             .padding(16.dp),
@@ -48,7 +48,7 @@ fun A2uiSkeletonPlaceholder(
                 .width(120.dp)
                 .height(16.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .shimmerLoading()
         )
 
@@ -62,7 +62,7 @@ fun A2uiSkeletonPlaceholder(
                     .fillMaxWidth()
                     .height(12.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
                     .shimmerLoading()
             )
             // 中等文本行
@@ -71,7 +71,7 @@ fun A2uiSkeletonPlaceholder(
                     .fillMaxWidth(0.75f)
                     .height(12.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
                     .shimmerLoading()
             )
             // 短文本行
@@ -80,7 +80,7 @@ fun A2uiSkeletonPlaceholder(
                     .fillMaxWidth(0.5f)
                     .height(12.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
                     .shimmerLoading()
             )
         }
@@ -94,7 +94,7 @@ fun A2uiSkeletonPlaceholder(
                 .width(80.dp)
                 .height(32.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .shimmerLoading()
         )
     }

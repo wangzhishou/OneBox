@@ -259,7 +259,7 @@ private fun ImportEntry(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .clip(ShapeDefaults.default)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
@@ -313,7 +313,7 @@ private fun RecentProjectsSection(
                 modifier = Modifier
                     .size(88.dp)
                     .clip(ShapeDefaults.default)
-                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
                     .clickable { onProjectClick(entry.uri.toUri()) }
             )
         }

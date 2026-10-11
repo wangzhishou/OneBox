@@ -250,9 +250,6 @@ fun ScheduleScreen(component: ScheduleComponent) {
                                 },
                             shape = MaterialTheme.shapes.medium,
                             borderWidth = 0.dp,
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-                            )
                         ) {
                             Row(
                                 modifier = Modifier
@@ -339,7 +336,6 @@ private fun SyncStatusCard(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         borderWidth = 0.dp,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),

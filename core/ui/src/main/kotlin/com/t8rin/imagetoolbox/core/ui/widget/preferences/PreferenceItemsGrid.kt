@@ -30,8 +30,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -50,6 +48,8 @@ import androidx.annotation.StringRes
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 
 @Composable
 fun PreferenceItemsGrid(
@@ -102,10 +102,10 @@ fun preferenceItemThemeForIndex(index: Int): PreferenceItemTheme = when (index %
 
 @Composable
 fun preferenceItemContainerColor(theme: PreferenceItemTheme): Color = when (theme) {
-    PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = AppTheme.dimens.containerAlpha)
+    PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
+    PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
+    PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
+    PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainer
 }
 
 @Composable
@@ -178,11 +178,11 @@ fun TypeSelectionCard(
         PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.65f)
     }
 
-    Card(
+    GlassCard(
+        onClick = onClick,
         modifier = modifier.height(200.dp),
         shape = RoundedCornerShape(16.dp),
-        onClick = onClick,
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        colors = tintedGlassCardColors(containerColor)
     ) {
         Column(
             modifier = Modifier

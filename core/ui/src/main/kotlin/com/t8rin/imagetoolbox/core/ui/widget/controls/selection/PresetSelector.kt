@@ -199,7 +199,7 @@ fun PresetSelector(
                             aspectRatios = aspectRatios,
                             shape = ShapeDefaults.top,
                             color = MaterialTheme.colorScheme.surface,
-                            unselectedCardColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                            unselectedCardColor = MaterialTheme.colorScheme.surfaceContainer
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         PreferenceRowSwitch(

@@ -101,7 +101,7 @@ private fun AddSizeItem(
         onClick = onClick,
         modifier = Modifier.size(60.dp),
         shape = shape,
-        color = MaterialTheme.colorScheme.surfaceContainerHighest
+        color = MaterialTheme.colorScheme.surfaceContainer
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -136,7 +136,7 @@ private fun SizePresetItem(
         color = if (isSelected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceContainerHighest
+            MaterialTheme.colorScheme.surfaceContainer
         }
     ) {
         // 主卡片

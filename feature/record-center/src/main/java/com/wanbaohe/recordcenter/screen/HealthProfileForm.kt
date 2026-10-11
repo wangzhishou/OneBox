@@ -159,7 +159,7 @@ private fun GenderOption(
     val containerColor = if (selected) {
         MaterialTheme.colorScheme.primaryContainer
     } else {
-        MaterialTheme.colorScheme.surfaceContainerHigh
+        MaterialTheme.colorScheme.surfaceContainer
     }
     val contentColor = if (selected) {
         MaterialTheme.colorScheme.onPrimaryContainer

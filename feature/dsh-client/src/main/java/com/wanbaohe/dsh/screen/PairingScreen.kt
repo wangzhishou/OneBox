@@ -25,8 +25,6 @@ import androidx.compose.material.icons.outlined.Verified
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -54,6 +52,7 @@ import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.dsh.connection.PairOffer
@@ -421,7 +420,7 @@ private fun OfferCard(
     val anchored = anchoredHostCode != null
     val matched = anchored && offer.hostCode == anchoredHostCode
     val disabled = anchored && !matched
-    Card(
+    GlassCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 10.dp)
@@ -430,11 +429,9 @@ private fun OfferCard(
                 onLongClick = { if (disabled) onConfirm() }
             ),
         colors = if (matched) {
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
+            tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
         } else {
-            CardDefaults.cardColors()
+            null
         }
     ) {
         Row(

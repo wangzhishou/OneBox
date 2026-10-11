@@ -61,6 +61,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineChatBubble
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNotifications
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.notification.R
 import com.wanbaohe.notification.component.NotificationComponent
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
@@ -370,9 +372,10 @@ private fun MessageCard(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(
-                                MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.6f)
+                            .glassBackground(
+                                style = GlassStyle.Thick,
+                                shape = RoundedCornerShape(8.dp),
+                                color = MaterialTheme.colorScheme.surfaceContainer,
                             )
                             .padding(horizontal = 10.dp, vertical = 8.dp),
                     ) {

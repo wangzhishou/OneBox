@@ -859,7 +859,7 @@ private fun RatioButton(
             .background(
                 if (selected) {
                     MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                } else MaterialTheme.colorScheme.surfaceContainerHigh
+                } else MaterialTheme.colorScheme.surfaceContainer
             )
             .then(
                 if (selected) {
@@ -916,7 +916,7 @@ private fun PanelButton(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .clip(ShapeDefaults.default)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .clickable(onClick = onClick)
             .padding(vertical = 8.dp)
     ) {

@@ -130,7 +130,7 @@ fun PickColorFromImageSheet(
                             modifier = Modifier
                                 .padding(end = 16.dp)
                                 .flatGlassContainer(
-                                    color = MaterialTheme.colorScheme.surfaceContainerHighest
+                                    color = MaterialTheme.colorScheme.surfaceContainer
                                 )
                                 .padding(4.dp)
                         ) {

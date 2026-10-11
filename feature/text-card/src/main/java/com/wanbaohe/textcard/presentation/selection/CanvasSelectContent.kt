@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,6 +44,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineBorderColor
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.CanvasSpec
 import com.wanbaohe.textcard.domain.model.ElementLayer
@@ -157,10 +157,7 @@ private fun CanvasCard(
         onClick = onClick,
         shape = RoundedCornerShape(20.dp),
         colors = if (selected) {
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+            tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
         } else null,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = modifier
@@ -248,10 +245,7 @@ private fun CustomCanvasCard(
         },
         shape = RoundedCornerShape(20.dp),
         colors = if (selected) {
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+            tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
         } else null,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = modifier

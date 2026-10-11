@@ -78,7 +78,7 @@ fun BaZiTabSkeleton(modifier: Modifier = Modifier) {
 /**
  * 扁平色块占位 — 纯单色，无渐变/shimmer
  *
- * 使用 [MaterialTheme.colorScheme.surfaceContainerLowest] 自动适配亮暗主题
+ * 使用 [MaterialTheme.colorScheme.surfaceContainer] 自动适配亮暗主题
  */
 @Composable
 private fun SkeletonBlock(
@@ -92,7 +92,7 @@ private fun SkeletonBlock(
             .height(height.dp)
             .glassBackground(
                 shape = shape,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f)
             )
     )
 }

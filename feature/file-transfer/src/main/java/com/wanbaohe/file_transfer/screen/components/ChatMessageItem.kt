@@ -21,11 +21,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.file_transfer.R
 import com.shifenmiao.model.transfer.ChatMessage
 import com.shifenmiao.model.transfer.MessageType
@@ -117,15 +120,25 @@ fun ChatMessageItem(
     ) {
         Surface(
             shape = RoundedCornerShape(AppTheme.dimens.cornerRadiusNormal),
-            color = if (isFromMobile) {
-                MaterialTheme.colorScheme.primaryContainer
+            color = Color.Transparent,
+            contentColor = if (isFromMobile) {
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else {
-                MaterialTheme.colorScheme.secondaryContainer
+                MaterialTheme.colorScheme.onSecondaryContainer
             },
             tonalElevation = 0.dp,
             shadowElevation = 0.dp,
             modifier = Modifier
                 .padding(horizontal = AppTheme.dimens.paddingExtraSmall)
+                .glassBackground(
+                    style = GlassStyle.Regular,
+                    shape = RoundedCornerShape(AppTheme.dimens.cornerRadiusNormal),
+                    color = if (isFromMobile) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.secondaryContainer
+                    }
+                )
                 .then(
                     if (onFileClick != null) {
                         Modifier.clickable { onFileClick() }

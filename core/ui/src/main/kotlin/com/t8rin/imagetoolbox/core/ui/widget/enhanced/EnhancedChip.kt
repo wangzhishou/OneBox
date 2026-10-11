@@ -55,7 +55,7 @@ fun EnhancedChip(
     contentPadding: PaddingValues = PaddingValues(6.dp),
     selectedColor: Color,
     selectedContentColor: Color = MaterialTheme.colorScheme.contentColorFor(selectedColor),
-    unselectedColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    unselectedColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     unselectedContentColor: Color = MaterialTheme.colorScheme.onSurface,
     shape: Shape = OneBoxDesignSystem.compactBadgeShape,
     pressedShape: Shape = OneBoxDesignSystem.compactBadgeShape,

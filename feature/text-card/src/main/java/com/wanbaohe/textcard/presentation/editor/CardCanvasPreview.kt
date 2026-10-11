@@ -758,7 +758,7 @@ private fun CardImageElement(
                 contentAlignment = Alignment.Center,
                 modifier = boxModifier
                     .clip(RoundedCornerShape(if (element.fullCanvas) 0.dp else 12.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
             ) {
                 if (element.status == ImageElementStatus.Loading && element.uri.isNotBlank()) {
                     Picture(

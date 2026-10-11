@@ -80,12 +80,12 @@ fun ImageUploadGallery(
                         color = when {
                             image.isError -> MaterialTheme.colorScheme.error
                             image.isUploaded -> MaterialTheme.colorScheme.onPrimaryContainer
-                            else -> MaterialTheme.colorScheme.surfaceContainerHighest
+                            else -> MaterialTheme.colorScheme.surfaceContainer
                         },
                         shape = shape
                     )
                     .glassBackground(
-                        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        color = MaterialTheme.colorScheme.surfaceContainer,
                         shape = shape
                     )
             ) {

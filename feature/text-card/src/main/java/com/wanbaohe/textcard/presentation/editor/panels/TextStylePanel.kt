@@ -162,7 +162,7 @@ fun TextStylePanel(
                             shape = ShapeDefaults.default,
                             color = if (selected) {
                                 MaterialTheme.colorScheme.primaryContainer
-                            } else MaterialTheme.colorScheme.surfaceContainerHigh
+                            } else MaterialTheme.colorScheme.surfaceContainer
                         )
                         .clickable { component.selectTextBlock(item.id) }
                         .padding(horizontal = 6.dp)

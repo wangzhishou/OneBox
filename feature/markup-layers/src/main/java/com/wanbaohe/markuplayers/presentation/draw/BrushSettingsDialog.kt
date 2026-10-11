@@ -219,7 +219,7 @@ private fun BrushChip(
             .background(
                 if (selected) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainerHigh
+                } else MaterialTheme.colorScheme.surfaceContainer
             )
             .then(
                 if (selected) {

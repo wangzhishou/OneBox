@@ -142,7 +142,7 @@ internal fun PdfPagesRotationGrid(
 
             EnhancedButton(
                 onClick = onRotateAll,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 contentPadding = PaddingValues(start = 8.dp, end = 12.dp),
                 modifier = Modifier

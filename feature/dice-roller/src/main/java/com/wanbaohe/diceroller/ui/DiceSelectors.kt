@@ -70,7 +70,7 @@ private fun DiceTypeChip(
         targetValue = if (isSelected)
             MaterialTheme.colorScheme.primaryContainer
         else
-            MaterialTheme.colorScheme.surfaceContainerHighest,
+            MaterialTheme.colorScheme.surfaceContainer,
         label = "chip_color"
     )
     val contentColor by animateColorAsState(
@@ -137,7 +137,7 @@ fun DiceCountSelector(
                 targetValue = if (isSelected)
                     MaterialTheme.colorScheme.secondary
                 else
-                    MaterialTheme.colorScheme.surfaceContainerHighest,
+                    MaterialTheme.colorScheme.surfaceContainer,
                 label = "count_chip_color_$n"
             )
             val contentColor by animateColorAsState(

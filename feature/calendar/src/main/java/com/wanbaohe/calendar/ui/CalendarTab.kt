@@ -280,7 +280,7 @@ fun CalendarTab(
                     items = state.yiJi.ji,
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                     accentColor = MaterialTheme.colorScheme.error,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     chipContainerColor = MaterialTheme.colorScheme.errorContainer,
                     chipContentColor = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier
@@ -361,9 +361,6 @@ private fun TimeSlotsCard(timeSlots: List<LunarTimeSlot>) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -511,9 +508,6 @@ private fun FotoCard(foto: FotoData, solarYear: Int) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-        )
     ) {
         Column(
             modifier = Modifier
@@ -688,9 +682,6 @@ private fun TaoCard(tao: TaoData, solarYear: Int) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-        )
     ) {
         Column(
             modifier = Modifier
@@ -953,9 +944,6 @@ private fun DetailInfoCard(lunar: LunarDate) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-        )
     ) {
         Column(
             modifier = Modifier
@@ -1170,7 +1158,7 @@ private fun DetailMiniInfoItem(label: String, value: String) {
             modifier = Modifier
                 .glassBackground(
                     shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest
+                    color = MaterialTheme.colorScheme.surfaceContainer
                 )
                 .padding(horizontal = 12.dp, vertical = 6.dp),
             contentAlignment = Alignment.Center
@@ -1198,7 +1186,7 @@ private fun PillTextContent(content: String) {
             modifier = Modifier
                 .glassBackground(
                     shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest
+                    color = MaterialTheme.colorScheme.surfaceContainer
                 )
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
@@ -1365,7 +1353,7 @@ private fun InfoChip(icon: ImageVector, label: String) {
         modifier = Modifier
             .glassBackground(
                 shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHighest
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
@@ -1605,9 +1593,6 @@ private fun SelectedDayCard(
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(
@@ -1863,9 +1848,6 @@ private fun UpcomingFestivalItemCard(item: UpcomingFestivalItem) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Row(
             modifier = Modifier

@@ -150,7 +150,7 @@ private fun EmptyStateActionCard(
                     color = if (action.emphasized) {
                         MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.14f)
                     } else {
-                        MaterialTheme.colorScheme.surfaceContainerHighest
+                        MaterialTheme.colorScheme.surfaceContainer
                     },
                 ),
             contentAlignment = Alignment.Center,

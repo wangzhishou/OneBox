@@ -1,7 +1,6 @@
 package com.wanbaohe.camera.watermark.presentation.components
 
 import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.camera.watermark.R
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -78,11 +79,11 @@ private fun AddImageButton(
     val shape = MaterialTheme.shapes.medium
     Box(
         modifier = Modifier
-            .background(
-                MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = shape
+            .glassBackground(
+                style = GlassStyle.Medium,
+                shape = shape,
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
-            .clip(shape)
             .size(60.dp)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center

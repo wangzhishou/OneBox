@@ -329,7 +329,7 @@ private fun ModelDistributionItem(
             progress = { progress.coerceIn(0f, 1f) },
             modifier = Modifier.fillMaxWidth(),
             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
-            trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            trackColor = MaterialTheme.colorScheme.surfaceContainer,
         )
 
         Row(

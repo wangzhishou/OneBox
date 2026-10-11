@@ -41,7 +41,7 @@ data class CodeBlockStyle(
 private val DefaultCodeBlockTextStyle = TextStyle(
     fontFamily = FontFamily.Monospace
 )
-internal val DefaultCodeBlockBackgroundColor: Color = AppTheme.colorScheme.surfaceContainerHighest
+internal val DefaultCodeBlockBackgroundColor: Color = AppTheme.colorScheme.surfaceContainer
 private val DefaultCodeBlockModifier: Modifier =
     Modifier.background(color = DefaultCodeBlockBackgroundColor)
 private val DefaultCodeBlockPadding: TextUnit = 16.sp

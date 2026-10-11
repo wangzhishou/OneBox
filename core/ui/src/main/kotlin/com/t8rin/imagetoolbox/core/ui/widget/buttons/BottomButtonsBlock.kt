@@ -263,7 +263,7 @@ fun BottomButtonsBlock(
                                 type = EnhancedFloatingActionButtonType.Compact,
                                 containerColor = takeColorFromScheme {
                                     if (isPrimaryButtonEnabled) primaryButtonContainerColor
-                                    else surfaceContainerHighest
+                                    else surfaceContainer
                                 },
                                 contentColor = takeColorFromScheme {
                                     if (isPrimaryButtonEnabled) primaryButtonContentColor
@@ -364,7 +364,7 @@ fun BottomButtonsBlock(
                         type = EnhancedFloatingActionButtonType.Compact,
                         containerColor = takeColorFromScheme {
                             if (isPrimaryButtonEnabled) primaryButtonContainerColor
-                            else surfaceContainerHighest
+                            else surfaceContainer
                         },
                         contentColor = takeColorFromScheme {
                             if (isPrimaryButtonEnabled) primaryButtonContentColor

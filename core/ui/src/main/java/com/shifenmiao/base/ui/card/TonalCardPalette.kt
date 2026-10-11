@@ -39,7 +39,7 @@ object TonalCardPaletteDefaults {
         defaultIconContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
         defaultTagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
         defaultTagTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-        defaultActionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = AppTheme.dimens.containerAlpha),
+        defaultActionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = AppTheme.dimens.containerAlpha),
         defaultActionContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     ): TonalCardPalette {
         val colorScheme = MaterialTheme.colorScheme
@@ -79,7 +79,7 @@ object TonalCardPaletteDefaults {
                         containerColor = colorScheme.secondaryContainer.copy(alpha = elevatedAlpha),
                         iconContentColor = colorScheme.onSecondaryContainer,
                         iconContainerColor = colorScheme.secondaryContainer,
-                        actionContainerColor = colorScheme.surfaceContainerHighest.copy(alpha = elevatedAlpha),
+                        actionContainerColor = colorScheme.surfaceContainer.copy(alpha = elevatedAlpha),
                         actionContentColor = colorScheme.onSurfaceVariant,
                         tagBackgroundColor = colorScheme.secondaryContainer.copy(alpha = 0.65f),
                         tagTextColor = colorScheme.onSecondaryContainer,
@@ -95,7 +95,7 @@ object TonalCardPaletteDefaults {
                         containerColor = colorScheme.tertiaryContainer.copy(alpha = highlightAlpha),
                         iconContentColor = colorScheme.onTertiaryContainer,
                         iconContainerColor = colorScheme.tertiaryContainer,
-                        actionContainerColor = colorScheme.surfaceContainerHighest,
+                        actionContainerColor = colorScheme.surfaceContainer,
                         actionContentColor = colorScheme.onSurface,
                         tagBackgroundColor = colorScheme.tertiaryContainer.copy(alpha = 0.65f),
                         tagTextColor = colorScheme.onTertiaryContainer,

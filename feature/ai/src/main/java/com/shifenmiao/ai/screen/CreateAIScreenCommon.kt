@@ -51,7 +51,7 @@ internal fun AIModelSelectorChip(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = MaterialTheme.shapes.large,
             )
             .clickable(onClick = onClick)

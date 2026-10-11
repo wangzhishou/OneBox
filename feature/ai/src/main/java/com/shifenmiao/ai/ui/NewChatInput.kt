@@ -345,7 +345,7 @@ private fun StandardInputSection(
                             GlassStyle.None
                         },
                         color = if (inputState.value.inputMore) {
-                            MaterialTheme.colorScheme.surfaceContainerHighest
+                            MaterialTheme.colorScheme.surfaceContainer
                         } else {
                             Color.Transparent
                         },
@@ -537,7 +537,7 @@ private fun AttachmentItem(
             alpha = 0.5f
         )
 
-        else -> MaterialTheme.colorScheme.surfaceContainerHighest
+        else -> MaterialTheme.colorScheme.surfaceContainer
     }
 
     val stateText = getStateText(item)
@@ -746,7 +746,7 @@ private fun ActionButton(
                 .clip(CircleShape)
                 .glassBackground(
                     style = GlassStyle.Dense,
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = CircleShape,
                     borderWidth = 0.dp
                 )
@@ -768,7 +768,7 @@ private fun ActionButton(
                 .clip(CircleShape)
                 .glassBackground(
                     style = GlassStyle.Dense,
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = CircleShape,
                     borderWidth = 0.dp
                 )
@@ -789,7 +789,7 @@ private fun ActionButton(
                 .clip(CircleShape)
                 .glassBackground(
                     style = GlassStyle.Dense,
-                    color = if (sendDisabled) MaterialTheme.colorScheme.surfaceContainerHighest
+                    color = if (sendDisabled) MaterialTheme.colorScheme.surfaceContainer
                     else activeContainerColor,
                     shape = CircleShape,
                     borderWidth = 0.dp

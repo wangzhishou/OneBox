@@ -135,7 +135,7 @@ fun IdPhotoCropper(
 
                 val borderStrokePx = 10.dp.toPx()
                 drawRect(
-                    color = AppTheme.colorScheme.surfaceContainerHighest,
+                    color = AppTheme.colorScheme.surfaceContainer,
                     topLeft = Offset(offsetX, offsetY),
                     size = Size(overlayWidth, overlayHeight),
                     style = Stroke(width = borderStrokePx)

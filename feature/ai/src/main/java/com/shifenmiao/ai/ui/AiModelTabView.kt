@@ -78,7 +78,7 @@ fun AiModelTabView(
                     val containerColor = if (isSelected) {
                         MaterialTheme.colorScheme.secondaryContainer
                     } else {
-                        MaterialTheme.colorScheme.surfaceContainerHigh
+                        MaterialTheme.colorScheme.surfaceContainer
                     }
                     val displayText = if (isCustomModel) {
                         if (aiModel.title.trim()

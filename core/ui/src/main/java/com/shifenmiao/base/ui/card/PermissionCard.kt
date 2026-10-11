@@ -35,6 +35,7 @@ import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.manageAppAllFilesIntent
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineManageSearch
 
 /**
@@ -84,9 +85,7 @@ fun AllFilesAccessPermissionCard(
     if (needAllFilesAccessCard) {
         GlassCard(
             modifier = modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer
-            ),
+            colors = tintedGlassCardColors(MaterialTheme.colorScheme.tertiaryContainer),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Row(

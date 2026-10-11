@@ -218,7 +218,7 @@ private fun ShapeKindButton(
             .background(
                 if (selected) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainerHigh
+                } else MaterialTheme.colorScheme.surfaceContainer
             )
             .then(
                 if (selected) {
@@ -258,7 +258,7 @@ private fun StyleSegmentedRow(
         modifier = Modifier
             .fillMaxWidth()
             .clip(ShapeDefaults.default)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .padding(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {

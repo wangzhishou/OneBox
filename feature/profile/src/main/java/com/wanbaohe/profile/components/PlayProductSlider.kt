@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +43,7 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import com.wanbaohe.profile.components.modifier.pagerAnimation
 import kotlinx.coroutines.launch
 
@@ -147,7 +147,7 @@ internal fun PlayProductSlider(
                         color = if (pagerState.currentPage == index) {
                             MaterialTheme.colorScheme.primaryContainer
                         } else {
-                            MaterialTheme.colorScheme.surfaceContainerHigh
+                            MaterialTheme.colorScheme.surfaceContainer
                         }
                     ),
                 text = {
@@ -189,10 +189,7 @@ private fun PlayProductCard(
     val tier = PlayProductTierMap[product.productId]
     GlassCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f),
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        ),
+        colors = tintedGlassCardColors(MaterialTheme.colorScheme.secondaryContainer),
     ) {
         Column(
             modifier = Modifier

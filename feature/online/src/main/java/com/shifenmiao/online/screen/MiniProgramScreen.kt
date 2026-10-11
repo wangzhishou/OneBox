@@ -1,7 +1,6 @@
 package com.shifenmiao.online.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,6 +31,8 @@ import com.shifenmiao.model.DataItem
 import com.shifenmiao.model.wechat.Wechat
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
 
 @Composable
 fun MiniProgramScreen(
@@ -89,8 +90,9 @@ fun MiniProgramScreen(
                         Spacer(modifier = Modifier.padding(AppTheme.dimens.paddingNormal))
                         Column(
                             modifier = Modifier
-                                .background(
+                                .coloredGlass(
                                     color = MaterialTheme.colorScheme.primaryContainer,
+                                    style = GlassStyle.Regular,
                                     shape = MaterialTheme.shapes.medium
                                 )
                                 .padding(AppTheme.dimens.paddingLarge),

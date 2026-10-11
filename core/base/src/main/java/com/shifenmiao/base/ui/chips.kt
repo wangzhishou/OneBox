@@ -39,7 +39,7 @@ fun CancelableChip(
     onClick: ((SuggestionModel) -> Unit)? = null,
     onCancel: ((SuggestionModel) -> Unit)? = null,
     textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer
 ) {
     val shape = MaterialTheme.shapes.large
     Row(

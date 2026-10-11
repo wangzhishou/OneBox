@@ -115,7 +115,7 @@ fun UrisPreview(
                         modifier = Modifier.container(
                             shape = ShapeDefaults.extraSmall,
                             resultPadding = 0.dp,
-                            color = MaterialTheme.colorScheme.surfaceContainerHighest
+                            color = MaterialTheme.colorScheme.surfaceContainer
                         )
                     ) {
                         var isLoaded by remember(uri) {
@@ -216,7 +216,7 @@ fun UrisPreview(
                                 .container(
                                     shape = ShapeDefaults.extraSmall,
                                     resultPadding = 0.dp,
-                                    color = MaterialTheme.colorScheme.surfaceContainerHigh
+                                    color = MaterialTheme.colorScheme.surfaceContainer
                                 )
                                 .width(width)
                                 .aspectRatio(1f)

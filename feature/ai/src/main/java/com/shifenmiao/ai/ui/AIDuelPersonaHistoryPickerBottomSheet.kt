@@ -1,6 +1,5 @@
 package com.shifenmiao.ai.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 
 @Composable
@@ -93,9 +94,10 @@ fun AIDuelPersonaHistoryPickerBottomSheet(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(
-                                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                                    shape = RoundedCornerShape(16.dp)
+                                .glassBackground(
+                                    style = GlassStyle.Regular,
+                                    shape = RoundedCornerShape(16.dp),
+                                    color = MaterialTheme.colorScheme.surfaceContainer
                                 )
                                 .clickable {
                                     onSelected(persona)

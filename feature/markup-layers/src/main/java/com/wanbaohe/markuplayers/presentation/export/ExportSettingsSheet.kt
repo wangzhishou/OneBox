@@ -2,7 +2,6 @@ package com.wanbaohe.markuplayers.presentation.export
 
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +24,6 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.IntSize
@@ -37,6 +35,8 @@ import com.t8rin.imagetoolbox.core.domain.utils.humanFileSize
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.utils.fileSize
 import com.wanbaohe.markuplayers.R
@@ -238,8 +238,11 @@ fun ExportSettingsSheet(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(ShapeDefaults.large)
-                        .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                        .glassBackground(
+                            style = GlassStyle.Regular,
+                            shape = ShapeDefaults.large,
+                            color = MaterialTheme.colorScheme.surfaceContainer
+                        )
                         .clickable {
                             onSettingsChange(
                                 settings.copy(shareAfterSave = !settings.shareAfterSave)
@@ -337,11 +340,12 @@ private fun SelectableCard(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .clip(ShapeDefaults.large)
-            .background(
-                if (selected) {
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = ShapeDefaults.large,
+                color = if (selected) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainerLow
+                } else MaterialTheme.colorScheme.surfaceContainer
             )
             .then(
                 if (selected) {
@@ -460,8 +464,11 @@ private fun ExportInfoRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .clip(ShapeDefaults.large)
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = ShapeDefaults.large,
+                color = MaterialTheme.colorScheme.surfaceContainer
+            )
             .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
         ExportInfoItem(

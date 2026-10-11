@@ -307,7 +307,7 @@ private fun JsonBlock(
                     .fillMaxWidth()
                     .heightIn(min = 180.dp, max = 240.dp),
                 shape = MaterialTheme.shapes.small,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             ) {
                 Text(
                     text = jsonText,

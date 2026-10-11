@@ -393,7 +393,7 @@ fun CollageMakerContent(
                     Row(
                         modifier = Modifier
                             .flatGlassContainer(
-                                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                color = MaterialTheme.colorScheme.surfaceContainer,
                                 shape = ShapeDefaults.large,
                                 resultPadding = 0.dp
                             ),

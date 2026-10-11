@@ -219,7 +219,7 @@ private fun WinRateCard(
 ) {
     val rate = SudokuStats.winRate(records)
     val ringColor = MaterialTheme.colorScheme.onPrimaryContainer
-    val trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
+    val trackColor = MaterialTheme.colorScheme.surfaceContainer
 
     OneBoxSectionCard(modifier = modifier) {
         Row(
@@ -485,7 +485,7 @@ private fun TrendSegmented(
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(OneBoxDesignSystem.pillRadius))
-            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {

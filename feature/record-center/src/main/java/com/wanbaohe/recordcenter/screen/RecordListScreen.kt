@@ -371,7 +371,7 @@ private fun TrendChartCard(
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
         containerAlpha = 0.4f,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             LineTrendChart(
@@ -430,7 +430,7 @@ private fun AiInsightCard(
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
         containerAlpha = 0.4f,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -538,7 +538,7 @@ private fun StatsCard(
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
         containerAlpha = 0.4f,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -619,7 +619,7 @@ private fun RecordRow(
         shape = RoundedCornerShape(16.dp),
         borderWidth = 0.dp,
         containerAlpha = 0.4f,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Row(
             modifier = Modifier

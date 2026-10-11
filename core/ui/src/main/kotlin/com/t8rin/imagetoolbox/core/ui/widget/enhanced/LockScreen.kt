@@ -752,7 +752,7 @@ private fun KeypadKey(
             modifier = modifier,
             shape = shape,
             style = style,
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            color = MaterialTheme.colorScheme.surfaceContainer,
             borderWidth = 0.9.dp,
         ) {
             Box(
@@ -820,7 +820,7 @@ private fun FooterAction(
         onClick = onClick,
         style = GlassStyle.Thin,
         shape = RoundedCornerShape(50),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         borderWidth = 0.dp,
     ) {
         Row(

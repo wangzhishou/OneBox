@@ -381,7 +381,7 @@ private fun AlignmentRow(
             modifier = Modifier
                 .weight(1f)
                 .clip(ShapeDefaults.default)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .padding(4.dp)
         ) {
             LayerType.Text.TextAlignment.entries.forEach { item ->
@@ -521,7 +521,7 @@ private fun DecorationChip(
             .background(
                 if (selected) {
                     MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainerHigh
+                } else MaterialTheme.colorScheme.surfaceContainer
             )
             .then(
                 if (selected) {

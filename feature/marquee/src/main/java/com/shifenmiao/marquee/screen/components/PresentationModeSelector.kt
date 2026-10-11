@@ -181,7 +181,7 @@ private fun PresentationModeCard(
         targetValue = if (isSelected)
             MaterialTheme.colorScheme.primaryContainer
         else
-            MaterialTheme.colorScheme.surfaceContainerHigh,
+            MaterialTheme.colorScheme.surfaceContainer,
         animationSpec = spring(stiffness = Spring.StiffnessLow),
         label = "backgroundColor"
     )
@@ -199,7 +199,7 @@ private fun PresentationModeCard(
         targetValue = if (isSelected)
             MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.15f)
         else
-            MaterialTheme.colorScheme.surfaceContainerHighest,
+            MaterialTheme.colorScheme.surfaceContainer,
         animationSpec = spring(stiffness = Spring.StiffnessLow),
         label = "iconBg"
     )

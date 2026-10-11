@@ -19,7 +19,7 @@ object Skeleton {
             modifier = Modifier
                 .size(100.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .shimmerLoading(isActive)
         )
     }
@@ -30,7 +30,7 @@ object Skeleton {
             modifier = Modifier
                 .size(100.dp)
                 .clip(MaterialTheme.shapes.medium)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .shimmerLoading(isActive)
         )
     }
@@ -42,7 +42,7 @@ object Skeleton {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clip(MaterialTheme.shapes.medium)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .shimmerLoading(isActive)
         )
     }
@@ -53,7 +53,7 @@ object Skeleton {
             modifier = Modifier
                 .size(width = 200.dp, height = 30.dp)
                 .clip(MaterialTheme.shapes.medium)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .shimmerLoading(isActive)
         )
     }
@@ -64,7 +64,7 @@ object Skeleton {
             modifier = Modifier
                 .size(width = 100.dp, height = 30.dp)
                 .clip(MaterialTheme.shapes.medium)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .shimmerLoading(isActive)
         )
     }

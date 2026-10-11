@@ -60,7 +60,7 @@ fun ReasoningCollapseSection(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = contentColor,
         ),
         containerAlpha = 0.16f,

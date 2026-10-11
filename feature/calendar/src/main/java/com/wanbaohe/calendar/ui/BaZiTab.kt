@@ -21,9 +21,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material3.CardDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -141,7 +141,7 @@ fun BaZiTab(
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(CHINESE_HOUR_SLOTS) { option ->
                     val isSelected = state.baZiHour == option.hour
-                    val bgColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerHighest
+                    val bgColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainer
                     val textColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                     val labelColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
 
@@ -269,9 +269,6 @@ private fun NatalChartCard(
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // 标题行
@@ -390,7 +387,7 @@ private fun PillarBox(text: String, isHighlight: Boolean) {
             .glassBackground(
                 shape = RoundedCornerShape(8.dp),
                 color = if (isHighlight) MaterialTheme.colorScheme.onPrimaryContainer
-                else MaterialTheme.colorScheme.surfaceContainerHighest
+                else MaterialTheme.colorScheme.surfaceContainer
             )
             .then(
                 if (!isHighlight) Modifier.border(
@@ -419,9 +416,6 @@ private fun DaYunCard(daYunList: List<DaYunItem>) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -480,7 +474,7 @@ private fun DaYunBox(item: DaYunItem) {
             .glassBackground(
                 shape = RoundedCornerShape(12.dp),
                 color = if (item.isCurrent) MaterialTheme.colorScheme.surfaceVariant
-                else MaterialTheme.colorScheme.surfaceContainerHighest
+                else MaterialTheme.colorScheme.surfaceContainer
             )
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -519,9 +513,6 @@ private fun WuXingCard(wuXingDist: Map<String, Float>) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
@@ -592,9 +583,6 @@ private fun FortuneCard(fortune: com.wanbaohe.calendar.data.FortuneData) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // 标题行
@@ -743,9 +731,6 @@ private fun MonthFortuneCard(
     GlassCard(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-        )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
@@ -775,9 +760,6 @@ private fun WisdomCard() {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        )
     ) {
         Column(
             modifier = Modifier
@@ -810,9 +792,7 @@ private fun AiBaZiCard(onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        colors = tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
     ) {
         Row(
             modifier = Modifier

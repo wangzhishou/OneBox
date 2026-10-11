@@ -115,7 +115,7 @@ fun LifeProgressCard(
                         .height(8.dp)
                         .clip(RoundedCornerShape(4.dp)),
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    trackColor = MaterialTheme.colorScheme.surfaceContainer,
                 )
 
                 Spacer(modifier = Modifier.height(OneBoxDesignSystem.compactSpacing))

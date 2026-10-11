@@ -31,7 +31,7 @@ fun Modifier.alertDialogBorder() = this.composed {
         .autoElevatedBorder(
             color = MaterialTheme.colorScheme.outlineVariant(
                 luminance = 0.15f,
-                onTopOf = MaterialTheme.colorScheme.surfaceContainerHigh
+                onTopOf = MaterialTheme.colorScheme.surfaceContainer
             ),
             shape = AlertDialogDefaults.shape,
             autoElevation = animateDpAsState(

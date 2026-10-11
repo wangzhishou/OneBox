@@ -119,7 +119,7 @@ fun IconImageBox(
 fun IconBox(
     modifier: Modifier = Modifier,
     contentColor: Color? = MaterialTheme.colorScheme.onSurfaceVariant,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     shape: Shape = RoundedCornerShape(50),
     firstCharacter: String = "null",
     size: Dp = 24.dp,

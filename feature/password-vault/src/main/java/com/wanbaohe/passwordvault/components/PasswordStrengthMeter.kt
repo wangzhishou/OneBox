@@ -60,7 +60,7 @@ fun PasswordStrengthMeter(
                 .fillMaxWidth()
                 .height(4.dp),
             color = color,
-            trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            trackColor = MaterialTheme.colorScheme.surfaceContainer,
             strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
         )
         if (result.suggestions.isNotEmpty()) {

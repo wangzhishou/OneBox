@@ -1054,7 +1054,7 @@ private fun LogoOptionChip(
     val backgroundColor = if (isSelected) {
         MaterialTheme.colorScheme.primaryContainer
     } else {
-        MaterialTheme.colorScheme.surfaceContainerHigh
+        MaterialTheme.colorScheme.surfaceContainer
     }
 
     val contentColor = if (isSelected) {

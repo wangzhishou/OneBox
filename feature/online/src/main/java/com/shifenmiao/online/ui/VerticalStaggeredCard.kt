@@ -63,7 +63,7 @@ fun VerticalStaggeredCard(
     iconContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     tagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     tagTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    actionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = AppTheme.dimens.containerAlpha),
+    actionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = AppTheme.dimens.containerAlpha),
     actionContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     shape: Shape = MaterialTheme.shapes.large,
     index: Int = 0,

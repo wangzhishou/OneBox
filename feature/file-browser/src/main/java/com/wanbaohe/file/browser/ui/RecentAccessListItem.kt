@@ -126,7 +126,7 @@ private fun RecentAccessThumbnail(
         val tint = if (isFolder) {
             MaterialTheme.colorScheme.onPrimaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceContainerHighest
+            MaterialTheme.colorScheme.surfaceContainer
         }
         Icon(
             imageVector = icon,

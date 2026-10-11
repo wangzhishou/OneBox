@@ -53,7 +53,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilterAlt
 fun SortButton(
     modifier: Modifier = Modifier,
     iconSize: Dp = 20.dp,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     onSortTypeSelected: (SortType) -> Unit
 ) {

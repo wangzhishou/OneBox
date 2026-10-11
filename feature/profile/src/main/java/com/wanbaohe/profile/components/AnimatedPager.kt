@@ -139,7 +139,7 @@ internal fun AnimatedViewPager(
                         color = if (pagerState.currentPage == index) {
                             MaterialTheme.colorScheme.primaryContainer
                         } else {
-                            MaterialTheme.colorScheme.surfaceContainerHigh
+                            MaterialTheme.colorScheme.surfaceContainer
                         }
                     ),
                 text = {

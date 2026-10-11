@@ -49,6 +49,8 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.model.event.PermissionRequest
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.measurement.component.MeasurementComponent
@@ -349,9 +351,9 @@ private fun AngleDisplayCard(
         MaterialTheme.colorScheme.onSurface
     }
 
-    Card(
+    GlassCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = bgColor),
+        colors = tintedGlassCardColors(bgColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(

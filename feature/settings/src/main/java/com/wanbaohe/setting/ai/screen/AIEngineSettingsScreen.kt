@@ -282,7 +282,7 @@ private fun EngineListCard(
                         OneBoxLeadingIconBadge(
                             icon = brandIcon,
                             iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
                         )
                     } else {
                         val engineIcon = remember(engine.iconName) {
@@ -290,7 +290,7 @@ private fun EngineListCard(
                         }
                         OneBoxLeadingIconBadge(
                             icon = engineIcon,
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
                         )
                     }
                     Spacer(modifier = Modifier.size(OneBoxDesignSystem.itemSpacing))
@@ -444,7 +444,7 @@ private fun EngineBadge(
             .glassBackground(
                 style = if (selected) GlassStyle.Thin else GlassStyle.Regular,
                 color = when {
-                    isError -> MaterialTheme.colorScheme.surfaceContainerHigh
+                    isError -> MaterialTheme.colorScheme.surfaceContainer
                     isPrimary -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
                     selected -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
                     else -> MaterialTheme.colorScheme.surfaceVariant
@@ -473,7 +473,7 @@ private fun RefreshStatusPill(
         modifier = Modifier
             .glassBackground(
                 style = GlassStyle.Thin,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.85f),
+                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.85f),
                 shape = RoundedCornerShape(50),
                 borderWidth = 0.dp,
             )

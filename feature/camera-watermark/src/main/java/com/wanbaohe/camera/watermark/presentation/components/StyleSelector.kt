@@ -26,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -37,7 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil3.compose.AsyncImage
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.camera.watermark.R
 import com.wanbaohe.camera.watermark.domain.LogoType
 import com.wanbaohe.camera.watermark.domain.WatermarkStyle
@@ -103,11 +105,11 @@ private fun SettingsItem(
 
     Box(
         modifier = Modifier
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = shape
+            .glassBackground(
+                style = GlassStyle.Medium,
+                shape = shape,
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
-            .clip(shape)
             .clickable(onClick = onClick)
             .size(60.dp),
         contentAlignment = Alignment.Center
@@ -137,14 +139,14 @@ private fun StylePresetItem(
     Box(
         modifier = Modifier
             .size(60.dp)
-            .clip(shape)
-            .background(
+            .glassBackground(
+                style = GlassStyle.Medium,
+                shape = shape,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainerHighest
-                },
-                shape = shape
+                    MaterialTheme.colorScheme.surfaceContainer
+                }
             )
     ) {
         // 主卡片
@@ -188,8 +190,9 @@ private fun StylePresetItem(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(
-                        MaterialTheme.colorScheme.primaryContainer,
+                    .coloredGlass(
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        style = GlassStyle.Regular,
                         shape = shape
                     )
                     .align(Alignment.Center),

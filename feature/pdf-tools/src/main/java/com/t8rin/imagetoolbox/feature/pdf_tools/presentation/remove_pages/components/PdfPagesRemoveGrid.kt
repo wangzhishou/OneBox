@@ -132,7 +132,7 @@ internal fun PdfPagesRemoveGrid(
 
             EnhancedButton(
                 onClick = { showPageSelector = true },
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 contentPadding = PaddingValues(start = 8.dp, end = 10.dp),
                 modifier = Modifier

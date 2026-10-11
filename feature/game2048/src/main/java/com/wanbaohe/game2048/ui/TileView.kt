@@ -93,7 +93,7 @@ private fun tileColors(
     colorScheme: androidx.compose.material3.ColorScheme
 ): Pair<Color, Color> {
     return when (value) {
-        0 -> colorScheme.surfaceContainerHighest.copy(alpha = 0.4f) to Color.Transparent
+        0 -> colorScheme.surfaceContainer.copy(alpha = 0.4f) to Color.Transparent
         2 -> colorScheme.surfaceContainerLowest to colorScheme.onSurfaceVariant
         4 -> colorScheme.surfaceContainerLow to colorScheme.onSurfaceVariant
         8 -> colorScheme.secondaryContainer.copy(alpha = 0.5f) to colorScheme.onSecondaryContainer.copy(alpha = 0.6f)

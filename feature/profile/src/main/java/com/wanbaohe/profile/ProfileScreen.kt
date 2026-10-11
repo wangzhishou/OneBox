@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,7 +61,6 @@ import com.shifenmiao.core.BuildConfig
 import com.shifenmiao.core.R
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.model.channel.FlavorType
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
@@ -71,6 +69,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassCardColors
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneSecondaryButton
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
@@ -480,10 +479,7 @@ private fun ProfileStatsRow(
             modifier = Modifier
                 .weight(1f)
                 .height(112.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            colors = tintedGlassCardColors(MaterialTheme.colorScheme.secondaryContainer)
         ) {
             Column(
                 modifier = Modifier
@@ -538,10 +534,7 @@ private fun ProfileStatsRow(
             modifier = Modifier
                 .weight(1f)
                 .height(112.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
-                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-            )
+            colors = tintedGlassCardColors(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             Column(
                 modifier = Modifier

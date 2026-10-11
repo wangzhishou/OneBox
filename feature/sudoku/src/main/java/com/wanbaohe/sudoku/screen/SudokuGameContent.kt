@@ -139,7 +139,7 @@ private fun GameOverflowMenu(component: SudokuComponent) {
         EnhancedDropdownMenu(
             expanded = showMenu,
             onDismissRequest = { showMenu = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ) {
             DropdownMenuItem(
                 text = { Text(text = stringResource(R.string.sudoku_menu_restart)) },
@@ -242,7 +242,7 @@ private fun SudokuCell(
         isError -> MaterialTheme.colorScheme.errorContainer
         sameNumber -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.18f)
         related -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.08f)
-        else -> MaterialTheme.colorScheme.surfaceContainerHighest
+        else -> MaterialTheme.colorScheme.surfaceContainer
     }
     val digitColor = when {
         isError -> MaterialTheme.colorScheme.error

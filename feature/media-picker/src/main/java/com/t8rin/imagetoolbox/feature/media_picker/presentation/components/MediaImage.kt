@@ -137,7 +137,7 @@ fun MediaImage(
                     } else Modifier
                 )
                 .background(
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = RoundedCornerShape(selectedShapeSize)
                 )
         ) {

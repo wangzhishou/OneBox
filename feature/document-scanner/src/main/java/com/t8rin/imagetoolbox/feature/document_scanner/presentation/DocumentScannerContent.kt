@@ -214,7 +214,7 @@ fun DocumentScannerContent(
                     onClick = {
                         savePdfLauncher.make(component.generatePdfFilename())
                     },
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     contentColor = MaterialTheme.colorScheme.onSurface,
                     contentPadding = PaddingValues(
                         top = 8.dp,

@@ -271,7 +271,7 @@ private fun CreationIcon(
         modifier = modifier.glassThin(
             shape = CircleShape,
             color = if (emphasized) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.14f)
-            else MaterialTheme.colorScheme.surfaceContainerHighest,
+            else MaterialTheme.colorScheme.surfaceContainer,
         ),
         contentAlignment = Alignment.Center,
     ) {

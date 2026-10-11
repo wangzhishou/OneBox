@@ -299,7 +299,7 @@ private fun FullScreenSendButton(
             modifier = Modifier
                 .size(size)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
                 .clickable(onClick = onCancel),
             contentAlignment = Alignment.Center
         ) {
@@ -316,7 +316,7 @@ private fun FullScreenSendButton(
                 .size(size)
                 .clip(CircleShape)
                 .background(
-                    if (textEmpty) MaterialTheme.colorScheme.surfaceContainerHighest
+                    if (textEmpty) MaterialTheme.colorScheme.surfaceContainer
                     else activeContainerColor
                 )
                 .clickable(enabled = !textEmpty, onClick = onSend),

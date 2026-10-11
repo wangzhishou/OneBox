@@ -36,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,6 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.idphoto.R
 import com.wanbaohe.idphoto.domain.IdPhotoSize
 import com.t8rin.imagetoolbox.core.resources.icons.Add
@@ -290,14 +291,14 @@ private fun SizeListItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(shape)
-            .background(
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = shape,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainerHighest
-                },
-                shape = shape
+                    MaterialTheme.colorScheme.surfaceContainer
+                }
             )
             .clickable {
                 if (isEditMode) {

@@ -55,6 +55,8 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.other.ToastDuration
@@ -255,8 +257,11 @@ private fun StickerCell(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .aspectRatio(1f)
-            .clip(ShapeDefaults.default)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .glassBackground(
+                style = GlassStyle.Regular,
+                shape = ShapeDefaults.default,
+                color = MaterialTheme.colorScheme.surfaceContainer
+            )
             .clickable(onClick = onClick)
     ) {
         Picture(

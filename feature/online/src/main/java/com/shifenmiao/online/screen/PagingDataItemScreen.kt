@@ -391,7 +391,7 @@ private fun SkeletonCard(seed: Int) {
             .fillMaxWidth()
             .height(heights[seed % heights.size])
             .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.5f))
+            .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f))
             .padding(12.dp),
         contentAlignment = Alignment.BottomStart,
     ) {
@@ -400,7 +400,7 @@ private fun SkeletonCard(seed: Int) {
                 .fillMaxWidth(0.5f)
                 .height(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.6f))
+                .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.6f))
         )
     }
 }

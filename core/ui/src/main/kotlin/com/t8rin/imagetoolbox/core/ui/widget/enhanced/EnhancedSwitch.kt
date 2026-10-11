@@ -183,7 +183,7 @@ fun EnhancedSwitch(
                     HyperOSSwitch(
                         modifier = switchModifier,
                         colors = switchColors.copy(
-                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceContainer
                         ),
                         checked = checked,
                         enabled = enabled,

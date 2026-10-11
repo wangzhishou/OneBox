@@ -147,7 +147,7 @@ internal fun MediaPickerHavePermissions(
                         EnhancedChip(
                             selected = selected,
                             selectedColor = MaterialTheme.colorScheme.secondaryContainer,
-                            unselectedColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            unselectedColor = MaterialTheme.colorScheme.surfaceContainer,
                             unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             onClick = {
                                 selectedAlbumIndex = album.id

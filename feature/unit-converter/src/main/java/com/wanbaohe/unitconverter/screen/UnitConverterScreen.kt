@@ -767,7 +767,7 @@ private fun CategorySelectorRow(
                 color = if (selected) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainerHigh
+                    MaterialTheme.colorScheme.surfaceContainer
                 },
                 borderWidth = 0.dp,
             ) {
@@ -1030,7 +1030,7 @@ private fun ConverterKey(
 ) {
     val bgColor = when {
         isDanger -> MaterialTheme.colorScheme.errorContainer
-        isAction -> MaterialTheme.colorScheme.surfaceContainerHigh
+        isAction -> MaterialTheme.colorScheme.surfaceContainer
         else -> MaterialTheme.colorScheme.surfaceContainerLow
     }
     val fgColor = when {
@@ -1080,7 +1080,7 @@ private fun ConverterInputBar(
         onClick = onExpand,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         borderWidth = 0.dp,
     ) {
         Row(
@@ -1116,7 +1116,7 @@ private fun UnitSelectorChip(
     GlassSurface(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         borderWidth = 0.dp,
     ) {
         Row(
@@ -1196,7 +1196,7 @@ private fun UnitPickerContent(
         containerAlpha = 0.96f,
         borderWidth = 0.dp,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
     ) {
         Column(
@@ -1243,7 +1243,7 @@ private fun UnitPickerContent(
                         color = if (selected) {
                             MaterialTheme.colorScheme.primaryContainer
                         } else {
-                            MaterialTheme.colorScheme.surfaceContainerHigh
+                            MaterialTheme.colorScheme.surfaceContainer
                         },
                         borderWidth = 0.dp,
                     ) {
@@ -1303,7 +1303,7 @@ private fun GenderToggleRow(
     GlassSurface(
         modifier = modifier,
         shape = RoundedCornerShape(18.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         borderWidth = 0.dp,
     ) {
         Row(

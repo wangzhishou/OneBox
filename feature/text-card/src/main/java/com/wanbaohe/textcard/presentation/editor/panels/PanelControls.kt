@@ -133,12 +133,12 @@ internal fun StyleChip(
         // 不用 Outline:主色系背景区分选中
         border = null,
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
             labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
             selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
-        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        glassContainerColor = MaterialTheme.colorScheme.surfaceContainer,
         glassSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
         label = {
             Row(verticalAlignment = Alignment.CenterVertically) {
