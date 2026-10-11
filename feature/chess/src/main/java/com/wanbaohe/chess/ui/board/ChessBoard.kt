@@ -59,6 +59,20 @@ private val LIGHT_SQUARE = Color(0xFFF0EBDD)
 private val DARK_SQUARE = Color(0xFF8A9BB4)
 
 /**
+ * 棋面油墨:格子是**固定浅色材质**(不跟主题走),所以画在格子上的前景色也必须与主题无关。
+ *
+ * 踩过的坑:棋子字形与高亮曾取 `onSurface` / `onPrimaryContainer` / `onTertiaryContainer`,
+ * 这些角色在暗色主题下会翻成浅色 —— 白到发灰的字形压在米白格上等于隐形(棋子、
+ * 候选落点、上一步高亮全部看不清,导出 GIF 因为用固定浅色底更是整盘看不见棋子)。
+ * 这里钉死一套浅底专用油墨,浅色/暗色/动态取色下表现一致。
+ */
+private val PIECE_INK = Color(0xFF262626)
+private val LAST_MOVE_TINT = Color(0xFFB8860B)
+private val SELECTED_TINT = Color(0xFF2E7D32)
+private val CANDIDATE_INK = Color(0xFF262626)
+private val CHECK_TINT = Color(0xFFC62828)
+
+/**
  * 国际象棋棋盘:8×8 交替格 + a-h/1-8 坐标标注 + Unicode 字形棋子。
  * 选中高亮、候选点、上一步高亮、将军格高亮;[bottomSide] 支持翻转视角。
  */
@@ -98,10 +112,10 @@ fun ChessBoard(
             style = if (forExport) GlassStyle.None else GlassStyle.Medium,
             color = if (forExport) Color(0xFFF3E8CE) else Color.Unspecified,
         ) {
-            val selectedColor = MaterialTheme.colorScheme.primaryContainer
-            val lastMoveColor = MaterialTheme.colorScheme.onTertiaryContainer
-            val checkColor = MaterialTheme.colorScheme.error
-            val candidateColor = MaterialTheme.colorScheme.onPrimaryContainer
+            val selectedColor = SELECTED_TINT
+            val lastMoveColor = LAST_MOVE_TINT
+            val checkColor = CHECK_TINT
+            val candidateColor = CANDIDATE_INK
 
             Canvas(modifier = Modifier.fillMaxSize()) {
                 for (rank in 0 until BoardPoint.RANK_COUNT) {
@@ -243,7 +257,7 @@ fun ChessBoard(
                                 Text(
                                     text = piece.glyph(),
                                     fontSize = with(androidx.compose.ui.platform.LocalDensity.current) { (cellPx * 0.72f).toSp() },
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = PIECE_INK,
                                     modifier = Modifier.graphicsLayer {
                                         translationX = dragOffset.x
                                         translationY = dragOffset.y
