@@ -26,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Surface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text

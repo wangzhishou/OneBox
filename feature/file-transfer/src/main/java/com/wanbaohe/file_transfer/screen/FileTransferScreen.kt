@@ -39,7 +39,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -430,7 +429,7 @@ fun ServerStatusCard(
                     .background(
                         when (serverState) {
                             is ServerState.Running -> MaterialTheme.colorScheme.onPrimaryContainer
-                            is ServerState.Starting -> MaterialTheme.colorScheme.tertiary
+                            is ServerState.Starting -> MaterialTheme.colorScheme.onTertiaryContainer
                             is ServerState.Error -> MaterialTheme.colorScheme.error
                             else -> MaterialTheme.colorScheme.outline
                         }
@@ -679,11 +678,6 @@ fun SettingsCard(
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceLarge))
 
-
-        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
-
-        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -718,10 +712,6 @@ fun SettingsCard(
                 colors = AppTheme.colors.switchColors()
             )
         }
-
-        Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
-
-        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
 
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
 

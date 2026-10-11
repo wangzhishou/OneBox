@@ -402,10 +402,10 @@ private fun SourceBadge(source: String) {
             stringResource(SettingsR.string.skill_source_bundled) to MaterialTheme.colorScheme.onPrimaryContainer
 
         SkillEntity.SOURCE_REMOTE ->
-            stringResource(SettingsR.string.skill_source_remote) to MaterialTheme.colorScheme.tertiary
+            stringResource(SettingsR.string.skill_source_remote) to MaterialTheme.colorScheme.onTertiaryContainer
 
         else ->
-            stringResource(SettingsR.string.skill_source_local) to MaterialTheme.colorScheme.secondary
+            stringResource(SettingsR.string.skill_source_local) to MaterialTheme.colorScheme.onSecondaryContainer
     }
     Badge(text = label, tint = tint)
 }

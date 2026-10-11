@@ -281,7 +281,7 @@ fun Toast(
             toastData.visuals.icon?.let { icon ->
                 IconShapeContainer(
                     containerColor = containerColor
-                        .blend(MaterialTheme.colorScheme.secondary, 0.5f)
+                        .blend(MaterialTheme.colorScheme.onSecondaryContainer, 0.5f)
                         .blend(MaterialTheme.colorScheme.primaryContainer, 0.05f),
                     contentColor = contentColor
                 ) {
@@ -348,7 +348,7 @@ fun ActionToast(
             toastData.visuals.icon?.let { icon ->
                 IconShapeContainer(
                     containerColor = containerColor
-                        .blend(MaterialTheme.colorScheme.secondary, 0.5f)
+                        .blend(MaterialTheme.colorScheme.onSecondaryContainer, 0.5f)
                         .blend(MaterialTheme.colorScheme.primaryContainer, 0.05f),
                     contentColor = contentColor
                 ) {

@@ -68,7 +68,7 @@ fun CanvasBackgroundSheet(
                     EnhancedChip(
                         selected = background is CanvasBackground.Default,
                         onClick = { onBackgroundChange(CanvasBackground.Default) },
-                        selectedColor = MaterialTheme.colorScheme.secondary,
+                        selectedColor = MaterialTheme.colorScheme.secondaryContainer,
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                         modifier = Modifier.weight(1f)
                     ) {
@@ -80,7 +80,7 @@ fun CanvasBackgroundSheet(
                     EnhancedChip(
                         selected = background is CanvasBackground.Solid,
                         onClick = { onBackgroundChange(CanvasBackground.Solid(solidColor)) },
-                        selectedColor = MaterialTheme.colorScheme.secondary,
+                        selectedColor = MaterialTheme.colorScheme.secondaryContainer,
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                         modifier = Modifier.weight(1f)
                     ) {

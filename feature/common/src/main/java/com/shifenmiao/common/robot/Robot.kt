@@ -338,7 +338,7 @@ private fun SleepIndicator(
 
                 Text(
                     text = sleepLetter,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontSize = (18 + index * 2).sp,
                     ),

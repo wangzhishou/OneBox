@@ -1,6 +1,5 @@
 package com.wanbaohe.textcard.presentation.selection
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -159,7 +158,6 @@ private fun CanvasCard(
         colors = if (selected) {
             tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
         } else null,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = modifier
     ) {
         Column(
@@ -247,7 +245,6 @@ private fun CustomCanvasCard(
         colors = if (selected) {
             tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)
         } else null,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = modifier
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {

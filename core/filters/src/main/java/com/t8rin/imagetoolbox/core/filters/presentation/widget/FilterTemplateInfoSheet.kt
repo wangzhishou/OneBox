@@ -223,7 +223,7 @@ internal fun FilterTemplateInfoSheet(
                     }
                     EnhancedIconButton(
                         onClick = { showEditTemplateSheet = true },
-                        containerColor = MaterialTheme.colorScheme.secondary
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.EditAlt,

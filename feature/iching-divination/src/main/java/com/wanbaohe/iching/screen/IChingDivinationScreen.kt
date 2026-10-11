@@ -398,7 +398,7 @@ private fun LineExplanationCard(line: HexagramLine, position: Int) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        containerAlpha = 0.14f,
+        style = GlassStyle.Medium,
         borderWidth = 0.6.dp,
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -437,7 +437,7 @@ private fun KnowledgeTipCard(tipIndex: Int) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        containerAlpha = 0.14f,
+        style = GlassStyle.Medium,
         borderWidth = 0.6.dp,
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -540,7 +540,7 @@ private fun JudgmentCard(primaryText: HexagramText, changingLineNumbers: List<In
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        containerAlpha = 0.16f,
+        style = GlassStyle.Medium,
         borderWidth = 0.7.dp,
     ) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -583,7 +583,7 @@ private fun QuestionCard(question: String) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        containerAlpha = 0.16f,
+        style = GlassStyle.Medium,
         borderWidth = 0.7.dp,
     ) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -606,7 +606,7 @@ private fun AIInterpretationSection(state: IChingUiState, onGenerate: () -> Unit
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        containerAlpha = 0.16f,
+        style = GlassStyle.Medium,
         borderWidth = 0.7.dp,
     ) {
         Column(
@@ -697,7 +697,7 @@ private fun HexagramCard(
     GlassCard(
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        containerAlpha = 0.18f,
+        style = GlassStyle.Thick,
         borderWidth = 0.9.dp,
         modifier = Modifier.fillMaxWidth(),
     ) {

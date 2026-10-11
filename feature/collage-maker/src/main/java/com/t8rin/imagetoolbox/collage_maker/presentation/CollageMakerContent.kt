@@ -660,8 +660,8 @@ private fun rememberHandleDrawable(): Drawable {
     val context = LocalContext.current
     val width = with(LocalDensity.current) { 42.dp.roundToPx() }
     val height = width / 2
-    val backgroundColor = MaterialTheme.colorScheme.tertiary
-    val iconColor = MaterialTheme.colorScheme.onTertiary
+    val backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+    val iconColor = MaterialTheme.colorScheme.onTertiaryContainer
 
     return remember(width, backgroundColor, iconColor, context) {
         val container = GradientDrawable().apply {

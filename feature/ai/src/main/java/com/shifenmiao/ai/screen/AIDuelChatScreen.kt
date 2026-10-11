@@ -713,7 +713,7 @@ private fun DuelRoleConfigSection(
         borderWidth = 0.dp,
         // 卡片底色与头像同色系（A=primary / B=tertiary），玻璃效果调淡
         colors = CardDefaults.cardColors(containerColor = avatarContainerColor),
-        containerAlpha = 0.22f
+        style = GlassStyle.Dense
     ) {
         Column(
             modifier = Modifier

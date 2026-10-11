@@ -894,9 +894,9 @@ private fun ExpiryBadge(item: HouseholdItemUi) {
 
         ExpiryStatus.EXPIRING_SOON -> {
             if (days == 0L) {
-                Triple(R.string.household_expires_today, 0L, MaterialTheme.colorScheme.tertiary)
+                Triple(R.string.household_expires_today, 0L, MaterialTheme.colorScheme.onTertiaryContainer)
             } else {
-                Triple(R.string.household_days_left, days, MaterialTheme.colorScheme.tertiary)
+                Triple(R.string.household_days_left, days, MaterialTheme.colorScheme.onTertiaryContainer)
             }
         }
 

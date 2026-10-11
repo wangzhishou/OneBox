@@ -85,7 +85,7 @@ fun <T : Any> DataSelector(
     badgeContent: (@Composable RowScope.() -> Unit)? = null,
     shape: Shape = ShapeDefaults.large,
     containerColor: Color = Color.Unspecified,
-    selectedItemColor: Color = MaterialTheme.colorScheme.tertiary,
+    selectedItemColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
     initialExpanded: Boolean = false,
     canExpand: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(8.dp),
@@ -148,8 +148,8 @@ fun <T : Any> DataSelector(
                             }
                             Badge(
                                 content = badgeContent,
-                                containerColor = MaterialTheme.colorScheme.tertiary,
-                                contentColor = MaterialTheme.colorScheme.onTertiary,
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                 modifier = Modifier
                                     .padding(horizontal = 2.dp)
                                     .padding(bottom = titlePadding.calculateBottomPadding() + 4.dp)

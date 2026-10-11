@@ -36,6 +36,7 @@ import com.shifenmiao.lifetime.util.countdownStatusLabel
 import com.shifenmiao.lifetime.util.localizedPresetEventName
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 
@@ -109,7 +110,7 @@ fun LifeTimeCountdownDetailScreen(
                     GlassCard(
                         modifier = Modifier.fillMaxWidth(),
                         shape = OneBoxDesignSystem.sectionCardShape,
-                        containerAlpha = 0.22f,
+                        style = GlassStyle.Dense,
                     ) {
                         Text(
                             text = stringResource(R.string.lifetime_countdown_holiday_hint),
@@ -135,15 +136,20 @@ fun LifeTimeCountdownDetailScreen(
 private fun CountdownHeroCard(status: CountdownStatus) {
     val item = status.event
     val accent = when {
-        status.isToday -> MaterialTheme.colorScheme.secondary
+        status.isToday -> MaterialTheme.colorScheme.onSecondaryContainer
         status.isPast -> MaterialTheme.colorScheme.onSurfaceVariant
         else -> MaterialTheme.colorScheme.onPrimaryContainer
+    }
+    val accentContainer = when {
+        status.isToday -> MaterialTheme.colorScheme.secondaryContainer
+        status.isPast -> MaterialTheme.colorScheme.surfaceContainer
+        else -> MaterialTheme.colorScheme.primaryContainer
     }
 
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.sectionCardShape,
-        containerAlpha = 0.22f,
+        style = GlassStyle.Dense,
         colors = androidx.compose.material3.CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )
@@ -159,7 +165,7 @@ private fun CountdownHeroCard(status: CountdownStatus) {
                 iconName = item.iconKey,
                 fallbackName = item.name,
                 size = 56.dp,
-                containerColor = accent.copy(alpha = 0.16f),
+                containerColor = accentContainer,
                 tint = accent,
                 shape = androidx.compose.foundation.shape.RoundedCornerShape(OneBoxDesignSystem.smallRadius),
                 iconSizeRatio = 0.6f,

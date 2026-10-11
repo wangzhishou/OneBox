@@ -151,7 +151,7 @@ private fun OverviewCard(records: List<SudokuRecord>) {
             OverviewItem(
                 modifier = Modifier.weight(1f),
                 icon = Icons.Outlined.LineTimer,
-                iconAccent = MaterialTheme.colorScheme.tertiary,
+                iconAccent = MaterialTheme.colorScheme.onTertiaryContainer,
                 value = SudokuStats.unfinishedGames(records).toString(),
                 label = stringResource(R.string.sudoku_stats_unfinished)
             )

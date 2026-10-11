@@ -235,7 +235,7 @@ private fun HeaderStatusIcon(phase: AiExecutionPhase) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.tertiary,
+                tint = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.size(18.dp)
             )
         }
@@ -396,7 +396,7 @@ private fun DeepLinkActionCard(item: DeepLinkItemUiModel) {
                 color = if (primary) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.4f)
+                    MaterialTheme.colorScheme.surfaceContainerLowest
                 },
                 shape = RoundedCornerShape(12.dp),
                 borderWidth = if (primary) 0.8.dp else 0.dp,
@@ -473,7 +473,7 @@ private fun ToolCallDetailPanel(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.55f),
+                color = MaterialTheme.colorScheme.surfaceContainerLowest,
                 shape = RoundedCornerShape(12.dp),
                 borderWidth = 0.dp
             )
@@ -510,7 +510,7 @@ private fun ToolCallDetailPanel(
             if (hasArguments) {
                 ToolCallDetailBlock(
                     label = stringResource(R.string.ai_execution_input_label),
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     text = arguments.orEmpty(),
                 )
             }
@@ -613,7 +613,7 @@ private fun StepStatusNode(status: ExecutionStepStatus) {
         ExecutionStepStatus.DONE -> Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.tertiary,
+            tint = MaterialTheme.colorScheme.onTertiaryContainer,
             modifier = Modifier.size(18.dp)
         )
 

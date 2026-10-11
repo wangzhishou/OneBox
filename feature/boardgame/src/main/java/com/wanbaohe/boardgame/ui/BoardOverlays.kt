@@ -15,7 +15,6 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 
 /** 未开始/暂停时盖在棋盘上的开始遮罩;[startLabel] 由调用方区分「开始」/「继续」 */
@@ -46,7 +46,7 @@ fun BoxScope.BoardStartOverlay(
             .clip(MaterialTheme.shapes.large)
             .glassBackground(
                 style = GlassStyle.Dense,
-                color = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
+                color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.large
             ),
         contentAlignment = Alignment.Center,
@@ -107,18 +107,12 @@ fun BoxScope.BoardGameOverOverlay(
             ),
         contentAlignment = Alignment.Center,
     ) {
-        Surface(
+        GlassSurface(
             modifier = Modifier
                 .padding(24.dp)
                 .widthIn(max = 300.dp),
             shape = MaterialTheme.shapes.extraLarge,
             color = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            shadowElevation = 8.dp,
-            border = androidx.compose.foundation.BorderStroke(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-            ),
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 20.dp),

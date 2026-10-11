@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -63,19 +62,11 @@ fun SelectBaseTypeDialog(
 private fun SelectBaseTypeHead(
     text: String = "选择"
 ) {
-    Column {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-        HorizontalDivider(
-            modifier = Modifier.padding(
-                top = AppTheme.dimens.paddingSmall,
-            ),
-            color = MaterialTheme.colorScheme.surfaceContainerLow
-        )
-    }
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+    )
 }
 
 /**

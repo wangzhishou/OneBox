@@ -37,7 +37,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.wanbaohe.profile.ui.AboutCardDivider
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.wanbaohe.profile.ui.AboutGlassListItem
 import com.wanbaohe.profile.ui.AboutSectionTitle
@@ -114,7 +113,6 @@ fun ContactUsScreen(
                             )
                         },
                     )
-                    AboutCardDivider()
                     if (enableWechat) {
                         AboutGlassListItem(
                             headlineText = stringResource(R.string.profile_item_wechat),
@@ -124,8 +122,7 @@ fun ContactUsScreen(
                                 showWechatTipsDialog.value = true
                             },
                         )
-                        AboutCardDivider()
-                        AboutGlassListItem(
+                            AboutGlassListItem(
                             headlineText = stringResource(R.string.my_wechat),
                             trailingText = Strings.WECHAT_ACCOUNT_ID,
                             trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
@@ -133,8 +130,7 @@ fun ContactUsScreen(
                                 showWechatAccountTipsDialog.value = true
                             },
                         )
-                        AboutCardDivider()
-                    }
+                        }
                     if (enableWechat) {
                         AboutGlassListItem(
                             headlineText = stringResource(R.string.qq_group),
@@ -148,8 +144,7 @@ fun ContactUsScreen(
                                 )
                             },
                         )
-                        AboutCardDivider()
-                    }
+                        }
                     AboutGlassListItem(
                         headlineText = stringResource(R.string.email),
                         trailingText = UrlConstants.EMAIL,

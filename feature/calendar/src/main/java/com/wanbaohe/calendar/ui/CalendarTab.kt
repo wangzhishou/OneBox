@@ -35,7 +35,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -1289,7 +1288,6 @@ private fun MonthNavigator(
                             )
                         }
                     }
-                    HorizontalDivider()
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1494,7 +1492,7 @@ private fun CalendarDayCell(
         isSelected-> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f)
         dayInfo.solarTerm != null -> MaterialTheme.colorScheme.onPrimaryContainer
         dayInfo.lunarFestival != null -> MaterialTheme.colorScheme.onPrimaryContainer
-        dayInfo.solarFestival != null -> MaterialTheme.colorScheme.tertiary
+        dayInfo.solarFestival != null -> MaterialTheme.colorScheme.onTertiaryContainer
         dayInfo.isToday -> MaterialTheme.colorScheme.onPrimaryContainer
         !dayInfo.isCurrentMonth -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
         else -> MaterialTheme.colorScheme.onSurfaceVariant
@@ -1507,15 +1505,11 @@ private fun CalendarDayCell(
                 if (isSelected) Modifier.glassBackground(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer)
                 else if (dayInfo.isLegalHoliday) Modifier.glassBackground(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.errorContainer.copy(
-                        alpha = 0.4f
-                    )
+                    color = MaterialTheme.colorScheme.errorContainer
                 )
                 else if (dayInfo.isToday) Modifier.glassBackground(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                        alpha = 0.12f
-                    )
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 else Modifier
             )

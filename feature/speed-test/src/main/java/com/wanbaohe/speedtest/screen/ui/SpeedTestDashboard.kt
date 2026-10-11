@@ -175,7 +175,7 @@ internal fun SpeedTestDashboard(
                                         Brush.linearGradient(
                                             listOf(
                                                 MaterialTheme.colorScheme.primaryContainer,
-                                                MaterialTheme.colorScheme.secondary
+                                                MaterialTheme.colorScheme.secondaryContainer
                                             )
                                         ),
                                         CircleShape
@@ -235,7 +235,7 @@ private fun NetworkCard(networkType: String, isResult: Boolean = false) {
 @Composable
 private fun SpeedReferenceBar(mbps: Float) {
     val primary = AppTheme.colors.getPrimaryColor()
-    val secondary = MaterialTheme.colorScheme.tertiary
+    val secondary = MaterialTheme.colorScheme.onTertiaryContainer
     val progress = remember { Animatable(0f) }
     LaunchedEffect(mbps) {
         progress.animateTo((mbps / 200f).coerceIn(0f, 1f), tween(900))

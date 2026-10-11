@@ -116,8 +116,8 @@ fun ScaleModeSelector(
                 content = {
                     Text(entries.size.toString())
                 },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
                     .padding(bottom = 12.dp)
@@ -217,9 +217,9 @@ fun ScaleModeSelector(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
                     selectedColor = MaterialTheme.colorScheme.outlineVariant(
                         0.2f,
-                        MaterialTheme.colorScheme.tertiary
+                        MaterialTheme.colorScheme.tertiaryContainer
                     ),
-                    selectedContentColor = MaterialTheme.colorScheme.onTertiary,
+                    selectedContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     unselectedContentColor = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -253,7 +253,7 @@ fun ScaleModeSelector(
                     .fillMaxWidth()
                     .padding(top = 4.dp)
                     .padding(horizontal = 8.dp),
-                selectedItemColor = MaterialTheme.colorScheme.secondary
+                selectedItemColor = MaterialTheme.colorScheme.secondaryContainer
             )
         }
 

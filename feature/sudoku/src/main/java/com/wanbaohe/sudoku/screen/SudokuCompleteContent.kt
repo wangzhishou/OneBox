@@ -37,6 +37,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineEmojiEvents
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMedal
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.sudoku.R
@@ -178,8 +179,10 @@ private fun CompleteStatCard(
 ) {
     Column(
         modifier = modifier
-            .clip(androidx.compose.foundation.shape.RoundedCornerShape(OneBoxDesignSystem.mediumRadius))
-            .background(accent.copy(alpha = 0.10f))
+            .glassBackground(
+                color = accent,
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(OneBoxDesignSystem.mediumRadius),
+            )
             .padding(vertical = OneBoxDesignSystem.blockSpacing),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing)

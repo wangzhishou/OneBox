@@ -99,7 +99,7 @@ fun ChessBoard(
             color = if (forExport) Color(0xFFF3E8CE) else Color.Unspecified,
         ) {
             val selectedColor = MaterialTheme.colorScheme.primaryContainer
-            val lastMoveColor = MaterialTheme.colorScheme.tertiary
+            val lastMoveColor = MaterialTheme.colorScheme.onTertiaryContainer
             val checkColor = MaterialTheme.colorScheme.error
             val candidateColor = MaterialTheme.colorScheme.onPrimaryContainer
 

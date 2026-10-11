@@ -135,14 +135,14 @@ fun DiceCountSelector(
             val isSelected = n == count
             val containerColor by animateColorAsState(
                 targetValue = if (isSelected)
-                    MaterialTheme.colorScheme.secondary
+                    MaterialTheme.colorScheme.secondaryContainer
                 else
                     MaterialTheme.colorScheme.surfaceContainer,
                 label = "count_chip_color_$n"
             )
             val contentColor by animateColorAsState(
                 targetValue = if (isSelected)
-                    MaterialTheme.colorScheme.onSecondary
+                    MaterialTheme.colorScheme.onSecondaryContainer
                 else
                     MaterialTheme.colorScheme.onSurfaceVariant,
                 label = "count_chip_content_color_$n"

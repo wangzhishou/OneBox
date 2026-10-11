@@ -92,7 +92,7 @@ private fun SkeletonBlock(
             .height(height.dp)
             .glassBackground(
                 shape = shape,
-                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
     )
 }

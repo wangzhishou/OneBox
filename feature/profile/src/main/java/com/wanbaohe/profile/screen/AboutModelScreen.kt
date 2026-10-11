@@ -38,7 +38,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.wanbaohe.profile.ui.AboutCardDivider
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.wanbaohe.profile.ui.AboutSectionTitle
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
@@ -138,7 +137,6 @@ fun ColumnScope.AboutAIModelContainer(
                             )
                         },
                     )
-                    AboutCardDivider()
                     ModelItem(
                         name = stringResource(R.string.baidu_ai),
                         filingNumber = UrlConstants.BEI_AN_BAIDU_NUMBER,
@@ -151,7 +149,6 @@ fun ColumnScope.AboutAIModelContainer(
                             )
                         },
                     )
-                    AboutCardDivider()
                     ModelItem(
                         name = stringResource(R.string.ai_tencent),
                         filingNumber = UrlConstants.BEI_AN_TENCENT_NUMBER,
@@ -164,7 +161,6 @@ fun ColumnScope.AboutAIModelContainer(
                             )
                         },
                     )
-                    AboutCardDivider()
                     ModelItem(
                         name = stringResource(R.string.aliyun_qwen),
                         filingNumber = UrlConstants.BEI_AN_ALI_NUMBER,
@@ -177,7 +173,6 @@ fun ColumnScope.AboutAIModelContainer(
                             )
                         },
                     )
-                    AboutCardDivider()
                     ModelItem(
                         name = stringResource(R.string.ai_kimi),
                         filingNumber = UrlConstants.BEI_AN_KIMI_NUMBER,
@@ -190,7 +185,6 @@ fun ColumnScope.AboutAIModelContainer(
                             )
                         },
                     )
-                    AboutCardDivider()
                     ModelItem(
                         name = stringResource(R.string.ai_doubao),
                         filingNumber = UrlConstants.BEI_AN_DOUBAO_NUMBER,
@@ -203,7 +197,6 @@ fun ColumnScope.AboutAIModelContainer(
                             )
                         },
                     )
-                    AboutCardDivider()
                     ModelItem(
                         name = stringResource(R.string.ai_deep_seek),
                         filingNumber = UrlConstants.BEI_AN_DEEPSEEK_NUMBER,

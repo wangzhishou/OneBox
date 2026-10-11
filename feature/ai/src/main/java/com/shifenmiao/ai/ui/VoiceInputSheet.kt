@@ -153,8 +153,8 @@ fun VoiceInputSheet(
             val colorScheme = MaterialTheme.colorScheme
             val voiceLottieColors = rememberLottieDynamicProperties(
                 rememberLottieDynamicProperty(LottieProperty.COLOR, colorScheme.primaryContainer.toArgb(), "01"),
-                rememberLottieDynamicProperty(LottieProperty.COLOR, colorScheme.tertiary.toArgb(), "02"),
-                rememberLottieDynamicProperty(LottieProperty.COLOR, colorScheme.secondary.toArgb(), "03"),
+                rememberLottieDynamicProperty(LottieProperty.COLOR, colorScheme.onTertiaryContainer.toArgb(), "02"),
+                rememberLottieDynamicProperty(LottieProperty.COLOR, colorScheme.onSecondaryContainer.toArgb(), "03"),
                 rememberLottieDynamicProperty(LottieProperty.COLOR, colorScheme.primaryContainer.toArgb(), "04"),
                 rememberLottieDynamicProperty(
                     LottieProperty.COLOR,
@@ -163,7 +163,7 @@ fun VoiceInputSheet(
                 ),
                 rememberLottieDynamicProperty(
                     LottieProperty.COLOR,
-                    colorScheme.tertiary.copy(alpha = 0.5f).toArgb(),
+                    colorScheme.onTertiaryContainer.copy(alpha = 0.5f).toArgb(),
                     "transparent2"
                 ),
                 rememberLottieDynamicProperty(LottieProperty.COLOR, colorScheme.onPrimaryContainer.toArgb(), "base"),

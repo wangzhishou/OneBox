@@ -228,7 +228,7 @@ private fun CalculatorTab(
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(28.dp),
-            containerAlpha = 0.2f,
+            style = GlassStyle.Thick,
             borderWidth = 0.dp,
         ) {
             Column(
@@ -428,7 +428,7 @@ private fun ConverterTab(
                     GlassCard(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(20.dp),
-                        containerAlpha = 0.16f,
+                        style = GlassStyle.Medium,
                         borderWidth = 0.dp,
                     ) {
                         Text(
@@ -535,7 +535,7 @@ private fun RelativeTab(
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(28.dp),
-            containerAlpha = 0.2f,
+            style = GlassStyle.Thick,
             borderWidth = 0.dp,
         ) {
             Column(
@@ -673,7 +673,7 @@ private fun CalculatorHistoryCard(
             .width(136.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        containerAlpha = 0.18f,
+        style = GlassStyle.Thick,
         borderWidth = 0.dp,
     ) {
         Column(
@@ -808,7 +808,7 @@ private fun ConverterDisplayCards(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(28.dp),
-                containerAlpha = 0.2f,
+                style = GlassStyle.Thick,
                 borderWidth = 0.dp,
             ) {
                 Column(
@@ -851,7 +851,7 @@ private fun ConverterDisplayCards(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(28.dp),
-                containerAlpha = 0.2f,
+                style = GlassStyle.Thick,
                 borderWidth = 0.dp,
             ) {
                 Column(
@@ -1149,7 +1149,7 @@ private fun ReferenceCard(
     GlassCard(
         modifier = modifier,
         shape = RoundedCornerShape(22.dp),
-        containerAlpha = 0.16f,
+        style = GlassStyle.Medium,
         borderWidth = 0.dp,
     ) {
         Column(

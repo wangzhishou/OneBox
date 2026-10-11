@@ -78,7 +78,7 @@ fun LoginInputs(
                     onForgotPasswordClick.invoke()
                 },
             text = stringResource(id = R.string.forgot_password),
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.bodyMedium
         )

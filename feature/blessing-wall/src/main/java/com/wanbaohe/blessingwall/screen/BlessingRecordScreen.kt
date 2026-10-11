@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -152,11 +151,9 @@ private fun CalendarCard(
         )
     }
 
-    Surface(
+    GlassSurface(
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -247,7 +244,7 @@ private fun CalendarCard(
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
                                 }
                                 dayLabel?.isRestDay == true -> MaterialTheme.colorScheme.error
-                                dayLabel?.isHighlighted == true -> MaterialTheme.colorScheme.tertiary
+                                dayLabel?.isHighlighted == true -> MaterialTheme.colorScheme.onTertiaryContainer
                                 else -> MaterialTheme.colorScheme.onSurfaceVariant
                             },
                             maxLines = 1,

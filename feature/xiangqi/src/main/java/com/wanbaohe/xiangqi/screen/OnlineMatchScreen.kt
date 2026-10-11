@@ -2,7 +2,6 @@ package com.wanbaohe.xiangqi.screen
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -61,6 +59,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalImageShareProvider
 import com.t8rin.imagetoolbox.core.ui.widget.other.BarcodeType
 import com.t8rin.imagetoolbox.core.ui.widget.other.QrCode
 import com.t8rin.imagetoolbox.core.ui.widget.other.QrCodeParams
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.port.outbound.RoomInfo
 import com.wanbaohe.xiangqi.application.usecase.OnlinePlayUseCase
@@ -339,9 +338,9 @@ private fun ModeButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        modifier = modifier
-            .clickable(onClick = onClick),
+    GlassCard(
+        onClick = onClick,
+        modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected)
                 MaterialTheme.colorScheme.primaryContainer
@@ -507,7 +506,7 @@ private fun RoomInviteQrCard(
     onShareImage: () -> Unit,
     onShareLink: () -> Unit,
 ) {
-    Card(
+    GlassCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
     ) {
@@ -692,10 +691,10 @@ private fun RoomItem(
     room: RoomInfo,
     onJoin: () -> Unit,
 ) {
-    Card(
+    GlassCard(
+        onClick = onJoin,
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onJoin),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),

@@ -87,8 +87,8 @@ object TonalCardPaletteDefaults {
                         tagTextColor = colorScheme.onSecondaryContainer,
                         titleColor = colorScheme.onSurface,
                         descriptionColor = colorScheme.onSurfaceVariant,
-                        supportingContentColor = colorScheme.secondary,
-                        accentColor = colorScheme.secondary,
+                        supportingContentColor = colorScheme.onSecondaryContainer,
+                        accentColor = colorScheme.onSecondaryContainer,
                     )
                 }
 
@@ -104,7 +104,7 @@ object TonalCardPaletteDefaults {
                         titleColor = colorScheme.onSurface,
                         descriptionColor = colorScheme.onSurfaceVariant,
                         supportingContentColor = colorScheme.onSurface,
-                        accentColor = colorScheme.tertiary,
+                        accentColor = colorScheme.onTertiaryContainer,
                     )
                 }
             }

@@ -36,7 +36,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -779,15 +778,13 @@ private fun StreamingSection(
             androidx.compose.animation.AnimatedVisibility(visible = showRawJson) {
                 Column {
                     Spacer(modifier = Modifier.height(8.dp))
-                    HorizontalDivider()
-                    Spacer(modifier = Modifier.height(8.dp))
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 120.dp)
                             .verticalScroll(rawScrollState)
                             .glassBackground(
-                                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                                color = MaterialTheme.colorScheme.surfaceVariant,
                                 shape = MaterialTheme.shapes.small,
                             )
                             .padding(8.dp)
@@ -860,7 +857,7 @@ private fun AgentPreviewSection(
                     Text(
                         text = stringResource(R.string.create_ai_agent_round, conversationRound),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         modifier = Modifier
                             .glassBackground(
                                 color = MaterialTheme.colorScheme.tertiaryContainer,
@@ -870,8 +867,6 @@ private fun AgentPreviewSection(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            HorizontalDivider()
             Spacer(modifier = Modifier.height(12.dp))
 
             // 生成成功提示：此处不再直接渲染 A2UI，仅展示摘要，
@@ -1121,7 +1116,7 @@ private fun ErrorSection(
                         .fillMaxWidth()
                         .heightIn(max = 140.dp)
                         .glassBackground(
-                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            color = MaterialTheme.colorScheme.surfaceVariant,
                             shape = MaterialTheme.shapes.small,
                         )
                         .verticalScroll(rememberScrollState())

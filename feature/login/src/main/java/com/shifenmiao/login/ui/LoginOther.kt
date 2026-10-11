@@ -2,6 +2,7 @@
 
 package com.shifenmiao.login.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.channel.ChannelConfig
 import com.shifenmiao.base.entrypoint.ChannelConfigEntryPoint
-import com.shifenmiao.base.ui.BoxHorizontalDivider
 import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.base.ui.button.SecondaryButton
 import com.shifenmiao.base.utils.CoreUtils
@@ -84,7 +85,13 @@ fun LoginOther(
             .padding(horizontal = AppTheme.dimens.paddingLarge)
     ) {
 
-        BoxHorizontalDivider {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = AppTheme.dimens.paddingLarge),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             UserAgreement(
                 isUserAgreementChecked = isUserAgreementChecked,
             )

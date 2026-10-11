@@ -154,7 +154,7 @@ internal fun FilterSelectionCubeLutBottomContent(
                     onShowDownloadDialog(true, false)
                 },
                 containerColor = if (resources.list.isEmpty()) {
-                    MaterialTheme.colorScheme.secondary
+                    MaterialTheme.colorScheme.secondaryContainer
                 } else Color.Transparent
             ) {
                 Icon(
@@ -174,7 +174,7 @@ internal fun FilterSelectionCubeLutBottomContent(
                     )
                 }
                 EnhancedIconButton(
-                    containerColor = MaterialTheme.colorScheme.secondary,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     onClick = {
                         showSelection = true
                     }

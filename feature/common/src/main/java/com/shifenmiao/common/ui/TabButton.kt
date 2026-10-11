@@ -1,17 +1,16 @@
 package com.shifenmiao.common.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 
 /**
  * 通用的 Tab 按钮组件
@@ -48,12 +47,12 @@ fun TabButton(
         bottomStart = CornerSize(0.dp),
         bottomEnd = CornerSize(0.dp)
     )
-    Surface(
-        modifier = modifier
-            .clip(shape)
-            .clickable(onClick = onClick),
+    GlassSurface(
+        onClick = onClick,
+        modifier = modifier,
+        shape = shape,
         color = backgroundColor,
-        shape = shape
+        style = if (isSelected) GlassStyle.None else GlassStyle.Transparent,
     ) {
         Text(
             text = text,

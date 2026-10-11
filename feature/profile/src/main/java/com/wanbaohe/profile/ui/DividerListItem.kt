@@ -3,7 +3,6 @@ package com.wanbaohe.profile.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.GrayHorizontalDivider
 
 @Composable
 fun DividerListItem(
@@ -61,5 +59,4 @@ fun DividerListItem(
             }
         }
     )
-    GrayHorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 }

@@ -40,7 +40,6 @@ import com.shifenmiao.storage.RemoteConfigStorage
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
-import com.wanbaohe.profile.ui.AboutCardDivider
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.wanbaohe.profile.ui.AboutGlassListItem
 import com.wanbaohe.profile.ui.AboutSectionTitle
@@ -102,14 +101,12 @@ fun CommunityScreen(
                             trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
                             onClick = { openUrl(UrlConstants.DISCORD_INVITE) },
                         )
-                        AboutCardDivider()
                         AboutGlassListItem(
                             headlineText = stringResource(R.string.community_x),
                             trailingText = stringResource(R.string.community_x_subtitle),
                             trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
                             onClick = { openUrl(UrlConstants.X_PROFILE) },
                         )
-                        AboutCardDivider()
                         AboutGlassListItem(
                             headlineText = stringResource(R.string.community_youtube),
                             trailingText = stringResource(R.string.community_youtube_subtitle),
@@ -139,7 +136,6 @@ fun CommunityScreen(
                                 ActionUtils.joinQQGroup(context, Constants.QQ_GROUP_KEY)
                             },
                         )
-                        AboutCardDivider()
                         AboutGlassListItem(
                             headlineText = stringResource(R.string.community_wechat_public),
                             trailingText = Strings.WECHAT_ACCOUNT,

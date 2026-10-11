@@ -515,7 +515,6 @@ private fun BoxScope.CenterResultNotice(
             shape = RoundedCornerShape(999.dp),
             color = accent.copy(alpha = 0.16f),
             contentColor = accent,
-            border = androidx.compose.foundation.BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),

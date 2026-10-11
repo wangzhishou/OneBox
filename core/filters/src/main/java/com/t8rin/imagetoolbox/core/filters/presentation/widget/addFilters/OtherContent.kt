@@ -122,7 +122,7 @@ internal fun OtherContent(
                     )
                     val containerColor by animateColorAsState(
                         if (canSetDynamicFilterPreview) {
-                            MaterialTheme.colorScheme.secondary
+                            MaterialTheme.colorScheme.secondaryContainer
                         } else {
                             MaterialTheme.colorScheme.secondaryContainer
                         }

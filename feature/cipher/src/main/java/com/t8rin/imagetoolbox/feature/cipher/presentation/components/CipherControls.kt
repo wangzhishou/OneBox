@@ -202,7 +202,7 @@ internal fun CipherControls(component: CipherComponent) {
                         shape = MaterialTheme.shapes.extraLarge,
                         color = MaterialTheme
                             .colorScheme
-                            .surfaceContainerHighest,
+                            .surfaceContainer,
                         resultPadding = 0.dp
                     )
                     .padding(16.dp)
@@ -335,7 +335,7 @@ internal fun CipherControls(component: CipherComponent) {
             value = component.cipherType,
             containerColor = Color.Unspecified,
             spanCount = 5,
-            selectedItemColor = MaterialTheme.colorScheme.secondary,
+            selectedItemColor = MaterialTheme.colorScheme.secondaryContainer,
             onValueChange = component::updateCipherType,
             entries = CipherType.entries,
             title = stringResource(R.string.algorithms),

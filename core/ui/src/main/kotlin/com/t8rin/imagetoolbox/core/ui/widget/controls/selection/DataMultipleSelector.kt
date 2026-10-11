@@ -75,7 +75,7 @@ fun <T : Any> DataMultipleSelector(
     badgeContent: (@Composable RowScope.() -> Unit)? = null,
     shape: Shape = MaterialTheme.shapes.medium,
     color: Color = MaterialTheme.colorScheme.surface,
-    selectedItemColor: Color = MaterialTheme.colorScheme.tertiary,
+    selectedItemColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
     initialExpanded: Boolean = false,
     onNewItemChange: (String) -> Unit,
     onDeleteChange: (T) -> Unit = {},

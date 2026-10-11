@@ -135,7 +135,7 @@ private fun HistoryRecordCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        containerAlpha = 0.18f,
+        style = GlassStyle.Thick,
         borderWidth = 0.6.dp,
     ) {
         Row(

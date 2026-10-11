@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -67,7 +66,6 @@ fun TermPickerSheet(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(vertical = 12.dp),
             )
-            HorizontalDivider()
 
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(termOptions) { (months, label) ->
@@ -78,10 +76,6 @@ fun TermPickerSheet(
                             onSelect(months)
                             onDismiss()
                         },
-                    )
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
                     )
                 }
             }

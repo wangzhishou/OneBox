@@ -25,6 +25,7 @@ import com.shifenmiao.common.components.sectionThemeForIndex
 import com.shifenmiao.lifetime.domain.model.MilestoneStatus
 import com.shifenmiao.lifetime.util.milestoneStatusLabel
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import java.time.LocalDate
@@ -58,7 +59,7 @@ fun PersonalMilestoneCard(
         modifier = modifier
             .aspectRatio(CARD_ASPECT_RATIO),
         shape = OneBoxDesignSystem.sectionCardShape,
-        containerAlpha = 0.22f,
+        style = GlassStyle.Dense,
         colors = androidx.compose.material3.CardDefaults.cardColors(
             containerColor = containerColor
         ),

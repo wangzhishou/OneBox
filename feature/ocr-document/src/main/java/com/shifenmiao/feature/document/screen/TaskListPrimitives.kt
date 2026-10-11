@@ -69,7 +69,6 @@ internal fun AddTaskCard(
             .heightIn(min = 220.dp, max = 280.dp)
             .fillMaxWidth(),
         shape = shape,
-        containerAlpha = GlassStyle.Regular.backgroundAlpha
     ) {
         Column(
             modifier = Modifier
@@ -212,7 +211,7 @@ internal fun StatusChip(status: String, isGridMode: Boolean) {
         )
 
         OcrTaskStatus.PROCESSING.value -> Triple(
-            MaterialTheme.colorScheme.secondary,
+            MaterialTheme.colorScheme.onSecondaryContainer,
             com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
             stringResource(R.string.status_processing)
         )

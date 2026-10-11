@@ -216,7 +216,7 @@ internal fun MaterialYouPaletteControls(bitmap: Bitmap) {
                 EnhancedChip(
                     selected = it == paletteStyle,
                     onClick = { paletteStyle = it },
-                    selectedColor = MaterialTheme.colorScheme.secondary,
+                    selectedColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentPadding = PaddingValues(
                         horizontal = 12.dp,
                         vertical = 8.dp

@@ -1504,7 +1504,7 @@ private fun ParameterSliderRow(
                 modifier = Modifier
                     .glassBackground(
                         style = GlassStyle.Thin,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         shape = OneBoxDesignSystem.pillShape,
                         borderWidth = 0.dp,
                     )

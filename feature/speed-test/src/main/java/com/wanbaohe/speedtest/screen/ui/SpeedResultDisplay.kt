@@ -21,7 +21,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import com.shifenmiao.theme.AppTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -136,7 +135,7 @@ fun SpeedResultDisplay(
         Box(
             modifier = Modifier
                 .glassThin(
-                    color = AppTheme.colors.getPrimaryColor().copy(alpha = 0.12f),
+                    color = AppTheme.colors.getPrimaryColor(),
                     shape = RoundedCornerShape(50),
                     borderWidth = 0.dp
                 )
@@ -186,11 +185,6 @@ fun SpeedResultDisplay(
                     label = stringResource(R.string.speed_test_latency_result_label),
                     value = record.latencyDisplay,
                     modifier = Modifier.weight(1f)
-                )
-                VerticalDivider(
-                    modifier = Modifier.height(40.dp),
-                    thickness = 1.dp,
-                    color = AppTheme.colors.getInactiveContainerColor()
                 )
                 MetricCardItem(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNetworkCell,

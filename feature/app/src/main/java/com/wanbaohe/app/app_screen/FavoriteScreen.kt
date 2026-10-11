@@ -469,7 +469,7 @@ private fun CompactGridItemCard(
         2 -> SectionTheme.PRIMARY
         else -> SectionTheme.SURFACE
     }
-    val iconBgColor = sectionIconContainerColor(theme).copy(alpha = 0.9f)
+    val iconBgColor = sectionIconContainerColor(theme)
     val iconTint = sectionIconColor(theme)
 
     GlassCard(
@@ -555,7 +555,7 @@ private fun MineListItemCard(
         2 -> SectionTheme.PRIMARY
         else -> SectionTheme.SURFACE
     }
-    val iconBgColor = sectionIconContainerColor(theme).copy(alpha = 0.9f)
+    val iconBgColor = sectionIconContainerColor(theme)
     val iconTint = sectionIconColor(theme)
     var expanded by remember { mutableStateOf(false) }
 

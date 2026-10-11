@@ -25,7 +25,6 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -96,8 +95,6 @@ fun NativeMarkdownEditorDemoScreen(
             onLoadSample = { editorState.replaceAll(initialMarkdown) },
             onLoadLargeDocument = { editorState.replaceAll(largeMarkdownDocument()) },
         )
-
-        HorizontalDivider()
 
         if (showPreview) {
             MarkdownLazyContent(
@@ -250,7 +247,7 @@ private fun markdownPresentationRanges(
         }
     }
     quotePattern.findAll(source).forEach { match ->
-        add(SpanStyle(color = colors.secondary) to match.range.toTextRange())
+        add(SpanStyle(color = colors.onSecondaryContainer) to match.range.toTextRange())
         match.groups[1]?.range?.toTextRange()?.let { markerRange ->
             if (match.range.toTextRange().isActive(activeRange)) add(markerStyle(colors) to markerRange)
         }
@@ -264,7 +261,7 @@ private fun markdownPresentationRanges(
     inlineCodePattern.findAll(source).forEach { match ->
         add(
             SpanStyle(
-                color = colors.tertiary,
+                color = colors.onTertiaryContainer,
                 background = colors.tertiaryContainer.copy(alpha = 0.45f),
             ) to match.range.toTextRange(),
         )

@@ -59,7 +59,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.profile.components.InvitationCodeAction
-import com.wanbaohe.profile.ui.AboutCardDivider
 import com.wanbaohe.profile.ui.AboutGlassCard
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -144,12 +143,10 @@ fun UserInfoScreen(
                                 )
                             },
                         )
-                        AboutCardDivider()
                         GlassListItemText(
                             headline = stringResource(R.string.profile_user_info_username),
                             value = loginState.username,
                         )
-                        AboutCardDivider()
                         GlassListItem(
                             modifier = Modifier.clickable { showNicknameDialog.value = true },
                             headlineContent = {
@@ -178,7 +175,6 @@ fun UserInfoScreen(
                                 }
                             },
                         )
-                        AboutCardDivider()
                         // 未绑真实邮箱(占位邮箱或格式非法)时显示绑定按钮
                         if (isBoundRealEmail(loginState.emailOrMobile)) {
                             GlassListItemText(
@@ -187,8 +183,7 @@ fun UserInfoScreen(
                             )
                             // 邮箱注册账号未完成验证时给出提示入口
                             if (!loginState.confirmed) {
-                                AboutCardDivider()
-                                GlassListItem(
+                                        GlassListItem(
                                     headlineContent = {
                                         Text(
                                             text = stringResource(R.string.profile_email_not_verified),
@@ -245,8 +240,7 @@ fun UserInfoScreen(
                         }
                         // 海外渠道不提供绑定手机功能, 不展示手机号行
                         if (LoginChannelConfig.getConfigByFlavor().bindPhoneSupported) {
-                            AboutCardDivider()
-                            GlassListItem(
+                                GlassListItem(
                                 headlineContent = {
                                     Text(
                                         text = stringResource(R.string.profile_user_info_phone),
@@ -283,8 +277,7 @@ fun UserInfoScreen(
                         }
                         // 已绑手机走短信验证码,未绑手机但有真实邮箱(非占位邮箱)走邮箱验证码
                         if (loginState.phone.isNotEmpty() || isBoundRealEmail(loginState.emailOrMobile)) {
-                            AboutCardDivider()
-                            GlassListItem(
+                                GlassListItem(
                                 modifier = Modifier.clickable { showChangePasswordSheet.value = true },
                                 headlineContent = {
                                     Text(
@@ -313,7 +306,6 @@ fun UserInfoScreen(
                             headline = stringResource(R.string.profile_user_info_points),
                             value = StringUtils.formatNumber(loginState.points),
                         )
-                        AboutCardDivider()
                         GlassListItem(
                             modifier = Modifier.clickable { onNavigateToVipLevel() },
                             headlineContent = {
@@ -343,7 +335,6 @@ fun UserInfoScreen(
                                 }
                             },
                         )
-                        AboutCardDivider()
                         GlassListItem(
                             headlineContent = {
                                 Text(
@@ -401,7 +392,7 @@ fun UserInfoScreen(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.profile_Logout_desc),
-                                        color = MaterialTheme.colorScheme.secondary,
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                                         style = MaterialTheme.typography.bodyMedium,
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis,
@@ -413,7 +404,7 @@ fun UserInfoScreen(
                                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDeleteForever,
                                         contentDescription = null,
                                         modifier = Modifier.size(18.dp),
-                                        tint = MaterialTheme.colorScheme.secondary,
+                                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
                                     )
                                 }
                             },

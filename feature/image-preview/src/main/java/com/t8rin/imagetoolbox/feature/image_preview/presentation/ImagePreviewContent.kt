@@ -197,8 +197,8 @@ fun ImagePreviewContent(
                                             text = "$prefix${component.uris.orEmpty().size}"
                                         )
                                     },
-                                    containerColor = MaterialTheme.colorScheme.tertiary,
-                                    contentColor = MaterialTheme.colorScheme.onTertiary,
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     modifier = Modifier
                                         .padding(horizontal = 2.dp)
                                         .padding(bottom = 12.dp)

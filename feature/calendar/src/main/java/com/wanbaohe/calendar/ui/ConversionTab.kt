@@ -97,7 +97,7 @@ fun ConversionTab(
     val pageBg = colorScheme.surface
     val cardBg = colorScheme.surfaceContainerLow
     val accentPrimary = colorScheme.onPrimaryContainer
-    val accentSecondary = colorScheme.tertiary
+    val accentSecondary = colorScheme.onTertiaryContainer
 
     val inputTitle = if (state.isConvertSolarToLunar) {
         stringResource(R.string.solar_date_input_title)
@@ -521,14 +521,14 @@ private fun BuddhistCalendarCard(
                         .height(22.dp)
                         .glassBackground(
                             shape = RoundedCornerShape(1.5.dp),
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.buddhist_calendar),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     letterSpacing = 1.sp
                 )
             }
@@ -675,14 +675,14 @@ private fun DaoistCalendarCard(
                         .height(22.dp)
                         .glassBackground(
                             shape = RoundedCornerShape(1.5.dp),
-                            color = MaterialTheme.colorScheme.secondary
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.daoist_calendar),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     letterSpacing = 1.sp
                 )
             }

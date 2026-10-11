@@ -180,7 +180,7 @@ fun <T : Any> FilterItem(
                                                 showPopup = false
                                             },
                                             shape = ShapeDefaults.top,
-                                            containerColor = MaterialTheme.colorScheme.secondary
+                                            containerColor = MaterialTheme.colorScheme.secondaryContainer
                                         ) {
                                             Icon(
                                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRemove,
@@ -227,7 +227,7 @@ fun <T : Any> FilterItem(
                                                     showPopup = false
                                                 },
                                                 shape = ShapeDefaults.bottom,
-                                                containerColor = MaterialTheme.colorScheme.tertiary
+                                                containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                             ) {
                                                 Icon(
                                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExtension,

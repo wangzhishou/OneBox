@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -421,11 +420,10 @@ private fun LockButton(
         MaterialTheme.colorScheme.onSurfaceVariant
     }
 
-    Card(
+    GlassCard(
+        onClick = onToggleLock,
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = containerColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        onClick = onToggleLock
+        colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Box(
             modifier = Modifier
@@ -448,7 +446,7 @@ private fun LockButton(
 
 @Composable
 private fun SensorUnavailableCard(modifier: Modifier = Modifier) {
-    Card(
+    GlassCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -521,7 +519,7 @@ private fun FullScreenRulerBackground(
     val outlineVariant = MaterialTheme.colorScheme.outlineVariant
     val rulerBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     val measureLineColor = MaterialTheme.colorScheme.onPrimaryContainer
-    val measureChipTextColor = MaterialTheme.colorScheme.onPrimary
+    val measureChipTextColor = MaterialTheme.colorScheme.primaryContainer
 
     val density = LocalDensity.current
     val measureTouchRadiusPx = with(density) { 36.dp.toPx() }

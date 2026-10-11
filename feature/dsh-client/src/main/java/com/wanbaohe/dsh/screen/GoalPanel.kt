@@ -14,10 +14,10 @@ import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -57,7 +57,7 @@ fun GoalPanel(
     val projection = parseGoalProjection(projectionValue)
     var editorMode by remember { mutableStateOf<GoalEditorMode?>(null) }
 
-    Card(modifier = modifier.fillMaxWidth()) {
+    GlassCard(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -239,8 +239,8 @@ private fun GoalProjection.phaseLabelRes(): Int? = when (phase) {
 @Composable
 private fun goalPhaseColor(phase: String?) = when (phase) {
     "active" -> MaterialTheme.colorScheme.onPrimaryContainer
-    "paused" -> MaterialTheme.colorScheme.tertiary
+    "paused" -> MaterialTheme.colorScheme.onTertiaryContainer
     "blocked" -> MaterialTheme.colorScheme.error
-    "complete" -> MaterialTheme.colorScheme.secondary
+    "complete" -> MaterialTheme.colorScheme.onSecondaryContainer
     else -> MaterialTheme.colorScheme.outline
 }

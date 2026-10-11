@@ -425,7 +425,7 @@ private fun StatFilterItem(
             .glassBackground(
                 style = if (isSelected) GlassStyle.Dense else GlassStyle.Regular,
                 color = if (isSelected) {
-                    accentColor.copy(alpha = 0.22f)
+                    accentColor
                 } else {
                     MaterialTheme.colorScheme.surfaceContainerLow
                 },

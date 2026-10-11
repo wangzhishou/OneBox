@@ -184,7 +184,7 @@ private fun CloudFileGridCard(
                                 Icon(
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.secondary,
+                                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                                     modifier = Modifier.size(32.dp)
                                 )
                             }
@@ -211,7 +211,7 @@ private fun CloudFileGridCard(
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.secondary,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                                 modifier = Modifier.size(32.dp)
                             )
                         }
@@ -227,7 +227,7 @@ private fun CloudFileGridCard(
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDescription,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.tertiary,
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer,
                                 modifier = Modifier.size(32.dp)
                             )
                         }
@@ -369,7 +369,7 @@ private fun CloudFileListRow(
                                     Icon(
                                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
                                         contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.secondary,
+                                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
                                         modifier = Modifier.size(24.dp)
                                     )
                                 }
@@ -396,7 +396,7 @@ private fun CloudFileListRow(
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.secondary,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -412,7 +412,7 @@ private fun CloudFileListRow(
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDescription,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.tertiary,
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer,
                                 modifier = Modifier.size(24.dp)
                             )
                         }

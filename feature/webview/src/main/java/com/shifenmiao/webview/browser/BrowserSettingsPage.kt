@@ -77,7 +77,7 @@ fun BrowserSettingsPage(component: BrowserComponent) {
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            containerAlpha = 0.2f,
+            style = GlassStyle.Thick,
             borderWidth = 0.5.dp
         ) {
             Column {
@@ -109,7 +109,7 @@ fun BrowserSettingsPage(component: BrowserComponent) {
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            containerAlpha = 0.2f,
+            style = GlassStyle.Thick,
             borderWidth = 0.5.dp
         ) {
             Column {
@@ -143,7 +143,7 @@ fun BrowserSettingsPage(component: BrowserComponent) {
         GlassCard(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            containerAlpha = 0.2f,
+            style = GlassStyle.Thick,
             borderWidth = 0.5.dp
         ) {
             Column {

@@ -71,7 +71,7 @@ fun CloudStorageTopBar(
                 Text(
                     text = currentBucket ?: stringResource(R.string.cloud_storage_no_bucket),
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -90,7 +90,7 @@ fun CloudStorageTopBar(
                 )
             },
             leadingContent = {
-                Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
+                Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
             },
             trailingContent = {
                 Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExpandMore, contentDescription = null)

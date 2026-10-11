@@ -29,7 +29,6 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -72,6 +71,7 @@ import kotlinx.coroutines.withContext
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 
 @Composable
 fun AIStreamAnswerScreen(
@@ -433,7 +433,7 @@ private fun StreamAnswerErrorBlock(
             style = MaterialTheme.typography.titleMedium,
         )
         if (error.isNotEmpty()) {
-            Surface(
+            GlassSurface(
                 modifier = Modifier.fillMaxWidth(),
                 color = MaterialTheme.colorScheme.errorContainer,
                 shape = MaterialTheme.shapes.medium,

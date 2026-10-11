@@ -3,6 +3,8 @@ package com.wanbaohe.bookkeeping.screen.tab
 import com.shifenmiao.model.money.AppCurrency
 import com.shifenmiao.model.money.MoneyFormat
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.shifenmiao.theme.AppTheme
 
 import androidx.compose.animation.core.animateFloatAsState
@@ -26,7 +28,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -235,10 +236,7 @@ internal fun StatsTab(
                 ) {
                     breakdowns.forEachIndexed { index, item ->
                         if (index > 0) {
-                            HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 6.dp),
-                                color    = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
-                            )
+                            Spacer(modifier = Modifier.height(AppTheme.dimens.paddingSmall))
                         }
                         RankRow(
                             rank     = index + 1,
@@ -353,9 +351,14 @@ private fun SummaryMetricCard(
         else -> contentColor.copy(alpha = 0.92f)
     }
     val iconContainerColor = when (tone) {
-        SummaryMetricTone.EXPENSE -> AppTheme.colors.getOnPrimaryColor().copy(alpha = 0.18f)
-        SummaryMetricTone.INCOME -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.14f)
-        SummaryMetricTone.NEUTRAL -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.14f)
+        SummaryMetricTone.EXPENSE -> AppTheme.colors.getOnPrimaryColor()
+        SummaryMetricTone.INCOME -> MaterialTheme.colorScheme.onPrimaryContainer
+        SummaryMetricTone.NEUTRAL -> MaterialTheme.colorScheme.primaryContainer
+    }
+    val iconContainerStyle = when (tone) {
+        SummaryMetricTone.EXPENSE -> GlassStyle.Thick
+        SummaryMetricTone.INCOME -> GlassStyle.Regular
+        SummaryMetricTone.NEUTRAL -> GlassStyle.Regular
     }
     val iconTint = when (tone) {
         SummaryMetricTone.EXPENSE -> AppTheme.colors.getOnPrimaryColor()
@@ -400,8 +403,12 @@ private fun SummaryMetricCard(
             }
             Box(
                 modifier = Modifier
-                    .clip(CircleShape)
-                    .background(iconContainerColor)
+                    .glassBackground(
+                        style = iconContainerStyle,
+                        shape = CircleShape,
+                        color = iconContainerColor,
+                        borderWidth = 0.dp,
+                    )
                     .padding(10.dp),
                 contentAlignment = Alignment.Center,
             ) {
@@ -444,7 +451,6 @@ private fun StatsSectionCard(
                 Icon(icon, null, tint = MaterialTheme.colorScheme.onPrimaryContainer, modifier = Modifier.size(18.dp))
                 Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             }
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
             content()
         }
     }
@@ -507,8 +513,8 @@ private fun RankRow(
     // 奖牌颜色全部来自主题，不再写死
     val (medalBg, medalFg) = when (rank) {
         1    -> MaterialTheme.colorScheme.primaryContainer        to MaterialTheme.colorScheme.onPrimaryContainer
-        2    -> MaterialTheme.colorScheme.secondary      to MaterialTheme.colorScheme.onSecondary
-        3    -> MaterialTheme.colorScheme.tertiary       to MaterialTheme.colorScheme.onTertiary
+        2    -> MaterialTheme.colorScheme.secondaryContainer      to MaterialTheme.colorScheme.onSecondaryContainer
+        3    -> MaterialTheme.colorScheme.tertiaryContainer       to MaterialTheme.colorScheme.onTertiaryContainer
         else -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
     }
 

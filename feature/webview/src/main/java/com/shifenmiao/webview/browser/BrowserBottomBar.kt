@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.resources.icons.Language
@@ -57,7 +58,7 @@ fun BrowserBottomBar(
     GlassCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        containerAlpha = 0.25f,
+        style = GlassStyle.Dense,
         borderWidth = 0.dp
     ) {
         Row(

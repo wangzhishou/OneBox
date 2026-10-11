@@ -350,7 +350,7 @@ private fun TrendChartCard(
 ) {
     val seriesColors = listOf(
         MaterialTheme.colorScheme.onPrimaryContainer,
-        MaterialTheme.colorScheme.tertiary,
+        MaterialTheme.colorScheme.onTertiaryContainer,
         MaterialTheme.colorScheme.error,
     )
     val ascending = remember(records) { records.sortedBy { it.happenedAt } }

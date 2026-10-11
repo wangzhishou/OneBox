@@ -90,8 +90,8 @@ fun SudokuHomeContent(
 /** 难度卡配色: 主题三色, 难度越高越贴近强调色(onPrimaryContainer), 界面整体跟随主题变化。 */
 @Composable
 private fun difficultyAccent(difficulty: SudokuDifficulty): Color = when (difficulty) {
-    SudokuDifficulty.EASY -> MaterialTheme.colorScheme.tertiary
-    SudokuDifficulty.MEDIUM -> MaterialTheme.colorScheme.secondary
+    SudokuDifficulty.EASY -> MaterialTheme.colorScheme.onTertiaryContainer
+    SudokuDifficulty.MEDIUM -> MaterialTheme.colorScheme.onSecondaryContainer
     SudokuDifficulty.HARD -> MaterialTheme.colorScheme.onPrimaryContainer
 }
 
@@ -112,7 +112,7 @@ private fun HomeActionCard(
 ) {
     OneBoxSectionCard(
         onClick = onClick,
-        containerColor = accent.copy(alpha = 0.10f)
+        containerColor = accent
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

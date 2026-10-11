@@ -340,7 +340,7 @@ private fun SummaryChip(
         SummaryMetricPill(
             label = stringResource(R.string.bookkeeping_expense_short),
             value = expenseText,
-            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.72f),
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         )
         SummaryMetricPill(

@@ -1,7 +1,6 @@
 package com.wanbaohe.altitude.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +22,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R as CoreR
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 
 /**
  * 海拔趋势折线图（Canvas 自绘，零第三方依赖）
@@ -38,7 +38,6 @@ internal fun AltitudeTrendChart(
     if (points.size < 2) return
 
     val primary = MaterialTheme.colorScheme.onPrimaryContainer
-    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
 
     val minVal = remember(points) { points.min() }
     val maxVal = remember(points) { points.max() }
@@ -48,7 +47,7 @@ internal fun AltitudeTrendChart(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(surfaceVariant.copy(alpha = 0.5f))
+            .glassBackground(shape = RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Text(

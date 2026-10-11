@@ -125,7 +125,7 @@ fun SpeedGauge(
     // 颜色体系
     val trackColor = AppTheme.colors.getInactiveContainerColor()
     val primaryColor = AppTheme.colors.getPrimaryColor()
-    val secondaryColor = MaterialTheme.colorScheme.secondary
+    val secondaryColor = MaterialTheme.colorScheme.onSecondaryContainer
     val centerTextColor = AppTheme.colors.getPrimaryTextColor()
     val subtitleColor = AppTheme.colors.getOnInactiveContainerColor()
     val tickColor = primaryColor.copy(alpha = 0.3f)
@@ -141,7 +141,7 @@ fun SpeedGauge(
     // 开始按钮填充用品牌色（primary → secondary），内容用 onPrimary 保证对比度：
     // getPrimaryColor() 取的是 onPrimaryContainer（文字色），直接当填充会和内容同色而"隐形"。
     val actionGradient = Brush.linearGradient(
-        listOf(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondary)
+        listOf(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondaryContainer)
     )
     val onActionColor = MaterialTheme.colorScheme.onPrimaryContainer
 

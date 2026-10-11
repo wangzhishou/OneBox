@@ -50,7 +50,6 @@ import dagger.hilt.android.EntryPointAccessors
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.ui.widget.glass.liquidGlassRegular
 import com.wanbaohe.profile.components.AppTextInfo
-import com.wanbaohe.profile.ui.AboutCardDivider
 import com.wanbaohe.profile.ui.AboutGlassCard
 import com.wanbaohe.profile.ui.AboutGlassListItem
 import com.wanbaohe.profile.ui.AboutSectionTitle
@@ -223,7 +222,6 @@ fun AboutUsContainer(
                             )
                         },
                     )
-                    AboutCardDivider()
                     AboutGlassListItem(
                         headlineText = stringResource(R.string.privacy_title),
                         trailingText = "",
@@ -241,8 +239,7 @@ fun AboutUsContainer(
                     )
                     // ICP 备案入口仅国内渠道显示,海外渠道无此监管要求
                     if (UrlConstants.SHOW_BEI_AN_ENTRY) {
-                        AboutCardDivider()
-                        AboutGlassListItem(
+                            AboutGlassListItem(
                             headlineText = stringResource(R.string.profile_item_beian),
                             trailingText = UrlConstants.BEI_AN_NUMBER,
                             trailingIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
@@ -280,7 +277,6 @@ fun AboutUsContainer(
                             onNavigate(Screen.AboutUs(showContactUs = true))
                         },
                     )
-                    AboutCardDivider()
                     AboutGlassListItem(
                         headlineText = stringResource(R.string.third_party),
                         trailingText = "",

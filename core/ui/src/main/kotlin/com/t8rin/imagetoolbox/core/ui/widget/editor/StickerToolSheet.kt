@@ -156,7 +156,7 @@ private fun CategoryTabRow(
             EnhancedChip(
                 selected = category == selected,
                 onClick = { onSelect(category) },
-                selectedColor = MaterialTheme.colorScheme.secondary,
+                selectedColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -182,10 +182,10 @@ private fun NewBadge() {
     Text(
         text = stringResource(R.string.sticker_new_badge),
         style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onTertiary,
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
         modifier = Modifier
             .clip(ShapeDefaults.small)
-            .background(MaterialTheme.colorScheme.tertiary)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(horizontal = 4.dp, vertical = 1.dp)
     )
 }

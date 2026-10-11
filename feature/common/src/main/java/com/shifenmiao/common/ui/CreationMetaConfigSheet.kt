@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -54,8 +55,10 @@ import com.shifenmiao.model.ai.tool.ToolRiskLevel
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.NewItemDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 
@@ -382,10 +385,10 @@ private fun ConfigSelectionOverviewCard(
     onOpenCategories: () -> Unit,
     onOpenTools: () -> Unit,
 ) {
-    Surface(
+    GlassSurface(
         modifier = Modifier.fillMaxWidth(),
+        style = GlassStyle.Medium,
         shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.14f),
     ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
             Text(
@@ -447,11 +450,14 @@ private fun SelectionPreviewSection(
     onClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
+    GlassCard(
         onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.34f),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        containerAlpha = 0.34f,
     ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
             Row(
@@ -887,14 +893,15 @@ private fun ToolSelectionOptionItem(
     isSystemTool: Boolean,
     onClick: () -> Unit,
 ) {
-    Surface(
+    GlassSurface(
         onClick = onClick,
         shape = MaterialTheme.shapes.medium,
         color = if (selected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
-        }
+            MaterialTheme.colorScheme.surfaceVariant
+        },
+        style = if (selected) GlassStyle.None else GlassStyle.Thick,
     ) {
         Row(
             modifier = Modifier
@@ -1015,18 +1022,23 @@ private fun ToolSelectionRiskTag(riskLevel: ToolRiskLevel) {
         ToolRiskLevel.DANGEROUS -> stringResource(R.string.ai_tool_risk_dangerous)
     }
     val background = when (riskLevel) {
-        ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
-        ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.14f)
-        ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.error.copy(alpha = 0.14f)
+        ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.primaryContainer
+        ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.tertiaryContainer
+        ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.error
+    }
+    val style = when (riskLevel) {
+        ToolRiskLevel.SAFE -> GlassStyle.Regular
+        else -> GlassStyle.Medium
     }
     val content = when (riskLevel) {
         ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.onPrimaryContainer
-        ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.tertiary
+        ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.onTertiaryContainer
         ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.error
     }
-    Surface(
+    GlassSurface(
         shape = MaterialTheme.shapes.medium,
-        color = background
+        color = background,
+        style = style,
     ) {
         Text(
             text = text,

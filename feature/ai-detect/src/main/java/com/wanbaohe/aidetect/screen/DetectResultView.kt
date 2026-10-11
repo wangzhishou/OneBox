@@ -212,7 +212,7 @@ private fun segmentLabelText(label: Int): String = stringResource(
 private fun segmentLabelColor(label: Int) = when (label) {
     0 -> MaterialTheme.colorScheme.onPrimaryContainer
     1 -> MaterialTheme.colorScheme.error
-    else -> MaterialTheme.colorScheme.tertiary
+    else -> MaterialTheme.colorScheme.onTertiaryContainer
 }
 
 internal fun formatPercent(value: Float): String =

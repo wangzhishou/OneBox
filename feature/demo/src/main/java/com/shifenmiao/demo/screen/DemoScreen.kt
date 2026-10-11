@@ -15,11 +15,9 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
@@ -81,7 +78,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.utils.getString
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -500,7 +496,6 @@ private fun AigcInfoGroup(
         rows.forEach { row ->
             AigcInfoLine(label = row.label, value = row.value.ifBlank { blank })
         }
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
     }
 }
 
@@ -697,17 +692,11 @@ private fun DemoScheduleDatabaseSection(
 private fun DemoScheduleEventCard(
     event: DemoComponent.ScheduleEventPreview,
 ) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .glassBackground(
-                style = GlassStyle.Thin,
-                shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colorScheme.surfaceContainer,
-            ),
+    GlassSurface(
+        modifier = Modifier.fillMaxWidth(),
+        style = GlassStyle.Thin,
         shape = MaterialTheme.shapes.medium,
-        color = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+        color = MaterialTheme.colorScheme.surfaceContainer,
     ) {
         Column(
             modifier = Modifier

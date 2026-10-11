@@ -119,8 +119,8 @@ fun preferenceItemContentColor(theme: PreferenceItemTheme): Color = when (theme)
 @Composable
 fun preferenceItemIconColor(theme: PreferenceItemTheme): Color = when (theme) {
     PreferenceItemTheme.PRIMARY -> MaterialTheme.colorScheme.onPrimaryContainer
-    PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.secondary
-    PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.tertiary
+    PreferenceItemTheme.SECONDARY -> MaterialTheme.colorScheme.onSecondaryContainer
+    PreferenceItemTheme.TERTIARY -> MaterialTheme.colorScheme.onTertiaryContainer
     PreferenceItemTheme.SURFACE -> MaterialTheme.colorScheme.onSurfaceVariant
 }
 

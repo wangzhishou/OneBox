@@ -454,7 +454,7 @@ private fun StatusBadge(
         modifier = Modifier.wrapContentHeight(),
         style = GlassStyle.Thin,
         shape = RoundedCornerShape(50),
-        color = accent.copy(alpha = 0.18f),
+        color = accent,
         borderWidth = 0.9.dp,
     ) {
         Row(
@@ -595,7 +595,7 @@ private fun PinGlyphState.color(): Color = when (this) {
 private fun LockScreenStatus.accentColor(): Color = when (this) {
     LockScreenStatus.Error -> MaterialTheme.colorScheme.error
     LockScreenStatus.Success -> MaterialTheme.colorScheme.onPrimaryContainer
-    LockScreenStatus.Verifying -> MaterialTheme.colorScheme.tertiary
+    LockScreenStatus.Verifying -> MaterialTheme.colorScheme.onTertiaryContainer
     LockScreenStatus.Idle, LockScreenStatus.Awaiting -> MaterialTheme.colorScheme.onPrimaryContainer
 }
 

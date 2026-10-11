@@ -292,7 +292,7 @@ private fun TodoDetailContent(
                     style = MaterialTheme.typography.bodyLarge,
                     color = when {
                         isOverdue -> MaterialTheme.colorScheme.error
-                        task.isDueSoon -> MaterialTheme.colorScheme.tertiary
+                        task.isDueSoon -> MaterialTheme.colorScheme.onTertiaryContainer
                         else -> MaterialTheme.colorScheme.onSurfaceVariant
                     }
                 )

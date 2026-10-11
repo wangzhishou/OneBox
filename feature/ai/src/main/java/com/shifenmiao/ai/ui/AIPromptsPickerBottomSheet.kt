@@ -243,7 +243,7 @@ private fun ChatPromptGridItem(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        containerAlpha = GlassStyle.Thin.backgroundAlpha,
+        style = GlassStyle.Thin,
         borderWidth = 0.dp,
     ) {
         Column(
@@ -336,7 +336,7 @@ private fun PromptCreateEntryCard(
         onClick = onClick,
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        containerAlpha = GlassStyle.Thin.backgroundAlpha,
+        style = GlassStyle.Thin,
         borderWidth = 0.dp,
     ) {
         Row(

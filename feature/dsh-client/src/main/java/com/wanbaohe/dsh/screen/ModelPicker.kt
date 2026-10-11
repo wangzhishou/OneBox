@@ -16,7 +16,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -32,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.dsh.R
 import com.wanbaohe.dsh.component.DshRootComponent
 import com.wanbaohe.dsh.wire.model.ModelProviderGroup
@@ -145,7 +145,7 @@ private fun ModelCatalogContent(
     LazyColumn(modifier = Modifier.heightIn(max = 420.dp)) {
         if (picked != null && !catalog.isRoutable(picked.provider)) {
             item(key = "routable_warning") {
-                Surface(
+                GlassSurface(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp),

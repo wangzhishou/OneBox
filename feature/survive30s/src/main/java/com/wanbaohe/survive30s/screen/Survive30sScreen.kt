@@ -341,7 +341,7 @@ private fun GameStatusPanel(
 }
 
 /**
- * 危险度文字颜色：安全/警戒/危险三档，全部取自主题色（onPrimaryContainer/tertiary/error），
+ * 危险度文字颜色：安全/警戒/危险三档，全部取自主题色（onPrimaryContainer/onTertiaryContainer/error），
  * 主题切换自动适配，不锁死具体色值。
  */
 @Composable
@@ -349,12 +349,12 @@ private fun dangerColorFor(dangerLevel: Float): Color {
     val colorScheme = MaterialTheme.colorScheme
     return when {
         dangerLevel > 0.8f -> colorScheme.error
-        dangerLevel > 0.45f -> colorScheme.tertiary
+        dangerLevel > 0.45f -> colorScheme.onTertiaryContainer
         else -> colorScheme.onPrimaryContainer
     }
 }
 
-/** 倒计时进度条：玻璃质感，从满到空，颜色 onPrimaryContainer（安全）→ tertiary（警戒）→ error（危险） */
+/** 倒计时进度条：玻璃质感，从满到空，颜色 onPrimaryContainer（安全）→ onTertiaryContainer（警戒）→ error（危险） */
 @Composable
 private fun TimerProgressBar(
     progress: Float,
@@ -381,7 +381,7 @@ private fun timerColorFor(progress: Float): Color {
     val colorScheme = MaterialTheme.colorScheme
     return when {
         progress < 0.33f -> colorScheme.onPrimaryContainer
-        progress < 0.66f -> colorScheme.tertiary
+        progress < 0.66f -> colorScheme.onTertiaryContainer
         else -> colorScheme.error
     }
 }
@@ -558,8 +558,8 @@ private fun rememberPlayerPalette(): PlayerPalette {
 
     return remember(
         colorScheme.onPrimaryContainer,
-        colorScheme.secondary,
-        colorScheme.tertiary,
+        colorScheme.onSecondaryContainer,
+        colorScheme.onTertiaryContainer,
         colorScheme.primaryContainer,
         colorScheme.secondaryContainer,
         colorScheme.tertiaryContainer,
@@ -572,8 +572,8 @@ private fun rememberPlayerPalette(): PlayerPalette {
         val isDarkTheme = colorScheme.background.luminance() < 0.5f
         val anchors = listOf(
             colorScheme.onPrimaryContainer,
-            colorScheme.secondary,
-            colorScheme.tertiary,
+            colorScheme.onSecondaryContainer,
+            colorScheme.onTertiaryContainer,
             colorScheme.primaryContainer,
             colorScheme.tertiaryContainer,
         )
@@ -623,10 +623,10 @@ private fun rememberPlayerPalette(): PlayerPalette {
                 if (isDarkTheme) 0.18f else 0.10f,
             ).copy(alpha = if (isDarkTheme) 0.24f else 0.16f),
             invincibleColors = listOf(
-                blendColors(colorScheme.inversePrimary, colorScheme.secondary, 0.35f),
-                blendColors(colorScheme.tertiary, colorScheme.primaryContainer, 0.42f),
+                blendColors(colorScheme.inversePrimary, colorScheme.onSecondaryContainer, 0.35f),
+                blendColors(colorScheme.onTertiaryContainer, colorScheme.primaryContainer, 0.42f),
                 blendColors(colorScheme.secondaryContainer, colorScheme.onPrimaryContainer, 0.36f),
-                blendColors(colorScheme.inversePrimary, colorScheme.secondary, 0.35f),
+                blendColors(colorScheme.inversePrimary, colorScheme.onSecondaryContainer, 0.35f),
             ),
         )
     }
@@ -986,7 +986,7 @@ private fun GameOverOverlay(
                     text = stringResource(R.string.survive_30s_new_record),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                 )
             }
             Text(

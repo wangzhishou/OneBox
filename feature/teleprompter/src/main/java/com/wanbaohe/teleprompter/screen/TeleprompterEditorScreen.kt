@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.GrayHorizontalDivider
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
@@ -125,7 +124,6 @@ fun TeleprompterEditorScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
         )
-        GrayHorizontalDivider(modifier = Modifier.padding(vertical = 6.dp, horizontal = AppTheme.dimens.paddingNormal))
 
         // 内容输入 — 沉浸式全屏（大号字体）
         TextField(

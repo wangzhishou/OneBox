@@ -78,7 +78,7 @@ fun ScoreSection(
                     text = formatScore(bestScore),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                 )
             }
         }

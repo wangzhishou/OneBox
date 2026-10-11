@@ -30,6 +30,7 @@ import androidx.compose.material.icons.automirrored.filled.ViewList
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,7 +57,10 @@ import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
@@ -415,18 +419,17 @@ private fun ModelCard(
 ) {
     val accent = resolveProviderAccentColor(model)
     val containerColor = if (isSelected) {
-        accent.copy(alpha = 0.10f)
+        accent
     } else {
-        MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.55f)
+        MaterialTheme.colorScheme.surfaceContainerLowest
     }
 
-    Surface(
+    GlassCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
-        color = containerColor,
-        shadowElevation = 0.dp,
-        tonalElevation = 0.dp,
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+        containerAlpha = if (isSelected) GlassStyle.Regular.backgroundAlpha else 0.55f,
     ) {
         Row(
             modifier = Modifier
@@ -648,18 +651,17 @@ fun ModelGridItem(
 ) {
     val accent = resolveProviderAccentColor(model)
     val containerColor = if (isSelected) {
-        accent.copy(alpha = 0.12f)
+        accent
     } else {
-        MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.55f)
+        MaterialTheme.colorScheme.surfaceContainerLowest
     }
 
-    Surface(
+    GlassCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = containerColor,
-        shadowElevation = 0.dp,
-        tonalElevation = 0.dp,
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+        containerAlpha = if (isSelected) GlassStyle.Regular.backgroundAlpha else 0.55f,
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
@@ -718,7 +720,7 @@ fun ModelGridItem(
         MaterialTheme.colorScheme.surfaceContainerLow
     }
 
-    Surface(
+    GlassSurface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
@@ -728,8 +730,7 @@ fun ModelGridItem(
         } else {
             null
         },
-        shadowElevation = 0.dp,
-        tonalElevation = 0.dp
+        style = GlassStyle.None,
     ) {
         Box(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 12.dp),

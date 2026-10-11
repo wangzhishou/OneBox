@@ -25,7 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -82,6 +81,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.utils.getString
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -603,13 +603,12 @@ private fun UnavailableEngineBanner(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.72f),
+    GlassSurface(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
-        tonalElevation = 0.dp,
+        color = MaterialTheme.colorScheme.errorContainer,
+        contentColor = MaterialTheme.colorScheme.onErrorContainer,
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
@@ -653,13 +652,11 @@ private fun NewMessageHintChip(
     isStreaming: Boolean,
     onClick: () -> Unit
 ) {
-    Surface(
-        modifier = Modifier.clickable(onClick = onClick),
+    GlassSurface(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        shape = MaterialTheme.shapes.large,
-        tonalElevation = 2.dp,
-        shadowElevation = 2.dp
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
@@ -722,13 +719,12 @@ private fun List<MessageUiModel>.withLiveToolCallHistory(
 
 @Composable
 private fun MessageLimitNoticeCard() {
-    Surface(
+    GlassSurface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = MaterialTheme.shapes.medium,
-        tonalElevation = 0.dp
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),

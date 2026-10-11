@@ -33,7 +33,6 @@ import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -819,11 +818,6 @@ private fun GlassEffectCard(
                 exit = shrinkVertically(),
             ) {
                 Column {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = OneBoxDesignSystem.compactSpacing),
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                    )
-
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1245,10 +1239,6 @@ private fun CustomBackgroundCard(
                     }
                 }
 
-                HorizontalDivider(
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-                )
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -1572,11 +1562,6 @@ private fun ColorSystemCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = OneBoxDesignSystem.microSpacing),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-            )
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -1600,11 +1585,6 @@ private fun ColorSystemCard(
                 value = contrastLevel.toFloat(),
                 onValueChange = { onContrastChange(it.toDouble()) },
                 valueRange = -1f..1f,
-            )
-
-            HorizontalDivider(
-                modifier = Modifier.padding(vertical = OneBoxDesignSystem.microSpacing),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
             )
 
             SwitchRow(

@@ -394,7 +394,7 @@ private fun CommentsList(
                 .fillMaxSize()
                 .glassBackground(
                     style = GlassStyle.Thin,
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.45f),
+                    color = MaterialTheme.colorScheme.surface,
                 ),
             contentAlignment = Alignment.Center,
         ) {
@@ -669,7 +669,7 @@ private fun ReplyPreview(
             .clip(RoundedCornerShape(8.dp))
             .glassBackground(
                 style = GlassStyle.Thin,
-                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.3f),
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(8.dp),
             )
             .clickable(onClick = onCancelReply)
@@ -728,7 +728,7 @@ private fun CommentInputBar(
     val remaining = COMMENT_CONTENT_MAX_LEN - text.length
     val counterColor = when {
         remaining < 0 -> MaterialTheme.colorScheme.error
-        remaining < 100 -> MaterialTheme.colorScheme.tertiary
+        remaining < 100 -> MaterialTheme.colorScheme.onTertiaryContainer
         else -> MaterialTheme.colorScheme.outlineVariant
     }
     // 不登录也保持可点: 点击时由 ActionUtils.showLogin 弹统一登录组件, 登录成功后自动继续.

@@ -31,7 +31,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -517,7 +516,6 @@ private fun OcrTaskItem(
             contentColor = contentColor
         ),
         shape = shape,
-        containerAlpha = GlassStyle.Regular.backgroundAlpha
     ) {
         Column(
             modifier = Modifier
@@ -547,12 +545,6 @@ private fun OcrTaskItem(
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = AppTheme.dimens.spaceSmall),
-                color = MaterialTheme.colorScheme.outlineVariant
-            )
             Spacer(modifier = Modifier.height(AppTheme.dimens.spaceSmall))
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),

@@ -21,7 +21,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -243,12 +242,6 @@ fun ColumnScope.BuyCoffeeBody(
                     text = stringResource(id = R.string.donate_earn_points),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
-                )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .padding(start = AppTheme.dimens.paddingNormal)
-                        .weight(1f),
-                    color = MaterialTheme.colorScheme.outlineVariant,
                 )
             }
             Spacer(modifier = Modifier.height(AppTheme.dimens.paddingLarge))

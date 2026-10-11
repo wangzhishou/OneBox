@@ -34,6 +34,7 @@ import com.shifenmiao.lifetime.component.LifeTimeAddCountdownComponent
 import com.shifenmiao.lifetime.domain.model.CountdownEvent
 import com.wanbaohe.calendar.data.LunarCalendarCalculator
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
@@ -120,7 +121,7 @@ fun LifeTimeAddCountdownScreen(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = OneBoxDesignSystem.sectionCardShape,
-                containerAlpha = 0.22f,
+                style = GlassStyle.Dense,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )
@@ -146,7 +147,7 @@ fun LifeTimeAddCountdownScreen(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = OneBoxDesignSystem.sectionCardShape,
-                containerAlpha = 0.22f,
+                style = GlassStyle.Dense,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
                     containerColor = dateCardContainerColor
                 ),
@@ -201,7 +202,7 @@ fun LifeTimeAddCountdownScreen(
             GlassCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = OneBoxDesignSystem.sectionCardShape,
-                containerAlpha = 0.22f,
+                style = GlassStyle.Dense,
                 colors = androidx.compose.material3.CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                 )

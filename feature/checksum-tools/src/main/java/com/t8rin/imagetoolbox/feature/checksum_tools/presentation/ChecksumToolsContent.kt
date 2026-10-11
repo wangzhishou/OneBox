@@ -116,7 +116,7 @@ fun ChecksumToolsContent(
                 .padding(top = AppTheme.dimens.spaceSmall),
             value = component.hashingType,
             containerColor = Color.Unspecified,
-            selectedItemColor = MaterialTheme.colorScheme.secondary,
+            selectedItemColor = MaterialTheme.colorScheme.secondaryContainer,
             onValueChange = component::updateChecksumType,
             entries = HashingType.entries,
             title = stringResource(R.string.algorithms),

@@ -88,7 +88,7 @@ internal fun AltitudeGauge(
     val onContainer     = MaterialTheme.colorScheme.onPrimaryContainer
     val primary         = MaterialTheme.colorScheme.onPrimaryContainer
     val error           = MaterialTheme.colorScheme.error
-    val tertiary        = MaterialTheme.colorScheme.tertiary
+    val tertiary        = MaterialTheme.colorScheme.onTertiaryContainer
     val gradient = remember(containerColor, containerVariant) {
         Brush.verticalGradient(listOf(containerColor, containerVariant))
     }

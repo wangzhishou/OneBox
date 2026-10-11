@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 
 @Composable
 fun AboutSectionTitle(
@@ -44,7 +44,7 @@ fun AboutGlassCard(
 ) {
     GlassCard(
         modifier = modifier.fillMaxWidth(),
-        containerAlpha = 0.24f,
+        style = GlassStyle.Dense,
         borderWidth = 0.8.dp,
         content = content,
     )
@@ -93,13 +93,5 @@ fun AboutGlassListItem(
             )
         }
     }
-}
-
-@Composable
-fun AboutCardDivider() {
-    HorizontalDivider(
-        modifier = Modifier.padding(horizontal = 18.dp),
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-    )
 }
 

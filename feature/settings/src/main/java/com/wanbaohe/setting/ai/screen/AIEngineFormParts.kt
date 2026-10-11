@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +26,7 @@ import com.shifenmiao.model.ai.AiRequestProtocol
 import com.shifenmiao.model.ai.AuthType
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.settings.R
@@ -89,7 +89,7 @@ internal fun CollapsibleSectionHeader(
     }
 }
 
-/** 网格/横向列表通用选择卡片(模型/协议/鉴权共用):选中高亮(onPrimaryContainer 描边 + 对勾),未选中细描边 */
+/** 网格/横向列表通用选择卡片(模型/协议/鉴权共用):选中高亮(onPrimaryContainer 描边 + 对勾) */
 @Composable
 internal fun SelectGridCard(
     title: String,
@@ -98,22 +98,20 @@ internal fun SelectGridCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    GlassSurface(
         onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         color = if (isSelected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f)
+            MaterialTheme.colorScheme.surfaceContainerLowest
         },
         border = if (isSelected) {
             BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimaryContainer)
         } else {
-            BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+            null
         },
-        shadowElevation = 0.dp,
-        tonalElevation = 0.dp,
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),

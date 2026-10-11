@@ -86,10 +86,10 @@ private fun AiSheetHeader() {
             Text(
                 text = stringResource(R.string.markup_ai_badge_new),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onTertiary,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier
                     .clip(ShapeDefaults.small)
-                    .background(MaterialTheme.colorScheme.tertiary)
+                    .background(MaterialTheme.colorScheme.tertiaryContainer)
                     .padding(horizontal = 4.dp, vertical = 1.dp)
             )
         }
@@ -164,12 +164,12 @@ private fun AiFeatureCard(
         Text(
             text = stringResource(R.string.markup_ai_points_badge, pointsCost),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onTertiary,
+            color = MaterialTheme.colorScheme.onTertiaryContainer,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(6.dp)
                 .clip(ShapeDefaults.small)
-                .background(MaterialTheme.colorScheme.tertiary)
+                .background(MaterialTheme.colorScheme.tertiaryContainer)
                 .padding(horizontal = 4.dp, vertical = 1.dp)
         )
     }

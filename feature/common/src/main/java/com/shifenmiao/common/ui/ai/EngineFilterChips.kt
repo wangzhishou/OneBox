@@ -1,6 +1,5 @@
 package com.shifenmiao.common.ui.ai
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -124,12 +123,6 @@ fun EngineFilterChip(
         selectedColor = MaterialTheme.colorScheme.primaryContainer,
         glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f),
         glassSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        border = if (!isSelected) {
-            BorderStroke(
-                0.5.dp,
-                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f)
-            )
-        } else null,
     )
 }
 

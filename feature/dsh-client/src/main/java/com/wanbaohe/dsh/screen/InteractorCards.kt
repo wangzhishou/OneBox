@@ -25,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -143,7 +144,7 @@ private fun ApprovalCard(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer
                 )
                 Spacer(Modifier.width(10.dp))
                 Column(modifier = Modifier.weight(1f)) {
@@ -338,9 +339,9 @@ private fun QuestionBlock(
     val multi = question.multiSelect == true
     Column(modifier = Modifier.padding(top = 12.dp)) {
         if (!question.header.isNullOrEmpty()) {
-            Surface(
+            GlassSurface(
                 shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.14f)
+                color = MaterialTheme.colorScheme.secondaryContainer
             ) {
                 Text(
                     text = question.header,

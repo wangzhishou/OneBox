@@ -134,8 +134,8 @@ private fun AdWatchHero() {
     // 跟随主题: 眼睛 primary / 环绕图标 tertiary·secondary·primary 轮换, 背景 primaryContainer
     val eyeColor = MaterialTheme.colorScheme.onPrimaryContainer
     val eyeBg = MaterialTheme.colorScheme.primaryContainer
-    val tertiaryColor = MaterialTheme.colorScheme.tertiary
-    val secondaryColor = MaterialTheme.colorScheme.secondary
+    val tertiaryColor = MaterialTheme.colorScheme.onTertiaryContainer
+    val secondaryColor = MaterialTheme.colorScheme.onSecondaryContainer
     val transition = rememberInfiniteTransition(label = "hero")
     val phase by transition.animateFloat(
         initialValue = 0f,
@@ -380,7 +380,7 @@ private fun RemainingCard(
                             .size(8.dp)
                             .background(
                                 color = if (i < remainingToday) {
-                                    MaterialTheme.colorScheme.secondary
+                                    MaterialTheme.colorScheme.onSecondaryContainer
                                 } else {
                                     MaterialTheme.colorScheme.outlineVariant
                                 },

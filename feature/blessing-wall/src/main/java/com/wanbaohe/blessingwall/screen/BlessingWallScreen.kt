@@ -253,12 +253,12 @@ fun BlessingWallScreen(component: BlessingWallComponent) {
         BlessingPalette(
             buttonContainer = colorScheme.secondaryContainer,
             buttonContent = colorScheme.onSecondaryContainer,
-            accent = colorScheme.secondary,
+            accent = colorScheme.onSecondaryContainer,
         ),
         BlessingPalette(
             buttonContainer = colorScheme.tertiaryContainer,
             buttonContent = colorScheme.onTertiaryContainer,
-            accent = colorScheme.tertiary,
+            accent = colorScheme.onTertiaryContainer,
         ),
         BlessingPalette(
             buttonContainer = colorScheme.surfaceContainerLow,

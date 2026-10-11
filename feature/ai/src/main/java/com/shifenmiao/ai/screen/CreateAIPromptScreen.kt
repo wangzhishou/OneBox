@@ -37,7 +37,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -201,7 +200,7 @@ fun CreateAIPromptScreen(
                     title = stringResource(R.string.create_ai_chat_prompt_drafts),
                     collapseContentDescription = stringResource(R.string.create_ai_chat_prompt_collapse),
                     expandContentDescription = stringResource(R.string.create_ai_chat_prompt_expand),
-                    activeColor = MaterialTheme.colorScheme.tertiary,
+                    activeColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     onDraftClick = { draft ->
                         handleActionWithConfirm {
                             component.loadDraft(draft)
@@ -474,7 +473,7 @@ private fun PromptPlaceholderSection(contentCardHeight: androidx.compose.ui.unit
                 modifier = Modifier
                     .size(64.dp)
                     .glassBackground(
-                        color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f),
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
                         shape = MaterialTheme.shapes.medium,
                     ),
                 contentAlignment = Alignment.Center,
@@ -483,7 +482,7 @@ private fun PromptPlaceholderSection(contentCardHeight: androidx.compose.ui.unit
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
                 )
             }
 
@@ -638,12 +637,12 @@ private fun PromptStreamingSection(
                 CircularProgressIndicator(
                     modifier = Modifier.size(14.dp),
                     strokeWidth = 2.dp,
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
                 Text(
                     text = stageLabel,
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (rawJson.isNotEmpty()) {
@@ -678,7 +677,7 @@ private fun PromptStreamingSection(
                         modifier = Modifier
                             .size(56.dp)
                             .glassBackground(
-                                color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f),
+                                color = MaterialTheme.colorScheme.tertiaryContainer,
                                 shape = MaterialTheme.shapes.large,
                             ),
                         contentAlignment = Alignment.Center,
@@ -687,7 +686,7 @@ private fun PromptStreamingSection(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText,
                             contentDescription = null,
                             modifier = Modifier.size(28.dp),
-                            tint = MaterialTheme.colorScheme.tertiary,
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                     }
                     Text(
@@ -706,7 +705,7 @@ private fun PromptStreamingSection(
                             .fillMaxWidth()
                             .heightIn(max = 120.dp)
                             .glassBackground(
-                                color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.22f),
+                                color = MaterialTheme.colorScheme.tertiaryContainer,
                                 shape = MaterialTheme.shapes.medium,
                             )
                             .padding(12.dp)
@@ -714,7 +713,7 @@ private fun PromptStreamingSection(
                         Text(
                             text = stringResource(R.string.create_ai_stream_reasoning_title),
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.tertiary,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Column(
@@ -740,15 +739,13 @@ private fun PromptStreamingSection(
             AnimatedVisibility(visible = showRawJson) {
                 Column {
                     Spacer(modifier = Modifier.height(8.dp))
-                    HorizontalDivider()
-                    Spacer(modifier = Modifier.height(8.dp))
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 120.dp)
                             .verticalScroll(rawScrollState)
                             .glassBackground(
-                                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                                color = MaterialTheme.colorScheme.surfaceVariant,
                                 shape = MaterialTheme.shapes.small,
                             )
                             .padding(8.dp)
@@ -807,7 +804,7 @@ private fun PromptPreviewSection(
                     title = chatPrompt.title,
                     description = chatPrompt.description,
                     defaultTitle = stringResource(R.string.create_ai_chat_prompt_preview_default_title),
-                    accentColor = MaterialTheme.colorScheme.tertiary,
+                    accentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     isEditing = isMetaEditing,
                     onToggleEditing = { isMetaEditing = !isMetaEditing },
                     onTitleChange = onTitleChange,
@@ -820,7 +817,7 @@ private fun PromptPreviewSection(
                             conversationRound
                         ),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         modifier = Modifier
                             .glassBackground(
                                 color = MaterialTheme.colorScheme.tertiaryContainer,
@@ -830,8 +827,6 @@ private fun PromptPreviewSection(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            HorizontalDivider()
             Spacer(modifier = Modifier.height(12.dp))
 
 
@@ -850,7 +845,7 @@ private fun PromptPreviewSection(
                         Text(
                             text = stringResource(R.string.create_ai_chat_prompt_system_prompt_label),
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.tertiary,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
@@ -867,7 +862,7 @@ private fun PromptPreviewSection(
                         Text(
                             text = stringResource(R.string.create_ai_chat_prompt_placeholder_label),
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.tertiary,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
@@ -903,12 +898,12 @@ private fun PromptPreviewSection(
                             com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibility,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.tertiary,
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Text(
                             text = stringResource(R.string.create_ai_chat_prompt_tap_preview),
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.tertiary,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                     }
                 }
@@ -1017,7 +1012,7 @@ private fun PromptPreviewSection(
                     Text(
                         text = stringResource(R.string.create_ai_common_category_label),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                     )
                     Text(
                         text = selectedCategoryNames.joinToString(" · ")
@@ -1114,7 +1109,7 @@ private fun PromptErrorSection(
                 Text(
                     text = stringResource(R.string.create_ai_chat_prompt_stream_raw_toggle),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Column(
@@ -1123,7 +1118,7 @@ private fun PromptErrorSection(
                         .heightIn(max = 140.dp)
                         .verticalScroll(rememberScrollState())
                         .glassBackground(
-                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                            color = MaterialTheme.colorScheme.surfaceVariant,
                             shape = MaterialTheme.shapes.small,
                         )
                         .padding(8.dp)

@@ -430,7 +430,7 @@ private fun LocationPermissionCard(
                 imageVector = if (isPermanentlyDenied) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLocationOff
                 else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLocationOn,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier.size(32.dp)
             )
             Column(modifier = Modifier.weight(1f)) {

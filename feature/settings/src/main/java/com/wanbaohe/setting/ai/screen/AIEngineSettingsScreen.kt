@@ -445,8 +445,8 @@ private fun EngineBadge(
                 style = if (selected) GlassStyle.Thin else GlassStyle.Regular,
                 color = when {
                     isError -> MaterialTheme.colorScheme.surfaceContainer
-                    isPrimary -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
-                    selected -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
+                    isPrimary -> MaterialTheme.colorScheme.primaryContainer
+                    selected -> MaterialTheme.colorScheme.onPrimaryContainer
                     else -> MaterialTheme.colorScheme.surfaceVariant
                 },
                 shape = RoundedCornerShape(50),

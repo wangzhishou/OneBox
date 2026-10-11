@@ -26,7 +26,7 @@ fun AppLargeTopAppBar(
             scrolledContainerColor = Color.Transparent,
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            actionIconContentColor = MaterialTheme.colorScheme.onSecondary
+            actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         modifier = modifier
             .background(Color.Transparent),

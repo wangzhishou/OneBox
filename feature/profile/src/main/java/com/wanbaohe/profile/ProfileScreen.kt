@@ -496,7 +496,7 @@ private fun ProfileStatsRow(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMedal,
                         contentDescription = null,
                         modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
@@ -551,7 +551,7 @@ private fun ProfileStatsRow(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
                         contentDescription = null,
                         modifier = Modifier.size(22.dp),
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,

@@ -201,7 +201,7 @@ fun ImageFormatSelector(
                                 label = {
                                     Text(text = stringResource(R.string.auto))
                                 },
-                                selectedColor = MaterialTheme.colorScheme.tertiary,
+                                selectedColor = MaterialTheme.colorScheme.tertiaryContainer,
                                 contentPadding = PaddingValues(
                                     horizontal = 16.dp,
                                     vertical = 6.dp
@@ -218,7 +218,7 @@ fun ImageFormatSelector(
                                     label = {
                                         Text(text = it.title)
                                     },
-                                    selectedColor = MaterialTheme.colorScheme.tertiary,
+                                    selectedColor = MaterialTheme.colorScheme.tertiaryContainer,
                                     contentPadding = PaddingValues(
                                         horizontal = 16.dp,
                                         vertical = 6.dp
@@ -235,7 +235,7 @@ fun ImageFormatSelector(
                                     label = {
                                         Text(text = it.title)
                                     },
-                                    selectedColor = MaterialTheme.colorScheme.tertiary,
+                                    selectedColor = MaterialTheme.colorScheme.tertiaryContainer,
                                     contentPadding = PaddingValues(
                                         horizontal = 16.dp,
                                         vertical = 6.dp
@@ -294,7 +294,7 @@ fun ImageFormatSelector(
                                 label = {
                                     Text(text = it.title)
                                 },
-                                selectedColor = MaterialTheme.colorScheme.tertiary,
+                                selectedColor = MaterialTheme.colorScheme.tertiaryContainer,
                                 contentPadding = PaddingValues(
                                     horizontal = 16.dp,
                                     vertical = 6.dp

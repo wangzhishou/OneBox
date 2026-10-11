@@ -232,7 +232,7 @@ internal fun SettingsTab(
             CategorySectionCard(
                 title = stringResource(R.string.bookkeeping_expense),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTrendingDown,
-                accentColor = MaterialTheme.colorScheme.secondary,
+                accentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 chipContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 onChipContainerColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 containerColor = MaterialTheme.colorScheme.surface,
@@ -260,7 +260,7 @@ internal fun SettingsTab(
             CategorySectionCard(
                 title = stringResource(R.string.bookkeeping_excluded),
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwapHoriz,
-                accentColor = MaterialTheme.colorScheme.tertiary,
+                accentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 chipContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
                 onChipContainerColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 containerColor = MaterialTheme.colorScheme.surface,

@@ -109,7 +109,7 @@ object Animation {
     }
 
     /**
-     * 默认卡片骨架占位：圆角 + surfaceContainerHigh 底色 + shimmer 动画，
+     * 默认卡片骨架占位：圆角 + surfaceContainer 底色 + shimmer 动画，
      * 自动填满父 Box 尺寸（由 AnimatedVisibility 内容撑起）。
      */
     @Composable

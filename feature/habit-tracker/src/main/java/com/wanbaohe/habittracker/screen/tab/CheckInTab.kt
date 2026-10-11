@@ -43,6 +43,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutChartSlice
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutExpenseChart
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.week_selector.WeekSelector
 import com.wanbaohe.habittracker.R
 import com.wanbaohe.habittracker.component.HabitTrackerComponent
@@ -270,8 +272,12 @@ private fun HabitListItem(
         Box(
             modifier = Modifier
                 .size(46.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(habitColor.copy(alpha = 0.16f)),
+                .glassBackground(
+                    style = GlassStyle.Medium,
+                    shape = RoundedCornerShape(14.dp),
+                    color = habitColor,
+                    borderWidth = 0.dp,
+                ),
             contentAlignment = Alignment.Center,
         ) {
             Icon(

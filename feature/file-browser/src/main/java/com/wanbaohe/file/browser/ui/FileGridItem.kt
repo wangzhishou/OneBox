@@ -43,8 +43,8 @@ fun FileGridItem(
     modifier: Modifier = Modifier
 ) {
     val backgroundColor = when {
-        item.isSelected -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f)
-        item.isHighlighted -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+        item.isSelected -> MaterialTheme.colorScheme.secondaryContainer
+        item.isHighlighted -> MaterialTheme.colorScheme.primaryContainer
         else -> MaterialTheme.colorScheme.surfaceContainerLowest
     }
 

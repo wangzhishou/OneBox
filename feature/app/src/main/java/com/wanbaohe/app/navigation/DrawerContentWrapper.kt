@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.base.ui.GrayHorizontalDivider
 import com.shifenmiao.common.components.DatabaseBackupRestoreSection
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.BuildConfig
@@ -121,11 +120,6 @@ fun DrawerMenu(
             }
         }
         item {
-            GrayHorizontalDivider(
-                color = MaterialTheme.colorScheme.surfaceContainerLow
-            )
-        }
-        item {
             Text(
                 text = stringResource(id = R.string.quick_setting),
                 style = MaterialTheme.typography.labelMedium,
@@ -169,11 +163,6 @@ fun DrawerMenu(
             FontSizeQuickSettingItem()
         }
         item {
-            GrayHorizontalDivider(
-                color = MaterialTheme.colorScheme.surfaceContainerLow
-            )
-        }
-        item {
             Text(
                 text = stringResource(id = R.string.data_database),
                 style = MaterialTheme.typography.labelMedium,
@@ -184,11 +173,6 @@ fun DrawerMenu(
             DatabaseBackupRestoreSection(
                 commonComponent = appComponent,
                 onAction = { onCloseDrawer() }
-            )
-        }
-        item {
-            GrayHorizontalDivider(
-                color = MaterialTheme.colorScheme.surfaceContainerLow
             )
         }
     }

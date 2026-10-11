@@ -104,7 +104,7 @@ internal fun FloatFileModelPairItem(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp)
                 .height(44.dp),
-            containerColor = MaterialTheme.colorScheme.secondary
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Github,

@@ -52,6 +52,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalSheetDragHandle
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.flatGlassContainer
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.t8rin.imagetoolbox.core.ui.widget.text.AutoSizeText
@@ -82,8 +83,8 @@ fun CompareSheet(
                             .flatGlassContainer(
                                 shape = ShapeDefaults.extraSmall,
                                 color = MaterialTheme.colorScheme
-                                    .outlineVariant()
-                                    .copy(alpha = 0.1f),
+                                    .outlineVariant(),
+                                style = GlassStyle.Thin,
                                 resultPadding = 0.dp
                             )
                             .transparencyChecker()
@@ -168,8 +169,8 @@ fun CompareSheet(
                         .flatGlassContainer(
                             shape = ShapeDefaults.extraSmall,
                             color = MaterialTheme.colorScheme
-                                .outlineVariant()
-                                .copy(alpha = 0.1f),
+                                .outlineVariant(),
+                            style = GlassStyle.Thin,
                             resultPadding = 0.dp
                         )
                         .transparencyChecker()

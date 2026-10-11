@@ -158,17 +158,17 @@ fun BlessingEffectHost(
                 BlessingEffectType.Guanyin -> GuanyinEffect()
                 BlessingEffectType.Incense -> IncenseEffect()
                 BlessingEffectType.Hamsa -> RingGlowEffect(color = MaterialTheme.colorScheme.onPrimaryContainer)
-                BlessingEffectType.Angel -> RingGlowEffect(color = MaterialTheme.colorScheme.tertiary)
+                BlessingEffectType.Angel -> RingGlowEffect(color = MaterialTheme.colorScheme.onTertiaryContainer)
                 BlessingEffectType.Cupid -> FloatingShapeEffect(
                     color = MaterialTheme.colorScheme.error,
                     shape = FloatingShape.Heart,
                 )
                 BlessingEffectType.Clover -> FloatingShapeEffect(
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     shape = FloatingShape.Leaf,
                 )
                 BlessingEffectType.Dreamcatcher -> FloatingShapeEffect(
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     shape = FloatingShape.Star,
                 )
                 BlessingEffectType.Wishbone -> SparkleBurstEffect(
@@ -333,7 +333,7 @@ private fun BurstingIngotImage(
 @Composable
 private fun GuanyinEffect() {
     val progress = remember { Animatable(0f) }
-    val primary = MaterialTheme.colorScheme.tertiary
+    val primary = MaterialTheme.colorScheme.onTertiaryContainer
     val secondary = MaterialTheme.colorScheme.onPrimaryContainer
     androidx.compose.runtime.LaunchedEffect(Unit) {
         progress.animateTo(1f, tween(durationMillis = 1_900, easing = LinearEasing))
@@ -509,7 +509,7 @@ private fun SparkleBurstEffect(color: Color) {
 private fun IncenseEffect() {
     val progress = remember { Animatable(0f) }
     val smoke = MaterialTheme.colorScheme.onSurfaceVariant
-    val ember = MaterialTheme.colorScheme.tertiary
+    val ember = MaterialTheme.colorScheme.onTertiaryContainer
     androidx.compose.runtime.LaunchedEffect(Unit) {
         progress.animateTo(1f, tween(durationMillis = 1_900, easing = LinearEasing))
     }

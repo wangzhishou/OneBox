@@ -30,6 +30,7 @@ import com.shifenmiao.lifetime.domain.model.CountdownStatus
 import com.shifenmiao.lifetime.util.countdownStatusLabel
 import com.shifenmiao.lifetime.util.localizedPresetEventName
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 
@@ -63,7 +64,7 @@ fun CountdownEventCard(
         modifier = modifier
             .aspectRatio(CARD_ASPECT_RATIO),
         shape = OneBoxDesignSystem.sectionCardShape,
-        containerAlpha = 0.22f,
+        style = GlassStyle.Dense,
         colors = CardDefaults.cardColors(containerColor = containerColor),
         onClick = onClick,
     ) {

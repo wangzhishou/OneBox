@@ -197,7 +197,7 @@ private fun PresetChip(
     EnhancedChip(
         selected = selected,
         onClick = onClick,
-        selectedColor = MaterialTheme.colorScheme.secondary,
+        selectedColor = MaterialTheme.colorScheme.secondaryContainer,
         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
         modifier = modifier
     ) {
@@ -225,7 +225,7 @@ private fun BackgroundChip(
     EnhancedChip(
         selected = selected,
         onClick = onClick,
-        selectedColor = MaterialTheme.colorScheme.secondary,
+        selectedColor = MaterialTheme.colorScheme.secondaryContainer,
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
         modifier = modifier
     ) {

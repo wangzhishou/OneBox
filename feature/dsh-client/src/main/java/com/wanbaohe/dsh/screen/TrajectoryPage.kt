@@ -379,9 +379,9 @@ private fun trajectoryRoleColor(role: TrajectoryRole): androidx.compose.ui.graph
     when (role) {
         TrajectoryRole.User -> AppTheme.colors.getPrimaryColor()
         TrajectoryRole.Assistant -> MaterialTheme.colorScheme.onSurface
-        TrajectoryRole.Tool -> MaterialTheme.colorScheme.tertiary
+        TrajectoryRole.Tool -> MaterialTheme.colorScheme.onTertiaryContainer
         TrajectoryRole.Compaction -> MaterialTheme.colorScheme.onSurfaceVariant
-        TrajectoryRole.Retry -> MaterialTheme.colorScheme.tertiary
+        TrajectoryRole.Retry -> MaterialTheme.colorScheme.onTertiaryContainer
         TrajectoryRole.Error -> MaterialTheme.colorScheme.error
         TrajectoryRole.Other -> MaterialTheme.colorScheme.onSurfaceVariant
     }

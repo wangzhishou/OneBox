@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,6 +51,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineStorage
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutChartSlice
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutExpenseChart
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.wanbaohe.householditems.R
 import com.wanbaohe.householditems.component.HouseholdItemsComponent
 import com.wanbaohe.householditems.model.CategoryCountUi
@@ -260,11 +261,11 @@ fun HouseholdStatsTab(
                     if (stats.upcomingExpiry.isNotEmpty()) {
                         ActivityGroup(
                             title = stringResource(R.string.household_stats_upcoming_expiry),
-                            tint = MaterialTheme.colorScheme.tertiary,
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
                             modifier = Modifier.padding(top = 16.dp),
                         ) {
                             stats.upcomingExpiry.forEach { item ->
-                                UpcomingExpiryRow(item = item, tint = MaterialTheme.colorScheme.tertiary)
+                                UpcomingExpiryRow(item = item, tint = MaterialTheme.colorScheme.onTertiaryContainer)
                             }
                         }
                     }
@@ -303,13 +304,15 @@ private fun StatsMetricCard(
         ) {
             Box(
                 modifier = Modifier
-                    .clip(CircleShape)
-                    .background(
-                        if (highlight) {
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.16f)
+                    .glassBackground(
+                        style = if (highlight) GlassStyle.Medium else GlassStyle.Regular,
+                        shape = CircleShape,
+                        color = if (highlight) {
+                            MaterialTheme.colorScheme.tertiaryContainer
                         } else {
-                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.14f)
-                        }
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        },
+                        borderWidth = 0.dp,
                     )
                     .padding(8.dp),
                 contentAlignment = Alignment.Center,
@@ -319,7 +322,7 @@ private fun StatsMetricCard(
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                     tint = if (highlight) {
-                        MaterialTheme.colorScheme.tertiary
+                        MaterialTheme.colorScheme.onTertiaryContainer
                     } else {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     },
@@ -388,7 +391,6 @@ private fun StatsSectionCard(
                 )
                 Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             }
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
             content()
         }
     }
@@ -608,8 +610,12 @@ private fun TimelineEntryRow(
         Box(
             modifier = Modifier
                 .size(38.dp)
-                .clip(RoundedCornerShape(11.dp))
-                .background(tint.copy(alpha = 0.12f)),
+                .glassBackground(
+                    style = GlassStyle.Regular,
+                    shape = RoundedCornerShape(11.dp),
+                    color = tint,
+                    borderWidth = 0.dp,
+                ),
             contentAlignment = Alignment.Center,
         ) {
             val icon = categoryIconOrNull(item.category)

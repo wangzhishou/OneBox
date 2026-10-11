@@ -525,9 +525,9 @@ private fun WuXingCard(wuXingDist: Map<String, Float>) {
 
             // 五行列表
             val wuXingColors = mapOf(
-                "水" to MaterialTheme.colorScheme.tertiary,
+                "水" to MaterialTheme.colorScheme.onTertiaryContainer,
                 "火" to MaterialTheme.colorScheme.error,
-                "金" to MaterialTheme.colorScheme.secondary,
+                "金" to MaterialTheme.colorScheme.onSecondaryContainer,
                 "木" to MaterialTheme.colorScheme.onPrimaryContainer,
                 "土" to MaterialTheme.colorScheme.outline
             )
@@ -678,7 +678,7 @@ private fun FortuneCard(fortune: com.wanbaohe.calendar.data.FortuneData) {
                         )
                         FortuneTag(
                             text = "CAREER:${fortune.careerLevel}",
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
                 }
@@ -725,7 +725,7 @@ private fun MonthFortuneCard(
     val tagColor = when (fortune.tagType) {
         "positive" -> MaterialTheme.colorScheme.onPrimaryContainer
         "negative" -> MaterialTheme.colorScheme.error
-        else -> MaterialTheme.colorScheme.tertiary
+        else -> MaterialTheme.colorScheme.onTertiaryContainer
     }
 
     GlassCard(
@@ -805,7 +805,7 @@ private fun AiBaZiCard(onClick: () -> Unit) {
                     .size(48.dp)
                     .glassBackground(
                         shape = RoundedCornerShape(12.dp),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.15f)
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                 contentAlignment = Alignment.Center
             ) {

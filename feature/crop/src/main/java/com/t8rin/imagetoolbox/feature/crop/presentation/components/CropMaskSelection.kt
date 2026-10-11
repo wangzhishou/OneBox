@@ -161,7 +161,7 @@ fun CropMaskSelection(
                         .padding(16.dp),
                     editable = false,
                     scale = 1f,
-                    outlineColor = MaterialTheme.colorScheme.secondary,
+                    outlineColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     title = "",
                     cropOutline = item.cropOutline
                 )

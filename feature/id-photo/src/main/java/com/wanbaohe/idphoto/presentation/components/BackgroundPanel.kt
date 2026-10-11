@@ -85,9 +85,7 @@ private fun BackgroundColorItem(
                 .then(
                     if (isSelected) {
                         Modifier.border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer, CircleShape)
-                    } else {
-                        Modifier.border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f), CircleShape)
-                    }
+                    } else Modifier
                 )
                 .clickable(onClick = onClick),
             contentAlignment = Alignment.Center

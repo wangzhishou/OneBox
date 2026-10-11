@@ -105,8 +105,8 @@ fun FontSelector(
                 content = {
                     Text(fonts.size.toString())
                 },
-                containerColor = MaterialTheme.colorScheme.tertiary,
-                contentColor = MaterialTheme.colorScheme.onTertiary,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
                     .padding(bottom = 12.dp)
@@ -151,7 +151,7 @@ fun FontSelector(
                         onClick = {
                             onValueChange(font)
                         },
-                        selectedColor = MaterialTheme.colorScheme.secondary,
+                        selectedColor = MaterialTheme.colorScheme.secondaryContainer,
                         contentPadding = PaddingValues(
                             horizontal = 12.dp,
                             vertical = 8.dp

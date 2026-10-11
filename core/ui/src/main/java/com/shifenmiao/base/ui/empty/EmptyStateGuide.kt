@@ -148,7 +148,7 @@ private fun EmptyStateActionCard(
                 .glassThin(
                     shape = CircleShape,
                     color = if (action.emphasized) {
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.14f)
+                        MaterialTheme.colorScheme.primaryContainer
                     } else {
                         MaterialTheme.colorScheme.surfaceContainer
                     },

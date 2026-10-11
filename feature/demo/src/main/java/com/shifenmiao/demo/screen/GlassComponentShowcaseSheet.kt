@@ -188,7 +188,7 @@ fun GlassComponentShowcaseSheet() {
                         containerColor = colorScheme.surfaceContainer,
                         contentColor = colorScheme.onSurface,
                     ),
-                    containerAlpha = selectedMode.style.backgroundAlpha,
+                    style = selectedMode.style,
                     borderWidth = 0.5.dp,
                 ) {
                     ShowcaseCardContent(

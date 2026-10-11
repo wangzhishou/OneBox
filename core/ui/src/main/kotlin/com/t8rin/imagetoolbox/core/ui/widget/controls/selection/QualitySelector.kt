@@ -89,7 +89,7 @@ fun QualitySelector(
     icon: ImageVector? = null,
     shape: Shape = ShapeDefaults.extraLarge,
     inactiveButtonColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
-    activeButtonColor: Color = MaterialTheme.colorScheme.secondary,
+    activeButtonColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     autoCoerce: Boolean = true
 ) {
     val settingsState = LocalSettingsState.current
@@ -291,7 +291,7 @@ fun QualitySelector(
                                             compressionScheme = it.ordinal
                                         )?.coerceIn(actualImageFormat)?.let(onQualityChange)
                                     },
-                                    selectedColor = MaterialTheme.colorScheme.tertiary,
+                                    selectedColor = MaterialTheme.colorScheme.tertiaryContainer,
                                     contentPadding = PaddingValues(
                                         horizontal = 12.dp,
                                         vertical = 8.dp

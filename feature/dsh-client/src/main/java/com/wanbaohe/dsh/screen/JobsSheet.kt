@@ -159,7 +159,7 @@ private fun JobStatusBadge(text: String, color: Color) {
 private fun jobStatusColor(task: TaskView): Color {
     if (task.isActive) {
         return if (task.status == TaskView.StatusStopping) {
-            MaterialTheme.colorScheme.tertiary
+            MaterialTheme.colorScheme.onTertiaryContainer
         } else {
             AppTheme.colors.getPrimaryColor()
         }

@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +24,7 @@ import com.shifenmiao.login.state.RegistrationUiEvent
 import com.shifenmiao.login.ui.RegistrationInputs
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 
 @Composable
 fun RegistrationBottomSheet(
@@ -64,7 +64,7 @@ fun RegistrationBottomSheet(
 
 
             // Main card Content for Registration
-            ElevatedCard(
+            GlassCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(AppTheme.dimens.paddingLarge)

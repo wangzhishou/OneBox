@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.text.HtmlText
 import com.t8rin.imagetoolbox.library_details.presentation.screenLogic.LibraryDetailsComponent
 
@@ -36,7 +37,7 @@ fun LibraryDetailsContent(
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 7.dp),
                 shape = RoundedCornerShape(16.dp),
-                containerAlpha = 0.24f,
+                style = GlassStyle.Dense,
                 borderWidth = 0.8.dp,
             ) {
                 HtmlText(

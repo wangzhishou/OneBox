@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavigationBar
 import com.wanbaohe.compass.component.CompassComponent
@@ -135,7 +135,7 @@ fun CompassScreen(component: CompassComponent) {
  */
 @Composable
 private fun CalibrationBanner(modifier: Modifier = Modifier) {
-    Card(
+    GlassCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.errorContainer
@@ -167,7 +167,7 @@ private fun CalibrationBanner(modifier: Modifier = Modifier) {
  */
 @Composable
 private fun SensorUnavailableCard(modifier: Modifier = Modifier) {
-    Card(
+    GlassCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant

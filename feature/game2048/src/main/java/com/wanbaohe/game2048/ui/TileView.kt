@@ -99,7 +99,7 @@ private fun tileColors(
         8 -> colorScheme.secondaryContainer.copy(alpha = 0.5f) to colorScheme.onSecondaryContainer.copy(alpha = 0.6f)
         16 -> colorScheme.secondaryContainer to colorScheme.onSecondaryContainer
         32 -> colorScheme.tertiaryContainer to colorScheme.onTertiaryContainer
-        64 -> colorScheme.tertiary to colorScheme.onTertiary
+        64 -> colorScheme.tertiaryContainer to colorScheme.onTertiaryContainer
         128 -> colorScheme.primaryContainer.copy(alpha = 0.55f) to colorScheme.onPrimaryContainer
         256 -> colorScheme.primaryContainer.copy(alpha = 0.8f) to colorScheme.onPrimaryContainer
         512 -> colorScheme.primaryContainer to colorScheme.onPrimaryContainer

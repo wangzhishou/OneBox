@@ -37,7 +37,7 @@ fun PositionSelector(
     modifier: Modifier = Modifier,
     shape: Shape = ShapeDefaults.large,
     color: Color = MaterialTheme.colorScheme.surface,
-    selectedItemColor: Color = MaterialTheme.colorScheme.tertiary,
+    selectedItemColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
 ) {
     DataSelector(
         value = value,

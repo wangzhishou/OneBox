@@ -20,7 +20,7 @@ fun TitleText(
         text = text,
         textAlign = textAlign,
         style = MaterialTheme.typography.headlineLarge,
-        color = MaterialTheme.colorScheme.secondary
+        color = MaterialTheme.colorScheme.onSecondaryContainer
     )
 }
 

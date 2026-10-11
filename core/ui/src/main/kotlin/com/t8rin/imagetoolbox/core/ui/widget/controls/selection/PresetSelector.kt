@@ -332,7 +332,7 @@ fun PresetSelector(
                         colors = RoundedTextFieldColors(
                             isError = false,
                             containerColor = MaterialTheme.colorScheme.surface,
-                            focusedIndicatorColor = MaterialTheme.colorScheme.secondary
+                            focusedIndicatorColor = MaterialTheme.colorScheme.onSecondaryContainer
                         ).let {
                             it.copy(
                                 unfocusedIndicatorColor = it.unfocusedIndicatorColor.copy(0.5f)

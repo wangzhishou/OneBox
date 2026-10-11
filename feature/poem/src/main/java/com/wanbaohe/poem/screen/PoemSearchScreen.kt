@@ -1,6 +1,5 @@
 package com.wanbaohe.poem.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +36,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineStar
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSearchTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
 import com.wanbaohe.poem.R
 import com.wanbaohe.poem.component.PoemSearchComponent
 import com.wanbaohe.poem.model.Poem
@@ -272,9 +273,11 @@ private fun PoemResultItem(
                         Box(
                             modifier = Modifier
                                 .padding(start = 8.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
+                                .coloredGlass(
+                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                    style = GlassStyle.Thin,
                                     shape = RoundedCornerShape(6.dp),
+                                    borderWidth = 0.dp,
                                 )
                                 .padding(horizontal = 6.dp, vertical = 2.dp),
                         ) {

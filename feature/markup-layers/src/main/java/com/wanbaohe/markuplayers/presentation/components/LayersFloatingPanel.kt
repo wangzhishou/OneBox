@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -356,14 +355,12 @@ private fun PanelActionRow(component: MarkupLayersComponent) {
         MaterialTheme.colorScheme.onSurfaceVariant
     } else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
 
-    HorizontalDivider(
-        color = MaterialTheme.colorScheme.outlineVariant,
-        modifier = Modifier.padding(vertical = 4.dp)
-    )
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
     ) {
         LayerIconButton(
             icon = Icons.Rounded.ContentCopy,

@@ -236,7 +236,7 @@ fun EasterEggScreen(component: EasterEggComponent) {
                         modifier = Modifier
                             .size(24.dp)
                             .padding(1.dp),
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }

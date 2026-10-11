@@ -122,7 +122,7 @@ fun CompareScreenTopAppBar(
                             onToggleLabelsEnabled(!isLabelsEnabled)
                         },
                         containerColor = animateColorAsState(
-                            if (isLabelsEnabled) MaterialTheme.colorScheme.secondary
+                            if (isLabelsEnabled) MaterialTheme.colorScheme.secondaryContainer
                             else Color.Transparent
                         ).value
                     ) {

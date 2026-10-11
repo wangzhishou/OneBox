@@ -263,7 +263,7 @@ private fun TrendCardChart(
     val xLabels = remember(summary) { summary.dayStarts.map(::formatChartDate) }
     val seriesColors = listOf(
         accentColor,
-        MaterialTheme.colorScheme.tertiary,
+        MaterialTheme.colorScheme.onTertiaryContainer,
         MaterialTheme.colorScheme.error,
     )
 

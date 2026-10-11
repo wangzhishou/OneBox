@@ -131,7 +131,7 @@ fun <T> EnhancedButtonGroup(
     title: String?,
     onValueChange: (T) -> Unit,
     inactiveButtonColor: Color = MaterialTheme.colorScheme.surface,
-    activeButtonColor: Color = MaterialTheme.colorScheme.secondary,
+    activeButtonColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     isScrollable: Boolean = true,
     contentPadding: PaddingValues = DefaultContentPadding
 ) {
@@ -176,7 +176,7 @@ fun EnhancedButtonGroup(
     title: @Composable RowScope.() -> Unit = {},
     onIndexChange: (Int) -> Unit,
     inactiveButtonColor: Color = MaterialTheme.colorScheme.surface,
-    activeButtonColor: Color = MaterialTheme.colorScheme.secondary,
+    activeButtonColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     isScrollable: Boolean = true,
     contentPadding: PaddingValues = DefaultContentPadding
 ) {
@@ -205,7 +205,7 @@ fun <T> EnhancedButtonGroup(
     title: String?,
     onValueChange: (T) -> Unit,
     inactiveButtonColor: Color = MaterialTheme.colorScheme.surface,
-    activeButtonColor: Color = MaterialTheme.colorScheme.secondary,
+    activeButtonColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     isScrollable: Boolean = true,
     contentPadding: PaddingValues = DefaultContentPadding
 ) {
@@ -256,7 +256,7 @@ fun EnhancedButtonGroup(
     title: @Composable RowScope.() -> Unit = {},
     onIndexChange: (Int) -> Unit,
     inactiveButtonColor: Color = MaterialTheme.colorScheme.surface,
-    activeButtonColor: Color = MaterialTheme.colorScheme.secondary,
+    activeButtonColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     isScrollable: Boolean = true,
     contentPadding: PaddingValues = DefaultContentPadding
 ) {
@@ -266,9 +266,9 @@ fun EnhancedButtonGroup(
 
     // 兼容层：视觉完全交给 GlassSegmentedButtonRow 的默认玻璃样式 ——
     // 与「日夜间模式」用的是同一个组件、同一套默认值，不再另调底色/容器样式。
-    // 老调用方传的 surface / secondary 是当年的默认值，这里视为「没传」。
+    // 老调用方传的 surface / secondaryContainer 是当年的默认值，这里视为「没传」。
     val selectedColor = activeButtonColor.takeIf {
-        it != MaterialTheme.colorScheme.secondary
+        it != MaterialTheme.colorScheme.secondaryContainer
     }
     val unselectedColor = inactiveButtonColor.takeIf {
         it != MaterialTheme.colorScheme.surface

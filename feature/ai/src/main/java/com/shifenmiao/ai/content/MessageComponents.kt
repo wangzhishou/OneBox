@@ -32,7 +32,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -84,6 +83,7 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassCardSegment
 import com.t8rin.imagetoolbox.core.utils.appContext
@@ -926,9 +926,9 @@ fun RobotDirectErrorContent(
             )
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
-        Surface(
+        GlassSurface(
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
+            color = MaterialTheme.colorScheme.errorContainer,
             shape = RoundedCornerShape(12.dp)
         ) {
             SelectionContainer {
@@ -1062,7 +1062,7 @@ fun ErrorStateContent(
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.titleMedium
         )
-        Surface(
+        GlassSurface(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = AppTheme.dimens.paddingNormal),

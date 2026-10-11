@@ -13,10 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -192,13 +190,7 @@ private fun LuopanInfoBar(uiState: CompassUiState, modifier: Modifier = Modifier
                 .padding(vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            items.forEachIndexed { index, item ->
-                if (index > 0) {
-                    VerticalDivider(
-                        modifier = Modifier.height(32.dp),
-                        color = MaterialTheme.colorScheme.outlineVariant
-                    )
-                }
+            items.forEach { item ->
                 InfoCell(
                     label = item.label,
                     value = item.value,
@@ -227,13 +219,7 @@ private fun LuopanInfoColumn(uiState: CompassUiState, modifier: Modifier = Modif
                 .padding(vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items.forEachIndexed { index, item ->
-                if (index > 0) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        color = MaterialTheme.colorScheme.outlineVariant
-                    )
-                }
+            items.forEach { item ->
                 InfoCell(
                     label = item.label,
                     value = item.value,

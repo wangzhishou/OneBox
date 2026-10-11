@@ -567,7 +567,7 @@ private fun toolStatusColor(status: ToolStatus): androidx.compose.ui.graphics.Co
         ToolStatus.Running -> AppTheme.colors.getPrimaryColor()
         ToolStatus.Success -> DshSuccessGreen
         ToolStatus.Failed -> MaterialTheme.colorScheme.error
-        ToolStatus.Interrupted -> MaterialTheme.colorScheme.tertiary
+        ToolStatus.Interrupted -> MaterialTheme.colorScheme.onTertiaryContainer
     }
 
 @Composable

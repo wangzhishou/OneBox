@@ -55,9 +55,9 @@ fun IdPhotoExportConfigPanel(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small,
                 color = if (isResolutionSufficient == true) {
-                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                    MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                    MaterialTheme.colorScheme.errorContainer
                 }
             ) {
                 Text(

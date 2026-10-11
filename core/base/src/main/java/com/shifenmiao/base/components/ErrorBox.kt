@@ -21,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -36,6 +35,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 
 @Composable
 fun ErrorItem(
@@ -174,7 +174,7 @@ fun ErrorBox(
             }
         }
         Spacer(modifier = Modifier.padding(vertical = AppTheme.dimens.paddingNormal))
-        Surface(
+        GlassSurface(
             modifier = Modifier.fillMaxWidth(),
             color = MaterialTheme.colorScheme.errorContainer,
             shape = AppTheme.shapes.getMediumShape()

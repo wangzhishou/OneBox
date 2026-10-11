@@ -137,7 +137,7 @@ internal fun FilterTemplateAddingGroup(
             onClick = {
                 scanner.scan(contextActivity = localActivity)
             },
-            containerColor = MaterialTheme.colorScheme.tertiary
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQrScanner,
@@ -146,7 +146,7 @@ internal fun FilterTemplateAddingGroup(
         }
         EnhancedIconButton(
             onClick = importFromFileLauncher::pickFile,
-            containerColor = MaterialTheme.colorScheme.secondary
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFileOpen,

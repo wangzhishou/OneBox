@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -633,8 +632,6 @@ private fun AIAssistantPaneContent(
                 )
             }
         }
-
-        HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainer)
 
         AIChatBody(
             appComponent = appComponent,

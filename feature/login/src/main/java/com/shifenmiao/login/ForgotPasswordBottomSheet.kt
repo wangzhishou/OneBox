@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +25,7 @@ import com.shifenmiao.login.ui.ForgotPasswordInputs
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 
 @Composable
 fun ForgotPasswordBottomSheet(
@@ -60,7 +60,7 @@ fun ForgotPasswordBottomSheet(
             onClick = onNavigateBack
         )
 
-        ElevatedCard(
+        GlassCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.dimens.paddingLarge)
