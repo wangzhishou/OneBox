@@ -33,7 +33,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -89,11 +88,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.BackgroundColor
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
+import com.t8rin.imagetoolbox.core.resources.icons.Eraser
 import com.t8rin.imagetoolbox.core.resources.icons.Fullscreen
 import com.t8rin.imagetoolbox.core.resources.icons.Share
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBurstMode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilters
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRename
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomIn
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomOut
@@ -124,6 +126,7 @@ import com.wanbaohe.markuplayers.presentation.components.EditBox
 import com.wanbaohe.markuplayers.presentation.components.LayersFloatingPanel
 import com.wanbaohe.markuplayers.presentation.components.LayersSheet
 import com.wanbaohe.markuplayers.presentation.components.layerDisplayName
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import com.wanbaohe.markuplayers.presentation.components.TextEditDialog
 import com.wanbaohe.markuplayers.presentation.draw.BrushSettingsDialog
 import com.wanbaohe.markuplayers.presentation.draw.DrawFloatingBar
@@ -161,6 +164,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.FitScreen
+import androidx.compose.material.icons.outlined.Gradient
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.ZoomOutMap
@@ -451,6 +455,7 @@ fun EditorScaffold(
     StickerToolSheet(
         visible = showStickerSheet,
         onDismiss = { showStickerSheet = false },
+        dragHandle = {},
         onStickerClick = { source ->
             component.addLayer(MarkupLayer(type = LayerType.Sticker(source)))
         },
@@ -704,6 +709,8 @@ fun EditorScaffold(
         canOverwriteOriginal = component.canOverwriteOriginal,
         onDismiss = { showExportSheet = false },
         onSettingsChange = component::updateExportSettings,
+        saveExif = component.saveExif,
+        onSaveExifChange = component::setSaveExif,
         onSave = {
             showExportSheet = false
             component.saveBitmap(
@@ -783,16 +790,17 @@ private fun AiTargetSheet(
     }
     EnhancedModalBottomSheet(
         visible = action != null,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.studio_ai_target_title),
+                onClose = onDismiss
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(16.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.studio_ai_target_title),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 Text(
                     text = stringResource(R.string.studio_ai_target_hint),
                     style = MaterialTheme.typography.bodySmall,
@@ -858,17 +866,18 @@ private fun AiResultSheet(component: MarkupLayersComponent) {
     val enabled = !component.isAiProcessing && !component.isImageLoading
     EnhancedModalBottomSheet(
         visible = true,
+        dragHandle = {},
         onDismiss = { component.discardAiResult() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.studio_ai_result_title, result.title),
+                onClose = component::discardAiResult
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
                     .navigationBarsPadding().padding(16.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.studio_ai_result_title, result.title),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 Picture(
                     model = result.imagePath,
                     contentDescription = stringResource(R.string.studio_ai_result_preview),
@@ -944,6 +953,9 @@ private fun EditorTopBarActions(
         ) {
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.studio_project_rename)) },
+                leadingIcon = {
+                    Icon(Icons.Outlined.LineRename, contentDescription = null)
+                },
                 onClick = {
                     menuExpanded = false
                     projectName = component.projectName
@@ -952,6 +964,9 @@ private fun EditorTopBarActions(
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.studio_effects_edit, component.targetEffects.size)) },
+                leadingIcon = {
+                    Icon(Icons.Outlined.LineFilters, contentDescription = null)
+                },
                 enabled = component.activeToolId != EditorTools.ID_DRAW,
                 onClick = {
                     menuExpanded = false
@@ -960,6 +975,9 @@ private fun EditorTopBarActions(
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.studio_mask)) },
+                leadingIcon = {
+                    Icon(MaterialIcons.Outlined.Gradient, contentDescription = null)
+                },
                 enabled = component.activeToolId != EditorTools.ID_DRAW,
                 onClick = {
                     menuExpanded = false
@@ -968,6 +986,9 @@ private fun EditorTopBarActions(
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.studio_batch_recipes)) },
+                leadingIcon = {
+                    Icon(Icons.Outlined.LineBurstMode, contentDescription = null)
+                },
                 onClick = {
                     menuExpanded = false
                     onOpenBatch()
@@ -1026,25 +1047,13 @@ private fun EditorTopBarActions(
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.studio_effects_clear)) },
                 leadingIcon = {
-                    Icon(Icons.Outlined.LineFilters, contentDescription = null)
+                    Icon(Icons.Rounded.Eraser, contentDescription = null)
                 },
                 // 清除当前目标的滤镜:选中图层 → 清图层滤镜(入 undo);无选中 → 清背景图
                 enabled = component.targetEffects.isNotEmpty(),
                 onClick = {
                     menuExpanded = false
                     component.selectFilter(null)
-                }
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.markup_menu_save_exif)) },
-                trailingIcon = {
-                    Switch(
-                        checked = component.saveExif,
-                        onCheckedChange = component::setSaveExif
-                    )
-                },
-                onClick = {
-                    component.setSaveExif(!component.saveExif)
                 }
             )
         }

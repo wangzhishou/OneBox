@@ -30,6 +30,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 
 /**
  * 画布背景设置面板:「默认」/「纯色」两个选项卡,选择即时生效。
@@ -50,8 +51,13 @@ fun CanvasBackgroundSheet(
 
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.studio_workspace_background),
+                onClose = onDismiss
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
@@ -59,11 +65,6 @@ fun CanvasBackgroundSheet(
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.studio_workspace_background),
-                    style = MaterialTheme.typography.titleMedium
-                )
-
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     EnhancedChip(
                         selected = background is CanvasBackground.Default,

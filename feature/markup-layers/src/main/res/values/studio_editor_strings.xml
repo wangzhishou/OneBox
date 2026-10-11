@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">Your edits are still open. Try saving again.\n%1$s</string>
     <string name="studio_project_rename">Rename project</string>
     <string name="studio_project_name">Project name</string>
-    <string name="studio_export_image">Export image</string>
+    <string name="studio_export_image">Export</string>
+    <string name="studio_export_save_exif_sub">Keep EXIF metadata in the exported image</string>
     <string name="studio_batch_recipes">Batch with recipe</string>
     <string name="studio_workspace_background">Workspace background</string>
     <string name="studio_quick_tasks">Quick tasks</string>

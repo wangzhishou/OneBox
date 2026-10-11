@@ -30,6 +30,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.AiImageOp
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 
 /**
  * 「AI 处理」底部面板(设计稿「AI处理Tab展开界面」):
@@ -47,8 +48,13 @@ fun AiToolSheet(
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.markup_ai_sheet_title),
+                onClose = onDismiss
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
@@ -56,7 +62,7 @@ fun AiToolSheet(
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
-                AiSheetHeader()
+                AiSheetSubtitle()
                 AiImageOp.entries.toList().chunked(2).forEach { pair ->
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         pair.forEach { op ->
@@ -76,24 +82,21 @@ fun AiToolSheet(
 }
 
 @Composable
-private fun AiSheetHeader() {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = stringResource(R.string.markup_ai_sheet_title),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.markup_ai_badge_new),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                modifier = Modifier
-                    .clip(ShapeDefaults.small)
-                    .background(MaterialTheme.colorScheme.tertiaryContainer)
-                    .padding(horizontal = 4.dp, vertical = 1.dp)
-            )
-        }
+private fun AiSheetSubtitle() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(R.string.markup_ai_badge_new),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onTertiaryContainer,
+            modifier = Modifier
+                .clip(ShapeDefaults.small)
+                .background(MaterialTheme.colorScheme.tertiaryContainer)
+                .padding(horizontal = 4.dp, vertical = 1.dp)
+        )
+        Spacer(Modifier.width(8.dp))
         Text(
             text = stringResource(R.string.markup_ai_sheet_subtitle),
             style = MaterialTheme.typography.bodySmall,

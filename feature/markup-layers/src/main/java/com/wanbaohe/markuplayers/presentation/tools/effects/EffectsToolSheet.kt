@@ -31,6 +31,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.components.EditorTargetSelector
 import com.wanbaohe.markuplayers.presentation.components.LayerIconButton
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import kotlin.math.roundToInt
 import androidx.compose.material.icons.Icons as MaterialIcons
@@ -57,11 +58,19 @@ fun EffectsToolSheet(
     }
     EnhancedModalBottomSheet(
         visible = true,
+        dragHandle = {},
         onDismiss = {
             component.endEffectsChange()
             onDismiss()
         },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.studio_effects),
+                onClose = {
+                    component.endEffectsChange()
+                    onDismiss()
+                }
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
@@ -70,10 +79,6 @@ fun EffectsToolSheet(
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.studio_effects),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 EditorTargetSelector(
                     component = component,
                     candidateLayerId = candidateLayerId

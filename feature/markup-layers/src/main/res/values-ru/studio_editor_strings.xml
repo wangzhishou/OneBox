@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">Ваши изменения всё ещё открыты. Попробуйте сохранить снова.\n%1$s</string>
     <string name="studio_project_rename">Переименовать проект</string>
     <string name="studio_project_name">Название проекта</string>
-    <string name="studio_export_image">Экспортировать изображение</string>
+    <string name="studio_export_image">Экспорт</string>
+    <string name="studio_export_save_exif_sub">Сохранять метаданные EXIF в экспортированном изображении</string>
     <string name="studio_batch_recipes">Пакетно с рецептом</string>
     <string name="studio_workspace_background">Фон рабочей области</string>
     <string name="studio_quick_tasks">Быстрые задачи</string>

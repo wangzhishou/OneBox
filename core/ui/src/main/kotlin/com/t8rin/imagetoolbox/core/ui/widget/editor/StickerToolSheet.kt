@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,6 +55,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTrendingUp
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalSheetDragHandle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
@@ -77,9 +79,11 @@ fun StickerToolSheet(
     onDismiss: () -> Unit,
     onStickerClick: (StickerSource) -> Unit,
     aiGeneration: AiStickerGeneration? = null,
+    dragHandle: @Composable ColumnScope.() -> Unit = { EnhancedModalSheetDragHandle() },
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = dragHandle,
         onDismiss = { onDismiss() },
         sheetContent = {
             StickerPanel(

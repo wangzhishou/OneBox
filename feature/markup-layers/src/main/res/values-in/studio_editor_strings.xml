@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">Editan Anda masih terbuka. Coba simpan lagi.\n%1$s</string>
     <string name="studio_project_rename">Ganti nama proyek</string>
     <string name="studio_project_name">Nama proyek</string>
-    <string name="studio_export_image">Ekspor gambar</string>
+    <string name="studio_export_image">Ekspor</string>
+    <string name="studio_export_save_exif_sub">Simpan metadata Exif pada gambar yang diekspor</string>
     <string name="studio_batch_recipes">Batch dengan resep</string>
     <string name="studio_workspace_background">Latar belakang ruang kerja</string>
     <string name="studio_quick_tasks">Tugas cepat</string>

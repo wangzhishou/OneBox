@@ -67,7 +67,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
-import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import android.net.Uri
 import com.wanbaohe.markuplayers.R
@@ -106,10 +105,9 @@ internal fun LayersSheet(
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = {},
         onDismiss = { onDismiss() },
-        title = {
-            TitleItem(text = stringResource(R.string.markup_tool_layers))
-        },
+        title = {},
         confirmButton = {
             var addMenuVisible by rememberSaveable { mutableStateOf(false) }
             Box {
@@ -129,6 +127,10 @@ internal fun LayersSheet(
             }
         },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.markup_tool_layers),
+                onClose = onDismiss
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

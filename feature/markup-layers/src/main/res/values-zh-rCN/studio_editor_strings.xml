@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">编辑内容仍保留在当前页面，请重试保存。\n%1$s</string>
     <string name="studio_project_rename">重命名项目</string>
     <string name="studio_project_name">项目名称</string>
-    <string name="studio_export_image">导出图片</string>
+    <string name="studio_export_image">导出</string>
+    <string name="studio_export_save_exif_sub">在导出的图片中保留 Exif 拍摄信息</string>
     <string name="studio_batch_recipes">配方批量处理</string>
     <string name="studio_workspace_background">工作区背景</string>
     <string name="studio_quick_tasks">快捷任务</string>

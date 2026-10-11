@@ -41,6 +41,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.markuplayers.R
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 
 /** Dimensions are validated before allocating a bitmap; null background means transparency. */
 @Composable
@@ -76,8 +77,13 @@ fun BlankCanvasSheet(
 
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.markup_blank_canvas_title),
+                onClose = onDismiss
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
@@ -87,11 +93,6 @@ fun BlankCanvasSheet(
                     .imePadding()
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.markup_blank_canvas_title),
-                    style = MaterialTheme.typography.titleMedium
-                )
-
                 Text(
                     text = stringResource(R.string.markup_blank_canvas_size),
                     style = MaterialTheme.typography.titleSmall,

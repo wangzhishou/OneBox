@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">Deine Änderungen sind noch geöffnet. Versuche erneut zu speichern.\n%1$s</string>
     <string name="studio_project_rename">Projekt umbenennen</string>
     <string name="studio_project_name">Projektname</string>
-    <string name="studio_export_image">Bild exportieren</string>
+    <string name="studio_export_image">Exportieren</string>
+    <string name="studio_export_save_exif_sub">EXIF-Metadaten im exportierten Bild behalten</string>
     <string name="studio_batch_recipes">Stapelverarbeitung mit Rezept</string>
     <string name="studio_workspace_background">Arbeitsbereich-Hintergrund</string>
     <string name="studio_quick_tasks">Schnellaufgaben</string>

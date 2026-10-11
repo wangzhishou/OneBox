@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">編輯內容仍保留在目前頁面，請重試儲存。\n%1$s</string>
     <string name="studio_project_rename">重新命名專案</string>
     <string name="studio_project_name">專案名稱</string>
-    <string name="studio_export_image">匯出圖片</string>
+    <string name="studio_export_image">匯出</string>
+    <string name="studio_export_save_exif_sub">在匯出的圖片中保留 Exif 拍攝資訊</string>
     <string name="studio_batch_recipes">配方批次處理</string>
     <string name="studio_workspace_background">工作區背景</string>
     <string name="studio_quick_tasks">快捷任務</string>

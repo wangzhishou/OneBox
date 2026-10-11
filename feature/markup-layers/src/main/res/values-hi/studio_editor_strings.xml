@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">आपके संपादन अभी भी खुले हैं। फिर से सहेजने का प्रयास करें।\n%1$s</string>
     <string name="studio_project_rename">प्रोजेक्ट का नाम बदलें</string>
     <string name="studio_project_name">प्रोजेक्ट का नाम</string>
-    <string name="studio_export_image">छवि निर्यात करें</string>
+    <string name="studio_export_image">निर्यात</string>
+    <string name="studio_export_save_exif_sub">निर्यात की गई छवि में EXIF मेटाडेटा रखें</string>
     <string name="studio_batch_recipes">रेसिपी के साथ बैच</string>
     <string name="studio_workspace_background">वर्कस्पेस पृष्ठभूमि</string>
     <string name="studio_quick_tasks">त्वरित कार्य</string>

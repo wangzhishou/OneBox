@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">لا تزال تعديلاتك مفتوحة. حاول الحفظ مرة أخرى.\n%1$s</string>
     <string name="studio_project_rename">إعادة تسمية المشروع</string>
     <string name="studio_project_name">اسم المشروع</string>
-    <string name="studio_export_image">تصدير الصورة</string>
+    <string name="studio_export_image">تصدير</string>
+    <string name="studio_export_save_exif_sub">الاحتفاظ ببيانات EXIF في الصورة المُصدَّرة</string>
     <string name="studio_batch_recipes">معالجة دفعة بوصفة</string>
     <string name="studio_workspace_background">خلفية مساحة العمل</string>
     <string name="studio_quick_tasks">مهام سريعة</string>

@@ -45,6 +45,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.utils.fileSize
 import com.wanbaohe.markuplayers.R
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
@@ -74,6 +75,8 @@ fun ExportSettingsSheet(
     validationError: String? = null,
     saveLocation: String? = null,
     onChooseSaveLocation: (() -> Unit)? = null,
+    saveExif: Boolean = false,
+    onSaveExifChange: (Boolean) -> Unit = {},
 ) {
     val localError = settings.validationError(sourceSize?.width ?: 0, sourceSize?.height ?: 0)
     val errorText = validationError ?: localError?.let { error ->
@@ -93,6 +96,7 @@ fun ExportSettingsSheet(
 
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         title = {
             // 底栏 Row 仅自带 end padding,左侧这里补齐,与右侧对称
@@ -110,6 +114,10 @@ fun ExportSettingsSheet(
             )
         },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.markup_export_title),
+                onClose = onDismiss
+            )
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
@@ -117,17 +125,11 @@ fun ExportSettingsSheet(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = stringResource(R.string.markup_export_title),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    Text(
-                        text = stringResource(R.string.markup_export_subtitle),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                Text(
+                    text = stringResource(R.string.markup_export_subtitle),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
 
                 ExportInfoRow(
                     settings = settings,
@@ -413,6 +415,12 @@ fun ExportSettingsSheet(
                     onCheckedChange = {
                         onSettingsChange(settings.copy(shareAfterSave = it))
                     }
+                )
+                ExportSwitchRow(
+                    label = stringResource(R.string.markup_menu_save_exif),
+                    subtitle = stringResource(R.string.studio_export_save_exif_sub),
+                    checked = saveExif,
+                    onCheckedChange = onSaveExifChange
                 )
 
                 Spacer(Modifier.height(8.dp))

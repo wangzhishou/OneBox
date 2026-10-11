@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">Düzenlemeleriniz hâlâ açık. Tekrar kaydetmeyi deneyin.\n%1$s</string>
     <string name="studio_project_rename">Projeyi yeniden adlandır</string>
     <string name="studio_project_name">Proje adı</string>
-    <string name="studio_export_image">Görüntüyü dışa aktar</string>
+    <string name="studio_export_image">Dışa aktar</string>
+    <string name="studio_export_save_exif_sub">Dışa aktarılan görüntüde Exif bilgilerini koru</string>
     <string name="studio_batch_recipes">Tarifle toplu işlem</string>
     <string name="studio_workspace_background">Çalışma alanı arka planı</string>
     <string name="studio_quick_tasks">Hızlı görevler</string>

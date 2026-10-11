@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">Tus ediciones siguen abiertas. Intenta guardar de nuevo.\n%1$s</string>
     <string name="studio_project_rename">Renombrar proyecto</string>
     <string name="studio_project_name">Nombre del proyecto</string>
-    <string name="studio_export_image">Exportar imagen</string>
+    <string name="studio_export_image">Exportar</string>
+    <string name="studio_export_save_exif_sub">Conservar los metadatos EXIF en la imagen exportada</string>
     <string name="studio_batch_recipes">Lote con receta</string>
     <string name="studio_workspace_background">Fondo del espacio de trabajo</string>
     <string name="studio_quick_tasks">Tareas rápidas</string>

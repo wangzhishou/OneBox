@@ -37,6 +37,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.presentation.components.EditorTargetSelector
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import kotlin.math.roundToInt
 
@@ -55,8 +56,13 @@ fun AdjustToolSheet(
     val candidateLayerId = remember(visible) { component.selectedLayerId }
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.markup_tool_adjust),
+                onClose = onDismiss
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
@@ -65,10 +71,6 @@ fun AdjustToolSheet(
                     .navigationBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.markup_tool_adjust),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 EditorTargetSelector(
                     component = component,
                     candidateLayerId = candidateLayerId

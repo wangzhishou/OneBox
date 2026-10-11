@@ -47,6 +47,7 @@ import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.model.ShapeKind
 import com.wanbaohe.markuplayers.domain.model.ShapeSpec
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import kotlin.math.roundToInt
 
@@ -68,8 +69,13 @@ fun ShapeToolSheet(
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.markup_tool_shape),
+                onClose = onDismiss
+            )
             ShapeToolPanel(
                 component = component,
                 defaultSpec = defaultSpec,

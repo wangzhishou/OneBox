@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">編集内容はまだ開いています。もう一度保存してください。\n%1$s</string>
     <string name="studio_project_rename">プロジェクト名を変更</string>
     <string name="studio_project_name">プロジェクト名</string>
-    <string name="studio_export_image">画像をエクスポート</string>
+    <string name="studio_export_image">エクスポート</string>
+    <string name="studio_export_save_exif_sub">書き出した画像に Exif 情報を保持</string>
     <string name="studio_batch_recipes">レシピで一括処理</string>
     <string name="studio_workspace_background">ワークスペースの背景</string>
     <string name="studio_quick_tasks">クイックタスク</string>

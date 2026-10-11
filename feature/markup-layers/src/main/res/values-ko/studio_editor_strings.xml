@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">편집 내용이 아직 열려 있습니다. 다시 저장해 보세요.\n%1$s</string>
     <string name="studio_project_rename">프로젝트 이름 변경</string>
     <string name="studio_project_name">프로젝트 이름</string>
-    <string name="studio_export_image">이미지 내보내기</string>
+    <string name="studio_export_image">보내기</string>
+    <string name="studio_export_save_exif_sub">보낸 이미지에 Exif 정보 유지</string>
     <string name="studio_batch_recipes">레시피로 일괄 처리</string>
     <string name="studio_workspace_background">작업 공간 배경</string>
     <string name="studio_quick_tasks">빠른 작업</string>

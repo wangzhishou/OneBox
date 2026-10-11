@@ -35,6 +35,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.recipe.BatchProgress
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import com.wanbaohe.markuplayers.domain.recipe.BatchReport
 import com.wanbaohe.markuplayers.domain.recipe.MarkupRecipe
 
@@ -63,6 +64,7 @@ fun RecipeBatchSheet(
     EnhancedModalBottomSheet(
         cancelable = !running,
         visible = visible,
+        dragHandle = {},
         onDismiss = { if (!running) onDismiss() },
         confirmButton = {},
         title = {
@@ -74,6 +76,11 @@ fun RecipeBatchSheet(
             )
         },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.studio_recipe_title),
+                onClose = { if (!running) onDismiss() },
+                closeEnabled = !running
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,10 +89,6 @@ fun RecipeBatchSheet(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    stringResource(R.string.studio_recipe_title),
-                    style = MaterialTheme.typography.titleLarge
-                )
                 Text(
                     stringResource(R.string.studio_recipe_subtitle),
                     style = MaterialTheme.typography.bodySmall,

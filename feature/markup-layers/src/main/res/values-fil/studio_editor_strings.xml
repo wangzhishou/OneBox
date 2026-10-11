@@ -17,7 +17,8 @@
     <string name="studio_project_save_error">Bukas pa rin ang iyong mga pag-edit. Subukang i-save muli.\n%1$s</string>
     <string name="studio_project_rename">Palitan ang pangalan ng proyekto</string>
     <string name="studio_project_name">Pangalan ng proyekto</string>
-    <string name="studio_export_image">I-export ang larawan</string>
+    <string name="studio_export_image">I-export</string>
+    <string name="studio_export_save_exif_sub">Panatilihin ang Exif metadata sa na-export na larawan</string>
     <string name="studio_batch_recipes">Batch gamit ang recipe</string>
     <string name="studio_workspace_background">Background ng workspace</string>
     <string name="studio_quick_tasks">Mabilisang gawain</string>

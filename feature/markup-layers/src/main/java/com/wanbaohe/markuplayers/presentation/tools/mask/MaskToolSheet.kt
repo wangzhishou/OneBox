@@ -60,6 +60,7 @@ import com.wanbaohe.markuplayers.domain.model.MaskStroke
 import com.wanbaohe.markuplayers.domain.model.NormalizedRect
 import com.wanbaohe.markuplayers.domain.model.StrokePoint
 import com.wanbaohe.markuplayers.presentation.components.EditorTargetSelector
+import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import kotlinx.coroutines.CancellationException
 import kotlin.math.max
@@ -122,17 +123,18 @@ fun MaskToolSheet(
     }
     EnhancedModalBottomSheet(
         visible = true,
+        dragHandle = {},
         onDismiss = { onDismiss() },
         sheetContent = {
+            SheetHeader(
+                title = stringResource(R.string.studio_mask),
+                onClose = onDismiss
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
                     .navigationBarsPadding().padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.studio_mask),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 EditorTargetSelector(
                     component = component,
                     candidateLayerId = candidateLayerId,
