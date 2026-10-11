@@ -43,9 +43,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -242,8 +240,12 @@ fun AdaptiveBottomScaffoldLayoutScreen(
         }
     }
 
-    Surface(
-        color = if (settingsState.isGlassAlphaEnabled) Color.Transparent else MaterialTheme.colorScheme.background,
+    // 这一层**不能**铺不透明底色: 底层是全局 MeshGradientBackground(自定义背景图 / 渐变 /
+    // surface 色), BaseScreen 系页面都是直接透出它, 所以标题栏(surface)与页面同色。
+    // 此前非玻璃态铺 `colorScheme.background`, 底色与 surface 一深一浅的配色下(如动态取色
+    // 或自定义主题)标题栏与页面会出现一条明显的分界线, 整页比其它页面暗一档。
+    // 一律透出底层, 两种状态都与 BaseScreen 对齐。
+    Box(
         modifier = modifier.clearFocusOnTap(autoClearFocus)
     ) {
         AnimatedContent(
