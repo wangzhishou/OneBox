@@ -188,7 +188,13 @@ fun XiangqiSetupScreen(
                     icon = Icons.Outlined.MoreVert, label = stringResource(BoardGameR.string.boardgame_more),
                     onClick = { more = true }, enabled = !busy, modifier = Modifier.fillMaxWidth(),
                 )
-                EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                // 底部工具栏入口:向上展开;锚定整个 weight 单元格,箭头对准按钮中心
+                EnhancedDropdownMenu(
+                    expanded = more,
+                    onDismissRequest = { more = false },
+                    modifier = Modifier.matchParentSize(),
+                    expandUp = true,
+                ) {
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.xiangqi_cancel)) },
                         onClick = { more = false; onCancel() },

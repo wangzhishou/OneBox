@@ -243,6 +243,15 @@ remainsRight >= minWidthPx || remainsRight >= remainsLeft   // 靠右
 - **复测**:象棋顶部 / 通知中心偏差 2.5px ≈ 0.8dp,箭尾完全在直边上、不再骑圆角;
   底栏胶囊居中保持。
 
+### 五次修正(2026-10-11,对局/摆棋底栏「更多」)
+
+- **现象**:国际象棋对局页底栏 More 菜单气泡被系统钳位乱摆,箭头碎成一小片漂在远处。
+- **根因**:6 个对局/摆棋页(三棋 × GameScreen/SetupScreen)迁移时只换了组件名,没传
+  `expandUp`——锚点在屏幕底部,默认向下展开,下方空间不够,弹窗被系统钳位后箭头(朝上的)
+  与气泡错位分离。这些入口还是 `Box(Modifier.weight(1f))` 宽单元格,同样缺 `matchParentSize()`。
+- **修法**:6 处调用统一补 `expandUp = true` + `modifier = Modifier.matchParentSize()`。
+- **复测**:国际象棋、象棋对局页 More —— 气泡在底栏上方完整展开,箭头朝下正对 ⋮ 图标。
+
 ---
 
 ## 七、建议的提交拆分

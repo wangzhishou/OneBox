@@ -182,7 +182,13 @@ fun GomokuSetupScreen(
                     enabled = !busy,
                     modifier = Modifier.fillMaxWidth(),
                 )
-                EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                // 底部工具栏入口:向上展开;锚定整个 weight 单元格,箭头对准按钮中心
+                EnhancedDropdownMenu(
+                    expanded = more,
+                    onDismissRequest = { more = false },
+                    modifier = Modifier.matchParentSize(),
+                    expandUp = true,
+                ) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_setup_clear), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                         enabled = !busy,
                         onClick = { more = false; onDraftChange(draft.clear()) })

@@ -385,7 +385,13 @@ private fun GameControls(component: GomokuGameComponent, onExport: () -> Unit, o
                 enabled = enabled,
                 modifier = Modifier.fillMaxWidth(),
             )
-            EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+            // 底部工具栏入口:向上展开;锚定整个 weight 单元格,箭头对准按钮中心
+            EnhancedDropdownMenu(
+                expanded = more,
+                onDismissRequest = { more = false },
+                modifier = Modifier.matchParentSize(),
+                expandUp = true,
+            ) {
                 DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_library_open_analysis), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                     onClick = { more = false; component.openAnalysis() })
                 DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_export), maxLines = 1, overflow = TextOverflow.Ellipsis) },
