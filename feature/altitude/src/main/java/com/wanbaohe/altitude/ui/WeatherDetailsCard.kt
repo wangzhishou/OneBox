@@ -35,7 +35,7 @@ internal fun WeatherDetailsCard(
     modifier: Modifier = Modifier
 ) {
     val onSurface = MaterialTheme.colorScheme.onSurface
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
 
     GlassSurface(
         modifier = modifier.fillMaxWidth(),

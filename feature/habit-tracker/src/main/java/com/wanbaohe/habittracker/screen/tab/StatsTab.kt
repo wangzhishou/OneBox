@@ -279,7 +279,7 @@ private fun RateTrendChart(
     points: List<HabitTrendPoint>,
     modifier: Modifier = Modifier,
 ) {
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val labelEvery = if (points.size > 10) 5 else 1
 
     Column(modifier = modifier.fillMaxWidth()) {

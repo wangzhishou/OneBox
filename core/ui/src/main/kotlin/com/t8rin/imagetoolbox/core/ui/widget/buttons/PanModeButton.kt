@@ -39,7 +39,7 @@ fun PanModeButton(
     EnhancedIconButton(
         modifier = modifier,
         containerColor = animateColorAsState(
-            if (selected) MaterialTheme.colorScheme.primary
+            if (selected) MaterialTheme.colorScheme.primaryContainer
             else Color.Transparent
         ).value,
         contentColor = animateColorAsState(

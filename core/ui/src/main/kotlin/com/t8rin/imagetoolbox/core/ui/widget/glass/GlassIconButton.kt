@@ -92,7 +92,10 @@ fun GlassFilledIconButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = IconButtonDefaults.filledShape,
-    colors: IconButtonColors = IconButtonDefaults.filledIconButtonColors(),
+    colors: IconButtonColors = IconButtonDefaults.filledIconButtonColors(
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    ),
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Medium,
     glassBorderWidth: Dp = 0.9.dp,
@@ -121,7 +124,7 @@ fun GlassFilledIconButton(
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
     val resolvedContentColor = colors.contentColor(enabled = enabled)
     val glassColor = colors.containerColor(enabled = enabled).takeIfSpecifiedOrElse(
-        MaterialTheme.colorScheme.primary,
+        MaterialTheme.colorScheme.primaryContainer,
     )
 
     LocalMinimumInteractiveComponentSize.ProvidesValue(Dp.Unspecified) {

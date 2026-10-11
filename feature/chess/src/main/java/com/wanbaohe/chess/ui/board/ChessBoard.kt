@@ -96,10 +96,10 @@ fun ChessBoard(
             modifier = Modifier.fillMaxSize(),
             style = GlassStyle.Medium,
         ) {
-            val selectedColor = MaterialTheme.colorScheme.primary
+            val selectedColor = MaterialTheme.colorScheme.primaryContainer
             val lastMoveColor = MaterialTheme.colorScheme.tertiary
             val checkColor = MaterialTheme.colorScheme.error
-            val candidateColor = MaterialTheme.colorScheme.primary
+            val candidateColor = MaterialTheme.colorScheme.onPrimaryContainer
 
             Canvas(modifier = Modifier.fillMaxSize()) {
                 for (rank in 0 until BoardPoint.RANK_COUNT) {

@@ -217,7 +217,7 @@ private fun IconSearchBar(
         singleLine = true,
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+            focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
             unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent

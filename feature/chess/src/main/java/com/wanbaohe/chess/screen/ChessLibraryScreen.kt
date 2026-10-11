@@ -158,7 +158,7 @@ private fun ChessGameSummary.toCardData(): GameCardData {
             name = whiteName,
             badgeColor = MaterialTheme.colorScheme.onPrimaryContainer,
             badgeBackground = MaterialTheme.colorScheme.primaryContainer,
-            badgeBorder = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+            badgeBorder = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f),
         ),
         secondPlayer = GameCardPlayer(
             badge = stringResource(R.string.chess_side_black),

@@ -1143,7 +1143,7 @@ private fun ModelSelectionCard(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
                         contentDescription = stringResource(R.string.ai_engine_edit_action),
                         tint = if (selectedModel.canEdit) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
                         },

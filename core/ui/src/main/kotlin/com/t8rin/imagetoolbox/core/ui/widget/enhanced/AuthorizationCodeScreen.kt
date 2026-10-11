@@ -165,7 +165,7 @@ private fun UnlockContent(
         status = status,
         pinLabel = stringResource(R.string.auth_code_pin_label),
         actionKeyIcon = if (canConfirm) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check else com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-        actionKeyTint = if (canConfirm) MaterialTheme.colorScheme.primary else null,
+        actionKeyTint = if (canConfirm) MaterialTheme.colorScheme.onPrimaryContainer else null,
         modifier = modifier,
     )
 }
@@ -209,7 +209,7 @@ private fun SetupContent(
         status = status,
         pinLabel = stringResource(R.string.auth_code_pin_label),
         actionKeyIcon = if (canConfirm) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check else com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-        actionKeyTint = if (canConfirm) MaterialTheme.colorScheme.primary else null,
+        actionKeyTint = if (canConfirm) MaterialTheme.colorScheme.onPrimaryContainer else null,
         header = { SetupHint() },
         modifier = modifier
     )

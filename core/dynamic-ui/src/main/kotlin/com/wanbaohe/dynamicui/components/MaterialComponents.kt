@@ -406,7 +406,7 @@ private fun SwitchRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext
             node.id?.let { scope.setByPath(DynamicUiInternalState.validationErrorKey(it), null) }
         },
         modifier = ctx.modifierPipeline.build(node.modifier),
-        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer,
     )
 }
 
@@ -428,7 +428,7 @@ private fun CheckboxRenderer(node: UiNode, scope: UiStateScope, ctx: RenderConte
             node.id?.let { scope.setByPath(DynamicUiInternalState.validationErrorKey(it), null) }
         },
         modifier = ctx.modifierPipeline.build(node.modifier),
-        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer,
     )
 }
 
@@ -1243,7 +1243,7 @@ private fun RowSelectorRenderer(
     val selectedTextColor = ModifierRegistry.parseColor(node.propString("selectedTextColor")) ?: MaterialTheme.colorScheme.onPrimaryContainer
     val containerColor = ModifierRegistry.parseColor(node.propString("containerColor")) ?: MaterialTheme.colorScheme.surfaceContainerLow
     val selectedContainerColor = ModifierRegistry.parseColor(node.propString("selectedContainerColor")) ?: MaterialTheme.colorScheme.primaryContainer
-    val iconColor = ModifierRegistry.parseColor(node.propString("iconColor")) ?: MaterialTheme.colorScheme.primary
+    val iconColor = ModifierRegistry.parseColor(node.propString("iconColor")) ?: MaterialTheme.colorScheme.onPrimaryContainer
     val textStyle = parseTextStyle(node.propString("textStyle"))
 
     val updateSelection: (Int, RowSelectorItem) -> Unit = { index, item ->
@@ -1363,7 +1363,7 @@ private fun ColumnSelectorRenderer(
     val selectedTextColor = ModifierRegistry.parseColor(node.propString("selectedTextColor")) ?: MaterialTheme.colorScheme.onPrimaryContainer
     val containerColor = ModifierRegistry.parseColor(node.propString("containerColor")) ?: MaterialTheme.colorScheme.surfaceContainerLow
     val selectedContainerColor = ModifierRegistry.parseColor(node.propString("selectedContainerColor")) ?: MaterialTheme.colorScheme.primaryContainer
-    val iconColor = ModifierRegistry.parseColor(node.propString("iconColor")) ?: MaterialTheme.colorScheme.primary
+    val iconColor = ModifierRegistry.parseColor(node.propString("iconColor")) ?: MaterialTheme.colorScheme.onPrimaryContainer
     val textStyle = parseTextStyle(node.propString("textStyle"))
 
     val updateSelection: (Int, RowSelectorItem) -> Unit = { index, item ->

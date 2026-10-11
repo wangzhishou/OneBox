@@ -334,7 +334,7 @@ private fun BurstingIngotImage(
 private fun GuanyinEffect() {
     val progress = remember { Animatable(0f) }
     val primary = MaterialTheme.colorScheme.tertiary
-    val secondary = MaterialTheme.colorScheme.primary
+    val secondary = MaterialTheme.colorScheme.onPrimaryContainer
     androidx.compose.runtime.LaunchedEffect(Unit) {
         progress.animateTo(1f, tween(durationMillis = 1_900, easing = LinearEasing))
     }

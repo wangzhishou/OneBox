@@ -218,12 +218,12 @@ fun XiangqiBoard(
                             when {
                                 isLastMoveTo -> LastMoveRing(
                                     pieceSize = pieceSize,
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f),
                                     width = 3.dp,
                                 )
                                 isLastMoveFrom -> LastMoveRing(
                                     pieceSize = pieceSize,
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.35f),
                                     width = 2.dp,
                                 )
                                 isCandidate -> Box(
@@ -318,7 +318,7 @@ internal fun PieceDisc(
     val isRed = piece.side == Side.RED
     val text = pieceLabel(piece)
     
-    val primaryColor = MaterialTheme.colorScheme.primary
+    val primaryColor = MaterialTheme.colorScheme.onPrimaryContainer
     val secondaryColor = MaterialTheme.colorScheme.error
     val pieceColor = if (isRed) secondaryColor else MaterialTheme.colorScheme.onSurface
     val glowColor = if (isRed) secondaryColor else primaryColor

@@ -283,7 +283,7 @@ private fun AigcDemoSection(
         Text(
             text = stringResource(DemoR.string.demo_aigc_title),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
         Text(
             text = stringResource(DemoR.string.demo_aigc_description),
@@ -399,7 +399,7 @@ private fun AigcInfoPanel(aigc: AIGCInfo) {
             Text(
                 text = stringResource(DemoR.string.demo_aigc_parsed_title),
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             AigcInfoLine(
                 label = stringResource(DemoR.string.demo_aigc_label),
@@ -580,7 +580,7 @@ private fun AigcRawPanel(raw: String) {
                 Text(
                     text = stringResource(DemoR.string.demo_aigc_raw_title),
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 IconButton(
                     onClick = {
@@ -592,7 +592,7 @@ private fun AigcRawPanel(raw: String) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
                         contentDescription = stringResource(DemoR.string.demo_aigc_raw_copy),
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -665,7 +665,7 @@ private fun DemoScheduleDatabaseSection(
                         state.scheduleEvents.size,
                     ),
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
 
                 state.scheduleEvents.take(8).forEach { event ->
@@ -842,11 +842,7 @@ private fun DemoActionButton(
     } else {
         colorScheme.surfaceContainerHigh
     }
-    val contentColor = if (emphasized) {
-        colorScheme.onPrimaryContainer
-    } else {
-        colorScheme.primary
-    }
+    val contentColor = colorScheme.onPrimaryContainer
 
     GlassTonalButton(
         onClick = onClick,

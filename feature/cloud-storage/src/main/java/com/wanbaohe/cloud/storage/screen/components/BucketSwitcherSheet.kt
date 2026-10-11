@@ -85,7 +85,7 @@ fun BucketSwitcherSheet(
                     buckets.forEach { bucket ->
                         val isCurrent = bucket.name == currentBucket
                         val tint = if (isCurrent) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurface
                         }

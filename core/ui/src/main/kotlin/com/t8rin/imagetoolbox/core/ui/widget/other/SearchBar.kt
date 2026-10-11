@@ -96,7 +96,7 @@ fun SearchBar(
             onDone = { localFocusManager.clearFocus() }
         ),
         singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         onValueChange = onValueChange
     )
     if (searchString.isEmpty()) {

@@ -733,7 +733,7 @@ fun RobotReasoningContent(
     codeBlockClickListener: CodeBlockClickListener,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    leftLine: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.32f),
+    leftLine: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.32f),
 ) {
     if (reasoningContent.reasoningAstNode != null) {
         Box(
@@ -809,7 +809,7 @@ fun RobotReasoningBlock(
     codeBlockClickListener: CodeBlockClickListener,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    leftLine: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.32f),
+    leftLine: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.32f),
 ) {
     // 多 block reasoning 视觉上应表现为“一个连续 section”：
     // - 中间 block 不收底部圆角；

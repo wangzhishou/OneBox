@@ -64,7 +64,7 @@ fun SudokuHomeContent(
 
             if (state.hasSavedGame) {
                 HomeActionCard(
-                    accent = MaterialTheme.colorScheme.primary,
+                    accent = MaterialTheme.colorScheme.onPrimaryContainer,
                     title = stringResource(R.string.sudoku_continue_title),
                     subtitle = stringResource(R.string.sudoku_continue_subtitle, state.savedFilledCount),
                     filledCells = CONTINUE_GRID_PATTERN,
@@ -87,12 +87,12 @@ fun SudokuHomeContent(
     }
 }
 
-/** 难度卡配色: 主题三色, 难度越高越贴近 primary, 界面整体跟随主题变化。 */
+/** 难度卡配色: 主题三色, 难度越高越贴近强调色(onPrimaryContainer), 界面整体跟随主题变化。 */
 @Composable
 private fun difficultyAccent(difficulty: SudokuDifficulty): Color = when (difficulty) {
     SudokuDifficulty.EASY -> MaterialTheme.colorScheme.tertiary
     SudokuDifficulty.MEDIUM -> MaterialTheme.colorScheme.secondary
-    SudokuDifficulty.HARD -> MaterialTheme.colorScheme.primary
+    SudokuDifficulty.HARD -> MaterialTheme.colorScheme.onPrimaryContainer
 }
 
 @Composable

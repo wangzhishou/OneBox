@@ -59,7 +59,7 @@ fun CompassDial(
 ) {
     val onSurface = MaterialTheme.colorScheme.onSurface
     val surface = MaterialTheme.colorScheme.surface
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val outline = MaterialTheme.colorScheme.outlineVariant
 
     // 8 个本地化方位标签

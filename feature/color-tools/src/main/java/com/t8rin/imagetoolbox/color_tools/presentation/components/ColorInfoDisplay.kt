@@ -248,7 +248,7 @@ private fun ColorEditableField(
                 visualTransformation = visualTransformation,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 interactionSource = interactionSource,
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer)
             )
         }
         EnhancedIconButton(

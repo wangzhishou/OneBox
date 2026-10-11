@@ -267,7 +267,7 @@ private fun AiSourceRow(
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.weight(1f).padding(start = 8.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

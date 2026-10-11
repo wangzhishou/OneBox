@@ -111,7 +111,7 @@ fun PlayerControlPanel(
     backgroundColor: Color = PanelBg,
     cornerRadius: Dp = 24.dp,
 ) {
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.primaryContainer
 
     Box(
         modifier = modifier.fillMaxWidth()
@@ -296,7 +296,7 @@ private fun SliderSection(
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     trailingText: String? = null,
     trailingIcon: ImageVector? = null,
-    accentColor: Color = MaterialTheme.colorScheme.primary,
+    accentColor: Color = MaterialTheme.colorScheme.primaryContainer,
 ) {
     Column(modifier = modifier) {
         // 标签行

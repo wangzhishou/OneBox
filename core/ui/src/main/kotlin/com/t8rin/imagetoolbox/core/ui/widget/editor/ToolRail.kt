@@ -121,7 +121,7 @@ private fun EditorToolRailItem(
     val contentColor = if (!tool.enabled) {
         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
     } else if (isActive) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
 
     Column(

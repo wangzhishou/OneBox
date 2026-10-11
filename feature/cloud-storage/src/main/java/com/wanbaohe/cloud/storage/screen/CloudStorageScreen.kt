@@ -204,7 +204,7 @@ fun CloudStorageScreen(
                             Icon(
                                 imageVector = if (currentPrefix.isNotBlank()) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ArrowUpward else Icons.Outlined.Folder,
                                 contentDescription = null,
-                                tint = if (currentPrefix.isNotBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                tint = if (currentPrefix.isNotBlank()) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
                                 modifier = Modifier.size(22.dp)
                             )
                         }

@@ -96,7 +96,7 @@ fun NewTextInputField(
     }
     val placeholderColor = lerp(
         MaterialTheme.colorScheme.onSurfaceVariant,
-        MaterialTheme.colorScheme.primary,
+        MaterialTheme.colorScheme.onPrimaryContainer,
         0.08f
     ).copy(alpha = 0.58f)
     val inputTextStyle = MaterialTheme.typography.bodyLarge.copy(
@@ -114,7 +114,7 @@ fun NewTextInputField(
         textStyle = inputTextStyle,
         minLines = 1,
         maxLines = 6,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         interactionSource = interactionSource,
         onTextLayout = { result ->
             val newLineCount = result.lineCount.coerceAtLeast(1)

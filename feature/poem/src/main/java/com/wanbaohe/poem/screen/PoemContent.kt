@@ -404,7 +404,7 @@ internal fun PoemInsightFavoriteRow(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFavorite,
                 contentDescription = null,
                 tint = if (poem.isFavorite) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },

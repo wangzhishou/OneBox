@@ -37,7 +37,7 @@ internal fun AltitudeTrendChart(
     // 至少 2 个点才能绘线
     if (points.size < 2) return
 
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
 
     val minVal = remember(points) { points.min() }

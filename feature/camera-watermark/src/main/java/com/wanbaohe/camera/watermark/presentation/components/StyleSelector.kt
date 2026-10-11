@@ -175,7 +175,7 @@ private fun StylePresetItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     }

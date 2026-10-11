@@ -106,7 +106,7 @@ fun EngineFilterChip(
                         text = trailingText,
                         style = MaterialTheme.typography.labelMedium,
                         color = if (isSelected) {
-                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
                         }

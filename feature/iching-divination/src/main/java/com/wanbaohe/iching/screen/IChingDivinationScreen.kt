@@ -165,7 +165,7 @@ private fun CoinImage(icon: ImageVector, modifier: Modifier = Modifier, size: Dp
     Icon(
         imageVector = icon,
         contentDescription = null,
-        tint = MaterialTheme.colorScheme.primary,
+        tint = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = modifier.size(size),
     )
 }
@@ -405,7 +405,7 @@ private fun LineExplanationCard(line: HexagramLine, position: Int) {
             Text(
                 text = stringResource(R.string.iching_line_title),
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Text(
                 text = stringResource(
@@ -444,7 +444,7 @@ private fun KnowledgeTipCard(tipIndex: Int) {
             Text(
                 text = stringResource(R.string.iching_tip_title),
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Crossfade(targetState = tips[tipIndex % tips.size], label = "iching_tip") { tip ->
                 Text(
@@ -502,7 +502,7 @@ private fun ResultContent(
             Text(
                 text = stringResource(R.string.iching_changing_lines, result.changingLineNumbers.joinToString("、")),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             HexagramCard(
                 label = stringResource(R.string.iching_changed_hexagram),
@@ -547,7 +547,7 @@ private fun JudgmentCard(primaryText: HexagramText, changingLineNumbers: List<In
             Text(
                 text = stringResource(R.string.iching_judgment_title),
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Text(text = primaryText.judgment, style = MaterialTheme.typography.bodyMedium)
             changingLineNumbers.forEach { position ->
@@ -590,7 +590,7 @@ private fun QuestionCard(question: String) {
             Text(
                 text = stringResource(R.string.iching_question_label),
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Text(
                 text = question.ifBlank { stringResource(R.string.iching_history_no_question) },
@@ -618,7 +618,7 @@ private fun AIInterpretationSection(state: IChingUiState, onGenerate: () -> Unit
                 text = stringResource(R.string.iching_ai_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.fillMaxWidth(),
             )
             // 深度思考内容:折叠区展示(不落库),展开状态与 AI 助手全局一致;
@@ -778,7 +778,7 @@ private fun PrimaryButton(
         enabled = enabled,
         modifier = Modifier.fillMaxWidth().height(54.dp),
         shape = RoundedCornerShape(18.dp),
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         containerAlpha = 0.58f,
         borderWidth = 0.8.dp,

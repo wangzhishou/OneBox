@@ -124,7 +124,7 @@ private fun PlayerBarItem(
                     Icon(
                         Icons.Outlined.ExpandMore,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(14.dp),
                     )
                 }
@@ -194,7 +194,7 @@ private fun VsBadge(
         Box(
             modifier = Modifier.clip(RoundedCornerShape(50))
                 .background(
-                    if (emphasized) MaterialTheme.colorScheme.primary
+                    if (emphasized) MaterialTheme.colorScheme.primaryContainer
                     else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f),
                 )
                 .padding(horizontal = if (emphasized) 12.dp else 10.dp, vertical = if (emphasized) 6.dp else 3.dp),
@@ -202,7 +202,7 @@ private fun VsBadge(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = if (emphasized) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
     }

@@ -120,7 +120,7 @@ fun LoanInputItem(
                         disabledIndicatorColor = Color.Transparent,
                         focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        cursorColor = MaterialTheme.colorScheme.primary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 },
                 modifier = Modifier.weight(0.6f),

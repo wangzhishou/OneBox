@@ -601,7 +601,7 @@ private fun resolveModelTags(model: AiModel): List<Pair<String, Color>> {
             add(stringResource(R.string.ai_model_not_free) to Color(0xFF6B7280))
         }
         if (isEmpty()) {
-            add(stringResource(R.string.ai_model_tag_balanced) to MaterialTheme.colorScheme.primary)
+            add(stringResource(R.string.ai_model_tag_balanced) to MaterialTheme.colorScheme.onPrimaryContainer)
         }
     }
 }
@@ -724,7 +724,7 @@ fun ModelGridItem(
         shape = RoundedCornerShape(14.dp),
         color = containerColor,
         border = if (isSelected) {
-            BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary)
+            BorderStroke(1.5.dp, MaterialTheme.colorScheme.onPrimaryContainer)
         } else {
             null
         },
@@ -834,7 +834,7 @@ private fun resolveProviderLabel(
 
 @Composable
 private fun resolveProviderAccentColor(model: AiModel): Color {
-    return providerAccentColor(model.provider.value) ?: MaterialTheme.colorScheme.primary
+    return providerAccentColor(model.provider.value) ?: MaterialTheme.colorScheme.onPrimaryContainer
 }
 
 private fun resolveProviderMonogram(

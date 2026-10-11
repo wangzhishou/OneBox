@@ -124,8 +124,8 @@ fun ChatNodeItem(node: ChatNode, parser: MarkdownAstNodeParser) {
 // ───────────────────────────── 文本气泡 ─────────────────────────────
 
 /**
- * 用户气泡:右对齐 primary 着色的 Glass 气泡(玻璃开启 = 半透明毛玻璃,
- * 关闭 = 实色 primary 卡;文本用 colorScheme.onPrimary 保证对比)。
+ * 用户气泡:右对齐 primaryContainer 着色的 Glass 气泡(玻璃开启 = 半透明毛玻璃,
+ * 关闭 = 实色 primaryContainer 卡;文本用 colorScheme.onPrimaryContainer 保证对比)。
  * 「时间戳 + 双对勾」包在气泡内部右下角。
  */
 @Composable

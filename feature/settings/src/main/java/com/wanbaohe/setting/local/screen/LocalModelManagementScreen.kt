@@ -292,7 +292,7 @@ private fun RecommendedModelCard(
                 isDownloaded -> Text(
                     text = stringResource(R.string.local_models_downloaded),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
 
                 downloadState?.isDownloading == true -> TextButton(onClick = onCancel) {
@@ -383,7 +383,7 @@ private fun DownloadedModelCard(
                 Text(
                     text = stringResource(R.string.local_models_current_chat_model),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.weight(1f),
                 )
             } else {

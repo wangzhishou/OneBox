@@ -111,7 +111,7 @@ fun CreateHtmlScreen(
                     tint = if (uiState.isSaving) {
                         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
                     } else {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     },
                 )
             }

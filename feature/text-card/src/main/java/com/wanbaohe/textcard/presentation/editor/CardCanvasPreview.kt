@@ -388,7 +388,7 @@ private fun ElementBox(
                 if (isSelected) {
                     Modifier.dashedSelectionBorder(
                         width = 1.5.dp,
-                        color = MaterialTheme.colorScheme.primary.copy(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(
                             alpha = if (gesturesEnabled) 1f else 0.4f
                         ),
                         cornerRadius = 4.dp,
@@ -654,7 +654,7 @@ private fun InPlaceTextEditor(
     BasicTextField(
         state = state,
         textStyle = cardTextStyle(block, baseSizePx),
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         onKeyboardAction = { onCommit() },
         modifier = modifier

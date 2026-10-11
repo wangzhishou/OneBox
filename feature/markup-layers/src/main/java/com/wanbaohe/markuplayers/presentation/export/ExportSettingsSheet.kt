@@ -131,7 +131,7 @@ fun ExportSettingsSheet(
                         text = "${settings.quality}%",
                         style = MaterialTheme.typography.labelLarge,
                         color = if (settings.format.canChangeCompressionValue) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -359,7 +359,7 @@ private fun SelectableCard(
             text = label,
             style = MaterialTheme.typography.titleSmall,
             color = if (selected) {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else MaterialTheme.colorScheme.onSurfaceVariant
         )
         if (subtitle.isNotEmpty()) {

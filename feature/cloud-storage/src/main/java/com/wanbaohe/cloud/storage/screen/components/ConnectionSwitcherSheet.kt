@@ -109,7 +109,7 @@ fun ConnectionSwitcherSheet(
                     connections.forEach { conn ->
                         val isCurrent = conn.id == currentConnectionId
                         val tint = if (isCurrent) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurface
                         }

@@ -200,7 +200,7 @@ fun <T : Any> FilterItem(
                                             shape = onCreateTemplate?.let {
                                                 ShapeDefaults.center
                                             } ?: ShapeDefaults.bottom,
-                                            containerColor = MaterialTheme.colorScheme.primary
+                                            containerColor = MaterialTheme.colorScheme.primaryContainer
                                         ) {
                                             Icon(
                                                 imageVector = if (isVisible) {

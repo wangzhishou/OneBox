@@ -501,7 +501,7 @@ private fun BoxScope.CenterResultNotice(
         resigning == Side.BLACK -> Color(0xFF37474F)
         status == GameStatus.RED_WINS -> Color(0xFFC62828)
         status == GameStatus.BLACK_WINS -> Color(0xFF37474F)
-        else -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onPrimaryContainer
     }
 
     Box(
@@ -678,7 +678,7 @@ private fun LocalEngineSwapCard(
         title = stringResource(R.string.xiangqi_ai_local_engine_swap_title),
         subtitle = stringResource(R.string.xiangqi_ai_local_engine_swap_message, reason),
         height = StatusCardHeight,
-        titleColor = MaterialTheme.colorScheme.primary,
+        titleColor = MaterialTheme.colorScheme.onPrimaryContainer,
         titleTrailing = if (state.mode != GameMode.LLM_VS_LLM) {
             {
                 GlassTonalButton(
@@ -742,7 +742,7 @@ private fun OnlineDebugPanel(state: XiangqiGameUiState) {
             Text(
                 text = stringResource(R.string.xiangqi_online_debug_title),
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Text(
                 text = stringResource(

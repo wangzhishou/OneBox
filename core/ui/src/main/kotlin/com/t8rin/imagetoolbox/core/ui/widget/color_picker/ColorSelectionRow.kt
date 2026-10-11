@@ -117,7 +117,7 @@ fun ColorSelectionRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Custom color picker — fixed, no background
-            val background = customColor ?: MaterialTheme.colorScheme.primary
+            val background = customColor ?: MaterialTheme.colorScheme.primaryContainer
             val isSelected = customColor != null
             val shape = animateShape(
                 if (isSelected) ShapeDefaults.mini

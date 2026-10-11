@@ -55,9 +55,9 @@ fun BoardGamePillButton(
         modifier = modifier.heightIn(min = 48.dp),
         shape = RoundedCornerShape(50),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (primary) MaterialTheme.colorScheme.primary
+            containerColor = if (primary) MaterialTheme.colorScheme.primaryContainer
                 else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f),
-            contentColor = if (primary) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
     ) {
@@ -89,7 +89,7 @@ fun BoardGameToolButton(
 ) {
     val contentColor = when {
         !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-        selected -> MaterialTheme.colorScheme.primary
+        selected -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
     Surface(
@@ -148,7 +148,7 @@ fun BoardGameSetupHeader(
                 Row(
                     modifier = Modifier.weight(1.2f)
                         .clip(RoundedCornerShape(50))
-                        .background(if (side.selected) MaterialTheme.colorScheme.primary else Color.Transparent)
+                        .background(if (side.selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
                         .selectable(
                             selected = side.selected, enabled = enabled,
                             role = Role.RadioButton, onClick = side.onClick,
@@ -166,7 +166,7 @@ fun BoardGameSetupHeader(
                         text = side.label,
                         modifier = Modifier.weight(1f, fill = false),
                         style = MaterialTheme.typography.labelMedium,
-                        color = if (side.selected) MaterialTheme.colorScheme.onPrimary
+                        color = if (side.selected) MaterialTheme.colorScheme.onPrimaryContainer
                             else MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -197,7 +197,7 @@ fun BoardGamePaletteItem(
             else MaterialTheme.colorScheme.surface.copy(alpha = 0.45f),
         border = BorderStroke(
             1.dp,
-            if (selected) MaterialTheme.colorScheme.primary
+            if (selected) MaterialTheme.colorScheme.onPrimaryContainer
             else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
         ),
     ) {

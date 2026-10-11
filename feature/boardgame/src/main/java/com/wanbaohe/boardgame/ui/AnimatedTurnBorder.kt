@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Modifier.animatedTurnBorder(
     shape: Shape = RoundedCornerShape(14.dp),
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     width: Dp = 1.dp,
 ): Modifier {
     val transition = rememberInfiniteTransition(label = "Active player border")

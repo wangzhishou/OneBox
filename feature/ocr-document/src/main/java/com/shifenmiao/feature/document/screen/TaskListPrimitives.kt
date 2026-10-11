@@ -200,7 +200,7 @@ internal fun EmptyStateView() {
 internal fun StatusChip(status: String, isGridMode: Boolean) {
     val (color, icon, label) = when (status) {
         OcrTaskStatus.SUCCESS.value -> Triple(
-            MaterialTheme.colorScheme.primary,
+            MaterialTheme.colorScheme.onPrimaryContainer,
             com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle,
             stringResource(R.string.status_success)
         )

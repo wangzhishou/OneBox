@@ -89,7 +89,7 @@ internal fun CollapsibleSectionHeader(
     }
 }
 
-/** 网格/横向列表通用选择卡片(模型/协议/鉴权共用):选中高亮(primary 描边 + 对勾),未选中细描边 */
+/** 网格/横向列表通用选择卡片(模型/协议/鉴权共用):选中高亮(onPrimaryContainer 描边 + 对勾),未选中细描边 */
 @Composable
 internal fun SelectGridCard(
     title: String,
@@ -108,7 +108,7 @@ internal fun SelectGridCard(
             MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f)
         },
         border = if (isSelected) {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+            BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimaryContainer)
         } else {
             BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
         },
@@ -150,7 +150,7 @@ internal fun SelectGridCard(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(18.dp),
                 )
             }

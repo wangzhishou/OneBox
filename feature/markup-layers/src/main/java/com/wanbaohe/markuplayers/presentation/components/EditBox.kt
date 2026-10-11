@@ -283,7 +283,7 @@ private fun AnimatedBorder(
     )
 
     val density = LocalDensity.current
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val primaryContainer = MaterialTheme.colorScheme.primaryContainer
     Canvas(modifier = modifier) {
         val strokeWidth = 3.dp.toPx() * (1f / scale)

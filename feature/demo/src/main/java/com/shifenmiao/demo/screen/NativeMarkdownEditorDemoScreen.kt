@@ -86,7 +86,7 @@ fun NativeMarkdownEditorDemoScreen(
         Text(
             text = "${markdown.length} 字符 · ${markdown.lineCount()} 行 · ${if (showPreview) "原生预览" else "编辑模式"}",
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
 
         MarkdownEditorToolbar(
@@ -196,7 +196,7 @@ private fun NativeMarkdownTextField(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = FontFamily.Monospace,
             ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState),
@@ -235,7 +235,7 @@ private fun markdownPresentationRanges(
         val level = match.groupValues[1].length
         add(
             SpanStyle(
-                color = colors.primary,
+                color = colors.onPrimaryContainer,
                 fontWeight = FontWeight.Bold,
                 fontSize = when (level) {
                     1 -> 28.sp

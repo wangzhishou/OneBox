@@ -166,7 +166,7 @@ private fun FilterThumbnail(
     }
     val painter = rememberAsyncImagePainter(model = request)
     val contentColor = if (selected) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
 
     Column(
@@ -187,7 +187,7 @@ private fun FilterThumbnail(
                 .border(
                     width = if (selected) 2.dp else 1.dp,
                     color = if (selected) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else MaterialTheme.colorScheme.outlineVariant,
                     shape = ShapeDefaults.small
                 )

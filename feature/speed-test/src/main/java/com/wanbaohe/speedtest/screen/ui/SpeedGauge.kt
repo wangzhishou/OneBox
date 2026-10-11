@@ -141,9 +141,9 @@ fun SpeedGauge(
     // 开始按钮填充用品牌色（primary → secondary），内容用 onPrimary 保证对比度：
     // getPrimaryColor() 取的是 onPrimaryContainer（文字色），直接当填充会和内容同色而"隐形"。
     val actionGradient = Brush.linearGradient(
-        listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
+        listOf(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondary)
     )
-    val onActionColor = MaterialTheme.colorScheme.onPrimary
+    val onActionColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     Box(
         contentAlignment = Alignment.Center,

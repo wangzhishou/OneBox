@@ -156,7 +156,7 @@ internal fun FilterTemplateAddingGroup(
         Spacer(modifier = Modifier.width(8.dp))
         EnhancedButton(
             onClick = { showFilterTemplateCreationSheet = true },
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ) {
             Text(stringResource(R.string.create_new))
         }

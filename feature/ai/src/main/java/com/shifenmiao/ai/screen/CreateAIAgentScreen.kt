@@ -214,7 +214,7 @@ fun CreateAIAgentScreen(
                     title = stringResource(R.string.create_ai_agent_drafts),
                     collapseContentDescription = stringResource(R.string.create_ai_agent_collapse),
                     expandContentDescription = stringResource(R.string.create_ai_agent_expand),
-                    activeColor = MaterialTheme.colorScheme.primary,
+                    activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     onDraftClick = { draft ->
                         handleActionWithConfirm {
                             component.loadDraft(draft)
@@ -233,7 +233,7 @@ fun CreateAIAgentScreen(
                     },
                     draftStatusColor = { draft ->
                         when (draft.status) {
-                            DataDraftEntity.STATUS_SUCCESS -> MaterialTheme.colorScheme.primary
+                            DataDraftEntity.STATUS_SUCCESS -> MaterialTheme.colorScheme.onPrimaryContainer
                             DataDraftEntity.STATUS_FAILED -> MaterialTheme.colorScheme.error
                             else -> MaterialTheme.colorScheme.onSurfaceVariant
                         }

@@ -605,7 +605,7 @@ private fun CurrencyPickerDialog(
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             )
                         }
                     }

@@ -700,7 +700,7 @@ private fun CalculatorHistoryCard(
 
 /**
  * 计算器按键
- * - `=` 使用 primary / onPrimary（实心强调，匹配设计稿）
+ * - `=` 使用 onPrimaryContainer / primaryContainer（反转强调，比运算符键更突出）
  * - 运算符使用 primaryContainer / onPrimaryContainer
  * - C 使用 errorContainer
  * - 数字使用 surfaceContainerLow
@@ -715,13 +715,13 @@ private fun CalculatorKey(
     onClick: () -> Unit,
 ) {
     val backgroundColor = when {
-        isPrimary -> MaterialTheme.colorScheme.primary
+        isPrimary -> MaterialTheme.colorScheme.onPrimaryContainer
         isDanger -> MaterialTheme.colorScheme.errorContainer
         isOperator -> MaterialTheme.colorScheme.primaryContainer
         else -> MaterialTheme.colorScheme.surfaceContainerLow
     }
     val contentColor = when {
-        isPrimary -> MaterialTheme.colorScheme.onPrimary
+        isPrimary -> MaterialTheme.colorScheme.primaryContainer
         isDanger -> MaterialTheme.colorScheme.onErrorContainer
         isOperator -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurface
@@ -1361,7 +1361,7 @@ private fun GenderChip(
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
                 tint = if (selected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }
@@ -1371,7 +1371,7 @@ private fun GenderChip(
                 text = label,
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (selected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
@@ -1429,7 +1429,7 @@ private fun RelationButton(
                     tint = if (action.isClear) {
                         MaterialTheme.colorScheme.error
                     } else {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     },
                     modifier = Modifier.size(26.dp)
                 )

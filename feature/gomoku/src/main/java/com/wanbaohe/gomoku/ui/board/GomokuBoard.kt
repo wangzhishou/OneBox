@@ -137,7 +137,7 @@ fun GomokuBoard(
                                     modifier = Modifier
                                         .size(stoneSize * 1.15f)
                                         .clip(CircleShape)
-                                        .border(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f), CircleShape)
+                                        .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f), CircleShape)
                                 )
                                 // 候选落点:半透明小点
                                 isCandidate -> Box(
@@ -151,7 +151,7 @@ fun GomokuBoard(
                                     modifier = Modifier
                                         .size(stoneSize * 1.15f)
                                         .clip(CircleShape)
-                                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                                        .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer, CircleShape)
                                 )
                             }
                         }

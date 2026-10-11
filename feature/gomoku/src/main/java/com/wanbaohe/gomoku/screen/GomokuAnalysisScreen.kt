@@ -340,7 +340,7 @@ private fun NotationRowItem(
             ply = row.white,
             isActive = isWhiteActive,
             activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            idleColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+            idleColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
             modifier = Modifier.weight(0.425f),
             onPlyClick = onPlyClick,
         )

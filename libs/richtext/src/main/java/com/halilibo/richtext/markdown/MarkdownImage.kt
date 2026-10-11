@@ -79,7 +79,7 @@ internal fun MarkdownImage(
 private fun SubcomposeAsyncImageScope.DefaultMarkdownImageLoading() {
     CircularProgressIndicator(
         modifier = Modifier.size(28.dp),
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
         strokeWidth = 2.5.dp
     )
 }

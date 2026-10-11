@@ -338,7 +338,7 @@ private fun SelectableCell(
                 .border(
                     width = if (selected) 2.dp else 1.dp,
                     color = if (selected) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else MaterialTheme.colorScheme.outlineVariant,
                     shape = RoundedCornerShape(12.dp)
                 )

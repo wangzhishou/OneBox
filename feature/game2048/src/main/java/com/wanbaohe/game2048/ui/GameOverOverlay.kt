@@ -80,7 +80,7 @@ fun GameOverOverlay(
                     color = if (isGameOver) {
                         MaterialTheme.colorScheme.error
                     } else {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     },
                     textAlign = TextAlign.Center,
                 )

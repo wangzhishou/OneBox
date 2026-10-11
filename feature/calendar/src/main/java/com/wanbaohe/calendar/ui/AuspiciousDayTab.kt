@@ -167,7 +167,7 @@ fun AuspiciousDayTab(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
                         contentDescription = null,
-                        tint = if (isAvoid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                        tint = if (isAvoid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
@@ -197,7 +197,7 @@ fun AuspiciousDayTab(
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(32.dp),
-                        color = if (isAvoid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                        color = if (isAvoid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onPrimaryContainer,
                         strokeWidth = 3.dp
                     )
                 }
@@ -302,7 +302,7 @@ private fun HeaderCard(
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.error,
                     checkedTrackColor = MaterialTheme.colorScheme.errorContainer,
-                    uncheckedThumbColor = MaterialTheme.colorScheme.primary,
+                    uncheckedThumbColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer,
                 )
             )
@@ -322,7 +322,7 @@ private fun ItemChip(
 ) {
     val bgColor = when {
         isSelected && isAvoidMode -> MaterialTheme.colorScheme.error
-        isSelected -> MaterialTheme.colorScheme.primary
+        isSelected -> MaterialTheme.colorScheme.primaryContainer
         else -> MaterialTheme.colorScheme.surfaceContainerHigh
     }
     val contentColor = when {

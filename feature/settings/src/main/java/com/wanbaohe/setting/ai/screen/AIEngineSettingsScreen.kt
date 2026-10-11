@@ -434,7 +434,7 @@ private fun EngineBadge(
 ) {
     val contentColor = when {
         isError -> MaterialTheme.colorScheme.error
-        isPrimary -> MaterialTheme.colorScheme.primary
+        isPrimary -> MaterialTheme.colorScheme.onPrimaryContainer
         selected -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -445,7 +445,7 @@ private fun EngineBadge(
                 style = if (selected) GlassStyle.Thin else GlassStyle.Regular,
                 color = when {
                     isError -> MaterialTheme.colorScheme.surfaceContainerHigh
-                    isPrimary -> MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                    isPrimary -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
                     selected -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f)
                     else -> MaterialTheme.colorScheme.surfaceVariant
                 },

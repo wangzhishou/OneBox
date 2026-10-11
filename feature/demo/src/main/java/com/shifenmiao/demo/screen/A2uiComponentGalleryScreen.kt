@@ -153,7 +153,7 @@ private fun SampleListPane(
                 Text(
                     text = category,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
                 )
             }
@@ -299,7 +299,7 @@ private fun JsonBlock(
             Text(
                 text = "JSON",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.padding(bottom = 8.dp),
             )
             Surface(
@@ -335,7 +335,7 @@ private fun PreviewBlock(
             Text(
                 text = "实时渲染",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.padding(bottom = 8.dp),
             )
             Surface(

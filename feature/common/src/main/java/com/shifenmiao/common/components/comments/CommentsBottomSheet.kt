@@ -524,7 +524,7 @@ private fun CommentRow(
                 if (highlighted) {
                     Modifier.border(
                         width = 1.5.dp,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         shape = shape,
                     )
                 } else {
@@ -918,7 +918,7 @@ private fun PendingImageChip(
 ) {
     val borderColor = when {
         image.isError -> MaterialTheme.colorScheme.error
-        image.isUploaded -> MaterialTheme.colorScheme.primary
+        image.isUploaded -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.outlineVariant
     }
     Box(

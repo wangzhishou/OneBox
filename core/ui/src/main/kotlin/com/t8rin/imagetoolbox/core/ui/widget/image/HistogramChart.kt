@@ -41,7 +41,7 @@ fun HistogramChart(
             HistogramType.Camera -> HistogramType.RGB
         }
     },
-    harmonizationColor: Color = MaterialTheme.colorScheme.primary,
+    harmonizationColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     linesThickness: Dp = 0.5.dp,
     bordersColor: Color = MaterialTheme.colorScheme.outline,
     bordersShape: Shape = ShapeDefaults.extraSmall

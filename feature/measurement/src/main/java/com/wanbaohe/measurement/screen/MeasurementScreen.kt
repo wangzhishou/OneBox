@@ -200,7 +200,7 @@ private fun CameraToggleAction(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCameraAlt,
             contentDescription = stringResource(CoreR.string.camera_background),
             tint = if (isEnabled) {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             }
@@ -518,7 +518,7 @@ private fun FullScreenRulerBackground(
     val tickColor = MaterialTheme.colorScheme.outline
     val outlineVariant = MaterialTheme.colorScheme.outlineVariant
     val rulerBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-    val measureLineColor = MaterialTheme.colorScheme.primary
+    val measureLineColor = MaterialTheme.colorScheme.onPrimaryContainer
     val measureChipTextColor = MaterialTheme.colorScheme.onPrimary
 
     val density = LocalDensity.current

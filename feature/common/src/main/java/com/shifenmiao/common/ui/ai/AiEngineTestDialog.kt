@@ -123,7 +123,7 @@ fun AiEngineTestDialog(
                                 stringResource(R.string.connection_failed)
                             },
                             color = if (testResult?.success == true) {
-                                MaterialTheme.colorScheme.primary
+                                MaterialTheme.colorScheme.onPrimaryContainer
                             } else {
                                 MaterialTheme.colorScheme.error
                             },

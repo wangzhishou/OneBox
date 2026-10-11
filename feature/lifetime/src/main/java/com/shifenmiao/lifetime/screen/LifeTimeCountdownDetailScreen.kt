@@ -137,7 +137,7 @@ private fun CountdownHeroCard(status: CountdownStatus) {
     val accent = when {
         status.isToday -> MaterialTheme.colorScheme.secondary
         status.isPast -> MaterialTheme.colorScheme.onSurfaceVariant
-        else -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onPrimaryContainer
     }
 
     GlassCard(

@@ -355,7 +355,7 @@ private fun StatusRow(loading: Boolean, hasCode: Boolean) {
         else -> stringResource(SettingsR.string.auth_code_settings_status_off)
     }
     val color = if (hasCode) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -712,7 +712,7 @@ private fun AuthCodeFlowDialog(
                 status = status,
                 pinLabel = pinLabel,
                 actionKeyIcon = if (canConfirm) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check else Icons.Outlined.Cancel,
-                actionKeyTint = if (canConfirm) MaterialTheme.colorScheme.primary else null,
+                actionKeyTint = if (canConfirm) MaterialTheme.colorScheme.onPrimaryContainer else null,
                 modifier = Modifier.fillMaxSize(),
             )
         }

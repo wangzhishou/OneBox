@@ -79,7 +79,7 @@ fun ImageUploadGallery(
                         width = 1.dp,
                         color = when {
                             image.isError -> MaterialTheme.colorScheme.error
-                            image.isUploaded -> MaterialTheme.colorScheme.primary
+                            image.isUploaded -> MaterialTheme.colorScheme.onPrimaryContainer
                             else -> MaterialTheme.colorScheme.surfaceContainerHighest
                         },
                         shape = shape

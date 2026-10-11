@@ -86,7 +86,7 @@ internal fun StampParamsContent(
                         )
                     )
                 },
-                selectedItemColor = MaterialTheme.colorScheme.primary
+                selectedItemColor = MaterialTheme.colorScheme.primaryContainer
             )
             Spacer(modifier = Modifier.height(4.dp))
             EnhancedSliderItem(

@@ -38,9 +38,9 @@ class BadgeRenderer @Inject constructor() : A2uiComponentRenderer {
     @Composable
     private fun mapBadgeColor(style: String?): Color = when (style?.lowercase()) {
         "error" -> MaterialTheme.colorScheme.error
-        "success" -> MaterialTheme.colorScheme.primary
+        "success" -> MaterialTheme.colorScheme.onPrimaryContainer
         "warning" -> MaterialTheme.colorScheme.tertiary
         "info" -> MaterialTheme.colorScheme.secondary
-        else -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onPrimaryContainer
     }
 }

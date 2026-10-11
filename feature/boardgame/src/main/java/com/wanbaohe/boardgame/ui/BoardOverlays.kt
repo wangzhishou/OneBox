@@ -134,7 +134,7 @@ fun BoxScope.BoardGameOverOverlay(
                     text = resultTitle,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     color = if (emphasizeResult) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
                         MaterialTheme.colorScheme.onSurface
                     },

@@ -399,7 +399,7 @@ fun SkillManagementContent(
 private fun SourceBadge(source: String) {
     val (label, tint) = when (source) {
         SkillEntity.SOURCE_BUNDLED ->
-            stringResource(SettingsR.string.skill_source_bundled) to MaterialTheme.colorScheme.primary
+            stringResource(SettingsR.string.skill_source_bundled) to MaterialTheme.colorScheme.onPrimaryContainer
 
         SkillEntity.SOURCE_REMOTE ->
             stringResource(SettingsR.string.skill_source_remote) to MaterialTheme.colorScheme.tertiary

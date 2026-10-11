@@ -238,7 +238,7 @@ private fun GoalProjection.phaseLabelRes(): Int? = when (phase) {
 /** 阶段配色(active 主色 / paused 橙 / blocked 错误色 / complete 绿) */
 @Composable
 private fun goalPhaseColor(phase: String?) = when (phase) {
-    "active" -> MaterialTheme.colorScheme.primary
+    "active" -> MaterialTheme.colorScheme.onPrimaryContainer
     "paused" -> MaterialTheme.colorScheme.tertiary
     "blocked" -> MaterialTheme.colorScheme.error
     "complete" -> MaterialTheme.colorScheme.secondary

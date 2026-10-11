@@ -75,7 +75,7 @@ fun PoemHistorySheet(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(20.dp),
                 )
                 Text(
@@ -184,7 +184,7 @@ private fun PoemHistoryRow(
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
                 color = if (selected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurface
                 },
@@ -206,7 +206,7 @@ private fun PoemHistoryRow(
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFavorite,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .size(14.dp),

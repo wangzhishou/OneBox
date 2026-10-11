@@ -429,13 +429,13 @@ private fun PoemEmptyState(onGenerate: () -> Unit) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePoem,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(88.dp),
                 )
                 Text(
                     text = "✦",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(top = 24.dp, end = 32.dp),
@@ -443,7 +443,7 @@ private fun PoemEmptyState(onGenerate: () -> Unit) {
                 Text(
                     text = "✦",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f),
                     modifier = Modifier
                         .align(Alignment.BottomStart)
                         .padding(bottom = 32.dp, start = 28.dp),
@@ -473,7 +473,7 @@ private fun PoemEmptyState(onGenerate: () -> Unit) {
                 .height(52.dp),
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ),
         ) {

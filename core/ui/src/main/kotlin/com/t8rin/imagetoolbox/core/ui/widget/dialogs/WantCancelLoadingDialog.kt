@@ -66,7 +66,7 @@ fun WantCancelLoadingDialog(
         icon = {
             EnhancedCircularProgressIndicator(
                 modifier = Modifier.size(24.dp),
-                trackColor = MaterialTheme.colorScheme.primary.copy(0.2f),
+                trackColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.2f),
                 strokeWidth = 3.dp
             )
         },

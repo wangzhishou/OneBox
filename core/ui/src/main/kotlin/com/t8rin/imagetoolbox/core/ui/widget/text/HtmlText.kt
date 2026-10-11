@@ -53,8 +53,8 @@ fun HtmlText(
     style: TextStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Left)
         .copy(color = MaterialTheme.colorScheme.onSurface),
     hyperlinkStyle: TextStyle = style.copy(
-        color = if (LocalSettingsState.current.isNightMode) Color.Cyan.blend(MaterialTheme.colorScheme.primary)
-        else Color.Blue.blend(MaterialTheme.colorScheme.primary, 0.5f)
+        color = if (LocalSettingsState.current.isNightMode) Color.Cyan.blend(MaterialTheme.colorScheme.onPrimaryContainer)
+        else Color.Blue.blend(MaterialTheme.colorScheme.onPrimaryContainer, 0.5f)
     ),
     softWrap: Boolean = true,
     enableAutoLinkify: Boolean = true, // 新增参数

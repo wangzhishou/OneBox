@@ -209,7 +209,7 @@ private fun BrushChip(
     modifier: Modifier = Modifier,
 ) {
     val contentColor = if (selected) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
     Row(
         verticalAlignment = Alignment.CenterVertically,

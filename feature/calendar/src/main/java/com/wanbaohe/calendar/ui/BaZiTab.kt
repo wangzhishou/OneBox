@@ -537,7 +537,7 @@ private fun WuXingCard(wuXingDist: Map<String, Float>) {
                 "水" to MaterialTheme.colorScheme.tertiary,
                 "火" to MaterialTheme.colorScheme.error,
                 "金" to MaterialTheme.colorScheme.secondary,
-                "木" to MaterialTheme.colorScheme.primary,
+                "木" to MaterialTheme.colorScheme.onPrimaryContainer,
                 "土" to MaterialTheme.colorScheme.outline
             )
             val wuXingStrength = mapOf(
@@ -549,7 +549,7 @@ private fun WuXingCard(wuXingDist: Map<String, Float>) {
             wuXingDist.entries.sortedByDescending { it.value }.forEach { (element, value) ->
                 val strength = wuXingStrength.entries.find { value in it.key }?.value
                     ?: stringResource(R.string.balanced)
-                val color = wuXingColors[element] ?: MaterialTheme.colorScheme.primary
+                val color = wuXingColors[element] ?: MaterialTheme.colorScheme.onPrimaryContainer
 
                 Row(
                     modifier = Modifier
@@ -735,7 +735,7 @@ private fun MonthFortuneCard(
     modifier: Modifier = Modifier
 ) {
     val tagColor = when (fortune.tagType) {
-        "positive" -> MaterialTheme.colorScheme.primary
+        "positive" -> MaterialTheme.colorScheme.onPrimaryContainer
         "negative" -> MaterialTheme.colorScheme.error
         else -> MaterialTheme.colorScheme.tertiary
     }

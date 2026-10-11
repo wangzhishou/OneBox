@@ -506,7 +506,7 @@ private fun SelectionIndicator(
         modifier = modifier.size(22.dp),
         shape = RoundedCornerShape(11.dp),
         color = if (selected) {
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.primaryContainer
         } else {
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.72f)
         },

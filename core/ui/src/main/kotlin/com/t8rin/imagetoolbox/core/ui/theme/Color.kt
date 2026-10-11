@@ -141,7 +141,7 @@ fun Color.harmonizeWithPrimary(
         from = 0.0,
         to = 1.0
     ) fraction: Float = 0.2f
-): Color = blend(MaterialTheme.colorScheme.primary, fraction)
+): Color = blend(MaterialTheme.colorScheme.onPrimaryContainer, fraction)
 
 
 fun Int.toColor() = Color(this)

@@ -97,7 +97,7 @@ private fun DrawBarButton(
 ) {
     val contentColor = when {
         !enabled -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-        active -> MaterialTheme.colorScheme.primary
+        active -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
     Box(

@@ -587,16 +587,16 @@ private fun pinGlyphState(
 @Composable
 private fun PinGlyphState.color(): Color = when (this) {
     PinGlyphState.Empty -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)
-    PinGlyphState.Filled -> MaterialTheme.colorScheme.primary
+    PinGlyphState.Filled -> MaterialTheme.colorScheme.onPrimaryContainer
     PinGlyphState.Error -> MaterialTheme.colorScheme.error
 }
 
 @Composable
 private fun LockScreenStatus.accentColor(): Color = when (this) {
     LockScreenStatus.Error -> MaterialTheme.colorScheme.error
-    LockScreenStatus.Success -> MaterialTheme.colorScheme.primary
+    LockScreenStatus.Success -> MaterialTheme.colorScheme.onPrimaryContainer
     LockScreenStatus.Verifying -> MaterialTheme.colorScheme.tertiary
-    LockScreenStatus.Idle, LockScreenStatus.Awaiting -> MaterialTheme.colorScheme.primary
+    LockScreenStatus.Idle, LockScreenStatus.Awaiting -> MaterialTheme.colorScheme.onPrimaryContainer
 }
 
 private val KeypadRows: List<List<Char>> = listOf(

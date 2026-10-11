@@ -33,7 +33,7 @@ internal fun TrendBarChartSection(
 ) {
     if (points.size < 2) return
 
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val onSurface = MaterialTheme.colorScheme.onSurface
 
     val minVal = remember(points) { points.min() }

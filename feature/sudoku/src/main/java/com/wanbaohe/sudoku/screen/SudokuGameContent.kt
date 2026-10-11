@@ -238,16 +238,16 @@ private fun SudokuCell(
         state.solution.getOrNull(index)?.let { it != entry } == true
 
     val containerColor = when {
-        selected -> MaterialTheme.colorScheme.primary.copy(alpha = 0.32f)
+        selected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.32f)
         isError -> MaterialTheme.colorScheme.errorContainer
-        sameNumber -> MaterialTheme.colorScheme.primary.copy(alpha = 0.18f)
-        related -> MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
+        sameNumber -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.18f)
+        related -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.08f)
         else -> MaterialTheme.colorScheme.surfaceContainerHighest
     }
     val digitColor = when {
         isError -> MaterialTheme.colorScheme.error
         given -> MaterialTheme.colorScheme.onSurface
-        else -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.onPrimaryContainer
     }
 
     Box(
@@ -359,7 +359,7 @@ private fun InfoCard(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(20.dp)
         )
         Column(modifier = Modifier.weight(1f)) {

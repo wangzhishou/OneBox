@@ -24,7 +24,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 fun GlassCircularProgressIndicator(
     progress: () -> Float,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     trackColor: Color = ProgressIndicatorDefaults.circularTrackColor,
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
     gapSize: Dp = ProgressIndicatorDefaults.CircularIndicatorTrackGapSize,
@@ -62,7 +62,7 @@ fun GlassCircularProgressIndicator(
 @Composable
 fun GlassCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     trackColor: Color = ProgressIndicatorDefaults.circularTrackColor,
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
     gapSize: Dp = ProgressIndicatorDefaults.CircularIndicatorTrackGapSize,
@@ -102,7 +102,7 @@ fun GlassCircularProgressIndicator(
 fun GlassLinearProgressIndicator(
     progress: () -> Float,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     trackColor: Color = ProgressIndicatorDefaults.linearTrackColor,
     strokeCap: androidx.compose.ui.graphics.StrokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
     gapSize: Dp = ProgressIndicatorDefaults.LinearIndicatorTrackGapSize,
@@ -142,7 +142,7 @@ fun GlassLinearProgressIndicator(
 @Composable
 fun GlassLinearProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     trackColor: Color = ProgressIndicatorDefaults.linearTrackColor,
     strokeCap: androidx.compose.ui.graphics.StrokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
     gapSize: Dp = ProgressIndicatorDefaults.LinearIndicatorTrackGapSize,

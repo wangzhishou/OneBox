@@ -428,7 +428,7 @@ fun ServerStatusCard(
                     .clip(RoundedCornerShape(6.dp))
                     .background(
                         when (serverState) {
-                            is ServerState.Running -> MaterialTheme.colorScheme.primary
+                            is ServerState.Running -> MaterialTheme.colorScheme.onPrimaryContainer
                             is ServerState.Starting -> MaterialTheme.colorScheme.tertiary
                             is ServerState.Error -> MaterialTheme.colorScheme.error
                             else -> MaterialTheme.colorScheme.outline
@@ -577,7 +577,7 @@ fun QRCodeCard(qrCodeBitmap: Bitmap?) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQrCode,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Spacer(modifier = Modifier.width(AppTheme.dimens.spaceSmall))
                 Text(
@@ -699,7 +699,7 @@ fun SettingsCard(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUpload,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Spacer(modifier = Modifier.width(AppTheme.dimens.spaceLarge))
                 Column {
@@ -736,7 +736,7 @@ fun SettingsCard(
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFolder,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Spacer(modifier = Modifier.width(AppTheme.dimens.spaceLarge))
             Column(modifier = Modifier.weight(1f)) {

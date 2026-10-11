@@ -50,7 +50,7 @@ fun OperateBar(
     val resolvedTagTextColor = palette?.tagTextColor ?: tagTextColor
     val supportingContentColor =
         palette?.supportingContentColor ?: MaterialTheme.colorScheme.outline
-    val accentColor = palette?.accentColor ?: MaterialTheme.colorScheme.primary
+    val accentColor = palette?.accentColor ?: MaterialTheme.colorScheme.onPrimaryContainer
 
     val resolvedTagText = tagText?.takeIf { it.isNotBlank() }
         ?: BaseUtils.getNameByType(dataItem.listType)

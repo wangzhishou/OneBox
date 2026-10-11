@@ -444,7 +444,7 @@ private fun BottomTab(
     modifier: Modifier = Modifier,
 ) {
     val contentColor = if (active) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

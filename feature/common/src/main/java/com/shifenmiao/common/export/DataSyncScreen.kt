@@ -273,7 +273,7 @@ private fun ExportContent(
                         Icon(
                             imageVector = if (selectedExportIds.contains(item.id)) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
                             contentDescription = null,
-                            tint = if (selectedExportIds.contains(item.id)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            tint = if (selectedExportIds.contains(item.id)) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -411,7 +411,7 @@ private fun ImportContent(
                             Icon(
                                 imageVector = if (selectedImportIndices.contains(index)) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
                                 contentDescription = null,
-                                tint = if (selectedImportIndices.contains(index)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                tint = if (selectedImportIndices.contains(index)) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))

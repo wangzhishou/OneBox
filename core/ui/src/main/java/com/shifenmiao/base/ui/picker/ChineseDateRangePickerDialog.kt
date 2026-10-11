@@ -522,7 +522,7 @@ private fun RangeDayCell(
                     isDisabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                     isStart || isEnd-> MaterialTheme.colorScheme.onPrimaryContainer
                     isInRange -> MaterialTheme.colorScheme.onPrimaryContainer
-                    isToday -> MaterialTheme.colorScheme.primary
+                    isToday -> MaterialTheme.colorScheme.onPrimaryContainer
                     else -> MaterialTheme.colorScheme.onSurface
                 },
                 fontWeight = when {

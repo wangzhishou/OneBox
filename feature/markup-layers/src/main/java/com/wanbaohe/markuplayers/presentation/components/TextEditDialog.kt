@@ -387,7 +387,7 @@ private fun AlignmentRow(
             LayerType.Text.TextAlignment.entries.forEach { item ->
                 val isSelected = item == alignment
                 val contentColor = if (isSelected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else MaterialTheme.colorScheme.onSurfaceVariant
                 val description = stringResource(
                     when (item) {
@@ -511,7 +511,7 @@ private fun DecorationChip(
     textDecoration: TextDecoration? = null,
 ) {
     val contentColor = if (selected) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
     Row(
         verticalAlignment = Alignment.CenterVertically,

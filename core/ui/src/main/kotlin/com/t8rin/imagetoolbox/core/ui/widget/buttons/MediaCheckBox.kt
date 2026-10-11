@@ -38,6 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.theme.suggestContainerColorBy
@@ -53,7 +55,7 @@ fun MediaCheckBox(
     selectionIndex: Int = -1,
     onCheck: (() -> Unit)? = null,
     checkedIcon: ImageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle,
-    checkedColor: Color = MaterialTheme.colorScheme.primary,
+    checkedColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     uncheckedColor: Color = MaterialTheme.colorScheme.onSurface,
     addContainer: Boolean = false
 ) {
@@ -105,7 +107,9 @@ fun MediaCheckBox(
                     ) {
                         AutoSizeText(
                             text = (selectionIndex + 1).toString(),
-                            color = contentColorFor(color),
+                            color = contentColorFor(color).takeOrElse {
+                                if (color.luminance() > 0.5f) Color.Black else Color.White
+                            },
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

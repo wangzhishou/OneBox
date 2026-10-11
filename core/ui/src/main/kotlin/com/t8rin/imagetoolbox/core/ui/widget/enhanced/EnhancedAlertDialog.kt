@@ -173,7 +173,7 @@ fun EnhancedAlertDialog(
                 shape = shape,
                 containerColor = containerColor,
                 tonalElevation = tonalElevation,
-                buttonContentColor = MaterialTheme.colorScheme.primary,
+                buttonContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 iconContentColor = iconContentColor,
                 titleContentColor = titleContentColor,
                 textContentColor = textContentColor,

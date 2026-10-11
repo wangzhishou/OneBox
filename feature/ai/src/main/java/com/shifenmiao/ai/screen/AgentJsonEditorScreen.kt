@@ -95,7 +95,7 @@ fun AgentJsonEditorScreen(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTextSnippet,
                         contentDescription = stringResource(R.string.code_editor_mode_text),
                         tint = if (!uiState.isTreeMode) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         },
@@ -104,7 +104,7 @@ fun AgentJsonEditorScreen(
                     Text(
                         text = stringResource(R.string.code_editor_mode_text),
                         color = if (!uiState.isTreeMode) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         },
@@ -120,7 +120,7 @@ fun AgentJsonEditorScreen(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWorkModels,
                         contentDescription = stringResource(R.string.code_editor_mode_tree),
                         tint = if (uiState.isTreeMode) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         },
@@ -129,7 +129,7 @@ fun AgentJsonEditorScreen(
                     Text(
                         text = stringResource(R.string.code_editor_mode_tree),
                         color = if (uiState.isTreeMode) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         },

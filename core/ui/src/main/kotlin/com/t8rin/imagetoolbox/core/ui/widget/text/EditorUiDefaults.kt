@@ -69,7 +69,7 @@ fun EditorTitleField(
         textStyle = textStyle,
         singleLine = true,
         maxLines = 1,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier.defaultMinSize(minHeight = minHeight),

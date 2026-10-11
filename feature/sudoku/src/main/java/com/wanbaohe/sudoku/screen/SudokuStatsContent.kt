@@ -137,7 +137,7 @@ private fun OverviewCard(records: List<SudokuRecord>) {
             OverviewItem(
                 modifier = Modifier.weight(1f),
                 icon = Icons.Outlined.LineGrid4x4,
-                iconAccent = MaterialTheme.colorScheme.primary,
+                iconAccent = MaterialTheme.colorScheme.onPrimaryContainer,
                 value = SudokuStats.totalGames(records).toString(),
                 label = stringResource(R.string.sudoku_stats_total)
             )
@@ -218,7 +218,7 @@ private fun WinRateCard(
     modifier: Modifier = Modifier
 ) {
     val rate = SudokuStats.winRate(records)
-    val ringColor = MaterialTheme.colorScheme.primary
+    val ringColor = MaterialTheme.colorScheme.onPrimaryContainer
     val trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
 
     OneBoxSectionCard(modifier = modifier) {
@@ -292,13 +292,13 @@ private fun BestTimeCard(
                 modifier = Modifier
                     .size(36.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                    .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.LineMedal,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -330,7 +330,7 @@ private fun BestTimeCard(
 private fun DistributionCard(records: List<SudokuRecord>) {
     val distribution = SudokuStats.completedByDifficulty(records)
     val difficulties = SudokuDifficulty.entries
-    val barColor = MaterialTheme.colorScheme.primary
+    val barColor = MaterialTheme.colorScheme.onPrimaryContainer
     val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
 
     OneBoxSectionCard {
@@ -399,7 +399,7 @@ private fun TrendCard(records: List<SudokuRecord>) {
     val daily = remember(records, selectedDays) {
         SudokuStats.dailyCompletions(records, selectedDays, System.currentTimeMillis())
     }
-    val lineColor = MaterialTheme.colorScheme.primary
+    val lineColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     OneBoxSectionCard {
         Row(
@@ -495,7 +495,7 @@ private fun TrendSegmented(
                 modifier = Modifier
                     .clip(RoundedCornerShape(OneBoxDesignSystem.pillRadius))
                     .background(
-                        if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
+                        if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
                     )
                     .clickable { onSelect(days) }
                     .padding(horizontal = 12.dp, vertical = 6.dp)
@@ -504,7 +504,7 @@ private fun TrendSegmented(
                     text = stringResource(R.string.sudoku_stats_days, days),
                     style = MaterialTheme.typography.labelMedium,
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.onPrimary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     }

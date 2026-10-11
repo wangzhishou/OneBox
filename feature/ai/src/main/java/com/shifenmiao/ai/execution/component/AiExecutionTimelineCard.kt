@@ -297,7 +297,7 @@ private fun AiExecutionStepRow(
                             when (step.status) {
                                 ExecutionStepStatus.DONE,
                                 ExecutionStepStatus.RUNNING,
-                                ExecutionStepStatus.WAITING_USER -> MaterialTheme.colorScheme.primary.copy(
+                                ExecutionStepStatus.WAITING_USER -> MaterialTheme.colorScheme.onPrimaryContainer.copy(
                                     alpha = 0.32f
                                 )
 
@@ -412,7 +412,7 @@ private fun DeepLinkActionCard(item: DeepLinkItemUiModel) {
             imageVector = if (primary) Icons.Outlined.Link else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
             contentDescription = null,
             tint = if (primary) {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             },
@@ -447,7 +447,7 @@ private fun DeepLinkActionCard(item: DeepLinkItemUiModel) {
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.OpenInNew,
             contentDescription = null,
             tint = if (primary) {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             },

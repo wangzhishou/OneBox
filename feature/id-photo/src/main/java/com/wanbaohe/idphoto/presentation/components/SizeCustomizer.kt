@@ -420,7 +420,7 @@ private fun SizePreviewBox(
                 .size(width = previewWidth, height = previewHeight)
                 .background(
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
                     } else {
                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
                     },
@@ -435,7 +435,7 @@ private fun SizePreviewBox(
                 fontSize = fontSize,
                 maxLines = 1,
                 color = if (isSelected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }

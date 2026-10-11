@@ -234,7 +234,7 @@ private fun MarkTodoScreenActions(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
                     contentDescription = stringResource(R.string.cd_edit_mode_done),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
             return@Row

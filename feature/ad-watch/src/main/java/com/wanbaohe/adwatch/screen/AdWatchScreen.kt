@@ -132,7 +132,7 @@ fun AdWatchScreen(
 @Composable
 private fun AdWatchHero() {
     // 跟随主题: 眼睛 primary / 环绕图标 tertiary·secondary·primary 轮换, 背景 primaryContainer
-    val eyeColor = MaterialTheme.colorScheme.primary
+    val eyeColor = MaterialTheme.colorScheme.onPrimaryContainer
     val eyeBg = MaterialTheme.colorScheme.primaryContainer
     val tertiaryColor = MaterialTheme.colorScheme.tertiary
     val secondaryColor = MaterialTheme.colorScheme.secondary

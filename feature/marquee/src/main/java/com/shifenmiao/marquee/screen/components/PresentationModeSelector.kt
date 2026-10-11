@@ -197,7 +197,7 @@ private fun PresentationModeCard(
 
     val iconBackgroundColor by animateColorAsState(
         targetValue = if (isSelected)
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.15f)
         else
             MaterialTheme.colorScheme.surfaceContainerHighest,
         animationSpec = spring(stiffness = Spring.StiffnessLow),

@@ -200,7 +200,7 @@ private fun HistoryHexagram(lineValues: List<Int>) {
             lineValues.asReversed().forEach { value ->
                 val isYang = value == 7 || value == 9
                 val color = if (value == 6 || value == 9) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else MaterialTheme.colorScheme.onSurface
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     if (isYang) {

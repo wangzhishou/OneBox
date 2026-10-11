@@ -172,7 +172,7 @@ fun RichText(
         stringStyle = RichTextStringStyle(
             linkStyle = TextLinkStyles(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textDecoration = TextDecoration.Underline
                 )
             ),

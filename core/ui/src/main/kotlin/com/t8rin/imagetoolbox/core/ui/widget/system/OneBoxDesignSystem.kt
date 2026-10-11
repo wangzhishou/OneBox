@@ -236,9 +236,8 @@ fun OneBoxListItem(
             style = if (selected) GlassStyle.Regular else OneBoxDesignSystem.rowGlassStyle,
             shape = shape,
             color = if (selected) {
-                colors.selectedContentColor
+                colors.selectedContainerColor
             } else {
-                MaterialTheme.colorScheme.surfaceContainerLowest
                 colors.containerColor
             },
             borderWidth = 0.dp,

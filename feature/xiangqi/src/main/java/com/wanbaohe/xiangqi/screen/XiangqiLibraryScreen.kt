@@ -227,7 +227,7 @@ private fun GameCard(
                         modifier = Modifier
                             .size(40.dp)
                             .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
-                            .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f), CircleShape),
+                            .border(1.dp, MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(stringResource(R.string.xiangqi_side_black), color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Bold)
@@ -244,7 +244,7 @@ private fun GameCard(
                 Text(
                     text = stringResource(R.string.xiangqi_setup_source) + ": " + item.origin.title,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.clickable { showOrigin = true },
                 )
             }

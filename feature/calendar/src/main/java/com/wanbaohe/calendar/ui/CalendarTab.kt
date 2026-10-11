@@ -1497,17 +1497,17 @@ private fun CalendarDayCell(
 ) {
     val textColor = when {
         isSelected-> MaterialTheme.colorScheme.onPrimaryContainer
-        dayInfo.isToday -> MaterialTheme.colorScheme.primary
+        dayInfo.isToday -> MaterialTheme.colorScheme.onPrimaryContainer
         !dayInfo.isCurrentMonth -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
         else -> MaterialTheme.colorScheme.onSurface
     }
 
     val subTextColor = when {
         isSelected-> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f)
-        dayInfo.solarTerm != null -> MaterialTheme.colorScheme.primary
-        dayInfo.lunarFestival != null -> MaterialTheme.colorScheme.primary
+        dayInfo.solarTerm != null -> MaterialTheme.colorScheme.onPrimaryContainer
+        dayInfo.lunarFestival != null -> MaterialTheme.colorScheme.onPrimaryContainer
         dayInfo.solarFestival != null -> MaterialTheme.colorScheme.tertiary
-        dayInfo.isToday -> MaterialTheme.colorScheme.primary
+        dayInfo.isToday -> MaterialTheme.colorScheme.onPrimaryContainer
         !dayInfo.isCurrentMonth -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
@@ -1516,7 +1516,7 @@ private fun CalendarDayCell(
         modifier = modifier
             .clip(CircleShape)
             .then(
-                if (isSelected) Modifier.glassBackground(shape = CircleShape, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                if (isSelected) Modifier.glassBackground(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer)
                 else if (dayInfo.isLegalHoliday) Modifier.glassBackground(
                     shape = CircleShape,
                     color = MaterialTheme.colorScheme.errorContainer.copy(

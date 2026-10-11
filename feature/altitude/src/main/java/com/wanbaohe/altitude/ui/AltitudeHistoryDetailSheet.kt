@@ -209,7 +209,7 @@ private fun DetailItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
                 modifier = Modifier.size(16.dp)
             )
         }

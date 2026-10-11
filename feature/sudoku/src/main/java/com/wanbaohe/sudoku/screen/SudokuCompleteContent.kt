@@ -98,7 +98,7 @@ fun SudokuCompleteContent(
                         CompleteStatCard(
                             modifier = Modifier.weight(1f),
                             icon = Icons.Outlined.LineTimer,
-                            accent = MaterialTheme.colorScheme.primary,
+                            accent = MaterialTheme.colorScheme.onPrimaryContainer,
                             label = stringResource(R.string.sudoku_complete_time),
                             value = formatSudokuTime(state.elapsedSeconds)
                         )
@@ -117,8 +117,8 @@ fun SudokuCompleteContent(
                     EnhancedButton(
                         onClick = component::onPlayAgain,
                         modifier = Modifier.fillMaxWidth(),
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ) {
                         Text(
                             text = stringResource(R.string.sudoku_play_again),
@@ -153,7 +153,7 @@ private fun TrophyWithConfetti() {
         Icon(
             imageVector = Icons.Outlined.LineEmojiEvents,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(72.dp)
         )
     }

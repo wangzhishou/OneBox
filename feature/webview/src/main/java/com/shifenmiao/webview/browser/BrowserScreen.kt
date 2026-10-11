@@ -110,7 +110,7 @@ fun BrowserScreen(
                     androidx.compose.material3.LinearProgressIndicator(
                         progress = { state.progress },
                         modifier = Modifier.fillMaxWidth(),
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
                         trackColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant
                     )
                 } else {

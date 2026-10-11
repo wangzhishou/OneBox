@@ -111,7 +111,7 @@ fun PreferenceRowSwitch(
                         disabledUncheckedThumbColor = MaterialTheme.colorScheme.onSurface
                             .copy(alpha = 0.12f)
                             .compositeOver(MaterialTheme.colorScheme.surface),
-                        checkedIconColor = MaterialTheme.colorScheme.primary
+                        checkedIconColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     enabled = enabled,
                     checked = checked,

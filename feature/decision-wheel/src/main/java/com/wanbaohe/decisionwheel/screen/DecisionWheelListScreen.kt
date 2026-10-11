@@ -170,7 +170,7 @@ private fun WheelRow(
                     horizontalArrangement = Arrangement.spacedBy(5.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val fallback = MaterialTheme.colorScheme.primary
+                    val fallback = MaterialTheme.colorScheme.primaryContainer
                     wheel.options.take(6).forEach { option ->
                         Box(
                             modifier = Modifier

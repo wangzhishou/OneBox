@@ -209,7 +209,7 @@ private fun EventPickerItem(
                     .clip(CircleShape)
                     .background(
                         if (event.isEnabled) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.primaryContainer
                         } else {
                             MaterialTheme.colorScheme.surfaceVariant
                         }

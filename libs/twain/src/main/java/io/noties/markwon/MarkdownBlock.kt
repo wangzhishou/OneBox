@@ -169,7 +169,7 @@ private fun MarkdownJLatexMathInternal(
         isLoading -> {
             CircularProgressIndicator(
                 modifier = modifier.padding(8.dp),
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 strokeWidth = 2.dp
             )
         }

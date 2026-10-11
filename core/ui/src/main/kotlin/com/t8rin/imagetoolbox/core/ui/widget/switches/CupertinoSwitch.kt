@@ -435,8 +435,8 @@ object CupertinoSwitchDefaults {
         } else MaterialTheme.colorScheme.surfaceContainerLowest,
         disabledThumbColor: Color = thumbColor,
         checkedTrackColor: Color = if (LocalSettingsState.current.isNightMode) {
-            MaterialTheme.colorScheme.primary.blend(Color.Black, 0.5f)
-        } else MaterialTheme.colorScheme.primary,
+            MaterialTheme.colorScheme.primaryContainer.blend(Color.Black, 0.5f)
+        } else MaterialTheme.colorScheme.primaryContainer,
         checkedIconColor: Color = MaterialTheme.colorScheme.outlineVariant,
         uncheckedTrackColor: Color = MaterialTheme.colorScheme.outline.copy(
             alpha = .33f

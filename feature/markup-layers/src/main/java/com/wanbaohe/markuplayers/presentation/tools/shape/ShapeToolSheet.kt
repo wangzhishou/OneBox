@@ -209,7 +209,7 @@ private fun ShapeKindButton(
     modifier: Modifier = Modifier,
 ) {
     val contentColor = if (selected) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -288,7 +288,7 @@ private fun StyleSegment(
         text = text,
         style = MaterialTheme.typography.labelLarge,
         color = if (selected) {
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.onPrimaryContainer
         } else MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
         maxLines = 1,

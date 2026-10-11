@@ -248,7 +248,7 @@ fun AddFiltersSheet(
                                 val selected = pagerState.currentPage == index
                                 val color by animateColorAsState(
                                     if (selected) {
-                                        MaterialTheme.colorScheme.primary
+                                        MaterialTheme.colorScheme.onPrimaryContainer
                                     } else MaterialTheme.colorScheme.onSurface
                                 )
                                 val interactionSource = remember { MutableInteractionSource() }

@@ -257,5 +257,5 @@ internal fun verdictText(verdictKey: String): String = stringResource(
 internal fun verdictColor(verdictKey: String) = when (verdictKey) {
     AiDetectService.VERDICT_LIKELY_AI -> MaterialTheme.colorScheme.error
     AiDetectService.VERDICT_MAYBE_AI -> MaterialTheme.colorScheme.tertiary
-    else -> MaterialTheme.colorScheme.primary
+    else -> MaterialTheme.colorScheme.onPrimaryContainer
 }

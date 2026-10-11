@@ -282,7 +282,7 @@ private fun multimodalCheckIcon(selected: Boolean): (@Composable () -> Unit)? {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(16.dp),
         )
     }

@@ -194,7 +194,7 @@ private fun PoemFilterGroup(
         Text(
             text = "✦ $label",
             style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
         Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -224,10 +224,10 @@ private fun PoemFilterChipItem(
         onClick = onClick,
         label = { Text(text = text) },
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primary,
+            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
             selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
-        glassSelectedContainerColor = MaterialTheme.colorScheme.primary,
+        glassSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
     )
 }
 
@@ -251,7 +251,7 @@ private fun PoemResultItem(
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBook,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(18.dp),
             )
             Column(
@@ -273,7 +273,7 @@ private fun PoemResultItem(
                             modifier = Modifier
                                 .padding(start = 8.dp)
                                 .background(
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
                                     shape = RoundedCornerShape(6.dp),
                                 )
                                 .padding(horizontal = 6.dp, vertical = 2.dp),
@@ -281,7 +281,7 @@ private fun PoemResultItem(
                             Text(
                                 text = poem.type,
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.primary,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                             )
                         }
                     }
@@ -317,7 +317,7 @@ private fun PoemResultItem(
                         if (poem.isFavorite) R.string.poem_favorited else R.string.poem_favorite
                     ),
                     tint = if (poem.isFavorite) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     },

@@ -150,7 +150,7 @@ private fun buildInfoItems(uiState: CompassUiState): List<InfoItem> {
 
     val normalColor = MaterialTheme.colorScheme.onSurface
     val calibrationColor = if (uiState.needsCalibration) MaterialTheme.colorScheme.error
-    else MaterialTheme.colorScheme.primary
+    else MaterialTheme.colorScheme.onPrimaryContainer
 
     return listOf(
         InfoItem(stringResource(CoreR.string.compass_info_direction), directionValue, normalColor),

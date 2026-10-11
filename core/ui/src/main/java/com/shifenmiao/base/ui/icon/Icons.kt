@@ -215,7 +215,7 @@ fun LetterIcon(
 
     val cache = remember(firstLetter) { getMeasureCache(firstLetter) }
     val styleParams = remember(nameStr) { getStyleParams(nameStr) }
-    val primaryColor = MaterialTheme.colorScheme.primary
+    val primaryColor = MaterialTheme.colorScheme.onPrimaryContainer
     val drawColor = if (tint != Color.Unspecified) tint else primaryColor
 
     Canvas(modifier = modifier) {

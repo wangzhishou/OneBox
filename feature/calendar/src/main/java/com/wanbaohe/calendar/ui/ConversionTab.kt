@@ -96,7 +96,7 @@ fun ConversionTab(
     val colorScheme = MaterialTheme.colorScheme
     val pageBg = colorScheme.surface
     val cardBg = colorScheme.surfaceContainerLow
-    val accentPrimary = colorScheme.primary
+    val accentPrimary = colorScheme.onPrimaryContainer
     val accentSecondary = colorScheme.tertiary
 
     val inputTitle = if (state.isConvertSolarToLunar) {
@@ -324,8 +324,8 @@ fun ConversionTab(
                     enabled = canConvert,
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = accentPrimary,
-                        contentColor = colorScheme.onPrimary
+                        containerColor = colorScheme.primaryContainer,
+                        contentColor = colorScheme.onPrimaryContainer
                     )
                 ) {
                     Text(

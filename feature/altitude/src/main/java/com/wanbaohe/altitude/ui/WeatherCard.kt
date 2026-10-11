@@ -42,7 +42,7 @@ internal fun WeatherCard(
     modifier: Modifier = Modifier
 ) {
     val onSurface = MaterialTheme.colorScheme.onSurface
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
 
     GlassSurface(
         modifier = modifier.fillMaxWidth(),
@@ -82,7 +82,7 @@ internal fun WeatherCard(
                     modifier = Modifier
                         .size(56.dp)
                         .clip(CircleShape)
-                        .background(primary.copy(alpha = 0.1f)),
+                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -107,7 +107,7 @@ internal fun WeatherCard(
  */
 @Composable
 private fun HourlyForecastPlaceholder(currentTemp: String) {
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val onSurface = MaterialTheme.colorScheme.onSurface
     val tempVal = currentTemp.toIntOrNull() ?: 18
 
@@ -125,7 +125,7 @@ private fun HourlyForecastPlaceholder(currentTemp: String) {
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         itemsIndexed(slots) { _, slot ->
-            val bgColor = if (slot.isCurrent) primary.copy(alpha = 0.12f)
+            val bgColor = if (slot.isCurrent) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
             else MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.5f)
             val textColor = if (slot.isCurrent) primary else onSurface.copy(alpha = 0.6f)
 

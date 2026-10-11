@@ -34,7 +34,7 @@ fun GlassCheckbox(
     colors: CheckboxColors = CheckboxDefaults.colors(),
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
-    checkedGlassColor: Color = MaterialTheme.colorScheme.primary,
+    checkedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
     uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
     glassBorderWidth: Dp = 0.9.dp,
 ) {

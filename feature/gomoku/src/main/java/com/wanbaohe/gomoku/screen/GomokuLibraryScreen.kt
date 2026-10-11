@@ -168,7 +168,7 @@ private fun GomokuGameSummary.toCardData(): GameCardData {
             name = whiteName,
             badgeColor = MaterialTheme.colorScheme.onPrimaryContainer,
             badgeBackground = MaterialTheme.colorScheme.primaryContainer,
-            badgeBorder = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+            badgeBorder = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f),
         ),
         vsLabel = stringResource(R.string.gomoku_vs_short),
         plyCountText = pluralStringResource(R.plurals.gomoku_ply_count, plyCount, plyCount),

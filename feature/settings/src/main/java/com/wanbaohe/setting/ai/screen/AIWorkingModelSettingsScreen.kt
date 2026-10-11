@@ -201,8 +201,8 @@ private fun WorkingEngineSummaryCard(
                     modifier = Modifier.padding(start = OneBoxDesignSystem.itemSpacing),
                     shape = OneBoxDesignSystem.listRowShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     ),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 ) {

@@ -193,7 +193,7 @@ fun DecisionWheelSpinScreen(
         spinNonce++
     }
 
-    val themePrimary = AppTheme.colorScheme.primary
+    val themePrimary = AppTheme.colorScheme.primaryContainer
     val firstItemColor = options.firstOrNull()?.color ?: themePrimary
     val (pointerColor, centerButtonColor) = remember(firstItemColor) {
         ColorGenerator.splitComplementaryPair(firstItemColor)

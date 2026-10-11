@@ -179,7 +179,7 @@ internal fun Modifier.glassSimpleStyle(
             style = style,
             colorSchemeSurface = colorScheme.surface,
             colorSchemeOutline = colorScheme.outline,
-            colorSchemePrimary = colorScheme.primary,
+            colorSchemePrimary = colorScheme.primaryContainer,
             colorSchemeSurfaceTint = colorScheme.surfaceTint,
             colorSchemeScrim = colorScheme.scrim,
             baseColor = baseColor,
@@ -235,7 +235,7 @@ internal fun Modifier.glassControlStyle(
             style = style,
             colorSchemeSurface = colorScheme.surface,
             colorSchemeOutline = colorScheme.outlineVariant,
-            colorSchemePrimary = colorScheme.primary,
+            colorSchemePrimary = colorScheme.primaryContainer,
             colorSchemeSurfaceTint = colorScheme.surfaceTint,
             colorSchemeScrim = colorScheme.scrim,
             baseColor = baseColor,
@@ -275,7 +275,7 @@ private fun createGlassDecorationColors(
 ): GlassDecorationColors {
     // 日间的中性玻璃(底色几乎无色, 如 surfaceContainerLow 卡片)走"填充式": 拿容器色往 scrim
     // 压一档, 让卡片略深于页面 —— 近白页面上往白里提是没有空间的(见 NEUTRAL_GLASS_DEEPEN)。
-    // 彩色玻璃保持原样(按 surfaceTint / primary 轻微染一下), 保留各自的分类色 ——
+    // 彩色玻璃保持原样(按 surfaceTint / primaryContainer 轻微染一下), 保留各自的分类色 ——
     // 一起洗白会让卡片和页面完全同色。
     // 夜间整段不改: 深色底上玻璃靠"压暗 + 提亮边缘"表现。
     val neutralGlassFill = if (isLight && baseColor.isNearNeutralGlass()) {
@@ -884,7 +884,7 @@ internal fun flatGlassContainerColor(
             style = style,
             colorSchemeSurface = colorScheme.surface,
             colorSchemeOutline = colorScheme.outline,
-            colorSchemePrimary = colorScheme.primary,
+            colorSchemePrimary = colorScheme.primaryContainer,
             colorSchemeSurfaceTint = colorScheme.surfaceTint,
             colorSchemeScrim = colorScheme.scrim,
             baseColor = baseColor,

@@ -201,7 +201,7 @@ private fun AiEditHistoryThumb(
                 .border(
                     width = if (highlighted) 2.dp else 1.dp,
                     color = if (highlighted) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else MaterialTheme.colorScheme.outlineVariant,
                     shape = RoundedCornerShape(8.dp)
                 )

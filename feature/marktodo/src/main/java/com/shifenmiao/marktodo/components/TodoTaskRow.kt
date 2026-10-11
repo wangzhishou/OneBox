@@ -180,7 +180,7 @@ fun TodoTagChip(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
-    val tagColor = tag?.colorArgb?.let { Color(it) } ?: MaterialTheme.colorScheme.primary
+    val tagColor = tag?.colorArgb?.let { Color(it) } ?: MaterialTheme.colorScheme.onPrimaryContainer
     Row(
         modifier = modifier
             .background(

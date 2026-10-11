@@ -195,7 +195,7 @@ private fun RowScope.WeekDayCell(
                 .size(4.dp)
                 .clip(CircleShape)
                 .background(
-                    if (isSelected) MaterialTheme.colorScheme.primary
+                    if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
                     else Color.Transparent
                 ),
         )

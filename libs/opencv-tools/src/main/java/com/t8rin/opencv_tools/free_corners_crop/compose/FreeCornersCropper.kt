@@ -419,7 +419,7 @@ fun FreeCornersCropper(
                 val scale = pointScales[index].value
 
                 drawCircle(
-                    color = colorScheme.primary,
+                    color = colorScheme.onPrimaryContainer,
                     center = point,
                     radius = handleRadiusPx * scale
                 )

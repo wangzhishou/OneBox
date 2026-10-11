@@ -302,7 +302,7 @@ fun RoundedTextField(
 fun RoundedTextFieldColors(
     isError: Boolean,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
-    focusedIndicatorColor: Color = MaterialTheme.colorScheme.primary,
+    focusedIndicatorColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     unfocusedIndicatorColor: Color = MaterialTheme.colorScheme.surfaceVariant.inverse({ 0.2f })
 ): TextFieldColors =
     MaterialTheme.colorScheme.run {

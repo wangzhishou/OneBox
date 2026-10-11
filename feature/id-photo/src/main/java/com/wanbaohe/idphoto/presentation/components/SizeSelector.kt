@@ -164,7 +164,7 @@ private fun SizePresetItem(
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 color = if (isSelected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }
@@ -228,7 +228,7 @@ private fun SizePreviewIcon(
             .size(width = displayWidth, height = displayHeight)
             .background(
                 color = if (isSelected) {
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
                 } else {
                     MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                 },
@@ -242,7 +242,7 @@ private fun SizePreviewIcon(
             fontSize = 6.sp,
             fontWeight = FontWeight.Medium,
             color = if (isSelected) {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant
             },

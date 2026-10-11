@@ -123,7 +123,7 @@ fun BaseSettingItem(
                     fontWeight = if (emphasizeSubtitle) FontWeight.SemiBold else FontWeight.Normal,
                     lineHeight = 13.sp,
                     color = if (emphasizeSubtitle) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.64f)
                     },

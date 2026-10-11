@@ -275,7 +275,7 @@ fun GlassComponentShowcaseSheet() {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
                             contentDescription = null,
-                            tint = colorScheme.primary,
+                            tint = colorScheme.onPrimaryContainer,
                         )
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
@@ -342,8 +342,8 @@ fun GlassComponentShowcaseSheet() {
                             checked = switchChecked,
                             onCheckedChange = { switchChecked = it },
                             colors = SwitchDefaults.colors(
-                                checkedThumbColor = colorScheme.onPrimary,
-                                checkedIconColor = colorScheme.onPrimary,
+                                checkedThumbColor = colorScheme.onPrimaryContainer,
+                                checkedIconColor = colorScheme.onPrimaryContainer,
                                 uncheckedThumbColor = colorScheme.onSurface,
                                 uncheckedIconColor = colorScheme.onSurface,
                             ),
@@ -413,7 +413,7 @@ fun GlassComponentShowcaseSheet() {
                     textStyle = MaterialTheme.typography.bodyLarge.copy(
                         color = colorScheme.onSurface,
                     ),
-                    cursorBrush = SolidColor(colorScheme.primary),
+                    cursorBrush = SolidColor(colorScheme.onPrimaryContainer),
                     decorationBox = { innerTextField ->
                         Box(contentAlignment = Alignment.CenterStart) {
                             if (inputText.isEmpty()) {

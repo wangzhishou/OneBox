@@ -724,7 +724,7 @@ private fun resolveGlassDecorationColors(
             .liftToward(colorScheme.onSurface, blendRatio = 0.08f)
             .ensureMinAlpha(0.96f),
         focusedLabelColor = colors.focusedLabelColor
-            .liftToward(colorScheme.primary, blendRatio = 0.08f)
+            .liftToward(colorScheme.onPrimaryContainer, blendRatio = 0.08f)
             .ensureMinAlpha(0.84f),
         unfocusedLabelColor = colors.unfocusedLabelColor
             .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.12f)
@@ -831,8 +831,8 @@ private fun Modifier.modernGlassTextFieldContainer(
             !enabled -> neutralTint.blend(colorScheme.outlineVariant, 0.48f)
             isError -> colorScheme.error.blend(neutralTint, if (isLight) 0.52f else 0.46f)
             visualFocused -> colorScheme.tertiary.blend(neutralTint, if (isLight) 0.60f else 0.50f)
-            readOnly -> colorScheme.primary.blend(neutralTint, if (isLight) 0.52f else 0.44f)
-            else -> colorScheme.primary.blend(neutralTint, if (isLight) 0.55f else 0.46f)
+            readOnly -> colorScheme.onPrimaryContainer.blend(neutralTint, if (isLight) 0.52f else 0.44f)
+            else -> colorScheme.onPrimaryContainer.blend(neutralTint, if (isLight) 0.55f else 0.46f)
         }
     }
     val tintOverlayColor = remember(accentTint, scaledBackgroundAlpha, enabled, readOnly, visualFocused, isError) {
@@ -872,8 +872,8 @@ private fun Modifier.modernGlassTextFieldContainer(
             !enabled -> colorScheme.outline
             isError -> colorScheme.error
             visualFocused -> colorScheme.tertiary
-            readOnly -> colorScheme.primary
-            else -> colorScheme.primary
+            readOnly -> colorScheme.onPrimaryContainer
+            else -> colorScheme.onPrimaryContainer
         }
     }
     val strokeColor = remember(strokeTint, style, glassBaseAlpha, enabled, readOnly, isError, visualFocused, isLight) {

@@ -482,12 +482,12 @@ private fun RiskBadge(riskLevel: ToolRiskLevel) {
         ToolRiskLevel.DANGEROUS -> stringResource(R.string.ai_tool_risk_dangerous)
     }
     val background = when (riskLevel) {
-        ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+        ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
         ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.14f)
         ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.error.copy(alpha = 0.14f)
     }
     val content = when (riskLevel) {
-        ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.primary
+        ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.onPrimaryContainer
         ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.tertiary
         ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.error
     }

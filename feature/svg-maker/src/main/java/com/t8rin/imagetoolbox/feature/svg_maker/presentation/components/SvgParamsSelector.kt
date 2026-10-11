@@ -114,7 +114,7 @@ fun SvgParamsSelector(
                         EnhancedChip(
                             selected = selected,
                             onClick = { onValueChange(it) },
-                            selectedColor = MaterialTheme.colorScheme.primary,
+                            selectedColor = MaterialTheme.colorScheme.primaryContainer,
                             shape = MaterialTheme.shapes.medium
                         ) {
                             AutoSizeText(it.name)

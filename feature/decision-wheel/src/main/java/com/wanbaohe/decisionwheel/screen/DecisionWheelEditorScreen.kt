@@ -82,7 +82,7 @@ fun DecisionWheelEditorScreen(
     val removedTip = stringResource(R.string.option_removed)
 
     val baseColor = uiState.options.firstOrNull { it.color != Color.Unspecified }?.color
-        ?: AppTheme.colorScheme.primary
+        ?: AppTheme.colorScheme.primaryContainer
 
     BaseScreen(
         title = stringResource(R.string.edit_wheel),

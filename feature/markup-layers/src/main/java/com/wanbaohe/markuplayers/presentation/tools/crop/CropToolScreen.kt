@@ -661,7 +661,7 @@ private fun RotationDial(
     // 拖动回调里读最新值,避免 pointerInput 闭包捕获旧角度
     val currentValue by rememberUpdatedState(value)
     val tickColor = MaterialTheme.colorScheme.onSurfaceVariant
-    val pointerColor = MaterialTheme.colorScheme.primary
+    val pointerColor = MaterialTheme.colorScheme.onPrimaryContainer
     val labelPaint = remember(tickColor, density) {
         android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
             textSize = with(density) { 10.sp.toPx() }
@@ -843,7 +843,7 @@ private fun RatioButton(
     modifier: Modifier = Modifier,
 ) {
     val contentColor = if (selected) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
     val label = when (mode) {
         CropAspectMode.OneToOne -> "1:1"

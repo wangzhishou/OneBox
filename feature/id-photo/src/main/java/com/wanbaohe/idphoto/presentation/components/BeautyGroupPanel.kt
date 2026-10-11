@@ -159,7 +159,7 @@ private fun StepperRow(
             color = if (value == 0f) {
                 MaterialTheme.colorScheme.onSurfaceVariant
             } else {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             }
         )
         GlassTonalIconButton(

@@ -176,7 +176,7 @@ private fun BottomIconButton(
 ) {
     val tint = when {
         !enabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-        selected -> MaterialTheme.colorScheme.primary
+        selected -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 

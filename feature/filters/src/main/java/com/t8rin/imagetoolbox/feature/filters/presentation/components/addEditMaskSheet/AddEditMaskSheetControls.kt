@@ -200,13 +200,13 @@ internal fun AddEditMaskSheetControls(
                 title = stringResource(id = R.string.mask_preview),
                 subtitle = stringResource(id = R.string.mask_preview_sub),
                 containerColor = animateColorAsState(
-                    if (component.maskPreviewModeEnabled) MaterialTheme.colorScheme.onPrimary
+                    if (component.maskPreviewModeEnabled) MaterialTheme.colorScheme.primaryContainer
                     else Color.Unspecified,
                 ).value,
                 modifier = Modifier.padding(horizontal = 16.dp),
                 shape = ShapeDefaults.extraLarge,
                 contentColor = animateColorAsState(
-                    if (component.maskPreviewModeEnabled) MaterialTheme.colorScheme.primary
+                    if (component.maskPreviewModeEnabled) MaterialTheme.colorScheme.onPrimaryContainer
                     else MaterialTheme.colorScheme.onSurface
                 ).value,
                 onClick = component::togglePreviewMode,

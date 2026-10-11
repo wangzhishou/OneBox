@@ -430,7 +430,7 @@ private fun DownloadableFontRow(
                         if (isSelected) R.string.font_downloaded else R.string.font_download
                     ),
                     tint = if (isSelected) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.onPrimaryContainer
                     } else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(24.dp)
                 )

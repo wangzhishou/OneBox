@@ -84,7 +84,7 @@ fun CompactWatermarkPreview(
 ) {
     val shape = RoundedCornerShape(8.dp)
     val borderColor = if (isSelected) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         Color.Transparent
     }

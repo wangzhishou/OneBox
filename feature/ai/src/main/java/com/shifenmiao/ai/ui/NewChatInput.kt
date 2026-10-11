@@ -719,8 +719,8 @@ private fun getStateText(media: com.shifenmiao.model.ai.AttachedMedia): String {
 private fun getStateColor(state: AttachmentProcessingState): Color {
     return when (state) {
         is AttachmentProcessingState.IDLE -> MaterialTheme.colorScheme.onSurfaceVariant
-        is AttachmentProcessingState.PROCESSING -> MaterialTheme.colorScheme.primary
-        is AttachmentProcessingState.COMPLETED -> MaterialTheme.colorScheme.primary
+        is AttachmentProcessingState.PROCESSING -> MaterialTheme.colorScheme.onPrimaryContainer
+        is AttachmentProcessingState.COMPLETED -> MaterialTheme.colorScheme.onPrimaryContainer
         is AttachmentProcessingState.ERROR -> MaterialTheme.colorScheme.error
     }
 }

@@ -182,7 +182,7 @@ fun MeshGradientEditorSheet(
                                 .border(
                                     width = if (isActive) 2.dp else 1.dp,
                                     color = if (isActive) {
-                                        MaterialTheme.colorScheme.primary
+                                        MaterialTheme.colorScheme.onPrimaryContainer
                                     } else MaterialTheme.colorScheme.outlineVariant,
                                     shape = RoundedCornerShape(12.dp)
                                 )
@@ -253,7 +253,7 @@ private fun MeshEditCanvas(
                         .border(
                             width = if (isSelected) 3.dp else 2.dp,
                             color = if (isSelected) {
-                                MaterialTheme.colorScheme.primary
+                                MaterialTheme.colorScheme.onPrimaryContainer
                             } else Color.White,
                             shape = CircleShape
                         )

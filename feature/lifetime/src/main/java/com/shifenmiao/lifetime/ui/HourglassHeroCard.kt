@@ -86,7 +86,7 @@ fun HourglassHeroCard(
     val pastLabel = stringResource(R.string.lifetime_time_card_label)
     val remainingLabel = stringResource(R.string.lifetime_remaining_time_label)
 
-    val primary = MaterialTheme.colorScheme.primary
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
     val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
 
     GlassCard(

@@ -54,7 +54,7 @@ class ListSelectorRenderer @Inject constructor() : A2uiComponentRenderer {
         val spacing = context.resolveInt(component.properties["spacing"])?.dp ?: 0.dp
         val padding = context.resolveInt(component.properties["padding"])?.dp ?: 0.dp
         val textColor = MaterialTheme.colorScheme.onSurface
-        val selectedTextColor = MaterialTheme.colorScheme.primary
+        val selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer
 
         if (!label.isNullOrBlank()) {
             Text(

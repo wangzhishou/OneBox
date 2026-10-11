@@ -52,7 +52,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -226,7 +225,7 @@ private fun FullScreenContent(
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
                 textStyle = textStyle,
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
                 decorationBox = { innerTextField ->
                     if (fieldValue.text.isEmpty()) {
                         Text(
@@ -294,11 +293,7 @@ private fun FullScreenSendButton(
 ) {
     val size = 44.dp
     val iconSize = 26.dp
-    val activeContainerColor = lerp(
-        MaterialTheme.colorScheme.primary,
-        MaterialTheme.colorScheme.primaryContainer,
-        0.26f
-    )
+    val activeContainerColor = MaterialTheme.colorScheme.primaryContainer
     if (isLoading) {
         Box(
             modifier = Modifier

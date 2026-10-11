@@ -294,7 +294,7 @@ private fun IconPickButton(
                 imageVector = if (hasIcon) HabitIcons.iconFor(iconKey) else Icons.Outlined.Add,
                 contentDescription = stringResource(R.string.habit_edit_icon_label),
                 tint = if (hasIcon) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },

@@ -220,7 +220,7 @@ fun CreateAIPromptScreen(
                     },
                     draftStatusColor = { draft ->
                         when (draft.status) {
-                            DataDraftEntity.STATUS_SUCCESS -> MaterialTheme.colorScheme.primary
+                            DataDraftEntity.STATUS_SUCCESS -> MaterialTheme.colorScheme.onPrimaryContainer
                             DataDraftEntity.STATUS_FAILED -> MaterialTheme.colorScheme.error
                             else -> MaterialTheme.colorScheme.onSurfaceVariant
                         }

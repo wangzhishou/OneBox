@@ -67,7 +67,7 @@ internal fun ElevationGaugeSection(
     }
 
     val colorScheme = MaterialTheme.colorScheme
-    val gaugeStart = lerp(colorScheme.primary, colorScheme.tertiary, 0.18f)
+    val gaugeStart = lerp(colorScheme.onPrimaryContainer, colorScheme.tertiary, 0.18f)
     val gaugeMid = lerp(colorScheme.primaryContainer, colorScheme.secondaryContainer, 0.46f)
     val gaugeEnd = lerp(colorScheme.secondary, colorScheme.surface, 0.4f)
     val ringTrack = lerp(colorScheme.primaryContainer, colorScheme.surface, 0.55f).copy(alpha = 0.24f)

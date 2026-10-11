@@ -332,7 +332,7 @@ private fun LayerStateToggles(
             contentDescription = stringResource(R.string.markup_layer_toggle_lock),
             onClick = onToggleLocked,
             tint = if (locked) {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else MaterialTheme.colorScheme.onSurfaceVariant
         )
     }

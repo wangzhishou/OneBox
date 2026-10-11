@@ -330,7 +330,7 @@ fun DecisionWheel(
     val rotation = rotationAnim.value
 
     // 颜色推导
-    val firstItemColor = items.firstOrNull()?.color ?: MaterialTheme.colorScheme.primary
+    val firstItemColor = items.firstOrNull()?.color ?: MaterialTheme.colorScheme.primaryContainer
     val (derivedPointerColor, derivedCenterColor) = remember(firstItemColor) {
         ColorGenerator.splitComplementaryPair(firstItemColor)
     }

@@ -271,7 +271,7 @@ private fun AiSourceRow(
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             maxLines = 1,
             modifier = Modifier.weight(1f),
             overflow = TextOverflow.Ellipsis,

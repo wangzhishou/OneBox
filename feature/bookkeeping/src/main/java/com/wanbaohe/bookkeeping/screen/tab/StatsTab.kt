@@ -355,7 +355,7 @@ private fun SummaryMetricCard(
     val iconContainerColor = when (tone) {
         SummaryMetricTone.EXPENSE -> AppTheme.colors.getOnPrimaryColor().copy(alpha = 0.18f)
         SummaryMetricTone.INCOME -> MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.14f)
-        SummaryMetricTone.NEUTRAL -> MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
+        SummaryMetricTone.NEUTRAL -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.14f)
     }
     val iconTint = when (tone) {
         SummaryMetricTone.EXPENSE -> AppTheme.colors.getOnPrimaryColor()

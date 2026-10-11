@@ -31,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -88,7 +89,10 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.screenIconByModule
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -193,7 +197,7 @@ fun PlaceHolderMessageCard(
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.size(28.dp)
                         )
                         Text(
@@ -558,11 +562,14 @@ private fun ChatQuickStartCard(
     val theme = sectionThemeForIndex(themeIndex)
     val containerColor = sectionGradient(theme)
     val contentColor = tintedGlassContentColor(containerColor)
-    GlassSurface(
+    // 必须用 GlassCard 而不是 GlassSurface: 玻璃关闭时 GlassCard 走 glassFlatSurface,
+    // 按玻璃管线同一套覆盖率把彩色压成平涂(与精选卡片一致); GlassSurface 的降级分支
+    // 只是把颜色自身 alpha 乘 glassBaseAlpha 直接平涂,彩色会深好几倍
+    GlassCard(
         onClick = onClick,
         modifier = modifier,
-        color = containerColor,
-        shape = MaterialTheme.shapes.large
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         // 图标独占一行置顶: 文案拿满卡片宽度,长文案少折行;
         // 同行图标不再随文案长度上下漂移,网格阅读起点对齐
@@ -573,9 +580,10 @@ private fun ChatQuickStartCard(
             Box(
                 modifier = Modifier
                     .size(32.dp)
-                    .background(
-                        color = sectionIconContainerColor(theme),
-                        shape = CircleShape
+                    .glassBackground(
+                        style = GlassStyle.Thick,
+                        shape = CircleShape,
+                        color = sectionIconContainerColor(theme)
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -693,7 +701,7 @@ private fun StatusCapsule(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
                 contentDescription = null,
                 tint = if (highlighted) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }

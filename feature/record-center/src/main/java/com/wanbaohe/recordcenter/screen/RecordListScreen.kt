@@ -349,7 +349,7 @@ private fun TrendChartCard(
     records: List<HealthRecordEntity>,
 ) {
     val seriesColors = listOf(
-        MaterialTheme.colorScheme.primary,
+        MaterialTheme.colorScheme.onPrimaryContainer,
         MaterialTheme.colorScheme.tertiary,
         MaterialTheme.colorScheme.error,
     )

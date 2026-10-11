@@ -356,7 +356,7 @@ private fun ChatComposer(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAttachFile,
                         contentDescription = stringResource(R.string.file_transfer_cd_send),
                         tint = if (enabled) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         }
@@ -378,7 +378,7 @@ private fun ChatComposer(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSend,
                         contentDescription = stringResource(R.string.file_transfer_cd_send),
                         tint = if (enabled && messageText.isNotBlank()) {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         }

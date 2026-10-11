@@ -29,7 +29,7 @@ fun GlassRadioButton(
     colors: RadioButtonColors = RadioButtonDefaults.colors(),
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
-    selectedGlassColor: Color = MaterialTheme.colorScheme.primary,
+    selectedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
     unselectedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
     glassBorderWidth: Dp = 0.9.dp,
 ) {

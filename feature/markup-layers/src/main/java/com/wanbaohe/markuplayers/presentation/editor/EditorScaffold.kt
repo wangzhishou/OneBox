@@ -1402,7 +1402,7 @@ private fun EditorToolItem(
     modifier: Modifier = Modifier,
 ) {
     val contentColor = if (isActive) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else MaterialTheme.colorScheme.onSurfaceVariant
 
     Column(
