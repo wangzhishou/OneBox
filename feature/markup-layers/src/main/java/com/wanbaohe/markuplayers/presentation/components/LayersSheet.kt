@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -68,6 +67,7 @@ import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.LockOpen
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * 图层面板(设计稿「图层管理 Tab」完整版):
@@ -366,7 +366,7 @@ private fun BlendModeDropdown(
                 modifier = Modifier.size(14.dp)
             )
         }
-        DropdownMenu(
+        EnhancedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {

@@ -6,9 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.NoteAdd
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -45,9 +43,12 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.t8rin.imagetoolbox.core.resources.Icons
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.filled.MoreVert
 
 /**
  * WebView 通用代码编辑器页面
@@ -184,9 +185,9 @@ fun CodeEditorScreen(
             // More 菜单
             Box {
                 IconButton(onClick = { showMenu = true }) {
-                    Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore, contentDescription = null)
+                    Icon(imageVector = MaterialIcons.Filled.MoreVert, contentDescription = null)
                 }
-                DropdownMenu(
+                EnhancedDropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh

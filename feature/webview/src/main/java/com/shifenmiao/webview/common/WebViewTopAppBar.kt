@@ -6,7 +6,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +34,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdf
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrint
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineOpenInBrowser
+import androidx.compose.foundation.layout.Box
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * 通用 WebView 顶部栏
@@ -107,17 +110,19 @@ fun WebViewTopAppBarWithExport(
         scrollBehavior = scrollBehavior,
         showEmojiAction = showEmojiAction,
         actions = {
-            IconButton(onClick = { showMenu = true }) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
-                    contentDescription = "Export options"
-                )
-            }
+            Box {
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = MaterialIcons.Filled.MoreVert,
+                        contentDescription = "Export options"
+                    )
+                }
 
-            DropdownMenu(
-                expanded = showMenu,
-                onDismissRequest = { showMenu = false }
-            ) {
+                EnhancedDropdownMenu(
+                    expanded = showMenu,
+                    onDismissRequest = { showMenu = false }
+                ) {
+            }
                 DropdownMenuItem(
                     text = { Text("复制内容") },
                     leadingIcon = {

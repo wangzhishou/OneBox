@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -139,6 +138,7 @@ import kotlinx.coroutines.launch
 import net.engawapg.lib.zoomable.ZoomState
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * 主编辑界面(设计稿「图片创作」):基于 BaseScreen,背景槽为画布背景
@@ -653,7 +653,7 @@ private fun EditorTopBarActions(
                 contentDescription = stringResource(R.string.markup_more_options)
             )
         }
-        DropdownMenu(
+        EnhancedDropdownMenu(
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false }
         ) {

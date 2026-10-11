@@ -56,6 +56,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowLeft
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * 中文日期选择器对话框（毫秒时间戳版本）
@@ -438,7 +439,7 @@ private fun MonthNavigator(
                 )
             }
 
-            DropdownMenu(
+            EnhancedDropdownMenu(
                 expanded = showYearPicker,
                 onDismissRequest = { showYearPicker = false }
             ) {

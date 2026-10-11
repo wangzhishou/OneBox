@@ -11,10 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,7 +40,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun ScriptCard(
@@ -84,16 +83,14 @@ fun ScriptCard(
                 Box {
                     IconButton(onClick = { showMenu = true }) {
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
+                            imageVector = MaterialIcons.Filled.MoreVert,
                             contentDescription = stringResource(R.string.teleprompter_more_actions),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
-                    DropdownMenu(
+                    EnhancedDropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false },
-                        shape = RoundedCornerShape(16.dp),
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     ) {
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.teleprompter_edit_script)) },

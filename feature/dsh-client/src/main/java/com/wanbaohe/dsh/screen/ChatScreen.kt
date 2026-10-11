@@ -51,7 +51,6 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -125,6 +124,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * DSH 聊天页(P5a 功能面):抽屉会话列表(搜索/长按菜单)+ 会话流节点渲染 +
@@ -554,7 +554,8 @@ fun ChatScreen(component: DshRootComponent) {
                                 }
                             )
                         }
-                        DropdownMenu(
+                        EnhancedDropdownMenu(
+                            alignToAnchor = true,
                             expanded = addMenuOpen,
                             onDismissRequest = { addMenuOpen = false }
                         ) {
@@ -1315,7 +1316,8 @@ private fun WorkspaceHeader(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            DropdownMenu(
+            EnhancedDropdownMenu(
+                alignToAnchor = true,
                 expanded = menuOpen,
                 onDismissRequest = { menuOpen = false }
             ) {
@@ -1393,7 +1395,8 @@ private fun SessionRow(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        DropdownMenu(
+        EnhancedDropdownMenu(
+            alignToAnchor = true,
             expanded = menuOpen,
             onDismissRequest = { menuOpen = false }
         ) {

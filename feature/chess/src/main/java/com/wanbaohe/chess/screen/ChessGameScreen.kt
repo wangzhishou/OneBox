@@ -18,7 +18,6 @@ import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -71,6 +70,7 @@ import com.wanbaohe.chess.ui.ChessOpponentPicker
 import com.wanbaohe.chess.ui.board.ChessBoard
 import com.wanbaohe.chess.ui.board.glyph
 import kotlinx.coroutines.launch
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier, showChrome: Boolean = true) {
@@ -402,7 +402,7 @@ private fun GameActions(component: ChessGameComponent, onExport: () -> Unit) {
                 enabled = state.isLoaded && !state.isUpdating,
                 modifier = Modifier.fillMaxWidth(),
             )
-            DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+            EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
                 @Composable
                 fun action(label: Int, enabled: Boolean = true, click: () -> Unit) {
                     DropdownMenuItem(

@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,7 +45,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.Lightbulb
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBackspace
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBarChart
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineGrid4x4
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePause
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTimer
@@ -59,6 +57,9 @@ import com.wanbaohe.sudoku.component.SudokuComponent
 import com.wanbaohe.sudoku.component.SudokuUiState
 import com.wanbaohe.sudoku.data.SudokuTimerMode
 import com.wanbaohe.sudoku.logic.SudokuEngine
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.filled.MoreVert
 
 /**
  * 核心层: 对局页。顶栏右侧 = 提示/撤销/溢出菜单;
@@ -131,11 +132,11 @@ private fun GameOverflowMenu(component: SudokuComponent) {
     Box {
         IconButton(onClick = { showMenu = true }) {
             Icon(
-                imageVector = Icons.Outlined.LineMore,
+                imageVector = MaterialIcons.Filled.MoreVert,
                 contentDescription = stringResource(R.string.sudoku_more)
             )
         }
-        DropdownMenu(
+        EnhancedDropdownMenu(
             expanded = showMenu,
             onDismissRequest = { showMenu = false },
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh

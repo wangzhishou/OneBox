@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -63,6 +62,7 @@ import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettingsSuggest
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun AIEngineSettingsScreen(
@@ -390,7 +390,8 @@ private fun EngineListCard(
             }
         }
 
-        DropdownMenu(
+        EnhancedDropdownMenu(
+            alignToAnchor = true,
             expanded = showContextMenu,
             onDismissRequest = { showContextMenu = false }
         ) {

@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.NoteAdd
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,6 +35,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 import com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults
 import com.wanbaohe.markdown.edit.component.MarkdownEditorComponent
 import com.wanbaohe.markdown.edit.component.MarkdownEditorUiState
@@ -45,7 +46,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.NoteAdd
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdf
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSaveAs
@@ -177,15 +177,14 @@ fun MarkdownEditorScreen(
             Box {
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
+                        imageVector = Icons.Filled.MoreVert,
                         contentDescription = null
                     )
                 }
 
-                DropdownMenu(
+                EnhancedDropdownMenu(
                     expanded = showMenu,
-                    onDismissRequest = { showMenu = false },
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                    onDismissRequest = { showMenu = false }
                 ) {
                     if (!component.isEditMode()) {
                         // 新建

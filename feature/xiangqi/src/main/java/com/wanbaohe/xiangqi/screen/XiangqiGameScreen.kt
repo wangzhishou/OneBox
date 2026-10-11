@@ -26,7 +26,6 @@ import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -102,6 +101,7 @@ import com.wanbaohe.boardgame.ui.PlayersBar as BoardGamePlayersBar
 import com.wanbaohe.boardgame.ui.BoardGameToolButton
 import com.wanbaohe.boardgame.R as BoardGameR
 import kotlinx.coroutines.delay
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun XiangqiGameScreen(
@@ -1048,7 +1048,7 @@ private fun ActionBar(
                 enabled = enabled,
                 modifier = Modifier.fillMaxWidth(),
             )
-            DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+            EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.xiangqi_analyze)) },
                     onClick = { more = false; onAnalysis() },

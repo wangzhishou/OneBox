@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +43,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
 import com.t8rin.imagetoolbox.core.ui.widget.system.OnePrimaryButton
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneSecondaryButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDropDown
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
@@ -219,7 +219,8 @@ fun LifeTimeAddEventScreen(
                             .matchParentSize()
                             .clickable { unitMenuExpanded = true }
                     )
-                    DropdownMenu(
+                    EnhancedDropdownMenu(
+                        alignToAnchor = true,
                         expanded = unitMenuExpanded,
                         onDismissRequest = { unitMenuExpanded = false }
                     ) {

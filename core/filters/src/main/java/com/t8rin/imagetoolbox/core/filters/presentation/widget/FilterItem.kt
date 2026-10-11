@@ -24,6 +24,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,6 +36,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -72,7 +74,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.value.ValueDialog
 import com.t8rin.imagetoolbox.core.ui.widget.value.ValueText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineExtension
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRemove
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibilityOff
@@ -157,7 +158,7 @@ fun <T : Any> FilterItem(
                                     }
                                 ) {
                                     Icon(
-                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
+                                        imageVector = Icons.Filled.MoreVert,
                                         contentDescription = "more"
                                     )
                                 }
@@ -165,7 +166,7 @@ fun <T : Any> FilterItem(
                                 EnhancedDropdownMenu(
                                     expanded = showPopup,
                                     onDismissRequest = { showPopup = false },
-                                    shape = ShapeDefaults.large
+                                    contentPadding = PaddingValues(vertical = 8.dp)
                                 ) {
                                     Column(
                                         modifier = Modifier

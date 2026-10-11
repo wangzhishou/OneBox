@@ -54,7 +54,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineCalendarAlert
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCatBulky
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLocationOn
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePieChart
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
@@ -82,6 +81,8 @@ import com.wanbaohe.householditems.model.locationIcon
 import com.wanbaohe.householditems.model.locationPathOf
 import com.wanbaohe.householditems.model.subtreeLocationIds
 import java.io.File
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.filled.MoreVert
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 家庭物品主页:底部三 tab(物品 / 位置 / 统计),列表 tab = 搜索 + 位置面包屑浏览
@@ -628,7 +629,7 @@ private fun ItemOverflowMenu(
             contentAlignment = Alignment.Center,
         ) {
             Icon(
-                imageVector = Icons.Outlined.LineMore,
+                imageVector = MaterialIcons.Filled.MoreVert,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
                 // 浅淡色,只做入口不做视觉焦点

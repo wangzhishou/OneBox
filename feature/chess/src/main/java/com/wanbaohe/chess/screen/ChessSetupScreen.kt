@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.OpenWith
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -62,6 +61,7 @@ import com.wanbaohe.chess.domain.model.PieceType
 import com.wanbaohe.chess.domain.model.Side
 import com.wanbaohe.chess.ui.board.ChessBoard
 import com.wanbaohe.chess.ui.board.glyph
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun ChessSetupScreen(
@@ -191,7 +191,7 @@ fun ChessSetupScreen(
                     icon = Icons.Outlined.MoreVert, label = stringResource(BoardGameR.string.boardgame_more),
                     onClick = { more = true }, enabled = !busy, modifier = Modifier.fillMaxWidth(),
                 )
-                DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.chess_cancel)) }, enabled = !busy,
                         onClick = { more = false; onCancel() })
                     DropdownMenuItem(text = { Text(stringResource(R.string.chess_setup_reset)) },

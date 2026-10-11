@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.OpenWith
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -55,6 +54,7 @@ import com.wanbaohe.gomoku.domain.model.BoardPoint
 import com.wanbaohe.gomoku.domain.model.Side
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
 import com.wanbaohe.gomoku.ui.board.StoneDisc
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun GomokuSetupScreen(
@@ -182,7 +182,7 @@ fun GomokuSetupScreen(
                     enabled = !busy,
                     modifier = Modifier.fillMaxWidth(),
                 )
-                DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_setup_clear), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                         enabled = !busy,
                         onClick = { more = false; onDraftChange(draft.clear()) })

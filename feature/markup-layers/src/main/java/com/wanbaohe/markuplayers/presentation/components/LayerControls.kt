@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +36,7 @@ import com.wanbaohe.markuplayers.presentation.render.LayerPreviewRenderers
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.Brush
 import androidx.compose.material.icons.outlined.Category
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * 图层缩略图:圆角透明棋盘格小盒内用预览渲染器画内容。
@@ -136,7 +136,7 @@ internal fun AddLayerDropdownMenu(
     onAddSticker: () -> Unit,
     onAddImage: () -> Unit,
 ) {
-    DropdownMenu(
+    EnhancedDropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismiss
     ) {

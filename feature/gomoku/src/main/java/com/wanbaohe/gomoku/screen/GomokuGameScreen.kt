@@ -15,7 +15,6 @@ import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.GridOn
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -71,6 +70,7 @@ import com.wanbaohe.gomoku.presentation.localizedGameResultText
 import com.wanbaohe.gomoku.ui.GomokuOpponentPicker
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
 import kotlinx.coroutines.launch
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun GomokuGameScreen(component: GomokuGameComponent, modifier: Modifier = Modifier, showChrome: Boolean = true) {
@@ -385,7 +385,7 @@ private fun GameControls(component: GomokuGameComponent, onExport: () -> Unit, o
                 enabled = enabled,
                 modifier = Modifier.fillMaxWidth(),
             )
-            DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+            EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
                 DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_library_open_analysis), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                     onClick = { more = false; component.openAnalysis() })
                 DropdownMenuItem(text = { Text(stringResource(R.string.gomoku_export), maxLines = 1, overflow = TextOverflow.Ellipsis) },

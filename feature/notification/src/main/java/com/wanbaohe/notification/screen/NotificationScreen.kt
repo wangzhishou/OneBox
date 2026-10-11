@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,13 +57,15 @@ import com.shifenmiao.network.model.comment.MyComment
 import com.shifenmiao.network.model.notification.UserNotification
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChatBubble
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineNotifications
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalLoginState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.wanbaohe.notification.R
 import com.wanbaohe.notification.component.NotificationComponent
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.filled.MoreVert
 
 @Composable
 fun NotificationScreen(component: NotificationComponent) {
@@ -79,14 +80,13 @@ fun NotificationScreen(component: NotificationComponent) {
             Box {
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
-                        imageVector = Icons.Outlined.LineMore,
+                        imageVector = MaterialIcons.Filled.MoreVert,
                         contentDescription = null,
                     )
                 }
-                DropdownMenu(
+                EnhancedDropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false },
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 ) {
                     DropdownMenuItem(
                         text = { Text(text = stringResource(R.string.notification_mark_all_read)) },

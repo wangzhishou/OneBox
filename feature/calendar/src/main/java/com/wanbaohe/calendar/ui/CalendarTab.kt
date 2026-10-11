@@ -32,7 +32,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CardDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
@@ -177,6 +176,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineToday
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTombSweeping
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVirgo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineWinter
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * 日历 Tab（合并了原来的详情 Tab 内容）
@@ -1274,7 +1274,7 @@ private fun MonthNavigator(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            DropdownMenu(
+            EnhancedDropdownMenu(
                 expanded = showYearMenu,
                 onDismissRequest = { showYearMenu = false }
             ) {

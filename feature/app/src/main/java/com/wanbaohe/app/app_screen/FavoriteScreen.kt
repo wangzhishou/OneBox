@@ -21,11 +21,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -113,7 +111,10 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineViewList
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineXiangqi
 import com.t8rin.imagetoolbox.core.resources.icons.OpenInNew
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.t8rin.imagetoolbox.core.resources.Icons
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.filled.MoreVert
 
 // ══════════════════════════════════════════════════════════════
 //  分区 Key 前缀（用于顶部标题跟随）
@@ -623,13 +624,13 @@ private fun MineListItemCard(
                 Box {
                     IconButton(onClick = { expanded = true }) {
                         Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
+                            imageVector = MaterialIcons.Filled.MoreVert,
                             contentDescription = "More",
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.outlineVariant
                         )
                     }
-                    DropdownMenu(
+                    EnhancedDropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
                     ) {

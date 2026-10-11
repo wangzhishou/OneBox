@@ -39,7 +39,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -109,6 +108,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.SelectAll
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowDownward
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileTransfer
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSchedule
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 /**
  * File browser main screen
@@ -754,7 +754,7 @@ private fun NavigationToolbar(
             }
 
             // Dropdown menu
-            DropdownMenu(
+            EnhancedDropdownMenu(
                 expanded = sortMenuExpanded,
                 onDismissRequest = { sortMenuExpanded = false }
             ) {

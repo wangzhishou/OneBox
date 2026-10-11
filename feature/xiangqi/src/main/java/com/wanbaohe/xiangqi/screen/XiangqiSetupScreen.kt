@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.OpenWith
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -63,6 +62,7 @@ import com.wanbaohe.xiangqi.ui.board.xiangqiBoardAspectRatio
 import com.wanbaohe.xiangqi.ui.board.pieceLabel
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
 import com.wanbaohe.xiangqi.router.LocalXiangqiImmersiveModeState
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 
 @Composable
 fun XiangqiSetupScreen(
@@ -188,7 +188,7 @@ fun XiangqiSetupScreen(
                     icon = Icons.Outlined.MoreVert, label = stringResource(BoardGameR.string.boardgame_more),
                     onClick = { more = true }, enabled = !busy, modifier = Modifier.fillMaxWidth(),
                 )
-                DropdownMenu(expanded = more, onDismissRequest = { more = false }) {
+                EnhancedDropdownMenu(expanded = more, onDismissRequest = { more = false }) {
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.xiangqi_cancel)) },
                         onClick = { more = false; onCancel() },
