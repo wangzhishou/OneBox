@@ -861,8 +861,12 @@ internal fun flatGlassContainerColor(
     val settingsState = LocalSettingsState.current
     val colorScheme = MaterialTheme.colorScheme
     val glassBaseAlpha = settingsState.glassBaseAlpha.coerceIn(0f, 1f)
-    // None = 明确不用玻璃、要一层实底(如分段按钮行的底板),不参与玻璃的覆盖率折算
-    if (style == GlassStyle.None) return color.withGlassBaseAlpha(glassBaseAlpha)
+    // None = 明确不用玻璃、要一层实底(如分段按钮行的底板),不参与玻璃的覆盖率折算;
+    // 未传色时落到默认中性底,避免把 Color.Unspecified 直接交给 background
+    if (style == GlassStyle.None) {
+        val solidBase = if (color != Color.Unspecified) color else colorScheme.surfaceContainerLow
+        return solidBase.withGlassBaseAlpha(glassBaseAlpha)
+    }
     val baseColor = if (color != Color.Unspecified) color else colorScheme.surfaceContainerLow
     val scaledBackgroundAlpha = (backgroundAlpha * glassBaseAlpha).coerceIn(0f, 1f)
     val isLight = colorScheme.surface.luminance() > 0.5f

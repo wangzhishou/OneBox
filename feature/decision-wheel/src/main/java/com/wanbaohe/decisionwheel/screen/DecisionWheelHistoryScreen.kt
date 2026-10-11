@@ -267,7 +267,7 @@ private fun HistoryRow(record: WheelHistoryEntity) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.listRowShape,
-        containerAlpha = OneBoxDesignSystem.sectionGlassStyle.backgroundAlpha,
+        style = OneBoxDesignSystem.sectionGlassStyle,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow

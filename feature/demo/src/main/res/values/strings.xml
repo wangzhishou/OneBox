@@ -32,6 +32,8 @@
     <string name="demo_glass_showcase_colored_plain_body">Good for list cards, toolbars, and info groups.</string>
     <string name="demo_glass_showcase_colored_liquid_title">Liquid Glass</string>
     <string name="demo_glass_showcase_colored_liquid_body">Good for overlays, selected states, and emphasized content.</string>
+    <string name="demo_glass_showcase_consistency_title">Pipeline Consistency</string>
+    <string name="demo_glass_showcase_consistency_desc">Same tint and style rendered through GlassCard, GlassSurface, and coloredGlass; with glass on or off, all three must look identical.</string>
     <string name="demo_glass_showcase_cards_title">Card</string>
     <string name="demo_glass_showcase_cards_desc">`GlassCard` now has clickable and non-clickable overloads, with parameter order kept close to the system Card.</string>
     <string name="demo_glass_showcase_primary_card_title">Theme-Aware Content Card</string>

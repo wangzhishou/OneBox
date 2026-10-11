@@ -143,7 +143,7 @@ private fun WheelRow(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.listRowShape,
-        containerAlpha = OneBoxDesignSystem.sectionGlassStyle.backgroundAlpha,
+        style = OneBoxDesignSystem.sectionGlassStyle,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isCurrent) MaterialTheme.colorScheme.primaryContainer

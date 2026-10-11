@@ -242,7 +242,7 @@ private fun CategoryField(
                     onClick = { onCategoryChange(if (selected) "" else name) },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(12.dp),
-                    containerAlpha = GlassStyle.Medium.backgroundAlpha,
+                    style = GlassStyle.Medium,
                     border = if (selected) {
                         BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimaryContainer)
                     } else {
@@ -311,7 +311,7 @@ private fun LocationField(
             onClick = onPickClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            containerAlpha = GlassStyle.Medium.backgroundAlpha,
+            style = GlassStyle.Medium,
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -364,7 +364,7 @@ private fun ExpireField(
             onClick = onPickClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            containerAlpha = GlassStyle.Medium.backgroundAlpha,
+            style = GlassStyle.Medium,
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),

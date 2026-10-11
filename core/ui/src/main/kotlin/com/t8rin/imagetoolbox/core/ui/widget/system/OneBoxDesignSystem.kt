@@ -116,7 +116,7 @@ fun OneBoxSectionCard(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick,
         shape = OneBoxDesignSystem.sectionCardShape,
-        containerAlpha = 0.22f,
+        style = GlassStyle.Dense,
         colors = androidx.compose.material3.CardDefaults.cardColors(
             containerColor = containerColor,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant

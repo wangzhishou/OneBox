@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import com.shifenmiao.theme.AppTheme
 
 @Immutable
 enum class TonalCardVisualVariant {
@@ -31,20 +30,23 @@ data class TonalCardPalette(
 
 object TonalCardPaletteDefaults {
 
+    /**
+     * 调色板颜色只负责色调, 不携带透明度 —— 这些颜色全部经玻璃管线
+     * (glassBackground/GlassCard)渲染, 颜色自身 alpha 会被覆盖率公式丢弃,
+     * 层次由 GlassStyle 阶梯表达。
+     */
     @Composable
     fun palette(
         variant: TonalCardVisualVariant,
-        defaultContainerColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
+        defaultContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
         defaultIconContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
         defaultIconContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-        defaultTagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
+        defaultTagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
         defaultTagTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-        defaultActionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = AppTheme.dimens.containerAlpha),
+        defaultActionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
         defaultActionContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     ): TonalCardPalette {
         val colorScheme = MaterialTheme.colorScheme
-        val elevatedAlpha = (AppTheme.dimens.containerAlpha + 0.08f).coerceAtMost(0.92f)
-        val highlightAlpha = (AppTheme.dimens.containerAlpha + 0.14f).coerceAtMost(0.96f)
 
         return remember(
             variant,
@@ -76,12 +78,12 @@ object TonalCardPaletteDefaults {
 
                 TonalCardVisualVariant.Recommend -> {
                     TonalCardPalette(
-                        containerColor = colorScheme.secondaryContainer.copy(alpha = elevatedAlpha),
+                        containerColor = colorScheme.secondaryContainer,
                         iconContentColor = colorScheme.onSecondaryContainer,
                         iconContainerColor = colorScheme.secondaryContainer,
-                        actionContainerColor = colorScheme.surfaceContainer.copy(alpha = elevatedAlpha),
+                        actionContainerColor = colorScheme.surfaceContainer,
                         actionContentColor = colorScheme.onSurfaceVariant,
-                        tagBackgroundColor = colorScheme.secondaryContainer.copy(alpha = 0.65f),
+                        tagBackgroundColor = colorScheme.secondaryContainer,
                         tagTextColor = colorScheme.onSecondaryContainer,
                         titleColor = colorScheme.onSurface,
                         descriptionColor = colorScheme.onSurfaceVariant,
@@ -92,12 +94,12 @@ object TonalCardPaletteDefaults {
 
                 TonalCardVisualVariant.Highlighted -> {
                     TonalCardPalette(
-                        containerColor = colorScheme.tertiaryContainer.copy(alpha = highlightAlpha),
+                        containerColor = colorScheme.tertiaryContainer,
                         iconContentColor = colorScheme.onTertiaryContainer,
                         iconContainerColor = colorScheme.tertiaryContainer,
                         actionContainerColor = colorScheme.surfaceContainer,
                         actionContentColor = colorScheme.onSurface,
-                        tagBackgroundColor = colorScheme.tertiaryContainer.copy(alpha = 0.65f),
+                        tagBackgroundColor = colorScheme.tertiaryContainer,
                         tagTextColor = colorScheme.onTertiaryContainer,
                         titleColor = colorScheme.onSurface,
                         descriptionColor = colorScheme.onSurfaceVariant,

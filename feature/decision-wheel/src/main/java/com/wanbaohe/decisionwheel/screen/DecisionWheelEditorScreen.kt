@@ -326,7 +326,7 @@ private fun OptionEditRow(
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.listRowShape,
-        containerAlpha = OneBoxDesignSystem.sectionGlassStyle.backgroundAlpha,
+        style = OneBoxDesignSystem.sectionGlassStyle,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
@@ -457,7 +457,7 @@ private fun UndoBar(
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = OneBoxDesignSystem.listRowShape,
-        containerAlpha = OneBoxDesignSystem.sectionGlassStyle.backgroundAlpha,
+        style = OneBoxDesignSystem.sectionGlassStyle,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer

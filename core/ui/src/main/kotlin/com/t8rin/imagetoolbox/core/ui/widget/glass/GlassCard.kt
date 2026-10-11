@@ -21,8 +21,12 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 /**
  * 毛玻璃风格卡片 —— 非点击版本，参数风格尽量与 Material3 [Card] 对齐。
  *
+ * 层次(底色浓淡)用 [style] 表达, 走 GlassStyle 阶梯; [containerAlpha] 是为
+ * 阶梯表达不了的场景(如近实底遮罩)保留的逃生口, 新代码优先传 style。
+ *
  * 额外参数：
- * - [containerAlpha]：玻璃底色透明度
+ * - [style]：玻璃质感档位, 同时驱动开/关玻璃两条渲染路径的透明度
+ * - [containerAlpha]：玻璃底色透明度, 默认取 [style].backgroundAlpha
  * - [borderWidth]：玻璃描边宽度；传入自定义 [border] 时会自动禁用内部玻璃描边
  */
 @Composable
@@ -32,7 +36,8 @@ fun GlassCard(
     colors: CardColors? = null,
     elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = null,
-    containerAlpha: Float = GlassStyle.Regular.backgroundAlpha,
+    style: GlassStyle = GlassStyle.Regular,
+    containerAlpha: Float = style.backgroundAlpha,
     borderWidth: Dp = 0.5.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -46,6 +51,7 @@ fun GlassCard(
             modifier = modifier.glassFlatSurface(
                 shape = shape,
                 color = resolvedColors.containerColor,
+                style = style,
                 backgroundAlpha = containerAlpha,
             ),
             shape = shape,
@@ -58,7 +64,7 @@ fun GlassCard(
     }
 
     val glassModifier = modifier.glassSimpleStyle(
-        style = GlassStyle.Regular,
+        style = style,
         backgroundAlpha = containerAlpha,
         shape = shape,
         borderWidth = if (border == null) borderWidth else 0.dp,
@@ -78,9 +84,8 @@ fun GlassCard(
 /**
  * 毛玻璃风格卡片 —— 点击版本，参数风格尽量与 Material3 `Card(onClick = …)` 对齐。
  *
- * 额外参数：
- * - [containerAlpha]：玻璃底色透明度
- * - [borderWidth]：玻璃描边宽度；传入自定义 [border] 时会自动禁用内部玻璃描边
+ * 层次(底色浓淡)用 [style] 表达, 走 GlassStyle 阶梯; [containerAlpha] 是为
+ * 阶梯表达不了的场景(如近实底遮罩)保留的逃生口, 新代码优先传 style。
  */
 @Composable
 fun GlassCard(
@@ -92,7 +97,8 @@ fun GlassCard(
     elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource? = null,
-    containerAlpha: Float = GlassStyle.Regular.backgroundAlpha,
+    style: GlassStyle = GlassStyle.Regular,
+    containerAlpha: Float = style.backgroundAlpha,
     borderWidth: Dp = 0.5.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -105,6 +111,7 @@ fun GlassCard(
             modifier = modifier.glassFlatSurface(
                 shape = shape,
                 color = resolvedColors.containerColor,
+                style = style,
                 backgroundAlpha = containerAlpha,
             ),
             enabled = enabled,
@@ -119,7 +126,7 @@ fun GlassCard(
     }
 
     val glassModifier = modifier.glassSimpleStyle(
-        style = GlassStyle.Regular,
+        style = style,
         backgroundAlpha = containerAlpha,
         shape = shape,
         borderWidth = if (border == null) borderWidth else 0.dp,
@@ -141,13 +148,15 @@ fun GlassCard(
 
 /**
  * 兼容旧签名：允许通过 nullable [onClick] 同时覆盖点击/非点击两种用法。
+ * 层次优先用 [style] 表达(GlassStyle 阶梯), [containerAlpha] 为逃生口。
  */
 @Composable
 fun GlassCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     shape: Shape = CardDefaults.shape,
-    containerAlpha: Float = GlassStyle.Regular.backgroundAlpha,
+    style: GlassStyle = GlassStyle.Regular,
+    containerAlpha: Float = style.backgroundAlpha,
     borderWidth: Dp = 0.5.dp,
     colors: CardColors? = null,
     border: BorderStroke? = null,
@@ -162,6 +171,7 @@ fun GlassCard(
             colors = colors,
             elevation = elevation,
             border = border,
+            style = style,
             containerAlpha = containerAlpha,
             borderWidth = borderWidth,
             content = content,
@@ -173,6 +183,7 @@ fun GlassCard(
             colors = colors,
             elevation = elevation,
             border = border,
+            style = style,
             containerAlpha = containerAlpha,
             borderWidth = borderWidth,
             content = content,

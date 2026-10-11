@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.icon.IconAvatar
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemWithCategoriesAndStats
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
@@ -421,12 +420,16 @@ fun sectionThemeForIndex(index: Int): SectionTheme = when (index % 4) {
     else -> SectionTheme.SURFACE
 }
 
+/**
+ * 轮换配色只负责色调, 不携带透明度 —— 玻璃管线(createGlassDecorationColors)会丢弃
+ * 颜色自身的 alpha, 底色浓淡一律由 GlassStyle 阶梯决定, 不要再 copy(alpha = …)。
+ */
 @Composable
 fun sectionGradient(theme: SectionTheme): Color = when (theme) {
-    SectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = AppTheme.dimens.containerAlpha)
-    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = AppTheme.dimens.containerAlpha)
+    SectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
+    SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
+    SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
+    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow
 }
 
 @Composable
@@ -448,7 +451,7 @@ fun sectionIconColor(theme: SectionTheme): Color = when (theme) {
 @Composable
 fun sectionIconContainerColor(theme: SectionTheme): Color = when (theme) {
     SectionTheme.PRIMARY -> MaterialTheme.colorScheme.primaryContainer
-    SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.65f)
-    SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.65f)
-    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.65f)
+    SectionTheme.SECONDARY -> MaterialTheme.colorScheme.secondaryContainer
+    SectionTheme.TERTIARY -> MaterialTheme.colorScheme.tertiaryContainer
+    SectionTheme.SURFACE -> MaterialTheme.colorScheme.surfaceContainerLow
 }

@@ -1,7 +1,6 @@
 package com.t8rin.imagetoolbox.core.ui.widget.glass
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -12,7 +11,6 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
@@ -82,15 +80,6 @@ enum class GlassStyle(
         surfaceOverlayAlpha = 0.018f,
     ),
 
-    Darker(
-        backgroundAlpha = 1f,
-        borderAlpha = 1f,
-        tintAlpha = 0f,
-        highlightAlpha = 0f,
-        innerShadowAlpha = 0f,
-        surfaceOverlayAlpha = 0f,
-    ),
-
     None(
         backgroundAlpha = 1f,
         borderAlpha = 1f,
@@ -113,23 +102,14 @@ fun GlassSurface(
     val settingsState = LocalSettingsState.current
 
     if (!settingsState.isGlassAlphaEnabled || style == GlassStyle.None) {
-        val fallbackColor = when {
-            style == GlassStyle.Transparent -> {
-                Color.Transparent
-            }
-
-            color != Color.Unspecified -> {
-                color
-            }
-
-            else -> {
-                MaterialTheme.colorScheme.surfaceContainer
-            }
-        }.withGlassBaseAlpha(settingsState.glassBaseAlpha)
+        // 与 GlassCard 同一条降级路径: 复用玻璃管线同一套覆盖率压成平涂,
+        // 保证开/关玻璃浓淡一致, GlassStyle 阶梯在关闭态同样生效
         Box(
-            modifier = modifier
-                .clip(shape)
-                .background(fallbackColor, shape),
+            modifier = modifier.glassFlatSurface(
+                shape = shape,
+                color = color,
+                style = style,
+            ),
             propagateMinConstraints = true,
             content = content,
         )
@@ -170,12 +150,18 @@ fun GlassSurface(
         if (settingsState.drawContainerShadows) shadowElevation else 0.dp
 
     if (!settingsState.isGlassAlphaEnabled || style == GlassStyle.None) {
+        // 底色交给与 GlassCard 同一套的平涂降级管线, Surface 自身透明,
+        // 保证开/关玻璃浓淡一致(见 glassFlatSurface)
         Surface(
             onClick = onClick,
-            modifier = modifier,
+            modifier = modifier.glassFlatSurface(
+                shape = shape,
+                color = glassTint,
+                style = style,
+            ),
             enabled = enabled,
             shape = shape,
-            color = color.withGlassBaseAlpha(settingsState.glassBaseAlpha),
+            color = Color.Transparent,
             contentColor = contentColor,
             tonalElevation = tonalElevation,
             shadowElevation = resolvedShadowElevation,

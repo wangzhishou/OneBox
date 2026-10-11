@@ -30,7 +30,6 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.online.component.ItemListComponent
 import com.shifenmiao.storage.AppSharedStorage
-import com.shifenmiao.theme.AppTheme
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -58,12 +57,12 @@ fun VerticalStaggeredCard(
     onLongClick: (() -> Unit)? = null,
     onDeleteRequest: ((itemId: Int, itemTitle: String) -> Unit)? = null,
     onCategoryClick: ((categoryId: Int?) -> Unit)? = null,
-    themeColor: Color? = MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
+    themeColor: Color? = MaterialTheme.colorScheme.primaryContainer,
     iconContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     iconContainerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     tagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     tagTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    actionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = AppTheme.dimens.containerAlpha),
+    actionContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     actionContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     shape: Shape = MaterialTheme.shapes.large,
     index: Int = 0,
@@ -99,7 +98,7 @@ fun VerticalStaggeredCard(
     val resolvedPalette = TonalCardPaletteDefaults.palette(
         variant = visualVariant,
         defaultContainerColor = themeColor
-            ?: MaterialTheme.colorScheme.primaryContainer.copy(alpha = AppTheme.dimens.containerAlpha),
+            ?: MaterialTheme.colorScheme.primaryContainer,
         defaultIconContentColor = iconContentColor,
         defaultIconContainerColor = iconContainerColor,
         defaultTagBackgroundColor = tagBackgroundColor,

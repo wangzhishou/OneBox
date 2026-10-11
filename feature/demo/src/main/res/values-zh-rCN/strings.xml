@@ -22,6 +22,8 @@
     <string name="demo_glass_showcase_colored_plain_body">适合列表卡片、工具条和信息分组。</string>
     <string name="demo_glass_showcase_colored_liquid_title">液态玻璃</string>
     <string name="demo_glass_showcase_colored_liquid_body">适合浮层、选中态和强调内容。</string>
+    <string name="demo_glass_showcase_consistency_title">管线一致性对照</string>
+    <string name="demo_glass_showcase_consistency_desc">同一色调、同一档位分别经 GlassCard、GlassSurface、coloredGlass 渲染,开/关玻璃三者观感都必须一致。</string>
 
     <string name="demo_glass_showcase_cards_title">Card</string>
     <string name="demo_glass_showcase_cards_desc">`GlassCard` 现在分为点击版和非点击版重载，参数顺序尽量贴近系统 Card。</string>

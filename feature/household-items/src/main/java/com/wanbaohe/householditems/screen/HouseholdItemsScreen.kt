@@ -565,7 +565,7 @@ internal fun ItemRow(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        containerAlpha = GlassStyle.Medium.backgroundAlpha,
+        style = GlassStyle.Medium,
         // 过期整卡高亮:errorContainer 玻璃底 + error 描边
         colors = if (isExpired) {
             CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
@@ -735,7 +735,7 @@ private fun ItemCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        containerAlpha = GlassStyle.Medium.backgroundAlpha,
+        style = GlassStyle.Medium,
         // 过期整卡高亮:errorContainer 玻璃底 + error 描边
         colors = if (isExpired) {
             CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)

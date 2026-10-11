@@ -59,7 +59,7 @@ private enum class GlassShowcaseMode(
     @StringRes val titleRes: Int,
     val style: GlassStyle,
 ) {
-    Quiet(R.string.demo_glass_showcase_mode_quiet, GlassStyle.Darker),
+    Quiet(R.string.demo_glass_showcase_mode_quiet, GlassStyle.None),
     Balanced(R.string.demo_glass_showcase_mode_balanced, GlassStyle.Regular),
     Expressive(R.string.demo_glass_showcase_mode_expressive, GlassStyle.Dense),
 }
@@ -102,7 +102,7 @@ fun GlassComponentShowcaseSheet() {
                 selectedOption = selectedMode,
                 onOptionSelected = { selectedMode = it },
                 modifier = Modifier.fillMaxWidth(),
-                rowStyle = GlassStyle.Darker,
+                rowStyle = GlassStyle.None,
                 selectedStyle = selectedMode.style,
                 selectedColor = colorScheme.primaryContainer,
                 selectedContentColor = colorScheme.onPrimaryContainer,
@@ -159,6 +159,17 @@ fun GlassComponentShowcaseSheet() {
 
         item {
             ColoredGlassComparisonSection(style = selectedMode.style)
+        }
+
+        item {
+            ShowcaseSectionHeader(
+                title = stringResource(R.string.demo_glass_showcase_consistency_title),
+                description = stringResource(R.string.demo_glass_showcase_consistency_desc),
+            )
+        }
+
+        item {
+            PipelineConsistencySection(style = selectedMode.style)
         }
 
         item {
@@ -363,7 +374,7 @@ fun GlassComponentShowcaseSheet() {
                             selectedColor = colorScheme.onSecondaryContainer,
                             glassContainerColor = colorScheme.surfaceContainer,
                             glassSelectedContainerColor = colorScheme.primaryContainer,
-                            style = if (primaryChipSelected) GlassStyle.Medium else GlassStyle.Darker,
+                            style = if (primaryChipSelected) GlassStyle.Medium else GlassStyle.None,
                         )
                         GlassFilterChip(
                             selected = secondaryChipSelected,
@@ -374,7 +385,7 @@ fun GlassComponentShowcaseSheet() {
                             selectedColor = colorScheme.onTertiaryContainer,
                             glassContainerColor = colorScheme.surfaceContainer,
                             glassSelectedContainerColor = colorScheme.secondaryContainer,
-                            style = if (secondaryChipSelected) GlassStyle.Medium else GlassStyle.Darker,
+                            style = if (secondaryChipSelected) GlassStyle.Medium else GlassStyle.None,
                         )
                     }
                 }
@@ -429,6 +440,60 @@ fun GlassComponentShowcaseSheet() {
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun PipelineConsistencySection(
+    style: GlassStyle,
+) {
+    val colorScheme = MaterialTheme.colorScheme
+    // 回归锚点: 同一色调 + 同一档位, 三个入口(组件/组件/Modifier)开/关玻璃都必须观感一致;
+    // 颜色只负责色调, 层次只由 GlassStyle 决定
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        GlassCard(
+            modifier = Modifier.weight(1f),
+            shape = RoundedCornerShape(24.dp),
+            style = style,
+            colors = CardDefaults.cardColors(containerColor = colorScheme.primaryContainer),
+        ) {
+            ConsistencyLabel(text = "GlassCard")
+        }
+        GlassSurface(
+            modifier = Modifier.weight(1f),
+            style = style,
+            shape = RoundedCornerShape(24.dp),
+            color = colorScheme.primaryContainer,
+        ) {
+            ConsistencyLabel(text = "GlassSurface")
+        }
+        ColoredGlassSurface(
+            modifier = Modifier.weight(1f),
+            color = colorScheme.primaryContainer,
+            style = style,
+            shape = RoundedCornerShape(24.dp),
+        ) {
+            ConsistencyLabel(text = "coloredGlass")
+        }
+    }
+}
+
+@Composable
+private fun ConsistencyLabel(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 22.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+        )
     }
 }
 

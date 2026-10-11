@@ -68,6 +68,7 @@ import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.base.provider.LocalDataDraftHelper
 import com.shifenmiao.base.utils.LoginUtils
 import com.shifenmiao.base.ui.CustomChatCard
+import com.shifenmiao.common.components.SectionTheme
 import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
 import com.shifenmiao.common.components.sectionIconContainerColor
@@ -184,9 +185,13 @@ fun PlaceHolderMessageCard(
                 modifier = Modifier.padding(vertical = AppTheme.dimens.paddingNormal),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
             ) {
-                GlassSurface(
-                    color = MaterialTheme.colorScheme.surfaceContainerLow,
-                    shape = MaterialTheme.shapes.large
+                // 与下方 ChatQuickStartCard 同一套彩色玻璃管线: PRIMARY 染色 + GlassCard,
+                // 内容色按玻璃混合后的有效底色自动选深浅(与快捷卡片一致)
+                val greetingTint = sectionGradient(SectionTheme.PRIMARY)
+                val greetingContentColor = tintedGlassContentColor(greetingTint)
+                GlassCard(
+                    shape = MaterialTheme.shapes.large,
+                    colors = CardDefaults.cardColors(containerColor = greetingTint)
                 ) {
                     Column(
                         modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
@@ -203,12 +208,12 @@ fun PlaceHolderMessageCard(
                         Text(
                             text = stringResource(id = R.string.ai_chat_placeholder_title),
                             style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
-                            color = AppTheme.colors.getPrimaryTextColor()
+                            color = greetingContentColor
                         )
                         Text(
                             text = stringResource(id = R.string.ai_chat_placeholder_content),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = AppTheme.colors.getPrimaryTextColor()
+                            color = greetingContentColor
                         )
                     }
                 }

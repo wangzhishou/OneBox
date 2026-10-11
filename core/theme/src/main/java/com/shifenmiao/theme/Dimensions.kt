@@ -4,7 +4,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 interface Dimensions {
-    val containerAlpha: Float
     val navigationHeight: Dp
     val cardIconSize: Dp
 
@@ -49,8 +48,6 @@ interface Dimensions {
 }
 
 val normalDimensions: Dimensions = object : Dimensions {
-    override val containerAlpha: Float
-        get() = 0.65f
     override val navigationHeight: Dp
         get() = 72.dp
     override val cardIconSize: Dp

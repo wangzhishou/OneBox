@@ -57,7 +57,6 @@ fun PlaygroundCard(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = shape,
-        containerAlpha = GlassStyle.Regular.backgroundAlpha,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             if (coverImage != null) {

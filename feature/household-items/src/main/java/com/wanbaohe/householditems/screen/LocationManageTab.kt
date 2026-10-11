@@ -303,7 +303,7 @@ private fun LocationTreeRow(
             .fillMaxWidth()
             .padding(start = INDENT_PER_DEPTH * depth, top = 3.dp, bottom = 3.dp),
         shape = RoundedCornerShape(14.dp),
-        containerAlpha = GlassStyle.Medium.backgroundAlpha,
+        style = GlassStyle.Medium,
     ) {
         Row(
             modifier = Modifier
