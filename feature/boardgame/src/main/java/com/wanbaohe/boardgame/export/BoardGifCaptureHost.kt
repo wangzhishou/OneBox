@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
+import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController
 import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
 import com.wanbaohe.boardgame.R
@@ -52,6 +53,7 @@ internal class BoardGifRenderRequest<Position>(
 
 internal suspend fun <Position> captureBoardFrame(
     frame: BoardGifFrame<Position>,
+    outputSize: IntegerSize,
     controller: CaptureController,
     requestRender: (BoardGifRenderRequest<Position>) -> Unit,
 ): Bitmap {
@@ -67,6 +69,9 @@ internal suspend fun <Position> captureBoardFrame(
                     request.rendered.await()
                     val captured = controller.bitmap()
                     try {
+                        if (captured.width != outputSize.width || captured.height != outputSize.height) {
+                            throw IOException("The captured board does not match the requested pixel dimensions")
+                        }
                         softwareBitmap = captured.copy(Bitmap.Config.ARGB_8888, false)
                             ?: throw IOException("Cannot copy the rendered board")
                         softwareBitmap?.setHasAlpha(false)

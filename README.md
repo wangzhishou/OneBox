@@ -229,7 +229,7 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | `feature/demo` | Demo | Developer component showcase grid |
 | `feature/libraries-info` | Open-source Licenses | License list of all third-party libraries |
 | `feature/library-details` | License Details | Per-library license details |
-| `feature/boardgame` | Board Game Kit | Shared Xiangqi / Gomoku / Chess UI and replay export: clip selection, speed, preview, sharing and saving |
+| `feature/boardgame` | Board Game Kit | Shared Xiangqi / Gomoku / Chess UI and 480 / 1440-pixel replay export: clip selection, speed, original-size preview, sharing and saving |
 
 ## Tech Stack
 

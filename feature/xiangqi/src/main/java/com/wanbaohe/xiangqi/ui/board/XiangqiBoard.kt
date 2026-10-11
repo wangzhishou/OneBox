@@ -108,7 +108,9 @@ fun XiangqiBoard(
             color = if (forExport) Color(0xFFF3E8CE) else Color.Unspecified,
         ) {
                 val lineColor = MaterialTheme.colorScheme.onSurface.copy(alpha = if (forExport) 0.65f else 0.2f)
-                val strokeWidth = 2f
+                val strokeWidth = if (forExport) {
+                    with(androidx.compose.ui.platform.LocalDensity.current) { 1.dp.toPx() }
+                } else 2f
 
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     val boardWidth = size.width - paddingPx * 2

@@ -63,7 +63,7 @@ enum class BoardGifSpeed(val durationMillis: Int) {
 
 enum class BoardGifResolution(val widthPixels: Int) {
     Compact(480),
-    Standard(640),
+    Standard(1440),
 }
 
 data class BoardGifFrame<Position>(

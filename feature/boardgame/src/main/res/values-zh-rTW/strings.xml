@@ -36,6 +36,15 @@
     <string name="boardgame_export_scrub_hint">拖動預覽 · 已走 %1$d / %2$d 手</string>
     <string name="boardgame_export_compact">小檔案 · %1$d 像素</string>
     <string name="boardgame_export_clear">清晰 · %1$d 像素</string>
+    <string name="boardgame_export_board_preview">棋盤預覽</string>
+    <string name="boardgame_export_range_title">棋步範圍</string>
+    <string name="boardgame_export_speed_title">播放速度</string>
+    <string name="boardgame_export_scrub_title">拖動預覽</string>
+    <string name="boardgame_export_size_title">檔案尺寸</string>
+    <string name="boardgame_export_scrub_status">已走 %1$d / %2$d 手</string>
+    <string name="boardgame_export_pixel_dimensions">原圖尺寸：%1$d × %2$d 像素</string>
+    <string name="boardgame_export_resolution_hint">尺寸為原圖實際像素，不隨手機螢幕密度改變。清晰檔產生較慢，檔案也較大。</string>
+    <string name="boardgame_export_original_preview">檢視原圖 · 可雙指放大</string>
     <string name="boardgame_export_generate">產生 GIF</string>
     <string name="boardgame_export_generate_image">產生棋盤圖片</string>
     <string name="boardgame_export_invalid_replay">棋譜中存在無效局面或缺失著法，暫時無法匯出。</string>

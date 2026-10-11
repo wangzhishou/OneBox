@@ -70,6 +70,9 @@ fun GomokuBoard(
         ) {
             val lineColor = MaterialTheme.colorScheme.onSurface.copy(alpha = if (forExport) 0.65f else 0.35f)
             val starColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            val strokeWidth = if (forExport) {
+                with(androidx.compose.ui.platform.LocalDensity.current) { 1.dp.toPx() }
+            } else 2f
 
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val gap = (size.width - paddingPx * 2) / cellCount
@@ -81,14 +84,14 @@ fun GomokuBoard(
                         color = lineColor,
                         start = Offset(paddingPx, offset),
                         end = Offset(size.width - paddingPx, offset),
-                        strokeWidth = 2f,
+                        strokeWidth = strokeWidth,
                     )
                     // 竖线
                     drawLine(
                         color = lineColor,
                         start = Offset(offset, paddingPx),
                         end = Offset(offset, size.height - paddingPx),
-                        strokeWidth = 2f,
+                        strokeWidth = strokeWidth,
                     )
                 }
 

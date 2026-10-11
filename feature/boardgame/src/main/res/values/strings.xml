@@ -36,6 +36,15 @@
     <string name="boardgame_export_scrub_hint">Drag to preview · %1$d / %2$d moves</string>
     <string name="boardgame_export_compact">Compact · %1$d px</string>
     <string name="boardgame_export_clear">Clear · %1$d px</string>
+    <string name="boardgame_export_board_preview">Board preview</string>
+    <string name="boardgame_export_range_title">Move range</string>
+    <string name="boardgame_export_speed_title">Playback speed</string>
+    <string name="boardgame_export_scrub_title">Scrub preview</string>
+    <string name="boardgame_export_size_title">Image size</string>
+    <string name="boardgame_export_scrub_status">%1$d / %2$d moves</string>
+    <string name="boardgame_export_pixel_dimensions">Original image: %1$d × %2$d pixels</string>
+    <string name="boardgame_export_resolution_hint">These are actual image pixels, independent of screen density. Clear images take longer to generate and use more space.</string>
+    <string name="boardgame_export_original_preview">View original · pinch to zoom</string>
     <string name="boardgame_export_generate">Generate GIF</string>
     <string name="boardgame_export_generate_image">Generate board image</string>
     <string name="boardgame_export_invalid_replay">The replay contains invalid positions or missing moves and cannot be exported.</string>
