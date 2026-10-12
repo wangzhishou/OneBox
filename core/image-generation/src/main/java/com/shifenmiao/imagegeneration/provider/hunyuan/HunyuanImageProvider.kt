@@ -191,8 +191,10 @@ interface HunyuanImageApi {
     ): Response<HunyuanResponse>
 }
 
-// R8 full mode 下字段名会被混淆,kotlinx 序列化依赖 @SerialName 固定 JSON key。
-// null 字段默认不参与序列化,未传的 size/seed 不会出现在请求体里。
+// 必须 @Serializable 让编译期生成 serializer:Release(R8 full mode)下反射兜底失效,
+// Retrofit 创建请求转换器会直接抛 "Unable to create @Body converter"。
+// @SerialName 固定 JSON key;null 字段默认不参与序列化,未传的 size/seed 不出现在请求体里。
+@Serializable
 data class HunyuanRequest(
     @SerialName("model") val model: String,
     @SerialName("size") val size: String? = null,
@@ -200,38 +202,46 @@ data class HunyuanRequest(
     @SerialName("messages") val messages: List<HunyuanMessage>,
 )
 
+@Serializable
 data class HunyuanMessage(
     @SerialName("role") val role: String = "user",
     @SerialName("content") val content: List<HunyuanContent>,
 )
 
+@Serializable
 data class HunyuanContent(
     @SerialName("type") val type: String,
     @SerialName("text") val text: String? = null,
     @SerialName("image_url") val imageUrl: HunyuanImageUrl? = null,
 )
 
+@Serializable
 data class HunyuanImageUrl(@SerialName("url") val url: String)
 
+@Serializable
 data class HunyuanResponse(
     @SerialName("choices") val choices: List<HunyuanChoice>? = null,
     @SerialName("error") val error: HunyuanError? = null,
 )
 
+@Serializable
 data class HunyuanChoice(
     @SerialName("delta") val delta: HunyuanDelta? = null,
 )
 
+@Serializable
 data class HunyuanDelta(
     @SerialName("image") val image: HunyuanImage? = null,
 )
 
+@Serializable
 data class HunyuanImage(
     @SerialName("url") val url: String? = null,
     @SerialName("width") val width: Int? = null,
     @SerialName("height") val height: Int? = null,
 )
 
+@Serializable
 data class HunyuanError(
     @SerialName("type") val type: String? = null,
     @SerialName("code") val code: String? = null,

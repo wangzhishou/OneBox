@@ -165,8 +165,10 @@ interface OpenAiImageApi {
     ): Response<OpenAiImageResponse>
 }
 
-// R8 full mode 下字段名会被混淆,kotlinx 序列化依赖 @SerialName 固定 JSON key。
-// null 字段默认不参与序列化,未传的 size 不会出现在请求体里。
+// 必须 @Serializable 让编译期生成 serializer:Release(R8 full mode)下反射兜底失效,
+// Retrofit 创建请求转换器会直接抛 "Unable to create @Body converter"。
+// @SerialName 固定 JSON key;null 字段默认不参与序列化,未传的 size 不出现在请求体里。
+@Serializable
 data class OpenAiImageRequest(
     @SerialName("model") val model: String,
     @SerialName("prompt") val prompt: String,
@@ -174,17 +176,20 @@ data class OpenAiImageRequest(
     @SerialName("size") val size: String? = null,
 )
 
+@Serializable
 data class OpenAiImageResponse(
     @SerialName("data") val data: List<OpenAiImageData>? = null,
     @SerialName("error") val error: OpenAiImageError? = null,
 )
 
 // gpt-image-1 只回 b64_json,dall-e-3 回 url,两种都兼容解析
+@Serializable
 data class OpenAiImageData(
     @SerialName("url") val url: String? = null,
     @SerialName("b64_json") val b64Json: String? = null,
 )
 
+@Serializable
 data class OpenAiImageError(
     @SerialName("message") val message: String? = null,
     @SerialName("type") val type: String? = null,

@@ -187,27 +187,33 @@ interface QwenImageApi {
     ): Response<QwenResponse>
 }
 
-// R8 full mode 下字段名会被混淆,kotlinx 序列化依赖 @SerialName 固定 JSON key,
-// 否则 Release 包发出的请求网关解析不到 model("model not allowed: ")
+// 必须 @Serializable 让编译期生成 serializer:Release(R8 full mode)下反射兜底失效,
+// Retrofit 创建请求转换器直接抛 "Unable to create @Body converter"(Google 审核曾因此拒 145)。
+// @SerialName 负责固定 JSON key,字段名被混淆后网关仍能解析 model 等字段。
+@Serializable
 data class QwenRequest(
     @SerialName("model") val model: String,
     @SerialName("input") val input: QwenInput,
     @SerialName("parameters") val parameters: QwenParameters,
 )
 
+@Serializable
 data class QwenInput(@SerialName("messages") val messages: List<QwenMessage>)
 
+@Serializable
 data class QwenMessage(
     @SerialName("role") val role: String = "user",
     @SerialName("content") val content: List<QwenContent>,
 )
 
+@Serializable
 data class QwenContent(
     @SerialName("image") val image: String? = null,
     @SerialName("text") val text: String? = null,
     @SerialName("type") val type: String? = null,
 )
 
+@Serializable
 data class QwenParameters(
     @SerialName("prompt_extend") val promptExtend: Boolean,
     @SerialName("prompt_extend_mode") val promptExtendMode: String,
@@ -219,6 +225,7 @@ data class QwenParameters(
     @SerialName("watermark") val watermark: Boolean,
 )
 
+@Serializable
 data class QwenResponse(
     @SerialName("output") val output: QwenOutput? = null,
     @SerialName("usage") val usage: QwenUsage? = null,
@@ -227,10 +234,13 @@ data class QwenResponse(
     @SerialName("message") val message: String? = null,
 )
 
+@Serializable
 data class QwenOutput(@SerialName("choices") val choices: List<QwenChoice> = emptyList())
 
+@Serializable
 data class QwenChoice(@SerialName("message") val message: QwenMessage? = null)
 
+@Serializable
 data class QwenUsage(
     @SerialName("output_height") val outputHeight: Int? = null,
     @SerialName("output_width") val outputWidth: Int? = null,
