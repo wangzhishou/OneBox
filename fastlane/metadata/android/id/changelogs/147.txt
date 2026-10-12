@@ -1,0 +1,6 @@
+• Editor markup dibangun ulang: edit teks langsung di kanvas, panel lebih rapi
+• Catur, Xiangqi, Gomoku: tata letak lebih baik, latihan susunan, petunjuk, ekspor GIF replay
+• Bookmark terpadu: favorit browser dan web di satu tempat, dengan kategori dan ikon
+• Asisten AI: mode Agent tunggal, kartu mulai cepat, riwayat tak lagi dibuat ulang
+• Tampilan baru: tema Material 3 solid (glass opsional), warna aksen seragam
+• Editor lebih cepat dibuka; perbaikan deep-link dan dialog ekspor

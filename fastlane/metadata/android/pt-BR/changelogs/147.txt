@@ -1,0 +1,6 @@
+• Editor de marcação reformulado: edite texto direto na tela, painéis mais limpos
+• Xadrez, Xiangqi e Gomoku: layouts melhores, prática de abertura, dicas, replay em GIF
+• Favoritos unificados: navegador e web em um só lugar, com categorias e ícones
+• Assistente de IA: modo Agent único, cartões rápidos, histórico sem regeneração
+• Novo visual: tema Material 3 sólido (vidro opcional), cores de destaque unificadas
+• Editor mais rápido; correções em links diretos e exportação

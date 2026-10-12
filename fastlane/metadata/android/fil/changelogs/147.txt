@@ -1,0 +1,6 @@
+• Muling binuo ang markup editor: edit ang text nang direkta sa canvas, malinis na panel
+• Chess, Xiangqi, Gomoku: magagandang layout, setup practice, move hints, replay GIF
+• Pinagsamang bookmark: browser at web favorites sa isang lugar, may kategorya at icon
+• AI assistant: iisang Agent mode, quick-start cards, history hindi na bine-regenerate
+• Bagong hitsura: solid Material 3 theme (optional ang glass), iisang accent colors
+• Mas mabilis ang editor; fixes sa deep-link at export dialog

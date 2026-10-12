@@ -1,0 +1,6 @@
+• Markup-Editor neu: Text direkt auf der Leinwand bearbeiten, klarere Panels
+• Schach, Xiangqi, Gomoku: bessere Layouts, Aufbau-Training, Zughinweise, Replay-GIFs
+• Lesezeichen vereint: Browser- und Web-Favoriten an einem Ort, mit Kategorien und Symbolen
+• KI-Assistent: ein Agent-Modus, Schnellstartkarten, Verlauf ohne Neu-Generierung
+• Neues Design: solides Material-3-Theme (Glas optional), einheitliche Akzentfarben
+• Editor startet schneller; Deeplink- und Export-Fixes

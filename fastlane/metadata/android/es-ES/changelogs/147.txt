@@ -1,0 +1,6 @@
+• Editor de marcado renovado: edita texto en el lienzo, paneles más limpios
+• Ajedrez, Xiangqi y Gomoku: mejores diseños, práctica de aperturas, pistas, exportación GIF
+• Marcadores unificados: favoritos del navegador y web en un lugar, con categorías e iconos
+• Asistente de IA: un solo modo Agent, tarjetas rápidas, historial sin regenerarse
+• Nuevo aspecto: tema Material 3 sólido (vidrio opcional), colores de acento unificados
+• Editor más rápido; correcciones de enlaces y exportación

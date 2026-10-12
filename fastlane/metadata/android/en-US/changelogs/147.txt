@@ -1,0 +1,6 @@
+• Markup editor rebuilt: edit text right on the canvas, cleaner panels
+• Chess, Xiangqi and Gomoku: better layouts, setup practice, move hints and replay GIF export
+• Bookmarks unified: browser and web favorites in one place, with categories and icons
+• AI assistant: simpler single Agent mode, quick-start cards, history no longer auto-regenerates
+• Fresh default look: solid Material 3 theme (glass now opt-in), unified accent colors
+• Faster editor startup; deep-link and export dialog fixes

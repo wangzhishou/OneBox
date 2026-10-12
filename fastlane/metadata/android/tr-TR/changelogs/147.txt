@@ -1,0 +1,6 @@
+• İşaretleme düzenleyici yenilendi: metni doğrudan tuvalde düzenleyin, sade paneller
+• Satranç, Xiangqi, Gomoku: daha iyi düzen, diziliş pratiği, hamle ipuçları, tekrar GIF'i
+• Yer imleri birleşti: tarayıcı ve web favorileri tek yerde, kategori ve simgelerle
+• YZ asistanı: tek Agent modu, hızlı kartlar, geçmiş artık yeniden üretilmiyor
+• Yeni görünüm: düz Material 3 teması (cam isteğe bağlı), birleşik vurgu renkleri
+• Düzenleyici daha hızlı açılır; derin bağlantı ve dışa aktarma düzeltmeleri
