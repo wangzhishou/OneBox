@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.ui
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -200,7 +201,7 @@ fun CustomModelEditDialog(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = nameInput,
                     onValueChange = { nameInput = it },
                     label = {
@@ -211,7 +212,7 @@ fun CustomModelEditDialog(
                     shape = AppTheme.shapes.getTextFieldShape(),
                     colors = AppTheme.colors.getOutlinedTextFieldColors()
                 )
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = titleInput,
                     onValueChange = { titleInput = it },
                     label = {

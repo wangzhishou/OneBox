@@ -11,8 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,11 +18,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.ui.BaseScreen
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
@@ -100,24 +98,17 @@ fun TeleprompterEditorScreen(
         Spacer(Modifier.height(8.dp))
 
         // 标题输入
-        TextField(
+        GlassOutlinedTextField(
             value = state.title,
             onValueChange = { component.onTitleChange(it) },
             placeholder = {
                 Text(
                     text = stringResource(R.string.teleprompter_title_hint),
                     style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                 )
             },
             textStyle = MaterialTheme.typography.headlineSmall.copy(
                 fontWeight = FontWeight.Bold,
-            ),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
             ),
             singleLine = true,
             modifier = Modifier
@@ -125,24 +116,16 @@ fun TeleprompterEditorScreen(
                 .padding(horizontal = 8.dp)
         )
 
-        // 内容输入 — 沉浸式全屏（大号字体）
-        TextField(
+        GlassOutlinedTextField(
             value = state.content,
             onValueChange = { component.onContentChange(it) },
             placeholder = {
                 Text(
                     text = stringResource(R.string.teleprompter_content_hint),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                 )
             },
             textStyle = MaterialTheme.typography.bodyLarge,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-            ),
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1f)

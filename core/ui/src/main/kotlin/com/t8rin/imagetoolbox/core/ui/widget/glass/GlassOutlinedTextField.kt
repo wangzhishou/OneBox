@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.semantics.semantics
@@ -61,6 +62,36 @@ import com.t8rin.imagetoolbox.core.ui.theme.blend
  * 卡片/按钮等装饰描边不受影响, 仍然直接乘设置值。
  */
 private const val TEXT_FIELD_MIN_STROKE_VISIBILITY = 0.62f
+
+/** 与列表行同一档圆角, 单行和多行共用, 避免搜索框胶囊、表单框小圆角各写各的。 */
+internal val GlassTextFieldShape: Shape = RoundedCornerShape(16.dp)
+
+private val GlassTextFieldHorizontalPadding = 16.dp
+private val GlassTextFieldSingleLineVerticalPadding = 14.dp
+private val GlassTextFieldMultiLineVerticalPadding = 12.dp
+
+/**
+ * 没传 [contentPadding] 时的留白。
+ * 有浮动标签走 Material 自己的内边距, 避免标签和文字抢同一块空间;
+ * 单行上下 14, 配合 56dp 最小高度, 文字垂直居中且点按区域够大;
+ * 多行上下 12, 首行末行离开 16dp 圆角, 又不会把文本区撑得过空。
+ */
+private fun glassTextFieldContentPadding(
+    hasLabel: Boolean,
+    singleLine: Boolean,
+    maxLines: Int,
+): PaddingValues {
+    if (hasLabel) return OutlinedTextFieldDefaults.contentPadding()
+    val vertical = if (singleLine || maxLines <= 1) {
+        GlassTextFieldSingleLineVerticalPadding
+    } else {
+        GlassTextFieldMultiLineVerticalPadding
+    }
+    return PaddingValues(
+        horizontal = GlassTextFieldHorizontalPadding,
+        vertical = vertical,
+    )
+}
 
 /** 把全局玻璃描边可见度映射成输入框描边的可见度(带下限, 保证输入框边界始终可辨认)。 */
 private fun textFieldStrokeVisibility(glassBorderAlpha: Float): Float =
@@ -120,11 +151,12 @@ enum class GlassTextFieldVisualPreset(
  * | `isGlassmorphismEnabled` | 单次缓存绘制：半透明底色 + 轻微顶部 sheen + 内侧景深 + 统一描边 |
  * | 关闭                     | 退化为标准 [OutlinedTextField]，使用原始 [colors]               |
  *
- * ### 焦点动画
+ * ### 配色与留白
  *
- * 聚焦输入时，玻璃背景透明度自动提升 [focusedAlphaBoost]（默认 +20%），
- * 对应 Tailwind CSS `focus-within:bg-surface-container-lowest/70`
- * （基础态 alpha 50% → 聚焦态 alpha 70%），300ms 平滑过渡。
+ * 静止态用 [androidx.compose.material3.ColorScheme.surfaceContainerLow] 做一层薄玻璃,
+ * 覆盖率和卡片同一档, 页面渐变能透过来。描边用 outlineVariant。聚焦时底色略实一点,
+ * 并往 primaryContainer 轻染, 描边和光标改用 onPrimaryContainer。
+ * 单行、多行共用 16dp 圆角; 未传入 [contentPadding] 时按有无标签、单行或多行取统一留白。
  *
  * 当玻璃效果激活时，组件会自动将 [colors] 中的 **容器色** 和 **指示线** 覆盖为透明，
  * 并交由输入框专用现代玻璃容器统一渲染。其余文字、标签、图标等颜色保持不变，
@@ -198,7 +230,7 @@ enum class GlassTextFieldVisualPreset(
  * @param glassColor         玻璃叠加色调（传入不透明原色，alpha 内部控制）；
  *                           传入 [Color.Unspecified] 时使用默认毛玻璃底色
  * @param glassBorderWidth   玻璃描边宽度，默认 0.5 dp
- * @param focusedAlphaBoost  聚焦时背景透明度增量，默认 0.20f
+ * @param focusedAlphaBoost  聚焦时底色加深幅度，默认 0.12f
  */
 @Composable
 fun GlassOutlinedTextField(
@@ -223,66 +255,28 @@ fun GlassOutlinedTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource? = null,
-    shape: Shape = MaterialTheme.shapes.large,
+    shape: Shape = GlassTextFieldShape,
     colors: TextFieldColors = AppTheme.colors.getOutlinedTextFieldColors(),
     style: GlassStyle = GlassStyle.Medium,
     visualPreset: GlassTextFieldVisualPreset = GlassTextFieldVisualPreset.Balanced,
     glassColor: Color = Color.Unspecified,
     glassBorderWidth: Dp = 0.5.dp,
-    focusedAlphaBoost: Float = 0.20f,
-    contentPadding: PaddingValues = OutlinedTextFieldDefaults.contentPaddingWithoutLabel(),
+    focusedAlphaBoost: Float = 0.06f,
+    contentPadding: PaddingValues? = null,
 ) {
-    val settingsState = LocalSettingsState.current
-    val isGlassActive = settingsState.isGlassAlphaEnabled
-
-    if (!isGlassActive) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = modifier,
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = textStyle,
-            label = label,
-            placeholder = placeholder,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            prefix = prefix,
-            suffix = suffix,
-            supportingText = supportingText,
-            isError = isError,
-            visualTransformation = visualTransformation,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            minLines = minLines,
-            interactionSource = interactionSource,
-            shape = shape,
-            colors = colors,
-        )
-        return
-    }
-
-    // ── 创建/复用交互源，收集焦点状态 ──
+    val resolvedContentPadding = contentPadding ?: glassTextFieldContentPadding(
+        hasLabel = label != null,
+        singleLine = singleLine,
+        maxLines = maxLines,
+    )
+    // 关掉玻璃也走同一条描边。系统 OutlinedTextField 聚焦会从 1dp 加到 2dp。
     @Suppress("NAME_SHADOWING")
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
 
-    // ── 焦点动画：聚焦时提升底色透明度（50% → 70%）；readOnly 时不提升 ──
-    val animatedBgAlpha by animateFloatAsState(
-        targetValue = if (isFocused && isGlassActive && !readOnly) {
-            (style.backgroundAlpha + focusedAlphaBoost).coerceAtMost(1f)
-        } else {
-            style.backgroundAlpha
-        },
-        animationSpec = tween(durationMillis = 300),
-        label = "GlassTextFieldFocusAlpha",
-    )
-
     val containerColor = glassColor.takeUnless { it == Color.Unspecified }
-        ?: colors.containerColor(enabled, isError, isFocused)
-    val cursorColor = if (isError) colors.errorIndicatorColor else colors.focusedIndicatorColor
+        ?: MaterialTheme.colorScheme.surfaceContainerLow
+    val cursorColor = if (isError) colors.errorCursorColor else colors.cursorColor
     val resolvedColors = resolveGlassDecorationColors(colors = colors, isGlassActive = true)
 
     GlassOutlinedTextFieldImpl(
@@ -311,12 +305,12 @@ fun GlassOutlinedTextField(
         colors = resolvedColors,
         style = style,
         visualPreset = visualPreset,
-        animatedBgAlpha = animatedBgAlpha,
+        focusedAlphaBoost = focusedAlphaBoost,
         glassColor = containerColor,
         glassBorderWidth = glassBorderWidth,
         cursorColor = cursorColor,
         isFocused = isFocused,
-        contentPadding = contentPadding,
+        contentPadding = resolvedContentPadding,
     )
 }
 
@@ -355,66 +349,27 @@ fun GlassOutlinedTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource? = null,
-    shape: Shape = OutlinedTextFieldDefaults.shape,
-    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    shape: Shape = GlassTextFieldShape,
+    colors: TextFieldColors = AppTheme.colors.getOutlinedTextFieldColors(),
     style: GlassStyle = GlassStyle.Medium,
     visualPreset: GlassTextFieldVisualPreset = GlassTextFieldVisualPreset.Balanced,
     glassColor: Color = Color.Unspecified,
     glassBorderWidth: Dp = 0.5.dp,
-    focusedAlphaBoost: Float = 0.20f,
-    contentPadding: PaddingValues = OutlinedTextFieldDefaults.contentPaddingWithoutLabel(),
+    focusedAlphaBoost: Float = 0.06f,
+    contentPadding: PaddingValues? = null,
 ) {
-    val settingsState = LocalSettingsState.current
-    val isGlassActive = settingsState.isGlassAlphaEnabled
-
-    if (!isGlassActive) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = modifier,
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = textStyle,
-            label = label,
-            placeholder = placeholder,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            prefix = prefix,
-            suffix = suffix,
-            supportingText = supportingText,
-            isError = isError,
-            visualTransformation = visualTransformation,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            minLines = minLines,
-            interactionSource = interactionSource,
-            shape = shape,
-            colors = colors,
-        )
-        return
-    }
-
-    // ── 创建/复用交互源，收集焦点状态 ──
+    val resolvedContentPadding = contentPadding ?: glassTextFieldContentPadding(
+        hasLabel = label != null,
+        singleLine = singleLine,
+        maxLines = maxLines,
+    )
     @Suppress("NAME_SHADOWING")
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
 
-    // ── 焦点动画：聚焦时提升底色透明度 ──
-    val animatedBgAlpha by animateFloatAsState(
-        targetValue = if (isFocused && isGlassActive) {
-            (style.backgroundAlpha + focusedAlphaBoost).coerceAtMost(1f)
-        } else {
-            style.backgroundAlpha
-        },
-        animationSpec = tween(durationMillis = 300),
-        label = "GlassTextFieldFocusAlpha",
-    )
-
     val containerColor = glassColor.takeUnless { it == Color.Unspecified }
-        ?: colors.containerColor(enabled, isError, isFocused)
-    val cursorColor = if (isError) colors.errorIndicatorColor else colors.focusedIndicatorColor
+        ?: MaterialTheme.colorScheme.surfaceContainerLow
+    val cursorColor = if (isError) colors.errorCursorColor else colors.cursorColor
     val resolvedColors = resolveGlassDecorationColors(colors = colors, isGlassActive = true)
 
     GlassOutlinedTextFieldImpl(
@@ -443,12 +398,12 @@ fun GlassOutlinedTextField(
         colors = resolvedColors,
         style = style,
         visualPreset = visualPreset,
-        animatedBgAlpha = animatedBgAlpha,
+        focusedAlphaBoost = focusedAlphaBoost,
         glassColor = containerColor,
         glassBorderWidth = glassBorderWidth,
         cursorColor = cursorColor,
         isFocused = isFocused,
-        contentPadding = contentPadding,
+        contentPadding = resolvedContentPadding,
     )
 }
 
@@ -480,7 +435,7 @@ private fun GlassOutlinedTextFieldImpl(
     colors: TextFieldColors,
     style: GlassStyle,
     visualPreset: GlassTextFieldVisualPreset,
-    animatedBgAlpha: Float,
+    focusedAlphaBoost: Float,
     glassColor: Color,
     glassBorderWidth: Dp,
     cursorColor: Color,
@@ -533,7 +488,7 @@ private fun GlassOutlinedTextFieldImpl(
                     GlassOutlinedContainer(
                         style = style,
                         visualPreset = visualPreset,
-                        animatedBgAlpha = animatedBgAlpha,
+                        focusedAlphaBoost = focusedAlphaBoost,
                         shape = shape,
                         color = glassColor,
                         borderWidth = glassBorderWidth,
@@ -576,7 +531,7 @@ private fun GlassOutlinedTextFieldImpl(
     colors: TextFieldColors,
     style: GlassStyle,
     visualPreset: GlassTextFieldVisualPreset,
-    animatedBgAlpha: Float,
+    focusedAlphaBoost: Float,
     glassColor: Color,
     glassBorderWidth: Dp,
     cursorColor: Color,
@@ -629,7 +584,7 @@ private fun GlassOutlinedTextFieldImpl(
                     GlassOutlinedContainer(
                         style = style,
                         visualPreset = visualPreset,
-                        animatedBgAlpha = animatedBgAlpha,
+                        focusedAlphaBoost = focusedAlphaBoost,
                         shape = shape,
                         color = glassColor,
                         borderWidth = glassBorderWidth,
@@ -664,7 +619,7 @@ private fun Modifier.glassDecorationModifier(
 private fun GlassOutlinedContainer(
     style: GlassStyle,
     visualPreset: GlassTextFieldVisualPreset,
-    animatedBgAlpha: Float,
+    focusedAlphaBoost: Float,
     shape: Shape,
     color: Color,
     borderWidth: Dp,
@@ -679,7 +634,7 @@ private fun GlassOutlinedContainer(
             .modernGlassTextFieldContainer(
                 style = style,
                 visualPreset = visualPreset,
-                backgroundAlpha = animatedBgAlpha,
+                focusedAlphaBoost = focusedAlphaBoost,
                 shape = shape,
                 color = color,
                 borderWidth = borderWidth,
@@ -699,9 +654,8 @@ private fun resolveGlassDecorationColors(
     isGlassActive: Boolean,
 ): TextFieldColors {
     if (!isGlassActive) return colors
-
-    val colorScheme = MaterialTheme.colorScheme
-
+    // 底色和描边由输入框自己画。文字、图标、占位符沿用调用方传入的角色色,
+    // 不再往别的颜色上混, 避免聚焦时 onPrimaryContainer 被洗回灰色。
     return colors.copy(
         focusedContainerColor = Color.Transparent,
         unfocusedContainerColor = Color.Transparent,
@@ -711,84 +665,19 @@ private fun resolveGlassDecorationColors(
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,
         errorIndicatorColor = Color.Transparent,
-        focusedTextColor = colors.focusedTextColor
-            .liftToward(colorScheme.onSurface, blendRatio = 0.10f)
-            .ensureMinAlpha(0.96f),
-        unfocusedTextColor = colors.unfocusedTextColor
-            .liftToward(colorScheme.onSurface, blendRatio = 0.16f)
-            .ensureMinAlpha(0.92f),
-        disabledTextColor = colors.disabledTextColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.08f)
-            .ensureMinAlpha(0.42f),
-        errorTextColor = colors.errorTextColor
-            .liftToward(colorScheme.onSurface, blendRatio = 0.08f)
-            .ensureMinAlpha(0.96f),
-        focusedLabelColor = colors.focusedLabelColor
-            .liftToward(colorScheme.onPrimaryContainer, blendRatio = 0.08f)
-            .ensureMinAlpha(0.84f),
-        unfocusedLabelColor = colors.unfocusedLabelColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.12f)
-            .ensureMinAlpha(0.72f),
-        errorLabelColor = colors.errorLabelColor
-            .ensureMinAlpha(0.86f),
-        focusedPlaceholderColor = colors.focusedPlaceholderColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.08f)
-            .ensureMinAlpha(0.42f),
-        unfocusedPlaceholderColor = colors.unfocusedPlaceholderColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.08f)
-            .ensureMinAlpha(0.50f),
-        disabledPlaceholderColor = colors.disabledPlaceholderColor
-            .ensureMinAlpha(0.34f),
-        errorPlaceholderColor = colors.errorPlaceholderColor
-            .ensureMinAlpha(0.50f),
-        focusedLeadingIconColor = colors.focusedLeadingIconColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.10f)
-            .ensureMinAlpha(0.78f),
-        unfocusedLeadingIconColor = colors.unfocusedLeadingIconColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.10f)
-            .ensureMinAlpha(0.68f),
-        disabledLeadingIconColor = colors.disabledLeadingIconColor
-            .ensureMinAlpha(0.42f),
-        errorLeadingIconColor = colors.errorLeadingIconColor
-            .ensureMinAlpha(0.82f),
-        focusedTrailingIconColor = colors.focusedTrailingIconColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.10f)
-            .ensureMinAlpha(0.78f),
-        unfocusedTrailingIconColor = colors.unfocusedTrailingIconColor
-            .liftToward(colorScheme.onSurfaceVariant, blendRatio = 0.10f)
-            .ensureMinAlpha(0.68f),
-        disabledTrailingIconColor = colors.disabledTrailingIconColor
-            .ensureMinAlpha(0.42f),
-        errorTrailingIconColor = colors.errorTrailingIconColor
-            .ensureMinAlpha(0.82f),
     )
 }
 
-private fun Color.liftToward(target: Color, blendRatio: Float): Color {
-    return blend(target, blendRatio)
-}
-
-private fun Color.ensureMinAlpha(minAlpha: Float): Color {
-    return copy(alpha = alpha.coerceAtLeast(minAlpha))
-}
-
-// ──────────────────────────────────────────────────────────────
-//  Modern Glass TextField Container
-// ──────────────────────────────────────────────────────────────
-
 /**
- * 输入框专用现代玻璃容器。
- *
- * 目标：
- * 1. **边框上下风格一致**：统一使用单色系描边，不再使用上亮下暗的边框渐变；
- * 2. **保留玻璃层次**：把顶部 sheen / 底部景深放到容器内部，而不是放到边框颜色上；
- * 3. **极致性能**：仅使用 `drawWithCache` 缓存 outline / stroke / brush，不走模糊图层。
+ * 输入框容器: 薄玻璃底 + 一条细描边。
+ * 覆盖率贴近卡片, 不铺实色, 页面上的浅色渐变可以透过来。
+ * 聚焦时只略微加实, 并收到 onPrimaryContainer 描边。
  */
 @Composable
 private fun Modifier.modernGlassTextFieldContainer(
     style: GlassStyle,
     visualPreset: GlassTextFieldVisualPreset,
-    backgroundAlpha: Float,
+    focusedAlphaBoost: Float,
     shape: Shape,
     color: Color,
     borderWidth: Dp,
@@ -799,117 +688,69 @@ private fun Modifier.modernGlassTextFieldContainer(
 ): Modifier {
     val colorScheme = MaterialTheme.colorScheme
     val isLight = colorScheme.surface.luminance() > 0.5f
-    val glassBaseAlpha = LocalSettingsState.current.glassBaseAlpha.coerceIn(0f, 1f)
-    // 描边可见度与 GlassCard/GlassButton 等共用同一主题设置, 但输入框走带下限的映射
-    // (见 textFieldStrokeVisibility): 直接乘设置值会让输入框边界糊到认不出来。
-    val glassBorderAlpha = LocalSettingsState.current.glassBorderAlpha.takeIf { it.isFinite() }
+    val settings = LocalSettingsState.current
+    val isGlassActive = settings.isGlassAlphaEnabled
+    val glassBaseAlpha = settings.glassBaseAlpha.coerceIn(0f, 1f)
+    val glassBorderAlpha = settings.glassBorderAlpha.takeIf { it.isFinite() }
         ?.coerceIn(0f, 1f) ?: ThemeDefaults.DEFAULT_GLASS_BORDER_ALPHA
     val strokeVisibility = textFieldStrokeVisibility(glassBorderAlpha)
-    val scaledBackgroundAlpha = backgroundAlpha * glassBaseAlpha
-    val baseColor = if (color != Color.Unspecified) color else colorScheme.surfaceContainerHighest
-    val visualFocused = isFocused && !readOnly
-    // 容器渲染：readOnly 时保持可见（不灰化），但去掉聚焦高亮；文字颜色在 GlassOutlinedTextFieldImpl 中单独处理为灰
-    val resolvedFillAlpha = remember(scaledBackgroundAlpha, enabled, readOnly, visualFocused, isError) {
+    val visualFocused = isFocused && enabled && !readOnly
+    val focusProgress by animateFloatAsState(
+        targetValue = if (visualFocused) 1f else 0f,
+        animationSpec = tween(durationMillis = 200),
+        label = "GlassTextFieldFocus",
+    )
+
+    val neutralBase = if (color != Color.Unspecified) color else colorScheme.surfaceContainerLow
+    // 不往 scrim 压。压深再叠高覆盖率会变成一块实灰, 和页面上的透明玻璃脱开。
+    val restingHue = neutralBase
+    val focusedHue = restingHue.blend(colorScheme.primaryContainer, if (isLight) 0.08f else 0.12f)
+    val errorHue = restingHue.blend(colorScheme.error, 0.10f)
+    val presetScale = visualPreset.fillMultiplier.coerceIn(0.96f, 1.04f)
+    // 开着玻璃: Medium(0.15) 大约 0.20, 和卡片同一档。
+    // 关掉玻璃: 固定一层更浅的底, 不跟玻璃透明度走。
+    val restingFillAlpha = if (isGlassActive) {
+        ((style.backgroundAlpha * 0.55f) + 0.12f)
+            .coerceIn(0.14f, 0.28f) * presetScale * glassBaseAlpha
+    } else {
+        0.26f
+    }
+    val fillAlpha = when {
+        !enabled -> if (isGlassActive) restingFillAlpha * 0.6f else 0.16f
+        isError -> if (isGlassActive) (restingFillAlpha + 0.04f).coerceAtMost(0.34f) else 0.30f
+        isGlassActive -> (restingFillAlpha + focusProgress * focusedAlphaBoost).coerceAtMost(0.36f)
+        else -> restingFillAlpha + focusProgress * 0.04f
+    }
+    val fillHue = when {
+        !enabled -> restingHue.blend(colorScheme.outlineVariant, 0.25f)
+        isError -> lerp(restingHue, errorHue, 0.85f)
+        else -> lerp(restingHue, focusedHue, focusProgress)
+    }
+    val fillColor = fillHue.copy(alpha = fillAlpha)
+
+    val restingStroke = if (isLight) colorScheme.outlineVariant else colorScheme.outline
+    val strokeHue = when {
+        !enabled -> colorScheme.outline
+        isError -> colorScheme.error
+        else -> lerp(restingStroke, colorScheme.onPrimaryContainer, focusProgress)
+    }
+    // 线宽始终是 borderWidth, 聚焦不加粗。关掉玻璃时颜色再淡一档, 聚焦只换色。
+    val strokeAlpha = if (isGlassActive) {
         when {
-            !enabled -> scaledBackgroundAlpha * 0.48f
-            isError -> scaledBackgroundAlpha * 0.74f
-            visualFocused -> scaledBackgroundAlpha * 0.84f
-            readOnly -> scaledBackgroundAlpha * 0.78f
-            else -> scaledBackgroundAlpha * 0.84f
-        }
-    } * visualPreset.fillMultiplier
-    val fillColor = remember(baseColor, resolvedFillAlpha) {
-        baseColor.copy(alpha = resolvedFillAlpha)
-    }
-    val neutralTint = remember(colorScheme, baseColor, isLight) {
-        colorScheme.surfaceTint
-            .blend(colorScheme.outlineVariant, if (isLight) 0.62f else 0.54f)
-            .blend(baseColor, if (isLight) 0.18f else 0.14f)
-    }
-    val accentTint = remember(colorScheme, neutralTint, enabled, readOnly, isError, visualFocused, isLight) {
+            !enabled -> 0.22f
+            isError -> 0.62f
+            else -> 0.78f + focusProgress * 0.08f
+        } * glassBaseAlpha * visualPreset.strokeMultiplier.coerceIn(0.94f, 1.06f)
+    } else {
         when {
-            !enabled -> neutralTint.blend(colorScheme.outlineVariant, 0.48f)
-            isError -> colorScheme.error.blend(neutralTint, if (isLight) 0.52f else 0.46f)
-            visualFocused -> colorScheme.tertiary.blend(neutralTint, if (isLight) 0.60f else 0.50f)
-            readOnly -> colorScheme.onPrimaryContainer.blend(neutralTint, if (isLight) 0.52f else 0.44f)
-            else -> colorScheme.onPrimaryContainer.blend(neutralTint, if (isLight) 0.55f else 0.46f)
-        }
-    }
-    val tintOverlayColor = remember(accentTint, scaledBackgroundAlpha, enabled, readOnly, visualFocused, isError) {
-        accentTint.copy(
-            alpha = scaledBackgroundAlpha * when {
-                !enabled -> 0f
-                isError -> 0.16f
-                visualFocused -> 0.29f
-                readOnly -> 0.20f
-                else -> 0.24f
-            } * visualPreset.tintMultiplier
-        )
-    }
-    val topSheenColor = remember(baseColor, accentTint, style, glassBaseAlpha, isLight, enabled, readOnly, visualFocused, isError) {
-        accentTint.blend(Color.White, if (isLight) 0.82f else 0.66f).copy(
-            alpha = (style.surfaceOverlayAlpha * when {
-                !enabled -> 0.62f
-                isError -> 1.8f
-                visualFocused -> 2.22f
-                readOnly -> 1.70f
-                else -> 1.92f
-            } * visualPreset.sheenMultiplier * glassBaseAlpha).coerceIn(0f, 1f)
-        )
-    }
-    val bottomDepthColor = remember(baseColor, accentTint, style, glassBaseAlpha, isLight, enabled, readOnly, visualFocused) {
-        baseColor.blend(accentTint.blend(Color.Black, 0.70f), if (isLight) 0.28f else 0.34f).copy(
-            alpha = (style.innerShadowAlpha * when {
-                !enabled -> 0.50f
-                visualFocused -> 1.24f
-                readOnly -> 1.00f
-                else -> 1.10f
-            } * visualPreset.depthMultiplier * glassBaseAlpha).coerceIn(0f, 1f)
-        )
-    }
-    val strokeTint = remember(colorScheme, enabled, readOnly, isError, visualFocused) {
-        when {
-            !enabled -> colorScheme.outline
-            isError -> colorScheme.error
-            visualFocused -> colorScheme.tertiary
-            readOnly -> colorScheme.onPrimaryContainer
-            else -> colorScheme.onPrimaryContainer
+            !enabled -> 0.14f
+            isError -> 0.50f
+            else -> 0.22f + focusProgress * 0.06f
         }
     }
-    val strokeColor = remember(strokeTint, style, glassBaseAlpha, enabled, readOnly, isError, visualFocused, isLight) {
-        strokeTint.copy(
-            alpha = (when {
-                !enabled -> 0.10f
-                isError -> 0.30f + style.borderAlpha * 0.22f
-                visualFocused -> 0.34f + style.borderAlpha * 0.30f
-                readOnly -> 0.20f + style.borderAlpha * 0.20f
-                isLight -> 0.24f + style.borderAlpha * 0.22f
-                else -> 0.26f + style.borderAlpha * 0.24f
-            }.times(visualPreset.strokeMultiplier).coerceAtMost(0.68f) * glassBaseAlpha).coerceIn(0f, 1f)
-        )
-    }
-    val accentStrokeColor = remember(accentTint, glassBaseAlpha, enabled, readOnly, isError, visualFocused, isLight) {
-        accentTint.copy(
-            alpha = (when {
-                !enabled -> 0.018f
-                isError -> 0.09f
-                visualFocused -> if (isLight) 0.20f else 0.24f
-                readOnly -> if (isLight) 0.12f else 0.15f
-                else -> if (isLight) 0.15f else 0.18f
-            } * visualPreset.accentStrokeMultiplier * glassBaseAlpha).coerceIn(0f, 1f)
-        )
-    }
-    val innerStrokeColor = remember(glassBaseAlpha, enabled, readOnly, visualFocused, isError, isLight) {
-        Color.White.copy(
-            alpha = (when {
-                !enabled -> 0.028f
-                isError -> 0.07f
-                visualFocused -> if (isLight) 0.14f else 0.17f
-                readOnly -> if (isLight) 0.10f else 0.13f
-                else -> if (isLight) 0.11f else 0.14f
-            } * visualPreset.innerStrokeMultiplier * glassBaseAlpha).coerceIn(0f, 1f)
-        )
-    }
+    val strokeColor = strokeHue.copy(alpha = strokeAlpha.coerceIn(0f, 1f))
+    val strokeDrawAlpha = if (isGlassActive) strokeVisibility else 1f
+    val drawStroke = if (isGlassActive) glassBorderAlpha > 0f else true
 
     return drawWithCache {
         val outline: Outline = shape.createOutline(
@@ -917,53 +758,16 @@ private fun Modifier.modernGlassTextFieldContainer(
             layoutDirection = layoutDirection,
             density = this,
         )
-        val strokeWidthPx = borderWidth.toPx().coerceAtLeast(0.95f)
-        val mainStroke = Stroke(width = strokeWidthPx)
-        val accentStroke = Stroke(width = strokeWidthPx * 1.02f)
-        val innerStroke = Stroke(width = (strokeWidthPx * 0.70f).coerceAtLeast(0.52f))
-
-        val tintBrush = androidx.compose.ui.graphics.Brush.verticalGradient(
-            0.0f to tintOverlayColor,
-            0.60f to tintOverlayColor.copy(alpha = tintOverlayColor.alpha * 0.60f),
-            1.0f to tintOverlayColor.copy(alpha = tintOverlayColor.alpha * 0.22f),
-        )
-        val sheenBrush = androidx.compose.ui.graphics.Brush.linearGradient(
-            colorStops = arrayOf(
-                0.0f to topSheenColor,
-                0.22f to topSheenColor.copy(alpha = topSheenColor.alpha * 0.62f),
-                0.52f to Color.Transparent,
-                1.0f to Color.Transparent,
-            ),
-            start = androidx.compose.ui.geometry.Offset(0f, 0f),
-            end = androidx.compose.ui.geometry.Offset(size.width * 0.78f, size.height * 0.32f),
-        )
-        val depthBrush = androidx.compose.ui.graphics.Brush.verticalGradient(
-            0.0f to Color.Transparent,
-            0.78f to Color.Transparent,
-            0.90f to bottomDepthColor.copy(alpha = bottomDepthColor.alpha * 0.30f),
-            1.0f to bottomDepthColor,
-        )
-        val accentStrokeBrush = androidx.compose.ui.graphics.Brush.linearGradient(
-            colorStops = arrayOf(
-                0.0f to topSheenColor.copy(alpha = topSheenColor.alpha * 0.44f),
-                0.24f to accentStrokeColor,
-                0.72f to accentStrokeColor.copy(alpha = accentStrokeColor.alpha * 0.64f),
-                1.0f to Color.White.copy(alpha = innerStrokeColor.alpha * 0.74f),
-            ),
-            start = androidx.compose.ui.geometry.Offset(0f, 0f),
-            end = androidx.compose.ui.geometry.Offset(size.width, size.height),
-        )
-
+        val stroke = Stroke(width = borderWidth.toPx().coerceAtLeast(0.75f))
         onDrawBehind {
             drawOutline(outline = outline, color = fillColor)
-            drawOutline(outline = outline, brush = tintBrush)
-            drawOutline(outline = outline, brush = sheenBrush)
-            drawOutline(outline = outline, brush = depthBrush)
-
-            if (glassBorderAlpha > 0f) {
-                drawOutline(outline = outline, color = strokeColor, style = mainStroke, alpha = strokeVisibility)
-                drawOutline(outline = outline, brush = accentStrokeBrush, style = accentStroke, alpha = strokeVisibility)
-                drawOutline(outline = outline, color = innerStrokeColor, style = innerStroke, alpha = strokeVisibility)
+            if (drawStroke) {
+                drawOutline(
+                    outline = outline,
+                    color = strokeColor,
+                    style = stroke,
+                    alpha = strokeDrawAlpha,
+                )
             }
         }
     }

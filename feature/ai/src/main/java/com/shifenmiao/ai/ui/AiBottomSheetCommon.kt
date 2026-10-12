@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,16 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 
 internal object AiBottomSheetDefaults {
     val HorizontalPadding = 20.dp
-    val SearchShape = RoundedCornerShape(18.dp)
     val ChipShape = RoundedCornerShape(14.dp)
     val ContentMinHeight = 420.dp
     val ContentMaxHeight = 720.dp
@@ -76,13 +70,10 @@ internal fun AiBottomSheetSearchField(
         onValueChange = onValueChange,
         modifier = modifier,
         singleLine = true,
-        shape = AiBottomSheetDefaults.SearchShape,
-        visualPreset = GlassTextFieldVisualPreset.Expressive,
         leadingIcon = {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
         trailingIcon = {
@@ -99,7 +90,6 @@ internal fun AiBottomSheetSearchField(
         label = {
             Text(text = placeholder)
         },
-        colors = AppTheme.colors.getOutlinedTextFieldColors()
     )
 }
 

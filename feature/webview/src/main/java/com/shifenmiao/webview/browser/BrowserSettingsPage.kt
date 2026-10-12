@@ -35,8 +35,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import androidx.compose.foundation.layout.PaddingValues
 import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import androidx.compose.ui.res.stringResource
@@ -353,10 +351,7 @@ fun BrowserSettingsPage(component: BrowserComponent) {
                     singleLine = false,
                     maxLines = 4,
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    style = GlassStyle.Thin,
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    placeholder = { Text(stringResource(R.string.browser_custom_ua_hint), style = MaterialTheme.typography.bodySmall) }
+                    placeholder = { Text(stringResource(R.string.browser_custom_ua_hint)) }
                 )
             },
             confirmButton = {

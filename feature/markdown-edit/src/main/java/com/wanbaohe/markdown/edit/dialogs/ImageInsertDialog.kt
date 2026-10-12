@@ -1,5 +1,6 @@
 package com.wanbaohe.markdown.edit.dialogs
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -81,7 +82,7 @@ fun ImageInsertDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // 图片描述输入
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = imageDescription,
                     onValueChange = { imageDescription = it },
                     label = { Text(stringResource(MarkdownR.string.image_description_label)) },
@@ -93,7 +94,7 @@ fun ImageInsertDialog(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 // 图片 URL 输入
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = imageUrl,
                     onValueChange = { imageUrl = it },
                     label = { Text(stringResource(MarkdownR.string.image_url_label)) },

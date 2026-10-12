@@ -28,7 +28,7 @@ fun RoundedTextField(
     onValueChange: (String) -> Unit,
     label: String = "",
     hint: String = "",
-    shape: Shape = RoundedCornerShape(4.dp),
+    shape: Shape = RoundedCornerShape(16.dp),
     startIcon: ImageVector? = null,
     value: String,
     isError: Boolean = false,

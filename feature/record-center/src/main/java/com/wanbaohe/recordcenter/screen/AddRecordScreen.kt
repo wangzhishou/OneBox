@@ -1,5 +1,6 @@
 package com.wanbaohe.recordcenter.screen
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -124,7 +125,7 @@ fun AddRecordScreen(component: RecordEditorComponent) {
                     // 动态数值字段
                     definition.fields.forEach { field ->
                         val error = fieldErrors[field.key]
-                        OutlinedTextField(
+                        GlassOutlinedTextField(
                             value = inputs[field.key].orEmpty(),
                             onValueChange = { component.onFieldInputChange(field.key, it) },
                             modifier = Modifier.fillMaxWidth(),
@@ -196,7 +197,7 @@ fun AddRecordScreen(component: RecordEditorComponent) {
                     }
 
                     // 备注
-                    OutlinedTextField(
+                    GlassOutlinedTextField(
                         value = note,
                         onValueChange = component::onNoteChange,
                         modifier = Modifier.fillMaxWidth(),

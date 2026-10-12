@@ -1,5 +1,6 @@
 package com.wanbaohe.gomoku.screen
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -413,7 +414,7 @@ private fun CreateRoomPanel(
     ) {
         when {
             currentRoom == null -> {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = initialFen,
                     onValueChange = onInitialFenChange,
                     modifier = Modifier.fillMaxWidth(),

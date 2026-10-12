@@ -45,7 +45,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.OutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -277,14 +277,12 @@ fun FileBrowserScreen(
             enter = expandVertically(),
             exit = shrinkVertically()
         ) {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = searchQuery.value,
                 onValueChange = { value -> searchQuery.value = value },
                 singleLine = true,
                 placeholder = { Text(stringResource(R.string.file_browser_search_hint)) },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
-                colors = AppTheme.colors.getOutlinedTextFieldColors(),
-                shape = MaterialTheme.shapes.medium,
                 trailingIcon = {
                     if (searchQuery.value.isNotEmpty()) {
                         IconButton(onClick = { searchQuery.value = "" }) {
@@ -528,12 +526,11 @@ fun FileBrowserScreen(
             onDismissRequest = { showRenameDialog.value = false },
             title = { Text(stringResource(R.string.dialog_rename_title)) },
             text = {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = renameInput.value,
                     onValueChange = { renameInput.value = it },
                     singleLine = true,
                     placeholder = { Text(stringResource(R.string.dialog_rename_hint)) },
-                    colors = AppTheme.colors.getOutlinedTextFieldColors(),
                     modifier = Modifier.fillMaxWidth()
                 )
             },

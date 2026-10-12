@@ -37,10 +37,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
@@ -325,8 +323,6 @@ fun OneBoxOutlinedTextField(
         textStyle = textStyle,
         maxLines = maxLines,
         minLines = minLines,
-        colors = AppTheme.colors.getOutlinedTextFieldColors(),
-        visualPreset = GlassTextFieldVisualPreset.Quiet,
         shape = OneBoxDesignSystem.listRowShape,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,

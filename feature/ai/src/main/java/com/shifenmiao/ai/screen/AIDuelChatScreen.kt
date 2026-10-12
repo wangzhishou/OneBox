@@ -807,8 +807,6 @@ private fun DuelRoleConfigSection(
                     }
                 },
                 singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                colors = AppTheme.colors.getOutlinedTextFieldColors()
             )
 
             // ── Model selection row ──
@@ -897,8 +895,6 @@ private fun DuelRoleConfigSection(
                 placeholder = { Text(stringResource(R.string.ai_duel_persona_hint)) },
                 minLines = 3,
                 maxLines = 5,
-                shape = MaterialTheme.shapes.medium,
-                colors = AppTheme.colors.getOutlinedTextFieldColors()
             )
 
             // ── 已选提示词 + 字数统计 + 放大编辑：独立一行，两端与输入框边缘对齐 ──
@@ -1007,8 +1003,6 @@ private fun DuelPersonaExpandEditorDialog(
                         .fillMaxWidth()
                         .weight(1f),
                     placeholder = { Text(stringResource(R.string.ai_duel_persona_hint)) },
-                    shape = MaterialTheme.shapes.medium,
-                    colors = AppTheme.colors.getOutlinedTextFieldColors()
                 )
                 GlassTonalButton(
                     onClick = onDismiss,

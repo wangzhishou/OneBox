@@ -1,5 +1,6 @@
 package com.wanbaohe.camera.watermark.presentation.components
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -554,7 +555,7 @@ internal fun TemplateEditor(
 
 
             // 模板名称
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = editedTemplate.name,
                 onValueChange = { editedTemplate = editedTemplate.copy(name = it) },
                 label = { Text(stringResource(R.string.camera_watermark_template_name)) },
@@ -731,7 +732,7 @@ internal fun TemplateEditor(
 
 
             // 左上角 - 相机信息
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = editedTemplate.customContent.topLeft ?: "",
                 onValueChange = { newValue ->
                     editedTemplate = editedTemplate.copy(
@@ -751,7 +752,7 @@ internal fun TemplateEditor(
 
 
             // 右上角 - 拍摄参数
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = editedTemplate.customContent.topRight ?: "",
                 onValueChange = { newValue ->
                     editedTemplate = editedTemplate.copy(
@@ -771,7 +772,7 @@ internal fun TemplateEditor(
 
 
             // 左下角 - 时间/签名
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = editedTemplate.customContent.bottomLeft ?: "",
                 onValueChange = { newValue ->
                     editedTemplate = editedTemplate.copy(
@@ -791,7 +792,7 @@ internal fun TemplateEditor(
 
 
             // 右下角 - GPS
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = editedTemplate.customContent.bottomRight ?: "",
                 onValueChange = { newValue ->
                     editedTemplate = editedTemplate.copy(

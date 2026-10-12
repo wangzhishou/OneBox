@@ -1,5 +1,6 @@
 package com.wanbaohe.bookkeeping.screen.tab
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.shifenmiao.model.money.AppCurrency
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
@@ -535,7 +536,7 @@ private fun CategorySectionCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    OutlinedTextField(
+                    GlassOutlinedTextField(
                         value = addName,
                         onValueChange = { addName = it },
                         placeholder = { Text(stringResource(R.string.bookkeeping_new_category)) },

@@ -1,5 +1,6 @@
 package com.shifenmiao.common.ui
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -669,7 +670,7 @@ private fun CreationToolSelectionSection(
     onToggleTool: (ToolCatalogItem, Boolean) -> Unit,
 ) {
     Column(modifier = modifier) {
-        OutlinedTextField(
+        GlassOutlinedTextField(
             value = searchQuery,
             onValueChange = onSearchQueryChange,
             modifier = Modifier.fillMaxWidth(),

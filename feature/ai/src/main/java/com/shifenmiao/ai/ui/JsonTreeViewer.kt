@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.ui
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -323,7 +324,7 @@ private fun JsonLeafNode(
                 )
             },
             text = {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = editText,
                     onValueChange = { editText = it },
                     modifier = Modifier.fillMaxWidth(),

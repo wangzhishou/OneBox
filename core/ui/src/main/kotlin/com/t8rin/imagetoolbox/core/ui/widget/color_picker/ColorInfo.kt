@@ -17,6 +17,7 @@
 
 package com.t8rin.imagetoolbox.core.ui.widget.color_picker
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -282,7 +283,7 @@ fun ColorInfo(
             ) {
                 val style =
                     MaterialTheme.typography.titleMedium.copy(textAlign = TextAlign.Center)
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     shape = ShapeDefaults.default,
                     textStyle = style,
                     maxLines = 1,

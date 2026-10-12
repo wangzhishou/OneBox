@@ -1,5 +1,6 @@
 package com.wanbaohe.altitude.ui
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,7 +61,7 @@ internal fun SaveNoteDialog(
                 )
                 Spacer(Modifier.height(12.dp))
                 // 备注输入框
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = note,
                     onValueChange = { note = it },
                     placeholder = {

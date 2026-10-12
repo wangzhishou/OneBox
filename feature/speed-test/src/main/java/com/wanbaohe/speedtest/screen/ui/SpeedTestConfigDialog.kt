@@ -1,5 +1,6 @@
 package com.wanbaohe.speedtest.screen.ui
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -80,7 +81,7 @@ fun SpeedTestConfigDialog(
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 // 配置名称
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
                     label = { Text(stringResource(R.string.speed_test_config_name_hint)) },
@@ -93,7 +94,7 @@ fun SpeedTestConfigDialog(
                 )
 
                 // 测速 URL
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = url,
                     onValueChange = { url = it },
                     label = { Text(stringResource(R.string.speed_test_config_url_hint)) },
@@ -112,7 +113,7 @@ fun SpeedTestConfigDialog(
 
                 // 预估流量 & 超时时长（同一行）
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    OutlinedTextField(
+                    GlassOutlinedTextField(
                         value = estimatedMb,
                         onValueChange = { v -> if (v.all { it.isDigit() }) estimatedMb = v },
                         label = { Text(stringResource(R.string.speed_test_config_estimated_mb_hint)) },
@@ -126,7 +127,7 @@ fun SpeedTestConfigDialog(
                         colors = AppTheme.colors.getOutlinedTextFieldColors()
                     )
                     Spacer(Modifier.width(8.dp))
-                    OutlinedTextField(
+                    GlassOutlinedTextField(
                         value = duration,
                         onValueChange = { v -> if (v.all { it.isDigit() }) duration = v },
                         label = { Text(stringResource(R.string.speed_test_config_duration_hint)) },

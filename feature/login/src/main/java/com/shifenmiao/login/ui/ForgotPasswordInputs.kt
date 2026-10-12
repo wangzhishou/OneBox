@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,6 +24,7 @@ import com.shifenmiao.base.ui.clearFocusOnKeyboardDismiss
 import com.shifenmiao.core.R
 import com.shifenmiao.login.state.ForgotPasswordState
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 
 @Composable
@@ -57,17 +56,14 @@ fun ForgotPasswordInputs(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val focusManager = LocalFocusManager.current
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 modifier = Modifier
                     .width(160.dp)
                     .clearFocusOnKeyboardDismiss(),
                 value = forgotPasswordState.code,
                 onValueChange = onCodeChange,
                 label = {
-                    Text(
-                        text = stringResource(id = R.string.forgot_password_code_hint),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
-                    )
+                    Text(text = stringResource(id = R.string.forgot_password_code_hint))
                 },
                 singleLine = true,
                 isError = forgotPasswordState.errorState.codeErrorState.hasError,
@@ -78,8 +74,6 @@ fun ForgotPasswordInputs(
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                colors = AppTheme.colors.getOutlinedTextFieldColors(),
-                shape = AppTheme.shapes.getTextFieldShape()
             )
 
             Spacer(modifier = Modifier.width(AppTheme.dimens.paddingExtraSmall))

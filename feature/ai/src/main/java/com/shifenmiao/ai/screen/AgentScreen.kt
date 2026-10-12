@@ -22,7 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -241,7 +241,7 @@ fun InputWithButton(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        TextField(
+        GlassOutlinedTextField(
             value = inputText.value,
             onValueChange = { inputText.value = it },
             label = { Text("Enter text") },

@@ -18,12 +18,8 @@
 package com.t8rin.imagetoolbox.core.ui.widget.text
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.Animatable
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,17 +34,11 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -62,11 +52,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.ui.theme.blend
 import com.t8rin.imagetoolbox.core.ui.theme.inverse
-import com.t8rin.imagetoolbox.core.ui.theme.outlineVariant
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldShape
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.animateContentSizeNoClip
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 
 @Composable
 fun RoundedTextField(
@@ -74,7 +62,7 @@ fun RoundedTextField(
     onValueChange: (String) -> Unit,
     label: String = "",
     hint: String = "",
-    shape: Shape = ShapeDefaults.small,
+    shape: Shape = GlassTextFieldShape,
     startIcon: ImageVector? = null,
     value: String,
     isError: Boolean = false,
@@ -148,7 +136,7 @@ fun RoundedTextField(
     onValueChange: (String) -> Unit,
     label: (@Composable () -> Unit)? = null,
     hint: (@Composable () -> Unit)? = null,
-    shape: Shape = ShapeDefaults.small,
+    shape: Shape = GlassTextFieldShape,
     startIcon: (@Composable () -> Unit)? = null,
     value: String,
     isError: Boolean = false,
@@ -172,54 +160,15 @@ fun RoundedTextField(
     maxSymbols: Int = Int.MAX_VALUE
 ) {
     val focus = LocalFocusManager.current
-    val focused = interactionSource.collectIsFocusedAsState().value
-
-    val colorScheme = MaterialTheme.colorScheme
-    val unfocusedColor = if (!enabled) colorScheme.outlineVariant(
-        onTopOf = colors.focusedContainerColor,
-        luminance = 0.2f
-    ) else colors.unfocusedIndicatorColor
-
-    val focusedColor = if (isError) {
-        colors.errorIndicatorColor
-    } else colors.focusedIndicatorColor
-
-    val borderColor by remember(focusedColor, enabled, focused) {
-        derivedStateOf {
-            Animatable(
-                initialValue = if (!focused) unfocusedColor
-                else focusedColor
-            )
-        }
-    }
-
-    val scope = rememberCoroutineScope()
-    LaunchedEffect(isError) {
-        borderColor.animateTo(if (focused) focusedColor else unfocusedColor)
-    }
 
     val mergedModifier = Modifier
         .fillMaxWidth()
-        .border(
-            width = animateDpAsState(
-                if (borderColor.value == unfocusedColor) 1.dp
-                else 2.dp
-            ).value,
-            color = borderColor.value,
-            shape = shape
-        )
         .onFocusChanged {
-            scope.launch {
-                if (readOnly) {
-                    focus.clearFocus()
-                    cancel()
-                }
-                if (it.isFocused) borderColor.animateTo(focusedColor)
-                else {
-                    if (!isError) borderColor.animateTo(unfocusedColor)
-                    onValueChange(value.onLoseFocusTransformation())
-                }
-                cancel()
+            if (readOnly) {
+                focus.clearFocus()
+            }
+            if (!it.isFocused) {
+                onValueChange(value.onLoseFocusTransformation())
             }
         }
         .animateContentSizeNoClip()
@@ -235,8 +184,8 @@ fun RoundedTextField(
     ) {
         val showSupportingText =
             !loading && (isError || (supportingText != null && supportingTextVisible))
-        TextField(
-            modifier = mergedModifier.clip(shape),
+        GlassOutlinedTextField(
+            modifier = mergedModifier,
             value = value,
             onValueChange = { onValueChange(it.take(maxSymbols).formatText()) },
             textStyle = textStyle,
@@ -255,6 +204,7 @@ fun RoundedTextField(
             maxLines = maxLines,
             interactionSource = interactionSource,
             minLines = minLines,
+            isError = isError,
         )
         val showMaxSymbols = maxSymbols != Int.MAX_VALUE && value.isNotEmpty()
 
@@ -289,7 +239,7 @@ fun RoundedTextField(
                         textAlign = TextAlign.End,
                         fontSize = 12.sp,
                         lineHeight = 12.sp,
-                        color = borderColor.value
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

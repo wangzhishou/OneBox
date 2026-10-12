@@ -1,5 +1,6 @@
 package com.wanbaohe.markdown.edit.dialogs
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -63,7 +64,7 @@ fun LinkInsertDialog(
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 // 链接文本输入
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = linkText,
                     onValueChange = { linkText = it },
                     label = { Text(stringResource(R.string.link_text_hint)) },
@@ -75,7 +76,7 @@ fun LinkInsertDialog(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 // URL 输入
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = linkUrl,
                     onValueChange = { linkUrl = it },
                     label = { Text(stringResource(R.string.link_url_hint)) },

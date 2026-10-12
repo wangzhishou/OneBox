@@ -1,5 +1,6 @@
 package com.wanbaohe.setting.memory.screen
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -241,7 +242,7 @@ fun MemoryManagementContent(
                 )
             },
             text = {
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = content,
                     onValueChange = { content = it },
                     modifier = Modifier.fillMaxWidth(),

@@ -11,15 +11,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 
 /**
@@ -95,34 +93,18 @@ fun LoanInputItem(
             )
         } else {
             // 输入行：右侧 TextField（透明背景，无分割线）
-            TextField(
+            GlassOutlinedTextField(
                 value = value,
                 onValueChange = { onValueChange?.invoke(it) },
                 placeholder = {
                     Text(
                         text = hint,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     )
                 },
-                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                colors = AppTheme.colors.getOutlinedTextFieldColors().let {
-                    // 完全透明容器 + 隐藏指示线，实现极致扁平
-                    androidx.compose.material3.TextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        cursorColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                },
                 modifier = Modifier.weight(0.6f),
             )
         }

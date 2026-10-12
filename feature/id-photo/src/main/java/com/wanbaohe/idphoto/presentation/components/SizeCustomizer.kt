@@ -1,5 +1,6 @@
 package com.wanbaohe.idphoto.presentation.components
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -470,7 +471,7 @@ fun SizeEditor(
             .padding(horizontal = 16.dp, vertical = AppTheme.dimens.spaceNormal)
     ) {
         // 名称
-        OutlinedTextField(
+        GlassOutlinedTextField(
             value = name,
             onValueChange = { name = it },
             label = { Text(stringResource(R.string.id_photo_field_name)) },
@@ -487,7 +488,7 @@ fun SizeEditor(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = widthMm,
                 onValueChange = { widthMm = it },
                 label = { Text(stringResource(R.string.id_photo_field_width_mm)) },
@@ -497,7 +498,7 @@ fun SizeEditor(
                 shape = shape,
                 colors = colors
             )
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = heightMm,
                 onValueChange = { heightMm = it },
                 label = { Text(stringResource(R.string.id_photo_field_height_mm)) },
@@ -516,7 +517,7 @@ fun SizeEditor(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = widthPx,
                 onValueChange = { widthPx = it },
                 label = { Text(stringResource(R.string.id_photo_field_width_px)) },
@@ -526,7 +527,7 @@ fun SizeEditor(
                 shape = shape,
                 colors = colors
             )
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = heightPx,
                 onValueChange = { heightPx = it },
                 label = { Text(stringResource(R.string.id_photo_field_height_px)) },
@@ -541,7 +542,7 @@ fun SizeEditor(
         Spacer(modifier = Modifier.height(12.dp))
 
         // 描述
-        OutlinedTextField(
+        GlassOutlinedTextField(
             value = description,
             onValueChange = { description = it },
             label = { Text(stringResource(R.string.id_photo_field_description_optional)) },

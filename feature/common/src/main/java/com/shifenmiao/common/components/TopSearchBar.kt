@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -32,13 +31,13 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.clearFocusOnKeyboardDismiss
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 
@@ -67,18 +66,16 @@ fun TopSearchBar(
     }
     val isShowEndIcon by remember { derivedStateOf { queryValue.value.isNotEmpty() } }
     GlassOutlinedTextField(
-        colors = AppTheme.colors.getOutlinedTextFieldColors(),
-        visualPreset = GlassTextFieldVisualPreset.Expressive,
-        shape = MaterialTheme.shapes.large,
+        singleLine = true,
         maxLines = 1,
+        textStyle = MaterialTheme.typography.labelLarge,
         placeholder = {
             Text(
                 text = stringResource(id = R.string.search_hint),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
-        textStyle = MaterialTheme.typography.labelLarge,
         modifier = modifier
             .clearFocusOnKeyboardDismiss()
             .padding(

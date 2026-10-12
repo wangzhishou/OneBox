@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.screen
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -158,7 +159,7 @@ fun AIHistoryCenterScreen(
             Text(text = stringResource(R.string.ai_history_rename_title))
         },
         text = {
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = renameValue,
                 onValueChange = { renameValue = it },
                 modifier = Modifier.fillMaxWidth(),

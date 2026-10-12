@@ -122,7 +122,6 @@ internal fun EditableMetaSection(
                     color = accentColor,
                 ),
                 singleLine = true,
-                shape = MaterialTheme.shapes.small,
             )
             GlassOutlinedTextField(
                 value = draftDescription,
@@ -136,7 +135,6 @@ internal fun EditableMetaSection(
                 ),
                 minLines = 1,
                 maxLines = 2,
-                shape = MaterialTheme.shapes.small,
             )
             Row(
                 modifier = Modifier.align(Alignment.End),

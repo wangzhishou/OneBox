@@ -101,17 +101,39 @@ class AppColors {
 
     @Composable
     fun getOutlinedTextFieldColors(): TextFieldColors {
+        val scheme = MaterialTheme.colorScheme
         return OutlinedTextFieldDefaults.colors().copy(
-            focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            focusedIndicatorColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.65f),
-            focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
-            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            focusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.85f),
-            cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedTextColor = scheme.onSurface,
+            unfocusedTextColor = scheme.onSurface,
+            disabledTextColor = scheme.onSurface.copy(alpha = 0.38f),
+            errorTextColor = scheme.onSurface,
+            // 底和描边由 GlassOutlinedTextField 自己画, 聚焦和未聚焦同一条线宽。
+            // 这里的指示色只留给还没接上组件的调用方, 比上一档再淡。
+            focusedContainerColor = scheme.surfaceContainerLow.copy(alpha = 0.30f),
+            unfocusedContainerColor = scheme.surfaceContainerLow.copy(alpha = 0.26f),
+            disabledContainerColor = scheme.surfaceContainerLow.copy(alpha = 0.16f),
+            errorContainerColor = scheme.surfaceContainerLow.copy(alpha = 0.30f),
+            cursorColor = scheme.onPrimaryContainer,
+            errorCursorColor = scheme.error,
+            focusedIndicatorColor = scheme.onPrimaryContainer.copy(alpha = 0.32f),
+            unfocusedIndicatorColor = scheme.outline.copy(alpha = 0.24f),
+            disabledIndicatorColor = scheme.outline.copy(alpha = 0.16f),
+            errorIndicatorColor = scheme.error.copy(alpha = 0.55f),
+            focusedPlaceholderColor = scheme.onSurfaceVariant.copy(alpha = 0.50f),
+            unfocusedPlaceholderColor = scheme.onSurfaceVariant.copy(alpha = 0.62f),
+            disabledPlaceholderColor = scheme.onSurfaceVariant.copy(alpha = 0.32f),
+            focusedLabelColor = scheme.onPrimaryContainer,
+            unfocusedLabelColor = scheme.onSurfaceVariant,
+            disabledLabelColor = scheme.onSurfaceVariant.copy(alpha = 0.38f),
+            errorLabelColor = scheme.error,
+            focusedLeadingIconColor = scheme.onPrimaryContainer,
+            unfocusedLeadingIconColor = scheme.onSurfaceVariant,
+            disabledLeadingIconColor = scheme.onSurfaceVariant.copy(alpha = 0.38f),
+            errorLeadingIconColor = scheme.error,
+            focusedTrailingIconColor = scheme.onPrimaryContainer,
+            unfocusedTrailingIconColor = scheme.onSurfaceVariant,
+            disabledTrailingIconColor = scheme.onSurfaceVariant.copy(alpha = 0.38f),
+            errorTrailingIconColor = scheme.error,
         )
     }
 

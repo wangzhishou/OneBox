@@ -1,5 +1,6 @@
 package com.shifenmiao.base.ui.icon
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -195,7 +196,7 @@ private fun IconSearchBar(
 ) {
     val focusManager = LocalFocusManager.current
 
-    OutlinedTextField(
+    GlassOutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier

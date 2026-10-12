@@ -1,5 +1,6 @@
 package com.shifenmiao.base.ui.picker
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -332,7 +333,7 @@ private fun DateInputFields(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 年份输入
-            androidx.compose.material3.OutlinedTextField(
+            GlassOutlinedTextField(
                 value = year,
                 onValueChange = {
                     if (it.length <= 4 && it.all { c -> c.isDigit() }) {
@@ -350,7 +351,7 @@ private fun DateInputFields(
             )
 
             // 月份输入
-            androidx.compose.material3.OutlinedTextField(
+            GlassOutlinedTextField(
                 value = month,
                 onValueChange = {
                     if (it.length <= 2 && it.all { c -> c.isDigit() }) {
@@ -368,7 +369,7 @@ private fun DateInputFields(
             )
 
             // 日期输入
-            androidx.compose.material3.OutlinedTextField(
+            GlassOutlinedTextField(
                 value = day,
                 onValueChange = {
                     if (it.length <= 2 && it.all { c -> c.isDigit() }) {

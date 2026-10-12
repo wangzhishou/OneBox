@@ -1,5 +1,6 @@
 package com.wanbaohe.markdown.edit.dialogs
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -79,7 +80,7 @@ fun CodeBlockInsertDialog(
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 // 代码输入
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = code,
                     onValueChange = { code = it },
                     label = { Text(stringResource(MarkdownR.string.code_label)) },
@@ -98,7 +99,7 @@ fun CodeBlockInsertDialog(
                 )
 
                 // 搜索框
-                OutlinedTextField(
+                GlassOutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     label = { Text(stringResource(MarkdownR.string.search_language)) },

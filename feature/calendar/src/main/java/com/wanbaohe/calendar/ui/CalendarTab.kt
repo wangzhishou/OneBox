@@ -1,5 +1,6 @@
 package com.wanbaohe.calendar.ui
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -1295,7 +1296,7 @@ private fun MonthNavigator(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        OutlinedTextField(
+                        GlassOutlinedTextField(
                             value = inputYear,
                             onValueChange = { inputYear = it.filter(Char::isDigit).take(4) },
                             label = { Text(stringResource(R.string.year_label)) },

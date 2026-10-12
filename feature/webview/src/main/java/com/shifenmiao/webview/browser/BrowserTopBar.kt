@@ -5,7 +5,6 @@ import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,8 +35,6 @@ import coil3.compose.SubcomposeAsyncImage
 import com.shifenmiao.webview.R
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
@@ -94,10 +91,6 @@ fun BrowserTopBar(
                     .weight(1f)
                     .onFocusChanged { onSearchFocusChange(it.isFocused) },
                 singleLine = true,
-                shape = RoundedCornerShape(50),
-                style = GlassStyle.Thin,
-                visualPreset = GlassTextFieldVisualPreset.Expressive,
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
                 leadingIcon = {
                     SubcomposeAsyncImage(
                         model = faviconUrl.takeIf { it.isNotEmpty() },

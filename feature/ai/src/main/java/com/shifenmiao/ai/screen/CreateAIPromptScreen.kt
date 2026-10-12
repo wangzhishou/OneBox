@@ -534,7 +534,6 @@ private fun PromptInputSection(
                 enabled = !isGenerating,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { onGenerate() }),
-                shape = MaterialTheme.shapes.medium,
             )
 
             Spacer(modifier = Modifier.height(12.dp))

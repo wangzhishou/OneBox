@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +24,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
-import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibility
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVisibilityOff
@@ -106,7 +104,6 @@ fun PasswordTextField(
                 ErrorTextInputField(text = errorText)
             }
         },
-        shape = AppTheme.shapes.getTextFieldShape()
     )
 }
 
@@ -192,15 +189,11 @@ fun UsernameTextField(
         keyboardActions = KeyboardActions(
             onDone = { focusManager.clearFocus() }
         ),
-        shape = AppTheme.shapes.getTextFieldShape()
     )
 
 }
 
 @Composable
 fun LabelText(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
-    )
+    Text(text = text)
 }

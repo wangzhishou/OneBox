@@ -1,5 +1,6 @@
 package com.shifenmiao.base.ui.picker
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -164,7 +165,7 @@ internal fun TimeInputRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // 小时输入
-        OutlinedTextField(
+        GlassOutlinedTextField(
             value = hour,
             onValueChange = {
                 if (it.length <= 2 && it.all { c -> c.isDigit() }) {
@@ -186,7 +187,7 @@ internal fun TimeInputRow(
         )
 
         // 分钟输入
-        OutlinedTextField(
+        GlassOutlinedTextField(
             value = minute,
             onValueChange = {
                 if (it.length <= 2 && it.all { c -> c.isDigit() }) {

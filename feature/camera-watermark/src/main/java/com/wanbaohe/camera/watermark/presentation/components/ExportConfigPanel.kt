@@ -1,5 +1,6 @@
 package com.wanbaohe.camera.watermark.presentation.components
 
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -118,7 +119,7 @@ fun ExportConfigPanel(
         if (keepOriginalExif) {
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedTextField(
+            GlassOutlinedTextField(
                 value = authorSignature,
                 onValueChange = onAuthorSignatureChanged,
                 label = { Text(stringResource(R.string.camera_watermark_author_signature)) },

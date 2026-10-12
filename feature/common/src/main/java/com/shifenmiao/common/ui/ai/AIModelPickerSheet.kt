@@ -62,7 +62,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.resources.icons.Close
@@ -254,19 +253,13 @@ private fun ModelSearchBar(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier,
-        visualPreset = GlassTextFieldVisualPreset.Expressive,
         placeholder = {
-            Text(
-                text = stringResource(R.string.ai_model_search_hint),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Text(text = stringResource(R.string.ai_model_search_hint))
         },
         leadingIcon = {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
         trailingIcon = {
@@ -275,15 +268,11 @@ private fun ModelSearchBar(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         },
         singleLine = true,
-        shape = RoundedCornerShape(28.dp),
-        textStyle = MaterialTheme.typography.bodyLarge,
-        colors = AppTheme.colors.getOutlinedTextFieldColors()
     )
 }
 
