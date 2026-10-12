@@ -399,7 +399,7 @@ private fun ModelSelectorChip(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
                 contentDescription = stringResource(R.string.ai_chat_model_select),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(22.dp)
+                modifier = Modifier.size(18.dp)
             )
         }
         Text(
