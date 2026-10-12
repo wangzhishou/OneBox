@@ -58,7 +58,7 @@ import kotlin.math.sin
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.OpenInFull
 import androidx.compose.material.icons.outlined.RotateRight
-import androidx.compose.material.icons.outlined.SwapHoriz
+import androidx.compose.material.icons.outlined.Straighten
 
 /**
  * One finger moves the selected layer. Explicit handles resize/rotate; multi-touch is never
@@ -206,31 +206,39 @@ fun BoxWithConstraintsScope.EditBox(
             var startDistance by remember { mutableStateOf(1f) }
             var startAngle by remember { mutableStateOf(0f) }
 
-            LayerTransformHandle(
-                icon = MaterialIcons.Outlined.OpenInFull,
-                description = stringResource(R.string.studio_layer_scale),
-                alignment = Alignment.BottomEnd,
-                offsetX = 24.dp * inverseScale,
-                offsetY = 24.dp * inverseScale,
-                inverseScale = inverseScale,
-                onStart = { root ->
-                    startTransform = localTransform
-                    centerRoot = elementCoordinates?.localToRoot(
-                        Offset(boxSize.width / 2f, boxSize.height / 2f)
-                    ) ?: root
-                    startDistance = (root - centerRoot).getDistance().coerceAtLeast(1f)
-                    start()
-                },
-                onDrag = { root ->
-                    update(
-                        startTransform.copy(
-                            scale = (startTransform.scale *
-                                (root - centerRoot).getDistance() / startDistance).coerceIn(0.1f, 10f)
+            // 标准选框:三角缩放(右上角让给删除),两侧改文字框宽,顶部旋转
+            listOf(
+                Alignment.TopStart to Offset(-24f, -24f),
+                Alignment.BottomStart to Offset(-24f, 24f),
+                Alignment.BottomEnd to Offset(24f, 24f),
+            ).forEach { (corner, offset) ->
+                LayerTransformHandle(
+                    icon = MaterialIcons.Outlined.OpenInFull,
+                    description = stringResource(R.string.studio_layer_scale),
+                    alignment = corner,
+                    offsetX = offset.x.dp * inverseScale,
+                    offsetY = offset.y.dp * inverseScale,
+                    inverseScale = inverseScale,
+                    onStart = { root ->
+                        startTransform = localTransform
+                        centerRoot = elementCoordinates?.localToRoot(
+                            Offset(boxSize.width / 2f, boxSize.height / 2f)
+                        ) ?: root
+                        startDistance = (root - centerRoot).getDistance().coerceAtLeast(1f)
+                        start()
+                    },
+                    onDrag = { root ->
+                        update(
+                            startTransform.copy(
+                                scale = (startTransform.scale *
+                                    (root - centerRoot).getDistance() / startDistance)
+                                    .coerceIn(0.1f, 10f)
+                            )
                         )
-                    )
-                },
-                onEnd = finish
-            )
+                    },
+                    onEnd = finish
+                )
+            }
             LayerTransformHandle(
                 icon = MaterialIcons.Outlined.RotateRight,
                 description = stringResource(R.string.studio_layer_rotate),
@@ -262,7 +270,7 @@ fun BoxWithConstraintsScope.EditBox(
                     var axisRoot by remember { mutableStateOf(Offset(1f, 0f)) }
                     var startSize by remember { mutableStateOf(IntSize.Zero) }
                     LayerTransformHandle(
-                        icon = MaterialIcons.Outlined.SwapHoriz,
+                        icon = MaterialIcons.Outlined.Straighten,
                         description = stringResource(R.string.studio_layer_resize_width),
                         alignment = if (edge < 0) Alignment.CenterStart else Alignment.CenterEnd,
                         offsetX = (edge * 32).dp * inverseScale,
