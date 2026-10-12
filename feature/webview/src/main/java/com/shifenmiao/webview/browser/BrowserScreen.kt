@@ -5,11 +5,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.webkit.WebChromeClient
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,10 +30,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.webview.common.WebViewPool
 import com.shifenmiao.webview.common.WebViewSettings
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
@@ -69,12 +75,31 @@ fun BrowserScreen(
         }
     )
 
+    // 从收藏进来的那条本地 HTML 文件（分享/文件浏览器入口）：交给同一套 WebView 渲染
+    LaunchedEffect(component) {
+        component.initialLocalUri?.let { uri ->
+            component.loadLocalFile(uri, uri.lastPathSegment)
+        }
+    }
+
     if (!isSearchFocused && addressText != state.currentUrl) {
         addressText = state.currentUrl
     }
 
     DisposableEffect(Unit) {
         onDispose { component.detachWebView() }
+    }
+
+    /** 收藏查看器里顶栏返回 = 回到收藏列表；普通浏览才回退历史。 */
+    val onTopBarBack: () -> Unit = {
+        when {
+            state.selectedPage != BrowserState.BrowserPage.Home -> {
+                component.selectPage(BrowserState.BrowserPage.Home)
+            }
+            state.isBookmarkViewer -> onGoBack()
+            state.canGoBack -> component.goBack()
+            else -> onGoBack()
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -93,13 +118,7 @@ fun BrowserScreen(
                 isSearchFocused = isSearchFocused,
                 onSearchFocusChange = { isSearchFocused = it },
                 faviconUrl = state.currentFaviconUrl,
-                onGoBack = {
-                    if (state.selectedPage != BrowserState.BrowserPage.Home) {
-                        component.selectPage(BrowserState.BrowserPage.Home)
-                    } else {
-                        onGoBack()
-                    }
-                },
+                onGoBack = onTopBarBack,
                 onReload = component::reload,
                 onStop = component::stopLoading,
                 modifier = Modifier.fillMaxWidth()
@@ -119,39 +138,63 @@ fun BrowserScreen(
             }
 
             Box(modifier = Modifier.weight(1f)) {
-                when {
-                    isSearchFocused -> SearchSuggestionPanel(
-                        query = addressText,
-                        history = state.history,
-                        bookmarks = state.bookmarks,
-                        onItemClick = { url ->
-                            component.loadUrl(url)
-                            focusManager.clearFocus()
-                            isSearchFocused = false
-                        },
-                        onDismiss = {
-                            focusManager.clearFocus()
-                            isSearchFocused = false
-                        },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    else -> Crossfade(
+                // WebView 常驻：不再放进 Crossfade 的分支里。
+                // 之前切到「标签页 / 书签 / 设置」时 Home 分支离开组合，WebView 被丢弃，
+                // 切回来工厂重跑 → 重新 new WebView + loadUrl → 整页重请求，
+                // 已渲染内容和前进/后退历史全部丢失（旧实例还只能等 GC）。
+                // 现在它始终在组合里，其它页面改成盖在它上面的不透明浮层。
+                BrowserWebViewContent(
+                    state = state,
+                    component = component,
+                    backgroundColor = backgroundColor,
+                    context = context,
+                    onAddressUpdate = { addressText = it }
+                )
+
+                if (isSearchFocused) {
+                    // 地址栏聚焦时同样用不透明底盖住，避免 WebView 内容透出来
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(androidx.compose.ui.graphics.Color(backgroundColor))
+                    ) {
+                        SearchSuggestionPanel(
+                            query = addressText,
+                            history = state.history,
+                            bookmarks = state.bookmarks,
+                            onItemClick = { url ->
+                                component.loadUrl(url)
+                                focusManager.clearFocus()
+                                isSearchFocused = false
+                            },
+                            onDismiss = {
+                                focusManager.clearFocus()
+                                isSearchFocused = false
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                } else {
+                    Crossfade(
                         targetState = state.selectedPage,
                         label = "browser_page_crossfade"
                     ) { page ->
-                        when (page) {
-                            BrowserState.BrowserPage.Home -> {
-                                BrowserWebViewContent(
-                                    state = state,
-                                    component = component,
-                                    backgroundColor = backgroundColor,
-                                    context = context,
-                                    onAddressUpdate = { addressText = it }
-                                )
+                        if (page != BrowserState.BrowserPage.Home) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(androidx.compose.ui.graphics.Color(backgroundColor))
+                                    // 这些页面本身不一定铺满，空出来的地方要吞掉点击，
+                                    // 否则会穿透到底下常驻的 WebView 上。
+                                    .pointerInput(Unit) { detectTapGestures { } }
+                            ) {
+                                when (page) {
+                                    BrowserState.BrowserPage.Tabs -> BrowserTabsPage(component = component)
+                                    BrowserState.BrowserPage.Bookmarks -> BrowserBookmarksPage(component = component)
+                                    BrowserState.BrowserPage.Settings -> BrowserSettingsPage(component = component)
+                                    BrowserState.BrowserPage.Home -> Unit
+                                }
                             }
-                            BrowserState.BrowserPage.Tabs -> BrowserTabsPage(component = component)
-                            BrowserState.BrowserPage.Bookmarks -> BrowserBookmarksPage(component = component)
-                            BrowserState.BrowserPage.Settings -> BrowserSettingsPage(component = component)
                         }
                     }
                 }
@@ -163,9 +206,17 @@ fun BrowserScreen(
                 tabCount = state.tabs.size,
                 isBookmarked = state.isCurrentPageBookmarked,
                 selectedPage = state.selectedPage,
+                isBookmarkViewer = state.isBookmarkViewer,
                 onGoBack = component::goBack,
                 onGoForward = component::goForward,
                 onHome = { component.selectPage(BrowserState.BrowserPage.Home) },
+                onEditBookmark = {
+                    if (component.onEditBookmark != null) {
+                        component.requestEditBookmark()
+                    } else {
+                        onGoBack()
+                    }
+                },
                 onTabs = { component.selectPage(BrowserState.BrowserPage.Tabs) },
                 onAddBookmark = component::toggleBookmark,
                 onMoreClick = { showMoreMenu = true }
@@ -175,6 +226,10 @@ fun BrowserScreen(
         if (showMoreMenu) {
             BrowserMoreMenu(
                 isBookmarked = state.isCurrentPageBookmarked,
+                isBookmarkViewer = state.isBookmarkViewer,
+                // 切换项只对「确实存了快照的收藏」有意义
+                isShowingSnapshot = state.isShowingSnapshot,
+                canToggleSnapshot = state.viewingBookmark?.hasSnapshot == true,
                 onBookmarkToggle = {
                     component.toggleBookmark()
                     showMoreMenu = false
@@ -186,6 +241,20 @@ fun BrowserScreen(
                 onExportPdf = {
                     showMoreMenu = false
                     component.exportPdf(context)
+                },
+                onToggleSnapshot = {
+                    showMoreMenu = false
+                    component.toggleSnapshotView()
+                },
+                onOpenExternal = {
+                    showMoreMenu = false
+                    state.currentUrl
+                        .takeIf { it.isNotBlank() && it != "about:blank" }
+                        ?.let { ActionUtils.openWebBrowser(context, it) }
+                },
+                onSharePage = {
+                    showMoreMenu = false
+                    component.sharePage()
                 },
                 onBookmarks = {
                     component.selectPage(BrowserState.BrowserPage.Bookmarks)
@@ -215,6 +284,8 @@ fun BrowserScreen(
             state.selectedPage != BrowserState.BrowserPage.Home -> {
                 component.selectPage(BrowserState.BrowserPage.Home)
             }
+            // 收藏查看器：返回即退出查看（历史仍可用底栏前进/后退按钮回走）
+            state.isBookmarkViewer -> onGoBack()
             state.canGoBack -> component.goBack()
             else -> onGoBack()
         }
@@ -243,6 +314,9 @@ private fun BrowserWebViewContent(
                             component.onProgressChanged(newProgress)
                         }
                     }
+                    // attach 只需要在 WebView 创建时做一次。
+                    // 之前放在 update 里，每次重组都会重新 attach + applySettings。
+                    component.attachWebView(this)
                     if (urlToLoad.isNotBlank()) {
                         loadUrl(urlToLoad)
                     }
@@ -255,8 +329,8 @@ private fun BrowserWebViewContent(
                     if (isBlank) android.graphics.Color.TRANSPARENT else backgroundColor
                 )
                 view.visibility = if (isBlank) android.view.View.INVISIBLE else android.view.View.VISIBLE
-                component.attachWebView(view)
-                component.onNavigationStateChanged(view.canGoBack(), view.canGoForward())
+                // canGoBack / canGoForward 改由 BrowserWebViewClient.onPageFinished 上报
+                // （真正的变化点），不再每次重组都算一遍。
             }
         )
 
@@ -283,6 +357,10 @@ private class BrowserWebViewClient(
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
         component.onPageFinished(url, view?.title)
+        // 前进/后退可用性的真实变化点在这里，顺带上报，省掉每次重组都去问一遍 WebView
+        if (view != null) {
+            component.onNavigationStateChanged(view.canGoBack(), view.canGoForward())
+        }
         onAddressUpdate(url ?: "")
     }
 
@@ -304,5 +382,17 @@ private class BrowserWebViewClient(
         } catch (_: Exception) {
             false
         }
+    }
+
+    /**
+     * 渲染进程被系统回收（低内存等）。
+     *
+     * 不接管的话 App 会跟着一起退出。这里返回 true 并提示用户重新打开，
+     * 但没有做自动恢复：出事的 WebView 实例已经不可用，真正的恢复需要重建实例，
+     * 而实例由 Compose 的 AndroidView 持有，从 client 里换不掉。
+     */
+    override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
+        AppToastHost.showToast("页面渲染进程已终止，请返回后重新打开")
+        return true
     }
 }

@@ -116,7 +116,8 @@ object ItemScreenResolver {
             ListItemType.NORMAL -> resolveNormalItem(item)
             ListItemType.WECHAT -> resolveWechatItem(item)
             ListItemType.HTML -> {
-                val screen = Screen.PreviewHtml(itemEntityParams = item.toItemEntityParams())
+                // 网址收藏统一在内置浏览器里查看（有快照就离线渲染快照）
+                val screen = Screen.WebBrowser(bookmarkItemId = item.id)
                 ItemScreenResolution(
                     screen = screen,
                     listItemType = ListItemType.HTML,

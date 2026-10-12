@@ -19,13 +19,12 @@ import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.Source
 import com.shifenmiao.model.event.AppEventBus
+import com.shifenmiao.model.event.BookmarkChangedEvent
 import com.shifenmiao.model.event.EditorResultEvent
 import com.shifenmiao.model.reorderable.ReorderableType
-import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.network.downloader.HtmlDownloadConfig
 import com.shifenmiao.network.downloader.HtmlDownloadResult
 import com.shifenmiao.network.downloader.HtmlDownloader
-import com.shifenmiao.webview.WebViewComponent
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -56,6 +55,8 @@ data class CreateHtmlUiState(
     val data: String = "",
     val allCategories: List<Category> = emptyList(),
     val selectedCategories: Set<Category> = emptySet(),
+    /** 图标注册表 key（IconRegistry）；为空时卡片回退为标题首字（LetterIcon） */
+    val iconName: String = "",
     val isSaving: Boolean = false,
     val isDirty: Boolean = false,
     val isDownloading: Boolean = false,
@@ -67,7 +68,6 @@ class CreateHtmlComponent @AssistedInject internal constructor(
     @Assisted val draftId: Long,
     @Assisted val onGoBack: () -> Unit,
     @Assisted val onResult: ScreenCallback? = null,
-    webViewComponentFactory: WebViewComponent.Factory,
     dispatchersHolder: DispatchersHolder,
     appDatabase: AppDatabase,
     private val dataDraftHelper: DataDraftHelper,
@@ -85,18 +85,10 @@ class CreateHtmlComponent @AssistedInject internal constructor(
     private val _uiState = MutableStateFlow(CreateHtmlUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _webViewParams = MutableStateFlow<WebViewParams?>(WebViewParams())
-
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     val categories: StateFlow<List<Category>> = _categories.asStateFlow()
 
     val reorderableType: ReorderableType = ReorderableType.CATEGORY
-
-    val webViewComponent = webViewComponentFactory(
-        componentContext = componentContext,
-        onGoBack = {},
-        webViewParams = null
-    )
 
     init {
         componentContext.lifecycle.doOnDestroy {
@@ -142,10 +134,10 @@ class CreateHtmlComponent @AssistedInject internal constructor(
                         url = draft.url.ifEmpty { itemWithRelation.item.url },
                         data = draft.data.ifEmpty { itemData },
                         selectedCategories = itemWithRelation.categories.toSet(),
+                        iconName = itemWithRelation.item.iconName.orEmpty(),
                         isEditing = true
                     )
                 }
-                updateWebViewParams()
                 return
             }
         }
@@ -158,7 +150,6 @@ class CreateHtmlComponent @AssistedInject internal constructor(
                 data = draft.data,
             )
         }
-        updateWebViewParams()
     }
 
     private suspend fun observeCategories() {
@@ -188,48 +179,34 @@ class CreateHtmlComponent @AssistedInject internal constructor(
             .collect { }
     }
 
-    fun updateWebViewParams() {
-        val currentState = _uiState.value
-        _webViewParams.update {
-            it?.copy(
-                title = currentState.title,
-                url = currentState.url,
-                htmlData = currentState.data,
-                isHtml = true
-            )
-        }
-    }
-
-    fun loadWebViewData() {
-        webViewComponent.setWebViewParams(_webViewParams.value)
-    }
-
     fun onTitleChange(title: String) {
         _uiState.update { it.copy(title = title, isDirty = true) }
-        updateWebViewParams()
     }
 
     fun onDescriptionChange(description: String) {
         _uiState.update { it.copy(description = description, isDirty = true) }
     }
 
+    /** 标题行 leadIcon：存图标注册表 key，空串表示回退标题首字。 */
+    fun onIconChange(iconName: String) {
+        _uiState.update { it.copy(iconName = iconName, isDirty = true) }
+    }
+
     fun onUrlChange(url: String) {
         _uiState.update { it.copy(url = url, isDirty = true) }
-        updateWebViewParams()
     }
 
     fun onDataChange(data: String) {
         _uiState.update { it.copy(data = data, isDirty = true) }
-        updateWebViewParams()
     }
 
     fun saveItem(
-        onSuccess: () -> Unit,
+        onSuccess: (savedItemId: Int) -> Unit,
         onFailure: (String) -> Unit
     ) {
         val currentState = _uiState.value
-        if (currentState.selectedCategories.isEmpty()) {
-            onFailure(AppContext.getString(R.string.error_category_empty))
+        if (resolveSaveUrl(currentState) == null) {
+            onFailure(AppContext.getString(R.string.error_url_empty))
             return
         }
         val resolvedTitle = currentState.title.ifBlank {
@@ -247,7 +224,8 @@ class CreateHtmlComponent @AssistedInject internal constructor(
 
         componentScope.launch(ioDispatcher) {
             val draft = dataDraftHelper.getById(draftId)
-
+            val isEditing = draft?.itemId != null
+            val normalizedUrl = resolveSaveUrl(currentState)
             val item = ItemEntity(
                 id = draft?.itemId ?: 0,
                 remoteId = null,
@@ -255,8 +233,10 @@ class CreateHtmlComponent @AssistedInject internal constructor(
                 listType = ListItemType.HTML.id,
                 title = resolvedTitle,
                 description = currentState.description,
-                url = currentState.url,
-                iconName = currentState.title.firstOrNull()?.toString(),
+                url = normalizedUrl ?: currentState.url,
+                iconName = currentState.iconName.ifBlank {
+                    resolvedTitle.firstOrNull()?.toString()
+                },
                 createdAt = now,
                 updatedAt = now,
                 publishedAt = now,
@@ -290,15 +270,22 @@ class CreateHtmlComponent @AssistedInject internal constructor(
             )
             itemDataDao.insertLink(ItemDataLink(itemId = itemId, dataId = dataId))
 
-            categoryDao.deleteCategoriesByItemId(itemId)
-            currentState.selectedCategories.forEach { category ->
-                itemDao.insertItemCategoryCrossRef(
-                    ItemCategoryCrossRef(itemId = itemId, categoryId = category.id)
-                )
-            }
+            applyCategories(
+                itemId = itemId,
+                selected = currentState.selectedCategories,
+                isEditing = isEditing,
+            )
             _uiState.update { it.copy(isSaving = false, isDirty = false) }
 
             dataDraftHelper.deleteById(draftId)
+
+            // 常驻返回栈里的收藏查看器（浏览器）据此重载快照，不显示编辑前的旧内容
+            AppEventBus.emit(
+                BookmarkChangedEvent(
+                    itemId = itemId,
+                    url = currentState.url,
+                )
+            )
 
             onResult?.invoke(
                 ScreenCallbackResult.saved(
@@ -308,11 +295,54 @@ class CreateHtmlComponent @AssistedInject internal constructor(
                 )
             )
 
-            sendOperationEvent(item, onSuccess)
+            sendOperationEvent(item.copy(id = itemId), onSuccess)
         }
     }
 
-    private fun sendOperationEvent(item: ItemEntity, onSuccess: () -> Unit = { }) {
+    /**
+     * 保存时落库的 url（已 trim）。url 是收藏在浏览器里打开的唯一入口，
+     * 仍然必填——「分类可选」不等于「内容可空」，两者都空只会在列表里生成点不开的僵尸卡片。
+     */
+    private fun resolveSaveUrl(state: CreateHtmlUiState): String? =
+        state.url.trim().takeIf { it.isNotEmpty() }
+
+    /**
+     * 分类现在可选：选了就按选择落库；编辑时清空选择保留原有分类；
+     * 新建且一个都没选时回落到「未分类」，避免条目在 INNER JOIN item_category 的列表里消失。
+     */
+    private suspend fun applyCategories(
+        itemId: Int,
+        selected: Set<Category>,
+        isEditing: Boolean,
+    ) {
+        if (selected.isEmpty()) {
+            if (!isEditing) {
+                itemDao.insertItemCategoryCrossRef(
+                    ItemCategoryCrossRef(
+                        itemId = itemId,
+                        categoryId = ensureDefaultCategoryId().toInt(),
+                    )
+                )
+            }
+            return
+        }
+        categoryDao.deleteCategoriesByItemId(itemId)
+        selected.forEach { category ->
+            itemDao.insertItemCategoryCrossRef(
+                ItemCategoryCrossRef(itemId = itemId, categoryId = category.id)
+            )
+        }
+    }
+
+    private suspend fun ensureDefaultCategoryId(): Long {
+        val name = AppContext.getString(R.string.note_default_category)
+        categoryDao.getCategoryByName(name)?.let { return it.id.toLong() }
+        return categoryDao.insert(
+            Category(name = name, canEdit = true, source = Source.LOCAL)
+        )
+    }
+
+    private fun sendOperationEvent(item: ItemEntity, onSuccess: (Int) -> Unit = { }) {
         componentScope.launch(ioDispatcher) {
             val description = AppContext.getString(
                 R.string.operation_history_description_html_saved,
@@ -327,7 +357,7 @@ class CreateHtmlComponent @AssistedInject internal constructor(
                 screenRoute = screen.id.toString()
             )
             withContext(Dispatchers.Main) {
-                onSuccess()
+                onSuccess(item.id)
             }
         }
     }
@@ -397,7 +427,6 @@ class CreateHtmlComponent @AssistedInject internal constructor(
                                 url = result.url
                             )
                         }
-                        updateWebViewParams()
                         withContext(Dispatchers.Main) {
                             onSuccess?.invoke(result.htmlContent)
                         }
@@ -432,7 +461,6 @@ class CreateHtmlComponent @AssistedInject internal constructor(
             _uiState.update {
                 it.copy(data = event.text, isDirty = true)
             }
-            updateWebViewParams()
             CodeEditorDataStore.clear(dataDraftHelper, event.editDraftId)
             editorDraftId = null
         }

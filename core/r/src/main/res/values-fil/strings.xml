@@ -873,7 +873,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">Source code (opsyonal)</string>
     <string name="title_placeholder">Pangalan</string>
-    <string name="error_category_empty">Hindi maaaring walang laman ang kategorya</string>
     <string name="note_default_category">Walang kategorya</string>
     <string name="save_success">Matagumpay na na-save</string>
     <string name="operation_history_description_html_saved">Na-bookmark ang URL \"%s\".</string>
@@ -889,11 +888,11 @@
     <string name="new_html">Magdagdag ng Bookmark</string>
     <string name="edit_html">I-edit ang Bookmark</string>
     <string name="new_prompt">Bagong Prompt</string>
-    <string name="html_preview">Preview</string>
-    <string name="html_preview_description">I-preview ang web content</string>
     <string name="html_data_placeholder">Ang na-scrape na content ay magpe-preview dito…</string>
     <string name="download_successful">Matagumpay na na-scrape</string>
     <string name="download_failed">Nabigo ang pag-scrape</string>
+    <string name="save_bookmark">I-save ang bookmark</string>
+    <string name="html_title_icon_pick">Pumili ng icon ng pamagat</string>
     <string name="save_to_collection">I-save sa Koleksyon</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">Na-scrape na Content</string>

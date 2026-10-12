@@ -1,7 +1,9 @@
 package com.shifenmiao.online.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,11 +14,10 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,16 +31,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.base.ui.icon.BuildCustomIcon
+import com.shifenmiao.base.ui.icon.IconPickerSheet
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.core.R
 import com.shifenmiao.interfaces.singleton.AppContext
-import com.shifenmiao.model.HomeTabKey
 import com.shifenmiao.online.component.CreateHtmlComponent
 import com.shifenmiao.online.ui.HtmlCategorySelection
 import com.shifenmiao.online.ui.ItemTextField
@@ -51,11 +54,10 @@ import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxBottomActionBar
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionHeader
 import kotlinx.coroutines.launch
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineSingleEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownloadForOffline
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 
 @Composable
 fun CreateHtmlScreen(
@@ -64,16 +66,23 @@ fun CreateHtmlScreen(
 ) {
     val uiState by createHtmlComponent.uiState.collectAsState()
     val showExitDialog = rememberSaveable { mutableStateOf(false) }
+    val showIconPicker = rememberSaveable { mutableStateOf(false) }
     val navigator = LocalUrlNavigator.current
     val scope = rememberCoroutineScope()
 
     val onSave = {
         createHtmlComponent.saveItem(
-            onSuccess = {
+            onSuccess = { savedItemId ->
                 AppToastHost.showToast(AppContext.getString(R.string.save_success))
-                appComponent.onNavigateReplacingCurrent(
-                    Screen.NewApp(initialTab = HomeTabKey.WEB)
-                )
+                if (uiState.isEditing) {
+                    // 从收藏查看器进来的编辑：退回查看器即可，它在 onStart 会重载最新快照
+                    appComponent.onGoBack()
+                } else {
+                    // 新建：替换当前页直接看内容，返回即回收藏列表
+                    appComponent.onNavigateReplacingCurrent(
+                        Screen.WebBrowser(bookmarkItemId = savedItemId)
+                    )
+                }
             },
             onFailure = { errorMsg ->
                 AppToastHost.showToast(errorMsg)
@@ -100,22 +109,6 @@ fun CreateHtmlScreen(
         onGoBack = onBack,
         supportGlassEffect = true,
         showNavigationBarsPadding = false,
-        actions = {
-            IconButton(
-                onClick = onSave,
-                enabled = !uiState.isSaving,
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                    contentDescription = stringResource(R.string.save_to_collection),
-                    tint = if (uiState.isSaving) {
-                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
-                    } else {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    },
-                )
-            }
-        },
     ) {
         LazyColumn(
             modifier = Modifier
@@ -140,11 +133,43 @@ fun CreateHtmlScreen(
                         placeholder = { Text(stringResource(R.string.create_ai_common_title_label)) },
                         singleLine = true,
                         leadingIcon = {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineText,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
+                            // leadIcon 可点：整块热区打开全局图标选择浮动层
+                            val hasIcon = uiState.iconName.isNotBlank()
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(RoundedCornerShape(OneBoxDesignSystem.smallRadius))
+                                    .clickable { showIconPicker.value = true },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                BuildCustomIcon(
+                                    iconName = uiState.iconName.ifBlank { null },
+                                    fallbackName = uiState.title,
+                                    modifier = Modifier.size(22.dp),
+                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                )
+                                if (!hasIcon) {
+                                    // 空态提示：未选图标时显示小铅笔角标，暗示这里可以点
+                                    Icon(
+                                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSingleEdit,
+                                        contentDescription = stringResource(R.string.html_title_icon_pick),
+                                        modifier = Modifier
+                                            .align(Alignment.BottomEnd)
+                                            .size(12.dp),
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                            }
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = { showIconPicker.value = true }) {
+                                Icon(
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSingleEdit,
+                                    contentDescription = stringResource(R.string.html_title_icon_pick),
+                                    modifier = Modifier.size(18.dp),
+                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                )
+                            }
                         },
                     )
                 }
@@ -202,7 +227,7 @@ fun CreateHtmlScreen(
                 }
             }
 
-            // ── CATEGORY（横向滚动，紧接 URL） ────────────────────
+            // ── CATEGORY（可选，横向滚动，紧接 URL） ───────────────
             item {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.compactSpacing),
@@ -287,13 +312,21 @@ fun CreateHtmlScreen(
 
         // ── Save to Collection ────────────────────────────────────
         OneBoxBottomActionBar(
-            primaryText = stringResource(R.string.save_to_collection),
+            primaryText = stringResource(R.string.save_bookmark),
             onPrimaryClick = onSave,
             primaryEnabled = !uiState.isSaving,
         )
     }
 
     BackHandler(onBack = onBack)
+
+    // 全局图标选择浮动层：标题 leadIcon 与卡片列表共用一个注册表 key
+    IconPickerSheet(
+        visible = showIconPicker.value,
+        onDismiss = { showIconPicker.value = false },
+        onIconSelected = createHtmlComponent::onIconChange,
+        selectedIconName = uiState.iconName.takeIf { it.isNotBlank() },
+    )
 
     ExitWithoutSavingDialog(
         onExit = { appComponent.onGoBack() },

@@ -873,7 +873,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">Código-fonte (opcional)</string>
     <string name="title_placeholder">Nome</string>
-    <string name="error_category_empty">A categoria não pode estar vazia</string>
     <string name="note_default_category">Sem categoria</string>
     <string name="save_success">Salvo com sucesso</string>
     <string name="operation_history_description_html_saved">URL marcada como favorito \"%s\".</string>
@@ -889,11 +888,11 @@
     <string name="new_html">Adicionar Favorito</string>
     <string name="edit_html">Editar Favorito</string>
     <string name="new_prompt">Novo Prompt</string>
-    <string name="html_preview">Pré-visualizar</string>
-    <string name="html_preview_description">Pré-visualizar conteúdo web</string>
     <string name="html_data_placeholder">O conteúdo extraído será pré-visualizado aqui…</string>
     <string name="download_successful">Extração bem-sucedida</string>
     <string name="download_failed">Falha na extração</string>
+    <string name="save_bookmark">Salvar favorito</string>
+    <string name="html_title_icon_pick">Escolher ícone do título</string>
     <string name="save_to_collection">Salvar na Coleção</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">Conteúdo Extraído</string>

@@ -332,7 +332,6 @@ internal fun Screen.simpleName(): String = when (this) {
     is Screen.MarkdownEditor -> "MarkdownEditor"
     is Screen.CreateNote -> "CreateNote"
     is Screen.CreateHtml -> "CreateHtml"
-    is Screen.PreviewHtml -> "PreviewHtml"
     is Screen.EditPromptItem -> "EditPromptItem"
     is Screen.OcrDocument -> "OcrDocument"
     is Screen.DocConvertDocument -> "DocConvertDocument"
@@ -473,7 +472,6 @@ internal fun Screen.icon(): ImageVector? = when (this) {
     is Screen.MarkdownEditor -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkdownEdit
     is Screen.CreateNote -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlog
     is Screen.CreateHtml -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCodeEditor
-    is Screen.PreviewHtml -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibility
     is Screen.EditPromptItem -> com.t8rin.imagetoolbox.core.resources.Icons.Rounded.EditAlt
     is Screen.OcrDocument -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineOcrDocument
     is Screen.DocConvertDocument -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFormatConversion

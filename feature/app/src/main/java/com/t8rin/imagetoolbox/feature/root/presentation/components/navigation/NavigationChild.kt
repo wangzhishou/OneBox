@@ -90,13 +90,11 @@ import com.shifenmiao.online.component.EditPromptComponent
 import com.shifenmiao.online.component.ItemListComponent
 import com.shifenmiao.online.component.NoteItemComponent
 import com.shifenmiao.online.component.PlaygroundComponent
-import com.shifenmiao.online.component.PreviewHtmlComponent
 import com.shifenmiao.online.screen.CreateHtmlScreen
 import com.shifenmiao.online.screen.CreateNoteScreen
 import com.shifenmiao.online.screen.EditPromptScreen
 import com.shifenmiao.online.screen.MiniProgramScreen
 import com.shifenmiao.online.screen.NoteItemScreen
-import com.shifenmiao.online.screen.PreviewHtmlScreen
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.search.screen.SearchScreen
 import com.shifenmiao.webview.BaseWebViewScreen
@@ -930,19 +928,6 @@ sealed interface NavigationChild {
             NoteItemScreen(
                 appComponent = appComponent,
                 noteItemComponent = noteItemComponent
-            )
-        }
-    }
-
-    class PreviewHtml(
-        val previewHtmlComponent: PreviewHtmlComponent,
-        val appComponent: AppComponent
-    ) : NavigationChild {
-        @Composable
-        override fun Content() {
-            PreviewHtmlScreen(
-                appComponent = appComponent,
-                previewHtmlComponent = previewHtmlComponent
             )
         }
     }

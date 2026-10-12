@@ -91,8 +91,9 @@ class DefaultContentRouter(
             }
 
             is ContentType.Html -> {
+                // 本地 HTML 统一走内置浏览器渲染，不再单独维护一个预览页
                 onNavigate(
-                    Screen.PreviewHtml(
+                    Screen.WebBrowser(
                         localUri = uri
                     )
                 )

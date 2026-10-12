@@ -50,7 +50,6 @@ import com.shifenmiao.online.component.CreateNoteComponent
 import com.shifenmiao.online.component.EditPromptComponent
 import com.shifenmiao.online.component.ItemListComponent
 import com.shifenmiao.online.component.NoteItemComponent
-import com.shifenmiao.online.component.PreviewHtmlComponent
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.webview.WebViewComponent
 import com.shifenmiao.webview.browser.BrowserComponent
@@ -945,16 +944,6 @@ class ChildProvider @Inject constructor(
             appComponent = appComponent
         )
 
-        is Screen.PreviewHtml -> NavigationChild.PreviewHtml(
-            previewHtmlComponent = homeFactories.previewHtmlComponentFactory(
-                componentContext = componentContext,
-                itemEntityParams = config.itemEntityParams,
-                localUri = config.localUri,
-                onResult = config.onResult
-            ),
-            appComponent = appComponent
-        )
-
         is Screen.DecisionWheelScreen -> NavigationChild.DecisionWheel(
             decisionWheelComponent = homeFactories.decisionWheelRouterComponentFactory(
                 componentContext = componentContext,
@@ -1490,7 +1479,13 @@ class ChildProvider @Inject constructor(
             lifeFactories.get().browserComponentFactory(
                 componentContext = componentContext,
                 onGoBack = ::navigateBack,
-                initialUrl = config.url
+                initialUrl = config.url,
+                bookmarkItemId = config.bookmarkItemId,
+                initialLocalUri = config.localUri,
+                // 收藏查看器底栏的「编辑」入口：直接进编辑页，保存后回到查看器
+                onEditBookmark = { _, draftId ->
+                    navigateTo(Screen.CreateHtml(draftId = draftId))
+                }
             )
         )
 

@@ -79,6 +79,11 @@ object AppEventBus {
     val editorResultEvents = _editorResultEvents.asSharedFlow()
     fun emit(event: EditorResultEvent) = _editorResultEvents.tryEmit(event)
 
+    /** 网址收藏写入 / 删除：常驻返回栈的浏览器收藏查看器据此重载快照。 */
+    private val _bookmarkChangedEvents = MutableSharedFlow<BookmarkChangedEvent>(extraBufferCapacity = 8)
+    val bookmarkChangedEvents = _bookmarkChangedEvents.asSharedFlow()
+    fun emit(event: BookmarkChangedEvent) = _bookmarkChangedEvents.tryEmit(event)
+
     private val _startupTraceMarks = MutableSharedFlow<StartupTraceMarkEvent>(extraBufferCapacity = 64)
     val startupTraceMarks = _startupTraceMarks.asSharedFlow()
     fun emitStartupTraceMark(event: StartupTraceMarkEvent) = _startupTraceMarks.tryEmit(event)

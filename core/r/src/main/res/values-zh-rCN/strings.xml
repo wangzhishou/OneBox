@@ -1031,7 +1031,6 @@
     <string name="url_placeholder">网址</string>
     <string name="input_data_placeholder">源代码(可选)</string>
     <string name="title_placeholder">主题名称</string>
-    <string name="error_category_empty">分类不能为空</string>
     <string name="note_default_category">未分类</string>
     <string name="save_success">保存成功</string>
     <string name="operation_history_description_html_saved">收藏了网址「%s」</string>
@@ -1047,12 +1046,12 @@
     <string name="new_html">添加收藏</string>
     <string name="edit_html">编辑收藏</string>
     <string name="new_prompt">新建提示词</string>
-    <string name="html_preview">网页预览</string>
-    <string name="html_preview_description">预览网页内容</string>
     <string name="html_data_placeholder">抓取网址内容后将在此处预览, 作为快照保存, 之后优先展示快照内容.</string>
     <string name="download_successful">抓取成功</string>
     <string name="download_failed">抓取失败</string>
     <string name="save_to_collection">收藏网址</string>
+    <string name="save_bookmark">保存收藏</string>
+    <string name="html_title_icon_pick">选择标题图标</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">页面内容</string>
     <string name="category_section_label">分类</string>

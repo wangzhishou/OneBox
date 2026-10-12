@@ -67,4 +67,20 @@
     <string name="browser_error">错误</string>
     <string name="browser_url_label">网址: %1$s</string>
     <string name="browser_check_network_hint">请检查您的网络连接或URL是否正确</string>
+    <string name="browser_more">更多</string>
+    <string name="browser_add_bookmark">添加书签</string>
+    <string name="browser_remove_bookmark">取消书签</string>
+    <string name="browser_export_png">导出 PNG</string>
+    <string name="browser_export_pdf">导出 PDF</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_home">主页</string>
+    <string name="browser_forward">前进</string>
+    <string name="browser_edit_bookmark">编辑收藏</string>
+    <string name="browser_show_original">查看原网页</string>
+    <string name="browser_show_snapshot">查看快照</string>
+    <string name="browser_open_external">用系统浏览器打开</string>
+    <string name="browser_share_page">分享页面</string>
+    <string name="browser_share_unavailable">当前没有可分享的内容</string>
+    <string name="browser_shared">已分享</string>
 </resources>

@@ -873,7 +873,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">Исходный код (необязательно)</string>
     <string name="title_placeholder">Название</string>
-    <string name="error_category_empty">Категория не может быть пустой</string>
     <string name="note_default_category">Без категории</string>
     <string name="save_success">Сохранено успешно</string>
     <string name="operation_history_description_html_saved">Добавлена закладка URL \"%s\".</string>
@@ -889,11 +888,11 @@
     <string name="new_html">Добавить закладку</string>
     <string name="edit_html">Редактировать закладку</string>
     <string name="new_prompt">Новый промпт</string>
-    <string name="html_preview">Предпросмотр</string>
-    <string name="html_preview_description">Предпросмотр веб-контента</string>
     <string name="html_data_placeholder">Собранный контент появится здесь…</string>
     <string name="download_successful">Сбор выполнен успешно</string>
     <string name="download_failed">Сбор не удался</string>
+    <string name="save_bookmark">Сохранить закладку</string>
+    <string name="html_title_icon_pick">Выбрать значок заголовка</string>
     <string name="save_to_collection">Сохранить в коллекцию</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">Собранный контент</string>

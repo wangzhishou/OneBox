@@ -54,4 +54,20 @@
     <string name="browser_error">Kesalahan</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">Periksa koneksi jaringan Anda dan pastikan URL benar</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_more">Lainnya</string>
+    <string name="browser_add_bookmark">Tambah bookmark</string>
+    <string name="browser_remove_bookmark">Hapus bookmark</string>
+    <string name="browser_export_png">Ekspor PNG</string>
+    <string name="browser_export_pdf">Ekspor PDF</string>
+    <string name="browser_home">Beranda</string>
+    <string name="browser_forward">Maju</string>
+    <string name="browser_edit_bookmark">Edit bookmark</string>
+    <string name="browser_show_original">Lihat halaman asli</string>
+    <string name="browser_show_snapshot">Lihat snapshot tersimpan</string>
+    <string name="browser_open_external">Buka di browser sistem</string>
+    <string name="browser_share_page">Bagikan halaman</string>
+    <string name="browser_share_unavailable">Belum ada yang bisa dibagikan</string>
+    <string name="browser_shared">Dibagikan</string>
 </resources>

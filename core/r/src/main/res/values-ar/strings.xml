@@ -933,7 +933,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">الشيفرة المصدرية (اختياري)</string>
     <string name="title_placeholder">الاسم</string>
-    <string name="error_category_empty">لا يمكن أن تكون الفئة فارغة</string>
     <string name="note_default_category">غير مصنَّف</string>
     <string name="save_success">تم الحفظ بنجاح</string>
     <string name="operation_history_description_html_saved">تمت إضافة URL \"%s\" إلى الإشارات المرجعية.</string>
@@ -949,11 +948,11 @@
     <string name="new_html">إضافة إشارة مرجعية</string>
     <string name="edit_html">تعديل الإشارة المرجعية</string>
     <string name="new_prompt">مُوجِّه جديد</string>
-    <string name="html_preview">معاينة</string>
-    <string name="html_preview_description">معاينة محتوى الويب</string>
     <string name="html_data_placeholder">سيظهر المحتوى المستخرَج هنا للمعاينة…</string>
     <string name="download_successful">تم الاستخراج بنجاح</string>
     <string name="download_failed">فشل الاستخراج</string>
+    <string name="save_bookmark">حفظ الإشارة المرجعية</string>
+    <string name="html_title_icon_pick">اختيار أيقونة العنوان</string>
     <string name="save_to_collection">حفظ في المجموعة</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">المحتوى المستخرَج</string>

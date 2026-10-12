@@ -54,4 +54,20 @@
     <string name="browser_error">خطأ</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">تحقّق من اتصال الشبكة ومن صحة URL</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_more">المزيد</string>
+    <string name="browser_add_bookmark">إضافة إشارة مرجعية</string>
+    <string name="browser_remove_bookmark">إزالة الإشارة المرجعية</string>
+    <string name="browser_export_png">تصدير PNG</string>
+    <string name="browser_export_pdf">تصدير PDF</string>
+    <string name="browser_home">الرئيسية</string>
+    <string name="browser_forward">تقدّم</string>
+    <string name="browser_edit_bookmark">تحرير الإشارة المرجعية</string>
+    <string name="browser_show_original">عرض الصفحة الأصلية</string>
+    <string name="browser_show_snapshot">عرض اللقطة المحفوظة</string>
+    <string name="browser_open_external">فتح في متصفح النظام</string>
+    <string name="browser_share_page">مشاركة الصفحة</string>
+    <string name="browser_share_unavailable">لا يوجد محتوى للمشاركة بعد</string>
+    <string name="browser_shared">تمت المشاركة</string>
 </resources>

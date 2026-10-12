@@ -873,7 +873,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">Quellcode (optional)</string>
     <string name="title_placeholder">Name</string>
-    <string name="error_category_empty">Kategorie darf nicht leer sein</string>
     <string name="note_default_category">Nicht kategorisiert</string>
     <string name="save_success">Erfolgreich gespeichert</string>
     <string name="operation_history_description_html_saved">URL \"%s\" als Lesezeichen gespeichert.</string>
@@ -889,11 +888,11 @@
     <string name="new_html">Lesezeichen hinzufügen</string>
     <string name="edit_html">Lesezeichen bearbeiten</string>
     <string name="new_prompt">Neuer Prompt</string>
-    <string name="html_preview">Vorschau</string>
-    <string name="html_preview_description">Webinhalt in der Vorschau anzeigen</string>
     <string name="html_data_placeholder">Der gescrapte Inhalt wird hier in der Vorschau angezeigt…</string>
     <string name="download_successful">Erfolgreich gescrapt</string>
     <string name="download_failed">Scraping fehlgeschlagen</string>
+    <string name="save_bookmark">Lesezeichen speichern</string>
+    <string name="html_title_icon_pick">Titel-Symbol wählen</string>
     <string name="save_to_collection">In Sammlung speichern</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">Gescraper Inhalt</string>

@@ -9,6 +9,13 @@ interface WebViewNavigator {
     fun detach()
     fun isAttached(): Boolean
     fun loadUrl(url: String)
+
+    /**
+     * 用 [baseUrl] 作为文档基准地址渲染一段 HTML 字符串（收藏快照离线查看）。
+     * baseUrl 只影响相对路径/Cookie 归属，地址栏与历史仍是原始网址。
+     */
+    fun loadHtml(html: String, baseUrl: String?)
+
     fun goBack()
     fun goForward()
     fun reload()

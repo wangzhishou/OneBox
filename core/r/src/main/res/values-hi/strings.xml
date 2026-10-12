@@ -873,7 +873,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">स्रोत कोड (वैकल्पिक)</string>
     <string name="title_placeholder">नाम</string>
-    <string name="error_category_empty">श्रेणी खाली नहीं हो सकती</string>
     <string name="note_default_category">अवर्गीकृत</string>
     <string name="save_success">सफलतापूर्वक सहेजा गया</string>
     <string name="operation_history_description_html_saved">बुकमार्क किया गया URL \"%s\"।</string>
@@ -889,11 +888,11 @@
     <string name="new_html">बुकमार्क जोड़ें</string>
     <string name="edit_html">बुकमार्क संपादित करें</string>
     <string name="new_prompt">नया प्रॉम्प्ट</string>
-    <string name="html_preview">पूर्वावलोकन</string>
-    <string name="html_preview_description">वेब सामग्री का पूर्वावलोकन करें</string>
     <string name="html_data_placeholder">स्क्रैप की गई सामग्री यहाँ दिखाई देगी…</string>
     <string name="download_successful">स्क्रैप सफल रहा</string>
     <string name="download_failed">स्क्रैप विफल रहा</string>
+    <string name="save_bookmark">बुकमार्क सहेजें</string>
+    <string name="html_title_icon_pick">शीर्षक आइकन चुनें</string>
     <string name="save_to_collection">संग्रह में सहेजें</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">स्क्रैप की गई सामग्री</string>

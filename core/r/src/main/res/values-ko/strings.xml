@@ -873,7 +873,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">소스 코드 (선택 사항)</string>
     <string name="title_placeholder">이름</string>
-    <string name="error_category_empty">카테고리는 비워 둘 수 없습니다</string>
     <string name="note_default_category">분류되지 않음</string>
     <string name="save_success">저장되었습니다</string>
     <string name="operation_history_description_html_saved">북마크된 URL \"%s\".</string>
@@ -889,11 +888,11 @@
     <string name="new_html">북마크 추가</string>
     <string name="edit_html">북마크 편집</string>
     <string name="new_prompt">새 프롬프트</string>
-    <string name="html_preview">미리보기</string>
-    <string name="html_preview_description">웹 콘텐츠 미리보기</string>
     <string name="html_data_placeholder">스크랩한 콘텐츠가 여기에 표시됩니다…</string>
     <string name="download_successful">스크랩 성공</string>
     <string name="download_failed">스크랩 실패</string>
+    <string name="save_bookmark">북마크 저장</string>
+    <string name="html_title_icon_pick">제목 아이콘 선택</string>
     <string name="save_to_collection">컬렉션에 저장</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">스크랩된 콘텐츠</string>

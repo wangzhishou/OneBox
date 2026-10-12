@@ -54,4 +54,20 @@
     <string name="browser_error">त्रुटि</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">अपना नेटवर्क कनेक्शन जाँचें और सुनिश्चित करें कि URL सही है</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_more">अधिक</string>
+    <string name="browser_add_bookmark">बुकमार्क जोड़ें</string>
+    <string name="browser_remove_bookmark">बुकमार्क हटाएँ</string>
+    <string name="browser_export_png">PNG निर्यात करें</string>
+    <string name="browser_export_pdf">PDF निर्यात करें</string>
+    <string name="browser_home">होम</string>
+    <string name="browser_forward">आगे</string>
+    <string name="browser_edit_bookmark">बुकमार्क संपादित करें</string>
+    <string name="browser_show_original">मूल पृष्ठ देखें</string>
+    <string name="browser_show_snapshot">सहेजा गया स्नैपशॉट देखें</string>
+    <string name="browser_open_external">सिस्टम ब्राउज़र में खोलें</string>
+    <string name="browser_share_page">पृष्ठ साझा करें</string>
+    <string name="browser_share_unavailable">अभी साझा करने के लिए कुछ नहीं है</string>
+    <string name="browser_shared">साझा किया गया</string>
 </resources>

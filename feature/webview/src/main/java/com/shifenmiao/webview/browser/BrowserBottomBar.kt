@@ -24,10 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import com.shifenmiao.webview.R
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.resources.icons.ArrowBack
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
@@ -37,6 +39,10 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineBookmark
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdf
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTab
+import com.t8rin.imagetoolbox.core.resources.icons.Edit
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTravelExplore
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowForwardIos
 
 @Composable
@@ -46,9 +52,11 @@ fun BrowserBottomBar(
     tabCount: Int,
     isBookmarked: Boolean,
     selectedPage: BrowserState.BrowserPage,
+    isBookmarkViewer: Boolean,
     onGoBack: () -> Unit,
     onGoForward: () -> Unit,
     onHome: () -> Unit,
+    onEditBookmark: () -> Unit,
     onTabs: () -> Unit,
     onAddBookmark: () -> Unit,
     onMoreClick: () -> Unit,
@@ -69,32 +77,42 @@ fun BrowserBottomBar(
         ) {
             BottomIconButton(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                contentDescription = "后退",
+                contentDescription = stringResource(R.string.browser_back),
                 enabled = canGoBack,
                 onClick = onGoBack
             )
             BottomIconButton(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArrowForwardIos,
-                contentDescription = "前进",
+                contentDescription = stringResource(R.string.browser_forward),
                 enabled = canGoForward,
                 onClick = onGoForward
             )
+            // 从收藏进来时，「主页」槽位换成编辑入口 —— 这是查看收藏时最常用的动作
+            if (isBookmarkViewer) {
+                BottomIconButton(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Edit,
+                    contentDescription = stringResource(R.string.browser_edit_bookmark),
+                    selected = true,
+                    onClick = onEditBookmark
+                )
+            } else {
+                BottomIconButton(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineApp,
+                    contentDescription = stringResource(R.string.browser_home),
+                    selected = selectedPage == BrowserState.BrowserPage.Home,
+                    onClick = onHome
+                )
+            }
             BottomIconButton(
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineApp,
-                contentDescription = "主页",
-                selected = selectedPage == BrowserState.BrowserPage.Home,
-                onClick = onHome
-            )
-            BottomIconButton(
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language,
-                contentDescription = "标签页",
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTab,
+                contentDescription = stringResource(R.string.browser_tabs),
                 selected = selectedPage == BrowserState.BrowserPage.Tabs,
                 badgeCount = tabCount,
                 onClick = onTabs
             )
             BottomIconButton(
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
-                contentDescription = "更多",
+                contentDescription = stringResource(R.string.browser_more),
                 onClick = onMoreClick
             )
         }
@@ -104,9 +122,15 @@ fun BrowserBottomBar(
 @Composable
 fun BrowserMoreMenu(
     isBookmarked: Boolean,
+    isBookmarkViewer: Boolean,
+    isShowingSnapshot: Boolean,
+    canToggleSnapshot: Boolean,
     onBookmarkToggle: () -> Unit,
     onExportPng: () -> Unit,
     onExportPdf: () -> Unit,
+    onToggleSnapshot: () -> Unit,
+    onOpenExternal: () -> Unit,
+    onSharePage: () -> Unit,
     onBookmarks: () -> Unit,
     onSettings: () -> Unit,
     onDismiss: () -> Unit,
@@ -120,14 +144,38 @@ fun BrowserMoreMenu(
         properties = PopupProperties(focusable = true)
     ) {
         Card(
-            modifier = modifier.width(200.dp),
+            modifier = modifier.width(220.dp),
             shape = RoundedCornerShape(16.dp)
         ) {
             Column {
+                if (isBookmarkViewer && canToggleSnapshot) {
+                    // 只对「带快照的收藏」有意义：离线快照 ⇄ 线上原页
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = stringResource(
+                                    if (isShowingSnapshot) R.string.browser_show_original
+                                    else R.string.browser_show_snapshot
+                                ),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTravelExplore,
+                                contentDescription = null
+                            )
+                        },
+                        onClick = onToggleSnapshot
+                    )
+                }
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = if (isBookmarked) "取消书签" else "添加书签",
+                            text = stringResource(
+                                if (isBookmarked) R.string.browser_remove_bookmark
+                                else R.string.browser_add_bookmark
+                            ),
                             style = MaterialTheme.typography.bodyLarge
                         )
                     },
@@ -140,22 +188,32 @@ fun BrowserMoreMenu(
                     onClick = onBookmarkToggle
                 )
                 DropdownMenuItem(
-                    text = { Text("导出PNG", style = MaterialTheme.typography.bodyLarge) },
+                    text = { Text(stringResource(R.string.browser_share_page), style = MaterialTheme.typography.bodyLarge) },
+                    leadingIcon = { Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare, contentDescription = null) },
+                    onClick = onSharePage
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.browser_open_external), style = MaterialTheme.typography.bodyLarge) },
+                    leadingIcon = { Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTravelExplore, contentDescription = null) },
+                    onClick = onOpenExternal
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.browser_export_png), style = MaterialTheme.typography.bodyLarge) },
                     leadingIcon = { Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage, contentDescription = null) },
                     onClick = onExportPng
                 )
                 DropdownMenuItem(
-                    text = { Text("导出PDF", style = MaterialTheme.typography.bodyLarge) },
+                    text = { Text(stringResource(R.string.browser_export_pdf), style = MaterialTheme.typography.bodyLarge) },
                     leadingIcon = { Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePdf, contentDescription = null) },
                     onClick = onExportPdf
                 )
                 DropdownMenuItem(
-                    text = { Text("书签与历史", style = MaterialTheme.typography.bodyLarge) },
+                    text = { Text(stringResource(R.string.browser_bookmarks_history), style = MaterialTheme.typography.bodyLarge) },
                     leadingIcon = { Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBookmark, contentDescription = null) },
                     onClick = onBookmarks
                 )
                 DropdownMenuItem(
-                    text = { Text("设置", style = MaterialTheme.typography.bodyLarge) },
+                    text = { Text(stringResource(R.string.browser_settings), style = MaterialTheme.typography.bodyLarge) },
                     leadingIcon = { Icon(imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings, contentDescription = null) },
                     onClick = onSettings
                 )

@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Close
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTab
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,7 +38,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.Add
 import androidx.compose.ui.res.stringResource
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.shifenmiao.webview.R
-import com.t8rin.imagetoolbox.core.resources.icons.Language
 
 @Composable
 fun BrowserTabsPage(component: BrowserComponent) {
@@ -128,7 +128,7 @@ private fun TabCardItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTab,
                 contentDescription = null,
                 modifier = Modifier.size(24.dp),
                 tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -169,7 +169,7 @@ private fun EmptyTabsView(onAddTab: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language,
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTab,
                 contentDescription = null,
                 modifier = Modifier.size(64.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)

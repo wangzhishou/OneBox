@@ -54,4 +54,20 @@
     <string name="browser_error">Hata</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">Ağ bağlantınızı kontrol edin ve URL\'nin doğru olduğundan emin olun</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_more">Diğer</string>
+    <string name="browser_add_bookmark">Yer imi ekle</string>
+    <string name="browser_remove_bookmark">Yer imini kaldır</string>
+    <string name="browser_export_png">PNG olarak dışa aktar</string>
+    <string name="browser_export_pdf">PDF olarak dışa aktar</string>
+    <string name="browser_home">Ana sayfa</string>
+    <string name="browser_forward">İleri</string>
+    <string name="browser_edit_bookmark">Yer imini düzenle</string>
+    <string name="browser_show_original">Özgün sayfayı görüntüle</string>
+    <string name="browser_show_snapshot">Kaydedilen anlık görüntüyü göster</string>
+    <string name="browser_open_external">Sistem tarayıcısında aç</string>
+    <string name="browser_share_page">Sayfayı paylaş</string>
+    <string name="browser_share_unavailable">Henüz paylaşılacak bir şey yok</string>
+    <string name="browser_shared">Paylaşıldı</string>
 </resources>

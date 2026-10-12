@@ -41,11 +41,11 @@ object ScreenNavigationToolSupport {
                     onResult = onResult
                 )
             }
-            is Screen.PreviewHtml -> { onResult ->
-                Screen.PreviewHtml(
-                    itemEntityParams = screen.itemEntityParams,
+            is Screen.WebBrowser -> { _ ->
+                Screen.WebBrowser(
+                    url = screen.url,
+                    bookmarkItemId = screen.bookmarkItemId,
                     localUri = screen.localUri,
-                    onResult = onResult
                 )
             }
             is Screen.EditPromptItem -> { onResult ->

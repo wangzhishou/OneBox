@@ -162,8 +162,12 @@ fun String.toFaviconUrl(): String {
 
 fun normalizeUrl(input: String, searchEngine: SearchEngine = SearchEngine.GOOGLE): String {
     val trimmed = input.trim()
+    // file:// / content:// / about:blank 等完整 scheme：原样交给 WebView，
+    // 不能套 domains-含点 的猜测规则（"content://..." 会被拼成 https://content://...）
+    if (trimmed.contains("://") || trimmed.startsWith("about:") || trimmed.startsWith("data:")) {
+        return trimmed
+    }
     return when {
-        trimmed.startsWith("http://") || trimmed.startsWith("https://") -> trimmed
         trimmed.contains(".") && !trimmed.contains(" ") -> "https://$trimmed"
         else -> searchEngine.searchUrl + java.net.URLEncoder.encode(trimmed, "UTF-8")
     }

@@ -1475,19 +1475,6 @@ sealed class Screen(
     )
 
     @Serializable
-    @SerialName("PreviewHtml")
-    class PreviewHtml(
-        val itemEntityParams: ItemEntityParams = ItemEntityParams(),
-        val localUri: Uri? = null,
-        @Transient val onResult: ScreenCallback? = null
-    ) : Screen(
-        id = 1051,
-        title = com.shifenmiao.core.R.string.html_preview,
-        subtitle = com.shifenmiao.core.R.string.html_preview_description,
-        description = ""
-    )
-
-    @Serializable
     @SerialName("EditPromptItem")
     class EditPromptItem(
         val draftId: Long = 0L,
@@ -2081,7 +2068,14 @@ sealed class Screen(
     @Serializable
     @SerialName("WebBrowser")
     data class WebBrowser(
-        val url: String = ""
+        val url: String = "",
+        /**
+         * 非 0 时进入「网址收藏查看器」形态：优先离线渲染本地快照，地址栏仍显示原始网址，
+         * 底栏主页槽位换成编辑入口。
+         */
+        val bookmarkItemId: Int = 0,
+        /** 本地 HTML 文件（分享 / 文件浏览器入口），file:// 或 content:// */
+        val localUri: Uri? = null,
     ) : Screen(
         id = 1064,
         title = com.shifenmiao.core.R.string.web_browser_title,

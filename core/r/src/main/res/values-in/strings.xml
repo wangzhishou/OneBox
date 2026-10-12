@@ -873,7 +873,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">Kode sumber (opsional)</string>
     <string name="title_placeholder">Nama</string>
-    <string name="error_category_empty">Kategori tidak boleh kosong</string>
     <string name="note_default_category">Tanpa kategori</string>
     <string name="save_success">Berhasil disimpan</string>
     <string name="operation_history_description_html_saved">URL bookmark \"%s\".</string>
@@ -889,11 +888,11 @@
     <string name="new_html">Tambah Bookmark</string>
     <string name="edit_html">Edit Bookmark</string>
     <string name="new_prompt">Prompt Baru</string>
-    <string name="html_preview">Pratinjau</string>
-    <string name="html_preview_description">Pratinjau konten web</string>
     <string name="html_data_placeholder">Konten yang diambil akan muncul di sini…</string>
     <string name="download_successful">Berhasil diambil</string>
     <string name="download_failed">Pengambilan gagal</string>
+    <string name="save_bookmark">Simpan bookmark</string>
+    <string name="html_title_icon_pick">Pilih ikon judul</string>
     <string name="save_to_collection">Simpan ke Koleksi</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">Konten yang Diambil</string>

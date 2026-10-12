@@ -13,7 +13,6 @@ import com.shifenmiao.online.component.EditPromptComponent
 import com.shifenmiao.online.component.ItemListComponent
 import com.shifenmiao.online.component.NoteItemComponent
 import com.shifenmiao.online.component.PlaygroundComponent
-import com.shifenmiao.online.component.PreviewHtmlComponent
 import com.shifenmiao.search.logic.SearchComponent
 import com.shifenmiao.webview.WebViewComponent
 import com.t8rin.imagetoolbox.feature.settings.presentation.screenLogic.SettingsComponent
@@ -44,7 +43,6 @@ class HomeNavigationFactories @Inject constructor(
     val createHtmlComponentFactory: CreateHtmlComponent.Factory,
     val editPromptComponentFactory: EditPromptComponent.Factory,
     val noteItemComponentFactory: NoteItemComponent.Factory,
-    val previewHtmlComponentFactory: PreviewHtmlComponent.Factory,
     val decisionWheelRouterComponentFactory: DecisionWheelRouterComponent.Factory,
     val fileTransferComponentFactory: FileTransferComponent.Factory,
     val reorderableComponentFactory: ReorderableComponent.Factory,

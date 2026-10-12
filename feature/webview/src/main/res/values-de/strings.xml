@@ -54,4 +54,20 @@
     <string name="browser_error">Fehler</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">Überprüfe deine Netzwerkverbindung und stelle sicher, dass die URL korrekt ist</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_more">Mehr</string>
+    <string name="browser_add_bookmark">Lesezeichen hinzufügen</string>
+    <string name="browser_remove_bookmark">Lesezeichen entfernen</string>
+    <string name="browser_export_png">PNG exportieren</string>
+    <string name="browser_export_pdf">PDF exportieren</string>
+    <string name="browser_home">Startseite</string>
+    <string name="browser_forward">Vorwärts</string>
+    <string name="browser_edit_bookmark">Lesezeichen bearbeiten</string>
+    <string name="browser_show_original">Originalseite anzeigen</string>
+    <string name="browser_show_snapshot">Gespeicherten Schnappschuss anzeigen</string>
+    <string name="browser_open_external">Im Systembrowser öffnen</string>
+    <string name="browser_share_page">Seite teilen</string>
+    <string name="browser_share_unavailable">Noch nichts zum Teilen</string>
+    <string name="browser_shared">Geteilt</string>
 </resources>

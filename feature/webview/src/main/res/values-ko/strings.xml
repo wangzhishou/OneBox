@@ -54,4 +54,20 @@
     <string name="browser_error">오류</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">네트워크 연결을 확인하고 URL이 올바른지 확인하세요</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_more">더보기</string>
+    <string name="browser_add_bookmark">북마크 추가</string>
+    <string name="browser_remove_bookmark">북마크 제거</string>
+    <string name="browser_export_png">PNG 내보내기</string>
+    <string name="browser_export_pdf">PDF 내보내기</string>
+    <string name="browser_home">홈</string>
+    <string name="browser_forward">앞으로</string>
+    <string name="browser_edit_bookmark">북마크 편집</string>
+    <string name="browser_show_original">원본 페이지 보기</string>
+    <string name="browser_show_snapshot">저장된 스냅샷 보기</string>
+    <string name="browser_open_external">시스템 브라우저에서 열기</string>
+    <string name="browser_share_page">페이지 공유</string>
+    <string name="browser_share_unavailable">아직 공유할 내용이 없습니다</string>
+    <string name="browser_shared">공유됨</string>
 </resources>

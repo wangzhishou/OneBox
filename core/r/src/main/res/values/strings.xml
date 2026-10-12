@@ -984,7 +984,6 @@
     <string name="url_placeholder">URL</string>
     <string name="input_data_placeholder">Source code (optional)</string>
     <string name="title_placeholder">Name</string>
-    <string name="error_category_empty">Category cannot be empty</string>
     <string name="note_default_category">Uncategorized</string>
     <string name="save_success">Saved successfully</string>
     <string name="operation_history_description_html_saved">Bookmarked URL "%s".</string>
@@ -1000,12 +999,12 @@
     <string name="new_html">Add Bookmark</string>
     <string name="edit_html">Edit Bookmark</string>
     <string name="new_prompt">New Prompt</string>
-    <string name="html_preview">Preview</string>
-    <string name="html_preview_description">Preview web content</string>
     <string name="html_data_placeholder">Scraped content will preview here…</string>
     <string name="download_successful">Scraped successfully</string>
     <string name="download_failed">Scrape failed</string>
     <string name="save_to_collection">Save to Collection</string>
+    <string name="save_bookmark">Save Bookmark</string>
+    <string name="html_title_icon_pick">Choose title icon</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">Scraped Content</string>
     <string name="category_section_label">Category</string>

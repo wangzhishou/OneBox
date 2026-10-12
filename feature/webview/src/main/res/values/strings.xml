@@ -67,4 +67,20 @@
     <string name="browser_error">Error</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">Check your network connection and make sure the URL is correct</string>
+    <string name="browser_more">More</string>
+    <string name="browser_add_bookmark">Add bookmark</string>
+    <string name="browser_remove_bookmark">Remove bookmark</string>
+    <string name="browser_export_png">Export PNG</string>
+    <string name="browser_export_pdf">Export PDF</string>
+
+    <!-- Bookmark viewer -->
+    <string name="browser_home">Home</string>
+    <string name="browser_forward">Forward</string>
+    <string name="browser_edit_bookmark">Edit bookmark</string>
+    <string name="browser_show_original">View original page</string>
+    <string name="browser_show_snapshot">View saved snapshot</string>
+    <string name="browser_open_external">Open in system browser</string>
+    <string name="browser_share_page">Share page</string>
+    <string name="browser_share_unavailable">Nothing to share yet</string>
+    <string name="browser_shared">Shared</string>
 </resources>

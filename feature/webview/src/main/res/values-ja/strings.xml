@@ -54,4 +54,20 @@
     <string name="browser_error">エラー</string>
     <string name="browser_url_label">URL: %1$s</string>
     <string name="browser_check_network_hint">ネットワーク接続を確認し、URLが正しいことを確認してください</string>
+
+    <!-- 收藏查看器 -->
+    <string name="browser_more">その他</string>
+    <string name="browser_add_bookmark">ブックマークに追加</string>
+    <string name="browser_remove_bookmark">ブックマークを削除</string>
+    <string name="browser_export_png">PNG を書き出す</string>
+    <string name="browser_export_pdf">PDF を書き出す</string>
+    <string name="browser_home">ホーム</string>
+    <string name="browser_forward">進む</string>
+    <string name="browser_edit_bookmark">ブックマークを編集</string>
+    <string name="browser_show_original">元のページを表示</string>
+    <string name="browser_show_snapshot">保存したスナップショットを表示</string>
+    <string name="browser_open_external">システムブラウザで開く</string>
+    <string name="browser_share_page">ページを共有</string>
+    <string name="browser_share_unavailable">共有できる内容がまだありません</string>
+    <string name="browser_shared">共有しました</string>
 </resources>

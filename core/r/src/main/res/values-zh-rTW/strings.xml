@@ -962,7 +962,6 @@
     <string name="url_placeholder">網址</string>
     <string name="input_data_placeholder">原始碼（選填）</string>
     <string name="title_placeholder">主題名稱</string>
-    <string name="error_category_empty">分類不能為空</string>
     <string name="note_default_category">未分類</string>
     <string name="save_success">儲存成功</string>
     <string name="operation_history_description_html_saved">收藏了網址「%s」</string>
@@ -978,11 +977,11 @@
     <string name="new_html">新增收藏</string>
     <string name="edit_html">編輯收藏</string>
     <string name="new_prompt">新增提示詞</string>
-    <string name="html_preview">網頁預覽</string>
-    <string name="html_preview_description">預覽網頁內容</string>
     <string name="html_data_placeholder">擷取網址內容後將在此處預覽，作為快照儲存，之後優先顯示快照內容。</string>
     <string name="download_successful">擷取成功</string>
     <string name="download_failed">擷取失敗</string>
+    <string name="save_bookmark">儲存收藏</string>
+    <string name="html_title_icon_pick">選擇標題圖示</string>
     <string name="save_to_collection">收藏網址</string>
     <string name="url_section_label">URL</string>
     <string name="scraped_content_section_label">頁面內容</string>
