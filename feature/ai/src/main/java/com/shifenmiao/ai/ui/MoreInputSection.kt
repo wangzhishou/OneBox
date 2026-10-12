@@ -4,18 +4,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -27,20 +25,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.logic.ChatInputComponent
+import com.shifenmiao.base.ui.icon.IconRegistry
 import com.shifenmiao.common.logic.AppComponent
+import com.shifenmiao.common.ui.ai.providerAccentColor
+import com.shifenmiao.common.ui.ai.providerBrandIcon
 import com.shifenmiao.core.R
 import com.shifenmiao.storage.AIChatStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.settings.presentation.model.PicturePickerMode
-import com.t8rin.imagetoolbox.core.ui.utils.GridFlowRowArrangement
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.FileType
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
@@ -53,13 +55,11 @@ import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineKeyboardArrowDown
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
 import com.t8rin.imagetoolbox.core.resources.icons.Lightbulb
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineEnergyLeaf
+import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MoreInputSection(
     appComponent: AppComponent,
@@ -69,7 +69,9 @@ fun MoreInputSection(
 ) {
     val context = LocalContext.current
     val currentAIModel by appComponent.aiEngineManager.currentAIModel.collectAsState()
+    val currentAIEngine by appComponent.aiEngineManager.currentAIEngine.collectAsState()
     val isEnableWebSearch by AIChatStorage.isEnableWebSearch.collectAsState()
+    val isEnableReasoning by AIChatStorage.isEnableReasoning.collectAsState()
     val inputState by chatInputComponent.chatInputState.collectAsState()
     val loadingLocalModel by chatInputComponent.localLlmLoadingModelName.collectAsState()
 
@@ -130,185 +132,219 @@ fun MoreInputSection(
                 )
             }
         }
-        // 第一区域：模型选择 + 功能开关, 功能开关：最多2个，两端对齐
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = GridFlowRowArrangement(fullCount = 2),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            maxItemsInEachRow = 2
-        ) {
-            ModelSelectorChip(
-                modifier = Modifier.width(160.dp),
-                modelTitle = currentAIModel.title.ifBlank { currentAIModel.name },
-                onClick = {
-                    chatInputComponent.showModelPicker()
-                }
+        val optionItems = buildList {
+            add(
+                MoreInputOption.Model(
+                    title = currentAIModel.title.ifBlank { currentAIModel.name },
+                    providerValue = currentAIModel.provider.value,
+                    fallbackIconName = currentAIEngine.iconName,
+                    onClick = { chatInputComponent.showModelPicker() }
+                )
             )
             if (currentAIModel.canNetwork) {
-                FeatureToggleChip(
-                    modifier = Modifier.width(160.dp),
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language,
-                    title = stringResource(R.string.network_search),
-                    isEnabled = isEnableWebSearch,
-                    onClick = {
-                        AIChatStorage.saveIsEnableWebSearch(!isEnableWebSearch)
-                    }
+                add(
+                    MoreInputOption.Toggle(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language,
+                        title = stringResource(R.string.network_search),
+                        isEnabled = isEnableWebSearch,
+                        onClick = { AIChatStorage.saveIsEnableWebSearch(!isEnableWebSearch) }
+                    )
                 )
             }
             if (currentAIModel.canReasoning) {
-                FeatureToggleChip(
-                    modifier = Modifier.width(160.dp),
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Lightbulb,
-                    title = stringResource(R.string.ai_reasoning),
-                    isEnabled = AIChatStorage.isEnableReasoning.collectAsState().value,
-                    onClick = {
-                        AIChatStorage.saveIsEnableReasoning(!AIChatStorage.isEnableReasoning.value)
-                    }
+                add(
+                    MoreInputOption.Toggle(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Lightbulb,
+                        title = stringResource(R.string.ai_reasoning),
+                        isEnabled = isEnableReasoning,
+                        onClick = { AIChatStorage.saveIsEnableReasoning(!isEnableReasoning) }
+                    )
                 )
             }
-            // 图片压缩开关（模型支持图片时始终显示）
             if (currentAIModel.canImage) {
-                FeatureToggleChip(
-                    modifier = Modifier.width(160.dp),
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
-                    title = stringResource(R.string.ai_input_image_compression),
-                    isEnabled = inputState.enableImageCompression,
-                    onClick = {
-                        chatInputComponent.toggleImageCompression()
-                    }
+                add(
+                    MoreInputOption.Toggle(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
+                        title = stringResource(R.string.ai_input_image_compression),
+                        isEnabled = inputState.enableImageCompression,
+                        onClick = { chatInputComponent.toggleImageCompression() }
+                    )
                 )
             }
         }
+        EqualColumnGrid(
+            items = optionItems,
+            columns = 2,
+            horizontalGap = 8.dp,
+            verticalGap = 8.dp,
+        ) { option, cellModifier ->
+            when (option) {
+                is MoreInputOption.Model -> ModelSelectorChip(
+                    modifier = cellModifier,
+                    modelTitle = option.title,
+                    providerValue = option.providerValue,
+                    fallbackIconName = option.fallbackIconName,
+                    onClick = option.onClick
+                )
+                is MoreInputOption.Toggle -> FeatureToggleChip(
+                    modifier = cellModifier,
+                    icon = option.icon,
+                    title = option.title,
+                    isEnabled = option.isEnabled,
+                    onClick = option.onClick
+                )
+            }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 第二区域：功能操作按钮（FlowRow 自动换行）
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = GridFlowRowArrangement(fullCount = 4),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            maxItemsInEachRow = 4
-        ) {
-            // 提示词
-            CircleActionButton(
-                icon = {
-                    Icon(
-                        com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Lightbulb,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                text = stringResource(R.string.ai_input_prompts),
-                onClick = { chatInputComponent.showPromptPicker() }
+        val canPickMedia = currentAIModel.canImage || currentAIModel.canUploadFile
+        val actionItems = buildList {
+            add(
+                PanelAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Lightbulb,
+                    label = stringResource(R.string.ai_input_prompts),
+                    onClick = { chatInputComponent.showPromptPicker() }
+                )
             )
-            // 图片选择
-            if (currentAIModel.canImage || currentAIModel.canUploadFile) {
-                CircleActionButton(
-                    icon = {
-                        Icon(
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    text = stringResource(R.string.ai_input_image),
-                    onClick = { imagePicker.pickFile() }
+            if (canPickMedia) {
+                add(
+                    PanelAction(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImage,
+                        label = stringResource(R.string.ai_input_image),
+                        onClick = { imagePicker.pickFile() }
+                    )
+                )
+                add(
+                    PanelAction(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCameraAlt,
+                        label = stringResource(R.string.ai_input_take_photo),
+                        onClick = {
+                            cameraImagePicker.pickImageWithMode(
+                                picker = Picker.Single,
+                                picturePickerMode = PicturePickerMode.CameraCapture
+                            )
+                        }
+                    )
                 )
             }
-            // 拍照
-            if (currentAIModel.canImage || currentAIModel.canUploadFile) {
-                CircleActionButton(
-                    icon = {
-                        Icon(
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCameraAlt,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    text = stringResource(R.string.ai_input_take_photo),
-                    onClick = {
-                        cameraImagePicker.pickImageWithMode(
-                            picker = Picker.Single,
-                            picturePickerMode = PicturePickerMode.CameraCapture
-                        )
-                    }
-                )
-            }
-            // 文件选择
             if (currentAIModel.canUploadFile) {
-                CircleActionButton(
-                    icon = {
-                        Icon(
-                            com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDescription,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    text = stringResource(R.string.ai_input_file),
-                    onClick = { filePicker.pickFile() }
+                add(
+                    PanelAction(
+                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDescription,
+                        label = stringResource(R.string.ai_input_file),
+                        onClick = { filePicker.pickFile() }
+                    )
                 )
             }
-            // 最近
-            CircleActionButton(
-                icon = {
-                    Icon(
-                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                text = stringResource(R.string.ai_input_recent),
-                onClick = { chatInputComponent.showRecentPicker() }
+            add(
+                PanelAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
+                    label = stringResource(R.string.ai_input_recent),
+                    onClick = { chatInputComponent.showRecentPicker() }
+                )
             )
-            // 工具
-            CircleActionButton(
-                icon = {
-                    Icon(
-                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                text = if (enabledToolCount > 0) {
-                    stringResource(R.string.ai_input_tools_with_count, enabledToolCount)
-                } else {
-                    stringResource(R.string.ai_input_tools)
-                },
-                onClick = onShowToolCenter
+            add(
+                PanelAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
+                    label = if (enabledToolCount > 0) {
+                        stringResource(R.string.ai_input_tools_with_count, enabledToolCount)
+                    } else {
+                        stringResource(R.string.ai_input_tools)
+                    },
+                    onClick = onShowToolCenter
+                )
             )
-            // 系统
-            CircleActionButton(
-                icon = {
-                    Icon(
-                        com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                text = stringResource(R.string.ai_input_system),
-                onClick = { appComponent.showAIChatSettings() }
+            add(
+                PanelAction(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
+                    label = stringResource(R.string.ai_input_system),
+                    onClick = { appComponent.showAIChatSettings() }
+                )
             )
+        }
+        EqualColumnGrid(
+            items = actionItems,
+            columns = 4,
+            horizontalGap = 4.dp,
+            verticalGap = 12.dp,
+        ) { action, cellModifier ->
+            CircleActionButton(
+                modifier = cellModifier,
+                icon = action.icon,
+                text = action.label,
+                onClick = action.onClick
+            )
+        }
+    }
+}
 
+private sealed interface MoreInputOption {
+    data class Model(
+        val title: String,
+        val providerValue: String,
+        val fallbackIconName: String,
+        val onClick: () -> Unit,
+    ) : MoreInputOption
+
+    data class Toggle(
+        val icon: ImageVector,
+        val title: String,
+        val isEnabled: Boolean,
+        val onClick: () -> Unit,
+    ) : MoreInputOption
+}
+
+private data class PanelAction(
+    val icon: ImageVector,
+    val label: String,
+    val onClick: () -> Unit,
+)
+
+/**
+ * 等宽网格：每行固定 [columns] 列，末行不足时用空白补齐，列与列对齐。
+ */
+@Composable
+private fun <T> EqualColumnGrid(
+    items: List<T>,
+    columns: Int,
+    horizontalGap: Dp,
+    verticalGap: Dp,
+    cell: @Composable (item: T, modifier: Modifier) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(verticalGap)) {
+        items.chunked(columns).forEach { rowItems ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(horizontalGap),
+            ) {
+                rowItems.forEach { item ->
+                    cell(
+                        item,
+                        Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                    )
+                }
+                repeat(columns - rowItems.size) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun CircleActionButton(
-    icon: @Composable () -> Unit,
+    icon: ImageVector,
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -319,80 +355,157 @@ private fun CircleActionButton(
                 .glassBackground(
                     color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = RoundedCornerShape(16.dp)
-                )
-                .clickable(onClick = onClick),
+                ),
             contentAlignment = Alignment.Center
         ) {
-            icon()
+            Icon(
+                imageVector = icon,
+                contentDescription = text,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(24.dp)
+            )
         }
         Text(
             text = text,
+            modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f),
             textAlign = TextAlign.Center,
-            maxLines = 1
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
 
 /**
- * 模型选择 Chip：🌱 + 模型名(小字体、ellipsis、限宽) + ▼
+ * 模型选择：左侧是当前模型的厂商标，右侧是切换按钮，模型名独占下方。
  */
 @Composable
 private fun ModelSelectorChip(
     modifier: Modifier = Modifier,
     modelTitle: String,
+    providerValue: String,
+    fallbackIconName: String,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .clip(MaterialTheme.shapes.large)
-            .glassBackground(
-                color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = MaterialTheme.shapes.large,
+    InputOptionCard(modifier = modifier, onClick = onClick) {
+        OptionHeaderRow {
+            ModelBrandMark(
+                providerValue = providerValue,
+                fallbackIconName = fallbackIconName,
+                monogram = modelTitle,
             )
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Icon(
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineEnergyLeaf,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.size(18.dp)
-        )
+            Icon(
+                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                contentDescription = stringResource(R.string.ai_chat_model_select),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(22.dp)
+            )
+        }
         Text(
-            modifier = Modifier.weight(1f).padding(start = 4.dp, end = 4.dp),
             text = modelTitle,
             style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.SemiBold
             ),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-        )
-        Icon(
-            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-            contentDescription = "Select model",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.85f),
-            modifier = Modifier.size(18.dp)
         )
     }
 }
 
 /**
- * 功能切换 Chip：单行展示图标 + 标题 + Switch。
+ * 当前模型的厂商标。没有收录的厂商用引擎图标，再没有就用名称首字母。
+ */
+@Composable
+private fun ModelBrandMark(
+    providerValue: String,
+    fallbackIconName: String,
+    monogram: String,
+) {
+    val brandIcon = providerBrandIcon(providerValue)
+    val accent = providerAccentColor(providerValue)
+        ?: MaterialTheme.colorScheme.onPrimaryContainer
+    when {
+        brandIcon != null -> Icon(
+            imageVector = brandIcon,
+            contentDescription = null,
+            tint = accent,
+            modifier = Modifier.size(22.dp)
+        )
+        else -> {
+            val fallback = IconRegistry.resolve(fallbackIconName)
+            if (fallback != null) {
+                Icon(
+                    imageVector = fallback,
+                    contentDescription = null,
+                    tint = accent,
+                    modifier = Modifier.size(22.dp)
+                )
+            } else {
+                Text(
+                    text = monogram.filter { it.isLetterOrDigit() }.take(1).ifBlank { "?" },
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = accent,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 功能开关：图标和开关在上，标题独占下方，长文案按词折成两行。
  */
 @Composable
 private fun FeatureToggleChip(
     modifier: Modifier = Modifier,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     isEnabled: Boolean,
     onClick: () -> Unit
 ) {
-    Row(
+    InputOptionCard(modifier = modifier, onClick = onClick) {
+        OptionHeaderRow {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(18.dp)
+            )
+            GlassSwitch(
+                checked = isEnabled,
+                onCheckedChange = { onClick() },
+                thumbContent = {
+                    if (isEnabled) {
+                        Icon(
+                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
+                            contentDescription = null,
+                            modifier = Modifier.size(SwitchDefaults.IconSize),
+                        )
+                    }
+                },
+                colors = AppTheme.colors.switchColors()
+            )
+        }
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+@Composable
+private fun InputOptionCard(
+    modifier: Modifier,
+    onClick: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.large)
             .glassBackground(
@@ -400,35 +513,22 @@ private fun FeatureToggleChip(
                 shape = MaterialTheme.shapes.large,
             )
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 6.dp),
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+        content = content,
+    )
+}
+
+@Composable
+private fun OptionHeaderRow(
+    content: @Composable () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(18.dp)
-        )
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
-        )
-        GlassSwitch(
-            checked = isEnabled,
-            onCheckedChange = { onClick() },
-            thumbContent = {
-                if (isEnabled) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                        contentDescription = null,
-                        modifier = Modifier.size(SwitchDefaults.IconSize),
-                    )
-                }
-            },
-            colors = AppTheme.colors.switchColors()
-        )
-    }
+        horizontalArrangement = Arrangement.SpaceBetween,
+        content = { content() },
+    )
 }
