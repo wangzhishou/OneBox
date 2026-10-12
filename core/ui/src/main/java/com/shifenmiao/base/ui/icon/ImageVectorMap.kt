@@ -429,6 +429,27 @@ object IconRegistry {
         "LocMeetingRoom" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineGroup },
         "LocPantry" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCoffee },
         "LocLocker" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawerCabinet },
+        // 引擎 iconName 与网址卡片共用。向量本来就在工程里,之前没登记,卡片会退回首字母。
+        "Github" to { com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Github },
+        "AutoAwesome" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic },
+        "Language" to { com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language },
+        "Explore" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMoon },
+        "SmartToy" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRobot },
+        // 与模型选择器同一套厂商标。键名给网址卡片 iconName 用。
+        "OpenAi" to { OpenAiBrandIcon },
+        "Gemini" to { GeminiBrandIcon },
+        "Claude" to { ClaudeBrandIcon },
+        "DeepSeek" to { DeepSeekBrandIcon },
+        "Grok" to { GrokBrandIcon },
+        "Qwen" to { QwenBrandIcon },
+        "Kimi" to { KimiBrandIcon },
+        "Mimo" to { XiaomiBrandIcon },
+        "Doubao" to { DoubaoBrandIcon },
+        "Hunyuan" to { HunyuanBrandIcon },
+        "Zhipu" to { ZhipuBrandIcon },
+        "MiniMax" to { MiniMaxBrandIcon },
+        "OpenRouter" to { OpenRouterBrandIcon },
+        "Baidu" to { BaiduBrandIcon },
     )
 
     // ── Material 标准图标 ──────────────────────────────────────

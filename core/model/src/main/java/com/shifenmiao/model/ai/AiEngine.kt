@@ -237,7 +237,7 @@ data class AiEngine(
                 // 海外引擎(Google 渠道预制): 不走 Go 网关代理, 用户自带 token 直连官方 API
                 AiProvider.Gemini -> AiEngine(
                     name = AiProvider.Gemini.value,
-                    iconName = "Star",
+                    iconName = "Gemini",
                     title = AppContext.getString(R.string.ai_engine_seed_gemini_title),
                     description = "",
                     requestUrl = UrlConstants.GEMINI_AI_BASE_URL,
