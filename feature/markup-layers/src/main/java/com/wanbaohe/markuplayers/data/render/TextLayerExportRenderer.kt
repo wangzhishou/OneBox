@@ -15,12 +15,16 @@ import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.render.LayerExportRenderer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 
 /**
  * 文字图层导出:字号 = fontSizeRatio × 原图宽,StaticLayout 多行绘制。
- * 内容中心对齐画布原点(定位/缩放/旋转由调度器处理)。
+ * 与 [com.wanbaohe.markuplayers.presentation.render.TextLayerPreviewRenderer] 同构:
+ * 文字块带 fontSize/2 横向、fontSize/3 纵向 padding,折行宽度 = 框宽 − 横向 padding;
+ * widthRatio 固定框宽,null 时最多到画布宽(超宽自动折行,否则收紧到最长行)。
+ * 内容块(含 padding)中心对齐画布原点(定位/缩放/旋转由调度器处理)。
  */
 class TextLayerExportRenderer @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -52,14 +56,15 @@ class TextLayerExportRenderer @Inject constructor(
             }
         }
 
-        // 以最长行的实测宽度作为布局宽,保证内容块紧贴文字(居中以内容为准);
-        // 有 widthRatio 时按框宽折行(拖边/角改框,文字重排,字号不变)
-        val contentWidth = type.widthRatio?.let {
-            (it * imageWidth).roundToInt().coerceAtLeast(1)
-        } ?: type.text.split('\n')
-            .maxOf { paint.measureText(it) }
-            .roundToInt()
-            .coerceAtLeast(1)
+        // 与预览 padding 一致:背景/块尺寸含 padding,文字在框内折行
+        val fontSizePx = type.fontSizeRatio * imageWidth
+        val hPad = fontSizePx / 2f
+        val vPad = fontSizePx / 3f
+
+        // widthRatio 固定框宽;null 时上限 = 画布宽(预览 Compose 父约束),短文自动收紧
+        val boxWidth = (type.widthRatio?.let { it * imageWidth } ?: imageWidth.toFloat())
+            .coerceAtLeast(1f)
+        val layoutWidth = (boxWidth - 2f * hPad).roundToInt().coerceAtLeast(1)
 
         val alignment = when (type.alignment) {
             LayerType.Text.TextAlignment.Left -> Layout.Alignment.ALIGN_NORMAL
@@ -68,15 +73,27 @@ class TextLayerExportRenderer @Inject constructor(
             LayerType.Text.TextAlignment.Justify -> Layout.Alignment.ALIGN_NORMAL
         }
 
-        fun buildLayout(p: TextPaint): StaticLayout = StaticLayout.Builder
-            .obtain(type.text, 0, type.text.length, p, contentWidth)
+        fun buildLayout(p: TextPaint, width: Int): StaticLayout = StaticLayout.Builder
+            .obtain(type.text, 0, type.text.length, p, width)
             .setAlignment(alignment)
             .setLineSpacing(0f, type.lineHeight)
             .setIncludePad(false)
             .build()
 
-        val layout = buildLayout(paint)
-        val contentHeight = layout.height
+        val probe = buildLayout(paint, layoutWidth)
+        // 自适应宽度:按折行后最长行收紧(与 Compose hug 一致),再重建以保证行内对齐正确
+        val contentWidth = if (type.widthRatio != null) {
+            boxWidth.roundToInt().coerceAtLeast(1)
+        } else {
+            var maxLine = 0f
+            for (i in 0 until probe.lineCount) {
+                maxLine = max(maxLine, probe.getLineWidth(i))
+            }
+            (maxLine + 2f * hPad).coerceAtMost(boxWidth).roundToInt().coerceAtLeast(1)
+        }
+        val textWidth = (contentWidth - 2f * hPad).roundToInt().coerceAtLeast(1)
+        val layout = if (textWidth == layoutWidth) probe else buildLayout(paint, textWidth)
+        val contentHeight = layout.height + 2f * vPad
 
         canvas.save()
         canvas.translate(-contentWidth / 2f, -contentHeight / 2f)
@@ -89,6 +106,8 @@ class TextLayerExportRenderer @Inject constructor(
             )
         }
 
+        canvas.save()
+        canvas.translate(hPad, vPad)
         type.outline?.let { outline ->
             val strokePaint = TextPaint(paint).apply {
                 color = outline.color
@@ -97,10 +116,10 @@ class TextLayerExportRenderer @Inject constructor(
                 strokeJoin = Paint.Join.ROUND
                 strokeCap = Paint.Cap.ROUND
             }
-            buildLayout(strokePaint).draw(canvas)
+            buildLayout(strokePaint, textWidth).draw(canvas)
         }
-
         layout.draw(canvas)
+        canvas.restore()
         canvas.restore()
     }
 

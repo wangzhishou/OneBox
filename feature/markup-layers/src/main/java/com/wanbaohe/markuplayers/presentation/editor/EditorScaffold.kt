@@ -52,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -1296,32 +1297,37 @@ private fun EditorCanvas(
                                 width = with(density) { canvasSize.width.toDp() },
                                 height = with(density) { canvasSize.height.toDp() }
                             )
+                            // 底图外扩绘制后裁回画布,避免外扩越界
+                            .clipToBounds()
                     ) {
-                        // 透明棋盘格内缩 1dp:与图片同 bounds 时,缩放/平移带来的亚像素
-                        // 边缘抗锯齿会让棋盘格在图片下缘/右缘露出细条;内缩后只有图片
-                        // 内部真正的透明区域才会透出棋盘格
+                        // 透明棋盘格铺满画布:图片内部真正的透明区域透出
                         Box(
                             modifier = Modifier
                                 .matchParentSize()
-                                .padding(1.dp)
                                 .transparencyChecker()
                         )
-                        Picture(
-                            model = imageBitmap,
-                            contentDescription = null,
-                            contentScale = ContentScale.FillBounds,
+                        // 底图一次重采样画到外扩矩形(不经 graphicsLayer 二次缩放)。
+                        // 外扩按屏幕像素折算,读 viewport.scale 不触发重组:双线性边缘过渡约 1px,
+                        // 视图缩小时父级 graphicsLayer 再叠一层重采样,用 2 / scale 补偿,
+                        // 任意 density / 缩放级别下屏幕空间都不漏棋盘格。
+                        // 背景调节只作用于底图(colorFilter,与导出烘焙一致)。
+                        val baseFilter = baseColorFilter
+                        Box(
                             modifier = Modifier
                                 .matchParentSize()
-                                .clipToBounds()
-                                // 背景调节只作用于底图:离屏合成后过 colorFilter,与导出烘焙一致
-                                .then(
-                                    if (baseColorFilter != null) {
-                                        Modifier.graphicsLayer {
-                                            compositingStrategy = CompositingStrategy.Offscreen
-                                            colorFilter = baseColorFilter
-                                        }
-                                    } else Modifier
-                                )
+                                .drawBehind {
+                                    val minScale = min(viewport.scale, 1f).coerceAtLeast(0.05f)
+                                    val pad = (2f / minScale).roundToInt().coerceIn(2, 16)
+                                    drawImage(
+                                        image = imageBitmap,
+                                        dstOffset = IntOffset(-pad, -pad),
+                                        dstSize = IntSize(
+                                            size.width.roundToInt() + pad * 2,
+                                            size.height.roundToInt() + pad * 2
+                                        ),
+                                        colorFilter = baseFilter,
+                                    )
+                                }
                         )
                         // 全部图层实时渲染;每个图层应用自身的滤镜(组件预算的过滤后位图)
                         // 与调节(离屏 colorFilter),与导出侧逐图层烘焙一致

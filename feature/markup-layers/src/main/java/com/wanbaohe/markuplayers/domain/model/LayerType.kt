@@ -29,7 +29,10 @@ sealed interface LayerType {
         val alignment: TextAlignment = TextAlignment.Left,
         val lineHeight: Float = 1.2f,
         val letterSpacingEm: Float = 0f,
-        /** 框宽(相对底图宽);null = 现状自适应(按最长行实测宽),非 null 时文字在框内折行 */
+        /**
+         * 框宽(相对底图宽)。null = 自适应:最多到画布宽,超宽自动折行,短文收紧到最长行;
+         * 非 null 时按框宽折行(拖边/角改框,文字重排,字号不变)
+         */
         val widthRatio: Float? = null,
     ) : LayerType {
         enum class Decoration {
