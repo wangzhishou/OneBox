@@ -328,9 +328,11 @@ class BrowserComponent @AssistedInject internal constructor(
         }
     }
 
-    fun attachWebView(webView: android.webkit.WebView) {
-        navigator.attach(webView)
+    /** @return 见 [WebViewNavigator.attach] */
+    fun attachWebView(webView: android.webkit.WebView): Boolean {
+        val consumedPending = navigator.attach(webView)
         navigator.applySettings(_state.value.settings)
+        return consumedPending
     }
 
     fun detachWebView() {

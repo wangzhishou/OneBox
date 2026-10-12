@@ -21,14 +21,14 @@ class AndroidWebViewNavigator : WebViewNavigator {
         data class Html(val html: String, val baseUrl: String?) : PendingContent
     }
 
-    override fun attach(webView: WebView) {
+    override fun attach(webView: WebView): Boolean {
         val isSameInstance = webViewRef?.get() === webView
         webViewRef = WeakReference(webView)
-        if (isSameInstance) return
-        pendingContent?.let { content ->
-            pendingContent = null
-            postOnMain { applyContent(webView, content) }
-        }
+        if (isSameInstance) return false
+        val pending = pendingContent ?: return false
+        pendingContent = null
+        postOnMain { applyContent(webView, pending) }
+        return true
     }
 
     override fun detach() {

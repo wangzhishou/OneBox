@@ -5,7 +5,13 @@ import android.print.PrintDocumentAdapter
 import android.webkit.WebView
 
 interface WebViewNavigator {
-    fun attach(webView: WebView)
+    /**
+     * 把 WebView 接上。
+     *
+     * @return 挂上之前已经排队的内容（网址或收藏快照）是否已投给这个实例。
+     * 为 true 时调用方不要再 loadUrl，否则会把快照盖掉。
+     */
+    fun attach(webView: WebView): Boolean
     fun detach()
     fun isAttached(): Boolean
     fun loadUrl(url: String)

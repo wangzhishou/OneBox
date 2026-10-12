@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.RenderProcessGoneDetail
+import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -27,8 +29,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -43,6 +48,15 @@ import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.shifenmiao.common.ui.LoadingOverlay
+import kotlinx.coroutines.delay
+
+/**
+ * 导航进入动画里最长的一段是 scale 500ms
+ * （[com.t8rin.imagetoolbox.core.ui.utils.animation.toolboxPredictiveBackAnimation] 的 defaultAnimator）。
+ * 这段时间里如果已经把 WebView 挂上，它的合成层不跟着 Compose 的位移/缩放走，
+ * 会在最终位置先画出一块白，把顶栏盖住，动画落稳后顶栏才补出来，看起来像卡住又闪一下。
+ */
+private const val BROWSER_ENTER_SETTLE_MILLIS = 500L
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
@@ -59,6 +73,8 @@ fun BrowserScreen(
     var isSearchFocused by remember { mutableStateOf(false) }
     var showMoreMenu by remember { mutableStateOf(false) }
     var isSaving by remember { mutableStateOf(false) }
+    // 进入动画落稳前不创建 WebView，见 [BROWSER_ENTER_SETTLE_MILLIS]。
+    var isWebViewReady by remember { mutableStateOf(false) }
 
     val savePngLauncher = rememberFileCreator(
         mimeType = MimeType.StaticPng,
@@ -80,6 +96,13 @@ fun BrowserScreen(
         component.initialLocalUri?.let { uri ->
             component.loadLocalFile(uri, uri.lastPathSegment)
         }
+    }
+
+    LaunchedEffect(Unit) {
+        delay(BROWSER_ENTER_SETTLE_MILLIS)
+        // 再让出一帧，避免和动画最后一帧抢主线程
+        withFrameNanos { }
+        isWebViewReady = true
     }
 
     if (!isSearchFocused && addressText != state.currentUrl) {
@@ -148,6 +171,7 @@ fun BrowserScreen(
                     component = component,
                     backgroundColor = backgroundColor,
                     context = context,
+                    isWebViewReady = isWebViewReady,
                     onAddressUpdate = { addressText = it }
                 )
 
@@ -299,40 +323,64 @@ private fun BrowserWebViewContent(
     component: BrowserComponent,
     backgroundColor: Int,
     context: android.content.Context,
+    isWebViewReady: Boolean,
     onAddressUpdate: (String) -> Unit
 ) {
     val urlToLoad = state.currentUrl
+    // 主页不提前建 WebView。一旦建过就留在组合里，切回主页也不能拆掉，否则历史和页面会丢。
+    var keepWebView by remember { mutableStateOf(false) }
+    LaunchedEffect(isWebViewReady, state.isHomePage) {
+        if (isWebViewReady && !state.isHomePage) {
+            keepWebView = true
+        }
+    }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        AndroidView(
-            factory = { ctx ->
-                WebViewPool.create(ctx, backgroundColor).apply {
-                    WebViewSettings.applyCommonSettings(this, ctx)
-                    this.webViewClient = BrowserWebViewClient(context, component, onAddressUpdate)
-                    this.webChromeClient = object : WebChromeClient() {
-                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                            component.onProgressChanged(newProgress)
+    Box(modifier = Modifier.fillMaxSize().clipToBounds()) {
+        // 有网址时先铺一层和页面同色的底，WebView 在首帧提交前保持不可见，
+        // 避免白底或页头先从顶部补出来。
+        if (!state.isHomePage) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(backgroundColor))
+            )
+        }
+        if (keepWebView) {
+            AndroidView(
+                factory = { ctx ->
+                    WebViewPool.create(ctx, backgroundColor).apply {
+                        // 先藏起来，等主帧真正可画再露。创建当下就是 VISIBLE 的话，
+                        // 第一帧经常是一块白，会盖住已经就位的顶栏。
+                        visibility = View.INVISIBLE
+                        WebViewSettings.applyCommonSettings(this, ctx)
+                        this.webViewClient = BrowserWebViewClient(context, component, onAddressUpdate)
+                        this.webChromeClient = object : WebChromeClient() {
+                            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                                component.onProgressChanged(newProgress)
+                            }
+                        }
+                        // attach 只需要在 WebView 创建时做一次。
+                        // 之前放在 update 里，每次重组都会重新 attach + applySettings。
+                        val consumedPending = component.attachWebView(this)
+                        if (!consumedPending && urlToLoad.isNotBlank()) {
+                            loadUrl(urlToLoad)
                         }
                     }
-                    // attach 只需要在 WebView 创建时做一次。
-                    // 之前放在 update 里，每次重组都会重新 attach + applySettings。
-                    component.attachWebView(this)
-                    if (urlToLoad.isNotBlank()) {
-                        loadUrl(urlToLoad)
+                },
+                modifier = Modifier.fillMaxSize(),
+                update = { view ->
+                    val isBlank = state.currentUrl.isBlank() || state.currentUrl == "about:blank"
+                    view.setBackgroundColor(
+                        if (isBlank) android.graphics.Color.TRANSPARENT else backgroundColor
+                    )
+                    // 只在回到主页时藏起来。有内容时的显示时机交给 onPageCommitVisible，
+                    // 这里如果直接设 VISIBLE，会把「等首帧」这道闸冲掉。
+                    if (isBlank) {
+                        view.visibility = View.INVISIBLE
                     }
                 }
-            },
-            modifier = Modifier.fillMaxSize(),
-            update = { view ->
-                val isBlank = state.currentUrl.isBlank()
-                view.setBackgroundColor(
-                    if (isBlank) android.graphics.Color.TRANSPARENT else backgroundColor
-                )
-                view.visibility = if (isBlank) android.view.View.INVISIBLE else android.view.View.VISIBLE
-                // canGoBack / canGoForward 改由 BrowserWebViewClient.onPageFinished 上报
-                // （真正的变化点），不再每次重组都算一遍。
-            }
-        )
+            )
+        }
 
         if (state.isHomePage) {
             BrowserHomePage(
@@ -354,14 +402,33 @@ private class BrowserWebViewClient(
         url?.let { onAddressUpdate(it) }
     }
 
+    override fun onPageCommitVisible(view: WebView?, url: String?) {
+        super.onPageCommitVisible(view, url)
+        reveal(view, url)
+    }
+
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
+        reveal(view, url)
         component.onPageFinished(url, view?.title)
         // 前进/后退可用性的真实变化点在这里，顺带上报，省掉每次重组都去问一遍 WebView
         if (view != null) {
             component.onNavigationStateChanged(view.canGoBack(), view.canGoForward())
         }
         onAddressUpdate(url ?: "")
+    }
+
+    override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+        super.onReceivedError(view, request, error)
+        if (request?.isForMainFrame == true) {
+            reveal(view, request.url?.toString())
+        }
+    }
+
+    /** 主帧有像素了再显示。about:blank / 空地址是主页，继续藏着。 */
+    private fun reveal(view: WebView?, url: String?) {
+        if (url.isNullOrBlank() || url == "about:blank") return
+        view?.visibility = View.VISIBLE
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
