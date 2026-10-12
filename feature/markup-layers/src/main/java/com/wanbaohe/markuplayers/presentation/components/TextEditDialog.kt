@@ -15,7 +15,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -37,8 +38,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -67,7 +66,7 @@ import com.t8rin.imagetoolbox.core.ui.theme.ProvideTypography
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.PickFontFamilySheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
@@ -83,30 +82,31 @@ import kotlin.math.roundToInt
 import com.t8rin.imagetoolbox.core.resources.R as CoreR
 
 /**
- * 文字编辑 Dialog(替代原全屏文字页):
- * 顶部输入框(打开自动聚焦弹键盘)+ 可滚动样式区(字体/字号/颜色/对齐/行距/
- * 字间距/B I U S/背景/描边)+ 底部取消/确认。
+ * 文字样式面板(对齐图文卡片「文字设置」):底部弹层只负责样式
+ * (字体/字号/颜色/对齐/行距/字间距/B I U S/背景/描边),
+ * 文字内容在画布上就地编辑([com.wanbaohe.markuplayers.presentation.render.InPlaceTextLayerEditor])。
  *
- * 打开期间所有修改经 [MarkupLayersComponent.updateLayerInEditSession] 实时落到画布
- * 图层上预览;确认经 [MarkupLayersComponent.commitLayerEditSession] 压成一次历史快照,
- * 取消经 [MarkupLayersComponent.cancelLayerEditSession] 整体还原(语义同原全屏页)。
- * 点外部/返回键等同取消。
+ * 打开期间样式修改经 [MarkupLayersComponent.updateLayerInEditSession] 实时落到画布;
+ * 「完成」经 [MarkupLayersComponent.commitLayerEditSession] 压成一次历史快照,
+ * 「取消」经 [MarkupLayersComponent.cancelLayerEditSession] 整体还原。
+ * 关闭面板(X/下滑)不结束编辑会话,仍在画布上继续改文字。
  *
- * 由 EditorScaffold 常驻组合,可见性完全由 [MarkupLayersComponent.editSessionLayerId]
- * 驱动:会话一开始(新建或编辑已有文字图层)Dialog 即弹出。
+ * 由 EditorScaffold 按 [MarkupLayersComponent.editSessionLayerId] 驱动可见性。
  */
 @Composable
 internal fun TextEditDialog(
     component: MarkupLayersComponent,
+    visible: Boolean,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
+    onDismiss: () -> Unit,
 ) {
-    val layerId = component.editSessionLayerId ?: return
-    val layer = component.layers.firstOrNull { it.id == layerId }
+    val layerId = component.editSessionLayerId
+    val layer = layerId?.let { id -> component.layers.firstOrNull { it.id == id } }
     val text = layer?.type as? LayerType.Text
-    if (text == null) {
+    if (layerId == null || text == null) {
         // 防御:会话图层被外部操作(如 undo)移除,兜底取消会话
-        LaunchedEffect(layerId) { onCancel() }
+        if (visible) LaunchedEffect(layerId) { onCancel() }
         return
     }
 
@@ -122,40 +122,28 @@ internal fun TextEditDialog(
     // 关闭后恢复(会话状态在组件里,不丢)
     var showFontSheet by rememberSaveable { mutableStateOf(false) }
 
-    EnhancedAlertDialog(
-        visible = !showFontSheet,
-        onDismissRequest = onCancel,
-        // 键盘弹出时整体上移,输入框不被遮挡
-        modifier = Modifier.imePadding(),
-        title = {
-            Text(
-                text = stringResource(
-                    if (component.isEditSessionNewLayer) {
-                        R.string.markup_add_text
-                    } else R.string.markup_edit_text
-                )
-            )
-        },
-        text = {
-            TextEditContent(
-                text = text,
-                onTextChange = updateText,
-                onPickFont = { showFontSheet = true }
-            )
-        },
-        dismissButton = {
-            CancelButton(
-                text = stringResource(R.string.markup_cancel),
-                onClick = onCancel
-            )
-        },
-        confirmButton = {
-            ConfirmButton(
-                text = stringResource(R.string.markup_confirm),
-                onClick = onConfirm
-            )
-        }
-    )
+    EnhancedModalBottomSheet(
+        visible = visible && !showFontSheet,
+        dragHandle = {},
+        // 下滑/X 关闭面板:不结束编辑会话,画布上继续就地改文字
+        onDismiss = { onDismiss() }
+    ) {
+        SheetHeader(
+            title = stringResource(
+                if (component.isEditSessionNewLayer) {
+                    R.string.markup_add_text
+                } else R.string.markup_edit_text
+            ),
+            onClose = onDismiss
+        )
+        TextStyleContent(
+            text = text,
+            onTextChange = updateText,
+            onPickFont = { showFontSheet = true },
+            onConfirm = onConfirm,
+            onCancel = onCancel
+        )
+    }
 
     TextEditFontSheet(
         visible = showFontSheet,
@@ -165,31 +153,21 @@ internal fun TextEditDialog(
     )
 }
 
-/** Dialog 正文:输入框(自动聚焦)+ 可滚动样式区 */
+/** 样式面板正文:可滚动样式区 + 底部取消/完成 */
 @Composable
-private fun TextEditContent(
+private fun TextStyleContent(
     text: LayerType.Text,
     onTextChange: ((LayerType.Text) -> LayerType.Text) -> Unit,
     onPickFont: () -> Unit,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
     Column(modifier = Modifier.fillMaxWidth()) {
-        GlassOutlinedTextField(
-            value = text.text,
-            onValueChange = { value -> onTextChange { it.copy(text = value) } },
-            placeholder = { Text(stringResource(R.string.markup_text_input_hint)) },
-            shape = ShapeDefaults.default,
-            minLines = 2,
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-        )
-        Spacer(Modifier.height(12.dp))
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f, fill = false)
+                .heightIn(max = 420.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             FontRow(
@@ -266,9 +244,25 @@ private fun TextEditContent(
             )
             Spacer(Modifier.height(4.dp))
         }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(top = 12.dp, bottom = 8.dp)
+        ) {
+            CancelButton(
+                text = stringResource(R.string.markup_cancel),
+                onClick = onCancel,
+                modifier = Modifier.weight(1f)
+            )
+            ConfirmButton(
+                text = stringResource(R.string.markup_confirm),
+                onClick = onConfirm,
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
-    // 打开即聚焦输入框弹键盘
-    LaunchedEffect(Unit) { focusRequester.requestFocus() }
 }
 
 /** 字体行:当前字体名(该字体渲染),点击打开全局共享字体选择器(能下载/能导入) */

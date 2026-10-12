@@ -95,6 +95,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Share
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBurstMode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCompare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFilters
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRedo
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRename
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUndo
@@ -135,6 +136,7 @@ import com.wanbaohe.markuplayers.presentation.draw.DrawOverlay
 import com.wanbaohe.markuplayers.presentation.draw.DrawSessionState
 import com.wanbaohe.markuplayers.presentation.export.ExportSettingsSheet
 import com.wanbaohe.markuplayers.presentation.recipe.RecipeBatchSheet
+import com.wanbaohe.markuplayers.presentation.render.InPlaceTextLayerEditor
 import com.wanbaohe.markuplayers.presentation.render.LayerPreviewRenderers
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import com.wanbaohe.markuplayers.presentation.tools.EditorTool
@@ -180,7 +182,8 @@ import androidx.compose.material.icons.outlined.ZoomOutMap
  * 切换左侧工具栏显隐,「图层」Tab 切换浮动图层面板显隐(完整图层 Sheet 由面板内展开)。
  * 更多菜单可进沉浸预览,沉浸下单击画布或返回键退出。
  *
- * 文字与画笔均为画布内模式,不跳全屏页:文字经 [TextEditDialog] 编辑(会话式历史),
+ * 文字与画笔均为画布内模式,不跳全屏页:文字画布上就地编辑(对齐图文卡片,
+ * 点选 → 再点进编辑,键盘完成/返回提交),样式走 [TextEditDialog] 底部面板(会话式历史),
  * 画笔进入画布内绘制模式(画布右侧浮动竖条承载模式切换/撤销重做,
  * 画笔参数收进 [BrushSettingsDialog],底部 Tab 栏换成取消/完成操作条);
  * 裁剪是唯一保留的全屏工具页。
@@ -198,6 +201,8 @@ fun EditorScaffold(
     var showMaskSheet by rememberSaveable { mutableStateOf(false) }
     var showCanvasBackgroundSheet by rememberSaveable { mutableStateOf(false) }
     var showRecipeSheet by rememberSaveable { mutableStateOf(false) }
+    // 文字样式面板:进入文字编辑会话时打开;关闭面板不结束会话(画布上继续就地改字)
+    var showTextStyleSheet by rememberSaveable { mutableStateOf(false) }
     // AI 生成图片弹层(共享 AiGenerateImageSheet,宿主薄壳负责预检)
     var showAiGenerateSheet by rememberSaveable { mutableStateOf(false) }
     var aiTargetAction by remember { mutableStateOf<AiTargetAction?>(null) }
@@ -407,6 +412,8 @@ fun EditorScaffold(
                 onRequestRasterize = { layerId, filter ->
                     pendingRasterize = RasterizeRequest(layerId, filter, append = false)
                 },
+                onReopenTextStyle = { showTextStyleSheet = true },
+                textStyleSheetVisible = showTextStyleSheet,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
@@ -746,17 +753,32 @@ fun EditorScaffold(
         onDeleteRecipe = component::deleteRecipe
     )
 
-    // 文字编辑 Dialog:由 Component 的文字编辑会话驱动(新建/点按已选中文字图层)
+    // 文字编辑:画布就地输入 + 样式底部面板(对齐图文卡片);会话驱动
+    val textEditLayerId = component.editSessionLayerId
+    LaunchedEffect(textEditLayerId) {
+        // 进入编辑会话打开样式面板;会话结束(提交/取消)一并收起
+        showTextStyleSheet = textEditLayerId != null
+    }
+    // 就地编辑态返回键 = 提交退出(优先于页面返回,同图文卡片)
+    androidx.activity.compose.BackHandler(enabled = textEditLayerId != null) {
+        component.commitLayerEditSession()
+        component.setActiveTool(null)
+        showTextStyleSheet = false
+    }
     TextEditDialog(
         component = component,
+        visible = showTextStyleSheet,
         onConfirm = {
             component.commitLayerEditSession()
             component.setActiveTool(null)
+            showTextStyleSheet = false
         },
         onCancel = {
             component.cancelLayerEditSession()
             component.setActiveTool(null)
-        }
+            showTextStyleSheet = false
+        },
+        onDismiss = { showTextStyleSheet = false }
     )
 
     // 画笔参数 Dialog:即改即生效,取消/确认均只关窗
@@ -1158,6 +1180,8 @@ private fun EditorCanvas(
     onOpenFullFilterCatalog: () -> Unit,
     onOpenEffects: () -> Unit,
     onRequestRasterize: (layerId: String, filter: UiFilter<*>) -> Unit,
+    onReopenTextStyle: () -> Unit = {},
+    textStyleSheetVisible: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val viewport = remember { EditorViewportState() }
@@ -1343,16 +1367,18 @@ private fun EditorCanvas(
                                         val textType = layer.type as? LayerType.Text
                                         val onEditRequest = textType
                                             ?.let { { onEditTextLayer(layer.id) } }
+                                        // 文字就地编辑会话中:手势关闭,避免与光标/选字冲突
+                                        val isTextEditing = layer.id == component.editSessionLayerId
                                         EditBox(
                                             transform = layer.transform,
                                             isSelected = layer.id in component.selectedLayerIds &&
                                                 !drawMode && !aiRectSelect && !immersiveModeState.isImmersive,
-                                            showHandles = component.selectedLayerId == layer.id,
+                                            showHandles = component.selectedLayerId == layer.id && !isTextEditing,
                                             onSelect = { component.selectLayer(layer.id) },
                                             onEditRequest = onEditRequest,
                                             // 选中框上的红色 X 删除(组件内记 undo 快照);
-                                            // 绘制/框选模式下不显示(该模式下图层纯静态渲染)
-                                            onDelete = if (!drawMode && !aiRectSelect) {
+                                            // 绘制/框选/就地编辑模式下不显示
+                                            onDelete = if (!drawMode && !aiRectSelect && !isTextEditing) {
                                                 { component.removeLayer(layer.id) }
                                             } else null,
                                             onTransformStart = component::beginLayerTransformChange,
@@ -1368,7 +1394,7 @@ private fun EditorCanvas(
                                             },
                                             canvasScale = viewport.scale,
                                             gesturesEnabled = !drawMode && !aiRectSelect &&
-                                                !immersiveModeState.isImmersive,
+                                                !immersiveModeState.isImmersive && !isTextEditing,
                                             // 绘制/框选模式下图层不响应手势(纯静态渲染)
                                             tapSelectable = !drawMode && !aiRectSelect && layer.type !is LayerType.Draw,
                                             // 文字层:8 向框尺寸手柄(拖边/角改框宽,文字重排,字号不变);
@@ -1420,13 +1446,37 @@ private fun EditorCanvas(
                                                     } else Modifier
                                                 )
                                             ) {
-                                                LayerPreviewRenderers.Content(
-                                                    layer = layer,
-                                                    canvasWidthPx = layerCanvasWidth,
-                                                    canvasHeightPx = layerCanvasHeight,
-                                                    filteredBitmap = component
-                                                        .layerFilteredBitmap(layer)
-                                                )
+                                                if (isTextEditing && textType != null) {
+                                                    InPlaceTextLayerEditor(
+                                                        type = textType,
+                                                        canvasWidthPx = layerCanvasWidth,
+                                                        onTextChange = { value ->
+                                                            component.updateLayerInEditSession(
+                                                                layer.id
+                                                            ) { current ->
+                                                                (current.type as? LayerType.Text)
+                                                                    ?.let {
+                                                                        current.copy(
+                                                                            type = it.copy(text = value)
+                                                                        )
+                                                                    }
+                                                                    ?: current
+                                                            }
+                                                        },
+                                                        onCommit = {
+                                                            component.commitLayerEditSession()
+                                                            component.setActiveTool(null)
+                                                        }
+                                                    )
+                                                } else {
+                                                    LayerPreviewRenderers.Content(
+                                                        layer = layer,
+                                                        canvasWidthPx = layerCanvasWidth,
+                                                        canvasHeightPx = layerCanvasHeight,
+                                                        filteredBitmap = component
+                                                            .layerFilteredBitmap(layer)
+                                                    )
+                                                }
                                             }
                                         }
                                     }
@@ -1466,6 +1516,20 @@ private fun EditorCanvas(
                 )
                 Spacer(Modifier.width(4.dp))
                 CompareButton(component = component)
+                // 就地编辑中收起样式面板后,可从这里再次打开
+                if (component.editSessionLayerId != null && !textStyleSheetVisible) {
+                    Spacer(Modifier.width(4.dp))
+                    EnhancedIconButton(
+                        onClick = onReopenTextStyle,
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.LineText,
+                            contentDescription = stringResource(R.string.markup_edit_text),
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
             }
         }
 
