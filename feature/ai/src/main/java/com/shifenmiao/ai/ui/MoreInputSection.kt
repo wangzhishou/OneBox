@@ -49,6 +49,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineBuild
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSettings
 import com.t8rin.imagetoolbox.core.resources.icons.Check
@@ -246,7 +247,7 @@ fun MoreInputSection(
             )
             add(
                 PanelAction(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBuild,
                     label = if (enabledToolCount > 0) {
                         stringResource(R.string.ai_input_tools_with_count, enabledToolCount)
                     } else {
