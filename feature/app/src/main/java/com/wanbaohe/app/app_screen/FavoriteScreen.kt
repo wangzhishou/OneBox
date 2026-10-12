@@ -2,7 +2,6 @@ package com.wanbaohe.app.app_screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,6 +74,7 @@ import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
 import com.t8rin.imagetoolbox.core.ui.widget.text.HtmlText
@@ -720,6 +720,7 @@ private fun TimelineRail(
 ) {
     val railColor = MaterialTheme.colorScheme.onSurfaceVariant
     val lineColor = railColor.copy(alpha = 0.28f)
+    val dotColor = MaterialTheme.colorScheme.outline
     Box(
         modifier = Modifier
             .width(railWidth)
@@ -753,7 +754,7 @@ private fun TimelineRail(
                     top = railDotCenterY - railDotSize / 2
                 )
                 .size(railDotSize)
-                .background(railColor, CircleShape)
+                .background(dotColor, CircleShape)
         )
     }
 }
@@ -768,7 +769,7 @@ private fun ActivityLogCard(
     val onNavigate = LocalOnNavigate.current
     val dataDraftHelper = LocalDataDraftHelper.current
     val logScope = rememberCoroutineScope()
-    val shape = RoundedCornerShape(20.dp)
+    val shape = RoundedCornerShape(16.dp)
 
     SwipeToDismissBox(
         modifier = modifier,
@@ -784,21 +785,29 @@ private fun ActivityLogCard(
         ),
         backgroundContent = {},
         content = {
-            ActivityLogCardContent(
-                entry = entry,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    // 操作记录卡片底色走中性 surfaceContainer（色调由玻璃管线接管）
-                    .glassRegular(shape = shape, color = MaterialTheme.colorScheme.surfaceContainer)
-                    .clickable {
-                        logScope.launch {
-                            ActivityLogNavigator.resolve(entry, dataDraftHelper)?.let { screen ->
-                                onNavigate(screen)
-                            }
+            GlassCard(
+                onClick = {
+                    logScope.launch {
+                        ActivityLogNavigator.resolve(entry, dataDraftHelper)?.let { screen ->
+                            onNavigate(screen)
                         }
                     }
-                    .padding(horizontal = 14.dp, vertical = 12.dp)
-            )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = shape,
+                // 比「我的」的 Regular 再淡一档，底色仍用同一支 surfaceContainerLow
+                style = GlassStyle.Thin,
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                ),
+            ) {
+                ActivityLogCardContent(
+                    entry = entry,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 14.dp, vertical = 12.dp)
+                )
+            }
         }
     )
 }
@@ -819,13 +828,12 @@ private fun ActivityLogCardContent(
         if (topLabel.isNotEmpty() && topLabel != rowTitle) {
             Text(
                 text = topLabel,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -834,18 +842,18 @@ private fun ActivityLogCardContent(
         ) {
             Box(
                 modifier = Modifier
-                    .size(46.dp)
-                    .glassMedium(
-                        // 与卡片同色相，靠 GlassStyle 阶梯（Medium > Regular）比卡片深一档
+                    .size(40.dp)
+                    .glassRegular(
+                        // 卡片是 Thin，图标井深一档到 Regular，色仍是 surfaceContainerLow
                         shape = RoundedCornerShape(12.dp),
-                        color = MaterialTheme.colorScheme.surfaceContainer,
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
                     ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = recordCategoryIcon(entry.category),
                     contentDescription = null,
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(20.dp),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -853,8 +861,7 @@ private fun ActivityLogCardContent(
                 if (rowTitle.isNotEmpty()) {
                     Text(
                         text = rowTitle,
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -864,10 +871,10 @@ private fun ActivityLogCardContent(
                 if (entry.description.isNotBlank()) {
                     HtmlText(
                         html = entry.description,
-                        style = MaterialTheme.typography.bodySmall.copy(
+                        style = MaterialTheme.typography.labelSmall.copy(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
-                        hyperlinkStyle = MaterialTheme.typography.bodySmall.copy(
+                        hyperlinkStyle = MaterialTheme.typography.labelSmall.copy(
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         ),
                         onHyperlinkClick = { localUrlNavigator.navigate(it) },
@@ -890,9 +897,8 @@ private fun ActivityLogCardContent(
 /**
  * 各活动分类的图标。
  *
- * 操作记录分区不再按分类染色：卡片、文字、时间轴、图标全部走中性
- * surfaceContainer 家族（surfaceContainer 打底 + onSurface / onSurfaceVariant 做内容色），
- * 分类只靠图标形状区分。
+ * 操作记录分区不再按分类染色。卡片比「我的」再淡一档（Thin + surfaceContainerLow），
+ * 文字对齐「我的」：标题 onSurface，说明 onSurfaceVariant。分类只靠图标形状区分。
  */
 private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (category) {
     ActivityCategory.AI_CHAT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat

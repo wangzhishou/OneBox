@@ -34,7 +34,7 @@ object ActivityLogNavigator {
             ActivityCategory.AI_AGENT -> resolveAiAgent(payload)
             ActivityCategory.IMAGE_EDIT -> resolveImageEdit(entry)
             ActivityCategory.NOTE_EDIT -> resolveNote(payload, dataDraftHelper)
-            ActivityCategory.HTML_EDIT -> resolveHtml(payload, dataDraftHelper)
+            ActivityCategory.HTML_EDIT -> resolveHtml(entry, payload)
             ActivityCategory.BOOKKEEPING -> Screen.Bookkeeping()
             ActivityCategory.RECORD_CENTER -> Screen.RecordCenter()
             ActivityCategory.TODO -> Screen.MarkTodoRouter()
@@ -121,20 +121,16 @@ object ActivityLogNavigator {
         return Screen.CreateNote()
     }
 
-    // ── HTML ────────────────────────────────────────
+    // ── 网址收藏 ─────────────────────────────────────
+    //
+    // 和「我的」里点同一条走同一条路：内置浏览器打开收藏（有快照就离线看快照）。
+    // 以前这里建草稿进编辑页，点操作记录打不开已收藏的网页。
 
-    private suspend fun resolveHtml(payload: JSONObject?, dataDraftHelper: DataDraftHelper?): Screen? {
-        payload ?: return null
-        val itemId = payload.optInt("itemId", 0)
-        if (itemId == 0) return null
-        if (dataDraftHelper != null) {
-            val draftId = dataDraftHelper.createDraft(
-                draftType = ListItemType.HTML.id,
-                itemId = itemId
-            )
-            return Screen.CreateHtml(draftId = draftId)
-        }
-        return Screen.CreateHtml()
+    private fun resolveHtml(entry: ActivityLogEntry, payload: JSONObject?): Screen? {
+        val itemId = payload?.optInt("itemId", 0)?.takeIf { it > 0 }
+            ?: entry.dedupKey.removePrefix("html_").toIntOrNull()?.takeIf { it > 0 }
+            ?: return null
+        return Screen.WebBrowser(bookmarkItemId = itemId)
     }
 
     // ── 象棋 ────────────────────────────────────────
