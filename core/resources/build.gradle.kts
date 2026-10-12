@@ -43,6 +43,9 @@ android {
 
 dependencies {
     implementation(libs.material)
+    // 「更多」等自绘入口的内容改用系统图标（见 icons/line/LineMore.kt），
+    // 依赖集中在本模块声明，方便以后整体摘除。
+    implementation(libs.icons.extended)
     implementation(libs.androidxCore)
     implementation(libs.appCompat)
     implementation(libs.splashScreen)

@@ -132,6 +132,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineExtension
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFileOpen
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLink
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineTab
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineText
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTexture
@@ -494,6 +495,7 @@ object IconRegistry {
         "Logout" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLogout },
         "Menu" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDrawer },
         "MoreVert" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore },
+        "TabUnselected" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTab },
         "Notifications" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineNotifications },
         "Palette" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme },
         "ColorLens" to { com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme },
