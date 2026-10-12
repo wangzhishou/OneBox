@@ -17,6 +17,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.DshWhale
 import com.t8rin.imagetoolbox.core.resources.icons.EditAlt
+import com.t8rin.imagetoolbox.core.resources.icons.Github
 import com.t8rin.imagetoolbox.core.resources.icons.ImageText
 import com.t8rin.imagetoolbox.core.resources.icons.Language
 import com.t8rin.imagetoolbox.core.resources.icons.Lightbulb
@@ -79,6 +80,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineLimitsResize
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLoadNetImage
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLoanCalculator
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineLock
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkdownEdit
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMarkupLayers
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTextCard
@@ -96,6 +98,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LinePoem
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineProfile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineQuickTiles
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineResizeConvert
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineRobot
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineScanQrCode
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSchedule
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSearch
