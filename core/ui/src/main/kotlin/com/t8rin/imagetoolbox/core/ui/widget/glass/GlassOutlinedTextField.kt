@@ -746,7 +746,7 @@ private fun Modifier.modernGlassTextFieldContainer(
             !enabled -> 0.14f
             isError -> 0.50f
             // 未聚焦从 0.22 收回到 0.32。聚焦仍停在 0.28, 只动默认边框。
-            else -> 0.32f + focusProgress * (0.28f - 0.32f)
+            else -> 0.49f + focusProgress * (0.28f - 0.32f)
         }
     }
     val strokeColor = strokeHue.copy(alpha = strokeAlpha.coerceIn(0f, 1f))
