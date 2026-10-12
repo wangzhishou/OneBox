@@ -141,7 +141,11 @@ def main():
             track=args.track,
             body={"track": args.track, "releases": [release]},
         ).execute()
-        edits.commit(packageName=args.package, editId=edit_id).execute()
+        # 有未决政策问题的应用不允许 API 直接送审:changesNotSentForReview=True 先提交,
+        # 再到 Play Console 的 Publishing overview 点 "Send for review" 统一送审
+        edits.commit(
+            packageName=args.package, editId=edit_id, changesNotSentForReview=True
+        ).execute()
         print(f"edit committed: {release['name']} 已发布到 {args.track} ({args.status})")
     finally:
         # dry-run 或任何中途失败:删除未提交的 edit,不改动线上
