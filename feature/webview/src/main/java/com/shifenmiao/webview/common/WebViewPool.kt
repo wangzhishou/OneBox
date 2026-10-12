@@ -6,13 +6,22 @@ import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.os.MessageQueue
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.webkit.WebViewCompat
+import androidx.webkit.WebViewOutcomeReceiver
+import androidx.webkit.WebViewStartUpConfig
+import androidx.webkit.WebViewStartUpResult
+import androidx.webkit.WebViewStartupException
+import com.shifenmiao.webview.diagnostics.WebViewDiagnostics
 import com.shifenmiao.webview.utils.Utils
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
+
+private const val TAG = "WebViewPool"
 
 /**
  * HTML 生成器接口
@@ -29,11 +38,24 @@ fun interface HtmlGenerator<T> {
 /**
  * 预加载的 HTML 缓存项
  *
- * @param config 配置对象，用于匹配检查
+ * @param config 配置对象，仅用于排查（生成时用的就是它）
+ * @param matchKey 命中判断用的稳定键
  * @param html 预生成的 HTML 内容
  */
 data class PreloadedEntry(
     val config: Any,
+    /**
+     * 命中判断只认这个键，不拿 [config] 做全字段相等。
+     *
+     * 原因：生成 HTML 所需的部分参数（字体缩放、颜色、深色标志）在预加载侧拿不到真值——
+     * fontScale 只存在于 composition（LocalConfiguration），Component.init 里无从得知，
+     * 所以两边永远算不出同一个数。而这些值在编辑器加载完成后都会由 JS
+     * （setTextStyle / setColors / setTheme）重新推一遍，HTML 里烘焙的那份只影响首帧底色，
+     * 不决定最终呈现。
+     * 继续用全字段相等，等于"任何一边动一下默认值就永久静默失效"——这个坑已经踩过一次
+     * （见 MarkdownHtmlGenerator 漏传行高/字距/字重）。
+     */
+    val matchKey: Any,
     val html: String
 )
 
@@ -121,12 +143,23 @@ object WebViewPool {
     private val isInitialized = AtomicBoolean(false)
     private val isEngineWarmedUp = AtomicBoolean(false)
 
+    /** 预热是否已经发起过（与"是否已完成"分开：startUpWebView 是异步的） */
+    private val isStartupRequested = AtomicBoolean(false)
+
     private var applicationContext: Context? = null
     private val mainHandler = Handler(Looper.getMainLooper())
 
     // 后台线程池，用于 HTML 生成等耗时操作
     private val executor = Executors.newSingleThreadExecutor { runnable ->
         Thread(runnable, "WebViewPool-Background").apply {
+            isDaemon = true
+        }
+    }
+
+    // WebView 启动专用线程池。与上面的 HTML 生成池分开：
+    // startUpWebView 会在这条线程上跑内核初始化，混用会把后面的 HTML 预拼接堵在后面。
+    private val startupExecutor = Executors.newSingleThreadExecutor { runnable ->
+        Thread(runnable, "WebViewPool-Startup").apply {
             isDaemon = true
         }
     }
@@ -140,6 +173,9 @@ object WebViewPool {
     fun init(context: Context) {
         if (isInitialized.compareAndSet(false, true)) {
             applicationContext = context.applicationContext
+            // 打一行内核信息（debug 构建）：版本、Chromium 主版本、是否具备 mermaid 所需的 ES2020。
+            // 国内渠道没有任何回传通道，这是目前唯一能看到"设备上到底是什么内核"的地方。
+            WebViewDiagnostics.logKernelInfo(context)
         }
     }
 
@@ -149,27 +185,33 @@ object WebViewPool {
     fun isInitialized(): Boolean = isInitialized.get()
 
     /**
-     * 检查 WebView 内核是否已预热
+     * 检查 WebView 内核是否已预热完成
      */
     fun isWebViewReady(): Boolean = isEngineWarmedUp.get()
 
     /**
      * 在主线程空闲时预热 WebView 内核
      *
-     * 创建一个临时 WebView 并加载 about:blank 来触发 Chromium 引擎初始化，
-     * 完成后立即销毁该 WebView。后续 new WebView() 都将是轻量操作。
+     * 优先走官方的 [WebViewCompat.startUpWebView]（androidx.webkit 1.16.0 起 stable）。
+     * 官方文档明确说明：隐式启动 WebView 是 "entirely on the main thread" 的，
+     * 会 "drastically increases the risk of Application Not Responding (ANRs)"；
+     * 而靠 getUserAgentString() 之类的手工预热属于 "unsupported practices"，
+     * 行为可能在后续 WebView 版本里变化。startUpWebView 把启动负载挪到后台线程并分块执行
+     * （UI 线程那部分由 androidx.webkit 按当前内核能力决定怎么切）。
+     *
+     * 老内核上如果这一步失败，回退到原来的手工预热，保证引擎照样被拉起来。
      */
     fun initWhenIdle() {
         if (!isInitialized.get()) return
-        if (isEngineWarmedUp.get()) return
+        if (isStartupRequested.get()) return
 
         val context = applicationContext ?: return
 
         mainHandler.post {
             Looper.myQueue().addIdleHandler(object : MessageQueue.IdleHandler {
                 override fun queueIdle(): Boolean {
-                    if (isEngineWarmedUp.compareAndSet(false, true)) {
-                        warmUpEngine(context)
+                    if (isStartupRequested.compareAndSet(false, true)) {
+                        startUpEngine(context)
                     }
                     return false
                 }
@@ -178,7 +220,41 @@ object WebViewPool {
     }
 
     /**
-     * 预热 Chromium 引擎：创建临时 WebView，加载空白页触发引擎初始化，然后销毁
+     * 走官方启动路径；失败则回退手工预热。
+     *
+     * 用的是接 [WebViewOutcomeReceiver] 的那个重载 —— 另一个接
+     * [WebViewCompat.WebViewStartUpCallback] 的重载在 androidx.webkit 1.17.1 里
+     * 仍标着 `@ExperimentalAsyncStartUp`（lint 会以 UnsafeOptInUsageError 拦下），
+     * OutcomeReceiver 这个才是 stable 的。重载有二义性，所以接收器必须写成显式的 object 表达式。
+     */
+    private fun startUpEngine(context: Context) {
+        val started = runCatching {
+            val config = WebViewStartUpConfig.Builder(startupExecutor).build()
+            WebViewCompat.startUpWebView(
+                context,
+                config,
+                object : WebViewOutcomeReceiver<WebViewStartUpResult, WebViewStartupException> {
+                    override fun onResult(result: WebViewStartUpResult) {
+                        Log.d(TAG, "startUpWebView finished: $result")
+                        isEngineWarmedUp.set(true)
+                    }
+
+                    override fun onError(error: WebViewStartupException) {
+                        Log.w(TAG, "startUpWebView failed", error)
+                        // 启动失败不阻塞后续 new WebView()：那条路会自己触发隐式启动
+                        isEngineWarmedUp.set(true)
+                    }
+                }
+            )
+        }.isSuccess
+
+        if (!started) {
+            warmUpEngine(context)
+        }
+    }
+
+    /**
+     * 老内核的兜底预热：创建临时 WebView，加载空白页触发引擎初始化，然后销毁
      */
     private fun warmUpEngine(context: Context) {
         mainHandler.post {
@@ -191,6 +267,7 @@ object WebViewPool {
             mainHandler.postDelayed({
                 tempWebView.stopLoading()
                 tempWebView.destroy()
+                isEngineWarmedUp.set(true)
             }, 1000)
         }
     }
@@ -205,15 +282,21 @@ object WebViewPool {
      *
      * 注意：HTML 拼接耗时极短（1-5ms），同步执行比线程调度更高效
      *
-     * @param key 业务标识 key，用于区分不同业务的预加载内容
+     * @param cacheKey 业务标识 key，用于区分不同业务的预加载内容
+     * @param matchKey 命中判断用的稳定键，见 [PreloadedEntry.matchKey]
      * @param config 预加载配置
      * @param generator HTML 生成器
      */
-    fun <T : Any> preloadHtml(key: String, config: T, generator: HtmlGenerator<T>) {
+    fun <T : Any> preloadHtml(
+        cacheKey: String,
+        matchKey: Any,
+        config: T,
+        generator: HtmlGenerator<T>
+    ) {
         if (!isInitialized.get()) return
 
         val html = generator.generate(config)
-        preloadedCache[key] = PreloadedEntry(config, html)
+        preloadedCache[cacheKey] = PreloadedEntry(config, matchKey, html)
     }
 
     /**
@@ -221,33 +304,35 @@ object WebViewPool {
      *
      * 适用于 HTML 生成耗时较长（>50ms）的场景
      *
-     * @param key 业务标识 key，用于区分不同业务的预加载内容
+     * @param cacheKey 业务标识 key，用于区分不同业务的预加载内容
+     * @param matchKey 命中判断用的稳定键，见 [PreloadedEntry.matchKey]
      * @param config 预加载配置
      * @param generator HTML 生成器
      */
-    fun <T : Any> preloadHtmlAsync(key: String, config: T, generator: HtmlGenerator<T>) {
+    fun <T : Any> preloadHtmlAsync(
+        cacheKey: String,
+        matchKey: Any,
+        config: T,
+        generator: HtmlGenerator<T>
+    ) {
         if (!isInitialized.get()) return
 
         executor.execute {
             val html = generator.generate(config)
-            preloadedCache[key] = PreloadedEntry(config, html)
+            preloadedCache[cacheKey] = PreloadedEntry(config, matchKey, html)
         }
     }
 
     /**
      * 获取预拼接的 HTML
      *
-     * @param key 业务标识 key
-     * @param config 配置对象，用于验证缓存是否匹配
-     * @return 预拼接的 HTML，如果配置未变化则返回缓存，否则返回 null
+     * @param cacheKey 业务标识 key
+     * @param matchKey 命中判断用的稳定键
+     * @return 预拼接的 HTML，键不匹配则返回 null
      */
-    fun <T : Any> getPreloadedHtml(key: String, config: T): String? {
-        val entry = preloadedCache[key] ?: return null
-        return if (entry.config == config) {
-            entry.html
-        } else {
-            null
-        }
+    fun getPreloadedHtml(cacheKey: String, matchKey: Any): String? {
+        val entry = preloadedCache[cacheKey] ?: return null
+        return if (entry.matchKey == matchKey) entry.html else null
     }
 
     /**
@@ -278,6 +363,9 @@ object WebViewPool {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             setBackgroundColor(backgroundColor)
+            // 这里是全应用唯一的 WebView 工厂，埋点挂这一次就覆盖了所有页面。
+            // 内部按 debug 构建 + 内核能力双重判断，正式包是空操作。
+            WebViewDiagnostics.attachPageMetrics(this, tag = "webview")
         }
     }
 

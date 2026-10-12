@@ -6,15 +6,19 @@ import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.annotation.Keep
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil3.compose.AsyncImage
@@ -32,13 +37,27 @@ import coil3.request.ImageRequest
 import coil3.svg.SvgDecoder
 import com.shifenmiao.webview.common.WebViewPool
 import com.shifenmiao.webview.common.WebViewSettings
+import com.shifenmiao.webview.diagnostics.WebViewDiagnostics
 import com.shifenmiao.webview.di.WebViewEntryPoint
 import com.shifenmiao.webview.resource.WebResourceEngine
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.shimmer
 import dagger.hilt.android.EntryPointAccessors
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.delay
 
 private const val TAG = "MermaidDiagram"
+
+/**
+ * mermaid 源码稳定多久之后才认为它是最终内容（毫秒）。
+ *
+ * AI 回答是流式输出的：每来一个 token，```mermaid 代码块的内容都会变。若直接拿 code 当渲染 key，
+ * 每变一次就会走一遍「新建 WebView → 重新加载 2.5 MB mermaid.min.js → 渲染半张图 → 写进缓存」，
+ * 一次回答能连续建好几个 WebView，既掉帧又会把不完整的图缓存下来。
+ *
+ * 首屏（内容已定型、code 不再变化）不受影响：stableCode 初值就是首个 code，
+ * LaunchedEffect 第一次进来发现没有变化会直接返回，不做任何等待。
+ */
+private const val CODE_SETTLE_DEBOUNCE_MS = 400L
 
 /**
  * Mermaid 图表 Compose 组件（SVG 缓存 + Shimmer 骨架屏）
@@ -68,10 +87,30 @@ fun MermaidDiagramView(
     val colorScheme = MaterialTheme.colorScheme
     val surfaceColor = colorScheme.surface.toArgb()
     val defaultMinHeight = 120.dp
+    val context = LocalContext.current
+
+    // 内核跑不动 mermaid 时不要建 WebView。
+    // mermaid.min.js 用了 ES2020（可选链/空值合并），Chromium < 80 的内核会在**解析阶段**就抛
+    // SyntaxError，window.mermaid 永远是 undefined。而模板的失败路径会把源码容器
+    // （.mermaid-container）隐藏、只留一句 "Mermaid 渲染失败: mermaid library not loaded"，
+    // 用户既看不到图也看不到源码。这里直接原生展示源码，比走那条路更有用，也省掉 2.5 MB 白读。
+    if (!remember(context) { WebViewDiagnostics.supportsEs2020(context) }) {
+        MermaidSourceFallback(code = code, modifier = modifier)
+        return
+    }
+
+    // 流式输出时 code 每个 token 都会变，先把内容稳定下来再拿去渲染（见 CODE_SETTLE_DEBOUNCE_MS）。
+    // 下面所有缓存查询、HTML 生成、缓存写入一律用 stableCode，不再直接用 code。
+    var stableCode by remember { mutableStateOf(code) }
+    LaunchedEffect(code) {
+        if (code == stableCode) return@LaunchedEffect
+        delay(CODE_SETTLE_DEBOUNCE_MS)
+        stableCode = code
+    }
 
     // ── 优先查缓存 ──
-    val initialCache = remember(code, isDark) { MermaidBitmapCache.get(code, isDark) }
-    var cachedFile by remember(code, isDark) { mutableStateOf(initialCache?.svgFile) }
+    val initialCache = remember(stableCode, isDark) { MermaidBitmapCache.get(stableCode, isDark) }
+    var cachedFile by remember(stableCode, isDark) { mutableStateOf(initialCache?.svgFile) }
 
     // 使用缓存高度作为初始高度（JS getBoundingClientRect CSS px ≈ Android dp），
     // 避免从 120dp 动画展开到实际高度
@@ -84,15 +123,14 @@ fun MermaidDiagramView(
         //  路径 A：缓存命中 → Coil AsyncImage 从文件渲染 SVG
         //  使用缓存高度固定初始尺寸，消除滚动回来时的展开动画
         // ══════════════════════════════════════════════════
-        Log.d(TAG, "CACHE HIT: hash=${code.hashCode()}, isDark=$isDark, h=${cachedHeightDp}")
-        val context = LocalContext.current
+        Log.d(TAG, "CACHE HIT: hash=${stableCode.hashCode()}, isDark=$isDark, h=${cachedHeightDp}")
         AsyncImage(
             model = remember(cachedFile) {
                 ImageRequest.Builder(context)
                     .data(cachedFile!!)
                     .decoderFactory(SvgDecoder.Factory())
                     // 设置内存缓存 key，滚动回来时直接从内存读取，无需重新解码
-                    .memoryCacheKey(MemoryCache.Key("mermaid_${code.hashCode()}_$isDark"))
+                    .memoryCacheKey(MemoryCache.Key("mermaid_${stableCode.hashCode()}_$isDark"))
                     .build()
             },
             contentDescription = "Mermaid Diagram",
@@ -113,14 +151,13 @@ fun MermaidDiagramView(
         // ══════════════════════════════════════════════════
         //  路径 B：缓存未命中 → Shimmer + WebView 渲染
         // ══════════════════════════════════════════════════
-        Log.d(TAG, "CACHE MISS: hash=${code.hashCode()}, isDark=$isDark")
+        Log.d(TAG, "CACHE MISS: hash=${stableCode.hashCode()}, isDark=$isDark")
 
         var isRendering by remember { mutableStateOf(true) }
         var webViewRef by remember { mutableStateOf<WebView?>(null) }
         val destroyed = remember { AtomicBoolean(false) }
 
         // 通过 Hilt EntryPoint 获取单例 WebResourceEngine
-        val context = LocalContext.current
         val engine: WebResourceEngine = remember(context) {
             EntryPointAccessors.fromApplication(
                 context = context.applicationContext,
@@ -136,6 +173,12 @@ fun MermaidDiagramView(
         ) {
             AndroidView(
                 factory = { ctx ->
+                    // 快照本次实际渲染的内容与主题。
+                    // bridge 回调是异步的，那里再去读 stableCode 会读到"更新后的值"——
+                    // 上一张图渲染完成时可能已经把内容换掉了，于是旧图的 SVG 会被写进新 code 的缓存键。
+                    val renderCode = stableCode
+                    val renderDark = isDark
+
                     val wv = WebViewPool.create(ctx, surfaceColor).apply {
                         layoutParams = ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -153,14 +196,22 @@ fun MermaidDiagramView(
 
                     val bridge = MermaidBridge(
                         onSvgReady = { svgString, height ->
-                            // 缓存 SVG 到文件，触发重组切换到路径 A
-                            val file = MermaidBitmapCache.put(code, isDark, svgString, height)
-                            if (file != null) cachedFile = file
-                            isRendering = false
-                            // 立即销毁 WebView，无需等待
-                            if (destroyed.compareAndSet(false, true)) {
-                                webViewRef = null
-                                WebViewPool.destroyWebView(wv, "Android")
+                            // 本回调跑在 WebView 的 JavaBridge 线程，不是主线程。
+                            // 写文件/MMKV 留在当前线程（是 IO），涉及 Compose state 与 View 的操作
+                            // 全部 post 回主线程：destroyWebView 内部会做 onPause / setLayerType /
+                            // loadUrl / removeView，非主线程调用属未定义行为。
+                            val file = MermaidBitmapCache.put(renderCode, renderDark, svgString, height)
+                            wv.post {
+                                // 等待期间内容可能又稳定成了新的（stableCode 读到的是当前值）。
+                                // 这份结果对应的是 renderCode，过期就只跳过写缓存——否则旧图会被写进
+                                // 新 code 的缓存键，后续命中就是错的图。清理动作照常走完，避免 WebView 泄漏。
+                                if (renderCode == stableCode && file != null) cachedFile = file
+                                isRendering = false
+                                // 立即销毁 WebView，无需等待
+                                if (destroyed.compareAndSet(false, true)) {
+                                    webViewRef = null
+                                    WebViewPool.destroyWebView(wv, "Android")
+                                }
                             }
                         },
                         onRendered = { height ->
@@ -169,7 +220,7 @@ fun MermaidDiagramView(
                         },
                         onError = { msg ->
                             Log.e(TAG, "JS onError: $msg")
-                            isRendering = false
+                            wv.post { isRendering = false }
                         }
                     )
                     wv.addJavascriptInterface(bridge, "Android")
@@ -180,11 +231,22 @@ fun MermaidDiagramView(
                             view: WebView,
                             request: android.webkit.WebResourceRequest,
                         ) = engine.intercept(request)
+
+                        override fun onRenderProcessGone(
+                            view: WebView?,
+                            detail: android.webkit.RenderProcessGoneDetail?,
+                        ): Boolean {
+                            // 不接管这个回调的话，渲染进程被回收会直接把 App 带走。
+                            // 图表本来就有一条 onError 路径：停掉 shimmer 即可，页面会显示 mermaid 源码。
+                            Log.w(TAG, "render process gone, stop shimmer")
+                            wv.post { isRendering = false }
+                            return true
+                        }
                     }
 
                     val html = MermaidHtmlTemplate.generate(
-                        code = code,
-                        isDark = isDark,
+                        code = renderCode,
+                        isDark = renderDark,
                         colors = colorScheme
                     )
                     wv.loadDataWithBaseURL(
@@ -256,5 +318,34 @@ class MermaidBridge(
     @JavascriptInterface
     fun onError(message: String) {
         onError.invoke(message)
+    }
+}
+
+/**
+ * 内核不支持 mermaid（Chromium < 80，见 [WebViewDiagnostics.MIN_CHROMIUM_MAJOR_FOR_MERMAID]）时的兜底。
+ *
+ * 直接展示 mermaid 源码。做成等宽字体代码块而不是走 WebView：
+ * 后者会在解析 2.5 MB 脚本时抛 SyntaxError，然后把源码容器隐藏掉只留一句错误提示，
+ * 用户既看不到图也看不到源码。
+ *
+ * 代码块属于"内容渲染"，按项目规范不走玻璃管线，用中性的 surfaceContainer 做底。
+ */
+@Composable
+private fun MermaidSourceFallback(
+    code: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .padding(12.dp)
+    ) {
+        Text(
+            text = code.trim(),
+            style = MaterialTheme.typography.bodySmall,
+            fontFamily = FontFamily.Monospace,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }

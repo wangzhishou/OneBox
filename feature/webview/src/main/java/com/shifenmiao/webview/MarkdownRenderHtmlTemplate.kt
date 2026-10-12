@@ -22,7 +22,14 @@ object MarkdownRenderHtmlTemplate {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>${escapeHtml(title)}</title>
-            <script src="/js/tailwindcss.js"></script>
+            <!--
+              这里不要引入 /js/tailwindcss.js。
+              本模板的样式全部在下面的 <style> 里手写，正文由 Markdown 转换器生成
+              （HtmlMarkdownConverter / MarkdownStringUtils 都不产出 class 属性），
+              而 tailwindcss.js 是 Tailwind 的 Play CDN JIT 运行时：407 KB 的同步脚本，
+              加载后会扫描整个 DOM 并在运行时生成样式表，还挂 MutationObserver 持续重扫。
+              引入它等于每次渲染都在 <head> 里白解析 407 KB JS 再生成一份空样式表，阻塞首屏。
+            -->
             <style>
                 :root {
                     color-scheme: light dark;

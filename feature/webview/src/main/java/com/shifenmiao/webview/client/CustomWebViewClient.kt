@@ -3,6 +3,8 @@ package com.shifenmiao.webview.client
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.http.SslError
+import android.os.Build
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -116,6 +118,34 @@ class CustomWebViewClient(
         else -> "ERR_FAILED"
     }
 
+    /**
+     * 渲染进程被系统回收（低内存等）时的兜底。
+     *
+     * 官方文档原话：如果不接管这个回调，"your app will exit too" —— 整个 App 会跟着挂掉。
+     * 返回 true 表示已处理。这里只上报错误、不在这里 destroy：宿主容器（CommonWebView 等）
+     * 收到 onError 后会切到错误态并把 AndroidView 移出组合，由它自己的 DisposableEffect
+     * 走正常销毁路径；在这里提前 destroy 会和 Compose 持有的实例撞车。
+     *
+     * 注：onRenderProcessGone 是 API 26+ 的回调，minSdk 24/25 上永远不会被调用，
+     * 签名里的 RenderProcessGoneDetail 在那两个版本上不会被解析（ART 软失败校验）。
+     */
+    override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
+        // onRenderProcessGone 只会在 API 26+ 被调用，但 minSdk 是 24：
+        // 显式判版本，既满足 lint 的 NewApi，也避免在低版本上触碰 RenderProcessGoneDetail#didCrash。
+        val didCrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            detail?.didCrash() ?: false
+        } else {
+            false
+        }
+        onError?.invoke(
+            view,
+            null,
+            "页面渲染进程已终止，请重试",
+            "net::ERR_RENDERER_GONE (didCrash=$didCrash)"
+        )
+        return true
+    }
+
     override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
         if (ignoreSslError) {
             handler?.proceed()
@@ -134,6 +164,8 @@ class CustomWebViewClient(
         val errorDetails = "net::ERR_SSL_PROTOCOL_ERROR"
 
         onError?.invoke(view, null, errorMessage, errorDetails)
-        handler?.proceed() // 取消加载
+        // 这里是"不忽略 SSL 错误"的分支，必须 cancel：proceed() 是继续加载（等于放行），
+        // 只弹个错误提示却照样建立连接，等于这个开关从来没生效过。
+        handler?.cancel()
     }
 }

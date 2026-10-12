@@ -691,7 +691,70 @@ object MarkdownEditorHtmlTemplate {
             });
         }
     </script>
-    <script src="https://appassets.androidplatform.net/assets/js/mermaid.min.js"></script>
+    <!--
+      mermaid（2.5 MB）不在这里同步引入。
+
+      原来它是 <script src> 直接写在 editor.bundle.js 前面，两个都是经典脚本、按文档顺序执行，
+      所以 editor.bundle.js 必须等这 2.5 MB 下载并解析完才开始跑——而 mermaid 只是编辑器里的
+      可选预览功能。改成：editor.bundle.js 照常先执行，编辑器就绪之后再把这个脚本注入进来。
+
+      两处依赖都从编辑器自己的源码里核实过，不需要重建 bundle：
+      1) 就绪信号：editor.src.js:714-716 在初始化完成时把 #editor-container 的 display 从
+         none 改成 block，所以在外面观察这个属性即可。
+      2) 重渲染钩子：mermaid 是异步到位的，到位时编辑器可能已经渲染过一轮（那时 window.mermaid
+         还不存在，预览面板会被隐藏、只留源码）。AndroidBridge.setTheme() 内部会重置
+         mermaidThemeMode 并调用 scheduleMermaidRender()（editor.src.js:502-510），是那 16 个
+         桥方法里唯一能触发预览重渲染的，传当前主题过去不会有副作用。
+    -->
+    <script>
+        (function () {
+            var MERMAID_SRC = 'https://appassets.androidplatform.net/assets/js/mermaid.min.js';
+            var POLL_MS = 120;
+            var GIVE_UP_MS = 8000;
+
+            function loadMermaid() {
+                if (window.mermaid || window.__mermaidLoading) return;
+                window.__mermaidLoading = true;
+                var s = document.createElement('script');
+                s.src = MERMAID_SRC;
+                s.onload = function () {
+                    try {
+                        if (window.AndroidBridge && window.AndroidBridge.setTheme) {
+                            window.AndroidBridge.setTheme(
+                                document.documentElement.classList.contains('dark')
+                            );
+                        }
+                    } catch (e) { /* 重渲染失败不影响编辑器本身 */ }
+                };
+                document.head.appendChild(s);
+            }
+
+            function watchEditorReady() {
+                var container = document.getElementById('editor-container');
+                if (!container) return;
+
+                var ready = function () {
+                    return container.style.display && container.style.display !== 'none';
+                };
+                if (ready()) { loadMermaid(); return; }
+
+                var timer = setInterval(function () {
+                    if (ready()) {
+                        clearInterval(timer);
+                        loadMermaid();
+                    }
+                }, POLL_MS);
+                // 编辑器一直起不来时也别把 mermaid 永远挂着（真起不来时它也无所谓）
+                setTimeout(function () { clearInterval(timer); loadMermaid(); }, GIVE_UP_MS);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', watchEditorReady);
+            } else {
+                watchEditorReady();
+            }
+        })();
+    </script>
     <script src="editor.bundle.js"></script>
 </body>
 </html>

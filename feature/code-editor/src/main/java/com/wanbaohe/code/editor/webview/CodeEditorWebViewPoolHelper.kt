@@ -11,16 +11,26 @@ object CodeEditorWebViewPoolHelper {
     const val PRELOAD_KEY = "code_editor"
 
     fun preloadHtml(config: CodeEditorPreloadConfig) {
-        WebViewPool.preloadHtml(PRELOAD_KEY, config, CodeEditorHtmlGenerator)
+        WebViewPool.preloadHtml(PRELOAD_KEY, matchKeyOf(config), config, CodeEditorHtmlGenerator)
     }
 
     fun getPreloadedHtml(config: CodeEditorPreloadConfig): String? {
-        return WebViewPool.getPreloadedHtml(PRELOAD_KEY, config)
+        return WebViewPool.getPreloadedHtml(PRELOAD_KEY, matchKeyOf(config))
     }
 
     fun clearPreloadedHtml() {
         WebViewPool.clearPreloadedHtml(PRELOAD_KEY)
     }
+
+    /**
+     * 命中判断用的稳定键。
+     *
+     * 与 Markdown 编辑器同理：字体/颜色在 onEditorReady 之后由 CodeEditorBridge 的
+     * setTextStyle / setColors / setTheme 重新推送，且 fontSizePx 依赖 composition 的 fontScale，
+     * 预加载侧拿不到真值。键里只留 storageKey 与 isDarkTheme。
+     */
+    private fun matchKeyOf(config: CodeEditorPreloadConfig): String =
+        "${config.storageKey}|${config.isDarkTheme}"
 }
 
 internal object CodeEditorHtmlGenerator : HtmlGenerator<CodeEditorPreloadConfig> {
