@@ -4,9 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,13 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.wanbaohe.a2ui.catalog.A2uiComponentRenderer
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
 import com.wanbaohe.a2ui.domain.model.A2uiComponent
 import javax.inject.Inject
-import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckBoxBlank
 
 class RowSelectorRenderer @Inject constructor() : A2uiComponentRenderer {
 
@@ -54,11 +48,6 @@ class RowSelectorRenderer @Inject constructor() : A2uiComponentRenderer {
         val enabled = context.resolveBoolean(component.properties["enabled"]) ?: true
         val spacing = context.resolveInt(component.properties["spacing"])?.dp ?: 8.dp
         val padding = context.resolveInt(component.properties["padding"])?.dp ?: 0.dp
-        val textColor = MaterialTheme.colorScheme.onSurfaceVariant
-        val selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer
-        val containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-        val selectedContainerColor = MaterialTheme.colorScheme.primaryContainer
-        val iconColor = MaterialTheme.colorScheme.onPrimaryContainer
 
         if (!label.isNullOrBlank()) {
             Text(
@@ -75,31 +64,11 @@ class RowSelectorRenderer @Inject constructor() : A2uiComponentRenderer {
             verticalArrangement = Arrangement.spacedBy(spacing),
         ) {
             options.forEach { option ->
-                val isSelected = option.value in state.selectedValues
-                GlassFilterChip(
-                    selected = isSelected,
+                A2uiSelectorChip(
+                    selected = option.value in state.selectedValues,
                     onClick = { state.toggle(option) },
+                    label = option.label,
                     enabled = enabled,
-                    label = {
-                        Text(
-                            text = option.label,
-                            color = if (isSelected) selectedTextColor else textColor,
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = if (isSelected) {
-                                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle
-                            } else {
-                                com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckBoxBlank
-                            },
-                            contentDescription = option.label,
-                            tint = if (isSelected) iconColor else textColor,
-                            modifier = Modifier.size(16.dp),
-                        )
-                    },
-                    glassContainerColor = containerColor,
-                    glassSelectedContainerColor = selectedContainerColor,
                 )
             }
         }

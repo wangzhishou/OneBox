@@ -190,10 +190,24 @@ open class AgentDetailComponent @AssistedInject internal constructor(
         )
     }
 
+    /** 已经绑定过的模型。首次回放和同模型刷新都不算用户切换。 */
+    private var observedModelKey: String? = null
+
     override fun onModelChanged(aiModel: AiModel) {
-        if (messages.firstOrNull() != null) {
-            reGenerateMessage(completionId = messages.first().completionId)
+        super.onModelChanged(aiModel)
+        // 活动记录 / 历史中心带 showLastMessage 进来，只是回看这条会话。
+        // currentAIModel 进页面就会回放当前值，引擎目录刷新也会再推一次
+        // （往往只是 updateTime 变了）。这两种都不是用户换模型，不能把已有回答重新生成。
+        if (_conversation.value.showLastMessage) return
+        val modelKey = "${aiModel.engineName}:${aiModel.id}:${aiModel.name}"
+        val previous = observedModelKey
+        observedModelKey = modelKey
+        if (previous == null || previous == modelKey) return
+        val completionId = synchronized(messages) {
+            messages.firstOrNull()?.completionId
         }
+        if (completionId.isNullOrEmpty()) return
+        reGenerateMessage(completionId = completionId)
     }
 
     private fun fetchLocalData() {

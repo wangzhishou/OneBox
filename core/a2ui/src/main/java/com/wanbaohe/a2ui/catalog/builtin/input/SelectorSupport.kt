@@ -1,10 +1,21 @@
 package com.wanbaohe.a2ui.catalog.builtin.input
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckBoxBlank
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.a2ui.catalog.A2uiRenderContext
 import com.wanbaohe.a2ui.domain.model.A2uiComponent
 import com.wanbaohe.a2ui.domain.model.DynamicValue
@@ -116,6 +127,66 @@ internal fun rememberSelectorState(
         selectedValues = selectedValues,
         showCustomInput = showCustomInput,
         toggle = toggle,
+    )
+}
+
+/**
+ * 选项芯片：选中和未选中都用容器底色，不画 M3 描边。
+ *
+ * 未选中底是 surfaceContainer，选中底是 primaryContainer，两边都走玻璃样式
+ * （玻璃关掉时由 GlassFilterChip 降成同等浓淡的平涂）。
+ */
+@Composable
+internal fun A2uiSelectorChip(
+    selected: Boolean,
+    onClick: () -> Unit,
+    label: String,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val containerColor = MaterialTheme.colorScheme.surfaceContainer
+    val selectedContainerColor = MaterialTheme.colorScheme.primaryContainer
+    val textColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer
+    GlassFilterChip(
+        selected = selected,
+        onClick = onClick,
+        enabled = enabled,
+        modifier = modifier,
+        style = GlassStyle.Regular,
+        border = null,
+        glassContainerColor = containerColor,
+        glassSelectedContainerColor = selectedContainerColor,
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = containerColor,
+            labelColor = textColor,
+            iconColor = textColor,
+            selectedContainerColor = selectedContainerColor,
+            selectedLabelColor = selectedTextColor,
+            selectedLeadingIconColor = selectedTextColor,
+            disabledContainerColor = containerColor,
+            disabledLabelColor = textColor,
+            disabledLeadingIconColor = textColor,
+            disabledSelectedContainerColor = selectedContainerColor,
+        ),
+        label = {
+            Text(
+                text = label,
+                color = if (selected) selectedTextColor else textColor,
+            )
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = if (selected) {
+                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle
+                } else {
+                    com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCheckBoxBlank
+                },
+                contentDescription = label,
+                tint = if (selected) selectedTextColor else textColor,
+                modifier = Modifier.size(16.dp),
+            )
+        },
     )
 }
 

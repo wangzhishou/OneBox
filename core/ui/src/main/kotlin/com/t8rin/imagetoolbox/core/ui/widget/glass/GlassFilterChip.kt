@@ -70,7 +70,36 @@ fun GlassFilterChip(
                 trailingIcon = trailingIcon,
                 shape = shape,
                 colors = colors.copy(
-                    containerColor = flatGlassContainerColor(color = colors.containerColor)
+                    containerColor = flatGlassContainerColor(
+                        color = colors.containerColor,
+                        style = style,
+                    ),
+                    // 实底（GlassStyle.None）时选中态也铺容器色，不再留 M3 默认的描边空底。
+                    // 其它浓度保持原选中色，避免把全站 chip 的选中底一起洗淡。
+                    selectedContainerColor = if (style == GlassStyle.None) {
+                        flatGlassContainerColor(
+                            color = colors.selectedContainerColor,
+                            style = style,
+                        )
+                    } else {
+                        colors.selectedContainerColor
+                    },
+                    disabledContainerColor = if (style == GlassStyle.None) {
+                        flatGlassContainerColor(
+                            color = colors.disabledContainerColor,
+                            style = style,
+                        )
+                    } else {
+                        colors.disabledContainerColor
+                    },
+                    disabledSelectedContainerColor = if (style == GlassStyle.None) {
+                        flatGlassContainerColor(
+                            color = colors.disabledSelectedContainerColor,
+                            style = style,
+                        )
+                    } else {
+                        colors.disabledSelectedContainerColor
+                    },
                 ),
                 elevation = elevation,
                 border = border,
