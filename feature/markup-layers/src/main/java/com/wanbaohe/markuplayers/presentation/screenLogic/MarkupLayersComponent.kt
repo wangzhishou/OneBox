@@ -300,16 +300,16 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val _selectedLayerId: MutableState<String?> = mutableStateOf(null)
     val selectedLayerId: String? by _selectedLayerId
 
-    /** 首页快捷任务:打开编辑器后要自动进入的工具 id,UI 消费一次即清除 */
-    private val _pendingToolId: MutableState<String?> = mutableStateOf(null)
-    val pendingToolId: String? by _pendingToolId
+    /** 首页快捷任务:图片打开后要直接执行的 AI 操作,UI 消费一次即清除 */
+    private val _pendingAiOp = mutableStateOf<AiImageOp?>(null)
+    val pendingAiOp: AiImageOp? by _pendingAiOp
 
-    fun requestToolOnOpen(toolId: String?) {
-        _pendingToolId.value = toolId
+    fun requestAiOpOnOpen(op: AiImageOp?) {
+        _pendingAiOp.value = op
     }
 
-    fun consumePendingTool() {
-        _pendingToolId.value = null
+    fun consumePendingAiOp() {
+        _pendingAiOp.value = null
     }
 
     private val _activeToolId: MutableState<String?> = mutableStateOf(null)
@@ -754,6 +754,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         backgroundColor: Int?
     ) {
         if (isBusy) return
+        _pendingAiOp.value = null
         imageLoadingJob = launchImageTask(R.string.studio_task_loading, ImageTask.Loading) {
             memoryBudget.requireCanRender(width, height)
             val transparent = backgroundColor == null
@@ -907,8 +908,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
      * 处理中重复调用直接忽略;[cancelAiProcessing] 取消进行中的请求。
      * 成功结果先预览,采用后再记录文档历史。
      *
-     * 登录与积分预检由调用方(UI 层 ActionUtils.ensureLoginAndCheckPoints)完成;
-     * [pointsCost] > 0 时,仅处理成功后经 BaseUtils.consumePoints 扣积分,失败不扣。
+     * 登录与积分预检由调用方(UI 层 ActionUtils.ensureLoginAndCheckPoints)完成。
+     * [pointsCost] 记在预览结果上,用户采用后才扣;取消预览或处理失败不扣。
      */
     fun processAiImage(
         op: AiImageOp,
@@ -941,16 +942,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 targetLayerId = target?.id,
                 replaceBackground = target == null,
                 width = result.width,
-                height = result.height
+                height = result.height,
+                pointsCost = pointsCost.coerceAtLeast(0)
             )
-            if (pointsCost > 0) {
-                BaseUtils.consumePoints(
-                    degree = pointsCost,
-                    desc = appContext.getString(op.nameRes),
-                    source = AI_POINTS_SOURCE,
-                    showToast = true
-                )
-            }
         }
     }
 
@@ -987,13 +981,16 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         if (asNewLayer || (!result.replaceBackground && result.targetLayerId == null)) {
             commitAddedLayer(MarkupLayer(type = LayerType.Image(result.imagePath)))
             _pendingAiResult.value = null
+            chargeAcceptedAiResult(result)
             return
         }
         if (result.targetLayerId != null) {
-            replaceImageLayer(result.targetLayerId, result.imagePath)
+            if (!replaceImageLayer(result.targetLayerId, result.imagePath)) return
             _pendingAiResult.value = null
+            chargeAcceptedAiResult(result)
             return
         }
+        if (isBusy) return
         imageLoadingJob = launchImageTask(R.string.studio_task_loading, ImageTask.Loading) {
             val preview = studioImageReader.load(
                 result.imagePath, memoryBudget.previewSize(result.width, result.height)
@@ -1009,7 +1006,19 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             updateBitmap(preview)
             onLayersChanged()
             _pendingAiResult.value = null
+            chargeAcceptedAiResult(result)
         }
+    }
+
+    /** 预览被采用后才扣积分。贴纸生成没有预览步骤,仍在落图层时扣。 */
+    private fun chargeAcceptedAiResult(result: AiImageResult) {
+        if (result.pointsCost <= 0) return
+        BaseUtils.consumePoints(
+            degree = result.pointsCost,
+            desc = result.title,
+            source = AI_POINTS_SOURCE,
+            showToast = true
+        )
     }
 
     fun revertAiImage(uri: String) {
@@ -1037,12 +1046,12 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         }
     }
 
-    private fun replaceImageLayer(id: String, path: String) {
+    private fun replaceImageLayer(id: String, path: String): Boolean {
         val target = _layers.value.firstOrNull { it.id == id }
         val image = target?.type as? LayerType.Image
         if (target == null || image == null) {
             AppToastHost.showFailureToast(R.string.studio_ai_image_target_required)
-            return
+            return false
         }
         updateLayer(id) {
             it.copy(
@@ -1051,6 +1060,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                     .distinct().takeLast(50)
             )
         }
+        return true
     }
 
     /** 替换图片图层素材(相册/文件),保留位置、变换、效果与蒙版;原图进图层历史可回退 */
@@ -1072,7 +1082,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
      * 防二次并驱动 LoadingDialog(不做占位图层)。
      * 新建:成功 addLayer(Image 图层,自动进 undo 历史);编辑:选中 Image 图层的
      * imageData 转 base64 data URI 作输入图,成功 updateLayer 换图(undo 即回退)。
-     * 仅非缓存结果(!fromCache)扣积分,失败/取消不扣。
+     * 仅非缓存结果记积分,采用预览后才扣;失败、取消或关掉预览不扣。
      */
     fun generateImageLayer(prompt: String) {
         val trimmed = prompt.trim()
@@ -1107,16 +1117,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 targetLayerId = editLayer?.id,
                 replaceBackground = target == AiGenerationTarget.Background,
                 width = dimensions.width,
-                height = dimensions.height
+                height = dimensions.height,
+                pointsCost = if (image.fromCache) 0 else aiImageProcessPointsCost()
             )
-            if (!image.fromCache) {
-                BaseUtils.consumePoints(
-                    degree = aiImageProcessPointsCost(),
-                    desc = appContext.getString(R.string.markup_ai_generate_title),
-                    source = AI_POINTS_SOURCE,
-                    showToast = true
-                )
-            }
         }
     }
 
@@ -2149,6 +2152,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
 
     fun openProject(id: String) {
         if (isBusy) return
+        _pendingAiOp.value = null
         imageLoadingJob = launchImageTask(R.string.studio_task_loading, ImageTask.Loading) {
             if (hasImage && haveChanges &&
                 !persistProject(projectId ?: error("No project ID"), projectName,
@@ -2331,14 +2335,25 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         uri: Uri,
         onFailure: (Throwable) -> Unit,
     ) {
-        if (isBusy) return
+        if (isBusy) {
+            _pendingAiOp.value = null
+            return
+        }
         imageLoadingJob = launchImageTask(
-            R.string.studio_task_loading, ImageTask.Loading, onFailure
+            R.string.studio_task_loading,
+            ImageTask.Loading,
+            onFailure = { failure ->
+                _pendingAiOp.value = null
+                onFailure(failure)
+            }
         ) {
             if (hasImage && haveChanges &&
                 !persistProject(projectId ?: error("No project ID"), projectName,
                     captureDocument(), documentRevision)
-            ) return@launchImageTask
+            ) {
+                _pendingAiOp.value = null
+                return@launchImageTask
+            }
             val path = projectStore.importAsset(uri.toString())
             val (size, preview) = studioImageReader.preview(path)
             val format = ImageFormat[imageGetter.getExtension(uri.toString())].toExportFormat()

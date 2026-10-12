@@ -291,17 +291,28 @@ fun EditorScaffold(
     }
     val onDrawCancel: () -> Unit = { component.setActiveTool(null) }
 
-    // 首页快捷任务:进入编辑器后自动打开指定工具(如 AI 面板),消费一次即清除
-    LaunchedEffect(component.pendingToolId) {
-        if (component.pendingToolId != null && component.hasImage) {
-            when (component.pendingToolId) {
-                EditorTools.ID_AI -> {
-                    aiCandidateLayerId = component.selectedLayerId
-                    activeBottomTab = EditorTools.ID_AI
-                }
+    val startAiOp: (AiImageOp) -> Unit = { op ->
+        val cost = aiImageProcessPointsCost()
+        ActionUtils.ensureLoginAndCheckPoints(
+            source = AI_POINTS_SOURCE,
+            point = cost
+        ) {
+            if (op.needsRect) {
+                aiRect = DEFAULT_AI_RECT
+                if (component.selectedLayer != null) component.prepareMaskTarget()
+                aiRectSelect = true
+            } else {
+                component.processAiImage(op, pointsCost = cost)
             }
-            component.consumePendingTool()
         }
+    }
+
+    // 首页快捷任务:等图片加载完再执行,避免处理请求撞上加载中的 isBusy
+    LaunchedEffect(component.pendingAiOp, component.hasImage, component.isImageLoading) {
+        val op = component.pendingAiOp ?: return@LaunchedEffect
+        if (!component.hasImage || component.isImageLoading) return@LaunchedEffect
+        component.consumePendingAiOp()
+        startAiOp(op)
     }
 
     // 返回键由 BaseScreen 处理(沉浸态先退沉浸):框选/绘制模式下返回 = 取消当前模式,否则按原逻辑退出
@@ -584,22 +595,10 @@ fun EditorScaffold(
         onDismiss = { if (activeBottomTab == EditorTools.ID_AI) activeBottomTab = null },
         pointsCost = aiImageProcessPointsCost(),
         onOpClick = { op ->
-            // 面板收起后分流:需框选的能力(图像修复)先做登录+积分预检,通过才进框选模式,
-            // Avoid selecting a region before authentication; replacements remain undoable.
-            // 确认后才做预检与处理;积分在处理成功后由组件扣除,失败不扣
+            // 需框选的能力先做登录+积分预检,通过才进框选;其余先确认再处理。
+            // 积分在采用预览结果后才扣,取消预览不扣。
             activeBottomTab = null
-            if (op.needsRect) {
-                ActionUtils.ensureLoginAndCheckPoints(
-                    source = AI_POINTS_SOURCE,
-                    point = aiImageProcessPointsCost()
-                ) {
-                    aiRect = DEFAULT_AI_RECT
-                    if (component.selectedLayer != null) component.prepareMaskTarget()
-                    aiRectSelect = true
-                }
-            } else {
-                pendingAiOp = op
-            }
+            if (op.needsRect) startAiOp(op) else pendingAiOp = op
         }
     )
 
@@ -621,13 +620,7 @@ fun EditorScaffold(
                 onClick = {
                     val op = pendingAiOp ?: return@ConfirmButton
                     pendingAiOp = null
-                    val cost = aiImageProcessPointsCost()
-                    ActionUtils.ensureLoginAndCheckPoints(
-                        source = AI_POINTS_SOURCE,
-                        point = cost
-                    ) {
-                        component.processAiImage(op, pointsCost = cost)
-                    }
+                    startAiOp(op)
                 }
             )
         }
@@ -912,6 +905,13 @@ private fun AiResultSheet(component: MarkupLayersComponent) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                if (result.pointsCost > 0) {
+                    Text(
+                        text = stringResource(R.string.studio_ai_result_points, result.pointsCost),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 if (result.replaceBackground || result.targetLayerId != null) {
                     ConfirmButton(
                         text = stringResource(R.string.studio_ai_result_replace),

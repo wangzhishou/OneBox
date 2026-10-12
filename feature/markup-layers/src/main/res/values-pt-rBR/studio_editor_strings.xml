@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Substituir imagem escolhida</string>
     <string name="studio_ai_result_new_layer">Adicionar como nova camada</string>
     <string name="studio_ai_result_keep_editable">Revise o resultado antes de aplicá-lo. Substituir a imagem mantém suas camadas e pode ser desfeito.</string>
+    <string name="studio_ai_result_points">Aplicar este resultado usa %1$d pontos. Descartar não desconta.</string>
     <string name="studio_mask_undo_stroke">Desfazer último traço</string>
     <string name="studio_effects">Efeitos</string>
     <string name="studio_effects_edit">Editar efeitos (%1$d)</string>

@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Palitan ang napiling larawan</string>
     <string name="studio_ai_result_new_layer">Idagdag bilang bagong layer</string>
     <string name="studio_ai_result_keep_editable">Suriin ang resulta bago ito ilapat. Ang pagpapalit ng larawan ay nagpapanatili ng iyong mga layer at maaaring i-undo.</string>
+    <string name="studio_ai_result_points">Ang pag-apply ay gagastos ng %1$d puntos. Ang pagkansela ay hindi.</string>
     <string name="studio_mask_undo_stroke">I-undo ang huling stroke</string>
     <string name="studio_effects">Mga effect</string>
     <string name="studio_effects_edit">I-edit ang mga effect (%1$d)</string>

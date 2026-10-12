@@ -73,8 +73,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
+import com.wanbaohe.markuplayers.domain.model.AiImageOp
 import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
-import com.wanbaohe.markuplayers.presentation.tools.EditorTools
 import com.wanbaohe.markuplayers.domain.render.ImageMemoryBudget
 import java.text.DateFormat
 import java.util.Date
@@ -303,14 +303,14 @@ private fun QuickTasksSection(
     setImage: (Uri) -> Unit,
     onMakeCover: () -> Unit,
 ) {
-    // 任务化入口:选图后自动进入对应工具(AI 面板);取消选图时清除待进入状态
+    // 任务化入口:选图并加载成功后直接执行对应操作;取消或加载失败时清除
     val taskPicker = rememberImagePicker(
         picker = Picker.Single,
-        onFailure = { component.requestToolOnOpen(null) },
+        onFailure = { component.requestAiOpOnOpen(null) },
         onSuccess = { uris: List<Uri> -> uris.firstOrNull()?.let(setImage) }
     )
-    val pickForAi: () -> Unit = {
-        component.requestToolOnOpen(EditorTools.ID_AI)
+    val pickForOp: (AiImageOp) -> Unit = { op ->
+        component.requestAiOpOnOpen(op)
         taskPicker.pickImage()
     }
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -327,13 +327,13 @@ private fun QuickTasksSection(
             QuickTaskEntry(
                 icon = Icons.Filled.Transparency,
                 label = stringResource(R.string.studio_task_remove_bg),
-                onClick = pickForAi,
+                onClick = { pickForOp(AiImageOp.Segment) },
                 modifier = Modifier.weight(1f)
             )
             QuickTaskEntry(
                 icon = Icons.Outlined.AutoFixHigh,
                 label = stringResource(R.string.studio_task_repair_photo),
-                onClick = pickForAi,
+                onClick = { pickForOp(AiImageOp.Inpainting) },
                 modifier = Modifier.weight(1f)
             )
             QuickTaskEntry(

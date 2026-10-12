@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">替换所选图片</string>
     <string name="studio_ai_result_new_layer">添加为新图层</string>
     <string name="studio_ai_result_keep_editable">先预览结果再应用。替换图片会保留其他图层，也可以撤销。</string>
+    <string name="studio_ai_result_points">采用后扣除 %1$d 积分，取消不扣。</string>
     <string name="studio_mask_undo_stroke">撤销上一笔</string>
     <string name="studio_effects">效果</string>
     <string name="studio_effects_edit">编辑效果（%1$d）</string>

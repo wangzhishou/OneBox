@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Reemplazar imagen elegida</string>
     <string name="studio_ai_result_new_layer">Añadir como nueva capa</string>
     <string name="studio_ai_result_keep_editable">Revisa el resultado antes de aplicarlo. Reemplazar la imagen conserva tus capas y se puede deshacer.</string>
+    <string name="studio_ai_result_points">Aplicar este resultado usa %1$d puntos. Descartarlo no descuenta.</string>
     <string name="studio_mask_undo_stroke">Deshacer último trazo</string>
     <string name="studio_effects">Efectos</string>
     <string name="studio_effects_edit">Editar efectos (%1$d)</string>

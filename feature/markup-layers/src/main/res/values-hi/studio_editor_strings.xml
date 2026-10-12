@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">चयनित छवि बदलें</string>
     <string name="studio_ai_result_new_layer">नए स्तर के रूप में जोड़ें</string>
     <string name="studio_ai_result_keep_editable">लागू करने से पहले परिणाम की समीक्षा करें। छवि बदलने से आपके स्तर बने रहते हैं और इसे पूर्ववत किया जा सकता है।</string>
+    <string name="studio_ai_result_points">लागू करने पर %1$d अंक कटेंगे। रद्द करने पर नहीं कटेंगे।</string>
     <string name="studio_mask_undo_stroke">अंतिम स्ट्रोक पूर्ववत करें</string>
     <string name="studio_effects">प्रभाव</string>
     <string name="studio_effects_edit">प्रभाव संपादित करें (%1$d)</string>

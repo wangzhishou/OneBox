@@ -11,4 +11,6 @@ data class AiImageResult(
     val replaceBackground: Boolean,
     val width: Int,
     val height: Int,
+    /** 采用结果时扣除的积分。0 表示本次不扣(缓存命中或未计价)。 */
+    val pointsCost: Int = 0,
 )

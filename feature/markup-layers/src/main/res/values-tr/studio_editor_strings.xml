@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Seçilen görüntüyü değiştir</string>
     <string name="studio_ai_result_new_layer">Yeni katman olarak ekle</string>
     <string name="studio_ai_result_keep_editable">Uygulamadan önce sonucu inceleyin. Görüntüyü değiştirmek katmanlarınızı korur ve geri alınabilir.</string>
+    <string name="studio_ai_result_points">Uygulamak %1$d puan düşer. Vazgeçmek puan düşmez.</string>
     <string name="studio_mask_undo_stroke">Son fırça darbesini geri al</string>
     <string name="studio_effects">Efektler</string>
     <string name="studio_effects_edit">Efektleri düzenle (%1$d)</string>

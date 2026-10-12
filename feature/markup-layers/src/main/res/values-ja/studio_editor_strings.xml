@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">選択した画像を置き換え</string>
     <string name="studio_ai_result_new_layer">新しいレイヤーとして追加</string>
     <string name="studio_ai_result_keep_editable">適用する前に結果を確認してください。画像を置き換えてもレイヤーは保持され、元に戻せます。</string>
+    <string name="studio_ai_result_points">採用すると %1$d ポイントを消費します。破棄しても消費しません。</string>
     <string name="studio_mask_undo_stroke">最後のストロークを元に戻す</string>
     <string name="studio_effects">エフェクト</string>
     <string name="studio_effects_edit">エフェクトを編集 (%1$d)</string>

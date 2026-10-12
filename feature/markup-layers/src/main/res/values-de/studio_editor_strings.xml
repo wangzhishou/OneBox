@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Gewähltes Bild ersetzen</string>
     <string name="studio_ai_result_new_layer">Als neue Ebene hinzufügen</string>
     <string name="studio_ai_result_keep_editable">Prüfe das Ergebnis, bevor du es anwendest. Beim Ersetzen des Bildes bleiben deine Ebenen erhalten und die Aktion kann rückgängig gemacht werden.</string>
+    <string name="studio_ai_result_points">Beim Übernehmen werden %1$d Punkte abgezogen. Verwerfen ist kostenlos.</string>
     <string name="studio_mask_undo_stroke">Letzten Strich rückgängig machen</string>
     <string name="studio_effects">Effekte</string>
     <string name="studio_effects_edit">Effekte bearbeiten (%1$d)</string>

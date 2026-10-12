@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Заменить выбранное изображение</string>
     <string name="studio_ai_result_new_layer">Добавить как новый слой</string>
     <string name="studio_ai_result_keep_editable">Проверьте результат перед применением. Замена изображения сохраняет ваши слои, и действие можно отменить.</string>
+    <string name="studio_ai_result_points">Применение списывает %1$d баллов. Отмена ничего не списывает.</string>
     <string name="studio_mask_undo_stroke">Отменить последний штрих</string>
     <string name="studio_effects">Эффекты</string>
     <string name="studio_effects_edit">Изменить эффекты (%1$d)</string>

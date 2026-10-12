@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Ganti gambar terpilih</string>
     <string name="studio_ai_result_new_layer">Tambahkan sebagai lapisan baru</string>
     <string name="studio_ai_result_keep_editable">Tinjau hasil sebelum menerapkannya. Mengganti gambar mempertahankan lapisan Anda dan dapat diurungkan.</string>
+    <string name="studio_ai_result_points">Menerapkan hasil ini memakai %1$d poin. Membatalkan tidak mengurangi poin.</string>
     <string name="studio_mask_undo_stroke">Urungkan goresan terakhir</string>
     <string name="studio_effects">Efek</string>
     <string name="studio_effects_edit">Edit efek (%1$d)</string>

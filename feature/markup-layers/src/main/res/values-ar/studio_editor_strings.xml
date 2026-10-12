@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">استبدال الصورة المختارة</string>
     <string name="studio_ai_result_new_layer">إضافة كطبقة جديدة</string>
     <string name="studio_ai_result_keep_editable">راجع النتيجة قبل تطبيقها. استبدال الصورة يحافظ على طبقاتك ويمكن التراجع عنه.</string>
+    <string name="studio_ai_result_points">يُخصم %1$d نقطة عند الاعتماد. الإلغاء لا يخصم شيئاً.</string>
     <string name="studio_mask_undo_stroke">التراجع عن آخر خط</string>
     <string name="studio_effects">التأثيرات</string>
     <string name="studio_effects_edit">تحرير التأثيرات (%1$d)</string>

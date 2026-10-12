@@ -94,6 +94,7 @@
     <string name="studio_ai_result_replace">Replace chosen image</string>
     <string name="studio_ai_result_new_layer">Add as a new layer</string>
     <string name="studio_ai_result_keep_editable">Review the result before applying it. Replacing the image keeps your layers and can be undone.</string>
+    <string name="studio_ai_result_points">Applying this result uses %1$d points. Discarding it does not.</string>
     <string name="studio_mask_undo_stroke">Undo last stroke</string>
     <string name="studio_effects">Effects</string>
     <string name="studio_effects_edit">Edit effects (%1$d)</string>
