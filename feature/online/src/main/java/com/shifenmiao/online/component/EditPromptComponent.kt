@@ -83,7 +83,7 @@ class EditPromptComponent @AssistedInject internal constructor(
             MarkdownPreloadConfig.fromColorScheme(
                 colorScheme = AppTheme.colorScheme,
                 isDarkTheme = AppTheme.isDarkTheme,
-                storageKey = "edit_prompt_editor"
+                storageKey = "edit_prompt_item"
             )
         )
         componentContext.lifecycle.doOnDestroy {

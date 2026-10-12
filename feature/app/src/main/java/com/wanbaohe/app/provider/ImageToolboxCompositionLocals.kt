@@ -1,6 +1,7 @@
 package com.wanbaohe.app.provider
 
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -125,6 +126,11 @@ fun ImageToolboxCompositionLocals(
         content = {
             ImageToolboxThemeSurface {
                 AppTheme.colorScheme = MaterialTheme.colorScheme
+                // AppTheme.isDarkTheme 必须在主题生效处一起赋值：
+                // 它在 composable 之外被读（AI 导出 HTML 的默认 isDark、Markdown/代码编辑器的
+                // 预加载配置），漏赋值就永远是 false —— 表现为深色模式下导出的对话 HTML 是浅色，
+                // 以及深色模式下编辑器预加载永远不命中。
+                AppTheme.isDarkTheme = isSystemInDarkTheme()
                 CompositionLocalProvider(
                     LocalContentColor provides MaterialTheme.colorScheme.onSurface,
                     LocalTextStyle provides MaterialTheme.typography.bodyLarge,

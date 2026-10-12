@@ -563,7 +563,18 @@ class MarkdownEditorComponent @AssistedInject internal constructor(
         onComplete: (Boolean, String?) -> Unit = { _, _ -> }
     ) {
         if (webView == null) {
-            appContext.getString(R.string.pdf_export_failure, R.string.pdf_url_not_found)
+            // 这条分支以前是：把消息拼出来就扔掉，而且不回调 onComplete。
+            // 两个后果：① 用户点"保存为 PDF"什么提示都没有（静默失败）；
+            // ② 调用方（MarkdownEditorScreen 的 scope.launch）永远等不到收尾。
+            // 另外 %s 收到的是资源 id（Int）而不是字符串，lint 的 StringFormatMatches 会直接报 error。
+            // 现在把拼好的消息交给 onComplete，由调用方统一弹出——它已经有 `msg ?: save_failed` 兜底。
+            onComplete(
+                false,
+                appContext.getString(
+                    R.string.pdf_export_failure,
+                    appContext.getString(R.string.pdf_url_not_found)
+                )
+            )
             return
         }
         try {
