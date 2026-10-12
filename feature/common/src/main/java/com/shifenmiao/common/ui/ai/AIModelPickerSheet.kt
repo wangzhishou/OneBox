@@ -56,6 +56,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
@@ -96,7 +97,10 @@ fun AIModelsPickerBottomSheet(
         onDismiss = { onDismiss(false) },
         dragHandle = {}
     ) {
-        var layoutMode by rememberSaveable { mutableStateOf(ModelLayoutMode.List) }
+        val preferGrid = LocalSettingsState.current.groupOptionsByTypes
+        var layoutMode by remember {
+            mutableStateOf(if (preferGrid) ModelLayoutMode.Grid else ModelLayoutMode.List)
+        }
         var selectedFilter by rememberSaveable { mutableStateOf(ENGINE_FILTER_ALL) }
         var searchQuery by rememberSaveable(visible) { mutableStateOf("") }
 
@@ -417,9 +421,13 @@ private fun ModelCard(
     isSelected: Boolean,
     onClick: () -> Unit,
 ) {
-    val accent = resolveProviderAccentColor(model)
+    val contentColor = if (isSelected) {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    } else {
+        MaterialTheme.colorScheme.onSurface
+    }
     val containerColor = if (isSelected) {
-        accent
+        MaterialTheme.colorScheme.primaryContainer
     } else {
         MaterialTheme.colorScheme.surfaceContainerLowest
     }
@@ -458,7 +466,7 @@ private fun ModelCard(
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold
                         ),
-                        color = if (isSelected) accent else MaterialTheme.colorScheme.onSurface,
+                        color = contentColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
@@ -472,7 +480,11 @@ private fun ModelCard(
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 10.sp,
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = if (isSelected) {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
                             maxLines = 1,
                         )
                     }
@@ -485,7 +497,7 @@ private fun ModelCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Surface(
                     shape = RoundedCornerShape(999.dp),
-                    color = accent,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.size(8.dp)
                 ) {}
             }
@@ -568,14 +580,17 @@ private fun ProviderBadge(
     model: AiModel,
     isSelected: Boolean,
 ) {
-    val accent = resolveProviderAccentColor(model)
     Text(
         text = resolveProviderLabel(engine, model),
         style = MaterialTheme.typography.labelSmall.copy(
             fontWeight = FontWeight.SemiBold,
             fontSize = 10.sp,
         ),
-        color = if (isSelected) accent else accent.copy(alpha = 0.60f),
+        color = if (isSelected) {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        },
         maxLines = 1,
     )
 }
@@ -649,9 +664,13 @@ fun ModelGridItem(
     isSelected: Boolean = false,
     onClick: () -> Unit = {},
 ) {
-    val accent = resolveProviderAccentColor(model)
+    val contentColor = if (isSelected) {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    } else {
+        MaterialTheme.colorScheme.onSurface
+    }
     val containerColor = if (isSelected) {
-        accent
+        MaterialTheme.colorScheme.primaryContainer
     } else {
         MaterialTheme.colorScheme.surfaceContainerLowest
     }
@@ -664,7 +683,9 @@ fun ModelGridItem(
         style = if (isSelected) GlassStyle.Regular else GlassStyle.Dense,
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 14.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -677,32 +698,53 @@ fun ModelGridItem(
             Text(
                 text = model.title,
                 style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                    lineHeight = 16.sp,
                 ),
-                color = if (isSelected) accent else MaterialTheme.colorScheme.onSurface,
+                color = contentColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp),
             )
 
-            // 代理中转链路按模型倍率扣积分,展示倍率
-            if (engine.usesProxyRoute()) {
-                Text(
-                    text = model.pointsMultiplierText(),
-                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    textAlign = TextAlign.Center,
-                )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(14.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (engine.usesProxyRoute()) {
+                    Text(
+                        text = model.pointsMultiplierText(),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 10.sp,
+                            lineHeight = 14.sp,
+                        ),
+                        color = if (isSelected) {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
 
-            if (isSelected) {
-                Surface(
-                    shape = RoundedCornerShape(999.dp),
-                    color = accent,
-                    modifier = Modifier.size(6.dp)
-                ) {}
+            Box(
+                modifier = Modifier.size(6.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (isSelected) {
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(6.dp),
+                    ) {}
+                }
             }
         }
     }
@@ -831,11 +873,6 @@ private fun resolveProviderLabel(
         "openai" -> "OPENAI"
         else -> engine.name.uppercase()
     }
-}
-
-@Composable
-private fun resolveProviderAccentColor(model: AiModel): Color {
-    return providerAccentColor(model.provider.value) ?: MaterialTheme.colorScheme.onPrimaryContainer
 }
 
 private fun resolveProviderMonogram(

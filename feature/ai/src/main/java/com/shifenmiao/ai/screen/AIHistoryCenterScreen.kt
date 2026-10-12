@@ -42,6 +42,7 @@ import com.shifenmiao.base.ui.ConfirmDialog
 import com.shifenmiao.base.ui.loading.EmptyBox
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
+import com.shifenmiao.common.ui.ai.EngineFilterChip
 import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.state.PageState
@@ -49,8 +50,8 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
+import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -221,18 +222,18 @@ private fun HistoryFilterRow(
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
             .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
     ) {
-        GlassFilterChip(
-            selected = selected == null,
+        EngineFilterChip(
+            text = stringResource(R.string.ai_history_filter_all),
+            isSelected = selected == null,
             onClick = { onSelected(null) },
-            label = { Text(text = stringResource(R.string.ai_history_filter_all)) }
         )
         AIConversationEntryType.entries.forEach { type ->
-            GlassFilterChip(
-                selected = selected == type,
+            EngineFilterChip(
+                text = type.label(),
+                isSelected = selected == type,
                 onClick = { onSelected(type) },
-                label = { Text(text = type.label()) }
             )
         }
     }

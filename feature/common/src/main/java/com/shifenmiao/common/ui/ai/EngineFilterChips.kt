@@ -4,13 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,6 +21,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 
 const val ENGINE_FILTER_ALL = "__all__"
 
@@ -39,7 +37,7 @@ fun EngineFilterChips(
     LazyRow(
         modifier = modifier.fillMaxWidth(),
         contentPadding = contentPadding,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.spaceSmall)
     ) {
         if (includeAllOption) {
             item(key = ENGINE_FILTER_ALL) {
@@ -62,9 +60,12 @@ fun EngineFilterChips(
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
-                            tint = providerAccentColor(engine.name)
-                                ?: MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp)
+                            tint = if (selectedFilter == engine.identityKey()) {
+                                MaterialTheme.colorScheme.onPrimaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
+                            modifier = Modifier.size(14.dp)
                         )
                     }
                 }
@@ -73,7 +74,6 @@ fun EngineFilterChips(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EngineFilterChip(
     text: String,
@@ -83,46 +83,48 @@ fun EngineFilterChip(
     trailingText: String? = null,
     leadingIcon: (@Composable () -> Unit)? = null,
 ) {
+    val contentColor = if (isSelected) {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
     GlassFilterChip(
-        modifier = modifier,
+        modifier = modifier.height(34.dp),
         selected = isSelected,
         onClick = onClick,
         label = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 leadingIcon?.invoke()
                 Text(
                     text = text,
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
-                    )
+                    style = if (isSelected) {
+                        MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.ExtraBold)
+                    } else {
+                        MaterialTheme.typography.titleSmall
+                    },
+                    color = contentColor,
                 )
                 if (trailingText != null) {
                     Text(
                         text = trailingText,
                         style = MaterialTheme.typography.labelMedium,
-                        color = if (isSelected) {
-                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
-                        }
+                        color = contentColor,
                     )
                 }
             }
         },
-        shape = RoundedCornerShape(50),
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f),
-            labelColor = MaterialTheme.colorScheme.onSurfaceVariant
-        ),
-        selectedColor = MaterialTheme.colorScheme.primaryContainer,
-        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f),
+        shape = MaterialTheme.shapes.large,
+        colors = AppTheme.colors.getFilterChipColors(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 2.dp),
+        style = if (isSelected) GlassStyle.Regular else GlassStyle.Thin,
+        glassBorderWidth = if (isSelected) 1.dp else 0.9.dp,
+        glassContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         glassSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        border = null,
     )
 }
 
