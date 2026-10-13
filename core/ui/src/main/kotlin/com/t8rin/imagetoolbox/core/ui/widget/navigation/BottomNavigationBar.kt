@@ -337,7 +337,7 @@ private fun BottomNavigationTabItem(
                 BadgedBox(
                     badge = {
                         if (item.hasBadge) {
-                            Badge(containerColor = MaterialTheme.colorScheme.error)
+                            Badge(containerColor = MaterialTheme.colorScheme.errorContainer)
                         }
                     }
                 ) {

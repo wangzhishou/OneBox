@@ -363,7 +363,7 @@ private fun MessageCard(
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
-                                .background(MaterialTheme.colorScheme.error, CircleShape),
+                                .background(MaterialTheme.colorScheme.errorContainer, CircleShape),
                         )
                     }
                 }

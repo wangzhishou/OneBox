@@ -105,7 +105,7 @@ private fun tileColors(
         512 -> colorScheme.primaryContainer to colorScheme.onPrimaryContainer
         1024 -> colorScheme.onPrimaryContainer.copy(alpha = 0.85f) to colorScheme.primaryContainer
         2048 -> colorScheme.onPrimaryContainer to colorScheme.primaryContainer
-        else -> colorScheme.onErrorContainer to colorScheme.onError // > 2048
+        else -> colorScheme.onErrorContainer to colorScheme.onErrorContainer // > 2048
     }
 }
 

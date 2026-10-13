@@ -437,13 +437,13 @@ private fun ElementBox(
                     }
                     .size(24.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.error)
+                    .background(MaterialTheme.colorScheme.errorContainer)
                     .clickable(onClick = onDelete)
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                     contentDescription = stringResource(R.string.textcard_delete_selected),
-                    tint = MaterialTheme.colorScheme.onError,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.size(18.dp)
                 )
             }

@@ -274,7 +274,7 @@ internal fun DeleteConfirmationDialog(
         confirmButton = {
             EnhancedButton(
                 onClick = onConfirm,
-                containerColor = MaterialTheme.colorScheme.error
+                containerColor = MaterialTheme.colorScheme.errorContainer
             ) {
                 Text(stringResource(R.string.delete))
             }

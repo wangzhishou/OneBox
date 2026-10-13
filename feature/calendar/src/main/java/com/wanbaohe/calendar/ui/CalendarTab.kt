@@ -1546,14 +1546,14 @@ private fun CalendarDayCell(
                             .glassBackground(
                                 shape = RoundedCornerShape(4.dp),
                                 color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-                                else MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.errorContainer
                             )
                             .padding(horizontal = 3.dp, vertical = 1.dp)
                 ) {
                     Text(
                         text = dayInfo.holidayBadge,
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onError
+                        color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             }

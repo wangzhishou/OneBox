@@ -78,7 +78,7 @@ fun NavigationRailBar(
                                     BadgedBox(
                                         badge = {
                                             if (hasUpdateAvailable && screen is Screen.Profile) {
-                                                Badge(containerColor = MaterialTheme.colorScheme.error)
+                                                Badge(containerColor = MaterialTheme.colorScheme.errorContainer)
                                             }
                                         }
                                     ) {

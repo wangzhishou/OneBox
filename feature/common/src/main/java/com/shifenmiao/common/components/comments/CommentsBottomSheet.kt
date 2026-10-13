@@ -957,13 +957,13 @@ private fun PendingImageChip(
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .background(MaterialTheme.colorScheme.error.copy(alpha = 0.4f)),
+                    .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onError,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.size(26.dp),
                 )
             }

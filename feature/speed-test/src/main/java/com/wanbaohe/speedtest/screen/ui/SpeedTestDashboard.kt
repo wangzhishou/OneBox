@@ -156,8 +156,8 @@ internal fun SpeedTestDashboard(
                                 onClick = onCancel,
                                 modifier = Modifier.size(64.dp),
                                 colors = IconButtonDefaults.filledIconButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.error,
-                                    contentColor = MaterialTheme.colorScheme.onError
+                                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                                    contentColor = MaterialTheme.colorScheme.onErrorContainer
                                 )
                             ) {
                                 Icon(Icons.Rounded.Close, stringResource(R.string.speed_test_stop), Modifier.size(26.dp))

@@ -203,7 +203,7 @@ private fun GameCard(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.2f), CircleShape)
+                            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f), CircleShape)
                             .border(1.dp, MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.3f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {

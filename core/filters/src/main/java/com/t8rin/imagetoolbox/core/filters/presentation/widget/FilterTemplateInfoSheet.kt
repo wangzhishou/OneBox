@@ -208,7 +208,7 @@ internal fun FilterTemplateInfoSheet(
                 ) {
                     EnhancedIconButton(
                         onClick = { showDeleteDialog = true },
-                        containerColor = MaterialTheme.colorScheme.error
+                        containerColor = MaterialTheme.colorScheme.errorContainer
                     ) {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,

@@ -516,7 +516,7 @@ fun ServerStatusCard(
                     Button(
                         onClick = onStop,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error
+                            containerColor = MaterialTheme.colorScheme.errorContainer
                         )
                     ) {
                         Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineStop, contentDescription = null)

@@ -326,12 +326,12 @@ fun BoxWithConstraintsScope.EditBox(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.size(24.dp).clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.error)
+                        .background(MaterialTheme.colorScheme.errorContainer)
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Close,
                         contentDescription = stringResource(R.string.markup_delete_layer),
-                        tint = MaterialTheme.colorScheme.onError,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.size(18.dp)
                     )
                 }

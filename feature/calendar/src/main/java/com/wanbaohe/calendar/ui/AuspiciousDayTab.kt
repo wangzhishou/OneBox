@@ -321,7 +321,7 @@ private fun ItemChip(
     modifier: Modifier = Modifier
 ) {
     val bgColor = when {
-        isSelected && isAvoidMode -> MaterialTheme.colorScheme.error
+        isSelected && isAvoidMode -> MaterialTheme.colorScheme.errorContainer
         isSelected -> MaterialTheme.colorScheme.primaryContainer
         else -> MaterialTheme.colorScheme.surfaceContainer
     }

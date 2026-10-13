@@ -1034,7 +1034,7 @@ private fun ToolSelectionRiskTag(riskLevel: ToolRiskLevel) {
     val background = when (riskLevel) {
         ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.primaryContainer
         ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.tertiaryContainer
-        ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.error
+        ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.errorContainer
     }
     val style = when (riskLevel) {
         ToolRiskLevel.SAFE -> GlassStyle.Regular

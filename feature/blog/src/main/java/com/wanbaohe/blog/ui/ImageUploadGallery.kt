@@ -124,12 +124,12 @@ fun ImageUploadGallery(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.error.copy(alpha = 0.5f)),
+                                .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f)),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "Failed",
-                                color = MaterialTheme.colorScheme.onError,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                                 style = MaterialTheme.typography.labelSmall
                             )
                         }

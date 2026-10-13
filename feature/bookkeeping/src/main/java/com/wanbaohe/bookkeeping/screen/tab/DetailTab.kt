@@ -456,7 +456,7 @@ private fun RecordItemRow(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        MaterialTheme.colorScheme.error.copy(alpha = color * 0.8f),
+                        MaterialTheme.colorScheme.errorContainer.copy(alpha = color * 0.8f),
                         RoundedCornerShape(12.dp)
                     )
                     .padding(horizontal = 20.dp),
@@ -466,7 +466,7 @@ private fun RecordItemRow(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.bookkeeping_swipe_delete),
-                        tint = MaterialTheme.colorScheme.onError,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.size(22.dp),
                     )
                 }

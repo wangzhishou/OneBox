@@ -407,7 +407,7 @@ private fun MessageCenterAction(compact: Boolean = false) {
                         .align(Alignment.TopEnd)
                         .offset(x = 3.dp, y = (-3).dp)
                         .size(8.dp)
-                        .background(MaterialTheme.colorScheme.error, CircleShape)
+                        .background(MaterialTheme.colorScheme.errorContainer, CircleShape)
                 )
             }
         }
