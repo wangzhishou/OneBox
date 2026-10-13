@@ -46,8 +46,6 @@ import com.t8rin.imagetoolbox.core.domain.image.toMap
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.Exif
 import com.t8rin.imagetoolbox.core.ui.theme.inverse
-import com.t8rin.imagetoolbox.core.ui.theme.onSecondaryContainerFixed
-import com.t8rin.imagetoolbox.core.ui.theme.secondaryContainerFixed
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.localizedName
 import com.t8rin.imagetoolbox.core.ui.utils.provider.rememberImageMetadataAsState
 import com.t8rin.imagetoolbox.core.ui.widget.buttons.SupportingButton
@@ -82,8 +80,8 @@ fun MetadataPreviewButton(
             }
             SupportingButton(
                 onClick = { showExif = true },
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainerFixed,
-                containerColor = MaterialTheme.colorScheme.secondaryContainerFixed,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier
                     .padding(start = 4.dp)

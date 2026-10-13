@@ -34,7 +34,6 @@ import com.smarttoolfactory.cropper.ImageCropper
 import com.smarttoolfactory.cropper.settings.CropDefaults
 import com.smarttoolfactory.cropper.settings.CropProperties
 import com.smarttoolfactory.cropper.util.drawWithLayer
-import com.t8rin.imagetoolbox.core.ui.theme.primaryContainerFixed
 import com.wanbaohe.idphoto.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

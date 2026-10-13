@@ -70,27 +70,10 @@ inline val ColorScheme.mixedContainer: Color
         )
     }
 
-inline val ColorScheme.primaryContainerFixed: Color
-    @Composable get() = run {
-        if (LocalSettingsState.current.isNightMode) primaryContainer.copy(alpha = 0.6f)
-        else primary.copy(alpha = 0.6f)
-    }
-
-inline val ColorScheme.onPrimaryContainerFixed: Color
-    @Composable get() = run {
-        if (LocalSettingsState.current.isNightMode) onPrimaryContainer else onPrimary
-    }.blend(Color.White)
-
-inline val ColorScheme.secondaryContainerFixed: Color
-    @Composable get() = run {
-        if (LocalSettingsState.current.isNightMode) secondaryContainer.copy(alpha = 0.6f)
-        else secondary.copy(alpha = 0.6f)
-    }
-
-inline val ColorScheme.onSecondaryContainerFixed: Color
-    @Composable get() = run {
-        if (LocalSettingsState.current.isNightMode) onSecondaryContainer else onSecondary
-    }.blend(Color.White)
+// 原先的 primaryContainerFixed / onPrimaryContainerFixed / secondaryContainerFixed /
+// onSecondaryContainerFixed 已在 2026-10 的 Container 统一中删除:它们在浅色模式回落到裸
+// primary / onPrimary / secondary / onSecondary,与「强调色只走 Container 家族」的口径冲突。
+// 调用方改用 primaryContainer / onPrimaryContainer / secondaryContainer / onSecondaryContainer。
 
 inline val ColorScheme.onMixedContainer: Color
     @Composable get() = run {

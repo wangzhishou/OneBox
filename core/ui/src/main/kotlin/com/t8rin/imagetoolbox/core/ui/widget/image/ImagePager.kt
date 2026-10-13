@@ -87,8 +87,6 @@ import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.BrokenImageAlt
 import com.t8rin.imagetoolbox.core.resources.icons.EditAlt
 import com.t8rin.imagetoolbox.core.ui.theme.White
-import com.t8rin.imagetoolbox.core.ui.theme.onPrimaryContainerFixed
-import com.t8rin.imagetoolbox.core.ui.theme.primaryContainerFixed
 import com.t8rin.imagetoolbox.core.ui.theme.takeColorFromScheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.rememberFilename
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ImageUtils.rememberFileSize
@@ -430,11 +428,11 @@ fun ImagePager(
                                         modifier = Modifier
                                             .animateContentSizeNoClip()
                                             .background(
-                                                color = MaterialTheme.colorScheme.primaryContainerFixed,
+                                                color = MaterialTheme.colorScheme.primaryContainer,
                                                 shape = CircleShape
                                             )
                                             .padding(horizontal = 8.dp, vertical = 4.dp),
-                                        color = MaterialTheme.colorScheme.onPrimaryContainerFixed,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                                         style = MaterialTheme.typography.labelMedium
                                     )
                                 }
