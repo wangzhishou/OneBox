@@ -185,14 +185,14 @@ private fun ImageThumbnail(
                 .size(18.dp),
             shape = MaterialTheme.shapes.medium,
             colors = AppTheme.colors.filledIconButtonColors().copy(
-                containerColor = MaterialTheme.colorScheme.onSurface.copy(0.6f),
-                contentColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                 contentDescription = stringResource(R.string.common_delete),
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(16.dp)
             )
         }

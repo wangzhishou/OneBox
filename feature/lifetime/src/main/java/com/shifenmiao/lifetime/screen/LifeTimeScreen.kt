@@ -360,14 +360,14 @@ private fun BoxScope.LifetimeFabMenu(
                 },
             onClick = { expanded = !expanded },
             shape = CircleShape,
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            contentColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 6.dp),
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                 contentDescription = stringResource(if (expanded) R.string.lifetime_cancel else R.string.lifetime_add),
-                tint = MaterialTheme.colorScheme.primaryContainer,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.graphicsLayer { rotationZ = fabRotation },
             )
         }

@@ -255,7 +255,7 @@ private fun CalendarCard(
                                 modifier = Modifier
                                     .size(4.dp)
                                     .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.onPrimaryContainer)
+                                    .background(MaterialTheme.colorScheme.primaryContainer)
                             )
                         }
                     }

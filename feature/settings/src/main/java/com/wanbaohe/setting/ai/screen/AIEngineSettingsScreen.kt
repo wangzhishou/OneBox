@@ -446,7 +446,7 @@ private fun EngineBadge(
                 color = when {
                     isError -> MaterialTheme.colorScheme.surfaceContainer
                     isPrimary -> MaterialTheme.colorScheme.primaryContainer
-                    selected -> MaterialTheme.colorScheme.onPrimaryContainer
+                    selected -> MaterialTheme.colorScheme.primaryContainer
                     else -> MaterialTheme.colorScheme.surfaceVariant
                 },
                 shape = RoundedCornerShape(50),
