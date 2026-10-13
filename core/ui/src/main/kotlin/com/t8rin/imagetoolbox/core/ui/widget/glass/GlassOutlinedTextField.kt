@@ -728,13 +728,17 @@ private fun Modifier.modernGlassTextFieldContainer(
     }
     val fillColor = fillHue.copy(alpha = fillAlpha)
 
-    val restingStroke = if (isLight) colorScheme.outlineVariant else colorScheme.outline
+    val restingStroke = if (isGlassActive) {
+        if (isLight) colorScheme.outlineVariant else colorScheme.outline
+    } else {
+        colorScheme.outline
+    }
     val strokeHue = when {
         !enabled -> colorScheme.outline
         isError -> colorScheme.error
         else -> lerp(restingStroke, colorScheme.onPrimaryContainer, focusProgress)
     }
-    // 线宽始终是 borderWidth, 聚焦不加粗。关掉玻璃时颜色再淡一档, 聚焦只换色。
+    // 线宽始终是 borderWidth, 聚焦不加粗。关玻璃用实线描边, 不跟玻璃透明度走。
     val strokeAlpha = if (isGlassActive) {
         when {
             !enabled -> 0.22f
@@ -743,16 +747,14 @@ private fun Modifier.modernGlassTextFieldContainer(
         } * glassBaseAlpha * visualPreset.strokeMultiplier.coerceIn(0.94f, 1.06f)
     } else {
         when {
-            !enabled -> 0.14f
-            isError -> 0.50f
-            // 未聚焦从 0.22 收回到 0.32。聚焦仍停在 0.28, 只动默认边框。
-            else -> 0.49f + focusProgress * (0.28f - 0.32f)
+            !enabled -> 0.55f
+            isError -> 1f
+            else -> 0.92f
         }
     }
     val strokeColor = strokeHue.copy(alpha = strokeAlpha.coerceIn(0f, 1f))
     val strokeDrawAlpha = if (isGlassActive) strokeVisibility else 1f
-    // 关玻璃不画装饰描边。出错时仍留一条，方便认出错误态。
-    val drawStroke = if (isGlassActive) glassBorderAlpha > 0f else isError
+    val drawStroke = if (isGlassActive) glassBorderAlpha > 0f else true
 
     return drawWithCache {
         val outline: Outline = shape.createOutline(
