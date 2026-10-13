@@ -167,7 +167,7 @@ fun AuspiciousDayTab(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
                         contentDescription = null,
-                        tint = if (isAvoid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onPrimaryContainer,
+                        tint = if (isAvoid) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
@@ -197,7 +197,7 @@ fun AuspiciousDayTab(
                 ) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(32.dp),
-                        color = if (isAvoid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onPrimaryContainer,
+                        color = if (isAvoid) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer,
                         strokeWidth = 3.dp
                     )
                 }
@@ -300,7 +300,7 @@ private fun HeaderCard(
                 checked = isAvoidMode,
                 onCheckedChange = { onToggleMode() },
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = MaterialTheme.colorScheme.error,
+                    checkedThumbColor = MaterialTheme.colorScheme.onErrorContainer,
                     checkedTrackColor = MaterialTheme.colorScheme.errorContainer,
                     uncheckedThumbColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer,
@@ -529,7 +529,7 @@ private fun AuspiciousDayCard(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                        tint = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.7f),
                         modifier = Modifier
                             .size(22.dp)
                             .padding(top = 2.dp)
@@ -556,7 +556,7 @@ private fun AuspiciousDayCard(
                                     style = MaterialTheme.typography.labelSmall.copy(
                                         fontWeight = if (isMatched) FontWeight.Bold else FontWeight.Normal
                                     ),
-                                    color = if (isMatched) MaterialTheme.colorScheme.error
+                                    color = if (isMatched) MaterialTheme.colorScheme.onErrorContainer
                                     else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis

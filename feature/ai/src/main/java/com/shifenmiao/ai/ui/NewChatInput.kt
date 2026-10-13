@@ -721,7 +721,7 @@ private fun getStateColor(state: AttachmentProcessingState): Color {
         is AttachmentProcessingState.IDLE -> MaterialTheme.colorScheme.onSurfaceVariant
         is AttachmentProcessingState.PROCESSING -> MaterialTheme.colorScheme.onPrimaryContainer
         is AttachmentProcessingState.COMPLETED -> MaterialTheme.colorScheme.onPrimaryContainer
-        is AttachmentProcessingState.ERROR -> MaterialTheme.colorScheme.error
+        is AttachmentProcessingState.ERROR -> MaterialTheme.colorScheme.onErrorContainer
     }
 }
 

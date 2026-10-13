@@ -430,7 +430,7 @@ private fun StatusBadge(uiState: DshUiState, onReauth: () -> Unit) {
         ConnectionPhase.Ready ->
             R.string.dsh_status_ready to AppTheme.colors.getPrimaryColor()
         ConnectionPhase.Down ->
-            R.string.dsh_status_down to MaterialTheme.colorScheme.error
+            R.string.dsh_status_down to MaterialTheme.colorScheme.onErrorContainer
     }
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -460,7 +460,7 @@ private fun StatusBadge(uiState: DshUiState, onReauth: () -> Unit) {
                     if (uiState.currentHostIsCloud) R.string.dsh_cloud_auth_blocked
                     else R.string.dsh_auth_blocked
                 ),
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 fontSize = 13.sp
             )
             // 云端形态 401 = App 登录过期,重登录后点重试(resume,令牌现取);
@@ -477,7 +477,7 @@ private fun StatusBadge(uiState: DshUiState, onReauth: () -> Unit) {
         } else if (snapshot.phase == ConnectionPhase.Down && snapshot.failureReason != null) {
             Text(
                 text = stringResource(R.string.dsh_connect_failed, snapshot.failureReason),
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 fontSize = 13.sp
             )
         }
@@ -638,7 +638,7 @@ private fun CloudRelaySection(
             Spacer(Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.dsh_camera_permission),
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 fontSize = 13.sp
             )
         }
@@ -662,7 +662,7 @@ private fun CloudRelaySection(
             Spacer(Modifier.height(4.dp))
             Text(
                 text = error,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 fontSize = 13.sp
             )
         }
@@ -719,7 +719,7 @@ private fun CloudRelaySection(
                 color = if (remainingSeconds > 0) {
                     AppTheme.colors.getOnInactiveContainerColor()
                 } else {
-                    MaterialTheme.colorScheme.error
+                    MaterialTheme.colorScheme.onErrorContainer
                 }
             )
             Spacer(Modifier.height(12.dp))
@@ -862,7 +862,7 @@ private fun SavedHostList(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(R.string.dsh_delete_host),
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             }

@@ -33,7 +33,7 @@ fun ErrorTextInputField(
         modifier = modifier,
         text = text,
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.error
+        color = MaterialTheme.colorScheme.onErrorContainer
     )
 }
 

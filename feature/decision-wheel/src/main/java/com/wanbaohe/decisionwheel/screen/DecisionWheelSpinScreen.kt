@@ -333,7 +333,7 @@ fun DecisionWheelSpinScreen(
                         else R.string.not_enough_active_options
                     ),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
 

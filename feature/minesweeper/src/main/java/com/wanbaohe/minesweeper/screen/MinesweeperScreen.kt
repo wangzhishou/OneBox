@@ -306,7 +306,7 @@ private fun StatRow(
                 Icon(
                     imageVector = Icons.Outlined.LineMinesweeper,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.size(20.dp)
                 )
             },
@@ -553,7 +553,7 @@ private fun CellView(
                 Icon(
                     imageVector = Icons.Outlined.LineMinesweeper,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.size(iconSize)
                 )
             }
@@ -571,7 +571,7 @@ private fun CellView(
                 Icon(
                     imageVector = Icons.Outlined.LineFlag,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.size(iconSize)
                 )
             }
@@ -620,7 +620,7 @@ private fun ImmersiveStats(
         )
         ImmersiveStatValue(
             icon = Icons.Outlined.LineMinesweeper,
-            tint = MaterialTheme.colorScheme.error,
+            tint = MaterialTheme.colorScheme.onErrorContainer,
             value = minesLeft.toString()
         )
     }
@@ -691,7 +691,7 @@ private fun ResultOverlay(
             Icon(
                 imageVector = if (isWon) Icons.Outlined.LineFlag else Icons.Outlined.LineMinesweeper,
                 contentDescription = null,
-                tint = if (isWon) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.error,
+                tint = if (isWon) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer,
                 modifier = Modifier.size(40.dp)
             )
             Text(

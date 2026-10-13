@@ -166,7 +166,7 @@ private fun jobStatusColor(task: TaskView): Color {
     }
     return when (task.status) {
         "success" -> AppTheme.colors.getPrimaryColor()
-        "error", "failed", "cancelled" -> MaterialTheme.colorScheme.error
+        "error", "failed", "cancelled" -> MaterialTheme.colorScheme.onErrorContainer
         else -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 }

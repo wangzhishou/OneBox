@@ -163,7 +163,7 @@ fun BrowserSettingsPage(component: BrowserComponent) {
             confirmButton = {
                 Text(
                     text = stringResource(R.string.browser_clear),
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .clickable {

@@ -93,7 +93,7 @@ fun LocationManageTab(
                 Text(
                     text = stringResource(R.string.household_location_delete_blocked),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
             }

@@ -459,7 +459,7 @@ private fun ErrorContent(message: String, onRetry: () -> Unit) {
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Spacer(Modifier.height(180.dp))
-        Text(message, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.error)
+        Text(message, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onErrorContainer)
         PrimaryButton(
             text = stringResource(R.string.iching_retry),
             onClick = onRetry,
@@ -639,7 +639,7 @@ private fun AIInterpretationSection(state: IChingUiState, onGenerate: () -> Unit
                     Text(
                         text = state.aiError,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         textAlign = TextAlign.Center,
                     )
                     GlassButton(onClick = onGenerate) {

@@ -116,7 +116,7 @@ fun DecisionWheelListScreen(
                     },
                     colors = AppTheme.colors.getSecondaryContainerButtonColors()
                 ) {
-                    Text(text = stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
+                    Text(text = stringResource(R.string.delete), color = MaterialTheme.colorScheme.onErrorContainer)
                 }
             },
             dismissButton = {
@@ -211,7 +211,7 @@ private fun WheelRow(
                 Icon(
                     imageVector = Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.delete),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.size(18.dp)
                 )
             }

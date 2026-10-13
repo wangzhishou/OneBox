@@ -209,7 +209,7 @@ fun AuthCodeSettingsScreen(component: AuthCodeSettingsComponent) {
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = FontWeight.Medium
                                         ),
-                                        color = MaterialTheme.colorScheme.error,
+                                        color = MaterialTheme.colorScheme.onErrorContainer,
                                     )
                                 },
                                 leadingContent = {
@@ -493,7 +493,7 @@ private fun ProtectedItemRow(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVisibilityOff,
                     contentDescription = closeButtonText,
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         },

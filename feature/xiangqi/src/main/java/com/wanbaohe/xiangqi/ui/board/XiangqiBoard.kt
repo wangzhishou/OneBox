@@ -275,7 +275,7 @@ fun XiangqiBoard(
                             .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.9f))
                             .border(
                                 width = 1.dp,
-                                color = MaterialTheme.colorScheme.error.copy(alpha = 0.45f),
+                                color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.45f),
                                 shape = RoundedCornerShape(999.dp),
                             )
                             .padding(horizontal = 16.dp, vertical = 6.dp),
@@ -325,7 +325,7 @@ internal fun PieceDisc(
     val text = pieceLabel(piece)
     
     val primaryColor = MaterialTheme.colorScheme.onPrimaryContainer
-    val secondaryColor = MaterialTheme.colorScheme.error
+    val secondaryColor = MaterialTheme.colorScheme.onErrorContainer
     val pieceColor = if (isRed) secondaryColor else MaterialTheme.colorScheme.onSurface
     val glowColor = if (isRed) secondaryColor else primaryColor
 

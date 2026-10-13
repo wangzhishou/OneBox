@@ -411,7 +411,7 @@ fun ChatScreen(component: DshRootComponent) {
                     Text(
                         text = error,
                         modifier = Modifier.weight(1f),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         fontSize = 13.sp
                     )
                     TextButton(onClick = component::dismissChatError) {
@@ -595,7 +595,7 @@ fun ChatScreen(component: DshRootComponent) {
                                 Icon(
                                     imageVector = Icons.Default.Stop,
                                     contentDescription = stringResource(R.string.dsh_stop_turn),
-                                    tint = MaterialTheme.colorScheme.error
+                                    tint = MaterialTheme.colorScheme.onErrorContainer
                                 )
                             }
                         }
@@ -866,7 +866,7 @@ private fun ConnectionBadge(uiState: DshUiState) {
         ConnectionPhase.Ready ->
             R.string.dsh_status_ready to DshSuccessGreen
         ConnectionPhase.Down ->
-            R.string.dsh_status_down to MaterialTheme.colorScheme.error
+            R.string.dsh_status_down to MaterialTheme.colorScheme.onErrorContainer
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
@@ -922,7 +922,7 @@ private fun SlashCommandPanel(
                 },
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
                 fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
         if (items.isEmpty() && !current.degraded) {

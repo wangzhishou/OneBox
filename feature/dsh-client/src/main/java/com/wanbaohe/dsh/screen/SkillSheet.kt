@@ -66,7 +66,7 @@ fun SkillSheet(
                 text = stringResource(R.string.dsh_skill_load_failed),
                 modifier = Modifier.padding(16.dp),
                 fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
 
             skills == null -> Row(

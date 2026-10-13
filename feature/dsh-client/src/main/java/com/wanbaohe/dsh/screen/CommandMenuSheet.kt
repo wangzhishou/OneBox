@@ -123,7 +123,7 @@ fun CommandMenuSheet(
                         text = stringResource(R.string.dsh_command_load_failed),
                         modifier = Modifier.weight(1f),
                         fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                     TextButton(onClick = { forceReload++ }) {
                         Text(stringResource(R.string.dsh_retry_action))
@@ -175,7 +175,7 @@ private fun CommandMenuContent(
                         },
                         modifier = Modifier.weight(1f),
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                     TextButton(onClick = onRetry) {
                         Text(stringResource(R.string.dsh_retry_action), fontSize = 12.sp)

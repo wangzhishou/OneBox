@@ -223,7 +223,7 @@ private fun ConfigItem(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.speed_test_config_delete_desc),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -252,7 +252,7 @@ private fun SpeedTestDeleteConfirmDialog(
             ) {
                 Text(
                     stringResource(R.string.speed_test_config_confirm_delete),
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         },

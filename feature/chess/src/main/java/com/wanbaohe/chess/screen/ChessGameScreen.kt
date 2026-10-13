@@ -305,7 +305,7 @@ private fun ChessGameContent(
                         if (error) {
                             Text(
                                 state.errorMessage.takeUnless { it == "AI_ERROR" } ?: stringResource(R.string.chess_ai_error),
-                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer,
                             )
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                                 if (state.mode == GameMode.HUMAN_VS_LLM || state.mode == GameMode.LLM_VS_LLM) {
@@ -331,7 +331,7 @@ private fun ChessGameContent(
                         }
                         if (disconnected) Text(
                             stringResource(R.string.chess_signaling_disconnected),
-                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer,
                         )
                     }
                 }

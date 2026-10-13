@@ -368,7 +368,7 @@ fun ThemePresetCard(
                         Modifier
                             .size(14.dp)
                             .clickable { onDelete() },
-                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f)
+                        tint = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.6f)
                     )
                 }
             }

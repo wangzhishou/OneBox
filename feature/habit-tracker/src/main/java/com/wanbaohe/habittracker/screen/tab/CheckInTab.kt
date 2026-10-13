@@ -314,7 +314,7 @@ private fun HabitListItem(
                 Icon(
                     imageVector = Icons.Rounded.Delete,
                     contentDescription = stringResource(R.string.habit_delete_habit),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         } else {

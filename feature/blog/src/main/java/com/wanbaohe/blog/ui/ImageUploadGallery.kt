@@ -78,7 +78,7 @@ fun ImageUploadGallery(
                     .border(
                         width = 1.dp,
                         color = when {
-                            image.isError -> MaterialTheme.colorScheme.error
+                            image.isError -> MaterialTheme.colorScheme.onErrorContainer
                             image.isUploaded -> MaterialTheme.colorScheme.onPrimaryContainer
                             else -> MaterialTheme.colorScheme.surfaceContainer
                         },

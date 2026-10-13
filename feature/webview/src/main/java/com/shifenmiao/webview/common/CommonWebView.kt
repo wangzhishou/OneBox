@@ -169,7 +169,7 @@ private fun ErrorStateView(
                 modifier = Modifier
                     .height(72.dp)
                     .width(72.dp),
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.onErrorContainer
             )
 
             Spacer(modifier = Modifier.height(24.dp))

@@ -795,7 +795,7 @@ internal fun CancelFetchConfirmDialog(
             TextButton(onClick = onStop) {
                 Text(
                     text = stringResource(R.string.ai_chat_cancel_confirm_stop),
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         },

@@ -180,7 +180,7 @@ private fun DraftCard(
                         com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f),
+                        tint = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.6f),
                     )
                 }
             }

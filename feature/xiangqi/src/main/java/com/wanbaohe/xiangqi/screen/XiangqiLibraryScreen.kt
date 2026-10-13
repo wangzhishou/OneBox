@@ -204,10 +204,10 @@ private fun GameCard(
                         modifier = Modifier
                             .size(40.dp)
                             .background(MaterialTheme.colorScheme.error.copy(alpha = 0.2f), CircleShape)
-                            .border(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.3f), CircleShape),
+                            .border(1.dp, MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.3f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(R.string.xiangqi_side_red), color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.xiangqi_side_red), color = MaterialTheme.colorScheme.onErrorContainer, fontWeight = FontWeight.Bold)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(redName, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)

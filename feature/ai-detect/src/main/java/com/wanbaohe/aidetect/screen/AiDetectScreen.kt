@@ -255,7 +255,7 @@ internal fun verdictText(verdictKey: String): String = stringResource(
 /** 判定 key → 环形/文案颜色 */
 @Composable
 internal fun verdictColor(verdictKey: String) = when (verdictKey) {
-    AiDetectService.VERDICT_LIKELY_AI -> MaterialTheme.colorScheme.error
+    AiDetectService.VERDICT_LIKELY_AI -> MaterialTheme.colorScheme.onErrorContainer
     AiDetectService.VERDICT_MAYBE_AI -> MaterialTheme.colorScheme.onTertiaryContainer
     else -> MaterialTheme.colorScheme.onPrimaryContainer
 }

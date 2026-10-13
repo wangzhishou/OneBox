@@ -115,7 +115,7 @@ fun LoanInputItem(
         Text(
             text = errorMessage,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.error,
+            color = MaterialTheme.colorScheme.onErrorContainer,
             modifier = Modifier.padding(start = 20.dp, top = 4.dp, bottom = 2.dp),
         )
     }

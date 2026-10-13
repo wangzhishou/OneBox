@@ -111,7 +111,7 @@ fun IChingHistoryScreen(component: IChingHistoryComponent) {
                     showClearConfirm = false
                     component.clearHistory()
                 },
-                contentColor = MaterialTheme.colorScheme.error,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
             ) { Text(stringResource(R.string.iching_confirm)) }
         },
         dismissButton = {

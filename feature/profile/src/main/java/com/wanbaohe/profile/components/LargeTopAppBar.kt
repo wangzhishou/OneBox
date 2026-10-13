@@ -187,7 +187,7 @@ fun ShowInvitationCodeDialog(
                             Text(
                                 text = stringResource(R.string.profile_invitation_code_hint),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.error
+                                color = MaterialTheme.colorScheme.onErrorContainer
                             )
                         }
                     },

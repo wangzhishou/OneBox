@@ -328,7 +328,7 @@ internal fun PoemAiSection(
                         Text(
                             text = error,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.error,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
                         )
                     }
                 }
@@ -357,7 +357,7 @@ internal fun PoemAiSection(
                             Text(
                                 text = error,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.error,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                                 textAlign = TextAlign.Center,
                             )
                         }
@@ -449,7 +449,7 @@ internal fun PoemInsightSection(
             Text(
                 text = insightError,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 textAlign = TextAlign.Center,
                 modifier = modifier
                     .fillMaxWidth()

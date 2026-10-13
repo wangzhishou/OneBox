@@ -205,7 +205,7 @@ internal fun StatusChip(status: String, isGridMode: Boolean) {
         )
 
         OcrTaskStatus.FAILED.value -> Triple(
-            MaterialTheme.colorScheme.error,
+            MaterialTheme.colorScheme.onErrorContainer,
             com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWarning,
             stringResource(R.string.status_failed)
         )

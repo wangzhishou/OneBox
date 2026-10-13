@@ -356,7 +356,7 @@ fun DemoContent(
                 Text(
                     text = state.error.orEmpty(),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -646,7 +646,7 @@ private fun DemoScheduleDatabaseSection(
                 Text(
                     text = stringResource(DemoR.string.demo_schedule_database_load_failed),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
 

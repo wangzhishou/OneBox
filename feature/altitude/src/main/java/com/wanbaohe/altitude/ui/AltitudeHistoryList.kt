@@ -235,7 +235,7 @@ private fun DeltaBadge(delta: Float, unit: AltitudeUnit) {
     val absDelta = kotlin.math.abs(delta)
     if (absDelta < 0.5f) return
     val risingColor = MaterialTheme.colorScheme.onTertiaryContainer
-    val fallingColor = MaterialTheme.colorScheme.error
+    val fallingColor = MaterialTheme.colorScheme.onErrorContainer
     val (icon, color) = if (delta > 0f)
         com.t8rin.imagetoolbox.core.resources.Icons.Outlined.ArrowUpward to risingColor
     else

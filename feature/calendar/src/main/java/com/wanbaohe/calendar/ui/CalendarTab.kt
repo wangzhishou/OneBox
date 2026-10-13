@@ -279,7 +279,7 @@ fun CalendarTab(
                     title = stringResource(R.string.ji),
                     items = state.yiJi.ji,
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                    accentColor = MaterialTheme.colorScheme.error,
+                    accentColor = MaterialTheme.colorScheme.onErrorContainer,
                     containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     chipContainerColor = MaterialTheme.colorScheme.errorContainer,
                     chipContentColor = MaterialTheme.colorScheme.onErrorContainer,
@@ -458,7 +458,7 @@ private fun TimeSlotItem(
                 Text(
                     text = "${stringResource(R.string.ji)} ${slot.ji.joinToString("、")}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         }
@@ -883,7 +883,7 @@ private fun FotoTaoDetailItem(
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
             if (remark.isNotBlank()) {
@@ -1359,7 +1359,7 @@ private fun InfoChip(icon: ImageVector, label: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.error,
+            tint = MaterialTheme.colorScheme.onErrorContainer,
             modifier = Modifier.size(12.dp)
         )
         Spacer(modifier = Modifier.width(6.dp))

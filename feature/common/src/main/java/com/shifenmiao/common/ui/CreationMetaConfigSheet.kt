@@ -717,7 +717,7 @@ private fun CreationToolSelectionSection(
                     disabledSystemToolTitles.joinToString("、")
                 ),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -1043,7 +1043,7 @@ private fun ToolSelectionRiskTag(riskLevel: ToolRiskLevel) {
     val content = when (riskLevel) {
         ToolRiskLevel.SAFE -> MaterialTheme.colorScheme.onPrimaryContainer
         ToolRiskLevel.SENSITIVE -> MaterialTheme.colorScheme.onTertiaryContainer
-        ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.error
+        ToolRiskLevel.DANGEROUS -> MaterialTheme.colorScheme.onErrorContainer
     }
     GlassSurface(
         shape = MaterialTheme.shapes.medium,

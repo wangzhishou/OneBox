@@ -1142,7 +1142,7 @@ private fun CustomBackgroundCard(
                     Text(
                         text = stringResource(R.string.custom_background_clear),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier
                             .clip(RoundedCornerShape(OneBoxDesignSystem.microSpacing))
                             .clickable { onBackgroundUriChange(null) }

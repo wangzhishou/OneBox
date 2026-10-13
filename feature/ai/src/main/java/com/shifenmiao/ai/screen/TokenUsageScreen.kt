@@ -500,7 +500,7 @@ private fun TokenUsageErrorState(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
                 contentDescription = null,
                 modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+                tint = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.5f)
             )
             Text(
                 text = stringResource(R.string.token_usage_error_title),

@@ -85,7 +85,7 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
             Text(
                 setupIssueText(issue),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 modifier = Modifier.padding(horizontal = 12.dp),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,

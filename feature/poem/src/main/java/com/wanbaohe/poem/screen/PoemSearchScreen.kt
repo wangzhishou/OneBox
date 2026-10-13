@@ -104,7 +104,7 @@ fun PoemSearchScreen(component: PoemSearchComponent) {
                         Text(
                             text = stringResource(R.string.poem_load_failed),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.error,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()

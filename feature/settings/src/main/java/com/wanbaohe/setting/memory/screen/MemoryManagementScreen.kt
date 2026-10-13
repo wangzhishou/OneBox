@@ -189,7 +189,7 @@ fun MemoryManagementContent(
                 Icon(
                     imageVector = Icons.Outlined.Delete,
                     contentDescription = stringResource(SettingsR.string.memory_clear_log),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         }
@@ -300,7 +300,7 @@ fun MemoryManagementContent(
                 ) {
                     Text(
                         text = stringResource(R.string.button_confirm),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             },
@@ -329,7 +329,7 @@ fun MemoryManagementContent(
                 ) {
                     Text(
                         text = stringResource(R.string.button_confirm),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             },

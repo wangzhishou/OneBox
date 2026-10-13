@@ -651,7 +651,7 @@ private fun AdminRowActions(
                     com.shifenmiao.core.R.string.comment_delete,
                 ),
                 modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.error,
+                tint = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
     }
@@ -727,7 +727,7 @@ private fun CommentInputBar(
     val ctx = AppContext.getContext()
     val remaining = COMMENT_CONTENT_MAX_LEN - text.length
     val counterColor = when {
-        remaining < 0 -> MaterialTheme.colorScheme.error
+        remaining < 0 -> MaterialTheme.colorScheme.onErrorContainer
         remaining < 100 -> MaterialTheme.colorScheme.onTertiaryContainer
         else -> MaterialTheme.colorScheme.outlineVariant
     }
@@ -917,7 +917,7 @@ private fun PendingImageChip(
     onRemove: () -> Unit,
 ) {
     val borderColor = when {
-        image.isError -> MaterialTheme.colorScheme.error
+        image.isError -> MaterialTheme.colorScheme.onErrorContainer
         image.isUploaded -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.outlineVariant
     }

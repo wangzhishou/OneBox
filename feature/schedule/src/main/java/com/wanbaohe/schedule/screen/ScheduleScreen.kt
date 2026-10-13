@@ -397,7 +397,7 @@ private fun SyncStatusCard(
                 Text(
                     text = stringResource(R.string.schedule_last_error_label, lastError),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         }

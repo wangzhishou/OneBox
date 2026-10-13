@@ -188,7 +188,7 @@ fun UserInfoScreen(
                                         Text(
                                             text = stringResource(R.string.profile_email_not_verified),
                                             style = MaterialTheme.typography.bodyLarge,
-                                            color = MaterialTheme.colorScheme.error,
+                                            color = MaterialTheme.colorScheme.onErrorContainer,
                                         )
                                     },
                                     trailingContent = {

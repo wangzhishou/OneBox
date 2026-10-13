@@ -431,7 +431,7 @@ private fun WatchCta(
                 Text(
                     text = stringResource(R.string.ad_watch_load_failed),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(

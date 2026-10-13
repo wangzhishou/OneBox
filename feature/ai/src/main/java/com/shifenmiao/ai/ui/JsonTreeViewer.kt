@@ -67,7 +67,7 @@ fun JsonTreeViewer(
         Text(
             text = stringResource(R.string.code_editor_parse_error),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error,
+            color = MaterialTheme.colorScheme.onErrorContainer,
             modifier = Modifier.padding(16.dp),
         )
         return

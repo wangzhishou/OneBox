@@ -279,7 +279,7 @@ private fun QuestionFormCard(
                         text = inlineError,
                         modifier = Modifier.padding(8.dp),
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             }

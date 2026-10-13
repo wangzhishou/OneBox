@@ -38,7 +38,7 @@ fun ClassicCompassPage(
     modifier: Modifier = Modifier
 ) {
     // 指针配色跟随主题：北针用 error 呼应罗经盘，南针用 outlineVariant
-    val northColor = MaterialTheme.colorScheme.error
+    val northColor = MaterialTheme.colorScheme.onErrorContainer
     val southColor = MaterialTheme.colorScheme.outlineVariant
 
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {

@@ -298,11 +298,11 @@ fun ImageLoadError(
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineError,
                 contentDescription = "Error",
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.onErrorContainer
             )
             Text(
                 text = errorText,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 style = MaterialTheme.typography.bodyMedium
             )
         }

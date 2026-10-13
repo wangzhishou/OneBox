@@ -290,7 +290,7 @@ fun FeedbackRow(
                 text = it,
                 modifier = Modifier.padding(top = 2.dp),
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
     }
@@ -382,7 +382,7 @@ private fun FeedbackNoteSheet(
                     text = it,
                     modifier = Modifier.padding(top = 4.dp),
                     fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
             Spacer(Modifier.height(8.dp))

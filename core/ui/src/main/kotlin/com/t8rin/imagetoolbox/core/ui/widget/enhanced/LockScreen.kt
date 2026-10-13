@@ -588,12 +588,12 @@ private fun pinGlyphState(
 private fun PinGlyphState.color(): Color = when (this) {
     PinGlyphState.Empty -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)
     PinGlyphState.Filled -> MaterialTheme.colorScheme.onPrimaryContainer
-    PinGlyphState.Error -> MaterialTheme.colorScheme.error
+    PinGlyphState.Error -> MaterialTheme.colorScheme.onErrorContainer
 }
 
 @Composable
 private fun LockScreenStatus.accentColor(): Color = when (this) {
-    LockScreenStatus.Error -> MaterialTheme.colorScheme.error
+    LockScreenStatus.Error -> MaterialTheme.colorScheme.onErrorContainer
     LockScreenStatus.Success -> MaterialTheme.colorScheme.onPrimaryContainer
     LockScreenStatus.Verifying -> MaterialTheme.colorScheme.onTertiaryContainer
     LockScreenStatus.Idle, LockScreenStatus.Awaiting -> MaterialTheme.colorScheme.onPrimaryContainer

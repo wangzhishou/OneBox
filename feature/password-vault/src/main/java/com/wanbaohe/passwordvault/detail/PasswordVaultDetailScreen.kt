@@ -392,7 +392,7 @@ private fun ErrorPlaceholder(
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.onErrorContainer
         )
     }
 }

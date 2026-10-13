@@ -148,7 +148,7 @@ fun TodoTaskRow(
                     // 时间：进行中显示截止时间，已完成显示完成时间
                     if (timeMillis != null) {
                         val dateColor = when {
-                            task.isOverdue -> MaterialTheme.colorScheme.error.copy(alpha = 0.85f)
+                            task.isOverdue -> MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.85f)
                             else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
                         }
                         Icon(

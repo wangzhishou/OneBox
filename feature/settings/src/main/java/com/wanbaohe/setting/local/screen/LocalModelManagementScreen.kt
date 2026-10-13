@@ -212,7 +212,7 @@ fun LocalModelManagementContent(
                 ) {
                     Text(
                         text = stringResource(CoreR.string.button_confirm),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             },
@@ -338,7 +338,7 @@ private fun RecommendedModelCard(
             Text(
                 text = stringResource(R.string.local_models_download_failed),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
     }
@@ -397,7 +397,7 @@ private fun DownloadedModelCard(
             TextButton(onClick = onDelete) {
                 Text(
                     text = stringResource(R.string.local_models_delete),
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         }

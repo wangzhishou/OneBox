@@ -245,7 +245,7 @@ private fun GameContent(
                             else -> R.string.gomoku_ai_failed
                         }),
                         maxLines = 2, overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onErrorContainer, style = MaterialTheme.typography.bodySmall,
                     )
                     Row(Modifier.fillMaxWidth()) {
                         TextButton(onClick = component::retryAiMove, modifier = Modifier.weight(1f),
@@ -268,7 +268,7 @@ private fun GameContent(
                 }
                 if (disconnected) {
                     Text(stringResource(R.string.gomoku_signaling_disconnected), maxLines = 2, overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onErrorContainer)
                 }
             }
         }

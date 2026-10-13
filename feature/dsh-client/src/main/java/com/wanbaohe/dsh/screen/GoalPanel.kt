@@ -240,7 +240,7 @@ private fun GoalProjection.phaseLabelRes(): Int? = when (phase) {
 private fun goalPhaseColor(phase: String?) = when (phase) {
     "active" -> MaterialTheme.colorScheme.onPrimaryContainer
     "paused" -> MaterialTheme.colorScheme.onTertiaryContainer
-    "blocked" -> MaterialTheme.colorScheme.error
+    "blocked" -> MaterialTheme.colorScheme.onErrorContainer
     "complete" -> MaterialTheme.colorScheme.onSecondaryContainer
     else -> MaterialTheme.colorScheme.outline
 }

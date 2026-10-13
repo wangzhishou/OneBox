@@ -144,7 +144,7 @@ fun ToolCenterBottomSheet(
                         uiState.disabledSystemToolTitles.joinToString("、")
                     ),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
                 Spacer(modifier = Modifier.height(12.dp))
             }

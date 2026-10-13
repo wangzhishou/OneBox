@@ -87,7 +87,7 @@ fun DecisionWheelHistoryScreen(
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.clear_history),
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             }
@@ -162,7 +162,7 @@ fun DecisionWheelHistoryScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.delete),
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             },

@@ -222,7 +222,7 @@ internal fun ElevationGaugeSection(
             }
             val badgeColor = when (badge) {
                 "ASCENDING" -> gaugeStart
-                "DESCENDING" -> MaterialTheme.colorScheme.error
+                "DESCENDING" -> MaterialTheme.colorScheme.onErrorContainer
                 else -> onSurface.copy(alpha = 0.4f)
             }
             GlassSurface(

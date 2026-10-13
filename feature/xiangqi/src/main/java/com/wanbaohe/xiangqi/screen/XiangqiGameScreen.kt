@@ -798,7 +798,7 @@ internal fun XiangqiPlayersRow(
             name = name,
             subtitle = subtitle,
             avatarUrl = resolvePlayerAvatarUrl(type, state.mode, login.avatar.orEmpty(), state.onlineOpponentAvatarUrl),
-            indicatorColor = if (side == Side.RED) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+            indicatorColor = if (side == Side.RED) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSurface,
             isActiveTurn = active,
             onClick = if (type == PlayerType.LLM && state.isLoaded && !state.isUpdating) ({ onPickAiFor(side) }) else null,
             actionLabel = stringResource(R.string.xiangqi_change_opponent),
@@ -886,7 +886,7 @@ private fun StatusCard(
     title: String,
     subtitle: String,
     height: Dp = StatusCardHeight,
-    titleColor: Color = MaterialTheme.colorScheme.error,
+    titleColor: Color = MaterialTheme.colorScheme.onErrorContainer,
     titleTrailing: (@Composable () -> Unit)? = null,
     actions: (@Composable () -> Unit)? = null,
 ) {

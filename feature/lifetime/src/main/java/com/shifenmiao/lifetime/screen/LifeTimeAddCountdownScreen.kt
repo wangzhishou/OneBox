@@ -64,7 +64,7 @@ fun LifeTimeAddCountdownScreen(
         MaterialTheme.colorScheme.surfaceContainerLow
     }
     val datePlaceholderColor = if (shouldShowDateError) {
-        MaterialTheme.colorScheme.error
+        MaterialTheme.colorScheme.onErrorContainer
     } else {
         placeholderColor
     }
@@ -190,7 +190,7 @@ fun LifeTimeAddCountdownScreen(
                 Text(
                     text = stringResource(R.string.lifetime_validation_milestone_target_date_required),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.padding(horizontal = OneBoxDesignSystem.compactSpacing)
                 )
             }

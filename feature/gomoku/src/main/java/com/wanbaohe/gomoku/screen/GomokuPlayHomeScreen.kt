@@ -75,7 +75,7 @@ fun GomokuPlayHomeScreen(component: GomokuRouterComponent, modifier: Modifier = 
         }
         if (issue != null) {
             Text(setupIssueText(issue), maxLines = 2, overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onErrorContainer, style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 12.dp))
         }
         Row(

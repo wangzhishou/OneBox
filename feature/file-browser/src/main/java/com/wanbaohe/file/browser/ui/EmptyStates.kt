@@ -85,7 +85,7 @@ fun ErrorState(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineError,
             contentDescription = null,
             modifier = Modifier.size(80.dp),
-            tint = MaterialTheme.colorScheme.error
+            tint = MaterialTheme.colorScheme.onErrorContainer
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -131,7 +131,7 @@ fun NoPermissionState(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLock,
             contentDescription = null,
             modifier = Modifier.size(80.dp),
-            tint = MaterialTheme.colorScheme.error
+            tint = MaterialTheme.colorScheme.onErrorContainer
         )
 
         Spacer(modifier = Modifier.height(16.dp))

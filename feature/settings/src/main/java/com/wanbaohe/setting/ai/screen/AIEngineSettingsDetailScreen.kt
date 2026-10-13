@@ -722,7 +722,7 @@ private fun RemoteModelPickerDialog(
                         ) {
                             Text(
                                 text = error,
-                                color = MaterialTheme.colorScheme.error,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                                 style = MaterialTheme.typography.bodyMedium
                             )
                             OneSecondaryButton(
@@ -1159,7 +1159,7 @@ private fun ModelSelectionCard(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.ai_engine_delete_action),
                         tint = if (selectedModel.canEdit) {
-                            MaterialTheme.colorScheme.error
+                            MaterialTheme.colorScheme.onErrorContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.35f)
                         },
@@ -1347,7 +1347,7 @@ private fun ParameterCardContent(
                 Text(
                     text = stringResource(R.string.ai_engine_cloud_storage_no_connection),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.height(4.dp))

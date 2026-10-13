@@ -165,7 +165,7 @@ fun CreateFeedbackScreen(
                     Text(
                         text = "*",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
                 GlassOutlinedTextField(
@@ -198,7 +198,7 @@ fun CreateFeedbackScreen(
                     Text(
                         text = "*",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
 
@@ -225,7 +225,7 @@ fun CreateFeedbackScreen(
                 if (isCheckError) {
                     Text(
                         text = stringResource(id = R.string.fields_required),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(top = 4.dp)
                     )

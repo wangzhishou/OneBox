@@ -1059,7 +1059,7 @@ fun ErrorStateContent(
     ) {
         Text(
             text = stringResource(id = R.string.ai_error),
-            color = MaterialTheme.colorScheme.error,
+            color = MaterialTheme.colorScheme.onErrorContainer,
             style = MaterialTheme.typography.titleMedium
         )
         GlassSurface(

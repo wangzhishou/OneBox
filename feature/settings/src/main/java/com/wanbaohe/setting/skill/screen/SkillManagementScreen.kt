@@ -382,7 +382,7 @@ fun SkillManagementContent(
                 ) {
                     Text(
                         text = stringResource(R.string.button_confirm),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             },

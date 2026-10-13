@@ -193,7 +193,7 @@ fun ColorInfo(
                 text = colorPasteError.value ?: getFormattedColor(color),
                 style = MaterialTheme.typography.titleMedium,
                 color = if (colorPasteError.value != null) {
-                    MaterialTheme.colorScheme.error
+                    MaterialTheme.colorScheme.onErrorContainer
                 } else {
                     LocalContentColor.current.copy(alpha = 0.7f)
                 },

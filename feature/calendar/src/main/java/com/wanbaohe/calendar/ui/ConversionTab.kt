@@ -313,7 +313,7 @@ fun ConversionTab(
                     Text(
                         text = it,
                         style = MaterialTheme.typography.bodySmall,
-                        color = colorScheme.error
+                        color = colorScheme.onErrorContainer
                     )
                 }
 

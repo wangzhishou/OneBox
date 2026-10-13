@@ -301,7 +301,7 @@ private fun MatchContent(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = errorMessage,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 style = MaterialTheme.typography.bodySmall,
             )
         }

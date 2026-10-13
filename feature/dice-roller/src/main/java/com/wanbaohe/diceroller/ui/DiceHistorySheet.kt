@@ -86,11 +86,11 @@ fun DiceHistorySheet(
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.DeleteSweep,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error
+                            tint = MaterialTheme.colorScheme.onErrorContainer
                         )
                         Text(
                             text = stringResource(R.string.dice_roller_clear_history),
-                            color = MaterialTheme.colorScheme.error,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
                             style = MaterialTheme.typography.labelLarge,
                             modifier = Modifier.padding(start = 4.dp)
                         )
@@ -155,7 +155,7 @@ fun DiceHistorySheet(
             }) {
                 Text(
                     stringResource(R.string.dice_roller_confirm),
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         },

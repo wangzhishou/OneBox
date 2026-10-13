@@ -67,7 +67,7 @@ fun IdPhotoExportConfigPanel(
                     color = if (isResolutionSufficient == true) {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
-                        MaterialTheme.colorScheme.error
+                        MaterialTheme.colorScheme.onErrorContainer
                     }
                 )
             }

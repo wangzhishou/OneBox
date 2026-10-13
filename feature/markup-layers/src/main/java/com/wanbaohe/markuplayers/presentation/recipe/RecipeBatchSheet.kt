@@ -97,7 +97,7 @@ fun RecipeBatchSheet(
                 if (error != null) {
                     Text(
                         stringResource(R.string.studio_recipe_error, error),
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
                 GlassOutlinedTextField(
@@ -265,7 +265,7 @@ private fun BatchReportContent(report: BatchReport) {
         report.failures.forEach { failure ->
             Text(
                 stringResource(R.string.studio_recipe_failure_item, failure.uri, failure.error),
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 style = MaterialTheme.typography.bodySmall
             )
         }

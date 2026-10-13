@@ -211,7 +211,7 @@ private fun segmentLabelText(label: Int): String = stringResource(
 @Composable
 private fun segmentLabelColor(label: Int) = when (label) {
     0 -> MaterialTheme.colorScheme.onPrimaryContainer
-    1 -> MaterialTheme.colorScheme.error
+    1 -> MaterialTheme.colorScheme.onErrorContainer
     else -> MaterialTheme.colorScheme.onTertiaryContainer
 }
 

@@ -784,12 +784,12 @@ private fun CardImageElement(
                         Icon(
                             imageVector = MaterialIcons.Outlined.ErrorOutline,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error
+                            tint = MaterialTheme.colorScheme.onErrorContainer
                         )
                         Text(
                             text = stringResource(R.string.textcard_image_layer_error),
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.error,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
                             modifier = Modifier.padding(top = 6.dp)
                         )
                     }

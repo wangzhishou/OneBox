@@ -363,7 +363,7 @@ private fun OptionEditRow(
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.delete),
-                        tint = if (canDelete) MaterialTheme.colorScheme.error
+                        tint = if (canDelete) MaterialTheme.colorScheme.onErrorContainer
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(20.dp)
                     )
@@ -394,7 +394,7 @@ private fun OptionEditRow(
                         Text(
                             text = stringResource(R.string.option_removed_badge),
                             fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.error
+                            color = MaterialTheme.colorScheme.onErrorContainer
                         )
                     }
                 }
@@ -598,7 +598,7 @@ private fun AiCreateDialog(
                             else R.string.ai_create_failed
                         ),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
 

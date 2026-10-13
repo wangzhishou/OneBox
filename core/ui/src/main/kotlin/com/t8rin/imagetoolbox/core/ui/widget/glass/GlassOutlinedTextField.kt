@@ -705,7 +705,7 @@ private fun Modifier.modernGlassTextFieldContainer(
     // 不往 scrim 压。压深再叠高覆盖率会变成一块实灰, 和页面上的透明玻璃脱开。
     val restingHue = neutralBase
     val focusedHue = restingHue.blend(colorScheme.primaryContainer, if (isLight) 0.08f else 0.12f)
-    val errorHue = restingHue.blend(colorScheme.error, 0.10f)
+    val errorHue = restingHue.blend(colorScheme.onErrorContainer, 0.10f)
     val presetScale = visualPreset.fillMultiplier.coerceIn(0.96f, 1.04f)
     // 开着玻璃: Medium(0.15) 大约 0.20, 和卡片同一档。
     // 关掉玻璃: 固定一层更浅的底, 不跟玻璃透明度走。
@@ -735,7 +735,7 @@ private fun Modifier.modernGlassTextFieldContainer(
     }
     val strokeHue = when {
         !enabled -> colorScheme.outline
-        isError -> colorScheme.error
+        isError -> colorScheme.onErrorContainer
         else -> lerp(restingStroke, colorScheme.onPrimaryContainer, focusProgress)
     }
     // 线宽始终是 borderWidth, 聚焦不加粗。关玻璃用实线描边, 不跟玻璃透明度走。

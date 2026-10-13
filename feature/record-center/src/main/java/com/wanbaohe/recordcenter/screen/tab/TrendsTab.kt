@@ -222,7 +222,7 @@ private fun WeekDeltaRow(
     if (deltas.all { it == null }) return
     val first = deltas.filterNotNull().first()
     val decreased = first < 0f
-    val deltaColor = if (decreased) TrendDownColor else MaterialTheme.colorScheme.error
+    val deltaColor = if (decreased) TrendDownColor else MaterialTheme.colorScheme.onErrorContainer
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -264,7 +264,7 @@ private fun TrendCardChart(
     val seriesColors = listOf(
         accentColor,
         MaterialTheme.colorScheme.onTertiaryContainer,
-        MaterialTheme.colorScheme.error,
+        MaterialTheme.colorScheme.onErrorContainer,
     )
 
     when (definition.trendChartKind) {

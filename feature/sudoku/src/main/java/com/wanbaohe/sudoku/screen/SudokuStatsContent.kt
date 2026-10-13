@@ -158,7 +158,7 @@ private fun OverviewCard(records: List<SudokuRecord>) {
             OverviewItem(
                 modifier = Modifier.weight(1f),
                 icon = Icons.Outlined.LineBarChart,
-                iconAccent = MaterialTheme.colorScheme.error,
+                iconAccent = MaterialTheme.colorScheme.onErrorContainer,
                 value = SudokuStats.averageTimeSeconds(records)?.let(::formatSudokuTime)
                     ?: stringResource(R.string.sudoku_time_none),
                 label = stringResource(R.string.sudoku_stats_avg_time)

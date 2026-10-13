@@ -144,7 +144,7 @@ fun BlankCanvasSheet(
                         !validSides -> Text(
                             text = stringResource(R.string.studio_blank_invalid_size, maxCanvasSide),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.error
+                            color = MaterialTheme.colorScheme.onErrorContainer
                         )
                         !validPixels -> Text(
                             text = stringResource(
@@ -152,14 +152,14 @@ fun BlankCanvasSheet(
                                 maxCanvasPixels
                             ),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.error
+                            color = MaterialTheme.colorScheme.onErrorContainer
                         )
                     }
                     creationError?.let {
                         Text(
                             text = it,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.error
+                            color = MaterialTheme.colorScheme.onErrorContainer
                         )
                     }
                 }

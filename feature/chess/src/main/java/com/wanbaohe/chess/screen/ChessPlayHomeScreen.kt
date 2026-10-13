@@ -76,7 +76,7 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
         }
         val issue = remember(state.boardState) { SetupPositionValidator.validate(state.boardState) }
         if (issue != null) Text(
-            setupIssueText(issue), color = MaterialTheme.colorScheme.error,
+            setupIssueText(issue), color = MaterialTheme.colorScheme.onErrorContainer,
             style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 12.dp),
             maxLines = 2, overflow = TextOverflow.Ellipsis,
         )

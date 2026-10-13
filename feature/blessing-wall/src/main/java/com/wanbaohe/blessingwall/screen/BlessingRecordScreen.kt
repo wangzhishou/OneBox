@@ -243,7 +243,7 @@ private fun CalendarCard(
                                 !day.isCurrentMonth -> {
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
                                 }
-                                dayLabel?.isRestDay == true -> MaterialTheme.colorScheme.error
+                                dayLabel?.isRestDay == true -> MaterialTheme.colorScheme.onErrorContainer
                                 dayLabel?.isHighlighted == true -> MaterialTheme.colorScheme.onTertiaryContainer
                                 else -> MaterialTheme.colorScheme.onSurfaceVariant
                             },

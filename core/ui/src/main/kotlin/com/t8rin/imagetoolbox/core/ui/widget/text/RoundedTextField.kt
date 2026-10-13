@@ -221,7 +221,7 @@ fun RoundedTextField(
                 if (showSupportingText) {
                     ProvideTextStyle(
                         LocalTextStyle.current.copy(
-                            color = MaterialTheme.colorScheme.error,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
                             fontSize = 12.sp,
                             lineHeight = 12.sp,
                         )

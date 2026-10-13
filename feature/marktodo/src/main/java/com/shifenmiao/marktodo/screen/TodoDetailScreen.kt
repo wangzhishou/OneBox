@@ -143,7 +143,7 @@ fun TodoDetailScreen(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.action_delete),
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             }
@@ -168,7 +168,7 @@ fun TodoDetailScreen(
                     Text(
                         text = uiState.error!!,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -291,7 +291,7 @@ private fun TodoDetailContent(
                     text = dateStr,
                     style = MaterialTheme.typography.bodyLarge,
                     color = when {
-                        isOverdue -> MaterialTheme.colorScheme.error
+                        isOverdue -> MaterialTheme.colorScheme.onErrorContainer
                         task.isDueSoon -> MaterialTheme.colorScheme.onTertiaryContainer
                         else -> MaterialTheme.colorScheme.onSurfaceVariant
                     }

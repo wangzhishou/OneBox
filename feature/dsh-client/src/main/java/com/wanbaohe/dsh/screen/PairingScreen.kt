@@ -177,7 +177,7 @@ private fun UrlStep(
         Spacer(Modifier.height(6.dp))
         Text(
             text = stringResource(R.string.dsh_camera_permission),
-            color = MaterialTheme.colorScheme.error,
+            color = MaterialTheme.colorScheme.onErrorContainer,
             fontSize = 13.sp
         )
     }
@@ -397,13 +397,13 @@ private fun VerifyGuidance() {
                     Icons.Outlined.WarningAmber,
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.error
+                    tint = MaterialTheme.colorScheme.onErrorContainer
                 )
                 Spacer(Modifier.width(6.dp))
                 Text(
                     text = stringResource(R.string.dsh_pair_verify_warn),
                     fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         }
@@ -515,7 +515,7 @@ private fun PairingErrorText(error: PairingError?) {
     Spacer(Modifier.height(12.dp))
     Text(
         text = pairingErrorText(error),
-        color = MaterialTheme.colorScheme.error,
+        color = MaterialTheme.colorScheme.onErrorContainer,
         fontSize = 13.sp
     )
 }

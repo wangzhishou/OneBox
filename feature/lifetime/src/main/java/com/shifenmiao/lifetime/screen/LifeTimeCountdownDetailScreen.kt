@@ -70,7 +70,7 @@ fun LifeTimeCountdownDetailScreen(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.lifetime_delete),
-                    tint = MaterialTheme.colorScheme.error
+                    tint = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         }

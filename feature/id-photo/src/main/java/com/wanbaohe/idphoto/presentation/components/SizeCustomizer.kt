@@ -358,7 +358,7 @@ private fun SizeListItem(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.id_photo_delete),
-                        tint = MaterialTheme.colorScheme.error,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.size(20.dp)
                     )
                 }

@@ -245,7 +245,7 @@ private fun SudokuCell(
         else -> MaterialTheme.colorScheme.surfaceContainer
     }
     val digitColor = when {
-        isError -> MaterialTheme.colorScheme.error
+        isError -> MaterialTheme.colorScheme.onErrorContainer
         given -> MaterialTheme.colorScheme.onSurface
         else -> MaterialTheme.colorScheme.onPrimaryContainer
     }

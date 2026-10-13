@@ -385,7 +385,7 @@ fun <Position> BoardGameGifExportDialog(
                         }
                     }
                 }
-                errorMessage?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+                errorMessage?.let { Text(it, color = MaterialTheme.colorScheme.onErrorContainer) }
                 if (file != null) {
                     BoardGifExportSection(
                         title = stringResource(R.string.boardgame_export_size_title),
@@ -489,7 +489,7 @@ fun <Position> BoardGameGifExportDialog(
                                     )
                                 }
                                 if (!customRangeValid) {
-                                    Text(stringResource(R.string.boardgame_export_invalid_range), color = MaterialTheme.colorScheme.error)
+                                    Text(stringResource(R.string.boardgame_export_invalid_range), color = MaterialTheme.colorScheme.onErrorContainer)
                                 }
                             }
                             Text(

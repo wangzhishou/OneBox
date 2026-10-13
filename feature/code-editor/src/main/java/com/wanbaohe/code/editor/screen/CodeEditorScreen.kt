@@ -268,7 +268,7 @@ fun CodeEditorScreen(
                             text = {
                                 Text(
                                     text = stringResource(R.string.clear_history),
-                                    color = MaterialTheme.colorScheme.error
+                                    color = MaterialTheme.colorScheme.onErrorContainer
                                 )
                             },
                             onClick = {
@@ -279,7 +279,7 @@ fun CodeEditorScreen(
                                 Icon(
                                     com.t8rin.imagetoolbox.core.resources.Icons.Outlined.DeleteSweep,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.error
+                                    tint = MaterialTheme.colorScheme.onErrorContainer
                                 )
                             }
                         )

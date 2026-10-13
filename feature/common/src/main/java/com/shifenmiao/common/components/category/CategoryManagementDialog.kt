@@ -360,7 +360,7 @@ private fun <T : ManageableItem> CategoryGridCell(
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                                 contentDescription = stringResource(R.string.delete),
-                                tint = MaterialTheme.colorScheme.error,
+                                tint = MaterialTheme.colorScheme.onErrorContainer,
                                 modifier = Modifier.size(14.dp),
                             )
                         }
@@ -508,7 +508,7 @@ fun <T : ManageableItem> CategoryItemRow(
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                                 contentDescription = stringResource(R.string.delete),
-                                tint = MaterialTheme.colorScheme.error,
+                                tint = MaterialTheme.colorScheme.onErrorContainer,
                                 modifier = Modifier.size(14.dp)
                             )
                         }

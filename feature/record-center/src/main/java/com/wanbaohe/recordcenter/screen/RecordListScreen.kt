@@ -190,7 +190,7 @@ fun RecordListScreen(component: RecordListComponent) {
                 ) {
                     Text(
                         text = stringResource(R.string.record_center_confirm),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             },
@@ -351,7 +351,7 @@ private fun TrendChartCard(
     val seriesColors = listOf(
         MaterialTheme.colorScheme.onPrimaryContainer,
         MaterialTheme.colorScheme.onTertiaryContainer,
-        MaterialTheme.colorScheme.error,
+        MaterialTheme.colorScheme.onErrorContainer,
     )
     val ascending = remember(records) { records.sortedBy { it.happenedAt } }
     val decoded = remember(ascending) { ascending.map { RecordFieldsCodec.decode(it.fieldsJson) } }
@@ -511,7 +511,7 @@ private fun AiInsightCard(
                     Text(
                         text = state.message,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                     GlassTonalButton(
                         onClick = onGenerate,

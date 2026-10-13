@@ -303,7 +303,7 @@ private fun EditFormContent(
             Text(
                 text = uiState.errorMessage.orEmpty(),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
 

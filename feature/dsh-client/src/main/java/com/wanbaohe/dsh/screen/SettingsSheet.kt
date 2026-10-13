@@ -141,7 +141,7 @@ private fun ProviderRow(
             // 凭据徽标:绿=已配置 / 红=引用缺失 / 无引用=无点
             when (entry.credentialStatus) {
                 CredentialStatus.Configured -> CredentialDot(AppTheme.colors.getPrimaryColor())
-                CredentialStatus.Missing -> CredentialDot(MaterialTheme.colorScheme.error)
+                CredentialStatus.Missing -> CredentialDot(MaterialTheme.colorScheme.onErrorContainer)
                 CredentialStatus.None -> Spacer(Modifier.size(8.dp))
             }
             Spacer(Modifier.width(10.dp))
@@ -262,7 +262,7 @@ private fun ProviderEditor(entry: ProviderEntry, store: SettingsStore) {
                         Text(
                             text = stringResource(R.string.dsh_settings_unset_key),
                             fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.error
+                            color = MaterialTheme.colorScheme.onErrorContainer
                         )
                     }
                 }
@@ -327,7 +327,7 @@ private fun ProviderEditor(entry: ProviderEntry, store: SettingsStore) {
                 text = it,
                 modifier = Modifier.padding(top = 4.dp),
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
     }
@@ -390,7 +390,7 @@ private fun SettingsFooter(store: SettingsStore) {
             Text(
                 text = it,
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
     }

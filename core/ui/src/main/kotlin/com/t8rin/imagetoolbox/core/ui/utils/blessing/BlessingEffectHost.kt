@@ -160,7 +160,7 @@ fun BlessingEffectHost(
                 BlessingEffectType.Hamsa -> RingGlowEffect(color = MaterialTheme.colorScheme.onPrimaryContainer)
                 BlessingEffectType.Angel -> RingGlowEffect(color = MaterialTheme.colorScheme.onTertiaryContainer)
                 BlessingEffectType.Cupid -> FloatingShapeEffect(
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     shape = FloatingShape.Heart,
                 )
                 BlessingEffectType.Clover -> FloatingShapeEffect(

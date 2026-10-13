@@ -249,7 +249,7 @@ fun MediaImage(
                     isChecked = isSelected,
                     uncheckedColor = White.copy(0.8f),
                     checkedColor = if (isImageError) {
-                        MaterialTheme.colorScheme.error
+                        MaterialTheme.colorScheme.onErrorContainer
                     } else MaterialTheme.colorScheme.onPrimaryContainer,
                     checkedIcon = if (isImageError) {
                         com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineError

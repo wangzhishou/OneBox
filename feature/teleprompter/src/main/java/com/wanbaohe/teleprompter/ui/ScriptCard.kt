@@ -105,7 +105,7 @@ fun ScriptCard(
                             text = {
                                 Text(
                                     text = stringResource(R.string.teleprompter_delete),
-                                    color = MaterialTheme.colorScheme.error,
+                                    color = MaterialTheme.colorScheme.onErrorContainer,
                                 )
                             },
                             onClick = { showMenu = false; onDelete() },
@@ -113,7 +113,7 @@ fun ScriptCard(
                                 Icon(
                                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.error,
+                                    tint = MaterialTheme.colorScheme.onErrorContainer,
                                 )
                             }
                         )

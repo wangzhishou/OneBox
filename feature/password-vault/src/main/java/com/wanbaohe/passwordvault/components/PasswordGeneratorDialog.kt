@@ -168,7 +168,7 @@ fun PasswordGeneratorDialog(
                     Text(
                         text = stringResource(R.string.password_vault_generator_charset_invalid),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             }

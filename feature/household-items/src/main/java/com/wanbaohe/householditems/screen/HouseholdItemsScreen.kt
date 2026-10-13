@@ -573,7 +573,7 @@ internal fun ItemRow(
             null
         },
         border = if (isExpired) {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.6f))
+            BorderStroke(1.dp, MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.6f))
         } else {
             null
         },
@@ -743,7 +743,7 @@ private fun ItemCard(
             null
         },
         border = if (isExpired) {
-            BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.6f))
+            BorderStroke(1.dp, MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.6f))
         } else {
             null
         },
@@ -889,7 +889,7 @@ private fun ExpiryBadge(item: HouseholdItemUi) {
         ExpiryStatus.EXPIRED -> Triple(
             R.string.household_expired_days,
             -days,
-            MaterialTheme.colorScheme.error,
+            MaterialTheme.colorScheme.onErrorContainer,
         )
 
         ExpiryStatus.EXPIRING_SOON -> {

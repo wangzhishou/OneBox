@@ -399,7 +399,7 @@ private fun EngineListCard(
                 text = {
                     Text(
                         text = stringResource(R.string.ai_engine_delete_action),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 },
                 onClick = {
@@ -433,7 +433,7 @@ private fun EngineBadge(
     onClick: (() -> Unit)? = null,
 ) {
     val contentColor = when {
-        isError -> MaterialTheme.colorScheme.error
+        isError -> MaterialTheme.colorScheme.onErrorContainer
         isPrimary -> MaterialTheme.colorScheme.onPrimaryContainer
         selected -> MaterialTheme.colorScheme.onPrimaryContainer
         else -> MaterialTheme.colorScheme.onSurfaceVariant
@@ -495,7 +495,7 @@ private fun RefreshStatusPill(
             Text(
                 text = stringResource(R.string.ai_engine_refresh_failed, error),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
     }

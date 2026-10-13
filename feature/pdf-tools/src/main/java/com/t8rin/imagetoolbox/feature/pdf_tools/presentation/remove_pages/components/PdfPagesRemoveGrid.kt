@@ -264,7 +264,7 @@ internal fun PdfPagesRemoveGrid(
                             MediaCheckBox(
                                 isChecked = transition.targetState,
                                 uncheckedColor = White.copy(0.8f),
-                                checkedColor = MaterialTheme.colorScheme.error,
+                                checkedColor = MaterialTheme.colorScheme.onErrorContainer,
                                 checkedIcon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.CheckCircle,
                                 modifier = Modifier
                                     .clip(ShapeDefaults.circle)

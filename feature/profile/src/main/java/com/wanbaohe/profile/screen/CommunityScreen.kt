@@ -237,7 +237,7 @@ private fun WeChatGroupQrcodeImage(
                 Text(
                     text = stringResource(R.string.community_wechat_group_error),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         },

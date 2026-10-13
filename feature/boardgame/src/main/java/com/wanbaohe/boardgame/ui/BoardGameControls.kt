@@ -212,7 +212,7 @@ fun BoardGameSetupHint(
         text = text,
         modifier = modifier.fillMaxWidth(),
         style = MaterialTheme.typography.bodySmall,
-        color = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
+        color = if (isError) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSurfaceVariant,
         minLines = 2,
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,

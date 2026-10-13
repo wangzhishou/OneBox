@@ -189,7 +189,7 @@ fun AddTodoScreen(
                     },
                     style = MaterialTheme.typography.labelSmall,
                     color = if (noteAtMax) {
-                        MaterialTheme.colorScheme.error
+                        MaterialTheme.colorScheme.onErrorContainer
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     },

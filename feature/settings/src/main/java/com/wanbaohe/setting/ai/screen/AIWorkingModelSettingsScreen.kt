@@ -190,7 +190,7 @@ private fun WorkingEngineSummaryCard(
                         color = if (engine.hasAvailableChatRoute()) {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         } else {
-                            MaterialTheme.colorScheme.error
+                            MaterialTheme.colorScheme.onErrorContainer
                         },
                     )
                 }

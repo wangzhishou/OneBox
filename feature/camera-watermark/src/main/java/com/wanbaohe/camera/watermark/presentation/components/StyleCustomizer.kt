@@ -414,7 +414,7 @@ private fun TemplateListItem(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                     contentDescription = stringResource(R.string.camera_watermark_delete),
-                    tint = MaterialTheme.colorScheme.error
+                    tint = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
         }

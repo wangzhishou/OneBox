@@ -147,7 +147,7 @@ private fun buildInfoItems(uiState: CompassUiState): List<InfoItem> {
         ?: "--"
 
     val normalColor = MaterialTheme.colorScheme.onSurface
-    val calibrationColor = if (uiState.needsCalibration) MaterialTheme.colorScheme.error
+    val calibrationColor = if (uiState.needsCalibration) MaterialTheme.colorScheme.onErrorContainer
     else MaterialTheme.colorScheme.onPrimaryContainer
 
     return listOf(

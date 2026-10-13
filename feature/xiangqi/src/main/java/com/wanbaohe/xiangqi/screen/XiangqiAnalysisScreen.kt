@@ -361,7 +361,7 @@ private fun NotationRowItem(
             ply = row.red,
             isActive = isRedActive,
             activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            idleColor = MaterialTheme.colorScheme.error,
+            idleColor = MaterialTheme.colorScheme.onErrorContainer,
             modifier = Modifier.weight(0.425f),
             onPlyClick = onPlyClick,
         )

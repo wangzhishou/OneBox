@@ -229,7 +229,7 @@ internal fun DetailTab(
                 ) {
                     Text(
                         text = stringResource(R.string.bookkeeping_confirm),
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             },

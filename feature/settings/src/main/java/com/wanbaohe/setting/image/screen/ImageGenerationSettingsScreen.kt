@@ -148,7 +148,7 @@ fun ImageGenerationSettingsContent(
                     TextButton(onClick = { manager.deleteConfig(selected.id) }) {
                         Text(
                             text = stringResource(R.string.image_settings_delete_action),
-                            color = MaterialTheme.colorScheme.error,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
                         )
                     }
                 }
@@ -317,7 +317,7 @@ private fun ConfigEditor(
             TextButton(onClick = onDelete) {
                 Text(
                     text = stringResource(R.string.image_settings_delete_action),
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
         }

@@ -141,7 +141,7 @@ fun ExportSettingsSheet(
                 if (errorText != null) {
                     Text(
                         text = errorText,
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

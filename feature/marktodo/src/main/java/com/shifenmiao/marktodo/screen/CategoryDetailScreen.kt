@@ -161,7 +161,7 @@ fun CategoryDetailScreen(
                     Text(
                         text = uiState.error!!,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -325,7 +325,7 @@ private fun CategoryHeaderCard(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                         contentDescription = stringResource(R.string.action_delete),
-                        tint = MaterialTheme.colorScheme.error,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -686,7 +686,7 @@ private fun TaskCardContent(
                         text = formatTodoDate(due),
                         style = MaterialTheme.typography.labelSmall,
                         color = if (task.isOverdue) {
-                            MaterialTheme.colorScheme.error
+                            MaterialTheme.colorScheme.onErrorContainer
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                         }

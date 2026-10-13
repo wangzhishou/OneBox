@@ -95,7 +95,7 @@ fun LuopanDial(
     val lineColor = MaterialTheme.colorScheme.outlineVariant
     val textColor = MaterialTheme.colorScheme.onSurface
     val subTextColor = MaterialTheme.colorScheme.onSurfaceVariant
-    val accentColor = MaterialTheme.colorScheme.error
+    val accentColor = MaterialTheme.colorScheme.onErrorContainer
 
     val textMeasurer = rememberTextMeasurer()
     val density = LocalDensity.current

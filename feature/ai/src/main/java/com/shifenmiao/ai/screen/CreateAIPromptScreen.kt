@@ -220,7 +220,7 @@ fun CreateAIPromptScreen(
                     draftStatusColor = { draft ->
                         when (draft.status) {
                             DataDraftEntity.STATUS_SUCCESS -> MaterialTheme.colorScheme.onPrimaryContainer
-                            DataDraftEntity.STATUS_FAILED -> MaterialTheme.colorScheme.error
+                            DataDraftEntity.STATUS_FAILED -> MaterialTheme.colorScheme.onErrorContainer
                             else -> MaterialTheme.colorScheme.onSurfaceVariant
                         }
                     }
@@ -1087,13 +1087,13 @@ private fun PromptErrorSection(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineError,
                 contentDescription = null,
                 modifier = Modifier.size(36.dp),
-                tint = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
+                tint = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f),
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = stringResource(R.string.create_ai_chat_prompt_error_title),
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(

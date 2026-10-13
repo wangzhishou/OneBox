@@ -245,7 +245,7 @@ private fun HeaderStatusIcon(phase: AiExecutionPhase) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineWarning,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.error,
+                tint = MaterialTheme.colorScheme.onErrorContainer,
                 modifier = Modifier.size(18.dp)
             )
         }
@@ -301,7 +301,7 @@ private fun AiExecutionStepRow(
                                     alpha = 0.32f
                                 )
 
-                                ExecutionStepStatus.FAILED -> MaterialTheme.colorScheme.error.copy(
+                                ExecutionStepStatus.FAILED -> MaterialTheme.colorScheme.onErrorContainer.copy(
                                     alpha = 0.32f
                                 )
 
@@ -340,7 +340,7 @@ private fun AiExecutionStepRow(
                 Text(
                     text = step.detail,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -633,7 +633,7 @@ private fun StepStatusNode(status: ExecutionStepStatus) {
         ExecutionStepStatus.FAILED -> Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.error,
+            tint = MaterialTheme.colorScheme.onErrorContainer,
             modifier = Modifier.size(24.dp)
         )
 
@@ -652,7 +652,7 @@ private fun stepTextColor(status: ExecutionStepStatus): Color {
         ExecutionStepStatus.DONE -> MaterialTheme.colorScheme.onSurfaceVariant
         ExecutionStepStatus.RUNNING -> MaterialTheme.colorScheme.onSurfaceVariant
         ExecutionStepStatus.WAITING_USER -> MaterialTheme.colorScheme.onSurfaceVariant
-        ExecutionStepStatus.FAILED -> MaterialTheme.colorScheme.error
+        ExecutionStepStatus.FAILED -> MaterialTheme.colorScheme.onErrorContainer
         ExecutionStepStatus.PENDING -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 }

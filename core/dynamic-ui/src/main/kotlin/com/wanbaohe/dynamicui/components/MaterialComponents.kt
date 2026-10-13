@@ -406,7 +406,7 @@ private fun SwitchRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext
             node.id?.let { scope.setByPath(DynamicUiInternalState.validationErrorKey(it), null) }
         },
         modifier = ctx.modifierPipeline.build(node.modifier),
-        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer,
+        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.primaryContainer,
     )
 }
 
@@ -428,7 +428,7 @@ private fun CheckboxRenderer(node: UiNode, scope: UiStateScope, ctx: RenderConte
             node.id?.let { scope.setByPath(DynamicUiInternalState.validationErrorKey(it), null) }
         },
         modifier = ctx.modifierPipeline.build(node.modifier),
-        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer,
+        checkedGlassColor = if (validationError != null) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.primaryContainer,
     )
 }
 
@@ -800,7 +800,7 @@ private fun BadgeRenderer(node: UiNode, scope: UiStateScope, ctx: RenderContext,
     GlassBadge(
         modifier = ctx.modifierPipeline.build(node.modifier),
         containerColor = ModifierRegistry.parseColor(node.propString("containerColor"))
-            ?: MaterialTheme.colorScheme.error,
+            ?: MaterialTheme.colorScheme.onErrorContainer,
     ) {
         if (text.isNotEmpty()) Text(text)
     }

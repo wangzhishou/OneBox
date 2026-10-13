@@ -334,7 +334,7 @@ private fun LayerThumb(
                     ImageElementStatus.Error -> Icon(
                         imageVector = MaterialIcons.Outlined.ErrorOutline,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.error
+                        tint = MaterialTheme.colorScheme.onErrorContainer
                     )
 
                     null -> Unit

@@ -348,7 +348,7 @@ private fun GameStatusPanel(
 private fun dangerColorFor(dangerLevel: Float): Color {
     val colorScheme = MaterialTheme.colorScheme
     return when {
-        dangerLevel > 0.8f -> colorScheme.error
+        dangerLevel > 0.8f -> colorScheme.onErrorContainer
         dangerLevel > 0.45f -> colorScheme.onTertiaryContainer
         else -> colorScheme.onPrimaryContainer
     }
@@ -382,7 +382,7 @@ private fun timerColorFor(progress: Float): Color {
     return when {
         progress < 0.33f -> colorScheme.onPrimaryContainer
         progress < 0.66f -> colorScheme.onTertiaryContainer
-        else -> colorScheme.error
+        else -> colorScheme.onErrorContainer
     }
 }
 
@@ -481,7 +481,7 @@ private fun GameCanvas(
     modifier: Modifier = Modifier,
 ) {
     val playerPalette = rememberPlayerPalette()
-    val dangerColor = MaterialTheme.colorScheme.error
+    val dangerColor = MaterialTheme.colorScheme.onErrorContainer
 
     Canvas(
         modifier = modifier
@@ -974,7 +974,7 @@ private fun GameOverOverlay(
                 text = stringResource(R.string.survive_30s_game_over),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
             )
             Text(
                 text = stringResource(R.string.survive_30s_survived_time, elapsed),

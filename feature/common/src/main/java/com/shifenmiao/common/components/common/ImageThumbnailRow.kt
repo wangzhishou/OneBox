@@ -113,7 +113,7 @@ private fun ThumbnailItem(
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineError,
                 contentDescription = "Error",
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.onErrorContainer
             )
         }
     }

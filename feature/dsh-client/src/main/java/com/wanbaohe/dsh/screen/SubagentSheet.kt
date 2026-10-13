@@ -205,7 +205,7 @@ private fun SubagentCatalogView(
                 text = it,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
         when {
@@ -219,7 +219,7 @@ private fun SubagentCatalogView(
                     text = stringResource(R.string.dsh_subagent_load_failed),
                     modifier = Modifier.weight(1f),
                     fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onErrorContainer
                 )
                 TextButton(onClick = {
                     scope.launch { store.invalidateChildren(sessionId) }
@@ -293,7 +293,7 @@ private fun CatalogEntryRow(
             Text(
                 text = stringResource(R.string.dsh_subagent_diagnostic, entry.id),
                 fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.error,
+                color = MaterialTheme.colorScheme.onErrorContainer,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -458,7 +458,7 @@ private fun SubagentTranscriptView(
                 ) {
                     Text(
                         text = stringResource(R.string.dsh_subagent_interrupt),
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
             }
@@ -468,7 +468,7 @@ private fun SubagentTranscriptView(
                 text = it,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
         LazyColumn(

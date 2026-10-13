@@ -430,7 +430,7 @@ fun ServerStatusCard(
                         when (serverState) {
                             is ServerState.Running -> MaterialTheme.colorScheme.onPrimaryContainer
                             is ServerState.Starting -> MaterialTheme.colorScheme.onTertiaryContainer
-                            is ServerState.Error -> MaterialTheme.colorScheme.error
+                            is ServerState.Error -> MaterialTheme.colorScheme.onErrorContainer
                             else -> MaterialTheme.colorScheme.outline
                         }
                     )
@@ -502,7 +502,7 @@ fun ServerStatusCard(
             Text(
                 text = serverState.message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.onErrorContainer
             )
         }
 

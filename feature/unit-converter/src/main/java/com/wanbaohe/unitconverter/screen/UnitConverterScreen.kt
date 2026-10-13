@@ -1384,7 +1384,7 @@ private fun RelationButton(
     onClick: () -> Unit,
 ) {
     val contentColor = if (action.isClear) {
-        MaterialTheme.colorScheme.error
+        MaterialTheme.colorScheme.onErrorContainer
     } else {
         MaterialTheme.colorScheme.onSurface
     }
@@ -1418,7 +1418,7 @@ private fun RelationButton(
                     imageVector = action.icon,
                     contentDescription = null,
                     tint = if (action.isClear) {
-                        MaterialTheme.colorScheme.error
+                        MaterialTheme.colorScheme.onErrorContainer
                     } else {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     },

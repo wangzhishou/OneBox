@@ -387,7 +387,7 @@ private fun ThemeMenuAnchor(
                 text = {
                     Text(
                         text = stringResource(R.string.action_delete),
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 },
                 onClick = {
@@ -398,7 +398,7 @@ private fun ThemeMenuAnchor(
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Delete,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.error,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.size(18.dp)
                     )
                 }

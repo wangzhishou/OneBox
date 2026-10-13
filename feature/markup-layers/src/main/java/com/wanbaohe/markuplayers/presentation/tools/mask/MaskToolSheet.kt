@@ -153,7 +153,7 @@ fun MaskToolSheet(
                     bitmap == null -> {
                         Text(
                             text = stringResource(R.string.studio_mask_load_failed),
-                            color = MaterialTheme.colorScheme.error
+                            color = MaterialTheme.colorScheme.onErrorContainer
                         )
                         TextButton(
                             onClick = component::prepareMaskTarget,
@@ -276,7 +276,7 @@ fun MaskToolSheet(
                         if (previewFailed) {
                             Text(
                                 text = stringResource(R.string.studio_mask_load_failed),
-                                color = MaterialTheme.colorScheme.error
+                                color = MaterialTheme.colorScheme.onErrorContainer
                             )
                             TextButton(onClick = { previewRevision++ }) {
                                 Text(stringResource(R.string.studio_retry))

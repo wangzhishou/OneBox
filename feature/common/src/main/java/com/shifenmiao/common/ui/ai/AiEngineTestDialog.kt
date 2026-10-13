@@ -125,7 +125,7 @@ fun AiEngineTestDialog(
                             color = if (testResult?.success == true) {
                                 MaterialTheme.colorScheme.onPrimaryContainer
                             } else {
-                                MaterialTheme.colorScheme.error
+                                MaterialTheme.colorScheme.onErrorContainer
                             },
                             fontWeight = FontWeight.Bold
                         )

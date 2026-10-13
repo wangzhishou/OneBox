@@ -567,7 +567,7 @@ private fun toolStatusColor(status: ToolStatus): androidx.compose.ui.graphics.Co
     when (status) {
         ToolStatus.Running -> AppTheme.colors.getPrimaryColor()
         ToolStatus.Success -> DshSuccessGreen
-        ToolStatus.Failed -> MaterialTheme.colorScheme.error
+        ToolStatus.Failed -> MaterialTheme.colorScheme.onErrorContainer
         ToolStatus.Interrupted -> MaterialTheme.colorScheme.onTertiaryContainer
     }
 
@@ -588,7 +588,7 @@ private fun DetailBlock(label: String, content: String, error: Boolean = false) 
         Text(
             text = label,
             fontSize = 11.sp,
-            color = if (error) MaterialTheme.colorScheme.error
+            color = if (error) MaterialTheme.colorScheme.onErrorContainer
             else MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
@@ -599,7 +599,7 @@ private fun DetailBlock(label: String, content: String, error: Boolean = false) 
             },
             fontSize = 11.sp,
             fontFamily = FontFamily.Monospace,
-            color = if (error) MaterialTheme.colorScheme.error
+            color = if (error) MaterialTheme.colorScheme.onErrorContainer
             else MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .fillMaxWidth()
@@ -757,7 +757,7 @@ private fun ErrorRow(node: ChatNode.Error) {
                 node.message
             },
             fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.onErrorContainer
         )
     }
 }

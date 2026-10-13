@@ -352,7 +352,7 @@ fun EditorScaffold(
                         }
                     ),
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (component.projectSaveError != null) MaterialTheme.colorScheme.error
+                    color = if (component.projectSaveError != null) MaterialTheme.colorScheme.onErrorContainer
                     else MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
