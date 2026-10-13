@@ -783,7 +783,7 @@ private fun StreamingSection(
                             .heightIn(max = 120.dp)
                             .verticalScroll(rawScrollState)
                             .glassBackground(
-                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                color = MaterialTheme.colorScheme.surfaceContainer,
                                 shape = MaterialTheme.shapes.small,
                             )
                             .padding(8.dp)
@@ -1115,7 +1115,7 @@ private fun ErrorSection(
                         .fillMaxWidth()
                         .heightIn(max = 140.dp)
                         .glassBackground(
-                            color = MaterialTheme.colorScheme.surfaceVariant,
+                            color = MaterialTheme.colorScheme.surfaceContainer,
                             shape = MaterialTheme.shapes.small,
                         )
                         .verticalScroll(rememberScrollState())

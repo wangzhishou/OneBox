@@ -280,7 +280,7 @@ private fun VipProgressCard(
                     .height(10.dp)
                     .clip(RoundedCornerShape(5.dp)),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                trackColor = MaterialTheme.colorScheme.surfaceContainer,
                 strokeCap = StrokeCap.Round,
             )
 
@@ -324,7 +324,7 @@ private fun VipLevelItem(
                     .clip(CircleShape)
                     .background(
                         if (isUnlocked) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surfaceVariant
+                        else MaterialTheme.colorScheme.surfaceContainer
                     ),
                 contentAlignment = Alignment.Center,
             ) {

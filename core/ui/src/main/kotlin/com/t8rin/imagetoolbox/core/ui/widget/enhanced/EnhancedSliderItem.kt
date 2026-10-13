@@ -106,7 +106,7 @@ fun EnhancedSliderItem(
 ) {
     val internalColor = contentColor
         ?: if (containerColor == MaterialTheme.colorScheme.surfaceContainerLow) {
-            contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceVariant)
+            contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceContainer)
         } else contentColorFor(backgroundColor = containerColor)
 
     var showValueDialog by rememberSaveable { mutableStateOf(false) }

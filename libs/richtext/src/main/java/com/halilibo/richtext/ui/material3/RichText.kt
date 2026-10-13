@@ -177,7 +177,7 @@ fun RichText(
                 )
             ),
             codeStyle = SpanStyle(
-                background = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                background = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         )

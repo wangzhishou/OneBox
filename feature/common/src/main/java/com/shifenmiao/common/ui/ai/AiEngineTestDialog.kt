@@ -143,7 +143,7 @@ fun AiEngineTestDialog(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 4.dp),
-                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                color = MaterialTheme.colorScheme.surfaceContainer,
                                 shape = AppTheme.shapes.getTextFieldShape()
                             ) {
                                 SelectionContainer {

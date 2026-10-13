@@ -187,7 +187,7 @@ private fun SearchCitationChip(
             .clip(RoundedCornerShape(16.dp))
             .glassBackground(
                 shape = RoundedCornerShape(16.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant
+                color = MaterialTheme.colorScheme.surfaceContainer
             )
             .clickable {
                 if (citation.url.isNotBlank()) {

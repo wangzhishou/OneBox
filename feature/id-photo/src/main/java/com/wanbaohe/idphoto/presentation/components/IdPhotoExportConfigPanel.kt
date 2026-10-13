@@ -183,7 +183,7 @@ private fun FormatChip(
     val containerColor = if (isSelected) {
         MaterialTheme.colorScheme.primaryContainer
     } else {
-        MaterialTheme.colorScheme.surfaceVariant
+        MaterialTheme.colorScheme.surfaceContainer
     }
     val contentColor = if (isSelected) {
         MaterialTheme.colorScheme.onPrimaryContainer

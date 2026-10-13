@@ -470,7 +470,7 @@ private fun LocationBarRow(
                 .weight(1f)
                 .height(8.dp)
                 .clip(RoundedCornerShape(99.dp))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(MaterialTheme.colorScheme.surfaceContainer),
         ) {
             Box(
                 modifier = Modifier

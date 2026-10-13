@@ -508,7 +508,7 @@ private fun CellView(
     val containerColor = when {
         !cell.isRevealed -> MaterialTheme.colorScheme.primaryContainer
         cell.isMine -> MaterialTheme.colorScheme.errorContainer
-        else -> MaterialTheme.colorScheme.surfaceVariant
+        else -> MaterialTheme.colorScheme.surfaceContainer
     }
     val fontSize = (size.value * 0.5f).sp
     val iconSize = size * 0.6f

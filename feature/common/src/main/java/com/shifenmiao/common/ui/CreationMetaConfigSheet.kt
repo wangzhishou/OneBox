@@ -882,7 +882,7 @@ fun SelectedToolSummary(
                 modifier = Modifier.glassBackground(
                     style = GlassStyle.None,
                     shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.surfaceVariant
+                    color = MaterialTheme.colorScheme.surfaceContainer
                 )
             ) {
                 Text(
@@ -964,7 +964,7 @@ private fun ToolCategoryChip(
         modifier = Modifier
             .background(
                 if (selected) MaterialTheme.colorScheme.secondaryContainer
-                else MaterialTheme.colorScheme.surfaceVariant,
+                else MaterialTheme.colorScheme.surfaceContainer,
                 RoundedCornerShape(14.dp)
             )
             .clickable(onClick = onClick)
@@ -1013,7 +1013,7 @@ private fun ToolSectionHeader(
 private fun ToolSelectionTag(text: String) {
     Surface(
         shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceVariant
+        color = MaterialTheme.colorScheme.surfaceContainer
     ) {
         Text(
             text = text,

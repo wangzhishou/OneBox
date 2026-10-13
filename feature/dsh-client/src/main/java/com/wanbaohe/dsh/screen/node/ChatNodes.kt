@@ -529,7 +529,7 @@ private fun NodeLabelIcon(icon: androidx.compose.ui.graphics.vector.ImageVector)
         modifier = Modifier
             .size(24.dp)
             .clip(RoundedCornerShape(6.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(MaterialTheme.colorScheme.surfaceContainer),
         contentAlignment = Alignment.Center
     ) {
         Icon(

@@ -170,7 +170,7 @@ private fun SensorUnavailableCard(modifier: Modifier = Modifier) {
     GlassCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         shape = MaterialTheme.shapes.large
     ) {

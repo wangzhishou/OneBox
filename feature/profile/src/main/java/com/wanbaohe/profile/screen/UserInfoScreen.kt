@@ -629,7 +629,7 @@ private fun GlassLongPressItem(
                 }
             }
             .background(
-                if (isPressed) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                if (isPressed) MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f)
                 else Color.Transparent
             ),
         headlineContent = headlineContent,

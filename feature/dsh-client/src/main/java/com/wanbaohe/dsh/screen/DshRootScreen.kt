@@ -265,7 +265,7 @@ private fun ConnectTabRow(selected: ConnectTab, onSelect: (ConnectTab) -> Unit) 
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f))
             .padding(4.dp)
     ) {
         tabs.forEach { (tab, labelRes) ->

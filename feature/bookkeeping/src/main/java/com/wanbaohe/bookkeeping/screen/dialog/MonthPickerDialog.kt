@@ -88,7 +88,7 @@ internal fun MonthPickerDialog(
                         modifier = Modifier
                             .coloredGlass(
                                 color = if (isSelected) MaterialTheme.colorScheme.primaryContainer
-                                else MaterialTheme.colorScheme.surfaceVariant,
+                                else MaterialTheme.colorScheme.surfaceContainer,
                                 style = GlassStyle.Regular,
                                 shape = RoundedCornerShape(8.dp),
                             )

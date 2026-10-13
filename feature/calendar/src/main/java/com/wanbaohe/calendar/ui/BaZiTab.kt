@@ -473,7 +473,7 @@ private fun DaYunBox(item: DaYunItem) {
             .height(80.dp)
             .glassBackground(
                 shape = RoundedCornerShape(12.dp),
-                color = if (item.isCurrent) MaterialTheme.colorScheme.surfaceVariant
+                color = if (item.isCurrent) MaterialTheme.colorScheme.surfaceContainer
                 else MaterialTheme.colorScheme.surfaceContainer
             )
             .padding(8.dp),

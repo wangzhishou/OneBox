@@ -163,7 +163,7 @@ private fun SummaryCard(
     val rate = if (dueCount > 0) doneCount.toFloat() / dueCount.toFloat() else 0f
     val percentText = "${(rate * 100).toInt()}%"
     val ringColor = MaterialTheme.colorScheme.onPrimaryContainer
-    val trackColor = MaterialTheme.colorScheme.surfaceVariant
+    val trackColor = MaterialTheme.colorScheme.surfaceContainer
 
     val slices = remember(doneCount, dueCount, ringColor, trackColor) {
         listOf(

@@ -142,7 +142,7 @@ private fun ReadOnlyCategoryChipLabel(text: String) {
 
 @Composable
 private fun readOnlyCategoryChipColors() = FilterChipDefaults.filterChipColors().copy(
-    selectedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+    selectedContainerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
     selectedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
 )
 

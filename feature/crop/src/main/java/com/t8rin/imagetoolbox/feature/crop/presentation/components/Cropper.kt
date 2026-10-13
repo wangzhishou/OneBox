@@ -148,7 +148,7 @@ fun Cropper(
                             onCropStart = onImageCropStarted,
                             crop = crop,
                             cropStyle = CropDefaults.style(
-                                overlayColor = MaterialTheme.colorScheme.surfaceVariant
+                                overlayColor = MaterialTheme.colorScheme.surfaceContainer
                             ),
                             onZoomChange = { newZoom ->
                                 zoomLevel = newZoom

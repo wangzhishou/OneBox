@@ -553,7 +553,7 @@ private fun RankRow(
                 .fillMaxWidth()
                 .height(5.dp)
                 .clip(RoundedCornerShape(99.dp))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(MaterialTheme.colorScheme.surfaceContainer),
         ) {
             Box(
                 modifier = Modifier

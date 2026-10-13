@@ -112,7 +112,7 @@ internal fun CategoryPickerSheet(
                         item {
                             CategoryCell(
                                 name = stringResource(R.string.bookkeeping_filter_all),
-                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                containerColor = MaterialTheme.colorScheme.surfaceContainer,
                                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                 onClick = onSelectAll,
                             )

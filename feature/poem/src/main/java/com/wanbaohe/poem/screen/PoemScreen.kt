@@ -421,7 +421,7 @@ private fun PoemEmptyState(onGenerate: () -> Unit) {
                 modifier = Modifier
                     .size(180.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
                         shape = CircleShape,
                     ),
                 contentAlignment = Alignment.Center,

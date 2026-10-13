@@ -785,7 +785,7 @@ private fun AttachmentThumbnail(image: PendingImage, onRemove: () -> Unit) {
                 modifier = Modifier
                     .size(56.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
             )
         }
         Icon(

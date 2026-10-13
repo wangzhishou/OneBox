@@ -115,7 +115,7 @@ fun ImageUploadGallery(
                                 progress = { animatedProgress },
                                 modifier = Modifier.size(32.dp),
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                trackColor = MaterialTheme.colorScheme.surfaceVariant
+                                trackColor = MaterialTheme.colorScheme.surfaceContainer
                             )
                         }
                     }

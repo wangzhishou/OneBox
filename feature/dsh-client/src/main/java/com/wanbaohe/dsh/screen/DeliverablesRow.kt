@@ -48,7 +48,7 @@ fun DeliverablesRow(paths: List<String>, modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .widthIn(max = 160.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
                     .padding(horizontal = 10.dp, vertical = 8.dp),
                 fontSize = 13.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

@@ -153,7 +153,7 @@ fun BrowserScreen(
                         progress = { state.progress },
                         modifier = Modifier.fillMaxWidth(),
                         color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
-                        trackColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant
+                        trackColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainer
                     )
                 } else {
                     Spacer(modifier = Modifier.height(2.dp))

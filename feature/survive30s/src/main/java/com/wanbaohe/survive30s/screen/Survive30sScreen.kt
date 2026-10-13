@@ -886,7 +886,7 @@ private fun PausedOverlay(
             ResultActions(
                 onBack = onBack,
                 onRestart = onRestart,
-                restartContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                restartContainerColor = MaterialTheme.colorScheme.surfaceContainer,
                 restartContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

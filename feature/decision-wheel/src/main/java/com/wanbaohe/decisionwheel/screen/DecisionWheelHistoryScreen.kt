@@ -187,7 +187,7 @@ private fun FilterChip(
     Surface(
         shape = RoundedCornerShape(14.dp),
         color = if (selected) MaterialTheme.colorScheme.primaryContainer
-        else MaterialTheme.colorScheme.surfaceVariant,
+        else MaterialTheme.colorScheme.surfaceContainer,
         tonalElevation = 0.dp,
         shadowElevation = 0.dp,
         modifier = Modifier.clickable(onClick = onClick)

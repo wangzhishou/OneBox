@@ -486,7 +486,7 @@ fun CloudStorageScreen(
         androidx.compose.ui.window.Dialog(onDismissRequest = {}) {
             androidx.compose.material3.Surface(
                 shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
+                color = androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainer,
                 modifier = Modifier.padding(24.dp)
             ) {
                 Column(

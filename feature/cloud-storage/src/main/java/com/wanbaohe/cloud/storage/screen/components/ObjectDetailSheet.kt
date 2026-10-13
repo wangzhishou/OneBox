@@ -78,7 +78,7 @@ fun ObjectDetailSheet(
                             .fillMaxWidth()
                             .heightIn(max = 260.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
+                            .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.3f)),
                         contentAlignment = Alignment.Center,
                     ) {
                         if (isError) {

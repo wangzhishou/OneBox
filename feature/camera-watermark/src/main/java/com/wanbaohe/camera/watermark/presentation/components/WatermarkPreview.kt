@@ -46,7 +46,7 @@ fun WatermarkPreview(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(MaterialTheme.colorScheme.surfaceContainer),
         contentAlignment = Alignment.Center
     ) {
         when {
@@ -59,7 +59,7 @@ fun WatermarkPreview(
                     contentPadding = contentPadding,
                     onTap = onClick,
                     modifier = Modifier.fillMaxSize(),
-                    backgroundColor = MaterialTheme.colorScheme.surfaceVariant
+                    backgroundColor = MaterialTheme.colorScheme.surfaceContainer
                 )
             }
             else -> {
@@ -93,7 +93,7 @@ fun CompactWatermarkPreview(
         modifier = modifier
             .aspectRatio(1f)
             .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .border(2.dp, borderColor, shape)
             .padding(2.dp),
         contentAlignment = Alignment.Center

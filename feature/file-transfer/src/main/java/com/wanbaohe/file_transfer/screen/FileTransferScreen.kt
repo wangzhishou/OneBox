@@ -591,7 +591,7 @@ fun QRCodeCard(qrCodeBitmap: Bitmap?) {
                     modifier = Modifier
                         .size(AppTheme.dimens.fileTransferQrCodeSize)
                         .clip(RoundedCornerShape(AppTheme.dimens.cornerRadiusNormal))
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
                         .padding(AppTheme.dimens.paddingExtraSmall)
                 )
             } else {
@@ -599,7 +599,7 @@ fun QRCodeCard(qrCodeBitmap: Bitmap?) {
                     modifier = Modifier
                         .size(AppTheme.dimens.fileTransferQrCodeSize)
                         .clip(RoundedCornerShape(AppTheme.dimens.cornerRadiusNormal))
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()

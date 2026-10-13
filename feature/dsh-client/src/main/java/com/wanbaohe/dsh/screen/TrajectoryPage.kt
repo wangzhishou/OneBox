@@ -356,7 +356,7 @@ private fun TrajectoryInspector(row: TrajectoryRow, onDismiss: () -> Unit) {
                     .fillMaxWidth()
                     .heightIn(max = 240.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                    .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f))
                     .horizontalScroll(rememberScrollState())
                     .verticalScroll(rememberScrollState())
                     .padding(8.dp),

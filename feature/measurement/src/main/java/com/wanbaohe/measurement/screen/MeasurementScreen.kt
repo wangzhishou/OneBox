@@ -342,7 +342,7 @@ private fun AngleDisplayCard(
     val bgColor = if (isLevel) {
         MaterialTheme.colorScheme.tertiaryContainer
     } else {
-        MaterialTheme.colorScheme.surfaceVariant
+        MaterialTheme.colorScheme.surfaceContainer
     }
     val textColor = if (isLevel) {
         MaterialTheme.colorScheme.onTertiaryContainer
@@ -412,7 +412,7 @@ private fun LockButton(
     val containerColor = if (isLocked) {
         MaterialTheme.colorScheme.primaryContainer
     } else {
-        MaterialTheme.colorScheme.surfaceVariant
+        MaterialTheme.colorScheme.surfaceContainer
     }
     val contentColor = if (isLocked) {
         MaterialTheme.colorScheme.onPrimaryContainer
@@ -449,7 +449,7 @@ private fun SensorUnavailableCard(modifier: Modifier = Modifier) {
     GlassCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         shape = MaterialTheme.shapes.large
     ) {
@@ -517,7 +517,7 @@ private fun FullScreenRulerBackground(
     val textColor = MaterialTheme.colorScheme.onSurfaceVariant
     val tickColor = MaterialTheme.colorScheme.outline
     val outlineVariant = MaterialTheme.colorScheme.outlineVariant
-    val rulerBackground = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    val rulerBackground = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f)
     val measureLineColor = MaterialTheme.colorScheme.onPrimaryContainer
     val measureChipTextColor = MaterialTheme.colorScheme.primaryContainer
 

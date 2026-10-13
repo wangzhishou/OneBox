@@ -346,7 +346,7 @@ private fun ModeButton(
             containerColor = if (isSelected)
                 MaterialTheme.colorScheme.primaryContainer
             else
-                MaterialTheme.colorScheme.surfaceVariant,
+                MaterialTheme.colorScheme.surfaceContainer,
         ),
     ) {
         Box(
@@ -509,7 +509,7 @@ private fun RoomInviteQrCard(
 ) {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -521,7 +521,7 @@ private fun RoomInviteQrCard(
                     .fillMaxWidth()
                     .capturable(captureController),
                 shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colorScheme.surfaceVariant,
+                color = MaterialTheme.colorScheme.surfaceContainer,
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -697,7 +697,7 @@ private fun RoomItem(
         modifier = Modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ),
     ) {
         Row(

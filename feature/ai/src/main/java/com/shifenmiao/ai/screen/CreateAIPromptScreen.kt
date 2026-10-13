@@ -744,7 +744,7 @@ private fun PromptStreamingSection(
                             .heightIn(max = 120.dp)
                             .verticalScroll(rawScrollState)
                             .glassBackground(
-                                color = MaterialTheme.colorScheme.surfaceVariant,
+                                color = MaterialTheme.colorScheme.surfaceContainer,
                                 shape = MaterialTheme.shapes.small,
                             )
                             .padding(8.dp)
@@ -1117,7 +1117,7 @@ private fun PromptErrorSection(
                         .heightIn(max = 140.dp)
                         .verticalScroll(rememberScrollState())
                         .glassBackground(
-                            color = MaterialTheme.colorScheme.surfaceVariant,
+                            color = MaterialTheme.colorScheme.surfaceContainer,
                             shape = MaterialTheme.shapes.small,
                         )
                         .padding(8.dp)

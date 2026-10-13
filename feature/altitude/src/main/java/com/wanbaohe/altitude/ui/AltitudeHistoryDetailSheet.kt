@@ -199,7 +199,7 @@ private fun DetailItem(
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(MaterialTheme.colorScheme.surfaceContainer),
             contentAlignment = Alignment.Center
         ) {
             Icon(
