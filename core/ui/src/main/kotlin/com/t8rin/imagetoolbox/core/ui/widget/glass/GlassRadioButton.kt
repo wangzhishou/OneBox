@@ -30,7 +30,7 @@ fun GlassRadioButton(
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
     selectedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    unselectedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    unselectedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current

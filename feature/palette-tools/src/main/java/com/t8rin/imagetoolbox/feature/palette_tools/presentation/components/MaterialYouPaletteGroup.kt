@@ -280,20 +280,6 @@ fun MaterialYouPaletteGroup(
                 onCopy = onCopy,
                 modifier = Modifier.weight(1f)
             )
-            MaterialYouPaletteItem(
-                color = colorScheme.surfaceContainerHigh,
-                colorScheme = colorScheme,
-                name = "Surface High",
-                onCopy = onCopy,
-                modifier = Modifier.weight(1f)
-            )
-            MaterialYouPaletteItem(
-                color = colorScheme.surfaceContainerHighest,
-                colorScheme = colorScheme,
-                name = "Surface Highest",
-                onCopy = onCopy,
-                modifier = Modifier.weight(1f)
-            )
         }
 
         Row(

@@ -279,7 +279,7 @@ private fun <T> GlassSegmentedButtonRowImpl(
     buttonBorderWidth: Dp,
 ) {
     val bgColor = if (rowColor != Color.Unspecified) rowColor
-    else MaterialTheme.colorScheme.surfaceContainerHigh
+    else MaterialTheme.colorScheme.surfaceContainer
     if (options.isEmpty()) return
 
     val isMultiSelect = selectedIndices.size > 1

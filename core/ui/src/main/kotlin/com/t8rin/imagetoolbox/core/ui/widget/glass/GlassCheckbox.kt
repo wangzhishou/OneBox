@@ -35,7 +35,7 @@ fun GlassCheckbox(
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
     checkedGlassColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+    uncheckedGlassColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current

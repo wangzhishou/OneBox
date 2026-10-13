@@ -77,7 +77,7 @@ fun MeshGradientBackground(
             val themePrimary = MaterialTheme.colorScheme.primary
             val themeSecondary = MaterialTheme.colorScheme.secondary
             val themeTertiary = MaterialTheme.colorScheme.tertiary
-            val themeSurfaceHighest = MaterialTheme.colorScheme.surfaceContainerHighest
+            val themeSurfaceHighest = MaterialTheme.colorScheme.surfaceContainer
             val themePrimaryContainer = MaterialTheme.colorScheme.primaryContainer
             val themeTertiaryContainer = MaterialTheme.colorScheme.tertiaryContainer
 

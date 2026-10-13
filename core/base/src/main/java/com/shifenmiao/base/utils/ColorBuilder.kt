@@ -65,9 +65,10 @@ object ColorBuilder {
         if (recommend == true) {
             if (id < 0) {
                 return ColorTuple(
-                    primary = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    secondary = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    tertiary = MaterialTheme.colorScheme.surfaceContainerLow,
+                    // 层级色阶统一走 Container 家族,不再用已废弃的 High/Highest
+                    primary = MaterialTheme.colorScheme.surfaceContainer,
+                    secondary = MaterialTheme.colorScheme.surfaceContainerLow,
+                    tertiary = MaterialTheme.colorScheme.surfaceContainerLowest,
                     surface = MaterialTheme.colorScheme.surface
                 )
             }
@@ -76,9 +77,9 @@ object ColorBuilder {
             return colorTuples[index]
         }
         return ColorTuple(
-            primary = MaterialTheme.colorScheme.surfaceContainerHighest,
-            secondary = MaterialTheme.colorScheme.surfaceContainerHigh,
-            tertiary = MaterialTheme.colorScheme.surfaceContainerLow,
+            primary = MaterialTheme.colorScheme.surfaceContainer,
+            secondary = MaterialTheme.colorScheme.surfaceContainerLow,
+            tertiary = MaterialTheme.colorScheme.surfaceContainerLowest,
             surface = MaterialTheme.colorScheme.surface
         )
 

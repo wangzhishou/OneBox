@@ -356,7 +356,7 @@ fun Modifier.glassTextField(
     if (!settingsState.isGlassAlphaEnabled) {
         return fallbackGlassBackground(
             shape = shape,
-            color = if (color != Color.Unspecified) color else MaterialTheme.colorScheme.surfaceContainerHighest,
+            color = if (color != Color.Unspecified) color else MaterialTheme.colorScheme.surfaceContainer,
             style = style,
         )
     }

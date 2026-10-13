@@ -296,7 +296,7 @@ class DuelHtmlExporter {
         val tertiary = colorScheme.tertiary.toArgb().toHexColor()
         val onTertiary = colorScheme.onTertiary.toArgb().toHexColor()
         val surfaceContainerLow = colorScheme.surfaceContainerLow.toArgb().toHexColor()
-        val surfaceContainerHigh = colorScheme.surfaceContainerHigh.toArgb().toHexColor()
+        val surfaceContainerHigh = colorScheme.surfaceContainer.toArgb().toHexColor()
         val outline = colorScheme.outline.toArgb().toHexColor()
         val outlineVariant = colorScheme.outlineVariant.toArgb().toHexColor()
 
@@ -573,7 +573,7 @@ body {
   font-style: italic;
 }
 .message-bubble .prose pre {
-  background: ${colorScheme.surfaceContainerHighest.toArgb().toHexColor()};
+  background: ${colorScheme.surfaceContainer.toArgb().toHexColor()};
   padding: 0.75rem;
   border-radius: 0.5rem;
   overflow-x: auto;
@@ -584,7 +584,7 @@ body {
   font-size: 0.85em;
 }
 .message-bubble .prose p code {
-  background: ${colorScheme.surfaceContainerHighest.toArgb().toHexColor()};
+  background: ${colorScheme.surfaceContainer.toArgb().toHexColor()};
   padding: 0.15em 0.35em;
   border-radius: 0.25rem;
 }
@@ -602,7 +602,7 @@ body {
   word-break: break-word;
   overflow-wrap: break-word;
 }
-.message-bubble .prose th { background: ${colorScheme.surfaceContainerHighest.toArgb().toHexColor()}; }
+.message-bubble .prose th { background: ${colorScheme.surfaceContainer.toArgb().toHexColor()}; }
 
 /* Footer */
 /* AI 生成内容声明 banner —— 徕卡水印风格:背景条 + 一行字 + 右对齐 + 全宽贴底。

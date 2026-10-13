@@ -405,8 +405,8 @@ class HtmlExporter {
         val primaryContainer = colorScheme.primaryContainer.toArgb().toHexColor()
         val onPrimaryContainer = colorScheme.onPrimaryContainer.toArgb().toHexColor()
         val surfaceContainerLow = colorScheme.surfaceContainerLow.toArgb().toHexColor()
-        val surfaceContainerHigh = colorScheme.surfaceContainerHigh.toArgb().toHexColor()
-        val surfaceContainerHighest = colorScheme.surfaceContainerHighest.toArgb().toHexColor()
+        val surfaceContainerHigh = colorScheme.surfaceContainer.toArgb().toHexColor()
+        val surfaceContainerHighest = colorScheme.surfaceContainer.toArgb().toHexColor()
         val outline = colorScheme.outline.toArgb().toHexColor()
         val outlineVariant = colorScheme.outlineVariant.toArgb().toHexColor()
         val tertiary = colorScheme.tertiary.toArgb().toHexColor()
@@ -717,8 +717,8 @@ tailwind.config = {
         'on-surface-variant': '${colorScheme.onSurfaceVariant.toArgb().toHexColor()}',
         'surface-variant': '${colorScheme.surfaceVariant.toArgb().toHexColor()}',
         'surface-container': '${colorScheme.surfaceContainerLow.toArgb().toHexColor()}',
-        'surface-container-high': '${colorScheme.surfaceContainerHigh.toArgb().toHexColor()}',
-        'surface-container-highest': '${colorScheme.surfaceContainerHighest.toArgb().toHexColor()}',
+        'surface-container-high': '${colorScheme.surfaceContainer.toArgb().toHexColor()}',
+        'surface-container-highest': '${colorScheme.surfaceContainer.toArgb().toHexColor()}',
         'outline': '${colorScheme.outline.toArgb().toHexColor()}',
         'outline-variant': '${colorScheme.outlineVariant.toArgb().toHexColor()}',
         'background': '${colorScheme.background.toArgb().toHexColor()}',
