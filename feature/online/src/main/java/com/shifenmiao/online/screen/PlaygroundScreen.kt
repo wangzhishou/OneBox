@@ -155,7 +155,9 @@ private fun PlaygroundGrid(
 ) {
     LazyVerticalStaggeredGrid(
         state = gridState,
-        modifier = Modifier.fillMaxHeight(),
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(bottom = 16.dp),
         columns = playgroundGridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalItemSpacing = 16.dp,
@@ -163,7 +165,7 @@ private fun PlaygroundGrid(
             start = AppTheme.dimens.paddingNormal,
             end = AppTheme.dimens.paddingNormal,
             top = 4.dp,
-            bottom = AppTheme.dimens.paddingNormal,
+            bottom = AppTheme.dimens.paddingLarge,
         )
     ) {
         items(

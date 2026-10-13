@@ -10,20 +10,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.TextAutoSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.Cloud
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -31,22 +27,18 @@ import androidx.compose.ui.unit.sp
 import com.shifenmiao.base.ui.card.TonalCardPalette
 import com.shifenmiao.common.utils.BaseUtils
 import com.shifenmiao.database.item.entity.ItemEntity
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineChatBubble
 
 @Composable
 fun OperateBar(
     dataItem: ItemEntity,
     palette: TonalCardPalette? = null,
-    tagBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     tagTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     tagText: String? = null,
     onTagClick: (() -> Unit)? = null,
     commentCount: Int? = null,
     onCommentClick: (() -> Unit)? = null,
 ) {
-    val resolvedTagBackgroundColor = palette?.tagBackgroundColor ?: tagBackgroundColor
     val resolvedTagTextColor = palette?.tagTextColor ?: tagTextColor
     val supportingContentColor =
         palette?.supportingContentColor ?: MaterialTheme.colorScheme.outline
@@ -55,10 +47,18 @@ fun OperateBar(
     val resolvedTagText = tagText?.takeIf { it.isNotBlank() }
         ?: BaseUtils.getNameByType(dataItem.listType)
 
-    val commentLabel = stringResource(com.shifenmiao.core.R.string.comment)
-    val resolvedCommentCount = commentCount?.takeIf { it > 0 }
-    // 只要业务层提供了点击回调就展示评论入口, 不因为评论数为 0 而隐藏.
+    // 只要业务层提供了点击回调就展示评论入口。数量未知按 0 显示,
+    // 避免「有的卡片只有气泡、有的气泡旁边有数字」被读成未读提醒。
     val showComment = onCommentClick != null
+    val resolvedCommentCount = if (showComment) commentCount ?: 0 else null
+    val commentDescription = if (resolvedCommentCount != null) {
+        stringResource(
+            com.shifenmiao.core.R.string.comments_count_format,
+            resolvedCommentCount,
+        )
+    } else {
+        stringResource(com.shifenmiao.core.R.string.comment)
+    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -68,7 +68,6 @@ fun OperateBar(
     ) {
         CategoryTagBadge(
             text = resolvedTagText,
-            backgroundColor = resolvedTagBackgroundColor,
             textColor = resolvedTagTextColor,
             onClick = onTagClick,
             // 占满剩余空间但不强制撑满:短分类贴合文字,长分类截断后由徽章内文字跑马灯滚动
@@ -80,7 +79,7 @@ fun OperateBar(
                 count = resolvedCommentCount,
                 iconTint = supportingContentColor,
                 textColor = supportingContentColor,
-                contentDescription = commentLabel,
+                contentDescription = commentDescription,
                 onClick = onCommentClick,
             )
         }
@@ -88,13 +87,10 @@ fun OperateBar(
 }
 
 /**
- * 评论入口小芯片: 图标 + (可选) 数量.
+ * 评论入口: 气泡 + 数量。
  *
- * - count=null 且有点击回调: 只展示图标 (评论数未知, 仅入口)
- * - count<=0 且有点击回调: 同样只展示图标
- * - count>0: 图标 + 文本 "23" 或 "99+" (>99 时)
- *
- * 点击区域命中整个 Row, 而非仅图标, 提升小屏幕命中率.
+ * 数量始终显示(含 0), 读作「评论数」而不是未读红点或会话数。
+ * 超过 99 显示 "99+"。整行都是点击热区。
  */
 @Composable
 private fun CommentCountChip(
@@ -108,6 +104,7 @@ private fun CommentCountChip(
         .let { mod ->
             if (onClick != null) mod.clickable(onClick = onClick) else mod
         }
+        .clearAndSetSemantics { this.contentDescription = contentDescription }
         .padding(horizontal = 6.dp, vertical = 2.dp)
 
     Row(
@@ -116,8 +113,8 @@ private fun CommentCountChip(
     ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChatBubble,
-            contentDescription = contentDescription,
-            modifier = Modifier.size(12.dp),
+            contentDescription = null,
+            modifier = Modifier.size(14.dp),
             tint = iconTint,
         )
         if (count != null) {
@@ -125,7 +122,7 @@ private fun CommentCountChip(
             Text(
                 text = if (count > 99) "99+" else count.toString(),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    fontSize = 10.sp,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.Medium,
                 ),
                 color = textColor,
@@ -138,45 +135,27 @@ private fun CommentCountChip(
 @Composable
 private fun CategoryTagBadge(
     text: String,
-    backgroundColor: Color,
     textColor: Color,
     onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val shape = RoundedCornerShape(16.dp)
-    val badgeModifier = if (onClick != null) {
-        modifier
-            .glassBackground(
-                style = GlassStyle.Thick,
-                color = backgroundColor,
-                shape = shape,
-            )
-            .clickable(onClick = onClick)
-    } else {
-        modifier.glassBackground(
-            style = GlassStyle.Thick,
-            color = backgroundColor,
-            shape = shape,
-        )
-    }
-    Row(
-        modifier = badgeModifier.padding(horizontal = 10.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-            color = textColor,
-            // 分类名超长时先自动降字号,再允许折成两行,仍放不下才省略号(不用 marquee:
-            // 长语种会一直滚动、静止帧只剩残词);宽度上限同时避免挤压右侧评论入口
-            maxLines = 2,
-            autoSize = TextAutoSize.StepBased(
-                minFontSize = 9.sp,
-                maxFontSize = MaterialTheme.typography.labelSmall.fontSize,
-                stepSize = 0.5.sp,
-            ),
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.widthIn(max = 140.dp),
-        )
-    }
+    // 纯文字, 不做成胶囊, 避免和顶部 Notes/App 分段抢。点击仍然按分类筛选当前列表。
+    Text(
+        text = text,
+        modifier = modifier
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+            .padding(vertical = 2.dp)
+            .widthIn(max = 140.dp),
+        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
+        color = textColor,
+        // 分类名超长时先自动降字号,再允许折成两行,仍放不下才省略号(不用 marquee:
+        // 长语种会一直滚动、静止帧只剩残词);宽度上限同时避免挤压右侧评论入口
+        maxLines = 2,
+        autoSize = TextAutoSize.StepBased(
+            minFontSize = 9.sp,
+            maxFontSize = MaterialTheme.typography.labelSmall.fontSize,
+            stepSize = 0.5.sp,
+        ),
+        overflow = TextOverflow.Ellipsis,
+    )
 }

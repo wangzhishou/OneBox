@@ -1824,4 +1824,5 @@
     <string name="comment_empty_topics">不具合の報告 · 機能のリクエスト · 体験の共有</string>
     <string name="comment_empty_cta">遠慮せずに、してほしいことを教えてください ↓</string>
     <string name="comment_empty_login_cta">ログインしてAIにしてほしいことを伝える</string>
+    <string name="card_more_actions">その他の操作</string>
 </resources>

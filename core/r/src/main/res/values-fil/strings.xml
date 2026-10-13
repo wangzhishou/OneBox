@@ -1834,4 +1834,5 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="comment_empty_topics">Iulat ang mga isyu · Humiling ng feature · Ibahagi ang karanasan</string>
     <string name="comment_empty_cta">Huwag magpigil—sabihin sa amin ang gusto mo ↓</string>
     <string name="comment_empty_login_cta">Mag-login at sabihin sa AI ang gusto mo</string>
+    <string name="card_more_actions">Higit pang aksyon</string>
 </resources>

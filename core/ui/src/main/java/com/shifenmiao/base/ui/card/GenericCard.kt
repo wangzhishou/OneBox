@@ -42,11 +42,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +67,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMore
 
 data class CardAction(
     val icon: ImageVector,
@@ -75,10 +80,13 @@ data class CardAction(
 // 动作面板每行列数
 private const val ACTION_GRID_COLUMNS = 3
 
+/** 「更多」和关闭: 用卡片主题的文字色, 比正文再透一点。 */
+private const val CARD_CHROME_ICON_ALPHA = 0.7f
+
 /**
- * 铺满整张卡片的动作面板:动作按网格排列,每个动作是 icon + 文字同在一个
- * 带底色容器内的可点击区块,右上角为关闭按钮,点击空白区域也可收起。
- * 遮罩与操作块均为 0.97 近实底,遮罩固定 surfaceContainerLow 色。
+ * 铺满整张卡片的动作面板。底是 surfaceContainerLow。
+ * 操作块保留每张卡片自己的主题色, 质感走玻璃。
+ * 右上角关闭, 点空白也可收起。
  */
 @Composable
 private fun ActionGridOverlay(
@@ -87,7 +95,6 @@ private fun ActionGridOverlay(
     onHide: () -> Unit,
     shape: Shape,
     modifier: Modifier = Modifier,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
     buttonContainerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     buttonContentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
 ) {
@@ -110,8 +117,7 @@ private fun ActionGridOverlay(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(shape)
-                // 整片遮罩固定 surfaceContainerLow, 0.97 近实底(玻璃管线会二次衰减 alpha, 达不到不透)
-                .background(MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.97f), shape)
+                .background(MaterialTheme.colorScheme.surfaceContainerLow, shape)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
@@ -169,15 +175,17 @@ private fun ActionGridOverlay(
                                 )
 
                                 val tileShape = RoundedCornerShape(16.dp)
-                                // icon 与文字收进同一个带底色容器, 0.97 近实底, 整块都是点击热区
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.Center,
                                     modifier = Modifier
                                         .weight(1f)
                                         .scale(scale)
-                                        .background(buttonContainerColor.copy(alpha = 0.97f), tileShape)
-                                        .clip(tileShape)
+                                        .glassBackground(
+                                            style = GlassStyle.Regular,
+                                            shape = tileShape,
+                                            color = buttonContainerColor,
+                                        )
                                         .clickable { handleActionClick(index, action) }
                                         .padding(horizontal = 4.dp, vertical = 10.dp)
                                 ) {
@@ -217,7 +225,7 @@ private fun ActionGridOverlay(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
                     contentDescription = stringResource(com.shifenmiao.core.R.string.close),
-                    tint = contentColor,
+                    tint = buttonContentColor.copy(alpha = CARD_CHROME_ICON_ALPHA),
                     modifier = Modifier.size(22.dp)
                 )
             }
@@ -310,10 +318,12 @@ fun GenericTonalCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.dimens.paddingNormal)
-                .heightIn(min = 188.dp),
+                // 高度锁死, 描述固定三行也落在这 188dp 里, 双列才能对齐
+                .height(188.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Top section: icon at left, arrow toggles the full-card action panel
+            // 左上角功能图标, 右上角「更多」打开整卡操作面板。
+            // 不用外链箭头: 这些入口都在应用内打开, ↗ 会被读成「离开本应用」。
             Box(
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 contentAlignment = Alignment.CenterStart
@@ -340,16 +350,19 @@ fun GenericTonalCard(
                                 iconSizeRatio = 0.6f,
                             )
 
-
                             IconButton(
                                 onClick = { showActions = true },
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier.size(32.dp)
                             ) {
                                 Icon(
-                                    modifier = Modifier.size(12.dp),
-                                    painter = painterResource(id = com.shifenmiao.core.R.drawable.forward_24px),
-                                    contentDescription = "Arrow",
-                                    tint = supportingContentColor
+                                    modifier = Modifier.size(18.dp),
+                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMore,
+                                    contentDescription = stringResource(
+                                        com.shifenmiao.core.R.string.card_more_actions
+                                    ),
+                                    tint = resolvedPalette.iconContentColor.copy(
+                                        alpha = CARD_CHROME_ICON_ALPHA
+                                    )
                                 )
                             }
                         }
@@ -388,15 +401,10 @@ fun GenericTonalCard(
                         color = resolvedPalette.titleColor,
                     )
                 }
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
+                Spacer(modifier = Modifier.height(8.dp))
+                CardDescription(
                     text = highlightedDescription ?: AnnotatedString(description),
-                    textAlign = TextAlign.Left,
-                    style = MaterialTheme.typography.labelSmall,
                     color = resolvedPalette.descriptionColor,
-                    maxLines = 2,
-                    minLines = 2,
-                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -419,13 +427,54 @@ fun GenericTonalCard(
                 // 卡片位于 LazyVerticalStaggeredGrid 中, 高度约束为无限,
                 // 必须用 matchParentSize 跟随卡片实际高度, 否则内部滚动容器会崩溃
                 modifier = Modifier.matchParentSize(),
-                contentColor = resolvedPalette.titleColor,
                 buttonContainerColor = resolvedPalette.iconContainerColor,
                 buttonContentColor = resolvedPalette.iconContentColor,
             )
         }
     }
 }
+
+/**
+ * 描述固定三行高。短文留白, 超出从最后一行渐隐。
+ * 行高写死, 避免和卡片的 188dp 互相把网格撑开。
+ */
+@Composable
+private fun CardDescription(
+    text: AnnotatedString,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    var overflows by remember(text) { mutableStateOf(false) }
+    val descriptionStyle = MaterialTheme.typography.labelSmall.copy(lineHeight = 16.sp)
+    Text(
+        text = text,
+        modifier = modifier
+            .fillMaxWidth()
+            .then(if (overflows) Modifier.fadedBottomEdge() else Modifier),
+        textAlign = TextAlign.Left,
+        style = descriptionStyle,
+        color = color,
+        minLines = 3,
+        maxLines = 3,
+        overflow = TextOverflow.Clip,
+        onTextLayout = { overflows = it.hasVisualOverflow },
+    )
+}
+
+/** 把文本自身的底部淡出, 玻璃底色会透出来, 不依赖卡片填色。 */
+private fun Modifier.fadedBottomEdge(): Modifier =
+    graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+        .drawWithContent {
+            drawContent()
+            drawRect(
+                brush = Brush.verticalGradient(
+                    0f to Color.Black,
+                    0.68f to Color.Black,
+                    1f to Color.Transparent,
+                ),
+                blendMode = BlendMode.DstIn,
+            )
+        }
 
 
 @Composable

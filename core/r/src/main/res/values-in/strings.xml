@@ -1824,4 +1824,5 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="comment_empty_topics">Laporkan masalah · Ajukan fitur · Bagikan pengalaman</string>
     <string name="comment_empty_cta">Jangan ragu—beri tahu kami apa yang Anda inginkan ↓</string>
     <string name="comment_empty_login_cta">Masuk dan beri tahu AI apa yang Anda inginkan</string>
+    <string name="card_more_actions">Tindakan lainnya</string>
 </resources>

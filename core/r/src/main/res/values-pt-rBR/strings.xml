@@ -1834,4 +1834,5 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="comment_empty_topics">Reporte problemas · Peça recursos · Compartilhe experiências</string>
     <string name="comment_empty_cta">Não segure—diga o que você quer ↓</string>
     <string name="comment_empty_login_cta">Entre e diga à AI o que você quer</string>
+    <string name="card_more_actions">Mais ações</string>
 </resources>

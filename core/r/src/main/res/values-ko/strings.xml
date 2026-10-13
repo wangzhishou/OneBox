@@ -1824,4 +1824,5 @@
     <string name="comment_empty_topics">문제 신고 · 기능 요청 · 경험 공유</string>
     <string name="comment_empty_cta">주저하지 말고 원하는 것을 알려주세요 ↓</string>
     <string name="comment_empty_login_cta">로그인하고 AI에게 원하는 것을 알려주세요</string>
+    <string name="card_more_actions">추가 작업</string>
 </resources>

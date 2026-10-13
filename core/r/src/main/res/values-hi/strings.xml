@@ -1834,4 +1834,5 @@
     <string name="comment_empty_topics">समस्याएँ बताएँ · सुविधाएँ अनुरोध करें · अनुभव साझा करें</string>
     <string name="comment_empty_cta">झिझकें नहीं—हमें बताएँ आप क्या चाहते हैं ↓</string>
     <string name="comment_empty_login_cta">लॉग इन करें और AI को बताएँ आप क्या चाहते हैं</string>
+    <string name="card_more_actions">और कार्रवाइयाँ</string>
 </resources>

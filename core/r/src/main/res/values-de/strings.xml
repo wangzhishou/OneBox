@@ -1834,4 +1834,5 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="comment_empty_topics">Probleme melden · Funktionen wünschen · Erfahrungen teilen</string>
     <string name="comment_empty_cta">Nur keine Zurückhaltung – sag uns, was du willst ↓</string>
     <string name="comment_empty_login_cta">Melde dich an und sag AI, was du willst</string>
+    <string name="card_more_actions">Weitere Aktionen</string>
 </resources>

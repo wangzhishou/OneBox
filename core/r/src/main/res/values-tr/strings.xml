@@ -1834,4 +1834,5 @@
     <string name="comment_empty_topics">Sorun bildirin · Özellik isteyin · Deneyimlerinizi paylaşın</string>
     <string name="comment_empty_cta">Çekinmeyin—ne istediğinizi söyleyin ↓</string>
     <string name="comment_empty_login_cta">Giriş yapın ve AI\'ya ne istediğinizi söyleyin</string>
+    <string name="card_more_actions">Diğer işlemler</string>
 </resources>

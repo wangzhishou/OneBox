@@ -1834,4 +1834,5 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="comment_empty_topics">Reporta problemas · Pide funciones · Comparte experiencias</string>
     <string name="comment_empty_cta">No te cortes: dinos qué quieres ↓</string>
     <string name="comment_empty_login_cta">Inicia sesión y dile a la AI qué quieres</string>
+    <string name="card_more_actions">Más acciones</string>
 </resources>

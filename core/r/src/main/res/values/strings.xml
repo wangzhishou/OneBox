@@ -2008,4 +2008,5 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="time_due_tomorrow">Due tomorrow</string>
     <string name="time_due_in_days">Due in %d days</string>
     <string name="time_due_on">Due: %s</string>
+    <string name="card_more_actions">More actions</string>
 </resources>

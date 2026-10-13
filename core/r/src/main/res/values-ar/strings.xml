@@ -1873,4 +1873,5 @@
     <string name="time_due_tomorrow">مستحق غدًا</string>
     <string name="time_due_in_days">مستحق خلال %d يوم</string>
     <string name="time_due_on">مستحق: %s</string>
+    <string name="card_more_actions">المزيد من الإجراءات</string>
 </resources>
