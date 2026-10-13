@@ -55,6 +55,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
+import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 
 @Composable
 fun XiangqiSettingsScreen(
@@ -116,13 +118,14 @@ fun XiangqiSettingsScreen(
                 onClick = {
                     confirmingEngineDelete = false
                     component.deleteLocalEngine()
-                }
+                },
+                colors = dangerTextButtonColors(),
             ) {
                 Text(text = stringResource(CoreR.string.button_confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = { confirmingEngineDelete = false }) {
+            TextButton(onClick = { confirmingEngineDelete = false }, colors = accentTextButtonColors()) {
                 Text(text = stringResource(CoreR.string.button_cancel))
             }
         },

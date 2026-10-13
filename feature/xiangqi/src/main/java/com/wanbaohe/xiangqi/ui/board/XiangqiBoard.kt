@@ -325,7 +325,7 @@ internal fun PieceDisc(
     val text = pieceLabel(piece)
     
     val primaryColor = MaterialTheme.colorScheme.onPrimaryContainer
-    val secondaryColor = MaterialTheme.colorScheme.onErrorContainer
+    val secondaryColor = MaterialTheme.colorScheme.error
     val pieceColor = if (isRed) secondaryColor else MaterialTheme.colorScheme.onSurface
     val glowColor = if (isRed) secondaryColor else primaryColor
 

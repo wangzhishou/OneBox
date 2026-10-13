@@ -71,6 +71,8 @@ import com.wanbaohe.chess.ui.board.ChessBoard
 import com.wanbaohe.chess.ui.board.glyph
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
+import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 
 @Composable
 fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier, showChrome: Boolean = true) {
@@ -138,6 +140,7 @@ fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier
     if (component.showResignConfirm) Confirmation(
         stringResource(R.string.chess_resign_confirm_title), stringResource(R.string.chess_resign_confirm_message),
         component::resign, { component.showResignConfirm = false },
+        danger = true,
     )
     if (component.showRestartConfirm) Confirmation(
         stringResource(R.string.chess_restart_confirm_title), stringResource(R.string.chess_restart_confirm_message),
@@ -159,12 +162,12 @@ fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier
                 )
             },
             confirmButton = {
-                TextButton(onClick = { component.renameGame(title) }, enabled = title.isNotBlank()) {
+                TextButton(onClick = { component.renameGame(title) }, enabled = title.isNotBlank(), colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.chess_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { component.showRenameDialog = false }) { Text(stringResource(R.string.chess_cancel)) }
+                TextButton(onClick = { component.showRenameDialog = false }, colors = accentTextButtonColors()) { Text(stringResource(R.string.chess_cancel)) }
             },
         )
     }
@@ -175,14 +178,14 @@ fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier
         text = {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 promotions.forEach { move ->
-                    TextButton(onClick = { component.commitPromotion(move) }, modifier = Modifier.weight(1f)) {
+                    TextButton(onClick = { component.commitPromotion(move) }, modifier = Modifier.weight(1f), colors = accentTextButtonColors()) {
                         Text(Piece(move.piece.side, requireNotNull(move.promotion)).glyph(), fontSize = 28.sp)
                     }
                 }
             }
         },
         confirmButton = {
-            TextButton(onClick = component::cancelPromotion) { Text(stringResource(R.string.chess_cancel)) }
+            TextButton(onClick = component::cancelPromotion, colors = accentTextButtonColors()) { Text(stringResource(R.string.chess_cancel)) }
         },
     )
     pickingSide?.let { side ->
@@ -204,12 +207,23 @@ fun ChessGameScreen(component: ChessGameComponent, modifier: Modifier = Modifier
 }
 
 @Composable
-private fun Confirmation(title: String, message: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+private fun Confirmation(
+    title: String,
+    message: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    danger: Boolean = false,
+) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(title) }, text = { Text(message) },
-        confirmButton = { TextButton(onClick = onConfirm) { Text(stringResource(R.string.chess_confirm)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.chess_cancel)) } },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = if (danger) dangerTextButtonColors() else accentTextButtonColors(),
+            ) { Text(stringResource(R.string.chess_confirm)) }
+        },
+        dismissButton = { TextButton(onClick = onDismiss, colors = accentTextButtonColors()) { Text(stringResource(R.string.chess_cancel)) } },
     )
 }
 
@@ -287,6 +301,7 @@ private fun ChessGameContent(
             if (state.status == GameStatus.CHECK || state.status.isFinished()) TextButton(
                 onClick = { if (state.status.isFinished()) component.reopenGameOverOverlay() },
                 modifier = Modifier.heightIn(max = 32.dp),
+                colors = accentTextButtonColors(),
             ) {
                 Text(
                     if (state.status == GameStatus.CHECK) stringResource(R.string.chess_check) else localizedGameResultText(state.status),
@@ -309,14 +324,14 @@ private fun ChessGameContent(
                             )
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                                 if (state.mode == GameMode.HUMAN_VS_LLM || state.mode == GameMode.LLM_VS_LLM) {
-                                    TextButton(onClick = component::retryAiMove, enabled = !state.isUpdating, modifier = Modifier.weight(1f)) {
+                                    TextButton(onClick = component::retryAiMove, enabled = !state.isUpdating, modifier = Modifier.weight(1f), colors = accentTextButtonColors()) {
                                         Text(stringResource(R.string.chess_retry_ai), maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     }
-                                    TextButton(onClick = { onPickAiFor(state.boardState.sideToMove) }, modifier = Modifier.weight(1f)) {
+                                    TextButton(onClick = { onPickAiFor(state.boardState.sideToMove) }, modifier = Modifier.weight(1f), colors = accentTextButtonColors()) {
                                         Text(stringResource(R.string.chess_player_change), maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     }
                                 }
-                                TextButton(onClick = component::dismissError, modifier = Modifier.weight(1f)) {
+                                TextButton(onClick = component::dismissError, modifier = Modifier.weight(1f), colors = accentTextButtonColors()) {
                                     Text(stringResource(R.string.chess_close), maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 }
                             }
@@ -348,15 +363,15 @@ private fun CompactGameOverDialog(component: ChessGameComponent, state: ChessGam
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         title = { Text(localizedGameResultText(state.status)) },
         text = {
-            TextButton(onClick = component::restart, modifier = Modifier.fillMaxWidth()) {
+            TextButton(onClick = component::restart, modifier = Modifier.fillMaxWidth(), colors = accentTextButtonColors()) {
                 Text(stringResource(R.string.chess_game_over_play_again), maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         },
         confirmButton = {
-            TextButton(onClick = component::openAnalysis) { Text(stringResource(R.string.chess_game_over_review)) }
+            TextButton(onClick = component::openAnalysis, colors = accentTextButtonColors()) { Text(stringResource(R.string.chess_game_over_review)) }
         },
         dismissButton = {
-            TextButton(onClick = component::dismissGameOverOverlay) { Text(stringResource(R.string.chess_setup_return)) }
+            TextButton(onClick = component::dismissGameOverOverlay, colors = accentTextButtonColors()) { Text(stringResource(R.string.chess_setup_return)) }
         },
     )
 }

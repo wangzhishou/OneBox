@@ -17,6 +17,7 @@ import com.wanbaohe.chess.R
 import com.wanbaohe.chess.domain.FenCodec
 import com.wanbaohe.chess.domain.model.GameOrigin
 import com.wanbaohe.chess.ui.board.ChessBoard
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable
 internal fun ChessOriginDialog(origin: GameOrigin, onContinueSource: () -> Unit, onDismiss: () -> Unit) {
@@ -33,10 +34,10 @@ internal fun ChessOriginDialog(origin: GameOrigin, onContinueSource: () -> Unit,
             }
         },
         confirmButton = {
-            TextButton(onClick = onContinueSource) { Text(stringResource(R.string.chess_setup_continue_source)) }
+            TextButton(onClick = onContinueSource, colors = accentTextButtonColors()) { Text(stringResource(R.string.chess_setup_continue_source)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.chess_close)) }
+            TextButton(onClick = onDismiss, colors = accentTextButtonColors()) { Text(stringResource(R.string.chess_close)) }
         },
     )
 }

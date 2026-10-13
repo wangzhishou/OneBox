@@ -54,6 +54,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistoryEdu
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
 import androidx.compose.ui.platform.LocalContext
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable
 fun NewGameDropMenu(
@@ -86,7 +87,7 @@ fun NewGameDropMenu(
         if (trigger != null) {
             trigger { expanded = !expanded }
         } else if (label != null) {
-            TextButton(onClick = { expanded = !expanded }) {
+            TextButton(onClick = { expanded = !expanded }, colors = accentTextButtonColors()) {
                 Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         } else IconButton(onClick = { expanded = !expanded }) {

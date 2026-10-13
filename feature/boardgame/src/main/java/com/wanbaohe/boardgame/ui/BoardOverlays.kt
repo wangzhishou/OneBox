@@ -156,12 +156,14 @@ fun BoxScope.BoardGameOverOverlay(
                     Button(
                         onClick = onRestart,
                         modifier = Modifier.fillMaxWidth(),
+                        colors = accentFilledButtonColors(),
                     ) {
                         Text(restartLabel)
                     }
                     OutlinedButton(
                         onClick = onReview,
                         modifier = Modifier.fillMaxWidth(),
+                        colors = accentOutlinedButtonColors(),
                     ) {
                         Text(reviewLabel)
                     }
@@ -169,6 +171,7 @@ fun BoxScope.BoardGameOverOverlay(
                         TextButton(
                             onClick = onBack,
                             modifier = Modifier.fillMaxWidth(),
+                            colors = accentTextButtonColors(),
                         ) {
                             Text(backLabel)
                         }
@@ -177,6 +180,7 @@ fun BoxScope.BoardGameOverOverlay(
                         TextButton(
                             onClick = onDismiss,
                             modifier = Modifier.fillMaxWidth(),
+                            colors = accentTextButtonColors(),
                         ) {
                             Text(dismissLabel)
                         }

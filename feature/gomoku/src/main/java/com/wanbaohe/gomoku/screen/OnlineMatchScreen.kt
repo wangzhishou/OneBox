@@ -72,6 +72,8 @@ import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Refresh
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVideogame
+import com.wanbaohe.boardgame.ui.accentFilledButtonColors
+import com.wanbaohe.boardgame.ui.accentOutlinedButtonColors
 
 @Composable
 fun OnlineMatchScreen(
@@ -426,6 +428,7 @@ private fun CreateRoomPanel(
                     onClick = onCreateRoom,
                     enabled = !isLoading,
                     modifier = Modifier.fillMaxWidth(),
+                    colors = accentFilledButtonColors(),
                 ) {
                     if (isLoading) {
                         CircularProgressIndicator(
@@ -477,6 +480,7 @@ private fun CreateRoomPanel(
                 OutlinedButton(
                     onClick = onCancel,
                     modifier = Modifier.fillMaxWidth(),
+                    colors = accentOutlinedButtonColors(),
                 ) {
                     Text(stringResource(R.string.gomoku_cancel))
                 }
@@ -558,6 +562,7 @@ private fun RoomInviteQrCard(
                     onClick = onShareImage,
                     enabled = !isSharingImage,
                     modifier = Modifier.weight(1f),
+                    colors = accentOutlinedButtonColors(),
                 ) {
                     if (isSharingImage) {
                         CircularProgressIndicator(
@@ -571,6 +576,7 @@ private fun RoomInviteQrCard(
                 OutlinedButton(
                     onClick = onShareLink,
                     modifier = Modifier.weight(1f),
+                    colors = accentOutlinedButtonColors(),
                 ) {
                     Text(stringResource(R.string.gomoku_online_invite_share_link_action))
                 }
@@ -583,6 +589,7 @@ private fun RoomInviteQrCard(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
+                colors = accentOutlinedButtonColors(),
             ) {
                 Text(stringResource(R.string.gomoku_online_invite_copy_link_action))
             }
@@ -620,7 +627,7 @@ private fun JoinTargetRoomPanel(
             CircularProgressIndicator(modifier = Modifier.size(40.dp))
             Text(stringResource(R.string.gomoku_join_target_room_connecting))
         } else {
-            OutlinedButton(onClick = onRetry, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = onRetry, modifier = Modifier.fillMaxWidth(), colors = accentOutlinedButtonColors()) {
                 Text(stringResource(R.string.gomoku_join_target_room_retry))
             }
         }
@@ -724,7 +731,7 @@ private fun RoomItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Button(onClick = onJoin) {
+            Button(onClick = onJoin, colors = accentFilledButtonColors()) {
                 Text(stringResource(R.string.gomoku_join))
             }
         }

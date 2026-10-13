@@ -71,6 +71,8 @@ import com.wanbaohe.gomoku.ui.GomokuOpponentPicker
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
+import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 
 @Composable
 fun GomokuGameScreen(component: GomokuGameComponent, modifier: Modifier = Modifier, showChrome: Boolean = true) {
@@ -130,7 +132,7 @@ fun GomokuGameScreen(component: GomokuGameComponent, modifier: Modifier = Modifi
     }
     if (component.showResignConfirm) {
         ConfirmDialog(R.string.gomoku_resign_confirm_title, R.string.gomoku_resign_confirm_message,
-            component::resign, { component.showResignConfirm = false })
+            component::resign, { component.showResignConfirm = false }, danger = true)
     }
     if (component.showRestartConfirm) {
         ConfirmDialog(R.string.gomoku_restart_confirm_title, R.string.gomoku_restart_confirm_message,
@@ -147,9 +149,9 @@ fun GomokuGameScreen(component: GomokuGameComponent, modifier: Modifier = Modifi
             title = { Text(stringResource(R.string.gomoku_rename_game)) },
             text = { GlassOutlinedTextField(value = title, onValueChange = { title = it }, modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text(stringResource(R.string.gomoku_rename_hint)) }, singleLine = true) },
-            confirmButton = { TextButton(onClick = { component.renameGame(title) }, enabled = title.isNotBlank()) {
+            confirmButton = { TextButton(onClick = { component.renameGame(title) }, enabled = title.isNotBlank(), colors = accentTextButtonColors()) {
                 Text(stringResource(R.string.gomoku_confirm)) } },
-            dismissButton = { TextButton(onClick = { component.showRenameDialog = false }) { Text(stringResource(R.string.gomoku_cancel)) } },
+            dismissButton = { TextButton(onClick = { component.showRenameDialog = false }, colors = accentTextButtonColors()) { Text(stringResource(R.string.gomoku_cancel)) } },
         )
     }
     pickingSide?.let { side ->
@@ -169,13 +171,24 @@ fun GomokuGameScreen(component: GomokuGameComponent, modifier: Modifier = Modifi
 }
 
 @Composable
-private fun ConfirmDialog(title: Int, message: Int, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+private fun ConfirmDialog(
+    title: Int,
+    message: Int,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    danger: Boolean = false,
+) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(title)) },
         text = { Text(stringResource(message)) },
-        confirmButton = { TextButton(onClick = onConfirm) { Text(stringResource(R.string.gomoku_confirm)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.gomoku_cancel)) } },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = if (danger) dangerTextButtonColors() else accentTextButtonColors(),
+            ) { Text(stringResource(R.string.gomoku_confirm)) }
+        },
+        dismissButton = { TextButton(onClick = onDismiss, colors = accentTextButtonColors()) { Text(stringResource(R.string.gomoku_cancel)) } },
     )
 }
 
@@ -231,7 +244,7 @@ private fun GameContent(
             }
         }
         if (resultText.isNotBlank()) {
-            TextButton(onClick = { component.showGameOverOverlay = !component.showGameOverOverlay }) {
+            TextButton(onClick = { component.showGameOverOverlay = !component.showGameOverOverlay }, colors = accentTextButtonColors()) {
                 Text(resultText, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
@@ -249,15 +262,17 @@ private fun GameContent(
                     )
                     Row(Modifier.fillMaxWidth()) {
                         TextButton(onClick = component::retryAiMove, modifier = Modifier.weight(1f),
-                            enabled = state.status == GameStatus.PLAYING && !state.isUpdating) {
+                            enabled = state.status == GameStatus.PLAYING && !state.isUpdating,
+                            colors = accentTextButtonColors(),
+                        ) {
                             Text(stringResource(R.string.gomoku_retry_ai), maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                         if (state.playerTypeFor(state.boardState.sideToMove) == PlayerType.LLM) {
-                            TextButton(onClick = { onPickAi(state.boardState.sideToMove) }, modifier = Modifier.weight(1f)) {
+                            TextButton(onClick = { onPickAi(state.boardState.sideToMove) }, modifier = Modifier.weight(1f), colors = accentTextButtonColors()) {
                                 Text(stringResource(R.string.gomoku_change_opponent), maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                         }
-                        TextButton(onClick = component::dismissError, modifier = Modifier.weight(1f)) {
+                        TextButton(onClick = component::dismissError, modifier = Modifier.weight(1f), colors = accentTextButtonColors()) {
                             Text(stringResource(R.string.gomoku_close), maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
@@ -332,7 +347,7 @@ private fun gomokuPlayerData(
     return PlayerBarData(
         name = name, subtitle = if (detail.isBlank()) sideName else "$sideName · $detail",
         avatarUrl = if (namedHuman) humanAvatar else if (type == PlayerType.REMOTE) state.onlineOpponentAvatarUrl else "",
-        indicatorColor = if (side == Side.BLACK) MaterialTheme.colorScheme.onSurface else Color(0xFF9E9E9E),
+        indicatorColor = if (side == Side.BLACK) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
         isActiveTurn = active,
         onClick = if (type == PlayerType.LLM && state.isLoaded && !state.isUpdating) ({ onPickAi(side) }) else null,
         actionLabel = stringResource(R.string.gomoku_change_opponent),

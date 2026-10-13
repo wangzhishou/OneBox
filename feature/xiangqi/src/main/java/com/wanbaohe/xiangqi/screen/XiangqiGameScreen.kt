@@ -103,6 +103,8 @@ import com.wanbaohe.boardgame.ui.BoardGameToolButton
 import com.wanbaohe.boardgame.R as BoardGameR
 import kotlinx.coroutines.delay
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
+import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 
 @Composable
 fun XiangqiGameScreen(
@@ -206,12 +208,12 @@ fun XiangqiGameScreen(
             title = { Text(stringResource(R.string.xiangqi_resign_confirm_title)) },
             text = { Text(stringResource(R.string.xiangqi_resign_confirm_message)) },
             confirmButton = {
-                androidx.compose.material3.TextButton(onClick = component::resign) {
+                androidx.compose.material3.TextButton(onClick = component::resign, colors = dangerTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_confirm))
                 }
             },
             dismissButton = {
-                androidx.compose.material3.TextButton(onClick = { component.showResignConfirm = false }) {
+                androidx.compose.material3.TextButton(onClick = { component.showResignConfirm = false }, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_cancel))
                 }
             },
@@ -225,12 +227,12 @@ fun XiangqiGameScreen(
             title = { Text(stringResource(R.string.xiangqi_restart_confirm_title)) },
             text = { Text(stringResource(R.string.xiangqi_restart_confirm_message)) },
             confirmButton = {
-                androidx.compose.material3.TextButton(onClick = component::restart) {
+                androidx.compose.material3.TextButton(onClick = component::restart, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_confirm))
                 }
             },
             dismissButton = {
-                androidx.compose.material3.TextButton(onClick = { component.showRestartConfirm = false }) {
+                androidx.compose.material3.TextButton(onClick = { component.showRestartConfirm = false }, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_cancel))
                 }
             },
@@ -243,12 +245,12 @@ fun XiangqiGameScreen(
             title = { Text(stringResource(R.string.xiangqi_standard_game)) },
             text = { Text(stringResource(R.string.xiangqi_standard_game_confirm)) },
             confirmButton = {
-                androidx.compose.material3.TextButton(onClick = component::prepareStandardGame) {
+                androidx.compose.material3.TextButton(onClick = component::prepareStandardGame, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_confirm))
                 }
             },
             dismissButton = {
-                androidx.compose.material3.TextButton(onClick = { component.showStandardGameConfirm = false }) {
+                androidx.compose.material3.TextButton(onClick = { component.showStandardGameConfirm = false }, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_cancel))
                 }
             },
@@ -282,12 +284,13 @@ fun XiangqiGameScreen(
                 androidx.compose.material3.TextButton(
                     onClick = { component.renameGame(renameText) },
                     enabled = renameText.isNotBlank(),
+                    colors = accentTextButtonColors(),
                 ) {
                     Text(stringResource(R.string.xiangqi_confirm))
                 }
             },
             dismissButton = {
-                androidx.compose.material3.TextButton(onClick = { component.showRenameDialog = false }) {
+                androidx.compose.material3.TextButton(onClick = { component.showRenameDialog = false }, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_cancel))
                 }
             },
@@ -498,10 +501,10 @@ private fun BoxScope.CenterResultNotice(
     }
     val isResign = status == GameStatus.RESIGNED
     val accent = when {
-        resigning == Side.RED -> Color(0xFFC62828)
-        resigning == Side.BLACK -> Color(0xFF37474F)
-        status == GameStatus.RED_WINS -> Color(0xFFC62828)
-        status == GameStatus.BLACK_WINS -> Color(0xFF37474F)
+        resigning == Side.RED -> MaterialTheme.colorScheme.error
+        resigning == Side.BLACK -> MaterialTheme.colorScheme.onSurface
+        status == GameStatus.RED_WINS -> MaterialTheme.colorScheme.error
+        status == GameStatus.BLACK_WINS -> MaterialTheme.colorScheme.onSurface
         else -> MaterialTheme.colorScheme.onPrimaryContainer
     }
 
@@ -534,7 +537,7 @@ private fun BoxScope.CenterResultNotice(
                                 .size(8.dp)
                                 .clip(CircleShape)
                                 .background(
-                                    if (resigning == Side.RED) Color(0xFFC62828) else Color(0xFF37474F)
+                                    if (resigning == Side.RED) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
                                 ),
                         )
                     }
@@ -798,7 +801,7 @@ internal fun XiangqiPlayersRow(
             name = name,
             subtitle = subtitle,
             avatarUrl = resolvePlayerAvatarUrl(type, state.mode, login.avatar.orEmpty(), state.onlineOpponentAvatarUrl),
-            indicatorColor = if (side == Side.RED) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSurface,
+            indicatorColor = if (side == Side.RED) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
             isActiveTurn = active,
             onClick = if (type == PlayerType.LLM && state.isLoaded && !state.isUpdating) ({ onPickAiFor(side) }) else null,
             actionLabel = stringResource(R.string.xiangqi_change_opponent),

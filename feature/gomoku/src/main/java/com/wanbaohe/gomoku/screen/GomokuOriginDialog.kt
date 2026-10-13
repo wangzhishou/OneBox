@@ -17,6 +17,7 @@ import com.wanbaohe.gomoku.R
 import com.wanbaohe.gomoku.domain.FenCodec
 import com.wanbaohe.gomoku.domain.model.GameOrigin
 import com.wanbaohe.gomoku.ui.board.GomokuBoard
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable
 internal fun GomokuOriginDialog(origin: GameOrigin, onOpenSource: () -> Unit, onDismiss: () -> Unit) {
@@ -33,10 +34,10 @@ internal fun GomokuOriginDialog(origin: GameOrigin, onOpenSource: () -> Unit, on
             }
         },
         confirmButton = {
-            TextButton(onClick = onOpenSource) {
+            TextButton(onClick = onOpenSource, colors = accentTextButtonColors()) {
                 Text(stringResource(R.string.gomoku_setup_open_source), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.gomoku_close)) } },
+        dismissButton = { TextButton(onClick = onDismiss, colors = accentTextButtonColors()) { Text(stringResource(R.string.gomoku_close)) } },
     )
 }

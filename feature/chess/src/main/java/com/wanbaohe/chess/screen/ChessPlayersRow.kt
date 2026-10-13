@@ -64,7 +64,7 @@ internal fun ChessPlayersRow(
                 PlayerType.REMOTE -> state.onlineOpponentAvatarUrl
                 PlayerType.LLM -> ""
             },
-            indicatorColor = if (side == Side.BLACK) MaterialTheme.colorScheme.onSurface else Color(0xFF9E9E9E),
+            indicatorColor = if (side == Side.BLACK) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             isActiveTurn = active,
             onClick = if (type == PlayerType.LLM && state.isLoaded && !state.isUpdating) ({ onPickAiFor(side) }) else null,
             actionLabel = if (type == PlayerType.LLM) stringResource(R.string.chess_player_change) else "",

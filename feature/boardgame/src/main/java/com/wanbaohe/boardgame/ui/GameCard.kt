@@ -152,7 +152,7 @@ fun GameCard(
             }
 
             if (onShowSource != null && sourceLabel.isNotBlank()) {
-                TextButton(onClick = onShowSource, modifier = Modifier.fillMaxWidth()) {
+                TextButton(onClick = onShowSource, modifier = Modifier.fillMaxWidth(), colors = accentTextButtonColors()) {
                     Text(
                         text = sourceLabel,
                         maxLines = 1,
@@ -220,12 +220,14 @@ fun GameCard(
                 TextButton(onClick = {
                     showDeleteConfirm = false
                     onDelete()
-                }) {
+                },
+                colors = dangerTextButtonColors(),
+                ) {
                     Text(labels.confirm)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) {
+                TextButton(onClick = { showDeleteConfirm = false }, colors = accentTextButtonColors()) {
                     Text(labels.cancel)
                 }
             },
@@ -289,12 +291,13 @@ private fun RenameGameDialog(
             TextButton(
                 onClick = { onConfirm(text) },
                 enabled = text.isNotBlank(),
+                colors = accentTextButtonColors(),
             ) {
                 Text(labels.confirm)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, colors = accentTextButtonColors()) {
                 Text(labels.cancel)
             }
         },

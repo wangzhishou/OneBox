@@ -92,7 +92,7 @@ fun XiangqiSetupScreen(
             sides = listOf(Side.RED, Side.BLACK).map { side ->
                 BoardGameSideOption(
                     label = stringResource(if (side == Side.RED) R.string.xiangqi_setup_red_first else R.string.xiangqi_setup_black_first),
-                    indicatorColor = if (side == Side.RED) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSurface,
+                    indicatorColor = if (side == Side.RED) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
                     selected = draft.boardState.sideToMove == side,
                     onClick = { onDraftChange(draft.setSideToMove(side)) },
                 )

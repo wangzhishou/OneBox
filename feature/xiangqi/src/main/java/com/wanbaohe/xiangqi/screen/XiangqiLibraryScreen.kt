@@ -55,6 +55,8 @@ import java.util.Date
 import com.t8rin.imagetoolbox.core.resources.icons.Edit
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowForwardIos
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
+import com.wanbaohe.boardgame.ui.dangerTextButtonColors
 
 @Composable
 fun XiangqiLibraryScreen(
@@ -203,11 +205,11 @@ private fun GameCard(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f), CircleShape)
-                            .border(1.dp, MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.3f), CircleShape),
+                            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.2f), CircleShape)
+                            .border(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.3f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(R.string.xiangqi_side_red), color = MaterialTheme.colorScheme.onErrorContainer, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.xiangqi_side_red), color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(redName, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
@@ -358,12 +360,14 @@ private fun GameCard(
                 androidx.compose.material3.TextButton(onClick = {
                     showDeleteConfirm = false
                     onDelete()
-                }) {
+                },
+                colors = dangerTextButtonColors(),
+                ) {
                     Text(stringResource(R.string.xiangqi_confirm))
                 }
             },
             dismissButton = {
-                androidx.compose.material3.TextButton(onClick = { showDeleteConfirm = false }) {
+                androidx.compose.material3.TextButton(onClick = { showDeleteConfirm = false }, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_cancel))
                 }
             },
@@ -405,12 +409,13 @@ private fun RenameGameDialog(
             androidx.compose.material3.TextButton(
                 onClick = { onConfirm(text) },
                 enabled = text.isNotBlank(),
+                colors = accentTextButtonColors(),
             ) {
                 Text(stringResource(R.string.xiangqi_confirm))
             }
         },
         dismissButton = {
-            androidx.compose.material3.TextButton(onClick = onDismiss) {
+            androidx.compose.material3.TextButton(onClick = onDismiss, colors = accentTextButtonColors()) {
                 Text(stringResource(R.string.xiangqi_cancel))
             }
         },

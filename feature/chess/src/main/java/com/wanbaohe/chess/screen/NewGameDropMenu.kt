@@ -51,6 +51,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineScience
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistoryEdu
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable
 fun NewGameDropMenu(
@@ -89,7 +90,7 @@ fun NewGameDropMenu(
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         } else {
-            TextButton(onClick = { expanded = !expanded }, modifier = Modifier.fillMaxWidth()) {
+            TextButton(onClick = { expanded = !expanded }, modifier = Modifier.fillMaxWidth(), colors = accentTextButtonColors()) {
                 Text(label, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }

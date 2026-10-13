@@ -51,6 +51,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineScience
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineHistoryEdu
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedDropdownMenu
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable
 fun NewGameDropMenu(
@@ -83,7 +84,7 @@ fun NewGameDropMenu(
         if (trigger != null) {
             trigger { expanded = !expanded }
         } else if (label != null) {
-            TextButton(onClick = { expanded = !expanded }) { Text(label) }
+            TextButton(onClick = { expanded = !expanded }, colors = accentTextButtonColors()) { Text(label) }
         } else {
             IconButton(onClick = { expanded = !expanded }) {
                 Icon(

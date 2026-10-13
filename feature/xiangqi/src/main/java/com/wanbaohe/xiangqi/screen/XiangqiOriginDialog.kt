@@ -16,6 +16,7 @@ import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.domain.FenCodec
 import com.wanbaohe.xiangqi.domain.model.GameOrigin
 import com.wanbaohe.xiangqi.ui.board.XiangqiBoard
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 @Composable
 internal fun XiangqiOriginDialog(
@@ -36,12 +37,12 @@ internal fun XiangqiOriginDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onContinueSource) {
+            TextButton(onClick = onContinueSource, colors = accentTextButtonColors()) {
                 Text(stringResource(R.string.xiangqi_setup_continue_source))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.xiangqi_close)) }
+            TextButton(onClick = onDismiss, colors = accentTextButtonColors()) { Text(stringResource(R.string.xiangqi_close)) }
         },
     )
 }

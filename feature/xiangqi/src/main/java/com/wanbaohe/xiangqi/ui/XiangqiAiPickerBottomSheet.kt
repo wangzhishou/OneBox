@@ -44,6 +44,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.wanbaohe.xiangqi.R
 import com.wanbaohe.xiangqi.application.port.outbound.XiangqiAiSource
 import com.wanbaohe.xiangqi.data.local.XiangqiEngineWeights
+import com.wanbaohe.boardgame.ui.accentTextButtonColors
 
 /**
  * 象棋专用走棋 AI 选择面板。
@@ -130,7 +131,7 @@ fun XiangqiAiPickerBottomSheet(
                     },
                 )
                 if (source == XiangqiAiSource.WorkingModel && onPickWorkingModel != null) {
-                    TextButton(onClick = onPickWorkingModel) {
+                    TextButton(onClick = onPickWorkingModel, colors = accentTextButtonColors()) {
                         Text(stringResource(R.string.xiangqi_settings_pick_ai_model))
                     }
                 }
@@ -159,7 +160,7 @@ fun XiangqiAiPickerBottomSheet(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { confirmingLocalDownload = false }) {
+                TextButton(onClick = { confirmingLocalDownload = false }, colors = accentTextButtonColors()) {
                     Text(stringResource(R.string.xiangqi_close))
                 }
             },
@@ -257,7 +258,7 @@ private fun SourceRow(
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    TextButton(onClick = onCancelLocalEngineDownload) {
+                    TextButton(onClick = onCancelLocalEngineDownload, colors = accentTextButtonColors()) {
                         Text(stringResource(R.string.xiangqi_cancel), style = MaterialTheme.typography.labelSmall)
                     }
                 }
