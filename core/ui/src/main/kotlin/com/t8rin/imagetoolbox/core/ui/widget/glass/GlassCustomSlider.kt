@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.rememberRipple
 import com.t8rin.imagetoolbox.core.ui.widget.sliders.custom_slider.CustomRangeSliderState
 import com.t8rin.imagetoolbox.core.ui.widget.sliders.custom_slider.CustomSlider
@@ -257,6 +258,7 @@ object GlassCustomSliderDefaults {
         val elevation = if (interactions.isNotEmpty()) 6.dp else 1.dp
         val resolvedGlassColor = glassColor.takeUnless { it == Color.Unspecified }
             ?: colors.thumbColor(enabled)
+        val showThumbShadow = enabled && LocalSettingsState.current.isGlassAlphaEnabled
 
         Spacer(
             modifier = modifier
@@ -269,7 +271,13 @@ object GlassCustomSliderDefaults {
                     ),
                 )
                 .hoverable(interactionSource = interactionSource)
-                .shadow(if (enabled) elevation else 0.dp, CircleShape, clip = false)
+                .then(
+                    if (showThumbShadow) {
+                        Modifier.shadow(elevation, CircleShape, clip = false)
+                    } else {
+                        Modifier
+                    }
+                )
                 .glassBackground(
                     style = style,
                     shape = CircleShape,

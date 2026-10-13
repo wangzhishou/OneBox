@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.base.ui.icon.IconAvatar
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassThin
@@ -276,8 +275,6 @@ fun GenericTonalCard(
             accentColor = colorScheme.onPrimaryContainer,
         )
     }
-    val settingsState = LocalSettingsState.current
-
     val cardModifier = if (onClick != null) {
         modifier
             .clip(shape)
@@ -322,12 +319,8 @@ fun GenericTonalCard(
                 contentAlignment = Alignment.CenterStart
             ) {
                 if (iconName != null) {
-                    val isGlass = settingsState.isGlassAlphaEnabled
-                    val (iconBg, contentTint) = if (isGlass) {
-                        resolvedPalette.iconContainerColor.copy(alpha = 0.92f) to resolvedPalette.iconContentColor
-                    } else {
-                        resolvedPalette.iconContainerColor to resolvedPalette.iconContentColor
-                    }
+                    val iconBg = resolvedPalette.iconContainerColor
+                    val contentTint = resolvedPalette.iconContentColor
                     androidx.compose.animation.AnimatedVisibility(
                         visible = !showActions,
                         enter = fadeIn(animationSpec = tween(200)),
@@ -340,8 +333,8 @@ fun GenericTonalCard(
                         ) {
                             IconAvatar(
                                 iconName = iconName,
-                                size = if (isGlass) 48.dp else 40.dp,
-                                shape = RoundedCornerShape(if (isGlass) 12.dp else 16.dp),
+                                size = 40.dp,
+                                shape = RoundedCornerShape(16.dp),
                                 containerColor = iconBg,
                                 tint = contentTint,
                                 iconSizeRatio = 0.6f,

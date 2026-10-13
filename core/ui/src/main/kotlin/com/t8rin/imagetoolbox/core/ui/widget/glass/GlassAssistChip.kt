@@ -42,6 +42,7 @@ fun GlassAssistChip(
     shape: Shape = AssistChipDefaults.shape,
     colors: ChipColors = AssistChipDefaults.assistChipColors(),
     elevation: ChipElevation? = AssistChipDefaults.assistChipElevation(),
+    @Suppress("UNUSED_PARAMETER")
     border: BorderStroke? = AssistChipDefaults.assistChipBorder(enabled),
     horizontalArrangement: Arrangement.Horizontal = AssistChipDefaults.horizontalArrangement(),
     contentPadding: PaddingValues = AssistChipDefaults.ContentPadding,
@@ -66,7 +67,7 @@ fun GlassAssistChip(
                     containerColor = flatGlassContainerColor(color = colors.containerColor)
                 ),
                 elevation = elevation,
-                border = border,
+                border = null,
                 horizontalArrangement = horizontalArrangement,
                 contentPadding = contentPadding,
                 interactionSource = interactionSource,
@@ -123,6 +124,7 @@ fun GlassSuggestionChip(
     shape: Shape = SuggestionChipDefaults.shape,
     colors: ChipColors = SuggestionChipDefaults.suggestionChipColors(),
     elevation: ChipElevation? = SuggestionChipDefaults.suggestionChipElevation(),
+    @Suppress("UNUSED_PARAMETER")
     border: BorderStroke? = SuggestionChipDefaults.suggestionChipBorder(enabled),
     horizontalArrangement: Arrangement.Horizontal = SuggestionChipDefaults.horizontalArrangement(),
     contentPadding: PaddingValues = SuggestionChipDefaults.ContentPadding,
@@ -146,7 +148,7 @@ fun GlassSuggestionChip(
                     containerColor = flatGlassContainerColor(color = colors.containerColor)
                 ),
                 elevation = elevation,
-                border = border,
+                border = null,
                 horizontalArrangement = horizontalArrangement,
                 contentPadding = contentPadding,
                 interactionSource = interactionSource,

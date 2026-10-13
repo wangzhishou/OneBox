@@ -381,8 +381,6 @@ private fun <T> GlassSegmentedButtonRowImpl(
                                 shape = buttonShape,
                                 color = indicatorColor,
                                 borderWidth = buttonBorderWidth,
-                                showTopEdge = false,
-                                showInnerHighlight = false,
                             )
                     )
                 }
@@ -539,8 +537,6 @@ private fun MultiSelectIndicator(
                     shape = shape,
                     color = color,
                     borderWidth = borderWidth,
-                    showTopEdge = false,
-                    showInnerHighlight = false,
                 )
         )
     }

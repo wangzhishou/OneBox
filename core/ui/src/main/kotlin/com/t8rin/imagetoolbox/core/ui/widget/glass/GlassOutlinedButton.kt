@@ -46,6 +46,7 @@ fun GlassOutlinedButton(
     @Suppress("UNUSED_PARAMETER")
     blurRadius: Dp = 20.dp,
     colors: ButtonColors? = null,
+    @Suppress("UNUSED_PARAMETER")
     border: BorderStroke? = null,
     elevation: ButtonElevation? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
@@ -61,10 +62,11 @@ fun GlassOutlinedButton(
             enabled = enabled,
             shape = shape,
             colors = colors ?: ButtonDefaults.outlinedButtonColors(
+                containerColor = flatGlassContainerColor(color = color),
                 contentColor = contentColor,
             ),
             elevation = elevation,
-            border = border,
+            border = null,
             contentPadding = contentPadding,
             interactionSource = interactionSource,
             content = content,

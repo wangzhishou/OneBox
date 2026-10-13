@@ -162,6 +162,7 @@ fun GlassOutlinedIconButton(
     enabled: Boolean = true,
     shape: Shape = IconButtonDefaults.outlinedShape,
     colors: IconButtonColors = IconButtonDefaults.outlinedIconButtonColors(),
+    @Suppress("UNUSED_PARAMETER")
     border: BorderStroke? = IconButtonDefaults.outlinedIconButtonBorder(enabled),
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
@@ -181,7 +182,7 @@ fun GlassOutlinedIconButton(
                     color = colors.containerColor(enabled = enabled)
                 )
             ),
-            border = border,
+            border = null,
             interactionSource = interactionSource,
             content = content,
         )

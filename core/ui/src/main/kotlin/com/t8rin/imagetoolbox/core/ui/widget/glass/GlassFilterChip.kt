@@ -42,6 +42,7 @@ fun GlassFilterChip(
     shape: Shape = FilterChipDefaults.shape,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(),
     elevation: SelectableChipElevation? = FilterChipDefaults.filterChipElevation(),
+    @Suppress("UNUSED_PARAMETER")
     border: BorderStroke? = FilterChipDefaults.filterChipBorder(
         enabled = enabled,
         selected = selected,
@@ -102,7 +103,7 @@ fun GlassFilterChip(
                     },
                 ),
                 elevation = elevation,
-                border = border,
+                border = null,
                 horizontalArrangement = horizontalArrangement,
                 contentPadding = contentPadding,
                 interactionSource = interactionSource,

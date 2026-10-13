@@ -19,8 +19,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
  *
  * 设计目标：轻薄、清透、低干扰，适合卡片、标签、工具栏等大面积 UI。
  * 与全局液态玻璃开关解耦，始终使用普通玻璃质感。
- * 通过透明染色透出背景，不采集或模糊页面内容。
- * [blurRadius] 为 API 兼容保留，普通模式不启用模糊。
+ * 采页面背景做磨砂，不折射。液态玻璃开关不影响这条路径。
  */
 @Composable
 fun Modifier.coloredGlass(
@@ -52,10 +51,7 @@ fun Modifier.coloredGlass(
  * 彩色液态玻璃。
  *
  * 设计目标：更明显的镜片边缘、彩色焦散和液态高光，适合浮层、强调卡片、选中态、底部面板。
- * 与全局液态玻璃开关解耦，始终使用液态玻璃质感。
- * 反光被限制在 [shape] 内；这是局部装饰模拟，不是实时背景折射。
- * [blurRadius] 仅在 Android 12+ 的 Thick/Dense 样式下平滑装饰层，
- * 实际半径分别封顶 6dp/8dp，不模糊内容；默认 Medium 不创建模糊层。
+ * 与全局液态玻璃开关解耦，始终走液态玻璃：背景模糊、边缘折射、高光描边。
  */
 @Composable
 fun Modifier.coloredLiquidGlass(

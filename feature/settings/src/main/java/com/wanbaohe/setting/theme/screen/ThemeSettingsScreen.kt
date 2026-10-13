@@ -1032,8 +1032,7 @@ private fun GradientBackgroundCard(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(RoundedCornerShape(OneBoxDesignSystem.smallRadius)),
-                        )
-
+                        ) {
                         Row(
                             modifier = Modifier
                                 .align(Alignment.BottomStart)
@@ -1060,6 +1059,7 @@ private fun GradientBackgroundCard(
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
+                        }
                         }
                     }
                 }

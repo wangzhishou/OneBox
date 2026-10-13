@@ -155,11 +155,9 @@ private fun ScrollableTabRowWithSubcomposeImpl(
 
             // Position the children.
             layout(layoutWidth, layoutHeight) {
-                // Place the tabs
                 val tabPositions = mutableListOf<TabPosition>()
                 var left = padding
                 tabPlaceables.fastForEachIndexed { index, placeable ->
-                    placeable.placeRelative(left, 0)
                     tabPositions.add(
                         TabPosition(
                             left = left.toDp(),
@@ -167,6 +165,19 @@ private fun ScrollableTabRowWithSubcomposeImpl(
                             contentWidth = tabContentWidths[index]
                         )
                     )
+                    left += placeable.width
+                }
+
+                // 选中底画在文字下面。后放置的子节点会盖住先放置的，
+                // 指示器如果放在最后，不透明的玻璃会把选中标签的字盖掉。
+                subcompose(TabSlots.Indicator) { indicator(tabPositions) }
+                    .fastForEach {
+                        it.measure(Constraints.fixed(layoutWidth, layoutHeight)).placeRelative(0, 0)
+                    }
+
+                left = padding
+                tabPlaceables.fastForEach { placeable ->
+                    placeable.placeRelative(left, 0)
                     left += placeable.width
                 }
 
@@ -191,13 +202,6 @@ private fun ScrollableTabRowWithSubcomposeImpl(
                         )
                     placeable.placeRelative(0, layoutHeight - placeable.height)
                 }
-
-                // The indicator container is measured to fill the entire space occupied by the tab
-                // row, and then placed on top of the divider.
-                subcompose(TabSlots.Indicator) { indicator(tabPositions) }
-                    .fastForEach {
-                        it.measure(Constraints.fixed(layoutWidth, layoutHeight)).placeRelative(0, 0)
-                    }
 
                 scrollableTabData.onLaidOut(
                     density = this@SubcomposeLayout,

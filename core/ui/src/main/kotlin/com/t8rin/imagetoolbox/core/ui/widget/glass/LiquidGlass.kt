@@ -20,10 +20,8 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
 // ──────────────────────────────────────────────────────────────
 //  Liquid Glass — 兼容层
 //
-//  重构后所有玻璃渲染已统一收敛到 GlassModifier.kt 的 glassSimpleStyle()，
-//  当 isLiquidGlassEnabled == true 时自动增强 Liquid Glass 效果。
-//
-//  本文件保留公开 API 以维持源兼容，内部全部委托到统一实现。
+//  渲染走 GlassModifier / GlassMaterial：采页面背景做模糊，
+//  液态玻璃再加边缘折射和高光。本文件只保留公开 API。
 // ──────────────────────────────────────────────────────────────
 
 // ──────────────────────────────────────────────────────────────
@@ -34,7 +32,7 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsS
  * Liquid Glass Modifier —— 受 iOS Liquid Glass 和 AndroidLiquidGlass 库启发。
  *
  * 重构后委托到 [glassBackground]，由 [glassSimpleStyle] 统一渲染。
- * 当 `isLiquidGlassEnabled == true` 时自动应用高斯模糊 + 径向光斑 + 内阴影等增强效果。
+ * 液态玻璃开启时：背景模糊、边缘折射、高光描边。
  *
  * @param style       效果浓度等级，见 [GlassStyle]
  * @param shape       形状，默认 16 dp 圆角

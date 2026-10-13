@@ -157,7 +157,14 @@ fun <T> GenericScrollableTabRow(
                 modifier = Modifier
                     .height(indicatorHeight)
                     .padding(start = if (index == 0) 0.dp else tabSpacing, end = tabSpacing)
-                    .glassThin(shape = indicatorShape, color = unselectedBg)
+                    .then(
+                        // 选中时底色由背后的指示器提供，标签自己不再铺一层，字才能留在玻璃上面。
+                        if (selectionFraction < 0.5f) {
+                            Modifier.glassThin(shape = indicatorShape, color = unselectedBg)
+                        } else {
+                            Modifier
+                        }
+                    )
                     .clickable(
                         interactionSource = interactionSource,
                         indication = null,

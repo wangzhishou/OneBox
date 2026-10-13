@@ -40,11 +40,14 @@ fun MeshGradientBackground(
 
     val backgroundImageUri = settingsState.customBackgroundImageUri
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(surfaceColor)
-    ) {
+    GlassBackdropFrame(
+        modifier = modifier.fillMaxSize(),
+        backdrop = {
+        Box(
+            Modifier
+                .matchParentSize()
+                .background(surfaceColor)
+        ) {
         if (backgroundImageUri != null) {
             Image(
                 painter = rememberAsyncImagePainter(model = backgroundImageUri),
@@ -221,9 +224,10 @@ fun MeshGradientBackground(
                     .background(veilBrush)
             )
         }
-
-        content()
-    }
+        }
+        },
+        content = content,
+    )
 }
 
 private data class ClassicColors(

@@ -751,7 +751,8 @@ private fun Modifier.modernGlassTextFieldContainer(
     }
     val strokeColor = strokeHue.copy(alpha = strokeAlpha.coerceIn(0f, 1f))
     val strokeDrawAlpha = if (isGlassActive) strokeVisibility else 1f
-    val drawStroke = if (isGlassActive) glassBorderAlpha > 0f else true
+    // 关玻璃不画装饰描边。出错时仍留一条，方便认出错误态。
+    val drawStroke = if (isGlassActive) glassBorderAlpha > 0f else isError
 
     return drawWithCache {
         val outline: Outline = shape.createOutline(

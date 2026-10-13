@@ -102,8 +102,7 @@ fun GlassSurface(
     val settingsState = LocalSettingsState.current
 
     if (!settingsState.isGlassAlphaEnabled || style == GlassStyle.None) {
-        // 与 GlassCard 同一条降级路径: 复用玻璃管线同一套覆盖率压成平涂,
-        // 保证开/关玻璃浓淡一致, GlassStyle 阶梯在关闭态同样生效
+        // 与 GlassCard 同一条降级路径: 关玻璃时按容器色覆盖率平涂,不跟白霜。
         Box(
             modifier = modifier.glassFlatSurface(
                 shape = shape,
@@ -150,8 +149,7 @@ fun GlassSurface(
         if (settingsState.drawContainerShadows) shadowElevation else 0.dp
 
     if (!settingsState.isGlassAlphaEnabled || style == GlassStyle.None) {
-        // 底色交给与 GlassCard 同一套的平涂降级管线, Surface 自身透明,
-        // 保证开/关玻璃浓淡一致(见 glassFlatSurface)
+        // 底色交给与 GlassCard 同一套平涂, Surface 自身透明。关玻璃不跟白霜。
         Surface(
             onClick = onClick,
             modifier = modifier.glassFlatSurface(
