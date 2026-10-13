@@ -110,7 +110,7 @@ internal class ModernPdfViewerDelegate : PdfViewerFragment() {
             background = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = 28f.dp
-                setColor(colorScheme.surfaceBright.toArgb())
+                setColor(colorScheme.surfaceContainer.toArgb())
             }
             invalidate()
         }

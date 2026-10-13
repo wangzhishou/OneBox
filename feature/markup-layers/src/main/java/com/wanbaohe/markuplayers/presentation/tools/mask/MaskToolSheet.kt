@@ -346,7 +346,7 @@ private fun MaskPreview(
 ) {
     val density = LocalDensity.current
     val description = stringResource(R.string.studio_mask_preview)
-    val outline = MaterialTheme.colorScheme.primary
+    val outline = MaterialTheme.colorScheme.onPrimaryContainer
     val alphaImage = remember(alphaPreview) { alphaPreview?.asImageBitmap() }
     BoxWithConstraints(
         contentAlignment = Alignment.Center,

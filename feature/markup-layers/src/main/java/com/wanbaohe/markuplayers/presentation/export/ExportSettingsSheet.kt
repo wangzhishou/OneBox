@@ -223,7 +223,7 @@ fun ExportSettingsSheet(
                                         .border(
                                             if (settings.jpegBackgroundColor == color) 3.dp else 1.dp,
                                             if (settings.jpegBackgroundColor == color) {
-                                                MaterialTheme.colorScheme.primary
+                                                MaterialTheme.colorScheme.onPrimaryContainer
                                             } else MaterialTheme.colorScheme.outline,
                                             ShapeDefaults.large
                                         )

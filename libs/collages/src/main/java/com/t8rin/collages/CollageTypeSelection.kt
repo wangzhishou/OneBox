@@ -58,7 +58,7 @@ fun CollageTypeSelection(
     shape: Shape = RectangleShape,
     itemModifierFactory: @Composable (isSelected: Boolean) -> Modifier = { Modifier },
     state: LazyListState = rememberLazyListState(),
-    previewColor: Color = MaterialTheme.colorScheme.secondary,
+    previewColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     contentPadding: PaddingValues = PaddingValues(16.dp)
 ) {
     var allFrames: List<CollageLayout> by remember {
