@@ -45,6 +45,7 @@ AI 理解、执行、反馈,一气呵成。
 - **画中画机器人,不必干等**:Agent 任务要跑一阵?直接退出 App 去做别的——AI 会话进行中离开时自动进入系统画中画,小窗里的机器人实时反馈任务进度,点一下即可回到结果。原生 PiP 能力,无需任何权限。
 - **一个入口,多家模型**:一个对话入口接入多家主流大模型,支持自定义 AI 引擎与提示词管理。
 - **自带 Key,零成本用 AI**:填入任意 OpenAI 兼容服务的 API Key 即可解锁全部 AI 能力——接上 Gemini、OpenRouter 等的免费额度,AI 助手和 Agent 零成本跑起来。(自定义引擎在海外版与自行构建的版本中完全开放;中国商店版为 VIP 能力)
+- **模型跑在手机上,全程离线**:在 App 内直接下载本地模型(Gemma 3 1B 或 Qwen3 0.6B),也可以从存储导入自己的 `.litertlm` 文件,断网也能聊——不登录、不消耗积分,推理全部在端侧由 LiteRT-LM 完成(仅 Google Play 版与 FOSS 构建;国内渠道不编入端侧推理库)。
 - **代码透明,隐私可见**:所有代码公开可查——数据如何在本地处理、哪些信息绝不上传,一目了然。你不再需要“相信”我们,而是可以亲自验证。
 
 ## 功能总览
@@ -55,7 +56,7 @@ AI 理解、执行、反馈,一气呵成。
 
 | 模块 | 功能 | 简介 |
 | --- | --- | --- |
-| `feature/ai` | AI 聊天与智能体 | 多模型对话、双模型对决、Prompt 执行、Agent 工具调用、Token 统计 |
+| `feature/ai` | AI 聊天与智能体 | 多模型对话、双模型对决、Prompt 执行、Agent 工具调用、LiteRT-LM 端侧本地模型(离线可用,仅海外渠道)、Token 统计 |
 | `feature/ai-image` | AI 绘图 | 文字描述生成图片,支持分享 / 复制 / 编辑 |
 | `feature/ai-detect` | AI 检测 | 检测一段文本或一张图片是否由 AI 生成 |
 | `feature/dsh-client` | DSH 客户端 | 在手机上指挥电脑里的 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Agent——扫码配对、端到端加密,支持局域网直连与云端中继(电脑端配合 [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge) 插件) |
@@ -247,9 +248,9 @@ AI 理解、执行、反馈,一气呵成。
 | `app/` | Android 应用壳层与打包入口；`AppActivity.kt` 为主 Activity 入口 |
 | `feature/app/` | 顶层壳层、主导航、全局 CompositionLocals、页面接线与自适应布局 |
 | `feature/*` | 各业务 / 工具功能模块 |
-| `feature/ai/` | AI 对话、Agent、工具调用链、AI 图像相关能力 |
+| `feature/ai/` | AI 对话、Agent、工具调用链、AI 图像相关能力、端侧模型运行时(`src/litertlm`) |
 | `feature/common/` | 通用业务能力、AI 引擎目录/同步等共享逻辑 |
-| `feature/settings/` | 设置、主题、AI 引擎与工作模型配置 |
+| `feature/settings/` | 设置、主题、AI 引擎配置、本地模型管理(下载 / 导入 / 设为聊天模型) |
 | `core/*` | 基础能力层：UI、domain、data、database、theme、settings 等 |
 | `libs/*` | 项目内复用库 |
 | `build-logic/convention/` | 自定义 Gradle convention plugins |
@@ -389,8 +390,12 @@ GitHub Release 只挂海外包（google/foss 各 arm64），国内 6 渠道包�
 项目中的 AI 能力不是单点实现，而是由多个模块协作完成：
 
 - `feature/ai/`：AI 对话、Agent Loop、工具调用执行、交互式工具桥接
+- `feature/ai/src/litertlm/`：端侧推理实现(LiteRT-LM，`LiteRtLmRuntime` / `LocalModelDirectoryRegistry`)——仅 Google Play / FOSS 渠道编入，国内渠道编译降级 stub
 - `feature/common/`：AI 引擎目录、引擎同步、共享管理器
 - `feature/settings/`：AI 引擎与工作模型配置入口
+- `feature/settings/.../local/`：本地模型管理页——下载推荐模型、从存储导入 `.litertlm`、设为当前聊天模型
+
+本地模型文件放在 `filesDir/local_models/`；设为聊天模型后首次使用时加载，GPU 后端初始化失败会自动回退 CPU 后端。
 
 其中工具调用链路基于：
 

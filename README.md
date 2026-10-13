@@ -46,6 +46,7 @@ It understands, acts, and reports back — in one flow.
 - **Picture-in-picture robot, no more waiting around**: long agent task? Just leave the app — with an active AI session it drops into system picture-in-picture, where the mini-window robot keeps you posted on progress and one tap brings you back to the result. Native PiP, zero permissions required.
 - **One chat, many models**: talk to multiple mainstream LLMs from a single entry, with custom AI engines and prompt management.
 - **Bring your own key — use it for free**: drop in any OpenAI-compatible API key (including free tiers like Gemini or OpenRouter's free models) and the full assistant + agent is yours at zero cost. Custom engines, endpoints and tokens are fully open in the Google Play build and in builds from this repo.
+- **Models that run on the phone — fully offline**: download a local model (Gemma 3 1B or Qwen3 0.6B) inside the app, or import your own `.litertlm` file, and chat without network, account or token cost — inference runs entirely on-device via LiteRT-LM (Google Play and FOSS builds only).
 - **Transparent by source**: every line is public — how data is processed locally and what never leaves the device is something you can verify, not a promise you have to trust.
 
 ## Features
@@ -56,7 +57,7 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 
 | Module | Feature | Description |
 | --- | --- | --- |
-| `feature/ai` | AI Chat & Agent | Multi-model chat, dual-model duels, prompt execution, and an agent that invokes in-app tools, with token stats |
+| `feature/ai` | AI Chat & Agent | Multi-model chat, dual-model duels, prompt execution, an agent that invokes in-app tools, and offline on-device models via LiteRT-LM (Google Play / FOSS builds), with token stats |
 | `feature/ai-image` | AI Image | Text-to-image generation, with share / copy / edit |
 | `feature/ai-detect` | AI Detector | Check whether a text or an image is AI-generated |
 | `feature/dsh-client` | DSH Client | Drive a [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) agent on your computer — scan-to-pair, end-to-end encrypted, LAN or cloud relay (computer side: [`onebox-dsh-bridge`](https://github.com/wangzhishou/onebox-dsh-bridge)) |
@@ -248,9 +249,9 @@ OneBox ships **104 feature modules**. Local tools run entirely on-device; only t
 | `app/` | Application shell and packaging entry; `AppActivity.kt` is the main Activity |
 | `feature/app/` | Top-level shell, root navigation, global CompositionLocals, screen wiring, adaptive layout |
 | `feature/*` | Business / tool feature modules |
-| `feature/ai/` | AI chat, agent, tool-calling chain, AI image features |
+| `feature/ai/` | AI chat, agent, tool-calling chain, AI image features, on-device model runtime (`src/litertlm`) |
 | `feature/common/` | Shared business logic, AI engine catalog/sync |
-| `feature/settings/` | Settings, themes, AI engine & working-model configuration |
+| `feature/settings/` | Settings, themes, AI engine configuration, local model management (download / import / set as chat model) |
 | `core/*` | Foundation layers: UI, domain, data, database, theme, settings, etc. |
 | `libs/*` | In-project reusable libraries |
 | `build-logic/convention/` | Custom Gradle convention plugins |
@@ -373,8 +374,12 @@ packages only. The GitCode repository has to be public, otherwise the anonymous 
 AI features are composed from several modules:
 
 - `feature/ai/`: AI chat, agent loop, tool-call execution, interactive tool bridging
+- `feature/ai/src/litertlm/`: on-device inference through LiteRT-LM (`LiteRtLmRuntime`, `LocalModelDirectoryRegistry`) — Google Play / FOSS builds, other channels compile a stub runtime
 - `feature/common/`: AI engine catalog, engine sync, shared managers
 - `feature/settings/`: AI engine, model and working-mode configuration UI
+- `feature/settings/.../local/`: local model management — download recommended models, import a `.litertlm` file, set as the chat model
+
+Local model files live in `filesDir/local_models/`; the one set as the chat model is loaded on first use, and inference falls back to the CPU backend when the GPU backend fails to initialize.
 
 The tool-calling chain is built on `ToolCallTaskManager`, `AgentLoopExecutor` and `AppDatabase`.
 
