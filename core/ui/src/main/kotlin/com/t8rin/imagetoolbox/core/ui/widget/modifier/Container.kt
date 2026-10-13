@@ -57,7 +57,6 @@ fun Modifier.container(
 
     Modifier
         .glassBackground(
-            style = GlassStyle.Dense,
             shape = resultShape,
             color = containerColor,
             borderWidth = targetBorderWidth

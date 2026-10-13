@@ -47,6 +47,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -213,6 +214,10 @@ fun BottomButtonsBlock(
                             topEnd = OneBoxDesignSystem.largeRadius,
                         )
                     ),
+                containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(0.68f),
+                windowInsets = WindowInsets.safeDrawing.only(
+                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+                ),
                 actions = actions,
                 floatingActionButton = {
                     Row {
@@ -305,7 +310,7 @@ fun BottomButtonsBlock(
                     .fillMaxHeight()
                     .container(
                         shape = RectangleShape,
-                        color = MaterialTheme.colorScheme.surfaceContainerLow
+                        color = MaterialTheme.colorScheme.surfaceContainer
                     )
                     .enhancedVerticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp)

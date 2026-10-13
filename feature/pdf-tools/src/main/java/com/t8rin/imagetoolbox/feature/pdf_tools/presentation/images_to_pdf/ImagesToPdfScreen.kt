@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -82,6 +83,7 @@ fun ImagesToPdfScreen(component: ImagesToPdfComponent) {
     BaseScreen(
         title = stringResource(R.string.images_to_pdf),
         onGoBack = onBack,
+        showNavigationBarsPadding = false,
         actions = {
             if (component.canShare) {
                 ShareButton(
@@ -217,6 +219,7 @@ private fun EmptyPickArea(onPick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .navigationBarsPadding()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
