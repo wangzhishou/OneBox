@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawOutline
@@ -46,8 +45,7 @@ internal data class GlassVeil(
     val frost: Color,
     val tint: Color,
     val rimWidth: Dp,
-    val rimTop: Color,
-    val rimEdge: Color,
+    val rim: Color,
 )
 
 @Composable
@@ -79,44 +77,55 @@ internal fun glassVeil(
     val coverage = (backgroundAlpha / style.backgroundAlpha.coerceAtLeast(0.04f)).coerceIn(0.65f, 1.35f)
     val weight = styleWeight(style) * glassBaseAlpha * coverage * (if (isControl) 1.05f else 1f) *
         (if (enabled) 1f else 0.65f)
-    // 霜要薄，后面的壁纸和压在玻璃下面的文字才看得清。液态开关只再透一点，不做逐卡片折射。
+    // 有网格或壁纸时霜要薄，彩色从卡片里透出来。
+    // 没有多彩背景时不再加白霜（白底上加白看不出来，还会把色调冲掉），
+    // 只把容器色调加重，色块才分得开。液态开关只再透一点。
+    // 玻璃开关关闭时走不到这里。
     val liquidScale = if (isLiquid) 0.82f else 1f
+    val plain = !hasWallpaper
     val frostAlpha = (
-        if (isLight) {
-            if (isControl) 0.22f else 0.36f
-        } else {
-            if (isControl) 0.16f else 0.24f
+        when {
+            // 有壁纸时控件只留一层很薄的霜，chip / 开关 / 滑杆才能透出背后的颜色。
+            isLight -> if (isControl) if (plain) 0.22f else 0.08f else 0.36f
+            else -> if (isControl) if (plain) 0.16f else 0.05f else 0.24f
         } * weight * liquidScale
         ).coerceIn(0f, if (isLight) 0.46f else 0.32f)
     val tintAlpha = (
         if (neutral || color == Color.Unspecified || color == Color.Transparent) {
             0f
+        } else if (isLight && plain) {
+            (if (isControl) 0.42f else 0.50f) * weight * liquidScale
         } else if (isLight) {
-            (if (isControl) 0.22f else 0.14f) * weight * liquidScale
+            (if (isControl) 0.10f else 0.14f) * weight * liquidScale
+        } else if (plain) {
+            (if (isControl) 0.32f else 0.36f) * weight * liquidScale
         } else {
-            (if (isControl) 0.16f else 0.12f) * weight * liquidScale
+            (if (isControl) 0.07f else 0.12f) * weight * liquidScale
         }
-        ).coerceIn(0f, if (isLight) 0.28f else 0.20f)
-    // 暗色描边只用很淡的白。0.5 的白边在深色底上会发亮。
-    val edgeInk = if (neutral) {
-        Color(red = 0.28f, green = 0.40f, blue = 0.38f)
-    } else {
-        Color(
-            red = color.red * 0.45f,
-            green = color.green * 0.45f,
-            blue = color.blue * 0.45f,
+        ).coerceIn(
+            0f,
+            when {
+                isLight && plain -> 0.58f
+                isLight -> 0.28f
+                plain -> 0.42f
+                else -> 0.20f
+            },
         )
+    // 四边同一条线，和原来的上沿一致。暗色只留很淡的白，避免发亮。
+    val rim = Color.White.copy(alpha = if (isLight) 0.42f else 0.10f)
+
+    // 纯色页上的中性卡片没有色调可染，薄薄压一层灰，才不会和页面底融在一起。
+    val frost = if (isLight && plain && neutral) {
+        Color(0xFF6E6874).copy(alpha = (0.12f * weight * liquidScale).coerceIn(0f, 0.16f))
+    } else {
+        (if (isLight) Color.White else Color.Black).copy(alpha = frostAlpha)
     }
-    val edgeAlpha = if (isLight) 0.10f + 0.06f * rimStrength else 0.05f + 0.04f * rimStrength
-    val rimEdge = if (isLight) edgeInk.copy(alpha = edgeAlpha) else Color.White.copy(alpha = edgeAlpha)
-    val rimTop = Color.White.copy(alpha = if (isLight) 0.42f else 0.10f)
 
     return GlassVeil(
-        frost = (if (isLight) Color.White else Color.Black).copy(alpha = frostAlpha),
+        frost = frost,
         tint = if (tintAlpha > 0f) color.copy(alpha = tintAlpha) else Color.Transparent,
         rimWidth = if (rimStrength <= 0f) 0.dp else borderWidth.coerceAtLeast(1.dp).coerceAtMost(1.25.dp),
-        rimTop = rimTop,
-        rimEdge = rimEdge,
+        rim = rim,
     )
 }
 
@@ -179,7 +188,7 @@ private fun Modifier.veilGlass(
 }
 
 private fun DrawScope.drawGlassRim(shape: Shape, veil: GlassVeil) {
-    if (veil.rimWidth <= 0.dp || veil.rimEdge.alpha <= 0f) return
+    if (veil.rimWidth <= 0.dp || veil.rim.alpha <= 0f) return
     // 描边往里收半个线宽，整条线都落在裁切里面，避免被切掉一半后发虚。
     val stroke = veil.rimWidth.toPx().coerceAtLeast(1f)
     val inset = stroke / 2f
@@ -189,13 +198,7 @@ private fun DrawScope.drawGlassRim(shape: Shape, veil: GlassVeil) {
     translate(inset, inset) {
         drawOutline(
             outline = outline,
-            brush = Brush.verticalGradient(
-                0f to veil.rimTop,
-                0.07f to veil.rimEdge,
-                1f to veil.rimEdge,
-                startY = 0f,
-                endY = height,
-            ),
+            color = veil.rim,
             style = Stroke(width = stroke),
         )
     }

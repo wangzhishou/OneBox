@@ -66,30 +66,25 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
 /**
  * 底栏是否该有自己的底色。
  *
- * 只有页面铺了背景层(渐变背景 / 自定义背景图)时才需要 —— 此时底栏要压住背后的
- * 色块或图片,否则内容会从底栏位置透出来。纯色页面下底栏不画任何底色,与页面
- * 完全连成一体。
+ * 渐变背景或自定义背景图铺着的时候,底栏要透出后面的颜色,不跟玻璃开关走。
+ * 纯色页面下底栏不画任何底色,与页面连成一体。
  *
  * 判定与 [com.t8rin.imagetoolbox.core.ui.widget.glass.effectiveGlassBorderAlpha]
  * 的"没有背景层就不画描边"保持一致。
  *
  * - [BackdropState.None]:无背景层,不画底;
- * - [BackdropState.Glass]:有背景层且玻璃开关打开,画毛玻璃;
- * - [BackdropState.Solid]:有背景层但玻璃关闭,画不透明 surface 实色底。
+ * - [BackdropState.Glass]:有渐变或自定义背景,底栏透出背后的颜色。
+ *   玻璃开着走毛玻璃;关着也留一层半透明,不铺实色。
  */
 @Composable
 private fun currentBackdropState(): BackdropState {
     val settingsState = LocalSettingsState.current
     val hasBackdrop = settingsState.isMeshGradientBackgroundEnabled ||
         settingsState.customBackgroundImageUri != null
-    return when {
-        !hasBackdrop -> BackdropState.None
-        settingsState.isGlassAlphaEnabled -> BackdropState.Glass
-        else -> BackdropState.Solid
-    }
+    return if (hasBackdrop) BackdropState.Glass else BackdropState.None
 }
 
-private enum class BackdropState { None, Glass, Solid }
+private enum class BackdropState { None, Glass }
 
 @Immutable
 data class BottomNavItem(
@@ -181,16 +176,18 @@ fun BottomNavigationBar(
                     .then(
                         when (backdropState) {
                             BackdropState.None -> Modifier
-                            BackdropState.Glass -> Modifier.glassBackground(
-                                style = style.containerGlassStyle,
-                                shape = style.containerShape,
-                                color = MaterialTheme.colorScheme.surface,
-                            )
-
-                            BackdropState.Solid -> Modifier.background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = style.containerShape,
-                            )
+                            BackdropState.Glass -> if (LocalSettingsState.current.isGlassAlphaEnabled) {
+                                Modifier.glassBackground(
+                                    style = GlassStyle.Thin,
+                                    shape = style.containerShape,
+                                    color = MaterialTheme.colorScheme.surface,
+                                )
+                            } else {
+                                Modifier.background(
+                                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.18f),
+                                    shape = style.containerShape,
+                                )
+                            }
                         }
                     )
                     .let { if (navigationBarsPadding) it.navigationBarsPadding() else it }

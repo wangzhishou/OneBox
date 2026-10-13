@@ -93,11 +93,7 @@ fun GlassSwitch(
             onCheckedChange = onCheckedChange,
             modifier = modifier.glassControlStyle(
                 style = style,
-                backgroundAlpha = if (checked) {
-                    (style.backgroundAlpha + 0.68f).coerceAtMost(1f)
-                } else {
-                    (style.backgroundAlpha + 0.68f).coerceAtMost(1f)
-                },
+                backgroundAlpha = style.backgroundAlpha,
                 shape = shape,
                 color = glassColor,
                 borderWidth = glassBorderWidth,

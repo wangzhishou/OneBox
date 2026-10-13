@@ -3,27 +3,26 @@ package com.t8rin.imagetoolbox.core.settings.domain.model
 /**
  * 预置渐变背景样式。
  *
- * 每种样式在 `MeshGradientBackground` 中映射到不同的光斑分布、颜色角色和透明度。
+ * 每种样式按名字决定色相范围、饱和度和网格密度
+ * （顶点数不固定，双三次插值 + 贝塞尔控制点）。雾面收在邻近色里、饱和度低；
+ * 流光溢彩才铺满色环。经典直接用当前 ColorScheme 的色调角色，不另调色相。
+ * 玻璃本身保持薄霜，颜色从卡片里透出来。
  * 使用 [ordinal2] 持久化到 DataStore，通过 [fromOrdinal] 反序列化。
  *
  * | 名称        | 描述                                                   |
  * |-------------|--------------------------------------------------------|
- * | Classic     | 经典四角光斑（默认，兼容旧版）                          |
- * | Aurora      | 极光——薄荷 + 青绿 + 薰衣草 + 柔粉，北欧冷色调           |
- * | Ocean       | 深海——午夜蓝 + 深青 + 荧光青 + 靛蓝，沉静神秘           |
- * | Sunset      | 日落——琥珀橙 + 玫瑰粉 + 金色，暖色漫射                  |
- * | SakuraMist  | 樱花雾——柔粉 + 蜜桃 + 淡紫 + 奶油，温柔梦幻             |
- * | MintBreeze  | 薄荷苏打——薄荷绿 + 晴空蓝 + 嫩芽绿 + 奶黄，清新气泡     |
- * | StarryNight | 午夜星河——午夜蓝 + 靛青 + 银灰 + 深蓝，静谧深邃         |
- * | Lavender    | 薰衣草田——紫罗兰 + 丁香 + 柔粉 + 淡蓝，浪漫花海         |
- * | WarmGlow    | 焦糖余晖——琥珀 + 珊瑚 + 奶油 + 暖金，黄昏暖光           |
- * | Ethereal    | 丝雾——跟随主题色的极淡渐变，清透宁静                    |
- * | NeonCyber   | 电子梦境——电青 + 紫罗兰 + 荧光绿 + 炽橙，高饱和幻境     |
- * | PrismFlow   | 流光溢彩——Compose 1.12 MeshGradientPainter 真网格渐变,  |
- * |             | 青/紫/品红/暖金九顶点双三次插值,色彩流体融合            |
- *
- * 渲染路径:Aurora~NeonCyber 与 PrismFlow 走官方 `MeshGradientPainter` 网格渲染
- * (3×3 网格 + 双三次插值);Classic/Ethereal(跟随主题色)与 StarryNight(局部星点)保留光斑叠加。
+ * | Classic     | 经典——当前 ColorScheme 的主色、辅色、三级色和容器色调点 |
+ * | Aurora      | 极光——青绿光幕 + 紫罗兰，竖向长网格，中高饱和           |
+ * | Ocean       | 深海——只有蓝和青绿，饱和度偏低                          |
+ * | Sunset      | 日落——玫瑰 + 琥珀 + 金色，比焦糖余晖更淡                |
+ * | SakuraMist  | 樱花雾——樱粉 + 蜜桃 + 淡紫，低饱和、少顶点              |
+ * | MintBreeze  | 薄荷苏打——薄荷绿 + 汽水蓝 + 青柠 + 柠檬                 |
+ * | StarryNight | 午夜星河——浅色银靛薄暮，深色海军蓝，饱和度低            |
+ * | Lavender    | 薰衣草田——紫罗兰到丁香，横向铺开，低饱和                |
+ * | WarmGlow    | 焦糖余晖——蜜桃 + 琥珀 + 焦糖，只有暖色                  |
+ * | Ethereal    | 丝雾——主题色上的薄雾，饱和度最低、网格最疏              |
+ * | NeonCyber   | 电子梦境——电青 + 品红 + 紫罗兰 + 荧光绿，饱和度最高     |
+ * | PrismFlow   | 流光溢彩——色环铺满，网格最密                            |
  */
 enum class GradientBackgroundStyle(val ordinal2: Int) {
     Classic(0),

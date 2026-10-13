@@ -123,9 +123,9 @@ fun GlassFilterChip(
                 modifier = modifier.glassControlStyle(
                     style = style,
                     backgroundAlpha = if (selected) {
-                        (style.backgroundAlpha + 0.12f).coerceAtMost(1f)
+                        (style.backgroundAlpha + 0.02f).coerceAtMost(1f)
                     } else {
-                        (style.backgroundAlpha + 0.04f).coerceAtMost(1f)
+                        style.backgroundAlpha
                     },
                     shape = shape,
                     color = if (selected) glassSelectedContainerColor else glassContainerColor,

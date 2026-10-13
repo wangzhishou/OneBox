@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.rememberRipple
 
 /**
@@ -61,14 +62,23 @@ object CustomSliderDefaults {
      * [CustomSlider] in different states.
      */
     @Composable
-    fun colors() = colors(
-        activeTickColor = MaterialTheme.colorScheme.inverseSurface,
-        inactiveTickColor = MaterialTheme.colorScheme.surface,
-        activeTrackColor = MaterialTheme.colorScheme.primaryContainer,
-        inactiveTrackColor = SwitchDefaults.colors().disabledCheckedTrackColor,
-        disabledThumbColor = SwitchDefaults.colors().disabledCheckedThumbColor,
-        thumbColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.68f)
-    )
+    fun colors(): CustomSliderColors {
+        val glass = LocalSettingsState.current.isGlassAlphaEnabled
+        val active = MaterialTheme.colorScheme.primaryContainer
+        val inactive = MaterialTheme.colorScheme.surfaceContainer
+        return colors(
+            activeTickColor = MaterialTheme.colorScheme.inverseSurface,
+            inactiveTickColor = MaterialTheme.colorScheme.surface,
+            activeTrackColor = if (glass) active.copy(alpha = 0.22f) else active,
+            inactiveTrackColor = if (glass) {
+                inactive.copy(alpha = 0.12f)
+            } else {
+                SwitchDefaults.colors().disabledCheckedTrackColor
+            },
+            disabledThumbColor = SwitchDefaults.colors().disabledCheckedThumbColor,
+            thumbColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(if (glass) 0.85f else 0.68f),
+        )
+    }
 
     /**
      * Creates a [CustomSliderColors] that represents the different colors used in parts of the

@@ -30,12 +30,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -985,7 +985,7 @@ private fun GradientBackgroundCard(
                         verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
                     ) {
                         options.forEach { (style, label) ->
-                            FilterChip(
+                            GlassFilterChip(
                                 selected = style == gradientStyle,
                                 onClick = { onGradientStyleChange(style) },
                                 label = {
@@ -1520,7 +1520,7 @@ private fun ColorSystemCard(
                 verticalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.microSpacing),
             ) {
                 PaletteStyle.entries.forEach { style ->
-                    FilterChip(
+                    GlassFilterChip(
                         selected = style == themeStyle,
                         onClick = { onThemeStyleChange(style) },
                         label = {
