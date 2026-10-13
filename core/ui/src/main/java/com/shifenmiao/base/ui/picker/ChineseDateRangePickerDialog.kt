@@ -276,7 +276,7 @@ private fun RowScope.DateRangeSelectorChip(
             .clip(RoundedCornerShape(8.dp))
             .background(
                 if (isSelected) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                else MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f)
             )
             .clickable(onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
