@@ -887,6 +887,7 @@
     <string name="sort_by_name">Sort by Name</string>
     <string name="sort_by_name_reversed">Sort by name (reversed)</string>
     <string name="pick_multiple_media">Pick multiple media</string>
+    <string name="choose_photos">Choose photos</string>
     <string name="pick">Pick</string>
     <string name="pick_single_media">Pick single media</string>
     <string name="channels_configuration">Channels configuration</string>

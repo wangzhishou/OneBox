@@ -885,6 +885,7 @@
     <string name="sort_by_name">الترتيب حسب الاسم</string>
     <string name="sort_by_name_reversed">فرز حسب الاسم (معكوس)</string>
     <string name="pick_multiple_media">اختر صور متعددة</string>
+    <string name="choose_photos">اختر الصور</string>
     <string name="pick">اختر</string>
     <string name="pick_single_media">اختر صورة واحدة</string>
     <string name="channels_configuration">إعداد القنوات</string>

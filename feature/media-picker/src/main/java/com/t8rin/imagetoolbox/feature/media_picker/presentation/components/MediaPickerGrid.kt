@@ -70,8 +70,6 @@ internal fun MediaPickerGrid(
     selectedMedia: SnapshotStateList<Media>,
     allowMultiple: Boolean,
     isButtonVisible: Boolean,
-    onRequestManagePermission: () -> Unit,
-    isManagePermissionAllowed: Boolean
 ) {
     val scope = rememberCoroutineScope()
     val stringToday = stringResource(id = R.string.header_today)
@@ -178,15 +176,6 @@ internal fun MediaPickerGrid(
             end = WindowInsets.displayCutout.asPaddingValues().calculateEndPadding(layoutDirection)
         )
     ) {
-        if (!isManagePermissionAllowed) {
-            item(
-                span = {
-                    GridItemSpan(maxLineSpan)
-                }
-            ) {
-                ManageExternalStorageWarning(onRequestManagePermission)
-            }
-        }
         items(
             items = state.mappedMedia,
             key = {

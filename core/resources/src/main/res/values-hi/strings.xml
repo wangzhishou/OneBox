@@ -871,6 +871,7 @@
     <string name="sort_by_name">नाम से क्रमबद्ध करें</string>
     <string name="sort_by_name_reversed">नाम के अनुसार क्रमबद्ध करें (उल्टा)</string>
     <string name="pick_multiple_media">एकाधिक मीडिया चुनें</string>
+    <string name="choose_photos">फ़ोटो चुनें</string>
     <string name="pick">चुनें</string>
     <string name="pick_single_media">एकल मीडिया चुनें</string>
     <string name="channels_configuration">चैनल कॉन्फ़िगरेशन</string>

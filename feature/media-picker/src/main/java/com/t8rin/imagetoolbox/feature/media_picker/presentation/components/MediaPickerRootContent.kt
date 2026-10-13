@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiState
+import com.t8rin.imagetoolbox.core.ui.utils.helper.EXTRA_PICKER_TITLE
 import com.t8rin.imagetoolbox.core.ui.utils.provider.ImageToolboxCompositionLocals
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.feature.media_picker.domain.model.AllowedMedia
@@ -39,6 +40,7 @@ internal fun MediaPickerRootContent(component: MediaPickerComponent) {
             component = component,
             allowedMedia = context.intent.type.allowedMedia,
             allowMultiple = context.intent.allowMultiple,
+            title = context.intent.getStringExtra(EXTRA_PICKER_TITLE),
             onPicked = context::sendMediaAsResult,
             onBack = context::finish,
             modifier = Modifier.navigationBarsPadding()

@@ -83,12 +83,10 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
 
             is SaveResult.Success -> {
                 updateSaveResult(saveResult)
-                saveResult.message?.let {
-                    AppToastHost.showFileSuccessToast(
-                        uri = saveResult.fileUri?.takeIf(String::isNotBlank)?.toUri(),
-                        message = it
-                    )
-                }
+                AppToastHost.showFileSuccessToast(
+                    uri = saveResult.fileUri?.takeIf(String::isNotBlank)?.toUri(),
+                    message = saveSuccessMessage(saveResult)
+                )
                 AppToastHost.showConfetti()
             }
 
@@ -115,7 +113,7 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
                 updateSaveResult(saveResult)
                 AppToastHost.showFileSuccessToast(
                     uri = saveResult.fileUri?.takeIf(String::isNotBlank)?.toUri(),
-                    message = getString(R.string.saved_to_without_filename, "")
+                    message = saveSuccessMessage(saveResult)
                 )
                 AppToastHost.showConfetti()
             }
@@ -143,13 +141,10 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
         if (failed == 0 && done > 0) {
             if (done == 1) {
                 val saveResult = results.firstOfType<SaveResult.Success>()
-                val savingPath = saveResult?.savingPath ?: getString(R.string.default_folder)
                 AppToastHost.showFileSuccessToast(
                     uri = saveResult?.fileUri?.takeIf(String::isNotBlank)?.toUri(),
-                    message = saveResult?.message ?: getString(
-                        R.string.saved_to_without_filename,
-                        savingPath
-                    )
+                    message = saveResult?.let { saveSuccessMessage(it) }
+                        ?: getString(R.string.saved_to_without_filename, getString(R.string.default_folder))
                 )
             } else {
                 val saveResult = results.firstOfType<SaveResult.Success>()
@@ -161,13 +156,12 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
                         duration = ToastDuration.Long
                     )
                 } else {
-                    val savingPath = saveResult?.savingPath ?: getString(R.string.default_folder)
-
                     AppToastHost.showToast(
-                        message = getString(
-                            R.string.saved_to_without_filename,
-                            savingPath
-                        ),
+                        message = saveResult?.let { saveSuccessMessage(it) }
+                            ?: getString(
+                                R.string.saved_to_without_filename,
+                                getString(R.string.default_folder)
+                            ),
                         icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
                         duration = ToastDuration.Long
                     )
@@ -192,10 +186,10 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
 
             if (done > 0) {
                 AppToastHost.showToast(
-                    message = saveResult?.message
+                    message = saveResult?.let { saveSuccessMessage(it) }
                         ?: getString(
                             R.string.saved_to_without_filename,
-                            saveResult?.savingPath
+                            getString(R.string.default_folder)
                         ),
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
                     duration = ToastDuration.Long
@@ -261,6 +255,26 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
                 )
             }
         }
+    }
+
+    private fun saveSuccessMessage(saveResult: SaveResult.Success): String {
+        val folder = folderLabel(saveResult.savingPath)
+        val fileName = saveResult.fileName?.takeIf { it.isNotBlank() }
+        return if (fileName != null) {
+            getString(R.string.saved_to, folder, fileName)
+        } else {
+            getString(R.string.saved_to_without_filename, folder)
+        }
+    }
+
+    /**
+     * 提示里只留目录最后一段。完整路径对用户没有用，空路径退回默认目录名。
+     */
+    private fun folderLabel(savingPath: String?): String {
+        val raw = savingPath?.trim()?.trimEnd('/')?.trimEnd('\\').orEmpty()
+        if (raw.isEmpty()) return getString(R.string.default_folder)
+        val leaf = raw.substringAfterLast('/').substringAfterLast('\\').substringAfterLast(':').trim()
+        return leaf.ifBlank { getString(R.string.default_folder) }
     }
 
     override fun linkifiedSaveMessage(

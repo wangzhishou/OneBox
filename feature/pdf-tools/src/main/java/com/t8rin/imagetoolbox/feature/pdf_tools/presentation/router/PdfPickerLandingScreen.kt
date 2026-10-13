@@ -45,6 +45,7 @@ import com.shifenmiao.database.recent_access.entity.RecentAccessEntity
 import com.shifenmiao.model.activity.ActivityLogEntry
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -88,8 +89,13 @@ internal fun PdfPickerLandingScreen(
             onPick(Screen.PdfTools.Type.PdfToImages(uri))
         }
     )
+    val choosePhotosTitle = stringResource(R.string.choose_photos)
     val imagesToPdfPicker = rememberImagePicker(
-        onSuccess = { uri: Uri -> onPick(Screen.PdfTools.Type.ImagesToPdf(listOf(uri))) }
+        picker = Picker.Multiple,
+        title = choosePhotosTitle,
+        onSuccess = { uris: List<Uri> ->
+            if (uris.isNotEmpty()) onPick(Screen.PdfTools.Type.ImagesToPdf(uris))
+        }
     )
     val mergePdfPicker = rememberFilePicker(
         mimeType = MimeType.Pdf,

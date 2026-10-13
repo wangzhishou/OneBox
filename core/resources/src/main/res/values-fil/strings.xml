@@ -871,6 +871,7 @@
     <string name="sort_by_name">Isaayos ayon sa pangalan</string>
     <string name="sort_by_name_reversed">Ayusin ayon sa pangalan (baligtad)</string>
     <string name="pick_multiple_media">Pumili ng maraming media</string>
+    <string name="choose_photos">Pumili ng mga larawan</string>
     <string name="pick">Pumili</string>
     <string name="pick_single_media">Pumili ng isang media</string>
     <string name="channels_configuration">Configuration ng mga channel</string>

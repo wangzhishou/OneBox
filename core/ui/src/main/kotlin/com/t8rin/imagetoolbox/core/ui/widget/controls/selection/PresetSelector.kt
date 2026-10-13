@@ -122,6 +122,7 @@ fun PresetSelector(
             RevealDirection.EndToStart
         ),
         maxRevealDp = 88.dp,
+        alphaTransformEnabled = true,
         state = state,
         swipeableContent = {
             Column(

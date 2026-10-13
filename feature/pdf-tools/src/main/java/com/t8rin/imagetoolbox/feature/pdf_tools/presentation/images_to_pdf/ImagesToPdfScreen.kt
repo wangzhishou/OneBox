@@ -32,6 +32,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.Preset
 import com.t8rin.imagetoolbox.core.domain.image.model.Quality
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
@@ -67,8 +68,17 @@ fun ImagesToPdfScreen(component: ImagesToPdfComponent) {
         onSuccess = component::save,
     )
 
-    val imagePicker = rememberImagePicker(onSuccess = component::setImages)
-    val addImagesPicker = rememberImagePicker(onSuccess = component::addImages)
+    val choosePhotosTitle = stringResource(R.string.choose_photos)
+    val imagePicker = rememberImagePicker(
+        picker = Picker.Multiple,
+        title = choosePhotosTitle,
+        onSuccess = { component.setImages(it) },
+    )
+    val addImagesPicker = rememberImagePicker(
+        picker = Picker.Multiple,
+        title = choosePhotosTitle,
+        onSuccess = component::addImages,
+    )
 
     BaseScreen(
         title = stringResource(R.string.images_to_pdf),

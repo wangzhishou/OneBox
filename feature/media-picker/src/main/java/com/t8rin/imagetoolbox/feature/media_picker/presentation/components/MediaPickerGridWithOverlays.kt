@@ -100,8 +100,6 @@ internal fun ColumnScope.MediaPickerGridWithOverlays(
     isSearching: Boolean,
     allowedMedia: AllowedMedia,
     allowMultiple: Boolean,
-    onRequestManagePermission: () -> Unit,
-    isManagePermissionAllowed: Boolean,
     selectedAlbumIndex: Long,
     onSearchingChange: (Boolean) -> Unit,
     onPicked: (List<Uri>) -> Unit
@@ -138,8 +136,6 @@ internal fun ColumnScope.MediaPickerGridWithOverlays(
                 selectedMedia = selectedMedia,
                 allowMultiple = allowMultiple,
                 isButtonVisible = isButtonVisible,
-                isManagePermissionAllowed = isManagePermissionAllowed,
-                onRequestManagePermission = onRequestManagePermission
             )
             BoxAnimatedVisibility(
                 modifier = Modifier

@@ -871,6 +871,7 @@
     <string name="sort_by_name">Ordenar por nome</string>
     <string name="sort_by_name_reversed">Ordenar por nome (reverso)</string>
     <string name="pick_multiple_media">Selecionar várias mídias</string>
+    <string name="choose_photos">Escolher fotos</string>
     <string name="pick">Selecionar</string>
     <string name="pick_single_media">Selecionar mídia única</string>
     <string name="channels_configuration">Configuração de canais</string>

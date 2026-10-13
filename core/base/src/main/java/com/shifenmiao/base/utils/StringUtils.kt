@@ -228,45 +228,43 @@ object StringUtils {
         highlightColor: Color = Color.Red,
         highlightBackgroundColor: Color = Color.Red.copy(0.1f),
     ): AnnotatedString {
-        if (query.isEmpty() || text.isEmpty()) return AnnotatedString(text)
+        if (text.isEmpty()) return AnnotatedString(text)
+        val snippet = firstReadableSnippet(text)
+        if (query.isEmpty()) return AnnotatedString(snippet)
 
-        // Find the first occurrence of the query (case insensitive)
-        val firstOccurrence = text.indexOf(query, ignoreCase = true)
-        if (firstOccurrence == -1) return AnnotatedString(text.take(90))
-
-        // Calculate context window
-        val startPosition = maxOf(0, firstOccurrence - 30)
-        val endPosition = minOf(text.length, firstOccurrence + query.length + 30)
-
-        // Extract context
-        val hasLeadingEllipsis = startPosition > 0
-        val hasTrailingEllipsis = endPosition < text.length
-
-        val contextText = buildString {
-            if (hasLeadingEllipsis) append("...")
-            append(text.substring(startPosition, endPosition))
-            if (hasTrailingEllipsis) append("...")
-        }
-
-        // Build annotated string with highlighted query
         return buildAnnotatedString {
-            append(contextText)
-
-            val extractedText = text.substring(startPosition, endPosition)
-            val queryRegex = query.toRegex(RegexOption.IGNORE_CASE)
-            val adjustedStartPos = if (hasLeadingEllipsis) 3 else 0
-
-            queryRegex.findAll(extractedText).forEach { result ->
+            append(snippet)
+            Regex.escape(query).toRegex(RegexOption.IGNORE_CASE).findAll(snippet).forEach { result ->
                 addStyle(
                     style = SpanStyle(
                         color = highlightColor,
                         fontWeight = FontWeight.Bold,
                         background = highlightBackgroundColor
                     ),
-                    start = result.range.first + adjustedStartPos,
-                    end = result.range.last + 1 + adjustedStartPos
+                    start = result.range.first,
+                    end = result.range.last + 1
                 )
             }
         }
     }
+
+    /**
+     * 搜索卡片说明从第一句开始。超长时在单词边界截断，避免从单词中间起头。
+     */
+    private fun firstReadableSnippet(text: String, maxChars: Int = 110): String {
+        val trimmed = text.trim()
+        if (trimmed.isEmpty()) return trimmed
+        val sentenceEnd = trimmed.indexOfFirst { it in SENTENCE_ENDINGS }
+        val sentence = if (sentenceEnd in 8..maxChars) {
+            trimmed.substring(0, sentenceEnd + 1).trim()
+        } else {
+            trimmed
+        }
+        if (sentence.length <= maxChars) return sentence
+        val space = sentence.lastIndexOf(' ', maxChars)
+        val cut = if (space >= maxChars / 2) space else maxChars
+        return sentence.substring(0, cut).trimEnd() + "..."
+    }
+
+    private val SENTENCE_ENDINGS = charArrayOf('.', '!', '?', '。', '！', '？')
 }

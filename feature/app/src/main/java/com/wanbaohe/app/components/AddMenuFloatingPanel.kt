@@ -47,6 +47,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.ChatPlus
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAgent
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineAiChat
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlessingWall
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineDocumentScanner
+import com.t8rin.imagetoolbox.core.resources.icons.line.LinePdfTools
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCheckCircleOutline
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCodeEditor
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawerCabinet
@@ -61,6 +63,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineSchedule
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.shifenmiao.core.R as CoreR
+import com.t8rin.imagetoolbox.core.resources.R as ToolboxR
 
 /**
  * 快捷操作浮动面板数据类
@@ -121,6 +124,8 @@ private fun addMenuItemContentColor(theme: AddMenuItemTheme): Color = when (them
  * @param onNavigateToTodoList  导航到待办事项
  * @param onNavigateToAiApp     导航到智能体
  * @param onNavigateToHabitTracker  导航到习惯打卡
+ * @param onNavigateToDocumentScanner 导航到文档扫描
+ * @param onNavigateToPdfTools 导航到 PDF 工具
  * @param onNavigateToBlessingWall  导航到祈福墙
  * @param onNavigateToImageCreation 导航到图片创作
  * @param onNavigateToTextCard 导航到文字卡片
@@ -142,6 +147,8 @@ fun AddMenuFloatingPanel(
     onNavigateToCreateAIAgent: () -> Unit,
     onNavigateToCreateAIPrompt: () -> Unit,
     onNavigateToHabitTracker: () -> Unit,
+    onNavigateToDocumentScanner: () -> Unit,
+    onNavigateToPdfTools: () -> Unit,
     onNavigateToBlessingWall: () -> Unit,
     onNavigateToImageCreation: () -> Unit,
     onNavigateToTextCard: () -> Unit,
@@ -219,13 +226,22 @@ fun AddMenuFloatingPanel(
             ) + fadeOut(animationSpec = tween(150)),
         ) {
             // 网格菜单项
+            // 先放能直接办事的：扫描、PDF、笔记、待办。祈福放在最后。
             val menuItems = listOf(
                 AddMenuItem(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineScanQrCode,
-                    label = CoreR.string.nav_new_qr_code,
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineDocumentScanner,
+                    label = ToolboxR.string.document_scanner,
                     onClick = {
                         onDismiss()
-                        onNavigateToQrCode()
+                        onNavigateToDocumentScanner()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePdfTools,
+                    label = ToolboxR.string.pdf_tools,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToPdfTools()
                     }
                 ),
                 AddMenuItem(
@@ -234,6 +250,22 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToNotebook()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSchedule,
+                    label = CoreR.string.nav_todo_list,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToTodoList()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineScanQrCode,
+                    label = CoreR.string.nav_new_qr_code,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToQrCode()
                     }
                 ),
                 AddMenuItem(
@@ -258,14 +290,6 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToPrompt()
-                    }
-                ),
-                AddMenuItem(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSchedule,
-                    label = CoreR.string.nav_todo_list,
-                    onClick = {
-                        onDismiss()
-                        onNavigateToTodoList()
                     }
                 ),
                 AddMenuItem(
@@ -301,14 +325,6 @@ fun AddMenuFloatingPanel(
                     }
                 ),
                 AddMenuItem(
-                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall,
-                    label = CoreR.string.nav_blessing,
-                    onClick = {
-                        onDismiss()
-                        onNavigateToBlessingWall()
-                    }
-                ),
-                AddMenuItem(
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMarkupLayers,
                     label = CoreR.string.nav_image_creation,
                     onClick = {
@@ -338,6 +354,14 @@ fun AddMenuFloatingPanel(
                     onClick = {
                         onDismiss()
                         onNavigateToRecordCenter()
+                    }
+                ),
+                AddMenuItem(
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineBlessingWall,
+                    label = CoreR.string.nav_blessing,
+                    onClick = {
+                        onDismiss()
+                        onNavigateToBlessingWall()
                     }
                 ),
             )

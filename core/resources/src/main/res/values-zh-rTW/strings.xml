@@ -887,6 +887,7 @@
     <string name="sort_by_name">依名稱排序</string>
     <string name="sort_by_name_reversed">按名稱排序（反向）</string>
     <string name="pick_multiple_media">選擇多種媒體</string>
+    <string name="choose_photos">選擇照片</string>
     <string name="pick">選取</string>
     <string name="pick_single_media">選擇單一媒體</string>
     <string name="channels_configuration">通道配置</string>

@@ -24,7 +24,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -196,7 +195,6 @@ fun ImageReorderCarousel(
                         state = state,
                         key = uri.toString() + uri.hashCode()
                     ) { isDragging ->
-                        val alpha by animateFloatAsState(if (isDragging) 0.3f else 0.6f)
                         val shape = animateShape(
                             if (showButton) ShapeDefaults.top
                             else ShapeDefaults.default
@@ -235,24 +233,14 @@ fun ImageReorderCarousel(
                                     shape = RectangleShape,
                                     contentScale = ContentScale.Fit
                                 )
-                                Box(
-                                    modifier = Modifier
-                                        .size(120.dp)
-                                        .background(
-                                            MaterialTheme.colorScheme
-                                                .surfaceContainerLow
-                                                .copy(alpha)
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = "${index + 1}",
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
                             }
+                            Text(
+                                text = "${index + 1}",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
                             BoxAnimatedVisibility(
                                 visible = showButton,
                                 enter = expandVertically(tween(300)) + fadeIn(),

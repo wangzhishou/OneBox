@@ -871,6 +871,7 @@
     <string name="sort_by_name">Urutkan berdasarkan nama</string>
     <string name="sort_by_name_reversed">Urutkan berdasarkan nama (terbalik)</string>
     <string name="pick_multiple_media">Pilih beberapa media</string>
+    <string name="choose_photos">Pilih foto</string>
     <string name="pick">Pilih</string>
     <string name="pick_single_media">Pilih satu media</string>
     <string name="channels_configuration">Konfigurasi saluran</string>

@@ -91,8 +91,6 @@ internal fun MediaPickerHavePermissions(
     component: MediaPickerComponent,
     allowedMedia: AllowedMedia,
     allowMultiple: Boolean,
-    onRequestManagePermission: () -> Unit,
-    isManagePermissionAllowed: Boolean,
     onPicked: (List<Uri>) -> Unit
 ) {
     var selectedAlbumIndex by rememberSaveable { mutableLongStateOf(-1) }
@@ -260,8 +258,6 @@ internal fun MediaPickerHavePermissions(
             isSearching = isSearching,
             allowedMedia = allowedMedia,
             allowMultiple = allowMultiple,
-            onRequestManagePermission = onRequestManagePermission,
-            isManagePermissionAllowed = isManagePermissionAllowed,
             selectedAlbumIndex = selectedAlbumIndex,
             onSearchingChange = { isSearching = it },
             onPicked = onPicked

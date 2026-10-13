@@ -870,6 +870,7 @@
     <string name="sort_by_name">Ada göre sırala</string>
     <string name="sort_by_name_reversed">Ada göre sırala (ters)</string>
     <string name="pick_multiple_media">Birden fazla medya seç</string>
+    <string name="choose_photos">Fotoğraf seç</string>
     <string name="pick">Seç</string>
     <string name="pick_single_media">Tek medya seç</string>
     <string name="channels_configuration">Kanal yapılandırması</string>

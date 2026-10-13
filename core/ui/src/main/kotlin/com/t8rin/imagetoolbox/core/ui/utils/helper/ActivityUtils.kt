@@ -36,11 +36,14 @@ val MediaPickerActivityClass: Class<*> by lazy {
     )
 }
 
+const val EXTRA_PICKER_TITLE = "com.shifenmiao.extra.PICKER_TITLE"
+
 fun createMediaPickerIntent(
     context: Context,
     allowMultiple: Boolean,
     currentAccent: Color,
-    imageExtension: String
+    imageExtension: String,
+    title: String? = null,
 ): Intent = Intent(
     Intent.ACTION_PICK,
     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -54,6 +57,7 @@ fun createMediaPickerIntent(
     if (allowMultiple) {
         putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
     }
+    title?.takeIf { it.isNotBlank() }?.let { putExtra(EXTRA_PICKER_TITLE, it) }
     putExtra(ColorSchemeName, currentAccent.toArgb())
 }
 

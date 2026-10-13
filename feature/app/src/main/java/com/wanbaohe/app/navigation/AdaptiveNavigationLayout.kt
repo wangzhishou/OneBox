@@ -450,6 +450,14 @@ private fun QuickCreateFloatingPanel(
             onDismiss()
             rootComponent.navigateToNew(Screen.HabitTracker())
         },
+        onNavigateToDocumentScanner = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.DocumentScanner)
+        },
+        onNavigateToPdfTools = {
+            onDismiss()
+            rootComponent.navigateToNew(Screen.PdfTools())
+        },
         onNavigateToBlessingWall = {
             onDismiss()
             rootComponent.navigateToNew(Screen.BlessingWall())

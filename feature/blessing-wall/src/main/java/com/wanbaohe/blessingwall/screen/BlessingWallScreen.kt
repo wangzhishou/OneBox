@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -62,6 +63,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
@@ -405,9 +407,10 @@ private fun BlessingBottomTabBar(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
+                    .width(72.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .clickable { onTabSelected(index) }
-                    .padding(horizontal = 6.dp, vertical = 4.dp),
+                    .padding(horizontal = 2.dp, vertical = 4.dp),
             ) {
                 Image(
                     painter = painterResource(pageConfigs[index].tabIconRes),
@@ -427,9 +430,16 @@ private fun BlessingBottomTabBar(
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f)
                     },
-                    fontSize = 12.sp,
                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                     maxLines = 1,
+                    softWrap = false,
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Clip,
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = 8.sp,
+                        maxFontSize = 12.sp,
+                        stepSize = 0.5.sp,
+                    ),
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Box(

@@ -869,6 +869,7 @@
     <string name="sort_by_name">이름순 정렬</string>
     <string name="sort_by_name_reversed">이름순 정렬(역순)</string>
     <string name="pick_multiple_media">여러 미디어 선택</string>
+    <string name="choose_photos">사진 선택</string>
     <string name="pick">선택</string>
     <string name="pick_single_media">단일 미디어 선택</string>
     <string name="channels_configuration">채널 구성</string>

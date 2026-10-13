@@ -870,6 +870,7 @@
     <string name="sort_by_name">名前で並べ替え</string>
     <string name="sort_by_name_reversed">名前で並べ替え（逆順）</string>
     <string name="pick_multiple_media">複数のメディアを選択</string>
+    <string name="choose_photos">写真を選ぶ</string>
     <string name="pick">選択</string>
     <string name="pick_single_media">単一のメディアを選択</string>
     <string name="channels_configuration">チャンネル設定</string>

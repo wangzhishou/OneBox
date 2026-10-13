@@ -73,6 +73,7 @@ private class ImagePickerImpl(
     private val takePhoto: ManagedActivityResultLauncher<Uri, Boolean>,
     private val onCreateTakePhotoUri: (Uri) -> Unit,
     private val imageExtension: String,
+    private val pickerTitle: String?,
     private val onFailure: (Throwable) -> Unit,
 ) : ImagePicker {
     override fun pickImage() {
@@ -130,7 +131,8 @@ private class ImagePickerImpl(
                     context = context,
                     allowMultiple = mode == ImagePickerMode.EmbeddedMultiple,
                     currentAccent = currentAccent,
-                    imageExtension = imageExtension
+                    imageExtension = imageExtension,
+                    title = pickerTitle,
                 )
             )
         }
@@ -225,6 +227,7 @@ private class ImagePickerImpl(
             takePhoto = takePhoto,
             onCreateTakePhotoUri = onCreateTakePhotoUri,
             imageExtension = imageExtension,
+            pickerTitle = pickerTitle,
             onFailure = onFailure
         )
 
@@ -287,11 +290,13 @@ fun localImagePickerMode(
 fun rememberImagePicker(
     picker: Picker = Picker.Single,
     imageExtension: String = DefaultExtension,
+    title: String? = null,
     onFailure: () -> Unit = {},
     onSuccess: (List<Uri>) -> Unit,
 ): ImagePicker = rememberImagePicker(
     mode = localImagePickerMode(picker = picker),
     imageExtension = imageExtension,
+    title = title,
     onFailure = onFailure,
     onSuccess = onSuccess
 )
@@ -328,6 +333,7 @@ fun rememberImagePicker(
 fun rememberImagePicker(
     mode: ImagePickerMode,
     imageExtension: String = DefaultExtension,
+    title: String? = null,
     onFailure: () -> Unit = {},
     onSuccess: (List<Uri>) -> Unit,
 ): ImagePicker {
@@ -408,7 +414,8 @@ fun rememberImagePicker(
         photoPickerMultiple,
         getContent,
         takePhoto,
-        mode
+        mode,
+        title,
     ) {
         derivedStateOf {
             ImagePickerImpl(
@@ -423,6 +430,7 @@ fun rememberImagePicker(
                     takePhotoUri = it
                 },
                 imageExtension = imageExtension,
+                pickerTitle = title,
                 onFailure = {
                     onFailure()
 

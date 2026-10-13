@@ -871,6 +871,7 @@
     <string name="sort_by_name">Сортировать по имени</string>
     <string name="sort_by_name_reversed">Сортировать по имени (обратно)</string>
     <string name="pick_multiple_media">Выбрать несколько медиафайлов</string>
+    <string name="choose_photos">Выбрать фото</string>
     <string name="pick">Выбрать</string>
     <string name="pick_single_media">Выбрать один медиафайл</string>
     <string name="channels_configuration">Конфигурация каналов</string>

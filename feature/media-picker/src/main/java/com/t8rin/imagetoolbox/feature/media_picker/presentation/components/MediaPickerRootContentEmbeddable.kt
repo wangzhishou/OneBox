@@ -20,9 +20,6 @@ package com.t8rin.imagetoolbox.feature.media_picker.presentation.components
 import android.Manifest
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,7 +40,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -56,13 +52,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
-import com.t8rin.imagetoolbox.core.domain.utils.tryAll
 import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.BrokenImageAlt
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.appSettingsIntent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.isInstalledFromPlayStore
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.manageAllFilesIntent
-import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.manageAppAllFilesIntent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.requestPermissions
 import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionStatus
 import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionUtils.checkPermissions
@@ -84,6 +75,7 @@ fun MediaPickerRootContentEmbeddable(
     modifier: Modifier = Modifier,
     allowedMedia: AllowedMedia = AllowedMedia.Photos(null),
     allowMultiple: Boolean = true,
+    title: String? = null,
     onBack: (() -> Unit)? = null
 ) {
     val context = LocalComponentActivity.current
@@ -91,35 +83,11 @@ fun MediaPickerRootContentEmbeddable(
     var isPermissionAllowed by remember {
         mutableStateOf(true)
     }
-    var isManagePermissionAllowed by remember {
-        mutableStateOf(true)
-    }
-    var invalidator by remember {
-        mutableIntStateOf(0)
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        invalidator++
-    }
-
-    val requestManagePermission = {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            tryAll(
-                { launcher.launch(context.manageAppAllFilesIntent()) },
-                { launcher.launch(manageAllFilesIntent()) },
-                { launcher.launch(context.appSettingsIntent()) }
-            )
-        }
-    }
 
     val lifecycleEvent = rememberCurrentLifecycleEvent()
-    LaunchedEffect(lifecycleEvent, invalidator) {
+    LaunchedEffect(lifecycleEvent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val permission = Manifest.permission.READ_MEDIA_IMAGES
-            isManagePermissionAllowed =
-                Environment.isExternalStorageManager() || context.isInstalledFromPlayStore()
             when (context.checkPermissions(listOf(permission)).finalStatus) {
                 PermissionStatus.ALLOWED -> {
                     isPermissionAllowed = true
@@ -155,8 +123,6 @@ fun MediaPickerRootContentEmbeddable(
                         allowedMedia = allowedMedia,
                         allowMultiple = allowMultiple,
                         component = component,
-                        isManagePermissionAllowed = isManagePermissionAllowed,
-                        onRequestManagePermission = requestManagePermission,
                         onPicked = onPicked
                     )
                     LaunchedEffect(Unit) {
@@ -212,7 +178,7 @@ fun MediaPickerRootContentEmbeddable(
                     EnhancedTopAppBar(
                         title = {
                             Text(
-                                text = if (allowMultiple) {
+                                text = title?.takeIf { it.isNotBlank() } ?: if (allowMultiple) {
                                     stringResource(R.string.pick_multiple_media)
                                 } else {
                                     stringResource(R.string.pick_single_media)
