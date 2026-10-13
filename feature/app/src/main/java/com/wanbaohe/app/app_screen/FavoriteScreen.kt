@@ -60,8 +60,10 @@ import com.shifenmiao.base.ui.icon.BuildCustomIcon
 import com.shifenmiao.common.components.ClickInfoType
 import com.shifenmiao.common.components.FeaturedGrid
 import com.shifenmiao.common.components.SectionTheme
+import com.shifenmiao.common.components.sectionGradient
 import com.shifenmiao.common.components.sectionIconColor
 import com.shifenmiao.common.components.sectionIconContainerColor
+import com.shifenmiao.common.components.sectionThemeForIndex
 import com.shifenmiao.common.handle.LocalUrlNavigator
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.common.ui.BaseScreen
@@ -77,6 +79,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassMedium
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassRegular
+import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
 import com.t8rin.imagetoolbox.core.ui.widget.text.HtmlText
 import com.wanbaohe.app.component.ActivityLogComponent
 import com.wanbaohe.app.component.FavoriteComponent
@@ -204,7 +207,7 @@ private fun ContentListSection(
             .padding(horizontal = 16.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(timelineItemGap, Alignment.Top)
     ) {
         // ── 1. 最近 Section ──
         if (recentItems.isNotEmpty()) {
@@ -328,6 +331,7 @@ private fun ContentListSection(
                         !isSameDay(next.createdAt, entry.createdAt)
                     ActivityLogTimelineItem(
                         entry = entry,
+                        themeIndex = index,
                         showDateHeader = isFirstInDay,
                         isFirstInDay = isFirstInDay,
                         isLastInDay = isLastInDay,
@@ -672,14 +676,23 @@ private val railDotSize = 8.dp
 private val railLineX = 42.dp
 private val railDotCenterY = 25.dp
 
+/**
+ * 时间线条目之间的间隔 —— 由上方 LazyColumn 的 Arrangement 统一留出。
+ * 左轨连线只能画在自己条目内，间隔处会断开，所以同一天内要按这个值把线往下补一个间隔（见 [TimelineRail]）。
+ */
+private val timelineItemGap = 6.dp
+
 @Composable
 private fun ActivityLogTimelineItem(
     entry: ActivityLogEntry,
+    themeIndex: Int,
     showDateHeader: Boolean,
     isFirstInDay: Boolean,
     isLastInDay: Boolean,
     onDeleteRequested: () -> Unit
 ) {
+    // 与「精选」同一套轮换配色：每条记录一个色调, 只负责区分, 浓淡交给 GlassStyle 阶梯
+    val theme = sectionThemeForIndex(themeIndex)
     Column(modifier = Modifier.fillMaxWidth()) {
         if (showDateHeader) {
             Text(
@@ -702,6 +715,7 @@ private fun ActivityLogTimelineItem(
             )
             ActivityLogCard(
                 entry = entry,
+                theme = theme,
                 onDeleteRequested = onDeleteRequested,
                 modifier = Modifier
                     .weight(1f)
@@ -711,16 +725,17 @@ private fun ActivityLogTimelineItem(
     }
 }
 
-/** 左轨：时间文本 + 圆点 + 连接线（组内首/尾截断），配色与卡片同属 surfaceContainer 家族 */
+/** 左轨：时间文本 + 圆点 + 连接线（组内首/尾截断），整条轴用 outlineVariant 加一点透明度，不带记录色调 */
 @Composable
 private fun TimelineRail(
     timeText: String,
     isFirstInDay: Boolean,
     isLastInDay: Boolean
 ) {
+    // 时间文本单独留 onSurfaceVariant：outlineVariant 那种明度压在 11sp 上会读不出来
     val railColor = MaterialTheme.colorScheme.onSurfaceVariant
-    val lineColor = railColor.copy(alpha = 0.28f)
-    val dotColor = MaterialTheme.colorScheme.outline
+    val lineColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+    val dotColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.85f)
     Box(
         modifier = Modifier
             .width(railWidth)
@@ -729,11 +744,15 @@ private fun TimelineRail(
                 val x = railLineX.toPx()
                 val dotY = railDotCenterY.toPx()
                 val stroke = 1.dp.toPx()
+                // 条目之间的 timelineItemGap 是列表留的空档, 只画自己的高度会在空档里断成两截。
+                // 用和列表同一个 roundToPx 把线段往下多画一个空档, 正好接上下一段; 只往一边补,
+                // 两段既不重叠(重叠处半透明线会叠深一道), 也不留缝。
+                val bridge = timelineItemGap.roundToPx().toFloat()
                 if (!isFirstInDay) {
                     drawLine(lineColor, Offset(x, 0f), Offset(x, dotY), strokeWidth = stroke)
                 }
                 if (!isLastInDay) {
-                    drawLine(lineColor, Offset(x, dotY), Offset(x, size.height), strokeWidth = stroke)
+                    drawLine(lineColor, Offset(x, dotY), Offset(x, size.height + bridge), strokeWidth = stroke)
                 }
             }
     ) {
@@ -763,6 +782,7 @@ private fun TimelineRail(
 @Suppress("DEPRECATION")
 private fun ActivityLogCard(
     entry: ActivityLogEntry,
+    theme: SectionTheme,
     onDeleteRequested: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -770,6 +790,7 @@ private fun ActivityLogCard(
     val dataDraftHelper = LocalDataDraftHelper.current
     val logScope = rememberCoroutineScope()
     val shape = RoundedCornerShape(16.dp)
+    val containerColor = sectionGradient(theme)
 
     SwipeToDismissBox(
         modifier = modifier,
@@ -795,14 +816,16 @@ private fun ActivityLogCard(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = shape,
-                // 比「我的」的 Regular 再淡一档，底色仍用同一支 surfaceContainerLow
+                // 比「我的」的 Regular 再淡一档：每条记录透出自己的色调，但只是浅浅一层
                 style = GlassStyle.Thin,
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                    containerColor = containerColor,
+                    contentColor = tintedGlassContentColor(containerColor)
                 ),
             ) {
                 ActivityLogCardContent(
                     entry = entry,
+                    theme = theme,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 14.dp, vertical = 12.dp)
@@ -815,6 +838,7 @@ private fun ActivityLogCard(
 @Composable
 private fun ActivityLogCardContent(
     entry: ActivityLogEntry,
+    theme: SectionTheme,
     modifier: Modifier = Modifier
 ) {
     val localUrlNavigator = LocalUrlNavigator.current
@@ -823,13 +847,16 @@ private fun ActivityLogCardContent(
     if (rowTitle.isEmpty() && entry.description.isBlank()) {
         rowTitle = topLabel.ifEmpty { stringResource(R.string.record_tab_title) }
     }
+    // 有色调的玻璃底上不要用成对的 onColor 猜对比度，按混合后的有效底色取文字色
+    val contentColor = tintedGlassContentColor(sectionGradient(theme))
+    val iconTint = sectionIconColor(theme)
 
     Column(modifier = modifier) {
         if (topLabel.isNotEmpty() && topLabel != rowTitle) {
             Text(
                 text = topLabel,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = contentColor.copy(alpha = 0.62f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -844,9 +871,9 @@ private fun ActivityLogCardContent(
                 modifier = Modifier
                     .size(40.dp)
                     .glassRegular(
-                        // 卡片是 Thin，图标井深一档到 Regular，色仍是 surfaceContainerLow
+                        // 卡片是 Thin，图标井深一档到 Regular，色跟卡片同属一个色调
                         shape = RoundedCornerShape(12.dp),
-                        color = MaterialTheme.colorScheme.surfaceContainerLow,
+                        color = sectionIconContainerColor(theme),
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -854,7 +881,7 @@ private fun ActivityLogCardContent(
                     imageVector = recordCategoryIcon(entry.category),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = iconTint
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
@@ -862,7 +889,7 @@ private fun ActivityLogCardContent(
                     Text(
                         text = rowTitle,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = contentColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -888,7 +915,7 @@ private fun ActivityLogCardContent(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineChevronRight,
                 contentDescription = null,
                 modifier = Modifier.size(12.dp),
-                tint = MaterialTheme.colorScheme.outline
+                tint = contentColor.copy(alpha = 0.5f)
             )
         }
     }
@@ -897,8 +924,9 @@ private fun ActivityLogCardContent(
 /**
  * 各活动分类的图标。
  *
- * 操作记录分区不再按分类染色。卡片比「我的」再淡一档（Thin + surfaceContainerLow），
- * 文字对齐「我的」：标题 onSurface，说明 onSurfaceVariant。分类只靠图标形状区分。
+ * 操作记录每条记录按「精选」的轮换配色拿一个色调（PRIMARY/SECONDARY/TERTIARY/SURFACE），
+ * 卡片用该色调的 container 走 GlassStyle.Thin，图标井深一档，图标用 onXContainer 上色；
+ * 底色浓淡仍由 GlassStyle 阶梯决定，不要往 container 色里 copy(alpha = …)。
  */
 private fun recordCategoryIcon(category: ActivityCategory): ImageVector = when (category) {
     ActivityCategory.AI_CHAT -> com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAiChat
