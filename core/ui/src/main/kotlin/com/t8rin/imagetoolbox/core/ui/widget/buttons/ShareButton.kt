@@ -17,7 +17,6 @@
 
 package com.t8rin.imagetoolbox.core.ui.widget.buttons
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,7 +47,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.enhancedVerticalScroll
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.fadingEdges
-import com.t8rin.imagetoolbox.core.ui.widget.modifier.shapeByInteraction
 import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItem
 import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItemDefaults
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
@@ -67,8 +64,6 @@ fun ShareButton(
     var showSelectionDialog by rememberSaveable {
         mutableStateOf(false)
     }
-    val buttonInteractionSource = remember { MutableInteractionSource() }
-
     EnhancedIconButton(
         onClick = {
             if (onCopy != null || onEdit != null) {
@@ -78,14 +73,6 @@ fun ShareButton(
             }
         },
         enabled = enabled,
-        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        shape = shapeByInteraction(
-            shape = ShapeDefaults.small,
-            pressedShape = ShapeDefaults.mini,
-            interactionSource = buttonInteractionSource
-        ),
-        pressedShape = ShapeDefaults.mini,
-        interactionSource = buttonInteractionSource
     ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,

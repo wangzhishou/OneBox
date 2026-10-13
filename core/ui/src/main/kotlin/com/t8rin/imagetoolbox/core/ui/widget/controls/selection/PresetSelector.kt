@@ -238,12 +238,13 @@ fun PresetSelector(
                     LazyRow(
                         state = listState,
                         modifier = Modifier
-                            .fadingEdges(listState)
+                            .fillMaxWidth()
+                            .fadingEdges(listState, length = 8.dp)
                             .padding(vertical = 1.dp),
                         horizontalArrangement = Arrangement.spacedBy(
-                            8.dp, Alignment.CenterHorizontally
+                            4.dp, Alignment.CenterHorizontally
                         ),
-                        contentPadding = PaddingValues(horizontal = 8.dp)
+                        contentPadding = PaddingValues(horizontal = 12.dp)
                     ) {
                         if (includeTelegramOption) {
                             item(key = "tg") {

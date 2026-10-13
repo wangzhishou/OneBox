@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,6 +36,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.isPortraitOrientationAsState
+import com.t8rin.imagetoolbox.core.ui.widget.buttons.BottomButtonsBlock
 import com.t8rin.imagetoolbox.core.ui.widget.buttons.ShareButton
 import com.t8rin.imagetoolbox.core.ui.widget.controls.ImageReorderCarousel
 import com.t8rin.imagetoolbox.core.ui.widget.controls.ScaleSmallImagesToLargeToggle
@@ -47,7 +47,6 @@ import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedFloatingActionButton
 import com.t8rin.imagetoolbox.feature.pdf_tools.presentation.images_to_pdf.screenLogic.ImagesToPdfComponent
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.resources.icons.AddPhotoAlt
 
 @Composable
@@ -101,24 +100,27 @@ fun ImagesToPdfScreen(component: ImagesToPdfComponent) {
             if (images.isNullOrEmpty()) {
                 EmptyPickArea(onPick = imagePicker::pickImage)
             } else {
+                val onSave = {
+                    savePdfLauncher.make(component.generatePdfFilename())
+                }
                 if (isPortrait) {
                     Column(modifier = Modifier.fillMaxSize()) {
                         Column(
                             modifier = Modifier
+                                .weight(1f)
                                 .fillMaxWidth()
                                 .verticalScroll(rememberScrollState())
-                                .weight(1f)
                                 .padding(16.dp),
                         ) {
                             ImagesToPdfControls(
                                 component = component,
                                 onAddImages = addImagesPicker::pickImage,
-                                onClickPick = imagePicker::pickImage,
-                                onClickSave = {
-                                    savePdfLauncher.make(component.generatePdfFilename())
-                                },
                             )
                         }
+                        ImagesToPdfButtons(
+                            onPick = imagePicker::pickImage,
+                            onSave = onSave,
+                        )
                     }
                 } else {
                     Row(modifier = Modifier.fillMaxSize()) {
@@ -132,12 +134,12 @@ fun ImagesToPdfScreen(component: ImagesToPdfComponent) {
                             ImagesToPdfControls(
                                 component = component,
                                 onAddImages = addImagesPicker::pickImage,
-                                onClickPick = imagePicker::pickImage,
-                                onClickSave = {
-                                    savePdfLauncher.make(component.generatePdfFilename())
-                                },
                             )
                         }
+                        ImagesToPdfButtons(
+                            onPick = imagePicker::pickImage,
+                            onSave = onSave,
+                        )
                     }
                 }
             }
@@ -165,8 +167,6 @@ fun ImagesToPdfScreen(component: ImagesToPdfComponent) {
 private fun ImagesToPdfControls(
     component: ImagesToPdfComponent,
     onAddImages: () -> Unit,
-    onClickPick: () -> Unit,
-    onClickSave: () -> Unit,
 ) {
     ImageReorderCarousel(
         images = component.imagesToPdfState,
@@ -197,27 +197,19 @@ private fun ImagesToPdfControls(
         checked = component.scaleSmallImagesToLarge,
         onCheckedChange = { component.toggleScaleSmallImagesToLarge() },
     )
-    Spacer(Modifier.height(16.dp))
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.End,
-    ) {
-        EnhancedFloatingActionButton(onClick = onClickPick) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.AddPhotoAlt,
-                contentDescription = stringResource(R.string.pick),
-            )
-        }
-        if (!component.imagesToPdfState.isNullOrEmpty()) {
-            Spacer(Modifier.width(8.dp))
-            EnhancedFloatingActionButton(onClick = onClickSave) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
-                    contentDescription = stringResource(R.string.save),
-                )
-            }
-        }
-    }
+}
+
+@Composable
+private fun ImagesToPdfButtons(
+    onPick: () -> Unit,
+    onSave: () -> Unit,
+) {
+    BottomButtonsBlock(
+        isNoData = false,
+        onSecondaryButtonClick = onPick,
+        onPrimaryButtonClick = onSave,
+        actions = {},
+    )
 }
 
 @Composable
