@@ -172,7 +172,7 @@ private fun PoemHistoryRow(
                 color = if (selected) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant
+                    MaterialTheme.colorScheme.surfaceContainer
                 }
             )
             .clickable(onClick = onClick)

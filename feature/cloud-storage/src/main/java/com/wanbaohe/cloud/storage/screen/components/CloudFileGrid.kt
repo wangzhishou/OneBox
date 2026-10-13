@@ -508,7 +508,7 @@ private fun SelectionIndicator(
         color = if (selected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.72f)
+            MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.72f)
         },
     ) {
         if (selected) {

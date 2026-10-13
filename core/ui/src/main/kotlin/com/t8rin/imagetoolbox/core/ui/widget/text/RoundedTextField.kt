@@ -253,7 +253,7 @@ fun RoundedTextFieldColors(
     isError: Boolean,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     focusedIndicatorColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    unfocusedIndicatorColor: Color = MaterialTheme.colorScheme.surfaceVariant.inverse({ 0.2f })
+    unfocusedIndicatorColor: Color = MaterialTheme.colorScheme.outlineVariant
 ): TextFieldColors =
     MaterialTheme.colorScheme.run {
         val containerColorNew = if (isError) {

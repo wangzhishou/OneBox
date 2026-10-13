@@ -447,7 +447,7 @@ private fun EngineBadge(
                     isError -> MaterialTheme.colorScheme.surfaceContainer
                     isPrimary -> MaterialTheme.colorScheme.primaryContainer
                     selected -> MaterialTheme.colorScheme.primaryContainer
-                    else -> MaterialTheme.colorScheme.surfaceVariant
+                    else -> MaterialTheme.colorScheme.surfaceContainer
                 },
                 shape = RoundedCornerShape(50),
                 borderWidth = 0.dp,

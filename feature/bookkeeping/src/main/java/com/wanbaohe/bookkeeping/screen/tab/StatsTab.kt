@@ -511,7 +511,7 @@ private fun RankRow(
         1    -> MaterialTheme.colorScheme.primaryContainer        to MaterialTheme.colorScheme.onPrimaryContainer
         2    -> MaterialTheme.colorScheme.secondaryContainer      to MaterialTheme.colorScheme.onSecondaryContainer
         3    -> MaterialTheme.colorScheme.tertiaryContainer       to MaterialTheme.colorScheme.onTertiaryContainer
-        else -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
+        else -> MaterialTheme.colorScheme.surfaceContainer to MaterialTheme.colorScheme.onSurfaceVariant
     }
 
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {

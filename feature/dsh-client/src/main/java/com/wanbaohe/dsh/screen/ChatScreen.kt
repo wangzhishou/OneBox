@@ -1364,7 +1364,7 @@ private fun SessionRow(
                 )
                 .background(
                     if (isSelected) {
-                        MaterialTheme.colorScheme.surfaceVariant
+                        MaterialTheme.colorScheme.surfaceContainer
                     } else {
                         MaterialTheme.colorScheme.surface.copy(alpha = 0f)
                     }

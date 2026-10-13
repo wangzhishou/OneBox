@@ -63,7 +63,7 @@ fun ImageUploadGallery(
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
                     contentDescription = "Add Image",
-                    tint = MaterialTheme.colorScheme.surfaceVariant
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

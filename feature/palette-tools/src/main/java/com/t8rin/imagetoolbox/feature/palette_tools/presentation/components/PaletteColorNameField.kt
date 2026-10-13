@@ -53,7 +53,7 @@ internal fun PaletteColorNameField(
     shape: Shape = RoundedCornerShape(20.dp),
     colors: TextFieldColors = RoundedTextFieldColors(
         isError = false,
-        unfocusedIndicatorColor = MaterialTheme.colorScheme.surfaceVariant.inverse({ 0.2f })
+        unfocusedIndicatorColor = MaterialTheme.colorScheme.outlineVariant
             .copy(0.5f)
     ),
     modifier: Modifier = Modifier

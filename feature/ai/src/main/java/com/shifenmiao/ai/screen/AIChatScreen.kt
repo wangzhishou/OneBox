@@ -723,7 +723,7 @@ private fun MessageLimitNoticeCard() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         shape = MaterialTheme.shapes.medium,
     ) {
         Row(

@@ -909,7 +909,7 @@ private fun ToolSelectionOptionItem(
         color = if (selected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceVariant
+            MaterialTheme.colorScheme.surfaceContainer
         },
         style = if (selected) GlassStyle.None else GlassStyle.Thick,
     ) {

@@ -271,7 +271,6 @@ private fun LevelBubble(
     } else {
         MaterialTheme.colorScheme.onPrimaryContainer
     }
-    val surfaceVariant = MaterialTheme.colorScheme.surfaceVariant
     val outline = MaterialTheme.colorScheme.outline
     val outlineVariant = MaterialTheme.colorScheme.outlineVariant
 
@@ -293,7 +292,7 @@ private fun LevelBubble(
 
         Canvas(modifier = Modifier.size(size)) {
             drawCircle(
-                color = surfaceVariant,
+                color = outlineVariant,
                 radius = radiusPx,
                 style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2f)
             )

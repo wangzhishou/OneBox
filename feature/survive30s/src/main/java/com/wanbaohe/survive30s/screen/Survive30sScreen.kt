@@ -908,7 +908,7 @@ private fun ResultActions(
     ) {
         GlassButton(
             onClick = onBack,
-            color = MaterialTheme.colorScheme.surfaceVariant,
+            color = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             borderWidth = 0.dp,
             modifier = Modifier

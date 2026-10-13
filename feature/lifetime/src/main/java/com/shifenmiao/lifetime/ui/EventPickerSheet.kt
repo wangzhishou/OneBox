@@ -211,7 +211,7 @@ private fun EventPickerItem(
                         if (event.isEnabled) {
                             MaterialTheme.colorScheme.primaryContainer
                         } else {
-                            MaterialTheme.colorScheme.surfaceVariant
+                            MaterialTheme.colorScheme.surfaceContainer
                         }
                     ),
                 contentAlignment = Alignment.Center

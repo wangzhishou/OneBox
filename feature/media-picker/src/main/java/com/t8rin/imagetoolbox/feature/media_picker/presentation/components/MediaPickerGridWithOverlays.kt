@@ -150,7 +150,7 @@ internal fun ColumnScope.MediaPickerGridWithOverlays(
                 val containerColor by animateColorAsState(
                     targetValue = if (enabled) {
                         MaterialTheme.colorScheme.primaryContainer
-                    } else MaterialTheme.colorScheme.surfaceVariant
+                    } else MaterialTheme.colorScheme.surfaceContainer
                 )
                 val contentColor by animateColorAsState(
                     targetValue = if (enabled) {

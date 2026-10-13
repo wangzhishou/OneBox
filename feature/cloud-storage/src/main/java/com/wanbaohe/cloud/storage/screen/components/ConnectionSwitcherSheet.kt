@@ -78,7 +78,7 @@ fun ConnectionSwitcherSheet(
             if (connections.isEmpty()) {
                 GlassSurface(
                     shape = RoundedCornerShape(16.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Row(
