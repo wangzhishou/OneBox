@@ -80,6 +80,7 @@ fun BoxScope.BoardStartOverlay(
  * 文字糊成一团);这里直接给 M3 实色底,保证任何棋盘底色下都看得清。
  *
  * @param emphasizeResult 胜负类结果用主题强调色;和棋等中性结果传 false
+ * @param resultColor 胜方身份色(红方/白方等);传了就以它为准,不传走 [emphasizeResult] 的强调色
  * @param backLabel/onBack 可选第三按钮(text 样式),不传则不显示
  * @param dismissLabel/onDismiss 可选「先看看棋盘」入口;传了 [onDismiss] 即可关闭浮层就地复盘
  */
@@ -93,6 +94,7 @@ fun BoxScope.BoardGameOverOverlay(
     modifier: Modifier = Modifier,
     resultSubtitle: String = "",
     emphasizeResult: Boolean = true,
+    resultColor: Color = Color.Unspecified,
     backLabel: String = "",
     onBack: (() -> Unit)? = null,
     dismissLabel: String = "",
@@ -102,7 +104,7 @@ fun BoxScope.BoardGameOverOverlay(
         modifier = modifier
             .matchParentSize()
             .clip(MaterialTheme.shapes.large)
-            .background(Color.Black.copy(alpha = 0.42f))
+            .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.28f))
             // 吃掉落在卡片外的点击;若允许关闭浮层,点遮罩也关掉以便看棋盘
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -132,10 +134,10 @@ fun BoxScope.BoardGameOverOverlay(
                 Text(
                     text = resultTitle,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                    color = if (emphasizeResult) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
+                    color = when {
+                        resultColor != Color.Unspecified -> resultColor
+                        emphasizeResult -> MaterialTheme.colorScheme.onPrimaryContainer
+                        else -> MaterialTheme.colorScheme.onSurface
                     },
                     textAlign = TextAlign.Center,
                 )

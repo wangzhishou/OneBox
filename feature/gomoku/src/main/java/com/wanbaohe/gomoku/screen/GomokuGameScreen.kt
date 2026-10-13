@@ -236,6 +236,7 @@ private fun GameContent(
                             onRestart = component::restart,
                             onReview = component::openAnalysis,
                             emphasizeResult = state.status != GameStatus.DRAW,
+                            resultColor = gameOverTitleColor(state.status, state.winnerSide),
                             dismissLabel = stringResource(R.string.gomoku_close),
                             onDismiss = { component.showGameOverOverlay = false },
                         )
@@ -353,6 +354,22 @@ private fun gomokuPlayerData(
         actionLabel = stringResource(R.string.gomoku_change_opponent),
         avatarIsLoggedIn = !namedHuman || humanIsLoggedIn,
     )
+}
+
+/** 终局标题按胜方身份色:黑方 -> onSurface,白方 -> onSurfaceVariant(与双方条圆点一致) */
+@Composable
+private fun gameOverTitleColor(status: GameStatus, winnerSide: String): Color {
+    val winner = when (status) {
+        GameStatus.BLACK_WINS -> Side.BLACK
+        GameStatus.WHITE_WINS -> Side.WHITE
+        GameStatus.RESIGNED -> Side.entries.firstOrNull { it.name.equals(winnerSide, ignoreCase = true) }
+        else -> null
+    }
+    return when (winner) {
+        Side.BLACK -> MaterialTheme.colorScheme.onSurface
+        Side.WHITE -> MaterialTheme.colorScheme.onSurfaceVariant
+        null -> Color.Unspecified
+    }
 }
 
 @Composable

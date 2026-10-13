@@ -31,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -285,6 +286,7 @@ private fun ChessGameContent(
                                 else -> R.string.chess_game_over_subtitle_resign
                             }),
                             emphasizeResult = state.status != GameStatus.DRAW,
+                            resultColor = gameOverTitleColor(state.status, state.winnerSide),
                             restartLabel = stringResource(R.string.chess_game_over_play_again),
                             reviewLabel = stringResource(R.string.chess_game_over_review),
                             backLabel = stringResource(R.string.chess_game_over_back),
@@ -355,13 +357,29 @@ private fun ChessGameContent(
     }
 }
 
+/** 终局标题按胜方身份色:黑方 -> onSurface,白方 -> onSurfaceVariant(与双方条圆点一致) */
+@Composable
+private fun gameOverTitleColor(status: GameStatus, winnerSide: String): Color {
+    val winner = when (status) {
+        GameStatus.BLACK_WINS -> Side.BLACK
+        GameStatus.WHITE_WINS -> Side.WHITE
+        GameStatus.RESIGNED -> Side.entries.firstOrNull { it.name.equals(winnerSide, ignoreCase = true) }
+        else -> null
+    }
+    return when (winner) {
+        Side.BLACK -> MaterialTheme.colorScheme.onSurface
+        Side.WHITE -> MaterialTheme.colorScheme.onSurfaceVariant
+        null -> Color.Unspecified
+    }
+}
+
 @Composable
 private fun CompactGameOverDialog(component: ChessGameComponent, state: ChessGameUiState) {
     AlertDialog(
         onDismissRequest = component::dismissGameOverOverlay,
         // 与竖屏的 BoardGameOverOverlay 卡片同底:弹层要实色,别让棋盘透上来
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        title = { Text(localizedGameResultText(state.status)) },
+        title = { Text(localizedGameResultText(state.status), color = gameOverTitleColor(state.status, state.winnerSide)) },
         text = {
             TextButton(onClick = component::restart, modifier = Modifier.fillMaxWidth(), colors = accentTextButtonColors()) {
                 Text(stringResource(R.string.chess_game_over_play_again), maxLines = 2, overflow = TextOverflow.Ellipsis)

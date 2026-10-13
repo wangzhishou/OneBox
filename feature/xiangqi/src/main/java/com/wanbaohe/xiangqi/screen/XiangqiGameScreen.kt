@@ -468,6 +468,7 @@ private fun GameBoardArea(
                     dismissLabel = stringResource(R.string.xiangqi_game_over_dismiss),
                     onDismiss = component::dismissGameOverOverlay,
                     emphasizeResult = state.status != GameStatus.DRAW,
+                    resultColor = gameOverTitleColor(state.status, state.winnerSide),
                 )
             } else if (isGameOver) {
                 // 浮层关掉后：结果落在棋盘中线（与「将军」同位置），认输带旗标 + 方色
@@ -478,6 +479,22 @@ private fun GameBoardArea(
                 )
             }
         }
+    }
+}
+
+/** 终局标题按胜方身份色:红方 -> error,黑方 -> onSurface(与棋子、双方条一致) */
+@Composable
+private fun gameOverTitleColor(status: GameStatus, winnerSide: String): Color {
+    val winner = when (status) {
+        GameStatus.RED_WINS -> Side.RED
+        GameStatus.BLACK_WINS -> Side.BLACK
+        GameStatus.RESIGNED -> Side.entries.firstOrNull { it.name.equals(winnerSide, ignoreCase = true) }
+        else -> null
+    }
+    return when (winner) {
+        Side.RED -> MaterialTheme.colorScheme.error
+        Side.BLACK -> MaterialTheme.colorScheme.onSurface
+        null -> Color.Unspecified
     }
 }
 
