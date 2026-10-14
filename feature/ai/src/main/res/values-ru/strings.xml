@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">Задача %1$s была %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">Задача удалена: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">Управление играми в сянци</string>
-    <string name="agent_tool_manage_xiangqi_summary">Запрос, создание, импорт эндшпиля/дебюта, импорт записей игр, удаление и экспорт китайских шахматных игр</string>
-    <string name="agent_tool_manage_xiangqi_param_action">Тип действия: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">Импорт эндшпиля или дебюта. Также запрос, создание, удаление и экспорт партий в сянци</string>
+    <string name="agent_tool_manage_xiangqi_param_action">Тип действия: list / detail / create / import_preset / import_fen / import_json / delete / export. Для встроенного эндшпиля — import_preset; import_fen — только когда пользователь дал FEN</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">ID игры (обязательно для detail / delete / export)</string>
     <string name="agent_tool_manage_xiangqi_param_title">Название игры (обязательно для create)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">Создавать ли игру человек против ИИ, где ИИ играет красными (необязательно для create, по умолчанию false)</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">Игра создана: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">Игра удалена: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">Строка нотации FEN (обязательна для import_fen). Используется для импорта эндшпиля или пользовательского дебюта. Формат: \"позиция сторона счетчик-полуходов счетчик-полных-ходов\", например \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\". Часть позиции состоит из 10 рядов, разделенных `/`, каждый ряд 9 колонок; заглавные буквы = Красные (K=Генерал A=Советник B=Слон N=Конь R=Ладья C=Пушка P=Пешка), строчные = Черные (k=a b=n r=c p), цифры = пустые клетки.</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">Имя встроенного эндшпиля (обязательно для import_preset). Доступно: rook_vs_pawn=Красная ладья против чёрной пешки</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">Строка записи игры в формате JSON (обязательна для import_json). Используется для импорта полной игры с повтором ходов. Формат: {\"version\":1,\"title\":\"название\",\"initialFen\":\"начальная FEN\",\"result\":\"результат\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}. `move` — координатный формат UCCI (например, a0a1 означает ход с a0 на a1); `moves` воспроизводятся по порядку.</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">Отсутствует параметр fen</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">Нет fen. Повторите один раз с action=import_fen, передав title и fen вместе, позиция — как описал пользователь; для встроенного эндшпиля используйте import_preset</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">Нет preset. Доступно: rook_vs_pawn (Красная ладья против чёрной пешки). Если пользователь дал FEN, используйте import_fen</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">Неизвестный встроенный эндшпиль: %1$s. Доступно: rook_vs_pawn (Красная ладья против чёрной пешки)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">Отсутствует параметр json_data</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN импортирован</string>
-    <string name="agent_tool_manage_xiangqi_imported">Игра импортирована: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">Красная ладья против чёрной пешки</string>
+    <string name="agent_tool_manage_xiangqi_imported">Партия импортирована: %1$s. Позиция импортирована полностью. Передайте пользователю deepLinks; повторный вызов не нужен</string>
     <string name="agent_tool_manage_xiangqi_import_failed">Импорт не удался: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -821,8 +825,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">Задача остановлена после %1$d шагов (достигнут лимит). Последнее действие: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">Сейчас нет доступного Activity. Убедитесь, что вы открыли чат с обычной страницы.</string>
     <string name="agent_tool_manage_gomoku_title">Управление партиями гомоку</string>
-    <string name="agent_tool_manage_gomoku_summary">Запрос, создание, импорт эндшпиля/дебюта, импорт записей, удаление и экспорт партий в гомоку</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">Импорт эндшпиля или дебюта. Также запрос, создание, удаление и экспорт партий в гомоку</string>
+    <string name="agent_tool_manage_gomoku_param_action">Тип действия: list / detail / create / import_preset / import_fen / import_json / delete / export. Для встроенного эндшпиля — import_preset; import_fen — только когда пользователь дал FEN</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -835,15 +839,19 @@
     <string name="agent_tool_manage_gomoku_created">Игра создана: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">Игра удалена: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">Имя встроенного эндшпиля (обязательно для import_preset). Доступно: center_two_black=Чёрная пара на тэнгэн</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">Отсутствует параметр fen</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">Нет fen. Повторите один раз с action=import_fen, передав title и fen вместе, позиция — как описал пользователь; для встроенного эндшпиля используйте import_preset</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">Нет preset. Доступно: center_two_black (Чёрная пара на тэнгэн). Если пользователь дал FEN, используйте import_fen</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">Неизвестный встроенный эндшпиль: %1$s. Доступно: center_two_black (Чёрная пара на тэнгэн)</string>
     <string name="agent_tool_manage_gomoku_missing_json">Отсутствует параметр json_data</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FEN импортирован</string>
-    <string name="agent_tool_manage_gomoku_imported">Игра импортирована: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">Чёрная пара на тэнгэн</string>
+    <string name="agent_tool_manage_gomoku_imported">Партия импортирована: %1$s. Позиция импортирована полностью. Передайте пользователю deepLinks; повторный вызов не нужен</string>
     <string name="agent_tool_manage_gomoku_import_failed">Импорт не удался: %1$s</string>
     <string name="agent_tool_manage_chess_title">Управление шахматными партиями</string>
-    <string name="agent_tool_manage_chess_summary">Запрос, создание, импорт эндшпиля/дебюта, импорт записей, удаление и экспорт шахматных партий</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">Импорт эндшпиля или дебюта. Также запрос, создание, удаление и экспорт шахматных партий</string>
+    <string name="agent_tool_manage_chess_param_action">Тип действия: list / detail / create / import_preset / import_fen / import_json / delete / export. Для встроенного эндшпиля — import_preset; import_fen — только когда пользователь дал FEN</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -856,11 +864,15 @@
     <string name="agent_tool_manage_chess_created">Игра создана: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">Игра удалена: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">Имя встроенного эндшпиля (обязательно для import_preset). Доступно: king_pawn_vs_king=Король и пешка против короля</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">Отсутствует параметр fen</string>
+    <string name="agent_tool_manage_chess_missing_fen">Нет fen. Повторите один раз с action=import_fen, передав title и fen вместе, позиция — как описал пользователь; для встроенного эндшпиля используйте import_preset</string>
+    <string name="agent_tool_manage_chess_missing_preset">Нет preset. Доступно: king_pawn_vs_king (Король и пешка против короля). Если пользователь дал FEN, используйте import_fen</string>
+    <string name="agent_tool_manage_chess_unknown_preset">Неизвестный встроенный эндшпиль: %1$s. Доступно: king_pawn_vs_king (Король и пешка против короля)</string>
     <string name="agent_tool_manage_chess_missing_json">Отсутствует параметр json_data</string>
     <string name="agent_tool_manage_chess_imported_fen">FEN импортирован</string>
-    <string name="agent_tool_manage_chess_imported">Игра импортирована: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">Король и пешка против короля</string>
+    <string name="agent_tool_manage_chess_imported">Партия импортирована: %1$s. Позиция импортирована полностью. Передайте пользователю deepLinks; повторный вызов не нужен</string>
     <string name="agent_tool_manage_chess_import_failed">Импорт не удался: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">Видимость стеклянной рамки. **Числовой тип** (НЕ строка), диапазон [0.0, 1.0], по умолчанию 0.17 (17%%). Значение 0 полностью скрывает рамку; чем выше — тем заметнее контур. Не зависит от glass_alpha. Необязательно</string>

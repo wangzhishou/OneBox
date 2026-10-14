@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">कार्य %1$s %2$s हो गया है</string>
     <string name="agent_tool_manage_todo_task_deleted">कार्य हटाया गया: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">शियांग्की खेल प्रबंधित करें</string>
-    <string name="agent_tool_manage_xiangqi_summary">चीनी शतरंज खेलों की क्वेरी, निर्माण, अंतिम खेल/प्रारंभिक आयात, खेल रिकॉर्ड आयात, हटाना और निर्यात करें</string>
-    <string name="agent_tool_manage_xiangqi_param_action">क्रिया प्रकार: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">एंडगेम या ओपनिंग आयात करें। श्यांगची खेलों को देखें, बनाएँ, हटाएँ और निर्यात करें</string>
+    <string name="agent_tool_manage_xiangqi_param_action">क्रिया प्रकार: list / detail / create / import_preset / import_fen / import_json / delete / export। बिल्ट-इन एंडगेम के लिए import_preset इस्तेमाल करें; import_fen तभी जब उपयोगकर्ता FEN दे</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">खेल ID (detail / delete / export के लिए आवश्यक)</string>
     <string name="agent_tool_manage_xiangqi_param_title">खेल शीर्षक (create के लिए आवश्यक)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">क्या मानव-बनाम-AI खेल बनाना है जिसमें AI लाल खेलता है (create के लिए वैकल्पिक, डिफ़ॉल्ट false)</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">खेल बनाया गया: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">खेल हटाया गया: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">FEN नोटेशन स्ट्रिंग (import_fen के लिए आवश्यक)। अंतिम खेल या कस्टम शुरुआत आयात करने के लिए उपयोग किया जाता है। प्रारूप: \"स्थिति पक्ष आधा-चाल गिनती पूर्ण-चाल गिनती\", उदा. \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\"। स्थिति भाग 10 पंक्तियाँ हैं जो `/` से अलग हैं, प्रत्येक पंक्ति 9 कॉलम; बड़े अक्षर = लाल (K=जनरल A=सलाहकार B=हाथी N=घोड़ा R=रथ C=तोप P=प्यादा), छोटे अक्षर = काला (k=a b=n r=c p), अंक = खाली वर्ग।</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">बिल्ट-इन एंडगेम का नाम (import_preset के लिए आवश्यक)। उपलब्ध: rook_vs_pawn=लाल रथ बनाम काला प्यादा</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">JSON खेल रिकॉर्ड स्ट्रिंग (import_json के लिए आवश्यक)। चाल पुनरावृत्ति के साथ पूरा खेल आयात करने के लिए उपयोग किया जाता है। प्रारूप: {\"version\":1,\"title\":\"शीर्षक\",\"initialFen\":\"प्रारंभिक FEN\",\"result\":\"परिणाम\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}। `move` UCCI समन्वय प्रारूप है (जैसे a0a1 का अर्थ a0 से a1 तक चाल); `moves` क्रम में दोहराया जाता है।</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">fen पैरामीटर अनुपलब्ध</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">fen पैरामीटर नहीं है। action=import_fen से एक बार पुनः प्रयास करें, title और fen साथ में दें, स्थिति वही जो उपयोगकर्ता ने बताई; बिल्ट-इन एंडगेम के लिए import_preset इस्तेमाल करें</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">preset पैरामीटर नहीं है। उपलब्ध: rook_vs_pawn (लाल रथ बनाम काला प्यादा)। उपयोगकर्ता ने FEN दिया है तो import_fen इस्तेमाल करें</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">अनजान बिल्ट-इन एंडगेम: %1$s। उपलब्ध: rook_vs_pawn (लाल रथ बनाम काला प्यादा)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">json_data पैरामीटर अनुपलब्ध</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN आयात किया गया</string>
-    <string name="agent_tool_manage_xiangqi_imported">खेल आयात किया गया: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">लाल रथ बनाम काला प्यादा</string>
+    <string name="agent_tool_manage_xiangqi_imported">गेम इम्पोर्ट हुआ: %1$s। स्थिति पूरी तरह इम्पोर्ट हो गई है। उपयोगकर्ता को deepLinks दें; इस टूल को फिर से कॉल करने की ज़रूरत नहीं</string>
     <string name="agent_tool_manage_xiangqi_import_failed">आयात विफल: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -821,8 +825,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">कार्य %1$d चरणों के बाद रोक दिया गया (सीमा तक पहुंच गया)। अंतिम कार्रवाई: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">वर्तमान में कोई Activity उपलब्ध नहीं है। सुनिश्चित करें कि आप सामान्य पृष्ठ से चैट खोलते हैं।</string>
     <string name="agent_tool_manage_gomoku_title">गोमोकू खेल प्रबंधित करें</string>
-    <string name="agent_tool_manage_gomoku_summary">गोमोकू खेलों की जाँच, निर्माण, अंतिम/प्रारंभ आयात, अभिलेख आयात, हटाना और निर्यात</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">एंडगेम या ओपनिंग आयात करें। गोमोकू खेलों को देखें, बनाएँ, हटाएँ और निर्यात करें</string>
+    <string name="agent_tool_manage_gomoku_param_action">क्रिया प्रकार: list / detail / create / import_preset / import_fen / import_json / delete / export। बिल्ट-इन एंडगेम के लिए import_preset इस्तेमाल करें; import_fen तभी जब उपयोगकर्ता FEN दे</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -835,15 +839,19 @@
     <string name="agent_tool_manage_gomoku_created">खेल बनाया गया: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">खेल हटाया गया: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">बिल्ट-इन एंडगेम का नाम (import_preset के लिए आवश्यक)। उपलब्ध: center_two_black=तेनगेन पर काली जोड़ी</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">fen पैरामीटर अनुपलब्ध</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">fen पैरामीटर नहीं है। action=import_fen से एक बार पुनः प्रयास करें, title और fen साथ में दें, स्थिति वही जो उपयोगकर्ता ने बताई; बिल्ट-इन एंडगेम के लिए import_preset इस्तेमाल करें</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">preset पैरामीटर नहीं है। उपलब्ध: center_two_black (तेनगेन पर काली जोड़ी)। उपयोगकर्ता ने FEN दिया है तो import_fen इस्तेमाल करें</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">अनजान बिल्ट-इन एंडगेम: %1$s। उपलब्ध: center_two_black (तेनगेन पर काली जोड़ी)</string>
     <string name="agent_tool_manage_gomoku_missing_json">json_data पैरामीटर अनुपलब्ध</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FEN आयात किया गया</string>
-    <string name="agent_tool_manage_gomoku_imported">खेल आयात किया गया: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">तेनगेन पर काली जोड़ी</string>
+    <string name="agent_tool_manage_gomoku_imported">गेम इम्पोर्ट हुआ: %1$s। स्थिति पूरी तरह इम्पोर्ट हो गई है। उपयोगकर्ता को deepLinks दें; इस टूल को फिर से कॉल करने की ज़रूरत नहीं</string>
     <string name="agent_tool_manage_gomoku_import_failed">आयात विफल: %1$s</string>
     <string name="agent_tool_manage_chess_title">शतरंज खेल प्रबंधित करें</string>
-    <string name="agent_tool_manage_chess_summary">शतरंज खेलों की जाँच, निर्माण, अंतिम/प्रारंभ आयात, अभिलेख आयात, हटाना और निर्यात</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">एंडगेम या ओपनिंग आयात करें। शतरंज खेलों को देखें, बनाएँ, हटाएँ और निर्यात करें</string>
+    <string name="agent_tool_manage_chess_param_action">क्रिया प्रकार: list / detail / create / import_preset / import_fen / import_json / delete / export। बिल्ट-इन एंडगेम के लिए import_preset इस्तेमाल करें; import_fen तभी जब उपयोगकर्ता FEN दे</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -856,11 +864,15 @@
     <string name="agent_tool_manage_chess_created">खेल बनाया गया: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">खेल हटाया गया: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">बिल्ट-इन एंडगेम का नाम (import_preset के लिए आवश्यक)। उपलब्ध: king_pawn_vs_king=राजा और प्यादा बनाम राजा</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">fen पैरामीटर अनुपलब्ध</string>
+    <string name="agent_tool_manage_chess_missing_fen">fen पैरामीटर नहीं है। action=import_fen से एक बार पुनः प्रयास करें, title और fen साथ में दें, स्थिति वही जो उपयोगकर्ता ने बताई; बिल्ट-इन एंडगेम के लिए import_preset इस्तेमाल करें</string>
+    <string name="agent_tool_manage_chess_missing_preset">preset पैरामीटर नहीं है। उपलब्ध: king_pawn_vs_king (राजा और प्यादा बनाम राजा)। उपयोगकर्ता ने FEN दिया है तो import_fen इस्तेमाल करें</string>
+    <string name="agent_tool_manage_chess_unknown_preset">अनजान बिल्ट-इन एंडगेम: %1$s। उपलब्ध: king_pawn_vs_king (राजा और प्यादा बनाम राजा)</string>
     <string name="agent_tool_manage_chess_missing_json">json_data पैरामीटर अनुपलब्ध</string>
     <string name="agent_tool_manage_chess_imported_fen">FEN आयात किया गया</string>
-    <string name="agent_tool_manage_chess_imported">खेल आयात किया गया: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">राजा और प्यादा बनाम राजा</string>
+    <string name="agent_tool_manage_chess_imported">गेम इम्पोर्ट हुआ: %1$s। स्थिति पूरी तरह इम्पोर्ट हो गई है। उपयोगकर्ता को deepLinks दें; इस टूल को फिर से कॉल करने की ज़रूरत नहीं</string>
     <string name="agent_tool_manage_chess_import_failed">आयात विफल: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">ग्लास बॉर्डर की दृश्यता। **संख्या प्रकार** (स्ट्रिंग नहीं), सीमा [0.0, 1.0], डिफ़ॉल्ट 0.17 (17%%)। 0 बॉर्डर को पूरी तरह छिपा देता है; अधिक मान = अधिक दिखने वाली रूपरेखा। glass_alpha से स्वतंत्र। वैकल्पिक</string>

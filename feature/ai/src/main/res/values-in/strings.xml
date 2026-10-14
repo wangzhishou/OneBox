@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">Tugas %1$s telah %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">Tugas dihapus: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">Kelola Permainan Xiangqi</string>
-    <string name="agent_tool_manage_xiangqi_summary">Kueri, buat, impor akhir/awal, impor catatan permainan, hapus dan ekspor permainan catur Cina</string>
-    <string name="agent_tool_manage_xiangqi_param_action">Jenis tindakan: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">Impor akhir permainan atau pembukaan. Juga kueri, buat, hapus, dan ekspor partai xiangqi</string>
+    <string name="agent_tool_manage_xiangqi_param_action">Jenis aksi: list / detail / create / import_preset / import_fen / import_json / delete / export. Gunakan import_preset untuk endgame bawaan; import_fen hanya jika pengguna memberikan FEN</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">ID permainan (wajib untuk detail / delete / export)</string>
     <string name="agent_tool_manage_xiangqi_param_title">Judul permainan (wajib untuk create)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">Apakah akan membuat permainan manusia-vs-AI dengan AI memainkan merah (opsional untuk create, default false)</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">Permainan dibuat: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">Permainan dihapus: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">String notasi FEN (diperlukan untuk import_fen). Digunakan untuk mengimpor akhir permainan atau pembukaan kustom. Format: \"posisi sisi jumlah-langkah-setengah jumlah-langkah-putaran\", misalnya \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\". Bagian posisi terdiri dari 10 baris dipisahkan oleh `/`, setiap baris 9 kolom; huruf besar = Merah (K=Jenderal A=Penasihat B=Gajah N=Kuda R=Kereta C=Meriam P=Pion), huruf kecil = Hitam (k=a b=n r=c p), angka = kotak kosong.</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">Nama endgame bawaan (wajib untuk import_preset). Tersedia: rook_vs_pawn=Benteng merah lawan pion hitam</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">String rekaman permainan JSON (diperlukan untuk import_json). Digunakan untuk mengimpor permainan lengkap dengan putar ulang langkah. Format: {\"version\":1,\"title\":\"judul\",\"initialFen\":\"FEN awal\",\"result\":\"hasil\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}. `move` adalah format koordinat UCCI (misalnya a0a1 berarti pindah dari a0 ke a1); `moves` diputar ulang secara berurutan.</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">Parameter fen hilang</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">fen tidak ada. Coba lagi sekali dengan action=import_fen, kirim title dan fen bersamaan, posisi sesuai yang dideskripsikan pengguna; untuk endgame bawaan gunakan import_preset</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">preset tidak ada. Tersedia: rook_vs_pawn (Benteng merah lawan pion hitam). Jika pengguna memberikan FEN, gunakan import_fen</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">Endgame bawaan tidak dikenal: %1$s. Tersedia: rook_vs_pawn (Benteng merah lawan pion hitam)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">Parameter json_data hilang</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN Diimpor</string>
-    <string name="agent_tool_manage_xiangqi_imported">Permainan diimpor: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">Benteng merah lawan pion hitam</string>
+    <string name="agent_tool_manage_xiangqi_imported">Partai diimpor: %1$s. Posisi sudah terimpor sepenuhnya. Berikan deepLinks ke pengguna; tidak perlu memanggil alat ini lagi</string>
     <string name="agent_tool_manage_xiangqi_import_failed">Impor gagal: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -821,8 +825,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">Tugas dihentikan setelah %1$d langkah (batas tercapai). Tindakan terakhir: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">Tidak ada Activity yang tersedia saat ini. Pastikan Anda membuka obrolan dari halaman normal.</string>
     <string name="agent_tool_manage_gomoku_title">Kelola permainan Gomoku</string>
-    <string name="agent_tool_manage_gomoku_summary">Tanya, buat, impor akhir/pembukaan, impor catatan, hapus, dan ekspor permainan Gomoku (Lima Berjajar)</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">Impor akhir permainan atau pembukaan. Juga kueri, buat, hapus, dan ekspor partai gomoku</string>
+    <string name="agent_tool_manage_gomoku_param_action">Jenis aksi: list / detail / create / import_preset / import_fen / import_json / delete / export. Gunakan import_preset untuk endgame bawaan; import_fen hanya jika pengguna memberikan FEN</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -835,15 +839,19 @@
     <string name="agent_tool_manage_gomoku_created">Permainan dibuat: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">Permainan dihapus: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">Nama endgame bawaan (wajib untuk import_preset). Tersedia: center_two_black=Dua batu hitam di tengen</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">Parameter fen hilang</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">fen tidak ada. Coba lagi sekali dengan action=import_fen, kirim title dan fen bersamaan, posisi sesuai yang dideskripsikan pengguna; untuk endgame bawaan gunakan import_preset</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">preset tidak ada. Tersedia: center_two_black (Dua batu hitam di tengen). Jika pengguna memberikan FEN, gunakan import_fen</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">Endgame bawaan tidak dikenal: %1$s. Tersedia: center_two_black (Dua batu hitam di tengen)</string>
     <string name="agent_tool_manage_gomoku_missing_json">Parameter json_data hilang</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FEN Diimpor</string>
-    <string name="agent_tool_manage_gomoku_imported">Permainan diimpor: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">Dua batu hitam di tengen</string>
+    <string name="agent_tool_manage_gomoku_imported">Partai diimpor: %1$s. Posisi sudah terimpor sepenuhnya. Berikan deepLinks ke pengguna; tidak perlu memanggil alat ini lagi</string>
     <string name="agent_tool_manage_gomoku_import_failed">Impor gagal: %1$s</string>
     <string name="agent_tool_manage_chess_title">Kelola permainan catur</string>
-    <string name="agent_tool_manage_chess_summary">Tanya, buat, impor akhir/pembukaan, impor catatan, hapus, dan ekspor permainan catur</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">Impor akhir permainan atau pembukaan. Juga kueri, buat, hapus, dan ekspor partai catur</string>
+    <string name="agent_tool_manage_chess_param_action">Jenis aksi: list / detail / create / import_preset / import_fen / import_json / delete / export. Gunakan import_preset untuk endgame bawaan; import_fen hanya jika pengguna memberikan FEN</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -856,11 +864,15 @@
     <string name="agent_tool_manage_chess_created">Permainan dibuat: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">Permainan dihapus: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">Nama endgame bawaan (wajib untuk import_preset). Tersedia: king_pawn_vs_king=Raja dan pion lawan raja</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">Parameter fen hilang</string>
+    <string name="agent_tool_manage_chess_missing_fen">fen tidak ada. Coba lagi sekali dengan action=import_fen, kirim title dan fen bersamaan, posisi sesuai yang dideskripsikan pengguna; untuk endgame bawaan gunakan import_preset</string>
+    <string name="agent_tool_manage_chess_missing_preset">preset tidak ada. Tersedia: king_pawn_vs_king (Raja dan pion lawan raja). Jika pengguna memberikan FEN, gunakan import_fen</string>
+    <string name="agent_tool_manage_chess_unknown_preset">Endgame bawaan tidak dikenal: %1$s. Tersedia: king_pawn_vs_king (Raja dan pion lawan raja)</string>
     <string name="agent_tool_manage_chess_missing_json">Parameter json_data hilang</string>
     <string name="agent_tool_manage_chess_imported_fen">FEN Diimpor</string>
-    <string name="agent_tool_manage_chess_imported">Permainan diimpor: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">Raja dan pion lawan raja</string>
+    <string name="agent_tool_manage_chess_imported">Partai diimpor: %1$s. Posisi sudah terimpor sepenuhnya. Berikan deepLinks ke pengguna; tidak perlu memanggil alat ini lagi</string>
     <string name="agent_tool_manage_chess_import_failed">Impor gagal: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">Visibilitas batas kaca. **Tipe angka** (bukan string), rentang [0.0, 1.0], default 0.17 (17%%). 0 menyembunyikan batas sepenuhnya; lebih tinggi = garis luar lebih terlihat. Tidak bergantung pada glass_alpha. Opsional</string>

@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">작업 %1$s: %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">작업 삭제됨: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">샹치 게임 관리</string>
-    <string name="agent_tool_manage_xiangqi_summary">중국 체스 게임의 잔여/오프닝 조회, 생성, 가져오기, 게임 기록 가져오기, 삭제 및 내보내기</string>
-    <string name="agent_tool_manage_xiangqi_param_action">동작 유형: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">엔드게임이나 오프닝을 가져옵니다. 중국 장기 대국을 조회, 생성, 삭제, 내보낼 수도 있습니다</string>
+    <string name="agent_tool_manage_xiangqi_param_action">작업 유형: list / detail / create / import_preset / import_fen / import_json / delete / export. 내장 엔드게임에는 import_preset, 사용자가 FEN을 직접 줄 때만 import_fen</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">게임 ID (detail / delete / export에 필수)</string>
     <string name="agent_tool_manage_xiangqi_param_title">게임 제목 (create에 필수)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">AI가 레드로 플레이하는 인간 대 AI 게임을 생성할지 여부 (create에 선택적, 기본값 false)</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">게임 생성됨: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">게임 삭제됨: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">FEN 표기 문자열(import_fen에 필요). 종반 또는 사용자 지정 초반을 가져오는 데 사용됩니다. 형식: \"위치 측 하프무브카운트 풀무브카운트\", 예: \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\". 위치 부분은 `/`로 구분된 10줄이며, 각 줄은 9열입니다. 대문자 = 홍색(K=장수 A=사 B=상 N=마 R=차 C=포 P=졸), 소문자 = 흑색(k=a b=n r=c p), 숫자 = 빈 칸.</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">내장 엔드게임 이름(import_preset 필수). 사용 가능: rook_vs_pawn=홍차 대 흑병</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">JSON 게임 기록 문자열(import_json에 필요). 이동 재생이 포함된 전체 게임을 가져오는 데 사용됩니다. 형식: {\"version\":1,\"title\":\"제목\",\"initialFen\":\"초기 FEN\",\"result\":\"결과\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"포이평오\"},...]}. `move`는 UCCI 좌표 형식입니다(예: a0a1은 a0에서 a1로 이동). `moves`는 순서대로 재생됩니다.</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">fen 매개변수 누락</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">fen이 없습니다. action=import_fen으로 한 번만 다시 시도하고 title과 fen을 함께 전달하며, 기보는 사용자가 설명한 대로 하세요. 내장 엔드게임은 import_preset 사용</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">preset이 없습니다. 사용 가능: rook_vs_pawn (홍차 대 흑병). 사용자가 FEN을 주었다면 import_fen을 사용하세요</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">알 수 없는 내장 엔드게임: %1$s. 사용 가능: rook_vs_pawn (홍차 대 흑병)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">json_data 매개변수 누락</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN 가져오기 완료</string>
-    <string name="agent_tool_manage_xiangqi_imported">게임 가져오기: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">홍차 대 흑병</string>
+    <string name="agent_tool_manage_xiangqi_imported">대국을 가져왔습니다: %1$s. 기보가 완전히 가져와졌습니다. deepLinks를 사용자에게 전달하세요. 이 도구를 다시 호출할 필요가 없습니다</string>
     <string name="agent_tool_manage_xiangqi_import_failed">가져오기 실패: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -821,8 +825,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">%1$d단계 후 작업 중지됨(한도 도달). 마지막 작업: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">현재 사용 가능한 Activity가 없습니다. 일반 페이지에서 채팅을 열어주세요.</string>
     <string name="agent_tool_manage_gomoku_title">오목 게임 관리</string>
-    <string name="agent_tool_manage_gomoku_summary">오목 게임 조회·생성, 엔드게임/오페닝 가져오기, 기보 가져오기, 삭제 및 내보내기</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">엔드게임이나 오프닝을 가져옵니다. 오목 대국을 조회, 생성, 삭제, 내보낼 수도 있습니다</string>
+    <string name="agent_tool_manage_gomoku_param_action">작업 유형: list / detail / create / import_preset / import_fen / import_json / delete / export. 내장 엔드게임에는 import_preset, 사용자가 FEN을 직접 줄 때만 import_fen</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -835,15 +839,19 @@
     <string name="agent_tool_manage_gomoku_created">게임 생성됨: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">게임 삭제됨: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">내장 엔드게임 이름(import_preset 필수). 사용 가능: center_two_black=천원 흑 두 점</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">fen 매개변수 누락</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">fen이 없습니다. action=import_fen으로 한 번만 다시 시도하고 title과 fen을 함께 전달하며, 기보는 사용자가 설명한 대로 하세요. 내장 엔드게임은 import_preset 사용</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">preset이 없습니다. 사용 가능: center_two_black (천원 흑 두 점). 사용자가 FEN을 주었다면 import_fen을 사용하세요</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">알 수 없는 내장 엔드게임: %1$s. 사용 가능: center_two_black (천원 흑 두 점)</string>
     <string name="agent_tool_manage_gomoku_missing_json">json_data 매개변수 누락</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FEN 가져오기 완료</string>
-    <string name="agent_tool_manage_gomoku_imported">게임 가져오기 완료: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">천원 흑 두 점</string>
+    <string name="agent_tool_manage_gomoku_imported">대국을 가져왔습니다: %1$s. 기보가 완전히 가져와졌습니다. deepLinks를 사용자에게 전달하세요. 이 도구를 다시 호출할 필요가 없습니다</string>
     <string name="agent_tool_manage_gomoku_import_failed">가져오기 실패: %1$s</string>
     <string name="agent_tool_manage_chess_title">체스 게임 관리</string>
-    <string name="agent_tool_manage_chess_summary">체스 게임 조회·생성, 엔드게임/오프닝 가져오기, 기보 가져오기, 삭제 및 내보내기</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">엔드게임이나 오프닝을 가져옵니다. 체스 대국을 조회, 생성, 삭제, 내보낼 수도 있습니다</string>
+    <string name="agent_tool_manage_chess_param_action">작업 유형: list / detail / create / import_preset / import_fen / import_json / delete / export. 내장 엔드게임에는 import_preset, 사용자가 FEN을 직접 줄 때만 import_fen</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -856,11 +864,15 @@
     <string name="agent_tool_manage_chess_created">게임 생성됨: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">게임 삭제됨: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">내장 엔드게임 이름(import_preset 필수). 사용 가능: king_pawn_vs_king=킹과 폰 대 킹</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">fen 매개변수 누락</string>
+    <string name="agent_tool_manage_chess_missing_fen">fen이 없습니다. action=import_fen으로 한 번만 다시 시도하고 title과 fen을 함께 전달하며, 기보는 사용자가 설명한 대로 하세요. 내장 엔드게임은 import_preset 사용</string>
+    <string name="agent_tool_manage_chess_missing_preset">preset이 없습니다. 사용 가능: king_pawn_vs_king (킹과 폰 대 킹). 사용자가 FEN을 주었다면 import_fen을 사용하세요</string>
+    <string name="agent_tool_manage_chess_unknown_preset">알 수 없는 내장 엔드게임: %1$s. 사용 가능: king_pawn_vs_king (킹과 폰 대 킹)</string>
     <string name="agent_tool_manage_chess_missing_json">json_data 매개변수 누락</string>
     <string name="agent_tool_manage_chess_imported_fen">FEN 가져오기 완료</string>
-    <string name="agent_tool_manage_chess_imported">게임 가져오기 완료: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">킹과 폰 대 킹</string>
+    <string name="agent_tool_manage_chess_imported">대국을 가져왔습니다: %1$s. 기보가 완전히 가져와졌습니다. deepLinks를 사용자에게 전달하세요. 이 도구를 다시 호출할 필요가 없습니다</string>
     <string name="agent_tool_manage_chess_import_failed">가져오기 실패: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">유리 테두리 표시 여부. **숫자형**(문자열 아님), 범위 [0.0, 1.0], 기본값 0.17(17%%). 0이면 테두리가 완전히 사라지고, 값이 클수록 윤곽선이 더 뚜렷해집니다. glass_alpha와는 무관합니다. 선택 사항</string>

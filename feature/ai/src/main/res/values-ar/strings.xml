@@ -586,8 +586,8 @@
     <string name="agent_tool_manage_todo_toggled">المهمة %1$s قد %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">حُذفت المهمة: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">إدارة مباريات الشطرنج الصيني</string>
-    <string name="agent_tool_manage_xiangqi_summary">استعلام مباريات الشطرنج الصيني وإنشاؤها واستيراد نهايات المباريات أو الافتتاحيات واستيراد سجلات المباريات وحذفها وتصديرها</string>
-    <string name="agent_tool_manage_xiangqi_param_action">نوع الإجراء: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">استيراد نهاية أو افتتاحية. وكذلك الاستعلام عن مباريات الشطرنج الصيني وإنشاؤها وحذفها وتصديرها</string>
+    <string name="agent_tool_manage_xiangqi_param_action">نوع العملية: list / detail / create / import_preset / import_fen / import_json / delete / export. استخدم import_preset للنهاية الجاهزة؛ ولا تستخدم import_fen إلا عندما يقدم المستخدم FEN</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">معرّف المباراة (مطلوب لـ detail / delete / export)</string>
     <string name="agent_tool_manage_xiangqi_param_title">عنوان المباراة (مطلوب لـ create)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">هل يلعب الذكاء الاصطناعي بالأحمر (اختياري لـ create/import_fen، القيمة الافتراضية false ليلعب الإنسان بالأحمر وينقل أولًا؛ وفي import_fen اتركه ليلعب الإنسان بالجانب صاحب النقلة)</string>
@@ -600,11 +600,15 @@
     <string name="agent_tool_manage_xiangqi_created">أُنشئت المباراة: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">حُذفت المباراة: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">سلسلة ترميز FEN (مطلوبة لـ import_fen). تُستخدم لاستيراد نهاية مباراة أو افتتاحية مخصصة. التنسيق: \"الوضع الجانب عدد أنصاف النقلات عدد النقلات\"، مثل \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\". يتألف جزء الوضع من 10 صفوف تفصل بينها العلامة `/`، وكل صف 9 أعمدة؛ الحروف الكبيرة = الأحمر (K=الجنرال A=المستشار B=الفيل N=الحصان R=العربة C=المدفع P=الجندي)، والحروف الصغيرة = الأسود (k=a b=n r=c p)، والأرقام = المربعات الفارغة.</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">اسم النهاية الجاهزة (مطلوب لـ import_preset). المتاح: rook_vs_pawn=قلعة حمراء ضد بيدق أسود</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">سلسلة سجل المباراة بصيغة JSON (مطلوبة لـ import_json). تُستخدم لاستيراد مباراة كاملة مع إعادة تشغيل النقلات. التنسيق: {\"version\":1,\"title\":\"العنوان\",\"initialFen\":\"وضع FEN الابتدائي\",\"result\":\"النتيجة\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}. المعامل `move` بصيغة إحداثيات UCCI (مثل a0a1 أي النقل من a0 إلى a1)؛ وتُعاد النقلات في `moves` بالترتيب.</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">المعامل fen مفقود</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">المعامل fen مفقود. أعد المحاولة مرة واحدة مع action=import_fen ومرّر title وfen معاً بالوضعية التي وصفها المستخدم؛ وللنهاية الجاهزة استخدم import_preset</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">المعامل preset مفقود. المتاح: rook_vs_pawn (قلعة حمراء ضد بيدق أسود). إذا قدّم المستخدم FEN فاستخدم import_fen بدلاً من ذلك</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">نهاية جاهزة غير معروفة: %1$s. المتاح: rook_vs_pawn (قلعة حمراء ضد بيدق أسود)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">المعامل json_data مفقود</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">تم استيراد FEN</string>
-    <string name="agent_tool_manage_xiangqi_imported">تم استيراد المباراة: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">قلعة حمراء ضد بيدق أسود</string>
+    <string name="agent_tool_manage_xiangqi_imported">تم استيراد المباراة: %1$s. اكتمل استيراد الوضعية. أعطِ المستخدم deepLinks؛ لا حاجة لاستدعاء هذه الأداة مجدداً</string>
     <string name="agent_tool_manage_xiangqi_import_failed">فشل الاستيراد: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -906,8 +910,8 @@
     <string name="ai_tools_session_skills_hint">عرض قائمة المهارات المتاحة والسماح للذكاء الاصطناعي بتحميل مهارات في هذه المحادثة</string>
     <string name="ai_tools_session_global_off_hint">مُعطّل عاماً في إعدادات الذكاء الاصطناعي؛ مفتاح المحادثة غير متاح</string>
     <string name="agent_tool_manage_gomoku_title">إدارة ألعاب جوموكو</string>
-    <string name="agent_tool_manage_gomoku_summary">استعلم عن ألعاب جوموكو (خمسة على التوالي) وأنشئها واستورد منها أوضاع النهاية/الافتتاحية وسجلات المباريات واحذفها وصدّرها</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">استيراد نهاية أو افتتاحية. وكذلك الاستعلام عن مباريات غوموكو وإنشاؤها وحذفها وتصديرها</string>
+    <string name="agent_tool_manage_gomoku_param_action">نوع العملية: list / detail / create / import_preset / import_fen / import_json / delete / export. استخدم import_preset للنهاية الجاهزة؛ ولا تستخدم import_fen إلا عندما يقدم المستخدم FEN</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">ما إذا كان الذكاء الاصطناعي يلعب بالأسود، أي النقلة الأولى (اختياري مع create/import_fen، والقيمة الافتراضية false فيلعب الإنسان بالأسود؛ وفي import_fen احذفه ليدع الإنسان يلعب للجانب صاحب الدور)</string>
@@ -920,15 +924,19 @@
     <string name="agent_tool_manage_gomoku_created">أُنشئت المباراة: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">حُذفت المباراة: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board&gt; &lt;side&gt; &lt;moveNumber&gt;\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">اسم النهاية الجاهزة (مطلوب لـ import_preset). المتاح: center_two_black=حجران أسودان عند تنغن</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">المعامل fen مفقود</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">المعامل fen مفقود. أعد المحاولة مرة واحدة مع action=import_fen ومرّر title وfen معاً بالوضعية التي وصفها المستخدم؛ وللنهاية الجاهزة استخدم import_preset</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">المعامل preset مفقود. المتاح: center_two_black (حجران أسودان عند تنغن). إذا قدّم المستخدم FEN فاستخدم import_fen بدلاً من ذلك</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">نهاية جاهزة غير معروفة: %1$s. المتاح: center_two_black (حجران أسودان عند تنغن)</string>
     <string name="agent_tool_manage_gomoku_missing_json">المعامل json_data مفقود</string>
     <string name="agent_tool_manage_gomoku_imported_fen">تم استيراد FEN</string>
-    <string name="agent_tool_manage_gomoku_imported">تم استيراد المباراة: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">حجران أسودان عند تنغن</string>
+    <string name="agent_tool_manage_gomoku_imported">تم استيراد المباراة: %1$s. اكتمل استيراد الوضعية. أعطِ المستخدم deepLinks؛ لا حاجة لاستدعاء هذه الأداة مجدداً</string>
     <string name="agent_tool_manage_gomoku_import_failed">فشل الاستيراد: %1$s</string>
     <string name="agent_tool_manage_chess_title">إدارة مباريات الشطرنج</string>
-    <string name="agent_tool_manage_chess_summary">الاستعلام عن مباريات الشطرنج وإنشاؤها، واستيراد نهايات المباريات والافتتاحيات وسجلات المباريات، وحذفها وتصديرها</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">استيراد نهاية أو افتتاحية. وكذلك الاستعلام عن مباريات الشطرنج وإنشاؤها وحذفها وتصديرها</string>
+    <string name="agent_tool_manage_chess_param_action">نوع العملية: list / detail / create / import_preset / import_fen / import_json / delete / export. استخدم import_preset للنهاية الجاهزة؛ ولا تستخدم import_fen إلا عندما يقدم المستخدم FEN</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -941,11 +949,15 @@
     <string name="agent_tool_manage_chess_created">أُنشئت المباراة: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">حُذفت المباراة: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">اسم النهاية الجاهزة (مطلوب لـ import_preset). المتاح: king_pawn_vs_king=ملك وبيدق ضد ملك</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">المعامل fen مفقود</string>
+    <string name="agent_tool_manage_chess_missing_fen">المعامل fen مفقود. أعد المحاولة مرة واحدة مع action=import_fen ومرّر title وfen معاً بالوضعية التي وصفها المستخدم؛ وللنهاية الجاهزة استخدم import_preset</string>
+    <string name="agent_tool_manage_chess_missing_preset">المعامل preset مفقود. المتاح: king_pawn_vs_king (ملك وبيدق ضد ملك). إذا قدّم المستخدم FEN فاستخدم import_fen بدلاً من ذلك</string>
+    <string name="agent_tool_manage_chess_unknown_preset">نهاية جاهزة غير معروفة: %1$s. المتاح: king_pawn_vs_king (ملك وبيدق ضد ملك)</string>
     <string name="agent_tool_manage_chess_missing_json">المعامل json_data مفقود</string>
     <string name="agent_tool_manage_chess_imported_fen">تم استيراد FEN</string>
-    <string name="agent_tool_manage_chess_imported">تم استيراد المباراة: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">ملك وبيدق ضد ملك</string>
+    <string name="agent_tool_manage_chess_imported">تم استيراد المباراة: %1$s. اكتمل استيراد الوضعية. أعطِ المستخدم deepLinks؛ لا حاجة لاستدعاء هذه الأداة مجدداً</string>
     <string name="agent_tool_manage_chess_import_failed">فشل الاستيراد: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">ما إذا كان الذكاء الاصطناعي يلعب بالأبيض، أي النقلة الأولى (اختياري مع create/import_fen، والقيمة الافتراضية false فيلعب الإنسان بالأبيض؛ وفي import_fen احذفه ليدع الإنسان يلعب للجانب صاحب الدور)</string>
     <string name="agent_tool_import_font_title">استيراد خط</string>

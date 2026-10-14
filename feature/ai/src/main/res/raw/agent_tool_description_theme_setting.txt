@@ -1,3 +1,7 @@
+用户要求某种风格（科技感、清新、商务、深色）时，不要 ask_user，也不要先 list。直接 action=set 写入一套协调配色。科技感或「深色 + 青色」用：
+{"action":"set","night_mode":"Dark","primary":"#22D3EE","secondary":"#818CF8","mesh_gradient":"true","gradient_style":"Ocean"}
+只有用户明确说「有哪几种」或「让我选」时才询问。
+
 主题设置工具：读取 / 切换 / 微调当前主题。
 
 三个 action，按用户意图选用：

@@ -57,7 +57,7 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
     var importFen by remember { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
     val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
-    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_21)
+    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_22)
     val draft = component.preparationSetupDraft
     if (draft != null) {
         ChessSetupScreen(

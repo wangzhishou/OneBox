@@ -67,7 +67,7 @@ fun NewGameDropMenu(
     var showOnlineMatch by remember { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
     val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
-    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_19)
+    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_11)
 
     val localTitle = stringResource(R.string.xiangqi_mode_local)
     val aiTitle = stringResource(R.string.xiangqi_mode_ai)

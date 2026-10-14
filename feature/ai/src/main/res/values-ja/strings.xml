@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">タスク%1$sは%2$sされました</string>
     <string name="agent_tool_manage_todo_task_deleted">タスクを削除しました: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">象棋ゲームを管理</string>
-    <string name="agent_tool_manage_xiangqi_summary">中国象棋の終盤/定跡の照会、作成、インポート、棋譜のインポート、削除、エクスポート</string>
-    <string name="agent_tool_manage_xiangqi_param_action">アクションタイプ: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">終盤または開局を取り込む。中国象棋の対局の照会、作成、削除、書き出しもできます</string>
+    <string name="agent_tool_manage_xiangqi_param_action">操作タイプ: list / detail / create / import_preset / import_fen / import_json / delete / export。内蔵残局には import_preset、ユーザーが FEN を渡したときだけ import_fen</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">ゲームID（detail / delete / exportに必須）</string>
     <string name="agent_tool_manage_xiangqi_param_title">ゲームタイトル（createに必須）</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">人間対AIのゲームを作成するかどうか（AIが紅側、createで任意、デフォルトはfalse）</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">游戏已创建：%1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">游戏已删除：%1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">FEN记法字符串（import_fen所需）。用于導入残局或自定义开局。格式：\"局面 走子方 半回合数 全回合数\"，例如\"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\"。局面部分由10行组成，以\"/\"分隔，每行9列；大写=红方（K=帅 A=仕 B=相 N=马 R=车 C=炮 P=兵），小写=黑方（k=将 a=士 b=象 n=马 r=车 c=炮 p=卒），数字=空位。</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">内蔵残局の名前（import_preset で必須）。選択肢: rook_vs_pawn=赤の車対黒の兵</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">JSON游戏记录字符串（import_json所需）。用于導入带走法回放的完整对局。格式：{\"version\":1,\"title\":\"标题\",\"initialFen\":\"初始FEN\",\"result\":\"结果\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}。`move`为UCCI坐标格式（例如a0a1表示从a0移到a1）；`moves`按顺序回放。</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">缺少fen参数</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">fen がありません。action=import_fen で一度だけ再試行し、title と fen を同時に渡し、局面はユーザーの指定どおりに。内蔵残局なら import_preset を使って</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">preset がありません。選択肢: rook_vs_pawn（赤の車対黒の兵）。ユーザーが FEN を渡した場合は import_fen を使って</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">未知の内蔵残局: %1$s。選択肢: rook_vs_pawn（赤の車対黒の兵）</string>
     <string name="agent_tool_manage_xiangqi_missing_json">缺少json_data参数</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN已導入</string>
-    <string name="agent_tool_manage_xiangqi_imported">游戏已導入：%1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">赤の車対黒の兵</string>
+    <string name="agent_tool_manage_xiangqi_imported">対局をインポートしました: %1$s。局面は完全にインポート済みです。deepLinks をユーザーに渡してください。このツールの再呼び出しは不要です</string>
     <string name="agent_tool_manage_xiangqi_import_failed">導入失败：%1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -821,8 +825,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">タスクは%1$dステップで停止しました（制限に達しました）。最後のアクション: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">現在利用可能なアクティビティがありません。通常のページからチャットを開いてください。</string>
     <string name="agent_tool_manage_gomoku_title">五目並べの対局を管理</string>
-    <string name="agent_tool_manage_gomoku_summary">五目並べの対局を照会・作成し、終盤/開局の導入、棋譜の導入、削除、書き出しができます</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">終盤または開局を取り込む。五目並べの対局の照会、作成、削除、書き出しもできます</string>
+    <string name="agent_tool_manage_gomoku_param_action">操作タイプ: list / detail / create / import_preset / import_fen / import_json / delete / export。内蔵残局には import_preset、ユーザーが FEN を渡したときだけ import_fen</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -835,15 +839,19 @@
     <string name="agent_tool_manage_gomoku_created">ゲームを作成しました: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">ゲームを削除しました: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">内蔵残局の名前（import_preset で必須）。選択肢: center_two_black=天元の黒二子</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">fenパラメータがありません</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">fen がありません。action=import_fen で一度だけ再試行し、title と fen を同時に渡し、局面はユーザーの指定どおりに。内蔵残局なら import_preset を使って</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">preset がありません。選択肢: center_two_black（天元の黒二子）。ユーザーが FEN を渡した場合は import_fen を使って</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">未知の内蔵残局: %1$s。選択肢: center_two_black（天元の黒二子）</string>
     <string name="agent_tool_manage_gomoku_missing_json">json_dataパラメータがありません</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FENをインポートしました</string>
-    <string name="agent_tool_manage_gomoku_imported">ゲームをインポートしました: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">天元の黒二子</string>
+    <string name="agent_tool_manage_gomoku_imported">対局をインポートしました: %1$s。局面は完全にインポート済みです。deepLinks をユーザーに渡してください。このツールの再呼び出しは不要です</string>
     <string name="agent_tool_manage_gomoku_import_failed">インポートに失敗しました: %1$s</string>
     <string name="agent_tool_manage_chess_title">チェスの対局を管理</string>
-    <string name="agent_tool_manage_chess_summary">チェスの対局を照会・作成し、終盤/オープニングの導入、棋譜の導入、削除、書き出しができます</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">終盤または開局を取り込む。チェスの対局の照会、作成、削除、書き出しもできます</string>
+    <string name="agent_tool_manage_chess_param_action">操作タイプ: list / detail / create / import_preset / import_fen / import_json / delete / export。内蔵残局には import_preset、ユーザーが FEN を渡したときだけ import_fen</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -856,11 +864,15 @@
     <string name="agent_tool_manage_chess_created">ゲームを作成しました: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">ゲームを削除しました: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">内蔵残局の名前（import_preset で必須）。選択肢: king_pawn_vs_king=キングとポーン対キング</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">fenパラメータがありません</string>
+    <string name="agent_tool_manage_chess_missing_fen">fen がありません。action=import_fen で一度だけ再試行し、title と fen を同時に渡し、局面はユーザーの指定どおりに。内蔵残局なら import_preset を使って</string>
+    <string name="agent_tool_manage_chess_missing_preset">preset がありません。選択肢: king_pawn_vs_king（キングとポーン対キング）。ユーザーが FEN を渡した場合は import_fen を使って</string>
+    <string name="agent_tool_manage_chess_unknown_preset">未知の内蔵残局: %1$s。選択肢: king_pawn_vs_king（キングとポーン対キング）</string>
     <string name="agent_tool_manage_chess_missing_json">json_dataパラメータがありません</string>
     <string name="agent_tool_manage_chess_imported_fen">FENをインポートしました</string>
-    <string name="agent_tool_manage_chess_imported">ゲームをインポートしました: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">キングとポーン対キング</string>
+    <string name="agent_tool_manage_chess_imported">対局をインポートしました: %1$s。局面は完全にインポート済みです。deepLinks をユーザーに渡してください。このツールの再呼び出しは不要です</string>
     <string name="agent_tool_manage_chess_import_failed">インポートに失敗しました: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">グラス枠線の表示度。**数値型**（文字列ではありません）、範囲 [0.0, 1.0]、既定値 0.17（17%%）。0 で枠線は完全に非表示、値が大きいほど輪郭がはっきりします。glass_alpha とは独立しています。任意</string>

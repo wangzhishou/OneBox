@@ -66,7 +66,7 @@ fun NewGameDropMenu(
     var importJson by remember { mutableStateOf(false) }
     var showOnlineMatch by remember { mutableStateOf(false) }
     val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
-    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_21)
+    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_22)
 
     val localTitle = stringResource(R.string.chess_mode_local)
     val aiTitle = stringResource(R.string.chess_mode_ai)

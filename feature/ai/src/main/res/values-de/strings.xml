@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">Aufgabe %1$s wurde %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">Aufgabe gelöscht: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">Xiangqi-Spiele verwalten</string>
-    <string name="agent_tool_manage_xiangqi_summary">Abfragen, erstellen, importieren von Endspiel/Eröffnung, importieren von Spielaufzeichnungen, löschen und exportieren von chinesischen Schachspielen</string>
-    <string name="agent_tool_manage_xiangqi_param_action">Aktionstyp: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">Endspiel oder Eröffnung importieren. Auch chinesische Schachpartien abfragen, erstellen, löschen und exportieren</string>
+    <string name="agent_tool_manage_xiangqi_param_action">Aktionstyp: list / detail / create / import_preset / import_fen / import_json / delete / export. import_preset für eingebaute Endspiele; import_fen nur, wenn der Nutzer ein FEN angibt</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">Spiel-ID (erforderlich für detail / delete / export)</string>
     <string name="agent_tool_manage_xiangqi_param_title">Spieltitel (erforderlich für create)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">Ob ein Mensch-gegen-KI-Spiel erstellt werden soll, wobei KI Rot spielt (optional für create, Standard: false)</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">Spiel erstellt: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">Spiel gelöscht: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">FEN-Notation (erforderlich für import_fen). Wird verwendet, um ein Endspiel oder eine benutzerdefinierte Eröffnung zu importieren. Format: \"position side halfmove-count fullmove-count\", z. B. \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\". Der Positionsteil besteht aus 10 Reihen, getrennt durch `/`, jede Reihe 9 Spalten; Großbuchstaben = Rot (K=General A=Berater B=Elefant N=Pferd R=Wagen C=Kanone P=Bauer), Kleinbuchstaben = Schwarz (k=a b=n r=c p), Ziffern = leere Felder.</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">Name des eingebauten Endspiels (Pflicht für import_preset). Verfügbar: rook_vs_pawn=Roter Wagen gegen schwarzen Bauern</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">JSON-Spielprotokoll (erforderlich für import_json). Wird verwendet, um ein vollständiges Spiel mit Zugwiederholung zu importieren. Format: {\"version\":1,\"title\":\"Titel\",\"initialFen\":\"Anfangs-FEN\",\"result\":\"Ergebnis\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}. `move` ist das UCCI-Koordinatenformat (z. B. a0a1 bedeutet Zug von a0 nach a1); `moves` werden der Reihe nach wiederholt.</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">Fen-Parameter fehlt</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">fen fehlt. Einmal mit action=import_fen wiederholen, title und fen gemeinsam übergeben, Stellung wie vom Nutzer beschrieben; für eingebaute Endspiele import_preset verwenden</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">preset fehlt. Verfügbar: rook_vs_pawn (Roter Wagen gegen schwarzen Bauern). Hat der Nutzer ein FEN angegeben, stattdessen import_fen verwenden</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">Unbekanntes eingebautes Endspiel: %1$s. Verfügbar: rook_vs_pawn (Roter Wagen gegen schwarzen Bauern)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">json_data-Parameter fehlt</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN importiert</string>
-    <string name="agent_tool_manage_xiangqi_imported">Spiel importiert: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">Roter Wagen gegen schwarzen Bauern</string>
+    <string name="agent_tool_manage_xiangqi_imported">Partie importiert: %1$s. Die Stellung ist vollständig importiert. Gib dem Nutzer die deepLinks; ein erneuter Aufruf ist nicht nötig</string>
     <string name="agent_tool_manage_xiangqi_import_failed">Import fehlgeschlagen: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -821,8 +825,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">Aufgabe nach %1$d Schritten gestoppt (Limit erreicht). Letzte Aktion: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">Derzeit ist keine Aktivität verfügbar. Stelle sicher, dass du den Chat von einer normalen Seite aus öffnest.</string>
     <string name="agent_tool_manage_gomoku_title">Gomoku-Partien verwalten</string>
-    <string name="agent_tool_manage_gomoku_summary">Gomoku-Partien abfragen, erstellen, Endspiel/Eröffnung importieren, Spielverläufe importieren, löschen und exportieren</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">Endspiel oder Eröffnung importieren. Auch Gomoku-Partien abfragen, erstellen, löschen und exportieren</string>
+    <string name="agent_tool_manage_gomoku_param_action">Aktionstyp: list / detail / create / import_preset / import_fen / import_json / delete / export. import_preset für eingebaute Endspiele; import_fen nur, wenn der Nutzer ein FEN angibt</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -835,15 +839,19 @@
     <string name="agent_tool_manage_gomoku_created">Spiel erstellt: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">Spiel gelöscht: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">Name des eingebauten Endspiels (Pflicht für import_preset). Verfügbar: center_two_black=Schwarzes Paar am Tengen</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">Fen-Parameter fehlt</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">fen fehlt. Einmal mit action=import_fen wiederholen, title und fen gemeinsam übergeben, Stellung wie vom Nutzer beschrieben; für eingebaute Endspiele import_preset verwenden</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">preset fehlt. Verfügbar: center_two_black (Schwarzes Paar am Tengen). Hat der Nutzer ein FEN angegeben, stattdessen import_fen verwenden</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">Unbekanntes eingebautes Endspiel: %1$s. Verfügbar: center_two_black (Schwarzes Paar am Tengen)</string>
     <string name="agent_tool_manage_gomoku_missing_json">json_data-Parameter fehlt</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FEN importiert</string>
-    <string name="agent_tool_manage_gomoku_imported">Spiel importiert: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">Schwarzes Paar am Tengen</string>
+    <string name="agent_tool_manage_gomoku_imported">Partie importiert: %1$s. Die Stellung ist vollständig importiert. Gib dem Nutzer die deepLinks; ein erneuter Aufruf ist nicht nötig</string>
     <string name="agent_tool_manage_gomoku_import_failed">Import fehlgeschlagen: %1$s</string>
     <string name="agent_tool_manage_chess_title">Schachpartien verwalten</string>
-    <string name="agent_tool_manage_chess_summary">Schachpartien abfragen, erstellen, Endspiel/Eröffnung importieren, Spielverläufe importieren, löschen und exportieren</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">Endspiel oder Eröffnung importieren. Auch Schachpartien abfragen, erstellen, löschen und exportieren</string>
+    <string name="agent_tool_manage_chess_param_action">Aktionstyp: list / detail / create / import_preset / import_fen / import_json / delete / export. import_preset für eingebaute Endspiele; import_fen nur, wenn der Nutzer ein FEN angibt</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -856,11 +864,15 @@
     <string name="agent_tool_manage_chess_created">Spiel erstellt: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">Spiel gelöscht: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">Name des eingebauten Endspiels (Pflicht für import_preset). Verfügbar: king_pawn_vs_king=König und Bauer gegen König</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">Fen-Parameter fehlt</string>
+    <string name="agent_tool_manage_chess_missing_fen">fen fehlt. Einmal mit action=import_fen wiederholen, title und fen gemeinsam übergeben, Stellung wie vom Nutzer beschrieben; für eingebaute Endspiele import_preset verwenden</string>
+    <string name="agent_tool_manage_chess_missing_preset">preset fehlt. Verfügbar: king_pawn_vs_king (König und Bauer gegen König). Hat der Nutzer ein FEN angegeben, stattdessen import_fen verwenden</string>
+    <string name="agent_tool_manage_chess_unknown_preset">Unbekanntes eingebautes Endspiel: %1$s. Verfügbar: king_pawn_vs_king (König und Bauer gegen König)</string>
     <string name="agent_tool_manage_chess_missing_json">json_data-Parameter fehlt</string>
     <string name="agent_tool_manage_chess_imported_fen">FEN importiert</string>
-    <string name="agent_tool_manage_chess_imported">Spiel importiert: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">König und Bauer gegen König</string>
+    <string name="agent_tool_manage_chess_imported">Partie importiert: %1$s. Die Stellung ist vollständig importiert. Gib dem Nutzer die deepLinks; ein erneuter Aufruf ist nicht nötig</string>
     <string name="agent_tool_manage_chess_import_failed">Import fehlgeschlagen: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">Sichtbarkeit des Glasrahmens. **Zahlentyp** (kein String), Bereich [0.0, 1.0], Standard 0.17 (17%%). 0 blendet den Rahmen vollständig aus; höher = sichtbarere Kontur. Unabhängig von glass_alpha. Optional</string>

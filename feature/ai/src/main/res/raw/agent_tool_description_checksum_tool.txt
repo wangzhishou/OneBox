@@ -1,3 +1,5 @@
+用户已经给出一段文字并指定算法时，直接 action=calculate、source_type=text，把原文放进 text。不要先追问文件在哪。
+
 计算或比对文本和文件的校验和，支持 MD5、SHA-1、SHA-224、SHA-256、SHA-384、SHA-512。
 
 使用场景：

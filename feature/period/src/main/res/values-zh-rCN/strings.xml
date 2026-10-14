@@ -108,7 +108,7 @@
 
     <string name="agent_tool_add_period_record_title">新增经期记录</string>
     <string name="agent_tool_add_period_record_summary">记录经期开始/结束、流量、症状与心情</string>
-    <string name="agent_tool_add_period_record_description">记录一条经期：日期(yyyy-MM-dd)，可选 is_period_start / is_period_end，flow_intensity(NONE/LIGHT/MEDIUM/HEAVY)，症状数组，mood(VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) 与备注。</string>
+    <string name="agent_tool_add_period_record_description">记录一条经期：日期(yyyy-MM-dd)，可选 is_period_start / is_period_end，flow_intensity(NONE/LIGHT/MEDIUM/HEAVY)，症状数组，mood(VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) 与备注。用户陈述经期事实（来月经、例假、腹痛、流量）时，这是记录请求：调用本工具写入，不要改成医疗建议。昨天开始则 date 为昨天且 is_period_start=true，腹痛写入 symptoms。</string>
     <string name="agent_tool_add_period_record_failed">新增经期记录失败：%1$s</string>
     <string name="agent_tool_query_period_records_title">查询经期记录</string>
     <string name="agent_tool_query_period_records_summary">查询记录、周期统计与下次预测</string>

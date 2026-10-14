@@ -588,8 +588,8 @@
     <string name="agent_tool_manage_todo_missing_tasks">create_list eylemi tasks parametresi gerektirir (öğe başlıkları dizisi)</string>
     <string name="agent_tool_manage_todo_list_created">\"%1$s\" listesi oluşturuldu, toplam %2$d öğe</string>
     <string name="agent_tool_manage_xiangqi_title">Xiangqi Oyunlarını Yönet</string>
-    <string name="agent_tool_manage_xiangqi_summary">Çin satrancı oyunlarını sorgula, oluştur, son/açılış içe aktar, oyun kayıtlarını içe aktar, sil ve dışa aktar</string>
-    <string name="agent_tool_manage_xiangqi_param_action">Eylem türü: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">Oyunsonu veya açılış içe aktar. Xiangqi partilerini sorgula, oluştur, sil ve dışa aktar</string>
+    <string name="agent_tool_manage_xiangqi_param_action">İşlem türü: list / detail / create / import_preset / import_fen / import_json / delete / export. Yerleşik oyunsonu için import_preset; import_fen yalnızca kullanıcı FEN verdiğinde</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">Oyun kimliği (detail / delete / export için zorunludur)</string>
     <string name="agent_tool_manage_xiangqi_param_title">Oyun başlığı (create için zorunludur)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">Kırmızı ile AI oynayan insan-AI oyunu oluşturulup oluşturulmayacağı (create için isteğe bağlı, varsayılan false)</string>
@@ -602,11 +602,15 @@
     <string name="agent_tool_manage_xiangqi_created">Oyun oluşturuldu: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">Oyun silindi: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">FEN notasyonu dizesi (import_fen için gereklidir). Bir oyun sonu veya özel açılış içe aktarmak için kullanılır. Biçim: \"pozisyon taraf yarı-hamle sayısı tam-hamle sayısı\", örn. \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\". Pozisyon kısmı `/` ile ayrılmış 10 satırdır, her satır 9 sütun; büyük harf = Kırmızı (K=General A=Danışman B=Fil N=At R=Kale C=Top P=Piyon), küçük harf = Siyah (k=a b=n r=c p), rakamlar = boş kareler.</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">Yerleşik oyunsonu adı (import_preset için gerekli). Mevcut: rook_vs_pawn=Kırmızı araba siyah piyona karşı</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">JSON oyun kaydı dizesi (import_json için gereklidir). Hamle tekrarı ile tam bir oyun içe aktarmak için kullanılır. Biçim: {\"version\":1,\"title\":\"başlık\",\"initialFen\":\"başlangıç FEN\",\"result\":\"sonuç\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}. `move` UCCI koordinat biçimidir (örn. a0a1, a0\'dan a1\'e hareket anlamına gelir); `moves` sırayla tekrarlanır.</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">Fen parametresi eksik</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">fen eksik. action=import_fen ile bir kez yeniden dene, title ve fen\'i birlikte gönder, konum kullanıcının tarif ettiği gibi olsun; yerleşik oyunsonu için import_preset kullan</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">preset eksik. Mevcut: rook_vs_pawn (Kırmızı araba siyah piyona karşı). Kullanıcı FEN verdiyse import_fen kullan</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">Bilinmeyen yerleşik oyunsonu: %1$s. Mevcut: rook_vs_pawn (Kırmızı araba siyah piyona karşı)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">json_data parametresi eksik</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN İçe Aktarıldı</string>
-    <string name="agent_tool_manage_xiangqi_imported">Oyun içe aktarıldı: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">Kırmızı araba siyah piyona karşı</string>
+    <string name="agent_tool_manage_xiangqi_imported">Oyun içe aktarıldı: %1$s. Konum eksiksiz içe aktarıldı. deepLinks\'i kullanıcıya verin; bu aracı tekrar çağırmaya gerek yok</string>
     <string name="agent_tool_manage_xiangqi_import_failed">İçe aktarma başarısız: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -824,8 +828,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">Görev %1$d adım sonra durduruldu (sınıra ulaşıldı). Son eylem: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">Şu anda hiçbir Activity mevcut değil. Sohbeti normal bir sayfadan açtığınızdan emin olun.</string>
     <string name="agent_tool_manage_gomoku_title">Gomoku oyunlarını yönet</string>
-    <string name="agent_tool_manage_gomoku_summary">Gomoku oyunlarını sorgula, oluştur, final/açılış içe aktar, kayıt içe aktar, sil ve dışa aktar</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">Oyunsonu veya açılış içe aktar. Gomoku partilerini sorgula, oluştur, sil ve dışa aktar</string>
+    <string name="agent_tool_manage_gomoku_param_action">İşlem türü: list / detail / create / import_preset / import_fen / import_json / delete / export. Yerleşik oyunsonu için import_preset; import_fen yalnızca kullanıcı FEN verdiğinde</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -838,15 +842,19 @@
     <string name="agent_tool_manage_gomoku_created">Oyun oluşturuldu: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">Oyun silindi: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">Yerleşik oyunsonu adı (import_preset için gerekli). Mevcut: center_two_black=Tengende siyah çift</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">Fen parametresi eksik</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">fen eksik. action=import_fen ile bir kez yeniden dene, title ve fen\'i birlikte gönder, konum kullanıcının tarif ettiği gibi olsun; yerleşik oyunsonu için import_preset kullan</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">preset eksik. Mevcut: center_two_black (Tengende siyah çift). Kullanıcı FEN verdiyse import_fen kullan</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">Bilinmeyen yerleşik oyunsonu: %1$s. Mevcut: center_two_black (Tengende siyah çift)</string>
     <string name="agent_tool_manage_gomoku_missing_json">json_data parametresi eksik</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FEN İçe Aktarıldı</string>
-    <string name="agent_tool_manage_gomoku_imported">Oyun içe aktarıldı: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">Tengende siyah çift</string>
+    <string name="agent_tool_manage_gomoku_imported">Oyun içe aktarıldı: %1$s. Konum eksiksiz içe aktarıldı. deepLinks\'i kullanıcıya verin; bu aracı tekrar çağırmaya gerek yok</string>
     <string name="agent_tool_manage_gomoku_import_failed">İçe aktarma başarısız: %1$s</string>
     <string name="agent_tool_manage_chess_title">Satranç oyunlarını yönet</string>
-    <string name="agent_tool_manage_chess_summary">Satranç oyunlarını sorgula, oluştur, final/açılış içe aktar, kayıt içe aktar, sil ve dışa aktar</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">Oyunsonu veya açılış içe aktar. Satranç partilerini sorgula, oluştur, sil ve dışa aktar</string>
+    <string name="agent_tool_manage_chess_param_action">İşlem türü: list / detail / create / import_preset / import_fen / import_json / delete / export. Yerleşik oyunsonu için import_preset; import_fen yalnızca kullanıcı FEN verdiğinde</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -859,11 +867,15 @@
     <string name="agent_tool_manage_chess_created">Oyun oluşturuldu: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">Oyun silindi: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">Yerleşik oyunsonu adı (import_preset için gerekli). Mevcut: king_pawn_vs_king=Şah ve piyon şaha karşı</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">Fen parametresi eksik</string>
+    <string name="agent_tool_manage_chess_missing_fen">fen eksik. action=import_fen ile bir kez yeniden dene, title ve fen\'i birlikte gönder, konum kullanıcının tarif ettiği gibi olsun; yerleşik oyunsonu için import_preset kullan</string>
+    <string name="agent_tool_manage_chess_missing_preset">preset eksik. Mevcut: king_pawn_vs_king (Şah ve piyon şaha karşı). Kullanıcı FEN verdiyse import_fen kullan</string>
+    <string name="agent_tool_manage_chess_unknown_preset">Bilinmeyen yerleşik oyunsonu: %1$s. Mevcut: king_pawn_vs_king (Şah ve piyon şaha karşı)</string>
     <string name="agent_tool_manage_chess_missing_json">json_data parametresi eksik</string>
     <string name="agent_tool_manage_chess_imported_fen">FEN İçe Aktarıldı</string>
-    <string name="agent_tool_manage_chess_imported">Oyun içe aktarıldı: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">Şah ve piyon şaha karşı</string>
+    <string name="agent_tool_manage_chess_imported">Oyun içe aktarıldı: %1$s. Konum eksiksiz içe aktarıldı. deepLinks\'i kullanıcıya verin; bu aracı tekrar çağırmaya gerek yok</string>
     <string name="agent_tool_manage_chess_import_failed">İçe aktarma başarısız: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">Cam kenarlık görünürlüğü. **Sayı türü** (dize DEĞİL), aralık [0.0, 1.0], varsayılan 0.17 (%%17). 0 kenarlığı tamamen gizler; değer yükseldikçe ana hat belirginleşir. glass_alpha\'dan bağımsızdır. İsteğe bağlı</string>

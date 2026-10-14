@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">Ang gawain %1$s ay %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">Tinanggal ang gawain: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">Pamahalaan ang mga Larong Xiangqi</string>
-    <string name="agent_tool_manage_xiangqi_summary">Kumonsulta, lumikha, mag-import ng endgame/opening, mag-import ng mga tala ng laro, magtanggal at mag-export ng mga larong Chinese chess</string>
-    <string name="agent_tool_manage_xiangqi_param_action">Uri ng aksyon: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">Mag-import ng endgame o opening. Mag-query, gumawa, mag-delete at mag-export din ng mga laro ng xiangqi</string>
+    <string name="agent_tool_manage_xiangqi_param_action">Uri ng aksyon: list / detail / create / import_preset / import_fen / import_json / delete / export. Gamitin ang import_preset para sa built-in na endgame; import_fen lang kapag ang user ang nagbigay ng FEN</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">ID ng laro (kinakailangan para sa detail / delete / export)</string>
     <string name="agent_tool_manage_xiangqi_param_title">Pamagat ng laro (kinakailangan para sa create)</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">Kung gagawa ng laro ng tao-laban-AI kung saan ang AI ay naglalaro ng pula (opsyonal para sa create, default false)</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">Nagawa ang laro: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">Tinanggal ang laro: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">FEN notation string (kinakailangan para sa import_fen). Ginagamit upang mag-import ng endgame o custom opening. Format: \"position side halfmove-count fullmove-count\", hal. \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\". Ang bahagi ng position ay 10 row na pinaghihiwalay ng `/`, bawat row ay 9 column; uppercase = Red (K=General A=Advisor B=Elephant N=Horse R=Chariot C=Cannon P=Pawn), lowercase = Black (k=a b=n r=c p), digits = mga bakanteng kahon.</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">Pangalan ng built-in na endgame (kailangan sa import_preset). Available: rook_vs_pawn=Pulang rook laban sa itim na pawn</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">JSON game record string (kinakailangan para sa import_json). Ginagamit upang mag-import ng buong laro na may move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}. Ang `move` ay UCCI coordinate format (hal. a0a1 ay nangangahulugang ilipat mula a0 patungong a1); ang `moves` ay ire-replay sa pagkakasunod-sunod.</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">Kulang ang fen parameter</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">Kulang ang fen. Subukan ulit nang minsan with action=import_fen, ipasa nang sabay ang title at fen, posisyon ayon sa inilarawan ng user; para sa built-in na endgame gamitin ang import_preset</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">Kulang ang preset. Available: rook_vs_pawn (Pulang rook laban sa itim na pawn). Kung ang user ang nagbigay ng FEN, gamitin ang import_fen</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">Hindi kilalang built-in na endgame: %1$s. Available: rook_vs_pawn (Pulang rook laban sa itim na pawn)</string>
     <string name="agent_tool_manage_xiangqi_missing_json">Kulang ang json_data parameter</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">Na-import ang FEN</string>
-    <string name="agent_tool_manage_xiangqi_imported">Na-import ang laro: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">Pulang rook laban sa itim na pawn</string>
+    <string name="agent_tool_manage_xiangqi_imported">Na-import ang laro: %1$s. Kumpleto nang na-import ang posisyon. Ibigay ang deepLinks sa user; hindi na kailangang tawagan ulit ang tool na ito</string>
     <string name="agent_tool_manage_xiangqi_import_failed">Nabigo ang pag-import: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -821,8 +825,8 @@
     <string name="agent_tool_automate_ui_task_step_limit">Huminto ang task pagkatapos ng %1$d na hakbang (naabot ang limitasyon). Huling aksyon: %2$s</string>
     <string name="agent_tool_automate_ui_task_no_activity">Walang kasalukuyang Activity na magagamit. Siguraduhing buksan mo ang chat mula sa isang normal na pahina.</string>
     <string name="agent_tool_manage_gomoku_title">Pamahalaan ang mga laro ng Gomoku</string>
-    <string name="agent_tool_manage_gomoku_summary">Mag-query, gumawa, mag-import ng endgame/opening, mag-import ng record, mag-delete at mag-export ng mga laro ng Five in a Row</string>
-    <string name="agent_tool_manage_gomoku_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">Mag-import ng endgame o opening. Mag-query, gumawa, mag-delete at mag-export din ng mga laro ng gomoku</string>
+    <string name="agent_tool_manage_gomoku_param_action">Uri ng aksyon: list / detail / create / import_preset / import_fen / import_json / delete / export. Gamitin ang import_preset para sa built-in na endgame; import_fen lang kapag ang user ang nagbigay ng FEN</string>
     <string name="agent_tool_manage_gomoku_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_gomoku_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -835,15 +839,19 @@
     <string name="agent_tool_manage_gomoku_created">Nagawa ang laro: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">Tinanggal ang laro: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">Gomoku FEN string (required for import_fen). Used to import an endgame or a custom opening. Format: \"&lt;board> &lt;side> &lt;moveNumber>\". board = 15 rows separated by `/`, each row exactly 15 cells; b = black stone, w = white stone, digits compress consecutive empty cells (e.g. \"3b11\" = 3 empty + black + 11 empty). Row 1 is the top of the board; files A-O run left to right. side: b = black to move, w = white to move (black moves first in Gomoku). Empty board: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\". Endgame example (black H8 &amp; I8, white H9, black to move): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\".</string>
+    <string name="agent_tool_manage_gomoku_param_preset">Pangalan ng built-in na endgame (kailangan sa import_preset). Available: center_two_black=Itim na pares sa tengen</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}. `move` is the coordinate (file A-O + rank 1-15, e.g. \"H8\"); `moves` is replayed in order. `result` must be one of BLACK / WHITE / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide BLACK|WHITE.</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">Kulang ang fen parameter</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">Kulang ang fen. Subukan ulit nang minsan with action=import_fen, ipasa nang sabay ang title at fen, posisyon ayon sa inilarawan ng user; para sa built-in na endgame gamitin ang import_preset</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">Kulang ang preset. Available: center_two_black (Itim na pares sa tengen). Kung ang user ang nagbigay ng FEN, gamitin ang import_fen</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">Hindi kilalang built-in na endgame: %1$s. Available: center_two_black (Itim na pares sa tengen)</string>
     <string name="agent_tool_manage_gomoku_missing_json">Kulang ang json_data parameter</string>
     <string name="agent_tool_manage_gomoku_imported_fen">Na-import ang FEN</string>
-    <string name="agent_tool_manage_gomoku_imported">Na-import ang laro: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">Itim na pares sa tengen</string>
+    <string name="agent_tool_manage_gomoku_imported">Na-import ang laro: %1$s. Kumpleto nang na-import ang posisyon. Ibigay ang deepLinks sa user; hindi na kailangang tawagan ulit ang tool na ito</string>
     <string name="agent_tool_manage_gomoku_import_failed">Nabigo ang pag-import: %1$s</string>
     <string name="agent_tool_manage_chess_title">Pamahalaan ang mga laro ng chess</string>
-    <string name="agent_tool_manage_chess_summary">Mag-query, gumawa, mag-import ng endgame/opening, mag-import ng record, mag-delete at mag-export ng mga laro ng chess</string>
-    <string name="agent_tool_manage_chess_param_action">Action type: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">Mag-import ng endgame o opening. Mag-query, gumawa, mag-delete at mag-export din ng mga laro ng chess</string>
+    <string name="agent_tool_manage_chess_param_action">Uri ng aksyon: list / detail / create / import_preset / import_fen / import_json / delete / export. Gamitin ang import_preset para sa built-in na endgame; import_fen lang kapag ang user ang nagbigay ng FEN</string>
     <string name="agent_tool_manage_chess_param_game_id">Game ID (required for detail / delete / export)</string>
     <string name="agent_tool_manage_chess_param_title">Game title (required for create)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">Whether to create a human-vs-AI game with AI playing black, i.e. first move (optional for create; omit it to create a local two-player game)</string>
@@ -856,11 +864,15 @@
     <string name="agent_tool_manage_chess_created">Nagawa ang laro: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">Tinanggal ang laro: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">Standard chess FEN string (required for import_fen). Used to import an endgame or a custom opening. Six fields: \"position side castling en-passant halfmove fullmove\", e.g. \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\". The position part is 8 rows separated by `/` (first row is rank 8), each row 8 columns; uppercase = White (P N B R Q K), lowercase = Black (p n b r q k), digits = empty squares. side: w = White to move, b = Black to move; use - for no castling rights / no en-passant square.</string>
+    <string name="agent_tool_manage_chess_param_preset">Pangalan ng built-in na endgame (kailangan sa import_preset). Available: king_pawn_vs_king=Hari at pawn laban sa hari</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON game record string (required for import_json). Used to import a full game with move replay. Format: {\"version\":1,\"title\":\"title\",\"initialFen\":\"initial FEN\",\"result\":\"result\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}. `move` is UCI coordinate format (e.g. \"e2e4\", promotion with suffix like \"e7e8q\"); `moves` is replayed in order. `result` must be one of WHITE / BLACK / DRAW / RESIGNED / \"\" (unfinished); resigned games also carry winnerSide WHITE|BLACK.</string>
-    <string name="agent_tool_manage_chess_missing_fen">Kulang ang fen parameter</string>
+    <string name="agent_tool_manage_chess_missing_fen">Kulang ang fen. Subukan ulit nang minsan with action=import_fen, ipasa nang sabay ang title at fen, posisyon ayon sa inilarawan ng user; para sa built-in na endgame gamitin ang import_preset</string>
+    <string name="agent_tool_manage_chess_missing_preset">Kulang ang preset. Available: king_pawn_vs_king (Hari at pawn laban sa hari). Kung ang user ang nagbigay ng FEN, gamitin ang import_fen</string>
+    <string name="agent_tool_manage_chess_unknown_preset">Hindi kilalang built-in na endgame: %1$s. Available: king_pawn_vs_king (Hari at pawn laban sa hari)</string>
     <string name="agent_tool_manage_chess_missing_json">Kulang ang json_data parameter</string>
     <string name="agent_tool_manage_chess_imported_fen">Na-import ang FEN</string>
-    <string name="agent_tool_manage_chess_imported">Na-import ang laro: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">Hari at pawn laban sa hari</string>
+    <string name="agent_tool_manage_chess_imported">Na-import ang laro: %1$s. Kumpleto nang na-import ang posisyon. Ibigay ang deepLinks sa user; hindi na kailangang tawagan ulit ang tool na ito</string>
     <string name="agent_tool_manage_chess_import_failed">Nabigo ang pag-import: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether to create a human-vs-AI game with AI playing white, i.e. first move (optional for create; omit it to create a local two-player game)</string>
     <string name="agent_tool_theme_setting_param_glass_border_alpha">Pagkakita ng glass na hangganan. **Uri na numero** (HINDI string), saklaw [0.0, 1.0], default 0.17 (17%%). Ang 0 ay ganap na nagtatago ng hangganan; mas mataas = mas nakikitang balangkas. Independiyente sa glass_alpha. Opsyonal</string>

@@ -60,7 +60,7 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
     var importFen by remember { mutableStateOf(false) }
     val onNavigate = LocalOnNavigate.current
     val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
-    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_19)
+    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_11)
     val setup = component.preparationSetupDraft
 
     if (setup != null) {

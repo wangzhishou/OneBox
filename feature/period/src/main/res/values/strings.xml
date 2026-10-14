@@ -109,7 +109,7 @@
     <!-- Agent tools -->
     <string name="agent_tool_add_period_record_title">Add period record</string>
     <string name="agent_tool_add_period_record_summary">Record period start/end, flow, symptoms and mood</string>
-    <string name="agent_tool_add_period_record_description">Record a period entry: date (yyyy-MM-dd), optional is_period_start / is_period_end, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), symptoms array, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) and note.</string>
+    <string name="agent_tool_add_period_record_description">Record a period entry: date (yyyy-MM-dd), optional is_period_start / is_period_end, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), symptoms array, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) and note. When the user states a period fact (period started, cramps, flow), record it with this tool. Do not turn it into medical advice. If it started yesterday, set date to yesterday and is_period_start=true, and put cramps in symptoms.</string>
     <string name="agent_tool_add_period_record_failed">Failed to add period record: %1$s</string>
     <string name="agent_tool_query_period_records_title">Query period records</string>
     <string name="agent_tool_query_period_records_summary">Query records, cycle stats and next period prediction</string>

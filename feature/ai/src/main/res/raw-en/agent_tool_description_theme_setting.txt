@@ -1,3 +1,7 @@
+When the user asks for a style (tech, fresh, business, dark), do not call ask_user and do not list first. Call action=set with a coherent palette. For a tech look or dark plus cyan, use:
+{"action":"set","night_mode":"Dark","primary":"#22D3EE","secondary":"#818CF8","mesh_gradient":"true","gradient_style":"Ocean"}
+Ask only when the user explicitly wants to choose among options.
+
 Theme settings tool: read the current theme or switch / fine-tune it.
 
 Three actions (pick by user intent):

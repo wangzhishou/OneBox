@@ -49,7 +49,7 @@ class ManageXiangqiTool @Inject constructor(
             "action" to ToolParameterProperty(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_manage_xiangqi_param_action),
-                enum = listOf("list", "detail", "create", "import_fen", "import_json", "delete", "export")
+                enum = listOf("list", "detail", "create", "import_preset", "import_fen", "import_json", "delete", "export")
             ),
             "game_id" to ToolParameterProperty(
                 type = "string",
@@ -72,6 +72,11 @@ class ManageXiangqiTool @Inject constructor(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_manage_xiangqi_param_fen)
             ),
+            "preset" to ToolParameterProperty(
+                type = "string",
+                description = textProvider.string(R.string.agent_tool_manage_xiangqi_param_preset),
+                enum = listOf("rook_vs_pawn")
+            ),
             "json_data" to ToolParameterProperty(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_manage_xiangqi_param_json_data)
@@ -86,7 +91,12 @@ class ManageXiangqiTool @Inject constructor(
             when (params.action) {
                 "list" -> handleList()
                 "detail" -> handleDetail(params)
-                "create" -> handleCreate(params)
+                "create" -> when {
+                    !params.preset.isNullOrBlank() -> handleImportPreset(params)
+                    !params.fen.isNullOrBlank() -> handleImportFen(params)
+                    else -> handleCreate(params)
+                }
+                "import_preset" -> handleImportPreset(params)
                 "import_fen" -> handleImportFen(params)
                 "import_json" -> handleImportJson(params)
                 "delete" -> handleDelete(params)
@@ -231,6 +241,21 @@ class ManageXiangqiTool @Inject constructor(
         return AgentToolResult(content = jsonStringOf(result))
     }
 
+    private suspend fun handleImportPreset(params: ManageXiangqiParams): AgentToolResult {
+        val key = params.preset
+        if (key.isNullOrBlank()) {
+            return errorResult(R.string.agent_tool_manage_xiangqi_missing_preset)
+        }
+        val fen = PRESET_ENDGAMES[key]
+            ?: return errorResult(R.string.agent_tool_manage_xiangqi_unknown_preset, key)
+        return handleImportFen(params.copy(fen = fen, title = params.title ?: presetTitle(key)))
+    }
+
+    private fun presetTitle(key: String): String = when (key) {
+        "rook_vs_pawn" -> textProvider.string(R.string.agent_tool_manage_xiangqi_preset_rook_vs_pawn_title)
+        else -> key
+    }
+
     private suspend fun handleImportJson(params: ManageXiangqiParams): AgentToolResult {
         val jsonData = params.json_data
         if (jsonData.isNullOrBlank()) {
@@ -338,6 +363,13 @@ class ManageXiangqiTool @Inject constructor(
         "primary" to primary,
     )
 
+    private companion object {
+        // 内置残局：preset 名 -> FEN，标题按系统语言走 presetTitle()
+        val PRESET_ENDGAMES = mapOf(
+            "rook_vs_pawn" to "4k4/9/9/9/9/4p4/9/9/3R5/4K4 w 0 1",
+        )
+    }
+
     @Serializable
     private data class ManageXiangqiParams(
         val action: String = "",
@@ -347,5 +379,6 @@ class ManageXiangqiTool @Inject constructor(
         val export_format: String? = null,
         val fen: String? = null,
         val json_data: String? = null,
+        val preset: String? = null,
     )
 }

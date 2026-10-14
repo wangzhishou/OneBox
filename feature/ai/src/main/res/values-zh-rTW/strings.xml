@@ -585,8 +585,8 @@
     <string name="agent_tool_manage_todo_toggled">任務 %1$s 已 %2$s</string>
     <string name="agent_tool_manage_todo_task_deleted">已刪除任務: %1$s</string>
     <string name="agent_tool_manage_xiangqi_title">管理象棋對局</string>
-    <string name="agent_tool_manage_xiangqi_summary">查詢、建立、匯入殘局/棋譜開局、匯入對戰記錄、刪除、匯出中國象棋對局</string>
-    <string name="agent_tool_manage_xiangqi_param_action">操作類型: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_xiangqi_summary">匯入殘局或棋譜開局，也可查詢、建立、刪除、匯出中國象棋對局</string>
+    <string name="agent_tool_manage_xiangqi_param_action">操作類型: list / detail / create / import_preset / import_fen / import_json / delete / export。擺內建殘局用 import_preset；使用者自己給了 FEN 才用 import_fen</string>
     <string name="agent_tool_manage_xiangqi_param_game_id">對局 ID（detail / delete / export 必填）</string>
     <string name="agent_tool_manage_xiangqi_param_title">對局標題（create 必填）</string>
     <string name="agent_tool_manage_xiangqi_param_ai_as_red">是否建立人機對局且 AI 執紅（create 可選，預設 false）</string>
@@ -599,11 +599,15 @@
     <string name="agent_tool_manage_xiangqi_created">已建立對局: %1$s</string>
     <string name="agent_tool_manage_xiangqi_deleted">已刪除對局: %1$s</string>
     <string name="agent_tool_manage_xiangqi_param_fen">FEN 棋譜字串（import_fen 必填）。用於匯入殘局或自訂開局。格式: \"局面 執子方 半步計數 回合數\"，例如 \"rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w 0 1\"。局面部分 10 行用 / 分隔，每行 9 欄，大寫=紅方(K帥 A仕 B相 N馬 R車 C炮 P兵)，小寫=黑方(k將 a士 b象 n馬 r車 c炮 p卒)，數字=空格。</string>
+    <string name="agent_tool_manage_xiangqi_param_preset">內建殘局名稱（import_preset 必填）。可選: rook_vs_pawn=紅車對黑卒</string>
     <string name="agent_tool_manage_xiangqi_param_json_data">JSON 對戰記錄字串（import_json 必填）。用於匯入完整對局並回放走子。格式: {\"version\":1,\"title\":\"標題\",\"initialFen\":\"初始FEN\",\"result\":\"結果\",\"moves\":[{\"move\":\"a0a1\",\"moveCn\":\"炮二平五\"},...]}。move 為 UCCI 座標格式（如 a0a1 表示從 a0 移動到 a1），moves 按順序回放。</string>
-    <string name="agent_tool_manage_xiangqi_missing_fen">缺少 fen 參數</string>
+    <string name="agent_tool_manage_xiangqi_missing_fen">缺少 fen 參數。用 action=import_fen 重試一次，title 和 fen 必須在同一次呼叫裡傳齊，局面以使用者描述的為準；內建殘局改用 import_preset</string>
+    <string name="agent_tool_manage_xiangqi_missing_preset">缺少 preset 參數。可選: rook_vs_pawn（紅車對黑卒）；使用者自己給了 FEN 時改用 import_fen</string>
+    <string name="agent_tool_manage_xiangqi_unknown_preset">未知的內建殘局: %1$s。可選: rook_vs_pawn（紅車對黑卒）</string>
     <string name="agent_tool_manage_xiangqi_missing_json">缺少 json_data 參數</string>
     <string name="agent_tool_manage_xiangqi_imported_fen">FEN 匯入</string>
-    <string name="agent_tool_manage_xiangqi_imported">已匯入對局: %1$s</string>
+    <string name="agent_tool_manage_xiangqi_preset_rook_vs_pawn_title">紅車對黑卒</string>
+    <string name="agent_tool_manage_xiangqi_imported">已匯入對局: %1$s。局面已完整匯入，把 deepLinks 交給使用者即可，無需再次呼叫本工具</string>
     <string name="agent_tool_manage_xiangqi_import_failed">匯入失敗: %1$s</string>
 
     <!-- manage_decision_wheel -->
@@ -901,8 +905,8 @@
     <string name="agent_tool_start_entry_setting_deeplink_label">顯示設定</string>
     <string name="agent_tool_start_entry_setting_deeplink_guidance">點擊前往顯示設定選擇啟動入口</string>
     <string name="agent_tool_manage_gomoku_title">管理五子棋對局</string>
-    <string name="agent_tool_manage_gomoku_summary">查詢、建立、匯入殘局/自訂開局、匯入對戰記錄、刪除、匯出五子棋對局</string>
-    <string name="agent_tool_manage_gomoku_param_action">操作類型: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_gomoku_summary">匯入殘局或自訂開局，也可查詢、建立、刪除、匯出五子棋對局</string>
+    <string name="agent_tool_manage_gomoku_param_action">操作類型: list / detail / create / import_preset / import_fen / import_json / delete / export。擺內建殘局用 import_preset；使用者自己給了 FEN 才用 import_fen</string>
     <string name="agent_tool_manage_gomoku_param_game_id">對局 ID(detail / delete / export 必填)</string>
     <string name="agent_tool_manage_gomoku_param_title">對局標題(create 必填)</string>
     <string name="agent_tool_manage_gomoku_param_ai_as_black">是否建立人機對局且 AI 執黑(先手)(create 可選;不傳則建立本地雙人對局)</string>
@@ -915,15 +919,19 @@
     <string name="agent_tool_manage_gomoku_created">已建立對局: %1$s</string>
     <string name="agent_tool_manage_gomoku_deleted">已刪除對局: %1$s</string>
     <string name="agent_tool_manage_gomoku_param_fen">五子棋 FEN 字串(import_fen 必填)。用於匯入殘局或自訂開局。格式: \"&lt;board> &lt;side> &lt;moveNumber>\" 三段。board 為 15 行用 / 分隔,每行恰好 15 格,b=黑子,w=白子,連續空位用數字壓縮(如 \"3b11\" = 3 空+黑子+11 空);第 1 行是棋盤最上方,列 A-O 從左到右。side: b=輪到黑,w=輪到白(五子棋黑先)。空盤: \"15/15/15/15/15/15/15/15/15/15/15/15/15/15/15 b 1\"。殘局示例(黑 H8、黑 I8、白 H9,輪到黑): \"15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4\"。</string>
+    <string name="agent_tool_manage_gomoku_param_preset">內建殘局名稱（import_preset 必填）。可選: center_two_black=天元黑兩子</string>
     <string name="agent_tool_manage_gomoku_param_json_data">JSON 對戰記錄字串(import_json 必填)。用於匯入完整對局並回放走子。格式: {\"version\":1,\"title\":\"標題\",\"initialFen\":\"初始FEN\",\"result\":\"結果\",\"moves\":[{\"move\":\"H8\",\"moveCn\":\"...\"},...]}。move 為座標(列 A-O + 行 1-15,如 \"H8\"),moves 按順序回放。result 合法值: BLACK / WHITE / DRAW / RESIGNED / \"\"(未結束);認輸局另傳 winnerSide BLACK|WHITE。</string>
-    <string name="agent_tool_manage_gomoku_missing_fen">缺少 fen 參數</string>
+    <string name="agent_tool_manage_gomoku_missing_fen">缺少 fen 參數。用 action=import_fen 重試一次，title 和 fen 必須在同一次呼叫裡傳齊，局面以使用者描述的為準；內建殘局改用 import_preset</string>
+    <string name="agent_tool_manage_gomoku_missing_preset">缺少 preset 參數。可選: center_two_black（天元黑兩子）；使用者自己給了 FEN 時改用 import_fen</string>
+    <string name="agent_tool_manage_gomoku_unknown_preset">未知的內建殘局: %1$s。可選: center_two_black（天元黑兩子）</string>
     <string name="agent_tool_manage_gomoku_missing_json">缺少 json_data 參數</string>
     <string name="agent_tool_manage_gomoku_imported_fen">FEN 匯入</string>
-    <string name="agent_tool_manage_gomoku_imported">已匯入對局: %1$s</string>
+    <string name="agent_tool_manage_gomoku_preset_center_two_black_title">天元黑兩子</string>
+    <string name="agent_tool_manage_gomoku_imported">已匯入對局: %1$s。局面已完整匯入，把 deepLinks 交給使用者即可，無需再次呼叫本工具</string>
     <string name="agent_tool_manage_gomoku_import_failed">匯入失敗: %1$s</string>
     <string name="agent_tool_manage_chess_title">管理國際象棋對局</string>
-    <string name="agent_tool_manage_chess_summary">查詢、建立、匯入殘局/自訂開局、匯入對戰記錄、刪除、匯出國際象棋對局</string>
-    <string name="agent_tool_manage_chess_param_action">操作類型: list / detail / create / import_fen / import_json / delete / export</string>
+    <string name="agent_tool_manage_chess_summary">匯入殘局或自訂開局，也可查詢、建立、刪除、匯出國際象棋對局</string>
+    <string name="agent_tool_manage_chess_param_action">操作類型: list / detail / create / import_preset / import_fen / import_json / delete / export。擺內建殘局用 import_preset；使用者自己給了 FEN 才用 import_fen</string>
     <string name="agent_tool_manage_chess_param_game_id">對局 ID(detail / delete / export 必填)</string>
     <string name="agent_tool_manage_chess_param_title">對局標題(create 必填)</string>
     <string name="agent_tool_manage_chess_param_ai_as_black">是否建立人機對局且 AI 執黑(先手)(create 可選;不傳則建立本地雙人對局)</string>
@@ -936,11 +944,15 @@
     <string name="agent_tool_manage_chess_created">已建立對局: %1$s</string>
     <string name="agent_tool_manage_chess_deleted">已刪除對局: %1$s</string>
     <string name="agent_tool_manage_chess_param_fen">標準國際象棋 FEN 字串(import_fen 必填)。用於匯入殘局或自訂開局。六段式: \"局面 執子方 易位權 吃過路兵 半回合計數 回合數\",如 \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\"。局面 8 行用 / 分隔(第 1 行是 rank 8),每行 8 列,大寫=白方(P N B R Q K),小寫=黑方(p n b r q k),數字=空格;執子方 w=白,b=黑;無易位權/過路兵用 -。</string>
+    <string name="agent_tool_manage_chess_param_preset">內建殘局名稱（import_preset 必填）。可選: king_pawn_vs_king=王兵對王</string>
     <string name="agent_tool_manage_chess_param_json_data">JSON 對戰記錄字串(import_json 必填)。用於匯入完整對局並回放走子。格式: {\"version\":1,\"title\":\"標題\",\"initialFen\":\"初始FEN\",\"result\":\"結果\",\"moves\":[{\"move\":\"e2e4\",\"moveCn\":\"...\"},...]}。move 為 UCI 座標(如 \"e2e4\",升變帶尾字母如 \"e7e8q\"),moves 按順序回放。result 合法值: WHITE / BLACK / DRAW / RESIGNED / \"\"(未結束);認輸局另傳 winnerSide WHITE|BLACK。</string>
-    <string name="agent_tool_manage_chess_missing_fen">缺少 fen 參數</string>
+    <string name="agent_tool_manage_chess_missing_fen">缺少 fen 參數。用 action=import_fen 重試一次，title 和 fen 必須在同一次呼叫裡傳齊，局面以使用者描述的為準；內建殘局改用 import_preset</string>
+    <string name="agent_tool_manage_chess_missing_preset">缺少 preset 參數。可選: king_pawn_vs_king（王兵對王）；使用者自己給了 FEN 時改用 import_fen</string>
+    <string name="agent_tool_manage_chess_unknown_preset">未知的內建殘局: %1$s。可選: king_pawn_vs_king（王兵對王）</string>
     <string name="agent_tool_manage_chess_missing_json">缺少 json_data 參數</string>
     <string name="agent_tool_manage_chess_imported_fen">FEN 匯入</string>
-    <string name="agent_tool_manage_chess_imported">已匯入對局: %1$s</string>
+    <string name="agent_tool_manage_chess_preset_king_pawn_vs_king_title">王兵對王</string>
+    <string name="agent_tool_manage_chess_imported">已匯入對局: %1$s。局面已完整匯入，把 deepLinks 交給使用者即可，無需再次呼叫本工具</string>
     <string name="agent_tool_manage_chess_import_failed">匯入失敗: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">是否建立人機對局且 AI 執白(先手)(create 可選;不傳則建立本地雙人對局)</string>
 </resources>

@@ -49,7 +49,7 @@ class ManageGomokuTool @Inject constructor(
             "action" to ToolParameterProperty(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_manage_gomoku_param_action),
-                enum = listOf("list", "detail", "create", "import_fen", "import_json", "delete", "export")
+                enum = listOf("list", "detail", "create", "import_preset", "import_fen", "import_json", "delete", "export")
             ),
             "game_id" to ToolParameterProperty(
                 type = "string",
@@ -72,6 +72,11 @@ class ManageGomokuTool @Inject constructor(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_manage_gomoku_param_fen)
             ),
+            "preset" to ToolParameterProperty(
+                type = "string",
+                description = textProvider.string(R.string.agent_tool_manage_gomoku_param_preset),
+                enum = listOf("center_two_black")
+            ),
             "json_data" to ToolParameterProperty(
                 type = "string",
                 description = textProvider.string(R.string.agent_tool_manage_gomoku_param_json_data)
@@ -86,7 +91,12 @@ class ManageGomokuTool @Inject constructor(
             when (params.action) {
                 "list" -> handleList()
                 "detail" -> handleDetail(params)
-                "create" -> handleCreate(params)
+                "create" -> when {
+                    !params.preset.isNullOrBlank() -> handleImportPreset(params)
+                    !params.fen.isNullOrBlank() -> handleImportFen(params)
+                    else -> handleCreate(params)
+                }
+                "import_preset" -> handleImportPreset(params)
                 "import_fen" -> handleImportFen(params)
                 "import_json" -> handleImportJson(params)
                 "delete" -> handleDelete(params)
@@ -231,6 +241,21 @@ class ManageGomokuTool @Inject constructor(
         return AgentToolResult(content = jsonStringOf(result))
     }
 
+    private suspend fun handleImportPreset(params: ManageGomokuParams): AgentToolResult {
+        val key = params.preset
+        if (key.isNullOrBlank()) {
+            return errorResult(R.string.agent_tool_manage_gomoku_missing_preset)
+        }
+        val fen = PRESET_ENDGAMES[key]
+            ?: return errorResult(R.string.agent_tool_manage_gomoku_unknown_preset, key)
+        return handleImportFen(params.copy(fen = fen, title = params.title ?: presetTitle(key)))
+    }
+
+    private fun presetTitle(key: String): String = when (key) {
+        "center_two_black" -> textProvider.string(R.string.agent_tool_manage_gomoku_preset_center_two_black_title)
+        else -> key
+    }
+
     private suspend fun handleImportJson(params: ManageGomokuParams): AgentToolResult {
         val jsonData = params.json_data
         if (jsonData.isNullOrBlank()) {
@@ -341,6 +366,13 @@ class ManageGomokuTool @Inject constructor(
         "primary" to primary,
     )
 
+    private companion object {
+        // 内置残局：preset 名 -> FEN，标题按系统语言走 presetTitle()
+        val PRESET_ENDGAMES = mapOf(
+            "center_two_black" to "15/15/15/15/15/15/15/7bb6/7w7/15/15/15/15/15/15 b 4",
+        )
+    }
+
     @Serializable
     private data class ManageGomokuParams(
         val action: String = "",
@@ -350,5 +382,6 @@ class ManageGomokuTool @Inject constructor(
         val export_format: String? = null,
         val fen: String? = null,
         val json_data: String? = null,
+        val preset: String? = null,
     )
 }
