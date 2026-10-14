@@ -77,49 +77,63 @@ internal fun glassVeil(
     val coverage = (backgroundAlpha / style.backgroundAlpha.coerceAtLeast(0.04f)).coerceIn(0.65f, 1.35f)
     val weight = styleWeight(style) * glassBaseAlpha * coverage * (if (isControl) 1.05f else 1f) *
         (if (enabled) 1f else 0.65f)
-    // 有网格或壁纸时霜要薄，彩色从卡片里透出来。
-    // 没有多彩背景时不再加白霜（白底上加白看不出来，还会把色调冲掉），
-    // 只把容器色调加重，色块才分得开。液态开关只再透一点。
+    // 霜的颜色跟主题走，用 surfaceContainerLowest，不写死白或灰。
+    // 透明度按玻璃厚度、液态、有没有渐变，以及这层颜色本身有多接近白来收放：
+    // 中性卡片没有色调可染，渐变页上要更实，不然会发透；
+    // 颜色越接近白，透明度越收一点，避免浅色主题铺成一块白。
+    // 彩色卡片的色相靠下面的 tint，霜只垫薄薄一层。液态开关再透一点。
     // 玻璃开关关闭时走不到这里。
     val liquidScale = if (isLiquid) 0.82f else 1f
     val plain = !hasWallpaper
-    val frostAlpha = (
+    val surfaceLowest = scheme.surfaceContainerLowest
+    val whitenessScale = (1.12f - surfaceLowest.luminance() * 0.28f).coerceIn(0.84f, 1.12f)
+    val frostStrength = when {
+        neutral && hasWallpaper && isLight -> 0.70f
+        neutral && hasWallpaper -> 0.64f
+        neutral && isLight -> 0.18f
+        neutral -> 0.16f
+        isLight && isControl && plain -> 0.22f
+        isLight && isControl -> 0.10f
+        isLight && plain -> 0.28f
+        isLight -> 0.14f
+        isControl && plain -> 0.16f
+        isControl -> 0.10f
+        plain -> 0.20f
+        else -> 0.16f
+    }
+    val frostAlpha = (frostStrength * weight * liquidScale * whitenessScale).coerceIn(
+        0f,
         when {
-            // 有壁纸时控件只留一层很薄的霜，chip / 开关 / 滑杆才能透出背后的颜色。
-            isLight -> if (isControl) if (plain) 0.22f else 0.08f else 0.36f
-            else -> if (isControl) if (plain) 0.16f else 0.05f else 0.24f
-        } * weight * liquidScale
-        ).coerceIn(0f, if (isLight) 0.46f else 0.32f)
+            neutral && hasWallpaper && isLight -> 0.86f
+            neutral && hasWallpaper -> 0.80f
+            isLight -> 0.46f
+            else -> 0.36f
+        },
+    )
     val tintAlpha = (
         if (neutral || color == Color.Unspecified || color == Color.Transparent) {
             0f
         } else if (isLight && plain) {
             (if (isControl) 0.42f else 0.50f) * weight * liquidScale
         } else if (isLight) {
-            (if (isControl) 0.10f else 0.14f) * weight * liquidScale
+            (if (isControl) 0.36f else 0.46f) * weight * liquidScale
         } else if (plain) {
             (if (isControl) 0.32f else 0.36f) * weight * liquidScale
         } else {
-            (if (isControl) 0.07f else 0.12f) * weight * liquidScale
+            (if (isControl) 0.28f else 0.36f) * weight * liquidScale
         }
         ).coerceIn(
             0f,
             when {
                 isLight && plain -> 0.58f
-                isLight -> 0.28f
+                isLight -> 0.56f
                 plain -> 0.42f
-                else -> 0.20f
+                else -> 0.42f
             },
         )
-    // 四边同一条线，和原来的上沿一致。暗色只留很淡的白，避免发亮。
+    // 四边同一条线，是高光，不是填充。暗色只留很淡的一条，避免发亮。
     val rim = Color.White.copy(alpha = if (isLight) 0.42f else 0.10f)
-
-    // 纯色页上的中性卡片没有色调可染，薄薄压一层灰，才不会和页面底融在一起。
-    val frost = if (isLight && plain && neutral) {
-        Color(0xFF6E6874).copy(alpha = (0.12f * weight * liquidScale).coerceIn(0f, 0.16f))
-    } else {
-        (if (isLight) Color.White else Color.Black).copy(alpha = frostAlpha)
-    }
+    val frost = surfaceLowest.copy(alpha = frostAlpha)
 
     return GlassVeil(
         frost = frost,
