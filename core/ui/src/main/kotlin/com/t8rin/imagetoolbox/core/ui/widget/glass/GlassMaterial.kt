@@ -86,21 +86,21 @@ internal fun glassVeil(
     val step = if (hueRoom < 0.15f) {
         0f
     } else {
-        (lift * if (isLight) 3.0f else 14f).coerceIn(0f, 1f)
+        (lift * if (isLight) 2.2f else 10f).coerceIn(0f, 1f)
     }
     val hueBase = when {
         isControl -> if (hasWallpaper) 0.04f else 0.02f
-        isLight && hasWallpaper -> 0.16f
+        isLight && hasWallpaper -> 0.12f
         isLight -> 0.05f
-        hasWallpaper -> 0.14f
+        hasWallpaper -> 0.10f
         else -> 0.04f
     }
-    val hueMix = (hueRoom * hueBase * (1f + step * 0.45f)).coerceIn(0f, 0.22f)
+    val hueMix = (hueRoom * hueBase * (1f + step * 0.35f)).coerceIn(0f, 0.16f)
     val hued = if (hueMix > 0.004f) lerp(base, scheme.surfaceTint, hueMix) else base
     val separated = when {
         step < 0.008f -> hued
-        isLight -> lerp(hued, scheme.scrim, (step * 0.16f).coerceAtMost(0.035f))
-        else -> lerp(hued, scheme.primaryContainer, (step * 0.32f).coerceAtMost(0.10f))
+        isLight -> lerp(hued, scheme.scrim, (step * 0.12f).coerceAtMost(0.02f))
+        else -> lerp(hued, scheme.primaryContainer, (step * 0.22f).coerceAtMost(0.06f))
     }
     // 白/黑霜只留一层薄奶，不再盖住上面的色相。
     val frostStrength = when {
@@ -130,9 +130,9 @@ internal fun glassVeil(
         isControl && isLight -> 0.36f
         isControl && plain -> 0.32f
         isControl -> 0.28f
-        isLight && hasWallpaper -> 0.48f
-        isLight && plain -> if (hueRoom > 0.35f) 0.16f else 0.40f
-        hasWallpaper -> 0.48f
+        isLight && hasWallpaper -> 0.40f
+        isLight && plain -> if (hueRoom > 0.35f) 0.14f else 0.40f
+        hasWallpaper -> 0.40f
         else -> 0.36f
     }
     val tintAlpha = (tintStrength * weight * liquidScale).coerceIn(
@@ -141,9 +141,9 @@ internal fun glassVeil(
             isControl && isLight && plain -> 0.58f
             isControl && isLight -> 0.56f
             isControl -> 0.42f
-            isLight && hasWallpaper -> 0.64f
+            isLight && hasWallpaper -> 0.54f
             isLight -> 0.50f
-            hasWallpaper -> 0.64f
+            hasWallpaper -> 0.54f
             else -> 0.46f
         },
     )
