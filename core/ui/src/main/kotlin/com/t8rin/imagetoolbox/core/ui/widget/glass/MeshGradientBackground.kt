@@ -282,6 +282,12 @@ private data class MeshRecipe(
     val darkLuminanceCeiling: Float = 0.22f,
     /** 顶点颜色的不透明度。1 为铺满，低于 1 时底色透出来。 */
     val alpha: Float = 1f,
+    /** 稀疏点缀。每隔 [accentEvery] 个顶点换这套色相，用来和卡片拉开层次。0 表示不点缀。 */
+    val accentHue: Float? = null,
+    val accentEvery: Int = 0,
+    val accentSaturation: Float = 0f,
+    val accentLightness: Float = 0f,
+    val accentAlpha: Float = 1f,
 )
 
 private fun meshRecipe(
@@ -335,13 +341,23 @@ private fun meshRecipe(
             jitter = 0.035f, flow = 0.14f,
             satSpread = 0.26f, lightSpread = 0.16f, darkLuminanceCeiling = 0.46f,
         )
-        // 樱粉、蜜桃、一点点淡紫。雾是淡的，顶点饱和度差要看得见。
+        // 樱粉铺得很淡，底色透出来，卡片才有一层可站。
+        // 少数顶点点浅叶绿，粉和叶交错，避免整屏一块粉、和卡片糊在一起。
         GradientBackgroundStyle.SakuraMist -> recipe(
             rows = 3, columns = 4,
-            hues = listOf(346f, 334f, 6f, 356f, 322f),
-            light = light, saturation = 0.32f, lightLightness = 0.80f, darkLightness = 0.36f,
+            hues = listOf(346f, 352f, 338f, 356f, 344f),
+            light = light, saturation = if (light) 0.36f else 0.42f,
+            lightLightness = 0.92f, darkLightness = 0.30f,
             jitter = 0.02f, flow = 0.10f,
-            satSpread = 0.28f, lightSpread = 0.18f, darkLuminanceCeiling = 0.52f,
+            satSpread = if (light) 0.04f else 0.16f,
+            lightSpread = if (light) 0.01f else 0.10f,
+            darkLuminanceCeiling = 0.40f,
+            alpha = if (light) 0.42f else 1f,
+            accentHue = if (light) 132f else null,
+            accentEvery = if (light) 5 else 0,
+            accentSaturation = 0.16f,
+            accentLightness = 0.92f,
+            accentAlpha = 0.22f,
         )
         // 薄荷、汽水蓝、青柠、一点柠檬。
         GradientBackgroundStyle.MintBreeze -> recipe(
@@ -415,6 +431,11 @@ private fun recipe(
     lightSpread: Float = 0f,
     darkLuminanceCeiling: Float = 0.22f,
     alpha: Float = 1f,
+    accentHue: Float? = null,
+    accentEvery: Int = 0,
+    accentSaturation: Float = 0f,
+    accentLightness: Float = 0f,
+    accentAlpha: Float = 1f,
 ): MeshRecipe = MeshRecipe(
     rows = rows,
     columns = columns,
@@ -427,6 +448,11 @@ private fun recipe(
     lightSpread = lightSpread,
     darkLuminanceCeiling = darkLuminanceCeiling,
     alpha = alpha,
+    accentHue = accentHue,
+    accentEvery = accentEvery,
+    accentSaturation = accentSaturation,
+    accentLightness = accentLightness,
+    accentAlpha = accentAlpha,
 )
 
 /** 主题色锚住，辅色离得太远就拉回邻近范围，避免经典/丝雾变成满色环。 */
@@ -466,6 +492,17 @@ private fun vertexColors(
     val row = index / vertexColumns
     val column = index % vertexColumns
     val hue = hueAt(row, column, recipe.hues, salt)
+    val accentHue = recipe.accentHue
+    if (accentHue != null && recipe.accentEvery > 0 && (row + column) % recipe.accentEvery == 0) {
+        return@List airyColor(
+            hue = accentHue,
+            saturation = recipe.accentSaturation,
+            lightness = recipe.accentLightness,
+            isDark = isDark,
+            darkLuminanceCeiling = recipe.darkLuminanceCeiling,
+            alpha = recipe.accentAlpha,
+        )
+    }
     // 窄色相按整行交替：一行更饱和更深，下一行更淡更浅。
     // 逐格棋盘会被双三次插值抹成中间色，渐变又变顺。
     val deep = if (recipe.satSpread > 0f) {
