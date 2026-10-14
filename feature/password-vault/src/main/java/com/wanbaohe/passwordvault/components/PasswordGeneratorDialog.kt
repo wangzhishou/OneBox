@@ -30,7 +30,7 @@ import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedCheckbox
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSwitch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.wanbaohe.passwordvault.R
 import com.wanbaohe.passwordvault.util.PasswordGenerator
@@ -158,7 +158,7 @@ fun PasswordGeneratorDialog(
                         text = stringResource(R.string.password_vault_generator_exclude_ambiguous),
                         style = MaterialTheme.typography.bodyMedium,
                     )
-                    EnhancedSwitch(
+                    GlassSwitch(
                         checked = options.excludeAmbiguous,
                         onCheckedChange = { options = options.copy(excludeAmbiguous = it) },
                     )

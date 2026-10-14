@@ -1,6 +1,7 @@
 package com.wanbaohe.setting.memory.screen
 
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -113,7 +113,7 @@ fun MemoryManagementContent(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                Switch(
+                GlassSwitch(
                     checked = globalEnabled,
                     onCheckedChange = { component.setGlobalMemoryEnabled(it) }
                 )
@@ -388,7 +388,7 @@ private fun MemoryEntryCard(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Switch(
+            GlassSwitch(
                 checked = entry.enabled,
                 onCheckedChange = onToggleEnabled,
             )

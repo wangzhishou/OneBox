@@ -40,7 +40,16 @@ class AppColors {
         uncheckedThumbColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         uncheckedTrackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.75f),
         uncheckedBorderColor = Color.Transparent,
-        uncheckedIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+        uncheckedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        // 关闭和禁用都是实心轨道，不画 Material 默认描边。
+        disabledCheckedThumbColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.38f),
+        disabledCheckedTrackColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.38f),
+        disabledCheckedBorderColor = Color.Transparent,
+        disabledCheckedIconColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.7f),
+        disabledUncheckedThumbColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+        disabledUncheckedTrackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.32f),
+        disabledUncheckedBorderColor = Color.Transparent,
+        disabledUncheckedIconColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
     )
 
     @Composable

@@ -20,26 +20,17 @@ package com.t8rin.imagetoolbox.core.ui.widget.preferences
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.t8rin.imagetoolbox.core.ui.theme.blend
-import com.t8rin.imagetoolbox.core.ui.utils.provider.SafeLocalContainerColor
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
-import com.t8rin.imagetoolbox.core.resources.icons.Check
 
 @Composable
 fun PreferenceRowSwitch(
@@ -67,7 +58,6 @@ fun PreferenceRowSwitch(
     titleFontStyle: TextStyle = PreferenceItemDefaults.TitleFontStyle,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val effectiveContainerColor = containerColor.takeOrElse { SafeLocalContainerColor }
     PreferenceRow(
         enabled = enabled,
         modifier = modifier,
@@ -91,33 +81,10 @@ fun PreferenceRowSwitch(
                 modifier = Modifier.padding(start = OneBoxDesignSystem.compactSpacing),
             ) { contentOfSwitch ->
                 contentOfSwitch?.invoke() ?: GlassSwitch(
-                    thumbContent = if (checked) {
-                        {
-                            Icon(
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Check,
-                                contentDescription = null,
-                                modifier = Modifier.padding(1.dp)
-                            )
-                        }
-                    } else null,
-                    colors = SwitchDefaults.colors(
-                        uncheckedBorderColor = MaterialTheme.colorScheme.outline.blend(
-                            effectiveContainerColor, 0.3f
-                        ),
-                        uncheckedThumbColor = MaterialTheme.colorScheme.outline.blend(
-                            effectiveContainerColor, 0.3f
-                        ),
-                        uncheckedTrackColor = effectiveContainerColor,
-                        disabledUncheckedThumbColor = MaterialTheme.colorScheme.onSurface
-                            .copy(alpha = 0.12f)
-                            .compositeOver(MaterialTheme.colorScheme.surface),
-                        checkedIconColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
                     enabled = enabled,
                     checked = checked,
                     onCheckedChange = onClick,
                     interactionSource = interactionSource,
-                    uncheckedGlassColor = effectiveContainerColor
                 )
             }
         },

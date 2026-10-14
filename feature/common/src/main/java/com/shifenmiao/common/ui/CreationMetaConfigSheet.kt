@@ -35,7 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -920,7 +920,7 @@ private fun ToolSelectionOptionItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Switch(
+            GlassSwitch(
                 checked = selected,
                 onCheckedChange = { onClick() },
             )

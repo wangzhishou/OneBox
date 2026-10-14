@@ -18,7 +18,6 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,6 +52,7 @@ import com.t8rin.imagetoolbox.core.settings.domain.model.GradientBackgroundStyle
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsManager
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.sliders.custom_slider.CustomSlider
 import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.Check
@@ -90,7 +90,7 @@ fun GlassmorphismSettingItem() {
             modifier = Modifier.weight(1f)
         )
 
-        Switch(
+        GlassSwitch(
             checked = isEnabled,
             onCheckedChange = {
                 isEnabled = it
@@ -144,7 +144,7 @@ fun LiquidGlassSettingItem(
             modifier = Modifier.weight(1f)
         )
 
-        Switch(
+        GlassSwitch(
             checked = isEnabled,
             onCheckedChange = {
                 isEnabled = it

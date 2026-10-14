@@ -19,7 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -140,7 +140,7 @@ private fun BrushSettingsContent(session: DrawSessionState) {
                 maxLines = 1
             )
             Spacer(Modifier.weight(1f))
-            Switch(
+            GlassSwitch(
                 checked = session.isEraser,
                 onCheckedChange = { checked ->
                     if (checked) session.enableEraser() else session.enableBrush()

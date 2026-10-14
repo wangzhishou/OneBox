@@ -20,7 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -344,7 +344,7 @@ private fun SessionSwitchRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        Switch(
+        GlassSwitch(
             checked = checked,
             enabled = switchEnabled,
             onCheckedChange = onToggle
@@ -436,7 +436,7 @@ private fun ToolRow(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Switch(
+            GlassSwitch(
                 checked = enabled,
                 onCheckedChange = { onToggle(tool, it) }
             )

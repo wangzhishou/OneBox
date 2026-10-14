@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.model.tts.TTSConfig
@@ -152,7 +152,7 @@ fun XiangqiSettingsScreen(
                     text = stringResource(R.string.xiangqi_settings_tts_enabled),
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Switch(
+                GlassSwitch(
                     checked = settings.ttsEnabled,
                     onCheckedChange = component::updateTTSEnabled,
                 )
@@ -215,7 +215,7 @@ fun XiangqiSettingsScreen(
                     text = stringResource(R.string.xiangqi_settings_sound_enabled),
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Switch(
+                GlassSwitch(
                     checked = settings.soundEnabled,
                     onCheckedChange = component::updateSoundEnabled,
                 )

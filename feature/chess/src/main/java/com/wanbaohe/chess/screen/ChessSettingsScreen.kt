@@ -14,7 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -250,7 +250,7 @@ private fun SettingSwitchRow(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
         )
-        Switch(
+        GlassSwitch(
             checked = checked,
             onCheckedChange = onCheckedChange,
         )

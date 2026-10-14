@@ -1,7 +1,9 @@
 package com.t8rin.imagetoolbox.core.ui.widget.glass
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -13,6 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.resources.Icons
+import com.t8rin.imagetoolbox.core.resources.icons.Check
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ProvidesValue
 
@@ -28,11 +33,13 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.ProvidesValue
  * - 背景颜色根据 [checked] 状态自动选择 [checkedGlassColor] / [uncheckedGlassColor]
  * - 取消最小交互尺寸限制，使玻璃背景与 Switch 实际 track 区域（52×32 dp）对齐
  *
+ * 开启时滑块里放对勾。关闭和禁用不画轨道描边，避免空心边框。
+ *
  * @param style              毛玻璃浓度等级，默认 [GlassStyle.Regular]
  * @param shape              玻璃背景形状，默认全圆角胶囊
  * @param checkedGlassColor  选中时的玻璃底色
  * @param uncheckedGlassColor 未选中时的玻璃底色
- * @param glassBorderWidth   玻璃描边宽度
+ * @param glassBorderWidth   开启且可用时的玻璃描边宽度；关闭和禁用固定为 0
  */
 @Composable
 fun GlassSwitch(
@@ -41,7 +48,7 @@ fun GlassSwitch(
     modifier: Modifier = Modifier,
     thumbContent: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
-    colors: SwitchColors = SwitchDefaults.colors(),
+    colors: SwitchColors = AppTheme.colors.switchColors(),
     interactionSource: MutableInteractionSource? = null,
     style: GlassStyle = GlassStyle.Regular,
     shape: Shape = RoundedCornerShape(50),
@@ -50,6 +57,39 @@ fun GlassSwitch(
     glassBorderWidth: Dp = 0.9.dp,
 ) {
     val settingsState = LocalSettingsState.current
+    val resolvedThumb: @Composable () -> Unit = {
+        if (thumbContent != null) {
+            thumbContent()
+        } else if (checked) {
+            Icon(
+                imageVector = Icons.Outlined.Check,
+                contentDescription = null,
+                modifier = Modifier.size(SwitchDefaults.IconSize),
+            )
+        }
+    }
+    // 关闭、禁用都是实心轨道。描边只留给开启且可用，避免淡轨道上多一圈框。
+    val resolvedBorderWidth = if (enabled && checked) glassBorderWidth else 0.dp
+
+    // 调用方若没覆盖禁用色，Material 默认会给关闭/禁用态画一圈描边。这里统一抹掉。
+    val borderlessColors = SwitchColors(
+        checkedThumbColor = colors.checkedThumbColor,
+        checkedTrackColor = colors.checkedTrackColor,
+        checkedBorderColor = Color.Transparent,
+        checkedIconColor = colors.checkedIconColor,
+        uncheckedThumbColor = colors.uncheckedThumbColor,
+        uncheckedTrackColor = colors.uncheckedTrackColor,
+        uncheckedBorderColor = Color.Transparent,
+        uncheckedIconColor = colors.uncheckedIconColor,
+        disabledCheckedThumbColor = colors.disabledCheckedThumbColor,
+        disabledCheckedTrackColor = colors.disabledCheckedTrackColor,
+        disabledCheckedBorderColor = Color.Transparent,
+        disabledCheckedIconColor = colors.disabledCheckedIconColor,
+        disabledUncheckedThumbColor = colors.disabledUncheckedThumbColor,
+        disabledUncheckedTrackColor = colors.disabledUncheckedTrackColor,
+        disabledUncheckedBorderColor = Color.Transparent,
+        disabledUncheckedIconColor = colors.disabledUncheckedIconColor,
+    )
 
     // ── 毛玻璃关闭 → 标准 M3 Switch ──
     if (!settingsState.isGlassAlphaEnabled) {
@@ -57,9 +97,9 @@ fun GlassSwitch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             modifier = modifier,
-            thumbContent = thumbContent,
+            thumbContent = resolvedThumb,
             enabled = enabled,
-            colors = colors,
+            colors = borderlessColors,
             interactionSource = interactionSource,
         )
         return
@@ -67,22 +107,22 @@ fun GlassSwitch(
 
     // ── 毛玻璃开启 → Track/Border 透明，由玻璃背景接管 ──
     val transparentTrackColors = SwitchColors(
-        checkedThumbColor = colors.checkedThumbColor,
+        checkedThumbColor = borderlessColors.checkedThumbColor,
         checkedTrackColor = Color.Transparent,
         checkedBorderColor = Color.Transparent,
-        checkedIconColor = colors.checkedIconColor,
-        uncheckedThumbColor = colors.uncheckedThumbColor,
+        checkedIconColor = borderlessColors.checkedIconColor,
+        uncheckedThumbColor = borderlessColors.uncheckedThumbColor,
         uncheckedTrackColor = Color.Transparent,
         uncheckedBorderColor = Color.Transparent,
-        uncheckedIconColor = colors.uncheckedIconColor,
-        disabledCheckedThumbColor = colors.disabledCheckedThumbColor,
+        uncheckedIconColor = borderlessColors.uncheckedIconColor,
+        disabledCheckedThumbColor = borderlessColors.disabledCheckedThumbColor,
         disabledCheckedTrackColor = Color.Transparent,
         disabledCheckedBorderColor = Color.Transparent,
-        disabledCheckedIconColor = colors.disabledCheckedIconColor,
-        disabledUncheckedThumbColor = colors.disabledUncheckedThumbColor,
+        disabledCheckedIconColor = borderlessColors.disabledCheckedIconColor,
+        disabledUncheckedThumbColor = borderlessColors.disabledUncheckedThumbColor,
         disabledUncheckedTrackColor = Color.Transparent,
         disabledUncheckedBorderColor = Color.Transparent,
-        disabledUncheckedIconColor = colors.disabledUncheckedIconColor,
+        disabledUncheckedIconColor = borderlessColors.disabledUncheckedIconColor,
     )
 
     val glassColor = if (checked) checkedGlassColor else uncheckedGlassColor
@@ -96,10 +136,10 @@ fun GlassSwitch(
                 backgroundAlpha = style.backgroundAlpha,
                 shape = shape,
                 color = glassColor,
-                borderWidth = glassBorderWidth,
+                borderWidth = resolvedBorderWidth,
                 enabled = enabled,
             ),
-            thumbContent = thumbContent,
+            thumbContent = resolvedThumb,
             enabled = enabled,
             colors = transparentTrackColors,
             interactionSource = interactionSource,

@@ -15,7 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -233,7 +233,7 @@ private fun ConfigEditor(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(stringResource(R.string.image_settings_enabled_label), modifier = Modifier.weight(1f))
-            Switch(
+            GlassSwitch(
                 checked = draft.enabled,
                 onCheckedChange = { draft = draft.copy(enabled = it) },
             )

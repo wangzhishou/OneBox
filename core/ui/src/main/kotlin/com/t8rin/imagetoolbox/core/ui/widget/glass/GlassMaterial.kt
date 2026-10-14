@@ -154,7 +154,11 @@ internal fun glassVeil(
     return GlassVeil(
         frost = frost,
         tint = if (tintAlpha > 0f) separated.copy(alpha = tintAlpha) else Color.Transparent,
-        rimWidth = if (rimStrength <= 0f) 0.dp else borderWidth.coerceAtLeast(1.dp).coerceAtMost(1.25.dp),
+        // borderWidth <= 0 表示调用方不要描边。Switch 的关闭/禁用态走这条，避免再被抬成 1dp 边框。
+        rimWidth = when {
+            borderWidth <= 0.dp || rimStrength <= 0f -> 0.dp
+            else -> borderWidth.coerceAtLeast(1.dp).coerceAtMost(1.25.dp)
+        },
         rim = rim,
     )
 }

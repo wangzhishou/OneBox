@@ -25,7 +25,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -557,7 +557,7 @@ private fun BackgroundRow(
 ) {
     SettingRow(label = stringResource(R.string.markup_text_background)) {
         Spacer(Modifier.weight(1f))
-        Switch(
+        GlassSwitch(
             checked = backgroundColor != 0,
             onCheckedChange = { checked ->
                 onBackgroundChange(if (checked) 0x66000000.toInt() else 0)
@@ -581,7 +581,7 @@ private fun OutlineRow(
 ) {
     SettingRow(label = stringResource(R.string.markup_text_outline)) {
         Spacer(Modifier.weight(1f))
-        Switch(
+        GlassSwitch(
             checked = outline != null,
             onCheckedChange = { checked ->
                 onOutlineChange(

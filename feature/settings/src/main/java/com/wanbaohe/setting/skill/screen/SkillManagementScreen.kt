@@ -25,7 +25,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -173,7 +173,7 @@ fun SkillManagementContent(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                Switch(
+                GlassSwitch(
                     checked = globalEnabled,
                     onCheckedChange = { component.setGlobalSkillsEnabled(it) }
                 )
@@ -264,7 +264,7 @@ fun SkillManagementContent(
                             overflow = TextOverflow.Ellipsis,
                         )
                     }
-                    Switch(
+                    GlassSwitch(
                         checked = skill.enabled,
                         onCheckedChange = { component.setSkillEnabled(skill, it) }
                     )

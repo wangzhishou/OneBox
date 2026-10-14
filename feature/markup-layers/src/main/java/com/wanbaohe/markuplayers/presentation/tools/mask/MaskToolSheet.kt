@@ -19,7 +19,7 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -241,7 +241,7 @@ fun MaskToolSheet(
                                 text = stringResource(R.string.studio_mask_invert),
                                 modifier = Modifier.weight(1f)
                             )
-                            Switch(
+                            GlassSwitch(
                                 checked = draft.inverted,
                                 onCheckedChange = {
                                     rememberUndo()

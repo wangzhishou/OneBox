@@ -43,7 +43,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -78,6 +77,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomSlider
 import com.t8rin.imagetoolbox.core.ui.widget.theme.ThemePresetSelector
 import kotlinx.coroutines.launch
@@ -312,7 +312,7 @@ fun ThemeMenuGuessThemeItem(settingsManager: SettingsManager) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f))
-        Switch(
+        GlassSwitch(
             checked = isDynamicColors,
             onCheckedChange = { scope.launch { settingsManager.toggleDynamicColors() } },
             thumbContent = {
