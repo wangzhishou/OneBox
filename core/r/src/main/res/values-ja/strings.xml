@@ -1145,6 +1145,7 @@
     <string name="theme_preset_name_sunset_warm">キャラメルラテ</string>
     <string name="theme_preset_name_ocean_deep">ディープオーシャン</string>
     <string name="theme_preset_name_starfield">星野</string>
+    <string name="theme_preset_name_daybreak">朝焼け</string>
     <string name="theme_preset_copy_suffix">コピー</string>
     <string name="theme_settings_title">テーマ設定</string>
     <string name="theme_settings_description">色、ガラス効果、背景をカスタマイズします。</string>

@@ -1145,6 +1145,7 @@
     <string name="theme_preset_name_sunset_warm">Caramel Latte</string>
     <string name="theme_preset_name_ocean_deep">Samudra Dalam</string>
     <string name="theme_preset_name_starfield">Padang Bintang</string>
+    <string name="theme_preset_name_daybreak">Fajar</string>
     <string name="theme_preset_copy_suffix"> Salin</string>
     <string name="theme_settings_title">Pengaturan Tema</string>
     <string name="theme_settings_description">Sesuaikan warna, efek kaca, dan latar belakang.</string>

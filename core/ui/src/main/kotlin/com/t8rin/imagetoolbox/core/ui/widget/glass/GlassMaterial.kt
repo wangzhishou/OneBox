@@ -77,16 +77,13 @@ internal fun glassVeil(
     val coverage = (backgroundAlpha / style.backgroundAlpha.coerceAtLeast(0.04f)).coerceIn(0.65f, 1.35f)
     val weight = styleWeight(style) * glassBaseAlpha * coverage * (if (isControl) 1.05f else 1f) *
         (if (enabled) 1f else 0.65f)
-    // 霜的颜色跟主题走，用 surfaceContainerLowest，不写死白或灰。
-    // 透明度按玻璃厚度、液态、有没有渐变，以及这层颜色本身有多接近白来收放：
-    // 中性卡片没有色调可染，渐变页上要更实，不然会发透；
-    // 颜色越接近白，透明度越收一点，避免浅色主题铺成一块白。
-    // 彩色卡片的色相靠下面的 tint，霜只垫薄薄一层。液态开关再透一点。
+    // 霜写死白，暗色写死黑。换主题时色相靠下面的 tint，不靠这层底。
+    // 透明度按玻璃厚度、液态、有没有渐变来收放：
+    // 中性卡片没有色调可染，渐变页上要更实，不然会发透。
+    // 彩色卡片的色相靠 tint，霜只垫薄薄一层。液态开关再透一点。
     // 玻璃开关关闭时走不到这里。
     val liquidScale = if (isLiquid) 0.82f else 1f
     val plain = !hasWallpaper
-    val surfaceLowest = scheme.surfaceContainerLowest
-    val whitenessScale = (1.12f - surfaceLowest.luminance() * 0.28f).coerceIn(0.84f, 1.12f)
     val frostStrength = when {
         neutral && hasWallpaper && isLight -> 0.70f
         neutral && hasWallpaper -> 0.64f
@@ -101,7 +98,7 @@ internal fun glassVeil(
         plain -> 0.20f
         else -> 0.16f
     }
-    val frostAlpha = (frostStrength * weight * liquidScale * whitenessScale).coerceIn(
+    val frostAlpha = (frostStrength * weight * liquidScale).coerceIn(
         0f,
         when {
             neutral && hasWallpaper && isLight -> 0.86f
@@ -131,9 +128,9 @@ internal fun glassVeil(
                 else -> 0.42f
             },
         )
-    // 四边同一条线，是高光，不是填充。暗色只留很淡的一条，避免发亮。
+    // 四边同一条线，写死白。浅色清楚，暗色只留很淡的一条，避免发亮。
     val rim = Color.White.copy(alpha = if (isLight) 0.42f else 0.10f)
-    val frost = surfaceLowest.copy(alpha = frostAlpha)
+    val frost = (if (isLight) Color.White else Color.Black).copy(alpha = frostAlpha)
 
     return GlassVeil(
         frost = frost,

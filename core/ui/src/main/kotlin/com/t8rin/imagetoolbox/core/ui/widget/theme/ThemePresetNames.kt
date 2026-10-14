@@ -24,6 +24,7 @@ fun AppThemePreset.builtinNameResId(): Int? = when (id) {
     AppThemePreset.SunsetWarm.id -> R.string.theme_preset_name_sunset_warm
     AppThemePreset.OceanDeep.id -> R.string.theme_preset_name_ocean_deep
     AppThemePreset.StarField.id -> R.string.theme_preset_name_starfield
+    AppThemePreset.Daybreak.id -> R.string.theme_preset_name_daybreak
     // 旧版本在中文界面保存的用户主题, 名字是内置主题的中文原名:
     // 按内置名反查一次, 让它们在其它语言下也能显示本地化名
     else -> AppThemePreset.builtinThemes

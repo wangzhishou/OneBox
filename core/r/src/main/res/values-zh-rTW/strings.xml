@@ -1278,6 +1278,7 @@
     <string name="theme_preset_name_sunset_warm">焦糖拿鐵</string>
     <string name="theme_preset_name_ocean_deep">深海秘境</string>
     <string name="theme_preset_name_starfield">星野</string>
+    <string name="theme_preset_name_daybreak">朝暉</string>
     <string name="theme_preset_copy_suffix">的副本</string>
     <string name="theme_settings_title">主題設定</string>
     <string name="theme_settings_description">自訂顏色、玻璃效果和背景風格</string>

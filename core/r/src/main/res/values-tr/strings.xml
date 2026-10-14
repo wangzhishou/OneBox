@@ -1145,6 +1145,7 @@
     <string name="theme_preset_name_sunset_warm">Karamel Latte</string>
     <string name="theme_preset_name_ocean_deep">Derin Okyanus</string>
     <string name="theme_preset_name_starfield">Yıldız Tarlası</string>
+    <string name="theme_preset_name_daybreak">Şafak</string>
     <string name="theme_preset_copy_suffix"> Kopyala</string>
     <string name="theme_settings_title">Tema Ayarları</string>
     <string name="theme_settings_description">Renkleri, cam efektlerini ve arka planları özelleştirin.</string>

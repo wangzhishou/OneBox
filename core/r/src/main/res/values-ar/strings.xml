@@ -1237,6 +1237,7 @@
     <string name="theme_preset_name_sunset_warm">لاتيه الكراميل</string>
     <string name="theme_preset_name_ocean_deep">المحيط العميق</string>
     <string name="theme_preset_name_starfield">حقل النجوم</string>
+    <string name="theme_preset_name_daybreak">الفجر</string>
     <string name="theme_preset_copy_suffix"> نسخة</string>
     <string name="theme_settings_title">إعدادات المظهر</string>
     <string name="theme_settings_description">خصّص الألوان وتأثيرات الزجاج والخلفيات.</string>

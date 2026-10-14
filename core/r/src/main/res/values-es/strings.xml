@@ -1145,6 +1145,7 @@
     <string name="theme_preset_name_sunset_warm">Latte de Caramelo</string>
     <string name="theme_preset_name_ocean_deep">Océano Profundo</string>
     <string name="theme_preset_name_starfield">Campo de estrellas</string>
+    <string name="theme_preset_name_daybreak">Amanecer</string>
     <string name="theme_preset_copy_suffix"> Copiar</string>
     <string name="theme_settings_title">Configuración de tema</string>
     <string name="theme_settings_description">Personaliza colores, efectos de vidrio y fondos.</string>

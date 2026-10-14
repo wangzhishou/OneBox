@@ -296,10 +296,40 @@ data class AppThemePreset(
             isBuiltin = true,
         )
 
+        /**
+         * 朝晖：清晨湖面壁纸，图在 R2 `themes/daybreak.jpg`。
+         * 和星野一对，这张给浅色。网格渐变关掉，否则会盖住照片。
+         * 配色取日出的暖光、雾蓝的山和很浅的天；照片偏亮，玻璃比星野稍实一点。
+         */
+        const val DAYBREAK_BACKGROUND_URL =
+            "https://images.oneboxable.com/themes/daybreak.jpg"
+
+        val Daybreak = AppThemePreset(
+            id = "builtin_daybreak",
+            name = "朝晖",
+            colorTupleString = colorTuple(
+                primary   = 0xFFD4A48A,
+                secondary = 0xFF7E9AA3,
+                tertiary  = 0xFFC5D0D2,
+                surface   = 0xFFF3F6F7,
+            ),
+            nightMode = NightMode.Light,
+            isGlassmorphismEnabled = true,
+            isLiquidGlassEnabled = true,
+            isMeshGradientBackgroundEnabled = false,
+            gradientBackgroundStyle = GradientBackgroundStyle.WarmGlow,
+            glassBaseAlpha = 0.72f,
+            glassBorderAlpha = 0.36f,
+            customBackgroundImageUri = DAYBREAK_BACKGROUND_URL,
+            isBuiltin = true,
+        )
+
         /** 所有内置主题（按展示顺序）。第一项千色千面固定不动。 */
         val builtinThemes: List<AppThemePreset> = listOf(
             Default,
             LogoTheme,
+            StarField,
+            Daybreak,
             SakuraPink,
             PureGlassGray,
             MintFresh,
@@ -308,7 +338,6 @@ data class AppThemePreset(
             LavenderDream,
             SunsetWarm,
             OceanDeep,
-            StarField,
         )
     }
 }

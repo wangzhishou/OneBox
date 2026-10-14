@@ -1145,6 +1145,7 @@
     <string name="theme_preset_name_sunset_warm">Caramel Latte</string>
     <string name="theme_preset_name_ocean_deep">Deep Ocean</string>
     <string name="theme_preset_name_starfield">Star Field</string>
+    <string name="theme_preset_name_daybreak">Dawn</string>
     <string name="theme_preset_copy_suffix"> Kopya</string>
     <string name="theme_settings_title">Mga Setting ng Tema</string>
     <string name="theme_settings_description">I-customize ang mga kulay, glass effects, at mga background.</string>
