@@ -369,9 +369,7 @@ private fun EmptyOrErrorState(
 @Composable
 private fun SkeletonItemGrid(isGrid: Boolean) {
     LazyVerticalStaggeredGrid(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = HomeGridBottomInset),
+        modifier = Modifier.fillMaxWidth(),
         columns = gridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalItemSpacing = 16.dp,
@@ -447,9 +445,7 @@ private fun ItemGrid(
 
     LazyVerticalStaggeredGrid(
         state = gridState,
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(bottom = HomeGridBottomInset),
+        modifier = Modifier.fillMaxHeight(),
         columns = gridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalItemSpacing = 16.dp,
@@ -538,12 +534,6 @@ private fun gridColumns(isGrid: Boolean): StaggeredGridCells {
     }
 }
 
-
-/**
- * 列表视口和底栏之间的空隙。
- * 外壳已经按底栏高度收过内容, 滚动时卡片底边却正好切在底栏上沿, 圆角贴着底栏消失。
- */
-private val HomeGridBottomInset = 16.dp
 
 @Composable
 private fun gridContentPadding() = PaddingValues(
