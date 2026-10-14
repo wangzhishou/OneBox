@@ -117,6 +117,11 @@
     <string name="gomoku_settings_tts_subtitle">终局时用语音播报胜负与和棋。</string>
     <string name="gomoku_settings_tts_enabled">语音播报开关</string>
     <string name="gomoku_settings_tts_preview">试听播报</string>
+    <string name="gomoku_settings_tts_config">语音引擎</string>
+    <string name="gomoku_settings_generate">生成</string>
+    <string name="gomoku_settings_generate_loading">生成中…</string>
+    <string name="gomoku_settings_regenerate">重新生成</string>
+    <string name="gomoku_settings_regenerate_loading">重新生成中…</string>
     <string name="gomoku_settings_ai_title">五子棋 AI</string>
     <string name="gomoku_settings_ai_subtitle">人机对弈与 AI 对战的走子来源。</string>
     <string name="gomoku_settings_ai_fast">人机对弈</string>
@@ -171,6 +176,8 @@
     <string name="gomoku_join_target_room_retry">重新加入</string>
     <string name="gomoku_signaling_disconnected">连接已断开,请重新匹配</string>
     <string name="gomoku_new_ai_create">AI 创建棋局</string>
+    <string name="gomoku_bar_import">导入</string>
+    <string name="gomoku_bar_ai_create">AI创建</string>
     <string name="gomoku_setup_action">摆棋</string>
     <string name="gomoku_setup_title">摆棋中</string>
     <string name="gomoku_setup_black_next">黑方行棋</string>

@@ -24,13 +24,31 @@ data class ChessSettings(
 data class ChessTTSTemplate(
     val tag: String,
     val labelResId: Int,
-    val defaultText: String,
-)
+    val defaultTextRes: Int,
+) {
+    fun defaultText(): String = com.shifenmiao.interfaces.singleton.AppContext.getString(defaultTextRes)
+}
 
 object ChessTTSTemplates {
-    val CAPTURE = ChessTTSTemplate("chess-capture", com.wanbaohe.chess.R.string.chess_tts_capture, "吃！")
-    val CHECK = ChessTTSTemplate("chess-check", com.wanbaohe.chess.R.string.chess_tts_check, "将军！")
-    val CHECKMATE = ChessTTSTemplate("chess-checkmate", com.wanbaohe.chess.R.string.chess_tts_checkmate, "将死！")
-    val DRAW = ChessTTSTemplate("chess-draw", com.wanbaohe.chess.R.string.chess_tts_draw, "和棋！")
+    val CAPTURE = ChessTTSTemplate(
+        "chess-capture",
+        com.wanbaohe.chess.R.string.chess_tts_capture,
+        com.wanbaohe.chess.R.string.chess_tts_default_capture,
+    )
+    val CHECK = ChessTTSTemplate(
+        "chess-check",
+        com.wanbaohe.chess.R.string.chess_tts_check,
+        com.wanbaohe.chess.R.string.chess_tts_default_check,
+    )
+    val CHECKMATE = ChessTTSTemplate(
+        "chess-checkmate",
+        com.wanbaohe.chess.R.string.chess_tts_checkmate,
+        com.wanbaohe.chess.R.string.chess_tts_default_checkmate,
+    )
+    val DRAW = ChessTTSTemplate(
+        "chess-draw",
+        com.wanbaohe.chess.R.string.chess_tts_draw,
+        com.wanbaohe.chess.R.string.chess_tts_default_draw,
+    )
     val ALL = listOf(CAPTURE, CHECK, CHECKMATE, DRAW)
 }

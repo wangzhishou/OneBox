@@ -279,6 +279,8 @@
     <string name="xiangqi_tts_default_checkmate">將死！</string>
     <string name="xiangqi_tts_default_draw">和棋！</string>
     <string name="xiangqi_new_ai_create">AI 建立棋局</string>
+    <string name="xiangqi_bar_import">匯入</string>
+    <string name="xiangqi_bar_ai_create">AI建立</string>
     <string name="xiangqi_log_game_created">新建對局: %1$s</string>
     <string name="xiangqi_log_game_renamed">重新命名對局: %1$s</string>
     <string name="xiangqi_log_game_resigned">對局認輸: %1$s</string>

@@ -1,6 +1,9 @@
 package com.shifenmiao.base.audio
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Handler
@@ -33,8 +36,14 @@ class NetworkAudioPlayer @Inject constructor(
         File(context.cacheDir, CACHE_DIR_NAME).also { it.mkdirs() }
     }
     private val cacheMutex = Mutex()
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private var effectPlayer: MediaPlayer? = null
     private var backgroundPlayer: MediaPlayer? = null
+    /** 页面还想听背景音乐。退后台只暂停，这个标记保持；离开页面或关掉声音才清掉。 */
+    private var backgroundDesired = false
+    /** [stopBackground] 递增。下载还没完成的播放看到代号变了就放弃，避免停掉之后又响起来。 */
+    private var playEpoch = 0
 
     suspend fun playEffect(url: String) {
         val file = getCachedFile(url) ?: return
@@ -42,6 +51,7 @@ class NetworkAudioPlayer @Inject constructor(
             runCatching {
                 effectPlayer?.release()
                 effectPlayer = MediaPlayer().apply {
+                    setAudioAttributes(effectAttributes)
                     setDataSource(file.absolutePath)
                     setOnCompletionListener { player ->
                         player.release()
@@ -55,19 +65,26 @@ class NetworkAudioPlayer @Inject constructor(
     }
 
     suspend fun playBackground(url: String) {
+        val epoch = playEpoch
         val file = getCachedFile(url) ?: return
         withContext(Dispatchers.Main) {
+            if (epoch != playEpoch) return@withContext
             runCatching {
-                val currentSource = backgroundPlayerSource
-                if (currentSource == url && backgroundPlayer?.isPlaying == true) return@runCatching
-                stopBackground()
+                backgroundDesired = true
+                val current = backgroundPlayer
+                if (backgroundPlayerSource == url && current != null) {
+                    if (!current.isPlaying && requestFocus()) current.start()
+                    return@runCatching
+                }
+                releaseBackgroundPlayer()
                 backgroundPlayerSource = url
                 backgroundPlayer = MediaPlayer().apply {
+                    setAudioAttributes(musicAttributes)
                     setDataSource(file.absolutePath)
                     isLooping = true
                     prepare()
-                    start()
                 }
+                if (requestFocus()) backgroundPlayer?.start()
             }.onFailure { it.makeLog("NetworkAudioPlayer") }
         }
     }
@@ -82,6 +99,7 @@ class NetworkAudioPlayer @Inject constructor(
             runCatching {
                 effectPlayer?.release()
                 effectPlayer = MediaPlayer().apply {
+                    setAudioAttributes(effectAttributes)
                     setDataSource(file.absolutePath)
                     setOnCompletionListener { player ->
                         player.release()
@@ -162,12 +180,98 @@ class NetworkAudioPlayer @Inject constructor(
         handler.post(ramp)
     }
 
-    fun stopBackground() {
-        runCatching {
-            backgroundPlayer?.release()
+    /** 暂停背景音乐并记住进度。页面回到前台后再 [playBackground] 同一地址会接着播。 */
+    fun pauseBackground() {
+        onMain {
+            backgroundDesired = false
+            runCatching {
+                val player = backgroundPlayer
+                if (player != null && player.isPlaying) player.pause()
+            }
+            abandonFocus()
         }
+    }
+
+    fun stopBackground() {
+        onMain {
+            playEpoch++
+            backgroundDesired = false
+            releaseBackgroundPlayer()
+            abandonFocus()
+        }
+    }
+
+    private fun releaseBackgroundPlayer() {
+        runCatching { backgroundPlayer?.release() }
         backgroundPlayer = null
         backgroundPlayerSource = null
+    }
+
+    private fun onMain(block: () -> Unit) {
+        if (Looper.myLooper() == Looper.getMainLooper()) block() else mainHandler.post(block)
+    }
+
+    private val focusListener = AudioManager.OnAudioFocusChangeListener { change ->
+        mainHandler.post {
+            when (change) {
+                AudioManager.AUDIOFOCUS_GAIN -> {
+                    if (!backgroundDesired) return@post
+                    runCatching {
+                        val player = backgroundPlayer
+                        if (player != null && !player.isPlaying) player.start()
+                    }
+                }
+                AudioManager.AUDIOFOCUS_LOSS,
+                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT,
+                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK,
+                -> runCatching {
+                    val player = backgroundPlayer
+                    if (player != null && player.isPlaying) player.pause()
+                }
+            }
+        }
+    }
+
+    private val musicAttributes: AudioAttributes = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_GAME)
+        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+        .build()
+
+    private val effectAttributes: AudioAttributes = AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_GAME)
+        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+        .build()
+
+    private val focusRequest: AudioFocusRequest? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+            .setAudioAttributes(musicAttributes)
+            .setOnAudioFocusChangeListener(focusListener, mainHandler)
+            .build()
+    } else {
+        null
+    }
+
+    private fun requestFocus(): Boolean {
+        val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            audioManager.requestAudioFocus(focusRequest!!)
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.requestAudioFocus(
+                focusListener,
+                AudioManager.STREAM_MUSIC,
+                AudioManager.AUDIOFOCUS_GAIN,
+            )
+        }
+        return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
+    }
+
+    private fun abandonFocus() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            focusRequest?.let { audioManager.abandonAudioFocusRequest(it) }
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.abandonAudioFocus(focusListener)
+        }
     }
 
     suspend fun warmUp(url: String): Boolean {

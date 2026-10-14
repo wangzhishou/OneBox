@@ -2,7 +2,9 @@ package com.wanbaohe.gomoku.router.screenLogic
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStart
+import com.arkivanov.essenty.lifecycle.doOnStop
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -45,6 +47,7 @@ import com.wanbaohe.gomoku.domain.model.Side
 import com.wanbaohe.gomoku.component.GomokuGameUiState
 import com.wanbaohe.gomoku.presentation.displayNames
 import com.shifenmiao.base.utils.ActionUtils
+import com.wanbaohe.gomoku.application.usecase.AudioFeedbackUseCase
 import com.wanbaohe.gomoku.application.usecase.SettingsUseCase
 import com.wanbaohe.gomoku.component.GomokuAnalysisComponent
 import com.wanbaohe.gomoku.component.GomokuGameComponent
@@ -79,6 +82,7 @@ class GomokuRouterComponent @AssistedInject constructor(
     private val analysisFactory: GomokuAnalysisComponent.Factory,
     private val settingsUseCase: SettingsUseCase,
     private val soundPlayer: SoundPlayer,
+    private val audioFeedback: AudioFeedbackUseCase,
     private val ttsService: TTSService,
     private val aiEngineManager: AIEngineManager,
     private val gomokuAiStore: GomokuAiStore,
@@ -331,14 +335,22 @@ class GomokuRouterComponent @AssistedInject constructor(
     var pendingJoinRoomId by mutableStateOf(type.initialJoinRoomId())
         private set
 
+    private var backgroundPreviewActive = false
+
     init {
         maybeOpenRecentGame()
         lifecycle.doOnStart {
             if (childStack.value.active.configuration == Route.AnalysisHome) openRecentAnalysis()
         }
+        lifecycle.doOnStop { stopSettingsPreview() }
+        lifecycle.doOnDestroy {
+            soundPlayer.stopBackground()
+            soundPlayer.stopEffect()
+        }
     }
 
     fun selectTab(tab: Tab) {
+        if (tab != Tab.Settings) stopSettingsPreview()
         when (val route = childStack.value.active.configuration) {
             is Route.Game -> selectedGameId = route.gameId
             is Route.Analysis -> selectedGameId = route.gameId
@@ -352,8 +364,12 @@ class GomokuRouterComponent @AssistedInject constructor(
         }
     }
 
-    fun openLibrary() { pauseBeforeLeavingGame { navigation.pushToFront(Route.Library) } }
+    fun openLibrary() {
+        stopSettingsPreview()
+        pauseBeforeLeavingGame { navigation.pushToFront(Route.Library) }
+    }
     fun openGame(gameId: String, startImmediately: Boolean = false) {
+        stopSettingsPreview()
         selectedGameId = gameId
         val route = Route.Game(gameId)
         if (childStack.value.active.configuration == route) return
@@ -365,6 +381,7 @@ class GomokuRouterComponent @AssistedInject constructor(
         }
     }
     fun openAnalysis(gameId: String, initialPly: Int = -1) {
+        stopSettingsPreview()
         if (gameId.isBlank()) {
             openRecentAnalysis()
             return
@@ -375,6 +392,7 @@ class GomokuRouterComponent @AssistedInject constructor(
     fun joinOnlineRoom(roomId: String) { pendingJoinRoomId = roomId.trim() }
     fun clearPendingJoinRoom() { pendingJoinRoomId = "" }
     fun navigateBack() {
+        stopSettingsPreview()
         val child = childStack.value.active.instance
         if (child is Child.Game && child.component.setupDraft != null) {
             child.component.cancelSetup()
@@ -415,12 +433,26 @@ class GomokuRouterComponent @AssistedInject constructor(
     fun updateMoveSoundUrl(url: String) { componentScope.launch { settingsUseCase.updateMoveSoundUrl(url) } }
     fun updateBackgroundMusicUrl(url: String) { componentScope.launch { settingsUseCase.updateBackgroundMusicUrl(url) } }
     fun updateCheckSoundUrl(url: String) { componentScope.launch { settingsUseCase.updateCheckSoundUrl(url) } }
-    fun updateTTSEnabled(enabled: Boolean) { componentScope.launch { settingsUseCase.updateTTSEnabled(enabled) } }
+    fun updateTTSEnabled(enabled: Boolean) {
+        componentScope.launch {
+            settingsUseCase.updateTTSEnabled(enabled)
+            if (enabled) audioFeedback.prepareCustomVoice(settingsUseCase.current())
+        }
+    }
     fun updateSoundEnabled(enabled: Boolean) {
         componentScope.launch { settingsUseCase.updateSoundEnabled(enabled) }
-        if (!enabled) soundPlayer.stopBackground()
+        if (!enabled) {
+            backgroundPreviewActive = false
+            soundPlayer.stopBackground()
+            soundPlayer.stopEffect()
+        }
     }
-    fun updateTTSTemplateText(tag: String, text: String) { componentScope.launch { settingsUseCase.updateTTSTemplateText(tag, text) } }
+    fun updateTTSTemplateText(tag: String, text: String) {
+        componentScope.launch {
+            settingsUseCase.updateTTSTemplateText(tag, text)
+            audioFeedback.prepareCustomVoice(settingsUseCase.current())
+        }
+    }
 
     fun switchAiModel(engine: AiEngine, model: AiModel) { aiEngineManager.switchFastModel(engine, model) }
     fun switchDuelEngineA(engine: AiEngine, model: AiModel) { aiEngineManager.setDuelEngineA(engine.copy(model = model)) }
@@ -433,35 +465,40 @@ class GomokuRouterComponent @AssistedInject constructor(
     }
 
     fun openAiModelSettings() {
+        stopSettingsPreview()
         pauseBeforeLeavingGame { onNavigate(Screen.AISettings(Screen.AISettings.Type.WorkingModel)) }
     }
     fun openGomokuPromptSettings() {
         componentScope.launch {
             val prompt = promptDao.getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_GOMOKU_MOVE)
             if (prompt != null) {
+                stopSettingsPreview()
                 pauseBeforeLeavingGame { onNavigate(Screen.SystemPromptDetail(promptId = prompt.id)) }
             }
         }
     }
-    fun openTTSConfigSettings() { pauseBeforeLeavingGame { onNavigate(Screen.TTSSettings) } }
+    fun openTTSConfigSettings() {
+        stopSettingsPreview()
+        pauseBeforeLeavingGame { onNavigate(Screen.TTSSettings) }
+    }
 
     fun generateTTS(template: GomokuTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.GenerateTTS(template.tag)) {
-            val text = customText.ifBlank { template.defaultText }
+            val text = customText.ifBlank { template.defaultText() }
             ttsService.synthesize(text = text, tag = template.tag)
         }
     }
 
     fun regenerateTTS(template: GomokuTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.RegenerateTTS(template.tag)) {
-            val text = customText.ifBlank { template.defaultText }
+            val text = customText.ifBlank { template.defaultText() }
             ttsService.regenerate(text = text, tag = template.tag)
         }
     }
 
     fun playTTSAudio(template: GomokuTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.PlayTTS(template.tag)) {
-            val text = customText.ifBlank { template.defaultText }
+            val text = customText.ifBlank { template.defaultText() }
             val audio = ttsService.getAudioByTextAndTag(text, template.tag)
             if (audio != null) {
                 soundPlayer.playLocalFile(File(audio.filePath))
@@ -492,8 +529,8 @@ class GomokuRouterComponent @AssistedInject constructor(
     )
 
     fun previewBackgroundMusic() {
+        backgroundPreviewActive = true
         runSettingsAction(SettingsAction.PreviewBackgroundMusic) {
-            // 没填 URL 就试听内置的默认 BGM，否则点"试听"什么也听不到
             val url = gomokuSettings.value.backgroundMusicUrl
                 .ifBlank { GomokuAudioDefaults.BACKGROUND }
             soundPlayer.playBackground(url)
@@ -502,8 +539,14 @@ class GomokuRouterComponent @AssistedInject constructor(
 
     fun stopBackgroundMusicPreview() {
         runSettingsAction(SettingsAction.StopBackgroundMusic) {
-            soundPlayer.stopBackground()
+            stopSettingsPreview()
         }
+    }
+
+    private fun stopSettingsPreview() {
+        if (!backgroundPreviewActive) return
+        backgroundPreviewActive = false
+        soundPlayer.stopBackground()
     }
 
     private fun previewSound(action: SettingsAction, url: String, defaultUrl: String) {

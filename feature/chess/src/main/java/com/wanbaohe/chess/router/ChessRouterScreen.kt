@@ -1,11 +1,19 @@
 package com.wanbaohe.chess.router
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.VolumeOff
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -34,6 +42,7 @@ fun ChessRouterScreen(component: ChessRouterComponent) {
     val childStack by component.childStack.subscribeAsState()
     val activeRoute = childStack.active.configuration
     val activeTab = component.tabOf(activeRoute)
+    val soundOn = component.chessSettings.collectAsState().value.soundEnabled
     val activeChild = childStack.active.instance
     val activeGame = (activeChild as? ChessRouterComponent.Child.Game)?.component
     val preparingSetup = activeChild == ChessRouterComponent.Child.PlayHome && component.preparationSetupDraft != null
@@ -85,8 +94,32 @@ fun ChessRouterScreen(component: ChessRouterComponent) {
             }
         },
         showTabs = !isSettingUp,
-        headerActions = if (activeTab != ChessRouterComponent.Tab.Settings) {
-            { NewGameDropMenu(component = component.libraryComponent) }
+        headerActions = if (
+            activeRoute is ChessRouterComponent.Route.Game ||
+            activeTab != ChessRouterComponent.Tab.Settings
+        ) {
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (activeRoute is ChessRouterComponent.Route.Game) {
+                        IconButton(onClick = { component.updateSoundEnabled(!soundOn) }) {
+                            Icon(
+                                imageVector = if (soundOn) {
+                                    Icons.AutoMirrored.Outlined.VolumeUp
+                                } else {
+                                    Icons.AutoMirrored.Outlined.VolumeOff
+                                },
+                                contentDescription = stringResource(
+                                    if (soundOn) R.string.chess_analysis_sound_on
+                                    else R.string.chess_analysis_sound_off
+                                ),
+                            )
+                        }
+                    }
+                    if (activeTab != ChessRouterComponent.Tab.Settings) {
+                        NewGameDropMenu(component = component.libraryComponent)
+                    }
+                }
+            }
         } else {
             null
         },

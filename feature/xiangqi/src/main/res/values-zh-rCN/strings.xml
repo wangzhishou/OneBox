@@ -278,6 +278,8 @@
     <string name="xiangqi_tts_default_checkmate">将死！</string>
     <string name="xiangqi_tts_default_draw">和棋！</string>
     <string name="xiangqi_new_ai_create">AI 创建棋局</string>
+    <string name="xiangqi_bar_import">导入</string>
+    <string name="xiangqi_bar_ai_create">AI创建</string>
     <string name="xiangqi_settings_local_engine_title">本地引擎</string>
     <string name="xiangqi_settings_local_engine_subtitle">内置象棋引擎与神经网络，没有网络也能有强对手。</string>
     <string name="xiangqi_local_engine_unavailable">当前构建未内置该引擎。</string>

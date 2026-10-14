@@ -25,8 +25,16 @@ class AudioAdapter @Inject constructor(
         networkAudioPlayer.playEffect(url)
     }
 
+    override fun stopEffect() {
+        networkAudioPlayer.stopEffect()
+    }
+
     override suspend fun playBackground(url: String) {
         networkAudioPlayer.playBackground(url)
+    }
+
+    override fun pauseBackground() {
+        networkAudioPlayer.pauseBackground()
     }
 
     override fun stopBackground() {
@@ -53,15 +61,19 @@ class TtsAdapter @Inject constructor(
 ) : TtsEngine {
 
     override suspend fun synthesize(text: String, tag: String): Result<File> {
-        return ttsService.synthesize(text, tag)
+        return ttsService.synthesize(text = text, tag = tag)
     }
 
     override suspend fun regenerate(text: String, tag: String): Result<File> {
-        return ttsService.regenerate(text, tag)
+        return ttsService.regenerate(text = text, tag = tag)
     }
 
     override suspend fun getAudioByTextAndTag(text: String, tag: String): CachedAudio? {
         val audio = ttsService.getAudioByTextAndTag(text, tag) ?: return null
         return CachedAudio(audio.filePath)
     }
+
+    override fun isLoggedIn(): Boolean = com.shifenmiao.storage.TokenStorage.getLoginInfo() != null
+
+    override fun canPrepareVoice(): Boolean = isLoggedIn() && ttsService.getConfig().isValid()
 }

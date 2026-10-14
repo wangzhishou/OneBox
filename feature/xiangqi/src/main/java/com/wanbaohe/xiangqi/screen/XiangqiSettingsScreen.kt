@@ -187,7 +187,11 @@ fun XiangqiSettingsScreen(
                                 component.regenerateTTS(template, it)
                             }
                         },
-                        onPlay = { component.playTTSAudio(template, it) },
+                        onPlay = { text ->
+                            ActionUtils.showLogin(source = "xiangqi_tts_play") {
+                                component.playTTSAudio(template, text)
+                            }
+                        },
                         isGenerating = XiangqiRouterComponent.SettingsAction.GenerateTTS(template.tag) in runningSettingsActions,
                         isRegenerating = XiangqiRouterComponent.SettingsAction.RegenerateTTS(template.tag) in runningSettingsActions,
                         isPlaying = XiangqiRouterComponent.SettingsAction.PlayTTS(template.tag) in runningSettingsActions,
@@ -496,7 +500,8 @@ private fun TTSTemplateRow(
     isPlaying: Boolean,
 ) {
     val label = stringResource(template.labelResId)
-    val text = customText.ifBlank { template.defaultText }
+    val fallback = stringResource(template.defaultTextRes)
+    val text = customText.ifBlank { fallback }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
@@ -508,7 +513,7 @@ private fun TTSTemplateRow(
             value = customText,
             onValueChange = onTextChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(template.defaultText) },
+            placeholder = { Text(fallback) },
             singleLine = true,
         )
         Row(

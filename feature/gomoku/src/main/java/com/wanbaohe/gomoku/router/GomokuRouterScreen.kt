@@ -1,11 +1,19 @@
 package com.wanbaohe.gomoku.router
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.VolumeOff
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -35,6 +43,7 @@ fun GomokuRouterScreen(component: GomokuRouterComponent) {
     val activeRoute = childStack.active.configuration
     val activeChild = childStack.active.instance
     val activeTab = component.tabOf(activeRoute)
+    val soundOn = component.gomokuSettings.collectAsState().value.soundEnabled
     val cancelSetup: (() -> Unit)? = when (activeChild) {
         GomokuRouterComponent.Child.PlayHome ->
             if (component.preparationSetupDraft != null) component::cancelPreparationSetup else null
@@ -85,8 +94,32 @@ fun GomokuRouterScreen(component: GomokuRouterComponent) {
                 else -> component.navigateBack()
             }
         },
-        headerActions = if (activeTab != GomokuRouterComponent.Tab.Settings) {
-            { NewGameDropMenu(component = component.libraryComponent) }
+        headerActions = if (
+            activeRoute is GomokuRouterComponent.Route.Game ||
+            activeTab != GomokuRouterComponent.Tab.Settings
+        ) {
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (activeRoute is GomokuRouterComponent.Route.Game) {
+                        IconButton(onClick = { component.updateSoundEnabled(!soundOn) }) {
+                            Icon(
+                                imageVector = if (soundOn) {
+                                    Icons.AutoMirrored.Outlined.VolumeUp
+                                } else {
+                                    Icons.AutoMirrored.Outlined.VolumeOff
+                                },
+                                contentDescription = stringResource(
+                                    if (soundOn) R.string.gomoku_analysis_sound_on
+                                    else R.string.gomoku_analysis_sound_off
+                                ),
+                            )
+                        }
+                    }
+                    if (activeTab != GomokuRouterComponent.Tab.Settings) {
+                        NewGameDropMenu(component = component.libraryComponent)
+                    }
+                }
+            }
         } else {
             null
         },

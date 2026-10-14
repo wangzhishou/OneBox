@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -28,45 +28,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.t8rin.imagetoolbox.core.resources.Icons
-import com.t8rin.imagetoolbox.core.resources.icons.PlayCircle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import androidx.compose.material.icons.Icons as MaterialIcons
 
-/** 未开始/暂停时盖在棋盘上的开始遮罩;[startLabel] 由调用方区分「开始」/「继续」 */
+/**
+ * 盖住棋盘的近白遮罩。吃掉棋子上的点击,中间放开始或继续按钮。
+ * 底色用 [androidx.compose.material3.ColorScheme.surfaceContainerLow],略透明,棋盘还认得出来。
+ */
+@Composable
+fun BoxScope.BoardCover(
+    modifier: Modifier = Modifier,
+    content: @Composable BoxScope.() -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .matchParentSize()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {},
+            )
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.50f)),
+        contentAlignment = Alignment.Center,
+        content = content,
+    )
+}
+
+/**
+ * 未开始/暂停时盖住棋盘。遮罩吃掉全部点击,棋子点不到;
+ * 只有中间按钮会开始或继续。[startLabel] 由调用方区分「开始」/「继续」。
+ */
 @Composable
 fun BoxScope.BoardStartOverlay(
     startLabel: String,
     onStart: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .matchParentSize()
-            .clip(MaterialTheme.shapes.large)
-            .glassBackground(
-                style = GlassStyle.Dense,
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shape = MaterialTheme.shapes.large
-            ),
-        contentAlignment = Alignment.Center,
-    ) {
-        ExtendedFloatingActionButton(
+    BoardCover(modifier) {
+        BoardGamePillButton(
+            label = startLabel,
+            icon = MaterialIcons.Filled.PlayArrow,
             onClick = onStart,
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.PlayCircle,
-                    contentDescription = null,
-                )
-            },
-            text = {
-                Text(
-                    text = startLabel,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                )
-            },
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            primary = true,
         )
     }
 }

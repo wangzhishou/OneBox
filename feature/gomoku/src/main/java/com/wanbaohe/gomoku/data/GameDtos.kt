@@ -24,11 +24,21 @@ data class GomokuSettings(
 data class GomokuTTSTemplate(
     val tag: String,
     val labelResId: Int,
-    val defaultText: String,
-)
+    val defaultTextRes: Int,
+) {
+    fun defaultText(): String = com.shifenmiao.interfaces.singleton.AppContext.getString(defaultTextRes)
+}
 
 object GomokuTTSTemplates {
-    val WIN = GomokuTTSTemplate("gomoku-win", com.wanbaohe.gomoku.R.string.gomoku_tts_win, "五连，胜！")
-    val DRAW = GomokuTTSTemplate("gomoku-draw", com.wanbaohe.gomoku.R.string.gomoku_tts_draw, "和棋！")
+    val WIN = GomokuTTSTemplate(
+        "gomoku-win",
+        com.wanbaohe.gomoku.R.string.gomoku_tts_win,
+        com.wanbaohe.gomoku.R.string.gomoku_tts_default_win,
+    )
+    val DRAW = GomokuTTSTemplate(
+        "gomoku-draw",
+        com.wanbaohe.gomoku.R.string.gomoku_tts_draw,
+        com.wanbaohe.gomoku.R.string.gomoku_tts_default_draw,
+    )
     val ALL = listOf(WIN, DRAW)
 }

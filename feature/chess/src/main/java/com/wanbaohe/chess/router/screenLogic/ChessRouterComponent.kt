@@ -10,6 +10,7 @@ import com.arkivanov.decompose.router.stack.pushToFront
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.essenty.lifecycle.doOnStop
 import androidx.compose.runtime.getValue
@@ -48,6 +49,7 @@ import com.wanbaohe.chess.domain.model.GameStatus
 import com.wanbaohe.chess.domain.model.PlayerType
 import com.wanbaohe.chess.domain.model.Side
 import com.wanbaohe.chess.presentation.displayNames
+import com.wanbaohe.chess.application.usecase.AudioFeedbackUseCase
 import com.wanbaohe.chess.application.usecase.SettingsUseCase
 import com.wanbaohe.chess.component.ChessAnalysisComponent
 import com.wanbaohe.chess.component.ChessGameComponent
@@ -83,6 +85,7 @@ class ChessRouterComponent @AssistedInject constructor(
     private val analysisFactory: ChessAnalysisComponent.Factory,
     private val settingsUseCase: SettingsUseCase,
     private val soundPlayer: SoundPlayer,
+    private val audioFeedback: AudioFeedbackUseCase,
     private val ttsService: TTSService,
     private val aiEngineManager: AIEngineManager,
     private val chessAiStore: ChessAiStore,
@@ -383,18 +386,26 @@ class ChessRouterComponent @AssistedInject constructor(
     var pendingJoinRoomId by mutableStateOf(type.initialJoinRoomId())
         private set
 
+    private var backgroundPreviewActive = false
+
     init {
         lifecycle.doOnStop {
             cancelPreparationStart()
             gamesToStart.clear()
+            stopSettingsPreview()
         }
         maybeOpenRecentGame()
         lifecycle.doOnStart {
             if (childStack.value.active.configuration == Route.AnalysisHome) openRecentAnalysis()
         }
+        lifecycle.doOnDestroy {
+            soundPlayer.stopBackground()
+            soundPlayer.stopEffect()
+        }
     }
 
     fun selectTab(tab: Tab) {
+        if (tab != Tab.Settings) stopSettingsPreview()
         when (tab) {
             Tab.Play -> openPlayTab()
             Tab.Analyze -> openAnalyzeTab()
@@ -403,8 +414,12 @@ class ChessRouterComponent @AssistedInject constructor(
         }
     }
 
-    fun openLibrary() { pauseBeforeLeavingGame { navigation.pushToFront(Route.Library) } }
+    fun openLibrary() {
+        stopSettingsPreview()
+        pauseBeforeLeavingGame { navigation.pushToFront(Route.Library) }
+    }
     fun openGame(gameId: String, startImmediately: Boolean = false) {
+        stopSettingsPreview()
         selectedGameId = gameId
         val route = Route.Game(gameId)
         if (childStack.value.active.configuration == route) return
@@ -416,6 +431,7 @@ class ChessRouterComponent @AssistedInject constructor(
         }
     }
     fun openAnalysis(gameId: String, initialPly: Int = -1) {
+        stopSettingsPreview()
         if (gameId.isBlank()) {
             openRecentAnalysis()
             return
@@ -428,6 +444,7 @@ class ChessRouterComponent @AssistedInject constructor(
     }
     fun clearPendingJoinRoom() { pendingJoinRoomId = "" }
     fun navigateBack() {
+        stopSettingsPreview()
         val child = childStack.value.active.instance
         if (child is Child.Game && child.component.setupDraft != null) {
             child.component.cancelSetup()
@@ -472,12 +489,26 @@ class ChessRouterComponent @AssistedInject constructor(
     fun updateMoveSoundUrl(url: String) { componentScope.launch { settingsUseCase.updateMoveSoundUrl(url) } }
     fun updateBackgroundMusicUrl(url: String) { componentScope.launch { settingsUseCase.updateBackgroundMusicUrl(url) } }
     fun updateCheckSoundUrl(url: String) { componentScope.launch { settingsUseCase.updateCheckSoundUrl(url) } }
-    fun updateTTSEnabled(enabled: Boolean) { componentScope.launch { settingsUseCase.updateTTSEnabled(enabled) } }
+    fun updateTTSEnabled(enabled: Boolean) {
+        componentScope.launch {
+            settingsUseCase.updateTTSEnabled(enabled)
+            if (enabled) audioFeedback.prepareCustomVoice(settingsUseCase.current())
+        }
+    }
     fun updateSoundEnabled(enabled: Boolean) {
         componentScope.launch { settingsUseCase.updateSoundEnabled(enabled) }
-        if (!enabled) soundPlayer.stopBackground()
+        if (!enabled) {
+            backgroundPreviewActive = false
+            soundPlayer.stopBackground()
+            soundPlayer.stopEffect()
+        }
     }
-    fun updateTTSTemplateText(tag: String, text: String) { componentScope.launch { settingsUseCase.updateTTSTemplateText(tag, text) } }
+    fun updateTTSTemplateText(tag: String, text: String) {
+        componentScope.launch {
+            settingsUseCase.updateTTSTemplateText(tag, text)
+            audioFeedback.prepareCustomVoice(settingsUseCase.current())
+        }
+    }
 
     fun switchAiModel(engine: AiEngine, model: AiModel) { aiEngineManager.switchFastModel(engine, model) }
     fun switchDuelEngineA(engine: AiEngine, model: AiModel) { aiEngineManager.setDuelEngineA(engine.copy(model = model)) }
@@ -490,35 +521,40 @@ class ChessRouterComponent @AssistedInject constructor(
     }
 
     fun openAiModelSettings() {
+        stopSettingsPreview()
         pauseBeforeLeavingGame { onNavigate(Screen.AISettings(Screen.AISettings.Type.WorkingModel)) }
     }
     fun openChessPromptSettings() {
         componentScope.launch {
             val prompt = promptDao.getSystemPromptByKey(PromptEntity.SYSTEM_PROMPT_KEY_CHESS_MOVE)
             if (prompt != null) {
+                stopSettingsPreview()
                 pauseBeforeLeavingGame { onNavigate(Screen.SystemPromptDetail(promptId = prompt.id)) }
             }
         }
     }
-    fun openTTSConfigSettings() { pauseBeforeLeavingGame { onNavigate(Screen.TTSSettings) } }
+    fun openTTSConfigSettings() {
+        stopSettingsPreview()
+        pauseBeforeLeavingGame { onNavigate(Screen.TTSSettings) }
+    }
 
     fun generateTTS(template: ChessTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.GenerateTTS(template.tag)) {
-            val text = customText.ifBlank { template.defaultText }
+            val text = customText.ifBlank { template.defaultText() }
             ttsService.synthesize(text = text, tag = template.tag)
         }
     }
 
     fun regenerateTTS(template: ChessTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.RegenerateTTS(template.tag)) {
-            val text = customText.ifBlank { template.defaultText }
+            val text = customText.ifBlank { template.defaultText() }
             ttsService.regenerate(text = text, tag = template.tag)
         }
     }
 
     fun playTTSAudio(template: ChessTTSTemplate, customText: String) {
         runSettingsAction(SettingsAction.PlayTTS(template.tag)) {
-            val text = customText.ifBlank { template.defaultText }
+            val text = customText.ifBlank { template.defaultText() }
             val audio = ttsService.getAudioByTextAndTag(text, template.tag)
             if (audio != null) {
                 soundPlayer.playLocalFile(File(audio.filePath))
@@ -549,8 +585,8 @@ class ChessRouterComponent @AssistedInject constructor(
     )
 
     fun previewBackgroundMusic() {
+        backgroundPreviewActive = true
         runSettingsAction(SettingsAction.PreviewBackgroundMusic) {
-            // 没填 URL 就试听内置的默认 BGM，否则点"试听"什么也听不到
             val url = chessSettings.value.backgroundMusicUrl
                 .ifBlank { ChessAudioDefaults.BACKGROUND }
             soundPlayer.playBackground(url)
@@ -559,8 +595,14 @@ class ChessRouterComponent @AssistedInject constructor(
 
     fun stopBackgroundMusicPreview() {
         runSettingsAction(SettingsAction.StopBackgroundMusic) {
-            soundPlayer.stopBackground()
+            stopSettingsPreview()
         }
+    }
+
+    private fun stopSettingsPreview() {
+        if (!backgroundPreviewActive) return
+        backgroundPreviewActive = false
+        soundPlayer.stopBackground()
     }
 
     private fun previewSound(action: SettingsAction, url: String, defaultUrl: String) {

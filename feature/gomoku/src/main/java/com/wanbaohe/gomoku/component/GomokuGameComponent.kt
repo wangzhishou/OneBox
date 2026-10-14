@@ -388,6 +388,7 @@ class GomokuGameComponent @AssistedInject constructor(
             mayResumeAfterSetup = false
             suppressAiRequests = true
             cancelAiRequest()
+            audioFeedback.stopEffects()
             componentScope.launch {
                 operationJob?.join()
                 setupPauseJob?.join()
@@ -1041,7 +1042,9 @@ class GomokuGameComponent @AssistedInject constructor(
                     is AiOrchestrationUseCase.Outcome.Committed -> {
                         applyPosition(outcome.detail)
                         val lastPly = outcome.detail.plies.firstOrNull { it.ply == outcome.detail.currentPly }
-                        if (lastPly != null) audioFeedback.playForMove(lastPly.afterFen, audioSettings)
+                        if (lastPly != null && isVisible && !isNavigatingAway) {
+                            audioFeedback.playForMove(lastPly.afterFen, audioSettings)
+                        }
                         continueAi = true
                     }
                     is AiOrchestrationUseCase.Outcome.Stale -> Unit
@@ -1121,7 +1124,10 @@ class GomokuGameComponent @AssistedInject constructor(
 
     private fun collectSettings() {
         componentScope.launch {
-            settingsUseCase.observe().collect { audioSettings = it }
+            settingsUseCase.observe().collect { settings ->
+                audioSettings = settings
+                componentScope.launch { audioFeedback.prepareCustomVoice(settings) }
+            }
         }
     }
 

@@ -299,6 +299,7 @@ class ChessGameComponent @AssistedInject constructor(
             pendingImmediateStart = false
             cancelStart()
             cancelAiRequest()
+            audioFeedback.stopEffects()
             if (uiState.isLoaded && uiState.mode != GameMode.ONLINE_PVP) {
                 val previousPause = lifecyclePauseJob
                 val pendingStart = startJob
@@ -368,7 +369,7 @@ class ChessGameComponent @AssistedInject constructor(
             }
             if (result is PlayMoveUseCase.Result.Success) {
                 applyPosition(result.detail)
-                playSound(before, move)
+                if (isVisible && !isNavigatingAway) playSound(before, move)
                 if (result.detail.mode == GameMode.ONLINE_PVP && !onlinePlay.sendMove(
                         move, result.detail.onlineMetadata.roomId, result.detail.onlineMetadata.mySide,
                     )
@@ -1005,7 +1006,10 @@ class ChessGameComponent @AssistedInject constructor(
 
     private fun collectSettings() {
         componentScope.launch {
-            settingsUseCase.observe().collect { audioSettings = it }
+            settingsUseCase.observe().collect { settings ->
+                audioSettings = settings
+                componentScope.launch { audioFeedback.prepareCustomVoice(settings) }
+            }
         }
     }
 

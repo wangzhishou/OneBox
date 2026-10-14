@@ -24,13 +24,31 @@ data class XiangqiSettings(
 data class XiangqiTTSTemplate(
     val tag: String,
     val labelResId: Int,
-    val defaultText: String,
-)
+    val defaultTextRes: Int,
+) {
+    fun defaultText(): String = com.shifenmiao.interfaces.singleton.AppContext.getString(defaultTextRes)
+}
 
 object XiangqiTTSTemplates {
-    val CAPTURE = XiangqiTTSTemplate("xiangqi-capture", com.wanbaohe.xiangqi.R.string.xiangqi_tts_capture, "吃！")
-    val CHECK = XiangqiTTSTemplate("xiangqi-check", com.wanbaohe.xiangqi.R.string.xiangqi_tts_check, "将军！")
-    val CHECKMATE = XiangqiTTSTemplate("xiangqi-checkmate", com.wanbaohe.xiangqi.R.string.xiangqi_tts_checkmate, "将死！")
-    val DRAW = XiangqiTTSTemplate("xiangqi-draw", com.wanbaohe.xiangqi.R.string.xiangqi_tts_draw, "和棋！")
+    val CAPTURE = XiangqiTTSTemplate(
+        "xiangqi-capture",
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_capture,
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_default_capture,
+    )
+    val CHECK = XiangqiTTSTemplate(
+        "xiangqi-check",
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_check,
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_default_check,
+    )
+    val CHECKMATE = XiangqiTTSTemplate(
+        "xiangqi-checkmate",
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_checkmate,
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_default_checkmate,
+    )
+    val DRAW = XiangqiTTSTemplate(
+        "xiangqi-draw",
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_draw,
+        com.wanbaohe.xiangqi.R.string.xiangqi_tts_default_draw,
+    )
     val ALL = listOf(CAPTURE, CHECK, CHECKMATE, DRAW)
 }

@@ -119,8 +119,7 @@ class GomokuAnalysisComponent @AssistedInject constructor(
     }
 
     private suspend fun startBackgroundMusic(settings: AudioSettings) {
-        if (!settings.soundEnabled) return
-        // 用户没填就用内置的 24s 循环 BGM，别让复盘页干着
+        if (!isVisible || !settings.soundEnabled) return
         val url = settings.backgroundMusicUrl.ifBlank { GomokuAudioDefaults.BACKGROUND }
         runCatching { soundPlayer.playBackground(url) }
     }
@@ -163,24 +162,27 @@ class GomokuAnalysisComponent @AssistedInject constructor(
         componentScope.launch {
             GomokuAudioDefaults.ALL.forEach { audioPlayer.warmUp(it) }
         }
-        componentScope.launch {
-            val settings = settingsUseCase.current()
-            uiState = uiState.copy(isSoundOn = settings.soundEnabled)
-            startBackgroundMusic(settings)
-        }
         componentContext.lifecycle.doOnDestroy {
             isVisible = false
             practiceJob?.cancel()
-            audioPlayer.stopBackground()
-            audioPlayer.stopEffect()
+            soundPlayer.stopBackground()
+            soundPlayer.stopEffect()
         }
-        lifecycle.doOnStart { isVisible = true }
+        lifecycle.doOnStart {
+            isVisible = true
+            componentScope.launch {
+                val settings = settingsUseCase.current()
+                uiState = uiState.copy(isSoundOn = settings.soundEnabled)
+                startBackgroundMusic(settings)
+                audioFeedback.prepareCustomVoice(settings)
+            }
+        }
         lifecycle.doOnStop {
             isVisible = false
             practiceJob?.cancel()
             stopAutoPlay()
-            audioPlayer.stopBackground()
-            audioPlayer.stopEffect()
+            soundPlayer.pauseBackground()
+            soundPlayer.stopEffect()
         }
         componentScope.launch {
             gameQuery.observeById(gameId).collect { detail ->
@@ -363,6 +365,7 @@ class GomokuAnalysisComponent @AssistedInject constructor(
     private fun playReplaySound(plies: List<GomokuPlyRecord>, targetPly: Int) {
         val record = plies.firstOrNull { it.ply == targetPly } ?: return
         componentScope.launch {
+            if (!isVisible) return@launch
             val settings = settingsUseCase.current()
             audioFeedback.playForMove(record.afterFen, settings)
         }

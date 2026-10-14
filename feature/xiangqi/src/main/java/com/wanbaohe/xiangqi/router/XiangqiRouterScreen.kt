@@ -7,10 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.VolumeOff
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -52,6 +58,7 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
     val childStack by component.childStack.subscribeAsState()
     val activeRoute = childStack.active.configuration
     val activeTab = component.tabOf(activeRoute)
+    val soundOn = component.xiangqiSettings.collectAsState().value.soundEnabled
     val activeGame = (childStack.active.instance as? XiangqiRouterComponent.Child.Game)?.component
     val preparingSetup = childStack.active.instance == XiangqiRouterComponent.Child.PlayHome &&
         component.preparationSetupDraft != null
@@ -104,9 +111,35 @@ fun XiangqiRouterScreen(component: XiangqiRouterComponent) {
             },
             immersiveState = immersiveState,
             showTabs = !isSettingUp,
-            headerActions = if (activeTab != XiangqiRouterComponent.Tab.Settings) {
-                { NewGameDropMenu(component = component.libraryComponent) }
-            } else null,
+            headerActions = if (
+                activeRoute is XiangqiRouterComponent.Route.Game ||
+                activeTab != XiangqiRouterComponent.Tab.Settings
+            ) {
+                {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (activeRoute is XiangqiRouterComponent.Route.Game) {
+                            IconButton(onClick = { component.updateSoundEnabled(!soundOn) }) {
+                                Icon(
+                                    imageVector = if (soundOn) {
+                                        Icons.AutoMirrored.Outlined.VolumeUp
+                                    } else {
+                                        Icons.AutoMirrored.Outlined.VolumeOff
+                                    },
+                                    contentDescription = stringResource(
+                                        if (soundOn) R.string.xiangqi_analysis_sound_on
+                                        else R.string.xiangqi_analysis_sound_off
+                                    ),
+                                )
+                            }
+                        }
+                        if (activeTab != XiangqiRouterComponent.Tab.Settings) {
+                            NewGameDropMenu(component = component.libraryComponent)
+                        }
+                    }
+                }
+            } else {
+                null
+            },
         ) {
             Children(
                 stack = childStack,

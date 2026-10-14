@@ -46,31 +46,37 @@ fun BoardGamePillButton(
     icon: ImageVector? = null,
     enabled: Boolean = true,
     primary: Boolean = false,
+    compact: Boolean = false,
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier.heightIn(min = 48.dp),
+        modifier = modifier.heightIn(min = if (compact) 44.dp else 48.dp),
         shape = RoundedCornerShape(50),
         colors = ButtonDefaults.buttonColors(
             containerColor = if (primary) MaterialTheme.colorScheme.primaryContainer
                 else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f),
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
+        contentPadding = PaddingValues(
+            horizontal = if (compact) 6.dp else 12.dp,
+            vertical = if (compact) 8.dp else 10.dp,
+        ),
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 8.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (icon != null) Icon(icon, contentDescription = null, modifier = Modifier.size(22.dp))
+            if (icon != null) {
+                Icon(icon, contentDescription = null, modifier = Modifier.size(if (compact) 16.dp else 22.dp))
+            }
             Text(
                 text = label,
                 modifier = Modifier.weight(1f, fill = false),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelLarge,
+                style = if (compact) MaterialTheme.typography.labelMedium else MaterialTheme.typography.labelLarge,
             )
         }
     }

@@ -26,6 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.storage.RemoteConfigStorage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.boardgame.ui.BoardCover
 import com.wanbaohe.boardgame.ui.BoardGamePillButton
 import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.xiangqi.R
@@ -49,6 +57,10 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
     }
     var pickingSide by remember { mutableStateOf<Side?>(null) }
     var showOrigin by remember { mutableStateOf(false) }
+    var importFen by remember { mutableStateOf(false) }
+    val onNavigate = LocalOnNavigate.current
+    val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
+    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_19)
     val setup = component.preparationSetupDraft
 
     if (setup != null) {
@@ -73,14 +85,31 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
             onShowOrigin = { showOrigin = true },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
         )
-        BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
-            XiangqiBoard(
-                state.boardState, null, emptySet(), { _, _ -> },
-                boardAspectRatio = xiangqiBoardAspectRatio(maxWidth.value, maxHeight.value),
-            )
-            if (component.isRestoringRecentGame) CircularProgressIndicator()
-        }
         val issue = remember(state.boardState) { SetupPositionValidator.validate(state.boardState) }
+        BoxWithConstraints(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
+            val aspect = xiangqiBoardAspectRatio(maxWidth.value, maxHeight.value)
+            Box(contentAlignment = Alignment.Center) {
+                XiangqiBoard(
+                    state.boardState, null, emptySet(), { _, _ -> },
+                    boardAspectRatio = aspect,
+                )
+                if (component.isRestoringRecentGame) {
+                    CircularProgressIndicator()
+                } else {
+                    BoardCover {
+                        BoardGamePillButton(
+                            label = stringResource(
+                                if (state.isUpdating) R.string.xiangqi_setup_starting else R.string.xiangqi_start_play,
+                            ),
+                            icon = Icons.Filled.PlayArrow,
+                            onClick = component::startPreparation,
+                            enabled = state.isLoaded && !state.isUpdating && issue == null,
+                            primary = true,
+                        )
+                    }
+                }
+            }
+        }
         if (issue != null) {
             Text(
                 setupIssueText(issue),
@@ -93,23 +122,44 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
         }
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            val barEnabled = state.isLoaded && !state.isUpdating
             BoardGamePillButton(
                 label = stringResource(R.string.xiangqi_setup_action),
                 icon = Icons.Outlined.GridOn,
                 onClick = component::beginPreparationSetup,
-                enabled = state.isLoaded && !state.isUpdating,
+                enabled = barEnabled,
+                compact = true,
                 modifier = Modifier.weight(1f),
             )
             BoardGamePillButton(
-                label = stringResource(if (state.isUpdating) R.string.xiangqi_setup_starting else R.string.xiangqi_start_play),
-                icon = Icons.Filled.PlayArrow,
-                onClick = component::startPreparation,
-                enabled = state.isLoaded && !state.isUpdating && issue == null,
-                modifier = Modifier.weight(1.6f),
-                primary = true,
+                label = stringResource(R.string.xiangqi_bar_import),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUploadFile,
+                onClick = { importFen = true },
+                enabled = barEnabled,
+                compact = true,
+                modifier = Modifier.weight(1f),
+            )
+            BoardGamePillButton(
+                label = stringResource(R.string.xiangqi_bar_ai_create),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
+                onClick = {
+                    val prompts = RemoteConfigStorage.getRemoteConfig().chatQuickStartPrompts
+                    onNavigate(
+                        Screen.AITabChatScreen(
+                            Conversation(
+                                entryType = AIConversationEntryType.ASSISTANT,
+                                title = aiChatTitle,
+                                template = prompts?.getOrNull(18)?.takeIf { it.isNotBlank() } ?: aiCreateFallback,
+                            )
+                        )
+                    )
+                },
+                enabled = barEnabled,
+                compact = true,
+                modifier = Modifier.weight(1f),
             )
             NewGameDropMenu(
                 component = component.libraryComponent,
@@ -120,7 +170,8 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
                         label = stringResource(BoardGameR.string.boardgame_more),
                         icon = Icons.Outlined.MoreHoriz,
                         onClick = openMenu,
-                        enabled = state.isLoaded && !state.isUpdating,
+                        enabled = barEnabled,
+                        compact = true,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 },
@@ -148,6 +199,18 @@ fun XiangqiPlayHomeScreen(component: XiangqiRouterComponent, modifier: Modifier 
             onDismiss = { pickingSide = null },
             onDownloadLocalEngine = component::downloadLocalEngine,
             onCancelLocalEngineDownload = component::cancelLocalEngineDownload,
+        )
+    }
+    if (importFen) {
+        val importedFenTitle = stringResource(R.string.xiangqi_imported_fen_title)
+        XiangqiImportDialog(
+            title = stringResource(R.string.xiangqi_import_dialog_title),
+            hint = stringResource(R.string.xiangqi_import_hint_fen),
+            onDismiss = { importFen = false },
+            onConfirm = { text ->
+                component.libraryComponent.importFen("", text, importedFenTitle)
+                importFen = false
+            },
         )
     }
     val origin = state.origin

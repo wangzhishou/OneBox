@@ -25,6 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.model.ai.AIConversationEntryType
+import com.shifenmiao.model.ai.Conversation
+import com.shifenmiao.storage.RemoteConfigStorage
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineMagic
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineUploadFile
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
+import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.wanbaohe.boardgame.ui.BoardCover
 import com.wanbaohe.boardgame.ui.BoardGamePillButton
 import com.wanbaohe.boardgame.R as BoardGameR
 import com.wanbaohe.chess.R
@@ -46,6 +54,10 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
         component.isRestoringRecentGame, component.isStartingPreparation) { component.preparationUiState() }
     var pickingSide by remember { mutableStateOf<Side?>(null) }
     var showOrigin by remember { mutableStateOf(false) }
+    var importFen by remember { mutableStateOf(false) }
+    val onNavigate = LocalOnNavigate.current
+    val aiChatTitle = stringResource(com.shifenmiao.core.R.string.ai_chat_title)
+    val aiCreateFallback = stringResource(com.shifenmiao.core.R.string.ai_chat_quick_start_21)
     val draft = component.preparationSetupDraft
     if (draft != null) {
         ChessSetupScreen(
@@ -68,13 +80,27 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
             Modifier.fillMaxWidth().padding(horizontal = 12.dp),
             emphasizeVs = true,
         )
+        val issue = remember(state.boardState) { SetupPositionValidator.validate(state.boardState) }
         Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
             Box(contentAlignment = Alignment.Center) {
                 ChessBoard(state.boardState, null, emptySet(), { _, _ -> }, bottomSide = state.bottomSide())
-                if (component.isRestoringRecentGame) CircularProgressIndicator()
+                if (component.isRestoringRecentGame) {
+                    CircularProgressIndicator()
+                } else {
+                    BoardCover {
+                        BoardGamePillButton(
+                            label = stringResource(
+                                if (state.isUpdating) R.string.chess_setup_starting else R.string.chess_start_action,
+                            ),
+                            icon = Icons.Filled.PlayArrow,
+                            onClick = component::startPreparation,
+                            enabled = state.isLoaded && !state.isUpdating && issue == null,
+                            primary = true,
+                        )
+                    }
+                }
             }
         }
-        val issue = remember(state.boardState) { SetupPositionValidator.validate(state.boardState) }
         if (issue != null) Text(
             setupIssueText(issue), color = MaterialTheme.colorScheme.onErrorContainer,
             style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(horizontal = 12.dp),
@@ -82,22 +108,44 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
         )
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            val barEnabled = state.isLoaded && !state.isUpdating
             BoardGamePillButton(
                 label = stringResource(R.string.chess_setup_action),
                 icon = Icons.Outlined.GridOn,
                 onClick = component::beginPreparationSetup,
-                enabled = state.isLoaded && !state.isUpdating,
+                enabled = barEnabled,
+                compact = true,
                 modifier = Modifier.weight(1f),
             )
             BoardGamePillButton(
-                label = stringResource(if (state.isUpdating) R.string.chess_setup_starting else R.string.chess_start_action),
-                icon = Icons.Filled.PlayArrow,
-                onClick = component::startPreparation, enabled = state.isLoaded && !state.isUpdating && issue == null,
-                modifier = Modifier.weight(1.6f),
-                primary = true,
+                label = stringResource(R.string.chess_bar_import),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineUploadFile,
+                onClick = { importFen = true },
+                enabled = barEnabled,
+                compact = true,
+                modifier = Modifier.weight(1f),
+            )
+            BoardGamePillButton(
+                label = stringResource(R.string.chess_bar_ai_create),
+                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineMagic,
+                onClick = {
+                    val prompts = RemoteConfigStorage.getRemoteConfig().chatQuickStartPrompts
+                    onNavigate(
+                        Screen.AITabChatScreen(
+                            Conversation(
+                                entryType = AIConversationEntryType.ASSISTANT,
+                                title = aiChatTitle,
+                                template = prompts?.getOrNull(20)?.takeIf { it.isNotBlank() } ?: aiCreateFallback,
+                            )
+                        )
+                    )
+                },
+                enabled = barEnabled,
+                compact = true,
+                modifier = Modifier.weight(1f),
             )
             NewGameDropMenu(
                 component.libraryComponent,
@@ -108,7 +156,8 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
                         label = stringResource(BoardGameR.string.boardgame_more),
                         icon = Icons.Outlined.MoreHoriz,
                         onClick = openMenu,
-                        enabled = state.isLoaded && !state.isUpdating,
+                        enabled = barEnabled,
+                        compact = true,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 },
@@ -131,6 +180,18 @@ fun ChessPlayHomeScreen(component: ChessRouterComponent, modifier: Modifier = Mo
             onSourceSelected = { component.switchPreparationAi(side, it) },
             onModelSelected = { provider, model -> component.switchPreparationModel(side, provider, model) },
             onDismiss = { pickingSide = null },
+        )
+    }
+    if (importFen) {
+        val importedFenTitle = stringResource(R.string.chess_imported_fen_title)
+        ChessImportDialog(
+            title = stringResource(R.string.chess_import_dialog_title),
+            hint = stringResource(R.string.chess_import_hint_fen),
+            onDismiss = { importFen = false },
+            onConfirm = { text ->
+                component.libraryComponent.importFen("", text, importedFenTitle)
+                importFen = false
+            },
         )
     }
     state.origin?.let { origin ->

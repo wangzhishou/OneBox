@@ -117,6 +117,11 @@
     <string name="chess_settings_tts_subtitle">吃子、将军、终局时用语音播报。</string>
     <string name="chess_settings_tts_enabled">语音播报开关</string>
     <string name="chess_settings_tts_preview">试听播报</string>
+    <string name="chess_settings_tts_config">语音引擎</string>
+    <string name="chess_settings_generate">生成</string>
+    <string name="chess_settings_generate_loading">生成中…</string>
+    <string name="chess_settings_regenerate">重新生成</string>
+    <string name="chess_settings_regenerate_loading">重新生成中…</string>
     <string name="chess_settings_ai_title">国际象棋 AI</string>
     <string name="chess_settings_ai_subtitle">新对局的默认对手。修改已有对局时，请在该局棋盘上更换对手。</string>
     <string name="chess_settings_ai_fast">人机对弈</string>
@@ -177,6 +182,8 @@
     <string name="chess_join_target_room_retry">重新加入</string>
     <string name="chess_signaling_disconnected">连接已断开,请重新匹配</string>
     <string name="chess_new_ai_create">AI 创建棋局</string>
+    <string name="chess_bar_import">导入</string>
+    <string name="chess_bar_ai_create">AI创建</string>
     <string name="chess_undo">撤销</string>
     <string name="chess_redo">重做</string>
     <string name="chess_fullscreen">全屏</string>

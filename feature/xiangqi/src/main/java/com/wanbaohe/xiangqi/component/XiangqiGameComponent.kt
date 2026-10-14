@@ -299,6 +299,7 @@ class XiangqiGameComponent @AssistedInject constructor(
             isVisible = false
             suppressAiRequests = true
             cancelAiRequest()
+            audioFeedback.stopEffects()
             if (uiState.isLoaded && uiState.mode != GameMode.ONLINE_PVP) {
                 componentScope.launch {
                     awaitPendingMoves()
@@ -343,7 +344,7 @@ class XiangqiGameComponent @AssistedInject constructor(
                 when (result) {
                     is PlayMoveUseCase.Result.Success -> {
                         applyPosition(result.detail)
-                        playSound(boardBefore, pending)
+                        if (isVisible && !isNavigatingAway) playSound(boardBefore, pending)
                         if (uiState.mode == GameMode.ONLINE_PVP) {
                             onlinePlay.sendMove(pending)
                         }
@@ -845,7 +846,7 @@ class XiangqiGameComponent @AssistedInject constructor(
                     is AiOrchestrationUseCase.Outcome.Committed -> {
                         applyPosition(outcome.detail)
                         val lastPly = outcome.detail.plies.firstOrNull { it.ply == outcome.detail.currentPly }
-                        if (lastPly != null) {
+                        if (lastPly != null && isVisible && !isNavigatingAway) {
                             audioFeedback.playForMove(lastPly.beforeFen, lastPly.afterFen, audioSettings)
                         }
                         continueAi = true
@@ -935,7 +936,10 @@ class XiangqiGameComponent @AssistedInject constructor(
 
     private fun collectSettings() {
         componentScope.launch {
-            settingsUseCase.observe().collect { audioSettings = it }
+            settingsUseCase.observe().collect { settings ->
+                audioSettings = settings
+                componentScope.launch { audioFeedback.prepareCustomVoice(settings) }
+            }
         }
     }
 

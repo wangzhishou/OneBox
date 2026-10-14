@@ -6,7 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.wanbaohe.boardgame.export.BoardGameGifExporter
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.essenty.lifecycle.doOnStart
+import com.arkivanov.essenty.lifecycle.doOnStop
 import com.shifenmiao.base.audio.NetworkAudioPlayer
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
@@ -80,6 +83,7 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
 
     private var targetInitialPly by mutableIntStateOf(initialPly)
     private var autoPlayJob: Job? = null
+    private var isVisible = lifecycle.state >= Lifecycle.State.STARTED
 
     /**
      * 声音开关（复盘页顶上的小喇叭）。
@@ -102,8 +106,7 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
     }
 
     private suspend fun startBackgroundMusic(settings: AudioSettings) {
-        if (!settings.soundEnabled) return
-        // 用户没填就用内置的 24s 循环 BGM，别让复盘页干着
+        if (!isVisible || !settings.soundEnabled) return
         val url = settings.backgroundMusicUrl.ifBlank { XiangqiAudioDefaults.BACKGROUND }
         runCatching { soundPlayer.playBackground(url) }
     }
@@ -146,14 +149,24 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
         componentScope.launch {
             XiangqiAudioDefaults.ALL.forEach { audioPlayer.warmUp(it) }
         }
-        componentScope.launch {
-            val settings = settingsUseCase.current()
-            uiState = uiState.copy(isSoundOn = settings.soundEnabled)
-            startBackgroundMusic(settings)
+        lifecycle.doOnStart {
+            isVisible = true
+            componentScope.launch {
+                val settings = settingsUseCase.current()
+                uiState = uiState.copy(isSoundOn = settings.soundEnabled)
+                startBackgroundMusic(settings)
+                audioFeedback.prepareCustomVoice(settings)
+            }
         }
-        componentContext.lifecycle.doOnDestroy {
-            audioPlayer.stopBackground()
-            audioPlayer.stopEffect()
+        lifecycle.doOnStop {
+            isVisible = false
+            stopAutoPlay()
+            soundPlayer.pauseBackground()
+            soundPlayer.stopEffect()
+        }
+        lifecycle.doOnDestroy {
+            soundPlayer.stopBackground()
+            soundPlayer.stopEffect()
         }
         componentScope.launch {
             gameQuery.observeById(gameId).collect { detail ->
@@ -300,6 +313,7 @@ class XiangqiAnalysisComponent @AssistedInject constructor(
     private fun playReplaySound(plies: List<XiangqiPlyRecord>, targetPly: Int) {
         val record = plies.firstOrNull { it.ply == targetPly } ?: return
         componentScope.launch {
+            if (!isVisible) return@launch
             val settings = settingsUseCase.current()
             audioFeedback.playForMove(record.beforeFen, record.afterFen, settings)
         }

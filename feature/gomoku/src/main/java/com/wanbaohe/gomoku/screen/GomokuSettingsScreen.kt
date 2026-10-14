@@ -34,10 +34,14 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineMusicNote
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePlay
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineRecordVoiceOver
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineStop
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
+import com.shifenmiao.base.utils.ActionUtils
 import com.wanbaohe.gomoku.R
+import com.wanbaohe.gomoku.data.GomokuTTSTemplate
+import com.wanbaohe.gomoku.data.GomokuTTSTemplates
 import com.wanbaohe.gomoku.application.port.outbound.EngineSlot
 import com.wanbaohe.gomoku.application.port.outbound.GomokuAiSource
 import com.wanbaohe.gomoku.application.dto.GameAiPlayerConfig
@@ -159,9 +163,45 @@ fun GomokuSettingsScreen(
                     label = stringResource(R.string.gomoku_settings_tts_preview),
                     icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay,
                     running = GomokuRouterComponent.SettingsAction.PreviewTTSConfig in runningActions,
-                    onClick = component::previewTTSConfig,
+                    onClick = {
+                        ActionUtils.showLogin(source = "gomoku_tts_preview") {
+                            component.previewTTSConfig()
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                 )
+                PreviewButton(
+                    label = stringResource(R.string.gomoku_settings_tts_config),
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineRecordVoiceOver,
+                    running = false,
+                    onClick = component::openTTSConfigSettings,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                GomokuTTSTemplates.ALL.forEach { template ->
+                    TtsLineRow(
+                        template = template,
+                        customText = settings.ttsTemplateTexts[template.tag] ?: "",
+                        onTextChange = { component.updateTTSTemplateText(template.tag, it) },
+                        onGenerate = {
+                            ActionUtils.showLogin(source = "gomoku_tts_generate") {
+                                component.generateTTS(template, it)
+                            }
+                        },
+                        onRegenerate = {
+                            ActionUtils.showLogin(source = "gomoku_tts_regenerate") {
+                                component.regenerateTTS(template, it)
+                            }
+                        },
+                        onPlay = { text ->
+                            ActionUtils.showLogin(source = "gomoku_tts_play") {
+                                component.playTTSAudio(template, text)
+                            }
+                        },
+                        isGenerating = GomokuRouterComponent.SettingsAction.GenerateTTS(template.tag) in runningActions,
+                        isRegenerating = GomokuRouterComponent.SettingsAction.RegenerateTTS(template.tag) in runningActions,
+                        isPlaying = GomokuRouterComponent.SettingsAction.PlayTTS(template.tag) in runningActions,
+                    )
+                }
             }
         }
 
@@ -312,6 +352,80 @@ private fun SettingsSection(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             content()
+        }
+    }
+}
+
+@Composable
+private fun TtsLineRow(
+    template: GomokuTTSTemplate,
+    customText: String,
+    onTextChange: (String) -> Unit,
+    onGenerate: (String) -> Unit,
+    onRegenerate: (String) -> Unit,
+    onPlay: (String) -> Unit,
+    isGenerating: Boolean,
+    isRegenerating: Boolean,
+    isPlaying: Boolean,
+) {
+    val fallback = stringResource(template.defaultTextRes)
+    val text = customText.ifBlank { fallback }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = stringResource(template.labelResId),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        GlassOutlinedTextField(
+            value = customText,
+            onValueChange = onTextChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text(fallback) },
+            singleLine = true,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            GlassTonalButton(
+                onClick = { onPlay(text) },
+                enabled = !isPlaying,
+                modifier = Modifier.weight(1f),
+            ) {
+                if (isPlaying) {
+                    CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
+                } else {
+                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePlay, contentDescription = null)
+                }
+            }
+            GlassTonalButton(
+                onClick = { onGenerate(text) },
+                enabled = !isGenerating,
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(
+                    stringResource(
+                        if (isGenerating) R.string.gomoku_settings_generate_loading
+                        else R.string.gomoku_settings_generate
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            GlassTonalButton(
+                onClick = { onRegenerate(text) },
+                enabled = !isRegenerating,
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(
+                    stringResource(
+                        if (isRegenerating) R.string.gomoku_settings_regenerate_loading
+                        else R.string.gomoku_settings_regenerate
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
     }
 }

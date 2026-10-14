@@ -118,6 +118,11 @@
     <string name="gomoku_settings_tts_subtitle">Announce wins and draws with text-to-speech.</string>
     <string name="gomoku_settings_tts_enabled">Voice announcements</string>
     <string name="gomoku_settings_tts_preview">Preview voice</string>
+    <string name="gomoku_settings_tts_config">Voice engine</string>
+    <string name="gomoku_settings_generate">Generate</string>
+    <string name="gomoku_settings_generate_loading">Generating…</string>
+    <string name="gomoku_settings_regenerate">Regenerate</string>
+    <string name="gomoku_settings_regenerate_loading">Regenerating…</string>
     <string name="gomoku_settings_ai_title">Gomoku AI</string>
     <string name="gomoku_settings_ai_subtitle">Move engine for Human vs AI and AI vs AI modes.</string>
     <string name="gomoku_settings_ai_fast">Human vs AI</string>
@@ -172,6 +177,8 @@ Tap or scan to join: %2$s</string>
     <string name="gomoku_join_target_room_retry">Join again</string>
     <string name="gomoku_signaling_disconnected">Connection lost, please rematch</string>
     <string name="gomoku_new_ai_create">AI create game</string>
+    <string name="gomoku_bar_import">Import</string>
+    <string name="gomoku_bar_ai_create">AI</string>
     <string name="gomoku_setup_action">Setup</string>
     <string name="gomoku_setup_title">Board setup</string>
     <string name="gomoku_setup_black_next">Black to move</string>

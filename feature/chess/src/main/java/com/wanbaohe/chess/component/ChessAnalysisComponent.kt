@@ -157,7 +157,12 @@ class ChessAnalysisComponent @AssistedInject constructor(
         }
         componentContext.lifecycle.doOnStart {
             isVisible = true
-            componentScope.launch { startBackgroundMusic(settingsUseCase.current()) }
+            componentScope.launch {
+                val settings = settingsUseCase.current()
+                uiState = uiState.copy(isSoundOn = settings.soundEnabled)
+                startBackgroundMusic(settings)
+                audioFeedback.prepareCustomVoice(settings)
+            }
         }
         componentContext.lifecycle.doOnDestroy {
             audioPlayer.stopBackground()
@@ -167,8 +172,8 @@ class ChessAnalysisComponent @AssistedInject constructor(
             isVisible = false
             visibilityEpoch++
             stopAutoPlay()
-            audioPlayer.stopBackground()
-            audioPlayer.stopEffect()
+            soundPlayer.pauseBackground()
+            soundPlayer.stopEffect()
         }
         componentScope.launch {
             manageGame.pauseOffline(gameId)

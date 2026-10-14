@@ -280,6 +280,8 @@
     <string name="xiangqi_tts_default_checkmate">Checkmate!</string>
     <string name="xiangqi_tts_default_draw">Draw!</string>
     <string name="xiangqi_new_ai_create">AI create game</string>
+    <string name="xiangqi_bar_import">Import</string>
+    <string name="xiangqi_bar_ai_create">AI</string>
     <string name="xiangqi_settings_local_engine_title">Local engine</string>
     <string name="xiangqi_settings_local_engine_subtitle">A built-in Xiangqi engine with a neural network, so a strong opponent stays available without a network connection.</string>
     <string name="xiangqi_local_engine_unavailable">Not included in this build.</string>
