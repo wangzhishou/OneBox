@@ -15,21 +15,18 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
-
-/** 浅色表面容器常带一点主题色。色差不到这个值按中性玻璃，再高一点就保留色相。 */
-private const val NEUTRAL_CHROMA = 0.08f
+import kotlin.math.abs
 
 private fun Color.chroma(): Float {
     if (this == Color.Unspecified || this == Color.Transparent) return 0f
     return maxOf(red, green, blue) - minOf(red, green, blue)
 }
-
-private fun Color.isNearNeutral(): Boolean = chroma() < NEUTRAL_CHROMA
 
 private fun styleWeight(style: GlassStyle): Float = when (style) {
     GlassStyle.Thin -> 0.78f
@@ -62,7 +59,6 @@ internal fun glassVeil(
     val settings = LocalSettingsState.current
     val scheme = MaterialTheme.colorScheme
     val isLight = scheme.surface.luminance() > 0.5f
-    val neutral = color.isNearNeutral()
     val glassBaseAlpha = settings.glassBaseAlpha.coerceIn(0f, 1f)
     val hasWallpaper = settings.isMeshGradientBackgroundEnabled ||
         settings.customBackgroundImageUri != null
@@ -77,64 +73,87 @@ internal fun glassVeil(
     val coverage = (backgroundAlpha / style.backgroundAlpha.coerceAtLeast(0.04f)).coerceIn(0.65f, 1.35f)
     val weight = styleWeight(style) * glassBaseAlpha * coverage * (if (isControl) 1.05f else 1f) *
         (if (enabled) 1f else 0.65f)
-    // 霜写死白，暗色写死黑。换主题时色相靠下面的 tint，不靠这层底。
-    // 透明度按玻璃厚度、液态、有没有渐变来收放：
-    // 中性卡片没有色调可染，渐变页上要更实，不然会发透。
-    // 彩色卡片的色相靠 tint，霜只垫薄薄一层。液态开关再透一点。
-    // 玻璃开关关闭时走不到这里。
     val liquidScale = if (isLiquid) 0.82f else 1f
     val plain = !hasWallpaper
+    // 表面角色本身几乎是灰的（色差常在 0.03–0.06）。以前色差不到 0.08 就当成没颜色，
+    // 再铺一层最多 86% 的白霜，渐变页上每张卡片都变成同一块白，嵌套层次也没了。
+    // 色相跟当前主题的 surfaceTint 走，日夜和换主题都会跟着变。
+    // 角色离页面 surface 越远，色相和明度差越大，外层浅、内层深。
+    // 只是两次纯色填充，不采样背景，也不做离屏模糊。
+    val base = if (color == Color.Unspecified) scheme.surfaceContainer else color
+    val hueRoom = ((0.10f - base.chroma()) / 0.10f).coerceIn(0f, 1f)
+    val lift = abs(base.luminance() - scheme.surface.luminance())
+    val step = if (hueRoom < 0.15f) {
+        0f
+    } else {
+        (lift * if (isLight) 3.0f else 14f).coerceIn(0f, 1f)
+    }
+    val hueBase = when {
+        isControl -> if (hasWallpaper) 0.04f else 0.02f
+        isLight && hasWallpaper -> 0.16f
+        isLight -> 0.05f
+        hasWallpaper -> 0.14f
+        else -> 0.04f
+    }
+    val hueMix = (hueRoom * hueBase * (1f + step * 0.45f)).coerceIn(0f, 0.22f)
+    val hued = if (hueMix > 0.004f) lerp(base, scheme.surfaceTint, hueMix) else base
+    val separated = when {
+        step < 0.008f -> hued
+        isLight -> lerp(hued, scheme.scrim, (step * 0.16f).coerceAtMost(0.035f))
+        else -> lerp(hued, scheme.primaryContainer, (step * 0.32f).coerceAtMost(0.10f))
+    }
+    // 白/黑霜只留一层薄奶，不再盖住上面的色相。
     val frostStrength = when {
-        neutral && hasWallpaper && isLight -> 0.70f
-        neutral && hasWallpaper -> 0.64f
-        neutral && isLight -> 0.18f
-        neutral -> 0.16f
-        isLight && isControl && plain -> 0.22f
-        isLight && isControl -> 0.10f
-        isLight && plain -> 0.28f
-        isLight -> 0.14f
+        isControl && isLight && plain -> 0.22f
+        isControl && isLight -> 0.10f
         isControl && plain -> 0.16f
         isControl -> 0.10f
-        plain -> 0.20f
-        else -> 0.16f
+        isLight && hasWallpaper -> if (hueRoom > 0.35f) 0.12f else 0.08f
+        isLight && plain -> 0.16f
+        hasWallpaper -> 0.14f
+        else -> 0.12f
     }
     val frostAlpha = (frostStrength * weight * liquidScale).coerceIn(
         0f,
         when {
-            neutral && hasWallpaper && isLight -> 0.86f
-            neutral && hasWallpaper -> 0.80f
-            isLight -> 0.46f
-            else -> 0.36f
+            isControl && isLight -> 0.40f
+            isLight && hasWallpaper -> 0.18f
+            isLight -> 0.32f
+            hasWallpaper -> 0.26f
+            else -> 0.22f
         },
     )
-    val tintAlpha = (
-        if (neutral || color == Color.Unspecified || color == Color.Transparent) {
-            0f
-        } else if (isLight && plain) {
-            (if (isControl) 0.42f else 0.50f) * weight * liquidScale
-        } else if (isLight) {
-            (if (isControl) 0.36f else 0.46f) * weight * liquidScale
-        } else if (plain) {
-            (if (isControl) 0.32f else 0.36f) * weight * liquidScale
-        } else {
-            (if (isControl) 0.28f else 0.36f) * weight * liquidScale
-        }
-        ).coerceIn(
-            0f,
-            when {
-                isLight && plain -> 0.58f
-                isLight -> 0.56f
-                plain -> 0.42f
-                else -> 0.42f
-            },
-        )
+    val tintStrength = when {
+        isControl && hueRoom > 0.35f && hasWallpaper -> 0.16f
+        isControl && hueRoom > 0.35f -> 0.08f
+        isControl && isLight && plain -> 0.42f
+        isControl && isLight -> 0.36f
+        isControl && plain -> 0.32f
+        isControl -> 0.28f
+        isLight && hasWallpaper -> 0.48f
+        isLight && plain -> if (hueRoom > 0.35f) 0.16f else 0.40f
+        hasWallpaper -> 0.48f
+        else -> 0.36f
+    }
+    val tintAlpha = (tintStrength * weight * liquidScale).coerceIn(
+        0f,
+        when {
+            isControl && isLight && plain -> 0.58f
+            isControl && isLight -> 0.56f
+            isControl -> 0.42f
+            isLight && hasWallpaper -> 0.64f
+            isLight -> 0.50f
+            hasWallpaper -> 0.64f
+            else -> 0.46f
+        },
+    )
     // 四边同一条线，写死白。浅色清楚，暗色只留很淡的一条，避免发亮。
     val rim = Color.White.copy(alpha = if (isLight) 0.42f else 0.10f)
     val frost = (if (isLight) Color.White else Color.Black).copy(alpha = frostAlpha)
 
     return GlassVeil(
         frost = frost,
-        tint = if (tintAlpha > 0f) color.copy(alpha = tintAlpha) else Color.Transparent,
+        tint = if (tintAlpha > 0f) separated.copy(alpha = tintAlpha) else Color.Transparent,
         rimWidth = if (rimStrength <= 0f) 0.dp else borderWidth.coerceAtLeast(1.dp).coerceAtMost(1.25.dp),
         rim = rim,
     )
