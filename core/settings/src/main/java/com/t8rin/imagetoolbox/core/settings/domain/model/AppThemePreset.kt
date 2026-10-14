@@ -85,7 +85,10 @@ data class AppThemePreset(
             isBuiltin = true,
         )
 
-        /** 默认主题 */
+        /**
+         * 品牌紫 + 汽水青，背景用极光（青绿光幕和紫罗兰），跟这两色是同一族。
+         * 磨砂玻璃开、液态玻璃关，日夜跟随系统。
+         */
         val LogoTheme = AppThemePreset(
             id = "builtin_logo",
             name = "品牌色",
@@ -95,16 +98,21 @@ data class AppThemePreset(
                 tertiary  = 0xFFD2B9EA,
                 surface   = 0xFFE5E5E5,
             ),
+            nightMode = NightMode.System,
             isDynamicColors = false,
             isGlassmorphismEnabled = true,
             isLiquidGlassEnabled = false,
             isMeshGradientBackgroundEnabled = true,
-            gradientBackgroundStyle = GradientBackgroundStyle.Sunset,
+            gradientBackgroundStyle = GradientBackgroundStyle.Aurora,
             glassBaseAlpha = 1.0f,
+            glassBorderAlpha = 0.24f,
             isBuiltin = true,
         )
 
         // ── 预制主题 ──
+        // 每套只把该开的开关打开，背景风格跟配色走同一色相，不要套一套参数。
+        // 浅色：樱花 / 薄荷 / 薰衣草 / 焦糖。暗色：晨雾蓝 / 深海 / 星野。
+        // 跟随系统：品牌色 / 烟雾灰 / 简约灰。液态玻璃只给花、紫、海、星野。
 
         val SakuraPink = AppThemePreset(
             id = "builtin_sakura_pink",
@@ -115,13 +123,14 @@ data class AppThemePreset(
                 tertiary  = 0xFFF8E8EE,
                 surface   = 0xFFF9F5F6,
             ),
+            nightMode = NightMode.Light,
             isGlassmorphismEnabled = true,
             isLiquidGlassEnabled = true,
             isMeshGradientBackgroundEnabled = true,
             gradientBackgroundStyle = GradientBackgroundStyle.SakuraMist,
-            glassBaseAlpha = 0.85f,
+            glassBaseAlpha = 0.72f,
+            glassBorderAlpha = 0.36f,
             isBuiltin = true,
-            nightMode = NightMode.Light,
         )
 
         val MintFresh = AppThemePreset(
@@ -133,14 +142,17 @@ data class AppThemePreset(
                 tertiary  = 0xFFB2DFDB,
                 surface   = 0xFFE0F2F1,
             ),
+            nightMode = NightMode.Light,
             isGlassmorphismEnabled = true,
             isLiquidGlassEnabled = false,
             isMeshGradientBackgroundEnabled = true,
             gradientBackgroundStyle = GradientBackgroundStyle.MintBreeze,
-            glassBaseAlpha = 0.90f,
+            glassBaseAlpha = 0.92f,
+            glassBorderAlpha = 0.20f,
             isBuiltin = true,
         )
 
+        /** 暗色 + 磨砂，不叠加液态玻璃。背景是午夜星河，不是极光。 */
         val StarryBlue = AppThemePreset(
             id = "builtin_starry_blue",
             name = "晨雾蓝",
@@ -152,13 +164,15 @@ data class AppThemePreset(
             ),
             nightMode = NightMode.Dark,
             isGlassmorphismEnabled = true,
-            isLiquidGlassEnabled = true,
+            isLiquidGlassEnabled = false,
             isMeshGradientBackgroundEnabled = true,
-            gradientBackgroundStyle = GradientBackgroundStyle.Aurora,
-            glassBaseAlpha = 0.85f,
+            gradientBackgroundStyle = GradientBackgroundStyle.StarryNight,
+            glassBaseAlpha = 0.78f,
+            glassBorderAlpha = 0.42f,
             isBuiltin = true,
         )
 
+        /** 只有磨砂，没有渐变，用来看一块平的灰底。 */
         val PureGray = AppThemePreset(
             id = "builtin_pure_gray",
             name = "简约灰",
@@ -168,10 +182,11 @@ data class AppThemePreset(
                 tertiary  = 0xFFE0E0E0,
                 surface   = 0xFFF5F5F5,
             ),
+            nightMode = NightMode.System,
             isGlassmorphismEnabled = true,
             isLiquidGlassEnabled = false,
             isMeshGradientBackgroundEnabled = false,
-            gradientBackgroundStyle = GradientBackgroundStyle.Ethereal,
+            gradientBackgroundStyle = GradientBackgroundStyle.Classic,
             glassBaseAlpha = 1.0f,
             isBuiltin = true,
         )
@@ -185,11 +200,13 @@ data class AppThemePreset(
                 tertiary  = 0xFFD6DCE4,
                 surface   = 0xFFF0F3F7,
             ),
+            nightMode = NightMode.System,
             isGlassmorphismEnabled = true,
             isLiquidGlassEnabled = false,
             isMeshGradientBackgroundEnabled = true,
             gradientBackgroundStyle = GradientBackgroundStyle.Ethereal,
-            glassBaseAlpha = 0.95f,
+            glassBaseAlpha = 0.88f,
+            glassBorderAlpha = 0.20f,
             isBuiltin = true,
         )
 
@@ -202,11 +219,13 @@ data class AppThemePreset(
                 tertiary  = 0xFFD1C4E9,
                 surface   = 0xFFF3E5F5,
             ),
+            nightMode = NightMode.Light,
             isGlassmorphismEnabled = true,
             isLiquidGlassEnabled = true,
             isMeshGradientBackgroundEnabled = true,
             gradientBackgroundStyle = GradientBackgroundStyle.Lavender,
-            glassBaseAlpha = 0.80f,
+            glassBaseAlpha = 0.68f,
+            glassBorderAlpha = 0.32f,
             isBuiltin = true,
         )
 
@@ -219,14 +238,17 @@ data class AppThemePreset(
                 tertiary  = 0xFFF4E4D0,
                 surface   = 0xFFFDF8F2,
             ),
+            nightMode = NightMode.Light,
             isGlassmorphismEnabled = true,
             isLiquidGlassEnabled = false,
             isMeshGradientBackgroundEnabled = true,
             gradientBackgroundStyle = GradientBackgroundStyle.WarmGlow,
             glassBaseAlpha = 0.90f,
+            glassBorderAlpha = 0.22f,
             isBuiltin = true,
         )
 
+        /** 暗色 + 液态玻璃，背景只有蓝和青绿。 */
         val OceanDeep = AppThemePreset(
             id = "builtin_ocean_deep",
             name = "深海秘境",
@@ -241,11 +263,40 @@ data class AppThemePreset(
             isLiquidGlassEnabled = true,
             isMeshGradientBackgroundEnabled = true,
             gradientBackgroundStyle = GradientBackgroundStyle.Ocean,
-            glassBaseAlpha = 0.75f,
+            glassBaseAlpha = 0.62f,
+            glassBorderAlpha = 0.48f,
             isBuiltin = true,
         )
 
-        /** 所有内置主题（按展示顺序） */
+        /**
+         * 星野：夜色湖面壁纸，图在 R2 `themes/starfield-night.jpg`。
+         * 网格渐变关掉，否则会盖住照片。液态玻璃叠在图上，描边拉高一点，卡片边才站得住。
+         * 配色取湖面那道月光金、地平线的青和雪峰的冷灰；surface 仍用浅种子，暗色由 [NightMode.Dark] 生成。
+         */
+        const val STARFIELD_BACKGROUND_URL =
+            "https://images.oneboxable.com/themes/starfield-night.jpg"
+
+        val StarField = AppThemePreset(
+            id = "builtin_starfield",
+            name = "星野",
+            colorTupleString = colorTuple(
+                primary   = 0xFFC9A36E,
+                secondary = 0xFF6E929C,
+                tertiary  = 0xFFA8B7BC,
+                surface   = 0xFFE7EBED,
+            ),
+            nightMode = NightMode.Dark,
+            isGlassmorphismEnabled = true,
+            isLiquidGlassEnabled = true,
+            isMeshGradientBackgroundEnabled = false,
+            gradientBackgroundStyle = GradientBackgroundStyle.StarryNight,
+            glassBaseAlpha = 0.58f,
+            glassBorderAlpha = 0.50f,
+            customBackgroundImageUri = STARFIELD_BACKGROUND_URL,
+            isBuiltin = true,
+        )
+
+        /** 所有内置主题（按展示顺序）。第一项千色千面固定不动。 */
         val builtinThemes: List<AppThemePreset> = listOf(
             Default,
             LogoTheme,
@@ -257,6 +308,7 @@ data class AppThemePreset(
             LavenderDream,
             SunsetWarm,
             OceanDeep,
+            StarField,
         )
     }
 }

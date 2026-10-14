@@ -1,5 +1,6 @@
 package com.t8rin.imagetoolbox.core.ui.widget.theme
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -39,12 +40,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.resources.icons.Theme
 import com.t8rin.imagetoolbox.core.settings.domain.model.AppThemePreset
@@ -274,6 +277,7 @@ fun ThemePresetCard(
             .clickable { onClick() }
             .padding(vertical = 8.dp, horizontal = 4.dp)
     ) {
+        val backgroundUri = preset.customBackgroundImageUri
         if (preset.isDynamicColors) {
             Box(
                 modifier = Modifier
@@ -290,6 +294,15 @@ fun ThemePresetCard(
                     modifier = Modifier.size(20.dp)
                 )
             }
+        } else if (backgroundUri != null) {
+            Image(
+                painter = rememberAsyncImagePainter(model = backgroundUri),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape),
+            )
         } else {
             ThemeColorPreview(preset.colorTupleString, Modifier.size(36.dp))
         }

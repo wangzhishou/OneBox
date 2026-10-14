@@ -1144,6 +1144,7 @@
     <string name="theme_preset_name_lavender_dream">라벤더</string>
     <string name="theme_preset_name_sunset_warm">카라멜 라떼</string>
     <string name="theme_preset_name_ocean_deep">딥 오션</string>
+    <string name="theme_preset_name_starfield">별밭</string>
     <string name="theme_preset_copy_suffix"> 복사</string>
     <string name="theme_settings_title">테마 설정</string>
     <string name="theme_settings_description">색상, 유리 효과, 배경을 사용자 지정하세요.</string>

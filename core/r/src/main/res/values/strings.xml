@@ -1321,6 +1321,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="theme_preset_name_lavender_dream">Lavender</string>
     <string name="theme_preset_name_sunset_warm">Caramel Latte</string>
     <string name="theme_preset_name_ocean_deep">Deep Ocean</string>
+    <string name="theme_preset_name_starfield">Star Field</string>
     <string name="theme_preset_copy_suffix"> Copy</string>
     <string name="theme_settings_title">Theme Settings</string>
     <string name="theme_settings_description">Customize colors, glass effects, and backgrounds.</string>

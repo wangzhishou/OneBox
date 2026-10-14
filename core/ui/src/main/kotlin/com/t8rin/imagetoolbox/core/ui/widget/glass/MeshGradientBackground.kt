@@ -280,6 +280,8 @@ private data class MeshRecipe(
     val lightSpread: Float = 0f,
     /** 深色模式下允许顶点亮到这里，否则淡顶点会被压成同一块暗色。 */
     val darkLuminanceCeiling: Float = 0.22f,
+    /** 顶点颜色的不透明度。1 为铺满，低于 1 时底色透出来。 */
+    val alpha: Float = 1f,
 )
 
 private fun meshRecipe(
@@ -310,12 +312,20 @@ private fun meshRecipe(
     }
     val light = !isDark
     return when (style) {
-        // 竖向光幕：青绿色带和紫罗兰交错，没有暖色。
+        // 竖向薄幕：青绿和紫罗兰还在，饱和度压低，颜色本身半透明，底色透出来。
         GradientBackgroundStyle.Aurora -> recipe(
             rows = 6, columns = 3,
             hues = listOf(158f, 292f, 174f, 318f, 188f, 274f),
-            light = light, saturation = 0.55f, lightLightness = 0.66f, darkLightness = 0.26f,
-            jitter = 0.06f, flow = 0.34f,
+            light = light,
+            saturation = if (light) 0.22f else 0.28f,
+            lightLightness = 0.86f,
+            darkLightness = 0.20f,
+            jitter = 0.03f,
+            flow = 0.20f,
+            satSpread = 0.10f,
+            lightSpread = 0.08f,
+            darkLuminanceCeiling = 0.30f,
+            alpha = if (light) 0.46f else 0.58f,
         )
         // 只有蓝和青绿。整体偏淡，顶点一深一浅。
         GradientBackgroundStyle.Ocean -> recipe(
@@ -404,6 +414,7 @@ private fun recipe(
     satSpread: Float = 0f,
     lightSpread: Float = 0f,
     darkLuminanceCeiling: Float = 0.22f,
+    alpha: Float = 1f,
 ): MeshRecipe = MeshRecipe(
     rows = rows,
     columns = columns,
@@ -415,6 +426,7 @@ private fun recipe(
     satSpread = satSpread,
     lightSpread = lightSpread,
     darkLuminanceCeiling = darkLuminanceCeiling,
+    alpha = alpha,
 )
 
 /** 主题色锚住，辅色离得太远就拉回邻近范围，避免经典/丝雾变成满色环。 */
@@ -479,6 +491,7 @@ private fun vertexColors(
         lightness = recipe.lightness + lightDelta,
         isDark = isDark,
         darkLuminanceCeiling = recipe.darkLuminanceCeiling,
+        alpha = recipe.alpha,
     )
 }
 
@@ -518,6 +531,7 @@ private fun airyColor(
     lightness: Float,
     isDark: Boolean,
     darkLuminanceCeiling: Float = 0.22f,
+    alpha: Float = 1f,
 ): Color {
     val hsl = floatArrayOf(
         (hue % 360f + 360f) % 360f,
@@ -539,7 +553,7 @@ private fun airyColor(
             color = lerp(color, Color.White, 0.1f)
         }
     }
-    return color.copy(alpha = 1f)
+    return color.copy(alpha = alpha.coerceIn(0f, 1f))
 }
 
 private fun Color.stableHue(): Float {

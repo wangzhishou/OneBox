@@ -1144,6 +1144,7 @@
     <string name="theme_preset_name_lavender_dream">Лаванда</string>
     <string name="theme_preset_name_sunset_warm">Карамельный латте</string>
     <string name="theme_preset_name_ocean_deep">Глубокий океан</string>
+    <string name="theme_preset_name_starfield">Звёздное поле</string>
     <string name="theme_preset_copy_suffix"> Копия</string>
     <string name="theme_settings_title">Настройки темы</string>
     <string name="theme_settings_description">Настройте цвета, стеклянные эффекты и фоны.</string>

@@ -1144,6 +1144,7 @@
     <string name="theme_preset_name_lavender_dream">Lavendel</string>
     <string name="theme_preset_name_sunset_warm">Karamell-Latte</string>
     <string name="theme_preset_name_ocean_deep">Tiefes Ozeanblau</string>
+    <string name="theme_preset_name_starfield">Sternenfeld</string>
     <string name="theme_preset_copy_suffix"> Kopieren</string>
     <string name="theme_settings_title">Theme-Einstellungen</string>
     <string name="theme_settings_description">Farben, Glaseffekte und Hintergründe anpassen.</string>
