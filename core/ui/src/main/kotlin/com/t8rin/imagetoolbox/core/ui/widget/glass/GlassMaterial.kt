@@ -28,6 +28,33 @@ private fun Color.chroma(): Float {
     return maxOf(red, green, blue) - minOf(red, green, blue)
 }
 
+/**
+ * 有色容器上的字是按实色配对的：底亮则字深，底暗则字浅。
+ * 玻璃把实色摊到明暗相反的壁纸上时，底会翻面，字就糊进底里。
+ * 中性卡片不走这里，仍按原来的薄覆盖。
+ */
+private fun chromaticContrastAlpha(
+    hueRoom: Float,
+    colorLum: Float,
+    tintAlpha: Float,
+    frostAlpha: Float,
+    isLight: Boolean,
+): Float {
+    if (hueRoom >= 0.15f) return tintAlpha
+    val backdropLum = if (isLight) 0.94f else 0.05f
+    val frostLum = if (isLight) 1f else 0f
+    val under = frostAlpha * frostLum + (1f - frostAlpha) * backdropLum
+    if (abs(colorLum - under) < 0.22f) return tintAlpha
+    val inkIsDark = colorLum >= 0.5f
+    val floor = if (inkIsDark) 0.68f else 0.24f
+    val shown = tintAlpha * colorLum + (1f - tintAlpha) * under
+    val readable = if (inkIsDark) shown >= floor else shown <= floor
+    if (readable) return tintAlpha
+    val denom = colorLum - under
+    if (abs(denom) < 0.08f) return tintAlpha
+    return ((floor - under) / denom).coerceIn(tintAlpha, 0.92f)
+}
+
 private fun styleWeight(style: GlassStyle): Float = when (style) {
     GlassStyle.Thin -> 0.78f
     GlassStyle.Regular -> 1f
@@ -135,17 +162,23 @@ internal fun glassVeil(
         hasWallpaper -> 0.40f
         else -> 0.36f
     }
-    val tintAlpha = (tintStrength * weight * liquidScale).coerceIn(
-        0f,
-        when {
-            isControl && isLight && plain -> 0.58f
-            isControl && isLight -> 0.56f
-            isControl -> 0.42f
-            isLight && hasWallpaper -> 0.54f
-            isLight -> 0.50f
-            hasWallpaper -> 0.54f
-            else -> 0.46f
-        },
+    val tintAlpha = chromaticContrastAlpha(
+        hueRoom = hueRoom,
+        colorLum = separated.luminance(),
+        tintAlpha = (tintStrength * weight * liquidScale).coerceIn(
+            0f,
+            when {
+                isControl && isLight && plain -> 0.58f
+                isControl && isLight -> 0.56f
+                isControl -> 0.42f
+                isLight && hasWallpaper -> 0.54f
+                isLight -> 0.50f
+                hasWallpaper -> 0.54f
+                else -> 0.46f
+            },
+        ),
+        frostAlpha = frostAlpha,
+        isLight = isLight,
     )
     // 四边同一条线，写死白。浅色清楚，暗色只留很淡的一条，避免发亮。
     val rim = Color.White.copy(alpha = if (isLight) 0.42f else 0.10f)
