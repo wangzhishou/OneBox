@@ -48,3 +48,4 @@ feature/xiangqi/src/main/jniLibs/
 
 # 本地临时验证脚本/产物(如 JVM 序列化复验),不入库
 .i18n-tmp/
+.wrangler/
