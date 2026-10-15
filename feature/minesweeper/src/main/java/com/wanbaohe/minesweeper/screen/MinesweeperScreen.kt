@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -681,41 +682,54 @@ private fun ResultOverlay(
             ),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            modifier = Modifier
-                .glassThick(shape = RoundedCornerShape(20.dp))
-                .padding(horizontal = 32.dp, vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+        val accentColor = if (isWon) {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.onErrorContainer
+        }
+
+        // 结算卡片是弹层容器, 按仓库约定不走玻璃管线: 玻璃底覆盖率很低,
+        // 压在棋盘上会透出格子, 结果文字糊成一团。这里给 M3 实底
+        // surfaceContainerLowest, 任何棋盘底色下都看得清。
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerLowest,
+            shadowElevation = 6.dp,
         ) {
-            Icon(
-                imageVector = if (isWon) Icons.Outlined.LineFlag else Icons.Outlined.LineMinesweeper,
-                contentDescription = null,
-                tint = if (isWon) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer,
-                modifier = Modifier.size(40.dp)
-            )
-            Text(
-                text = stringResource(if (isWon) R.string.minesweeper_won else R.string.minesweeper_lost),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = stringResource(R.string.minesweeper_result_detail, seconds),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            GlassTonalButton(
-                onClick = onRestart,
-                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp)
+            Column(
+                modifier = Modifier.padding(horizontal = 32.dp, vertical = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Refresh,
+                    imageVector = if (isWon) Icons.Outlined.LineFlag else Icons.Outlined.LineMinesweeper,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    tint = accentColor,
+                    modifier = Modifier.size(40.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(R.string.minesweeper_play_again))
+                Text(
+                    text = stringResource(if (isWon) R.string.minesweeper_won else R.string.minesweeper_lost),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = stringResource(R.string.minesweeper_result_detail, seconds),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                GlassTonalButton(
+                    onClick = onRestart,
+                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Refresh,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = stringResource(R.string.minesweeper_play_again))
+                }
             }
         }
     }
