@@ -65,10 +65,17 @@ fun XiangqiBoard(
     ) {
         val boardMaxWidth = constraints.maxWidth
         val boardMaxHeight = constraints.maxHeight
-        val paddingPx = minOf(
-            with(androidx.compose.ui.platform.LocalDensity.current) { 28.dp.toPx() },
-            boardMaxWidth / 18f,
-            boardMaxHeight / 20f,
+        val density = androidx.compose.ui.platform.LocalDensity.current
+        // 留白要装得下最外圈棋子的一半,否则大棋盘上边路棋子会被裁掉(见 xiangqiBoardPadding)。
+        val paddingPx = xiangqiBoardPadding(
+            basePaddingPx = minOf(
+                with(density) { 28.dp.toPx() },
+                boardMaxWidth / 18f,
+                boardMaxHeight / 20f,
+            ),
+            boardWidthPx = boardMaxWidth.toFloat(),
+            boardHeightPx = boardMaxHeight.toFloat(),
+            marginPx = with(density) { 1.dp.toPx() },
         )
         var dragFrom by remember { mutableStateOf<BoardPoint?>(null) }
         var dragPosition by remember { mutableStateOf<Offset?>(null) }

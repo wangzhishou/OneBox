@@ -31,8 +31,17 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons as MaterialIcons
 
 /**
+ * 棋盘遮罩的统一底色:[androidx.compose.material3.ColorScheme.surfaceContainerLow] 半透明平涂。
+ *
+ * 三款棋(五子棋/国际象棋/中国象棋)棋盘上的遮罩——开局、暂停、终局——都用这一层,
+ * 观感一致:棋盘在遮罩下仍认得出来,不带任何暗色倾向。
+ */
+@Composable
+internal fun boardCoverColor(): Color =
+    MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.50f)
+
+/**
  * 盖住棋盘的近白遮罩。吃掉棋子上的点击,中间放开始或继续按钮。
- * 底色用 [androidx.compose.material3.ColorScheme.surfaceContainerLow],略透明,棋盘还认得出来。
  */
 @Composable
 fun BoxScope.BoardCover(
@@ -48,7 +57,7 @@ fun BoxScope.BoardCover(
                 onClick = {},
             )
             .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.50f)),
+            .background(boardCoverColor()),
         contentAlignment = Alignment.Center,
         content = content,
     )
@@ -81,6 +90,7 @@ fun BoxScope.BoardStartOverlay(
  *
  * 卡片是弹层容器,按仓库约定不走玻璃管线(玻璃的底只铺约 4% 覆盖率,压在棋盘上会透出棋子,
  * 文字糊成一团);这里直接给 M3 实色底,保证任何棋盘底色下都看得清。
+ * 卡片外的遮罩与开局遮罩同底同透明度([boardCoverColor]),三款棋观感统一。
  *
  * @param emphasizeResult 胜负类结果用主题强调色;和棋等中性结果传 false
  * @param resultColor 胜方身份色(红方/白方等);传了就以它为准,不传走 [emphasizeResult] 的强调色
@@ -107,7 +117,7 @@ fun BoxScope.BoardGameOverOverlay(
         modifier = modifier
             .matchParentSize()
             .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.28f))
+            .background(boardCoverColor())
             // 吃掉落在卡片外的点击;若允许关闭浮层,点遮罩也关掉以便看棋盘
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

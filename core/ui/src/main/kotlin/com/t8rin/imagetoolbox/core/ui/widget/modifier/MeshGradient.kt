@@ -95,7 +95,10 @@ fun Canvas.drawMeshGradient(
                         indices = indicesModifier(pointData.indices)
                     ),
                     blendMode = BlendMode.Dst,
+                    // 颜色必须是不透明白:平台画顶点色时固定按 Modulate 把它乘上 paint 颜色,
+                    // 默认的黑 paint 会把整张网格渐变的 RGB 乘成 0(只剩 alpha),预览和导出都是黑底。
                     paint = Paint().apply {
+                        this.color = Color.White
                         this.alpha = alpha
                     }
                 )

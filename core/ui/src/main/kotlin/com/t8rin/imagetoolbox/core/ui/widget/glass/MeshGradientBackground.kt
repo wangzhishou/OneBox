@@ -1,5 +1,6 @@
 package com.t8rin.imagetoolbox.core.ui.widget.glass
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,11 +10,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.MeshGradientPainter
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
@@ -88,7 +91,7 @@ fun MeshGradientBackground(
                 ).coerceIn(0.8f, 1.25f)
 
             // 经典直接铺 ColorScheme 的色调角色。其余样式按名字配色相和饱和度。
-            val meshPainter = remember(
+            val meshSpec = remember(
                 style,
                 isDark,
                 themePrimary,
@@ -111,7 +114,7 @@ fun MeshGradientBackground(
                 surfaceContainerLowest,
             ) {
                 if (style == GradientBackgroundStyle.Classic) {
-                    createSchemeMeshPainter(
+                    schemeMeshSpec(
                         listOf(
                             listOf(
                                 themePrimary,
@@ -144,7 +147,7 @@ fun MeshGradientBackground(
                         ),
                     )
                 } else {
-                    createOrganicMeshPainter(
+                    organicMeshSpec(
                         style = style,
                         isDark = isDark,
                         primary = themePrimary,
@@ -154,11 +157,8 @@ fun MeshGradientBackground(
                     )
                 }
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .paint(meshPainter, contentScale = ContentScale.FillBounds)
-            )
+            val meshPainter = remember(meshSpec) { meshSpec.toPainter() }
+            MeshGradientLayer(meshSpec, meshPainter)
 
             val meshGradientVeilMultiplier = if (isDark) 1f else 0.88f
             val veilBrush = remember(surfaceColor, isDark, meshGradientVeilMultiplier) {
@@ -185,87 +185,109 @@ fun MeshGradientBackground(
 }
 
 /**
- * 经典：顶点就是当前 ColorScheme 的色调角色。
- * 一行用主色、辅色、三级色这类比较实的颜色，下一行用对应的 Container 和 Fixed，
- * 对比度跟主题走，不再把四个容器色铺匀。
+ * 铺网格渐变。
+ *
+ * API 34 及以上交给平台的 Mesh API([MeshGradientPainter]);低版本自己铺三角网
+ * (见 [MeshGradientSpec]):Compose 的回退实现会把顶点色乘成黑色,这里换白色 paint 画,
+ * 颜色才是对的。
  */
-private fun createSchemeMeshPainter(bands: List<List<Color>>): MeshGradientPainter {
-    val rows = bands.size - 1
-    val columns = bands.first().size - 1
-    val vertexRows = rows + 1
-    val vertexColumns = columns + 1
-    val positions = vertexPositions(vertexRows, vertexColumns, salt = 0)
-    return MeshGradientPainter(rows = rows, columns = columns, hasBicubicColor = true) {
-        for (row in 0 until vertexRows) {
-            for (column in 0 until vertexColumns) {
-                val index = row * vertexColumns + column
-                val color = bands[row][column]
-                val interior = row != 0 && row != vertexRows - 1 &&
-                    column != 0 && column != vertexColumns - 1
-                if (!interior) {
-                    setVertex(row, column, positions[index], color)
-                } else {
-                    val sign = if ((row + column) % 2 == 0) 1f else -1f
-                    val dx = 0.16f / columns
-                    val dy = 0.16f / rows
-                    setVertex(
-                        row = row,
-                        column = column,
-                        position = positions[index],
-                        color = color,
-                        rightControlPoint = Offset(dx * sign, -dy * 0.35f * sign),
-                        bottomControlPoint = Offset(-dx * 0.3f * sign, dy * sign),
-                    )
+@Composable
+private fun MeshGradientLayer(spec: MeshGradientSpec, painter: MeshGradientPainter) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .paint(painter, contentScale = ContentScale.FillBounds)
+        )
+        return
+    }
+    val mesh = remember(spec) { spec.buildMesh() }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .drawBehind {
+                // 顶点是归一化坐标,铺满整块画布。
+                scale(size.width, size.height, pivot = Offset.Zero) {
+                    with(mesh) { draw() }
                 }
             }
-        }
-    }
+    )
 }
 
-private fun createOrganicMeshPainter(
+/**
+ * 经典:顶点就是当前 ColorScheme 的色调角色。
+ * 一行用主色、辅色、三级色这类比较实的颜色,下一行用对应的 Container 和 Fixed,
+ * 对比度跟主题走,不再把四个容器色铺匀。
+ */
+private fun schemeMeshSpec(bands: List<List<Color>>): MeshGradientSpec = meshGradientSpec(
+    rows = bands.size - 1,
+    columns = bands.first().size - 1,
+    positions = vertexPositions(bands.size, bands.first().size, salt = 0),
+    colors = bands.flatten(),
+    flow = CLASSIC_FLOW,
+    salt = 0,
+)
+
+private fun organicMeshSpec(
     style: GradientBackgroundStyle,
     isDark: Boolean,
     primary: Color,
     secondary: Color,
     tertiary: Color,
     themeIntensity: Float,
-): MeshGradientPainter {
+): MeshGradientSpec {
     val recipe = meshRecipe(style, isDark, primary, secondary, tertiary, themeIntensity)
     val vertexRows = recipe.rows + 1
     val vertexColumns = recipe.columns + 1
-    val colors = vertexColors(recipe, vertexRows, vertexColumns, style.ordinal2, isDark)
-    val positions = vertexPositions(vertexRows, vertexColumns, style.ordinal2)
-    return MeshGradientPainter(rows = recipe.rows, columns = recipe.columns, hasBicubicColor = true) {
-        for (row in 0 until vertexRows) {
-            for (column in 0 until vertexColumns) {
-                val index = row * vertexColumns + column
-                val interior = row != 0 && row != vertexRows - 1 &&
-                    column != 0 && column != vertexColumns - 1
-                if (!interior) {
-                    setVertex(row, column, positions[index], colors[index])
-                } else {
-                    val sign = if ((style.ordinal2 + row + column) % 2 == 0) 1f else -1f
-                    val dx = recipe.flow / recipe.columns
-                    val dy = recipe.flow / recipe.rows
-                    setVertex(
-                        row = row,
-                        column = column,
-                        position = positions[index],
-                        color = colors[index],
-                        rightControlPoint = Offset(dx * sign, -dy * 0.35f * sign),
-                        bottomControlPoint = Offset(-dx * 0.3f * sign, dy * sign),
-                    )
-                }
-            }
-        }
-    }
+    return meshGradientSpec(
+        rows = recipe.rows,
+        columns = recipe.columns,
+        positions = vertexPositions(vertexRows, vertexColumns, style.ordinal2),
+        colors = vertexColors(recipe, vertexRows, vertexColumns, style.ordinal2, isDark),
+        flow = recipe.flow,
+        salt = style.ordinal2,
+    )
 }
 
 /**
- * 每套背景自己的网格、色相和饱和度。
- * 色相只在这套名字该有的范围内走，流光溢彩才铺满色环。
- * [flow] 是内部顶点的弯曲幅度，雾面小、极光和流光大。
+ * 内部顶点给一对错开的控制点,让网格边界有点流动感;四边不给,保持平整。
+ * 控制点只影响 patch 内部的弯曲,位置本身照旧走 [vertexPositions] 的抖动。
  */
+private fun meshGradientSpec(
+    rows: Int,
+    columns: Int,
+    positions: List<Offset>,
+    colors: List<Color>,
+    flow: Float,
+    salt: Int,
+): MeshGradientSpec {
+    val vertexRows = rows + 1
+    val vertexColumns = columns + 1
+    val rightTangents = MutableList(positions.size) { Offset.Unspecified }
+    val bottomTangents = MutableList(positions.size) { Offset.Unspecified }
+    val dx = flow / columns
+    val dy = flow / rows
+    for (row in 1 until vertexRows - 1) {
+        for (column in 1 until vertexColumns - 1) {
+            val index = row * vertexColumns + column
+            val sign = if ((salt + row + column) % 2 == 0) 1f else -1f
+            rightTangents[index] = Offset(dx * sign, -dy * 0.35f * sign)
+            bottomTangents[index] = Offset(-dx * 0.3f * sign, dy * sign)
+        }
+    }
+    return MeshGradientSpec(
+        rows = rows,
+        columns = columns,
+        positions = positions,
+        colors = colors,
+        rightTangents = rightTangents,
+        bottomTangents = bottomTangents,
+    )
+}
+
+/** 经典样式的流动幅度,与旧实现里写死的 0.16 一致。 */
+private const val CLASSIC_FLOW = 0.16f
+
 private data class MeshRecipe(
     val rows: Int,
     val columns: Int,

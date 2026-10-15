@@ -27,10 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntOffset
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.boardgame.ui.boardPaddingForPieces
 import com.wanbaohe.gomoku.domain.model.BoardPoint
 import com.wanbaohe.gomoku.domain.model.BoardState
 import com.wanbaohe.gomoku.domain.model.Side
 import kotlin.math.roundToInt
+
+/** 棋子直径与格距的比例。 */
+private const val STONE_TO_GAP_RATIO = 0.88f
 
 /** 天元 + 四角星位 */
 private val STAR_POINTS = listOf(
@@ -57,9 +61,19 @@ fun GomokuBoard(
     BoxWithConstraints(
         modifier = modifier.aspectRatio(1f)
     ) {
-        val padding = minOf(20.dp, maxWidth * 0.055f)
-        val paddingPx = with(androidx.compose.ui.platform.LocalDensity.current) { padding.toPx() }
+        val density = androidx.compose.ui.platform.LocalDensity.current
         val cellCount = BoardPoint.FILE_COUNT - 1
+        // 留白要装得下最外圈棋子的一半,否则平板这类大棋盘上边路的棋子会被裁掉
+        // (20dp 上限先到顶,棋子直径却跟着格距继续变大,见 boardPaddingForPieces)。
+        val paddingPx = boardPaddingForPieces(
+            basePaddingPx = minOf(with(density) { 20.dp.toPx() }, with(density) { maxWidth.toPx() } * 0.055f),
+            boardWidthPx = constraints.maxWidth.toFloat(),
+            boardHeightPx = constraints.maxHeight.toFloat(),
+            fileGaps = cellCount.toFloat(),
+            rankGaps = cellCount.toFloat(),
+            pieceRatio = STONE_TO_GAP_RATIO,
+            marginPx = with(density) { 1.dp.toPx() },
+        )
         // 格距在外层 BoxWithConstraints 作用域先算好:内层 Box lambda 里拿不到 constraints
         val gapPx = (constraints.maxWidth - paddingPx * 2) / cellCount
 
@@ -117,7 +131,7 @@ fun GomokuBoard(
                         val isCandidate = point in candidateTargets
                         val isLastMove = point == lastMove
 
-                        val stoneSize = with(androidx.compose.ui.platform.LocalDensity.current) { (gapPx * 0.88f).toDp() }
+                        val stoneSize = with(androidx.compose.ui.platform.LocalDensity.current) { (gapPx * STONE_TO_GAP_RATIO).toDp() }
 
                         // 点击区域(以交点为中心)
                         Box(

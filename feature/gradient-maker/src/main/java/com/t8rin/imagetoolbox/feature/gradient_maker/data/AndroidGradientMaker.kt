@@ -114,6 +114,8 @@ internal class AndroidGradientMaker @Inject constructor(
             setHasAlpha(true)
 
             val paint = Paint().apply {
+                // 顶点色会被平台按 Modulate 乘上 paint 颜色:不透明白才是恒等,默认黑会把渐变乘成黑底。
+                color = Color.White
                 alpha = gradientAlpha
             }
 
