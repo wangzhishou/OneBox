@@ -31,13 +31,16 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.AiImageOp
 import com.wanbaohe.markuplayers.presentation.components.SheetHeader
+import androidx.compose.material.icons.Icons as MaterialIcons
+import androidx.compose.material.icons.outlined.AutoAwesome
 
 /**
  * 「AI 处理」底部面板(设计稿「AI处理Tab展开界面」):
- * 标题行(带 NEW 角标)+ 副标题 + [AiImageOp] 能力卡(2 列网格,玻璃背景,
- * 卡片右上角展示单次消耗积分)。
+ * 标题行(带 NEW 角标)+ 副标题 + 「AI 生成图片」全宽引导卡(原侧栏 AI 入口并入)
+ * + [AiImageOp] 能力卡(2 列网格,玻璃背景,卡片右上角展示单次消耗积分)。
  * 点击卡片经 [onOpClick] 交给外部执行(登录/积分预检在外层完成):
- * 直出能力立即处理,[AiImageOp.needsRect] 的能力(图像修复)先进入框选模式。
+ * 直出能力立即处理,[AiImageOp.needsRect] 的能力(图像修复)先进入框选模式;
+ * 生成卡走 [onGenerateClick](目标选择/预检同原侧栏入口)。
  */
 @Composable
 fun AiToolSheet(
@@ -45,6 +48,7 @@ fun AiToolSheet(
     onDismiss: () -> Unit,
     pointsCost: Int,
     onOpClick: (AiImageOp) -> Unit,
+    onGenerateClick: () -> Unit,
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
@@ -63,6 +67,10 @@ fun AiToolSheet(
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
                 AiSheetSubtitle()
+                AiGenerateCard(
+                    pointsCost = pointsCost,
+                    onClick = onGenerateClick
+                )
                 AiImageOp.entries.toList().chunked(2).forEach { pair ->
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         pair.forEach { op ->
@@ -79,6 +87,74 @@ fun AiToolSheet(
             }
         }
     )
+}
+
+/** 「AI 生成图片」全宽引导卡:与能力卡同款玻璃容器 + 积分角标,图标用 AutoAwesome */
+@Composable
+private fun AiGenerateCard(
+    pointsCost: Int,
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassBackground(
+                style = GlassStyle.None,
+                shape = ShapeDefaults.default,
+                color = MaterialTheme.colorScheme.surfaceContainerLow
+            )
+            .clickable(onClick = onClick)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Icon(
+                imageVector = MaterialIcons.Outlined.AutoAwesome,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier
+                    .clip(ShapeDefaults.small)
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(8.dp)
+                    .size(20.dp)
+            )
+            Spacer(Modifier.width(10.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.markup_ai_generate_title),
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1
+                )
+                Text(
+                    text = stringResource(R.string.markup_ai_generate_card_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2
+                )
+            }
+            Spacer(Modifier.width(4.dp))
+            Icon(
+                imageVector = Icons.Outlined.LineChevronRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        Text(
+            text = stringResource(R.string.markup_ai_points_badge, pointsCost),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onTertiaryContainer,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(6.dp)
+                .clip(ShapeDefaults.small)
+                .background(MaterialTheme.colorScheme.tertiaryContainer)
+                .padding(horizontal = 4.dp, vertical = 1.dp)
+        )
+    }
 }
 
 @Composable

@@ -47,7 +47,6 @@ object EditorTools {
     const val ID_FILTER = "filter"
     const val ID_ADJUST = "adjust"
     const val ID_AI = "ai"
-    const val ID_AI_GENERATE = "ai_generate"
     const val ID_LAYERS = "layers"
     const val ID_MASK = "mask"
     const val ID_EFFECTS = "effects"
@@ -119,14 +118,7 @@ object EditorTools {
             placement = EditorTool.Placement.Hidden,
             mode = EditorTool.Mode.Sheet
         ),
-        // AI 生成图片:侧栏入口,开共享 AiGenerateImageSheet(文生图;选中图片图层时图生图)
-        EditorTool(
-            id = ID_AI_GENERATE,
-            titleRes = R.string.markup_rail_ai,
-            icon = MaterialIcons.Outlined.AutoAwesome,
-            placement = EditorTool.Placement.SideBar,
-            mode = EditorTool.Mode.Sheet
-        ),
+        // AI 生成图片不在侧栏:入口并入底部「AI 处理」面板(AiToolSheet 顶部生成卡)
         // 「基础工具」Tab:左侧工具栏的显隐开关(侧栏承载选择/画笔/文字/贴纸/形状/裁剪)
         EditorTool(
             id = ID_BASIC,

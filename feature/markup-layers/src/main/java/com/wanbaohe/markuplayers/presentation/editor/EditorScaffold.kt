@@ -280,15 +280,11 @@ fun EditorScaffold(
                     EditorTools.ID_DRAW -> component.selectLayer(null)
                     EditorTools.ID_STICKER -> showStickerSheet = true
                     EditorTools.ID_SHAPE -> showShapeSheet = true
-                    EditorTools.ID_AI_GENERATE -> {
-                        component.prepareAiGeneration()
-                        aiCandidateLayerId = component.selectedLayerId
-                        aiTargetAction = AiTargetAction.Generate
-                    }
                     EditorTools.ID_MASK -> showMaskSheet = true
                     EditorTools.ID_EFFECTS -> showEffectsSheet = true
                     // 调色已从底部 Tab 移到左侧工具栏
                     EditorTools.ID_ADJUST -> showAdjustSheet = true
+                    // AI 生成图片走底部「AI 处理」面板的生成卡,不在侧栏
                     // FullScreen 工具(裁剪)由 activeToolId 驱动,下方直接切换全屏页
                 }
             }
@@ -637,6 +633,13 @@ fun EditorScaffold(
             // 积分在采用预览结果后才扣,取消预览不扣。
             activeBottomTab = null
             if (op.needsRect) startAiOp(op) else pendingAiOp = op
+        },
+        // AI 生成图片(原侧栏「AI」入口并入本面板):先收面板,再走目标选择 → 生成弹层
+        onGenerateClick = {
+            activeBottomTab = null
+            component.prepareAiGeneration()
+            aiCandidateLayerId = component.selectedLayerId
+            aiTargetAction = AiTargetAction.Generate
         }
     )
 
