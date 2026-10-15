@@ -193,6 +193,10 @@
 -dontwarn com.bytedance.component.sdk.annotation.**
 -dontwarn com.bytedance.framwork.core.sdkmonitor.**
 -dontwarn com.bytedance.keva.**
+# GroMore 7.8.1.4 的素材窗口复制插件类,aar 未携带、官方 maven 无独立 artifact;
+# 运行时经服务端配置(d_p) + 类存在性检查(catch Throwable)双重门控,缺失时功能自动关闭
+-dontwarn com.bytedance.msdk.report.plugin.AdnMaterialWindowCopyUtils
+-dontwarn com.bytedance.msdk.report.plugin.AdnMaterialWindowCopyUtils$CopyRequest
 
 -keep class com.tencent.mm.sdk.** {
     *;
