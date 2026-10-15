@@ -24,8 +24,8 @@ plugins {
 android.namespace = "com.t8rin.imagetoolbox.core.ui"
 
 // 为国内渠道增加 src/domestic sourceSet,与 src/google 形成 flavor 隔离(同 core/r 的做法):
-//   - 国内渠道 + foss:src/main + src/domestic(InAppReviewPrompt 空实现)
-//   - Google 渠道:src/main + src/google(InAppReviewPrompt 走 Play In-App Review)
+//   - 国内渠道 + foss:src/main + src/domestic(InAppReviewPrompt 空实现、OpenCV 文档扫描器)
+//   - Google 渠道:src/main + src/google(InAppReviewPrompt 走 Play In-App Review、ML Kit 文档扫描器)
 afterEvaluate {
     android.sourceSets {
         listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "foss").forEach { flavor ->
@@ -102,7 +102,12 @@ dependencies {
 
     implementation(libs.datastore.preferences.android)
     googleImplementation(libs.play.review)
-    api(projects.libs.documentscanner)
+    // 文档扫描器按渠道隔离:google 走 ML Kit(实时框选 + 自动拍摄),
+    // 国内渠道 + foss 走 vendored OpenCV 库(com.t8rin.documentscanner)
+    googleImplementation(libs.mlkit.document.scanner)
+    listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "foss").forEach { flavor ->
+        add("${flavor}Api", projects.libs.documentscanner)
+    }
     api(libs.quickie.foss)
     api(libs.material)
 

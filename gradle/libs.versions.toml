@@ -76,6 +76,7 @@ androidxMacroBenchmark = "1.5.0-rc01"
 quickie = "1.18.1"
 playServicesAuth = "21.6.0"
 playServicesAds = "25.4.0"
+mlkitDocumentScanner = "16.0.0"
 groMoreMediationSdk = "7.8.1.4"
 playReview = "2.0.2"
 places = "5.3.0"
@@ -328,6 +329,7 @@ androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref 
 androidx-compose-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animationCore" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
+mlkit-document-scanner = { module = "com.google.android.gms:play-services-mlkit-document-scanner", version.ref = "mlkitDocumentScanner" }
 gromore-mediation-sdk = { module = "com.pangle.cn:mediation-sdk", version.ref = "groMoreMediationSdk" }
 play-review = { module = "com.google.android.play:review", version.ref = "playReview" }
 places = { module = "com.google.android.libraries.places:places", version.ref = "places" }

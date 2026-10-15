@@ -1,6 +1,6 @@
 /*
  * ImageToolbox is an image editor for android
- * Copyright (c) 2024 T8RIN (Malik Mukhametzyanov)
+ * Copyright (c) 2026 T8RIN (Malik Mukhametzyanov)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,17 +25,11 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
-import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
-import com.t8rin.imagetoolbox.core.ui.widget.other.LocalToastHostState
-import com.t8rin.imagetoolbox.core.ui.widget.other.showFailureToast
 
 private class DocumentScannerImpl(
     private val context: ComponentActivity,
@@ -64,35 +58,26 @@ private class DocumentScannerImpl(
 
 }
 
-@Stable
-@Immutable
-interface DocumentScanner {
-    fun scan()
-}
-
-
 @Composable
-fun rememberDocumentScanner(
+internal fun rememberDocumentScannerImpl(
     onSuccess: (ScanResult) -> Unit
 ): DocumentScanner {
-    val scope = rememberCoroutineScope()
-    val toastHostState = LocalToastHostState.current
     val context = LocalComponentActivity.current
 
     val scannerLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()
+        contract = ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            GmsDocumentScanningResult.fromActivityResultIntent(result.data)?.apply {
-                onSuccess(
-                    ScanResult(
-                        imageUris = pages?.let { pages ->
-                            pages.map { it.imageUri }
-                        } ?: emptyList(),
-                        pdfUri = pdf?.uri
+            runCatching {
+                GmsDocumentScanningResult.fromActivityResultIntent(result.data)?.apply {
+                    onSuccess(
+                        ScanResult(
+                            imageUris = pages?.map { it.imageUri } ?: emptyList(),
+                            pdfUri = pdf?.uri
+                        )
                     )
-                )
-            }
+                }
+            }.onFailure(AppToastHost::showFailureToast)
         }
     }
 
@@ -100,14 +85,7 @@ fun rememberDocumentScanner(
         DocumentScannerImpl(
             context = context,
             scannerLauncher = scannerLauncher,
-            onFailure = {
-                scope.launch {
-                    AppToastHost.showFailureToast(
-                        context = context,
-                        throwable = it
-                    )
-                }
-            }
+            onFailure = AppToastHost::showFailureToast
         )
     }
 }
