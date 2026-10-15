@@ -14,10 +14,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,7 +30,8 @@ import com.wanbaohe.game2048.R
 /**
  * 游戏结束 / 胜利覆盖层
  *
- * 半透明遮罩 + 居中提示文本 + 新游戏按钮。
+ * 棋盘压暗 + 居中一张实底(surfaceContainerLowest)结算卡 + 新游戏按钮。
+ * 卡片是弹层容器,按仓库约定不走玻璃管线——半透明底会把下面的方格透上来。
  *
  * @param isGameOver   游戏是否结束
  * @param isWon        是否达成 2048
@@ -57,82 +60,89 @@ fun GameOverOverlay(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    MaterialTheme.colorScheme.surface.copy(alpha = 0.75f),
-                    RoundedCornerShape(20.dp)
-                ),
+                .clip(RoundedCornerShape(20.dp))
+                // 只压暗棋盘: 结算内容落在下面那张实底卡上, 半透明底会把方格透上来
+                .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f)),
             contentAlignment = Alignment.Center,
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(32.dp),
+            // 结算卡片是弹层容器, 不走玻璃管线, 给 M3 实底(与扫雷结算弹窗一致)
+            Surface(
+                modifier = Modifier.padding(20.dp),
+                shape = RoundedCornerShape(24.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                shadowElevation = 6.dp,
             ) {
-                // ── 标题 ──
-                Text(
-                    text = if (isGameOver) {
-                        stringResource(R.string.game_2048_game_over)
-                    } else {
-                        stringResource(R.string.game_2048_you_win)
-                    },
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isGameOver) {
-                        MaterialTheme.colorScheme.onErrorContainer
-                    } else {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    },
-                    textAlign = TextAlign.Center,
-                )
-
-                Spacer(Modifier.height(8.dp))
-
-                Text(
-                    text = if (isGameOver) {
-                        stringResource(R.string.game_2048_no_moves)
-                    } else {
-                        stringResource(R.string.game_2048_reached_2048)
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                )
-
-                Spacer(Modifier.height(24.dp))
-
-                // ── 新游戏按钮 ──
-                GlassButton(
-                    onClick = onNewGame,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier
-                        .fillMaxWidth(0.7f)
-                        .height(48.dp),
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(horizontal = 28.dp, vertical = 22.dp),
                 ) {
+                    // ── 标题 ──
                     Text(
-                        text = stringResource(R.string.game_2048_new_game),
-                        style = MaterialTheme.typography.titleMedium,
+                        text = if (isGameOver) {
+                            stringResource(R.string.game_2048_game_over)
+                        } else {
+                            stringResource(R.string.game_2048_you_win)
+                        },
+                        style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.Bold,
+                        color = if (isGameOver) {
+                            MaterialTheme.colorScheme.onErrorContainer
+                        } else {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        },
+                        textAlign = TextAlign.Center,
                     )
-                }
 
-                // ── 胜利时额外显示"继续游戏"按钮 ──
-                if (isWon && !hasShownWin) {
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(8.dp))
+
+                    Text(
+                        text = if (isGameOver) {
+                            stringResource(R.string.game_2048_no_moves)
+                        } else {
+                            stringResource(R.string.game_2048_reached_2048)
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                    )
+
+                    Spacer(Modifier.height(24.dp))
+
+                    // ── 新游戏按钮 ──
                     GlassButton(
-                        onClick = onContinue,
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        borderWidth = 0.dp,
+                        onClick = onNewGame,
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                             .height(48.dp),
                     ) {
                         Text(
-                            text = stringResource(R.string.game_2048_continue),
+                            text = stringResource(R.string.game_2048_new_game),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                         )
+                    }
+
+                    // ── 胜利时额外显示"继续游戏"按钮 ──
+                    if (isWon && !hasShownWin) {
+                        Spacer(Modifier.height(12.dp))
+                        GlassButton(
+                            onClick = onContinue,
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            borderWidth = 0.dp,
+                            modifier = Modifier
+                                .fillMaxWidth(0.7f)
+                                .height(48.dp),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.game_2048_continue),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
                     }
                 }
             }
