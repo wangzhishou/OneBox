@@ -38,6 +38,12 @@ interface ElementTransform {
  * @param scale 手势整体缩放(绕内容中心)
  * @param rotation 手势旋转(度,绕内容中心)
  * @param alpha 元素级不透明度(0..1),与颜色自身 alpha 叠乘
+ * @param isUnderline 下划线(块级;选区级局部样式不含它,选区激活时面板置灰)
+ * @param isStrikethrough 删除线(块级,同上)
+ * @param backgroundColor 文字底色(逐行高亮,0 = 无背景;预览 TextStyle.background,导出 BackgroundColorSpan)
+ * @param outlineColor 描边颜色([outlineWidthRatio] > 0 时生效)
+ * @param outlineWidthRatio 描边粗细(相对画布宽的比例),0 = 无描边;
+ * 预览经 OutlinedText 双线叠绘(描边层垫底),导出经 STROKE 画笔二遍绘制
  * @param styleSpans 块内局部样式区间(字符下标;字段 null = 继承块级样式),
  * 由文字设置面板的选区作用域产生;编辑中文字增删由 Compose TrackedRange 跟随迁移。
  * 不变量:同属性区间互斥(写入侧 applySpanStyle 保证)——em 字号在 Android 端
@@ -60,6 +66,11 @@ data class TextBlock(
     val isItalic: Boolean = false,
     val color: Long = 0xFF1A1A1A,
     val alpha: Float = 1f,
+    val isUnderline: Boolean = false,
+    val isStrikethrough: Boolean = false,
+    val backgroundColor: Long = 0,
+    val outlineColor: Long = 0xFFFFFFFF,
+    val outlineWidthRatio: Float = 0f,
     val styleSpans: List<TextStyleSpan> = emptyList(),
     override val offsetX: Float = 0f,
     override val offsetY: Float = 0f,

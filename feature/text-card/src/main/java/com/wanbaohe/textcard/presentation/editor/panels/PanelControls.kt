@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
@@ -124,6 +125,7 @@ internal fun StyleChip(
     modifier: Modifier = Modifier,
     fontWeight: FontWeight? = null,
     fontStyle: FontStyle? = null,
+    textDecoration: TextDecoration? = null,
 ) {
     GlassFilterChip(
         selected = selected,
@@ -146,7 +148,8 @@ internal fun StyleChip(
                     text = glyph,
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = fontWeight,
-                        fontStyle = fontStyle
+                        fontStyle = fontStyle,
+                        textDecoration = textDecoration
                     ),
                     maxLines = 1
                 )

@@ -38,6 +38,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -55,6 +56,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.controls.selection.PickFontFamilySheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSegmentedButtonRow
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.logger.makeLog
@@ -93,8 +95,9 @@ private fun TextBlock.displayLabel(): String {
  * 行间距/字间距/对齐为行级属性,置灰不可调,面板顶部提示「正在调整:选中的文字」
  * 并提供「清除样式」(移除选区全部局部样式)。取消选中即回到整块模式。
  * 紧凑布局(对齐图片创作 TextEditDialog):标签在左的扁平设置行,
- * 滑杆/色板/分段均不带 container 包裹,行间距 8dp。
- * 顺序按常用优先:文本块切换 → 字体 → 字号 → 行距 → 字间距 → 不透明度 → 对齐 → B/I → 文字颜色
+ * 滑杆/色板/分段均不带 container 包裹,行间距 12dp。
+ * 顺序按常用优先:文本块切换 → 字体 → 字号 → 行距 → 字间距 → 不透明度 → 对齐
+ * → B/I/U/S → 文字颜色 → 文字背景 → 描边(U/S、背景、描边为块级属性,选区激活时置灰)
  */
 @Composable
 fun TextStylePanel(
@@ -272,7 +275,8 @@ fun TextStylePanel(
             }
         }
 
-        // 字体样式:B 加粗 / I 斜体切换 chip;选区激活时切换选区(叠加/反转块级),否则整块
+        // 字体样式:B 加粗 / I 斜体 / U 下划线 / S 删除线切换 chip(对齐图片创作);
+        // B/I 选区激活时切换选区(叠加/反转块级);U/S 为块级属性,选区激活时置灰
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxWidth()
@@ -331,6 +335,40 @@ fun TextStylePanel(
                 fontStyle = FontStyle.Italic,
                 modifier = Modifier.weight(1f)
             )
+            PanelDisabledWrapper(
+                enabled = selectionCtx == null,
+                modifier = Modifier.weight(1f)
+            ) {
+                StyleChip(
+                    glyph = "U",
+                    labelRes = R.string.textcard_underline,
+                    selected = block.isUnderline,
+                    onClick = {
+                        component.updateTextBlock(blockId) {
+                            it.copy(isUnderline = !it.isUnderline)
+                        }
+                    },
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            PanelDisabledWrapper(
+                enabled = selectionCtx == null,
+                modifier = Modifier.weight(1f)
+            ) {
+                StyleChip(
+                    glyph = "S",
+                    labelRes = R.string.textcard_strikethrough,
+                    selected = block.isStrikethrough,
+                    onClick = {
+                        component.updateTextBlock(blockId) {
+                            it.copy(isStrikethrough = !it.isStrikethrough)
+                        }
+                    },
+                    textDecoration = TextDecoration.LineThrough,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
 
         // 文字颜色:与图片创作一致的横向滚动色板(首项支持自定义取色);
@@ -357,6 +395,75 @@ fun TextStylePanel(
                 allowAlpha = false,
                 modifier = Modifier.weight(1f)
             )
+        }
+
+        // 文字背景(逐行高亮底色):开关 + 颜色行(支持透明);块级属性,选区激活时置灰
+        PanelDisabledWrapper(enabled = selectionCtx == null) {
+            Column {
+                PanelSettingRow(label = stringResource(R.string.textcard_text_background)) {
+                    Spacer(Modifier.weight(1f))
+                    GlassSwitch(
+                        checked = block.backgroundColor != 0L,
+                        onCheckedChange = { checked ->
+                            component.updateTextBlock(blockId) {
+                                it.copy(backgroundColor = if (checked) 0x66000000 else 0)
+                            }
+                        }
+                    )
+                }
+                if (block.backgroundColor != 0L) {
+                    ColorSelectionRow(
+                        value = Color(block.backgroundColor),
+                        onValueChange = { color ->
+                            component.updateTextBlock(blockId) {
+                                it.copy(
+                                    backgroundColor = color.toArgb().toLong() and 0xFFFF_FFFFL
+                                )
+                            }
+                        },
+                        allowAlpha = true
+                    )
+                }
+            }
+        }
+
+        // 描边:开关 + 颜色行 + 粗细滑杆(粗细为相对画布宽的比例);块级属性,选区激活时置灰
+        PanelDisabledWrapper(enabled = selectionCtx == null) {
+            Column {
+                PanelSettingRow(label = stringResource(R.string.textcard_text_outline)) {
+                    Spacer(Modifier.weight(1f))
+                    GlassSwitch(
+                        checked = block.outlineWidthRatio > 0f,
+                        onCheckedChange = { checked ->
+                            component.updateTextBlock(blockId) {
+                                it.copy(outlineWidthRatio = if (checked) 0.004f else 0f)
+                            }
+                        }
+                    )
+                }
+                if (block.outlineWidthRatio > 0f) {
+                    ColorSelectionRow(
+                        value = Color(block.outlineColor),
+                        onValueChange = { color ->
+                            component.updateTextBlock(blockId) {
+                                it.copy(outlineColor = color.toArgb().toLong() and 0xFFFF_FFFFL)
+                            }
+                        },
+                        allowAlpha = false
+                    )
+                    PanelSliderRow(
+                        label = stringResource(R.string.textcard_outline_width),
+                        value = block.outlineWidthRatio,
+                        valueRange = 0.001f..0.02f,
+                        valueText = "${formatDecimal((block.outlineWidthRatio * 1000).roundToInt() / 10f)}%",
+                        onValueChange = { value ->
+                            component.updateTextBlock(blockId) {
+                                it.copy(outlineWidthRatio = value)
+                            }
+                        }
+                    )
+                }
+            }
         }
     }
 }

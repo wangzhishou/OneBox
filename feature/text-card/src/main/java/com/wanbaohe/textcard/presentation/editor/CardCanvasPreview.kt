@@ -5,7 +5,6 @@ package com.wanbaohe.textcard.presentation.editor
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -72,6 +71,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -81,15 +81,17 @@ import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.resources.emoji.Emoji
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.settings.presentation.model.toUiFont
+import com.t8rin.imagetoolbox.core.ui.widget.editor.AnimatedSelectionBorder
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeHandles
 import com.t8rin.imagetoolbox.core.ui.widget.editor.HANDLE_SIZE
 import com.t8rin.imagetoolbox.core.ui.widget.editor.RotationHandle
 import com.t8rin.imagetoolbox.core.ui.widget.editor.ScaleHandle
-import com.t8rin.imagetoolbox.core.ui.widget.editor.dashedSelectionBorder
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedLoadingIndicator
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.meshGradient
+import com.t8rin.imagetoolbox.core.ui.widget.text.OutlineParams
+import com.t8rin.imagetoolbox.core.ui.widget.text.OutlinedText
 import com.wanbaohe.textcard.R
 import com.wanbaohe.textcard.domain.model.BackgroundSpec
 import androidx.compose.material.icons.Icons as MaterialIcons
@@ -332,11 +334,12 @@ private fun BackgroundLayerContent(
 }
 
 /**
- * 元素容器:offset 定位 + 选中后 transform 手势 + 虚线选中框与拖拽手柄。
+ * 元素容器:offset 定位 + 选中后 transform 手势 + 蚂蚁线动效选框与拖拽手柄
+ * (选框为共享 [AnimatedSelectionBorder],与图片创作同一动效)。
  * detectTransformGestures 的 pan 在元素本地(已变换)坐标系,乘新缩放并按
  * 新旋转角转回画布坐标系再归一化(同 markup-layers LayerTransform.applyGesture)。
  * [gesturesEnabled]=false(就地编辑态)时手势与手柄全部关闭,避免与文本选择/光标冲突,
- * 编辑态虚线框弱化显示。
+ * 编辑态选框弱化显示。
  * [resizeConfig] 非空(文字块)= 8 向框尺寸手柄(改框宽/高,文字重排,字号不变);
  * 为空(装饰/图片/形状/画笔)= 四角缩放手柄。删除按钮统一放选中框下方居中,
  * 避开四角缩放手柄与顶部旋转手柄,不与变换操作冲突。
@@ -384,18 +387,6 @@ private fun ElementBox(
                 rotationZ = transform.rotation
                 transformOrigin = TransformOrigin.Center
             }
-            .then(
-                if (isSelected) {
-                    Modifier.dashedSelectionBorder(
-                        width = 1.5.dp,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                            alpha = if (gesturesEnabled) 1f else 0.4f
-                        ),
-                        cornerRadius = 4.dp,
-                        inverseScale = inverseChromeScale
-                    )
-                } else Modifier
-            )
             // 选中态接管 transform 手势;点按(选中/再点编辑)由独立 tap 检测器承担,
             // 拖动消费位移后 tap 自动取消
             .pointerInput(elementId, isSelected, gesturesEnabled, canvasWidthPx, canvasHeightPx) {
@@ -423,6 +414,15 @@ private fun ElementBox(
             )
     ) {
         content()
+        // 蚂蚁线动效选框(与图片创作共享 [AnimatedSelectionBorder]):scale 反算线宽,
+        // 元素放大时线宽/虚线间隔视觉恒定;就地编辑态弱化显示
+        AnimatedSelectionBorder(
+            isVisible = isSelected,
+            scale = transform.scale,
+            modifier = Modifier.matchParentSize(),
+            cornerRadius = 4.dp,
+            alphaScale = if (gesturesEnabled) 1f else 0.4f
+        )
         // 删除按钮:独立 clickable,事件在子级被消费,不会触发元素的拖动/点选手势。
         // 统一放选中框下方居中(避开四角缩放手柄与顶部旋转手柄)
         if (isSelected && onDelete != null) {
@@ -615,6 +615,7 @@ private fun CardTextElement(
             CardText(
                 block = block,
                 baseSizePx = canvasWidthPx * block.baseSizeRatio,
+                canvasWidthPx = canvasWidthPx,
                 modifier = contentModifier
             )
         }
@@ -808,22 +809,36 @@ private fun Offset.rotateBy(degrees: Float): Offset {
 }
 
 /** 单个文字块预览:字号 px→sp 等比缩放,letterSpacing(em)/行距倍率/对齐/粗斜与导出侧一致;
- * 块内局部样式(styleSpans)以 AnnotatedString 区间叠加在块级样式之上 */
+ * 块内局部样式(styleSpans)以 AnnotatedString 区间叠加在块级样式之上;
+ * 描边经共享 OutlinedText 双线叠绘(描边层垫底),粗细 = outlineWidthRatio × 画布宽 */
 @Composable
 private fun CardText(
     block: TextBlock,
     baseSizePx: Float,
+    canvasWidthPx: Float,
     modifier: Modifier = Modifier,
 ) {
     if (block.content.isBlank()) return
-    Text(
+    val outlineParams = if (block.outlineWidthRatio > 0f) {
+        OutlineParams(
+            color = Color(block.outlineColor),
+            stroke = Stroke(
+                width = block.outlineWidthRatio * canvasWidthPx,
+                cap = StrokeCap.Round,
+                join = StrokeJoin.Round
+            )
+        )
+    } else null
+    OutlinedText(
         text = block.buildAnnotatedContent(),
+        outlineParams = outlineParams,
         style = cardTextStyle(block, baseSizePx),
         modifier = modifier.graphicsLayer { alpha = block.alpha.coerceIn(0f, 1f) }
     )
 }
 
-/** 文字块统一样式:CardText 与就地编辑器共用,保证编辑态与渲染态观感一致 */
+/** 文字块统一样式:CardText 与就地编辑器共用,保证编辑态与渲染态观感一致;
+ * 下划线/删除线/逐行底色也在这里(就地编辑态可见);描边仅渲染态(编辑器不支持双线叠绘) */
 @Composable
 private fun cardTextStyle(
     block: TextBlock,
@@ -839,6 +854,15 @@ private fun cardTextStyle(
         fontFamily = block.font.toUiFont().fontFamily,
         fontWeight = if (block.isBold) FontWeight.Bold else FontWeight.Normal,
         fontStyle = if (block.isItalic) FontStyle.Italic else FontStyle.Normal,
+        textDecoration = TextDecoration.combine(
+            buildList {
+                if (block.isUnderline) add(TextDecoration.Underline)
+                if (block.isStrikethrough) add(TextDecoration.LineThrough)
+            }
+        ),
+        background = if (block.backgroundColor != 0L) {
+            Color(block.backgroundColor)
+        } else Color.Unspecified,
         textAlign = when (block.alignment) {
             CardTextAlignment.Left -> TextAlign.Start
             CardTextAlignment.Center -> TextAlign.Center

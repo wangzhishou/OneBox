@@ -189,7 +189,11 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
      * 绘制单个文字块:基准位置(baseTopRatio)+ 归一化偏移,再绕内容中心
      * 套 scale/rotation(translate→rotate→scale,同 LayerExportDispatcher 顺序)。
      * StaticLayout 用法照搬 markup-layers。
-     * 块内局部样式(styleSpans)以 SpannableString span 叠加在块级 paint 之上。
+     * 块内局部样式(styleSpans)以 SpannableString span 叠加在块级 paint 之上;
+     * 块级底色 = 逐行矩形(预览 TextStyle.background 同款高亮;不走 span,
+     * 否则 layout.draw 内的背景会盖住先画的描边层);
+     * 描边 = STROKE 画笔的同宽 StaticLayout 画在填充层之下(同 markup-layers TextLayerExportRenderer);
+     * 下划线/删除线 = paint flags。
      */
     private fun drawTextBlock(
         canvas: Canvas,
@@ -215,9 +219,11 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
             textSize = width * block.baseSizeRatio * block.sizeScale
             typeface = resolveTypeface(block)
             letterSpacing = block.letterSpacingEm
+            if (block.isUnderline) flags = flags or Paint.UNDERLINE_TEXT_FLAG
+            if (block.isStrikethrough) flags = flags or Paint.STRIKE_THRU_TEXT_FLAG
         }
-        fun buildLayout(layoutWidth: Int): StaticLayout = StaticLayout.Builder
-            .obtain(text, 0, text.length, paint, layoutWidth)
+        fun buildLayout(p: TextPaint, layoutWidth: Int): StaticLayout = StaticLayout.Builder
+            .obtain(text, 0, text.length, p, layoutWidth)
             .setAlignment(block.alignment.toLayoutAlignment())
             .setLineSpacing(0f, block.lineSpacingMultiplier)
             .setIncludePad(false)
@@ -225,13 +231,17 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
 
         // 未手动拖宽的块预览侧框随内容收缩(wrap):先按上限宽折行,取各行最大宽度
         // 作为实际内容宽重建布局,定位与变换中心与预览一致;手动拖宽块直接用设定框宽
-        var layout = buildLayout(maxContentWidth)
+        var layoutWidthUsed = maxContentWidth
+        var layout = buildLayout(paint, layoutWidthUsed)
         val contentWidth = if (block.widthManuallySet) {
             maxContentWidth
         } else {
             val maxLineWidth = (0 until layout.lineCount).maxOf { layout.getLineWidth(it) }
             val wrappedWidth = ceil(maxLineWidth).toInt().coerceAtLeast(1)
-            if (wrappedWidth < maxContentWidth) layout = buildLayout(wrappedWidth)
+            if (wrappedWidth < maxContentWidth) {
+                layoutWidthUsed = wrappedWidth
+                layout = buildLayout(paint, layoutWidthUsed)
+            }
             wrappedWidth
         }
 
@@ -243,6 +253,32 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
         canvas.save()
         canvas.translate(left, top)
         canvas.applyElementTransform(block, contentWidth.toFloat(), boxHeight)
+        // 逐行底色矩形(先于描边/填充;行矩形 = 该行文字实际排布范围,含行距高度)
+        if (block.backgroundColor != 0L) {
+            val bgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = block.backgroundColor.toInt()
+            }
+            for (line in 0 until layout.lineCount) {
+                canvas.drawRect(
+                    layout.getLineLeft(line),
+                    layout.getLineTop(line).toFloat(),
+                    layout.getLineRight(line),
+                    layout.getLineBottom(line).toFloat(),
+                    bgPaint
+                )
+            }
+        }
+        // 描边:同布局宽度重建 STROKE 版垫底(线宽/折行与填充层一致),再画填充层
+        if (block.outlineWidthRatio > 0f) {
+            val strokePaint = TextPaint(paint).apply {
+                color = block.outlineColor.toInt()
+                style = Paint.Style.STROKE
+                strokeWidth = block.outlineWidthRatio * width
+                strokeJoin = Paint.Join.ROUND
+                strokeCap = Paint.Cap.ROUND
+            }
+            buildLayout(strokePaint, layoutWidthUsed).draw(canvas)
+        }
         layout.draw(canvas)
         canvas.restore()
     }
@@ -275,6 +311,8 @@ class AndroidTextCardExportRenderer @Inject internal constructor(
      * 颜色用 ForegroundColorSpan;字号倍率用 RelativeSizeSpan;粗斜合成一个 StyleSpan
      * (未设置的字段继承块级,故块粗体下 bold=false 的区间经 StyleSpan(NORMAL) 反粗),
      * 区间钳制到内容长度。
+     * 注意块级底色不走 BackgroundColorSpan:span 在 layout.draw 内绘制,会盖住先画的描边层;
+     * 底色改由 drawTextBlock 按行手动画矩形(在描边层之前)。
      */
     private fun TextBlock.exportText(): CharSequence {
         if (styleSpans.isEmpty()) return content

@@ -53,7 +53,12 @@
     <string name="textcard_font_style">Font Style</string>
     <string name="textcard_bold">Bold</string>
     <string name="textcard_italic">Italic</string>
+    <string name="textcard_underline">Underline</string>
+    <string name="textcard_strikethrough">Strikethrough</string>
     <string name="textcard_text_color">Text Color</string>
+    <string name="textcard_text_background">Text Background</string>
+    <string name="textcard_text_outline">Outline</string>
+    <string name="textcard_outline_width">Outline Width</string>
     <string name="textcard_layers_title">Layers</string>
     <string name="textcard_layer_background">Background</string>
     <string name="textcard_layer_text">Text</string>

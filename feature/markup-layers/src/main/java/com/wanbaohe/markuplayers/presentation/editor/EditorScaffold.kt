@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -244,8 +245,13 @@ fun EditorScaffold(
                 component.setActiveTool(tool.id)
                 when (tool.id) {
                     EditorTools.ID_SELECT -> component.selectLayer(null)
-                    // 文字为画布内联工具:中心新增文字图层并选中,同时弹出编辑 Dialog
-                    EditorTools.ID_TEXT -> component.beginTextEditSession()
+                    // 文字工具感知当前选中:已选中文字图层 → 就地编辑它并调起样式面板;
+                    // 否则新建文字图层(对齐图文卡片「先选中文字区域,再点文字设置」)
+                    EditorTools.ID_TEXT -> component.beginTextEditSession(
+                        component.selectedLayer
+                            ?.takeIf { it.type is LayerType.Text && !it.transform.locked }
+                            ?.id
+                    )
                     // 画笔为画布内绘制模式:取消图层选中,避免选中框手势与绘制冲突
                     EditorTools.ID_DRAW -> component.selectLayer(null)
                     EditorTools.ID_STICKER -> showStickerSheet = true
@@ -429,6 +435,8 @@ fun EditorScaffold(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
+                    // 就地编辑文字时键盘弹出,画布区整体上移,输入位置不被遮挡(同图文卡片)
+                    .imePadding()
             )
             AnimatedVisibility(visible = immersiveModeState.isUiVisible) {
                 when {
@@ -1627,7 +1635,12 @@ private fun EditorCanvas(
             ) {
                 LayersFloatingPanel(
                     component = component,
-                    onAddText = { EditorTools.byId(EditorTools.ID_TEXT)?.let(onToolClick) },
+                    // 图层面板的「添加文字」保持纯新增语义,不走 onToolClick
+                    // (文字工具已改为感知当前选中:选中文字图层时是编辑而非新建)
+                    onAddText = {
+                        component.beginTextEditSession()
+                        component.setActiveTool(EditorTools.ID_TEXT)
+                    },
                     onAddSticker = { EditorTools.byId(EditorTools.ID_STICKER)?.let(onToolClick) },
                     onAddImage = onAddImageLayer,
                     onExpand = onExpandLayers,

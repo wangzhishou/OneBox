@@ -1,13 +1,5 @@
 package com.wanbaohe.markuplayers.presentation.components
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -31,8 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -49,6 +39,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Close
+import com.t8rin.imagetoolbox.core.ui.widget.editor.AnimatedSelectionBorder
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
@@ -195,10 +186,12 @@ fun BoxWithConstraintsScope.EditBox(
         )
         val chromeScale = (localTransform.scale * canvasScale).coerceAtLeast(0.01f)
         val inverseScale = 1f / chromeScale
-        AnimatedBorder(
-            isVisible = isSelected && gesturesEnabled,
+        // 选框动效与图文卡片一致:就地编辑态不隐藏,弱化显示(alphaScale 0.4)
+        AnimatedSelectionBorder(
+            isVisible = isSelected,
             scale = chromeScale,
-            modifier = Modifier.matchParentSize()
+            modifier = Modifier.matchParentSize(),
+            alphaScale = if (gesturesEnabled) 1f else 0.4f
         )
         if (canTransform && showHandles && boxSize != IntSize.Zero) {
             var startTransform by remember { mutableStateOf(localTransform) }
@@ -426,39 +419,4 @@ private fun Offset.rotateBy(degrees: Float): Offset {
         x = (x * cos(radians) - y * sin(radians)).toFloat(),
         y = (x * sin(radians) + y * cos(radians)).toFloat()
     )
-}
-
-@Composable
-private fun AnimatedBorder(
-    isVisible: Boolean,
-    scale: Float,
-    modifier: Modifier = Modifier,
-) {
-    val alpha by animateFloatAsState(if (isVisible) 1f else 0f)
-    if (alpha <= 0f) return
-    val transition = rememberInfiniteTransition()
-    val phase by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 80f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-    val primary = MaterialTheme.colorScheme.onPrimaryContainer
-    val primaryContainer = MaterialTheme.colorScheme.primaryContainer
-    Canvas(modifier = modifier) {
-        val stroke = 3.dp.toPx() / scale
-        drawRect(color = primary.copy(alpha), style = Stroke(width = stroke))
-        drawRect(
-            color = primaryContainer.copy(alpha),
-            style = Stroke(
-                width = stroke,
-                pathEffect = PathEffect.dashPathEffect(
-                    intervals = floatArrayOf(20f / scale, 20f / scale),
-                    phase = phase / scale
-                )
-            )
-        )
-    }
 }

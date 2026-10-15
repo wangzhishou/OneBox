@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -137,6 +138,8 @@ private fun ElementLayerRow(
         ElementLayer.Kind.Shape -> true
         ElementLayer.Kind.Draw -> true
     }
+    // 当前选中:画布选中元素与面板行联动高亮(点行即选中,画布同步显示选框)
+    val selected = component.selectedElementId == layer.elementId
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -144,6 +147,9 @@ private fun ElementLayerRow(
             .padding(vertical = 4.dp)
             .container(
                 shape = ShapeDefaults.large,
+                color = if (selected) {
+                    MaterialTheme.colorScheme.primaryContainer
+                } else Color.Unspecified,
                 resultPadding = 0.dp
             )
             .clickable(enabled = !layer.locked) {
@@ -155,6 +161,9 @@ private fun ElementLayerRow(
         Text(
             text = layerName(layer, component),
             style = MaterialTheme.typography.bodyMedium,
+            color = if (selected) {
+                MaterialTheme.colorScheme.onPrimaryContainer
+            } else Color.Unspecified,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier

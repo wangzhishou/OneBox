@@ -1,5 +1,13 @@
 package com.t8rin.imagetoolbox.core.ui.widget.editor
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -10,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,10 +40,72 @@ import kotlin.math.roundToInt
 
 /**
  * 编辑器选中框共享 chrome(自 feature/text-card 抽取,供图文卡片/图片创作共用):
- * 静态虚线框 + 手柄圆点 + 8 向框尺寸手柄 + 四角缩放/顶部旋转手柄。
+ * 静态虚线框 + 蚂蚁线动效选框 + 手柄圆点 + 8 向框尺寸手柄 + 四角缩放/顶部旋转手柄。
  * 全部 chrome 支持 inverseScale 反缩放:元素被放大时操作件视觉尺寸保持恒定。
  * 所有手势在元素本地坐标系计算(graphicsLayer 变换下的坐标映射天然一致)。
  */
+
+/**
+ * 选中态蚂蚁线动效选框(图片创作 EditBox 同款,两编辑器统一用它):
+ * 主色实线打底 + primaryContainer 虚线无限滚动,出现/消失带透明度渐变。
+ * [scale] = 元素缩放 × 画布缩放,用于反算线宽/虚线间隔保持视觉恒定;
+ * [alphaScale] 供编辑态等场景整体弱化(如就地编辑时 0.4)。
+ */
+@Composable
+fun AnimatedSelectionBorder(
+    isVisible: Boolean,
+    scale: Float,
+    modifier: Modifier = Modifier,
+    cornerRadius: Dp = 0.dp,
+    alphaScale: Float = 1f,
+) {
+    val safeScale = scale.coerceAtLeast(0.01f)
+    val alpha by animateFloatAsState(if (isVisible) alphaScale else 0f)
+    if (alpha <= 0f) return
+    val transition = rememberInfiniteTransition()
+    val phase by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 80f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        )
+    )
+    val primary = MaterialTheme.colorScheme.onPrimaryContainer
+    val primaryContainer = MaterialTheme.colorScheme.primaryContainer
+    Canvas(modifier = modifier) {
+        val stroke = 3.dp.toPx() / safeScale
+        val corner = CornerRadius(cornerRadius.toPx() / safeScale)
+        val dashStyle = Stroke(
+            width = stroke,
+            pathEffect = PathEffect.dashPathEffect(
+                intervals = floatArrayOf(20f / safeScale, 20f / safeScale),
+                phase = phase / safeScale
+            )
+        )
+        if (cornerRadius > 0.dp) {
+            drawRoundRect(
+                color = primary.copy(alpha = primary.alpha * alpha),
+                cornerRadius = corner,
+                style = Stroke(width = stroke)
+            )
+            drawRoundRect(
+                color = primaryContainer.copy(alpha = primaryContainer.alpha * alpha),
+                cornerRadius = corner,
+                style = dashStyle
+            )
+        } else {
+            drawRect(
+                color = primary.copy(alpha = primary.alpha * alpha),
+                style = Stroke(width = stroke)
+            )
+            drawRect(
+                color = primaryContainer.copy(alpha = primaryContainer.alpha * alpha),
+                style = dashStyle
+            )
+        }
+    }
+}
 
 /** 选中态虚线圆角边框;[inverseScale] 抵消元素缩放,线宽/虚线间隔视觉恒定 */
 fun Modifier.dashedSelectionBorder(

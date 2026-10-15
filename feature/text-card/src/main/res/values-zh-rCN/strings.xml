@@ -53,7 +53,12 @@
     <string name="textcard_font_style">字体样式</string>
     <string name="textcard_bold">加粗</string>
     <string name="textcard_italic">斜体</string>
+    <string name="textcard_underline">下划线</string>
+    <string name="textcard_strikethrough">删除线</string>
     <string name="textcard_text_color">文字颜色</string>
+    <string name="textcard_text_background">文字背景</string>
+    <string name="textcard_text_outline">描边</string>
+    <string name="textcard_outline_width">描边粗细</string>
     <string name="textcard_layers_title">图层</string>
     <string name="textcard_layer_background">背景</string>
     <string name="textcard_layer_text">文字</string>
