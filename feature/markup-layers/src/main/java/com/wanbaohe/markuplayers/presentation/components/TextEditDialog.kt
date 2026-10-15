@@ -123,7 +123,6 @@ internal fun TextEditDialog(
 
     EnhancedModalBottomSheet(
         visible = visible && !showFontSheet,
-        dragHandle = {},
         // 下滑/X 关闭面板:不结束编辑会话,画布上继续就地改文字
         onDismiss = { onDismiss() }
     ) {
@@ -161,9 +160,9 @@ private fun TextStyleContent(
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 420.dp)

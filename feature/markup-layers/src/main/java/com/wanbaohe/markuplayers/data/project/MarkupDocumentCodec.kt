@@ -81,7 +81,9 @@ object MarkupDocumentCodec {
                     "type" to json("solid"),
                     "color" to json(background.color)
                 )
-            }
+            },
+            "baseVisible" to json(document.baseVisible),
+            "baseOrder" to json(document.baseOrder),
         )
         // Validate the same contract for writes and reads, without clamping or substituting defaults.
         formatErrors { decodeDocument(result) }
@@ -89,10 +91,15 @@ object MarkupDocumentCodec {
     }
 
     internal fun decodeDocument(element: JsonElement): MarkupDocument {
-        val value = element.objectWith(
-            "baseUri", "width", "height", "layers", "baseAdjustments", "baseEffects", "baseMask",
-            "baseTransforms", "baseImageHistory", "exportSettings", "originalUri", "sourceUri",
-            "saveExif", "workspaceBackground"
+        // baseVisible/baseOrder 为后加字段:旧项目文件没有,按默认值兼容解码;
+        // 其余字段保持严格 schema(缺失/未知均报错)
+        val value = element.objectWithOptional(
+            arrayOf(
+                "baseUri", "width", "height", "layers", "baseAdjustments", "baseEffects", "baseMask",
+                "baseTransforms", "baseImageHistory", "exportSettings", "originalUri", "sourceUri",
+                "saveExif", "workspaceBackground"
+            ),
+            optional = setOf("baseVisible", "baseOrder")
         )
         val document = MarkupDocument(
             baseUri = value.string("baseUri"),
@@ -111,6 +118,12 @@ object MarkupDocumentCodec {
             sourceUri = value.optional("sourceUri") { it.stringValue() },
             saveExif = value.boolean("saveExif"),
             workspaceBackground = decodeBackground(value.getValue("workspaceBackground")),
+            baseVisible = value["baseVisible"]?.let {
+                it.primitive().let { p -> if (p.isString) invalid("Invalid base visibility"); p.booleanOrNull ?: invalid("Invalid base visibility") }
+            } ?: true,
+            baseOrder = (value["baseOrder"]?.let {
+                it.primitive().let { p -> if (p.isString) invalid("Invalid base order"); p.intOrNull ?: invalid("Invalid base order") }
+            } ?: 0).also { if (it < 0) invalid("Invalid base order") },
         )
         if (document.baseUri.isBlank() || document.width <= 0 || document.height <= 0) {
             invalid("The document must have a base asset and positive dimensions")
@@ -670,6 +683,12 @@ private fun JsonElement.asObject(): JsonObject = this as? JsonObject
 private fun JsonElement.objectWith(vararg fields: String): JsonObject = asObject().also {
     if (it.keys != fields.toSet()) invalid("Missing or unknown fields: ${fields.toList()}")
 }
+private fun JsonElement.objectWithOptional(required: Array<String>, optional: Set<String>): JsonObject =
+    asObject().also {
+        if (!required.all { f -> f in it.keys } || !(required.toSet() + optional).containsAll(it.keys)) {
+            invalid("Missing or unknown fields: ${it.keys.toList()}")
+        }
+    }
 private fun JsonElement.primitive(): JsonPrimitive = this as? JsonPrimitive
     ?: invalid("Expected a JSON scalar")
 private fun JsonElement.stringValue(): String = primitive().let {

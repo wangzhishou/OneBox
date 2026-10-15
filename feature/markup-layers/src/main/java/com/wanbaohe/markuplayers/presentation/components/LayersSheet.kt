@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -156,10 +157,9 @@ internal fun LayersSheet(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(16.dp)
                     )
-                } else {
-                    LayerReorderList(component = component)
                 }
-                BackgroundTargetRow(component = component)
+                // 背景层在列表内随图层一起拖拽排序
+                LayerReorderList(component = component)
                 component.selectedLayer?.let { layer ->
                     SelectedLayerProperties(component = component, layer = layer)
                 }
@@ -169,50 +169,46 @@ internal fun LayersSheet(
     )
 }
 
-/** 背景层行:底图缩略图;可点 = 取消图层选中(滤镜/调节目标回到背景图),无选中时高亮 */
-@Composable
-private fun BackgroundTargetRow(component: MarkupLayersComponent) {
-    val isTarget = component.selectedLayerId == null
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .container(
-                shape = ShapeDefaults.large,
-                color = if (isTarget) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else MaterialTheme.colorScheme.surfaceContainerLow,
-                resultPadding = 0.dp
-            )
-            .clickable { component.selectLayer(null) }
-            .padding(horizontal = 8.dp, vertical = 6.dp)
-    ) {
-        Picture(
-            model = component.displayBitmap,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(40.dp)
-                .clip(ShapeDefaults.small)
-                .transparencyChecker()
-        )
-        Text(
-            text = stringResource(R.string.markup_layer_background),
-            style = MaterialTheme.typography.bodyMedium,
-            color = if (isTarget) {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            } else MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
+/** 可拖拽排序列表的条目:普通图层或背景层(背景不在最底层时随列表移动) */
+internal sealed interface LayerListEntry {
+    val key: String
+
+    data class LayerEntry(val layer: MarkupLayer) : LayerListEntry {
+        override val key: String get() = layer.id
+    }
+
+    data object BackgroundEntry : LayerListEntry {
+        override val key: String get() = "__background__"
     }
 }
 
-/** 可拖拽排序的图层列表,显示倒序(顶层在上),松手时一次性提交新 z 序 */
+/** 松手提交:拆出图层新 z 序 + 背景位置(背景之后的条目数 = 渲染在背景下的图层数) */
+internal fun commitLayerReorder(
+    component: MarkupLayersComponent,
+    displayList: List<LayerListEntry>,
+) {
+    val newLayers = displayList
+        .filterIsInstance<LayerListEntry.LayerEntry>()
+        .map { it.layer }
+        .asReversed()
+    val backgroundIndex = displayList.indexOfFirst { it is LayerListEntry.BackgroundEntry }
+    val newBaseOrder = (displayList.size - 1 - backgroundIndex).coerceAtLeast(0)
+    component.reorderLayersAndBase(newLayers, newBaseOrder)
+}
+
+/** 可拖拽排序的图层列表,显示倒序(顶层在上),松手时一次性提交新 z 序;背景层在列表底部(默认) */
 @Composable
 private fun LayerReorderList(component: MarkupLayersComponent) {
     val layers = component.layers
-    var displayList by remember(layers) { mutableStateOf(layers.asReversed()) }
+    val baseOrder = component.baseOrder.coerceIn(0, layers.size)
+    var displayList by remember(layers, baseOrder) {
+        mutableStateOf(
+            buildList<LayerListEntry> {
+                layers.asReversed().forEach { add(LayerListEntry.LayerEntry(it)) }
+                add(layers.size - baseOrder, LayerListEntry.BackgroundEntry)
+            }
+        )
+    }
     val listState = rememberLazyListState()
     val haptics = LocalHapticFeedback.current
     val reorderState = rememberReorderableLazyListState(
@@ -233,31 +229,108 @@ private fun LayerReorderList(component: MarkupLayersComponent) {
     ) {
         itemsIndexed(
             items = displayList,
-            key = { _, layer -> layer.id }
-        ) { _, layer ->
+            key = { _, entry -> entry.key }
+        ) { _, entry ->
             ReorderableItem(
                 state = reorderState,
-                key = layer.id
+                key = entry.key
             ) { isDragging ->
-                LayerRow(
-                    layer = layer,
-                    layers = layers,
-                    isSelected = layer.id in component.selectedLayerIds,
-                    isDragging = isDragging,
-                    dragHandleModifier = Modifier.longPressDraggableHandle(
-                        onDragStarted = { haptics.longPress() },
-                        onDragStopped = {
-                            component.reorderLayers(displayList.reversed())
-                        }
-                    ),
-                    onSelect = {
-                        if (!layer.transform.locked) component.selectLayer(layer.id)
-                    },
-                    onToggleSelection = { component.toggleLayerSelection(layer.id) },
-                    onToggleVisible = { component.toggleLayerVisible(layer.id) },
-                    onToggleLocked = { component.toggleLayerLocked(layer.id) },
+                val dragHandleModifier = Modifier.longPressDraggableHandle(
+                    onDragStarted = { haptics.longPress() },
+                    onDragStopped = { commitLayerReorder(component, displayList) }
                 )
+                when (entry) {
+                    is LayerListEntry.LayerEntry -> {
+                        val layer = entry.layer
+                        LayerRow(
+                            layer = layer,
+                            layers = layers,
+                            isSelected = layer.id in component.selectedLayerIds,
+                            isDragging = isDragging,
+                            dragHandleModifier = dragHandleModifier,
+                            onSelect = {
+                                if (!layer.transform.locked) component.selectLayer(layer.id)
+                            },
+                            onToggleSelection = { component.toggleLayerSelection(layer.id) },
+                            onToggleVisible = { component.toggleLayerVisible(layer.id) },
+                            onToggleLocked = { component.toggleLayerLocked(layer.id) },
+                        )
+                    }
+
+                    LayerListEntry.BackgroundEntry -> BackgroundTargetRow(
+                        component = component,
+                        isDragging = isDragging,
+                        dragHandleModifier = dragHandleModifier
+                    )
+                }
             }
+        }
+    }
+}
+
+/** 背景层行:底图缩略图;可点 = 取消图层选中(滤镜/调节目标回到背景图),无选中时高亮。
+ * 支持显隐切换、删除(替换为同尺寸透明底,可撤销)与长按拖拽调整 z 序 */
+@Composable
+private fun BackgroundTargetRow(
+    component: MarkupLayersComponent,
+    isDragging: Boolean,
+    dragHandleModifier: Modifier,
+) {
+    val isTarget = component.selectedLayerId == null
+    val visible = component.baseVisible
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .scale(animateFloatAsState(if (isDragging) 1.02f else 1f).value)
+            .container(
+                shape = ShapeDefaults.large,
+                color = if (isTarget) {
+                    MaterialTheme.colorScheme.primaryContainer
+                } else MaterialTheme.colorScheme.surfaceContainerLow,
+                resultPadding = 0.dp
+            )
+            .clickable { component.selectLayer(null) }
+            .padding(horizontal = 8.dp, vertical = 6.dp)
+    ) {
+        Picture(
+            model = component.displayBitmap,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(40.dp)
+                .clip(ShapeDefaults.small)
+                .transparencyChecker()
+                .graphicsLayer { alpha = if (visible) 1f else 0.4f }
+        )
+        Text(
+            text = stringResource(R.string.markup_layer_background),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+        )
+        LayerIconButton(
+            icon = if (visible) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,
+            contentDescription = stringResource(R.string.markup_layer_toggle_visible),
+            onClick = component::toggleBaseVisible
+        )
+        LayerIconButton(
+            icon = Icons.Outlined.Delete,
+            contentDescription = stringResource(R.string.studio_layers_delete),
+            onClick = component::removeBaseBackground
+        )
+        Box(
+            modifier = dragHandleModifier.size(48.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = MaterialIcons.Rounded.DragHandle,
+                contentDescription = stringResource(R.string.markup_drag_reorder),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
+            )
         }
     }
 }

@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -53,7 +54,6 @@ import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.UnfoldMore
-import androidx.compose.material.icons.rounded.Lock
 
 /**
  * 画布右侧浮动图层小面板(设计稿「图片创作」主界面):
@@ -98,10 +98,9 @@ internal fun LayersFloatingPanel(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(vertical = 4.dp)
                 )
-            } else {
-                CompactLayerList(component = component)
             }
-            BackgroundRow(component = component)
+            // 背景层在列表内随图层一起拖拽排序
+            CompactLayerList(component = component)
             PanelActionRow(component = component)
         }
         val selected = layers.firstOrNull { it.id == component.selectedLayerId }
@@ -161,11 +160,20 @@ private fun PanelHeader(
     }
 }
 
-/** 紧凑图层列表:最多约 3 行,超出可滚;行 = 眼睛 + 缩略图 + 名称,整行长按拖拽排序,松手一次性提交新 z 序 */
+/** 紧凑图层列表:最多约 3 行,超出可滚;行 = 眼睛 + 缩略图 + 名称,整行长按拖拽排序,松手一次性提交新 z 序;
+ * 背景层作为末位条目(默认)随列表一起排序 */
 @Composable
 private fun CompactLayerList(component: MarkupLayersComponent) {
     val layers = component.layers
-    var displayList by remember(layers) { mutableStateOf(layers.asReversed()) }
+    val baseOrder = component.baseOrder.coerceIn(0, layers.size)
+    var displayList by remember(layers, baseOrder) {
+        mutableStateOf(
+            buildList<LayerListEntry> {
+                layers.asReversed().forEach { add(LayerListEntry.LayerEntry(it)) }
+                add(layers.size - baseOrder, LayerListEntry.BackgroundEntry)
+            }
+        )
+    }
     val listState = rememberLazyListState()
     val haptics = LocalHapticFeedback.current
     val reorderState = rememberReorderableLazyListState(
@@ -185,25 +193,34 @@ private fun CompactLayerList(component: MarkupLayersComponent) {
         // 显示倒序(顶层在上)
         itemsIndexed(
             items = displayList,
-            key = { _, layer -> layer.id }
-        ) { _, layer ->
+            key = { _, entry -> entry.key }
+        ) { _, entry ->
             ReorderableItem(
                 state = reorderState,
-                key = layer.id
+                key = entry.key
             ) { _ ->
-                CompactLayerRow(
-                    layer = layer,
-                    layers = layers,
-                    isSelected = layer.id in component.selectedLayerIds,
-                    onSelect = { component.selectLayer(layer.id) },
-                    onToggleVisible = { component.toggleLayerVisible(layer.id) },
-                    dragModifier = Modifier.longPressDraggableHandle(
-                        onDragStarted = { haptics.longPress() },
-                        onDragStopped = {
-                            component.reorderLayers(displayList.reversed())
-                        }
-                    )
+                val dragModifier = Modifier.longPressDraggableHandle(
+                    onDragStarted = { haptics.longPress() },
+                    onDragStopped = { commitLayerReorder(component, displayList) }
                 )
+                when (entry) {
+                    is LayerListEntry.LayerEntry -> {
+                        val layer = entry.layer
+                        CompactLayerRow(
+                            layer = layer,
+                            layers = layers,
+                            isSelected = layer.id in component.selectedLayerIds,
+                            onSelect = { component.selectLayer(layer.id) },
+                            onToggleVisible = { component.toggleLayerVisible(layer.id) },
+                            dragModifier = dragModifier
+                        )
+                    }
+
+                    LayerListEntry.BackgroundEntry -> CompactBackgroundRow(
+                        component = component,
+                        dragModifier = dragModifier
+                    )
+                }
             }
         }
     }
@@ -257,11 +274,15 @@ private fun CompactLayerRow(
     }
 }
 
-/** 背景层行:当前底图缩略图 + 锁图标;可点 = 取消图层选中(滤镜/调节目标回到背景图),
- * 无选中图层时高亮表示当前目标就是背景图;始终在列表底部 */
+/** 紧凑背景层行:眼睛 + 底图缩略图 + 名称 + 删除;可点 = 取消图层选中(滤镜/调节目标回到背景图),
+ * 无选中图层时高亮;整行长按拖拽调整背景 z 序,删除 = 替换为同尺寸透明底(可撤销) */
 @Composable
-private fun BackgroundRow(component: MarkupLayersComponent) {
+private fun CompactBackgroundRow(
+    component: MarkupLayersComponent,
+    dragModifier: Modifier,
+) {
     val isTarget = component.selectedLayerId == null
+    val visible = component.baseVisible
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -274,9 +295,16 @@ private fun BackgroundRow(component: MarkupLayersComponent) {
                 resultPadding = 0.dp
             )
             .clickable { component.selectLayer(null) }
-            .heightIn(min = 48.dp)
+            .then(dragModifier)
             .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
+        LayerIconButton(
+            icon = if (visible) {
+                Icons.Rounded.Visibility
+            } else Icons.Rounded.VisibilityOff,
+            contentDescription = stringResource(R.string.markup_layer_toggle_visible),
+            onClick = component::toggleBaseVisible
+        )
         Picture(
             model = component.displayBitmap,
             contentDescription = null,
@@ -285,22 +313,22 @@ private fun BackgroundRow(component: MarkupLayersComponent) {
                 .size(28.dp)
                 .clip(ShapeDefaults.small)
                 .transparencyChecker()
+                .graphicsLayer { alpha = if (visible) 1f else 0.4f }
         )
         Text(
             text = stringResource(R.string.markup_layer_background),
             style = MaterialTheme.typography.labelSmall,
-            color = if (isTarget) {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            } else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 6.dp)
         )
-        Icon(
-            imageVector = MaterialIcons.Rounded.Lock,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(14.dp)
+        LayerIconButton(
+            icon = Icons.Outlined.Delete,
+            contentDescription = stringResource(R.string.studio_layers_delete),
+            onClick = component::removeBaseBackground
         )
     }
 }

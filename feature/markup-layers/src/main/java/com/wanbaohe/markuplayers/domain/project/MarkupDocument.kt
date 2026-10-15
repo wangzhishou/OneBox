@@ -30,4 +30,8 @@ data class MarkupDocument(
     val sourceUri: String? = null,
     val saveExif: Boolean = false,
     val workspaceBackground: CanvasBackground = CanvasBackground.Default,
+    /** 底图(背景)是否可见;不可见时预览/导出均为透明底,图层照常渲染 */
+    val baseVisible: Boolean = true,
+    /** 背景在 z 序中的位置:渲染在背景下方的图层数(0 = 背景在最底层,默认) */
+    val baseOrder: Int = 0,
 )

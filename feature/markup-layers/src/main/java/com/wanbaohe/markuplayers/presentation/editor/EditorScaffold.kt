@@ -14,6 +14,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -1161,6 +1162,145 @@ private fun EditorTopBarActions(
     )
 }
 
+/** 一组图层的实时渲染(按 z 序):背景上下两段各调用一次,与导出侧逐图层烘焙一致 */
+@Composable
+private fun BoxScope.EditorLayerStack(
+    component: MarkupLayersComponent,
+    layers: List<MarkupLayer>,
+    drawMode: Boolean,
+    aiRectSelect: Boolean,
+    immersiveModeState: ImmersiveModeState,
+    canvasScale: Float,
+    onEditTextLayer: (String) -> Unit,
+) {
+    if (layers.isEmpty()) return
+    BoxWithConstraints(
+        modifier = Modifier.matchParentSize()
+    ) {
+        val layerCanvasWidth = constraints.maxWidth.toFloat()
+        val layerCanvasHeight = constraints.maxHeight.toFloat()
+        layers.forEach { layer ->
+            key(layer.id) {
+                val textType = layer.type as? LayerType.Text
+                val onEditRequest = textType
+                    ?.let { { onEditTextLayer(layer.id) } }
+                // 文字就地编辑会话中:手势关闭,避免与光标/选字冲突
+                val isTextEditing = layer.id == component.editSessionLayerId
+                EditBox(
+                    transform = layer.transform,
+                    isSelected = layer.id in component.selectedLayerIds &&
+                        !drawMode && !aiRectSelect && !immersiveModeState.isImmersive,
+                    showHandles = component.selectedLayerId == layer.id && !isTextEditing,
+                    onSelect = { component.selectLayer(layer.id) },
+                    onEditRequest = onEditRequest,
+                    // 选中框上的红色 X 删除(组件内记 undo 快照);
+                    // 绘制/框选/就地编辑模式下不显示
+                    onDelete = if (!drawMode && !aiRectSelect && !isTextEditing) {
+                        { component.removeLayer(layer.id) }
+                    } else null,
+                    onTransformStart = component::beginLayerTransformChange,
+                    onTransformChange = {
+                        component.updateLayerTransformTransient(layer.id, it)
+                    },
+                    onTransformEnd = {
+                        component.updateLayerTransformTransient(
+                            layer.id,
+                            component.snapLayerTransform(it)
+                        )
+                        component.endLayerTransformChange()
+                    },
+                    canvasScale = canvasScale,
+                    gesturesEnabled = !drawMode && !aiRectSelect &&
+                        !immersiveModeState.isImmersive && !isTextEditing,
+                    // 绘制/框选模式下图层不响应手势(纯静态渲染)
+                    tapSelectable = !drawMode && !aiRectSelect && layer.type !is LayerType.Draw,
+                    // 文字层:8 向框尺寸手柄(拖边/角改框宽,文字重排,字号不变);
+                    // 手势开始记 undo 快照,中间帧 transient(手势结束即一次 undo)
+                    resizeConfig = textType?.takeIf {
+                        !drawMode && !aiRectSelect && component.selectedLayerId == layer.id
+                    }?.let {
+                        BoxResizeConfig(
+                            minWidthPx = layerCanvasWidth * 0.1f,
+                            maxWidthPx = layerCanvasWidth,
+                            minHeightPx = 1f,
+                            maxHeightPx = layerCanvasHeight * 2f,
+                            onResize = { newW, newH, newLeft, newTop ->
+                                component.updateTextWidthRatioTransient(
+                                    layer.id,
+                                    newW / layerCanvasWidth
+                                )
+                                component.updateLayerTransformTransient(
+                                    layer.id,
+                                    layer.transform.copy(
+                                        centerX = ((newLeft + newW / 2) / layerCanvasWidth)
+                                            .coerceIn(0f, 1f),
+                                        centerY = ((newTop + newH / 2) / layerCanvasHeight)
+                                            .coerceIn(0f, 1f)
+                                    )
+                                )
+                            },
+                            onGestureStart = {
+                                component.beginLayerTransformChange()
+                            }
+                        )
+                    }
+                ) {
+                    // 图层调节:离屏合成后过 colorFilter,只作用于本图层内容
+                    val layerColorFilter = remember(layer.adjustments) {
+                        if (layer.adjustments.isNeutral) null
+                        else ColorFilter.colorMatrix(
+                            ColorMatrix(layer.adjustments.toColorMatrixValues())
+                        )
+                    }
+                    Box(
+                        modifier = Modifier.then(
+                            if (layerColorFilter != null) {
+                                Modifier.graphicsLayer {
+                                    compositingStrategy =
+                                        CompositingStrategy.Offscreen
+                                    colorFilter = layerColorFilter
+                                }
+                            } else Modifier
+                        )
+                    ) {
+                        if (isTextEditing && textType != null) {
+                            InPlaceTextLayerEditor(
+                                type = textType,
+                                canvasWidthPx = layerCanvasWidth,
+                                onTextChange = { value ->
+                                    component.updateLayerInEditSession(
+                                        layer.id
+                                    ) { current ->
+                                        (current.type as? LayerType.Text)
+                                            ?.let {
+                                                current.copy(
+                                                    type = it.copy(text = value)
+                                                )
+                                            }
+                                            ?: current
+                                    }
+                                },
+                                onCommit = {
+                                    component.commitLayerEditSession()
+                                    component.setActiveTool(null)
+                                }
+                            )
+                        } else {
+                            LayerPreviewRenderers.Content(
+                                layer = layer,
+                                canvasWidthPx = layerCanvasWidth,
+                                canvasHeightPx = layerCanvasHeight,
+                                filteredBitmap = component
+                                    .layerFilteredBitmap(layer)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun EditorCanvas(
     component: MarkupLayersComponent,
@@ -1330,158 +1470,62 @@ private fun EditorCanvas(
                                 .matchParentSize()
                                 .transparencyChecker()
                         )
+                        // 背景层可经图层面板调整 z 序:baseOrder 个底层图层画在底图之下;
+                        // 按可见图层计算分段,与导出侧(renderDocument)口径一致
+                        val liveLayers = component.layers
+                        val showLiveLayers = liveLayers.isNotEmpty() &&
+                            !component.isComparing && !localAiTarget
+                        val orderedLayers = liveLayers.filter { it.transform.visible }
+                        val baseSplit = component.baseOrder.coerceIn(0, orderedLayers.size)
+                        if (showLiveLayers && baseSplit > 0) {
+                            EditorLayerStack(
+                                component = component,
+                                layers = orderedLayers.take(baseSplit),
+                                drawMode = drawMode,
+                                aiRectSelect = aiRectSelect,
+                                immersiveModeState = immersiveModeState,
+                                canvasScale = viewport.scale,
+                                onEditTextLayer = onEditTextLayer
+                            )
+                        }
                         // 底图一次重采样画到外扩矩形(不经 graphicsLayer 二次缩放)。
                         // 外扩按屏幕像素折算,读 viewport.scale 不触发重组:双线性边缘过渡约 1px,
                         // 视图缩小时父级 graphicsLayer 再叠一层重采样,用 2 / scale 补偿,
                         // 任意 density / 缩放级别下屏幕空间都不漏棋盘格。
                         // 背景调节只作用于底图(colorFilter,与导出烘焙一致)。
+                        // 背景隐藏时跳过底图绘制,画布透出透明棋盘格(对比/框选模式除外)
                         val baseFilter = baseColorFilter
-                        Box(
-                            modifier = Modifier
-                                .matchParentSize()
-                                .drawBehind {
-                                    val minScale = min(viewport.scale, 1f).coerceAtLeast(0.05f)
-                                    val pad = (2f / minScale).roundToInt().coerceIn(2, 16)
-                                    drawImage(
-                                        image = imageBitmap,
-                                        dstOffset = IntOffset(-pad, -pad),
-                                        dstSize = IntSize(
-                                            size.width.roundToInt() + pad * 2,
-                                            size.height.roundToInt() + pad * 2
-                                        ),
-                                        colorFilter = baseFilter,
-                                    )
-                                }
-                        )
-                        // 全部图层实时渲染;每个图层应用自身的滤镜(组件预算的过滤后位图)
-                        // 与调节(离屏 colorFilter),与导出侧逐图层烘焙一致
-                        val liveLayers = component.layers
-                        if (liveLayers.isNotEmpty() && !component.isComparing && !localAiTarget) {
-                            BoxWithConstraints(
-                                modifier = Modifier.matchParentSize()
-                            ) {
-                                val layerCanvasWidth = constraints.maxWidth.toFloat()
-                                val layerCanvasHeight = constraints.maxHeight.toFloat()
-                                liveLayers.forEach { layer ->
-                                    key(layer.id) {
-                                        val textType = layer.type as? LayerType.Text
-                                        val onEditRequest = textType
-                                            ?.let { { onEditTextLayer(layer.id) } }
-                                        // 文字就地编辑会话中:手势关闭,避免与光标/选字冲突
-                                        val isTextEditing = layer.id == component.editSessionLayerId
-                                        EditBox(
-                                            transform = layer.transform,
-                                            isSelected = layer.id in component.selectedLayerIds &&
-                                                !drawMode && !aiRectSelect && !immersiveModeState.isImmersive,
-                                            showHandles = component.selectedLayerId == layer.id && !isTextEditing,
-                                            onSelect = { component.selectLayer(layer.id) },
-                                            onEditRequest = onEditRequest,
-                                            // 选中框上的红色 X 删除(组件内记 undo 快照);
-                                            // 绘制/框选/就地编辑模式下不显示
-                                            onDelete = if (!drawMode && !aiRectSelect && !isTextEditing) {
-                                                { component.removeLayer(layer.id) }
-                                            } else null,
-                                            onTransformStart = component::beginLayerTransformChange,
-                                            onTransformChange = {
-                                                component.updateLayerTransformTransient(layer.id, it)
-                                            },
-                                            onTransformEnd = {
-                                                component.updateLayerTransformTransient(
-                                                    layer.id,
-                                                    component.snapLayerTransform(it)
-                                                )
-                                                component.endLayerTransformChange()
-                                            },
-                                            canvasScale = viewport.scale,
-                                            gesturesEnabled = !drawMode && !aiRectSelect &&
-                                                !immersiveModeState.isImmersive && !isTextEditing,
-                                            // 绘制/框选模式下图层不响应手势(纯静态渲染)
-                                            tapSelectable = !drawMode && !aiRectSelect && layer.type !is LayerType.Draw,
-                                            // 文字层:8 向框尺寸手柄(拖边/角改框宽,文字重排,字号不变);
-                                            // 手势开始记 undo 快照,中间帧 transient(手势结束即一次 undo)
-                                            resizeConfig = textType?.takeIf {
-                                                !drawMode && !aiRectSelect && component.selectedLayerId == layer.id
-                                            }?.let {
-                                                BoxResizeConfig(
-                                                    minWidthPx = layerCanvasWidth * 0.1f,
-                                                    maxWidthPx = layerCanvasWidth,
-                                                    minHeightPx = 1f,
-                                                    maxHeightPx = layerCanvasHeight * 2f,
-                                                    onResize = { newW, newH, newLeft, newTop ->
-                                                        component.updateTextWidthRatioTransient(
-                                                            layer.id,
-                                                            newW / layerCanvasWidth
-                                                        )
-                                                        component.updateLayerTransformTransient(
-                                                            layer.id,
-                                                            layer.transform.copy(
-                                                                centerX = ((newLeft + newW / 2) / layerCanvasWidth)
-                                                                    .coerceIn(0f, 1f),
-                                                                centerY = ((newTop + newH / 2) / layerCanvasHeight)
-                                                                    .coerceIn(0f, 1f)
-                                                            )
-                                                        )
-                                                    },
-                                                    onGestureStart = {
-                                                        component.beginLayerTransformChange()
-                                                    }
-                                                )
-                                            }
-                                        ) {
-                                            // 图层调节:离屏合成后过 colorFilter,只作用于本图层内容
-                                            val layerColorFilter = remember(layer.adjustments) {
-                                                if (layer.adjustments.isNeutral) null
-                                                else ColorFilter.colorMatrix(
-                                                    ColorMatrix(layer.adjustments.toColorMatrixValues())
-                                                )
-                                            }
-                                            Box(
-                                                modifier = Modifier.then(
-                                                    if (layerColorFilter != null) {
-                                                        Modifier.graphicsLayer {
-                                                            compositingStrategy =
-                                                                CompositingStrategy.Offscreen
-                                                            colorFilter = layerColorFilter
-                                                        }
-                                                    } else Modifier
-                                                )
-                                            ) {
-                                                if (isTextEditing && textType != null) {
-                                                    InPlaceTextLayerEditor(
-                                                        type = textType,
-                                                        canvasWidthPx = layerCanvasWidth,
-                                                        onTextChange = { value ->
-                                                            component.updateLayerInEditSession(
-                                                                layer.id
-                                                            ) { current ->
-                                                                (current.type as? LayerType.Text)
-                                                                    ?.let {
-                                                                        current.copy(
-                                                                            type = it.copy(text = value)
-                                                                        )
-                                                                    }
-                                                                    ?: current
-                                                            }
-                                                        },
-                                                        onCommit = {
-                                                            component.commitLayerEditSession()
-                                                            component.setActiveTool(null)
-                                                        }
-                                                    )
-                                                } else {
-                                                    LayerPreviewRenderers.Content(
-                                                        layer = layer,
-                                                        canvasWidthPx = layerCanvasWidth,
-                                                        canvasHeightPx = layerCanvasHeight,
-                                                        filteredBitmap = component
-                                                            .layerFilteredBitmap(layer)
-                                                    )
-                                                }
-                                            }
-                                        }
+                        if (component.baseVisible || component.isComparing || localAiTarget) {
+                            Box(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .drawBehind {
+                                        val minScale = min(viewport.scale, 1f).coerceAtLeast(0.05f)
+                                        val pad = (2f / minScale).roundToInt().coerceIn(2, 16)
+                                        drawImage(
+                                            image = imageBitmap,
+                                            dstOffset = IntOffset(-pad, -pad),
+                                            dstSize = IntSize(
+                                                size.width.roundToInt() + pad * 2,
+                                                size.height.roundToInt() + pad * 2
+                                            ),
+                                            colorFilter = baseFilter,
+                                        )
                                     }
-                                }
-                            }
+                            )
+                        }
+                        // 背景之上的图层实时渲染;每个图层应用自身的滤镜(组件预算的过滤后位图)
+                        // 与调节(离屏 colorFilter),与导出侧逐图层烘焙一致
+                        if (showLiveLayers && baseSplit < liveLayers.size) {
+                            EditorLayerStack(
+                                component = component,
+                                layers = liveLayers.drop(baseSplit),
+                                drawMode = drawMode,
+                                aiRectSelect = aiRectSelect,
+                                immersiveModeState = immersiveModeState,
+                                canvasScale = viewport.scale,
+                                onEditTextLayer = onEditTextLayer
+                            )
                         }
                         // 绘制模式:会话笔画覆盖层(含进行中笔画,橡皮擦离屏隔离)
                         if (drawSession != null && !component.isComparing) {

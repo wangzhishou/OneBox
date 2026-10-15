@@ -251,10 +251,19 @@ class MarkupProjectStore @Inject constructor(
         if (bitmap.isRecycled || bitmap.width <= 0 || bitmap.height <= 0) {
             throw IOException("Cannot persist an invalid bitmap")
         }
-        return writeAsset("png", directories, cancellation) { output ->
-            if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, output)) {
-                throw IOException("Could not encode bitmap")
+        // 硬件位图(HARDWARE config)不能直接编码,先回读成软件位图
+        val encodable = if (bitmap.config == Bitmap.Config.HARDWARE) {
+            bitmap.copy(Bitmap.Config.ARGB_8888, false)
+                ?: throw IOException("Could not read back a hardware bitmap")
+        } else bitmap
+        try {
+            return writeAsset("png", directories, cancellation) { output ->
+                if (!encodable.compress(Bitmap.CompressFormat.PNG, 100, output)) {
+                    throw IOException("Could not encode bitmap")
+                }
             }
+        } finally {
+            if (encodable !== bitmap) encodable.recycle()
         }
     }
 

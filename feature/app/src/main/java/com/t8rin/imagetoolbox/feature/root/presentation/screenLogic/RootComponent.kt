@@ -344,7 +344,11 @@ class RootComponent @AssistedInject internal constructor(
          */
         val url = intent?.dataString
         val urlNavigator = UrlNavigator(context, ::navigateTo, contentRouter)
-        if (urlNavigator.navigate(url)) {
+        // 系统「打开/编辑图片」(ACTION_VIEW/EDIT + image/*)不是深链:跳过 UrlNavigator
+        // (它会经 ContentRouter 落到图片查看器),交给下方 handleDeeplinks 路由到图片创作
+        val isSystemImageOpen = intent?.type?.startsWith("image/") == true &&
+            (intent.action == Intent.ACTION_VIEW || intent.action == Intent.ACTION_EDIT)
+        if (!isSystemImageOpen && urlNavigator.navigate(url)) {
             return
         }
 

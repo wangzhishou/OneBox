@@ -207,11 +207,12 @@ fun BoxWithConstraintsScope.EditBox(
             var startAngle by remember { mutableStateOf(0f) }
 
             // 标准选框:三角缩放(右上角让给删除),两侧改文字框宽,顶部旋转
+            // OpenInFull 是 ↙↗ 方向双箭头;左上/右下角需要 ↖↘ 方向,图标旋转 90°
             listOf(
-                Alignment.TopStart to Offset(-24f, -24f),
-                Alignment.BottomStart to Offset(-24f, 24f),
-                Alignment.BottomEnd to Offset(24f, 24f),
-            ).forEach { (corner, offset) ->
+                Triple(Alignment.TopStart, Offset(-24f, -24f), 90f),
+                Triple(Alignment.BottomStart, Offset(-24f, 24f), 0f),
+                Triple(Alignment.BottomEnd, Offset(24f, 24f), 90f),
+            ).forEach { (corner, offset, iconRotation) ->
                 LayerTransformHandle(
                     icon = MaterialIcons.Outlined.OpenInFull,
                     description = stringResource(R.string.studio_layer_scale),
@@ -219,6 +220,7 @@ fun BoxWithConstraintsScope.EditBox(
                     offsetX = offset.x.dp * inverseScale,
                     offsetY = offset.y.dp * inverseScale,
                     inverseScale = inverseScale,
+                    iconRotation = iconRotation,
                     onStart = { root ->
                         startTransform = localTransform
                         centerRoot = elementCoordinates?.localToRoot(
@@ -349,6 +351,7 @@ private fun BoxScope.LayerTransformHandle(
     inverseScale: Float,
     offsetX: Dp = 0.dp,
     offsetY: Dp = 0.dp,
+    iconRotation: Float = 0f,
     onStart: (Offset) -> Unit,
     onDrag: (Offset) -> Unit,
     onEnd: () -> Unit,
@@ -409,7 +412,9 @@ private fun BoxScope.LayerTransformHandle(
                 imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier
+                    .size(18.dp)
+                    .graphicsLayer { rotationZ = iconRotation }
             )
         }
     }

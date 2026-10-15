@@ -81,17 +81,14 @@ fun Intent?.handleDeeplinks(
 
         if ((startsWithImage || hasExtraFormats || dataHasExtraFormats)) {
             when (intent.action) {
-                Intent.ACTION_VIEW -> {
+                Intent.ACTION_VIEW, Intent.ACTION_EDIT -> {
                     val data = intent.data
                     val clipData = intent.clipData
                     val uris =
                         clipData?.clipList() ?: data?.let { listOf(it) } ?: return@runCatching
 
-                    if (isOpenEditInsteadOfPreview) {
-                        onGetUris(uris)
-                    } else {
-                        onNavigate(Screen.ImagePreview(uris))
-                    }
+                    // 系统"打开/编辑图片"默认进图片创作(该 Screen 支持外部传入图片 Uri)
+                    onNavigate(Screen.MarkupLayers(uris.firstOrNull()))
                 }
 
                 Intent.ACTION_SEND -> {

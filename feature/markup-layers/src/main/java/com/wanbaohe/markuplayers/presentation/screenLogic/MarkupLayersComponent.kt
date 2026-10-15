@@ -226,6 +226,11 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private val _sourceUri = mutableStateOf<String?>(null)
     private val _baseTransforms = mutableStateOf<List<BaseTransformSpec>>(emptyList())
     private val _baseImageHistory = mutableStateOf<List<String>>(emptyList())
+    // 背景(底图)可见性与 z 序位置,随文档快照进 undo 历史
+    private val _baseVisible = mutableStateOf(true)
+    val baseVisible: Boolean by _baseVisible
+    private val _baseOrder = mutableStateOf(0)
+    val baseOrder: Int by _baseOrder
     private val _aiGenerationTarget = mutableStateOf(AiGenerationTarget.NewLayer)
     val aiGenerationTarget: AiGenerationTarget by _aiGenerationTarget
     private val _canAiEdit = mutableStateOf(false)
@@ -1702,10 +1707,59 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     }
 
     fun reorderLayers(layers: List<MarkupLayer>) {
-        if (layers == _layers.value) return
+        reorderLayersAndBase(layers, _baseOrder.value)
+    }
+
+    /** 图层 z 序 + 背景位置一次性提交(背景在面板里与图层一起拖拽排序),只记一次历史快照 */
+    fun reorderLayersAndBase(layers: List<MarkupLayer>, baseOrder: Int) {
+        val coercedOrder = baseOrder.coerceIn(0, layers.size)
+        if (layers == _layers.value && coercedOrder == _baseOrder.value) return
         history.snapshot(_layers.value)
         _layers.value = layers
+        _baseOrder.value = coercedOrder
         onLayersChanged()
+    }
+
+    /** 背景(底图)显隐:隐藏后画布/导出均为透明底,图层照常渲染,可撤销 */
+    fun toggleBaseVisible() {
+        history.snapshot(_layers.value)
+        _baseVisible.value = !_baseVisible.value
+        onLayersChanged()
+    }
+
+    /**
+     * 删除背景:底图替换为同尺寸透明底(画布尺寸与图层保留),原底图进资产历史,
+     * 整体走一次文档快照可撤销。参考 [startWithBlankCanvas] 的透明底图链路。
+     */
+    fun removeBaseBackground() {
+        if (!hasImage || isBusy) return
+        imageLoadingJob = launchImageTask(R.string.studio_task_loading, ImageTask.Loading) {
+            val size = _sourceSize.value ?: error("No image dimensions are available")
+            memoryBudget.requireCanRender(size.width, size.height)
+            val blank = withContext(defaultDispatcher) {
+                Bitmap.createBitmap(size.width, size.height, Bitmap.Config.ARGB_8888)
+            }
+            val path = try {
+                projectStore.storeBitmap(blank)
+            } finally {
+                blank.recycle()
+            }
+            val preview = studioImageReader.load(path, memoryBudget.previewSize(size.width, size.height))
+            ensureActive()
+            history.snapshot(_layers.value)
+            _baseImageHistory.update { (it + captureDocument().baseUri).distinct().takeLast(50) }
+            _uri.value = path.toUri()
+            _blankBaseBitmap.value = null
+            _baseMask.value = null
+            _baseEffects.value = emptyList()
+            _baseAdjustments.value = BaseAdjustments()
+            _selectedFilter.value = null
+            _baseVisible.value = true
+            _imageFormat.value = ImageFormat.Png.Lossless
+            _exportSettings.update { it.copy(format = ImageFormat.Png.Lossless) }
+            updateBitmap(preview)
+            onLayersChanged()
+        }
     }
 
     fun clearLayers() {
@@ -1922,7 +1976,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             originalUri = _originalUri.value,
             sourceUri = _sourceUri.value,
             saveExif = _saveExif.value,
-            workspaceBackground = _canvasBackground.value
+            workspaceBackground = _canvasBackground.value,
+            baseVisible = _baseVisible.value,
+            baseOrder = _baseOrder.value
         )
     }
 
@@ -1951,6 +2007,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         _originalUri.value = document.originalUri
         _sourceUri.value = document.sourceUri
         _canvasBackground.value = document.workspaceBackground
+        _baseVisible.value = document.baseVisible
+        _baseOrder.value = document.baseOrder.coerceIn(0, document.layers.size)
         _bitmap.value = softwareBitmap(preview)
         _isComparing.value = false
         updateFilterPreview()
@@ -1975,7 +2033,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         autosaveJob?.cancel()
         autosaveJob = componentScope.launch {
             delay(750)
-            persistProject(id, name, document, revision)
+            persistProject(id, name, document, revision, interactive = false)
         }
     }
 
@@ -1984,6 +2042,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         name: String,
         document: MarkupDocument,
         revision: Long,
+        interactive: Boolean,
     ): Boolean = projectWriteMutex.withLock {
         _isProjectSaving.value = true
         try {
@@ -2001,7 +2060,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             val message = appContext.getString(
                 R.string.studio_project_save_failed, failure.message.orEmpty()
             )
-            if (projectId == id) _projectSaveError.value = message
+            // 自动保存失败不弹阻断对话框(编辑可继续),只 toast 提示;
+            // 手动保存失败才置 projectSaveError 触发重试对话框
+            if (interactive && projectId == id) _projectSaveError.value = message
             AppToastHost.showFailureToast(message)
             false
         } finally {
@@ -2035,7 +2096,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         val name = _projectName.value
         autosaveJob?.cancel()
         autosaveJob = componentScope.launch {
-            if (persistProject(id, name, document, revision)) onComplete()
+            if (persistProject(id, name, document, revision, interactive = true)) onComplete()
         }
     }
 
@@ -2156,7 +2217,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         imageLoadingJob = launchImageTask(R.string.studio_task_loading, ImageTask.Loading) {
             if (hasImage && haveChanges &&
                 !persistProject(projectId ?: error("No project ID"), projectName,
-                    captureDocument(), documentRevision)
+                    captureDocument(), documentRevision, interactive = false)
             ) return@launchImageTask
             val document = projectStore.load(id)
             val preview = studioImageReader.load(
@@ -2349,7 +2410,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         ) {
             if (hasImage && haveChanges &&
                 !persistProject(projectId ?: error("No project ID"), projectName,
-                    captureDocument(), documentRevision)
+                    captureDocument(), documentRevision, interactive = false)
             ) {
                 _pendingAiOp.value = null
                 return@launchImageTask
@@ -2445,6 +2506,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         _baseMask.value = null
         _baseTransforms.value = emptyList()
         _baseImageHistory.value = emptyList()
+        _baseVisible.value = true
+        _baseOrder.value = 0
         _pendingAiResult.value = null
         _aiGenerationTarget.value = AiGenerationTarget.NewLayer
         _filterPreviewBitmap.value = null
@@ -2470,12 +2533,33 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             }
         }
         memoryBudget.requireCanRender(target.width, target.height)
-        val source = studioImageReader.load(document.baseUri, target)
-        val preparedBase = effectsProcessor.apply(source, document.baseEffects, document.baseMask)
-            .withBaseAdjustments(document.baseAdjustments)
+        val visibleLayers = document.layers.filter { it.transform.visible }
+        val split = document.baseOrder.coerceIn(0, visibleLayers.size)
+        val belowBase = visibleLayers.take(split)
+        val aboveBase = visibleLayers.drop(split)
+        // 背景隐藏时用透明底,不再解码底图;调节/效果/蒙版只作用于真实底图
+        val preparedBase = if (document.baseVisible) {
+            val source = studioImageReader.load(document.baseUri, target)
+            effectsProcessor.apply(source, document.baseEffects, document.baseMask)
+                .withBaseAdjustments(document.baseAdjustments)
+        } else {
+            Bitmap.createBitmap(target.width, target.height, Bitmap.Config.ARGB_8888)
+        }
+        // baseOrder > 0 时背景不再垫底:下层图层先绘到透明画布,盖上底图,再绘上层图层
+        val composed = if (belowBase.isEmpty()) {
+            preparedBase
+        } else {
+            val under = markupLayersApplier.applyToImage(
+                image = Bitmap.createBitmap(target.width, target.height, Bitmap.Config.ARGB_8888),
+                layers = belowBase,
+                filteredLayers = emptyMap()
+            )
+            Canvas(under).drawBitmap(preparedBase, 0f, 0f, null)
+            under
+        }
         return markupLayersApplier.applyToImage(
-            image = preparedBase,
-            layers = document.layers.filter { it.transform.visible },
+            image = composed,
+            layers = aboveBase,
             filteredLayers = emptyMap()
         )
     }

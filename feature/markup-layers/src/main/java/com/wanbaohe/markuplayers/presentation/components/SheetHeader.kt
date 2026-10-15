@@ -21,9 +21,9 @@ import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.resources.R as CoreR
 
 /**
- * 底部弹层共享头部:居中标题 + 最右关闭按钮,配合 `dragHandle = {}`
- * 替代 EnhancedModalBottomSheet 的默认拖动条。作为 sheetContent 的
- * 第一个子项(滚动 Column 之外)使用时保持固定不随内容滚动。
+ * 底部弹层共享头部:居中标题 + 最右关闭按钮。可配合 `dragHandle = {}`
+ * 替代 EnhancedModalBottomSheet 的默认拖动条,也可与默认拖动条共存。
+ * 作为 sheetContent 的第一个子项(滚动 Column 之外)使用时保持固定不随内容滚动。
  */
 @Composable
 fun SheetHeader(
