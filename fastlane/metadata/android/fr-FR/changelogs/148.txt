@@ -1,0 +1,6 @@
+• Éditeur de balisage repensé : modifiez le texte directement sur le canevas, panneaux plus épurés
+• Échecs, Xiangqi et Gomoku : meilleures dispositions, pratique des ouvertures, indices de coup et export GIF de replay
+• Favoris unifiés : favoris du navigateur et du web au même endroit, avec catégories et icônes
+• Assistant IA : mode Agent unique simplifié, cartes de démarrage rapide, l'historique ne se régénère plus automatiquement
+• Nouveau look par défaut : thème Material 3 uni (le verre est désormais en option), couleurs d'accent unifiées
+• Démarrage de l'éditeur plus rapide ; corrections des liens profonds et de la boîte de dialogue d'export

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Kết nối mạng thất bại, vui lòng kiểm tra cài đặt mạng</string>
+    <string name="error_request_timeout">Yêu cầu quá thời gian, vui lòng thử lại sau</string>
+    <string name="error_cannot_connect_server">Không thể kết nối đến máy chủ, vui lòng kiểm tra mạng</string>
+    <string name="error_ssl_failed">Kết nối bảo mật thất bại, vui lòng kiểm tra cài đặt mạng</string>
+    <string name="error_network_exception">Mạng bất thường, vui lòng kiểm tra kết nối mạng</string>
+    <string name="error_request_cancelled">Yêu cầu đã bị hủy</string>
+    <string name="error_data_parse_failed">Phân tích dữ liệu thất bại, vui lòng thử lại sau</string>
+    <string name="error_bad_request">Tham số yêu cầu không đúng</string>
+    <string name="error_unauthorized">Chưa được xác thực, vui lòng đăng nhập lại</string>
+    <string name="error_forbidden">Không có quyền truy cập</string>
+    <string name="error_not_found">Tài nguyên yêu cầu không tồn tại</string>
+    <string name="error_server_internal">Lỗi nội bộ máy chủ</string>
+    <string name="error_server_maintenance">Máy chủ đang bảo trì, vui lòng thử lại sau</string>
+    <string name="error_server_code">Lỗi máy chủ (%d)</string>
+    <string name="error_client_error">Yêu cầu không đúng, vui lòng kiểm tra tham số</string>
+    <string name="error_server_error">Lỗi máy chủ, vui lòng thử lại sau</string>
+    <string name="error_request_failed">Yêu cầu thất bại, vui lòng thử lại sau</string>
+    <string name="error_request_failed_with_message">Yêu cầu thất bại: %s</string>
+    <string name="error_unknown">Lỗi không xác định</string>
+    <string name="no_error_body">Không có nội dung lỗi</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

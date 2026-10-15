@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="record_center_title">Dossiers de santé</string>
+    <string name="record_center_type_heart_rate_title">Fréquence cardiaque</string>
+    <string name="record_center_type_heart_rate_desc">Enregistrer et gérer les données de fréquence cardiaque, surveiller la santé cardiaque</string>
+    <string name="record_center_type_blood_pressure_title">Tension artérielle</string>
+    <string name="record_center_type_blood_pressure_desc">Enregistrer et gérer les données de tension artérielle, suivre les tendances</string>
+    <string name="record_center_type_blood_glucose_title">Glycémie</string>
+    <string name="record_center_type_blood_glucose_desc">Enregistrer et gérer les données de glycémie, aider à contrôler le taux de sucre</string>
+    <string name="record_center_type_weight_title">Poids</string>
+    <string name="record_center_type_weight_desc">Enregistrer et gérer les données de poids, suivre les variations</string>
+    <string name="record_center_type_bmi_title">IMC</string>
+    <string name="record_center_type_bmi_desc">Enregistrer et gérer les données d\'IMC, évaluer la santé pondérale</string>
+    <string name="record_center_type_body_fat_title">Masse grasse</string>
+    <string name="record_center_type_body_fat_desc">Enregistrer et gérer les données de masse grasse, comprendre l\'évolution corporelle</string>
+    <string name="record_center_type_uric_acid_title">Acide urique</string>
+    <string name="record_center_type_uric_acid_desc">Enregistrer et gérer les données d\'acide urique, prévenir et contrôler la goutte</string>
+    <string name="record_center_type_blood_lipid_title">Lipides sanguins</string>
+    <string name="record_center_type_blood_lipid_desc">Enregistrer et gérer les données de lipides sanguins, surveiller le taux</string>
+    <string name="record_center_type_blood_oxygen_title">Saturation en oxygène</string>
+    <string name="record_center_type_blood_oxygen_desc">Enregistrer et gérer les données de saturation en oxygène, surveiller la santé respiratoire et circulatoire</string>
+    <string name="record_center_type_body_temperature_title">Température corporelle</string>
+    <string name="record_center_type_body_temperature_desc">Enregistrer et gérer les données de température corporelle, suivre les variations</string>
+    <string name="record_center_type_sleep_duration_title">Sommeil</string>
+    <string name="record_center_type_sleep_duration_desc">Enregistrer et gérer la durée de sommeil, améliorer la qualité du sommeil</string>
+    <string name="record_center_type_waist_circumference_title">Tour de taille</string>
+    <string name="record_center_type_waist_circumference_desc">Enregistrer et gérer le tour de taille, surveiller la santé abdominale</string>
+    <string name="record_center_field_heart_rate_value">Fréquence cardiaque</string>
+    <string name="record_center_field_bp_systolic">Pression systolique</string>
+    <string name="record_center_field_bp_diastolic">Pression diastolique</string>
+    <string name="record_center_field_glucose_value">Glycémie</string>
+    <string name="record_center_field_weight_value">Poids</string>
+    <string name="record_center_field_bmi_value">IMC</string>
+    <string name="record_center_field_body_fat_value">Taux de masse grasse</string>
+    <string name="record_center_field_uric_acid_value">Acide urique</string>
+    <string name="record_center_field_lipid_total_cholesterol">Cholestérol total</string>
+    <string name="record_center_field_lipid_triglyceride">Triglycérides</string>
+    <string name="record_center_field_lipid_ldl">LDL</string>
+    <string name="record_center_field_lipid_hdl">HDL</string>
+    <string name="record_center_field_blood_oxygen_value">Saturation en oxygène</string>
+    <string name="record_center_field_body_temperature_value">Température corporelle</string>
+    <string name="record_center_field_sleep_duration_value">Durée de sommeil</string>
+    <string name="record_center_field_waist_circumference_value">Tour de taille</string>
+    <string name="record_center_ref_heart_rate">Normal 60-100 bpm</string>
+    <string name="record_center_ref_blood_pressure">Normal 90-140/60-90 mmHg</string>
+    <string name="record_center_ref_blood_glucose">À jeun normal 3,9-6,1 mmol/L</string>
+    <string name="record_center_ref_bmi">Normal 18,5-24</string>
+    <string name="record_center_ref_uric_acid">Homme 208-428 / Femme 155-357 μmol/L</string>
+    <string name="record_center_ref_blood_lipid">Cholestérol total &lt;5,2 mmol/L</string>
+    <string name="record_center_ref_blood_oxygen">Normal 95-100 %</string>
+    <string name="record_center_ref_body_temperature">Normal 36,0-37,3 °C</string>
+    <string name="record_center_ref_sleep_duration">Recommandé 7-9 heures</string>
+    <string name="record_center_ref_waist_circumference">Homme &lt;90 / Femme &lt;85 cm</string>
+    <string name="record_center_label_time">Heure d\'enregistrement</string>
+    <string name="record_center_label_note">Remarque</string>
+    <string name="record_center_action_save">Enregistrer</string>
+    <string name="record_center_action_delete">Supprimer</string>
+    <string name="record_center_add_record">Ajouter un enregistrement</string>
+    <string name="record_center_edit_record">Modifier l\'enregistrement</string>
+    <string name="record_center_empty">Aucun enregistrement</string>
+    <string name="record_center_stats_latest">Dernier</string>
+    <string name="record_center_stats_average">Moyenne</string>
+    <string name="record_center_stats_max">Maximum</string>
+    <string name="record_center_stats_min">Minimum</string>
+    <string name="record_center_range_7d">7 derniers jours</string>
+    <string name="record_center_range_30d">30 derniers jours</string>
+    <string name="record_center_range_all">Tout</string>
+    <string name="record_center_range_days">%1$d derniers jours</string>
+    <string name="record_center_today">Aujourd\'hui</string>
+    <string name="record_center_yesterday">Hier</string>
+    <string name="record_center_days_ago">Il y a %1$d jours</string>
+    <string name="record_center_delete_confirm_title">Supprimer l\'enregistrement</string>
+    <string name="record_center_delete_confirm_message">Confirmer la suppression de cet enregistrement ? Cette action est irréversible.</string>
+    <string name="record_center_confirm">Confirmer</string>
+    <string name="record_center_cancel">Annuler</string>
+    <string name="record_center_save_success">Enregistré</string>
+    <string name="record_center_range_all_label">Tous les enregistrements</string>
+    <string name="record_center_tab_records">Enregistrements</string>
+    <string name="record_center_tab_trends">Tendances</string>
+    <string name="record_center_tab_mine">Moi</string>
+    <string name="record_center_no_record">Aucun enregistrement</string>
+    <string name="record_center_trend_empty">Aucune tendance</string>
+    <string name="record_center_vs_last_week">vs semaine dernière</string>
+    <string name="record_center_ai_insight">Analyse IA</string>
+    <string name="record_center_ai_insight_hint">Laissez l\'IA analyser les tendances de vos données sur cette période</string>
+    <string name="record_center_ai_insight_generate">Générer l\'analyse</string>
+    <string name="record_center_ai_insight_regenerate">Regénérer l\'analyse</string>
+    <string name="record_center_ai_insight_retry">Réessayer</string>
+    <string name="record_center_ai_insight_loading">Génération de l\'analyse…</string>
+    <string name="record_center_ai_insight_error">Échec de la génération de l\'analyse, veuillez réessayer plus tard</string>
+    <string name="record_center_ai_insight_points_hint">Chaque analyse consomme %1$d points</string>
+    <string name="record_center_profile_title">Informations de base</string>
+    <string name="record_center_profile_hint">Pour une interprétation IA plus adaptée à votre situation</string>
+    <string name="record_center_profile_unset">Non défini, appuyez pour compléter</string>
+    <string name="record_center_profile_gender_male">Homme</string>
+    <string name="record_center_profile_gender_female">Femme</string>
+    <string name="record_center_profile_field_gender">Sexe</string>
+    <string name="record_center_profile_field_age">Âge</string>
+    <string name="record_center_profile_field_height">Taille (cm)</string>
+    <string name="record_center_profile_field_weight">Poids (kg)</string>
+    <string name="record_center_profile_age_placeholder">Veuillez saisir l\'âge</string>
+    <string name="record_center_profile_height_placeholder">Veuillez saisir la taille</string>
+    <string name="record_center_profile_weight_placeholder">Veuillez saisir le poids</string>
+    <string name="record_center_profile_age_years">%1$d ans</string>
+    <string name="record_center_profile_invalid">Veuillez saisir une valeur valide</string>
+    <string name="record_center_empty_go_ai">Aller à l\'assistant IA pour enregistrer</string>
+    <string name="record_center_empty_go_ai_description">Dites à l\'IA votre situation, elle remplira l\'enregistrement pour vous</string>
+    <string name="record_center_empty_title">Aucun enregistrement de santé</string>
+    <string name="record_center_empty_description">Vous pouvez en ajouter un manuellement, ou dire à l\'IA votre situation pour qu\'elle enregistre rapidement</string>
+    <string name="record_center_empty_range_title">Aucun enregistrement dans cette période</string>
+    <string name="record_center_empty_range_description">Vous pouvez changer la période ci-dessus, ou en ajouter un manuellement</string>
+    <string name="record_center_add_manually">Ajouter manuellement</string>
+    <string name="record_center_add_manually_description">Valeurs et horaires personnalisés, enregistrement précis</string>
+    <string name="record_center_ai_assist_title">Assistant d\'enregistrement de santé</string>
+    <string name="record_center_ai_assist_prompt">Tu es l\'assistant d\'enregistrement de santé de l\'utilisateur. Lorsque l\'utilisateur décrit des données de santé en langage naturel (par exemple « tension aujourd\'hui 120/80 », « glycémie à jeun 5.2 »), utilise l\'outil add_health_record pour l\'enregistrer. Après l\'enregistrement, confirme brièvement le type, la valeur et l\'heure. Si l\'utilisateur ne précise pas l\'heure, enregistre à l\'instant présent.</string>
+    <string name="record_center_ai_assist_fill_in">Tension aujourd\'hui 120/80, enregistre-la dans mes enregistrements de santé</string>
+    <string name="record_center_cd_switch_to_grid">Passer à la vue grille</string>
+    <string name="record_center_cd_switch_to_list">Passer à la vue liste</string>
+    <string name="record_center_error_unknown_type">Type d\'enregistrement inconnu : %1$s</string>
+    <string name="record_center_error_missing_field">Champ obligatoire manquant : %1$s</string>
+    <string name="record_center_error_unknown_field">Champ non pris en charge : %1$s</string>
+    <string name="record_center_error_out_of_range">%1$s dépasse la plage raisonnable (%2$s ~ %3$s)</string>
+    <string name="record_center_error_not_found">L\'enregistrement n\'existe pas</string>
+    <string name="record_center_error_invalid_number">Veuillez saisir un nombre valide</string>
+    <string name="record_center_error_required">Champ obligatoire</string>
+    <string name="record_center_error_out_of_range_short">Hors plage (%1$s ~ %2$s)</string>
+    <string name="record_center_log_created">Ajouter un enregistrement de santé</string>
+    <string name="record_center_log_updated">Mettre à jour l\'enregistrement de santé</string>
+    <string name="record_center_log_deleted">Supprimer l\'enregistrement de santé</string>
+    <string name="agent_tool_add_health_record_title">Ajouter un enregistrement de santé</string>
+    <string name="agent_tool_add_health_record_summary">Enregistrer la tension artérielle, la fréquence cardiaque, le poids et d\'autres données de santé</string>
+    <string name="agent_tool_add_health_record_description">Ajouter un enregistrement de santé. Mode simple : passer record_type et values au niveau supérieur (happened_at/note en option). Mode par lots : passer un tableau records pour ajouter plusieurs enregistrements à la fois, chaque élément ayant les mêmes champs que le mode simple, chaque élément étant traité indépendamment, un échec partiel n\'affectant pas les autres. values est un objet JSON nom_de_champ→valeur, le nom du champ et l\'unité étant déterminés par record_type. Types d\'enregistrement et champs pris en charge :</string>
+    <string name="agent_tool_add_health_record_param_records">Mode par lots : tableau d\'enregistrements, chaque élément contenant record_type et values (happened_at/note en option) ; une fois passé, record_type/values au niveau supérieur sont ignorés</string>
+    <string name="agent_tool_add_health_record_param_record_type">Type d\'enregistrement, l\'une des valeurs de l\'énumération</string>
+    <string name="agent_tool_add_health_record_param_values">Valeur du champ, objet JSON nom_de_champ→valeur, ex. {\"systolic\": 120, \"diastolic\": 80}</string>
+    <string name="agent_tool_add_health_record_param_happened_at">Horodatage en millisecondes de la mesure, par défaut l\'heure actuelle</string>
+    <string name="agent_tool_add_health_record_param_note">Remarque, en option</string>
+    <string name="agent_tool_add_health_record_success">Enregistré</string>
+    <string name="agent_tool_add_health_record_failed">Échec de l\'ajout de l\'enregistrement de santé : %1$s</string>
+    <string name="agent_tool_add_health_record_batch_empty">records ne peut pas être vide</string>
+    <string name="agent_tool_add_health_record_batch_success_count">%1$d réussis</string>
+    <string name="agent_tool_add_health_record_batch_failure_count">%1$d échoués</string>
+    <string name="agent_tool_add_health_record_batch_section_success">Enregistrements réussis</string>
+    <string name="agent_tool_add_health_record_batch_section_failure">Enregistrements échoués</string>
+    <string-array name="agent_tool_add_health_record_keywords">
+        <item>Enregistrement de santé</item>
+        <item>Tension artérielle</item>
+        <item>Fréquence cardiaque</item>
+        <item>Poids</item>
+        <item>Glycémie</item>
+        <item>IMC</item>
+    </string-array>
+    <string-array name="agent_tool_add_health_record_examples">
+        <item>Noter la tension 120/80</item>
+        <item>Enregistrer le poids 65,5 kg</item>
+        <item>Ajouter une glycémie à jeun de 5,6</item>
+    </string-array>
+    <string name="agent_tool_query_health_records_title">Consulter les enregistrements de santé</string>
+    <string name="agent_tool_query_health_records_summary">Consulter les enregistrements et statistiques récents d\'un type d\'indicateur de santé</string>
+    <string name="agent_tool_query_health_records_description">Consulter les enregistrements de santé des N derniers jours (30 par défaut) pour un type donné, avec les statistiques moyenne/max/min selon les champs du graphique. Types d\'enregistrements et champs pris en charge :</string>
+    <string name="agent_tool_query_health_records_param_record_type">Type d\'enregistrement, l\'une des valeurs de l\'énumération</string>
+    <string name="agent_tool_query_health_records_param_days">Nombre de jours à consulter en arrière, 30 par défaut</string>
+    <string name="agent_tool_query_health_records_empty">Aucun enregistrement pour cette période</string>
+    <string name="agent_tool_query_health_records_failed">Échec de la consultation des enregistrements de santé : %1$s</string>
+    <string name="agent_tool_query_health_records_section_stats">Statistiques</string>
+    <string name="agent_tool_query_health_records_section_records">Détails des enregistrements</string>
+    <string-array name="agent_tool_query_health_records_keywords">
+        <item>Enregistrements de santé</item>
+        <item>Historique de tension artérielle</item>
+        <item>Tendance du poids</item>
+        <item>Statistiques de glycémie</item>
+    </string-array>
+    <string-array name="agent_tool_query_health_records_examples">
+        <item>Montre-moi ma tension artérielle de ce mois</item>
+        <item>Comment a évolué mon poids ces 30 derniers jours</item>
+        <item>Quelle est ma fréquence cardiaque moyenne cette semaine</item>
+    </string-array>
+    <string name="agent_tool_get_health_summary_title">Aperçu des données de santé</string>
+    <string name="agent_tool_get_health_summary_summary">Dernières valeurs de chaque indicateur de santé</string>
+    <string name="agent_tool_get_health_summary_description">Obtenir la dernière donnée de chaque type d\'enregistrement de santé, avec unité et plage de référence.</string>
+    <string name="agent_tool_get_health_summary_empty">Aucun enregistrement de santé</string>
+    <string name="agent_tool_get_health_summary_failed">Échec de l\'obtention de l\'aperçu de santé : %1$s</string>
+    <string-array name="agent_tool_get_health_summary_keywords">
+        <item>Aperçu de santé</item>
+        <item>Dernières données de santé</item>
+        <item>Aperçu de la santé</item>
+    </string-array>
+    <string-array name="agent_tool_get_health_summary_examples">
+        <item>Montre-moi l\'aperçu des données de santé</item>
+        <item>Quelles sont mes derniers indicateurs</item>
+    </string-array>
+    <string name="agent_tool_record_center_open_link">Ouvrir les enregistrements de santé</string>
+    <string name="agent_tool_record_center_field_optional">(facultatif)</string>
+    <string name="agent_tool_record_center_unknown_error">Erreur inconnue</string>
+</resources>

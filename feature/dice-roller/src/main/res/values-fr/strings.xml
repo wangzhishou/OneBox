@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dice_roller_title">Lancer les dés</string>
+    <string name="dice_roller_roll">Secouer</string>
+    <string name="dice_roller_history">Historique</string>
+    <string name="dice_roller_history_empty">Aucun historique</string>
+    <string name="dice_roller_clear_history">Effacer l\'historique</string>
+    <string name="dice_roller_clear_confirm">Confirmer l\'effacement de tout l\'historique ?</string>
+    <string name="dice_roller_confirm">Confirmer</string>
+    <string name="dice_roller_cancel">Annuler</string>
+    <string name="dice_roller_count">Nombre de dés</string>
+    <string name="dice_roller_type">Type de dé</string>
+    <string name="dice_roller_total">Total</string>
+    <string name="dice_roller_shake_hint">Secouez le téléphone ou appuyez sur \"Secouer\"</string>
+    <string name="dice_roller_result_prefix">Résultat :</string>
+    <string name="dice_roller_description">Dés de jeu de société D4/D6/D8/D10/D12/D20</string>
+</resources>

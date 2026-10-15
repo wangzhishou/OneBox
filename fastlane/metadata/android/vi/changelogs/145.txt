@@ -1,0 +1,6 @@
+• Mới: Trò chơi Sudoku — ba độ khó, gợi ý, hoàn tác, hẹn giờ và thống kê
+• Việc cần làm được thiết kế lại: thẻ chủ đề, nhãn và đồng bộ lịch; AI thiết lập danh sách trong một lần
+• Trung tâm ghi chép được xây dựng lại: tab Ghi chép / Xu hướng / Của tôi, cuộn mượt hơn
+• AI giờ có thể tạo vòng quay quyết định, nhập phông chữ và giải nén tệp
+• 11 phông chữ mới có thể tải xuống; kích thước ảnh thẻ ID được đặt sẵn cho khu vực của bạn
+• Cài đặt sẵn được bản địa hóa hoàn toàn, sửa lỗi huy hiệu; sửa lỗi và cải tiến

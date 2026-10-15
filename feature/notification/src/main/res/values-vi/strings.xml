@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">Chưa có tin nhắn</string>
+    <string name="notification_mark_all_read">Đã đọc tất cả</string>
+    <string name="notification_login_hint">Đăng nhập để xem phản hồi bình luận, phản hồi góp ý và thông báo hệ thống</string>
+    <string name="notification_load_failed">Tải tin nhắn thất bại</string>
+    <string name="notification_retry">Thử lại</string>
+    <string name="notification_type_comment_reply">Phản hồi bình luận</string>
+    <string name="notification_type_system">Thông báo hệ thống</string>
+    <string name="notification_type_feedback_reply">Phản hồi góp ý</string>
+    <string name="notification_section_my_comments">Bình luận tôi đã đăng</string>
+    <string name="notification_section_replies">Người dùng trả lời</string>
+    <string name="notification_you_commented">Bạn đã bình luận trong《%1$s》：</string>
+    <string name="notification_you_commented_fallback">Bạn đã nói trong bình luận：</string>
+    <string name="notification_replied_to_you">%1$s đã trả lời bình luận của bạn：</string>
+    <string name="notification_from_source">Từ: %1$s</string>
+    <string name="notification_replier_anonymous">Người dùng</string>
+    <string name="notification_section_messages">Thông báo</string>
+</resources>

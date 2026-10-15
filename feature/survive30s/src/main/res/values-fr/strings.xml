@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="survive_30s_title">Survis 30 s pour gagner des points</string>
+    <string name="survive_30s_ready">Prêt ?</string>
+    <string name="survive_30s_instruction">Fais glisser la bille bleue pour éviter les obstacles\nDéplace-toi librement dans toutes les directions, tiens 30 secondes pour gagner !</string>
+    <string name="survive_30s_instruction_bonus">Les esquives rapprochées accumulent de l\'énergie. 3 esquives donnent 1 bouclier qui bloque un impact.</string>
+    <string name="survive_30s_start">Commencer</string>
+    <string name="survive_30s_game_over">Échec !</string>
+    <string name="survive_30s_survived_time">Survie : %.1f s</string>
+    <string name="survive_30s_new_record">Nouveau record !</string>
+    <string name="survive_30s_win">Bravo !</string>
+    <string name="survive_30s_win_desc">Tu as tenu 30 secondes !</string>
+    <string name="survive_30s_retry">Rejouer</string>
+    <string name="survive_30s_best_time">Record : %.1fs</string>
+    <string name="survive_30s_phase">Phase</string>
+    <string name="survive_30s_phase_warmup">Échauffement</string>
+    <string name="survive_30s_phase_rush">Pression</string>
+    <string name="survive_30s_phase_storm">Tempête</string>
+    <string name="survive_30s_shield">Bouclier</string>
+    <string name="survive_30s_charge">Énergie</string>
+    <string name="survive_30s_charge_value">%1$d/%2$d</string>
+    <string name="survive_30s_near_miss">Esquive</string>
+    <string name="survive_30s_near_miss_count">Esquives rapprochées : %1$d</string>
+    <string name="survive_30s_danger_low">Rythme stable, garde tes distances.</string>
+    <string name="survive_30s_danger_medium">Le danger approche, prépare-toi à changer de direction.</string>
+    <string name="survive_30s_danger_high">Danger élevé ! Esquive de près pour gagner de l\'énergie ou échappe-toi vite.</string>
+    <string name="survive_30s_back">Retour</string>
+    <string name="survive_30s_paused">En pause</string>
+    <string name="survive_30s_pause_desc">Mise en arrière-plan, pause automatique. Ta progression est conservée.</string>
+    <string name="survive_30s_resume">Reprendre</string>
+</resources>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Centre d\'agenda</string>
+    <string name="schedule_sync_card_title">Architecture de synchronisation prête</string>
+    <string name="schedule_sync_card_description">Ce module dispose désormais d\'un domaine d\'événements indépendant, d\'un curseur de synchronisation et de champs de pontage vers les tâches. L\'intégration future de Google Agenda n\'affectera ni le calendrier perpétuel ni le module des tâches.</string>
+    <string name="schedule_sync_ready">Curseur de synchronisation enregistré</string>
+    <string name="schedule_sync_not_connected">Aucun compte connecté</string>
+    <string name="schedule_event_count_label">%1$d événements</string>
+    <string name="schedule_linked_task_chip">Contexte de tâche associé</string>
+    <string name="schedule_last_error_label">Dernière erreur : %1$s</string>
+    <string name="schedule_action_card_title">Commencez par activer le domaine d\'événements local</string>
+    <string name="schedule_action_create_local">Ajouter un événement local</string>
+    <string name="schedule_action_create_focus">Créer un événement à la date ciblée</string>
+    <string name="schedule_action_open_todo">Ouvrir les tâches</string>
+    <string name="schedule_action_open_calendar">Ouvrir le calendrier perpétuel</string>
+    <string name="schedule_event_section_title">Liste des événements</string>
+    <string name="schedule_empty_title">Aucun événement pour le moment</string>
+    <string name="schedule_empty_description">Créez d\'abord des événements locaux, puis ajoutez progressivement la connexion au compte Google Calendar, la synchronisation incrémentielle et la gestion des conflits.</string>
+    <string name="schedule_provider_local">Local</string>
+    <string name="schedule_provider_system">Calendrier système</string>
+    <string name="schedule_provider_google">Google Agenda</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Local uniquement</string>
+    <string name="schedule_status_pending_upload">À téléverser</string>
+    <string name="schedule_status_synced">Synchronisé</string>
+    <string name="schedule_status_pending_delete">À supprimer</string>
+    <string name="schedule_status_conflict">Conflit</string>
+    <string name="schedule_status_failed">Échec de synchronisation</string>
+    <string name="schedule_linked_task_badge">Pontage des tâches</string>
+    <string name="schedule_quick_event_title">Nouvel événement local</string>
+    <string name="schedule_focus_event_title">Événement ciblé</string>
+    <string name="schedule_linked_task_description">Tâche associée : %1$s</string>
+    <string name="schedule_save_to_system_calendar">Écrire directement dans le calendrier système</string>
+    <string name="schedule_export_to_system_calendar">Ajouter au calendrier système</string>
+    <string name="schedule_system_calendar_unavailable">Aucune application de calendrier disponible sur cet appareil</string>
+    <string name="schedule_no_writable_calendar">Aucun calendrier système accessible en écriture</string>
+    <string name="schedule_saved_to_system_calendar">Écrit dans le calendrier système</string>
+    <string name="schedule_save_to_system_calendar_failed">Échec de l\'écriture dans le calendrier système, veuillez réessayer plus tard</string>
+    <string name="schedule_calendar_permission_denied">L\'autorisation du calendrier est requise pour écrire directement dans le calendrier système</string>
+    <string name="schedule_choose_calendar_title">Sélectionner le calendrier cible</string>
+    <string name="schedule_calendar_primary_badge">Calendrier principal</string>
+    <string name="schedule_dialog_close">Fermer</string>
+    <string name="schedule_permission_dialog_title">Autorisation du calendrier requise</string>
+    <string name="schedule_permission_dialog_message">Veuillez activer l\'autorisation de lecture/écriture du calendrier dans les paramètres système pour écrire directement dans le calendrier système.</string>
+    <string name="schedule_open_settings">Aller aux paramètres</string>
+    <string name="agent_tool_schedule_unknown_error">Erreur inconnue</string>
+    <string name="agent_tool_schedule_open_link">Ouvrir l\'événement</string>
+    <string name="agent_tool_schedule_label_start">Début</string>
+    <string name="agent_tool_schedule_label_end">Fin</string>
+    <string name="agent_tool_schedule_label_all_day">Événement toute la journée</string>
+    <string name="agent_tool_schedule_label_location">Lieu</string>
+    <string name="agent_tool_schedule_invalid_datetime">Format de l\'heure « %1$s » incorrect, veuillez utiliser le format ISO, par exemple 2026-09-10T14:00 ou 2026-09-10.</string>
+    <string name="agent_tool_schedule_invalid_date">Format de la date « %1$s » incorrect, veuillez utiliser yyyy-MM-dd, par exemple 2026-09-10.</string>
+    <string name="agent_tool_add_schedule_event_title">Nouvel événement</string>
+    <string name="agent_tool_add_schedule_event_summary">Créer un événement local avec titre, heure, notes et lieu.</string>
+    <string name="agent_tool_add_schedule_event_description">Créer un événement local. title et start sont obligatoires ; si end est omis, la valeur par défaut est start + 1 heure (ou le lendemain pour un événement toute la journée). Les heures utilisent le format ISO : 2026-09-10T14:00, 2026-09-10T14:00:00+08:00, ou une date seule 2026-09-10.</string>
+    <string name="agent_tool_add_schedule_event_param_title">Titre de l\'événement, obligatoire.</string>
+    <string name="agent_tool_add_schedule_event_param_start">Heure de début, format ISO, par exemple 2026-09-10T14:00 ; une date seule correspond à 00:00 ce jour-là.</string>
+    <string name="agent_tool_add_schedule_event_param_end">Heure de fin, format ISO, facultatif ; par défaut start + 1 heure, ou le lendemain pour un événement toute la journée.</string>
+    <string name="agent_tool_add_schedule_event_param_all_day">Événement toute la journée, false par défaut.</string>
+    <string name="agent_tool_add_schedule_event_param_description">Notes de l\'événement, facultatif.</string>
+    <string name="agent_tool_add_schedule_event_param_location">Lieu de l\'événement, facultatif.</string>
+    <string name="agent_tool_add_schedule_event_title_required">Le paramètre title est obligatoire et ne peut pas être vide.</string>
+    <string name="agent_tool_add_schedule_event_failed">Échec de la création de l\'événement : %1$s</string>
+    <string-array name="agent_tool_add_schedule_event_keywords">
+        <item>Événement</item>
+        <item>Calendrier</item>
+        <item>Rappel</item>
+        <item>Programme</item>
+        <item>schedule</item>
+        <item>calendar</item>
+        <item>Nouvel événement</item>
+    </string-array>
+    <string-array name="agent_tool_add_schedule_event_examples">
+        <item>Rappelle-moi la réunion demain à 15 h</item>
+        <item>Crée un événement toute la journée du 20 septembre : mariage d\'un ami</item>
+        <item>Lundi prochain de 10:00 à 11:00, séance de sport à la salle de sport</item>
+    </string-array>
+    <string name="agent_tool_query_schedule_events_title">Consulter l\'agenda</string>
+    <string name="agent_tool_query_schedule_events_summary">Consulter les événements locaux par plage de dates.</string>
+    <string name="agent_tool_query_schedule_events_description">Consulte les événements locaux qui chevauchent la plage de dates spécifiée. start_date est par défaut aujourd\'hui, end_date par défaut 6 jours plus tard (fenêtre de 7 jours par défaut). Renvoie au maximum 50 résultats, triés par heure de début croissante ; chaque résultat contient id, titre, heure, lieu et notes ; l\'id peut être transmis à delete_schedule_event pour suppression.</string>
+    <string name="agent_tool_query_schedule_events_param_start_date">Date de début de la plage, aaaa-MM-jj ; par défaut aujourd\'hui.</string>
+    <string name="agent_tool_query_schedule_events_param_end_date">Date de fin de la plage (incluse), aaaa-MM-jj ; par défaut 6 jours après start_date.</string>
+    <string name="agent_tool_query_schedule_events_end_before_start">end_date ne peut pas être antérieure à start_date.</string>
+    <string name="agent_tool_query_schedule_events_empty">Aucun événement dans cette plage</string>
+    <string name="agent_tool_query_schedule_events_failed">Échec de la consultation de l\'agenda : %1$s</string>
+    <string-array name="agent_tool_query_schedule_events_keywords">
+        <item>Événement</item>
+        <item>Calendrier</item>
+        <item>Programme</item>
+        <item>schedule</item>
+        <item>calendar</item>
+        <item>Consulter l\'agenda</item>
+        <item>Qu\'est-ce que j\'ai prévu aujourd\'hui ?</item>
+    </string-array>
+    <string-array name="agent_tool_query_schedule_events_examples">
+        <item>Qu\'est-ce que j\'ai prévu aujourd\'hui ?</item>
+        <item>Montre-moi l\'agenda de cette semaine</item>
+        <item>Consulte l\'agenda du 10 au 15 septembre</item>
+    </string-array>
+    <string name="agent_tool_delete_schedule_event_title">Supprimer l\'événement</string>
+    <string name="agent_tool_delete_schedule_event_summary">Supprime un événement local par son id.</string>
+    <string name="agent_tool_delete_schedule_event_description">Supprime un événement local par event_id (généralement issu de query_schedule_events). La suppression efface aussi les liaisons de synchronisation comme le calendrier système et est irréversible ; une confirmation de l\'utilisateur est requise.</string>
+    <string name="agent_tool_delete_schedule_event_param_event_id">Id de l\'événement à supprimer, issu de query_schedule_events.</string>
+    <string name="agent_tool_delete_schedule_event_id_required">Le paramètre event_id est obligatoire.</string>
+    <string name="agent_tool_delete_schedule_event_not_found">Événement introuvable : %1$s</string>
+    <string name="agent_tool_delete_schedule_event_deleted">Supprimé : %1$s</string>
+    <string name="agent_tool_delete_schedule_event_failed">Échec de la suppression de l\'événement : %1$s</string>
+    <string name="agent_tool_delete_schedule_event_confirm_title">Supprimer l\'événement</string>
+    <string name="agent_tool_delete_schedule_event_confirm_presentation">Supprimer définitivement cet événement</string>
+    <string-array name="agent_tool_delete_schedule_event_keywords">
+        <item>Événement</item>
+        <item>Calendrier</item>
+        <item>Supprimer l\'événement</item>
+        <item>Annuler l\'événement</item>
+        <item>schedule</item>
+        <item>delete event</item>
+    </string-array>
+    <string-array name="agent_tool_delete_schedule_event_examples">
+        <item>supprime la réunion de demain à 15 h</item>
+        <item>annule la séance de sport de vendredi</item>
+    </string-array>
+</resources>

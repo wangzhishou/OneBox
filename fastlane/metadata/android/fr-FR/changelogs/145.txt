@@ -1,0 +1,6 @@
+• Nouveau : jeu de Sudoku — trois niveaux de difficulté, indices, annulation, chronomètre et statistiques
+• To-do repensé : cartes de thème, tags et synchronisation avec le calendrier ; l'IA crée vos listes en une seule fois
+• Espace Enregistrements remanié : onglets Enregistrements / Tendances / Mes données, défilement plus fluide
+• L'IA peut désormais créer des roues de décision, importer des polices et décompresser des fichiers
+• 11 nouvelles polices téléchargeables ; formats de photo d'identité prédéfinis pour votre région
+• Préréglages entièrement localisés, corrections de badges ; corrections de bugs et améliorations

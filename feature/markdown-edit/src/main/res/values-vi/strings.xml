@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">Chèn khối mã</string>
+    <string name="code_label">Mã</string>
+    <string name="enter_code_hint">Nhập mã...</string>
+    <string name="select_language">Chọn ngôn ngữ:</string>
+    <string name="search_language">Tìm kiếm ngôn ngữ</string>
+    <string name="search_language_hint">Nhập tên ngôn ngữ...</string>
+    <string name="or_enter_image_url">Hoặc nhập địa chỉ hình ảnh trực tuyến:</string>
+    <string name="image_description_label">Mô tả hình ảnh</string>
+    <string name="image_description_hint">Chú thích cho hình ảnh</string>
+    <string name="image_url_label">Địa chỉ hình ảnh</string>
+    <string name="link_text_placeholder">Văn bản hiển thị</string>
+    <string name="resize_image">Điều chỉnh kích thước hình ảnh</string>
+    <string name="markdown_image_resize_width">Chiều rộng</string>
+    <string name="original_width">Chiều rộng gốc: %1$dpx</string>
+    <string name="markdown_placeholder">Nhập nội dung...</string>
+</resources>

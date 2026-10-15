@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Dò mìn</string>
+    <string name="minesweeper_restart">Bắt đầu lại</string>
+    <string name="minesweeper_sound_on">Đã bật âm thanh</string>
+    <string name="minesweeper_sound_off">Đã tắt âm thanh</string>
+    <string name="minesweeper_mode_dig">Chế độ đào mìn</string>
+    <string name="minesweeper_mode_flag">Chế độ cắm cờ</string>
+    <string name="minesweeper_hint_dig">Nhấn để mở ô</string>
+    <string name="minesweeper_hint_flag">Nhấn để cắm cờ</string>
+    <string name="minesweeper_time">Thời gian</string>
+    <string name="minesweeper_mines_left">Mìn còn lại</string>
+    <string name="minesweeper_won">Đã thắng</string>
+    <string name="minesweeper_lost">Trúng mìn rồi</string>
+    <string name="minesweeper_play_again">Chơi lại</string>
+    <string name="minesweeper_result_detail">Thời gian %1$d giây</string>
+    <string name="minesweeper_fullscreen">Toàn màn hình</string>
+    <string name="minesweeper_exit_fullscreen">Thoát toàn màn hình</string>
+    <string name="minesweeper_share">Chia sẻ</string>
+</resources>

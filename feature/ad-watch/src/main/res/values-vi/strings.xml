@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Xem quảng cáo</string>
+    <string name="ad_watch_headline_1">Quảng cáo đốt tiền của thương hiệu lớn, họ đang chơi chiêu gì?</string>
+    <string name="ad_watch_headline_2">Quảng cáo mà các ông lớn đều đầu tư trông như thế nào?</string>
+    <string name="ad_watch_headline_3">15 giây, xem tuyệt chiêu của các thương hiệu</string>
+    <string name="ad_watch_headline_4">Người khác bỏ tiền giành sự chú ý, bạn tiện thể kiếm điểm</string>
+    <string name="ad_watch_headline_5">Cuộc chiến nội bộ của nhà quảng cáo, xem miễn phí</string>
+    <string name="ad_watch_subtitle">Xem quảng cáo 15 giây, nhận %1$d điểm</string>
+    <string name="ad_watch_cta">Xem quảng cáo · +%1$d điểm</string>
+    <string name="ad_watch_remaining">Hôm nay còn %1$d/%2$d lần</string>
+    <string name="ad_watch_daily_limit_reached">Hôm nay đã hết lượt, mai quay lại nhé</string>
+    <string name="ad_watch_loading">Đang tải quảng cáo…</string>
+    <string name="ad_watch_load_failed">Tải quảng cáo thất bại</string>
+    <string name="ad_watch_retry">Thử lại</string>
+    <string name="ad_watch_ad_not_ready">Quảng cáo chưa sẵn sàng, vui lòng thử lại sau</string>
+</resources>

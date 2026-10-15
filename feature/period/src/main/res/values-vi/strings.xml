@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">Ghi chép kinh nguyệt</string>
+    <string name="period_stats_title">Thống kê chu kỳ</string>
+    <string name="period_detail_title">Chi tiết ghi chép</string>
+    <string name="period_add_title">Thêm ghi chép</string>
+    <string name="period_edit_title">Sửa ghi chép</string>
+    <string name="period_tab_records">Ghi chép</string>
+    <string name="period_tab_stats">Dữ liệu</string>
+    <string name="period_search">Tìm kiếm</string>
+    <string name="period_search_hint">Tìm kiếm ghi chú hoặc triệu chứng</string>
+    <string name="period_add">Thêm</string>
+    <string name="period_save">Lưu</string>
+    <string name="period_cancel">Hủy</string>
+    <string name="period_delete">Xóa</string>
+    <string name="period_loading">Đang tải…</string>
+    <string name="period_saved">Đã lưu</string>
+    <string name="period_record_added">Đã ghi</string>
+    <string name="period_deleted">Đã xóa ghi chép</string>
+    <string name="period_save_failed">Lưu thất bại</string>
+    <string name="period_toast_recorded">Đã ghi kinh nguyệt</string>
+    <string name="period_empty_title">Chưa có ghi chép</string>
+    <string name="period_empty_subtitle">Cho AI biết tình trạng của bạn, tạo ghi chép kinh nguyệt chỉ với một chạm</string>
+    <string name="period_ai_quick_record">Ghi nhanh bằng AI</string>
+    <string name="period_manual_record">Ghi thủ công</string>
+    <string name="period_empty_example">Ví dụ: “Hôm qua tôi bắt đầu có kinh, đau bụng khá rõ”</string>
+    <string name="period_ai_assist_title">Trợ lý ghi chép kinh nguyệt</string>
+    <string name="period_ai_assist_fill_in">Hôm qua tôi bắt đầu có kinh, đau bụng rõ, giúp tôi ghi lại</string>
+    <string name="period_ai_assist_prompt">Bạn là trợ lý ghi chép kinh nguyệt của người dùng. Khi người dùng mô tả tình trạng kinh nguyệt, lượng máu, triệu chứng hoặc tâm trạng, hãy dùng công cụ add_period_record để ghi lại (ngày theo định dạng yyyy-MM-dd). Khi người dùng hỏi về độ dài chu kỳ, kỳ kinh tiếp theo hoặc thống kê, hãy dùng query_period_records để trả lời. Khi cần sửa ghi chép, dùng update_period_record; khi xóa ghi chép, dùng delete_period_record. Sau mỗi lần ghi, xác nhận ngắn gọn.</string>
+    <string name="period_record_count">%1$d bản ghi</string>
+    <string name="period_month_group_pattern">tháng M năm yyyy</string>
+    <string name="period_short_date_pattern">ngày d tháng M</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint">（có thể chọn nhiều）</string>
+    <string name="period_cycle_day">Ngày %1$d của chu kỳ</string>
+    <string name="period_cycle_day_unknown">Ngày — của chu kỳ</string>
+    <string name="period_status_period">Đang trong kỳ kinh</string>
+    <string name="period_status_ovulation">Thời kỳ rụng trứng</string>
+    <string name="period_status_normal">Bình thường</string>
+    <string name="period_status_start">Bắt đầu</string>
+    <string name="period_status_mid">Đang trong kỳ kinh</string>
+    <string name="period_status_end">Kết thúc</string>
+    <string name="period_calendar_prev">Tháng trước</string>
+    <string name="period_calendar_next">Tháng sau</string>
+    <string name="period_field_date">Ngày</string>
+    <string name="period_field_status">Trạng thái kinh nguyệt</string>
+    <string name="period_field_flow">Cường độ dòng chảy</string>
+    <string name="period_field_symptoms">Triệu chứng</string>
+    <string name="period_field_mood">Tâm trạng</string>
+    <string name="period_field_note">Ghi chú</string>
+    <string name="period_note_hint">Nhập ghi chú (tùy chọn)</string>
+    <string name="period_delete_record">Xóa bản ghi</string>
+    <string name="period_delete_confirm_title">Xóa bản ghi này?</string>
+    <string name="period_delete_confirm_message">Không thể khôi phục sau khi xóa.</string>
+    <string name="period_flow_none">Không</string>
+    <string name="period_flow_light">Nhẹ</string>
+    <string name="period_flow_medium">Trung bình</string>
+    <string name="period_flow_heavy">Nặng</string>
+    <string name="period_mood_very_happy">Rất vui</string>
+    <string name="period_mood_happy">Vui</string>
+    <string name="period_mood_normal">Bình thường</string>
+    <string name="period_mood_sad">Buồn</string>
+    <string name="period_mood_very_sad">Rất buồn</string>
+    <string name="period_symptom_abdominal_pain">Đau bụng</string>
+    <string name="period_symptom_headache">Đau đầu</string>
+    <string name="period_symptom_back_pain">Đau lưng</string>
+    <string name="period_symptom_mood_swings">Thay đổi cảm xúc</string>
+    <string name="period_symptom_breast_tenderness">Đau căng ngực</string>
+    <string name="period_symptom_fatigue">Mệt mỏi</string>
+    <string name="period_symptom_nausea">Buồn nôn</string>
+    <string name="period_symptom_insomnia">Mất ngủ</string>
+    <string name="period_symptom_appetite_change">Thay đổi cảm giác thèm ăn</string>
+    <string name="period_symptom_acne">Mụn</string>
+    <string name="period_symptom_edema">Phù nề</string>
+    <string name="period_stats_range_6m">6 tháng gần đây</string>
+    <string name="period_stats_range_day">Ngày</string>
+    <string name="period_stats_range_week">Tuần</string>
+    <string name="period_stats_range_month">Tháng</string>
+    <string name="period_stats_avg_cycle">Chu kỳ trung bình</string>
+    <string name="period_stats_avg_period">Kinh nguyệt trung bình</string>
+    <string name="period_stats_next">Dự đoán lần tới</string>
+    <string name="period_stats_vs_prev">%1$+d ngày so với kỳ trước</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">Xu hướng độ dài chu kỳ</string>
+    <string name="period_stats_trend_empty">Cần ít nhất hai lần bắt đầu kinh nguyệt để ghi lại</string>
+    <string name="period_stats_symptom_title">Phân bố triệu chứng</string>
+    <string name="period_stats_symptom_empty">Chưa có dữ liệu triệu chứng</string>
+    <string name="period_stats_symptom_center">Tổng số lần triệu chứng</string>
+    <string name="period_day_unit">Ngày</string>
+    <string name="period_month_unit">Tháng</string>
+    <string name="period_next_label">Dự đoán lần tới</string>
+    <string name="period_days_until">Còn %1$d ngày</string>
+    <string name="period_timeline_title">Dòng thời gian</string>
+    <string name="period_timeline_start">Bắt đầu kỳ kinh</string>
+    <string name="period_timeline_end">Dự kiến kết thúc kỳ kinh</string>
+    <string name="period_log_record_created">Thêm bản ghi kỳ kinh</string>
+    <string name="period_log_record_updated">Cập nhật bản ghi kỳ kinh</string>
+    <string name="period_log_record_deleted">Xóa bản ghi kỳ kinh</string>
+    <string name="agent_tool_add_period_record_title">Thêm bản ghi kỳ kinh</string>
+    <string name="agent_tool_add_period_record_summary">Ghi lại ngày bắt đầu/kết thúc kỳ kinh, lượng máu, triệu chứng và tâm trạng</string>
+    <string name="agent_tool_add_period_record_description">Ghi một kỳ kinh: ngày (yyyy-MM-dd), tùy chọn is_period_start / is_period_end, flow_intensity(NONE/LIGHT/MEDIUM/HEAVY), mảng triệu chứng, mood(VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) và ghi chú. Khi người dùng nêu sự thật về kỳ kinh (đến kỳ, hành kinh, đau bụng, lượng máu), đây là yêu cầu ghi lại: gọi công cụ này để ghi, không chuyển thành lời khuyên y tế. Nếu bắt đầu từ hôm qua thì date là hôm qua và is_period_start=true, đau bụng ghi vào symptoms.</string>
+    <string name="agent_tool_add_period_record_failed">Thêm bản ghi kỳ kinh thất bại: %1$s</string>
+    <string name="agent_tool_query_period_records_title">Truy vấn bản ghi kỳ kinh</string>
+    <string name="agent_tool_query_period_records_summary">Truy vấn bản ghi, thống kê chu kỳ và dự đoán lần tới</string>
+    <string name="agent_tool_query_period_records_description">Truy vấn các bản ghi kỳ kinh gần đây, cùng chu kỳ trung bình, độ dài kỳ kinh trung bình và ngày dự đoán lần tới. Tùy chọn limit.</string>
+    <string name="agent_tool_query_period_records_empty">Chưa có bản ghi kỳ kinh nào.</string>
+    <string name="agent_tool_query_period_records_failed">Truy vấn bản ghi kỳ kinh thất bại: %1$s</string>
+    <string name="agent_tool_update_period_record_title">Cập nhật bản ghi kỳ kinh</string>
+    <string name="agent_tool_update_period_record_summary">Cập nhật bản ghi kỳ kinh hiện có theo record_id</string>
+    <string name="agent_tool_update_period_record_description">Cập nhật bản ghi kỳ kinh. Cung cấp record_id và các trường cần sửa (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note).</string>
+    <string name="agent_tool_update_period_record_failed">Cập nhật bản ghi kỳ kinh thất bại: %1$s</string>
+    <string name="agent_tool_delete_period_record_title">Xóa bản ghi kỳ kinh</string>
+    <string name="agent_tool_delete_period_record_summary">Xóa bản ghi kỳ kinh theo record_id</string>
+    <string name="agent_tool_delete_period_record_description">Xóa vĩnh viễn một bản ghi kỳ kinh. Cần record_id và cần người dùng xác nhận.</string>
+    <string name="agent_tool_delete_period_record_done">Đã xóa bản ghi kỳ kinh %1$s</string>
+    <string name="agent_tool_delete_period_record_failed">Xóa bản ghi kỳ kinh thất bại: %1$s</string>
+    <string name="agent_tool_period_param_date">Ngày ghi, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">Ngày đó có phải là ngày bắt đầu kỳ kinh</string>
+    <string name="agent_tool_period_param_is_end">Ngày đó có phải là ngày kết thúc kỳ kinh</string>
+    <string name="agent_tool_period_param_flow">Cường độ dòng chảy: NONE, LIGHT, MEDIUM hoặc HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">Mảng triệu chứng, ví dụ ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">Tâm trạng: VERY_HAPPY, HAPPY, NORMAL, SAD hoặc VERY_SAD</string>
+    <string name="agent_tool_period_param_note">Ghi chú tùy chọn</string>
+    <string name="agent_tool_period_param_record_id">ID bản ghi kinh nguyệt</string>
+    <string name="agent_tool_period_param_limit">Số lượng trả về tối đa (1-50)</string>
+    <string name="agent_tool_period_label_date">Ngày</string>
+    <string name="agent_tool_period_label_flow">Lưu lượng</string>
+    <string name="agent_tool_period_label_symptoms">Triệu chứng</string>
+    <string name="agent_tool_period_open_link">Mở bản ghi kinh nguyệt</string>
+    <string name="agent_tool_period_detail_link">Mở chi tiết bản ghi</string>
+    <string name="agent_tool_period_no_next">Không đủ dữ liệu</string>
+    <string name="agent_tool_period_unknown_error">Lỗi không xác định</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>period</item>
+        <item>menstruation</item>
+        <item>cycle</item>
+        <item>Kỳ kinh</item>
+        <item>Kinh nguyệt</item>
+        <item>Đèn đỏ</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>I started my period today with mild cramps</item>
+        <item>Giúp tôi ghi lại hôm nay tôi có kinh, lưu lượng trung bình</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>cycle</item>
+        <item>next period</item>
+        <item>Chu kỳ</item>
+        <item>Dự đoán</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>When is my next period?</item>
+        <item>Chu kỳ của tôi có đều không?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>update period</item>
+        <item>Sửa bản ghi kinh nguyệt</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>Update yesterday\'s record to heavy flow</item>
+        <item>Đổi lưu lượng bản ghi hôm qua thành nhiều</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>delete period</item>
+        <item>Xóa bản ghi kinh nguyệt</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>Delete the period record from yesterday</item>
+        <item>Xóa bản ghi kinh nguyệt của ngày hôm qua</item>
+    </string-array>
+</resources>

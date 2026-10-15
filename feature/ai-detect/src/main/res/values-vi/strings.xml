@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">Kiểm tra văn bản</string>
+    <string name="ai_detect_image_tab">Kiểm tra hình ảnh</string>
+    <string name="ai_detect_text_hint">Dán hoặc nhập văn bản cần kiểm tra…</string>
+    <string name="ai_detect_button">Bắt đầu kiểm tra</string>
+    <string name="ai_detect_detecting">Đang kiểm tra…</string>
+    <string name="ai_detect_upload_hint">Nhấn để tải lên hoặc dán hình ảnh…</string>
+    <string name="ai_detect_upload_format">Hỗ trợ JPG / PNG / WebP, kích thước lớn hơn 300×300, không quá 10MB</string>
+    <string name="ai_detect_change_image">Thay đổi hình ảnh</string>
+    <string name="ai_detect_probability_label">Xác suất do AI tạo</string>
+    <string name="ai_detect_verdict_likely_ai">Nghi ngờ do AI tạo</string>
+    <string name="ai_detect_verdict_maybe_ai">Có thể do AI tạo</string>
+    <string name="ai_detect_verdict_likely_human">Nghi ngờ do con người tạo</string>
+    <string name="ai_detect_recheck">Kiểm tra lại</string>
+    <string name="ai_detect_view_detail">Xem chi tiết</string>
+    <string name="ai_detect_collapse_detail">Thu gọn chi tiết</string>
+    <string name="ai_detect_segment_human">Con người</string>
+    <string name="ai_detect_segment_ai">AI</string>
+    <string name="ai_detect_segment_suspected">Nghi ngờ AI</string>
+    <string name="ai_detect_labels_ratio_title">Tỷ lệ nhãn</string>
+    <string name="ai_detect_image_confidence_detail">Độ tin cậy do AI tạo của hình ảnh này theo mô hình là %1$d%%, giá trị càng cao thì càng có khả năng do AI tạo.</string>
+    <string name="ai_detect_history">Lịch sử kiểm tra</string>
+    <string name="ai_detect_history_empty">Chưa có bản ghi kiểm tra</string>
+    <string name="ai_detect_clear_all">Xóa hết</string>
+    <string name="ai_detect_clear_confirm">Xác nhận xóa toàn bộ lịch sử kiểm tra?</string>
+    <string name="ai_detect_confirm">Xác nhận</string>
+    <string name="ai_detect_cancel">Hủy</string>
+    <string name="ai_detect_delete">Xóa</string>
+    <string name="ai_detect_type_text">Văn bản</string>
+    <string name="ai_detect_type_image">Hình ảnh</string>
+    <string name="ai_detect_detail_title">Chi tiết kiểm tra</string>
+    <string name="ai_detect_error_image_too_large">Kích thước ảnh không được vượt quá 10MB</string>
+    <string name="ai_detect_error_image_too_small">Kích thước ảnh phải lớn hơn 300×300</string>
+    <string name="ai_detect_error_image_unreadable">Không thể đọc ảnh này</string>
+    <string name="ai_detect_error_network">Phát hiện thất bại, vui lòng thử lại sau</string>
+    <string name="agent_tool_detect_ai_text_title">Phát hiện văn bản AI</string>
+    <string name="agent_tool_detect_ai_text_summary">Phát hiện xem một đoạn văn bản có nghi ngờ do AI tạo ra không, trả về tỷ lệ nghi ngờ AI, kết luận đánh giá và nhãn phân đoạn</string>
+    <string name="agent_tool_detect_ai_text_param_text">Nội dung văn bản thuần cần phát hiện</string>
+    <string name="agent_tool_detect_ai_text_error_args">Lỗi tham số: text phải là chuỗi không rỗng</string>
+    <string name="agent_tool_detect_ai_image_title">Phát hiện ảnh AI</string>
+    <string name="agent_tool_detect_ai_image_summary">Phát hiện xem một ảnh có nghi ngờ do AI tạo ra không, trả về độ tin cậy tạo bởi AI và kết luận đánh giá</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">URI của ảnh cần phát hiện, hỗ trợ content:// và file://, có thể lấy từ tệp đính kèm hội thoại hoặc kết quả công cụ browse_files</string>
+    <string name="agent_tool_detect_ai_image_error_args">Lỗi tham số: image_uri phải là chuỗi không rỗng</string>
+</resources>

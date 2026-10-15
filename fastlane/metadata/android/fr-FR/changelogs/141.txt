@@ -1,0 +1,7 @@
+• Nouveau : Gomoku et Échecs internationaux avec adversaires IA
+• Écrans de jeu et de replay du Xiangqi entièrement repensés
+• Nouveau : recherche par mots-clés dans tous les outils
+• La comptabilité prend désormais en charge votre devise locale
+• Centre de notifications repensé avec notifications push
+• Nouveau : prise en charge de l'arabe et davantage de moteurs de génération d'images
+• Corrections de bugs et améliorations des performances

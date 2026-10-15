@@ -1,0 +1,3 @@
+• Corrigé : l'enregistrement de votre propre jeton API pour les fournisseurs d'IA intégrés (DeepSeek, etc.) échouait avec « Échec de l'enregistrement »
+• Corrigé : les liens de la boîte de dialogue de la politique de confidentialité ne répondaient pas sur certains appareils
+• Corrections de bugs et améliorations des performances

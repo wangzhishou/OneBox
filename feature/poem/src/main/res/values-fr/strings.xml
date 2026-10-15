@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Poésie chinoise classique</string>
+    <string name="poem_latest">Génération récente</string>
+    <string name="poem_generate">Générer un poème</string>
+    <string name="poem_generate_random">Génération aléatoire</string>
+    <string name="poem_generating_pinyin">Génération du pinyin…</string>
+    <string name="poem_ai_pinyin">Pinyin IA</string>
+    <string name="poem_pinyin_done">Pinyin généré</string>
+    <string name="poem_recite">Récitation</string>
+    <string name="poem_recite_stop">Arrêter la récitation</string>
+    <string name="poem_search">Rechercher</string>
+    <string name="poem_history">Historique</string>
+    <string name="poem_ai_insight">Interprétation IA</string>
+    <string name="poem_favorite">Favoris</string>
+    <string name="poem_favorited">Ajouté aux favoris</string>
+    <string name="poem_retry">Réessayer</string>
+    <string name="poem_load_failed">Échec du chargement, veuillez réessayer plus tard</string>
+    <string name="poem_generating_insight">Génération de l\'interprétation…</string>
+    <string name="poem_generating_translation">Génération de la traduction…</string>
+    <string name="poem_insight_title">Interprétation poétique</string>
+    <string name="poem_translation_title">Traduction moderne</string>
+    <string name="poem_regenerate">Régénérer</string>
+    <string name="poem_insight_empty_hint">Appuyez pour générer une interprétation poétique et comprendre le sens profond des vers</string>
+    <string name="poem_translation_empty_hint">Appuyez pour générer une traduction moderne et comprendre le sens actuel des vers</string>
+    <string name="poem_generate_click">Appuyez pour générer</string>
+    <string name="poem_history_title">Historique</string>
+    <string name="poem_clear_history">Effacer l\'historique</string>
+    <string name="poem_clear_history_confirm">Confirmer l\'effacement de l\'historique ? Les poèmes ajoutés aux favoris seront conservés.</string>
+    <string name="poem_confirm">Confirmer</string>
+    <string name="poem_cancel">Annuler</string>
+    <string name="poem_empty_title">Aucun poème généré pour le moment</string>
+    <string name="poem_empty_subtitle">Appuyez sur le bouton ci-dessous pour commencer</string>
+    <string name="poem_search_hint">Rechercher un vers / poète / mot-clé</string>
+    <string name="poem_filter_dynasty">Dynastie</string>
+    <string name="poem_filter_type">Genre</string>
+    <string name="poem_filter_author">Poète</string>
+    <string name="poem_filter_all">Tout</string>
+    <string name="poem_search_results">Résultats de recherche</string>
+    <string name="poem_result_count">%1$d au total</string>
+    <string name="poem_search_empty">Aucun résultat de recherche</string>
+    <string name="poem_history_empty">Aucun historique</string>
+    <string name="poem_favorites_only">Favoris uniquement</string>
+    <string name="poem_delete">Supprimer</string>
+    <string name="agent_tool_search_poem_title">Rechercher des poèmes</string>
+    <string name="agent_tool_search_poem_summary">Rechercher des poèmes chinois anciens par mot-clé</string>
+    <string name="agent_tool_search_poem_description">Rechercher des poèmes chinois anciens par mot-clé, en correspondant au titre, au poète et aux vers. Les mots-clés de 3 caractères ou plus utilisent la recherche en texte intégral ; les mots-clés plus courts (comme un nom de poète à deux caractères) utilisent un filtrage approximatif par échantillonnage. Renvoie l\'id du poème, le titre, le poète, la dynastie et un extrait ; utilisez get_poem_detail avec l\'id ou le titre pour obtenir le texte complet.</string>
+    <string name="agent_tool_search_poem_param_query">Mot-clé de recherche : fragment de vers, titre de poème ou nom de poète</string>
+    <string name="agent_tool_search_poem_param_max_results">Nombre maximum de résultats, 1-20, par défaut 10</string>
+    <string name="agent_tool_search_poem_query_required">query ne peut pas être vide</string>
+    <string name="agent_tool_search_poem_empty">Aucun poème trouvé pour « %1$s »</string>
+    <string name="agent_tool_search_poem_failed">Échec de la recherche de poèmes : %1$s</string>
+    <string-array name="agent_tool_search_poem_keywords">
+        <item>Poésie ancienne</item>
+        <item>Poèmes</item>
+        <item>Vers</item>
+        <item>Poète</item>
+        <item>poem</item>
+        <item>poetry</item>
+    </string-array>
+    <string-array name="agent_tool_search_poem_examples">
+        <item>Rechercher des poèmes sur la lune</item>
+        <item>Trouver quelques poèmes de Li Bai</item>
+        <item>Search poems about autumn</item>
+    </string-array>
+    <string name="agent_tool_get_poem_detail_title">Détails du poème</string>
+    <string name="agent_tool_get_poem_detail_summary">Obtenir le texte intégral du poème, avec la traduction et l\'interprétation déjà générées</string>
+    <string name="agent_tool_get_poem_detail_description">Obtenir le texte intégral d\'un poème chinois ancien ; si une traduction moderne par IA et une interprétation poétique ont déjà été générées, les renvoyer également. Vous pouvez passer poem_id (l\'id dans les résultats de search_poem) ou le titre du poème, le titre pouvant être associé à author pour lever l\'ambiguïté. Les poèmes récupérés en ligne seront enregistrés dans la base locale, ce qui rend le lien vers la page de détail utilisable.</string>
+    <string name="agent_tool_get_poem_detail_param_poem_id">id du poème, c\'est-à-dire l\'id dans les résultats de search_poem</string>
+    <string name="agent_tool_get_poem_detail_param_title">titre du poème, à utiliser si poem_id est inconnu</string>
+    <string name="agent_tool_get_poem_detail_param_author">nom du poète, facultatif, à associer au titre pour lever l\'ambiguïté</string>
+    <string name="agent_tool_get_poem_detail_id_or_title_required">Veuillez fournir poem_id ou title</string>
+    <string name="agent_tool_get_poem_detail_not_found">Poème introuvable : %1$s</string>
+    <string name="agent_tool_get_poem_detail_failed">Échec de l\'obtention des détails du poème : %1$s</string>
+    <string-array name="agent_tool_get_poem_detail_keywords">
+        <item>Détails du poème</item>
+        <item>Texte intégral</item>
+        <item>Traduction</item>
+        <item>Interprétation</item>
+        <item>poem detail</item>
+    </string-array>
+    <string-array name="agent_tool_get_poem_detail_examples">
+        <item>Donne-moi le texte intégral de 《静夜思》</item>
+        <item>Obtenir le poème avec l\'id 123</item>
+        <item>Show the full text of 静夜思</item>
+    </string-array>
+    <string name="agent_tool_query_poem_favorites_title">Poèmes favoris</string>
+    <string name="agent_tool_query_poem_favorites_summary">Voir les poèmes enregistrés en favoris localement</string>
+    <string name="agent_tool_query_poem_favorites_description">Lister les poèmes enregistrés en favoris localement par l\'utilisateur, avec id, titre, poète, dynastie et extrait. Requête purement locale, sans besoin de réseau.</string>
+    <string name="agent_tool_query_poem_favorites_param_max_results">Nombre maximum de résultats, 1-50, par défaut 20</string>
+    <string name="agent_tool_query_poem_favorites_empty">Aucun poème en favori pour le moment</string>
+    <string name="agent_tool_query_poem_favorites_failed">Échec de la requête des poèmes favoris : %1$s</string>
+    <string-array name="agent_tool_query_poem_favorites_keywords">
+        <item>Favoris</item>
+        <item>Poèmes favoris</item>
+        <item>favorite poems</item>
+        <item>favorites</item>
+    </string-array>
+    <string-array name="agent_tool_query_poem_favorites_examples">
+        <item>Quels poèmes ai-je en favoris</item>
+        <item>List my favorite poems</item>
+    </string-array>
+    <string name="agent_tool_poem_open_detail_link">Voir le poème</string>
+    <string name="agent_tool_poem_open_search_link">Ouvrir la recherche de poèmes</string>
+    <string name="agent_tool_poem_open_home_link">Ouvrir la poésie classique chinoise</string>
+    <string name="agent_tool_poem_unknown_error">Erreur inconnue</string>
+    <string name="poem_log_favorited">Ajouter « %1$s » aux favoris</string>
+    <string name="poem_log_unfavorited">Retirer « %1$s » des favoris</string>
+    <string name="poem_log_deleted">Supprimer « %1$s »</string>
+</resources>

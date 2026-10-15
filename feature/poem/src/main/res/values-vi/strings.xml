@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poem_page_title">Thơ cổ Trung Quốc</string>
+    <string name="poem_latest">Mới tạo</string>
+    <string name="poem_generate">Tạo một bài</string>
+    <string name="poem_generate_random">Tạo ngẫu nhiên</string>
+    <string name="poem_generating_pinyin">Đang tạo phiên âm…</string>
+    <string name="poem_ai_pinyin">Phiên âm AI</string>
+    <string name="poem_pinyin_done">Đã tạo phiên âm</string>
+    <string name="poem_recite">Đọc thơ</string>
+    <string name="poem_recite_stop">Dừng đọc</string>
+    <string name="poem_search">Tìm kiếm</string>
+    <string name="poem_history">Lịch sử</string>
+    <string name="poem_ai_insight">AI giải thích</string>
+    <string name="poem_favorite">Yêu thích</string>
+    <string name="poem_favorited">Đã yêu thích</string>
+    <string name="poem_retry">Thử lại</string>
+    <string name="poem_load_failed">Tải thất bại, vui lòng thử lại sau</string>
+    <string name="poem_generating_insight">Đang tạo giải thích…</string>
+    <string name="poem_generating_translation">Đang tạo bản dịch…</string>
+    <string name="poem_insight_title">Giải thích ý thơ</string>
+    <string name="poem_translation_title">Bản dịch hiện đại</string>
+    <string name="poem_regenerate">Tạo lại</string>
+    <string name="poem_insight_empty_hint">Nhấn để tạo giải thích ý thơ, giúp bạn hiểu ý nghĩa sâu xa của câu thơ</string>
+    <string name="poem_translation_empty_hint">Nhấn để tạo bản dịch hiện đại, giúp bạn hiểu ý nghĩa hiện đại của câu thơ</string>
+    <string name="poem_generate_click">Nhấn để tạo</string>
+    <string name="poem_history_title">Lịch sử</string>
+    <string name="poem_clear_history">Xóa lịch sử</string>
+    <string name="poem_clear_history_confirm">Xác nhận xóa lịch sử? Những bài thơ đã yêu thích sẽ được giữ lại.</string>
+    <string name="poem_confirm">Xác nhận</string>
+    <string name="poem_cancel">Hủy</string>
+    <string name="poem_empty_title">Chưa tạo bài thơ nào</string>
+    <string name="poem_empty_subtitle">Nhấn nút bên dưới để bắt đầu</string>
+    <string name="poem_search_hint">Tìm thơ / nhà thơ / từ khóa</string>
+    <string name="poem_filter_dynasty">Triều đại</string>
+    <string name="poem_filter_type">Thể loại</string>
+    <string name="poem_filter_author">Nhà thơ</string>
+    <string name="poem_filter_all">Tất cả</string>
+    <string name="poem_search_results">Kết quả tìm kiếm</string>
+    <string name="poem_result_count">Tổng %1$d bài</string>
+    <string name="poem_search_empty">Chưa có kết quả tìm kiếm</string>
+    <string name="poem_history_empty">Chưa có lịch sử</string>
+    <string name="poem_favorites_only">Chỉ xem yêu thích</string>
+    <string name="poem_delete">Xóa</string>
+    <string name="agent_tool_search_poem_title">Tìm kiếm thơ</string>
+    <string name="agent_tool_search_poem_summary">Tìm thơ cổ Trung Quốc theo từ khóa</string>
+    <string name="agent_tool_search_poem_description">Tìm thơ cổ Trung Quốc theo từ khóa, khớp tiêu đề, nhà thơ và câu thơ. Từ khóa từ 3 ký tự trở lên sẽ tìm toàn văn; từ khóa ngắn hơn (như tên nhà thơ hai chữ) sẽ lọc và lấy mẫu gần đúng. Trả về id bài thơ, tiêu đề, nhà thơ, triều đại và trích đoạn; dùng get_poem_detail truyền id hoặc tiêu đề để lấy toàn văn.</string>
+    <string name="agent_tool_search_poem_param_query">Từ khóa tìm kiếm: đoạn thơ, tên bài thơ hoặc tên nhà thơ</string>
+    <string name="agent_tool_search_poem_param_max_results">Số kết quả tối đa, 1-20, mặc định 10</string>
+    <string name="agent_tool_search_poem_query_required">query không được để trống</string>
+    <string name="agent_tool_search_poem_empty">Không tìm thấy bài thơ nào liên quan đến「%1$s」</string>
+    <string name="agent_tool_search_poem_failed">Tìm kiếm thơ thất bại: %1$s</string>
+    <string-array name="agent_tool_search_poem_keywords">
+        <item>Thơ cổ</item>
+        <item>Thơ</item>
+        <item>Câu thơ</item>
+        <item>Nhà thơ</item>
+        <item>poem</item>
+        <item>poetry</item>
+    </string-array>
+    <string-array name="agent_tool_search_poem_examples">
+        <item>Tìm thơ viết về mặt trăng</item>
+        <item>Tìm vài bài thơ của Lý Bạch</item>
+        <item>Search poems about autumn</item>
+    </string-array>
+    <string name="agent_tool_get_poem_detail_title">Chi tiết bài thơ</string>
+    <string name="agent_tool_get_poem_detail_summary">Lấy toàn văn bài thơ, bao gồm bản dịch và diễn giải đã tạo</string>
+    <string name="agent_tool_get_poem_detail_description">Lấy toàn văn một bài thơ cổ Trung Quốc; nếu trước đó đã tạo bản dịch hiện đại bằng AI và diễn giải thi ý, trả về kèm theo. Có thể truyền poem_id (id trong kết quả search_poem) hoặc tiêu đề bài thơ, tiêu đề có thể kết hợp author để phân biệt. Bài thơ lấy từ mạng sẽ được ghi vào thư viện cục bộ, nhờ đó liên kết trang chi tiết mới dùng được.</string>
+    <string name="agent_tool_get_poem_detail_param_poem_id">id bài thơ, tức id trong kết quả search_poem</string>
+    <string name="agent_tool_get_poem_detail_param_title">Tiêu đề bài thơ, dùng khi không biết poem_id</string>
+    <string name="agent_tool_get_poem_detail_param_author">Tên nhà thơ, tùy chọn, kết hợp với tiêu đề để phân biệt</string>
+    <string name="agent_tool_get_poem_detail_id_or_title_required">Vui lòng cung cấp poem_id hoặc title</string>
+    <string name="agent_tool_get_poem_detail_not_found">Không tìm thấy bài thơ: %1$s</string>
+    <string name="agent_tool_get_poem_detail_failed">Lấy chi tiết bài thơ thất bại: %1$s</string>
+    <string-array name="agent_tool_get_poem_detail_keywords">
+        <item>Chi tiết bài thơ</item>
+        <item>Toàn văn</item>
+        <item>Bản dịch</item>
+        <item>Diễn giải</item>
+        <item>poem detail</item>
+    </string-array>
+    <string-array name="agent_tool_get_poem_detail_examples">
+        <item>Cho tôi toàn văn bài 《Tĩnh Dạ Tứ》</item>
+        <item>Lấy bài thơ có id là 123</item>
+        <item>Show the full text of 静夜思</item>
+    </string-array>
+    <string name="agent_tool_query_poem_favorites_title">Bài thơ đã lưu</string>
+    <string name="agent_tool_query_poem_favorites_summary">Xem các bài thơ đã lưu cục bộ</string>
+    <string name="agent_tool_query_poem_favorites_description">Liệt kê các bài thơ người dùng đã lưu cục bộ, gồm id, tiêu đề, nhà thơ, triều đại và trích đoạn. Truy vấn thuần cục bộ, không cần mạng.</string>
+    <string name="agent_tool_query_poem_favorites_param_max_results">Số lượng trả về tối đa, 1-50, mặc định 20</string>
+    <string name="agent_tool_query_poem_favorites_empty">Chưa lưu bài thơ nào</string>
+    <string name="agent_tool_query_poem_favorites_failed">Truy vấn bài thơ đã lưu thất bại: %1$s</string>
+    <string-array name="agent_tool_query_poem_favorites_keywords">
+        <item>Lưu</item>
+        <item>Bài thơ đã lưu</item>
+        <item>favorite poems</item>
+        <item>favorites</item>
+    </string-array>
+    <string-array name="agent_tool_query_poem_favorites_examples">
+        <item>Tôi đã lưu những bài thơ nào</item>
+        <item>List my favorite poems</item>
+    </string-array>
+    <string name="agent_tool_poem_open_detail_link">Xem bài thơ</string>
+    <string name="agent_tool_poem_open_search_link">Mở tìm kiếm bài thơ</string>
+    <string name="agent_tool_poem_open_home_link">Mở thơ cổ Trung Quốc</string>
+    <string name="agent_tool_poem_unknown_error">Lỗi không xác định</string>
+    <string name="poem_log_favorited">Yêu thích《%1$s》</string>
+    <string name="poem_log_unfavorited">Bỏ yêu thích《%1$s》</string>
+    <string name="poem_log_deleted">Xóa《%1$s》</string>
+</resources>

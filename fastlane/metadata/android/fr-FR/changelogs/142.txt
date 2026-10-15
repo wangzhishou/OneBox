@@ -1,0 +1,7 @@
+• Corrigé : plantage au lancement lorsque l'Assistant est défini comme écran de démarrage
+• Nouveau : rapporteur avec fond caméra et mesure à la règle à deux points
+• Les jeux hors ligne Échecs, Échecs chinois et Gomoku utilisent désormais le moteur sur l'appareil
+• IA : correction de l'appel d'outils Anthropic ainsi que l'ajout/modification/suppression de moteur personnalisé
+• IA : les longs blocs de raisonnement peuvent être réduits, l'historique de chat s'enregistre plus fiablement
+• Cartes en verre, champs de saisie et arrière-plans de jour plus nets
+• Corrections de bugs et améliorations des performances

@@ -1,0 +1,7 @@
+• Nouveau : mémoire et compétences de l'agent — il retient votre façon de travailler
+• Nouveau : saisie vocale IA avec dictée multi-segments
+• Nouveau : centre Dossiers de santé — indicateurs, saisies groupées, analyses IA, suivi du cycle
+• Nouveau : détection de contenu IA, avec prise en charge du chinois traditionnel
+• Nouveau : Ad Watch — publicités récompensées facultatives qui rapportent des points IA
+• Roue de décision repensée, thème Material 3 Expressive, gestionnaire d'éléments avec statistiques
+• Corrections de bugs et améliorations des performances

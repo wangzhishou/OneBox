@@ -176,10 +176,12 @@ android {
         resValue("string", "com.crashlytics.RequireBuildId", "false")
         buildConfigField("String", "FLAVOR", "\"google\"")
         dimension = "app"
-        // 海外包: 英文 + 简体中文 + 西班牙语 + 巴西葡萄牙语 + 印尼语 + 印地语 + 俄语 + 土耳其语 + 日语 + 韩语 + 菲律宾语 + 德语 + 阿拉伯语, 更多语种翻译就绪后再放开
+        // 海外包: 英文 + 简体中文 + 西班牙语 + 巴西葡萄牙语 + 印尼语 + 印地语 + 俄语 + 土耳其语 + 日语 + 韩语 + 菲律宾语 + 德语 + 阿拉伯语 + 越南语 + 法语, 更多语种翻译就绪后再放开
         // 完整列表参考 https://support.google.com/googleplay/android-developer/answer/9888077
         androidResources {
             localeFilters += listOf(
+                "vi",        // 越南语
+                "fr",        // 法语
                 "en",        // 英文 (默认)
                 "zh-rCN",    // 简体中文
                 "zh-rTW",    // 繁体中文 (台湾; zh-HK/zh-Hant 靠 locale 回退命中)
@@ -223,6 +225,8 @@ android {
         // 海外包: 与 google 渠道一致的多语言集合
         androidResources {
             localeFilters += listOf(
+                "vi",        // 越南语
+                "fr",        // 法语
                 "en",        // 英文 (默认)
                 "zh-rCN",    // 简体中文
                 "zh-rTW",    // 繁体中文 (台湾; zh-HK/zh-Hant 靠 locale 回退命中)

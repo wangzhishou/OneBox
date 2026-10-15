@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">Pub à gogo</string>
+    <string name="ad_watch_headline_1">Les grosses marques dépensent sans compter en pub, quel est leur jeu ?</string>
+    <string name="ad_watch_headline_2">À quoi ressemblent les pubs des grandes entreprises ?</string>
+    <string name="ad_watch_headline_3">15 secondes pour découvrir le savoir-faire des marques</string>
+    <string name="ad_watch_headline_4">Les autres paient pour capter l\'attention, vous gagnez des points au passage</string>
+    <string name="ad_watch_headline_5">Les annonceurs se livrent à fond, assistez gratuitement</string>
+    <string name="ad_watch_subtitle">Regardez 15 s de pub, gagnez %1$d points</string>
+    <string name="ad_watch_cta">Regarder la pub · +%1$d points</string>
+    <string name="ad_watch_remaining">%1$d/%2$d restantes aujourd\'hui</string>
+    <string name="ad_watch_daily_limit_reached">Plus de tentatives aujourd\'hui, revenez demain</string>
+    <string name="ad_watch_loading">Chargement de la pub…</string>
+    <string name="ad_watch_load_failed">Échec du chargement de la pub</string>
+    <string name="ad_watch_retry">Réessayer</string>
+    <string name="ad_watch_ad_not_ready">Pub pas encore prête, réessayez plus tard</string>
+</resources>

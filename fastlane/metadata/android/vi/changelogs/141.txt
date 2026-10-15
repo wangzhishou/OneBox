@@ -1,0 +1,7 @@
+• Mới: Cờ caro và Cờ vua với đối thủ AI
+• Xây dựng lại màn hình chơi và xem lại ván Cờ tướng
+• Mới: tìm kiếm từ khóa trên tất cả công cụ
+• Sổ thu chi giờ hỗ trợ đơn vị tiền tệ địa phương của bạn
+• Thiết kế lại Trung tâm thông báo với thông báo đẩy
+• Mới: hỗ trợ tiếng Ả Rập và thêm nhiều engine tạo ảnh
+• Sửa lỗi và cải thiện hiệu năng

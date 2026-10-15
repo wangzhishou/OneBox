@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">Invite système de chat par défaut</string>
+    <string name="sys_prompt_default_desc">Règles système par défaut du chat</string>
+    <string name="sys_prompt_agent_create_title">Invite système de création d\'Agent</string>
+    <string name="sys_prompt_agent_create_desc">Invite système prédéfinie pour créer un Agent</string>
+    <string name="sys_prompt_prompt_create_title">Invite système de création de Prompt</string>
+    <string name="sys_prompt_prompt_create_desc">Invite système prédéfinie pour créer un Prompt</string>
+    <string name="sys_prompt_bazi_title">Invite système d\'analyse du thème astrologique BaZi</string>
+    <string name="sys_prompt_bazi_desc">Invite système prédéfinie pour l\'analyse du thème astrologique BaZi</string>
+    <string name="sys_prompt_xiangqi_title">Invite système de coup aux échecs chinois</string>
+    <string name="sys_prompt_xiangqi_desc">Invite système prédéfinie pour les parties homme-machine aux échecs chinois avec LLM</string>
+    <string name="sys_prompt_iching_title">Invite système d\'interprétation des six lignes du Yi Jing</string>
+    <string name="sys_prompt_iching_desc">Utilisée pour générer une interprétation ciblée en combinant la question, l\'hexagramme et la ligne mobile</string>
+    <string name="sys_prompt_mode_agent_title">Protocole d\'exécution</string>
+    <string name="sys_prompt_mode_agent_desc">Invite système qui pilote l\'assistant pour appeler des outils et accomplir des tâches</string>
+    <string name="sys_prompt_duel_title">Modèle d\'invite pour le dialogue/interaction IA</string>
+    <string name="sys_prompt_duel_desc">Modèles d\'instructions système, de règles de prise de parole des rôles et d\'amorces de tours utilisés dans le dialogue/l\'interaction IA</string>
+    <string name="sys_prompt_memory_global_title">Amorce du profil de mémoire</string>
+    <string name="sys_prompt_memory_global_desc">Amorce de la section profil utilisateur lors de l\'injection de mémoire IA</string>
+    <string name="sys_prompt_memory_recent_title">Amorce du journal récent de mémoire</string>
+    <string name="sys_prompt_memory_recent_desc">Amorce de la section journal récent lors de l\'injection de mémoire IA (avec indication de recherche memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Amorce du journal récent de mémoire (sans outil)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Version dégradée utilisée lorsque le modèle ne prend pas en charge l\'appel d\'outils</string>
+    <string name="sys_prompt_skills_guidance_title">Amorce de la liste des compétences</string>
+    <string name="sys_prompt_skills_guidance_desc">Amorce de la liste des compétences disponibles</string>
+    <string name="activity_log_habit_app_title">Suivi d\'habitudes</string>
+    <string name="activity_log_habit_created">Nouvelle habitude : %1$s</string>
+    <string name="activity_log_habit_check_in">Enregistrer : %1$s</string>
+    <string name="marktodo_preset_category_title">Mes tâches</string>
+    <string name="marktodo_preset_task_title">Bienvenue dans les tâches</string>
+    <string name="marktodo_preset_task_note">Cochez la case à gauche pour me terminer ; appuyez sur moi pour modifier ; appui long sur la carte du sujet pour modifier ou supprimer</string>
+    <string name="marktodo_preset_tag_work">Travail</string>
+    <string name="marktodo_preset_tag_study">Études</string>
+    <string name="marktodo_preset_tag_life">Vie</string>
+    <string name="marktodo_preset_tag_health">Santé</string>
+    <string name="marktodo_preset_tag_travel">Voyage</string>
+    <string name="activity_log_teleprompter_app_title">Téléprompteur</string>
+    <string name="activity_log_bookkeeping_app_title">Comptabilité</string>
+    <string name="activity_log_poem_app_title">Poésie chinoise classique</string>
+    <string name="activity_log_todo_app_title">Liste de tâches</string>
+    <string name="activity_log_xiangqi_app_title">Échecs chinois</string>
+</resources>

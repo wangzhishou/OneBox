@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_title">Sélectionner une date</string>
+    <string name="date_picker_confirm">Confirmer</string>
+    <string name="date_picker_cancel">Annuler</string>
+    <string name="date_picker_edit">Modifier</string>
+    <string name="date_picker_select_year_month">Sélectionner le mois et l\'année</string>
+    <string name="date_picker_year_input">Année</string>
+    <string name="date_picker_year_label">an</string>
+    <string name="date_picker_month_label">mois</string>
+    <string name="date_picker_day_label">jour</string>
+    <string name="date_picker_current_year">Cette année</string>
+    <string name="blessing_effect_merit_plus_one">Bonne chance +1</string>
+    <string name="date_picker_month_format">%d mois</string>
+    <string name="date_picker_previous_month">Mois précédent</string>
+    <string name="date_picker_next_month">Mois suivant</string>
+    <string name="date_picker_year_format">%d an</string>
+    <string name="date_picker_year_month_format">%1$d an %2$d mois</string>
+    <string name="date_picker_date_format">%1$d an %2$d mois %3$d jour</string>
+    <string name="date_picker_weekday_sun">Dim</string>
+    <string name="date_picker_weekday_mon">Lun</string>
+    <string name="date_picker_weekday_tue">Mar</string>
+    <string name="date_picker_weekday_wed">Mer</string>
+    <string name="date_picker_weekday_thu">Jeu</string>
+    <string name="date_picker_weekday_fri">Ven</string>
+    <string name="date_picker_weekday_sat">Sam</string>
+    <string name="time_range_picker_title">Sélectionner une plage horaire</string>
+    <string name="time_picker_title">Sélectionner l\'heure</string>
+    <string name="time_range_picker_start_time">Heure de début</string>
+    <string name="time_range_picker_end_time">Heure de fin</string>
+    <string name="time_range_picker_hour">h</string>
+    <string name="time_range_picker_minute">min</string>
+    <string name="time_range_picker_hint">Astuce : saisissez une heure entre 0 et 23 et des minutes entre 0 et 59</string>
+    <string name="date_range_picker_title">Sélectionner une plage de dates</string>
+    <string name="date_range_start">Date de début</string>
+    <string name="date_range_end">Date de fin</string>
+    <string name="week_selector_week_title">%2$d/%1$d · Semaine %3$d</string>
+    <string name="icon_picker_icon_count">%1$d icônes</string>
+    <string name="icon_picker_title">Sélectionner une icône</string>
+    <string name="icon_picker_search_hint">Rechercher le nom d\'une icône…</string>
+    <string name="icon_picker_tab_app">Appliquer</string>
+    <string name="icon_picker_tab_material">Général</string>
+    <string name="icon_picker_tab_all">Tout</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mer</item>
+        <item>Jeu</item>
+        <item>Ven</item>
+        <item>Sam</item>
+        <item>Dim</item>
+    </string-array>
+</resources>

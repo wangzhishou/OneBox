@@ -1,0 +1,4 @@
+• Nouveau : version F-Droid (foss) — variante entièrement open source, sans SDK propriétaire
+• Nouveau : entrée Soutenir le développeur (Ko-fi) pour les utilisateurs à l'étranger
+• Correctif : le sélecteur de fichiers ne demande plus la permission de stockage de façon prématurée
+• Corrections de bugs et améliorations des performances

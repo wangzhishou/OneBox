@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">Calculateur de prêt</string>
+    <string name="loan_calc_amount_label">Montant du prêt (yuan)</string>
+    <string name="loan_calc_amount_hint">Veuillez saisir le montant</string>
+    <string name="loan_calc_term_label">Durée du prêt</string>
+    <string name="loan_calc_term_hint">Sélectionner</string>
+    <string name="loan_calc_rate_label">Taux d\'intérêt annuel (%)</string>
+    <string name="loan_calc_rate_hint">Veuillez saisir le taux d\'intérêt annuel</string>
+    <string name="loan_calc_method_label">Mode de remboursement</string>
+    <string name="loan_calc_method_hint">Sélectionner</string>
+    <string name="loan_calc_start">Commencer le calcul</string>
+    <string name="loan_calc_cancel">Annuler</string>
+    <string name="loan_method_equal_installment">Capital et intérêts égaux</string>
+    <string name="loan_method_equal_installment_desc">Mensualité, capital et intérêts identiques chaque mois</string>
+    <string name="loan_method_equal_payment">Mensualités constantes</string>
+    <string name="loan_method_equal_payment_desc">Mensualité constante, capital croissant chaque mois, intérêts décroissants chaque mois</string>
+    <string name="loan_method_equal_principal">Capital constant</string>
+    <string name="loan_method_equal_principal_desc">Mensualité décroissante chaque mois, capital constant chaque mois, intérêts décroissants chaque mois</string>
+    <string name="loan_method_interest_first">Intérêts d\'abord, capital ensuite</string>
+    <string name="loan_method_interest_first_desc">Intérêts fixes chaque mois, remboursement du capital total à l\'échéance</string>
+    <string name="loan_result_monthly_payment">Mensualité moyenne</string>
+    <string name="loan_result_total_interest">Intérêts totaux</string>
+    <string name="loan_result_total_repayment">Montant total du remboursement</string>
+    <string name="loan_result_schedule_title">Plan de remboursement</string>
+    <string name="loan_result_month">Échéance</string>
+    <string name="loan_result_monthly_col">Mensualité</string>
+    <string name="loan_result_principal_col">Capital</string>
+    <string name="loan_result_interest_col">Intérêts</string>
+    <string name="loan_result_remaining_col">Capital restant</string>
+    <string name="loan_input_error_amount">Veuillez saisir un montant de prêt valide</string>
+    <string name="loan_input_error_term">Veuillez sélectionner la durée du prêt</string>
+    <string name="loan_input_error_rate">Veuillez saisir un taux d\'intérêt annuel valide</string>
+    <string name="loan_input_error_method">Veuillez choisir le mode de remboursement</string>
+    <string name="loan_term_months">%d mois</string>
+    <string name="loan_term_years">%1$d ans (%2$d mois)</string>
+    <string name="loan_term_picker_title">Choisir la durée du prêt</string>
+</resources>

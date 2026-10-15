@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="period_title">Suivi des règles</string>
+    <string name="period_stats_title">Statistiques du cycle</string>
+    <string name="period_detail_title">Détails de l\'enregistrement</string>
+    <string name="period_add_title">Ajouter un enregistrement</string>
+    <string name="period_edit_title">Modifier l\'enregistrement</string>
+    <string name="period_tab_records">Enregistrer</string>
+    <string name="period_tab_stats">Données</string>
+    <string name="period_search">Rechercher</string>
+    <string name="period_search_hint">Rechercher une note ou un symptôme</string>
+    <string name="period_add">Ajouter</string>
+    <string name="period_save">Enregistrer</string>
+    <string name="period_cancel">Annuler</string>
+    <string name="period_delete">Supprimer</string>
+    <string name="period_loading">Chargement…</string>
+    <string name="period_saved">Enregistré</string>
+    <string name="period_record_added">Enregistré</string>
+    <string name="period_deleted">Enregistrement supprimé</string>
+    <string name="period_save_failed">Échec de l\'enregistrement</string>
+    <string name="period_toast_recorded">Règles enregistrées</string>
+    <string name="period_empty_title">Aucun enregistrement pour le moment</string>
+    <string name="period_empty_subtitle">Décrivez votre situation à l\'IA pour générer un enregistrement en un clic</string>
+    <string name="period_ai_quick_record">Enregistrement rapide par IA</string>
+    <string name="period_manual_record">Enregistrement manuel</string>
+    <string name="period_empty_example">Par exemple : « J\'ai eu mes règles hier, douleurs abdominales assez marquées »</string>
+    <string name="period_ai_assist_title">Assistant de suivi des règles</string>
+    <string name="period_ai_assist_fill_in">J\'ai eu mes règles hier, douleurs abdominales marquées, aide-moi à enregistrer</string>
+    <string name="period_ai_assist_prompt">Tu es l\'assistant de suivi des règles de l\'utilisatrice. Lorsqu\'elle décrit son état, son flux, ses symptômes ou son humeur, utilise l\'outil add_period_record pour enregistrer (date au format yyyy-MM-dd). Lorsqu\'elle demande la durée du cycle, les prochaines règles ou des statistiques, réponds avec query_period_records. Pour corriger un enregistrement, utilise update_period_record, et pour le supprimer, delete_period_record. Confirme brièvement après chaque enregistrement.</string>
+    <string name="period_record_count">%1$d enregistrements</string>
+    <string name="period_month_group_pattern">MMMM yyyy</string>
+    <string name="period_short_date_pattern">d MMMM</string>
+    <string name="period_note_counter">%1$d/%2$d</string>
+    <string name="period_symptoms_multi_hint">（choix multiple）</string>
+    <string name="period_cycle_day">Jour %1$d du cycle</string>
+    <string name="period_cycle_day_unknown">Jour — du cycle</string>
+    <string name="period_status_period">Pendant les règles</string>
+    <string name="period_status_ovulation">Période d\'ovulation</string>
+    <string name="period_status_normal">Normal</string>
+    <string name="period_status_start">Début</string>
+    <string name="period_status_mid">Pendant les règles</string>
+    <string name="period_status_end">Fin</string>
+    <string name="period_calendar_prev">Mois précédent</string>
+    <string name="period_calendar_next">Mois suivant</string>
+    <string name="period_field_date">Date</string>
+    <string name="period_field_status">État des règles</string>
+    <string name="period_field_flow">Intensité du flux</string>
+    <string name="period_field_symptoms">Symptômes</string>
+    <string name="period_field_mood">Humeur</string>
+    <string name="period_field_note">Remarques</string>
+    <string name="period_note_hint">Saisir une remarque (facultatif)</string>
+    <string name="period_delete_record">Supprimer l\'enregistrement</string>
+    <string name="period_delete_confirm_title">Supprimer cet enregistrement ?</string>
+    <string name="period_delete_confirm_message">La suppression est irréversible.</string>
+    <string name="period_flow_none">Aucun</string>
+    <string name="period_flow_light">Léger</string>
+    <string name="period_flow_medium">Moyen</string>
+    <string name="period_flow_heavy">Fort</string>
+    <string name="period_mood_very_happy">Très heureux</string>
+    <string name="period_mood_happy">Heureux</string>
+    <string name="period_mood_normal">Neutre</string>
+    <string name="period_mood_sad">Triste</string>
+    <string name="period_mood_very_sad">Triste</string>
+    <string name="period_symptom_abdominal_pain">Maux de ventre</string>
+    <string name="period_symptom_headache">Maux de tête</string>
+    <string name="period_symptom_back_pain">Mal de dos</string>
+    <string name="period_symptom_mood_swings">Sautes d\'humeur</string>
+    <string name="period_symptom_breast_tenderness">Seins douloureux</string>
+    <string name="period_symptom_fatigue">Fatigue</string>
+    <string name="period_symptom_nausea">Nausées</string>
+    <string name="period_symptom_insomnia">Insomnie</string>
+    <string name="period_symptom_appetite_change">Changements d\'appétit</string>
+    <string name="period_symptom_acne">Acné</string>
+    <string name="period_symptom_edema">Rétention d\'eau</string>
+    <string name="period_stats_range_6m">6 derniers mois</string>
+    <string name="period_stats_range_day">Jour</string>
+    <string name="period_stats_range_week">Semaine</string>
+    <string name="period_stats_range_month">Mois</string>
+    <string name="period_stats_avg_cycle">Cycle moyen</string>
+    <string name="period_stats_avg_period">Règles moyennes</string>
+    <string name="period_stats_next">Prochaine prédiction</string>
+    <string name="period_stats_vs_prev">%1$+d jours vs cycle précédent</string>
+    <string name="period_stats_vs_prev_na">—</string>
+    <string name="period_stats_trend_title">Tendance de la durée du cycle</string>
+    <string name="period_stats_trend_empty">Au moins deux débuts de règles sont nécessaires</string>
+    <string name="period_stats_symptom_title">Répartition des symptômes</string>
+    <string name="period_stats_symptom_empty">Aucune donnée de symptôme</string>
+    <string name="period_stats_symptom_center">Total des symptômes</string>
+    <string name="period_day_unit">jours</string>
+    <string name="period_month_unit">mois</string>
+    <string name="period_next_label">Prochaine prédiction</string>
+    <string name="period_days_until">Dans %1$d jours</string>
+    <string name="period_timeline_title">Chronologie</string>
+    <string name="period_timeline_start">Début des règles</string>
+    <string name="period_timeline_end">Fin prévue des règles</string>
+    <string name="period_log_record_created">Ajouter un enregistrement de règles</string>
+    <string name="period_log_record_updated">Mettre à jour l\'enregistrement de règles</string>
+    <string name="period_log_record_deleted">Supprimer l\'enregistrement de règles</string>
+    <string name="agent_tool_add_period_record_title">Ajouter un enregistrement de règles</string>
+    <string name="agent_tool_add_period_record_summary">Enregistrer le début/la fin des règles, le flux, les symptômes et l\'humeur</string>
+    <string name="agent_tool_add_period_record_description">Enregistrer une période de règles : date (yyyy-MM-dd), is_period_start / is_period_end facultatifs, flow_intensity (NONE/LIGHT/MEDIUM/HEAVY), tableau de symptômes, mood (VERY_HAPPY/HAPPY/NORMAL/SAD/VERY_SAD) et note. Lorsque l\'utilisatrice énonce un fait lié aux règles (avoir ses règles, menstruations, douleurs abdominales, flux), il s\'agit d\'une demande d\'enregistrement : appeler cet outil pour écrire, ne pas transformer en conseil médical. Si cela a commencé hier, date = hier et is_period_start=true, les douleurs abdominales vont dans symptoms.</string>
+    <string name="agent_tool_add_period_record_failed">Échec de l\'ajout de l\'enregistrement de règles : %1$s</string>
+    <string name="agent_tool_query_period_records_title">Consulter les enregistrements de règles</string>
+    <string name="agent_tool_query_period_records_summary">Consulter les enregistrements, les statistiques de cycle et la prochaine prédiction</string>
+    <string name="agent_tool_query_period_records_description">Consulter les enregistrements de règles récents, ainsi que la durée moyenne du cycle, la durée moyenne des règles et la date prévue des prochaines règles. limit facultatif.</string>
+    <string name="agent_tool_query_period_records_empty">Aucun enregistrement de règles pour le moment.</string>
+    <string name="agent_tool_query_period_records_failed">Échec de la consultation des enregistrements de règles : %1$s</string>
+    <string name="agent_tool_update_period_record_title">Mettre à jour l\'enregistrement de règles</string>
+    <string name="agent_tool_update_period_record_summary">Mettre à jour un enregistrement de règles existant via record_id</string>
+    <string name="agent_tool_update_period_record_description">Mettre à jour l\'enregistrement de règles. Fournir record_id, ainsi que les champs à modifier (date, is_period_start, is_period_end, flow_intensity, symptoms, mood, note).</string>
+    <string name="agent_tool_update_period_record_failed">Échec de la mise à jour de l\'enregistrement de règles : %1$s</string>
+    <string name="agent_tool_delete_period_record_title">Supprimer l\'enregistrement de règles</string>
+    <string name="agent_tool_delete_period_record_summary">Supprimer un enregistrement de règles via record_id</string>
+    <string name="agent_tool_delete_period_record_description">Supprimer définitivement un enregistrement de règles. Nécessite record_id et la confirmation de l\'utilisateur.</string>
+    <string name="agent_tool_delete_period_record_done">Enregistrement de règles %1$s supprimé</string>
+    <string name="agent_tool_delete_period_record_failed">Échec de la suppression de l\'enregistrement de règles : %1$s</string>
+    <string name="agent_tool_period_param_date">Date d\'enregistrement, yyyy-MM-dd</string>
+    <string name="agent_tool_period_param_is_start">Indique si ce jour est le début des règles</string>
+    <string name="agent_tool_period_param_is_end">Indique si ce jour est la fin des règles</string>
+    <string name="agent_tool_period_param_flow">Intensité du flux : NONE, LIGHT, MEDIUM ou HEAVY</string>
+    <string name="agent_tool_period_param_symptoms">Tableau de symptômes, ex. ABDOMINAL_PAIN, HEADACHE, FATIGUE</string>
+    <string name="agent_tool_period_param_mood">Humeur : VERY_HAPPY, HAPPY, NORMAL, SAD ou VERY_SAD</string>
+    <string name="agent_tool_period_param_note">Note facultative</string>
+    <string name="agent_tool_period_param_record_id">ID de l\'enregistrement des règles</string>
+    <string name="agent_tool_period_param_limit">Nombre maximum de résultats (1-50)</string>
+    <string name="agent_tool_period_label_date">Date</string>
+    <string name="agent_tool_period_label_flow">Flux</string>
+    <string name="agent_tool_period_label_symptoms">Symptômes</string>
+    <string name="agent_tool_period_open_link">Ouvrir l\'enregistrement des règles</string>
+    <string name="agent_tool_period_detail_link">Ouvrir les détails de l\'enregistrement</string>
+    <string name="agent_tool_period_no_next">Données insuffisantes</string>
+    <string name="agent_tool_period_unknown_error">Erreur inconnue</string>
+    <string-array name="agent_tool_add_period_record_keywords">
+        <item>period</item>
+        <item>menstruation</item>
+        <item>cycle</item>
+        <item>Règles</item>
+        <item>Menstruation</item>
+        <item>Règles</item>
+    </string-array>
+    <string-array name="agent_tool_add_period_record_examples">
+        <item>I started my period today with mild cramps</item>
+        <item>Aide-moi à noter que mes règles ont commencé aujourd\'hui, flux moyen</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_keywords">
+        <item>cycle</item>
+        <item>next period</item>
+        <item>Cycle</item>
+        <item>Prédiction</item>
+    </string-array>
+    <string-array name="agent_tool_query_period_records_examples">
+        <item>When is my next period?</item>
+        <item>Mon cycle est-il régulier ?</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_keywords">
+        <item>update period</item>
+        <item>Modifier l\'enregistrement des règles</item>
+    </string-array>
+    <string-array name="agent_tool_update_period_record_examples">
+        <item>Update yesterday\'s record to heavy flow</item>
+        <item>Changer le flux de l\'enregistrement d\'hier en abondant</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_keywords">
+        <item>delete period</item>
+        <item>Supprimer l\'enregistrement des règles</item>
+    </string-array>
+    <string-array name="agent_tool_delete_period_record_examples">
+        <item>Delete the period record from yesterday</item>
+        <item>Supprimer l\'enregistrement de règles d\'hier</item>
+    </string-array>
+</resources>

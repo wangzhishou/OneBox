@@ -1,0 +1,6 @@
+• Trình soạn thảo Markup được làm lại: chỉnh sửa văn bản ngay trên canvas, bảng điều khiển gọn gàng hơn
+• Cờ vua, Cờ tướng và Cờ caro: bố cục đẹp hơn, luyện tập thế cờ, gợi ý nước đi và xuất GIF xem lại
+• Dấu trang hợp nhất: yêu thích trình duyệt và web ở cùng một nơi, có danh mục và biểu tượng
+• Trợ lý AI: chế độ Agent đơn giản hơn, thẻ khởi động nhanh, lịch sử không còn tự động tạo lại
+• Giao diện mặc định mới: chủ đề Material 3 thuần (hiệu ứng kính giờ là tùy chọn), màu nhấn thống nhất
+• Trình soạn thảo khởi động nhanh hơn; sửa lỗi deep-link và hộp thoại xuất

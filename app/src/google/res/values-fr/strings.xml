@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_launcher_name">WanBaoHe</string>
+    <string name="app_name">WanBaoHe</string>
+    <string name="default_folder">Documents/OneBox</string>
+    <string name="default_prefix">OneBox</string>
+    <string name="push_channel_comment_reply_name">Notifications</string>
+    <string name="push_channel_comment_reply_desc">Réponses aux commentaires, réponses aux retours et notifications système</string>
+</resources>

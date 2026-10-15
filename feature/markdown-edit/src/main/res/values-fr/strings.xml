@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_code_block">Insérer un bloc de code</string>
+    <string name="code_label">Code</string>
+    <string name="enter_code_hint">Saisir le code...</string>
+    <string name="select_language">Choisir la langue :</string>
+    <string name="search_language">Rechercher une langue</string>
+    <string name="search_language_hint">Saisir le nom de la langue...</string>
+    <string name="or_enter_image_url">Ou saisir l\'adresse d\'une image web :</string>
+    <string name="image_description_label">Description de l\'image</string>
+    <string name="image_description_hint">Légende de l\'image</string>
+    <string name="image_url_label">Adresse de l\'image</string>
+    <string name="link_text_placeholder">Texte affiché</string>
+    <string name="resize_image">Redimensionner l\'image</string>
+    <string name="markdown_image_resize_width">Largeur</string>
+    <string name="original_width">Largeur d\'origine : %1$dpx</string>
+    <string name="markdown_placeholder">Saisir le contenu...</string>
+</resources>

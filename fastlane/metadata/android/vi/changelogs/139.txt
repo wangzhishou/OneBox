@@ -1,0 +1,4 @@
+• Mới: Bản dựng F-Droid (foss) — phiên bản mã nguồn mở hoàn toàn, không có SDK độc quyền
+• Mới: Mục Ủng hộ nhà phát triển (Ko-fi) dành cho người dùng nước ngoài
+• Sửa lỗi: trình chọn tệp không còn yêu cầu quyền truy cập bộ nhớ quá sớm
+• Sửa lỗi và cải thiện hiệu suất

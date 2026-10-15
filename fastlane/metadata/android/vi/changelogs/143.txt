@@ -1,0 +1,6 @@
+• Đã sửa: lỗi thoát ứng dụng khi khởi động nếu Trợ lý được đặt làm màn hình bắt đầu
+• Giao diện: viền kính giờ đây tuân theo công tắc lớp nền
+• Mới: thước đo góc với nền camera và đo thước hai điểm
+• Công cụ ngoại tuyến trên thiết bị cho Cờ vua, Cờ tướng và Cờ caro
+• AI: đã sửa lỗi gọi công cụ Anthropic và quản lý công cụ tùy chỉnh
+• Sửa lỗi và cải thiện hiệu suất

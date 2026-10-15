@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_empty">Aucun message</string>
+    <string name="notification_mark_all_read">Tout marquer comme lu</string>
+    <string name="notification_login_hint">Connectez-vous pour voir les réponses aux commentaires, les réponses aux retours et les notifications système</string>
+    <string name="notification_load_failed">Échec du chargement des messages</string>
+    <string name="notification_retry">Réessayer</string>
+    <string name="notification_type_comment_reply">Réponse à un commentaire</string>
+    <string name="notification_type_system">Notification système</string>
+    <string name="notification_type_feedback_reply">Réponse à un retour</string>
+    <string name="notification_section_my_comments">Mon commentaire</string>
+    <string name="notification_section_replies">Réponse de l\'utilisateur</string>
+    <string name="notification_you_commented">Vous avez commenté dans « %1$s » :</string>
+    <string name="notification_you_commented_fallback">Vous avez dit dans votre commentaire :</string>
+    <string name="notification_replied_to_you">%1$s a répondu à votre commentaire :</string>
+    <string name="notification_from_source">De : %1$s</string>
+    <string name="notification_replier_anonymous">Utilisateur</string>
+    <string name="notification_section_messages">Notification</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="agent_tool_submit_feedback_title">Gửi phản hồi</string>
+    <string name="agent_tool_submit_feedback_summary">Gửi đề xuất, phản hồi vấn đề hoặc yêu cầu tính năng tới nhóm phát triển</string>
+    <string name="agent_tool_submit_feedback_description">Gửi đề xuất, phản hồi vấn đề hoặc yêu cầu tính năng của người dùng tới nhóm phát triển. Không cần đăng nhập. content là nội dung phản hồi bắt buộc; thông tin liên hệ tùy chọn sẽ được thêm vào cuối nội dung phản hồi để nhà phát triển có thể liên hệ lại.</string>
+    <string name="agent_tool_submit_feedback_param_content">Nội dung phản hồi, bắt buộc, tối đa 2000 ký tự. Vui lòng mô tả chi tiết vấn đề gặp phải, đề xuất hoặc tính năng mong muốn.</string>
+    <string name="agent_tool_submit_feedback_param_contact">Thông tin liên hệ tùy chọn (email, QQ, WeChat, v.v.), để nhà phát triển liên hệ lại về nội dung phản hồi.</string>
+    <string name="agent_tool_submit_feedback_success">Phản hồi đã được gửi thành công, cảm ơn bạn đã phản hồi! Nhóm phát triển sẽ xem xét và xử lý sớm nhất có thể, bạn có thể xem phản hồi tại trang phản hồi.</string>
+    <string name="agent_tool_submit_feedback_failed">Gửi phản hồi thất bại: %1$s</string>
+    <string name="agent_tool_submit_feedback_error_empty_content">Nội dung phản hồi không được để trống</string>
+    <string name="agent_tool_submit_feedback_error_too_long">Nội dung phản hồi vượt quá giới hạn độ dài (tối đa %1$d ký tự)</string>
+    <string name="agent_tool_submit_feedback_contact_label">Thông tin liên hệ</string>
+    <string name="agent_tool_submit_feedback_unknown_error">Lỗi không xác định</string>
+    <string name="agent_tool_submit_feedback_open_link">Xem phản hồi của tôi</string>
+    <string-array name="agent_tool_submit_feedback_keywords">
+        <item>Phản hồi</item>
+        <item>Đề xuất</item>
+        <item>Ý kiến</item>
+        <item>Vấn đề</item>
+        <item>Yêu cầu tính năng</item>
+    </string-array>
+    <string-array name="agent_tool_submit_feedback_examples">
+        <item>Giúp tôi gửi một phản hồi: mong muốn hỗ trợ tự động chuyển chế độ ban đêm</item>
+        <item>Tôi muốn phản hồi một vấn đề, tính năng quét mã thỉnh thoảng bị thoát đột ngột</item>
+        <item>Gửi phản hồi: đề xuất thêm tính năng đổi tên hàng loạt, email của tôi là test@example.com</item>
+    </string-array>
+</resources>

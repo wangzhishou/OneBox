@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dead_pixel_test">Kiểm tra điểm chết màn hình</string>
+    <string name="dead_pixel_test_description">Luân phiên màu đơn sắc, nhanh chóng phát hiện điểm chết và điểm kẹt màn hình</string>
+    <string name="dead_pixel_color_white">Trắng</string>
+    <string name="dead_pixel_color_black">Đen</string>
+    <string name="dead_pixel_color_red">Đỏ</string>
+    <string name="dead_pixel_color_green">Xanh lá</string>
+    <string name="dead_pixel_color_blue">Xanh dương</string>
+    <string name="dead_pixel_hint">Nhấn để chuyển màu · Vuốt trái phải để chuyển tiến lùi</string>
+    <string name="dead_pixel_progress">%1$d / %2$d</string>
+    <string name="dead_pixel_grid_on">Hiện lưới</string>
+    <string name="dead_pixel_grid_off">Ẩn lưới</string>
+    <string name="dead_pixel_auto_play">Tự động luân phiên</string>
+    <string name="dead_pixel_auto_stop">Dừng luân phiên</string>
+    <string name="dead_pixel_fullscreen">Kiểm tra toàn màn hình</string>
+    <string name="dead_pixel_exit_fullscreen">Thoát toàn màn hình</string>
+    <string name="dead_pixel_guide_title">Cách kiểm tra điểm chết?</string>
+    <string name="dead_pixel_guide_content">Màn hình sẽ lần lượt hiển thị nền màu đơn sắc: trắng, đen, đỏ, xanh lá, xanh dương.\n\n• Nền trắng: Quan sát xem có điểm tối màu đen (điểm chết) không\n• Nền đen: Quan sát xem có điểm sáng (điểm kẹt) không\n• Nền màu: Quan sát xem có pixel bất thường màu khác không\n\nNhấn vào màn hình để chuyển sang màu tiếp theo, cũng có thể bật tự động luân phiên. Nên kiểm tra trong môi trường ánh sáng yếu để đạt hiệu quả tốt nhất.</string>
+    <string name="dead_pixel_guide_start">Bắt đầu kiểm tra</string>
+</resources>

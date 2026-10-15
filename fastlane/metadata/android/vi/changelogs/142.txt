@@ -1,0 +1,7 @@
+• Đã sửa: lỗi thoát ứng dụng khi khởi động nếu Trợ lý được đặt làm màn hình bắt đầu
+• Mới: thước đo góc với nền camera và thước đo hai điểm
+• Cờ vua, Cờ tướng và Cờ caro ngoại tuyến giờ dùng engine trên thiết bị
+• AI: đã sửa gọi công cụ Anthropic cùng thêm/sửa/xóa engine tùy chỉnh
+• AI: có thể thu gọn các khối suy luận dài, lịch sử trò chuyện lưu đáng tin cậy hơn
+• Thẻ kính, ô nhập liệu và nền ban ngày rõ ràng hơn
+• Sửa lỗi và cải thiện hiệu năng

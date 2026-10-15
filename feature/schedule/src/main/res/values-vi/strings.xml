@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_screen_title">Trung tâm lịch</string>
+    <string name="schedule_sync_card_title">Kiến trúc đồng bộ đã sẵn sàng</string>
+    <string name="schedule_sync_card_description">Mô-đun này đã tách miền sự kiện độc lập, con trỏ đồng bộ và trường cầu nối việc cần làm, sau này khi tích hợp Google Lịch sẽ không cần gây ảnh hưởng đến mô-đun lịch vạn niên và việc cần làm.</string>
+    <string name="schedule_sync_ready">Đã ghi con trỏ đồng bộ</string>
+    <string name="schedule_sync_not_connected">Chưa kết nối tài khoản</string>
+    <string name="schedule_event_count_label">%1$d sự kiện</string>
+    <string name="schedule_linked_task_chip">Đã liên kết ngữ cảnh việc cần làm</string>
+    <string name="schedule_last_error_label">Lỗi gần nhất: %1$s</string>
+    <string name="schedule_action_card_title">Chạy miền sự kiện cục bộ trước</string>
+    <string name="schedule_action_create_local">Thêm lịch cục bộ</string>
+    <string name="schedule_action_create_focus">Tạo sự kiện theo ngày trọng tâm</string>
+    <string name="schedule_action_open_todo">Mở việc cần làm</string>
+    <string name="schedule_action_open_calendar">Mở lịch vạn niên</string>
+    <string name="schedule_event_section_title">Danh sách sự kiện</string>
+    <string name="schedule_empty_title">Chưa có sự kiện lịch</string>
+    <string name="schedule_empty_description">Tạo sự kiện cục bộ trước, sau đó dần hoàn thiện kết nối tài khoản Google Calendar, đồng bộ tăng dần và xử lý xung đột.</string>
+    <string name="schedule_provider_local">Cục bộ</string>
+    <string name="schedule_provider_system">Lịch hệ thống</string>
+    <string name="schedule_provider_google">Google Lịch</string>
+    <string name="schedule_event_time_range">%1$s - %2$s</string>
+    <string name="schedule_status_local_only">Chỉ cục bộ</string>
+    <string name="schedule_status_pending_upload">Chờ tải lên</string>
+    <string name="schedule_status_synced">Đã đồng bộ</string>
+    <string name="schedule_status_pending_delete">Chờ xóa</string>
+    <string name="schedule_status_conflict">Có xung đột</string>
+    <string name="schedule_status_failed">Đồng bộ thất bại</string>
+    <string name="schedule_linked_task_badge">Cầu nối tác vụ</string>
+    <string name="schedule_quick_event_title">Lịch cục bộ mới</string>
+    <string name="schedule_focus_event_title">Lịch trọng tâm</string>
+    <string name="schedule_linked_task_description">Việc cần làm liên quan: %1$s</string>
+    <string name="schedule_save_to_system_calendar">Ghi trực tiếp vào lịch hệ thống</string>
+    <string name="schedule_export_to_system_calendar">Thêm vào lịch hệ thống</string>
+    <string name="schedule_system_calendar_unavailable">Thiết bị hiện tại không có ứng dụng lịch khả dụng</string>
+    <string name="schedule_no_writable_calendar">Hiện không có lịch hệ thống nào có thể ghi</string>
+    <string name="schedule_saved_to_system_calendar">Đã ghi vào lịch hệ thống</string>
+    <string name="schedule_save_to_system_calendar_failed">Ghi vào lịch hệ thống thất bại, vui lòng thử lại sau</string>
+    <string name="schedule_calendar_permission_denied">Cần quyền lịch để ghi trực tiếp vào lịch hệ thống</string>
+    <string name="schedule_choose_calendar_title">Chọn lịch đích</string>
+    <string name="schedule_calendar_primary_badge">Lịch chính</string>
+    <string name="schedule_dialog_close">Đóng</string>
+    <string name="schedule_permission_dialog_title">Cần quyền lịch</string>
+    <string name="schedule_permission_dialog_message">Vui lòng bật quyền đọc/ghi lịch trong cài đặt hệ thống để ghi trực tiếp vào lịch hệ thống.</string>
+    <string name="schedule_open_settings">Đi tới cài đặt</string>
+    <string name="agent_tool_schedule_unknown_error">Lỗi không xác định</string>
+    <string name="agent_tool_schedule_open_link">Mở sự kiện</string>
+    <string name="agent_tool_schedule_label_start">Bắt đầu</string>
+    <string name="agent_tool_schedule_label_end">Kết thúc</string>
+    <string name="agent_tool_schedule_label_all_day">Sự kiện cả ngày</string>
+    <string name="agent_tool_schedule_label_location">Địa điểm</string>
+    <string name="agent_tool_schedule_invalid_datetime">Định dạng thời gian「%1$s」không đúng, vui lòng dùng định dạng ISO, ví dụ 2026-09-10T14:00 hoặc 2026-09-10.</string>
+    <string name="agent_tool_schedule_invalid_date">Định dạng ngày「%1$s」không đúng, vui lòng dùng yyyy-MM-dd, ví dụ 2026-09-10.</string>
+    <string name="agent_tool_add_schedule_event_title">Tạo sự kiện mới</string>
+    <string name="agent_tool_add_schedule_event_summary">Tạo một sự kiện cục bộ, hỗ trợ tiêu đề, thời gian, ghi chú và địa điểm.</string>
+    <string name="agent_tool_add_schedule_event_description">Tạo một sự kiện cục bộ. title và start là bắt buộc; nếu thiếu end, mặc định là 1 giờ sau thời gian bắt đầu (sự kiện cả ngày thì là ngày hôm sau). Thời gian dùng chuỗi định dạng ISO: 2026-09-10T14:00, 2026-09-10T14:00:00+08:00, hoặc chỉ ngày 2026-09-10.</string>
+    <string name="agent_tool_add_schedule_event_param_title">Tiêu đề sự kiện, bắt buộc.</string>
+    <string name="agent_tool_add_schedule_event_param_start">Thời gian bắt đầu, định dạng ISO, ví dụ 2026-09-10T14:00; chỉ ngày nghĩa là 00:00 ngày hôm đó.</string>
+    <string name="agent_tool_add_schedule_event_param_end">Thời gian kết thúc, định dạng ISO, tùy chọn; mặc định là 1 giờ sau thời gian bắt đầu, sự kiện cả ngày thì là ngày hôm sau.</string>
+    <string name="agent_tool_add_schedule_event_param_all_day">Có phải sự kiện cả ngày không, mặc định false.</string>
+    <string name="agent_tool_add_schedule_event_param_description">Ghi chú sự kiện, tùy chọn.</string>
+    <string name="agent_tool_add_schedule_event_param_location">Địa điểm sự kiện, tùy chọn.</string>
+    <string name="agent_tool_add_schedule_event_title_required">Tham số title là bắt buộc và không được để trống.</string>
+    <string name="agent_tool_add_schedule_event_failed">Tạo sự kiện thất bại: %1$s</string>
+    <string-array name="agent_tool_add_schedule_event_keywords">
+        <item>Sự kiện</item>
+        <item>Lịch</item>
+        <item>Nhắc nhở</item>
+        <item>Sắp xếp</item>
+        <item>schedule</item>
+        <item>calendar</item>
+        <item>Tạo sự kiện</item>
+    </string-array>
+    <string-array name="agent_tool_add_schedule_event_examples">
+        <item>Nhắc tôi họp vào 3 giờ chiều mai</item>
+        <item>Tạo sự kiện cả ngày 20 tháng 9: đám cưới bạn</item>
+        <item>Sắp xếp tập gym từ 10:00 đến 11:00 thứ Hai tuần sau, địa điểm tại phòng gym</item>
+    </string-array>
+    <string name="agent_tool_query_schedule_events_title">Tra cứu sự kiện</string>
+    <string name="agent_tool_query_schedule_events_summary">Tra cứu sự kiện lịch cục bộ theo khoảng ngày.</string>
+    <string name="agent_tool_query_schedule_events_description">Tra cứu các sự kiện lịch cục bộ giao với khoảng ngày chỉ định. start_date mặc định là hôm nay, end_date mặc định là 6 ngày sau đó (tức cửa sổ 7 ngày mặc định). Trả về tối đa 50 mục, sắp xếp theo thời gian bắt đầu tăng dần, mỗi mục gồm id, tiêu đề, thời gian, địa điểm và ghi chú; id có thể truyền cho delete_schedule_event để xóa.</string>
+    <string name="agent_tool_query_schedule_events_param_start_date">Ngày bắt đầu khoảng, yyyy-MM-dd; mặc định là hôm nay.</string>
+    <string name="agent_tool_query_schedule_events_param_end_date">Ngày kết thúc khoảng (bao gồm ngày đó), yyyy-MM-dd; mặc định là 6 ngày sau start_date.</string>
+    <string name="agent_tool_query_schedule_events_end_before_start">end_date không được sớm hơn start_date.</string>
+    <string name="agent_tool_query_schedule_events_empty">Không có sự kiện trong khoảng này</string>
+    <string name="agent_tool_query_schedule_events_failed">Tra cứu sự kiện thất bại: %1$s</string>
+    <string-array name="agent_tool_query_schedule_events_keywords">
+        <item>Sự kiện</item>
+        <item>Lịch</item>
+        <item>Sắp xếp</item>
+        <item>schedule</item>
+        <item>calendar</item>
+        <item>Tra sự kiện</item>
+        <item>Hôm nay có sắp xếp gì</item>
+    </string-array>
+    <string-array name="agent_tool_query_schedule_events_examples">
+        <item>Hôm nay tôi có sắp xếp gì</item>
+        <item>Xem sự kiện tuần này</item>
+        <item>Tra sự kiện từ 10 tháng 9 đến 15 tháng 9</item>
+    </string-array>
+    <string name="agent_tool_delete_schedule_event_title">Xóa lịch</string>
+    <string name="agent_tool_delete_schedule_event_summary">Xóa một lịch cục bộ theo id sự kiện.</string>
+    <string name="agent_tool_delete_schedule_event_description">Xóa một sự kiện lịch cục bộ theo event_id (thường lấy từ kết quả truy vấn của query_schedule_events). Việc xóa sẽ đồng thời xóa liên kết đồng bộ như lịch hệ thống và không thể khôi phục, cần người dùng xác nhận trước khi thực hiện.</string>
+    <string name="agent_tool_delete_schedule_event_param_event_id">Id sự kiện cần xóa, lấy từ kết quả truy vấn của query_schedule_events.</string>
+    <string name="agent_tool_delete_schedule_event_id_required">Tham số event_id là bắt buộc.</string>
+    <string name="agent_tool_delete_schedule_event_not_found">Không tìm thấy sự kiện: %1$s</string>
+    <string name="agent_tool_delete_schedule_event_deleted">Đã xóa: %1$s</string>
+    <string name="agent_tool_delete_schedule_event_failed">Xóa lịch thất bại: %1$s</string>
+    <string name="agent_tool_delete_schedule_event_confirm_title">Xóa lịch</string>
+    <string name="agent_tool_delete_schedule_event_confirm_presentation">Xóa vĩnh viễn sự kiện lịch này</string>
+    <string-array name="agent_tool_delete_schedule_event_keywords">
+        <item>Lịch</item>
+        <item>Lịch</item>
+        <item>Xóa lịch</item>
+        <item>Hủy lịch</item>
+        <item>schedule</item>
+        <item>delete event</item>
+    </string-array>
+    <string-array name="agent_tool_delete_schedule_event_examples">
+        <item>xóa cuộc họp 3 giờ chiều mai</item>
+        <item>hủy lịch tập thể dục thứ Sáu</item>
+    </string-array>
+</resources>

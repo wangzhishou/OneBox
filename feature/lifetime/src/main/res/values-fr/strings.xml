@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lifetime_title">Sablier du temps</string>
+    <string name="lifetime_loading">Calcul de votre temps en cours…</string>
+    <string name="lifetime_unit_years">an(s)</string>
+    <string name="lifetime_unit_months">mois</string>
+    <string name="lifetime_unit_days">jour(s)</string>
+    <string name="lifetime_unit_hours">heure(s)</string>
+    <string name="lifetime_unit_minutes">minute(s)</string>
+    <string name="lifetime_unit_seconds">seconde(s)</string>
+    <string name="lifetime_time_card_label">Vie écoulée</string>
+    <string name="lifetime_remaining_time_label">Vie restante</string>
+    <string name="lifetime_life_journey">Voyage de la vie</string>
+    <string name="lifetime_progress_label">Progression</string>
+    <string name="lifetime_remaining_estimate">Encore environ %1$d ans</string>
+    <string name="lifetime_milestone_section">Anniversaire</string>
+    <string name="lifetime_countdown_section">Compte à rebours</string>
+    <string name="lifetime_frequency_section">Fréquence temporelle</string>
+    <string name="lifetime_add">Ajouter</string>
+    <string name="lifetime_add_event">Ajouter une fréquence temporelle</string>
+    <string name="lifetime_add_milestone">Ajouter un anniversaire</string>
+    <string name="lifetime_edit_milestone">Modifier l\'anniversaire</string>
+    <string name="lifetime_event_name_label">Nom de l\'événement</string>
+    <string name="lifetime_milestone_name_hint">Nom de l\'anniversaire</string>
+    <string name="lifetime_event_name_placeholder">Manger</string>
+    <string name="lifetime_choose_icon">Choisir une icône</string>
+    <string name="lifetime_frequency_label">Fréquence</string>
+    <string name="lifetime_unit_label">Unité</string>
+    <string name="lifetime_times_per_period">Nombre de fois par cycle</string>
+    <string name="lifetime_add_to_timeline">Enregistrer la fréquence temporelle</string>
+    <string name="lifetime_default_times_per_period">1</string>
+    <string name="lifetime_validation_event_name_required">Veuillez saisir le nom de l\'événement</string>
+    <string name="lifetime_validation_times_per_period_required">Veuillez saisir un nombre supérieur à 0</string>
+    <string name="lifetime_validation_milestone_name_required">Veuillez saisir le nom de l\'anniversaire</string>
+    <string name="lifetime_validation_milestone_target_date_required">Veuillez sélectionner la date cible</string>
+    <string name="lifetime_select_birthday">Sélectionner la date de naissance</string>
+    <string name="lifetime_confirm">Confirmer</string>
+    <string name="lifetime_cancel">Annuler</string>
+    <string name="lifetime_settings">Définir le point de départ</string>
+    <string name="lifetime_birth_date">Date de naissance</string>
+    <string name="lifetime_target_age">Durée de vie souhaitée</string>
+    <string name="lifetime_target_age_description">La durée de vie que vous souhaitez définit la plage de visualisation du \"Sablier du Temps\", représentant votre vision personnelle d\'une vie épanouie.</string>
+    <string name="lifetime_tap_to_change">Appuyer pour modifier</string>
+    <string name="lifetime_update_settings">Entrer dans le Sablier du Temps</string>
+    <string name="lifetime_hide_progress">Masquer la progression de vie</string>
+    <string name="lifetime_welcome_title">Sablier du Temps</string>
+    <string name="lifetime_welcome_subtitle">Le temps n\'attend personne, mais vous pouvez vous en souvenir.</string>
+    <string name="lifetime_welcome_start">Commencer</string>
+    <string name="lifetime_demo_hint">Données de démonstration — Appuyez pour définir votre vraie date de naissance</string>
+    <string name="lifetime_demo_action">Configurer</string>
+    <string name="lifetime_empty_events_title">Aucune fréquence temporelle</string>
+    <string name="lifetime_empty_events_subtitle">Ajoutez ce qui vous tient à cœur, comme manger, lire, voyager…</string>
+    <string name="lifetime_empty_milestones_title">Aucun anniversaire</string>
+    <string name="lifetime_empty_milestones_subtitle">1000 jours après le diplôme, 30e anniversaire… Enregistrez vos moments importants</string>
+    <string name="lifetime_empty_countdown_title">Aucun compte à rebours</string>
+    <string name="lifetime_empty_countdown_subtitle">Le système couvre automatiquement les fêtes des 3 prochains mois, ajoutez vos propres jours importants</string>
+    <string name="lifetime_recommend_events_title">Voici les fréquences temporelles recommandées pour vous</string>
+    <string name="lifetime_event_date">Date de l\'événement</string>
+    <string name="lifetime_select_date">Sélectionner une date</string>
+    <string name="lifetime_event_picker_title">Sélectionner la fréquence temporelle</string>
+    <string name="lifetime_event_picker_add">Ajouter</string>
+    <string name="lifetime_event_picker_recommended">Recommandé</string>
+    <string name="lifetime_event_picker_preset">Événements prédéfinis</string>
+    <string name="lifetime_event_picker_custom">Ma fréquence temporelle</string>
+    <string name="lifetime_event_added">Ajouté</string>
+    <string name="lifetime_event_saved">Fréquence temporelle ajoutée</string>
+    <string name="lifetime_event_updated">Fréquence temporelle mise à jour</string>
+    <string name="lifetime_event_deleted">Fréquence temporelle supprimée</string>
+    <string name="lifetime_frequency_one_time">Une fois</string>
+    <string name="lifetime_frequency_daily">Chaque jour</string>
+    <string name="lifetime_frequency_weekly">Chaque semaine</string>
+    <string name="lifetime_frequency_monthly">Chaque mois</string>
+    <string name="lifetime_frequency_yearly">Chaque année</string>
+    <string name="lifetime_frequency_progress">%1$d%% de la vie écoulée</string>
+    <string name="lifetime_card_flip_hint">Appuyez pour retourner</string>
+    <string name="lifetime_completed_label">Terminé</string>
+    <string name="lifetime_remaining_label">À faire</string>
+    <string name="lifetime_milestone_target_date">Date cible</string>
+    <string name="lifetime_milestone_target_days">Nombre de jours cible</string>
+    <string name="lifetime_milestone_start_date">Date de début</string>
+    <string name="lifetime_milestone_note">Remarque</string>
+    <string name="lifetime_action_frequency_events">Événement récurrent</string>
+    <string name="lifetime_action_milestones">Anniversaire</string>
+    <string name="lifetime_action_countdown">Compte à rebours</string>
+    <string name="lifetime_milestone_days_until">Encore %1$d jours</string>
+    <string name="lifetime_milestone_days_today">C\'est aujourd\'hui</string>
+    <string name="lifetime_milestone_days_past">%1$d jours écoulés</string>
+    <string name="lifetime_delete_confirm_title">Confirmer la suppression</string>
+    <string name="lifetime_delete_confirm_message">La suppression est irréversible. Voulez-vous vraiment supprimer cet anniversaire ?</string>
+    <string name="lifetime_delete">Supprimer</string>
+    <string name="lifetime_note_placeholder">Notez la signification de cet anniversaire pour vous…</string>
+    <string name="lifetime_milestone_name_placeholder">1000 jours après l\'obtention du diplôme</string>
+    <string name="lifetime_milestone_note_placeholder">Facultatif, notez la signification de cet anniversaire…</string>
+    <string name="lifetime_note_edit">Modifier la note</string>
+    <string name="lifetime_note_delete">Supprimer la note</string>
+    <string name="lifetime_note_add">Ajouter une note</string>
+    <string name="lifetime_note_dialog_title">Note</string>
+    <string name="lifetime_note_save">Enregistrer</string>
+    <string name="lifetime_note_empty">Aucune note</string>
+    <string name="lifetime_insight_current_title">Inspiration du jour</string>
+    <string name="lifetime_insight_refresh">Changer</string>
+    <string name="lifetime_insight_loading">L\'IA réfléchit…</string>
+    <string name="lifetime_insight_empty">Pas encore d\'inspiration, appuyez sur « Changer » pour générer</string>
+    <string name="lifetime_insight_history_title">Inspirations passées</string>
+    <string name="lifetime_insight_history_empty">Aucun historique</string>
+    <string name="lifetime_add_countdown">Ajouter un compte à rebours</string>
+    <string name="lifetime_countdown_detail_title">Détails du compte à rebours</string>
+    <string name="lifetime_countdown_name_label">Nom du compte à rebours</string>
+    <string name="lifetime_countdown_name_placeholder">Salaire, prime annuelle, anniversaire…</string>
+    <string name="lifetime_countdown_target_date">Date cible</string>
+    <string name="lifetime_countdown_lunar_target">Calculer selon le calendrier lunaire (roulement annuel automatique)</string>
+    <string name="lifetime_countdown_lunar_target_help">Pour les anniversaires lunaires, fêtes traditionnelles et autres événements annuels</string>
+    <string name="lifetime_countdown_note_placeholder">Facultatif, notez la signification de ce compte à rebours…</string>
+    <string name="lifetime_countdown_holiday_badge">Fête</string>
+    <string name="lifetime_countdown_holiday_hint">Ce compte à rebours est ajouté automatiquement par le système selon le calendrier lunaire/grégorien, chaque année. Vous pouvez le supprimer et l\'ajouter manuellement.</string>
+    <string name="lifetime_event_picker_delete">Supprimer</string>
+    <string name="lifetime_date_ymd">%2$d/%3$d/%1$d</string>
+    <string name="lifetime_lunar_date">Lunaire %1$s %2$s%3$s</string>
+    <string name="lifetime_frequency_value_label">%1$s%2$d%3$s</string>
+    <string name="lifetime_status_today">Aujourd\'hui</string>
+    <string name="lifetime_status_days_until">Encore %1$d jours</string>
+    <string name="lifetime_status_days_past">%1$d jours écoulés</string>
+    <string name="lifetime_status_months_until">Encore %1$d mois</string>
+    <string name="lifetime_status_months_past">Il y a %1$d mois</string>
+    <string name="lifetime_status_years_until">Dans %1$d ans</string>
+    <string name="lifetime_status_years_past">Il y a %1$d ans</string>
+    <string name="lifetime_preset_name_spring_festival">Nouvel An chinois</string>
+    <string name="lifetime_preset_name_lantern_festival">Fête des Lanternes</string>
+    <string name="lifetime_preset_name_longtaitou">Fête du Dragon</string>
+    <string name="lifetime_preset_name_shangsi">Fête de Shangsi</string>
+    <string name="lifetime_preset_name_dragon_boat">Fête des Bateaux-Dragons</string>
+    <string name="lifetime_preset_name_qixi">Qixi</string>
+    <string name="lifetime_preset_name_zhongyuan">Fête des Fantômes</string>
+    <string name="lifetime_preset_name_mid_autumn">Fête de la Mi-Automne</string>
+    <string name="lifetime_preset_name_double_ninth">Fête du Double Neuf</string>
+    <string name="lifetime_preset_name_hanyi">Fête des Vêtements d\'Hiver</string>
+    <string name="lifetime_preset_name_xiayuan">Fête de Xiayuan</string>
+    <string name="lifetime_preset_name_laba">Fête Laba</string>
+    <string name="lifetime_preset_name_little_new_year">Xiaonian</string>
+    <string name="lifetime_preset_name_chinese_new_years_eve">Réveillon du Nouvel An chinois</string>
+    <string name="lifetime_preset_name_new_years_day">Jour de l\'An</string>
+    <string name="lifetime_preset_name_valentines">Saint-Valentin</string>
+    <string name="lifetime_preset_name_womens_day">Journée des femmes</string>
+    <string name="lifetime_preset_name_arbor_day">Fête de l\'arbre</string>
+    <string name="lifetime_preset_name_consumer_rights_day">Journée des consommateurs</string>
+    <string name="lifetime_preset_name_april_fools">Poisson d\'avril</string>
+    <string name="lifetime_preset_name_earth_day">Jour de la Terre</string>
+    <string name="lifetime_preset_name_labor_day">Fête du Travail</string>
+    <string name="lifetime_preset_name_youth_day">Fête de la Jeunesse</string>
+    <string name="lifetime_preset_name_nurses_day">Fête des infirmières</string>
+    <string name="lifetime_preset_name_childrens_day">Fête des enfants</string>
+    <string name="lifetime_preset_name_environment_day">Journée de l\'environnement</string>
+    <string name="lifetime_preset_name_party_founding_day">Fête du Parti</string>
+    <string name="lifetime_preset_name_army_day">Fête de l\'Armée</string>
+    <string name="lifetime_preset_name_victory_day">Victoire de la guerre de résistance</string>
+    <string name="lifetime_preset_name_teachers_day">Fête des enseignants</string>
+    <string name="lifetime_preset_name_national_day">Fête nationale</string>
+    <string name="lifetime_preset_name_singles_day">Singles\' Day</string>
+    <string name="lifetime_preset_name_national_memorial_day">Journée nationale de commémoration</string>
+    <string name="lifetime_preset_name_christmas_eve">Réveillon de Noël</string>
+    <string name="lifetime_preset_name_christmas">Noël</string>
+    <string name="lifetime_preset_name_halloween">Halloween</string>
+    <string name="lifetime_preset_name_thanksgiving">Thanksgiving</string>
+    <string name="lifetime_preset_name_black_friday">Black Friday</string>
+    <string name="lifetime_preset_name_mothers_day">Fête des mères</string>
+    <string name="lifetime_preset_name_fathers_day">Fête des pères</string>
+    <string name="lifetime_preset_name_new_years_eve">Réveillon du Nouvel An</string>
+    <string name="lifetime_preset_name_eating">Manger</string>
+    <string name="lifetime_preset_name_sleeping">Dormir</string>
+    <string name="lifetime_preset_name_journaling">Écrire un journal</string>
+    <string name="lifetime_preset_name_exercise">Sport</string>
+    <string name="lifetime_preset_name_reading">Lire</string>
+    <string name="lifetime_preset_name_movies">Regarder un film</string>
+    <string name="lifetime_preset_name_travel">Voyager</string>
+    <string name="lifetime_event_unit_times">fois</string>
+    <string name="lifetime_event_unit_meals">repas</string>
+    <string name="lifetime_event_unit_entries">article</string>
+    <string name="lifetime_event_unit_books">livre</string>
+    <string name="lifetime_event_unit_movies">film</string>
+    <string name="lifetime_event_unit_episodes">épisode</string>
+    <string name="lifetime_event_unit_km">km</string>
+    <string name="lifetime_event_unit_meters">m</string>
+    <string name="lifetime_event_unit_steps">pas</string>
+    <string name="lifetime_event_unit_minutes">minutes</string>
+    <string name="lifetime_event_unit_hours">heures</string>
+    <string name="lifetime_event_unit_items">pièces</string>
+    <string name="lifetime_event_unit_cups">tasses</string>
+    <string name="lifetime_event_unit_bottles">bouteilles</string>
+    <string name="lifetime_event_unit_packs">paquets</string>
+    <string name="lifetime_event_unit_boxes">boîtes</string>
+    <string name="agent_tool_lifetime_unknown_error">Erreur inconnue</string>
+    <string name="agent_tool_lifetime_open_link">Ouvrir la chronologie de vie</string>
+    <string name="agent_tool_lifetime_invalid_date">Format de date « %1$s » incorrect, veuillez utiliser yyyy-MM-dd, par exemple 2026-12-31.</string>
+    <string name="agent_tool_lifetime_invalid_type">Type « %1$s » invalide, veuillez utiliser countdown ou milestone.</string>
+    <string name="agent_tool_lifetime_label_target_date">Date cible</string>
+    <string name="agent_tool_lifetime_label_note">Remarque</string>
+    <string name="agent_tool_lifetime_section_countdown">Compte à rebours</string>
+    <string name="agent_tool_lifetime_section_milestone">Jalon de vie</string>
+    <string name="agent_tool_lifetime_days_left">Encore %1$d jours</string>
+    <string name="agent_tool_lifetime_days_ago">%1$d jours écoulés</string>
+    <string name="agent_tool_lifetime_today">C\'est aujourd\'hui</string>
+    <string name="agent_tool_lifetime_reached">Atteint</string>
+    <string name="agent_tool_lifetime_date_unknown">Date à déterminer</string>
+    <string name="agent_tool_add_countdown_event_title">Nouveau compte à rebours</string>
+    <string name="agent_tool_add_countdown_event_summary">Créer un compte à rebours avec un nom et une date cible.</string>
+    <string name="agent_tool_add_countdown_event_description">Créer un compte à rebours dans la chronologie de vie. name et target_date sont obligatoires ; la date cible est une date grégorienne ponctuelle (yyyy-MM-dd), les comptes à rebours récurrents ou lunaires ne sont pas pris en charge. note est facultatif.</string>
+    <string name="agent_tool_add_countdown_event_param_name">Nom du compte à rebours, obligatoire, par exemple « Bac ».</string>
+    <string name="agent_tool_add_countdown_event_param_target_date">Date cible, yyyy-MM-dd, par exemple 2026-12-31.</string>
+    <string name="agent_tool_add_countdown_event_param_note">Remarque du compte à rebours, facultatif.</string>
+    <string name="agent_tool_add_countdown_event_name_required">Le paramètre name est obligatoire et ne peut pas être vide.</string>
+    <string name="agent_tool_add_countdown_event_failed">Échec de la création du compte à rebours : %1$s</string>
+    <string-array name="agent_tool_add_countdown_event_keywords">
+        <item>countdown</item>
+        <item>days matter</item>
+        <item>anniversaire</item>
+        <item>Compte à rebours</item>
+        <item>Compte à rebours</item>
+        <item>Anniversaire</item>
+    </string-array>
+    <string-array name="agent_tool_add_countdown_event_examples">
+        <item>Ajouter un compte à rebours : Nouvel An 2027-01-01</item>
+        <item>Crée un compte à rebours pour moi : Baccalauréat 2027-06-07</item>
+        <item>Ajouter un compte à rebours Anniversaire de mariage 2026-10-01</item>
+    </string-array>
+    <string name="agent_tool_add_life_milestone_title">Nouveau jalon de vie</string>
+    <string name="agent_tool_add_life_milestone_summary">Enregistrer un jalon de vie avec un nom et une date cible.</string>
+    <string name="agent_tool_add_life_milestone_description">Créer un jalon personnel dans la chronologie de vie (comme une date cible ou un anniversaire). name et target_date (yyyy-MM-dd) sont obligatoires ; note est facultatif.</string>
+    <string name="agent_tool_add_life_milestone_param_name">Nom du jalon, obligatoire, par exemple « Premier marathon ».</string>
+    <string name="agent_tool_add_life_milestone_param_target_date">Date cible, yyyy-MM-dd, par exemple 2027-05-01.</string>
+    <string name="agent_tool_add_life_milestone_param_note">Note du jalon, facultative.</string>
+    <string name="agent_tool_add_life_milestone_name_required">Le paramètre name est obligatoire et ne peut pas être vide.</string>
+    <string name="agent_tool_add_life_milestone_failed">Échec de la création du jalon de vie : %1$s</string>
+    <string-array name="agent_tool_add_life_milestone_keywords">
+        <item>jalon</item>
+        <item>objectif</item>
+        <item>événement de vie</item>
+        <item>Jalon</item>
+        <item>Événement de vie</item>
+        <item>Objectif</item>
+    </string-array>
+    <string-array name="agent_tool_add_life_milestone_examples">
+        <item>Enregistrer un jalon : premier marathon le 2026-11-15</item>
+        <item>Enregistrer un jalon : terminer mon premier marathon 2026-11-15</item>
+        <item>Ajouter un jalon de vie Achat immobilier 2027-05-01</item>
+    </string-array>
+    <string name="agent_tool_query_life_events_title">Consulter les événements de vie</string>
+    <string name="agent_tool_query_life_events_summary">Lister les comptes à rebours et les jalons de vie, avec les jours restants.</string>
+    <string name="agent_tool_query_life_events_description">Consulter les comptes à rebours et les jalons personnels dans la chronologie de vie. type filtre les résultats : countdown, milestone ou all (par défaut). limit limite le nombre de résultats par catégorie (20 par défaut, 50 maximum). Chaque entrée contient id (transmissible à delete_lifetime_entry), le nom, la date cible et les jours restants.</string>
+    <string name="agent_tool_query_life_events_param_type">Filtre par type d\'entrée : countdown, milestone ou all (par défaut).</string>
+    <string name="agent_tool_query_life_events_param_limit">Nombre maximum de résultats par catégorie, 1-50, 20 par défaut.</string>
+    <string name="agent_tool_query_life_events_empty">Aucune entrée pour le moment</string>
+    <string name="agent_tool_query_life_events_failed">Échec de la requête des événements de vie : %1$s</string>
+    <string-array name="agent_tool_query_life_events_keywords">
+        <item>countdown</item>
+        <item>milestone</item>
+        <item>query</item>
+        <item>Compte à rebours</item>
+        <item>Jalon</item>
+        <item>Combien de jours restants</item>
+    </string-array>
+    <string-array name="agent_tool_query_life_events_examples">
+        <item>What countdowns do I have?</item>
+        <item>Quels comptes à rebours ai-je ?</item>
+        <item>Lister tous les jalons de vie</item>
+        <item>Combien de jours avant le prochain compte à rebours</item>
+    </string-array>
+    <string name="agent_tool_delete_lifetime_entry_title">Supprimer un événement de vie</string>
+    <string name="agent_tool_delete_lifetime_entry_summary">Supprimer un compte à rebours ou un jalon de vie par id.</string>
+    <string name="agent_tool_delete_lifetime_entry_description">Supprimer un compte à rebours ou un jalon personnel de la chronologie de vie. type (countdown ou milestone) et id sont obligatoires ; l\'id provient des résultats de query_life_events. La suppression est irréversible.</string>
+    <string name="agent_tool_delete_lifetime_entry_param_type">Type d\'élément : countdown ou milestone.</string>
+    <string name="agent_tool_delete_lifetime_entry_param_id">Id de l\'élément, provenant des résultats de query_life_events.</string>
+    <string name="agent_tool_delete_lifetime_entry_id_required">Le paramètre id est obligatoire et doit être un nombre.</string>
+    <string name="agent_tool_delete_lifetime_entry_not_found">Aucun élément trouvé avec l\'id %1$d.</string>
+    <string name="agent_tool_delete_lifetime_entry_deleted">« %1$s » a été supprimé.</string>
+    <string name="agent_tool_delete_lifetime_entry_confirm_title">Supprimer un événement de vie</string>
+    <string name="agent_tool_delete_lifetime_entry_confirm_presentation">Supprimer un compte à rebours ou un jalon de vie, sans possibilité de restauration.</string>
+    <string name="agent_tool_delete_lifetime_entry_failed">Échec de la suppression de l\'événement de vie : %1$s</string>
+    <string-array name="agent_tool_delete_lifetime_entry_keywords">
+        <item>delete</item>
+        <item>remove</item>
+        <item>countdown</item>
+        <item>milestone</item>
+        <item>Supprimer</item>
+        <item>Compte à rebours</item>
+        <item>Jalon</item>
+    </string-array>
+    <string-array name="agent_tool_delete_lifetime_entry_examples">
+        <item>Delete the countdown with id 3</item>
+        <item>Supprimer le compte à rebours avec l\'id 3</item>
+        <item>Supprimer le jalon 5</item>
+    </string-array>
+</resources>

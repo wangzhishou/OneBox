@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">Clé API OpenAI non renseignée. Veuillez d\'abord la configurer dans la page des paramètres de génération d\'images avant de générer.</string>
+</resources>

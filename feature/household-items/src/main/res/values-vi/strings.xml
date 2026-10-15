@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="household_title">Quản lý đồ vật</string>
+    <string name="household_tab_list">Đồ vật</string>
+    <string name="household_tab_locations">Vị trí</string>
+    <string name="household_tab_stats">Thống kê</string>
+    <string name="household_empty_guide_title">Chưa ghi lại đồ vật nào</string>
+    <string name="household_empty_guide_message">Thêm thủ công một món, hoặc để AI ghi giúp bạn</string>
+    <string name="household_add_manually">Thêm thủ công</string>
+    <string name="household_add_with_ai">AI ghi giúp</string>
+    <string name="household_ai_assist_title">Trợ lý quản lý đồ vật</string>
+    <string name="household_ai_assist_fill_in">Ghi thuốc cảm vào hộp thuốc phòng ngủ chính, hết hạn tháng 6 năm 2027</string>
+    <string name="household_ai_assist_prompt">Bạn là trợ lý quản lý đồ vật của người dùng. Khi người dùng cho biết đồ vật nào để ở đâu (và hạn sử dụng tùy chọn), hãy dùng công cụ add_household_item để ghi lại giúp họ, ví dụ \"để thuốc cảm vào hộp thuốc phòng ngủ chính, hết hạn tháng 6 năm 2027\"; khi người dùng hỏi đồ ở đâu thì dùng find_household_item để tra cứu; khi người dùng muốn chuyển đồ thì dùng move_household_item. Sau mỗi thao tác, xác nhận kết quả ngắn gọn.</string>
+    <string name="household_search_hint">Tìm tên, phân loại hoặc ghi chú</string>
+    <string name="household_expired_days">Đã quá hạn %1$d ngày</string>
+    <string name="household_days_left">Còn %1$d ngày</string>
+    <string name="household_expires_today">Hết hạn hôm nay</string>
+    <string name="household_add_item">Thêm đồ vật</string>
+    <string name="household_manage_locations">Quản lý vị trí</string>
+    <string name="household_empty_items">Chưa có đồ vật, nhấn + ở góc dưới bên phải để thêm nhé</string>
+    <string name="household_empty_search">Không tìm thấy đồ vật phù hợp</string>
+    <string name="household_breadcrumb_home">Tất cả</string>
+    <string name="household_view_list">Dạng danh sách</string>
+    <string name="household_view_grid">Dạng lưới</string>
+    <string name="household_uncategorized">Chưa phân loại</string>
+    <string name="household_no_location">Chưa đặt vị trí</string>
+    <string name="household_delete_item">Xóa</string>
+    <string name="household_edit_item">Sửa</string>
+    <string name="household_editor_add_title">Thêm đồ vật</string>
+    <string name="household_editor_edit_title">Sửa đồ vật</string>
+    <string name="household_editor_name_label">Tên</string>
+    <string name="household_editor_name_hint">Ví dụ: thuốc cảm</string>
+    <string name="household_editor_category_label">Danh mục</string>
+    <string name="household_category_medicine">Thuốc</string>
+    <string name="household_category_beauty">Chăm sóc da &amp; Mỹ phẩm</string>
+    <string name="household_category_daily">Đồ dùng hàng ngày</string>
+    <string name="household_category_food">Thực phẩm &amp; Đồ uống</string>
+    <string name="household_category_clothing">Quần áo</string>
+    <string name="household_category_digital">Kỹ thuật số</string>
+    <string name="household_category_books">Sách</string>
+    <string name="household_category_stationery">Văn phòng phẩm</string>
+    <string name="household_category_home_goods">Đồ gia dụng</string>
+    <string name="household_category_cleaning">Đồ vệ sinh</string>
+    <string name="household_category_baby">Đồ mẹ &amp; bé</string>
+    <string name="household_category_sports">Thể thao &amp; Fitness</string>
+    <string name="household_category_pet">Đồ thú cưng</string>
+    <string name="household_category_tools">Công cụ</string>
+    <string name="household_category_accessories">Phụ kiện trang sức</string>
+    <string name="household_category_other">Khác</string>
+    <string name="household_category_small_legacy">Đồ nhỏ</string>
+    <string name="household_category_big_legacy">Đồ cồng kềnh</string>
+    <string name="household_category_custom_hint">Danh mục tùy chỉnh</string>
+    <string name="household_editor_location_label">Vị trí</string>
+    <string name="household_editor_location_none">Chưa đặt vị trí</string>
+    <string name="household_editor_location_pick">Chọn vị trí</string>
+    <string name="household_editor_expire_label">Hạn sử dụng</string>
+    <string name="household_editor_expire_pick">Chọn ngày</string>
+    <string name="household_editor_expire_clear">Xóa</string>
+    <string name="household_editor_photo_label">Hình ảnh</string>
+    <string name="household_editor_photo_add">Thêm hình ảnh</string>
+    <string name="household_editor_photo_remove">Xóa hình ảnh</string>
+    <string name="household_editor_note_label">Ghi chú (tùy chọn)</string>
+    <string name="household_editor_note_hint">Mục đích, thông số, v.v.</string>
+    <string name="household_save">Lưu</string>
+    <string name="household_cancel">Hủy</string>
+    <string name="household_confirm">Xác nhận</string>
+    <string name="household_item_added">Đã thêm vật phẩm</string>
+    <string name="household_location_added">Đã thêm vị trí</string>
+    <string name="household_saved">Đã lưu</string>
+    <string name="household_stats_total_items">Tổng số vật phẩm</string>
+    <string name="household_stats_location_count">Số lượng vị trí</string>
+    <string name="household_stats_expiring_soon">Vật phẩm sắp hết hạn</string>
+    <string name="household_stats_unit_item">cái</string>
+    <string name="household_stats_unit_location">cái</string>
+    <string name="household_stats_added_this_month">Thêm mới tháng này +%1$d</string>
+    <string name="household_stats_category_share">Tỷ lệ theo loại vật phẩm</string>
+    <string name="household_stats_location_distribution">Phân bố theo vị trí (cái)</string>
+    <string name="household_stats_activity">Tóm tắt động</string>
+    <string name="household_stats_recent_added">Thêm gần đây</string>
+    <string name="household_stats_upcoming_expiry">Sắp hết hạn</string>
+    <string name="household_stats_total_count">%1$d\nTổng cộng</string>
+    <string name="household_stats_items_count">%1$d cái</string>
+    <string name="household_stats_other">Khác</string>
+    <string name="household_stats_empty">Chưa có dữ liệu</string>
+    <string name="household_stats_expire_prefix">%1$s hết hạn(</string>
+    <string name="household_stats_expire_suffix">)</string>
+    <string name="household_locations_title">Quản lý vị trí</string>
+    <string name="household_location_add_root">Tạo vị trí mới</string>
+    <string name="household_location_add_child">Thêm cấp con</string>
+    <string name="household_location_rename">Đổi tên</string>
+    <string name="household_location_delete">Xóa</string>
+    <string name="household_location_name_hint">Tên vị trí</string>
+    <string name="household_location_pick_icon">Chọn biểu tượng</string>
+    <string name="household_location_delete_blocked">Vị trí này có vị trí con hoặc vật phẩm, vui lòng xóa trước</string>
+    <string name="household_locations_empty">Chưa có vị trí</string>
+    <string name="household_location_expand">Mở rộng</string>
+    <string name="household_location_collapse">Thu gọn</string>
+    <string name="household_loc_home">Nhà</string>
+    <string name="household_loc_living_room">Phòng khách</string>
+    <string name="household_loc_master_bedroom">Phòng ngủ chính</string>
+    <string name="household_loc_second_bedroom">Phòng ngủ phụ</string>
+    <string name="household_loc_kitchen">Nhà bếp</string>
+    <string name="household_loc_bathroom">Phòng tắm</string>
+    <string name="household_loc_study">Phòng làm việc</string>
+    <string name="household_loc_balcony">Ban công</string>
+    <string name="household_loc_storage_room">Kho chứa</string>
+    <string name="household_loc_company">Công ty</string>
+    <string name="household_loc_desk">Bàn làm việc</string>
+    <string name="household_loc_meeting_room">Phòng họp</string>
+    <string name="household_loc_pantry">Phòng trà</string>
+    <string name="household_loc_locker">Tủ đựng đồ</string>
+    <string name="household_log_item_created">Thêm vật phẩm: %1$s</string>
+    <string name="household_log_item_updated">Cập nhật vật phẩm: %1$s</string>
+    <string name="household_log_item_deleted">Xóa vật phẩm: %1$s</string>
+    <string name="household_log_item_moved">Di chuyển vật phẩm: %1$s</string>
+    <string name="household_log_location_created">Thêm vị trí: %1$s</string>
+    <string name="household_log_location_renamed">Đổi tên vị trí: %1$s</string>
+    <string name="household_log_location_deleted">Xóa vị trí: %1$s</string>
+    <string name="agent_tool_add_household_item_title">Thêm vật phẩm</string>
+    <string name="agent_tool_add_household_item_summary">Ghi lại một vật phẩm và vị trí lưu trữ</string>
+    <string name="agent_tool_add_household_item_description">Ghi lại một vật phẩm: tên, đường dẫn vị trí lưu trữ, phân loại tùy chọn, hạn sử dụng và ghi chú. Vị trí trùng tên (kể cả trong các cấp lồng nhau) sẽ được dùng lại trực tiếp, chỉ tạo mới khi chưa tồn tại.</string>
+    <string name="agent_tool_add_household_item_param_name">Tên vật phẩm, ví dụ \"Thuốc cảm\"</string>
+    <string name="agent_tool_add_household_item_param_location_path">Đường dẫn vị trí lưu trữ, phân tách bằng \"/\" hoặc \"&gt;\", ví dụ \"Nhà/Phòng ngủ chính/Hộp thuốc\". Vị trí trùng tên sẽ được dùng lại trực tiếp, chỉ tạo mới khi chưa tồn tại</string>
+    <string name="agent_tool_add_household_item_param_category">Phân loại, văn bản tự do, ví dụ: thuốc / đồ nhỏ / đồ cồng kềnh</string>
+    <string name="agent_tool_add_household_item_param_expire_date">Ngày hết hạn, yyyy-MM-dd, tùy chọn</string>
+    <string name="agent_tool_add_household_item_param_note">Ghi chú, tùy chọn</string>
+    <string name="agent_tool_add_household_item_failed">Thêm đồ vật thất bại: %1$s</string>
+    <string-array name="agent_tool_add_household_item_keywords">
+        <item>Đồ vật</item>
+        <item>Quản lý đồ vật</item>
+        <item>Cất giữ</item>
+        <item>Ghi lại đồ vật</item>
+    </string-array>
+    <string-array name="agent_tool_add_household_item_examples">
+        <item>Giúp tôi ghi thuốc cảm vào hộp thuốc phòng ngủ chính, hết hạn tháng 6 năm 2027</item>
+        <item>Ghi cáp sạc dự phòng vào ngăn kéo phòng làm việc</item>
+    </string-array>
+    <string name="agent_tool_find_household_item_title">Tìm đồ vật</string>
+    <string name="agent_tool_find_household_item_summary">Tìm vị trí đồ vật được đặt trong nhà</string>
+    <string name="agent_tool_find_household_item_description">Tìm kiếm mờ đồ vật theo tên, phân loại hoặc ghi chú, trả về đường dẫn vị trí đầy đủ, trạng thái hạn sử dụng và ghi chú của từng kết quả khớp.</string>
+    <string name="agent_tool_find_household_item_param_query">Từ khóa tìm kiếm, khớp tên, phân loại và ghi chú</string>
+    <string name="agent_tool_find_household_item_empty">Không tìm thấy đồ vật phù hợp</string>
+    <string name="agent_tool_find_household_item_failed">Tìm đồ vật thất bại: %1$s</string>
+    <string-array name="agent_tool_find_household_item_keywords">
+        <item>Đồ vật</item>
+        <item>Tìm</item>
+        <item>Ở đâu</item>
+        <item>Vị trí</item>
+    </string-array>
+    <string-array name="agent_tool_find_household_item_examples">
+        <item>Thuốc cảm ở đâu</item>
+        <item>Cáp sạc dự phòng để đâu rồi</item>
+    </string-array>
+    <string name="agent_tool_move_household_item_title">Di chuyển đồ vật</string>
+    <string name="agent_tool_move_household_item_summary">Thay đổi vị trí cất giữ đồ vật</string>
+    <string name="agent_tool_move_household_item_description">Di chuyển một đồ vật đến đường dẫn vị trí cất giữ mới. Đồ vật được khớp mờ theo tên; đường dẫn vị trí sẽ tự động được tạo từng cấp nếu chưa tồn tại.</string>
+    <string name="agent_tool_move_household_item_param_name">Tên đồ vật, khớp mờ</string>
+    <string name="agent_tool_move_household_item_param_location_path">Đường dẫn vị trí cất giữ mới, phân tách bằng \"/\" hoặc \"&gt;\"</string>
+    <string name="agent_tool_move_household_item_not_found">Không tìm thấy đồ vật: %1$s</string>
+    <string name="agent_tool_move_household_item_failed">Di chuyển đồ vật thất bại: %1$s</string>
+    <string-array name="agent_tool_move_household_item_keywords">
+        <item>Đồ vật</item>
+        <item>Di chuyển</item>
+        <item>Chuyển đến</item>
+    </string-array>
+    <string-array name="agent_tool_move_household_item_examples">
+        <item>Chuyển thuốc cảm đến ngăn kéo phòng khách</item>
+    </string-array>
+    <string name="agent_tool_household_label_name">Tên</string>
+    <string name="agent_tool_household_label_location">Vị trí</string>
+    <string name="agent_tool_household_label_category">Danh mục</string>
+    <string name="agent_tool_household_label_expiry">Hạn sử dụng</string>
+    <string name="agent_tool_household_label_note">Ghi chú</string>
+    <string name="agent_tool_household_expiry_expired">Đã hết hạn %1$d ngày</string>
+    <string name="agent_tool_household_expiry_days_left">Còn %1$d ngày</string>
+    <string name="agent_tool_household_expiry_today">Hết hạn hôm nay</string>
+    <string name="agent_tool_household_expiry_none">Không có hạn sử dụng</string>
+    <string name="agent_tool_household_open_link">Mở quản lý đồ vật</string>
+    <string name="agent_tool_household_edit_link">Xem đồ vật</string>
+    <string name="agent_tool_household_unknown_error">Lỗi không xác định</string>
+</resources>

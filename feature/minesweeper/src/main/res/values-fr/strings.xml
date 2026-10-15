@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minesweeper_title">Démineur</string>
+    <string name="minesweeper_restart">Recommencer</string>
+    <string name="minesweeper_sound_on">Son activé</string>
+    <string name="minesweeper_sound_off">Son désactivé</string>
+    <string name="minesweeper_mode_dig">Mode déminage</string>
+    <string name="minesweeper_mode_flag">Mode drapeau</string>
+    <string name="minesweeper_hint_dig">Appuyez pour révéler une case</string>
+    <string name="minesweeper_hint_flag">Appuyez pour placer un drapeau</string>
+    <string name="minesweeper_time">Temps</string>
+    <string name="minesweeper_mines_left">Mines restantes</string>
+    <string name="minesweeper_won">Partie gagnée</string>
+    <string name="minesweeper_lost">Mine touchée</string>
+    <string name="minesweeper_play_again">Rejouer</string>
+    <string name="minesweeper_result_detail">Temps : %1$d s</string>
+    <string name="minesweeper_fullscreen">Plein écran</string>
+    <string name="minesweeper_exit_fullscreen">Quitter le plein écran</string>
+    <string name="minesweeper_share">Partager</string>
+</resources>

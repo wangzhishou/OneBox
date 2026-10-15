@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="iching_cast_title">Tirer un hexagramme</string>
+    <string name="iching_casting_title">Tirage en cours</string>
+    <string name="iching_result_title">Hexagramme principal</string>
+    <string name="iching_ai_title">Interprétation IA</string>
+    <string name="iching_question_label">Votre question</string>
+    <string name="iching_question_hint">Saisissez votre question, par ex. : carrière, amour, finances…</string>
+    <string name="iching_cast_button">Secouez pour tirer</string>
+    <string name="iching_continue_cast">Continuer le tirage</string>
+    <string name="iching_casting_hint">Secouez doucement le téléphone ou attendez la formation aléatoire des traits</string>
+    <string name="iching_casting_progress">%1$d/6</string>
+    <string name="iching_casting_status">Formation des traits…</string>
+    <string name="iching_retry">Nouveau tirage</string>
+    <string name="iching_view_ai">Voir l\'interprétation IA</string>
+    <string name="iching_upper_trigram">Trigrame supérieur : %1$s</string>
+    <string name="iching_lower_trigram">Trigrame inférieur : %1$s</string>
+    <string name="iching_hexagram_number">Hexagramme n° %1$d</string>
+    <string name="iching_changed_hexagram">Hexagramme dérivé</string>
+    <string name="iching_changing_lines">Traits mouvants : %1$s</string>
+    <string name="iching_no_changing_lines">Aucun trait mouvant</string>
+    <string name="iching_new_cast">Nouveau tirage</string>
+    <string name="iching_ai_loading">Interprétation de l\'hexagramme en cours…</string>
+    <string name="iching_ai_error">Impossible de générer l\'interprétation pour le moment</string>
+    <string name="iching_ai_retry">Réessayer</string>
+    <string name="iching_tip_title">Le saviez-vous ?</string>
+    <string name="iching_tip_1">Méthode des pièces : lancez trois pièces à la fois ; la combinaison faces/piles détermine un trait. Répétez six fois pour former l\'hexagramme.</string>
+    <string name="iching_tip_2">Face inscrite = 3, revers = 2 ; la somme des trois pièces (6/7/8/9) donne un trait.</string>
+    <string name="iching_tip_3">Trois revers = vieux yin (trait yin, mouvant) ; trois faces = vieux yang (trait yang, mouvant).</string>
+    <string name="iching_tip_4">Deux revers et une face = jeune yang (trait yang, fixe) ; deux faces et un revers = jeune yin (trait yin, fixe).</string>
+    <string name="iching_tip_5">Le premier lancer donne le trait initial (en bas), le sixième le trait supérieur (en haut) ; l\'hexagramme se construit de bas en haut.</string>
+    <string name="iching_tip_6">Les traits mouvants annoncent le changement : le vieux yin devient yang, le vieux yang devient yin ; l\'hexagramme ainsi obtenu est appelé « hexagramme dérivé ».</string>
+    <string name="iching_line_title">Trait actuel</string>
+    <string name="iching_line_pos_1">Premier trait</string>
+    <string name="iching_line_pos_2">Deuxième trait</string>
+    <string name="iching_line_pos_3">Troisième trait</string>
+    <string name="iching_line_pos_4">Quatrième trait</string>
+    <string name="iching_line_pos_5">Cinquième trait</string>
+    <string name="iching_line_pos_6">Trait supérieur</string>
+    <string name="iching_combo_6">Trois revers</string>
+    <string name="iching_combo_7">Deux revers, un face</string>
+    <string name="iching_combo_8">Deux faces, un revers</string>
+    <string name="iching_combo_9">Trois faces</string>
+    <string name="iching_line_name_6">Yin ancien</string>
+    <string name="iching_line_name_7">Yang jeune</string>
+    <string name="iching_line_name_8">Yin jeune</string>
+    <string name="iching_line_name_9">Yang ancien</string>
+    <string name="iching_line_yang">Trait yang ⚊</string>
+    <string name="iching_line_yin">Trait yin ⚋</string>
+    <string name="iching_line_changing">Trait mobile</string>
+    <string name="iching_line_steady">Inchangé</string>
+    <string name="iching_line_summary">%1$s · %2$s → %3$s, %4$s, %5$s</string>
+    <string name="iching_sound_on">Effets sonores activés</string>
+    <string name="iching_sound_off">Effets sonores désactivés</string>
+    <string name="iching_history_title">Historique des tirages</string>
+    <string name="iching_history_empty">Aucun historique de tirage</string>
+    <string name="iching_history_no_question">Question non renseignée</string>
+    <string name="iching_history_delete">Supprimer cet enregistrement</string>
+    <string name="iching_history_clear">Effacer l\'historique des tirages</string>
+    <string name="iching_history_clear_confirm">Confirmer la suppression de tout l\'historique des tirages ? Cette action est irréversible.</string>
+    <string name="iching_confirm">Supprimer</string>
+    <string name="iching_cancel">Annuler</string>
+    <string name="iching_judgment_title">Jugements · Traits</string>
+    <string name="iching_ai_points_estimate">Consommation estimée : environ %1$d points</string>
+    <string name="iching_marker_changing_yang">○</string>
+    <string name="iching_marker_changing_yin">×</string>
+</resources>

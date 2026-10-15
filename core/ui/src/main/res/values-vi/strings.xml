@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_picker_title">Chọn ngày</string>
+    <string name="date_picker_confirm">Xác nhận</string>
+    <string name="date_picker_cancel">Hủy</string>
+    <string name="date_picker_edit">Chỉnh sửa</string>
+    <string name="date_picker_select_year_month">Chọn năm tháng</string>
+    <string name="date_picker_year_input">Năm</string>
+    <string name="date_picker_year_label">Năm</string>
+    <string name="date_picker_month_label">Tháng</string>
+    <string name="date_picker_day_label">Ngày</string>
+    <string name="date_picker_current_year">Năm nay</string>
+    <string name="blessing_effect_merit_plus_one">May mắn +1</string>
+    <string name="date_picker_month_format">Tháng %d</string>
+    <string name="date_picker_previous_month">Tháng trước</string>
+    <string name="date_picker_next_month">Tháng sau</string>
+    <string name="date_picker_year_format">Năm %d</string>
+    <string name="date_picker_year_month_format">Tháng %2$d năm %1$d</string>
+    <string name="date_picker_date_format">Ngày %3$d tháng %2$d năm %1$d</string>
+    <string name="date_picker_weekday_sun">CN</string>
+    <string name="date_picker_weekday_mon">T2</string>
+    <string name="date_picker_weekday_tue">T3</string>
+    <string name="date_picker_weekday_wed">T4</string>
+    <string name="date_picker_weekday_thu">T5</string>
+    <string name="date_picker_weekday_fri">T6</string>
+    <string name="date_picker_weekday_sat">T7</string>
+    <string name="time_range_picker_title">Chọn khoảng thời gian</string>
+    <string name="time_picker_title">Chọn thời gian</string>
+    <string name="time_range_picker_start_time">Thời gian bắt đầu</string>
+    <string name="time_range_picker_end_time">Thời gian kết thúc</string>
+    <string name="time_range_picker_hour">Giờ</string>
+    <string name="time_range_picker_minute">Phút</string>
+    <string name="time_range_picker_hint">Gợi ý: nhập giờ từ 0-23 và phút từ 0-59</string>
+    <string name="date_range_picker_title">Chọn khoảng thời gian</string>
+    <string name="date_range_start">Ngày bắt đầu</string>
+    <string name="date_range_end">Ngày kết thúc</string>
+    <string name="week_selector_week_title">%1$d năm %2$d tháng · Tuần thứ %3$d</string>
+    <string name="icon_picker_icon_count">%1$d biểu tượng</string>
+    <string name="icon_picker_title">Chọn biểu tượng</string>
+    <string name="icon_picker_search_hint">Tìm tên biểu tượng…</string>
+    <string name="icon_picker_tab_app">Ứng dụng</string>
+    <string name="icon_picker_tab_material">Chung</string>
+    <string name="icon_picker_tab_all">Tất cả</string>
+    <string-array name="week_selector_weekdays_short">
+        <item>Một</item>
+        <item>Hai</item>
+        <item>Ba</item>
+        <item>Bốn</item>
+        <item>Năm</item>
+        <item>Sáu</item>
+        <item>Chủ nhật</item>
+    </string-array>
+</resources>

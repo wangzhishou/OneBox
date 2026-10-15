@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sys_prompt_default_title">Lời nhắc hệ thống trò chuyện mặc định</string>
+    <string name="sys_prompt_default_desc">Quy tắc hệ thống mặc định cho trò chuyện</string>
+    <string name="sys_prompt_agent_create_title">Lời nhắc hệ thống tạo Agent</string>
+    <string name="sys_prompt_agent_create_desc">Lời nhắc hệ thống đặt trước dùng để tạo Agent</string>
+    <string name="sys_prompt_prompt_create_title">Lời nhắc hệ thống tạo Prompt</string>
+    <string name="sys_prompt_prompt_create_desc">Lời nhắc hệ thống đặt trước dùng để tạo Prompt</string>
+    <string name="sys_prompt_bazi_title">Lời nhắc hệ thống phân tích lá số Bát Tự</string>
+    <string name="sys_prompt_bazi_desc">Lời nhắc hệ thống đặt trước dùng để phân tích lá số Bát Tự</string>
+    <string name="sys_prompt_xiangqi_title">Lời nhắc hệ thống nước đi cờ tướng Trung Quốc</string>
+    <string name="sys_prompt_xiangqi_desc">Lời nhắc hệ thống đặt trước cho ván đấu người - máy với LLM cờ tướng Trung Quốc</string>
+    <string name="sys_prompt_iching_title">Lời nhắc hệ thống giải đoán Lục Hào Kinh Dịch</string>
+    <string name="sys_prompt_iching_desc">Dùng để kết hợp sự việc được hỏi, quẻ tượng và hào động để tạo giải đoán có tính nhắm mục tiêu</string>
+    <string name="sys_prompt_mode_agent_title">Giao thức thực thi</string>
+    <string name="sys_prompt_mode_agent_desc">Lời nhắc hệ thống điều khiển trợ lý gọi công cụ, hoàn thành nhiệm vụ</string>
+    <string name="sys_prompt_duel_title">Mẫu prompt trò chuyện/tương tác AI</string>
+    <string name="sys_prompt_duel_desc">Mẫu chỉ thị hệ thống, quy tắc phát ngôn nhân vật và câu dẫn lượt dùng trong trò chuyện/tương tác AI</string>
+    <string name="sys_prompt_memory_global_title">Câu dẫn hồ sơ ký ức</string>
+    <string name="sys_prompt_memory_global_desc">Câu dẫn cho đoạn hồ sơ người dùng khi AI chèn ký ức</string>
+    <string name="sys_prompt_memory_recent_title">Câu dẫn nhật ký gần đây trong ký ức</string>
+    <string name="sys_prompt_memory_recent_desc">Câu dẫn cho đoạn nhật ký gần đây khi AI chèn ký ức (kèm gợi ý tìm kiếm memory_get)</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">Câu dẫn nhật ký gần đây trong ký ức (không có công cụ)</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">Phiên bản giảm cấp dùng khi mô hình không hỗ trợ gọi công cụ</string>
+    <string name="sys_prompt_skills_guidance_title">Câu dẫn danh sách kỹ năng</string>
+    <string name="sys_prompt_skills_guidance_desc">Câu dẫn cho danh sách kỹ năng khả dụng</string>
+    <string name="activity_log_habit_app_title">Điểm danh thói quen</string>
+    <string name="activity_log_habit_created">Tạo thói quen mới:%1$s</string>
+    <string name="activity_log_habit_check_in">Điểm danh:%1$s</string>
+    <string name="marktodo_preset_category_title">Việc cần làm của tôi</string>
+    <string name="marktodo_preset_task_title">Chào mừng sử dụng việc cần làm</string>
+    <string name="marktodo_preset_task_note">Nhấn vào ô chọn bên trái để hoàn thành tôi; nhấn vào tôi để chỉnh sửa; nhấn giữ thẻ chủ đề để chỉnh sửa hoặc xóa</string>
+    <string name="marktodo_preset_tag_work">Công việc</string>
+    <string name="marktodo_preset_tag_study">Học tập</string>
+    <string name="marktodo_preset_tag_life">Cuộc sống</string>
+    <string name="marktodo_preset_tag_health">Sức khỏe</string>
+    <string name="marktodo_preset_tag_travel">Du lịch</string>
+    <string name="activity_log_teleprompter_app_title">Máy nhắc chữ</string>
+    <string name="activity_log_bookkeeping_app_title">Sổ ghi chép</string>
+    <string name="activity_log_poem_app_title">Thơ cổ Trung Quốc</string>
+    <string name="activity_log_todo_app_title">Danh sách việc cần làm</string>
+    <string name="activity_log_xiangqi_app_title">Cờ tướng Trung Quốc</string>
+</resources>

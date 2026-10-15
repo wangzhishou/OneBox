@@ -1,0 +1,43 @@
+OneBox est une boîte à outils tout-en-un gratuite : 90+ outils pour images, PDF, fichiers et quotidien — et un vrai assistant IA qui ne se contente pas de répondre, il utilise la boîte à outils pour vous.
+
+【Chat IA, avec les modèles de votre choix】
+• Un seul point d'entrée pour les modèles phares : OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
+• Ouvert aux tiers : branchez toute API compatible OpenAI, Anthropic ou Responses avec votre clé — même un modèle local sur votre ordinateur
+• Saisie vocale, pièces jointes images et fichiers, réponses en streaming, bibliothèque de prompts
+• Aide à la rédaction, la réécriture, le résumé et la traduction
+• Détecteur de contenu IA : vérifiez si un texte ou une image a été généré par IA
+
+【Un agent qui fait vraiment le travail】
+• L'assistant appelle 70+ outils dans l'app : compression et conversion d'images, fusion et découpage de PDF, OCR et codes-barres, édition EXIF, filigranes, comptabilité, tâches, notes, clouds, recherche web et lecture de pages
+• Il pilote aussi votre téléphone : voir l'écran, toucher, balayer et saisir pour finir une tâche dans une autre app
+• Un navigateur intégré qu'il peut conduire : ouvrir des pages, lire le contenu, exécuter des scripts
+• Mémoire et compétences de l'agent : il retient votre profil et vos préférences
+
+【Décrivez-le — l'app le construit】
+Fini de fouiller les menus. Dites ce que vous voulez, OneBox en fait un outil ou une app :
+• « Donne-moi 8 idées pour le repas de ce soir. » — la création IA sur la roue de décision remplit les options
+• « Planificateur de voyage. » « Convertisseur de style d'article. » — l'IA construit toute l'app ; affinez en discutant : « mets le bouton en bleu, ajoute un sélecteur de date »
+• Les réponses arrivent en vrais contrôles — formulaires, curseurs, sélecteurs de date, d'heure, de couleur et de fichier natifs dans le chat, pas un mur de texte
+• Générez des images depuis un prompt, puis modifiez-les, compressez-les ou convertissez-les avec la même boîte à outils
+• Chaque outil avec saisie a une entrée création IA : décrivez-la, l'IA l'écrit
+
+【La boîte à outils, quand vous préférez toucher】
+• Images : un éditeur photo complet — recadrage, filtres, collage, assemblage de longues images, GIF, Image Studio avec calques, pinceaux et texte — plus la conversion de format (HEIC / WebP / AVIF), un compresseur d'images, la conversion bitmap vers SVG et un créateur de fonds dégradés
+• Fichiers et PDF : scanner de documents, fusion et découpage de PDF, extraction de texte et d'images, éditeur Markdown avec aperçu en direct, chiffrement de fichiers, édition EXIF, transfert entre appareils
+• Productivité : téléprompteur, bloc-notes, tâches, comptabilité, suivi d'habitudes, calendrier, roue de décision, centre d'enregistrement (santé, objets et péremption, règles)
+• Quotidien : coffre-fort de mots de passe, photos d'identité, scanner et générateur de QR codes, test de débit, appareil photo à filigrane, convertisseur d'unités, calculateur de prêt, boussole et altimètre, règle et rapporteur, bandeau LED, pipette de couleur, test de pixels morts, lanceur de dés, Text Card, divination Yi Jing, mini-jeux
+• Ad Watch : regardez une pub récompensée pour gagner des points IA — c'est vous qui décidez, jamais imposé
+
+【Également inclus】
+• Client DSH : associez DeepSeek Harness sur votre ordinateur via un relais chiffré, pilotez-le depuis votre téléphone
+• OneBox évolue même toute seule : vos retours sont lus par un chef de produit IA, puis codés, testés et déployés
+
+【Pourquoi OneBox】
+• Utilisation gratuite, pas de pubs imposées — les pubs récompensées sont optionnelles
+• Confidentialité avant tout : images et documents traités en local
+• Interface Material Design propre et moderne
+• De nouveaux outils et fonctions IA arrivent sans cesse
+
+Si vous en avez assez de jongler entre une dizaine d'apps, essayez-la — elle pourrait bien devenir la dernière dont vous aurez besoin.
+
+Contact : support@oneboxable.com

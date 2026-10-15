@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lifetime_title">Đồng hồ cát thời gian</string>
+    <string name="lifetime_loading">Đang tính toán thời gian của bạn…</string>
+    <string name="lifetime_unit_years">Năm</string>
+    <string name="lifetime_unit_months">Tháng</string>
+    <string name="lifetime_unit_days">Ngày</string>
+    <string name="lifetime_unit_hours">Giờ</string>
+    <string name="lifetime_unit_minutes">Phút</string>
+    <string name="lifetime_unit_seconds">Giây</string>
+    <string name="lifetime_time_card_label">Cuộc đời đã qua</string>
+    <string name="lifetime_remaining_time_label">Cuộc đời còn lại</string>
+    <string name="lifetime_life_journey">Hành trình cuộc đời</string>
+    <string name="lifetime_progress_label">Tiến độ</string>
+    <string name="lifetime_remaining_estimate">Dự kiến còn %1$d năm</string>
+    <string name="lifetime_milestone_section">Ngày kỷ niệm</string>
+    <string name="lifetime_countdown_section">Ngày đếm ngược</string>
+    <string name="lifetime_frequency_section">Tần suất thời gian</string>
+    <string name="lifetime_add">Thêm</string>
+    <string name="lifetime_add_event">Thêm tần suất thời gian</string>
+    <string name="lifetime_add_milestone">Thêm ngày kỷ niệm</string>
+    <string name="lifetime_edit_milestone">Chỉnh sửa ngày kỷ niệm</string>
+    <string name="lifetime_event_name_label">Tên sự kiện</string>
+    <string name="lifetime_milestone_name_hint">Tên ngày kỷ niệm</string>
+    <string name="lifetime_event_name_placeholder">Ăn cơm</string>
+    <string name="lifetime_choose_icon">Chọn biểu tượng</string>
+    <string name="lifetime_frequency_label">Tần suất</string>
+    <string name="lifetime_unit_label">Đơn vị</string>
+    <string name="lifetime_times_per_period">Số lần mỗi chu kỳ</string>
+    <string name="lifetime_add_to_timeline">Ghi lại tần suất thời gian</string>
+    <string name="lifetime_default_times_per_period">1</string>
+    <string name="lifetime_validation_event_name_required">Vui lòng nhập tên sự kiện</string>
+    <string name="lifetime_validation_times_per_period_required">Vui lòng nhập số lần lớn hơn 0</string>
+    <string name="lifetime_validation_milestone_name_required">Vui lòng nhập tên ngày kỷ niệm</string>
+    <string name="lifetime_validation_milestone_target_date_required">Vui lòng chọn ngày mục tiêu</string>
+    <string name="lifetime_select_birthday">Chọn ngày sinh</string>
+    <string name="lifetime_confirm">Xác nhận</string>
+    <string name="lifetime_cancel">Hủy</string>
+    <string name="lifetime_settings">Đặt điểm bắt đầu</string>
+    <string name="lifetime_birth_date">Ngày sinh</string>
+    <string name="lifetime_target_age">Độ dài cuộc đời mong muốn</string>
+    <string name="lifetime_target_age_description">Độ dài cuộc đời mong muốn của bạn xác định phạm vi hiển thị của \"Đồng hồ cát thời gian\", thể hiện tầm nhìn cá nhân của bạn về một cuộc đời trọn vẹn.</string>
+    <string name="lifetime_tap_to_change">Nhấn để sửa</string>
+    <string name="lifetime_update_settings">Vào Đồng hồ cát thời gian</string>
+    <string name="lifetime_hide_progress">Ẩn tiến độ cuộc đời</string>
+    <string name="lifetime_welcome_title">Đồng hồ cát thời gian</string>
+    <string name="lifetime_welcome_subtitle">Thời gian không chờ ai, nhưng bạn có thể ghi nhớ nó.</string>
+    <string name="lifetime_welcome_start">Bắt đầu</string>
+    <string name="lifetime_demo_hint">Dữ liệu demo — Nhấn để đặt ngày sinh thật của bạn</string>
+    <string name="lifetime_demo_action">Đi tới cài đặt</string>
+    <string name="lifetime_empty_events_title">Chưa có tần số thời gian</string>
+    <string name="lifetime_empty_events_subtitle">Thêm những điều bạn quan tâm, như ăn uống, đọc sách, du lịch…</string>
+    <string name="lifetime_empty_milestones_title">Chưa có ngày kỷ niệm</string>
+    <string name="lifetime_empty_milestones_subtitle">Tốt nghiệp 1000 ngày, sinh nhật 30 tuổi… Ghi lại những khoảnh khắc quan trọng của bạn</string>
+    <string name="lifetime_empty_countdown_title">Chưa có ngày đếm ngược</string>
+    <string name="lifetime_empty_countdown_subtitle">Hệ thống đã tự động dự phòng các ngày lễ trong 3 tháng tới, hãy thêm ngày quan trọng của riêng bạn</string>
+    <string name="lifetime_recommend_events_title">Đề xuất cho bạn các tần số thời gian sau</string>
+    <string name="lifetime_event_date">Ngày sự kiện</string>
+    <string name="lifetime_select_date">Chọn ngày</string>
+    <string name="lifetime_event_picker_title">Chọn tần số thời gian</string>
+    <string name="lifetime_event_picker_add">Thêm mới</string>
+    <string name="lifetime_event_picker_recommended">Đề xuất</string>
+    <string name="lifetime_event_picker_preset">Sự kiện có sẵn</string>
+    <string name="lifetime_event_picker_custom">Tần suất thời gian của tôi</string>
+    <string name="lifetime_event_added">Đã thêm</string>
+    <string name="lifetime_event_saved">Đã thêm tần suất thời gian</string>
+    <string name="lifetime_event_updated">Đã cập nhật tần suất thời gian</string>
+    <string name="lifetime_event_deleted">Đã xóa tần suất thời gian</string>
+    <string name="lifetime_frequency_one_time">Một lần</string>
+    <string name="lifetime_frequency_daily">Hàng ngày</string>
+    <string name="lifetime_frequency_weekly">Hàng tuần</string>
+    <string name="lifetime_frequency_monthly">Hàng tháng</string>
+    <string name="lifetime_frequency_yearly">Hàng năm</string>
+    <string name="lifetime_frequency_progress">Đã qua %1$d%% cuộc đời</string>
+    <string name="lifetime_card_flip_hint">Nhấn để lật</string>
+    <string name="lifetime_completed_label">Đã hoàn thành</string>
+    <string name="lifetime_remaining_label">Chưa hoàn thành</string>
+    <string name="lifetime_milestone_target_date">Ngày mục tiêu</string>
+    <string name="lifetime_milestone_target_days">Số ngày mục tiêu</string>
+    <string name="lifetime_milestone_start_date">Ngày bắt đầu</string>
+    <string name="lifetime_milestone_note">Ghi chú</string>
+    <string name="lifetime_action_frequency_events">Sự kiện tần suất</string>
+    <string name="lifetime_action_milestones">Ngày kỷ niệm</string>
+    <string name="lifetime_action_countdown">Ngày đếm ngược</string>
+    <string name="lifetime_milestone_days_until">Còn %1$d ngày</string>
+    <string name="lifetime_milestone_days_today">Chính là hôm nay</string>
+    <string name="lifetime_milestone_days_past">Đã qua %1$d ngày</string>
+    <string name="lifetime_delete_confirm_title">Xác nhận xóa</string>
+    <string name="lifetime_delete_confirm_message">Không thể khôi phục sau khi xóa, bạn có chắc chắn muốn xóa ngày kỷ niệm này không?</string>
+    <string name="lifetime_delete">Xóa</string>
+    <string name="lifetime_note_placeholder">Ghi lại ý nghĩa của ngày kỷ niệm này với bạn…</string>
+    <string name="lifetime_milestone_name_placeholder">1000 ngày tốt nghiệp</string>
+    <string name="lifetime_milestone_note_placeholder">Tùy chọn, ghi lại ý nghĩa của ngày kỷ niệm này…</string>
+    <string name="lifetime_note_edit">Chỉnh sửa ghi chú</string>
+    <string name="lifetime_note_delete">Xóa ghi chú</string>
+    <string name="lifetime_note_add">Thêm ghi chú</string>
+    <string name="lifetime_note_dialog_title">Ghi chú</string>
+    <string name="lifetime_note_save">Lưu</string>
+    <string name="lifetime_note_empty">Chưa có ghi chú</string>
+    <string name="lifetime_insight_current_title">Cảm hứng hôm nay</string>
+    <string name="lifetime_insight_refresh">Đổi cái khác</string>
+    <string name="lifetime_insight_loading">AI đang suy nghĩ…</string>
+    <string name="lifetime_insight_empty">Chưa có cảm hứng, nhấn \"Đổi cái khác\" để tạo</string>
+    <string name="lifetime_insight_history_title">Cảm hứng lịch sử</string>
+    <string name="lifetime_insight_history_empty">Chưa có lịch sử</string>
+    <string name="lifetime_add_countdown">Thêm ngày đếm ngược</string>
+    <string name="lifetime_countdown_detail_title">Chi tiết ngày đếm ngược</string>
+    <string name="lifetime_countdown_name_label">Tên ngày đếm ngược</string>
+    <string name="lifetime_countdown_name_placeholder">Ngày lương, thưởng cuối năm, kỷ niệm…</string>
+    <string name="lifetime_countdown_target_date">Ngày mục tiêu</string>
+    <string name="lifetime_countdown_lunar_target">Tính theo âm lịch (tự động lặp mỗi năm)</string>
+    <string name="lifetime_countdown_lunar_target_help">Phù hợp cho sinh nhật âm lịch, ngày lễ truyền thống và các dịp lặp lại hàng năm</string>
+    <string name="lifetime_countdown_note_placeholder">Tùy chọn, ghi lại ý nghĩa của ngày đếm ngược này…</string>
+    <string name="lifetime_countdown_holiday_badge">Ngày lễ</string>
+    <string name="lifetime_countdown_holiday_hint">Ngày đếm ngược này được hệ thống tự động thêm theo âm lịch/dương lịch, có hiệu lực mỗi năm. Có thể xóa rồi thêm thủ công.</string>
+    <string name="lifetime_event_picker_delete">Xóa</string>
+    <string name="lifetime_date_ymd">Ngày %3$d tháng %2$d năm %1$d</string>
+    <string name="lifetime_lunar_date">Âm lịch %1$s năm %2$s%3$s</string>
+    <string name="lifetime_frequency_value_label">%1$s%2$d%3$s</string>
+    <string name="lifetime_status_today">Hôm nay</string>
+    <string name="lifetime_status_days_until">Còn %1$d ngày</string>
+    <string name="lifetime_status_days_past">Đã qua %1$d ngày</string>
+    <string name="lifetime_status_months_until">Còn %1$d tháng</string>
+    <string name="lifetime_status_months_past">Đã qua %1$d tháng</string>
+    <string name="lifetime_status_years_until">Còn %1$d năm</string>
+    <string name="lifetime_status_years_past">Đã qua %1$d năm</string>
+    <string name="lifetime_preset_name_spring_festival">Tết Nguyên Đán</string>
+    <string name="lifetime_preset_name_lantern_festival">Tết Nguyên Tiêu</string>
+    <string name="lifetime_preset_name_longtaitou">Tết Long Đầu</string>
+    <string name="lifetime_preset_name_shangsi">Tết Thượng Tỵ</string>
+    <string name="lifetime_preset_name_dragon_boat">Tết Đoan Ngọ</string>
+    <string name="lifetime_preset_name_qixi">Thất Tịch</string>
+    <string name="lifetime_preset_name_zhongyuan">Tết Trung Nguyên</string>
+    <string name="lifetime_preset_name_mid_autumn">Tết Trung Thu</string>
+    <string name="lifetime_preset_name_double_ninth">Tết Trùng Dương</string>
+    <string name="lifetime_preset_name_hanyi">Tết Hàn Y</string>
+    <string name="lifetime_preset_name_xiayuan">Tết Hạ Nguyên</string>
+    <string name="lifetime_preset_name_laba">Tết Lạp Bát</string>
+    <string name="lifetime_preset_name_little_new_year">Tết Ông Công Ông Táo</string>
+    <string name="lifetime_preset_name_chinese_new_years_eve">Giao Thừa</string>
+    <string name="lifetime_preset_name_new_years_day">Tết Dương Lịch</string>
+    <string name="lifetime_preset_name_valentines">Ngày Valentine</string>
+    <string name="lifetime_preset_name_womens_day">Ngày Quốc tế Phụ nữ</string>
+    <string name="lifetime_preset_name_arbor_day">Ngày Trồng cây</string>
+    <string name="lifetime_preset_name_consumer_rights_day">Ngày Quyền lợi Người tiêu dùng</string>
+    <string name="lifetime_preset_name_april_fools">Ngày Cá tháng Tư</string>
+    <string name="lifetime_preset_name_earth_day">Ngày Trái Đất</string>
+    <string name="lifetime_preset_name_labor_day">Ngày Quốc tế Lao động</string>
+    <string name="lifetime_preset_name_youth_day">Ngày Thanh niên</string>
+    <string name="lifetime_preset_name_nurses_day">Ngày Quốc tế Điều dưỡng</string>
+    <string name="lifetime_preset_name_childrens_day">Ngày Quốc tế Thiếu nhi</string>
+    <string name="lifetime_preset_name_environment_day">Ngày Môi trường</string>
+    <string name="lifetime_preset_name_party_founding_day">Ngày Thành lập Đảng</string>
+    <string name="lifetime_preset_name_army_day">Ngày Quân đội</string>
+    <string name="lifetime_preset_name_victory_day">Thắng lợi kháng chiến</string>
+    <string name="lifetime_preset_name_teachers_day">Ngày Nhà giáo</string>
+    <string name="lifetime_preset_name_national_day">Quốc khánh</string>
+    <string name="lifetime_preset_name_singles_day">Ngày độc thân</string>
+    <string name="lifetime_preset_name_national_memorial_day">Ngày Quốc tang</string>
+    <string name="lifetime_preset_name_christmas_eve">Đêm Giáng sinh</string>
+    <string name="lifetime_preset_name_christmas">Lễ Giáng sinh</string>
+    <string name="lifetime_preset_name_halloween">Lễ Halloween</string>
+    <string name="lifetime_preset_name_thanksgiving">Lễ Tạ ơn</string>
+    <string name="lifetime_preset_name_black_friday">Thứ Sáu Đen</string>
+    <string name="lifetime_preset_name_mothers_day">Ngày của Mẹ</string>
+    <string name="lifetime_preset_name_fathers_day">Ngày của Cha</string>
+    <string name="lifetime_preset_name_new_years_eve">Đêm giao thừa</string>
+    <string name="lifetime_preset_name_eating">Ăn cơm</string>
+    <string name="lifetime_preset_name_sleeping">Ngủ</string>
+    <string name="lifetime_preset_name_journaling">Viết nhật ký</string>
+    <string name="lifetime_preset_name_exercise">Tập thể dục</string>
+    <string name="lifetime_preset_name_reading">Đọc sách</string>
+    <string name="lifetime_preset_name_movies">Xem phim</string>
+    <string name="lifetime_preset_name_travel">Du lịch</string>
+    <string name="lifetime_event_unit_times">lần</string>
+    <string name="lifetime_event_unit_meals">bữa</string>
+    <string name="lifetime_event_unit_entries">bài</string>
+    <string name="lifetime_event_unit_books">cuốn</string>
+    <string name="lifetime_event_unit_movies">bộ</string>
+    <string name="lifetime_event_unit_episodes">tập</string>
+    <string name="lifetime_event_unit_km">km</string>
+    <string name="lifetime_event_unit_meters">m</string>
+    <string name="lifetime_event_unit_steps">bước</string>
+    <string name="lifetime_event_unit_minutes">phút</string>
+    <string name="lifetime_event_unit_hours">giờ</string>
+    <string name="lifetime_event_unit_items">cái</string>
+    <string name="lifetime_event_unit_cups">cốc</string>
+    <string name="lifetime_event_unit_bottles">chai</string>
+    <string name="lifetime_event_unit_packs">gói</string>
+    <string name="lifetime_event_unit_boxes">hộp</string>
+    <string name="agent_tool_lifetime_unknown_error">Lỗi không xác định</string>
+    <string name="agent_tool_lifetime_open_link">Mở dòng thời gian cuộc đời</string>
+    <string name="agent_tool_lifetime_invalid_date">Định dạng ngày「%1$s」không hợp lệ, vui lòng dùng yyyy-MM-dd, ví dụ 2026-12-31.</string>
+    <string name="agent_tool_lifetime_invalid_type">Loại「%1$s」không hợp lệ, vui lòng dùng countdown hoặc milestone.</string>
+    <string name="agent_tool_lifetime_label_target_date">Ngày mục tiêu</string>
+    <string name="agent_tool_lifetime_label_note">Ghi chú</string>
+    <string name="agent_tool_lifetime_section_countdown">Ngày đếm ngược</string>
+    <string name="agent_tool_lifetime_section_milestone">Cột mốc cuộc đời</string>
+    <string name="agent_tool_lifetime_days_left">Còn %1$d ngày</string>
+    <string name="agent_tool_lifetime_days_ago">Đã qua %1$d ngày</string>
+    <string name="agent_tool_lifetime_today">Chính là hôm nay</string>
+    <string name="agent_tool_lifetime_reached">Đã đạt được</string>
+    <string name="agent_tool_lifetime_date_unknown">Ngày chưa xác định</string>
+    <string name="agent_tool_add_countdown_event_title">Tạo ngày đếm ngược</string>
+    <string name="agent_tool_add_countdown_event_summary">Tạo một ngày đếm ngược với tên và ngày mục tiêu.</string>
+    <string name="agent_tool_add_countdown_event_description">Tạo một ngày đếm ngược trong dòng thời gian cuộc đời. name và target_date là bắt buộc; ngày mục tiêu là ngày dương lịch một lần (yyyy-MM-dd), không hỗ trợ lặp lại hoặc âm lịch. note là tùy chọn.</string>
+    <string name="agent_tool_add_countdown_event_param_name">Tên ngày đếm ngược, bắt buộc, ví dụ「Thi đại học」.</string>
+    <string name="agent_tool_add_countdown_event_param_target_date">Ngày mục tiêu, yyyy-MM-dd, ví dụ 2026-12-31.</string>
+    <string name="agent_tool_add_countdown_event_param_note">Ghi chú ngày đếm ngược, tùy chọn.</string>
+    <string name="agent_tool_add_countdown_event_name_required">Tham số name là bắt buộc và không được để trống.</string>
+    <string name="agent_tool_add_countdown_event_failed">Tạo ngày đếm ngược thất bại: %1$s</string>
+    <string-array name="agent_tool_add_countdown_event_keywords">
+        <item>countdown</item>
+        <item>days matter</item>
+        <item>anniversary</item>
+        <item>Ngày đếm ngược</item>
+        <item>Đếm ngược</item>
+        <item>Ngày kỷ niệm</item>
+    </string-array>
+    <string-array name="agent_tool_add_countdown_event_examples">
+        <item>Add a countdown: New Year 2027-01-01</item>
+        <item>帮我建一个倒数日:高考 2027-06-07</item>
+        <item>添加倒数日 结婚纪念日 2026-10-01</item>
+    </string-array>
+    <string name="agent_tool_add_life_milestone_title">Tạo cột mốc cuộc đời</string>
+    <string name="agent_tool_add_life_milestone_summary">Ghi lại một cột mốc cuộc đời với tên và ngày mục tiêu.</string>
+    <string name="agent_tool_add_life_milestone_description">Tạo một cột mốc cá nhân trong dòng thời gian cuộc đời (như ngày mục tiêu, ngày kỷ niệm). name và target_date (yyyy-MM-dd) là bắt buộc; note là tùy chọn.</string>
+    <string name="agent_tool_add_life_milestone_param_name">Tên cột mốc, bắt buộc, ví dụ \"Cuộc marathon đầu tiên\".</string>
+    <string name="agent_tool_add_life_milestone_param_target_date">Ngày mục tiêu, yyyy-MM-dd, ví dụ 2027-05-01.</string>
+    <string name="agent_tool_add_life_milestone_param_note">Ghi chú cột mốc, tùy chọn.</string>
+    <string name="agent_tool_add_life_milestone_name_required">Tham số name là bắt buộc và không được để trống.</string>
+    <string name="agent_tool_add_life_milestone_failed">Tạo cột mốc cuộc đời thất bại: %1$s</string>
+    <string-array name="agent_tool_add_life_milestone_keywords">
+        <item>milestone</item>
+        <item>goal</item>
+        <item>life event</item>
+        <item>Cột mốc</item>
+        <item>Sự kiện cuộc đời</item>
+        <item>Mục tiêu</item>
+    </string-array>
+    <string-array name="agent_tool_add_life_milestone_examples">
+        <item>Record a milestone: first marathon on 2026-11-15</item>
+        <item>记录一个里程碑:跑完第一次马拉松 2026-11-15</item>
+        <item>添加人生里程碑 买房 2027-05-01</item>
+    </string-array>
+    <string name="agent_tool_query_life_events_title">Truy vấn sự kiện cuộc đời</string>
+    <string name="agent_tool_query_life_events_summary">Liệt kê ngày đếm ngược và cột mốc cuộc đời, kèm số ngày còn lại.</string>
+    <string name="agent_tool_query_life_events_description">Truy vấn ngày đếm ngược và cột mốc cá nhân trong dòng thời gian cuộc đời. type lọc kết quả: countdown, milestone hoặc all (mặc định). limit giới hạn số lượng trả về mỗi loại (mặc định 20, tối đa 50). Mỗi mục bao gồm id (có thể truyền cho delete_lifetime_entry), tên, ngày mục tiêu và số ngày còn lại.</string>
+    <string name="agent_tool_query_life_events_param_type">Lọc loại mục: countdown, milestone hoặc all (mặc định).</string>
+    <string name="agent_tool_query_life_events_param_limit">Số lượng tối đa trả về mỗi loại, 1-50, mặc định 20.</string>
+    <string name="agent_tool_query_life_events_empty">Chưa có mục nào</string>
+    <string name="agent_tool_query_life_events_failed">Truy vấn sự kiện cuộc đời thất bại: %1$s</string>
+    <string-array name="agent_tool_query_life_events_keywords">
+        <item>countdown</item>
+        <item>milestone</item>
+        <item>query</item>
+        <item>Ngày đếm ngược</item>
+        <item>Cột mốc</item>
+        <item>Còn mấy ngày</item>
+    </string-array>
+    <string-array name="agent_tool_query_life_events_examples">
+        <item>What countdowns do I have?</item>
+        <item>Tôi còn những ngày đếm ngược nào?</item>
+        <item>Liệt kê tất cả cột mốc cuộc đời</item>
+        <item>Còn mấy ngày nữa đến ngày đếm ngược tiếp theo</item>
+    </string-array>
+    <string name="agent_tool_delete_lifetime_entry_title">Xóa sự kiện cuộc đời</string>
+    <string name="agent_tool_delete_lifetime_entry_summary">Xóa một ngày đếm ngược hoặc cột mốc cuộc đời theo id.</string>
+    <string name="agent_tool_delete_lifetime_entry_description">Xóa một ngày đếm ngược hoặc cột mốc cá nhân trong dòng thời gian cuộc đời. type (countdown hoặc milestone) và id là bắt buộc; id lấy từ kết quả truy vấn của query_life_events. Xóa không thể hoàn tác.</string>
+    <string name="agent_tool_delete_lifetime_entry_param_type">Loại mục: countdown hoặc milestone.</string>
+    <string name="agent_tool_delete_lifetime_entry_param_id">Id mục, lấy từ kết quả truy vấn của query_life_events.</string>
+    <string name="agent_tool_delete_lifetime_entry_id_required">Tham số id là bắt buộc và phải là số.</string>
+    <string name="agent_tool_delete_lifetime_entry_not_found">Không tìm thấy mục có id %1$d.</string>
+    <string name="agent_tool_delete_lifetime_entry_deleted">Đã xóa「%1$s」.</string>
+    <string name="agent_tool_delete_lifetime_entry_confirm_title">Xóa sự kiện cuộc đời</string>
+    <string name="agent_tool_delete_lifetime_entry_confirm_presentation">Xóa một ngày đếm ngược hoặc cột mốc cuộc đời, không thể khôi phục sau khi xóa.</string>
+    <string name="agent_tool_delete_lifetime_entry_failed">Xóa sự kiện cuộc đời thất bại: %1$s</string>
+    <string-array name="agent_tool_delete_lifetime_entry_keywords">
+        <item>delete</item>
+        <item>remove</item>
+        <item>countdown</item>
+        <item>milestone</item>
+        <item>Xóa</item>
+        <item>Ngày đếm ngược</item>
+        <item>Cột mốc</item>
+    </string-array>
+    <string-array name="agent_tool_delete_lifetime_entry_examples">
+        <item>Delete the countdown with id 3</item>
+        <item>Xóa ngày đếm ngược có id là 3</item>
+        <item>Xóa cột mốc 5</item>
+    </string-array>
+</resources>

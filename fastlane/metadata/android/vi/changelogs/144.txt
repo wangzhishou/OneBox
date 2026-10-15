@@ -1,0 +1,3 @@
+• Đã sửa: lưu API token của bạn cho các nhà cung cấp AI tích hợp (DeepSeek, v.v.) bị lỗi "Lưu thất bại"
+• Đã sửa: liên kết trong hộp thoại chính sách quyền riêng tư không phản hồi trên một số thiết bị
+• Sửa lỗi và cải thiện hiệu suất

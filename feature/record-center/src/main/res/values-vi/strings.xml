@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="record_center_title">Hồ sơ sức khỏe</string>
+    <string name="record_center_type_heart_rate_title">Ghi nhận nhịp tim</string>
+    <string name="record_center_type_heart_rate_desc">Ghi nhận và quản lý dữ liệu nhịp tim, theo dõi sức khỏe tim mạch</string>
+    <string name="record_center_type_blood_pressure_title">Ghi nhận huyết áp</string>
+    <string name="record_center_type_blood_pressure_desc">Ghi nhận và quản lý dữ liệu huyết áp, theo dõi xu hướng thay đổi huyết áp</string>
+    <string name="record_center_type_blood_glucose_title">Ghi nhận đường huyết</string>
+    <string name="record_center_type_blood_glucose_desc">Ghi nhận và quản lý dữ liệu đường huyết, giúp kiểm soát mức đường huyết</string>
+    <string name="record_center_type_weight_title">Ghi nhận cân nặng</string>
+    <string name="record_center_type_weight_desc">Ghi nhận và quản lý dữ liệu cân nặng, theo dõi thay đổi cân nặng</string>
+    <string name="record_center_type_bmi_title">Ghi nhận BMI</string>
+    <string name="record_center_type_bmi_desc">Ghi nhận và quản lý dữ liệu BMI, đánh giá tình trạng sức khỏe cân nặng</string>
+    <string name="record_center_type_body_fat_title">Ghi nhận mỡ cơ thể</string>
+    <string name="record_center_type_body_fat_desc">Ghi nhận và quản lý dữ liệu mỡ cơ thể, hiểu rõ thay đổi thành phần cơ thể</string>
+    <string name="record_center_type_uric_acid_title">Ghi nhận axit uric</string>
+    <string name="record_center_type_uric_acid_desc">Ghi nhận và quản lý dữ liệu axit uric, phòng ngừa và kiểm soát bệnh gút</string>
+    <string name="record_center_type_blood_lipid_title">Ghi nhận mỡ máu</string>
+    <string name="record_center_type_blood_lipid_desc">Ghi nhận và quản lý dữ liệu mỡ máu, theo dõi mức mỡ máu</string>
+    <string name="record_center_type_blood_oxygen_title">Ghi nhận oxy trong máu</string>
+    <string name="record_center_type_blood_oxygen_desc">Ghi nhận và quản lý dữ liệu oxy trong máu, theo dõi sức khỏe hệ hô hấp và tuần hoàn</string>
+    <string name="record_center_type_body_temperature_title">Ghi nhận nhiệt độ cơ thể</string>
+    <string name="record_center_type_body_temperature_desc">Ghi nhận và quản lý dữ liệu nhiệt độ cơ thể, theo dõi thay đổi nhiệt độ</string>
+    <string name="record_center_type_sleep_duration_title">Ghi nhận giấc ngủ</string>
+    <string name="record_center_type_sleep_duration_desc">Ghi nhận và quản lý thời gian ngủ, cải thiện chất lượng giấc ngủ</string>
+    <string name="record_center_type_waist_circumference_title">Ghi nhận vòng eo</string>
+    <string name="record_center_type_waist_circumference_desc">Ghi nhận và quản lý dữ liệu vòng eo, quan tâm sức khỏe vùng bụng</string>
+    <string name="record_center_field_heart_rate_value">Nhịp tim</string>
+    <string name="record_center_field_bp_systolic">Huyết áp tâm thu</string>
+    <string name="record_center_field_bp_diastolic">Huyết áp tâm trương</string>
+    <string name="record_center_field_glucose_value">Đường huyết</string>
+    <string name="record_center_field_weight_value">Cân nặng</string>
+    <string name="record_center_field_bmi_value">BMI</string>
+    <string name="record_center_field_body_fat_value">Tỷ lệ mỡ cơ thể</string>
+    <string name="record_center_field_uric_acid_value">Axit uric</string>
+    <string name="record_center_field_lipid_total_cholesterol">Cholesterol toàn phần</string>
+    <string name="record_center_field_lipid_triglyceride">Triglyceride</string>
+    <string name="record_center_field_lipid_ldl">LDL</string>
+    <string name="record_center_field_lipid_hdl">HDL</string>
+    <string name="record_center_field_blood_oxygen_value">Nồng độ oxy trong máu</string>
+    <string name="record_center_field_body_temperature_value">Nhiệt độ cơ thể</string>
+    <string name="record_center_field_sleep_duration_value">Thời gian ngủ</string>
+    <string name="record_center_field_waist_circumference_value">Vòng eo</string>
+    <string name="record_center_ref_heart_rate">Bình thường 60-100 bpm</string>
+    <string name="record_center_ref_blood_pressure">Bình thường 90-140/60-90 mmHg</string>
+    <string name="record_center_ref_blood_glucose">Lúc đói bình thường 3.9-6.1 mmol/L</string>
+    <string name="record_center_ref_bmi">Bình thường 18.5-24</string>
+    <string name="record_center_ref_uric_acid">Nam 208-428 / Nữ 155-357 μmol/L</string>
+    <string name="record_center_ref_blood_lipid">Cholesterol toàn phần &lt;5.2 mmol/L</string>
+    <string name="record_center_ref_blood_oxygen">Bình thường 95-100%</string>
+    <string name="record_center_ref_body_temperature">Bình thường 36.0-37.3 °C</string>
+    <string name="record_center_ref_sleep_duration">Khuyến nghị 7-9 giờ</string>
+    <string name="record_center_ref_waist_circumference">Nam &lt;90 / Nữ &lt;85 cm</string>
+    <string name="record_center_label_time">Thời gian ghi</string>
+    <string name="record_center_label_note">Ghi chú</string>
+    <string name="record_center_action_save">Lưu</string>
+    <string name="record_center_action_delete">Xóa</string>
+    <string name="record_center_add_record">Thêm bản ghi</string>
+    <string name="record_center_edit_record">Chỉnh sửa bản ghi</string>
+    <string name="record_center_empty">Chưa có bản ghi</string>
+    <string name="record_center_stats_latest">Mới nhất</string>
+    <string name="record_center_stats_average">Trung bình</string>
+    <string name="record_center_stats_max">Cao nhất</string>
+    <string name="record_center_stats_min">Thấp nhất</string>
+    <string name="record_center_range_7d">7 ngày qua</string>
+    <string name="record_center_range_30d">30 ngày qua</string>
+    <string name="record_center_range_all">Tất cả</string>
+    <string name="record_center_range_days">%1$d ngày qua</string>
+    <string name="record_center_today">Hôm nay</string>
+    <string name="record_center_yesterday">Hôm qua</string>
+    <string name="record_center_days_ago">%1$d ngày trước</string>
+    <string name="record_center_delete_confirm_title">Xóa bản ghi</string>
+    <string name="record_center_delete_confirm_message">Bạn có chắc chắn muốn xóa bản ghi này? Sau khi xóa không thể khôi phục.</string>
+    <string name="record_center_confirm">Xác nhận</string>
+    <string name="record_center_cancel">Hủy</string>
+    <string name="record_center_save_success">Đã lưu</string>
+    <string name="record_center_range_all_label">Tất cả bản ghi</string>
+    <string name="record_center_tab_records">Bản ghi</string>
+    <string name="record_center_tab_trends">Xu hướng</string>
+    <string name="record_center_tab_mine">Của tôi</string>
+    <string name="record_center_no_record">Chưa có bản ghi</string>
+    <string name="record_center_trend_empty">Chưa có xu hướng</string>
+    <string name="record_center_vs_last_week">So với tuần trước</string>
+    <string name="record_center_ai_insight">AI phân tích</string>
+    <string name="record_center_ai_insight_hint">Để AI giúp bạn phân tích xu hướng dữ liệu trong khoảng thời gian này</string>
+    <string name="record_center_ai_insight_generate">Tạo phân tích</string>
+    <string name="record_center_ai_insight_regenerate">Phân tích lại</string>
+    <string name="record_center_ai_insight_retry">Thử lại</string>
+    <string name="record_center_ai_insight_loading">Đang tạo phân tích…</string>
+    <string name="record_center_ai_insight_error">Tạo phân tích thất bại, vui lòng thử lại sau</string>
+    <string name="record_center_ai_insight_points_hint">Mỗi lần phân tích tiêu tốn %1$d điểm</string>
+    <string name="record_center_profile_title">Thông tin cơ bản</string>
+    <string name="record_center_profile_hint">Dùng để AI diễn giải phù hợp hơn với tình trạng của bạn</string>
+    <string name="record_center_profile_unset">Chưa thiết lập, nhấn để hoàn thiện</string>
+    <string name="record_center_profile_gender_male">Nam</string>
+    <string name="record_center_profile_gender_female">Nữ</string>
+    <string name="record_center_profile_field_gender">Giới tính</string>
+    <string name="record_center_profile_field_age">Tuổi</string>
+    <string name="record_center_profile_field_height">Chiều cao (cm)</string>
+    <string name="record_center_profile_field_weight">Cân nặng (kg)</string>
+    <string name="record_center_profile_age_placeholder">Vui lòng nhập tuổi</string>
+    <string name="record_center_profile_height_placeholder">Vui lòng nhập chiều cao</string>
+    <string name="record_center_profile_weight_placeholder">Vui lòng nhập cân nặng</string>
+    <string name="record_center_profile_age_years">%1$d tuổi</string>
+    <string name="record_center_profile_invalid">Vui lòng nhập giá trị hợp lệ</string>
+    <string name="record_center_empty_go_ai">Đến trợ lý AI để ghi</string>
+    <string name="record_center_empty_go_ai_description">Cho AI biết tình trạng của bạn, để nó giúp bạn điền bản ghi</string>
+    <string name="record_center_empty_title">Chưa có bản ghi sức khỏe</string>
+    <string name="record_center_empty_description">Bạn có thể tự thêm một bản ghi, hoặc cho AI biết tình trạng của bạn để nó ghi nhanh giúp bạn</string>
+    <string name="record_center_empty_range_title">Không có bản ghi trong khoảng thời gian này</string>
+    <string name="record_center_empty_range_description">Có thể chuyển khoảng thời gian phía trên, hoặc tự thêm một bản ghi</string>
+    <string name="record_center_add_manually">Thêm thủ công</string>
+    <string name="record_center_add_manually_description">Tùy chỉnh giá trị và thời gian, ghi chép chi tiết</string>
+    <string name="record_center_ai_assist_title">Trợ lý ghi chép sức khỏe</string>
+    <string name="record_center_ai_assist_prompt">Bạn là trợ lý ghi chép sức khỏe của người dùng. Khi người dùng mô tả dữ liệu sức khỏe bằng ngôn ngữ tự nhiên (ví dụ \"hôm nay huyết áp 120/80\", \"đường huyết lúc đói 5.2\"), hãy dùng công cụ add_health_record để ghi giúp họ. Sau khi ghi xong, xác nhận ngắn gọn loại, giá trị và thời gian. Khi người dùng không nói rõ thời gian, hãy ghi theo thời điểm hiện tại.</string>
+    <string name="record_center_ai_assist_fill_in">Hôm nay huyết áp 120/80, giúp tôi ghi vào bản ghi sức khỏe</string>
+    <string name="record_center_cd_switch_to_grid">Chuyển sang chế độ xem lưới</string>
+    <string name="record_center_cd_switch_to_list">Chuyển sang chế độ xem danh sách</string>
+    <string name="record_center_error_unknown_type">Loại bản ghi không xác định:%1$s</string>
+    <string name="record_center_error_missing_field">Thiếu trường bắt buộc:%1$s</string>
+    <string name="record_center_error_unknown_field">Trường không được hỗ trợ:%1$s</string>
+    <string name="record_center_error_out_of_range">%1$s vượt quá phạm vi hợp lý(%2$s ~ %3$s)</string>
+    <string name="record_center_error_not_found">Bản ghi không tồn tại</string>
+    <string name="record_center_error_invalid_number">Vui lòng nhập số hợp lệ</string>
+    <string name="record_center_error_required">Trường bắt buộc</string>
+    <string name="record_center_error_out_of_range_short">Vượt quá phạm vi (%1$s ~ %2$s)</string>
+    <string name="record_center_log_created">Thêm bản ghi sức khỏe</string>
+    <string name="record_center_log_updated">Cập nhật bản ghi sức khỏe</string>
+    <string name="record_center_log_deleted">Xóa bản ghi sức khỏe</string>
+    <string name="agent_tool_add_health_record_title">Thêm bản ghi sức khỏe</string>
+    <string name="agent_tool_add_health_record_summary">Ghi lại huyết áp, nhịp tim, cân nặng và các dữ liệu sức khỏe khác</string>
+    <string name="agent_tool_add_health_record_description">Thêm bản ghi sức khỏe. Chế độ đơn: truyền record_type và values ở cấp cao nhất (tùy chọn happened_at/note). Chế độ hàng loạt: truyền mảng records để thêm nhiều bản ghi cùng lúc, mỗi mục có các trường như chế độ đơn, mỗi mục được xử lý độc lập, lỗi một phần không ảnh hưởng đến các mục khác. values là đối tượng JSON dạng tên_trường→giá_trị, tên trường và đơn vị do record_type quyết định. Các loại bản ghi và trường được hỗ trợ:</string>
+    <string name="agent_tool_add_health_record_param_records">Chế độ hàng loạt: mảng bản ghi, mỗi mục gồm record_type và values (tùy chọn happened_at/note); khi truyền vào sẽ bỏ qua record_type/values ở cấp cao nhất</string>
+    <string name="agent_tool_add_health_record_param_record_type">Loại bản ghi, chọn một trong các giá trị enum</string>
+    <string name="agent_tool_add_health_record_param_values">Giá trị trường, đối tượng JSON dạng tên_trường→giá_trị, ví dụ {\"systolic\": 120, \"diastolic\": 80}</string>
+    <string name="agent_tool_add_health_record_param_happened_at">Dấu thời gian mili giây khi đo, mặc định là thời gian hiện tại</string>
+    <string name="agent_tool_add_health_record_param_note">Ghi chú, tùy chọn</string>
+    <string name="agent_tool_add_health_record_success">Đã lưu</string>
+    <string name="agent_tool_add_health_record_failed">Thêm bản ghi sức khỏe thất bại: %1$s</string>
+    <string name="agent_tool_add_health_record_batch_empty">records không được để trống</string>
+    <string name="agent_tool_add_health_record_batch_success_count">Thành công %1$d mục</string>
+    <string name="agent_tool_add_health_record_batch_failure_count">Thất bại %1$d mục</string>
+    <string name="agent_tool_add_health_record_batch_section_success">Bản ghi thành công</string>
+    <string name="agent_tool_add_health_record_batch_section_failure">Bản ghi thất bại</string>
+    <string-array name="agent_tool_add_health_record_keywords">
+        <item>Bản ghi sức khỏe</item>
+        <item>Huyết áp</item>
+        <item>Nhịp tim</item>
+        <item>Cân nặng</item>
+        <item>Đường huyết</item>
+        <item>BMI</item>
+    </string-array>
+    <string-array name="agent_tool_add_health_record_examples">
+        <item>Ghi huyết áp 120/80</item>
+        <item>Ghi cân nặng 65.5 kg</item>
+        <item>Thêm một chỉ số đường huyết lúc đói 5.6</item>
+    </string-array>
+    <string name="agent_tool_query_health_records_title">Tra cứu hồ sơ sức khỏe</string>
+    <string name="agent_tool_query_health_records_summary">Tra cứu hồ sơ và thống kê gần đây của một loại chỉ số sức khỏe</string>
+    <string name="agent_tool_query_health_records_description">Tra cứu hồ sơ sức khỏe loại chỉ định trong N ngày gần nhất (mặc định 30 ngày), và đưa ra thống kê trung bình/cao nhất/thấp nhất theo trường biểu đồ. Các loại hồ sơ và trường được hỗ trợ:</string>
+    <string name="agent_tool_query_health_records_param_record_type">Loại hồ sơ, chọn một trong các giá trị enum</string>
+    <string name="agent_tool_query_health_records_param_days">Số ngày tra cứu ngược, mặc định 30</string>
+    <string name="agent_tool_query_health_records_empty">Không có hồ sơ nào trong khoảng thời gian này</string>
+    <string name="agent_tool_query_health_records_failed">Tra cứu hồ sơ sức khỏe thất bại: %1$s</string>
+    <string name="agent_tool_query_health_records_section_stats">Thống kê</string>
+    <string name="agent_tool_query_health_records_section_records">Chi tiết hồ sơ</string>
+    <string-array name="agent_tool_query_health_records_keywords">
+        <item>Hồ sơ sức khỏe</item>
+        <item>Lịch sử huyết áp</item>
+        <item>Xu hướng cân nặng</item>
+        <item>Thống kê đường huyết</item>
+    </string-array>
+    <string-array name="agent_tool_query_health_records_examples">
+        <item>Xem huyết áp của tôi tháng này</item>
+        <item>Thay đổi cân nặng trong 30 ngày gần đây thế nào</item>
+        <item>Nhịp tim trung bình tuần này là bao nhiêu</item>
+    </string-array>
+    <string name="agent_tool_get_health_summary_title">Tổng quan dữ liệu sức khỏe</string>
+    <string name="agent_tool_get_health_summary_summary">Giá trị mới nhất của các chỉ số sức khỏe</string>
+    <string name="agent_tool_get_health_summary_description">Lấy dữ liệu mới nhất của mỗi loại hồ sơ sức khỏe, kèm đơn vị và phạm vi tham chiếu.</string>
+    <string name="agent_tool_get_health_summary_empty">Chưa có hồ sơ sức khỏe</string>
+    <string name="agent_tool_get_health_summary_failed">Lấy tổng quan sức khỏe thất bại: %1$s</string>
+    <string-array name="agent_tool_get_health_summary_keywords">
+        <item>Tổng quan sức khỏe</item>
+        <item>Dữ liệu sức khỏe mới nhất</item>
+        <item>Tình trạng sức khỏe</item>
+    </string-array>
+    <string-array name="agent_tool_get_health_summary_examples">
+        <item>Cho tôi xem tổng quan dữ liệu sức khỏe</item>
+        <item>Các chỉ số gần đây của tôi là bao nhiêu</item>
+    </string-array>
+    <string name="agent_tool_record_center_open_link">Mở hồ sơ sức khỏe</string>
+    <string name="agent_tool_record_center_field_optional">(Tùy chọn)</string>
+    <string name="agent_tool_record_center_unknown_error">Lỗi không xác định</string>
+</resources>

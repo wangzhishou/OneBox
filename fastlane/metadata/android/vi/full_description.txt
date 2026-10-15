@@ -1,0 +1,43 @@
+OneBox là bộ công cụ tất cả trong một miễn phí: hơn 90 công cụ cho hình ảnh, PDF, tệp tin và cuộc sống hằng ngày — kèm một trợ lý AI thực thụ, không chỉ trả lời câu hỏi mà còn dùng bộ công cụ thay bạn.
+
+【Trò chuyện AI với đúng mô hình bạn chọn】
+• Một điểm truy cập cho các mô hình phổ biến: OpenAI GPT, Claude, Gemini, Grok, DeepSeek, Qwen, OpenRouter
+• Thân thiện với bên thứ ba: kết nối bất kỳ API tương thích OpenAI, Anthropic hay Responses bằng khóa riêng của bạn — kể cả mô hình chạy cục bộ trên máy tính của bạn
+• Nhập bằng giọng nói, đính kèm hình ảnh và tệp tin, phản hồi dạng streaming, thư viện prompt
+• Hỗ trợ viết, viết lại, tóm tắt và dịch thuật
+• Trình phát hiện nội dung AI: kiểm tra xem một đoạn văn bản hay hình ảnh có phải do AI tạo ra không
+
+【Một agent thực sự làm việc】
+• Trợ lý gọi hơn 70 công cụ trong ứng dụng: nén và chuyển đổi định dạng ảnh, gộp và tách PDF, đọc OCR và mã vạch, chỉnh EXIF, watermark, ghi chép thu chi, việc cần làm, ghi chú, ổ đĩa đám mây, tìm kiếm web và đọc trang
+• Nó còn điều khiển được điện thoại của bạn: xem màn hình, chạm, vuốt và gõ để hoàn thành tác vụ trong ứng dụng khác
+• Trình duyệt tích hợp mà nó có thể điều khiển: mở trang, đọc nội dung, chạy script
+• Bộ nhớ và kỹ năng của agent: ghi nhớ hồ sơ của bạn và cách bạn muốn mọi thứ được làm
+
+【Mô tả là ứng dụng tự tạo ra】
+Đừng mò mẫm qua các menu nữa. Nói điều bạn muốn và OneBox biến nó thành công cụ hay ứng dụng hoạt động được:
+• "Cho tôi 8 lựa chọn cho bữa ăn hôm nay." — AI create trên vòng quay quyết định tự điền các lựa chọn cho bạn
+• "Lập kế hoạch du lịch." "Chuyển đổi phong cách bài viết." — AI dựng cả ứng dụng, gồm cả màn hình và công cụ; tinh chỉnh bằng cách trò chuyện: "đổi nút thành màu xanh, thêm bộ chọn ngày"
+• Câu trả lời hiện ra dưới dạng điều khiển thật — biểu mẫu, thanh trượt, bộ chọn ngày, giờ, màu sắc và tệp tin hiển thị native ngay trong chat, không phải một đống chữ
+• Tạo ảnh từ prompt văn bản, rồi chỉnh sửa, nén hoặc chuyển đổi bằng chính bộ công cụ đó
+• Mọi công cụ cần nhập liệu đều có lối vào AI create: mô tả nó, và AI sẽ viết cho bạn
+
+【Bộ công cụ, dành cho khi bạn muốn tự tay chạm】
+• Hình ảnh: trình chỉnh sửa ảnh đầy đủ — cắt, bộ lọc, ghép ảnh, nối ảnh dài, GIF, Image Studio với layer, cọ vẽ và văn bản — kèm chuyển đổi định dạng (HEIC / WebP / AVIF), công cụ nén ảnh, chuyển bitmap sang SVG và tạo hình nền gradient, tất cả xử lý cục bộ
+• Tệp tin & PDF: quét tài liệu, gộp và tách PDF, trích xuất văn bản và hình ảnh, trình soạn Markdown có xem trước trực tiếp, mã hóa tệp tin, chỉnh EXIF, truyền giữa các thiết bị
+• Năng suất: teleprompter, sổ ghi chú, việc cần làm, ghi chép thu chi, theo dõi thói quen, lịch, vòng quay quyết định, trung tâm ghi chép với phân tích AI (sức khỏe, đồ dùng và hạn dùng, chu kỳ)
+• Hằng ngày: két mật khẩu, ảnh thẻ, quét và tạo mã QR, đo tốc độ mạng, camera watermark, chuyển đổi đơn vị, tính lãi vay, la bàn và đo độ cao, thước kẻ và thước đo góc, bảng LED chạy chữ, chọn màu, kiểm tra điểm chết, lắc xúc xắc, Text Card, gieo quẻ Kinh Dịch, game nhỏ
+• Ad Watch: xem quảng cáo thưởng để nhận điểm AI — tùy bạn, không bao giờ bị ép
+
+【Còn có bên trong】
+• DSH client: ghép nối với DeepSeek Harness trên máy tính qua relay mã hóa, điều khiển từ điện thoại
+• OneBox còn tự tiến hóa: phản hồi của bạn được một quản lý sản phẩm AI đọc, rồi lập trình, kiểm thử và phát hành
+
+【Vì sao chọn OneBox】
+• Dùng miễn phí, không quảng cáo ép buộc — quảng cáo thưởng là tùy chọn và đổi được điểm AI
+• Ưu tiên quyền riêng tư: hình ảnh và tài liệu được xử lý cục bộ trên thiết bị của bạn
+• Giao diện Material Design hiện đại, gọn gàng
+• Công cụ mới và tính năng AI liên tục được bổ sung
+
+Nếu bạn đã mệt vì phải nhảy qua hàng tá ứng dụng công cụ, hãy thử xem — biết đâu nó thực sự trở thành ứng dụng cuối cùng bạn cần.
+
+Liên hệ: support@oneboxable.com

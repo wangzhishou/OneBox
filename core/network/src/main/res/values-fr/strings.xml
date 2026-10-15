@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_network_connection_failed">Échec de la connexion réseau, veuillez vérifier vos paramètres réseau</string>
+    <string name="error_request_timeout">Délai de la requête dépassé, veuillez réessayer plus tard</string>
+    <string name="error_cannot_connect_server">Impossible de se connecter au serveur, veuillez vérifier votre réseau</string>
+    <string name="error_ssl_failed">Échec de la connexion sécurisée, veuillez vérifier vos paramètres réseau</string>
+    <string name="error_network_exception">Anomalie réseau, veuillez vérifier votre connexion réseau</string>
+    <string name="error_request_cancelled">Requête annulée</string>
+    <string name="error_data_parse_failed">Échec de l\'analyse des données, veuillez réessayer plus tard</string>
+    <string name="error_bad_request">Paramètres de requête incorrects</string>
+    <string name="error_unauthorized">Non autorisé, veuillez vous reconnecter</string>
+    <string name="error_forbidden">Accès non autorisé</string>
+    <string name="error_not_found">La ressource demandée n\'existe pas</string>
+    <string name="error_server_internal">Erreur interne du serveur</string>
+    <string name="error_server_maintenance">Serveur en maintenance, veuillez réessayer plus tard</string>
+    <string name="error_server_code">Erreur du serveur (%d)</string>
+    <string name="error_client_error">Erreur de requête, veuillez vérifier les paramètres</string>
+    <string name="error_server_error">Erreur du serveur, veuillez réessayer plus tard</string>
+    <string name="error_request_failed">Échec de la requête, veuillez réessayer plus tard</string>
+    <string name="error_request_failed_with_message">Échec de la requête : %s</string>
+    <string name="error_unknown">Erreur inconnue</string>
+    <string name="no_error_body">Aucun contenu d\'erreur</string>
+    <string name="bearer_masked">Bearer ********</string>
+</resources>

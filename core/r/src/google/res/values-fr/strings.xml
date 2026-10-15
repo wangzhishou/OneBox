@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_privacy">J\'ai lu et j\'accepte les <a href="https://www.oneboxable.com/agreement/global.html">Conditions d\'utilisation</a> et la <a href="https://www.oneboxable.com/privacy/global.html">Politique de confidentialité</a>.</string>
+    <string name="app_description_download_des">\n\nGoogle Play : https://play.google.com/store/apps/details?id=com.shifenmiao.app\nOpen source : https://github.com/wangzhishou/OneBox</string>
+</resources>

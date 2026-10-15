@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openai_image_token_required">Chưa điền OpenAI API Key, vui lòng cấu hình trong trang cài đặt tạo ảnh trước khi tạo</string>
+</resources>

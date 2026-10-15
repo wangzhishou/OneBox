@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loan_calc_title">Máy tính khoản vay</string>
+    <string name="loan_calc_amount_label">Số tiền vay (VNĐ)</string>
+    <string name="loan_calc_amount_hint">Vui lòng nhập số tiền</string>
+    <string name="loan_calc_term_label">Số kỳ vay</string>
+    <string name="loan_calc_term_hint">Chọn</string>
+    <string name="loan_calc_rate_label">Lãi suất năm (%)</string>
+    <string name="loan_calc_rate_hint">Vui lòng nhập lãi suất năm</string>
+    <string name="loan_calc_method_label">Phương thức trả nợ</string>
+    <string name="loan_calc_method_hint">Chọn</string>
+    <string name="loan_calc_start">Bắt đầu tính</string>
+    <string name="loan_calc_cancel">Hủy</string>
+    <string name="loan_method_equal_installment">Gốc lãi bằng nhau</string>
+    <string name="loan_method_equal_installment_desc">Tiền trả hàng tháng, gốc, lãi mỗi tháng như nhau</string>
+    <string name="loan_method_equal_payment">Gốc lãi đều nhau</string>
+    <string name="loan_method_equal_payment_desc">Tiền trả hàng tháng như nhau, gốc tăng dần, lãi giảm dần</string>
+    <string name="loan_method_equal_principal">Gốc đều nhau</string>
+    <string name="loan_method_equal_principal_desc">Tiền trả hàng tháng giảm dần, gốc mỗi tháng như nhau, lãi giảm dần</string>
+    <string name="loan_method_interest_first">Lãi trước gốc sau</string>
+    <string name="loan_method_interest_first_desc">Trả lãi cố định hàng tháng, trả toàn bộ gốc khi đáo hạn</string>
+    <string name="loan_result_monthly_payment">Trả hàng tháng trung bình</string>
+    <string name="loan_result_total_interest">Tổng lãi</string>
+    <string name="loan_result_total_repayment">Tổng số tiền trả</string>
+    <string name="loan_result_schedule_title">Kế hoạch trả nợ</string>
+    <string name="loan_result_month">Kỳ</string>
+    <string name="loan_result_monthly_col">Trả hàng tháng</string>
+    <string name="loan_result_principal_col">Gốc</string>
+    <string name="loan_result_interest_col">Lãi</string>
+    <string name="loan_result_remaining_col">Gốc còn lại</string>
+    <string name="loan_input_error_amount">Vui lòng nhập số tiền vay hợp lệ</string>
+    <string name="loan_input_error_term">Vui lòng chọn số kỳ vay</string>
+    <string name="loan_input_error_rate">Vui lòng nhập lãi suất năm hợp lệ</string>
+    <string name="loan_input_error_method">Vui lòng chọn phương thức trả nợ</string>
+    <string name="loan_term_months">%d tháng</string>
+    <string name="loan_term_years">%1$d năm (%2$d tháng)</string>
+    <string name="loan_term_picker_title">Chọn số kỳ hạn vay</string>
+</resources>

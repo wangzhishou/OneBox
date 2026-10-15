@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_detect_text_tab">Détection de texte</string>
+    <string name="ai_detect_image_tab">Détection d\'image</string>
+    <string name="ai_detect_text_hint">Collez ou saisissez le texte à détecter…</string>
+    <string name="ai_detect_button">Lancer la détection</string>
+    <string name="ai_detect_detecting">Détection en cours…</string>
+    <string name="ai_detect_upload_hint">Appuyez pour télécharger ou coller une image…</string>
+    <string name="ai_detect_upload_format">Formats JPG / PNG / WebP, dimensions supérieures à 300×300, jusqu\'à 10 Mo</string>
+    <string name="ai_detect_change_image">Changer d\'image</string>
+    <string name="ai_detect_probability_label">Probabilité de génération par IA</string>
+    <string name="ai_detect_verdict_likely_ai">Probablement généré par IA</string>
+    <string name="ai_detect_verdict_maybe_ai">Peut-être généré par IA</string>
+    <string name="ai_detect_verdict_likely_human">Probablement créé par un humain</string>
+    <string name="ai_detect_recheck">Relancer la détection</string>
+    <string name="ai_detect_view_detail">Voir les détails</string>
+    <string name="ai_detect_collapse_detail">Masquer les détails</string>
+    <string name="ai_detect_segment_human">Humain</string>
+    <string name="ai_detect_segment_ai">IA</string>
+    <string name="ai_detect_segment_suspected">IA probable</string>
+    <string name="ai_detect_labels_ratio_title">Proportion des étiquettes</string>
+    <string name="ai_detect_image_confidence_detail">La confiance de génération par IA donnée par le modèle pour cette image est de %1$d%%, plus la valeur est élevée, plus il est probable qu\'elle soit générée par IA.</string>
+    <string name="ai_detect_history">Historique des détections</string>
+    <string name="ai_detect_history_empty">Aucun enregistrement de détection</string>
+    <string name="ai_detect_clear_all">Effacer</string>
+    <string name="ai_detect_clear_confirm">Confirmer l\'effacement de tout l\'historique des détections ?</string>
+    <string name="ai_detect_confirm">Confirmer</string>
+    <string name="ai_detect_cancel">Annuler</string>
+    <string name="ai_detect_delete">Supprimer</string>
+    <string name="ai_detect_type_text">Texte</string>
+    <string name="ai_detect_type_image">Image</string>
+    <string name="ai_detect_detail_title">Détails de la détection</string>
+    <string name="ai_detect_error_image_too_large">La taille de l\'image ne doit pas dépasser 10 Mo</string>
+    <string name="ai_detect_error_image_too_small">Les dimensions de l\'image doivent être supérieures à 300×300</string>
+    <string name="ai_detect_error_image_unreadable">Impossible de lire cette image</string>
+    <string name="ai_detect_error_network">Échec de la détection, veuillez réessayer plus tard</string>
+    <string name="agent_tool_detect_ai_text_title">Détection de texte par IA</string>
+    <string name="agent_tool_detect_ai_text_summary">Détecte si un texte est probablement généré par IA, renvoie le pourcentage suspecté d\'IA, la conclusion et les étiquettes par segment</string>
+    <string name="agent_tool_detect_ai_text_param_text">Contenu textuel brut à détecter</string>
+    <string name="agent_tool_detect_ai_text_error_args">Erreur de paramètre : text doit être une chaîne non vide</string>
+    <string name="agent_tool_detect_ai_image_title">Détection d\'image par IA</string>
+    <string name="agent_tool_detect_ai_image_summary">Détecte si une image est probablement générée par IA, renvoie le niveau de confiance de génération par IA et la conclusion</string>
+    <string name="agent_tool_detect_ai_image_param_image_uri">URI de l\'image à détecter, prend en charge content:// et file://, accessible depuis les pièces jointes de conversation ou les résultats de l\'outil browse_files</string>
+    <string name="agent_tool_detect_ai_image_error_args">Erreur de paramètre : image_uri doit être une chaîne non vide</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localized_description">Mô tả bản địa hóa</string>
+    <string name="copy">Sao chép</string>
+    <string name="create_widget">Trang web yêu thích</string>
+    <string name="run">Chạy</string>
+    <string name="save">Lưu</string>
+    <string name="mermaid_tab_diagram">Biểu đồ</string>
+    <string name="mermaid_tab_code">Mã</string>
+    <string name="mermaid_fullscreen">Toàn màn hình</string>
+    <string name="a2ui_parse_failed">Phân tích A2UI thất bại</string>
+    <string name="a2ui_parse_failed_hint">Vui lòng sao chép mã nguồn để kiểm tra định dạng JSON hoặc cú pháp biểu thức.</string>
+</resources>

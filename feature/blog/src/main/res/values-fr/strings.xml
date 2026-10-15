@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="agent_tool_submit_feedback_title">Envoyer un retour</string>
+    <string name="agent_tool_submit_feedback_summary">Soumettre des suggestions, signalements de problèmes ou demandes de fonctionnalités à l\'équipe de développement</string>
+    <string name="agent_tool_submit_feedback_description">Soumettre les suggestions, signalements de problèmes ou demandes de fonctionnalités de l\'utilisateur à l\'équipe de développement. Aucune connexion requise. content est le contenu du retour obligatoire ; un moyen de contact facultatif sera ajouté à la fin du contenu du retour pour permettre aux développeurs de recontacter l\'utilisateur.</string>
+    <string name="agent_tool_submit_feedback_param_content">Contenu du retour, obligatoire, 2000 caractères maximum. Veuillez décrire en détail le problème rencontré, la suggestion ou la fonctionnalité souhaitée.</string>
+    <string name="agent_tool_submit_feedback_param_contact">Moyen de contact facultatif (e-mail, QQ, WeChat, etc.), pour permettre aux développeurs de recontacter l\'utilisateur au sujet du retour.</string>
+    <string name="agent_tool_submit_feedback_success">Retour envoyé avec succès, merci pour votre retour ! L\'équipe de développement l\'examinera dès que possible ; vous pouvez consulter la réponse sur la page des retours.</string>
+    <string name="agent_tool_submit_feedback_failed">Échec de l\'envoi du retour : %1$s</string>
+    <string name="agent_tool_submit_feedback_error_empty_content">Le contenu du retour ne peut pas être vide</string>
+    <string name="agent_tool_submit_feedback_error_too_long">Le contenu du retour dépasse la limite de longueur (%1$d caractères maximum)</string>
+    <string name="agent_tool_submit_feedback_contact_label">Moyen de contact</string>
+    <string name="agent_tool_submit_feedback_unknown_error">Erreur inconnue</string>
+    <string name="agent_tool_submit_feedback_open_link">Voir mes retours</string>
+    <string-array name="agent_tool_submit_feedback_keywords">
+        <item>Retour</item>
+        <item>Suggestion</item>
+        <item>Avis</item>
+        <item>Problème</item>
+        <item>Demande de fonctionnalité</item>
+    </string-array>
+    <string-array name="agent_tool_submit_feedback_examples">
+        <item>Envoyez un retour pour moi : j\'aimerais que le basculement automatique en mode nuit soit pris en charge</item>
+        <item>Je souhaite signaler un problème : la fonction de scan plante parfois</item>
+        <item>Envoyer un retour : suggestion d\'ajouter une fonction de renommage par lots, mon e-mail est test@example.com</item>
+    </string-array>
+</resources>

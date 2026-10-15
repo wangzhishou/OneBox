@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="habit_title">Điểm danh</string>
+    <string name="habit_tab_checkin">Điểm danh</string>
+    <string name="habit_tab_stats">Dữ liệu</string>
+    <string name="habit_add">Thêm thói quen</string>
+    <string name="habit_summary_rate">Tỷ lệ điểm danh</string>
+    <string name="habit_summary_done">Đã điểm danh</string>
+    <string name="habit_summary_missed">Chưa điểm danh</string>
+    <string name="habit_today_section">Điểm danh hôm nay</string>
+    <string name="habit_edit_mode">Chỉnh sửa</string>
+    <string name="habit_edit_done">Hoàn thành</string>
+    <string name="habit_empty_list">Chưa có thói quen, nhấn + ở góc trên bên phải để tạo</string>
+    <string name="habit_delete_habit">Xóa thói quen</string>
+    <string-array name="habit_weekdays_short">
+        <item>Hai</item>
+        <item>Ba</item>
+        <item>Tư</item>
+        <item>Năm</item>
+        <item>Sáu</item>
+        <item>Bảy</item>
+        <item>Chủ nhật</item>
+    </string-array>
+    <string name="habit_stats_week_trend">Xu hướng tuần này</string>
+    <string name="habit_stats_distribution">Phân bố điểm danh</string>
+    <string name="habit_stats_rate_trend">Xu hướng tỷ lệ điểm danh</string>
+    <string name="habit_stats_not_started">Chưa bắt đầu</string>
+    <string name="habit_stats_total_habits">Tổng thói quen</string>
+    <string name="habit_stats_empty">Chưa có dữ liệu</string>
+    <string name="habit_last_7_days">7 ngày qua</string>
+    <string name="habit_last_30_days">30 ngày qua</string>
+    <string name="habit_add_title">Thêm thói quen</string>
+    <string name="habit_edit_title">Chỉnh sửa thói quen</string>
+    <string name="habit_edit_name_label">Tên thói quen</string>
+    <string name="habit_edit_name_hint">Nhập tên thói quen</string>
+    <string name="habit_edit_icon_label">Chọn biểu tượng</string>
+    <string name="habit_edit_color_label">Chọn màu</string>
+    <string name="habit_edit_color_auto_hint">Tự động dùng màu chủ đề nếu không chọn</string>
+    <string name="habit_edit_repeat_label">Tần suất lặp lại</string>
+    <string name="habit_repeat_daily">Hàng ngày</string>
+    <string name="habit_repeat_weekly">Hàng tuần</string>
+    <string name="habit_repeat_monthly">Hàng tháng</string>
+    <string name="habit_repeat_custom">Tùy chỉnh</string>
+    <string name="habit_repeat_daily_desc">Lặp lại hàng ngày</string>
+    <string name="habit_repeat_times_week_label">Số lần mỗi tuần</string>
+    <string name="habit_repeat_times_month_label">Số lần mỗi tháng</string>
+    <string name="habit_edit_reminder_label">Thời gian nhắc nhở</string>
+    <string name="habit_edit_reminder_none">Không nhắc nhở</string>
+    <string name="habit_edit_reminder_subtitle">Nhắc tôi điểm danh vào thời gian này</string>
+    <string name="habit_edit_reminder_clear">Xóa</string>
+    <string name="habit_edit_note_label">Ghi chú (tùy chọn)</string>
+    <string name="habit_edit_note_hint">Thêm ghi chú...</string>
+    <string name="habit_edit_stats_label">Thống kê dữ liệu điểm danh</string>
+    <string name="habit_edit_stats_subtitle">Sau khi bật sẽ thống kê tỷ lệ điểm danh và số ngày điểm danh liên tiếp</string>
+    <string name="habit_save">Lưu</string>
+    <string name="habit_name_required">Vui lòng nhập tên thói quen</string>
+    <string name="habit_saved">Đã lưu</string>
+    <string name="habit_freq_daily">Hàng ngày</string>
+    <string name="habit_freq_weekly_times">%1$d lần mỗi tuần</string>
+    <string name="habit_freq_monthly_times">%1$d lần mỗi tháng</string>
+    <string name="habit_preset_drink_water">Uống tám cốc nước mỗi ngày</string>
+    <string name="habit_preset_wake_early">Dậy sớm</string>
+    <string name="habit_preset_exercise">Tập thể dục</string>
+    <string name="habit_preset_reading">Đọc sách</string>
+    <string name="habit_preset_meditation">Thiền</string>
+    <string name="habit_preset_no_stay_up">Không thức khuya</string>
+    <string name="habit_notification_channel_name">Nhắc nhở thói quen</string>
+    <string name="habit_notification_channel_desc">Nhắc nhở điểm danh thói quen hàng ngày</string>
+    <string name="habit_notification_text">Đến giờ điểm danh rồi:%1$s</string>
+    <string name="habit_streak_days">Điểm danh liên tiếp %1$d ngày</string>
+    <string name="agent_tool_add_habit_title">Thêm thói quen</string>
+    <string name="agent_tool_add_habit_summary">Tạo thói quen mới trong điểm danh thói quen</string>
+    <string name="agent_tool_add_habit_description">Tạo thói quen mới trong mô-đun điểm danh thói quen. Hỗ trợ tên tùy chỉnh, biểu tượng, tần suất lặp lại (hàng ngày / N lần mỗi tuần / N lần mỗi tháng / tùy chỉnh thứ trong tuần), thời gian nhắc nhở hàng ngày tùy chọn và ghi chú.</string>
+    <string name="agent_tool_add_habit_param_name">Tên thói quen, ví dụ \"uống tám cốc nước mỗi ngày\"</string>
+    <string name="agent_tool_add_habit_param_icon">Khóa biểu tượng, tùy chọn: waterdrop (uống nước), sunrise (dậy sớm), running (thể thao), book (đọc sách), meditation (thiền), moon (ngủ sớm), toothbrush (đánh răng), pill (uống thuốc), fruit (trái cây), writing (viết lách), piggybank (tiết kiệm), dumbbell (tập gym)</string>
+    <string name="agent_tool_add_habit_param_repeat_type">Loại lặp lại: daily (hàng ngày)/ weekly_times (N lần mỗi tuần)/ monthly_times (N lần mỗi tháng)/ custom_weekdays (tùy chỉnh thứ trong tuần)</string>
+    <string name="agent_tool_add_habit_param_repeat_target">Số lần mỗi tuần hoặc mỗi tháng, 1-30, chỉ có hiệu lực với weekly_times / monthly_times</string>
+    <string name="agent_tool_add_habit_param_weekdays">Tùy chỉnh thứ trong tuần, mảng 1-7 (1=Thứ Hai, 7=Chủ Nhật), chỉ có hiệu lực với custom_weekdays</string>
+    <string name="agent_tool_add_habit_param_remind_time">Thời gian nhắc nhở hàng ngày, HH:mm (định dạng 24 giờ), tùy chọn</string>
+    <string name="agent_tool_add_habit_param_note">Ghi chú, tùy chọn</string>
+    <string name="agent_tool_add_habit_success">Đã tạo thói quen</string>
+    <string name="agent_tool_add_habit_failed">Tạo thói quen thất bại:%1$s</string>
+    <string-array name="agent_tool_add_habit_keywords">
+        <item>Thói quen</item>
+        <item>Điểm danh</item>
+        <item>Thêm thói quen</item>
+        <item>Tạo thói quen</item>
+    </string-array>
+    <string-array name="agent_tool_add_habit_examples">
+        <item>Giúp tôi thêm một thói quen uống tám cốc nước mỗi ngày</item>
+        <item>Tạo một thói quen chạy bộ 3 lần mỗi tuần</item>
+    </string-array>
+    <string name="agent_tool_check_in_habit_title">Điểm danh thói quen</string>
+    <string name="agent_tool_check_in_habit_summary">Hoàn thành điểm danh một ngày cho thói quen chỉ định</string>
+    <string name="agent_tool_check_in_habit_description">Đánh dấu một thói quen là đã điểm danh vào ngày chỉ định (mặc định hôm nay). Có thể dùng habit_id để xác định chính xác, hoặc dùng habit_name để khớp mờ. Điểm danh lặp lại trong cùng một ngày sẽ không tạo bản ghi trùng.</string>
+    <string name="agent_tool_check_in_habit_param_habit_id">ID thói quen. Ưu tiên dùng khi đã biết; nếu không thì dùng habit_name để khớp</string>
+    <string name="agent_tool_check_in_habit_param_habit_name">Tên thói quen, khớp mờ khi không cung cấp habit_id</string>
+    <string name="agent_tool_check_in_habit_param_date">Ngày điểm danh, yyyy-MM-dd, mặc định hôm nay, không được là ngày trong tương lai</string>
+    <string name="agent_tool_check_in_habit_success">Điểm danh thành công</string>
+    <string name="agent_tool_check_in_habit_already">Thói quen này đã được điểm danh trong ngày</string>
+    <string name="agent_tool_check_in_habit_not_found">Không tìm thấy thói quen: %1$s</string>
+    <string name="agent_tool_check_in_habit_failed">Điểm danh thất bại: %1$s</string>
+    <string-array name="agent_tool_check_in_habit_keywords">
+        <item>Thói quen</item>
+        <item>Điểm danh</item>
+        <item>Hoàn thành</item>
+    </string-array>
+    <string-array name="agent_tool_check_in_habit_examples">
+        <item>Giúp tôi điểm danh thói quen chạy bộ hôm nay</item>
+        <item>Đánh dấu thói quen đọc sách hôm qua là đã hoàn thành</item>
+    </string-array>
+    <string name="agent_tool_query_habits_title">Tra cứu thói quen</string>
+    <string name="agent_tool_query_habits_summary">Tra cứu danh sách thói quen, trạng thái hoàn thành hôm nay và tỷ lệ điểm danh tuần này</string>
+    <string name="agent_tool_query_habits_description">Tra cứu danh sách thói quen: trạng thái điểm danh hôm nay của từng thói quen, số ngày điểm danh liên tiếp của thói quen hàng ngày, và tỷ lệ điểm danh tổng thể trong tuần này.</string>
+    <string name="agent_tool_query_habits_section_today">Hôm nay</string>
+    <string name="agent_tool_query_habits_weekly_rate">Tỷ lệ điểm danh tuần này</string>
+    <string name="agent_tool_query_habits_empty">Chưa tạo thói quen nào</string>
+    <string name="agent_tool_query_habits_failed">Tra cứu thói quen thất bại: %1$s</string>
+    <string-array name="agent_tool_query_habits_keywords">
+        <item>Thói quen</item>
+        <item>Trạng thái điểm danh</item>
+        <item>Điểm danh liên tiếp</item>
+    </string-array>
+    <string-array name="agent_tool_query_habits_examples">
+        <item>Hôm nay còn thói quen nào chưa điểm danh?</item>
+        <item>Xem tỷ lệ điểm danh thói quen của tôi tuần này</item>
+    </string-array>
+    <string name="agent_tool_habit_label_date">Ngày</string>
+    <string name="agent_tool_habit_label_repeat">Tần suất</string>
+    <string name="agent_tool_habit_label_reminder">Nhắc nhở</string>
+    <string name="agent_tool_habit_label_name">Tên</string>
+    <string name="agent_tool_habit_open_link">Mở điểm danh thói quen</string>
+    <string name="agent_tool_habit_edit_link">Xem thói quen</string>
+    <string name="agent_tool_unknown_error">Lỗi không xác định</string>
+</resources>

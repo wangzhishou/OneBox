@@ -1,0 +1,7 @@
+• Mới: Bộ nhớ & kỹ năng Agent — ghi nhớ cách bạn làm việc
+• Mới: Nhập liệu bằng giọng nói AI với đọc chính tả nhiều đoạn
+• Mới: Trung tâm Hồ sơ Sức khỏe — chỉ số, nhập hàng loạt, phân tích AI, theo dõi chu kỳ
+• Mới: Phát hiện nội dung AI, hỗ trợ thêm tiếng Trung Phồn thể
+• Mới: Xem Quảng cáo — quảng cáo thưởng tùy chọn để nhận điểm AI
+• Xây dựng lại vòng quay quyết định, giao diện Material 3 Expressive, Trình quản lý mục với thống kê
+• Sửa lỗi và cải thiện hiệu suất
