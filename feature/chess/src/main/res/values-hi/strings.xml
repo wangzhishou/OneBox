@@ -234,4 +234,11 @@
     <string name="chess_piece_pawn">प्यादा</string>
     <string name="chess_setup_start_failed">बाज़ी शुरू नहीं हो सकी। फिर से कोशिश करें।</string>
     <string name="chess_online_sync_failed">ऑनलाइन खेल सिंक नहीं हो सका। पिछली सहेजी गई स्थिति बरकरार रखी गई है।</string>
+    <string name="chess_bar_ai_create">AI</string>
+    <string name="chess_bar_import">आयात करें</string>
+    <string name="chess_settings_generate">बनाएँ</string>
+    <string name="chess_settings_generate_loading">बनाया जा रहा है…</string>
+    <string name="chess_settings_regenerate">फिर से बनाएँ</string>
+    <string name="chess_settings_regenerate_loading">फिर से बनाया जा रहा है…</string>
+    <string name="chess_settings_tts_config">वॉइस इंजन</string>
 </resources>

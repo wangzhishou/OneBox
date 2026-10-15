@@ -212,4 +212,11 @@ Toca o escanea para unirte: %2$s</string>
     <string name="gomoku_pick_chat_model">Elegir modelo de chat</string>
     <string name="gomoku_start_play">Iniciar partida</string>
     <string name="gomoku_starting">Iniciando…</string>
+    <string name="gomoku_bar_ai_create">IA</string>
+    <string name="gomoku_bar_import">Importar</string>
+    <string name="gomoku_settings_generate">Generar</string>
+    <string name="gomoku_settings_generate_loading">Generando…</string>
+    <string name="gomoku_settings_regenerate">Volver a generar</string>
+    <string name="gomoku_settings_regenerate_loading">Volviendo a generar…</string>
+    <string name="gomoku_settings_tts_config">Motor de voz</string>
 </resources>

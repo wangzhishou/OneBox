@@ -1877,4 +1877,10 @@
     <string name="time_due_in_days">مستحق خلال %d يوم</string>
     <string name="time_due_on">مستحق: %s</string>
     <string name="card_more_actions">المزيد من الإجراءات</string>
+    <string name="ad_watch_earn_subtitle">شاهد إعلانًا قصيرًا واحصل على نقاط مجانية كل يوم</string>
+    <string name="byok_entry_subtitle">يتصل بحسابك الخاص — دون خصم نقاط ويعمل بلا تسجيل دخول</string>
+    <string name="byok_entry_title">استخدم مفتاح API الخاص بك</string>
+    <string name="byok_login_hint_subtitle">استخدم مفتاح API الخاص بك لمحادثة ذكاء اصطناعي مجانية</string>
+    <string name="byok_login_hint_title">لا ترغب في التسجيل؟</string>
+    <string name="donate_earn_points">تبرّع لتحصل على نقاط</string>
 </resources>

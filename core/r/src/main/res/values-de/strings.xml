@@ -1838,4 +1838,10 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="comment_empty_cta">Nur keine Zurückhaltung – sag uns, was du willst ↓</string>
     <string name="comment_empty_login_cta">Melde dich an und sag AI, was du willst</string>
     <string name="card_more_actions">Weitere Aktionen</string>
+    <string name="ad_watch_earn_subtitle">Kurze Werbung ansehen und täglich kostenlos Punkte erhalten</string>
+    <string name="byok_entry_subtitle">Verbindet sich mit Ihrem eigenen Konto – keine Punkte, funktioniert ohne Anmeldung</string>
+    <string name="byok_entry_title">Eigenen API-Schlüssel verwenden</string>
+    <string name="byok_login_hint_subtitle">Mit eigenem API-Schlüssel kostenlos KI-Chat nutzen</string>
+    <string name="byok_login_hint_title">Möchten Sie sich nicht anmelden?</string>
+    <string name="donate_earn_points">Mit einer Spende Punkte erhalten</string>
 </resources>

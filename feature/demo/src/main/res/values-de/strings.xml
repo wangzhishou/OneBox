@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Dateiauswahl fehlgeschlagen</string>
     <string name="demo_aigc_demo_parse_failed">Demo-AIGC konnte nicht analysiert werden</string>
+    <string name="demo_glass_showcase_consistency_desc">Gleiche Tönung und Stufe über GlassCard, GlassSurface und coloredGlass gerendert; mit und ohne Glas müssen alle drei identisch aussehen.</string>
+    <string name="demo_glass_showcase_consistency_title">Konsistenz der Pipeline</string>
 </resources>

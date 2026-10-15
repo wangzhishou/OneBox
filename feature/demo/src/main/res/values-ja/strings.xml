@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">ファイルの選択に失敗しました</string>
     <string name="demo_aigc_demo_parse_failed">デモAIGCの解析に失敗しました</string>
+    <string name="demo_glass_showcase_consistency_desc">同じ色調・同じ段階を GlassCard、GlassSurface、coloredGlass で描画。グラスがオンでもオフでも、3 つの見た目は一致している必要があります。</string>
+    <string name="demo_glass_showcase_consistency_title">パイプラインの一貫性</string>
 </resources>

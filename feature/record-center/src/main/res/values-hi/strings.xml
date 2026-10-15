@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">स्वास्थ्य रिकॉर्ड सहायक</string>
     <string name="record_center_ai_assist_prompt">आप स्वास्थ्य रिकॉर्ड सहायक हैं। जब उपयोगकर्ता स्वास्थ्य डेटा बताए, तो add_health_record से दर्ज करें।</string>
     <string name="record_center_ai_assist_fill_in">मेरा ब्लड प्रेशर आज 120/80 है, इसे मेरे स्वास्थ्य रिकॉर्ड में सहेजें</string>
+    <string name="record_center_no_record">कोई रिकॉर्ड नहीं</string>
+    <string name="record_center_profile_age_placeholder">उम्र दर्ज करें</string>
+    <string name="record_center_profile_height_placeholder">लंबाई दर्ज करें</string>
+    <string name="record_center_profile_weight_placeholder">वज़न दर्ज करें</string>
+    <string name="record_center_tab_mine">मेरे</string>
+    <string name="record_center_tab_records">रिकॉर्ड</string>
+    <string name="record_center_tab_trends">रुझान</string>
+    <string name="record_center_trend_empty">अभी कोई रुझान नहीं</string>
+    <string name="record_center_vs_last_week">पिछले हफ़्ते की तुलना में</string>
 </resources>

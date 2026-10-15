@@ -210,4 +210,11 @@
     <string name="gomoku_pick_chat_model">채팅 모델 선택</string>
     <string name="gomoku_start_play">대국 시작</string>
     <string name="gomoku_starting">시작 중…</string>
+    <string name="gomoku_bar_ai_create">AI</string>
+    <string name="gomoku_bar_import">가져오기</string>
+    <string name="gomoku_settings_generate">생성</string>
+    <string name="gomoku_settings_generate_loading">생성 중…</string>
+    <string name="gomoku_settings_regenerate">다시 생성</string>
+    <string name="gomoku_settings_regenerate_loading">다시 생성 중…</string>
+    <string name="gomoku_settings_tts_config">음성 엔진</string>
 </resources>

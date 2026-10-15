@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Dosya seçilemedi</string>
     <string name="demo_aigc_demo_parse_failed">Demo AIGC ayrıştırılamadı</string>
+    <string name="demo_glass_showcase_consistency_desc">Aynı ton ve kademe GlassCard, GlassSurface ve coloredGlass ile çizilir; cam açıkken de kapalıyken de üçü birebir aynı görünmelidir.</string>
+    <string name="demo_glass_showcase_consistency_title">İşlem hattı tutarlılığı</string>
 </resources>

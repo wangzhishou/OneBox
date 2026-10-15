@@ -234,4 +234,11 @@ Tippen oder scannen, um beizutreten: %2$s</string>
     <string name="chess_piece_pawn">Bauer</string>
     <string name="chess_setup_start_failed">Die Partie konnte nicht gestartet werden. Bitte erneut versuchen.</string>
     <string name="chess_online_sync_failed">Die Onlinepartie konnte nicht synchronisiert werden. Die zuletzt gespeicherte Stellung wurde beibehalten.</string>
+    <string name="chess_bar_ai_create">KI</string>
+    <string name="chess_bar_import">Importieren</string>
+    <string name="chess_settings_generate">Erzeugen</string>
+    <string name="chess_settings_generate_loading">Wird erzeugt…</string>
+    <string name="chess_settings_regenerate">Neu erzeugen</string>
+    <string name="chess_settings_regenerate_loading">Wird neu erzeugt…</string>
+    <string name="chess_settings_tts_config">Sprach-Engine</string>
 </resources>

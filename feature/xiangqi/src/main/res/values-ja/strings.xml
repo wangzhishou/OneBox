@@ -320,4 +320,17 @@
     <string name="xiangqi_game_not_found">この対局は利用できなくなりました。</string>
     <string name="xiangqi_standard_game">標準局面から新しい対局</string>
     <string name="xiangqi_standard_game_confirm">現在の対局を残し、標準の初期局面から新しい対局を準備しますか？</string>
+    <string name="xiangqi_bar_ai_create">AI</string>
+    <string name="xiangqi_bar_import">読み込み</string>
+    <string name="xiangqi_local_engine_delete">削除</string>
+    <string name="xiangqi_local_engine_delete_confirm_message">%1$s のニューラルネットワークファイルを削除します。あとから再ダウンロードできます。</string>
+    <string name="xiangqi_local_engine_delete_confirm_title">オフラインエンジンのデータを削除しますか?</string>
+    <string name="xiangqi_local_engine_download">ダウンロード</string>
+    <string name="xiangqi_local_engine_downloading">ダウンロード中… %1$d%%</string>
+    <string name="xiangqi_local_engine_installed">準備完了(%1$s)。対局はサーバーエンジンに依存しなくなります。</string>
+    <string name="xiangqi_local_engine_not_installed">まだダウンロードしていません。%1$s を一度ダウンロードするとオフラインで対局できます。</string>
+    <string name="xiangqi_local_engine_unavailable">このビルドには含まれていません。</string>
+    <string name="xiangqi_resign_by_side">%1$s が投了しました</string>
+    <string name="xiangqi_settings_local_engine_subtitle">ニューラルネットワークを備えた内蔵中国象棋エンジン。通信がなくても強い相手と対局できます。</string>
+    <string name="xiangqi_settings_local_engine_title">ローカルエンジン</string>
 </resources>

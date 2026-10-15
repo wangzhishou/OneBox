@@ -212,4 +212,11 @@
     <string name="gomoku_pick_chat_model">चैट मॉडल चुनें</string>
     <string name="gomoku_start_play">खेल शुरू करें</string>
     <string name="gomoku_starting">शुरू हो रहा है…</string>
+    <string name="gomoku_bar_ai_create">AI</string>
+    <string name="gomoku_bar_import">आयात करें</string>
+    <string name="gomoku_settings_generate">बनाएँ</string>
+    <string name="gomoku_settings_generate_loading">बनाया जा रहा है…</string>
+    <string name="gomoku_settings_regenerate">फिर से बनाएँ</string>
+    <string name="gomoku_settings_regenerate_loading">फिर से बनाया जा रहा है…</string>
+    <string name="gomoku_settings_tts_config">वॉइस इंजन</string>
 </resources>

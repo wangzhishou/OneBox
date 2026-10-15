@@ -1838,4 +1838,10 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="comment_empty_cta">Não segure—diga o que você quer ↓</string>
     <string name="comment_empty_login_cta">Entre e diga à AI o que você quer</string>
     <string name="card_more_actions">Mais ações</string>
+    <string name="ad_watch_earn_subtitle">Assista a um anúncio curto e ganhe pontos grátis todos os dias</string>
+    <string name="byok_entry_subtitle">Conecta-se à sua própria conta — não gasta pontos e funciona sem login</string>
+    <string name="byok_entry_title">Use sua própria chave de API</string>
+    <string name="byok_login_hint_subtitle">Use sua própria chave de API para conversar com IA grátis</string>
+    <string name="byok_login_hint_title">Não quer se cadastrar?</string>
+    <string name="donate_earn_points">Faça uma doação e ganhe pontos</string>
 </resources>

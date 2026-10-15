@@ -238,4 +238,11 @@
     <string name="chess_piece_pawn">Пешка</string>
     <string name="chess_setup_start_failed">Не удалось начать партию. Попробуйте ещё раз.</string>
     <string name="chess_online_sync_failed">Не удалось синхронизировать сетевую партию. Последняя сохранённая позиция не изменена.</string>
+    <string name="chess_bar_ai_create">ИИ</string>
+    <string name="chess_bar_import">Импорт</string>
+    <string name="chess_settings_generate">Создать</string>
+    <string name="chess_settings_generate_loading">Создание…</string>
+    <string name="chess_settings_regenerate">Создать заново</string>
+    <string name="chess_settings_regenerate_loading">Повторное создание…</string>
+    <string name="chess_settings_tts_config">Голосовой движок</string>
 </resources>

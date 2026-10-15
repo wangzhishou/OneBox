@@ -234,4 +234,11 @@ I-tap o i-scan upang sumali: %2$s</string>
     <string name="chess_piece_pawn">Pawn</string>
     <string name="chess_setup_start_failed">Hindi masimulan ang laro. Pakisubukan muli.</string>
     <string name="chess_online_sync_failed">Hindi ma-sync ang online na laro. Pinanatili ang huling naka-save na posisyon.</string>
+    <string name="chess_bar_ai_create">AI</string>
+    <string name="chess_bar_import">I-import</string>
+    <string name="chess_settings_generate">Gumawa</string>
+    <string name="chess_settings_generate_loading">Ginagawa…</string>
+    <string name="chess_settings_regenerate">Gawin muli</string>
+    <string name="chess_settings_regenerate_loading">Ginagawa muli…</string>
+    <string name="chess_settings_tts_config">Voice engine</string>
 </resources>

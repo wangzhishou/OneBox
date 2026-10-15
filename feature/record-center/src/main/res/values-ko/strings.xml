@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">건강 기록 도우미</string>
     <string name="record_center_ai_assist_prompt">당신은 건강 기록 도우미입니다. 사용자가 건강 데이터를 말하면 add_health_record로 기록하세요.</string>
     <string name="record_center_ai_assist_fill_in">오늘 혈압 120/80이야, 건강 기록에 저장해 줘</string>
+    <string name="record_center_no_record">기록 없음</string>
+    <string name="record_center_profile_age_placeholder">나이 입력</string>
+    <string name="record_center_profile_height_placeholder">키 입력</string>
+    <string name="record_center_profile_weight_placeholder">몸무게 입력</string>
+    <string name="record_center_tab_mine">내 기록</string>
+    <string name="record_center_tab_records">기록</string>
+    <string name="record_center_tab_trends">추이</string>
+    <string name="record_center_trend_empty">아직 추이가 없습니다</string>
+    <string name="record_center_vs_last_week">지난주 대비</string>
 </resources>

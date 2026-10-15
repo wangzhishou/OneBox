@@ -232,4 +232,11 @@ Ketuk atau pindai untuk bergabung: %2$s</string>
     <string name="chess_piece_pawn">Pion</string>
     <string name="chess_setup_start_failed">Permainan tidak dapat dimulai. Coba lagi.</string>
     <string name="chess_online_sync_failed">Permainan online tidak dapat disinkronkan. Posisi terakhir yang disimpan tetap dipertahankan.</string>
+    <string name="chess_bar_ai_create">AI</string>
+    <string name="chess_bar_import">Impor</string>
+    <string name="chess_settings_generate">Buat</string>
+    <string name="chess_settings_generate_loading">Membuat…</string>
+    <string name="chess_settings_regenerate">Buat ulang</string>
+    <string name="chess_settings_regenerate_loading">Membuat ulang…</string>
+    <string name="chess_settings_tts_config">Mesin suara</string>
 </resources>

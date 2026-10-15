@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">Помощник по записям здоровья</string>
     <string name="record_center_ai_assist_prompt">Ты помощник по записям здоровья. Когда пользователь описывает данные, запиши через add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Моё давление сегодня 120/80, сохрани в моих записях о здоровье</string>
+    <string name="record_center_no_record">Нет записей</string>
+    <string name="record_center_profile_age_placeholder">Введите возраст</string>
+    <string name="record_center_profile_height_placeholder">Введите рост</string>
+    <string name="record_center_profile_weight_placeholder">Введите вес</string>
+    <string name="record_center_tab_mine">Мои</string>
+    <string name="record_center_tab_records">Записи</string>
+    <string name="record_center_tab_trends">Динамика</string>
+    <string name="record_center_trend_empty">Пока нет динамики</string>
+    <string name="record_center_vs_last_week">к прошлой неделе</string>
 </resources>

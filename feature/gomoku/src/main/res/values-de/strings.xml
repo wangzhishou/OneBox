@@ -212,4 +212,11 @@ Tippen oder scannen, um beizutreten: %2$s</string>
     <string name="gomoku_pick_chat_model">Chatmodell wählen</string>
     <string name="gomoku_start_play">Partie starten</string>
     <string name="gomoku_starting">Startet…</string>
+    <string name="gomoku_bar_ai_create">KI</string>
+    <string name="gomoku_bar_import">Importieren</string>
+    <string name="gomoku_settings_generate">Erzeugen</string>
+    <string name="gomoku_settings_generate_loading">Wird erzeugt…</string>
+    <string name="gomoku_settings_regenerate">Neu erzeugen</string>
+    <string name="gomoku_settings_regenerate_loading">Wird neu erzeugt…</string>
+    <string name="gomoku_settings_tts_config">Sprach-Engine</string>
 </resources>

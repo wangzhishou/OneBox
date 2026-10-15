@@ -183,4 +183,13 @@
     <string name="agent_tool_record_center_open_link">فتح السجلات الصحية</string>
     <string name="agent_tool_record_center_field_optional"> (اختياري)</string>
     <string name="agent_tool_record_center_unknown_error">خطأ غير معروف</string>
+    <string name="record_center_no_record">لا توجد سجلات</string>
+    <string name="record_center_profile_age_placeholder">أدخل العمر</string>
+    <string name="record_center_profile_height_placeholder">أدخل الطول</string>
+    <string name="record_center_profile_weight_placeholder">أدخل الوزن</string>
+    <string name="record_center_tab_mine">خاصتي</string>
+    <string name="record_center_tab_records">السجلات</string>
+    <string name="record_center_tab_trends">الاتجاهات</string>
+    <string name="record_center_trend_empty">لا يوجد اتجاه بعد</string>
+    <string name="record_center_vs_last_week">مقارنة بالأسبوع الماضي</string>
 </resources>

@@ -323,4 +323,14 @@
     <string name="xiangqi_game_not_found">此棋局已無法使用。</string>
     <string name="xiangqi_standard_game">新開標準棋局</string>
     <string name="xiangqi_standard_game_confirm">保留目前對局，並從標準局面準備一局新的對弈？</string>
+    <string name="xiangqi_local_engine_delete">刪除</string>
+    <string name="xiangqi_local_engine_delete_confirm_message">將刪除 %1$s 的神經網路檔案，之後可以重新下載。</string>
+    <string name="xiangqi_local_engine_delete_confirm_title">刪除離線引擎資料？</string>
+    <string name="xiangqi_local_engine_download">下載</string>
+    <string name="xiangqi_local_engine_downloading">正在下載… %1$d%%</string>
+    <string name="xiangqi_local_engine_installed">已就緒（%1$s），對局不再依賴伺服器端引擎。</string>
+    <string name="xiangqi_local_engine_not_installed">尚未下載。下載一次（%1$s）後即可離線對弈。</string>
+    <string name="xiangqi_local_engine_unavailable">目前建置未內建該引擎。</string>
+    <string name="xiangqi_settings_local_engine_subtitle">內建象棋引擎與神經網路，沒有網路也能有強對手。</string>
+    <string name="xiangqi_settings_local_engine_title">本地引擎</string>
 </resources>

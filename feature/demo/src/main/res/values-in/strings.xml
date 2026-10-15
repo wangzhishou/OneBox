@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Gagal memilih file</string>
     <string name="demo_aigc_demo_parse_failed">Gagal mengurai demo AIGC</string>
+    <string name="demo_glass_showcase_consistency_desc">Tint dan gaya yang sama dirender lewat GlassCard, GlassSurface, dan coloredGlass; dengan glass menyala atau mati, ketiganya harus terlihat identik.</string>
+    <string name="demo_glass_showcase_consistency_title">Konsistensi pipeline</string>
 </resources>

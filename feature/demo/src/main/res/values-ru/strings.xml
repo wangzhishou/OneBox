@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Не удалось выбрать файл</string>
     <string name="demo_aigc_demo_parse_failed">Не удалось разобрать демо AIGC</string>
+    <string name="demo_glass_showcase_consistency_desc">Один и тот же оттенок и уровень отрисовываются через GlassCard, GlassSurface и coloredGlass; со стеклом и без него все три должны выглядеть одинаково.</string>
+    <string name="demo_glass_showcase_consistency_title">Согласованность конвейера</string>
 </resources>

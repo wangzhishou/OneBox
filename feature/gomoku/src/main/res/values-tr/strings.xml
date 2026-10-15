@@ -212,4 +212,11 @@ Katılmak için dokunun veya tarayın: %2$s</string>
     <string name="gomoku_pick_chat_model">Sohbet modeli seç</string>
     <string name="gomoku_start_play">Oyunu başlat</string>
     <string name="gomoku_starting">Başlatılıyor…</string>
+    <string name="gomoku_bar_ai_create">AI</string>
+    <string name="gomoku_bar_import">İçe aktar</string>
+    <string name="gomoku_settings_generate">Oluştur</string>
+    <string name="gomoku_settings_generate_loading">Oluşturuluyor…</string>
+    <string name="gomoku_settings_regenerate">Yeniden oluştur</string>
+    <string name="gomoku_settings_regenerate_loading">Yeniden oluşturuluyor…</string>
+    <string name="gomoku_settings_tts_config">Ses motoru</string>
 </resources>

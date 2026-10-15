@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="image_with_cropper">含裁剪工具的原始图片</string>
+</resources>

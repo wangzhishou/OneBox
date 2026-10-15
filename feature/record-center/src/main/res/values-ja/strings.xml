@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">健康記録アシスタント</string>
     <string name="record_center_ai_assist_prompt">あなたは健康記録アシスタントです。ユーザーが健康データを伝えたら、add_health_record で記録してください。</string>
     <string name="record_center_ai_assist_fill_in">今日の血圧は120/80、健康記録に保存して</string>
+    <string name="record_center_no_record">記録なし</string>
+    <string name="record_center_profile_age_placeholder">年齢を入力</string>
+    <string name="record_center_profile_height_placeholder">身長を入力</string>
+    <string name="record_center_profile_weight_placeholder">体重を入力</string>
+    <string name="record_center_tab_mine">マイ</string>
+    <string name="record_center_tab_records">記録</string>
+    <string name="record_center_tab_trends">推移</string>
+    <string name="record_center_trend_empty">まだ推移はありません</string>
+    <string name="record_center_vs_last_week">先週比</string>
 </resources>

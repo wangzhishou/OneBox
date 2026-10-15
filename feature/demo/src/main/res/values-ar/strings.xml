@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">تعذّر اختيار الملف</string>
     <string name="demo_aigc_demo_parse_failed">تعذّر تحليل بيانات AIGC التجريبية</string>
+    <string name="demo_glass_showcase_consistency_desc">النفس اللون والمستوى يُرسمان عبر GlassCard وGlassSurface وcoloredGlass؛ ومع تشغيل الزجاج أو إيقافه يجب أن تبدو الثلاثة متطابقة.</string>
+    <string name="demo_glass_showcase_consistency_title">اتساق المسار</string>
 </resources>

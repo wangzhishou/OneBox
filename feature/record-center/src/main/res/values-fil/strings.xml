@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">Health Record Assistant</string>
     <string name="record_center_ai_assist_prompt">Ikaw ang health record assistant. Kapag naglarawan ang user ng health data, i-record gamit ang add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Ang presyon ko ngayon ay 120/80, i-save ito sa health records ko</string>
+    <string name="record_center_no_record">Walang record</string>
+    <string name="record_center_profile_age_placeholder">Ilagay ang edad</string>
+    <string name="record_center_profile_height_placeholder">Ilagay ang taas</string>
+    <string name="record_center_profile_weight_placeholder">Ilagay ang timbang</string>
+    <string name="record_center_tab_mine">Akin</string>
+    <string name="record_center_tab_records">Mga record</string>
+    <string name="record_center_tab_trends">Mga trend</string>
+    <string name="record_center_trend_empty">Wala pang trend</string>
+    <string name="record_center_vs_last_week">kumpara noong nakaraang linggo</string>
 </resources>

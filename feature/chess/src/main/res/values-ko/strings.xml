@@ -232,4 +232,11 @@
     <string name="chess_piece_pawn">폰</string>
     <string name="chess_setup_start_failed">대국을 시작하지 못했습니다. 다시 시도하세요.</string>
     <string name="chess_online_sync_failed">온라인 대국을 동기화하지 못했습니다. 마지막으로 저장한 국면을 유지합니다.</string>
+    <string name="chess_bar_ai_create">AI</string>
+    <string name="chess_bar_import">가져오기</string>
+    <string name="chess_settings_generate">생성</string>
+    <string name="chess_settings_generate_loading">생성 중…</string>
+    <string name="chess_settings_regenerate">다시 생성</string>
+    <string name="chess_settings_regenerate_loading">다시 생성 중…</string>
+    <string name="chess_settings_tts_config">음성 엔진</string>
 </resources>

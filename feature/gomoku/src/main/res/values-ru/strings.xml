@@ -216,4 +216,11 @@
     <string name="gomoku_pick_chat_model">Выбрать чат-модель</string>
     <string name="gomoku_start_play">Начать партию</string>
     <string name="gomoku_starting">Запуск…</string>
+    <string name="gomoku_bar_ai_create">ИИ</string>
+    <string name="gomoku_bar_import">Импорт</string>
+    <string name="gomoku_settings_generate">Создать</string>
+    <string name="gomoku_settings_generate_loading">Создание…</string>
+    <string name="gomoku_settings_regenerate">Создать заново</string>
+    <string name="gomoku_settings_regenerate_loading">Повторное создание…</string>
+    <string name="gomoku_settings_tts_config">Голосовой движок</string>
 </resources>

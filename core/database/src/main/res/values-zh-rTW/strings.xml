@@ -33,4 +33,12 @@
     <string name="activity_log_poem_app_title">中國古詩詞</string>
     <string name="activity_log_todo_app_title">待辦清單</string>
     <string name="activity_log_xiangqi_app_title">中國象棋</string>
+    <string name="sys_prompt_memory_global_desc">AI 記憶注入時，個人資料段落的引導語</string>
+    <string name="sys_prompt_memory_global_title">記憶個人資料引導語</string>
+    <string name="sys_prompt_memory_recent_desc">AI 記憶注入時，近期日誌段落的引導語（含 memory_get 搜尋提示）</string>
+    <string name="sys_prompt_memory_recent_no_tool_desc">模型不支援工具呼叫時使用的降級版本</string>
+    <string name="sys_prompt_memory_recent_no_tool_title">記憶近期日誌引導語（無工具）</string>
+    <string name="sys_prompt_memory_recent_title">記憶近期日誌引導語</string>
+    <string name="sys_prompt_skills_guidance_desc">可用技能清單的引導語</string>
+    <string name="sys_prompt_skills_guidance_title">技能清單引導語</string>
 </resources>

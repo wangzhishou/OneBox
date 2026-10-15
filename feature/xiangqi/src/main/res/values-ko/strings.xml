@@ -330,4 +330,7 @@
     <string name="xiangqi_game_not_found">이 대국을 더 이상 사용할 수 없습니다.</string>
     <string name="xiangqi_standard_game">새 표준 대국</string>
     <string name="xiangqi_standard_game_confirm">현재 대국을 유지하고 표준 시작 국면에서 새 대국을 준비할까요?</string>
+    <string name="xiangqi_bar_ai_create">AI</string>
+    <string name="xiangqi_bar_import">가져오기</string>
+    <string name="xiangqi_resign_by_side">%1$s 기권</string>
 </resources>

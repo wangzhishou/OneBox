@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">파일 선택 실패</string>
     <string name="demo_aigc_demo_parse_failed">데모 AIGC 파싱 실패</string>
+    <string name="demo_glass_showcase_consistency_desc">같은 색조와 단계를 GlassCard, GlassSurface, coloredGlass로 렌더링합니다. 글래스가 켜져 있든 꺼져 있든 셋 다 똑같이 보여야 합니다.</string>
+    <string name="demo_glass_showcase_consistency_title">파이프라인 일관성</string>
 </resources>

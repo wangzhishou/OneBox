@@ -210,4 +210,11 @@
     <string name="gomoku_pick_chat_model">チャットモデルを選択</string>
     <string name="gomoku_start_play">対局開始</string>
     <string name="gomoku_starting">開始中…</string>
+    <string name="gomoku_bar_ai_create">AI</string>
+    <string name="gomoku_bar_import">読み込み</string>
+    <string name="gomoku_settings_generate">生成</string>
+    <string name="gomoku_settings_generate_loading">生成中…</string>
+    <string name="gomoku_settings_regenerate">再生成</string>
+    <string name="gomoku_settings_regenerate_loading">再生成中…</string>
+    <string name="gomoku_settings_tts_config">音声エンジン</string>
 </resources>

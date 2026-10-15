@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">Asisten Catatan Kesehatan</string>
     <string name="record_center_ai_assist_prompt">Anda asisten catatan kesehatan. Saat pengguna mendeskripsikan data kesehatan, catat dengan add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Tekanan darahku hari ini 120/80, simpan ke catatan kesehatanku</string>
+    <string name="record_center_no_record">Belum ada catatan</string>
+    <string name="record_center_profile_age_placeholder">Masukkan usia</string>
+    <string name="record_center_profile_height_placeholder">Masukkan tinggi</string>
+    <string name="record_center_profile_weight_placeholder">Masukkan berat</string>
+    <string name="record_center_tab_mine">Milik saya</string>
+    <string name="record_center_tab_records">Catatan</string>
+    <string name="record_center_tab_trends">Tren</string>
+    <string name="record_center_trend_empty">Belum ada tren</string>
+    <string name="record_center_vs_last_week">vs minggu lalu</string>
 </resources>

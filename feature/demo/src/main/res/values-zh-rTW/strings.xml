@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">檔案選擇失敗</string>
     <string name="demo_aigc_demo_parse_failed">示範 AIGC 解析失敗</string>
+    <string name="demo_glass_showcase_consistency_desc">同一色調、同一檔位分別經 GlassCard、GlassSurface、coloredGlass 渲染，開／關玻璃三者觀感都必須一致。</string>
+    <string name="demo_glass_showcase_consistency_title">管線一致性對照</string>
 </resources>

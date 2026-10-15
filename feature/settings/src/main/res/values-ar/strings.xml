@@ -430,4 +430,9 @@
     <string name="ai_service_hub_tab_jev">Jev</string>
     <string name="ai_service_hub_tab_local">محلي</string>
     <string name="ai_service_hub_tab_multimodal">متعدد الوسائط</string>
+    <string name="ai_engine_api_url_hint">يملأ https:// والشرطة المائلة / تلقائيًا عند مغادرة الحقل</string>
+    <string name="ai_engine_model_dialog_primary_hint">أدخل معرّف النموذج الذي يتطلبه القسم. يُنشأ الاسم الظاهر تلقائيًا.</string>
+    <string name="ai_engine_model_display_name_hint">اتركه فارغًا ليُنشأ من مفتاح النموذج</string>
+    <string name="ai_engine_name_edit_hint">مفتاح فريد للقسم؛ تنتقل النماذج معه عند إعادة التسمية — اتركه كما هو عادةً</string>
+    <string name="ai_engine_title_hint">الاسم الظاهر في القوائم والمحادثة؛ يمكن تغييره في أي وقت</string>
 </resources>

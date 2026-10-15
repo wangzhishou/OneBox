@@ -242,4 +242,11 @@
     <string name="chess_piece_pawn">بيدق</string>
     <string name="chess_setup_start_failed">تعذّر بدء المباراة. يرجى المحاولة مجددًا.</string>
     <string name="chess_online_sync_failed">تعذرت مزامنة المباراة عبر الإنترنت. تم الاحتفاظ بآخر وضع محفوظ.</string>
+    <string name="chess_bar_ai_create">AI</string>
+    <string name="chess_bar_import">استيراد</string>
+    <string name="chess_settings_generate">إنشاء</string>
+    <string name="chess_settings_generate_loading">جارٍ الإنشاء…</string>
+    <string name="chess_settings_regenerate">إعادة الإنشاء</string>
+    <string name="chess_settings_regenerate_loading">جارٍ إعادة الإنشاء…</string>
+    <string name="chess_settings_tts_config">محرك الصوت</string>
 </resources>

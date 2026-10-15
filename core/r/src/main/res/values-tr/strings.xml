@@ -1838,4 +1838,10 @@
     <string name="comment_empty_cta">Çekinmeyin—ne istediğinizi söyleyin ↓</string>
     <string name="comment_empty_login_cta">Giriş yapın ve AI\'ya ne istediğinizi söyleyin</string>
     <string name="card_more_actions">Diğer işlemler</string>
+    <string name="ad_watch_earn_subtitle">Kısa bir reklam izleyin, her gün ücretsiz puan kazanın</string>
+    <string name="byok_entry_subtitle">Kendi hesabınıza bağlanır — puan harcanmaz, giriş yapmadan da çalışır</string>
+    <string name="byok_entry_title">Kendi API anahtarınızı kullanın</string>
+    <string name="byok_login_hint_subtitle">Ücretsiz AI sohbeti için kendi API anahtarınızı kullanın</string>
+    <string name="byok_login_hint_title">Kaydolmak istemiyor musunuz?</string>
+    <string name="donate_earn_points">Bağış yaparak puan kazanın</string>
 </resources>

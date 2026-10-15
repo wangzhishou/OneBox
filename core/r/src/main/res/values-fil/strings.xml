@@ -1838,4 +1838,10 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="comment_empty_cta">Huwag magpigil—sabihin sa amin ang gusto mo ↓</string>
     <string name="comment_empty_login_cta">Mag-login at sabihin sa AI ang gusto mo</string>
     <string name="card_more_actions">Higit pang aksyon</string>
+    <string name="ad_watch_earn_subtitle">Manood ng maikling ad, makakuha ng libreng puntos araw-araw</string>
+    <string name="byok_entry_subtitle">Kumokonekta sa sarili mong account — walang nagagastos na puntos, gumagana kahit walang sign-in</string>
+    <string name="byok_entry_title">Gamitin ang sarili mong API key</string>
+    <string name="byok_login_hint_subtitle">Gamitin ang sarili mong API key para sa libreng AI chat</string>
+    <string name="byok_login_hint_title">Ayaw mong mag-sign up?</string>
+    <string name="donate_earn_points">Mag-donate para makakuha ng puntos</string>
 </resources>

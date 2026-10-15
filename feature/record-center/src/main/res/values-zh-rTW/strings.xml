@@ -183,4 +183,13 @@
     <string name="agent_tool_record_center_open_link">開啟健康記錄</string>
     <string name="agent_tool_record_center_field_optional">(選填)</string>
     <string name="agent_tool_record_center_unknown_error">未知錯誤</string>
+    <string name="record_center_no_record">暫無記錄</string>
+    <string name="record_center_profile_age_placeholder">請輸入年齡</string>
+    <string name="record_center_profile_height_placeholder">請輸入身高</string>
+    <string name="record_center_profile_weight_placeholder">請輸入體重</string>
+    <string name="record_center_tab_mine">我的</string>
+    <string name="record_center_tab_records">記錄</string>
+    <string name="record_center_tab_trends">趨勢</string>
+    <string name="record_center_trend_empty">暫無趨勢</string>
+    <string name="record_center_vs_last_week">較上週</string>
 </resources>

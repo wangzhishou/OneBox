@@ -234,4 +234,11 @@ Katılmak için dokunun veya tarayın: %2$s</string>
     <string name="chess_piece_pawn">Piyon</string>
     <string name="chess_setup_start_failed">Oyun başlatılamadı. Lütfen tekrar deneyin.</string>
     <string name="chess_online_sync_failed">Çevrimiçi oyun eşitlenemedi. Son kaydedilen konum korundu.</string>
+    <string name="chess_bar_ai_create">AI</string>
+    <string name="chess_bar_import">İçe aktar</string>
+    <string name="chess_settings_generate">Oluştur</string>
+    <string name="chess_settings_generate_loading">Oluşturuluyor…</string>
+    <string name="chess_settings_regenerate">Yeniden oluştur</string>
+    <string name="chess_settings_regenerate_loading">Yeniden oluşturuluyor…</string>
+    <string name="chess_settings_tts_config">Ses motoru</string>
 </resources>

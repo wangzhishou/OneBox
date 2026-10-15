@@ -1828,4 +1828,10 @@
     <string name="comment_empty_cta">遠慮せずに、してほしいことを教えてください ↓</string>
     <string name="comment_empty_login_cta">ログインしてAIにしてほしいことを伝える</string>
     <string name="card_more_actions">その他の操作</string>
+    <string name="ad_watch_earn_subtitle">短い広告を見て、毎日無料でポイントを獲得</string>
+    <string name="byok_entry_subtitle">自分のアカウントに接続します。ポイント消費なし、ログインなしでも使えます</string>
+    <string name="byok_entry_title">自分の API キーを使う</string>
+    <string name="byok_login_hint_subtitle">自分の API キーで AI チャットを無料で利用</string>
+    <string name="byok_login_hint_title">登録したくない場合</string>
+    <string name="donate_earn_points">投げ銭でポイントを獲得</string>
 </resources>

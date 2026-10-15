@@ -212,4 +212,11 @@ I-tap o i-scan upang sumali: %2$s</string>
     <string name="gomoku_pick_chat_model">Pumili ng chat model</string>
     <string name="gomoku_start_play">Simulan ang laro</string>
     <string name="gomoku_starting">Nagsisimula…</string>
+    <string name="gomoku_bar_ai_create">AI</string>
+    <string name="gomoku_bar_import">I-import</string>
+    <string name="gomoku_settings_generate">Gumawa</string>
+    <string name="gomoku_settings_generate_loading">Ginagawa…</string>
+    <string name="gomoku_settings_regenerate">Gawin muli</string>
+    <string name="gomoku_settings_regenerate_loading">Ginagawa muli…</string>
+    <string name="gomoku_settings_tts_config">Voice engine</string>
 </resources>

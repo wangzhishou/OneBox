@@ -983,4 +983,8 @@
     <string name="agent_tool_import_font_remove_not_found">사용자 정의 글꼴을 찾을 수 없습니다: %1$s. list를 호출해 가져온 글꼴을 확인하세요</string>
     <string name="agent_tool_import_font_deeplink_label">디스플레이 설정</string>
     <string name="agent_tool_import_font_deeplink_guidance">디스플레이 설정에서 글꼴을 관리하려면 탭하세요</string>
+    <string name="agent_tool_manage_todo_created">\"%1$s\" 목록을 만들었습니다(항목 %2$d개)</string>
+    <string name="agent_tool_manage_todo_missing_tasks">create_list 작업에는 tasks 매개변수(항목 제목 배열)가 필요합니다</string>
+    <string name="agent_tool_manage_todo_param_tasks">항목 제목 배열로 create_list에 필수입니다. 예: [\"AI 영상 편집 배우기\", \"책 12권 읽기\"]</string>
+    <string name="agent_tool_manage_todo_list_created">\"%1$s\" 목록을 만들었습니다(항목 %2$d개)</string>
 </resources>

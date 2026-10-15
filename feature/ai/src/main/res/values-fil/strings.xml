@@ -983,4 +983,8 @@
     <string name="agent_tool_import_font_remove_not_found">Hindi natagpuan ang custom na font: %1$s. Tawagin ang list para makita ang mga na-import na font</string>
     <string name="agent_tool_import_font_deeplink_label">Mga Setting ng Display</string>
     <string name="agent_tool_import_font_deeplink_guidance">I-tap para pamahalaan ang mga font sa mga setting ng display</string>
+    <string name="agent_tool_manage_todo_created">Nagawa ang listahang \"%1$s\" na may %2$d item</string>
+    <string name="agent_tool_manage_todo_missing_tasks">Kailangan ng create_list action ang tasks parameter (array ng mga pamagat ng item)</string>
+    <string name="agent_tool_manage_todo_param_tasks">Array ng mga pamagat ng item, kailangan para sa create_list, hal. [\"Matuto ng AI video editing\", \"Magbasa ng 12 libro\"]</string>
+    <string name="agent_tool_manage_todo_list_created">Nagawa ang listahang \"%1$s\" na may %2$d item</string>
 </resources>

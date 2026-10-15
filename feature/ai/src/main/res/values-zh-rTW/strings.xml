@@ -955,4 +955,37 @@
     <string name="agent_tool_manage_chess_imported">已匯入對局: %1$s。局面已完整匯入，把 deepLinks 交給使用者即可，無需再次呼叫本工具</string>
     <string name="agent_tool_manage_chess_import_failed">匯入失敗: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">是否建立人機對局且 AI 執白(先手)(create 可選;不傳則建立本地雙人對局)</string>
+    <string name="agent_memory_prompt_log_header">記憶日誌（%1$s）：</string>
+    <string name="agent_memory_prompt_omitted_hint">（較早的記憶因預算限制已省略，可用 memory_get 搜尋。）</string>
+    <string name="agent_memory_prompt_omitted_hint_no_search">（較早的記憶因預算限制已省略。）</string>
+    <string name="agent_memory_prompt_profile_header">個人資料：</string>
+    <string name="agent_skill_import_invalid">無效的 SKILL.md:frontmatter 必須包含單行的 name 和 description 欄位</string>
+    <string name="agent_skills_prompt_unlisted">（還有 %1$d 個技能未列出。）</string>
+    <string name="agent_tool_gate_memory_disabled">本次對話的記憶功能已停用（全域或對話開關處於關閉狀態）。請不要再呼叫記憶工具。</string>
+    <string name="agent_tool_gate_skills_disabled">本次對話的技能功能已停用（全域或對話開關處於關閉狀態）。請不要再呼叫 use_skill 工具。</string>
+    <string name="agent_tool_manage_todo_list_created">已建立清單「%1$s」，共 %2$d 項</string>
+    <string name="agent_tool_manage_todo_missing_tasks">create_list 操作需要 tasks 參數（項目標題陣列）</string>
+    <string name="agent_tool_manage_todo_param_tasks">項目標題陣列，create_list 時必填，例如 [\"學會用 AI 剪影片\", \"讀完 12 本書\"]</string>
+    <string name="agent_tool_memory_get_description">依關鍵字檢索已儲存的記憶條目；全部關鍵字都命中（忽略大小寫）才回傳該條目。不傳關鍵字則 dump 最近的條目。scope=log（預設）只檢索日誌條目，scope=all 同時包含個人資料。</string>
+    <string name="agent_tool_memory_get_param_keywords">關鍵字，以空格或逗號分隔；留空則 dump 最近的條目</string>
+    <string name="agent_tool_memory_get_param_scope">檢索範圍：log（預設）或 all（含個人資料）</string>
+    <string name="agent_tool_memory_get_result_empty">沒有符合的記憶條目。</string>
+    <string name="agent_tool_memory_get_result_entry">#%1$d [%2$s] (%3$s)</string>
+    <string name="agent_tool_memory_get_result_truncated_bytes">[%1$d 筆因輸出大小上限被省略。請縮小關鍵字範圍。]</string>
+    <string name="agent_tool_memory_get_result_truncated_count">[還有更多符合的條目未顯示:結果上限 %1$d 筆。請縮小關鍵字範圍。]</string>
+    <string name="agent_tool_memory_get_result_truncated_entries">[%1$d 筆因輸出上限被截斷顯示。請用更精確的關鍵字讀取完整內容。]</string>
+    <string name="agent_tool_memory_write_description">記錄值得長期保留的使用者偏好、關鍵事實、專案約定與決策。寫成簡潔、能獨立成立的陳述句。不要記錄金鑰、密碼、API Key 或一次性的暫時細節。</string>
+    <string name="agent_tool_memory_write_param_content">要記錄的記憶內容，簡潔且能獨立成立的一句話</string>
+    <string name="agent_tool_memory_write_result_saved">記憶已儲存（id=%1$d）。</string>
+    <string name="agent_tool_memory_write_too_long">記憶內容過長：上限 %1$d 字元。請精簡後只保留重點。</string>
+    <string name="agent_tool_theme_setting_param_glass_border_alpha">玻璃描邊可見度。**數字型別**（非字串），範圍 [0.0, 1.0]，預設 0.17（17%%）。0 表示完全隱藏描邊，數值越大描邊越明顯。與 glass_alpha 彼此獨立。選填</string>
+    <string name="agent_tool_use_skill_description">依 name 載入 &lt;available_skills&gt; 清單中某個技能的完整指令。套用任何技能前必須先呼叫本工具。</string>
+    <string name="agent_tool_use_skill_none_available">（無）</string>
+    <string name="agent_tool_use_skill_not_found">技能 \'%1$s\' 不存在或已停用。可用技能：%2$s</string>
+    <string name="agent_tool_use_skill_param_name">技能 name(slug),與 &lt;available_skills&gt; 清單中列出的完全一致</string>
+    <string name="ai_tools_session_global_off_hint">已在 AI 設定中全域關閉，對話開關無法使用</string>
+    <string name="ai_tools_session_memory">本次對話的記憶</string>
+    <string name="ai_tools_session_memory_hint">在本次對話注入已儲存的記憶，並允許 AI 寫入記憶</string>
+    <string name="ai_tools_session_skills">本次對話的技能</string>
+    <string name="ai_tools_session_skills_hint">在本次對話顯示可用技能清單，並允許 AI 載入技能</string>
 </resources>

@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">Gesundheitsdaten-Assistent</string>
     <string name="record_center_ai_assist_prompt">Du bist der Gesundheitsdaten-Assistent. Beschreibt der Nutzer Gesundheitsdaten, erfasse sie mit add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Mein Blutdruck ist heute 120/80, speichere es in meinen Gesundheitsdaten</string>
+    <string name="record_center_no_record">Keine Einträge</string>
+    <string name="record_center_profile_age_placeholder">Alter eingeben</string>
+    <string name="record_center_profile_height_placeholder">Größe eingeben</string>
+    <string name="record_center_profile_weight_placeholder">Gewicht eingeben</string>
+    <string name="record_center_tab_mine">Meine</string>
+    <string name="record_center_tab_records">Einträge</string>
+    <string name="record_center_tab_trends">Trends</string>
+    <string name="record_center_trend_empty">Noch kein Trend</string>
+    <string name="record_center_vs_last_week">vs. letzte Woche</string>
 </resources>

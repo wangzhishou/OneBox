@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Nabigong pumili ng file</string>
     <string name="demo_aigc_demo_parse_failed">Nabigong i-parse ang demo AIGC</string>
+    <string name="demo_glass_showcase_consistency_desc">Parehong tint at estilo na nire-render sa pamamagitan ng GlassCard, GlassSurface, at coloredGlass; naka-on man o naka-off ang glass, dapat magkapareho ang itsura ng tatlo.</string>
+    <string name="demo_glass_showcase_consistency_title">Pagkakapareho ng pipeline</string>
 </resources>

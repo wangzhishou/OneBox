@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ad_watch_title">广告看看看</string>
+    <string name="ad_watch_headline_1">大品牌烧钱投的广告, 都在打什么牌?</string>
+    <string name="ad_watch_headline_2">大厂都在投的广告, 长什么样?</string>
+    <string name="ad_watch_headline_3">15 秒, 看品牌们的看家本领</string>
+    <string name="ad_watch_headline_4">别人花钱抢眼球, 你顺便赚积分</string>
+    <string name="ad_watch_headline_5">广告主内卷现场, 免费围观</string>
+    <string name="ad_watch_subtitle">看 15 秒广告, 赚 %1$d 积分</string>
+    <string name="ad_watch_cta">看广告 · +%1$d 积分</string>
+    <string name="ad_watch_remaining">今日剩余 %1$d/%2$d 次</string>
+    <string name="ad_watch_daily_limit_reached">今日次数已用完, 明天再来吧</string>
+    <string name="ad_watch_loading">广告加载中…</string>
+    <string name="ad_watch_load_failed">广告加载失败</string>
+    <string name="ad_watch_retry">重试</string>
+    <string name="ad_watch_ad_not_ready">广告暂未就绪, 请稍后再试</string>
+</resources>

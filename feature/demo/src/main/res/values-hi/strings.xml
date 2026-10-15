@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">फ़ाइल चुनने में विफल</string>
     <string name="demo_aigc_demo_parse_failed">डेमो AIGC पार्स करने में विफल</string>
+    <string name="demo_glass_showcase_consistency_desc">एक ही टिंट और शैली GlassCard, GlassSurface और coloredGlass से रेंडर; ग्लास चालू या बंद, तीनों एक जैसे दिखने चाहिए।</string>
+    <string name="demo_glass_showcase_consistency_title">पाइपलाइन की एकरूपता</string>
 </resources>

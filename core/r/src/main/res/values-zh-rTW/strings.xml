@@ -1816,4 +1816,23 @@
     <string name="time_due_in_days">%d天後到期</string>
     <string name="time_due_on">到期：%s</string>
     <string name="card_more_actions">更多操作</string>
+    <string name="ad_watch_earn_subtitle">每天看廣告，免費拿積分</string>
+    <string name="ai_engine_seed_baidu_title">百度文心</string>
+    <string name="ai_engine_seed_jev_title">Jev</string>
+    <string name="ai_engine_seed_minimax_title">MiniMax</string>
+    <string name="ai_engine_seed_zhipu_title">智譜 GLM</string>
+    <string name="ai_model_default_baidu_title">ERNIE 4.5 Turbo</string>
+    <string name="ai_model_default_jev_title">Jev</string>
+    <string name="ai_model_default_minimax_title">MiniMax M2.7</string>
+    <string name="ai_model_default_zhipu_title">GLM 5.3 Flash</string>
+    <string name="byok_entry_subtitle">直連你的帳號，不扣積分，無須登入也能用</string>
+    <string name="byok_entry_title">使用自己的 API Key</string>
+    <string name="byok_login_hint_subtitle">用自己的 API Key 免費使用 AI 聊天</string>
+    <string name="byok_login_hint_title">不想註冊？</string>
+    <string name="donate_earn_points">贊助獲取積分</string>
+    <string name="local_model_loading_hint">正在載入本機模型 %1$s,僅在啟動後第一次需要幾秒…</string>
+    <string name="on_device_model_not_supported">目前選取的裝置端模型不支援此功能，請在設定中改用雲端模型</string>
+    <string name="profile_item_ai_memory">AI 記憶</string>
+    <string name="profile_item_ai_skill">AI 技能</string>
+    <string name="profile_item_local_models">本機模型</string>
 </resources>

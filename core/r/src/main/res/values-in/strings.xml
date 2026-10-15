@@ -1828,4 +1828,10 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="comment_empty_cta">Jangan ragu—beri tahu kami apa yang Anda inginkan ↓</string>
     <string name="comment_empty_login_cta">Masuk dan beri tahu AI apa yang Anda inginkan</string>
     <string name="card_more_actions">Tindakan lainnya</string>
+    <string name="ad_watch_earn_subtitle">Tonton iklan singkat, dapatkan poin gratis setiap hari</string>
+    <string name="byok_entry_subtitle">Terhubung ke akun Anda sendiri — tanpa memakai poin, tetap jalan tanpa masuk</string>
+    <string name="byok_entry_title">Gunakan kunci API Anda sendiri</string>
+    <string name="byok_login_hint_subtitle">Gunakan kunci API Anda sendiri untuk chat AI gratis</string>
+    <string name="byok_login_hint_title">Tidak ingin mendaftar?</string>
+    <string name="donate_earn_points">Berdonasi untuk mendapatkan poin</string>
 </resources>

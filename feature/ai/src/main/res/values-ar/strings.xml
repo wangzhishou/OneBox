@@ -983,4 +983,8 @@
     <string name="agent_tool_import_font_remove_not_found">الخط المخصّص غير موجود: %1$s. استدعِ list لعرض الخطوط المستوردة</string>
     <string name="agent_tool_import_font_deeplink_label">إعدادات العرض</string>
     <string name="agent_tool_import_font_deeplink_guidance">انقر لإدارة الخطوط في إعدادات العرض</string>
+    <string name="agent_tool_manage_todo_created">تم إنشاء القائمة \"%1$s\" مع %2$d عنصرًا</string>
+    <string name="agent_tool_manage_todo_missing_tasks">يتطلب إجراء create_list المعامل tasks (مصفوفة عناوين العناصر)</string>
+    <string name="agent_tool_manage_todo_param_tasks">مصفوفة عناوين العناصر، مطلوبة لإجراء create_list، مثال: [\"تعلّم مونتاج الفيديو بالذكاء الاصطناعي\", \"قراءة 12 كتابًا\"]</string>
+    <string name="agent_tool_manage_todo_list_created">تم إنشاء القائمة \"%1$s\" مع %2$d عنصرًا</string>
 </resources>

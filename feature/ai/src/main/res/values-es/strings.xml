@@ -983,4 +983,8 @@
     <string name="agent_tool_import_font_remove_not_found">Fuente personalizada no encontrada: %1$s. Llama a list para ver las fuentes importadas</string>
     <string name="agent_tool_import_font_deeplink_label">Ajustes de pantalla</string>
     <string name="agent_tool_import_font_deeplink_guidance">Toca para gestionar las fuentes en los ajustes de pantalla</string>
+    <string name="agent_tool_manage_todo_created">Lista \"%1$s\" creada con %2$d elementos</string>
+    <string name="agent_tool_manage_todo_missing_tasks">La acción create_list requiere el parámetro tasks (matriz de títulos de elementos)</string>
+    <string name="agent_tool_manage_todo_param_tasks">Matriz de títulos de elementos, obligatoria para create_list; p. ej. [\"Aprender edición de vídeo con IA\", \"Leer 12 libros\"]</string>
+    <string name="agent_tool_manage_todo_list_created">Lista \"%1$s\" creada con %2$d elementos</string>
 </resources>

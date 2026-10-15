@@ -983,4 +983,8 @@
     <string name="agent_tool_import_font_remove_not_found">कस्टम फ़ॉन्ट नहीं मिला: %1$s। इम्पोर्ट किए गए फ़ॉन्ट देखने के लिए list कॉल करें</string>
     <string name="agent_tool_import_font_deeplink_label">डिस्प्ले सेटिंग्स</string>
     <string name="agent_tool_import_font_deeplink_guidance">डिस्प्ले सेटिंग्स में फ़ॉन्ट प्रबंधित करने के लिए टैप करें</string>
+    <string name="agent_tool_manage_todo_created">सूची \"%1$s\" बनाई गई, %2$d आइटम के साथ</string>
+    <string name="agent_tool_manage_todo_missing_tasks">create_list क्रिया के लिए tasks पैरामीटर ज़रूरी है (आइटम शीर्षकों की सरणी)</string>
+    <string name="agent_tool_manage_todo_param_tasks">आइटम शीर्षकों की सरणी, create_list के लिए ज़रूरी, जैसे [\"AI वीडियो एडिटिंग सीखें\", \"12 किताबें पढ़ें\"]</string>
+    <string name="agent_tool_manage_todo_list_created">सूची \"%1$s\" बनाई गई, %2$d आइटम के साथ</string>
 </resources>

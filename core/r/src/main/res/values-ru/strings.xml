@@ -1858,4 +1858,10 @@
     <string name="comment_empty_cta">Не сдерживайтесь — расскажите, чего вы хотите ↓</string>
     <string name="comment_empty_login_cta">Войдите и расскажите AI, чего вы хотите</string>
     <string name="card_more_actions">Другие действия</string>
+    <string name="ad_watch_earn_subtitle">Смотрите короткую рекламу и получайте бесплатные баллы каждый день</string>
+    <string name="byok_entry_subtitle">Подключается к вашему аккаунту — баллы не списываются, работает без входа</string>
+    <string name="byok_entry_title">Использовать свой ключ API</string>
+    <string name="byok_login_hint_subtitle">Используйте свой ключ API для бесплатного общения с ИИ</string>
+    <string name="byok_login_hint_title">Не хотите регистрироваться?</string>
+    <string name="donate_earn_points">Поддержать и получить баллы</string>
 </resources>

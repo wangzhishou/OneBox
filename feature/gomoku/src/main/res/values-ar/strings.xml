@@ -219,4 +219,11 @@
     <string name="gomoku_pick_chat_model">اختيار نموذج محادثة</string>
     <string name="gomoku_start_play">بدء المباراة</string>
     <string name="gomoku_starting">جارٍ البدء…</string>
+    <string name="gomoku_bar_ai_create">AI</string>
+    <string name="gomoku_bar_import">استيراد</string>
+    <string name="gomoku_settings_generate">إنشاء</string>
+    <string name="gomoku_settings_generate_loading">جارٍ الإنشاء…</string>
+    <string name="gomoku_settings_regenerate">إعادة الإنشاء</string>
+    <string name="gomoku_settings_regenerate_loading">جارٍ إعادة الإنشاء…</string>
+    <string name="gomoku_settings_tts_config">محرك الصوت</string>
 </resources>

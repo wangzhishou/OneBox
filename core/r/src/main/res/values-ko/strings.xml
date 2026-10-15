@@ -1828,4 +1828,10 @@
     <string name="comment_empty_cta">주저하지 말고 원하는 것을 알려주세요 ↓</string>
     <string name="comment_empty_login_cta">로그인하고 AI에게 원하는 것을 알려주세요</string>
     <string name="card_more_actions">추가 작업</string>
+    <string name="ad_watch_earn_subtitle">짧은 광고를 보고 매일 무료 포인트 받기</string>
+    <string name="byok_entry_subtitle">내 계정에 연결됩니다. 포인트가 차감되지 않고 로그인 없이도 작동합니다</string>
+    <string name="byok_entry_title">내 API 키 사용하기</string>
+    <string name="byok_login_hint_subtitle">내 API 키로 AI 채팅 무료 이용</string>
+    <string name="byok_login_hint_title">가입하고 싶지 않으신가요?</string>
+    <string name="donate_earn_points">후원하고 포인트 받기</string>
 </resources>

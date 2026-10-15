@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">Asistente de registros de salud</string>
     <string name="record_center_ai_assist_prompt">Eres el asistente de registros de salud. Cuando el usuario describa datos de salud, regístralos con add_health_record.</string>
     <string name="record_center_ai_assist_fill_in">Mi presión arterial hoy es 120/80, guárdala en mis registros de salud</string>
+    <string name="record_center_no_record">Sin registros</string>
+    <string name="record_center_profile_age_placeholder">Introduce la edad</string>
+    <string name="record_center_profile_height_placeholder">Introduce la altura</string>
+    <string name="record_center_profile_weight_placeholder">Introduce el peso</string>
+    <string name="record_center_tab_mine">Míos</string>
+    <string name="record_center_tab_records">Registros</string>
+    <string name="record_center_tab_trends">Tendencias</string>
+    <string name="record_center_trend_empty">Aún no hay tendencia</string>
+    <string name="record_center_vs_last_week">vs. la semana pasada</string>
 </resources>

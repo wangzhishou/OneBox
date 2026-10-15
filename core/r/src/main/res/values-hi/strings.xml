@@ -1838,4 +1838,10 @@
     <string name="comment_empty_cta">झिझकें नहीं—हमें बताएँ आप क्या चाहते हैं ↓</string>
     <string name="comment_empty_login_cta">लॉग इन करें और AI को बताएँ आप क्या चाहते हैं</string>
     <string name="card_more_actions">और कार्रवाइयाँ</string>
+    <string name="ad_watch_earn_subtitle">छोटा विज्ञापन देखें, हर दिन मुफ़्त अंक पाएँ</string>
+    <string name="byok_entry_subtitle">आपके अपने खाते से जुड़ता है — कोई अंक खर्च नहीं, बिना लॉगिन भी काम करता है</string>
+    <string name="byok_entry_title">अपनी खुद की API कुंजी इस्तेमाल करें</string>
+    <string name="byok_login_hint_subtitle">मुफ़्त AI चैट के लिए अपनी API कुंजी इस्तेमाल करें</string>
+    <string name="byok_login_hint_title">साइन अप नहीं करना चाहते?</string>
+    <string name="donate_earn_points">अंक पाने के लिए दान करें</string>
 </resources>

@@ -232,4 +232,11 @@
     <string name="chess_piece_pawn">ポーン</string>
     <string name="chess_setup_start_failed">対局を開始できませんでした。もう一度お試しください。</string>
     <string name="chess_online_sync_failed">オンライン対局を同期できませんでした。最後に保存した局面を保持しています。</string>
+    <string name="chess_bar_ai_create">AI</string>
+    <string name="chess_bar_import">読み込み</string>
+    <string name="chess_settings_generate">生成</string>
+    <string name="chess_settings_generate_loading">生成中…</string>
+    <string name="chess_settings_regenerate">再生成</string>
+    <string name="chess_settings_regenerate_loading">再生成中…</string>
+    <string name="chess_settings_tts_config">音声エンジン</string>
 </resources>

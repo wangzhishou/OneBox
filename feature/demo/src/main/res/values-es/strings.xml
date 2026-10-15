@@ -86,4 +86,6 @@
     <string name="demo_aigc_value_blank">-</string>
     <string name="demo_aigc_pick_failed">Error al seleccionar el archivo</string>
     <string name="demo_aigc_demo_parse_failed">Error al analizar la demostración AIGC</string>
+    <string name="demo_glass_showcase_consistency_desc">El mismo tono y estilo renderizados con GlassCard, GlassSurface y coloredGlass; con el cristal activado o desactivado, los tres deben verse idénticos.</string>
+    <string name="demo_glass_showcase_consistency_title">Coherencia del pipeline</string>
 </resources>

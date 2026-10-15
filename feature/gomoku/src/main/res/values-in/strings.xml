@@ -210,4 +210,11 @@ Ketuk atau pindai untuk bergabung: %2$s</string>
     <string name="gomoku_pick_chat_model">Pilih model chat</string>
     <string name="gomoku_start_play">Mulai permainan</string>
     <string name="gomoku_starting">Memulai…</string>
+    <string name="gomoku_bar_ai_create">AI</string>
+    <string name="gomoku_bar_import">Impor</string>
+    <string name="gomoku_settings_generate">Buat</string>
+    <string name="gomoku_settings_generate_loading">Membuat…</string>
+    <string name="gomoku_settings_regenerate">Buat ulang</string>
+    <string name="gomoku_settings_regenerate_loading">Membuat ulang…</string>
+    <string name="gomoku_settings_tts_config">Mesin suara</string>
 </resources>

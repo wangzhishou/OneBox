@@ -211,4 +211,13 @@
     <string name="record_center_ai_assist_title">Sağlık Kaydı Asistanı</string>
     <string name="record_center_ai_assist_prompt">Kullanıcının sağlık kaydı asistanısın. Sağlık verisi anlatıldığında add_health_record ile kaydet.</string>
     <string name="record_center_ai_assist_fill_in">Tansiyonum bugün 120/80, sağlık kayıtlarıma kaydet</string>
+    <string name="record_center_no_record">Kayıt yok</string>
+    <string name="record_center_profile_age_placeholder">Yaş girin</string>
+    <string name="record_center_profile_height_placeholder">Boy girin</string>
+    <string name="record_center_profile_weight_placeholder">Kilo girin</string>
+    <string name="record_center_tab_mine">Benim</string>
+    <string name="record_center_tab_records">Kayıtlar</string>
+    <string name="record_center_tab_trends">Eğilimler</string>
+    <string name="record_center_trend_empty">Henüz eğilim yok</string>
+    <string name="record_center_vs_last_week">geçen haftaya göre</string>
 </resources>
