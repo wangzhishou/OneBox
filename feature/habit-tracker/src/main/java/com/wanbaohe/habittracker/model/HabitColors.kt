@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import com.t8rin.imagetoolbox.core.ui.theme.blend
 import com.t8rin.imagetoolbox.core.ui.widget.glass.tintedGlassContentColor
 import kotlin.math.abs
@@ -63,7 +64,7 @@ fun habitPalette(): List<Color> {
 
 /**
  * 解析习惯展示色:
- * - 用户指定色 → 命中色板就用色板配好的内容色, 否则按容器色亮度兜底算一个可读前景
+ * - 用户指定色 → 先收敛到容器色调, 命中色板就用色板配好的内容色, 否则按容器色亮度兜底算前景
  * - 未指定(null=自动)→ 按 habitId 哈希在配色板上稳定取色
  */
 @Composable
@@ -79,7 +80,7 @@ fun resolveHabitColor(colorArgb: Long?, habitId: String): HabitColorPair {
     }
 
     palette.firstOrNull { it.container == container }?.let { return it }
-    // 用户自定义/历史遗留色没有配对的 on 色, 按玻璃混合后的有效底色推一个可读前景
+    // 收敛后的自定义色同样不在色板里, 没有配对的 on 色, 按容器色亮度推一个可读前景
     return HabitColorPair(container, tintedGlassContentColor(container))
 }
 
@@ -92,9 +93,17 @@ fun habitContainerColor(colorArgb: Long): Color {
     }
 }
 
+/** 容器色的目标浓度:混合后大致落在 M3 容器色的 90(浅色)/ 30(深色) 调上 */
+private const val CONTAINER_TONE_MIX_LIGHT = 0.85f
+private const val CONTAINER_TONE_MIX_DARK = 0.68f
+
 /**
- * 旧色板存的是裸 primary/secondary/tertiary/error/inversePrimary, 这里归一到对应容器色,
- * 免得历史习惯游离在新配色之外(不动库里的值, 只改渲染口径)。
+ * 任何存进库的颜色都收敛到容器色调:
+ * - 旧色板存的裸 primary/secondary/tertiary/error/inversePrimary → 对应容器色(同色相, 直接换)
+ * - 用户自己挑的任意色 → 保留色相, 只把浓度压到容器色那一档(与 surface 混合)
+ *
+ * 不这么做的话, 一片淡雅的 container 卡片里会突然戳出一个饱和实心块。
+ * 只改渲染口径, 不动库里的值。
  */
 private fun Color.toContainerColor(colorScheme: ColorScheme): Color = when (this) {
     colorScheme.primary -> colorScheme.primaryContainer
@@ -102,5 +111,9 @@ private fun Color.toContainerColor(colorScheme: ColorScheme): Color = when (this
     colorScheme.tertiary -> colorScheme.tertiaryContainer
     colorScheme.error -> colorScheme.errorContainer
     colorScheme.inversePrimary -> colorScheme.primaryContainer
-    else -> this
+    else -> {
+        val isLightSurface = colorScheme.surface.luminance() > 0.5f
+        val mix = if (isLightSurface) CONTAINER_TONE_MIX_LIGHT else CONTAINER_TONE_MIX_DARK
+        blend(colorScheme.surface, mix)
+    }
 }
