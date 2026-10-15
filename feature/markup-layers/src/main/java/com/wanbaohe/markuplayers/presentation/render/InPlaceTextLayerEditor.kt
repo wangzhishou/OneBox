@@ -3,6 +3,7 @@ package com.wanbaohe.markuplayers.presentation.render
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -54,6 +55,14 @@ fun InPlaceTextLayerEditor(
         keyboardController?.show()
     }
 
+    // 框宽与预览侧(TextLayerPreviewRenderer)一致:固定框宽态 = requiredWidth,
+    // 自适应(默认)= widthIn 上限,框随文字收紧
+    val widthModifier = if (type.widthManuallySet && type.widthRatio != null) {
+        Modifier.requiredWidth(with(density) { (type.widthRatio * canvasWidthPx).toDp() })
+    } else {
+        Modifier.widthIn(max = with(density) { ((type.widthRatio ?: 1f) * canvasWidthPx).toDp() })
+    }
+
     BasicTextField(
         value = type.text,
         onValueChange = onTextChange,
@@ -62,18 +71,15 @@ fun InPlaceTextLayerEditor(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { onCommit() }),
         modifier = modifier
-            .then(
-                type.widthRatio?.let {
-                    Modifier.requiredWidth(with(density) { (it * canvasWidthPx).toDp() })
-                } ?: Modifier
-            )
+            .then(widthModifier)
             .background(
                 color = type.backgroundColor.toColor(),
                 shape = ShapeDefaults.extraSmall
             )
+            // 与预览侧一致:fontSize/6 横向、fontSize/10 纵向
             .padding(
-                horizontal = with(density) { (fontSizePx / 2).toDp() },
-                vertical = with(density) { (fontSizePx / 3).toDp() }
+                horizontal = with(density) { (fontSizePx / 6).toDp() },
+                vertical = with(density) { (fontSizePx / 10).toDp() }
             )
             .focusRequester(focusRequester)
     )

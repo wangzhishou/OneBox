@@ -186,6 +186,7 @@ object MarkupDocumentCodec {
             "lineHeight" to json(type.lineHeight),
             "letterSpacingEm" to json(type.letterSpacingEm),
             "widthRatio" to nullable(type.widthRatio, ::json),
+            "widthManuallySet" to json(type.widthManuallySet),
         )
         is LayerType.Draw -> obj(
             "kind" to json("draw"),
@@ -236,15 +237,25 @@ object MarkupDocumentCodec {
         val value = element.asObject()
         return when (value.string("kind")) {
             "text" -> {
-                value.objectWith(
-                    "kind", "text", "color", "fontSizeRatio", "font", "backgroundColor",
-                    "decorations", "outline", "alignment", "lineHeight", "letterSpacingEm",
-                    "widthRatio"
+                // widthManuallySet 为后加字段:旧文件没有,缺省回退 false = 自适应收紧
+                // (选框始终贴合文字;旧文件里的 widthRatio 降级为折行上限,不再固定框宽——
+                // 固定宽框放大后手柄飞出画布、文字不跟随,正是本次要修的问题;
+                // 代价是旧项目重开时文字围绕锚点重新居中一次,折行不变)
+                value.objectWithOptional(
+                    required = arrayOf(
+                        "kind", "text", "color", "fontSizeRatio", "font", "backgroundColor",
+                        "decorations", "outline", "alignment", "lineHeight", "letterSpacingEm",
+                        "widthRatio"
+                    ),
+                    optional = setOf("widthManuallySet")
                 )
                 val decorations = value.list("decorations") {
                     enumValue<LayerType.Text.Decoration>(it.stringValue())
                 }
                 if (decorations.toSet().size != decorations.size) invalid("Duplicate decorations")
+                val widthRatio = value.optional("widthRatio") {
+                    it.floatValue().positive("Text width")
+                }
                 LayerType.Text(
                     text = value.string("text"),
                     color = value.int("color"),
@@ -259,9 +270,9 @@ object MarkupDocumentCodec {
                     alignment = enumValue(value.string("alignment")),
                     lineHeight = value.float("lineHeight").positive("Line height"),
                     letterSpacingEm = value.float("letterSpacingEm"),
-                    widthRatio = value.optional("widthRatio") {
-                        it.floatValue().positive("Text width")
-                    },
+                    widthRatio = widthRatio,
+                    widthManuallySet = (value["widthManuallySet"] as? JsonPrimitive)
+                        ?.booleanOrNull ?: false,
                 )
             }
             "draw" -> {

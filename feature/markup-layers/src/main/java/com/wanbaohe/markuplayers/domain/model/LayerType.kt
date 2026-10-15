@@ -30,10 +30,14 @@ sealed interface LayerType {
         val lineHeight: Float = 1.2f,
         val letterSpacingEm: Float = 0f,
         /**
-         * 框宽(相对底图宽)。null = 自适应:最多到画布宽,超宽自动折行,短文收紧到最长行;
-         * 非 null 时按框宽折行(拖边/角改框,文字重排,字号不变)
+         * 框宽(相对底图宽),配合 [widthManuallySet]:
+         * [widthManuallySet]=false(默认)= 自适应收紧:框随文字内容收缩(选框始终贴合文字,
+         * 缩放后手柄不飞出画布),[widthRatio] 此时只是折行上限,null = 画布宽;
+         * [widthManuallySet]=true = 固定框宽(拖边/角改框后落此态,文字在框内重排)
          */
         val widthRatio: Float? = null,
+        /** 是否被框尺寸手柄手动拖过:true = 固定框宽;false = 框随文字收缩(对齐图文卡片) */
+        val widthManuallySet: Boolean = false,
     ) : LayerType {
         enum class Decoration {
             Bold, Italic, Underline, LineThrough

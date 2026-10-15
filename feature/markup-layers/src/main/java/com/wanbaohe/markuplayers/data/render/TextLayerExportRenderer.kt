@@ -22,8 +22,9 @@ import kotlin.reflect.KClass
 /**
  * 文字图层导出:字号 = fontSizeRatio × 原图宽,StaticLayout 多行绘制。
  * 与 [com.wanbaohe.markuplayers.presentation.render.TextLayerPreviewRenderer] 同构:
- * 文字块带 fontSize/2 横向、fontSize/3 纵向 padding,折行宽度 = 框宽 − 横向 padding;
- * widthRatio 固定框宽,null 时最多到画布宽(超宽自动折行,否则收紧到最长行)。
+ * 文字块带 fontSize/6 横向、fontSize/10 纵向 padding,折行宽度 = 框宽 − 横向 padding;
+ * widthManuallySet(拖过框尺寸手柄)= widthRatio 固定框宽;否则自适应收紧到最长行
+ * (上限 (widthRatio ?: 1) × 图宽,超宽自动折行)。
  * 内容块(含 padding)中心对齐画布原点(定位/缩放/旋转由调度器处理)。
  */
 class TextLayerExportRenderer @Inject constructor(
@@ -57,13 +58,15 @@ class TextLayerExportRenderer @Inject constructor(
         }
 
         // 与预览 padding 一致:背景/块尺寸含 padding,文字在框内折行
+        // (fontSize/6 横向、fontSize/10 纵向——过大留白会把选框/手柄顶出画布)
         val fontSizePx = type.fontSizeRatio * imageWidth
-        val hPad = fontSizePx / 2f
-        val vPad = fontSizePx / 3f
+        val hPad = fontSizePx / 6f
+        val vPad = fontSizePx / 10f
 
-        // widthRatio 固定框宽;null 时上限 = 画布宽(预览 Compose 父约束),短文自动收紧
-        val boxWidth = (type.widthRatio?.let { it * imageWidth } ?: imageWidth.toFloat())
-            .coerceAtLeast(1f)
+        // 框宽上限 = (widthRatio ?: 1) × 图宽;固定框宽态(拖过框尺寸手柄)直接占满,
+        // 自适应(默认)短文收紧到最长行——选框/导出均贴合文字(对齐图文卡片)
+        val fixedWidth = type.widthManuallySet && type.widthRatio != null
+        val boxWidth = ((type.widthRatio ?: 1f) * imageWidth).coerceAtLeast(1f)
         val layoutWidth = (boxWidth - 2f * hPad).roundToInt().coerceAtLeast(1)
 
         val alignment = when (type.alignment) {
@@ -81,8 +84,9 @@ class TextLayerExportRenderer @Inject constructor(
             .build()
 
         val probe = buildLayout(paint, layoutWidth)
-        // 自适应宽度:按折行后最长行收紧(与 Compose hug 一致),再重建以保证行内对齐正确
-        val contentWidth = if (type.widthRatio != null) {
+        // 固定框宽:直接用设定框宽;自适应:按折行后最长行收紧(与 Compose hug 一致),
+        // 再重建以保证行内对齐正确
+        val contentWidth = if (fixedWidth) {
             boxWidth.roundToInt().coerceAtLeast(1)
         } else {
             var maxLine = 0f

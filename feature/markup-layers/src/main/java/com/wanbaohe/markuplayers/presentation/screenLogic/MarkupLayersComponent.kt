@@ -1487,7 +1487,7 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         registerDocumentChange()
     }
 
-    /** 文字层框尺寸拖动手势中间帧:直接改 widthRatio 不入历史(快照已在 [beginLayerTransformChange] 记录) */
+    /** 文字层框尺寸拖动手势中间帧:直接改 widthRatio 不入历史(快照已在 [beginLayerTransformChange] 记录);拖动即落固定框宽态 */
     fun updateTextWidthRatioTransient(
         id: String,
         widthRatio: Float
@@ -1497,7 +1497,10 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             list.map { layer ->
                 if (layer.id == id && layer.type is LayerType.Text) {
                     layer.copy(
-                        type = layer.type.copy(widthRatio = widthRatio.coerceIn(0.05f, 1f))
+                        type = layer.type.copy(
+                            widthRatio = widthRatio.coerceIn(0.05f, 1f),
+                            widthManuallySet = true
+                        )
                     )
                 } else layer
             }
