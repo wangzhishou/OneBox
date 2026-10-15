@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -49,11 +48,9 @@ import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutChartSlice
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutExpenseChart
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.habittracker.R
 import com.wanbaohe.habittracker.component.HabitTrackerComponent
 import com.wanbaohe.habittracker.model.HabitTrendPoint
-import com.wanbaohe.habittracker.model.habitPalette
 import java.time.LocalDate
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,9 +63,14 @@ internal fun StatsTab(
     modifier: Modifier = Modifier,
 ) {
     val stats by component.statsState.collectAsState()
-    val palette = habitPalette()
     val weekdayLabels = stringArrayResource(R.array.habit_weekdays_short)
     val hasHabits = stats.totalHabits > 0
+    // 分布图是"状态映射"不是分类色:走 onXContainer 家族,
+    // 容器色在玻璃卡上太淡(secondaryContainer 几乎和卡底同色), 分不出段。
+    // 中间那段是"今日到期还没打"(pending), 不是失败, 因此不套 error 语义。
+    val doneColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val pendingColor = MaterialTheme.colorScheme.onTertiaryContainer
+    val notStartedColor = MaterialTheme.colorScheme.onSecondaryContainer
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -114,12 +116,14 @@ internal fun StatsTab(
                         stats.distributionDone,
                         stats.distributionMissed,
                         stats.distributionNotStarted,
-                        palette,
+                        doneColor,
+                        pendingColor,
+                        notStartedColor,
                     ) {
                         listOf(
-                            DonutChartSlice(stats.distributionDone.toFloat(), palette[0]),
-                            DonutChartSlice(stats.distributionMissed.toFloat(), palette[1]),
-                            DonutChartSlice(stats.distributionNotStarted.toFloat(), palette[2]),
+                            DonutChartSlice(stats.distributionDone.toFloat(), doneColor),
+                            DonutChartSlice(stats.distributionMissed.toFloat(), pendingColor),
+                            DonutChartSlice(stats.distributionNotStarted.toFloat(), notStartedColor),
                         )
                     }
                     Box(
@@ -136,11 +140,22 @@ internal fun StatsTab(
                     Spacer(modifier = Modifier.height(12.dp))
                     DistributionLegend(
                         entries = listOf(
-                            stringResource(R.string.habit_summary_done) to stats.distributionDone,
-                            stringResource(R.string.habit_summary_missed) to stats.distributionMissed,
-                            stringResource(R.string.habit_stats_not_started) to stats.distributionNotStarted,
+                            Triple(
+                                stringResource(R.string.habit_summary_done),
+                                stats.distributionDone,
+                                doneColor,
+                            ),
+                            Triple(
+                                stringResource(R.string.habit_summary_missed),
+                                stats.distributionMissed,
+                                pendingColor,
+                            ),
+                            Triple(
+                                stringResource(R.string.habit_stats_not_started),
+                                stats.distributionNotStarted,
+                                notStartedColor,
+                            ),
                         ),
-                        palette = palette,
                     )
                 }
             }
@@ -199,9 +214,6 @@ private fun StatsSectionCard(
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        borderWidth = 0.dp,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        style = GlassStyle.None,
     ) {
         Column(
             modifier = Modifier
@@ -238,11 +250,10 @@ private fun StatsSectionCard(
 
 @Composable
 private fun DistributionLegend(
-    entries: List<Pair<String, Int>>,
-    palette: List<Color>,
+    entries: List<Triple<String, Int, Color>>,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        entries.forEachIndexed { index, (label, count) ->
+        entries.forEach { (label, count, color) ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -252,7 +263,8 @@ private fun DistributionLegend(
                     modifier = Modifier
                         .size(10.dp)
                         .clip(CircleShape)
-                        .background(palette[index % palette.size]),
+                        // 色点必须跟环形图的分段同色, 这里不套容器色规则
+                        .background(color),
                 )
                 Text(
                     text = label,
@@ -279,6 +291,8 @@ private fun RateTrendChart(
     modifier: Modifier = Modifier,
 ) {
     val primary = MaterialTheme.colorScheme.onPrimaryContainer
+    // 数据点心的颜色要在 Canvas 外取好: draw lambda 不是 @Composable
+    val pointCenterColor = MaterialTheme.colorScheme.surfaceContainer
     val labelEvery = if (points.size > 10) 5 else 1
 
     Column(modifier = modifier.fillMaxWidth()) {
@@ -328,7 +342,12 @@ private fun RateTrendChart(
             // 数据点
             coords.forEach { center ->
                 drawCircle(color = primary, radius = 4.dp.toPx(), center = center)
-                drawCircle(color = Color.White, radius = 2.dp.toPx(), center = center)
+                // 点心取卡片底色, 不再硬编码白色(浅色主题下白点等于看不见)
+                drawCircle(
+                    color = pointCenterColor,
+                    radius = 2.dp.toPx(),
+                    center = center,
+                )
             }
         }
 

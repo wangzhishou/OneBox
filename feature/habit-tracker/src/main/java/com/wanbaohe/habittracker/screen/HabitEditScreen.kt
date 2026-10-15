@@ -1,6 +1,5 @@
 package com.wanbaohe.habittracker.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringArrayResource
@@ -47,7 +45,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.color_picker.ColorSelectionRow
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItem
 import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceRowSwitch
@@ -56,6 +53,7 @@ import com.wanbaohe.habittracker.R
 import com.wanbaohe.habittracker.component.HabitEditComponent
 import com.wanbaohe.habittracker.model.HabitIcons
 import com.wanbaohe.habittracker.model.HabitRepeat
+import com.wanbaohe.habittracker.model.habitContainerColor
 import com.wanbaohe.habittracker.model.habitPalette
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -281,9 +279,7 @@ private fun IconPickButton(
         Box(
             modifier = Modifier
                 .size(56.dp)
-                .clip(CircleShape)
                 .glassBackground(
-                    style = GlassStyle.Thick,
                     shape = CircleShape,
                     color = MaterialTheme.colorScheme.surfaceContainer,
                 )
@@ -319,10 +315,11 @@ private fun ColorSection(
     selectedArgb: Long?,
     onSelect: (Long?) -> Unit,
 ) {
-    // 未选颜色时传 Color.Unspecified:不在色板中 → 无选中勾,正好表达"自动"
+    // 未选颜色时传 Color.Unspecified:不在色板中 → 无选中勾,正好表达"自动"。
+    // 存的值先归一到容器色再比对, 老数据(裸 primary 等)才不会掉进"自定义色"那一格。
     ColorSelectionRow(
         defaultColors = habitPalette(),
-        value = selectedArgb?.let { Color(it) } ?: Color.Unspecified,
+        value = selectedArgb?.let { habitContainerColor(it) } ?: Color.Unspecified,
         onValueChange = { color -> onSelect(color.toArgb().toLong()) },
     )
 }
@@ -422,8 +419,11 @@ private fun StepperButton(
     Box(
         modifier = Modifier
             .size(32.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            // 小控件同样走玻璃管线, 跟旁边的图标钮保持一致
+            .glassBackground(
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.surfaceContainer,
+            )
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {

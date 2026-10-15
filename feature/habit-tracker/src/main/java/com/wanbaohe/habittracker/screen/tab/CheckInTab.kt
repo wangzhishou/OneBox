@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +42,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.Delete
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutChartSlice
 import com.t8rin.imagetoolbox.core.ui.widget.charts.DonutExpenseChart
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.week_selector.WeekSelector
 import com.wanbaohe.habittracker.R
@@ -163,7 +161,9 @@ private fun SummaryCard(
     val rate = if (dueCount > 0) doneCount.toFloat() / dueCount.toFloat() else 0f
     val percentText = "${(rate * 100).toInt()}%"
     val ringColor = MaterialTheme.colorScheme.onPrimaryContainer
-    val trackColor = MaterialTheme.colorScheme.surfaceContainer
+    // 卡片底走玻璃管线的 surfaceContainer, 圆环底槽再用 surfaceContainer 就看不见了,
+    // 用分隔线角色 outlineVariant 定住"未完成"那一段
+    val trackColor = MaterialTheme.colorScheme.outlineVariant
 
     val slices = remember(doneCount, dueCount, ringColor, trackColor) {
         listOf(
@@ -178,9 +178,6 @@ private fun SummaryCard(
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        borderWidth = 0.dp,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        style = GlassStyle.None,
     ) {
         Row(
             modifier = Modifier
@@ -256,89 +253,94 @@ private fun HabitListItem(
 ) {
     val habitColor = resolveHabitColor(item.habit.colorArgb, item.habit.id)
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            // 整行可点:编辑模式进编辑页,普通模式直接打卡(未来日期只读除外)
-            .clickable(
-                enabled = isEditMode || !isReadOnly,
-                onClick = if (isEditMode) onEdit else onToggle,
-            )
-            .padding(horizontal = 4.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    // 行本身保持中性玻璃卡(surfaceContainer 默认档), 习惯色只落在图标 chip 与勾选圈上:
+    // 整行染色会把勾选态吃掉, 而容器色 + onXContainer 的前景配对才不会糊。
+    // 做法参考功能卡片(TypeSelectionCard / GenericTonalCard)。
+    GlassCard(
+        onClick = if (isEditMode) onEdit else onToggle,
+        // 整行可点:编辑模式进编辑页,普通模式直接打卡(未来日期只读除外)
+        enabled = isEditMode || !isReadOnly,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
     ) {
-        // 彩色圆角方块图标
-        Box(
+        Row(
             modifier = Modifier
-                .size(46.dp)
-                .glassBackground(
-                    shape = RoundedCornerShape(14.dp),
-                    color = habitColor,
-                    borderWidth = 0.dp,
-                ),
-            contentAlignment = Alignment.Center,
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = HabitIcons.iconFor(item.habit.iconKey),
-                contentDescription = null,
-                tint = habitColor,
-                modifier = Modifier.size(24.dp),
-            )
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = item.habit.name,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            // 副标题:频率文案,备注非空时追加 " · 备注"(备注可能多行,先压成单行)
-            val frequencyText = HabitRepeat.frequencySubtitle(item.habit)
-            val noteText = item.habit.note?.replace('\n', ' ')?.trim().orEmpty()
-            Text(
-                text = if (noteText.isEmpty()) frequencyText else "$frequencyText · $noteText",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        if (isEditMode) {
-            // 管理模式:行尾删除按钮
-            IconButton(onClick = onDelete) {
-                Icon(
-                    imageVector = Icons.Rounded.Delete,
-                    contentDescription = stringResource(R.string.habit_delete_habit),
-                    tint = MaterialTheme.colorScheme.onErrorContainer,
-                )
-            }
-        } else {
-            // 圆形勾选钮:已打卡 = 实心对勾(点击事件由整行统一处理)
+            // 彩色圆角方块图标:容器色铺玻璃底, 图标用配对的 on 色
             Box(
                 modifier = Modifier
-                    .size(30.dp)
-                    .clip(CircleShape)
-                    .background(if (item.isChecked) habitColor else Color.Transparent)
-                    .border(
-                        width = 2.dp,
-                        color = if (item.isChecked) habitColor
-                        else MaterialTheme.colorScheme.outlineVariant,
-                        shape = CircleShape,
+                    .size(46.dp)
+                    .glassBackground(
+                        shape = RoundedCornerShape(14.dp),
+                        color = habitColor.container,
+                        borderWidth = 0.dp,
                     ),
                 contentAlignment = Alignment.Center,
             ) {
-                if (item.isChecked) {
+                Icon(
+                    imageVector = HabitIcons.iconFor(item.habit.iconKey),
+                    contentDescription = null,
+                    tint = habitColor.content,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = item.habit.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                // 副标题:频率文案,备注非空时追加 " · 备注"(备注可能多行,先压成单行)
+                val frequencyText = HabitRepeat.frequencySubtitle(item.habit)
+                val noteText = item.habit.note?.replace('\n', ' ')?.trim().orEmpty()
+                Text(
+                    text = if (noteText.isEmpty()) frequencyText else "$frequencyText · $noteText",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            if (isEditMode) {
+                // 管理模式:行尾删除按钮
+                IconButton(onClick = onDelete) {
                     Icon(
-                        imageVector = Icons.Outlined.Check,
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp),
+                        imageVector = Icons.Rounded.Delete,
+                        contentDescription = stringResource(R.string.habit_delete_habit),
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
                     )
+                }
+            } else {
+                // 圆形勾选钮:已打卡 = 容器色实心对勾(点击事件由整行统一处理)
+                Box(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clip(CircleShape)
+                        .background(if (item.isChecked) habitColor.container else Color.Transparent)
+                        .border(
+                            width = 2.dp,
+                            color = if (item.isChecked) habitColor.container
+                            else MaterialTheme.colorScheme.outlineVariant,
+                            shape = CircleShape,
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    if (item.isChecked) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = null,
+                            tint = habitColor.content,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    }
                 }
             }
         }
