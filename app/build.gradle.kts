@@ -582,18 +582,13 @@ dependencies {
 allprojects {
     configurations.all {
         resolutionStrategy {
-            // 强制使用 4.11.0 版本
-            force("org.opencv:opencv:4.11.0")
             dependencySubstitution {
                 substitute(module("com.caverock:androidsvg-aar:1.4")).using(module("com.github.deckerst:androidsvg:cc9d59a88f"))
-                substitute(module("org.opencv:opencv:4.11.0")).using(module("org.opencv:opencv:4.11.0"))
                 substitute(module("org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.4.0")).using(
                     module("org.jetbrains.kotlin:kotlin-parcelize-runtime:2.2.20")
                 )
             }
         }
-        // 排除旧版本的 OpenCV
-        exclude(group = "com.websitebeaver", module = "opencv")
         // 排除远程 zoomable，使用本地 :libs:zoomable 模块，避免重复类
         exclude(group = "com.wanbaohe.libs", module = "zoomable")
         // 排除旧版本 BouncyCastle (jdk15to18)，统一使用 jdk18on 版本，避免重复类

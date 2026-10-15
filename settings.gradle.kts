@@ -56,6 +56,7 @@ rootProject.name = "WanBaoHe"
 include(":app")
 
 include(":libs:opencv-tools")
+include(":libs:documentscanner")
 include(":libs:gesture")
 include(":libs:image")
 include(":libs:zoomable")

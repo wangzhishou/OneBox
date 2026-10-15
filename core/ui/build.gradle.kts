@@ -102,11 +102,10 @@ dependencies {
 
     implementation(libs.datastore.preferences.android)
     googleImplementation(libs.play.review)
-    api(libs.documentscanner)
+    api(projects.libs.documentscanner)
     api(libs.quickie.foss)
     api(libs.material)
 
-    api(libs.documentscanner)
     implementation(libs.zxing.android.embedded)
     implementation(libs.onebox.qrose)
 

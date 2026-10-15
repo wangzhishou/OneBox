@@ -90,7 +90,6 @@ jsoup = "1.23.2"
 materialKolor = "5.0.0"
 juniversalchardet = "2.5.0"
 kotlinxCoroutinesCore = "1.11.0"
-documentScanner = "1.3.7"
 androidliquidglass = "1.0.0-rc01"
 capsule = "2.1.0"
 zxingAndroidEmbedded = "4.3.0"
@@ -184,7 +183,6 @@ quickie-foss = { module = "com.github.T8RIN.QuickieExtended:quickie-foss", versi
 
 zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxingAndroidEmbedded" }
 capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
-documentscanner = { module = "com.github.T8RIN:DocumentScanner", version.ref = "documentScanner" }
 
 toolbox-logger = { module = "com.github.T8RIN:Logger", version.ref = "logger" }
 onebox-cropper = { module = "com.wanbaohe.libs:cropper", version.ref = "oneBoxLibs" }

@@ -17,42 +17,45 @@
 
 package com.t8rin.imagetoolbox.core.ui.utils.helper
 
-import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.icons.Icons
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.core.content.ContextCompat
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.net.toUri
+import com.shifenmiao.model.event.PermissionRequest
+import com.t8rin.documentscanner.DocumentScanner as DocumentScannerDelegate
 import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.utils.getString
-import com.websitebeaver.documentscanner.DocumentScanner as DocumentScannerDelegate
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
 
 private class DocumentScannerImpl(
-    private val context: Context,
+    private val context: ComponentActivity,
     private val scanner: DocumentScannerDelegate,
-    private val scannerLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
-    private val requestPermissionLauncher: ManagedActivityResultLauncher<String, Boolean>
+    private val scannerLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
 ) : DocumentScanner {
 
     override fun scan() {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            scannerLauncher.launch(scanner.createDocumentScanIntent())
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-        }
+        ContextUtils.requestPermissionAndExecute(
+            permissionRequest = PermissionRequest.CAMERA,
+            context = context,
+            permissions = arrayOf(android.Manifest.permission.CAMERA),
+            onGranted = {
+                scannerLauncher.launch(scanner.createDocumentScanIntent())
+            },
+            onDenied = {
+                AppToastHost.showToast(
+                    message = getString(R.string.grant_camera_permission_to_scan_document_scanner),
+                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCameraAlt
+                )
+            }
+        )
     }
 
 }
@@ -62,9 +65,37 @@ internal fun rememberDocumentScannerImpl(
     onSuccess: (ScanResult) -> Unit
 ): DocumentScanner {
     val context = LocalComponentActivity.current
-    val scanner = remember(context) {
+    val colorScheme = MaterialTheme.colorScheme
+    val cropperHandleColor = colorScheme.onPrimaryContainer
+    val cropperFrameColor = colorScheme.onPrimaryContainer
+    val cropperHandleOutlineColor = colorScheme.primaryContainer
+    val buttonTintColor = colorScheme.onPrimaryContainer
+    val buttonContainerColor = colorScheme.primaryContainer
+    val doneButtonTintColor = colorScheme.primaryContainer
+    val doneButtonContainerColor = colorScheme.onPrimaryContainer
+    val cropperStrokeWidthDp = 1.2f
+
+    val scanner = remember(
+        context,
+        cropperHandleColor,
+        cropperFrameColor,
+        cropperHandleOutlineColor,
+        buttonTintColor,
+        buttonContainerColor,
+        cropperStrokeWidthDp,
+        doneButtonTintColor,
+        doneButtonContainerColor
+    ) {
         DocumentScannerDelegate(
             activity = context,
+            cropperHandleColor = cropperHandleColor.toArgb(),
+            cropperHandleOutlineColor = cropperHandleOutlineColor.toArgb(),
+            cropperFrameColor = cropperFrameColor.toArgb(),
+            cropperStrokeWidthDp = cropperStrokeWidthDp,
+            buttonTintColor = buttonTintColor.toArgb(),
+            buttonContainerColor = buttonContainerColor.toArgb(),
+            doneButtonTintColor = doneButtonTintColor.toArgb(),
+            doneButtonContainerColor = doneButtonContainerColor.toArgb(),
             successHandler = { imageUris ->
                 onSuccess(
                     ScanResult(imageUris.map { it.toUri() })
@@ -84,27 +115,11 @@ internal fun rememberDocumentScannerImpl(
         scanner.handleDocumentScanIntentResult(result)
     }
 
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            scanner.apply {
-                scannerLauncher.launch(createDocumentScanIntent())
-            }
-        } else {
-            AppToastHost.showToast(
-                message = getString(R.string.grant_camera_permission_to_scan_document_scanner),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineCameraAlt
-            )
-        }
-    }
-
-    return remember(context, scannerLauncher) {
+    return remember(context, scanner, scannerLauncher) {
         DocumentScannerImpl(
             context = context,
             scanner = scanner,
-            scannerLauncher = scannerLauncher,
-            requestPermissionLauncher = requestPermissionLauncher
+            scannerLauncher = scannerLauncher
         )
     }
 }
