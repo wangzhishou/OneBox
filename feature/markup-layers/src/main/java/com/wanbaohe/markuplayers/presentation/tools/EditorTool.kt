@@ -51,6 +51,7 @@ object EditorTools {
     const val ID_LAYERS = "layers"
     const val ID_MASK = "mask"
     const val ID_EFFECTS = "effects"
+    const val ID_TEXT_STYLE = "text_style"
 
     val all: List<EditorTool> = listOf(
         EditorTool(
@@ -103,6 +104,14 @@ object EditorTools {
             placement = EditorTool.Placement.SideBar,
             mode = EditorTool.Mode.Sheet
         ),
+        // 调色(亮度/对比度/饱和度等):左侧工具栏入口,开 AdjustToolSheet
+        EditorTool(
+            id = ID_ADJUST,
+            titleRes = R.string.markup_tool_adjust,
+            icon = Icons.Outlined.LineTune,
+            placement = EditorTool.Placement.SideBar,
+            mode = EditorTool.Mode.Sheet
+        ),
         EditorTool(
             id = ID_EFFECTS,
             titleRes = R.string.studio_effects,
@@ -140,10 +149,12 @@ object EditorTools {
             placement = EditorTool.Placement.BottomTab,
             mode = EditorTool.Mode.Sheet
         ),
+        // 「文字设置」Tab(对齐图文卡片):调起当前选中文字图层的样式面板;
+        // 未选中时选中最上层文字图层,无文字图层时新建
         EditorTool(
-            id = ID_ADJUST,
-            titleRes = R.string.markup_tool_adjust,
-            icon = Icons.Outlined.LineTune,
+            id = ID_TEXT_STYLE,
+            titleRes = R.string.markup_tool_text_style,
+            icon = MaterialIcons.Outlined.Tune,
             placement = EditorTool.Placement.BottomTab,
             mode = EditorTool.Mode.Sheet
         ),

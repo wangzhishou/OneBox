@@ -12,7 +12,6 @@
     <string name="textcard_custom_size_title">自定义画布尺寸</string>
     <string name="textcard_canvas_width">宽 (px)</string>
     <string name="textcard_canvas_height">高 (px)</string>
-    <string name="textcard_start_create">开始制作</string>
     <string name="textcard_back">返回</string>
     <string name="textcard_save">保存</string>
     <string name="textcard_tab_basic">基础工具</string>

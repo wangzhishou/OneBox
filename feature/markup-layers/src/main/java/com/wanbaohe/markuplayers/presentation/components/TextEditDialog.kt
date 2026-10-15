@@ -123,7 +123,10 @@ internal fun TextEditDialog(
 
     EnhancedModalBottomSheet(
         visible = visible && !showFontSheet,
-        // 下滑/X 关闭面板:不结束编辑会话,画布上继续就地改文字
+        // 默认拖动条上下留白过大:抑制默认条,改用 SheetHeader 内嵌的紧凑拖动条
+        dragHandle = {},
+        // 下滑/X 关闭面板:就地编辑会话不结束,画布上继续就地改文字;
+        // 纯面板会话(选中/底部 Tab 调起)关闭即提交结算(由宿主按模式区分)
         onDismiss = { onDismiss() }
     ) {
         SheetHeader(
@@ -132,12 +135,16 @@ internal fun TextEditDialog(
                     R.string.markup_add_text
                 } else R.string.markup_edit_text
             ),
-            onClose = onDismiss
+            onClose = onDismiss,
+            showDragHandle = true
         )
         TextStyleContent(
             text = text,
             onTextChange = updateText,
             onPickFont = { showFontSheet = true },
+            // 纯面板会话(非就地编辑)即时生效,不显示取消/完成行(对齐图文卡片);
+            // 就地编辑会话保留取消/完成(整个会话 = 一次历史粒度)
+            showActions = component.editSessionInPlace,
             onConfirm = onConfirm,
             onCancel = onCancel
         )
@@ -151,12 +158,13 @@ internal fun TextEditDialog(
     )
 }
 
-/** 样式面板正文:可滚动样式区 + 底部取消/完成 */
+/** 样式面板正文:可滚动样式区 + 底部取消/完成([showActions]=false 的纯面板会话不显示操作行) */
 @Composable
 private fun TextStyleContent(
     text: LayerType.Text,
     onTextChange: ((LayerType.Text) -> LayerType.Text) -> Unit,
     onPickFont: () -> Unit,
+    showActions: Boolean,
     onConfirm: () -> Unit,
     onCancel: () -> Unit,
 ) {
@@ -242,23 +250,28 @@ private fun TextStyleContent(
             )
             Spacer(Modifier.height(4.dp))
         }
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(top = 12.dp, bottom = 8.dp)
-        ) {
-            CancelButton(
-                text = stringResource(R.string.markup_cancel),
-                onClick = onCancel,
-                modifier = Modifier.weight(1f)
-            )
-            ConfirmButton(
-                text = stringResource(R.string.markup_confirm),
-                onClick = onConfirm,
-                modifier = Modifier.weight(1f)
-            )
+        if (showActions) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(top = 12.dp, bottom = 8.dp)
+            ) {
+                CancelButton(
+                    text = stringResource(R.string.markup_cancel),
+                    onClick = onCancel,
+                    modifier = Modifier.weight(1f)
+                )
+                ConfirmButton(
+                    text = stringResource(R.string.markup_confirm),
+                    onClick = onConfirm,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        } else {
+            // 无操作行时导航栏留白同样挂在内容末尾,保证最后一组控件不被手势条遮挡
+            Spacer(Modifier.navigationBarsPadding().padding(bottom = 8.dp))
         }
     }
 }

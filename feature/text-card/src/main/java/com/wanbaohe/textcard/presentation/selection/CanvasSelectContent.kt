@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,9 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
-import com.shifenmiao.base.ui.button.PrimaryButton
 import com.shifenmiao.common.ui.BaseScreen
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineArrowForwardIos
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBorderColor
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
@@ -57,7 +54,9 @@ import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.Add
 
 /**
- * 选择画布页(设计稿 00):两个平台卡片(带 mini 预览)+ 底部「开始制作」。
+ * 选择画布页(设计稿 00):两个平台卡片(带 mini 预览)+ 自定义尺寸卡片。
+ * 点卡片直接进入编辑页(不再有「开始制作」二次确认);自定义卡片点按弹尺寸输入框,
+ * 确认尺寸后直接开始制作。
  */
 @Composable
 fun CanvasSelectContent(
@@ -94,7 +93,11 @@ fun CanvasSelectContent(
                         CanvasCard(
                             spec = spec,
                             selected = component.pendingCanvas == spec,
-                            onClick = { component.selectPendingCanvas(spec) },
+                            // 点卡片 = 选中并直接进入编辑页
+                            onClick = {
+                                component.selectPendingCanvas(spec)
+                                component.startEditing()
+                            },
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -114,21 +117,6 @@ fun CanvasSelectContent(
                     Spacer(modifier = Modifier.weight(1f))
                 }
             }
-            PrimaryButton(
-                text = stringResource(R.string.textcard_start_create),
-                onClick = component::startEditing,
-                icon = {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineArrowForwardIos,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.width(16.dp)
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
-            )
         }
     )
 
@@ -136,7 +124,9 @@ fun CanvasSelectContent(
         CustomSizeDialog(
             initial = component.lastCustomCanvas,
             onConfirm = { width, height ->
+                // 确认自定义尺寸 = 选中该规格并直接进入编辑页
                 component.selectCustomCanvas(width, height)
+                component.startEditing()
                 showCustomSizeDialog = false
             },
             onDismiss = { showCustomSizeDialog = false }
@@ -235,12 +225,8 @@ private fun CustomCanvasCard(
     val lastCustom = component.lastCustomCanvas
     val selected = component.pendingCanvas is CanvasSpec.Custom
     GlassCard(
-        onClick = {
-            if (lastCustom != null) {
-                component.selectPendingCanvas(lastCustom)
-            }
-            onEditRequest()
-        },
+        // 点按 = 弹尺寸输入框(确认尺寸后才进入编辑页,见 CustomSizeDialog onConfirm)
+        onClick = onEditRequest,
         shape = RoundedCornerShape(20.dp),
         colors = if (selected) {
             tintedGlassCardColors(MaterialTheme.colorScheme.primaryContainer)

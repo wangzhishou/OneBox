@@ -1428,6 +1428,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
 
     fun removeLayer(id: String) {
         if (_layers.value.none { it.id == id }) return
+        // 删除的是会话图层(纯面板会话期间可选中可删):直接结束会话簿记,
+        // 不走 cancel(那会恢复图层);删除本身走下方正常历史快照,可撤销
+        if (id == _editSessionLayerId.value) endLayerEditSession()
         history.snapshot(_layers.value)
         _layers.update { list -> list.filterNot { it.id == id } }
         if (_selectedLayerId.value == id) _selectedLayerId.value = null
@@ -1773,6 +1776,11 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     fun selectLayer(id: String?) {
         endEffectsChange()
         endLayerTransformChange()
+        // 选中目标变更前先结算进行中的文字编辑会话(一次历史粒度);
+        // 同图层重复选中不动会话(就地编辑态点按不退出)
+        if (id != _editSessionLayerId.value && editSession != null) {
+            commitLayerEditSession()
+        }
         val target = _layers.value.firstOrNull { it.id == id }
         _selectedLayerId.value = target?.id
         _selectedLayerIds.value = if (target == null) {
@@ -1782,6 +1790,11 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 .map { it.id }.toSet()
         } else setOf(target.id)
         _maskTargetBitmap.value = null
+        // 选中文字图层自动调起纯面板文字会话(选中即出文字设置面板,对齐图文卡片);
+        // 就地编辑(弹键盘改内容)仍走「再点已选中文字」(EditBox onEditRequest)
+        if (target != null && target.type is LayerType.Text && !target.transform.locked) {
+            beginTextEditSession(target.id, inPlaceEdit = false)
+        }
     }
 
     fun setActiveTool(id: String?) {
@@ -1792,11 +1805,15 @@ class MarkupLayersComponent @AssistedInject internal constructor(
 
     /**
      * 编辑会话快照。[preEditLayers] 为进入会话时的完整图层列表;
-     * [createdLayerId] 非空表示「新建图层再编辑」流程(快照中已含该新图层)
+     * [createdLayerId] 非空表示「新建图层再编辑」流程(快照中已含该新图层);
+     * [inPlaceEdit] = 就地编辑模式(true:画布内输入框+弹键盘+手势关闭;
+     * false:纯面板会话,只出样式面板,图层保持可选中可拖动——
+     * 选中文字图层/底部「文字设置」Tab 自动调起的就是纯面板会话,对齐图文卡片)
      */
     private class LayerEditSession(
         val preEditDocument: MarkupDocument,
         val createdLayerId: String?,
+        var inPlaceEdit: Boolean,
     ) {
         val preEditLayers get() = preEditDocument.layers
     }
@@ -1811,12 +1828,33 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     /** 当前会话是否为「新建文字图层」流程 */
     val isEditSessionNewLayer: Boolean get() = editSession?.createdLayerId != null
 
+    private val _editSessionInPlace: MutableState<Boolean> = mutableStateOf(true)
+
+    /** 当前会话是否为就地编辑模式(false = 纯面板会话:只出样式面板不动画布编辑器) */
+    val editSessionInPlace: Boolean by _editSessionInPlace
+
     /**
      * 开始文字图层编辑会话。[layerId] 为空时先经 [addLayer] 新建默认空文字图层
      * (自带一次历史快照)再记会话;非空时直接编辑该已有文字图层。
      * 会话期间的一切修改都应走 [updateLayerInEditSession] 等 transient 接口。
+     * 重复进入同一图层的会话 = 幂等,仅在 [inPlaceEdit]=true 时升级为就地编辑;
+     * 换图层/新建时先结算(commit)当前会话。新建图层强制就地编辑(要等用户输入)。
      */
-    fun beginTextEditSession(layerId: String? = null) {
+    fun beginTextEditSession(layerId: String? = null, inPlaceEdit: Boolean = true) {
+        editSession?.let { current ->
+            val currentId = _editSessionLayerId.value
+            if (currentId != null) {
+                if (layerId == currentId) {
+                    if (inPlaceEdit && !current.inPlaceEdit) {
+                        current.inPlaceEdit = true
+                        _editSessionInPlace.value = true
+                    }
+                    return
+                }
+                commitLayerEditSession()
+            }
+        }
+        val effectiveInPlace = inPlaceEdit || layerId == null
         val beforeEdit = captureDocument()
         val targetId: String
         if (layerId == null) {
@@ -1830,8 +1868,10 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         }
         editSession = LayerEditSession(
             preEditDocument = beforeEdit,
-            createdLayerId = targetId.takeIf { layerId == null }
+            createdLayerId = targetId.takeIf { layerId == null },
+            inPlaceEdit = effectiveInPlace
         )
+        _editSessionInPlace.value = effectiveInPlace
         _editSessionLayerId.value = targetId
         _selectedLayerId.value = targetId
         _selectedLayerIds.value = setOf(targetId)
@@ -1904,6 +1944,15 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     private fun endLayerEditSession() {
         editSession = null
         _editSessionLayerId.value = null
+        _editSessionInPlace.value = true
+    }
+
+    /**
+     * 项目级写盘(openProject/setUri 切换)前结算进行中的文字编辑会话:
+     * commit 路径会丢弃空内容的新建层、保留有效编辑,避免会话临时图层随写盘落库
+     */
+    private fun settleTextEditSession() {
+        if (editSession != null) commitLayerEditSession()
     }
 
     // ---------------- undo / redo ----------------
@@ -2215,6 +2264,9 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         if (isBusy) return
         _pendingAiOp.value = null
         imageLoadingJob = launchImageTask(R.string.studio_task_loading, ImageTask.Loading) {
+            // 切项目前结算进行中的文字编辑会话(空内容新建层会被提交逻辑丢弃,
+            // 避免会话中的临时图层随写盘落库)
+            settleTextEditSession()
             if (hasImage && haveChanges &&
                 !persistProject(projectId ?: error("No project ID"), projectName,
                     captureDocument(), documentRevision, interactive = false)
@@ -2408,6 +2460,8 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 onFailure(failure)
             }
         ) {
+            // 同 openProject:打开新图片前先结算文字编辑会话,避免会话临时图层落库
+            settleTextEditSession()
             if (hasImage && haveChanges &&
                 !persistProject(projectId ?: error("No project ID"), projectName,
                     captureDocument(), documentRevision, interactive = false)

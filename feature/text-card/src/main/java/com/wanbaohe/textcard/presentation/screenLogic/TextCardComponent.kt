@@ -261,7 +261,7 @@ class TextCardComponent @AssistedInject internal constructor(
         registerChanges()
     }
 
-    /** 新增文字块:正文样式,默认排在现有最后一块基准往下,同步建图层 */
+    /** 新增文字块:正文样式,默认排在现有最后一块基准往下,同步建图层并选中(选中即出文字设置面板) */
     fun addTextBlock() {
         val last = _textBlocks.value.lastOrNull()
         val block = TextBlock(
@@ -272,8 +272,7 @@ class TextCardComponent @AssistedInject internal constructor(
         )
         _textBlocks.update { it + block }
         _elementLayers.update { it + ElementLayer(block.id, ElementLayer.Kind.Text) }
-        _selectedTextBlockId.value = block.id
-        _selectedElementId.value = block.id
+        selectElement(block.id)
         registerChanges()
     }
 
@@ -312,11 +311,18 @@ class TextCardComponent @AssistedInject internal constructor(
 
     // ---------------- 元素选中与变换(文字块/装饰通用) ----------------
 
-    /** 画布点按元素=选中;点空白传 null 取消选中。选中文字块时同步为样式面板目标 */
+    /**
+     * 画布点按元素=选中;点空白传 null 取消选中。选中文字块时同步为样式面板目标,
+     * 并自动调起文字设置面板(与图片创作一致:选中文字即出面板,操作作用于当前选中);
+     * 选中非文字元素时若文字面板开着则收起(面板目标已失效)。
+     */
     fun selectElement(id: String?) {
         _selectedElementId.value = id
         if (id != null && _textBlocks.value.any { it.id == id }) {
             _selectedTextBlockId.value = id
+            setActivePanel(EditorPanel.TextStyle)
+        } else if (id != null && _activePanel.value == EditorPanel.TextStyle) {
+            setActivePanel(null)
         }
     }
 

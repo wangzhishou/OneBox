@@ -96,8 +96,8 @@ private fun TextBlock.displayLabel(): String {
  * 并提供「清除样式」(移除选区全部局部样式)。取消选中即回到整块模式。
  * 紧凑布局(对齐图片创作 TextEditDialog):标签在左的扁平设置行,
  * 滑杆/色板/分段均不带 container 包裹,行间距 12dp。
- * 顺序按常用优先:文本块切换 → 字体 → 字号 → 行距 → 字间距 → 不透明度 → 对齐
- * → B/I/U/S → 文字颜色 → 文字背景 → 描边(U/S、背景、描边为块级属性,选区激活时置灰)
+ * 顺序按常用优先:文本块切换 → 字体 → 字号 → 文字颜色(高频) → 行距 → 字间距
+ * → 不透明度 → 对齐 → B/I/U/S → 文字背景 → 描边(U/S、背景、描边为块级属性,选区激活时置灰)
  */
 @Composable
 fun TextStylePanel(
@@ -215,6 +215,31 @@ fun TextStylePanel(
                 }
             }
         )
+        // 文字颜色(高频操作,紧跟字号):与图片创作一致的横向滚动色板(首项支持自定义取色);
+        // 选区激活时给选中文字上色(恢复跟随整块用顶部「清除样式」)
+        PanelSettingRow(label = stringResource(R.string.textcard_text_color)) {
+            ColorSelectionRow(
+                value = selectionCtx?.let { (_, blk, sel) ->
+                    Color(blk.effectiveColorAt(sel.min, sel.max))
+                } ?: Color(block.color),
+                onValueChange = { color ->
+                    val ctx = selectionCtx
+                    if (ctx != null) {
+                        applySpanStyle(
+                            state = ctx.first,
+                            style = SpanStyle(color = color),
+                            onChanged = onEditingSync
+                        )
+                    } else {
+                        component.updateTextBlock(blockId) {
+                            it.copy(color = color.toArgb().toLong() and 0xFFFF_FFFFL)
+                        }
+                    }
+                },
+                allowAlpha = false,
+                modifier = Modifier.weight(1f)
+            )
+        }
         // 行间距/字间距是行级属性,对局部选区无意义:选区激活时置灰
         PanelSliderRow(
             label = stringResource(R.string.textcard_line_spacing),
@@ -369,32 +394,6 @@ fun TextStylePanel(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-        }
-
-        // 文字颜色:与图片创作一致的横向滚动色板(首项支持自定义取色);
-        // 选区激活时给选中文字上色(恢复跟随整块用顶部「清除样式」)
-        PanelSettingRow(label = stringResource(R.string.textcard_text_color)) {
-            ColorSelectionRow(
-                value = selectionCtx?.let { (_, blk, sel) ->
-                    Color(blk.effectiveColorAt(sel.min, sel.max))
-                } ?: Color(block.color),
-                onValueChange = { color ->
-                    val ctx = selectionCtx
-                    if (ctx != null) {
-                        applySpanStyle(
-                            state = ctx.first,
-                            style = SpanStyle(color = color),
-                            onChanged = onEditingSync
-                        )
-                    } else {
-                        component.updateTextBlock(blockId) {
-                            it.copy(color = color.toArgb().toLong() and 0xFFFF_FFFFL)
-                        }
-                    }
-                },
-                allowAlpha = false,
-                modifier = Modifier.weight(1f)
-            )
         }
 
         // 文字背景(逐行高亮底色):开关 + 颜色行(支持透明);块级属性,选区激活时置灰

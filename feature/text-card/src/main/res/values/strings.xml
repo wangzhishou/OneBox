@@ -12,7 +12,6 @@
     <string name="textcard_custom_size_title">Custom Canvas Size</string>
     <string name="textcard_canvas_width">Width (px)</string>
     <string name="textcard_canvas_height">Height (px)</string>
-    <string name="textcard_start_create">Start Creating</string>
     <string name="textcard_back">Back</string>
     <string name="textcard_save">Save</string>
     <string name="textcard_tab_basic">Basic Tools</string>

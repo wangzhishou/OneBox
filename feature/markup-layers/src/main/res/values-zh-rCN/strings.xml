@@ -45,6 +45,7 @@
     <string name="markup_tool_crop">裁剪</string>
     <string name="markup_tool_filter">滤镜</string>
     <string name="markup_tool_adjust">调色</string>
+    <string name="markup_tool_text_style">文字设置</string>
     <string name="markup_tool_ai">AI 处理</string>
     <string name="markup_tool_layers">图层</string>
 

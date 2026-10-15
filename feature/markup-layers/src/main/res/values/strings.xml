@@ -45,6 +45,7 @@
     <string name="markup_tool_crop">Crop</string>
     <string name="markup_tool_filter">Filter</string>
     <string name="markup_tool_adjust">Adjust</string>
+    <string name="markup_tool_text_style">Text Style</string>
     <string name="markup_tool_ai">AI</string>
     <string name="markup_tool_layers">Layers</string>
 

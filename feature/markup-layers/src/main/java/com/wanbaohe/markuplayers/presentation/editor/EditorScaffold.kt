@@ -203,6 +203,8 @@ fun EditorScaffold(
     var showMaskSheet by rememberSaveable { mutableStateOf(false) }
     var showCanvasBackgroundSheet by rememberSaveable { mutableStateOf(false) }
     var showRecipeSheet by rememberSaveable { mutableStateOf(false) }
+    // 调色面板:左侧工具栏「调色」入口驱动(已不从底部 Tab 派生)
+    var showAdjustSheet by rememberSaveable { mutableStateOf(false) }
     // 文字样式面板:进入文字编辑会话时打开;关闭面板不结束会话(画布上继续就地改字)
     var showTextStyleSheet by rememberSaveable { mutableStateOf(false) }
     // AI 生成图片弹层(共享 AiGenerateImageSheet,宿主薄壳负责预检)
@@ -228,16 +230,43 @@ fun EditorScaffold(
     var shapeDefaultSpec by remember { mutableStateOf(ShapeSpec.default(ShapeKind.Rectangle)) }
     val immersiveModeState = rememberImmersiveModeState()
 
+    // 「文字设置」调起:优先当前选中的文字图层,其次最上层的非空文字图层
+    // (空内容层不可见,兜底选中它用户会找不到),都没有则新建(弹键盘)
+    val openTextStylePanel: () -> Unit = {
+        val targetId = component.selectedLayer
+            ?.takeIf { it.type is LayerType.Text && !it.transform.locked }?.id
+            ?: component.layers.lastOrNull {
+                (it.type as? LayerType.Text)?.text?.isNotBlank() == true &&
+                    !it.transform.locked
+            }?.id
+        component.beginTextEditSession(targetId, inPlaceEdit = false)
+    }
+
     val onToolClick: (EditorTool) -> Unit = { tool ->
         when {
             // 底部 Tab 互斥:已是当前 → 清除;否则设为当前(显隐/开关由 activeBottomTab 派生)
             tool.placement == EditorTool.Placement.BottomTab -> {
-                if (tool.id == EditorTools.ID_AI && activeBottomTab != tool.id) {
-                    activeBottomTab = null
-                    aiCandidateLayerId = component.selectedLayerId
-                    aiTargetAction = AiTargetAction.Process
-                } else {
-                    activeBottomTab = if (activeBottomTab == tool.id) null else tool.id
+                when {
+                    tool.id == EditorTools.ID_AI && activeBottomTab != tool.id -> {
+                        activeBottomTab = null
+                        aiCandidateLayerId = component.selectedLayerId
+                        aiTargetAction = AiTargetAction.Process
+                    }
+                    // 「文字设置」Tab(对齐图文卡片):再点当前 Tab = 提交会话并收起
+                    tool.id == EditorTools.ID_TEXT_STYLE -> {
+                        if (activeBottomTab == tool.id) {
+                            component.commitLayerEditSession()
+                            component.setActiveTool(null)
+                            activeBottomTab = null
+                        } else {
+                            activeBottomTab = tool.id
+                            openTextStylePanel()
+                        }
+                    }
+
+                    else -> {
+                        activeBottomTab = if (activeBottomTab == tool.id) null else tool.id
+                    }
                 }
             }
 
@@ -245,13 +274,8 @@ fun EditorScaffold(
                 component.setActiveTool(tool.id)
                 when (tool.id) {
                     EditorTools.ID_SELECT -> component.selectLayer(null)
-                    // 文字工具感知当前选中:已选中文字图层 → 就地编辑它并调起样式面板;
-                    // 否则新建文字图层(对齐图文卡片「先选中文字区域,再点文字设置」)
-                    EditorTools.ID_TEXT -> component.beginTextEditSession(
-                        component.selectedLayer
-                            ?.takeIf { it.type is LayerType.Text && !it.transform.locked }
-                            ?.id
-                    )
+                    // 侧栏「文字」= 纯新增(编辑入口:选中自动弹出面板/再点文字/底部「文字设置」Tab)
+                    EditorTools.ID_TEXT -> component.beginTextEditSession()
                     // 画笔为画布内绘制模式:取消图层选中,避免选中框手势与绘制冲突
                     EditorTools.ID_DRAW -> component.selectLayer(null)
                     EditorTools.ID_STICKER -> showStickerSheet = true
@@ -263,6 +287,8 @@ fun EditorScaffold(
                     }
                     EditorTools.ID_MASK -> showMaskSheet = true
                     EditorTools.ID_EFFECTS -> showEffectsSheet = true
+                    // 调色已从底部 Tab 移到左侧工具栏
+                    EditorTools.ID_ADJUST -> showAdjustSheet = true
                     // FullScreen 工具(裁剪)由 activeToolId 驱动,下方直接切换全屏页
                 }
             }
@@ -418,8 +444,8 @@ fun EditorScaffold(
                 aiRect = aiRect,
                 onAiRectChange = { aiRect = it },
                 onEditTextLayer = { layerId ->
-                    component.beginTextEditSession(layerId)
-                    component.setActiveTool(EditorTools.ID_TEXT)
+                    // 再点已选中文字 = 就地编辑(纯面板会话升级为弹键盘)
+                    component.beginTextEditSession(layerId, inPlaceEdit = true)
                 },
                 onToolClick = onToolClick,
                 onOpenBrushSettings = { showBrushSettings = true },
@@ -538,10 +564,13 @@ fun EditorScaffold(
     )
 
     AdjustToolSheet(
-        visible = activeBottomTab == EditorTools.ID_ADJUST,
+        visible = showAdjustSheet,
         component = component,
-        // Sheet dismiss(下滑/点外侧)时清除 Tab 高亮
-        onDismiss = { if (activeBottomTab == EditorTools.ID_ADJUST) activeBottomTab = null }
+        // Sheet dismiss(下滑/点外侧)时清工具高亮
+        onDismiss = {
+            showAdjustSheet = false
+            if (component.activeToolId == EditorTools.ID_ADJUST) component.setActiveTool(null)
+        }
     )
 
     EffectsToolSheet(
@@ -760,6 +789,11 @@ fun EditorScaffold(
     LaunchedEffect(textEditLayerId) {
         // 进入编辑会话打开样式面板;会话结束(提交/取消)一并收起
         showTextStyleSheet = textEditLayerId != null
+        // 「文字设置」Tab 高亮只随手动点按;会话结束时若仍高亮则取消
+        // (画布选中自动弹出的会话不抢占底部工作态,基础工具栏保持可见)
+        if (textEditLayerId == null && activeBottomTab == EditorTools.ID_TEXT_STYLE) {
+            activeBottomTab = null
+        }
     }
     // 就地编辑态返回键 = 提交退出(优先于页面返回,同图文卡片)
     androidx.activity.compose.BackHandler(enabled = textEditLayerId != null) {
@@ -780,7 +814,15 @@ fun EditorScaffold(
             component.setActiveTool(null)
             showTextStyleSheet = false
         },
-        onDismiss = { showTextStyleSheet = false }
+        onDismiss = {
+            // 纯面板会话(选中/Tab 调起):关闭面板 = 提交结算;
+            // 就地编辑会话:仅收起面板,画布上继续就地改文字
+            if (!component.editSessionInPlace) {
+                component.commitLayerEditSession()
+                component.setActiveTool(null)
+            }
+            showTextStyleSheet = false
+        }
     )
 
     // 画笔参数 Dialog:即改即生效,取消/确认均只关窗
@@ -1192,8 +1234,10 @@ private fun BoxScope.EditorLayerStack(
                 val textType = layer.type as? LayerType.Text
                 val onEditRequest = textType
                     ?.let { { onEditTextLayer(layer.id) } }
-                // 文字就地编辑会话中:手势关闭,避免与光标/选字冲突
-                val isTextEditing = layer.id == component.editSessionLayerId
+                // 就地编辑会话中:手势关闭,避免与光标/选字冲突;
+                // 纯面板会话(editSessionInPlace=false)保持可选中可拖动,只出样式面板
+                val isTextEditing = layer.id == component.editSessionLayerId &&
+                    component.editSessionInPlace
                 EditBox(
                     transform = layer.transform,
                     isSelected = layer.id in component.selectedLayerIds &&
