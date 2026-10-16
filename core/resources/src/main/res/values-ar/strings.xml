@@ -1983,4 +1983,5 @@
     <string name="sticker_ai_points_hint">كل عملية توليد تكلّف %1$d نقطة</string>
     <string name="sticker_ai_empty">صف الملصق أولًا</string>
     <string name="sticker_ai_generating">جارٍ التوليد…</string>
+    <string name="download_started">بدأ التنزيل</string>
 </resources>

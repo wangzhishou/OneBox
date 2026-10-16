@@ -1983,4 +1983,5 @@
     <string name="sticker_ai_points_hint">Chaque génération coûte %1$d points</string>
     <string name="sticker_ai_empty">Décrivez d\'abord le contenu de l\'autocollant</string>
     <string name="sticker_ai_generating">Génération en cours…</string>
+    <string name="download_started">Téléchargement lancé</string>
 </resources>

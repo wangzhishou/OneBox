@@ -1983,4 +1983,5 @@
     <string name="sticker_ai_points_hint">每次生成消耗 %1$d 積分</string>
     <string name="sticker_ai_empty">先描述貼紙內容</string>
     <string name="sticker_ai_generating">生成中…</string>
+    <string name="download_started">開始下載</string>
 </resources>

@@ -1983,4 +1983,5 @@
     <string name="sticker_ai_points_hint">Mỗi lần tạo tiêu tốn %1$d điểm</string>
     <string name="sticker_ai_empty">Hãy mô tả nội dung nhãn dán trước</string>
     <string name="sticker_ai_generating">Đang tạo…</string>
+    <string name="download_started">Đã bắt đầu tải xuống</string>
 </resources>

@@ -1982,4 +1982,5 @@
     <string name="font_sarabun">Sarabun</string>
     <string name="font_noto_sans_jp">Noto Sans JP</string>
     <string name="font_noto_sans_kr">Noto Sans KR</string>
+    <string name="download_started">ダウンロードを開始しました</string>
 </resources>
