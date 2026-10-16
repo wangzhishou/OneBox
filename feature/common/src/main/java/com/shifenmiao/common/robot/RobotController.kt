@@ -20,6 +20,12 @@ object RobotController {
     /** 机器人可点击区域与搜索按钮之间的间距，避免挡住搜索。 */
     private val searchButtonGap = 16.dp
 
+    /**
+     * 默认 Y 在标题栏视觉中心之上再抬一段。
+     * 机器人主体偏下，居中时下缘会盖住标题栏下面的分类导航。
+     */
+    private val robotTopLift = 28.dp
+
     fun updateSearchAnchor(leftPx: Float, rightPx: Float) {
         searchAnchorLeftPx = leftPx
         searchAnchorRightPx = rightPx
@@ -100,7 +106,7 @@ object RobotController {
             // AppBar vertical center uses the approximated visual height.
             val appBarCenterY = appBarTop + currentAppBarHeightPx / 2f
 
-            val targetTopLeftY = appBarCenterY - visualRobotSize / 2f + topOffsetPx - 10.dp.toPx()
+            val targetTopLeftY = appBarCenterY - visualRobotSize / 2f + topOffsetPx - robotTopLift.toPx()
 
             // IMPORTANT:
             // FloatingRobotDragController maps percent to an extended range:
@@ -119,7 +125,6 @@ object RobotController {
             val percentY = ((finalY - minY) / yRange).coerceIn(0f, 1f)
 
             // X 跟搜索按钮走，不跟屏幕宽度百分比走：可点击区域贴在按钮朝标题的一侧，并留出间距。
-            // Y 仍用上面的 AppBar 视觉中心，不在这里改。
             val anchorLeft = searchAnchorLeftPx
             val anchorRight = searchAnchorRightPx
             val appBarLeft = positionInRoot.x
