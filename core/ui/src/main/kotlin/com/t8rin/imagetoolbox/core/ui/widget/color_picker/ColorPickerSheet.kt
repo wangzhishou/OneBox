@@ -96,12 +96,7 @@ fun ColorPickerSheet(
         onDismiss = {
             if (!it) onDismiss()
         },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.color),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme
-            )
-        },
+        title = stringResource(R.string.color),
         confirmButton = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

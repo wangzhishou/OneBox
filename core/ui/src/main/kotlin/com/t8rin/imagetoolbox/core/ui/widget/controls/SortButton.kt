@@ -80,12 +80,7 @@ fun SortButton(
     EnhancedModalBottomSheet(
         visible = showSortTypeSelection,
         onDismiss = { showSortTypeSelection = it },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.sorting),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFilterAlt
-            )
-        },
+        title = stringResource(R.string.sorting),
         confirmButton = {
             EnhancedButton(
                 onClick = {

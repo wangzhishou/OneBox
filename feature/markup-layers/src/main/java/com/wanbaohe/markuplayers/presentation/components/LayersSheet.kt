@@ -106,10 +106,10 @@ internal fun LayersSheet(
 ) {
     EnhancedModalBottomSheet(
         visible = visible,
-        dragHandle = {},
         onDismiss = { onDismiss() },
-        title = {},
-        confirmButton = {
+        title = stringResource(R.string.markup_tool_layers),
+        onClose = onDismiss,
+        endContent = {
             var addMenuVisible by rememberSaveable { mutableStateOf(false) }
             Box {
                 EnhancedIconButton(onClick = { addMenuVisible = true }) {
@@ -128,10 +128,6 @@ internal fun LayersSheet(
             }
         },
         sheetContent = {
-            SheetHeader(
-                title = stringResource(R.string.markup_tool_layers),
-                onClose = onDismiss
-            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

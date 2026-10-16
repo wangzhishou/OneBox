@@ -213,12 +213,7 @@ fun PickImageFromUrisSheet(
                 AutoSizeText(stringResource(R.string.close))
             }
         },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.change_preview),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineImagePreview
-            )
-        },
+        title = stringResource(R.string.change_preview),
         visible = visible,
         onDismiss = {
             if (!it) onDismiss()

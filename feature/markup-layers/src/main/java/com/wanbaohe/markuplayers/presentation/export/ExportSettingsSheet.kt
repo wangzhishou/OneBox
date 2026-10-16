@@ -96,28 +96,26 @@ fun ExportSettingsSheet(
 
     EnhancedModalBottomSheet(
         visible = visible,
-        dragHandle = {},
         onDismiss = { onDismiss() },
-        title = {
-            // 底栏 Row 仅自带 end padding,左侧这里补齐,与右侧对称
-            CancelButton(
-                text = stringResource(R.string.markup_cancel),
-                onClick = onDismiss,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        },
+        title = stringResource(R.string.markup_export_title),
+        onClose = onDismiss,
         confirmButton = {
-            ConfirmButton(
-                text = stringResource(R.string.markup_save),
-                enabled = errorText == null,
-                onClick = onSave
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CancelButton(
+                    text = stringResource(R.string.markup_cancel),
+                    onClick = onDismiss
+                )
+                ConfirmButton(
+                    text = stringResource(R.string.markup_save),
+                    enabled = errorText == null,
+                    onClick = onSave
+                )
+            }
         },
         sheetContent = {
-            SheetHeader(
-                title = stringResource(R.string.markup_export_title),
-                onClose = onDismiss
-            )
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())

@@ -58,15 +58,10 @@ internal fun QrTypeEditSheet(
     EnhancedModalBottomSheet(
         visible = visible,
         onDismiss = { onDismiss() },
-        title = {
-            TitleItem(
-                text = stringResource(
+        title = stringResource(
                     if (qrType == null) R.string.create_barcode
                     else R.string.edit_barcode
-                ),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineQrCode
-            )
-        },
+        ),
         confirmButton = {
             OnePrimaryButton(
                 text = stringResource(R.string.save),

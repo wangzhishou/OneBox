@@ -83,12 +83,7 @@ fun DecisionWheelPalettePickerSheet(
     EnhancedModalBottomSheet(
         visible = visible,
         onDismiss = { if (!it) onDismiss() },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.palette_scheme),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme
-            )
-        },
+        title = stringResource(R.string.palette_scheme),
         confirmButton = {
             EnhancedButton(
                 onClick = {

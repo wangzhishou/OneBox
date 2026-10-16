@@ -4,6 +4,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -65,6 +66,81 @@ fun EnhancedModalBottomSheet(
         visible = visible,
         onVisibleChange = onDismiss,
         content = sheetContent
+    )
+}
+
+/**
+ * 统一头部重载:顶部 DragHandle + 居中标题 + 右上角关闭(样式对齐图文「编辑文字」面板)。
+ * [confirmButton] 非空时在底部追加操作栏(取消/保存等),标题不再占用底栏。
+ * [onClose] 覆盖关闭按钮行为;默认 `onDismiss(false)`。
+ */
+@Composable
+fun EnhancedModalBottomSheet(
+    visible: Boolean,
+    onDismiss: (Boolean) -> Unit,
+    title: String,
+    modifier: Modifier = Modifier,
+    showCloseButton: Boolean = true,
+    closeEnabled: Boolean = true,
+    onClose: (() -> Unit)? = null,
+    startContent: @Composable RowScope.() -> Unit = {},
+    endContent: @Composable RowScope.() -> Unit = {},
+    confirmButton: (@Composable RowScope.() -> Unit)? = null,
+    endConfirmButtonPadding: Dp = 16.dp,
+    nestedScrollEnabled: Boolean = false,
+    cancelable: Boolean = true,
+    enableBackHandler: Boolean = true,
+    enableGlass: Boolean = true,
+    sheetContent: @Composable ColumnScope.() -> Unit,
+) {
+    val settingsState = LocalSettingsState.current
+    val useGlass = enableGlass && settingsState.isGlassAlphaEnabled
+
+    EnhancedModalSheetImpl(
+        cancelable = cancelable,
+        nestedScrollEnabled = nestedScrollEnabled,
+        dragHandle = {},
+        visible = visible,
+        onVisibleChange = onDismiss,
+        enableBackHandler = enableBackHandler,
+        sheetModifier = modifier,
+        content = {
+            EnhancedSheetHeader(
+                title = title,
+                onClose = onClose ?: { onDismiss(false) },
+                closeEnabled = closeEnabled,
+                showCloseButton = showCloseButton,
+                startContent = startContent,
+                endContent = endContent
+            )
+            Column(
+                modifier = Modifier.weight(1f, false),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                content = sheetContent
+            )
+            if (confirmButton != null) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .then(if (useGlass) {
+                            Modifier.background(
+                                color = EnhancedBottomSheetDefaults.barContainerColor,
+                            )
+                        } else {
+                            Modifier.drawHorizontalStroke(true, autoElevation = 6.dp).background(
+                                EnhancedBottomSheetDefaults.barContainerColor
+                            )
+                        })
+                        .padding(16.dp)
+                        .navigationBarsPadding()
+                        .padding(end = endConfirmButtonPadding),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    confirmButton()
+                }
+            }
+        }
     )
 }
 

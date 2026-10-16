@@ -58,6 +58,7 @@ import com.shifenmiao.model.ai.AiModel
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSheetHeader
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
@@ -193,54 +194,37 @@ private fun SheetHeader(
     showSettings: Boolean = false,
     onSettings: () -> Unit = {},
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.dimens.spaceLarge, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        LayoutToggleButton(layoutMode = layoutMode, onToggle = onLayoutToggle)
-
-        if (showRefresh) {
-            ToolbarIconButton(
-                onClick = onRefresh,
-                enabled = !isRefreshing,
-            ) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+    // 统一头部:DragHandle + 居中标题 + 右上角关闭;布局切换挂左,刷新/设置挂右
+    EnhancedSheetHeader(
+        title = title,
+        onClose = onDismissRequest,
+        startContent = {
+            LayoutToggleButton(layoutMode = layoutMode, onToggle = onLayoutToggle)
+        },
+        endContent = {
+            if (showRefresh) {
+                ToolbarIconButton(
+                    onClick = onRefresh,
+                    enabled = !isRefreshing,
+                ) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            if (showSettings) {
+                ToolbarIconButton(onClick = onSettings) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
-
-        if (showSettings) {
-            ToolbarIconButton(onClick = onSettings) {
-                Icon(
-                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.weight(1f)
-        )
-
-        IconButton(onClick = onDismissRequest) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                contentDescription = stringResource(id = R.string.button_close),
-                modifier = Modifier.size(30.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
+    )
 }
 
 @Composable

@@ -153,12 +153,7 @@ internal fun CompareScreenContent(
                     EnhancedModalBottomSheet(
                         visible = openTuneMenu,
                         onDismiss = { openTuneMenu = it },
-                        title = {
-                            TitleItem(
-                                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTune,
-                                text = stringResource(compareType.title)
-                            )
-                        },
+                        title = stringResource(compareType.title),
                         confirmButton = {
                             EnhancedButton(
                                 onClick = { openTuneMenu = false }

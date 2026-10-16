@@ -64,23 +64,18 @@ fun RecipeBatchSheet(
     EnhancedModalBottomSheet(
         cancelable = !running,
         visible = visible,
-        dragHandle = {},
         onDismiss = { if (!running) onDismiss() },
-        confirmButton = {},
-        title = {
+        title = stringResource(R.string.studio_recipe_title),
+        onClose = { if (!running) onDismiss() },
+        closeEnabled = !running,
+        confirmButton = {
             CancelButton(
                 text = stringResource(R.string.markup_cancel),
                 onClick = onDismiss,
-                enabled = !running,
-                modifier = Modifier.padding(start = 16.dp)
+                enabled = !running
             )
         },
         sheetContent = {
-            SheetHeader(
-                title = stringResource(R.string.studio_recipe_title),
-                onClose = { if (!running) onDismiss() },
-                closeEnabled = !running
-            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

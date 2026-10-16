@@ -134,11 +134,20 @@ fun FilterTemplateCreationSheet(
             else showExitDialog = true
         },
         cancelable = false,
-        title = {
-            TitleItem(
-                text = stringResource(id = R.string.create_template),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExtension
-            )
+        title = stringResource(id = R.string.create_template),
+        // 左上返回:未保存改动时弹退出确认,替代原 dragHandle 内的自定义顶栏
+        startContent = {
+            EnhancedIconButton(
+                onClick = {
+                    if (!canSave) onDismiss()
+                    else showExitDialog = true
+                }
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                    contentDescription = stringResource(R.string.exit)
+                )
+            }
         },
         confirmButton = {
             EnhancedButton(
@@ -150,28 +159,6 @@ fun FilterTemplateCreationSheet(
                 }
             ) {
                 Text(stringResource(id = R.string.save))
-            }
-        },
-        dragHandle = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .drawHorizontalStroke(autoElevation = 3.dp)
-                    .zIndex(Float.MAX_VALUE)
-                    .background(EnhancedBottomSheetDefaults.barContainerColor)
-                    .padding(8.dp)
-            ) {
-                EnhancedIconButton(
-                    onClick = {
-                        if (!canSave) onDismiss()
-                        else showExitDialog = true
-                    }
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                        contentDescription = stringResource(R.string.exit)
-                    )
-                }
             }
         },
         enableBackHandler = !canSave

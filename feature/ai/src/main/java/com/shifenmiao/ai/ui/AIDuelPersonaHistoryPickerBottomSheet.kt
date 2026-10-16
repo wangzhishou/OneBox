@@ -1,24 +1,17 @@
 package com.shifenmiao.ai.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.core.R
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSheetHeader
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
-import com.t8rin.imagetoolbox.core.resources.icons.Close
 
 @Composable
 fun AIDuelPersonaHistoryPickerBottomSheet(
@@ -45,22 +38,12 @@ fun AIDuelPersonaHistoryPickerBottomSheet(
     EnhancedModalBottomSheet(
         visible = visible,
         onDismiss = onDismiss,
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                actions = {
-                    IconButton(onClick = { onDismiss(true) }) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                            contentDescription = null,
-                            modifier = Modifier.size(22.dp)
-                        )
-                    }
-                },
-                title = {}
-            )
-        }
+        dragHandle = {}
     ) {
+        EnhancedSheetHeader(
+            title = title,
+            onClose = { onDismiss(true) }
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()

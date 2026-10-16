@@ -177,12 +177,7 @@ internal fun CompareShareSheet(
                 AutoSizeText(stringResource(R.string.close))
             }
         },
-        title = {
-            TitleItem(
-                text = stringResource(id = R.string.share),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare
-            )
-        },
+        title = stringResource(id = R.string.share),
         onDismiss = onVisibleChange,
         visible = visible
     )

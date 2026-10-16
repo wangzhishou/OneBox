@@ -199,22 +199,25 @@ fun IdPhotoScreen(
         EnhancedModalBottomSheet(
             visible = showExportConfig,
             onDismiss = { dismissExportConfig() },
-            title = {
-                // 底栏 Row 仅自带 end padding,左侧这里补齐,与右侧对称
-                CancelButton(
-                    text = stringResource(CommonR.string.common_cancel),
-                    onClick = dismissExportConfig,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
-            },
+            title = stringResource(R.string.id_photo_export_settings),
+            onClose = dismissExportConfig,
             confirmButton = {
-                ConfirmButton(
-                    text = stringResource(CommonR.string.common_save),
-                    onClick = {
-                        showExportConfig = false
-                        startCropSave()
-                    }
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CancelButton(
+                        text = stringResource(CommonR.string.common_cancel),
+                        onClick = dismissExportConfig
+                    )
+                    ConfirmButton(
+                        text = stringResource(CommonR.string.common_save),
+                        onClick = {
+                            showExportConfig = false
+                            startCropSave()
+                        }
+                    )
+                }
             },
             enableBackHandler = true
         ) {
@@ -224,10 +227,6 @@ fun IdPhotoScreen(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.id_photo_export_settings),
-                    style = MaterialTheme.typography.titleLarge
-                )
                 IdPhotoExportInfoRow(
                     targetWidth = component.currentSize.widthPx,
                     targetHeight = component.currentSize.heightPx,
@@ -252,15 +251,8 @@ fun IdPhotoScreen(
         EnhancedModalBottomSheet(
             visible = showSizeCustomizer,
             onDismiss = { showSizeCustomizer = false },
-            title = {
-                Text(
-                    text = stringResource(R.string.id_photo_size_template),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-            },
+            title = stringResource(R.string.id_photo_size_template),
             enableBackHandler = true,
-            enableBottomContentWeight = false
         ) {
             SizeCustomizer(
                 sizes = sizes,
@@ -283,15 +275,8 @@ fun IdPhotoScreen(
         EnhancedModalBottomSheet(
             visible = true,
             onDismiss = { editingSize = null },
-            title = {
-                Text(
-                    text = stringResource(R.string.id_photo_edit_size),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-            },
+            title = stringResource(R.string.id_photo_edit_size),
             enableBackHandler = true,
-            enableBottomContentWeight = false
         ) {
             SizeEditor(
                 size = size,

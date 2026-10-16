@@ -87,16 +87,6 @@ internal fun DrawPathModeInfoSheet(
         onDismiss = {
             if (!it) onDismiss()
         },
-        title = {
-            TitleItem(text = stringResource(R.string.draw_path_mode))
-        },
-        confirmButton = {
-            EnhancedButton(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                onClick = onDismiss
-            ) {
-                AutoSizeText(stringResource(R.string.close))
-            }
-        }
+        title = stringResource(R.string.draw_path_mode),
     )
 }

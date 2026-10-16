@@ -3,14 +3,12 @@ package com.wanbaohe.textcard.presentation.editor
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,27 +54,7 @@ fun ShapePickerSheet(
 
     EnhancedModalBottomSheet(
         visible = true,
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                actions = {
-                    IconButton(onClick = onDismiss) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                            contentDescription = null,
-                            modifier = Modifier.size(22.dp)
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = stringResource(R.string.textcard_add_shape),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            )
-        },
+        title = stringResource(R.string.textcard_add_shape),
         onDismiss = { onDismiss() },
         sheetContent = {
             Column(

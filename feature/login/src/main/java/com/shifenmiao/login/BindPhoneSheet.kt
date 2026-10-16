@@ -43,19 +43,8 @@ fun BindPhoneSheet(
             onDismiss = {
                 loginComponent.hideBind()
             },
-            dragHandle = {
-                CenterAlignedTopAppBar(
-                    title = {
-                        IdentityVerificationText()
-                    },
-                    navigationIcon = {
-                    },
-                    actions = {
-                    }
-                )
-            },
+            title = stringResource(id = R.string.identity_verification),
             enableBackHandler = true,
-            enableBottomContentWeight = false
         ) {
             Column(
                 modifier = Modifier

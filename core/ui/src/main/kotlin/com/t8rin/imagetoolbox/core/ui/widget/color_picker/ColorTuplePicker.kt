@@ -131,12 +131,7 @@ fun ColorTuplePicker(
         onDismiss = {
             if (!it) onDismiss()
         },
-        title = {
-            TitleItem(
-                text = title,
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme
-            )
-        },
+        title = title,
         sheetContent = {
             Box {
                 LazyVerticalGrid(

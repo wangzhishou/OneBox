@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +38,6 @@ import com.shifenmiao.model.ai.AIGCInfo
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.domain.model.plus
 import com.t8rin.imagetoolbox.core.resources.icons.BrokenImageAlt
-import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.resources.icons.Compass
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.DshWhale
@@ -96,27 +93,7 @@ fun DemoScreen(
     var showNativeMarkdownEditorDemo by remember { mutableStateOf(false) }
     EnhancedModalBottomSheet(
         visible = showDeeplinkHelp,
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                actions = {
-                    IconButton(onClick = { showDeeplinkHelp = false }) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                            contentDescription = null,
-                            modifier = Modifier.size(22.dp)
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = stringResource(R.string.demo_navigation_deeplink_tool_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                    )
-                }
-            )
-        },
+        title = stringResource(R.string.demo_navigation_deeplink_tool_title),
         onDismiss = { showDeeplinkHelp = false },
         sheetContent = {
             NavigationDeeplinkHelpSheet(
@@ -128,27 +105,7 @@ fun DemoScreen(
 
     EnhancedModalBottomSheet(
         visible = showGlassShowcase,
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                actions = {
-                    IconButton(onClick = { showGlassShowcase = false }) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                            contentDescription = null,
-                            modifier = Modifier.size(22.dp)
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = stringResource(DemoR.string.demo_glass_showcase_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                    )
-                }
-            )
-        },
+        title = stringResource(DemoR.string.demo_glass_showcase_title),
         onDismiss = { showGlassShowcase = false },
         sheetContent = {
             GlassComponentShowcaseSheet()
@@ -157,27 +114,7 @@ fun DemoScreen(
 
     EnhancedModalBottomSheet(
         visible = showA2uiGallery,
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                actions = {
-                    IconButton(onClick = { showA2uiGallery = false }) {
-                        Icon(
-                            imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                            contentDescription = null,
-                            modifier = Modifier.size(22.dp)
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = "A2UI 组件画廊",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                    )
-                }
-            )
-        },
+        title = "A2UI 组件画廊",
         onDismiss = { showA2uiGallery = false },
         sheetContent = {
             A2uiComponentGalleryScreen(

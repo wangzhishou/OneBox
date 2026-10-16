@@ -123,12 +123,7 @@ internal fun FilterTemplateInfoSheet(
                 Text(stringResource(R.string.close))
             }
         },
-        title = {
-            TitleItem(
-                text = stringResource(id = R.string.template_filter),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExtension
-            )
-        }
+        title = stringResource(id = R.string.template_filter),
     ) {
         var filterContent by rememberSaveable {
             mutableStateOf("")

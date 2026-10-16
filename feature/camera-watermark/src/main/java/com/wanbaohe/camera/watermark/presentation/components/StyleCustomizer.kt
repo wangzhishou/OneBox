@@ -246,15 +246,8 @@ fun StyleCustomizer(
                 showEditSheet = false
                 editingTemplate = null
             },
-            dragHandle = {
-                CenterAlignedTopAppBar(
-                    title = { Text(stringResource(R.string.camera_watermark_edit_template)) },
-                    navigationIcon = {},
-                    actions = {}
-                )
-            },
+            title = stringResource(R.string.camera_watermark_edit_template),
             enableBackHandler = true,
-            enableBottomContentWeight = false
         ) {
             TemplateEditor(
                 template = editingTemplate!!,
@@ -278,15 +271,8 @@ fun StyleCustomizer(
         EnhancedModalBottomSheet(
             visible = true,
             onDismiss = { showAddSheet = false },
-            dragHandle = {
-                CenterAlignedTopAppBar(
-                    title = { Text(stringResource(R.string.camera_watermark_add_template)) },
-                    navigationIcon = {},
-                    actions = {}
-                )
-            },
+            title = stringResource(R.string.camera_watermark_add_template),
             enableBackHandler = true,
-            enableBottomContentWeight = false
         ) {
             TemplateEditor(
                 template = WatermarkStyle(

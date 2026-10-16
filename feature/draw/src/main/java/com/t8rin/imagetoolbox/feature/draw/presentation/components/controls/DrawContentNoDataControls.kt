@@ -148,12 +148,7 @@ internal fun DrawContentNoDataControls(
         mutableStateOf(drawOnBackgroundParams?.color?.toColor() ?: Color.White)
     }
     EnhancedModalBottomSheet(
-        title = {
-            TitleItem(
-                text = stringResource(R.string.draw),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFormatPaint
-            )
-        },
+        title = stringResource(R.string.draw),
         confirmButton = {
             EnhancedButton(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,

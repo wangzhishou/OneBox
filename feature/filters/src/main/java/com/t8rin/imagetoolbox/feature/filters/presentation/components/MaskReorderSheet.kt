@@ -123,12 +123,7 @@ fun MaskReorderSheet(
         onDismiss = {
             if (!it) onDismiss()
         },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.reorder),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineReorder
-            )
-        },
+        title = stringResource(R.string.reorder),
         confirmButton = {
             EnhancedButton(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,

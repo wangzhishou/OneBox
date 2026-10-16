@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -71,24 +70,8 @@ fun VerifyContactSheet(
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { onDismiss() },
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.identity_verification),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    )
-                },
-                navigationIcon = {
-                },
-                actions = {
-                }
-            )
-        },
+        title = stringResource(R.string.identity_verification),
         enableBackHandler = true,
-        enableBottomContentWeight = false
     ) {
         Column(
             modifier = Modifier

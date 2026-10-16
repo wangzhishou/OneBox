@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -60,24 +59,8 @@ fun VerifyEmailSheet(
     EnhancedModalBottomSheet(
         visible = true,
         onDismiss = { onDismiss() },
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.profile_verify_email),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    )
-                },
-                navigationIcon = {
-                },
-                actions = {
-                }
-            )
-        },
+        title = stringResource(R.string.profile_verify_email),
         enableBackHandler = true,
-        enableBottomContentWeight = false
     ) {
         Column(
             modifier = Modifier

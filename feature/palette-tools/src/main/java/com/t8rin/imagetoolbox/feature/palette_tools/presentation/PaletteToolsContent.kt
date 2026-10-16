@@ -353,12 +353,7 @@ fun PaletteToolsContent(
                 Text(stringResource(R.string.close))
             }
         },
-        title = {
-            TitleItem(
-                text = stringResource(id = R.string.palette),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme
-            )
-        }
+        title = stringResource(id = R.string.palette),
     ) {
         Column(
             modifier = Modifier.padding(12.dp)

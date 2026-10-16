@@ -1,7 +1,6 @@
 package com.shifenmiao.login
 
 
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,24 +23,8 @@ fun ModalBottomSheetLogin(
             onDismiss = {
                 loginComponent.hideLoginModal()
             },
-            dragHandle = {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.login_heading_text),
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        )
-                    },
-                    navigationIcon = {
-                    },
-                    actions = {
-                    }
-                )
-            },
+            title = stringResource(R.string.login_heading_text),
             enableBackHandler = true,
-            enableBottomContentWeight = false
         ) {
             when (loginState.loginStyle) {
                 LoginStyle.LOGIN -> {

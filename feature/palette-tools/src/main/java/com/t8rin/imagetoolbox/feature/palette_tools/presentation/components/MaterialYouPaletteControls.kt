@@ -252,12 +252,7 @@ internal fun MaterialYouPaletteControls(bitmap: Bitmap) {
         onDismiss = {
             showColorPicker = it
         },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.color),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme
-            )
-        },
+        title = stringResource(R.string.color),
         confirmButton = {
             EnhancedButton(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,

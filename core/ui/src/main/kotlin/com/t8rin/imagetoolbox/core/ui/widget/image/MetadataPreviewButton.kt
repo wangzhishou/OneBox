@@ -91,12 +91,7 @@ fun MetadataPreviewButton(
             EnhancedModalBottomSheet(
                 visible = showExif,
                 onDismiss = { showExif = false },
-                title = {
-                    TitleItem(
-                        text = stringResource(R.string.exif),
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Exif
-                    )
-                },
+                title = stringResource(R.string.exif),
                 confirmButton = {
                     EnhancedButton(
                         onClick = { showExif = false }

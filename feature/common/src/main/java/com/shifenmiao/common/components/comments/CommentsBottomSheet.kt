@@ -65,6 +65,7 @@ import com.shifenmiao.network.model.comment.Comment
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
+import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSheetHeader
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
@@ -229,20 +230,11 @@ private fun CommentsSheetHeader(
     total: Int,
     onClose: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+    // 统一头部:DragHandle + 居中标题 + 右侧条数 + 右上角关闭
+    EnhancedSheetHeader(
+        title = title,
+        onClose = onClose,
+        endContent = {
             Text(
                 text = AppContext.getContext().getString(
                     com.shifenmiao.core.R.string.comments_count_format,
@@ -251,15 +243,10 @@ private fun CommentsSheetHeader(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
+                modifier = Modifier.padding(end = 4.dp)
             )
         }
-        GlassIconButton(onClick = onClose) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Close,
-                contentDescription = AppContext.getString(com.shifenmiao.core.R.string.comment_close),
-            )
-        }
-    }
+    )
 }
 
 @Composable

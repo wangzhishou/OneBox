@@ -150,11 +150,6 @@ internal fun FiltersContentNoData(
                 }
             }
         },
-        title = {
-            TitleItem(
-                text = stringResource(id = R.string.pick_file),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFileOpen
-            )
-        }
+        title = stringResource(id = R.string.pick_file),
     )
 }

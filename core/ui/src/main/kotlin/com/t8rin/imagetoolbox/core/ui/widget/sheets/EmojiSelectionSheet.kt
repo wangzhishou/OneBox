@@ -158,12 +158,7 @@ fun EmojiSelectionSheet(
                 }
             }
         },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.emoji),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFace5
-            )
-        },
+        title = stringResource(R.string.emoji),
         visible = visible,
         onDismiss = {
             if (!it) onDismiss()

@@ -319,17 +319,7 @@ fun ScaleModeSelector(
         onDismiss = {
             showInfoSheet = it
         },
-        title = {
-            TitleItem(text = stringResource(R.string.scale_mode))
-        },
-        confirmButton = {
-            EnhancedButton(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                onClick = { showInfoSheet = false }
-            ) {
-                AutoSizeText(stringResource(R.string.close))
-            }
-        }
+        title = stringResource(R.string.scale_mode),
     )
 }
 

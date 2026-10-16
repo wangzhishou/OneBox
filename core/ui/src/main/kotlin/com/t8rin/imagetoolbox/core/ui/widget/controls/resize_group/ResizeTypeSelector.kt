@@ -371,17 +371,7 @@ fun ResizeTypeSelector(
         onDismiss = {
             isSheetVisible = it
         },
-        title = {
-            TitleItem(text = stringResource(R.string.resize_type))
-        },
-        confirmButton = {
-            EnhancedButton(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                onClick = { isSheetVisible = false }
-            ) {
-                AutoSizeText(stringResource(R.string.close))
-            }
-        }
+        title = stringResource(R.string.resize_type),
     )
 }
 

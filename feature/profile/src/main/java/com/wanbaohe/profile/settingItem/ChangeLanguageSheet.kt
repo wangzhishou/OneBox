@@ -69,12 +69,7 @@ fun ChangeLanguageSheet(
         onDismiss = {
             if (!it) onDismiss()
         },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.language),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Language
-            )
-        },
+        title = stringResource(R.string.language),
         sheetContent = {
             val entries = remember { context.getLanguages() }
             val selected = remember { context.getCurrentLocaleString() }

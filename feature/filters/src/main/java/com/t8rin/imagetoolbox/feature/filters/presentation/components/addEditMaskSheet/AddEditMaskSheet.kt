@@ -113,11 +113,20 @@ fun AddEditMaskSheet(
             else showExitDialog = true
         },
         cancelable = false,
-        title = {
-            TitleItem(
-                text = stringResource(id = R.string.add_mask),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTexture
-            )
+        title = stringResource(id = R.string.add_mask),
+        // 左上返回:有未保存改动时弹退出确认,替代原 dragHandle 内自定义顶栏
+        startContent = {
+            EnhancedIconButton(
+                onClick = {
+                    if (component.paths.isEmpty() && component.filterList.isEmpty()) onDismiss()
+                    else showExitDialog = true
+                }
+            ) {
+                Icon(
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                    contentDescription = stringResource(R.string.exit)
+                )
+            }
         },
         confirmButton = {
             EnhancedButton(
@@ -129,28 +138,6 @@ fun AddEditMaskSheet(
                 }
             ) {
                 Text(stringResource(id = R.string.save))
-            }
-        },
-        dragHandle = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .drawHorizontalStroke(autoElevation = 3.dp)
-                    .zIndex(Float.MAX_VALUE)
-                    .background(EnhancedBottomSheetDefaults.barContainerColor)
-                    .padding(8.dp)
-            ) {
-                EnhancedIconButton(
-                    onClick = {
-                        if (component.paths.isEmpty() && component.filterList.isEmpty()) onDismiss()
-                        else showExitDialog = true
-                    }
-                ) {
-                    Icon(
-                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                        contentDescription = stringResource(R.string.exit)
-                    )
-                }
             }
         },
         enableBackHandler = component.paths.isEmpty() && component.filterList.isEmpty()

@@ -50,72 +50,51 @@ fun AIChatModalBottomSheet(
         onDismiss = {
             appComponent.hideAIChat()
         },
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = when (conversation.entryType) {
-                            AIConversationEntryType.ASSISTANT -> stringResource(CoreR.string.ai_tab_chat_title)
-                            else -> conversation.title
-                        },
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+        title = when (conversation.entryType) {
+            AIConversationEntryType.ASSISTANT -> stringResource(CoreR.string.ai_tab_chat_title)
+            else -> conversation.title
+        },
+        // 持久化聊天弹层:不给关闭按钮(下滑/返回键/左侧历史返回即可退出),但保留拖动条
+        showCloseButton = false,
+        startContent = {
+            if (!chatUIState.showHistory) {
+                IconButton(onClick = {
+                    aiChatComponent.showHistory()
+                }) {
+                    Icon(
+                        imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                },
-                navigationIcon = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(AppTheme.dimens.paddingTooSmall),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        if (!chatUIState.showHistory) {
-                            IconButton(onClick = {
-                                aiChatComponent.showHistory()
-                            }) {
-                                Icon(
-                                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineHistory,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        } else {
-                            IconButton(
-                                onClick = {
-                                    aiChatComponent.hideHistory()
-                                }
-                            ) {
-                                Icon(
-                                    com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                                    contentDescription = "Back"
-                                )
-                            }
-                        }
-                    }
-                },
-                actions = {
-                    DisableContainer(
-                        enabled = chatUIState.pageState != PageState.INITIALIZING
-                    ) {
-                        Row {
-                            Icon(
-                                modifier = Modifier.clickable {
-                                    aiChatComponent.changeConversationId(Date().time.toString())
-                                },
-                                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAddAiChat,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(
-                                modifier = Modifier.width(
-                                    AppTheme.dimens.paddingNormal
-                                )
-                            )
-                        }
-                    }
                 }
-            )
+            } else {
+                IconButton(
+                    onClick = {
+                        aiChatComponent.hideHistory()
+                    }
+                ) {
+                    Icon(
+                        com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+        },
+        endContent = {
+            DisableContainer(
+                enabled = chatUIState.pageState != PageState.INITIALIZING
+            ) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        aiChatComponent.changeConversationId(Date().time.toString())
+                    },
+                    imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineAddAiChat,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         },
         enableBackHandler = false,
-        enableBottomContentWeight = false
     ) {
         AIChatBody(
             appComponent = appComponent,

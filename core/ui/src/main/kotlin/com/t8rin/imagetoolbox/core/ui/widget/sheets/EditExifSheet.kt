@@ -132,13 +132,7 @@ fun EditExifSheet(
                 )
             }
         },
-        title = {
-            TitleItem(
-                text = stringResource(id = R.string.edit_exif),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Exif,
-                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp, start = 8.dp, end = 16.dp)
-            )
-        },
+        title = stringResource(id = R.string.edit_exif),
         visible = visible,
         onDismiss = {
             if (!it) onDismiss()

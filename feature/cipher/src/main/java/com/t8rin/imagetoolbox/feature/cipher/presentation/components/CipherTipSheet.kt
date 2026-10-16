@@ -140,12 +140,7 @@ fun CipherTipSheet(
         onDismiss = {
             if (!it) onDismiss()
         },
-        title = {
-            TitleItem(
-                text = stringResource(R.string.cipher),
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSecurity
-            )
-        },
+        title = stringResource(R.string.cipher),
         confirmButton = {
             GlassTonalButton(
                 onClick = onDismiss

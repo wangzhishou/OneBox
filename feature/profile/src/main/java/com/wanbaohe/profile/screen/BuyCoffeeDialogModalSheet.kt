@@ -48,35 +48,21 @@ fun BuyCoffeeDialogModalSheet(
         onDismiss = {
             appComponent.hideBuyCoffeeDialogModalSheet()
         },
-        dragHandle = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.need_coffee),
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    )
-                },
-                navigationIcon = {
-                },
-                actions = {
-                    SecondarySmallButton(
-                        text = stringResource(id = R.string.free_coffee),
-                        onClick = {
-                            ActionUtils.showLogin(
-                                source = "BuyCoffeeDialogModalSheet",
-                            ) {
-                                showDialog.value = true
-                            }
-                        }
-                    )
-                    Spacer(modifier = Modifier.width(AppTheme.dimens.paddingNormal))
+        title = stringResource(id = R.string.need_coffee),
+        endContent = {
+            SecondarySmallButton(
+                text = stringResource(id = R.string.free_coffee),
+                onClick = {
+                    ActionUtils.showLogin(
+                        source = "BuyCoffeeDialogModalSheet",
+                    ) {
+                        showDialog.value = true
+                    }
                 }
             )
+            Spacer(modifier = Modifier.width(AppTheme.dimens.paddingSmall))
         },
         enableBackHandler = true,
-        enableBottomContentWeight = false
     ) {
         BuyCoffeeBody(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),

@@ -200,17 +200,7 @@ fun DrawModeSelector(
         onDismiss = {
             isSheetVisible = it
         },
-        title = {
-            TitleItem(text = stringResource(R.string.draw_mode))
-        },
-        confirmButton = {
-            EnhancedButton(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                onClick = { isSheetVisible = false }
-            ) {
-                AutoSizeText(stringResource(R.string.close))
-            }
-        }
+        title = stringResource(R.string.draw_mode),
     )
 }
 

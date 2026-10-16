@@ -248,12 +248,7 @@ fun PickFontFamilySheet(
                 )
             }
         },
-        title = {
-            TitleItem(
-                icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineFont,
-                text = stringResource(R.string.font),
-            )
-        }
+        title = stringResource(R.string.font),
     )
 }
 

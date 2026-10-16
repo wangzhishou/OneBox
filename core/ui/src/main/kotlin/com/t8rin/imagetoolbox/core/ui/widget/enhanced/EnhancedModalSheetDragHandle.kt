@@ -73,7 +73,8 @@ fun EnhancedModalSheetDragHandle(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 22.dp),
+                    // 统一紧凑留白(原 22dp 上下过大,与「编辑文字」面板头部不一致)
+                    .padding(top = 10.dp, bottom = 6.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 BendableDragHandle(
