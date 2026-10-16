@@ -21,6 +21,7 @@ import com.t8rin.imagetoolbox.core.domain.model.Position
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.feature.watermarking.domain.TextParams
 import com.t8rin.imagetoolbox.feature.watermarking.domain.WatermarkApplier
 import com.t8rin.imagetoolbox.feature.watermarking.domain.WatermarkParams
@@ -217,13 +218,17 @@ class AddWatermarkTool @Inject constructor(
             keepOriginalMetadata = true
         )
         when (saveResult) {
-            is SaveResult.Success -> WatermarkedImageEntry(
-                input_uri = imageUri,
-                output_uri = resolveOutputUri(saveResult.fileUri),
-                width = watermarked.width,
-                height = watermarked.height,
-                output_size_bytes = data.size
-            )
+            is SaveResult.Success -> {
+                // 保存成功只写 ActivityLog(不弹 toast/撒花,结果经 AgentToolResult 回对话流)
+                SaveSuccessNotifier.logOnly(saveResult)
+                WatermarkedImageEntry(
+                    input_uri = imageUri,
+                    output_uri = resolveOutputUri(saveResult.fileUri),
+                    width = watermarked.width,
+                    height = watermarked.height,
+                    output_size_bytes = data.size
+                )
+            }
 
             is SaveResult.Error -> error(
                 saveResult.throwable.message

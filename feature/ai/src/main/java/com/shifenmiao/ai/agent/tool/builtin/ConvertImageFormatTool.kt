@@ -19,6 +19,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.Quality
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import javax.inject.Inject
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -167,13 +168,17 @@ class ConvertImageFormatTool @Inject constructor(
             keepOriginalMetadata = keepExif
         )
         when (saveResult) {
-            is SaveResult.Success -> ConvertedImageEntry(
-                input_uri = imageUri,
-                output_uri = resolveOutputUri(saveResult.fileUri),
-                width = bitmap.width,
-                height = bitmap.height,
-                output_size_bytes = data.size
-            )
+            is SaveResult.Success -> {
+                // 保存成功只写 ActivityLog(不弹 toast/撒花,结果经 AgentToolResult 回对话流)
+                SaveSuccessNotifier.logOnly(saveResult)
+                ConvertedImageEntry(
+                    input_uri = imageUri,
+                    output_uri = resolveOutputUri(saveResult.fileUri),
+                    width = bitmap.width,
+                    height = bitmap.height,
+                    output_size_bytes = data.size
+                )
+            }
 
             is SaveResult.Error -> error(
                 saveResult.throwable.message

@@ -17,6 +17,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.ImageScaleMode
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.feature.weight_resize.domain.WeightImageScaler
 import javax.inject.Inject
 import kotlinx.serialization.Serializable
@@ -118,6 +119,8 @@ class CompressImageTool @Inject constructor(
 
             when (saveResult) {
                 is SaveResult.Success -> {
+                    // 保存成功只写 ActivityLog(不弹 toast/撒花,结果经 AgentToolResult 回对话流)
+                    SaveSuccessNotifier.logOnly(saveResult)
                     val outputUri = resolveOutputUri(saveResult.fileUri)
                     val result = CompressImageResult(
                         output_uri = outputUri,

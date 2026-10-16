@@ -20,6 +20,7 @@ import com.t8rin.imagetoolbox.core.domain.image.model.Quality
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.feature.limits_resize.domain.LimitsImageScaler
 import com.t8rin.imagetoolbox.feature.limits_resize.domain.LimitsResizeType
 import javax.inject.Inject
@@ -154,6 +155,8 @@ class LimitResizeTool @Inject constructor(
 
             when (saveResult) {
                 is SaveResult.Success -> {
+                    // 保存成功只写 ActivityLog(不弹 toast/撒花,结果经 AgentToolResult 回对话流)
+                    SaveSuccessNotifier.logOnly(saveResult)
                     val outputUri = resolveOutputUri(saveResult.fileUri)
                     val result = LimitResizeResult(
                         output_uri = outputUri,

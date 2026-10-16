@@ -20,6 +20,7 @@ import com.t8rin.imagetoolbox.core.domain.image.toMap
 import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import javax.inject.Inject
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -176,14 +177,18 @@ class EditExifTool @Inject constructor(
             keepOriginalMetadata = false
         )
         return when (saveResult) {
-            is SaveResult.Success -> AgentToolResult(
-                content = AppJson.encodeToString(
-                    ExifWriteResult(
-                        input_uri = imageUri,
-                        output_uri = resolveOutputUri(saveResult.fileUri)
+            is SaveResult.Success -> {
+                // 保存成功只写 ActivityLog(不弹 toast/撒花,结果经 AgentToolResult 回对话流)
+                SaveSuccessNotifier.logOnly(saveResult)
+                AgentToolResult(
+                    content = AppJson.encodeToString(
+                        ExifWriteResult(
+                            input_uri = imageUri,
+                            output_uri = resolveOutputUri(saveResult.fileUri)
+                        )
                     )
                 )
-            )
+            }
 
             is SaveResult.Error -> AgentToolResult(
                 content = textProvider.string(
