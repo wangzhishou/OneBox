@@ -12,7 +12,6 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -108,7 +106,7 @@ private fun addMenuItemContentColor(theme: AddMenuItemTheme): Color = when (them
  * 底部导航栏 ADD 按钮的可展开浮动面板。
  *
  * 点击 ADD 按钮后，在底部导航栏上方弹出一个毛玻璃面板，
- * 以每行 3 个的网格展示快捷操作入口（扫一扫、记事本、待办事项、家庭物品、健康记录等），
+ * 以每行 4 个的网格展示快捷操作入口（扫一扫、记事本、待办事项、家庭物品、健康记录等），
  * 中间有菱形指示器连接面板与 ADD 按钮。
  *
  * 背景遮罩跟随全局玻璃设置：
@@ -388,25 +386,23 @@ fun AddMenuFloatingPanel(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // 每行3个，自动分行
-                menuItems.chunked(3).forEachIndexed { index, rowItems ->
+                // 每行 4 个，格子等分撑满整行(随屏幕宽度自适应)
+                menuItems.chunked(4).forEachIndexed { index, rowItems ->
                     if (index > 0) {
                         Spacer(modifier = Modifier.height(16.dp))
                     }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
                         rowItems.forEachIndexed { itemIndex, item ->
-                            val themeIndex = index * 3 + itemIndex
+                            val themeIndex = index * 4 + itemIndex
                             AddMenuGridItem(
                                 item = item,
                                 themeIndex = themeIndex,
+                                modifier = Modifier.weight(1f),
                             )
                         }
-                        // 补齐空位，保持对齐
-                        repeat(3 - rowItems.size) {
-                            Spacer(modifier = Modifier.width(100.dp))
+                        // 补齐空位，保持末行网格对齐
+                        repeat(4 - rowItems.size) {
+                            Spacer(modifier = Modifier.weight(1f))
                         }
                     }
                 }
@@ -422,13 +418,13 @@ fun AddMenuFloatingPanel(
 private fun AddMenuGridItem(
     item: AddMenuItem,
     themeIndex: Int,
+    modifier: Modifier = Modifier,
 ) {
     val theme = addMenuItemThemeForIndex(themeIndex)
     val backgroundColor = addMenuItemBackground(theme)
     val contentColor = addMenuItemContentColor(theme)
     Column(
-        modifier = Modifier
-            .width(100.dp)
+        modifier = modifier
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
