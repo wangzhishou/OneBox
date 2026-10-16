@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">Aç</string>
     <string name="studio_target">Düzenleme hedefi</string>
     <string name="studio_target_layer">Seçili katman</string>
-    <string name="studio_ai_target_title">Bir AI hedefi seçin</string>
-    <string name="studio_ai_target_base">Arka plan görüntüsü</string>
-    <string name="studio_ai_target_layer">Seçili görüntü katmanı: %1$s</string>
-    <string name="studio_ai_target_generate">Yeni bir görüntü katmanı oluştur</string>
-    <string name="studio_ai_target_hint">Düzenlenecek görüntüyü seçin. Her sonuç Geçmiş veya Geri Al ile geri yüklenebilir.</string>
-    <string name="studio_ai_provider_no_edit">Bu görüntü sağlayıcısı yalnızca oluşturmayı destekler. Mevcut bir görüntüyü düzenlemek için ayarlardan düzenleme destekli bir sağlayıcı seçin.</string>
     <string name="studio_ai_result_title">AI sonucu: %1$s</string>
     <string name="studio_ai_result_preview">AI sonucu önizlemesi</string>
     <string name="studio_ai_result_replace">Seçilen görüntüyü değiştir</string>

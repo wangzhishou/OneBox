@@ -45,9 +45,6 @@
     <string name="markup_tool_layers">레이어</string>
 
     <string name="markup_ai_sheet_title">AI 스마트 처리</string>
-    <string name="markup_ai_sheet_subtitle">이미지 내용을 이해하고 한 번의 탭으로 품질과 창의성을 높여 줍니다</string>
-    <string name="markup_ai_badge_new">NEW</string>
-    <string name="markup_ai_points_badge">%1$d 포인트</string>
     <string name="markup_ai_dehaze">안개 제거</string>
     <string name="markup_ai_dehaze_sub">안개와 흐림을 제거해 선명한 화면으로</string>
     <string name="markup_ai_contrast_enhance">대비 강화</string>
@@ -197,21 +194,16 @@
     <string name="markup_export_failed_no_image">보낼 이미지가 없습니다</string>
     <string name="markup_cancel">취소</string>
     <string name="markup_ai_generate_title">AI로 이미지 생성</string>
-    <string name="markup_ai_edit_image_title">AI로 이미지 편집</string>
     <string name="markup_ai_generate_hint">생성할 이미지를 설명하세요. 예: 달에서 기타를 치는 고양이</string>
     <string name="markup_ai_edit_image_hint">편집 내용을 설명하세요. 예: 배경을 별이 빛나는 하늘로 바꾸기</string>
     <string name="markup_ai_generate_action">생성</string>
     <string name="markup_ai_generate_points_hint">생성 시 %1$d 포인트 차감</string>
     <string name="markup_ai_generate_empty">이미지 설명을 입력해 주세요</string>
-    <string name="markup_ai_edit_current">현재</string>
-    <string name="markup_ai_edit_history">기록</string>
     <string name="markup_rail_ai">AI</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">레이어 지우기</string>
     <string name="markup_clear_layers_message">모든 레이어가 삭제됩니다.</string>
-    <string name="markup_ai_replace_title">원본 이미지를 교체할까요?</string>
-    <string name="markup_ai_replace_message">처리 후 원본 이미지가 교체되며 되돌릴 수 없습니다. 계속할까요?</string>
     <string name="markup_crop_bake_title">레이어를 이미지에 병합할까요?</string>
     <string name="markup_crop_bake_message">회전하면 모든 레이어가 이미지에 병합되어 더 이상 개별적으로 편집할 수 없습니다. 계속할까요?</string>
 

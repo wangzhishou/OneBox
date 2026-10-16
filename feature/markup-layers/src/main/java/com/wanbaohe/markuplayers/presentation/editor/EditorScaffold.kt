@@ -107,8 +107,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberImagePicker
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
-import com.t8rin.imagetoolbox.core.ui.widget.editor.AiEditImage
-import com.t8rin.imagetoolbox.core.ui.widget.editor.AiGenerateImageSheet
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiStickerGeneration
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
@@ -129,7 +127,6 @@ import com.wanbaohe.markuplayers.domain.model.ShapeSpec
 import com.wanbaohe.markuplayers.presentation.components.EditBox
 import com.wanbaohe.markuplayers.presentation.components.LayersFloatingPanel
 import com.wanbaohe.markuplayers.presentation.components.LayersSheet
-import com.wanbaohe.markuplayers.presentation.components.layerDisplayName
 import com.wanbaohe.markuplayers.presentation.components.SheetHeader
 import com.wanbaohe.markuplayers.presentation.components.TextEditDialog
 import com.wanbaohe.markuplayers.presentation.draw.BrushSettingsDialog
@@ -207,15 +204,9 @@ fun EditorScaffold(
     var showAdjustSheet by rememberSaveable { mutableStateOf(false) }
     // 文字样式面板:进入文字编辑会话时打开;关闭面板不结束会话(画布上继续就地改字)
     var showTextStyleSheet by rememberSaveable { mutableStateOf(false) }
-    // AI 生成图片弹层(共享 AiGenerateImageSheet,宿主薄壳负责预检)
-    var showAiGenerateSheet by rememberSaveable { mutableStateOf(false) }
-    var aiTargetAction by remember { mutableStateOf<AiTargetAction?>(null) }
-    var aiCandidateLayerId by remember { mutableStateOf<String?>(null) }
     // 图像修复框选模式:true 时画布叠加框选层(矩形相对底图归一化),底部换成取消/确认操作条
     var aiRectSelect by rememberSaveable { mutableStateOf(false) }
     var aiRect by remember { mutableStateOf(DEFAULT_AI_RECT) }
-    // Non-region AI operations confirm the chosen target before processing.
-    var pendingAiOp by remember { mutableStateOf<AiImageOp?>(null) }
     // 文字/形状图层选滤镜的待确认项:图层 id + 待应用滤镜,确认后光栅化为图片图层再应用
     var pendingRasterize by remember { mutableStateOf<RasterizeRequest?>(null) }
     // 底部 Tab 单一工作态:任一时刻至多一个 Tab 高亮(高亮即「当前工作态」)。
@@ -247,11 +238,6 @@ fun EditorScaffold(
             // 底部 Tab 互斥:已是当前 → 清除;否则设为当前(显隐/开关由 activeBottomTab 派生)
             tool.placement == EditorTool.Placement.BottomTab -> {
                 when {
-                    tool.id == EditorTools.ID_AI && activeBottomTab != tool.id -> {
-                        activeBottomTab = null
-                        aiCandidateLayerId = component.selectedLayerId
-                        aiTargetAction = AiTargetAction.Process
-                    }
                     // 「文字设置」Tab(对齐图文卡片):再点当前 Tab = 提交会话并收起
                     tool.id == EditorTools.ID_TEXT_STYLE -> {
                         if (activeBottomTab == tool.id) {
@@ -608,62 +594,33 @@ fun EditorScaffold(
         canAddTemplates = false
     )
 
-    AiTargetSheet(
-        component = component,
-        action = aiTargetAction,
-        candidateLayerId = aiCandidateLayerId,
-        onSelectTarget = { layerId, generationTarget ->
-            component.selectLayer(layerId)
-            if (aiTargetAction == AiTargetAction.Generate) {
-                component.setAiGenerationTarget(generationTarget ?: AiGenerationTarget.NewLayer)
-                showAiGenerateSheet = true
-            }
-            else activeBottomTab = EditorTools.ID_AI
-            aiTargetAction = null
-        },
-        onDismiss = { aiTargetAction = null }
-    )
-
+    // AI 处理面板:点底部 AI Tab 直达,自然语言生成/编辑与快捷处理都在一层完成。
+    // 能力卡点击即处理(积分在采用预览结果后才扣,取消预览不扣);
+    // prompt 提交:选中图片图层 = 图生图编辑,未选中 = 文生图新增图层
     AiToolSheet(
         visible = activeBottomTab == EditorTools.ID_AI,
         onDismiss = { if (activeBottomTab == EditorTools.ID_AI) activeBottomTab = null },
+        component = component,
         pointsCost = aiImageProcessPointsCost(),
         onOpClick = { op ->
-            // 需框选的能力先做登录+积分预检,通过才进框选;其余先确认再处理。
-            // 积分在采用预览结果后才扣,取消预览不扣。
             activeBottomTab = null
-            if (op.needsRect) startAiOp(op) else pendingAiOp = op
+            startAiOp(op)
         },
-        // AI 生成图片(原侧栏「AI」入口并入本面板):先收面板,再走目标选择 → 生成弹层
-        onGenerateClick = {
-            activeBottomTab = null
-            component.prepareAiGeneration()
-            aiCandidateLayerId = component.selectedLayerId
-            aiTargetAction = AiTargetAction.Generate
-        }
-    )
-
-    // The confirmation copy describes undoable replacement of the selected target.
-    EnhancedAlertDialog(
-        visible = pendingAiOp != null,
-        onDismissRequest = { pendingAiOp = null },
-        title = { Text(stringResource(R.string.markup_ai_replace_title)) },
-        text = { Text(stringResource(R.string.markup_ai_replace_message)) },
-        dismissButton = {
-            CancelButton(
-                text = stringResource(R.string.markup_cancel),
-                onClick = { pendingAiOp = null }
-            )
-        },
-        confirmButton = {
-            ConfirmButton(
-                text = stringResource(R.string.markup_confirm),
-                onClick = {
-                    val op = pendingAiOp ?: return@ConfirmButton
-                    pendingAiOp = null
-                    startAiOp(op)
-                }
-            )
+        onGenerateSubmit = { prompt, edit ->
+            if (edit && !component.canAiEdit) {
+                AppToastHost.showFailureToast(R.string.studio_ai_edit_unsupported)
+                return@AiToolSheet
+            }
+            ActionUtils.ensureLoginAndCheckPoints(
+                source = AI_POINTS_SOURCE,
+                point = aiImageProcessPointsCost()
+            ) {
+                component.setAiGenerationTarget(
+                    if (edit) AiGenerationTarget.SelectedLayer else AiGenerationTarget.NewLayer
+                )
+                component.generateImageLayer(prompt)
+                activeBottomTab = null
+            }
         }
     )
 
@@ -694,42 +651,6 @@ fun EditorScaffold(
                 }
             )
         }
-    )
-
-    // AI 生成图片(共享 core/ui AiGenerateImageSheet;宿主薄壳负责登录+积分预检):
-    // 选中图片图层时图生图编辑(成功后换图,回退走现有 undo 体系,不另建历史)
-    AiGenerateImageSheet(
-        visible = showAiGenerateSheet,
-        title = stringResource(R.string.markup_ai_generate_title),
-        editTitle = stringResource(R.string.markup_ai_edit_image_title),
-        promptHint = stringResource(R.string.markup_ai_generate_hint),
-        editPromptHint = stringResource(R.string.markup_ai_edit_image_hint),
-        generateLabel = stringResource(R.string.markup_ai_generate_action),
-        pointsHint = stringResource(
-            R.string.markup_ai_generate_points_hint,
-            aiImageProcessPointsCost()
-        ),
-        emptyHint = stringResource(R.string.markup_ai_generate_empty),
-        currentLabel = stringResource(R.string.markup_ai_edit_current),
-        historyLabel = stringResource(R.string.markup_ai_edit_history),
-        isGenerating = component.isAiProcessing,
-        editImage = component.aiEditImageUri?.let { uri ->
-            AiEditImage(
-                uri = uri,
-                historyUris = component.aiImageHistory,
-                onRevert = component::revertAiImage
-            )
-        },
-        onGenerate = { prompt ->
-            ActionUtils.ensureLoginAndCheckPoints(
-                source = AI_POINTS_SOURCE,
-                point = aiImageProcessPointsCost()
-            ) {
-                component.generateImageLayer(prompt)
-                showAiGenerateSheet = false
-            }
-        },
-        onDismiss = { showAiGenerateSheet = false }
     )
 
     AiResultSheet(component = component)
@@ -839,96 +760,11 @@ fun EditorScaffold(
 
 }
 
-private enum class AiTargetAction { Process, Generate }
-
 private data class RasterizeRequest(
     val layerId: String,
     val filter: UiFilter<*>,
     val append: Boolean,
 )
-
-@Composable
-private fun AiTargetSheet(
-    component: MarkupLayersComponent,
-    action: AiTargetAction?,
-    candidateLayerId: String?,
-    onSelectTarget: (String?, AiGenerationTarget?) -> Unit,
-    onDismiss: () -> Unit,
-) {
-    val candidate = component.layers.firstOrNull {
-        it.id == candidateLayerId && it.type is LayerType.Image && !it.transform.locked
-    }
-    EnhancedModalBottomSheet(
-        visible = action != null,
-        dragHandle = {},
-        onDismiss = { onDismiss() },
-        sheetContent = {
-            SheetHeader(
-                title = stringResource(R.string.studio_ai_target_title),
-                onClose = onDismiss
-            )
-            Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.studio_ai_target_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                candidate?.let { layer ->
-                    ConfirmButton(
-                        text = stringResource(
-                            R.string.studio_ai_target_layer,
-                            layerDisplayName(layer, component.layers)
-                        ),
-                        enabled = !component.isAiProcessing &&
-                            (action != AiTargetAction.Generate || component.canAiEdit),
-                        onClick = {
-                            onSelectTarget(
-                                layer.id,
-                                if (action == AiTargetAction.Generate) AiGenerationTarget.SelectedLayer else null
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
-                    )
-                }
-                ConfirmButton(
-                    text = stringResource(R.string.studio_ai_target_base),
-                    enabled = !component.isAiProcessing &&
-                        (action != AiTargetAction.Generate || component.canAiEdit),
-                    onClick = {
-                        onSelectTarget(
-                            null,
-                            if (action == AiTargetAction.Generate) AiGenerationTarget.Background else null
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
-                )
-                if (action == AiTargetAction.Generate) {
-                    ConfirmButton(
-                        text = stringResource(R.string.studio_ai_target_generate),
-                        enabled = !component.isAiProcessing,
-                        onClick = { onSelectTarget(null, AiGenerationTarget.NewLayer) },
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
-                    )
-                    if (!component.canAiEdit) {
-                        Text(
-                            text = stringResource(R.string.studio_ai_provider_no_edit),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-                CancelButton(
-                    text = stringResource(R.string.markup_cancel),
-                    onClick = onDismiss,
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
-                )
-            }
-        }
-    )
-}
 
 @Composable
 private fun AiResultSheet(component: MarkupLayersComponent) {

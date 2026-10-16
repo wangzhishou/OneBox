@@ -45,9 +45,6 @@
     <string name="markup_tool_layers">レイヤー</string>
 
     <string name="markup_ai_sheet_title">AI スマート処理</string>
-    <string name="markup_ai_sheet_subtitle">画像の内容を理解し、ワンタップで画質と表現力を向上</string>
-    <string name="markup_ai_badge_new">NEW</string>
-    <string name="markup_ai_points_badge">%1$d ポイント</string>
     <string name="markup_ai_dehaze">かすみ除去</string>
     <string name="markup_ai_dehaze_sub">かすみや霧を取り除き、クリアな景色に</string>
     <string name="markup_ai_contrast_enhance">コントラスト強化</string>
@@ -197,21 +194,16 @@
     <string name="markup_export_failed_no_image">書き出せる画像がありません</string>
     <string name="markup_cancel">キャンセル</string>
     <string name="markup_ai_generate_title">AI で画像生成</string>
-    <string name="markup_ai_edit_image_title">AI で画像を編集</string>
     <string name="markup_ai_generate_hint">生成したい画像を説明してください。例:月でギターを弾く猫</string>
     <string name="markup_ai_edit_image_hint">編集内容を説明してください。例:背景を星空に変える</string>
     <string name="markup_ai_generate_action">生成</string>
     <string name="markup_ai_generate_points_hint">生成ごとに %1$d ポイント消費</string>
     <string name="markup_ai_generate_empty">画像の説明を入力してください</string>
-    <string name="markup_ai_edit_current">現在</string>
-    <string name="markup_ai_edit_history">履歴</string>
     <string name="markup_rail_ai">AI</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">レイヤーをクリア</string>
     <string name="markup_clear_layers_message">すべてのレイヤーが削除されます。</string>
-    <string name="markup_ai_replace_title">元の画像を置き換えますか?</string>
-    <string name="markup_ai_replace_message">処理後、元の画像は置き換えられ、元に戻せません。続行しますか?</string>
     <string name="markup_crop_bake_title">レイヤーを画像に結合しますか?</string>
     <string name="markup_crop_bake_message">回転するとすべてのレイヤーが画像に結合され、個別に編集できなくなります。続行しますか?</string>
 

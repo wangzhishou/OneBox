@@ -50,9 +50,6 @@
 
     <!-- AI 处理 -->
     <string name="markup_ai_sheet_title">AI Smart Processing</string>
-    <string name="markup_ai_sheet_subtitle">Nauunawaan ang nilalaman ng larawan at pinapahusay ang kalidad at pagkamalikhain sa isang tap</string>
-    <string name="markup_ai_badge_new">NEW</string>
-    <string name="markup_ai_points_badge">%1$d puntos</string>
     <string name="markup_ai_dehaze">Alisin ang Hamog</string>
     <string name="markup_ai_dehaze_sub">Alisin ang hamog at ulap para sa malinaw na tanawin</string>
     <string name="markup_ai_contrast_enhance">Pahusayin ang Contrast</string>
@@ -213,21 +210,16 @@
     <string name="markup_export_failed_no_image">Walang larawang puwedeng i-export</string>
     <string name="markup_cancel">Kanselahin</string>
     <string name="markup_ai_generate_title">Bumuo ng Larawan (AI)</string>
-    <string name="markup_ai_edit_image_title">I-edit ang Larawan (AI)</string>
     <string name="markup_ai_generate_hint">Ilarawan ang larawan, hal. pusang nag-gitara sa buwan</string>
     <string name="markup_ai_edit_image_hint">Ilarawan ang edit, hal. palitan ang background ng starry sky</string>
     <string name="markup_ai_generate_action">Gawin</string>
     <string name="markup_ai_generate_points_hint">%1$d puntos bawat generate</string>
     <string name="markup_ai_generate_empty">Maglagay ng paglalarawan ng larawan</string>
-    <string name="markup_ai_edit_current">Kasalukuyan</string>
-    <string name="markup_ai_edit_history">Kasaysayan</string>
     <string name="markup_rail_ai">AI</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">I-clear ang mga layer</string>
     <string name="markup_clear_layers_message">Tatanggalin nito ang lahat ng layer.</string>
-    <string name="markup_ai_replace_title">Palitan ang orihinal na imahe?</string>
-    <string name="markup_ai_replace_message">Mapapalitan ang orihinal na imahe pagkatapos ng pagproseso at hindi na maibabalik. Magpatuloy?</string>
     <string name="markup_crop_bake_title">Pagsamahin ang mga layer sa imahe?</string>
     <string name="markup_crop_bake_message">Kapag pinaikot, pagsasamahin ang lahat ng layer sa imahe at hindi na sila maa-edit nang paisa-isa. Magpatuloy?</string>
 

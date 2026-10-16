@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">Terangkan</string>
     <string name="studio_target">Target pengeditan</string>
     <string name="studio_target_layer">Lapisan terpilih</string>
-    <string name="studio_ai_target_title">Pilih target AI</string>
-    <string name="studio_ai_target_base">Gambar latar belakang</string>
-    <string name="studio_ai_target_layer">Lapisan gambar terpilih: %1$s</string>
-    <string name="studio_ai_target_generate">Buat lapisan gambar baru</string>
-    <string name="studio_ai_target_hint">Pilih gambar untuk diedit. Setiap hasil dapat dipulihkan dari Riwayat atau Urungkan.</string>
-    <string name="studio_ai_provider_no_edit">Penyedia gambar ini hanya mendukung pembuatan. Pilih penyedia yang mendukung pengeditan di pengaturan untuk mengedit gambar yang ada.</string>
     <string name="studio_ai_result_title">Hasil AI: %1$s</string>
     <string name="studio_ai_result_preview">Pratinjau hasil AI</string>
     <string name="studio_ai_result_replace">Ganti gambar terpilih</string>

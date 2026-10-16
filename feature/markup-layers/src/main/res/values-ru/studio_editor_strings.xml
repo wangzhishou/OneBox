@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">Осветление</string>
     <string name="studio_target">Цель редактирования</string>
     <string name="studio_target_layer">Выбранный слой</string>
-    <string name="studio_ai_target_title">Выберите цель ИИ</string>
-    <string name="studio_ai_target_base">Фоновое изображение</string>
-    <string name="studio_ai_target_layer">Выбранный слой изображения: %1$s</string>
-    <string name="studio_ai_target_generate">Создать новый слой изображения</string>
-    <string name="studio_ai_target_hint">Выберите изображение для редактирования. Каждый результат можно восстановить из истории или отмены.</string>
-    <string name="studio_ai_provider_no_edit">Этот поставщик изображений поддерживает только генерацию. Выберите в настройках поставщика с поддержкой редактирования, чтобы редактировать существующее изображение.</string>
     <string name="studio_ai_result_title">Результат ИИ: %1$s</string>
     <string name="studio_ai_result_preview">Предпросмотр результата ИИ</string>
     <string name="studio_ai_result_replace">Заменить выбранное изображение</string>

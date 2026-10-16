@@ -51,9 +51,6 @@
 
     <!-- AI 处理 -->
     <string name="markup_ai_sheet_title">AI Smart Processing</string>
-    <string name="markup_ai_sheet_subtitle">Understands image content and boosts quality and creativity in one tap</string>
-    <string name="markup_ai_badge_new">NEW</string>
-    <string name="markup_ai_points_badge">%1$d points</string>
     <string name="markup_ai_dehaze">Dehaze</string>
     <string name="markup_ai_dehaze_sub">Remove haze and fog for a clear scene</string>
     <string name="markup_ai_contrast_enhance">Contrast Enhance</string>
@@ -214,21 +211,15 @@
     <string name="markup_export_failed_no_image">No image to export</string>
     <string name="markup_cancel">Cancel</string>
     <string name="markup_ai_generate_title">Generate Image (AI)</string>
-    <string name="markup_ai_generate_card_desc">Generate an image from a text description, or edit the selected image layer</string>
-    <string name="markup_ai_edit_image_title">Edit Image (AI)</string>
     <string name="markup_ai_generate_hint">Describe the image, e.g. a cat playing guitar on the moon</string>
     <string name="markup_ai_edit_image_hint">Describe the edit, e.g. replace the background with a starry sky</string>
     <string name="markup_ai_generate_action">Generate</string>
     <string name="markup_ai_generate_points_hint">%1$d points per generation</string>
     <string name="markup_ai_generate_empty">Please enter an image description</string>
-    <string name="markup_ai_edit_current">Current</string>
-    <string name="markup_ai_edit_history">History</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">Clear layers</string>
     <string name="markup_clear_layers_message">This will delete all layers.</string>
-    <string name="markup_ai_replace_title">Replace original image?</string>
-    <string name="markup_ai_replace_message">The original image will be replaced after processing and cannot be undone. Continue?</string>
     <string name="markup_crop_bake_title">Merge layers into image?</string>
     <string name="markup_crop_bake_message">Rotating will merge all layers into the image, and they can no longer be edited individually. Continue?</string>
 

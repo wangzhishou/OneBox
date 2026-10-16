@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">Aclarar</string>
     <string name="studio_target">Objetivo de edición</string>
     <string name="studio_target_layer">Capa seleccionada</string>
-    <string name="studio_ai_target_title">Elegir un objetivo de IA</string>
-    <string name="studio_ai_target_base">Imagen de fondo</string>
-    <string name="studio_ai_target_layer">Capa de imagen seleccionada: %1$s</string>
-    <string name="studio_ai_target_generate">Generar una nueva capa de imagen</string>
-    <string name="studio_ai_target_hint">Elige la imagen a editar. Cada resultado se puede restaurar desde el Historial o Deshacer.</string>
-    <string name="studio_ai_provider_no_edit">Este proveedor de imágenes solo admite generación. Selecciona un proveedor con capacidad de edición en los ajustes para editar una imagen existente.</string>
     <string name="studio_ai_result_title">Resultado de IA: %1$s</string>
     <string name="studio_ai_result_preview">Vista previa del resultado de IA</string>
     <string name="studio_ai_result_replace">Reemplazar imagen elegida</string>

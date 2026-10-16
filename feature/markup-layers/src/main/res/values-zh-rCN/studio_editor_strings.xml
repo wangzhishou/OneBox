@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">变亮</string>
     <string name="studio_target">编辑目标</string>
     <string name="studio_target_layer">所选图层</string>
-    <string name="studio_ai_target_title">选择 AI 编辑目标</string>
-    <string name="studio_ai_target_base">背景图片</string>
-    <string name="studio_ai_target_layer">所选图片图层：%1$s</string>
-    <string name="studio_ai_target_generate">生成新的图片图层</string>
-    <string name="studio_ai_target_hint">选择要编辑的图片，可通过历史记录或撤销恢复结果。</string>
-    <string name="studio_ai_provider_no_edit">当前图片服务商仅支持生成，请在设置中选择支持图片编辑的服务商，再编辑已有图片。</string>
     <string name="studio_ai_result_title">AI 结果：%1$s</string>
     <string name="studio_ai_result_preview">AI 结果预览</string>
     <string name="studio_ai_result_replace">替换所选图片</string>

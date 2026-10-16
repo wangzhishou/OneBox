@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">Aufhellen</string>
     <string name="studio_target">Bearbeitungsziel</string>
     <string name="studio_target_layer">Ausgewählte Ebene</string>
-    <string name="studio_ai_target_title">KI-Ziel auswählen</string>
-    <string name="studio_ai_target_base">Hintergrundbild</string>
-    <string name="studio_ai_target_layer">Ausgewählte Bild-Ebene: %1$s</string>
-    <string name="studio_ai_target_generate">Neue Bild-Ebene erstellen</string>
-    <string name="studio_ai_target_hint">Wähle das zu bearbeitende Bild. Jedes Ergebnis kann über Verlauf oder Rückgängig wiederhergestellt werden.</string>
-    <string name="studio_ai_provider_no_edit">Dieser Bildanbieter unterstützt nur die Generierung. Wähle in den Einstellungen einen bearbeitungsfähigen Anbieter, um ein vorhandenes Bild zu bearbeiten.</string>
     <string name="studio_ai_result_title">KI-Ergebnis: %1$s</string>
     <string name="studio_ai_result_preview">KI-Ergebnisvorschau</string>
     <string name="studio_ai_result_replace">Gewähltes Bild ersetzen</string>

@@ -45,9 +45,6 @@
     <string name="markup_tool_layers">Слои</string>
 
     <string name="markup_ai_sheet_title">Умная обработка AI</string>
-    <string name="markup_ai_sheet_subtitle">Распознаёт содержимое изображения и улучшает качество и креативность в одно нажатие</string>
-    <string name="markup_ai_badge_new">NEW</string>
-    <string name="markup_ai_points_badge">%1$d баллов</string>
     <string name="markup_ai_dehaze">Удаление дымки</string>
     <string name="markup_ai_dehaze_sub">Уберите дымку и туман для чёткой картинки</string>
     <string name="markup_ai_contrast_enhance">Усиление контраста</string>
@@ -197,21 +194,16 @@
     <string name="markup_export_failed_no_image">Нет изображения для экспорта</string>
     <string name="markup_cancel">Отмена</string>
     <string name="markup_ai_generate_title">Создать изображение (ИИ)</string>
-    <string name="markup_ai_edit_image_title">Редактировать изображение (ИИ)</string>
     <string name="markup_ai_generate_hint">Опишите изображение, например кот, играющий на гитаре на Луне</string>
     <string name="markup_ai_edit_image_hint">Опишите правку, например заменить фон на звёздное небо</string>
     <string name="markup_ai_generate_action">Создать</string>
     <string name="markup_ai_generate_points_hint">%1$d баллов за генерацию</string>
     <string name="markup_ai_generate_empty">Введите описание изображения</string>
-    <string name="markup_ai_edit_current">Текущее</string>
-    <string name="markup_ai_edit_history">История</string>
     <string name="markup_rail_ai">AI</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">Очистить слои</string>
     <string name="markup_clear_layers_message">Все слои будут удалены.</string>
-    <string name="markup_ai_replace_title">Заменить исходное изображение?</string>
-    <string name="markup_ai_replace_message">После обработки исходное изображение будет заменено, отменить будет нельзя. Продолжить?</string>
     <string name="markup_crop_bake_title">Объединить слои с изображением?</string>
     <string name="markup_crop_bake_message">При повороте все слои будут объединены с изображением, редактировать их по отдельности будет нельзя. Продолжить?</string>
 

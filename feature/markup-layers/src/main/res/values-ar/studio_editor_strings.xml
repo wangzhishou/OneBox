@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">تفتيح</string>
     <string name="studio_target">هدف التحرير</string>
     <string name="studio_target_layer">الطبقة المحددة</string>
-    <string name="studio_ai_target_title">اختر هدف الذكاء الاصطناعي</string>
-    <string name="studio_ai_target_base">صورة الخلفية</string>
-    <string name="studio_ai_target_layer">طبقة الصورة المحددة: %1$s</string>
-    <string name="studio_ai_target_generate">إنشاء طبقة صورة جديدة</string>
-    <string name="studio_ai_target_hint">اختر الصورة المراد تحريرها. يمكن استعادة كل نتيجة من السجل أو التراجع.</string>
-    <string name="studio_ai_provider_no_edit">مزود الصور هذا يدعم الإنشاء فقط. اختر مزوداً يدعم التحرير في الإعدادات لتحرير صورة موجودة.</string>
     <string name="studio_ai_result_title">نتيجة الذكاء الاصطناعي: %1$s</string>
     <string name="studio_ai_result_preview">معاينة نتيجة الذكاء الاصطناعي</string>
     <string name="studio_ai_result_replace">استبدال الصورة المختارة</string>

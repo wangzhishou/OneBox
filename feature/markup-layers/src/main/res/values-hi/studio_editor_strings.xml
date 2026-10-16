@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">लाइटन</string>
     <string name="studio_target">संपादन लक्ष्य</string>
     <string name="studio_target_layer">चयनित स्तर</string>
-    <string name="studio_ai_target_title">AI लक्ष्य चुनें</string>
-    <string name="studio_ai_target_base">पृष्ठभूमि छवि</string>
-    <string name="studio_ai_target_layer">चयनित छवि स्तर: %1$s</string>
-    <string name="studio_ai_target_generate">नया छवि स्तर बनाएँ</string>
-    <string name="studio_ai_target_hint">संपादित करने के लिए छवि चुनें। प्रत्येक परिणाम को इतिहास या पूर्ववत से पुनर्स्थापित किया जा सकता है।</string>
-    <string name="studio_ai_provider_no_edit">यह छवि प्रदाता केवल जनरेशन का समर्थन करता है। मौजूदा छवि को संपादित करने के लिए सेटिंग्स में संपादन-सक्षम प्रदाता चुनें।</string>
     <string name="studio_ai_result_title">AI परिणाम: %1$s</string>
     <string name="studio_ai_result_preview">AI परिणाम पूर्वावलोकन</string>
     <string name="studio_ai_result_replace">चयनित छवि बदलें</string>

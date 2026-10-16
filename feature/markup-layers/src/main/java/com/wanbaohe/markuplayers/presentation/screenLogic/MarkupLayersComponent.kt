@@ -244,12 +244,6 @@ class MarkupLayersComponent @AssistedInject internal constructor(
                 ?.imageData?.toString()
             AiGenerationTarget.Background -> _uri.value?.toString()
         }
-    val aiImageHistory: List<String>
-        get() = when (aiGenerationTarget) {
-            AiGenerationTarget.NewLayer -> emptyList()
-            AiGenerationTarget.SelectedLayer -> selectedLayer?.imageHistory.orEmpty()
-            AiGenerationTarget.Background -> _baseImageHistory.value
-        }
     val originalSourceUri: Uri? get() = _sourceUri.value?.toUri()
     val canOverwriteOriginal: Boolean
         get() = _sourceUri.value?.let { source ->
@@ -957,14 +951,6 @@ class MarkupLayersComponent @AssistedInject internal constructor(
         cancelImageTasks()
     }
 
-    fun prepareAiGeneration() {
-        _aiGenerationTarget.value = if (selectedLayer?.type is LayerType.Image && canAiEdit) {
-            AiGenerationTarget.SelectedLayer
-        } else {
-            AiGenerationTarget.NewLayer
-        }
-    }
-
     fun setAiGenerationTarget(target: AiGenerationTarget) {
         if (target != AiGenerationTarget.NewLayer && !canAiEdit) {
             AppToastHost.showFailureToast(R.string.studio_ai_edit_unsupported)
@@ -1024,31 +1010,6 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             source = AI_POINTS_SOURCE,
             showToast = true
         )
-    }
-
-    fun revertAiImage(uri: String) {
-        if (aiGenerationTarget == AiGenerationTarget.SelectedLayer) {
-            val layer = selectedLayer ?: return
-            if (uri !in layer.imageHistory) {
-                AppToastHost.showFailureToast(R.string.studio_image_read_failed)
-                return
-            }
-            replaceImageLayer(layer.id, uri)
-        } else if (aiGenerationTarget == AiGenerationTarget.Background) {
-            if (uri !in _baseImageHistory.value) {
-                AppToastHost.showFailureToast(R.string.studio_image_read_failed)
-                return
-            }
-            imageLoadingJob = launchImageTask(R.string.studio_task_loading, ImageTask.Loading) {
-                val (size, preview) = studioImageReader.preview(uri)
-                history.snapshot(_layers.value)
-                _baseImageHistory.update { ((it - uri) + captureDocument().baseUri).takeLast(50) }
-                _uri.value = uri.toUri()
-                _sourceSize.value = IntSize(size.width, size.height)
-                updateBitmap(preview)
-                onLayersChanged()
-            }
-        }
     }
 
     private fun replaceImageLayer(id: String, path: String): Boolean {

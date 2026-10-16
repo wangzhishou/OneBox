@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">Lighten</string>
     <string name="studio_target">Target sa pag-edit</string>
     <string name="studio_target_layer">Napiling layer</string>
-    <string name="studio_ai_target_title">Pumili ng AI target</string>
-    <string name="studio_ai_target_base">Background na larawan</string>
-    <string name="studio_ai_target_layer">Napiling image layer: %1$s</string>
-    <string name="studio_ai_target_generate">Gumawa ng bagong image layer</string>
-    <string name="studio_ai_target_hint">Piliin ang larawang ie-edit. Ang bawat resulta ay maibabalik mula sa History o Undo.</string>
-    <string name="studio_ai_provider_no_edit">Ang image provider na ito ay sumusuporta lamang sa paggawa. Pumili ng provider na may kakayahang mag-edit sa settings para i-edit ang umiiral na larawan.</string>
     <string name="studio_ai_result_title">Resulta ng AI: %1$s</string>
     <string name="studio_ai_result_preview">Preview ng resulta ng AI</string>
     <string name="studio_ai_result_replace">Palitan ang napiling larawan</string>

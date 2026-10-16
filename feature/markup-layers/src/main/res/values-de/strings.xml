@@ -50,9 +50,6 @@
 
     <!-- AI 处理 -->
     <string name="markup_ai_sheet_title">AI-Smart-Verarbeitung</string>
-    <string name="markup_ai_sheet_subtitle">Erkennt Bildinhalte und verbessert Qualität und Kreativität mit einem Fingertipp</string>
-    <string name="markup_ai_badge_new">NEU</string>
-    <string name="markup_ai_points_badge">%1$d Punkte</string>
     <string name="markup_ai_dehaze">Dunst entfernen</string>
     <string name="markup_ai_dehaze_sub">Dunst und Nebel für eine klare Szene entfernen</string>
     <string name="markup_ai_contrast_enhance">Kontrast verbessern</string>
@@ -213,21 +210,16 @@
     <string name="markup_export_failed_no_image">Kein Bild zum Exportieren</string>
     <string name="markup_cancel">Abbrechen</string>
     <string name="markup_ai_generate_title">Bild mit KI generieren</string>
-    <string name="markup_ai_edit_image_title">Bild mit KI bearbeiten</string>
     <string name="markup_ai_generate_hint">Beschreibe das Bild, z. B. eine Katze, die auf dem Mond Gitarre spielt</string>
     <string name="markup_ai_edit_image_hint">Beschreibe die Änderung, z. B. ersetze den Hintergrund durch einen Sternenhimmel</string>
     <string name="markup_ai_generate_action">Generieren</string>
     <string name="markup_ai_generate_points_hint">%1$d Punkte pro Generierung</string>
     <string name="markup_ai_generate_empty">Bitte eine Bildbeschreibung eingeben</string>
-    <string name="markup_ai_edit_current">Aktuell</string>
-    <string name="markup_ai_edit_history">Verlauf</string>
     <string name="markup_rail_ai">AI</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">Ebenen löschen</string>
     <string name="markup_clear_layers_message">Dadurch werden alle Ebenen gelöscht.</string>
-    <string name="markup_ai_replace_title">Originalbild ersetzen?</string>
-    <string name="markup_ai_replace_message">Das Originalbild wird nach der Verarbeitung ersetzt und kann nicht rückgängig gemacht werden. Fortfahren?</string>
     <string name="markup_crop_bake_title">Ebenen ins Bild einbetten?</string>
     <string name="markup_crop_bake_message">Beim Drehen werden alle Ebenen ins Bild eingebettet und können nicht mehr einzeln bearbeitet werden. Fortfahren?</string>
 

@@ -50,9 +50,6 @@
 
     <!-- AI 处理 -->
     <string name="markup_ai_sheet_title">AI स्मार्ट प्रोसेसिंग</string>
-    <string name="markup_ai_sheet_subtitle">इमेज की सामग्री को समझता है और एक टैप में गुणवत्ता और क्रिएटिविटी बढ़ाता है</string>
-    <string name="markup_ai_badge_new">NEW</string>
-    <string name="markup_ai_points_badge">%1$d पॉइंट</string>
     <string name="markup_ai_dehaze">धुंध हटाएं</string>
     <string name="markup_ai_dehaze_sub">साफ़ दृश्य के लिए धुंध और कोहरा हटाएं</string>
     <string name="markup_ai_contrast_enhance">कंट्रास्ट बढ़ाएं</string>
@@ -213,21 +210,16 @@
     <string name="markup_export_failed_no_image">एक्सपोर्ट करने के लिए कोई इमेज नहीं</string>
     <string name="markup_cancel">रद्द करें</string>
     <string name="markup_ai_generate_title">AI से छवि बनाएं</string>
-    <string name="markup_ai_edit_image_title">AI से छवि संपादित करें</string>
     <string name="markup_ai_generate_hint">छवि का वर्णन करें, जैसे चंद्रमा पर गिटार बजाती एक बिल्ली</string>
     <string name="markup_ai_edit_image_hint">संपादन का वर्णन करें, जैसे पृष्ठभूमि को तारों भरे आसमान से बदलें</string>
     <string name="markup_ai_generate_action">बनाएं</string>
     <string name="markup_ai_generate_points_hint">प्रत्येक जेनरेशन पर %1$d पॉइंट</string>
     <string name="markup_ai_generate_empty">कृपया छवि का विवरण दर्ज करें</string>
-    <string name="markup_ai_edit_current">वर्तमान</string>
-    <string name="markup_ai_edit_history">इतिहास</string>
     <string name="markup_rail_ai">AI</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">लेयर साफ़ करें</string>
     <string name="markup_clear_layers_message">इससे सभी लेयर हट जाएंगी।</string>
-    <string name="markup_ai_replace_title">मूल छवि बदलें?</string>
-    <string name="markup_ai_replace_message">प्रोसेसिंग के बाद मूल छवि बदल दी जाएगी और इसे पूर्ववत नहीं किया जा सकेगा। जारी रखें?</string>
     <string name="markup_crop_bake_title">लेयर को छवि में मर्ज करें?</string>
     <string name="markup_crop_bake_message">घुमाने पर सभी लेयर छवि में मर्ज हो जाएंगी और उन्हें अलग-अलग संपादित नहीं किया जा सकेगा। जारी रखें?</string>
 

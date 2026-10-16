@@ -83,12 +83,6 @@
     <string name="studio_blend_lighten">Lighten</string>
     <string name="studio_target">Editing target</string>
     <string name="studio_target_layer">Selected layer</string>
-    <string name="studio_ai_target_title">Choose an AI target</string>
-    <string name="studio_ai_target_base">Background image</string>
-    <string name="studio_ai_target_layer">Selected image layer: %1$s</string>
-    <string name="studio_ai_target_generate">Generate a new image layer</string>
-    <string name="studio_ai_target_hint">Choose the image to edit. Each result can be restored from History or Undo.</string>
-    <string name="studio_ai_provider_no_edit">This image provider supports generation only. Select an editing-capable provider in settings to edit an existing image.</string>
     <string name="studio_ai_result_title">AI result: %1$s</string>
     <string name="studio_ai_result_preview">AI result preview</string>
     <string name="studio_ai_result_replace">Replace chosen image</string>

@@ -45,9 +45,6 @@
     <string name="markup_tool_layers">Katmanlar</string>
 
     <string name="markup_ai_sheet_title">AI Akıllı İşleme</string>
-    <string name="markup_ai_sheet_subtitle">Görsel içeriğini anlar, tek dokunuşla kaliteyi ve yaratıcılığı artırır</string>
-    <string name="markup_ai_badge_new">YENİ</string>
-    <string name="markup_ai_points_badge">%1$d puan</string>
     <string name="markup_ai_dehaze">Sis Giderme</string>
     <string name="markup_ai_dehaze_sub">Net bir sahne için sisi ve pusları giderin</string>
     <string name="markup_ai_contrast_enhance">Kontrast Artırma</string>
@@ -197,21 +194,16 @@
     <string name="markup_export_failed_no_image">Dışa aktarılacak görsel yok</string>
     <string name="markup_cancel">İptal</string>
     <string name="markup_ai_generate_title">YZ ile görsel oluştur</string>
-    <string name="markup_ai_edit_image_title">Görseli YZ ile düzenle</string>
     <string name="markup_ai_generate_hint">Görseli tarif edin, örn. Ay\'da gitar çalan bir kedi</string>
     <string name="markup_ai_edit_image_hint">Düzenlemeyi tarif edin, örn. arka planı yıldızlı gökyüzüyle değiştirin</string>
     <string name="markup_ai_generate_action">Oluştur</string>
     <string name="markup_ai_generate_points_hint">Oluşturma başına %1$d puan</string>
     <string name="markup_ai_generate_empty">Lütfen bir görsel açıklaması girin</string>
-    <string name="markup_ai_edit_current">Mevcut</string>
-    <string name="markup_ai_edit_history">Geçmiş</string>
     <string name="markup_rail_ai">AI</string>
 
     <!-- 破坏性操作二次确认 -->
     <string name="markup_clear_layers_title">Katmanları temizle</string>
     <string name="markup_clear_layers_message">Bu işlem tüm katmanları silecek.</string>
-    <string name="markup_ai_replace_title">Orijinal resim değiştirilsin mi?</string>
-    <string name="markup_ai_replace_message">İşlemden sonra orijinal resim değiştirilecek ve geri alınamayacak. Devam edilsin mi?</string>
     <string name="markup_crop_bake_title">Katmanlar resme birleştirilsin mi?</string>
     <string name="markup_crop_bake_message">Döndürme işlemi tüm katmanları resme birleştirecek ve katmanlar artık ayrı ayrı düzenlenemeyecek. Devam edilsin mi?</string>
 
