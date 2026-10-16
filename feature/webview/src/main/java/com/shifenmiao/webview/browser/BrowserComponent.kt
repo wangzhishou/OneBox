@@ -9,7 +9,6 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.doOnStart
 import com.shifenmiao.base.utils.ImageUtils
 import com.shifenmiao.database.AppDatabase
-import com.shifenmiao.database.activity.ActivityLogRecorder
 import com.shifenmiao.database.data_draft.DataDraftHelper
 import com.shifenmiao.interfaces.bookmark.UrlBookmark
 import com.shifenmiao.interfaces.bookmark.UrlBookmarkService
@@ -53,7 +52,6 @@ class BrowserComponent @AssistedInject internal constructor(
     private val repository: BrowserRepository,
     private val bookmarkService: UrlBookmarkService,
     private val fileController: FileController,
-    private val activityLogRecorder: ActivityLogRecorder,
     private val automationService: BrowserAutomationService,
     private val dataDraftHelper: DataDraftHelper,
     private val shareProvider: ImageShareProvider<Bitmap>,
@@ -620,18 +618,6 @@ class BrowserComponent @AssistedInject internal constructor(
                         SaveResult.Error.Exception(Exception("WebView not available"))
                     }
                 }.getOrElse { SaveResult.Error.Exception(it) }
-            }
-            if (result is SaveResult.Success) {
-                runCatching {
-                    activityLogRecorder.recordImageSave(
-                        screenId = "browser",
-                        screenName = "浏览器",
-                        description = "导出网页截图: ${_state.value.currentTitle.ifEmpty { _state.value.currentUrl }}",
-                        fileUri = fileUri.toString(),
-                        fileName = getExportFileName() + ".png",
-                        savePath = result.savingPath.orEmpty()
-                    )
-                }
             }
             withContext(uiDispatcher) { onResult(result) }
         }

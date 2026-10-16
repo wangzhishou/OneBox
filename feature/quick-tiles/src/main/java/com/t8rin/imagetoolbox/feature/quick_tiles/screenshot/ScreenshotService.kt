@@ -58,6 +58,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.getScreenExtra
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.postToast
 import com.t8rin.imagetoolbox.core.ui.utils.helper.ContextUtils.putScreenExtra
 import com.t8rin.imagetoolbox.core.ui.utils.helper.IntentUtils.parcelable
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -201,7 +202,7 @@ class ScreenshotService : Service() {
                             }
                         )
                     } else {
-                        fileController.save(
+                        val saveResult = fileController.save(
                             saveTarget = FileSaveTarget(
                                 filename = "screenshot-${timestamp()}.png",
                                 originalUri = "screenshot",
@@ -224,10 +225,8 @@ class ScreenshotService : Service() {
                                 )
                             )
                         }
-                        postToast(
-                            textRes = R.string.saved_to_without_filename,
-                            fileController.defaultSavingPath
-                        )
+                        // 标准保存结果管线：toast(带「打开」) + 撒花 + ActivityLog
+                        SaveSuccessNotifier.notify(saveResult)
                     }
 
                     stopForeground(STOP_FOREGROUND_REMOVE)

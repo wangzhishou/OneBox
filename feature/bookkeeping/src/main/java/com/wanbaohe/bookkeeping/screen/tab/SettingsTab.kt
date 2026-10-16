@@ -56,12 +56,14 @@ import com.shifenmiao.common.components.category.CategoryManagementDialog
 import com.shifenmiao.common.components.category.ManageableItem
 import com.shifenmiao.model.Source
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.FileType
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.wanbaohe.bookkeeping.R
@@ -99,11 +101,9 @@ internal fun SettingsTab(
     val allCategories by component.allCategoriesFlow.collectAsState()
 
     val context = LocalComponentActivity.current
-    val backupSuccessText = stringResource(R.string.bookkeeping_backup_success)
     val backupFailedText = stringResource(R.string.bookkeeping_backup_failed)
     val restoreFailedText = stringResource(R.string.bookkeeping_restore_failed)
     val restoreEmptyCategoriesText = stringResource(R.string.bookkeeping_restore_empty_categories)
-    val csvExportSuccessText = stringResource(R.string.bookkeeping_csv_export_success)
     val csvExportFailedText = stringResource(R.string.bookkeeping_csv_export_failed)
     val csvImportFailedText = stringResource(R.string.bookkeeping_csv_import_failed)
     val backupFileName = stringResource(
@@ -125,7 +125,11 @@ internal fun SettingsTab(
             component.exportBackup(
                 onSuccess = { json ->
                     if (context.writeTextToUri(uri, json)) {
-                        AppToastHost.showToast(backupSuccessText)
+                        SaveSuccessNotifier.notifyFileSaved(
+                            fileUri = uri.toString(),
+                            fileName = backupFileName,
+                            savingPath = uri.toString().getPath(context).removeSuffix("/$backupFileName")
+                        )
                     } else {
                         AppToastHost.showToast(backupFailedText)
                     }
@@ -175,7 +179,13 @@ internal fun SettingsTab(
             component.exportCsv(
                 context = context,
                 uri = uri,
-                onSuccess = { AppToastHost.showToast(csvExportSuccessText) },
+                onSuccess = {
+                    SaveSuccessNotifier.notifyFileSaved(
+                        fileUri = uri.toString(),
+                        fileName = csvFileName,
+                        savingPath = uri.toString().getPath(context).removeSuffix("/$csvFileName")
+                    )
+                },
                 onFailure = { AppToastHost.showToast(csvExportFailedText) },
             )
         }

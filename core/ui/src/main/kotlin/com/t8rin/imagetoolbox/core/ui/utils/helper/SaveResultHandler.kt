@@ -257,7 +257,7 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
         }
     }
 
-    private fun saveSuccessMessage(saveResult: SaveResult.Success): String {
+    fun saveSuccessMessage(saveResult: SaveResult.Success): String {
         val folder = folderLabel(saveResult.savingPath)
         val fileName = saveResult.fileName?.takeIf { it.isNotBlank() }
         return if (fileName != null) {
@@ -333,6 +333,59 @@ internal object SaveResultHandlerImpl : SaveResultHandler {
             }
         }
     }
+}
+
+/**
+ * 非 BaseComponent 场景(Service、Dialog、Screen 回调里拿不到组件时)的
+ * 标准保存成功提示入口,行为与 [SaveResultHandler.parseSaveResult] 一致:
+ * 带「打开」按钮的 toast + 撒花 + 写 ActivityLog。
+ */
+object SaveSuccessNotifier {
+
+    /** 已有 [SaveResult] 时直接使用(如 FileController.save 的返回值)。 */
+    fun notify(saveResult: SaveResult) = SaveResultHandlerImpl.parseSaveResult(saveResult)
+
+    /** 批量保存结果(只写一条汇总 ActivityLog)。 */
+    fun notifyAll(results: List<SaveResult>) = SaveResultHandlerImpl.parseSaveResults(results)
+
+    /**
+     * 只有文件信息时拼装标准消息(「已使用名称 X 保存到 Y 文件夹」)后走标准管线。
+     */
+    fun notifyFileSaved(
+        fileUri: String,
+        fileName: String = "",
+        savingPath: String = ""
+    ) {
+        val folder = savingPath.ifBlank { getString(R.string.default_folder) }
+        val message = if (fileName.isNotBlank()) {
+            getString(R.string.saved_to, folder, fileName)
+        } else {
+            getString(R.string.saved_to_without_filename, folder)
+        }
+        SaveResultHandlerImpl.parseSaveResult(
+            SaveResult.Success(
+                message = message,
+                savingPath = savingPath.ifBlank { null },
+                fileUri = fileUri,
+                fileName = fileName.ifBlank { null }
+            )
+        )
+    }
+
+    /**
+     * 标准 toast 文案(目录只留最后一段),供需要自行写 ActivityLog 的场景复用。
+     */
+    fun successMessage(fileName: String, savingPath: String): String =
+        SaveResultHandlerImpl.saveSuccessMessage(
+            SaveResult.Success(savingPath = savingPath, fileName = fileName)
+        )
+
+    /**
+     * 只写 ActivityLog、不弹 toast 不撒花:AI Agent 工具等结果走对话流、
+     * 不打扰用户的场景。描述消息同样会做文件名/目录的链接化处理。
+     */
+    fun logOnly(saveResult: SaveResult.Success) =
+        SaveResultHandlerImpl.updateSaveResult(saveResult)
 }
 
 /**

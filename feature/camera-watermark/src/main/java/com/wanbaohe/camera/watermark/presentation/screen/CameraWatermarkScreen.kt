@@ -35,7 +35,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,9 +49,7 @@ import com.shifenmiao.common.ui.rememberAddImagePickerState
 import com.shifenmiao.common.ui.rememberImmersiveModeState
 import com.shifenmiao.common.ui.rememberPreviewPaddingValues
 import com.shifenmiao.theme.AppTheme
-import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.Picker
-import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalTopSheet
 import com.wanbaohe.camera.watermark.R
@@ -273,7 +270,6 @@ fun CameraWatermarkScreen(
                     },
                     trailingContent = if (selectedUris.size > 1) {
                         {
-                            val context = LocalContext.current
                             // 批量保存按钮（仅多张图片时显示）
                             BatchSaveButton(
                                 count = selectedUris.size,
@@ -281,17 +277,8 @@ fun CameraWatermarkScreen(
                                 onClick = {
                                     component.saveAllBitmaps(
                                         onProgress = { _, _ -> },
-                                        onComplete = { results ->
-                                            val successCount =
-                                                results.count { it is SaveResult.Success }
-                                            AppToastHost.showToast(
-                                                context.getString(
-                                                    R.string.camera_watermark_batch_save_result,
-                                                    successCount,
-                                                    results.size
-                                                )
-                                            )
-                                        }
+                                        // 标准批量保存管线：汇总 toast + 撒花 + 一条汇总 ActivityLog
+                                        onComplete = component::parseSaveResults
                                     )
                                 }
                             )

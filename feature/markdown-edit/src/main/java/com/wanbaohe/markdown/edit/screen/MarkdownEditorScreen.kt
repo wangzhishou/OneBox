@@ -153,7 +153,6 @@ fun MarkdownEditorScreen(
                                 onSuccess = {
                                     editorState.clearDraft()
                                     component.parseSaveResult(saveResult = it)
-                                    AppToastHost.showToast(context.getString(R.string.save_success))
                                 },
                                 onFailure = { msg ->
                                     AppToastHost.showToast(msg)

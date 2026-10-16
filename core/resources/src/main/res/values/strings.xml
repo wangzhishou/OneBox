@@ -584,6 +584,7 @@
     <string name="best">Best</string>
     <string name="no_data">No data</string>
     <string name="download">Download</string>
+    <string name="download_started">Download started</string>
     <string name="downloaded_languages">Downloaded languages</string>
     <string name="segmentation_mode">Segmentation mode</string>
     <string name="restore_background_sub">The brush will restore the background instead of erasing it</string>

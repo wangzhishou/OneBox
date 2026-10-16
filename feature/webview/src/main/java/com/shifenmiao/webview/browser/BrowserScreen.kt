@@ -47,6 +47,7 @@ import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.shifenmiao.common.ui.LoadingOverlay
 import kotlinx.coroutines.delay
 
@@ -83,8 +84,8 @@ fun BrowserScreen(
             component.savePngFile(fileUri = uri) { result ->
                 isSaving = false
                 when (result) {
-                    is SaveResult.Success -> AppToastHost.showToast("已保存为 PNG")
-                    is SaveResult.Error -> AppToastHost.showToast("保存失败: ${result.throwable.localizedMessage ?: "未知错误"}")
+                    is SaveResult.Success -> SaveSuccessNotifier.notify(result)
+                    is SaveResult.Error -> AppToastHost.showFailureToast(result.throwable)
                     SaveResult.Skipped -> {}
                 }
             }

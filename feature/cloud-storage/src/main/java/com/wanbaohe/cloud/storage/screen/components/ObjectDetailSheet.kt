@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +53,7 @@ fun ObjectDetailSheet(
     onCopyLink: () -> Unit,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var renameText by remember(item.key) { mutableStateOf(item.displayName) }
     var movePrefix by remember(item.key) { mutableStateOf(item.prefix) }
 
@@ -142,7 +144,7 @@ fun ObjectDetailSheet(
                     text = stringResource(R.string.cloud_storage_download_local),
                     onClick = {
                         signedUrl?.let { url ->
-                            downloadCloudFile(context, url, item.displayName)
+                            downloadCloudFile(context, url, item.displayName, scope)
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),

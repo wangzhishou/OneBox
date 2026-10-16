@@ -584,6 +584,7 @@
     <string name="best">最优</string>
     <string name="no_data">无数据</string>
     <string name="download">下载</string>
+    <string name="download_started">开始下载</string>
     <string name="downloaded_languages">已下载的语言</string>
     <string name="segmentation_mode">分割模式</string>
     <string name="restore_background_sub">刷子将会还原背景，而不是擦除</string>

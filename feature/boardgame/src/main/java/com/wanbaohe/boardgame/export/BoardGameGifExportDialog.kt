@@ -61,6 +61,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTune
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineZoomIn
 import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
+import com.t8rin.imagetoolbox.core.utils.getPath
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassButton
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCustomRangeSlider
@@ -182,7 +184,13 @@ fun <Position> BoardGameGifExportDialog(
             scope.launch {
                 try {
                     exporter.save(file, uri)
-                    AppToastHost.showToast(R.string.boardgame_export_saved)
+                    // 标准保存成功提示：toast(带「打开」) + 撒花 + ActivityLog;
+                    // SAF 返回的 document URI 解析出目录展示路径,失败时 notifier 回退默认目录名
+                    SaveSuccessNotifier.notifyFileSaved(
+                        fileUri = uri.toString(),
+                        fileName = file.filename,
+                        savingPath = uri.toString().getPath(context).substringBeforeLast('/', "")
+                    )
                 } catch (exception: IOException) {
                     reportFailure(exception, R.string.boardgame_export_save_failed)
                 } catch (exception: SecurityException) {

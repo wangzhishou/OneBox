@@ -27,10 +27,12 @@ import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.core.R
+import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
 import com.t8rin.imagetoolbox.core.ui.widget.text.EditorUiDefaults
@@ -93,6 +95,18 @@ fun CodeEditorScreen(
         }
     }
 
+    // 标准保存成功提示:uri 转展示用全路径,拆出文件名与目录后走统一管线
+    // (带「打开」按钮的 toast + 撒花 + ActivityLog)
+    fun notifyFileSaved(uri: Uri) {
+        val fullPath = uri.toString().getPath(context)
+        val fileName = fullPath.substringAfterLast('/')
+        SaveSuccessNotifier.notifyFileSaved(
+            fileUri = uri.toString(),
+            fileName = fileName,
+            savingPath = fullPath.removeSuffix("/$fileName")
+        )
+    }
+
     // 用 */* 打开保存对话框，避免 text/plain 时系统强制改成 .txt
     // 默认文件名扩展名由 generateFileNameFromContent 按语言生成
     val fileSaver = rememberFileCreator(
@@ -106,10 +120,7 @@ fun CodeEditorScreen(
                     content = content,
                     onSuccess = {
                         editorState.clearDraft()
-                        AppToastHost.showFileSuccessToast(
-                            uri = uri,
-                            message = context.getString(R.string.save_success)
-                        )
+                        notifyFileSaved(uri)
                         pendingAction?.invoke()
                         pendingAction = null
                     },
@@ -160,10 +171,7 @@ fun CodeEditorScreen(
                                 content = content,
                                 onSuccess = {
                                     editorState.clearDraft()
-                                    AppToastHost.showFileSuccessToast(
-                                        uri = uiState.fileUri,
-                                        message = context.getString(R.string.save_success)
-                                    )
+                                    uiState.fileUri?.let(::notifyFileSaved)
                                 },
                                 onFailure = { msg -> AppToastHost.showToast(msg) }
                             )

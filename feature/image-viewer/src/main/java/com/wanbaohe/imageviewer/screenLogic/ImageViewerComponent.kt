@@ -4,7 +4,6 @@ import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
 import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.model.image.ImageViewerInfo
@@ -13,7 +12,15 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.qualifiers.ApplicationContext
 import com.t8rin.imagetoolbox.core.domain.coroutines.DispatchersHolder
+import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
+import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
+import kotlinx.coroutines.delay
+
+private const val DOWNLOAD_SUBDIR = "Wanbaohe"
+private const val DOWNLOAD_WATCH_INTERVAL_MS = 500L
+private const val DOWNLOAD_WATCH_TIMEOUT_MS = 120_000L
 
 class ImageViewerComponent @AssistedInject internal constructor(
     @Assisted componentContext: ComponentContext,
@@ -33,23 +40,73 @@ class ImageViewerComponent @AssistedInject internal constructor(
     
     fun downloadImage(imageUrl: String) {
         componentScope.launch {
+            val downloadManager =
+                applicationContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            val fileName: String
+            val downloadId: Long
             try {
-                val fileName = imageUrl.toUri().lastPathSegment ?: "image_${System.currentTimeMillis()}.jpg"
-                
+                fileName = imageUrl.toUri().lastPathSegment
+                    ?: "image_${System.currentTimeMillis()}.jpg"
+
                 val request = DownloadManager.Request(imageUrl.toUri())
-                    .setTitle("图片下载中")
-                    .setDescription("正在下载图片...")
+                    .setTitle(fileName)
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "Wanbaohe/$fileName")
-                
-                val downloadManager = applicationContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                downloadManager.enqueue(request)
-                
-                Toast.makeText(applicationContext, "开始下载图片", Toast.LENGTH_SHORT).show()
+                    .setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_PICTURES,
+                        "$DOWNLOAD_SUBDIR/$fileName"
+                    )
+
+                downloadId = downloadManager.enqueue(request)
+
+                AppToastHost.showToast(applicationContext.getString(R.string.download_started))
             } catch (e: Exception) {
                 Log.e("ImageViewerComponent", "Download error", e)
-                Toast.makeText(applicationContext, "下载失败: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                AppToastHost.showFailureToast(e)
+                return@launch
             }
+
+            watchDownload(downloadManager, downloadId, fileName)
+        }
+    }
+
+    /**
+     * 轮询 DownloadManager 直到下载结束:成功走标准保存成功提示管线
+     * (带「打开」按钮的 toast + 撒花 + ActivityLog),失败弹错误 toast。
+     * 组件销毁时 componentScope 取消,轮询随 delay 自然终止。
+     */
+    private suspend fun watchDownload(
+        downloadManager: DownloadManager,
+        downloadId: Long,
+        fileName: String
+    ) {
+        val deadline = System.currentTimeMillis() + DOWNLOAD_WATCH_TIMEOUT_MS
+        while (System.currentTimeMillis() < deadline) {
+            val status = runCatching {
+                downloadManager.query(DownloadManager.Query().setFilterById(downloadId))
+                    ?.use { cursor ->
+                        if (!cursor.moveToFirst()) return@use null
+                        val index = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
+                        if (index >= 0) cursor.getInt(index) else null
+                    }
+            }.getOrNull()
+
+            when (status) {
+                DownloadManager.STATUS_SUCCESSFUL -> {
+                    SaveSuccessNotifier.notifyFileSaved(
+                        fileUri = downloadManager.getUriForDownloadedFile(downloadId)
+                            ?.toString().orEmpty(),
+                        fileName = fileName,
+                        savingPath = "${Environment.DIRECTORY_PICTURES}/$DOWNLOAD_SUBDIR"
+                    )
+                    return
+                }
+
+                DownloadManager.STATUS_FAILED -> {
+                    AppToastHost.showFailureToast(R.string.something_went_wrong)
+                    return
+                }
+            }
+            delay(DOWNLOAD_WATCH_INTERVAL_MS)
         }
     }
 

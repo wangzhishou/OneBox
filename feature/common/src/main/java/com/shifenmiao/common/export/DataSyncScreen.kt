@@ -37,11 +37,13 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.common.R
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.data.utils.getPath
 import com.t8rin.imagetoolbox.core.domain.model.MimeType
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.FileType
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFileCreator
 import com.t8rin.imagetoolbox.core.ui.utils.content_pickers.rememberFilePicker
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.navigation.BottomNavItem
@@ -75,8 +77,8 @@ fun DataSyncScreen(
 
     var jsonInput by remember { mutableStateOf("") }
 
-    val exportSuccessText = stringResource(R.string.data_sync_export_success)
     val importSuccessText = stringResource(R.string.data_sync_import_success)
+    val exportFileName = "wanbaohe_export.json"
 
     val fileCreator = rememberFileCreator(
         mimeType = MimeType.Json,
@@ -89,7 +91,11 @@ fun DataSyncScreen(
                             context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                                 outputStream.write(jsonString.toByteArray())
                             }
-                            AppToastHost.showToast(exportSuccessText)
+                            SaveSuccessNotifier.notifyFileSaved(
+                                fileUri = uri.toString(),
+                                fileName = exportFileName,
+                                savingPath = uri.toString().getPath(context).removeSuffix("/$exportFileName")
+                            )
                             selectedExportIds = emptySet()
                         } catch (e: Exception) {
                             AppToastHost.showToast(context.getString(R.string.data_sync_export_failed, e.message))
@@ -144,7 +150,7 @@ fun DataSyncScreen(
                         exportableItems = exportableItems,
                         selectedExportIds = selectedExportIds,
                         onSelectionChanged = { selectedExportIds = it },
-                        onExportClick = { fileCreator.make("wanbaohe_export.json") },
+                        onExportClick = { fileCreator.make(exportFileName) },
                         isExporting = isExporting
                     )
                 } else {

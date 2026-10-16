@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,11 +41,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDesignSystem
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxSectionCard
 import com.wanbaohe.cloud.storage.R
 import com.wanbaohe.cloud.storage.model.CloudObjectItem
 import java.text.DecimalFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import com.t8rin.imagetoolbox.core.resources.icons.CheckCircle
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineFolder
@@ -52,7 +58,10 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDescription
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDownload
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineImage
 
-fun downloadCloudFile(context: Context, url: String, fileName: String) {
+private const val DOWNLOAD_POLL_INTERVAL_MS = 500L
+private const val DOWNLOAD_WATCH_TIMEOUT_MS = 120_000L
+
+fun downloadCloudFile(context: Context, url: String, fileName: String, scope: CoroutineScope) {
     try {
         val request = DownloadManager.Request(Uri.parse(url))
             .setTitle(fileName)
@@ -63,10 +72,56 @@ fun downloadCloudFile(context: Context, url: String, fileName: String) {
             .setAllowedOverRoaming(true)
 
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        downloadManager.enqueue(request)
+        val downloadId = downloadManager.enqueue(request)
         Toast.makeText(context, context.getString(R.string.cloud_storage_download_queued), Toast.LENGTH_SHORT).show()
+        watchCloudDownload(context, downloadManager, downloadId, fileName, scope)
     } catch (e: Exception) {
         Toast.makeText(context, context.getString(R.string.cloud_storage_download_failed, e.localizedMessage), Toast.LENGTH_SHORT).show()
+    }
+}
+
+/**
+ * 轮询 DownloadManager 下载状态：成功后走标准保存成功管线（带「打开」按钮的 toast + 撒花 +
+ * ActivityLog），失败弹失败 toast；页面销毁时随传入的协程作用域自然取消。
+ */
+private fun watchCloudDownload(
+    context: Context,
+    downloadManager: DownloadManager,
+    downloadId: Long,
+    fileName: String,
+    scope: CoroutineScope
+) {
+    scope.launch {
+        runCatching {
+            val deadline = System.currentTimeMillis() + DOWNLOAD_WATCH_TIMEOUT_MS
+            while (System.currentTimeMillis() < deadline) {
+                delay(DOWNLOAD_POLL_INTERVAL_MS)
+                downloadManager.query(
+                    DownloadManager.Query().setFilterById(downloadId)
+                )?.use { cursor ->
+                    if (!cursor.moveToFirst()) return@use
+                    when (cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS))) {
+                        DownloadManager.STATUS_SUCCESSFUL -> {
+                            downloadManager.getUriForDownloadedFile(downloadId)?.toString()?.let { fileUri ->
+                                SaveSuccessNotifier.notifyFileSaved(
+                                    fileUri = fileUri,
+                                    fileName = fileName,
+                                    savingPath = Environment.DIRECTORY_DOWNLOADS
+                                )
+                            }
+                            return@launch
+                        }
+
+                        DownloadManager.STATUS_FAILED -> {
+                            AppToastHost.showFailureToast(
+                                com.t8rin.imagetoolbox.core.resources.R.string.something_went_wrong
+                            )
+                            return@launch
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -132,6 +187,7 @@ private fun CloudFileGridCard(
     onLongClick: () -> Unit,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     OneBoxSectionCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -288,7 +344,7 @@ private fun CloudFileGridCard(
                     }
                     IconButton(
                         onClick = {
-                            downloadCloudFile(context, signedUrl, item.displayName)
+                            downloadCloudFile(context, signedUrl, item.displayName, scope)
                         },
                         modifier = Modifier.size(24.dp)
                     ) {
@@ -316,6 +372,7 @@ private fun CloudFileListRow(
     onLongClick: () -> Unit,
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     OneBoxSectionCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -480,7 +537,7 @@ private fun CloudFileListRow(
                 }
                 IconButton(
                     onClick = {
-                        downloadCloudFile(context, signedUrl, item.displayName)
+                        downloadCloudFile(context, signedUrl, item.displayName, scope)
                     },
                     modifier = Modifier.size(28.dp)
                 ) {

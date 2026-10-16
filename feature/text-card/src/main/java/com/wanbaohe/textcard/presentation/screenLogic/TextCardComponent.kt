@@ -5,6 +5,7 @@ import android.util.Base64
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.base.utils.aiImageProcessPointsCost
 import com.shifenmiao.common.utils.BaseUtils
@@ -20,10 +21,10 @@ import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
 import com.t8rin.imagetoolbox.core.domain.utils.smartJob
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineInfo
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import com.t8rin.imagetoolbox.core.ui.utils.BaseComponent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.utils.helper.SaveSuccessNotifier
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
@@ -1008,13 +1009,13 @@ class TextCardComponent @AssistedInject internal constructor(
     private suspend fun handleSaveResult(result: SaveResult) {
         when (result) {
             is SaveResult.Success -> {
-                result.message?.let {
-                    AppToastHost.showToast(
-                        message = it,
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
-                        duration = ToastDuration.Long
+                AppToastHost.showFileSuccessToast(
+                    uri = result.fileUri?.takeIf(String::isNotBlank)?.toUri(),
+                    message = SaveSuccessNotifier.successMessage(
+                        fileName = result.fileName.orEmpty(),
+                        savingPath = result.savingPath.orEmpty()
                     )
-                }
+                )
                 AppToastHost.showConfetti()
                 runCatching {
                     imageSaveLogger.recordImageSave(
