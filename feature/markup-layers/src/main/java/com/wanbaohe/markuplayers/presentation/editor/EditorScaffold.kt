@@ -596,7 +596,8 @@ fun EditorScaffold(
 
     // AI 处理面板:点底部 AI Tab 直达,自然语言生成/编辑与快捷处理都在一层完成。
     // 能力卡点击即处理(积分在采用预览结果后才扣,取消预览不扣);
-    // prompt 提交:选中图片图层 = 图生图编辑,未选中 = 文生图新增图层
+    // prompt 提交:选中图片图层 = 图生图编辑,未选中 = 文生图新增图层,
+    // 成功直接落图(进 undo,不满意撤销即可),不走预览确认
     AiToolSheet(
         visible = activeBottomTab == EditorTools.ID_AI,
         onDismiss = { if (activeBottomTab == EditorTools.ID_AI) activeBottomTab = null },

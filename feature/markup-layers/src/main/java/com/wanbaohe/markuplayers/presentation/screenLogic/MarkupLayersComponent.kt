@@ -1046,9 +1046,10 @@ class MarkupLayersComponent @AssistedInject internal constructor(
     /**
      * AI 生成图片:登录与积分预检由调用方(UI 层)完成;复用 [isAiProcessing]
      * 防二次并驱动 LoadingDialog(不做占位图层)。
-     * 新建:成功 addLayer(Image 图层,自动进 undo 历史);编辑:选中 Image 图层的
-     * imageData 转 base64 data URI 作输入图,成功 updateLayer 换图(undo 即回退)。
-     * 仅非缓存结果记积分,采用预览后才扣;失败、取消或关掉预览不扣。
+     * 成功直接落图,不走预览确认(对齐 AI 贴纸):新建 = addLayer(Image 图层,
+     * 自动选中并进 undo 历史);编辑 = 选中 Image 图层的 imageData 转 base64
+     * data URI 作输入图,成功 updateLayer 换图(undo 即回退)。
+     * 落图成功即扣积分(仅非缓存结果),失败/取消不扣;不满意撤销即可。
      */
     fun generateImageLayer(prompt: String) {
         val trimmed = prompt.trim()
@@ -1075,18 +1076,44 @@ class MarkupLayersComponent @AssistedInject internal constructor(
             ).getOrThrow()
             _taskLabel.value = appContext.getString(R.string.studio_task_ai_download)
             val path = projectStore.importAsset(image.file.absolutePath)
-            val (dimensions, _) = studioImageReader.preview(path)
             ensureActive()
-            _pendingAiResult.value = AiImageResult(
-                imagePath = path,
-                title = appContext.getString(R.string.markup_ai_generate_title),
-                targetLayerId = editLayer?.id,
-                replaceBackground = target == AiGenerationTarget.Background,
-                width = dimensions.width,
-                height = dimensions.height,
-                pointsCost = if (image.fromCache) 0 else aiImageProcessPointsCost()
-            )
+            when (target) {
+                AiGenerationTarget.NewLayer -> {
+                    commitAddedLayer(MarkupLayer(type = LayerType.Image(path)))
+                    chargeAiGeneration(image.fromCache)
+                }
+
+                AiGenerationTarget.SelectedLayer -> {
+                    val layerId = editLayer?.id ?: error("No AI editing target is selected")
+                    if (replaceImageLayer(layerId, path)) chargeAiGeneration(image.fromCache)
+                }
+
+                AiGenerationTarget.Background -> {
+                    // 背景目标当前 UI 不提供,保留预览采用链路兜底
+                    val (dimensions, _) = studioImageReader.preview(path)
+                    _pendingAiResult.value = AiImageResult(
+                        imagePath = path,
+                        title = appContext.getString(R.string.markup_ai_generate_title),
+                        targetLayerId = null,
+                        replaceBackground = true,
+                        width = dimensions.width,
+                        height = dimensions.height,
+                        pointsCost = if (image.fromCache) 0 else aiImageProcessPointsCost()
+                    )
+                }
+            }
         }
+    }
+
+    /** 生成落图成功后扣积分;缓存命中不计价 */
+    private fun chargeAiGeneration(fromCache: Boolean) {
+        if (fromCache) return
+        BaseUtils.consumePoints(
+            degree = aiImageProcessPointsCost(),
+            desc = appContext.getString(R.string.markup_ai_generate_title),
+            source = AI_POINTS_SOURCE,
+            showToast = true
+        )
     }
 
     // ---------------- AI 生成贴纸(共享贴纸弹层 AI tab) ----------------
