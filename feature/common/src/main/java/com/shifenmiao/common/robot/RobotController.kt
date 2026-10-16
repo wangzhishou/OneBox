@@ -11,6 +11,26 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 
 object RobotController {
     /**
+     * 搜索按钮左/右缘，坐标系与 [updateRobotPosition] 里的 positionInRoot 一致。
+     * 未测量（横屏没有搜索按钮）时为 NaN，X 退回固定右边距。
+     */
+    private var searchAnchorLeftPx = Float.NaN
+    private var searchAnchorRightPx = Float.NaN
+
+    /** 机器人可点击区域与搜索按钮之间的间距，避免挡住搜索。 */
+    private val searchButtonGap = 16.dp
+
+    fun updateSearchAnchor(leftPx: Float, rightPx: Float) {
+        searchAnchorLeftPx = leftPx
+        searchAnchorRightPx = rightPx
+    }
+
+    fun clearSearchAnchor() {
+        searchAnchorLeftPx = Float.NaN
+        searchAnchorRightPx = Float.NaN
+    }
+
+    /**
      * Updates the robot's position based on the app bar coordinates
      */
     fun updateRobotPosition(
@@ -98,9 +118,29 @@ object RobotController {
             val finalY = targetTopLeftY.coerceIn(minY, maxY)
             val percentY = ((finalY - minY) / yRange).coerceIn(0f, 1f)
 
-            // X: keep existing strategy: lock robot's *layout right edge* to AppBarRight - fixed distance.
-            val targetOffsetFromRight = 80.dp.toPx()
-            val targetTopLeftX = (appBarRight - targetOffsetFromRight) - robotLayoutSize
+            // X 跟搜索按钮走，不跟屏幕宽度百分比走：可点击区域贴在按钮朝标题的一侧，并留出间距。
+            // Y 仍用上面的 AppBar 视觉中心，不在这里改。
+            val anchorLeft = searchAnchorLeftPx
+            val anchorRight = searchAnchorRightPx
+            val appBarLeft = positionInRoot.x
+            val targetTopLeftX = if (
+                !anchorLeft.isNaN() &&
+                !anchorRight.isNaN() &&
+                anchorRight > anchorLeft &&
+                anchorLeft >= appBarLeft - 1f &&
+                anchorRight <= appBarRight + 8.dp.toPx()
+            ) {
+                val gapPx = searchButtonGap.toPx()
+                val searchCenterX = (anchorLeft + anchorRight) / 2f
+                val appBarCenterX = (appBarLeft + appBarRight) / 2f
+                if (searchCenterX >= appBarCenterX) {
+                    (anchorLeft - gapPx) - robotLayoutSize
+                } else {
+                    anchorRight + gapPx
+                }
+            } else {
+                (appBarRight - 80.dp.toPx()) - robotLayoutSize
+            }
 
             val finalX = targetTopLeftX.coerceIn(minX, maxX)
             val percentX = ((finalX - minX) / xRange).coerceIn(0f, 1f)

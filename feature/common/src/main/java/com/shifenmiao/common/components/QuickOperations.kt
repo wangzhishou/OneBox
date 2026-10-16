@@ -6,8 +6,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import com.shifenmiao.base.utils.RateLimiter
 import com.shifenmiao.common.logic.AppComponent
+import com.shifenmiao.common.robot.RobotController
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.resources.icons.Search
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawer
@@ -17,9 +22,23 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDrawer
 fun QuickOperations(
     appComponent: AppComponent
 ) {
-    IconButton(onClick = {
-        appComponent.onNavigate(Screen.Search())
-    }) {
+    DisposableEffect(Unit) {
+        onDispose { RobotController.clearSearchAnchor() }
+    }
+
+    IconButton(
+        onClick = {
+            appComponent.onNavigate(Screen.Search())
+        },
+        modifier = Modifier.onGloballyPositioned { coordinates ->
+            if (!coordinates.isAttached || coordinates.size.width == 0) return@onGloballyPositioned
+            val left = coordinates.positionInRoot().x
+            RobotController.updateSearchAnchor(
+                leftPx = left,
+                rightPx = left + coordinates.size.width,
+            )
+        },
+    ) {
         Icon(
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Search,
             contentDescription = null,
