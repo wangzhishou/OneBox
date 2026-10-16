@@ -56,7 +56,12 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.random.Random
 
-/** 卡片固定高度；文字与沙粒尺寸都按实测高度等比缩放，换机型不走样。 */
+/**
+ * 设计稿口径：内容区宽 330dp、卡片高 430dp。
+ * 字号按内容区宽度相对 330dp 缩放。窄屏（不超过设计宽）高度保持 430dp；
+ * 宽屏按同一比例拉高，否则字号变大后年 / 天 / 时分秒会叠在固定高度里。
+ */
+private val HeroDesignWidth = 330.dp
 private val HeroCardHeight = 430.dp
 
 /**
@@ -95,175 +100,187 @@ fun HourglassHeroCard(
         shape = OneBoxDesignSystem.sectionCardShape,
         containerAlpha = 0.34f,
     ) {
-        Box(modifier = Modifier.fillMaxWidth().height(HeroCardHeight)) {
-            HourglassBackdrop(
-                modifier = Modifier.fillMaxSize(),
-                primary = primary,
-            )
+        BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+            val contentWidth = (maxWidth - OneBoxDesignSystem.cardPadding * 2).coerceAtLeast(1.dp)
+            val sizeRatio = contentWidth / HeroDesignWidth
+            // 窄屏不缩高度；宽屏跟字号同一比例拉高，沙漏轮廓和文字一起变高
+            val heightScale = sizeRatio.coerceAtLeast(1f)
+            val cardHeight = HeroCardHeight * heightScale
 
-            BoxWithConstraints(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = OneBoxDesignSystem.cardPadding),
-            ) {
-                // 字号按内容区宽度换算（与沙漏轮廓同口径）；纵向位置按整卡高度比例分层，
-                // 段高用 TextMeasurer 实测，避免行高留白把段落推歪
-                val density = LocalDensity.current
-                val sizeRatio = maxWidth / 330.dp
-                val textMeasurer = rememberTextMeasurer()
-
-                val labelSize = 15.sp * sizeRatio
-                val yearsSize = 58.sp * sizeRatio
-                val unitSize = 19.sp * sizeRatio
-                val daysSize = 46.sp * sizeRatio
-                val daysUnitSize = 18.sp * sizeRatio
-                val clockSize = 36.sp * sizeRatio
-                val clockUnitSize = 16.sp * sizeRatio
-
-                val labelStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontSize = labelSize,
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = 2.sp,
-                )
-                val yearsValueStyle = MaterialTheme.typography.headlineLarge.copy(
-                    fontSize = yearsSize,
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = (-1).sp,
-                )
-                val yearsUnitStyle = MaterialTheme.typography.labelMedium.copy(
-                    fontSize = unitSize,
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = 1.5.sp,
-                )
-                val daysValueStyle = yearsValueStyle.copy(
-                    fontSize = daysSize,
-                    letterSpacing = (-0.5).sp,
-                )
-                val daysUnitStyle = yearsUnitStyle.copy(
-                    fontSize = daysUnitSize,
-                )
-                val clockValueStyle = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = clockSize,
-                    fontWeight = FontWeight.Bold,
-                )
-                val clockUnitStyle = MaterialTheme.typography.labelSmall.copy(
-                    fontSize = clockUnitSize,
-                    fontWeight = FontWeight.Medium,
-                    letterSpacing = 1.sp,
+            Box(modifier = Modifier.fillMaxWidth().height(cardHeight)) {
+                HourglassBackdrop(
+                    modifier = Modifier.fillMaxSize(),
+                    primary = primary,
                 )
 
-                val labelHeight = remember(labelStyle) {
-                    with(density) { textMeasurer.measure("Ag", labelStyle).size.height.toDp() }
-                }
-                val yearsValueHeight = remember(yearsValueStyle) {
-                    with(density) { textMeasurer.measure("0", yearsValueStyle).size.height.toDp() }
-                }
-                val yearsUnitHeight = remember(yearsUnitStyle) {
-                    with(density) { textMeasurer.measure("Ag", yearsUnitStyle).size.height.toDp() }
-                }
-                val daysValueHeight = remember(daysValueStyle) {
-                    with(density) { textMeasurer.measure("0", daysValueStyle).size.height.toDp() }
-                }
-                val daysUnitHeight = remember(daysUnitStyle) {
-                    with(density) { textMeasurer.measure("Ag", daysUnitStyle).size.height.toDp() }
-                }
-                val clockValueHeight = remember(clockValueStyle) {
-                    with(density) { textMeasurer.measure("0", clockValueStyle).size.height.toDp() }
-                }
-                val clockUnitHeight = remember(clockUnitStyle) {
-                    with(density) { textMeasurer.measure("Ag", clockUnitStyle).size.height.toDp() }
-                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = OneBoxDesignSystem.cardPadding),
+                ) {
+                    // 字号按内容区宽度换算（与沙漏轮廓同口径）；纵向位置按整卡高度比例分层，
+                    // 段高用 TextMeasurer 实测，避免行高留白把段落推歪
+                    val density = LocalDensity.current
+                    val textMeasurer = rememberTextMeasurer()
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    AnimatedContent(
-                        targetState = displayMode,
-                        transitionSpec = {
-                            fadeIn(animationSpec = tween(280))
-                                .togetherWith(fadeOut(animationSpec = tween(200)))
-                        },
-                        label = "hourglass_mode",
-                    ) { mode ->
-                        val isPast = mode == TimeDisplayMode.PAST
-                        val modeLabel = if (isPast) pastLabel else remainingLabel
-                        val modeYears = if (isPast) pastTimeData.years else remainingLifeData.years
-                        val modeDays = if (isPast) pastTimeData.totalDays else remainingLifeData.days
-                        val modeHours = if (isPast) {
-                            pastTimeData.hours % 24
-                        } else {
-                            remainingLifeData.hours % 24
-                        }
-                        val modeMinutes = if (isPast) {
-                            pastTimeData.minutes % 60
-                        } else {
-                            remainingLifeData.minutes % 60
-                        }
-                        val modeSeconds = if (isPast) {
-                            pastTimeData.seconds % 60
-                        } else {
-                            remainingLifeData.seconds % 60
-                        }
+                    val labelSize = 15.sp * sizeRatio
+                    val yearsSize = 58.sp * sizeRatio
+                    val unitSize = 19.sp * sizeRatio
+                    val daysSize = 46.sp * sizeRatio
+                    val daysUnitSize = 18.sp * sizeRatio
+                    val clockSize = 36.sp * sizeRatio
+                    val clockUnitSize = 16.sp * sizeRatio
 
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            HeroTextBlock(
-                                contentHeight = labelHeight,
-                                centerFraction = 0.160f,
-                            ) {
-                                Text(
-                                    text = modeLabel,
-                                    style = labelStyle,
-                                    color = onSurfaceVariant,
-                                    textAlign = TextAlign.Center,
-                                    maxLines = 1,
-                                )
+                    val labelStyle = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = labelSize,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 2.sp,
+                    )
+                    val yearsValueStyle = MaterialTheme.typography.headlineLarge.copy(
+                        fontSize = yearsSize,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = (-1).sp,
+                    )
+                    val yearsUnitStyle = MaterialTheme.typography.labelMedium.copy(
+                        fontSize = unitSize,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 1.5.sp,
+                    )
+                    val daysValueStyle = yearsValueStyle.copy(
+                        fontSize = daysSize,
+                        letterSpacing = (-0.5).sp,
+                    )
+                    val daysUnitStyle = yearsUnitStyle.copy(
+                        fontSize = daysUnitSize,
+                    )
+                    val clockValueStyle = MaterialTheme.typography.titleLarge.copy(
+                        fontSize = clockSize,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    val clockUnitStyle = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = clockUnitSize,
+                        fontWeight = FontWeight.Medium,
+                        letterSpacing = 1.sp,
+                    )
+
+                    val labelHeight = remember(labelStyle) {
+                        with(density) { textMeasurer.measure("Ag", labelStyle).size.height.toDp() }
+                    }
+                    val yearsValueHeight = remember(yearsValueStyle) {
+                        with(density) { textMeasurer.measure("0", yearsValueStyle).size.height.toDp() }
+                    }
+                    val yearsUnitHeight = remember(yearsUnitStyle) {
+                        with(density) { textMeasurer.measure("Ag", yearsUnitStyle).size.height.toDp() }
+                    }
+                    val daysValueHeight = remember(daysValueStyle) {
+                        with(density) { textMeasurer.measure("0", daysValueStyle).size.height.toDp() }
+                    }
+                    val daysUnitHeight = remember(daysUnitStyle) {
+                        with(density) { textMeasurer.measure("Ag", daysUnitStyle).size.height.toDp() }
+                    }
+                    val clockValueHeight = remember(clockValueStyle) {
+                        with(density) { textMeasurer.measure("0", clockValueStyle).size.height.toDp() }
+                    }
+                    val clockUnitHeight = remember(clockUnitStyle) {
+                        with(density) { textMeasurer.measure("Ag", clockUnitStyle).size.height.toDp() }
+                    }
+
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        AnimatedContent(
+                            targetState = displayMode,
+                            transitionSpec = {
+                                fadeIn(animationSpec = tween(280))
+                                    .togetherWith(fadeOut(animationSpec = tween(200)))
+                            },
+                            label = "hourglass_mode",
+                        ) { mode ->
+                            val isPast = mode == TimeDisplayMode.PAST
+                            val modeLabel = if (isPast) pastLabel else remainingLabel
+                            val modeYears = if (isPast) pastTimeData.years else remainingLifeData.years
+                            val modeDays = if (isPast) pastTimeData.totalDays else remainingLifeData.days
+                            val modeHours = if (isPast) {
+                                pastTimeData.hours % 24
+                            } else {
+                                remainingLifeData.hours % 24
+                            }
+                            val modeMinutes = if (isPast) {
+                                pastTimeData.minutes % 60
+                            } else {
+                                remainingLifeData.minutes % 60
+                            }
+                            val modeSeconds = if (isPast) {
+                                pastTimeData.seconds % 60
+                            } else {
+                                remainingLifeData.seconds % 60
                             }
 
-                            // 年（大号，独占上壶）
-                            HeroTextBlock(
-                                contentHeight = yearsValueHeight + yearsUnitHeight,
-                                centerFraction = 0.310f,
-                            ) {
-                                StackedTimeValue(
-                                    value = modeYears,
-                                    unit = yearsLabel,
-                                    valueStyle = yearsValueStyle,
-                                    unitStyle = yearsUnitStyle,
-                                    color = primary,
-                                    subColor = onSurfaceVariant,
-                                )
-                            }
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                HeroTextBlock(
+                                    cardHeight = cardHeight,
+                                    contentHeight = labelHeight,
+                                    centerFraction = 0.160f,
+                                ) {
+                                    Text(
+                                        text = modeLabel,
+                                        style = labelStyle,
+                                        color = onSurfaceVariant,
+                                        textAlign = TextAlign.Center,
+                                        maxLines = 1,
+                                    )
+                                }
 
-                            // 天（落在下壶、细颈之下，与细颈留出呼吸空隙）
-                            HeroTextBlock(
-                                contentHeight = daysValueHeight + daysUnitHeight,
-                                centerFraction = 0.595f,
-                            ) {
-                                StackedTimeValue(
-                                    value = modeDays,
-                                    unit = daysLabel,
-                                    valueStyle = daysValueStyle,
-                                    unitStyle = daysUnitStyle,
-                                    color = primary,
-                                    subColor = onSurfaceVariant,
-                                )
-                            }
+                                // 年（大号，独占上壶）
+                                HeroTextBlock(
+                                    cardHeight = cardHeight,
+                                    contentHeight = yearsValueHeight + yearsUnitHeight,
+                                    centerFraction = 0.310f,
+                                ) {
+                                    StackedTimeValue(
+                                        value = modeYears,
+                                        unit = yearsLabel,
+                                        valueStyle = yearsValueStyle,
+                                        unitStyle = yearsUnitStyle,
+                                        color = primary,
+                                        subColor = onSurfaceVariant,
+                                    )
+                                }
 
-                            // 时 / 分 / 秒（落在下壶中段，底部留足空间）
-                            HeroTextBlock(
-                                contentHeight = clockValueHeight + clockUnitHeight,
-                                centerFraction = 0.80f,
-                            ) {
-                                HeroClockRow(
-                                    hours = modeHours,
-                                    hoursLabel = hoursLabel,
-                                    minutes = modeMinutes,
-                                    minutesLabel = minutesLabel,
-                                    seconds = modeSeconds,
-                                    secondsLabel = secondsLabel,
-                                    valueColor = MaterialTheme.colorScheme.onSurface,
-                                    subColor = onSurfaceVariant,
-                                    valueStyle = clockValueStyle,
-                                    unitStyle = clockUnitStyle,
-                                )
+                                // 天（落在下壶、细颈之下，与细颈留出呼吸空隙）
+                                HeroTextBlock(
+                                    cardHeight = cardHeight,
+                                    contentHeight = daysValueHeight + daysUnitHeight,
+                                    centerFraction = 0.595f,
+                                ) {
+                                    StackedTimeValue(
+                                        value = modeDays,
+                                        unit = daysLabel,
+                                        valueStyle = daysValueStyle,
+                                        unitStyle = daysUnitStyle,
+                                        color = primary,
+                                        subColor = onSurfaceVariant,
+                                    )
+                                }
+
+                                // 时 / 分 / 秒（落在下壶中段，底部留足空间）
+                                HeroTextBlock(
+                                    cardHeight = cardHeight,
+                                    contentHeight = clockValueHeight + clockUnitHeight,
+                                    centerFraction = 0.80f,
+                                ) {
+                                    HeroClockRow(
+                                        hours = modeHours,
+                                        hoursLabel = hoursLabel,
+                                        minutes = modeMinutes,
+                                        minutesLabel = minutesLabel,
+                                        seconds = modeSeconds,
+                                        secondsLabel = secondsLabel,
+                                        valueColor = MaterialTheme.colorScheme.onSurface,
+                                        subColor = onSurfaceVariant,
+                                        valueStyle = clockValueStyle,
+                                        unitStyle = clockUnitStyle,
+                                        spacing = 24.dp * heightScale,
+                                    )
+                                }
                             }
                         }
                     }
@@ -279,11 +296,12 @@ fun HourglassHeroCard(
  */
 @Composable
 private fun HeroTextBlock(
+    cardHeight: Dp,
     contentHeight: Dp,
     centerFraction: Float,
     content: @Composable () -> Unit,
 ) {
-    val top = (HeroCardHeight * centerFraction - contentHeight / 2).coerceAtLeast(0.dp)
+    val top = (cardHeight * centerFraction - contentHeight / 2).coerceAtLeast(0.dp)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -307,10 +325,11 @@ private fun HeroClockRow(
     subColor: Color,
     valueStyle: TextStyle,
     unitStyle: TextStyle,
+    spacing: Dp,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        horizontalArrangement = Arrangement.spacedBy(spacing),
     ) {
         ClockBlock(hours, hoursLabel, valueColor, subColor, valueStyle, unitStyle)
         ClockBlock(minutes, minutesLabel, valueColor, subColor, valueStyle, unitStyle)
