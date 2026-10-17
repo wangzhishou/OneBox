@@ -1219,7 +1219,7 @@
     <string name="altitude_unit_m">m</string>
     <string name="altitude_unit_ft">ft</string>
     <string name="altitude_location_permission_title">需要定位权限</string>
-    <string name="altitude_location_permission_description">海拔仪通过 GPS 获取精准高度信息，请授予定位权限以开始使用。</string>
+    <string name="altitude_location_permission_description">未授权时显示上次保存的海拔和天气。授予定位权限后，会按当前位置更新。</string>
     <string name="altitude_location_permission_denied">定位权限已被永久拒绝，请前往应用设置手动开启。</string>
     <string name="altitude_grant_permission">授予权限</string>
     <string name="altitude_open_settings">前往设置</string>

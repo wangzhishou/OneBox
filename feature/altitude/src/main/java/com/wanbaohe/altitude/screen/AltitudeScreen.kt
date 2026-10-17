@@ -8,7 +8,6 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,7 +29,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.resources.icons.DeleteSweep
@@ -110,12 +109,13 @@ fun AltitudeScreen(component: AltitudeComponent) {
         }
     }
 
-    LaunchedEffect(Unit) {
+    LifecycleResumeEffect(Unit) {
         val granted = isPermissionGranted()
         permissionGranted = granted
         if (granted && !state.locationPermissionGranted) {
             component.onLocationPermissionGranted()
         }
+        onPauseOrDispose { }
     }
 
     // ── 主屏幕 BaseScreen ────────────────────────────────────────────────
@@ -125,27 +125,20 @@ fun AltitudeScreen(component: AltitudeComponent) {
         showNavigationBarsPadding = false,
         supportGlassEffect = true,
     ) {
-        if (!permissionGranted) {
-            Box(modifier = Modifier.weight(1f)) {
-                LocationPermissionCard(
-                    isPermanentlyDenied = isPermanentlyDenied,
-                    onRequestPermission = { permissionLauncher.launch(locationPermissions) },
-                    onOpenSettings = {
-                        activity.startActivity(
-                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                data = Uri.fromParts("package", activity.packageName, null)
-                            }
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
-            }
-        } else when (state.selectedTab) {
+        when (state.selectedTab) {
             0 -> InstrumentTab(
                 state = state,
                 captureController = captureController,
+                showPermissionCard = !permissionGranted,
+                isPermissionPermanentlyDenied = isPermanentlyDenied,
+                onRequestPermission = { permissionLauncher.launch(locationPermissions) },
+                onOpenSettings = {
+                    activity.startActivity(
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.fromParts("package", activity.packageName, null)
+                        }
+                    )
+                },
                 onSaveRecord = {
                     if (state.currentAltitudeMeters != null) {
                         component.showSaveDialog()
@@ -192,6 +185,10 @@ fun AltitudeScreen(component: AltitudeComponent) {
 private fun ColumnScope.InstrumentTab(
     state: AltitudeUiState,
     captureController: CaptureController,
+    showPermissionCard: Boolean,
+    isPermissionPermanentlyDenied: Boolean,
+    onRequestPermission: () -> Unit,
+    onOpenSettings: () -> Unit,
     onSaveRecord: () -> Unit,
     onShare: () -> Unit,
 ) {
@@ -203,6 +200,14 @@ private fun ColumnScope.InstrumentTab(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        if (showPermissionCard) {
+            LocationPermissionCard(
+                isPermanentlyDenied = isPermissionPermanentlyDenied,
+                onRequestPermission = onRequestPermission,
+                onOpenSettings = onOpenSettings,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
         // ── 可截图区域（卡片 + 观测时间，不含按钮）──────────
         Column(
             modifier = Modifier

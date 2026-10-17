@@ -151,6 +151,12 @@ class AltitudeComponent @AssistedInject internal constructor(
     /** 上次城市/天气请求的时间戳，用于节流 */
     private var lastWeatherFetchMs: Long = 0L
 
+    /** 上次请求对应的地点。换了位置不受 60 秒节流限制 */
+    private var lastWeatherPlaceKey: String? = null
+
+    /** 未授权时已经按这个地点拉过天气，避免历史列表每次刷新都重请求 */
+    private var savedPlaceKey: String? = null
+
     init {
         if (gpsSource.hasPermission()) {
             startGpsTracking()
@@ -161,24 +167,79 @@ class AltitudeComponent @AssistedInject internal constructor(
         repository.getAll()
             .onEach { records ->
                 val trend = records.take(TREND_LIMIT).reversed().map { it.altitudeMeters }
-                _uiState.value = _uiState.value.copy(
-                    history = records,
-                    trendPoints = trend
-                )
+                val current = _uiState.value
+                if (current.locationPermissionGranted) {
+                    _uiState.value = current.copy(history = records, trendPoints = trend)
+                } else {
+                    showSavedRecord(current.copy(history = records, trendPoints = trend), records.firstOrNull())
+                }
             }
             .catch { }
             .launchIn(componentScope)
     }
 
     /**
+     * 没有定位权限时先摆上一条保存记录。有经纬度就按那个地点拉一次天气，
+     * 授权之后 GPS 会用新坐标再拉，把这块换成当前位置。
+     */
+    private fun showSavedRecord(base: AltitudeUiState, record: AltitudeRecord?) {
+        if (record == null) {
+            savedPlaceKey = null
+            _uiState.value = base.copy(
+                currentAltitudeMeters = null,
+                latitude = null,
+                longitude = null,
+                cityInfo = null,
+                weatherInfo = null,
+                placeWeather = null,
+                altitudeSource = null,
+                isAcquiring = false,
+                weatherUnavailable = false,
+            )
+            return
+        }
+        val alreadyShowing = base.currentAltitudeMeters != null || base.placeWeather != null
+        _uiState.value = if (alreadyShowing) {
+            base
+        } else {
+            val weather = record.weatherSnapshot?.toWeatherInfo()
+            val place = record.weatherSnapshot?.toPlaceWeather()
+            base.copy(
+                currentAltitudeMeters = record.altitudeMeters,
+                accuracyMeters = record.accuracyMeters,
+                latitude = record.latitude,
+                longitude = record.longitude,
+                altitudeSource = record.source,
+                isAcquiring = false,
+                cityInfo = record.citySnapshot
+                    ?.takeIf { it.title.isNotBlank() }
+                    ?.toCityInfo(record.latitude ?: 0.0, record.longitude ?: 0.0),
+                weatherInfo = weather,
+                placeWeather = place,
+                weatherUnavailable = false,
+            )
+        }
+        val lat = record.latitude
+        val lon = record.longitude
+        if (lat == null || lon == null) return
+        val key = "%.2f,%.2f".format(lat, lon)
+        if (savedPlaceKey == key) return
+        savedPlaceKey = key
+        _uiState.value = _uiState.value.copy(latitude = lat, longitude = lon)
+        lastWeatherFetchMs = 0L
+        fetchLocationDataThrottled()
+    }
+
+    /**
      * 获取城市信息并更新到 UI 状态
      */
     private fun fetchCityInfo() {
+        val lon = _uiState.value.longitude ?: return
+        val lat = _uiState.value.latitude ?: return
         componentScope.launch {
-            val lon = _uiState.value.longitude ?: return@launch
-            val lat = _uiState.value.latitude ?: return@launch
             weatherRepository.getCityAtLocation(lat, lon)
                 .onSuccess { cityInfo ->
+                    if (!stillAt(lat, lon)) return@onSuccess
                     makeLog("City: ${cityInfo.name}, ${cityInfo}")
                     _uiState.value = _uiState.value.copy(cityInfo = cityInfo)
                 }
@@ -192,11 +253,12 @@ class AltitudeComponent @AssistedInject internal constructor(
      * 获取当前天气信息并更新到 UI 状态
      */
     private fun fetchWeatherNow() {
+        val lon = _uiState.value.longitude ?: return
+        val lat = _uiState.value.latitude ?: return
         componentScope.launch {
-            val lon = _uiState.value.longitude ?: return@launch
-            val lat = _uiState.value.latitude ?: return@launch
             weatherRepository.getPlaceWeather(lat, lon)
                 .onSuccess { place ->
+                    if (!stillAt(lat, lon)) return@onSuccess
                     _uiState.value = _uiState.value.copy(
                         placeWeather = place,
                         weatherInfo = place.current,
@@ -205,19 +267,31 @@ class AltitudeComponent @AssistedInject internal constructor(
                 }
                 .onFailure { e ->
                     makeLog("Weather error: ${e.message}")
-                    if (_uiState.value.placeWeather == null) {
+                    if (_uiState.value.placeWeather == null && stillAt(lat, lon)) {
                         _uiState.value = _uiState.value.copy(weatherUnavailable = true)
                     }
                 }
         }
     }
 
+    private fun stillAt(lat: Double, lon: Double): Boolean {
+        val state = _uiState.value
+        val currentLat = state.latitude ?: return false
+        val currentLon = state.longitude ?: return false
+        return kotlin.math.abs(currentLat - lat) < 0.01 &&
+            kotlin.math.abs(currentLon - lon) < 0.01
+    }
+
     /**
      * 节流调用：获取城市和天气信息（至少间隔 WEATHER_THROTTLE_MS）
      */
     private fun fetchLocationDataThrottled() {
+        val lat = _uiState.value.latitude ?: return
+        val lon = _uiState.value.longitude ?: return
+        val placeKey = "%.2f,%.2f".format(lat, lon)
         val now = System.currentTimeMillis()
-        if (now - lastWeatherFetchMs < WEATHER_THROTTLE_MS) return
+        if (placeKey == lastWeatherPlaceKey && now - lastWeatherFetchMs < WEATHER_THROTTLE_MS) return
+        lastWeatherPlaceKey = placeKey
         lastWeatherFetchMs = now
         fetchCityInfo()
         fetchWeatherNow()
@@ -230,6 +304,7 @@ class AltitudeComponent @AssistedInject internal constructor(
      */
     fun onLocationPermissionGranted() {
         if (_uiState.value.locationPermissionGranted) return  // 已在追踪，忽略重复调用
+        lastWeatherFetchMs = 0L
         _uiState.value = _uiState.value.copy(
             locationPermissionGranted = true,
             isAcquiring = true

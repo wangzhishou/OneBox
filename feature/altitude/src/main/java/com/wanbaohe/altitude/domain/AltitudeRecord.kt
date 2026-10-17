@@ -4,6 +4,7 @@ import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.wanbaohe.core.weather.domain.model.AirQuality
 import com.wanbaohe.core.weather.domain.model.CityInfo
+import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
 
 /**
@@ -142,5 +143,17 @@ data class WeatherSnapshot(
         icon = icon,
         uvIndex = uvIndex,
     )
+
+    /** 未授权定位时先展示上次保存的实况；没有逐时和逐日。 */
+    fun toPlaceWeather(): PlaceWeather? {
+        val current = toWeatherInfo()
+        val air = if (aqi.isNotBlank() || aqiCategory.isNotBlank()) {
+            AirQuality(aqi = aqi, category = aqiCategory)
+        } else {
+            null
+        }
+        if (current.text.isBlank() && current.temp.isBlank() && air == null) return null
+        return PlaceWeather(current = current, air = air)
+    }
 }
 

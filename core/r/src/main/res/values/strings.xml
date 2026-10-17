@@ -1157,7 +1157,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="altitude_unit_m">m</string>
     <string name="altitude_unit_ft">ft</string>
     <string name="altitude_location_permission_title">Location Permission Required</string>
-    <string name="altitude_location_permission_description">The altimeter uses GPS for precise altitude. Please grant location permission to start.</string>
+    <string name="altitude_location_permission_description">The last saved altitude and weather stay visible. Grant location access to refresh them for where you are now.</string>
     <string name="altitude_location_permission_denied">Location permission was permanently denied. Go to app settings to enable it manually.</string>
     <string name="altitude_grant_permission">Grant Permission</string>
     <string name="altitude_open_settings">Open Settings</string>
