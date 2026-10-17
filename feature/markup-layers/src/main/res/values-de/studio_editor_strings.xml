@@ -4,7 +4,10 @@
     <string name="studio_projects_empty">Gespeicherte Projekte behalten das Originalbild, Ebenen, Masken und Effekte zum Bearbeiten bei.</string>
     <string name="studio_recent_files">Letzte Bilder</string>
     <string name="studio_recent_files_empty">Keine letzten Bilder</string>
-    <string name="studio_project_layers">%1$d Ebenen</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d Ebene</item>
+        <item quantity="other">%1$d Ebenen</item>
+    </plurals>
     <string name="studio_project_updated">Aktualisiert %1$s</string>
     <string name="studio_project_open">Projekt %1$s öffnen</string>
     <string name="studio_project_delete">Projekt %1$s löschen</string>

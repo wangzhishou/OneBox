@@ -213,4 +213,5 @@
     <string name="markup_rasterize_title">이미지로 변환할까요?</string>
     <string name="markup_rasterize_message">텍스트/도형 레이어는 필터를 사용하려면 먼저 이미지로 변환해야 합니다. 변환 후에는 텍스트/도형 설정을 더 이상 편집할 수 없지만 실행 취소로 복원할 수 있습니다.</string>
     <string name="markup_rasterize_failed">레이어 변환 실패</string>
+    <string name="markup_tool_text_style">텍스트 스타일</string>
 </resources>

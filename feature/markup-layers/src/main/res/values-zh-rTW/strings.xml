@@ -194,4 +194,5 @@
     <string name="markup_rasterize_title">轉換為圖片?</string>
     <string name="markup_rasterize_message">文字/形狀圖層需先轉換為圖片才能使用濾鏡。轉換後不可再編輯文字/形狀參數,可透過復原恢復。</string>
     <string name="markup_rasterize_failed">圖層轉換失敗</string>
+    <string name="markup_tool_text_style">文字設定</string>
 </resources>

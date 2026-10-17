@@ -984,4 +984,14 @@
     <string name="agent_tool_manage_chess_imported">Partie importée : %1$s. La position est entièrement importée, il suffit de transmettre deepLinks à l\'utilisateur, pas besoin de rappeler cet outil</string>
     <string name="agent_tool_manage_chess_import_failed">Échec de l\'import : %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">L\'IA joue-t-elle les Blancs (premier coup) (create/import_fen facultatif, par défaut false, soit l\'humain joue les Blancs en premier ; si import_fen n\'est pas fourni, l\'humain joue le camp au trait)</string>
+    <string name="ai_chat_attachment_idle_image">Prêt · %1$s → Env. %2$dKB après compression · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Prêt · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Vérification...</string>
+    <string name="ai_chat_attachment_resizing">Redimensionnement...</string>
+    <string name="ai_chat_attachment_converting">Conversion du format...</string>
+    <string name="ai_chat_attachment_compressing">Compression...</string>
+    <string name="ai_chat_attachment_encoding">Encodage...</string>
+    <string name="ai_chat_attachment_uploading">Téléversement...</string>
+    <string name="ai_chat_attachment_error">Échec : %1$s</string>
+    <string name="ai_chat_go_to_top">Retour en haut</string>
 </resources>

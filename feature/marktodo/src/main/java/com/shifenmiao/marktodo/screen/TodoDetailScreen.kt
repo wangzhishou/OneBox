@@ -104,7 +104,7 @@ fun TodoDetailScreen(
             }) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(com.shifenmiao.core.R.string.back_button)
                 )
             }
         },

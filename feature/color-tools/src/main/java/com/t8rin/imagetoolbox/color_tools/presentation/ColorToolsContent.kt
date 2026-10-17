@@ -147,7 +147,7 @@ fun ColorToolsContent(
             items = listOf(
                 BottomNavItem(
                     id = ColorToolTab.INFO.name,
-                    label = stringResource(R.string.color_info),
+                    label = stringResource(R.string.color_info_tab),
                     icon = Icons.Outlined.LineInfo
                 ),
                 BottomNavItem(
@@ -157,7 +157,7 @@ fun ColorToolsContent(
                 ),
                 BottomNavItem(
                     id = ColorToolTab.SHADING.name,
-                    label = stringResource(R.string.color_shading),
+                    label = stringResource(R.string.color_shading_tab),
                     icon = Icons.Rounded.Swatch
                 ),
                 BottomNavItem(

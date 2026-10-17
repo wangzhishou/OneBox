@@ -93,7 +93,7 @@ fun AITabChatScreen(
                 ) {
                     Icon(
                         com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                        contentDescription = "Back",
+                        contentDescription = stringResource(com.shifenmiao.core.R.string.back_button),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(24.dp)
                     )

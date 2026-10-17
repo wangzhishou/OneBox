@@ -4,7 +4,10 @@
     <string name="studio_projects_empty">सहेजे गए प्रोजेक्ट मूल छवि, लेयर, मास्क और इफेक्ट्स को संपादन के लिए तैयार रखते हैं।</string>
     <string name="studio_recent_files">हाल की छवियाँ</string>
     <string name="studio_recent_files_empty">कोई हाल की छवि नहीं</string>
-    <string name="studio_project_layers">%1$d लेयर</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d लेयर</item>
+        <item quantity="other">%1$d लेयर</item>
+    </plurals>
     <string name="studio_project_updated">%1$s को अपडेट किया गया</string>
     <string name="studio_project_open">प्रोजेक्ट %1$s खोलें</string>
     <string name="studio_project_delete">प्रोजेक्ट %1$s हटाएँ</string>

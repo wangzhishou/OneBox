@@ -50,4 +50,7 @@
     <string name="date_picker_title">날짜 선택</string>
     <string name="time_range_picker_title">시간 범위 선택</string>
     <string name="time_picker_title">시간 선택</string>
+    <string name="date_picker_apply">적용</string>
+    <string name="date_picker_input_title">날짜 입력</string>
+    <string name="date_picker_input_hint">팁: 날짜를 입력한 후 적용을 탭하세요</string>
 </resources>

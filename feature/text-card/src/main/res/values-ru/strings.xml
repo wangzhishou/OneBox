@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">Обновить фоны</string>
     <string name="textcard_editing_selection">Редактирование: выделенный текст</string>
     <string name="textcard_clear_selection_style">Сбросить стиль</string>
+    <string name="textcard_underline">Подчёркнутый</string>
+    <string name="textcard_strikethrough">Зачёркнутый</string>
+    <string name="textcard_text_background">Фон текста</string>
+    <string name="textcard_text_outline">Контур</string>
+    <string name="textcard_outline_width">Толщина контура</string>
 </resources>

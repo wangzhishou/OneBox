@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">Lanskap terkunci</string>
+    <string name="marquee_fullscreen_landscape_locked_label">Kunci lanskap</string>
+    <string name="marquee_fullscreen_follow_rotation">Ikuti rotasi</string>
+</resources>

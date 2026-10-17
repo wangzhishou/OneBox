@@ -24,4 +24,26 @@
 
     <!-- Editor placeholder -->
     <string name="markdown_placeholder">Start typing...</string>
+    <string name="markdown_editor_source_placeholder">Markdown source...</string>
+    <string name="markdown_editor_toolbar_undo">Undo</string>
+    <string name="markdown_editor_toolbar_redo">Redo</string>
+    <string name="markdown_editor_toolbar_heading_1">Heading 1</string>
+    <string name="markdown_editor_toolbar_heading_2">Heading 2</string>
+    <string name="markdown_editor_toolbar_heading_3">Heading 3</string>
+    <string name="markdown_editor_toolbar_bold">Bold</string>
+    <string name="markdown_editor_toolbar_italic">Italic</string>
+    <string name="markdown_editor_toolbar_strikethrough">Strikethrough</string>
+    <string name="markdown_editor_toolbar_inline_code">Inline code</string>
+    <string name="markdown_editor_toolbar_bullet_list">Bulleted list</string>
+    <string name="markdown_editor_toolbar_ordered_list">Numbered list</string>
+    <string name="markdown_editor_toolbar_task_list">Task list</string>
+    <string name="markdown_editor_toolbar_blockquote">Quote</string>
+    <string name="markdown_editor_toolbar_code_block">Code block</string>
+    <string name="markdown_editor_toolbar_link">Link</string>
+    <string name="markdown_editor_toolbar_image">Image</string>
+    <string name="markdown_editor_toolbar_divider">Divider</string>
+    <string name="markdown_editor_toolbar_copy">Copy</string>
+    <string name="markdown_editor_toolbar_paste">Paste</string>
+    <string name="markdown_editor_toolbar_select_all">Select all</string>
+    <string name="markdown_editor_toolbar_view_source">View Markdown source</string>
 </resources>

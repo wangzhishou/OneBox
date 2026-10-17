@@ -52,6 +52,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.marquee.screen.components.FireworksBackground
 import com.shifenmiao.marquee.screenLogic.MarqueeComponent
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalScreenSize
+import com.shifenmiao.marquee.R as MarqueeR
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.alertDialogBorder
 import com.t8rin.imagetoolbox.core.ui.widget.other.LockScreenOrientation
 import kotlinx.coroutines.Job
@@ -271,7 +272,10 @@ fun FullScreenSubtitles(
                     ) {
                         Icon(
                             imageVector = if (isLocked) Icons.Rounded.ScreenLockRotation else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineScreenRotation,
-                            contentDescription = if (isLocked) "已锁定横屏" else "跟随旋转",
+                            contentDescription = stringResource(
+                                if (isLocked) MarqueeR.string.marquee_fullscreen_landscape_locked
+                                else MarqueeR.string.marquee_fullscreen_follow_rotation
+                            ),
                         )
                     }
 
@@ -286,7 +290,10 @@ fun FullScreenSubtitles(
                     ) {
                         Text(
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                            text = if (isLocked) "锁定横屏" else "跟随旋转",
+                            text = stringResource(
+                                if (isLocked) MarqueeR.string.marquee_fullscreen_landscape_locked_label
+                                else MarqueeR.string.marquee_fullscreen_follow_rotation
+                            ),
                             color = Color.White,
                             fontSize = 12.sp,
                             maxLines = 1,

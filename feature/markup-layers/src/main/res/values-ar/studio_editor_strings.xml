@@ -4,7 +4,14 @@
     <string name="studio_projects_empty">تحتفظ المشاريع المحفوظة بالصورة الأصلية والطبقات والأقنعة والتأثيرات جاهزة للتحرير.</string>
     <string name="studio_recent_files">الصور الأخيرة</string>
     <string name="studio_recent_files_empty">لا توجد صور حديثة</string>
-    <string name="studio_project_layers">%1$d طبقات</string>
+    <plurals name="studio_project_layers">
+        <item quantity="zero">%1$d طبقات</item>
+        <item quantity="one">%1$d طبقة</item>
+        <item quantity="two">طبقتان</item>
+        <item quantity="few">%1$d طبقات</item>
+        <item quantity="many">%1$d طبقة</item>
+        <item quantity="other">%1$d طبقة</item>
+    </plurals>
     <string name="studio_project_updated">تم التحديث %1$s</string>
     <string name="studio_project_open">فتح المشروع %1$s</string>
     <string name="studio_project_delete">حذف المشروع %1$s</string>

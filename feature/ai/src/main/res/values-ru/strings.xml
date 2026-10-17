@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">Для действия create_list нужен параметр tasks (массив заголовков пунктов)</string>
     <string name="agent_tool_manage_todo_param_tasks">Массив заголовков пунктов, обязателен для create_list, напр. [\"Освоить монтаж видео с ИИ\", \"Прочитать 12 книг\"]</string>
     <string name="agent_tool_manage_todo_list_created">Список «%1$s» создан, элементов: %2$d</string>
+    <string name="ai_chat_attachment_idle_image">Готово · %1$s → Около %2$dKB после сжатия · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Готово · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Проверка...</string>
+    <string name="ai_chat_attachment_resizing">Изменение размера...</string>
+    <string name="ai_chat_attachment_converting">Преобразование формата...</string>
+    <string name="ai_chat_attachment_compressing">Сжатие...</string>
+    <string name="ai_chat_attachment_encoding">Кодирование...</string>
+    <string name="ai_chat_attachment_uploading">Загрузка...</string>
+    <string name="ai_chat_attachment_error">Ошибка: %1$s</string>
+    <string name="ai_chat_go_to_top">Наверх</string>
 </resources>

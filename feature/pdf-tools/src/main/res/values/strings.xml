@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pdf_conversion_activity_app_title">PDF Tools</string>
+    <string name="pdf_conversion_activity_images_to_pdf">Images → PDF</string>
+    <string name="pdf_conversion_activity_pdf_to_format">PDF → %1$s</string>
+</resources>

@@ -12,7 +12,7 @@
     <!-- 색상 및 모션(전역) -->
     <string name="theme_color_system_section">색상 및 모션</string>
     <string name="theme_palette_style_label">색상 스타일</string>
-    <string name="theme_palette_style_hint">기본 색상에서 전체 팔레트를 어떻게 만드는지 바꿉니다. Expressive가 가장 생동감 있습니다.</string>
+    <string name="theme_palette_style_hint">기본 색상에서 전체 팔레트를 어떻게 만드는지 바꿉니다. 표현적 스타일이 가장 생동감 있습니다.</string>
     <string name="theme_contrast_label">대비</string>
     <string name="theme_color_spec_2025">선명한 색상</string>
     <string name="theme_color_spec_2025_hint">모든 색상을 더 진하고 선명하게 만듭니다(새 색상 사양).</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">설명</string>
     <string name="ai_engine_protocol_label">요청 프로토콜</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Anthropic 호환</string>
     <string name="ai_engine_protocol_proxy">앱 프록시</string>
     <string name="ai_engine_protocol_local_on_device">기기 내 (네트워크 없음)</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">비워 두면 모델 키로 자동 생성됩니다</string>
     <string name="ai_engine_name_edit_hint">서비스 고유 키입니다. 이름을 바꾸면 모델도 함께 이동합니다. 보통은 그대로 두세요.</string>
     <string name="ai_engine_title_hint">목록과 채팅에 표시되는 이름이며 언제든 바꿀 수 있습니다</string>
+    <string name="ai_personalization_tab_prompts">프롬프트</string>
 </resources>

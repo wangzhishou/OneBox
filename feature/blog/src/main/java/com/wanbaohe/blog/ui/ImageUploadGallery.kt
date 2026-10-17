@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -62,7 +63,7 @@ fun ImageUploadGallery(
             ) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Add,
-                    contentDescription = "Add Image",
+                    contentDescription = stringResource(com.t8rin.imagetoolbox.core.resources.R.string.add_image),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }

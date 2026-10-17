@@ -1982,4 +1982,6 @@
     <string name="font_noto_sans_jp">Noto Sans JP</string>
     <string name="font_noto_sans_kr">Noto Sans KR</string>
     <string name="download_started">다운로드 시작됨</string>
+    <string name="color_info_tab">색상 정보</string>
+    <string name="color_shading_tab">색상 음영</string>
 </resources>

@@ -26,6 +26,8 @@
     <string name="server_status_running">Service running</string>
     <string name="server_status_starting">Starting…</string>
     <string name="server_status_error">Service error</string>
+    <string name="server_ip_address_error">Unable to get IP address. Check your network connection</string>
+    <string name="server_start_failed">Failed to start service</string>
 
     <!-- Action buttons -->
     <string name="start_server">Start Service</string>

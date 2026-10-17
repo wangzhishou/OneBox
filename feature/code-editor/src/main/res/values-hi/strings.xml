@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">अपना कोड टाइप करना शुरू करें…</string>
+    <string name="code_editor_toolbar_undo">पूर्ववत करें</string>
+    <string name="code_editor_toolbar_redo">फिर से करें</string>
+    <string name="code_editor_toolbar_find">खोजें</string>
+    <string name="code_editor_toolbar_copy">कॉपी करें</string>
+    <string name="code_editor_toolbar_paste">पेस्ट करें</string>
+    <string name="code_editor_toolbar_select_all">सभी चुनें</string>
+    <string name="code_editor_toolbar_word_wrap">वर्ड रैप</string>
 </resources>

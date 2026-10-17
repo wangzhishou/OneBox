@@ -836,4 +836,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Deskarga hasi da</string>
+    <string name="color_info_tab">Kolore-info</string>
+    <string name="color_shading_tab">Itzaltzea</string>
 </resources>

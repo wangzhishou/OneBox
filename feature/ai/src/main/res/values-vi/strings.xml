@@ -984,4 +984,14 @@
     <string name="agent_tool_manage_chess_imported">Đã nhập ván đấu: %1$s. Thế cờ đã được nhập đầy đủ, chỉ cần đưa deepLinks cho người dùng, không cần gọi lại công cụ này</string>
     <string name="agent_tool_manage_chess_import_failed">Nhập thất bại: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">AI có cầm Trắng (đi trước) không (tùy chọn cho create/import_fen, mặc định false tức người cầm Trắng đi trước; khi import_fen không truyền thì người cầm bên đang đến lượt)</string>
+    <string name="ai_chat_attachment_idle_image">Sẵn sàng · %1$s → Khoảng %2$dKB sau khi nén · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Sẵn sàng · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Đang kiểm tra...</string>
+    <string name="ai_chat_attachment_resizing">Đang đổi kích thước...</string>
+    <string name="ai_chat_attachment_converting">Đang chuyển định dạng...</string>
+    <string name="ai_chat_attachment_compressing">Đang nén...</string>
+    <string name="ai_chat_attachment_encoding">Đang mã hóa...</string>
+    <string name="ai_chat_attachment_uploading">Đang tải lên...</string>
+    <string name="ai_chat_attachment_error">Thất bại: %1$s</string>
+    <string name="ai_chat_go_to_top">Lên đầu trang</string>
 </resources>

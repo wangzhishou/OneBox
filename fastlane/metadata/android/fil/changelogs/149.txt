@@ -1,0 +1,3 @@
+• Pinabuti ang mga salin, plural rules, at format ng petsa
+• Naayos ang putol na teksto sa Text Card, board games, Color Tools, at Markup editor
+• Lokalisado ang loan calculator at ID photo specs; pinabuti ang retry ng komento at AI status text

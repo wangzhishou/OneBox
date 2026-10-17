@@ -80,4 +80,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">බාගැනීම ආරම්භ විය</string>
+    <string name="color_info_tab">වර්ණ තොරතුරු</string>
+    <string name="color_shading_tab">වර්ණ සෙවණ</string>
 </resources>

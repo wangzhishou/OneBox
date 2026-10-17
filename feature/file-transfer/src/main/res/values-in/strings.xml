@@ -72,4 +72,6 @@
     <string name="permission_required_message">Layanan transfer file memerlukan izin penyimpanan untuk membaca dan menulis file. Harap berikan akses.</string>
     <string name="grant_permission">Beri Izin</string>
     <string name="cancel">Batal</string>
+    <string name="server_ip_address_error">Tidak dapat memperoleh alamat IP. Periksa koneksi jaringan Anda</string>
+    <string name="server_start_failed">Gagal memulai layanan</string>
 </resources>

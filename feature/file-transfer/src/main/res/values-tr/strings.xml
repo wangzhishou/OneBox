@@ -72,4 +72,6 @@
     <string name="permission_required_message">Dosya aktarım hizmeti, dosyaları okumak ve yazmak için depolama iznine ihtiyaç duyar. Lütfen erişim izni verin.</string>
     <string name="grant_permission">İzin Ver</string>
     <string name="cancel">İptal</string>
+    <string name="server_ip_address_error">IP adresi alınamıyor. Ağ bağlantınızı kontrol edin</string>
+    <string name="server_start_failed">Hizmet başlatılamadı</string>
 </resources>

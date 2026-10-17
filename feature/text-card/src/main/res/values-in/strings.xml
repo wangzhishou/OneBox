@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">Segarkan kertas</string>
     <string name="textcard_editing_selection">Mengedit: teks terpilih</string>
     <string name="textcard_clear_selection_style">Hapus gaya</string>
+    <string name="textcard_underline">Garis bawah</string>
+    <string name="textcard_strikethrough">Coret</string>
+    <string name="textcard_text_background">Latar belakang teks</string>
+    <string name="textcard_text_outline">Garis luar</string>
+    <string name="textcard_outline_width">Ketebalan garis luar</string>
 </resources>

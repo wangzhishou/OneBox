@@ -72,4 +72,6 @@
     <string name="permission_required_message">Сервису передачи файлов необходимо разрешение на доступ к хранилищу для чтения и записи файлов. Пожалуйста, предоставьте доступ.</string>
     <string name="grant_permission">Предоставить разрешение</string>
     <string name="cancel">Отмена</string>
+    <string name="server_ip_address_error">Не удалось получить IP-адрес. Проверьте подключение к сети</string>
+    <string name="server_start_failed">Не удалось запустить службу</string>
 </resources>

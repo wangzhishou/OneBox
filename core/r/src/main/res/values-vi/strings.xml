@@ -825,7 +825,7 @@
     <string name="feedback_submit">Xác nhận gửi</string>
     <string name="feedback_title_hint">Tiêu đề</string>
     <string name="feedback_content_hint">Mô tả</string>
-    <string name="feedback_placeholder">Vui lòng mô tả chi tiết vấn đề bạn gặp phải để chúng tôi giải quyết nhanh hơn~</string>
+    <string name="feedback_placeholder">Vui lòng mô tả chi tiết vấn đề bạn gặp phải để chúng tôi giải quyết nhanh hơn</string>
     <string name="fields_required">Vui lòng kiểm tra các trường bắt buộc</string>
     <string name="feedback_failed">Gửi thất bại, vui lòng thử lại sau!</string>
     <string name="feedback_onSuccess">Đã nhận phản hồi! Cảm ơn bạn đã giúp chúng tôi cải thiện sản phẩm ❤️</string>
@@ -1494,7 +1494,7 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="prompt_push_success">Đồng bộ prompt thành công</string>
     <string name="prompt_push_failed">Đồng bộ prompt thất bại</string>
     <string name="nav_add">Thêm</string>
-    <string name="nav_create_new_task">Tạo nhiệm vụ mới</string>
+    <string name="nav_create_new_task">Tạo</string>
     <string name="nav_new_qr_code">Quét mã</string>
     <string name="nav_notebook">Sổ ghi chú</string>
     <string name="nav_todo_list">Việc cần làm</string>
@@ -1732,7 +1732,9 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="auth_code_cancelled">Đã hủy xác minh</string>
     <string name="comment">Bình luận</string>
     <string name="comments_title">Bình luận</string>
-    <string name="comments_count_format">Tổng %1$d bình luận</string>
+    <plurals name="comments_count_format">
+        <item quantity="other">Tổng %1$d bình luận</item>
+    </plurals>
     <string name="comment_close">Đóng</string>
     <string name="comment_loading">Đang tải bình luận…</string>
     <string name="comment_empty">Chưa nhận được phản hồi, hãy để lại góp ý của bạn</string>
@@ -1751,6 +1753,7 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="comment_send_failed">Gửi bình luận thất bại</string>
     <string name="comment_load_failed_format">Tải bình luận thất bại (%1$d)</string>
     <string name="comment_network_error">Lỗi mạng, vui lòng thử lại sau</string>
+    <string name="comment_retry">Thử lại</string>
     <string name="comment_cancel_reply">Hủy trả lời</string>
     <string name="comment_hint">Cho AI biết vấn đề bạn gặp hoặc tính năng bạn muốn…</string>
     <string name="comment_too_long_format">Bình luận không được vượt quá %1$d ký tự</string>
@@ -1832,4 +1835,5 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="time_due_in_days">Hết hạn sau %d ngày</string>
     <string name="time_due_on">Hết hạn: %s</string>
     <string name="card_more_actions">Thao tác khác</string>
+    <string name="expand">Mở rộng</string>
 </resources>

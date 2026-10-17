@@ -194,7 +194,7 @@ fun ChineseDatePickerDialog(
                         onDateSelected(selectedDate)
                     }
                 }) {
-                Text(if (isInputMode) "应用" else confirmText)
+                Text(if (isInputMode) stringResource(R.string.date_picker_apply) else confirmText)
             }
         },
         dismissButton = {
@@ -212,7 +212,7 @@ fun ChineseDatePickerDialog(
                     }
                 }
             ) {
-                Text(if (isInputMode) "取消" else cancelText)
+                Text(if (isInputMode) stringResource(R.string.date_picker_cancel) else cancelText)
             }
         },
         title = null,
@@ -322,7 +322,7 @@ private fun DateInputFields(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "请输入日期",
+            text = stringResource(R.string.date_picker_input_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
@@ -389,7 +389,7 @@ private fun DateInputFields(
 
         // 提示文字
         Text(
-            text = "提示：输入完成后点击\"应用\"按钮",
+            text = stringResource(R.string.date_picker_input_hint),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

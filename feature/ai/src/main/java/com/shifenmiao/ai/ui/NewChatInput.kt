@@ -66,6 +66,7 @@ import com.shifenmiao.ai.voice.resolveVoiceInputEngine
 import com.shifenmiao.base.utils.ActionUtils
 import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
+import com.shifenmiao.ai.R as AiR
 import com.shifenmiao.model.ai.AttachmentProcessingState
 import com.shifenmiao.model.ai.ChatInputEventHandler
 import com.shifenmiao.model.ai.Conversation
@@ -659,6 +660,7 @@ private fun AttachmentItem(
     }
 }
 
+@Composable
 private fun getStateText(media: com.shifenmiao.model.ai.AttachedMedia): String {
     val state = media.processingState
     return when (state) {
@@ -675,7 +677,12 @@ private fun getStateText(media: com.shifenmiao.model.ai.AttachedMedia): String {
                 // 估算压缩后大小（原图 * 0.3 系数）和 tokens
                 val estimatedCompressedKB = (media.size * 3 / 10) / 1024
                 val estimatedTokens = ((estimatedCompressedKB * 1024 * 4 / 3) / 4).toInt()
-                "就绪 · $sizeText → 压缩后约${estimatedCompressedKB}KB · ~${estimatedTokens}tokens"
+                stringResource(
+                    AiR.string.ai_chat_attachment_idle_image,
+                    sizeText,
+                    estimatedCompressedKB,
+                    estimatedTokens
+                )
             } else {
                 val sizeKB = media.size / 1024
                 val sizeText = if (sizeKB > 1024) {
@@ -684,18 +691,18 @@ private fun getStateText(media: com.shifenmiao.model.ai.AttachedMedia): String {
                     "${sizeKB}KB"
                 }
                 val estimatedTokens = ((media.size * 4 / 3) / 4).toInt()
-                "就绪 · ${sizeText} · ~${estimatedTokens}tokens"
+                stringResource(AiR.string.ai_chat_attachment_idle_file, sizeText, estimatedTokens)
             }
         }
 
         is AttachmentProcessingState.PROCESSING -> {
             when (state.step) {
-                ProcessingStep.CHECKING -> "检查中..."
-                ProcessingStep.RESIZING -> "压缩尺寸..."
-                ProcessingStep.CONVERTING -> "转换格式..."
-                ProcessingStep.COMPRESSING -> "压缩中..."
-                ProcessingStep.ENCODING -> "编码中..."
-                ProcessingStep.UPLOADING -> "上传中..."
+                ProcessingStep.CHECKING -> stringResource(AiR.string.ai_chat_attachment_checking)
+                ProcessingStep.RESIZING -> stringResource(AiR.string.ai_chat_attachment_resizing)
+                ProcessingStep.CONVERTING -> stringResource(AiR.string.ai_chat_attachment_converting)
+                ProcessingStep.COMPRESSING -> stringResource(AiR.string.ai_chat_attachment_compressing)
+                ProcessingStep.ENCODING -> stringResource(AiR.string.ai_chat_attachment_encoding)
+                ProcessingStep.UPLOADING -> stringResource(AiR.string.ai_chat_attachment_uploading)
             }
         }
 
@@ -711,7 +718,8 @@ private fun getStateText(media: com.shifenmiao.model.ai.AttachedMedia): String {
             "✓ ${processedSizeText} · ~${estimatedTokens}tokens"
         }
 
-        is AttachmentProcessingState.ERROR -> "失败: ${state.message}"
+        is AttachmentProcessingState.ERROR ->
+            stringResource(AiR.string.ai_chat_attachment_error, state.message)
     }
 }
 

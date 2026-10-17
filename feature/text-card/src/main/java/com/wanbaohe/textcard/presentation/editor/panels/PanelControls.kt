@@ -4,12 +4,14 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +25,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassFilterChip
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
@@ -132,6 +136,7 @@ internal fun StyleChip(
         onClick = onClick,
         modifier = modifier,
         shape = ShapeDefaults.default,
+        contentPadding = PaddingValues(horizontal = 4.dp),
         // 不用 Outline:主色系背景区分选中
         border = null,
         colors = FilterChipDefaults.filterChipColors(
@@ -157,7 +162,13 @@ internal fun StyleChip(
                 Text(
                     text = stringResource(labelRes),
                     style = MaterialTheme.typography.labelMedium,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = 7.5.sp,
+                        maxFontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        stepSize = 0.25.sp,
+                    )
                 )
             }
         }

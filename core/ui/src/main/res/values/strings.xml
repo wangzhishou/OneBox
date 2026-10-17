@@ -3,6 +3,9 @@
     <string name="date_picker_title">Select Date</string>
     <string name="date_picker_confirm">Confirm</string>
     <string name="date_picker_cancel">Cancel</string>
+    <string name="date_picker_apply">Apply</string>
+    <string name="date_picker_input_title">Enter date</string>
+    <string name="date_picker_input_hint">Tip: Tap Apply after entering the date</string>
     <string name="date_picker_edit">Edit</string>
     <string name="date_picker_select_year_month">Select Year and Month</string>
     <string name="date_picker_year_input">Year</string>

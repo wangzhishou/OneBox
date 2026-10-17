@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d calque</item>
+        <item quantity="other">%1$d calques</item>
+    </plurals>
+</resources>

@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">Die Aktion create_list erfordert den Parameter tasks (Array von Eintragstiteln)</string>
     <string name="agent_tool_manage_todo_param_tasks">Array von Eintragstiteln, erforderlich für create_list, z. B. [\"KI-Videoschnitt lernen\", \"12 Bücher lesen\"]</string>
     <string name="agent_tool_manage_todo_list_created">Liste „%1$s“ mit %2$d Einträgen erstellt</string>
+    <string name="ai_chat_attachment_idle_image">Bereit · %1$s → Ca. %2$dKB nach Komprimierung · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Bereit · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Wird geprüft...</string>
+    <string name="ai_chat_attachment_resizing">Größe wird geändert...</string>
+    <string name="ai_chat_attachment_converting">Format wird konvertiert...</string>
+    <string name="ai_chat_attachment_compressing">Wird komprimiert...</string>
+    <string name="ai_chat_attachment_encoding">Wird kodiert...</string>
+    <string name="ai_chat_attachment_uploading">Wird hochgeladen...</string>
+    <string name="ai_chat_attachment_error">Fehlgeschlagen: %1$s</string>
+    <string name="ai_chat_go_to_top">Zum Anfang</string>
 </resources>

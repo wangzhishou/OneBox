@@ -89,4 +89,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Atsiuntimas pradėtas</string>
+    <string name="color_info_tab">Spalvos info</string>
+    <string name="color_shading_tab">Šešėliavimas</string>
 </resources>

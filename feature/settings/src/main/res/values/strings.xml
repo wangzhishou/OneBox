@@ -381,6 +381,8 @@
     <string name="auth_code_settings_immersive_exit">Exit Immersive Mode</string>
     <string name="auth_code_settings_unnamed_item">Unnamed App</string>
 
+    <string name="ai_personalization_tab_prompts">Prompts</string>
+
     <!-- AI Memory management page -->
     <string name="memory_global_switch_title">Enable AI Memory</string>
     <string name="memory_global_switch_subtitle">Master switch: when off, memories are not injected and the AI cannot write memories</string>

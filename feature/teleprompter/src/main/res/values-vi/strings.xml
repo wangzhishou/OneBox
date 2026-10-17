@@ -3,7 +3,9 @@
     <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Văn bản của tôi</string>
     <string name="teleprompter_recent_scripts">Văn bản gần đây</string>
-    <string name="teleprompter_scripts_total">Tổng cộng %d văn bản</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="other">Tổng cộng %d văn bản</item>
+    </plurals>
     <string name="teleprompter_empty">Chưa có văn bản, nhấn + ở góc trên bên phải để tạo mới</string>
     <string name="teleprompter_empty_title">Chưa có văn bản nào</string>
     <string name="teleprompter_empty_description">Bạn có thể tự tạo một văn bản mới, hoặc cho AI biết nhu cầu của bạn để nó giúp bạn tạo nhanh</string>
@@ -11,10 +13,10 @@
     <string name="teleprompter_empty_ai_desc">Cho AI biết bối cảnh và thời lượng, tạo văn bản thông minh</string>
     <string name="teleprompter_empty_go_ai">AI viết giúp tôi</string>
     <string name="teleprompter_ai_assist_title">Trợ lý kịch bản nhắc</string>
-    <string name="teleprompter_ai_assist_prompt">Bạn là trợ lý kịch bản nhắc của người dùng. Khi người dùng mô tả bối cảnh, thời lượng hoặc chủ đề, hãy dùng công cụ manage_teleprompter để tạo hoặc cập nhật văn bản. Khi viết, hãy dùng ngôn ngữ khẩu ngữ, câu ngắn, phù hợp để đọc, kiểm soát số chữ theo thời lượng người dùng yêu cầu (tiếng Trung khoảng 4 chữ mỗi giây). Sau khi tạo xong, xác nhận ngắn gọn tiêu đề và số chữ.</string>
+    <string name="teleprompter_ai_assist_prompt">Bạn là trợ lý kịch bản nhắc của người dùng. Khi người dùng mô tả bối cảnh, thời lượng hoặc chủ đề, hãy dùng công cụ manage_teleprompter để tạo hoặc cập nhật văn bản. Khi viết, hãy dùng ngôn ngữ khẩu ngữ, câu ngắn, phù hợp để đọc, kiểm soát số ký tự theo thời lượng người dùng yêu cầu (tiếng Trung khoảng 4 ký tự mỗi giây). Sau khi tạo xong, xác nhận ngắn gọn tiêu đề và số ký tự.</string>
     <string name="teleprompter_ai_assist_fill_in">Viết một đoạn mở đầu 30 giây, lưu vào teleprompter</string>
     <plurals name="teleprompter_word_count">
-        <item quantity="other">%d chữ</item>
+        <item quantity="other">%d ký tự</item>
     </plurals>
     <string name="teleprompter_new_script">Tạo văn bản mới</string>
     <string name="teleprompter_edit_script">Chỉnh sửa văn bản</string>

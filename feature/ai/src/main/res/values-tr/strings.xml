@@ -987,4 +987,14 @@
     <string name="agent_tool_import_font_deeplink_label">Ekran Ayarları</string>
     <string name="agent_tool_import_font_deeplink_guidance">Ekran ayarlarında yazı tiplerini yönetmek için dokunun</string>
     <string name="agent_tool_manage_todo_created">\"%1$s\" listesi %2$d öğeyle oluşturuldu</string>
+    <string name="ai_chat_attachment_idle_image">Hazır · %1$s → Sıkıştırma sonrası yaklaşık %2$dKB · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Hazır · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Kontrol ediliyor...</string>
+    <string name="ai_chat_attachment_resizing">Yeniden boyutlandırılıyor...</string>
+    <string name="ai_chat_attachment_converting">Biçim dönüştürülüyor...</string>
+    <string name="ai_chat_attachment_compressing">Sıkıştırılıyor...</string>
+    <string name="ai_chat_attachment_encoding">Kodlanıyor...</string>
+    <string name="ai_chat_attachment_uploading">Yükleniyor...</string>
+    <string name="ai_chat_attachment_error">Başarısız: %1$s</string>
+    <string name="ai_chat_go_to_top">Başa dön</string>
 </resources>

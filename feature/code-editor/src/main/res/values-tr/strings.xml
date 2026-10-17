@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Kodunuzu yazmaya başlayın…</string>
+    <string name="code_editor_toolbar_undo">Geri al</string>
+    <string name="code_editor_toolbar_redo">Yinele</string>
+    <string name="code_editor_toolbar_find">Bul</string>
+    <string name="code_editor_toolbar_copy">Kopyala</string>
+    <string name="code_editor_toolbar_paste">Yapıştır</string>
+    <string name="code_editor_toolbar_select_all">Tümünü seç</string>
+    <string name="code_editor_toolbar_word_wrap">Satır kaydırma</string>
 </resources>

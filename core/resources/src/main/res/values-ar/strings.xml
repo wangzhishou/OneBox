@@ -1984,4 +1984,6 @@
     <string name="sticker_ai_empty">صف الملصق أولًا</string>
     <string name="sticker_ai_generating">جارٍ التوليد…</string>
     <string name="download_started">بدأ التنزيل</string>
+    <string name="color_info_tab">معلومات اللون</string>
+    <string name="color_shading_tab">تظليل اللون</string>
 </resources>

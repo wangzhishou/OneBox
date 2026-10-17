@@ -4,7 +4,10 @@
     <string name="studio_projects_empty">Los proyectos guardados conservan la imagen original, las capas, las máscaras y los efectos listos para editar.</string>
     <string name="studio_recent_files">Imágenes recientes</string>
     <string name="studio_recent_files_empty">No hay imágenes recientes</string>
-    <string name="studio_project_layers">%1$d capas</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d capa</item>
+        <item quantity="other">%1$d capas</item>
+    </plurals>
     <string name="studio_project_updated">Actualizado %1$s</string>
     <string name="studio_project_open">Abrir proyecto %1$s</string>
     <string name="studio_project_delete">Eliminar proyecto %1$s</string>

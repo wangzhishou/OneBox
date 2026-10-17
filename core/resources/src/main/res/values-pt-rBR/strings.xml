@@ -1984,4 +1984,6 @@
     <string name="font_noto_sans_jp">Noto Sans JP</string>
     <string name="font_noto_sans_kr">Noto Sans KR</string>
     <string name="download_started">Download iniciado</string>
+    <string name="color_info_tab">Info da cor</string>
+    <string name="color_shading_tab">Sombreamento</string>
 </resources>

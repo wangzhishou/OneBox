@@ -213,4 +213,5 @@
     <string name="markup_rasterize_title">Ubah menjadi gambar?</string>
     <string name="markup_rasterize_message">Lapisan teks/bentuk harus diubah menjadi gambar sebelum menggunakan filter. Setelah diubah, pengaturan teks/bentuk tidak dapat diedit lagi, tetapi dapat dipulihkan dengan Urungkan.</string>
     <string name="markup_rasterize_failed">Gagal mengubah lapisan</string>
+    <string name="markup_tool_text_style">Gaya teks</string>
 </resources>

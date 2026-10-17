@@ -4,7 +4,9 @@
     <string name="studio_projects_empty">저장된 프로젝트는 원본 이미지, 레이어, 마스크, 효과를 편집 가능한 상태로 유지합니다.</string>
     <string name="studio_recent_files">최근 이미지</string>
     <string name="studio_recent_files_empty">최근 이미지 없음</string>
-    <string name="studio_project_layers">레이어 %1$d개</string>
+    <plurals name="studio_project_layers">
+        <item quantity="other">레이어 %1$d개</item>
+    </plurals>
     <string name="studio_project_updated">%1$s에 업데이트됨</string>
     <string name="studio_project_open">프로젝트 %1$s 열기</string>
     <string name="studio_project_delete">프로젝트 %1$s 삭제</string>

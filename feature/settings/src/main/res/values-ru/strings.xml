@@ -12,7 +12,7 @@
     <!-- Цвета и анимация (глобально) -->
     <string name="theme_color_system_section">Цвета и анимация</string>
     <string name="theme_palette_style_label">Стиль цвета</string>
-    <string name="theme_palette_style_hint">Меняет, как вся палитра строится из основного цвета. Expressive — самый яркий вариант.</string>
+    <string name="theme_palette_style_hint">Меняет, как вся палитра строится из основного цвета. Экспрессивный — самый яркий вариант.</string>
     <string name="theme_contrast_label">Контраст</string>
     <string name="theme_color_spec_2025">Насыщенные цвета</string>
     <string name="theme_color_spec_2025_hint">Делает все цвета более насыщенными и яркими (новая цветовая схема).</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">Описание</string>
     <string name="ai_engine_protocol_label">Протокол запроса</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Совместимый с Anthropic</string>
     <string name="ai_engine_protocol_proxy">Прокси приложения</string>
     <string name="ai_engine_protocol_local_on_device">На устройстве (без сети)</string>
@@ -150,11 +150,11 @@
     <string name="ai_engine_model_restore_defaults_success">Удаленные настройки по умолчанию восстановлены</string>
     <string name="ai_engine_model_restore_defaults_failed">Не удалось восстановить удаленные настройки по умолчанию. Пожалуйста, попробуйте позже.</string>
     <string name="ai_working_model_default_title">Модель чата по умолчанию</string>
-    <string name="ai_working_model_default_desc">Используется для обычных AI-разговоров и основных сценариев задач.</string>
+    <string name="ai_working_model_default_desc">Используется для обычных ИИ-разговоров и основных сценариев задач.</string>
     <string name="ai_working_model_fast_title">Модель быстрых задач</string>
-    <string name="ai_working_model_fast_desc">Используется для легких задач, быстрых ответов и вспомогательных сценариев. Например, генерация заголовков, AI для китайских шахмат.</string>
+    <string name="ai_working_model_fast_desc">Используется для легких задач, быстрых ответов и вспомогательных сценариев. Например, генерация заголовков, ИИ для китайских шахмат.</string>
     <string name="ai_working_model_duel_a_title">Модель дуэли A</string>
-    <string name="ai_working_model_duel_a_desc">Первая роль в AI-дуэли.</string>
+    <string name="ai_working_model_duel_a_desc">Первая роль в ИИ-дуэли.</string>
     <string name="ai_working_model_duel_b_title">Модель B для дуэли</string>
     <string name="ai_working_model_duel_b_desc">Вторая роль в ИИ-дуэли.</string>
     <string name="ai_working_model_engine_label">Выберите сервис</string>
@@ -327,8 +327,8 @@
     <string name="ai_engine_protocol_pikafish">Шахматный движок Pikafish</string>
     <string name="theme_preset_glass_border_alpha">Непрозрачность границы стекла</string>
     <string name="theme_preset_glass_border_alpha_hint">Меньшие значения делают границу мягче, при нуле она скрыта. Фон не меняется.</string>
-    <string name="custom_background_ai_generate">Создать с помощью AI</string>
-    <string name="custom_background_ai_title">Фоновое изображение AI</string>
+    <string name="custom_background_ai_generate">Создать с помощью ИИ</string>
+    <string name="custom_background_ai_title">Фоновое изображение ИИ</string>
     <string name="custom_background_ai_hint">Опишите фон, например: Туманный лес на рассвете</string>
     <string name="custom_background_ai_action">Создать</string>
     <string name="custom_background_ai_points_hint">%1$d баллов за создание</string>
@@ -336,7 +336,7 @@
     <string name="custom_background_ai_running">Идёт создание, подождите</string>
     <string name="custom_background_ai_generating">Создание…</string>
     <string name="ai_feature_settings_context_compaction_toggle_title">Умное сжатие контекста</string>
-    <string name="ai_feature_settings_context_compaction_toggle_desc">Когда контекст агента приближается к лимиту модели, предыдущая беседа суммаризируется с помощью AI и сохраняется как дайджест вместо удаления. Если выключено, ранние сообщения просто обрезаются.</string>
+    <string name="ai_feature_settings_context_compaction_toggle_desc">Когда контекст агента приближается к лимиту модели, предыдущая беседа суммаризируется с помощью ИИ и сохраняется как дайджест вместо удаления. Если выключено, ранние сообщения просто обрезаются.</string>
     <string name="ai_engine_add_jev_engine">Добавить движок Jev</string>
     <string name="ai_engine_name_auto_hint">Уникальный ключ для этого сервиса, заполняется автоматически из отображаемого имени; обычно менять не нужно.</string>
     <string name="ai_engine_more_options">Дополнительные параметры</string>
@@ -344,13 +344,13 @@
     <string name="ai_working_model_status_available">Текущий маршрут: доступен</string>
     <string name="ai_engine_jev_proxy_hint">Введите свой ключ API Jev и пройдите проверку подключения, чтобы подключиться напрямую; можно пользоваться и без ключа.</string>
     <string name="ai_engine_jev_list_empty">Движков Jev пока нет. Нажмите значок в правом верхнем углу, чтобы добавить.</string>
-    <string name="memory_global_switch_title">Включить память AI</string>
-    <string name="memory_global_switch_subtitle">Главный переключатель: когда выключено, воспоминания не добавляются, и AI не может их записывать</string>
+    <string name="memory_global_switch_title">Включить память ИИ</string>
+    <string name="memory_global_switch_subtitle">Главный переключатель: когда выключено, воспоминания не добавляются, и ИИ не может их записывать</string>
     <string name="memory_profile_section">Профиль</string>
-    <string name="memory_profile_supporting">Ведёте вы, добавляется всегда; AI только читает</string>
-    <string name="memory_profile_empty">Записей профиля пока нет. Добавьте факты о себе, которые AI должен всегда знать.</string>
+    <string name="memory_profile_supporting">Ведёте вы, добавляется всегда; ИИ только читает</string>
+    <string name="memory_profile_empty">Записей профиля пока нет. Добавьте факты о себе, которые ИИ должен всегда знать.</string>
     <string name="memory_log_section">Журнал памяти</string>
-    <string name="memory_log_supporting">Записи, созданные AI или вами, сгруппированы по дате</string>
+    <string name="memory_log_supporting">Записи, созданные ИИ или вами, сгруппированы по дате</string>
     <string name="memory_log_empty">Записей в журнале пока нет.</string>
     <string name="memory_add_entry">Добавить</string>
     <string name="memory_add_entry_title">Добавить воспоминание</string>
@@ -363,10 +363,10 @@
     <string name="memory_log_cleared">Журнал памяти очищен</string>
     <string name="memory_source_conversation">из %1$s</string>
     <string name="memory_entry_too_long">Текст превышает лимит в %1$d символов</string>
-    <string name="skill_global_switch_title">Включить навыки AI</string>
-    <string name="skill_global_switch_subtitle">Главный переключатель: когда выключено, список навыков не добавляется, и AI не может загружать навыки</string>
+    <string name="skill_global_switch_title">Включить навыки ИИ</string>
+    <string name="skill_global_switch_subtitle">Главный переключатель: когда выключено, список навыков не добавляется, и ИИ не может загружать навыки</string>
     <string name="skill_list_section">Навыки</string>
-    <string name="skill_list_supporting">AI загружает полные инструкции навыка по запросу через инструмент use_skill</string>
+    <string name="skill_list_supporting">ИИ загружает полные инструкции навыка по запросу через инструмент use_skill</string>
     <string name="skill_empty">Навыки не установлены.</string>
     <string name="skill_import_clipboard">Импорт из буфера обмена</string>
     <string name="skill_import_file">Импорт из файла</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">Оставьте пустым, чтобы создать из ключа модели</string>
     <string name="ai_engine_name_edit_hint">Уникальный ключ сервиса; при переименовании модели переезжают вместе с ним — обычно не меняйте</string>
     <string name="ai_engine_title_hint">Имя в списках и в чате; можно менять в любое время</string>
+    <string name="ai_personalization_tab_prompts">Подсказки</string>
 </resources>

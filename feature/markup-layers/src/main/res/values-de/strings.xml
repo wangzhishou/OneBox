@@ -229,4 +229,5 @@
     <string name="markup_rasterize_title">In Bild umwandeln?</string>
     <string name="markup_rasterize_message">Text- und Formebenen müssen zur Verwendung von Filtern zuerst in ein Bild umgewandelt werden. Nach der Umwandlung können Text-/Formeinstellungen nicht mehr bearbeitet werden, du kannst sie aber über „Rückgängig“ wiederherstellen.</string>
     <string name="markup_rasterize_failed">Ebenenumwandlung fehlgeschlagen</string>
+    <string name="markup_tool_text_style">Textstil</string>
 </resources>

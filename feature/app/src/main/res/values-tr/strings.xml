@@ -1,0 +1,3 @@
+<resources>
+    <string name="robot_hint_executing_tool">Yürütülüyor: %1$s</string>
+</resources>

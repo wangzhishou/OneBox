@@ -67,7 +67,7 @@ fun WebViewTopAppBar(
             IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.back_button)
                 )
             }
         },

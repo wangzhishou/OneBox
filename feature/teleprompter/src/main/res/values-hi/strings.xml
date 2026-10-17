@@ -3,9 +3,12 @@
     <string name="teleprompter_title">टेलीप्रॉम्प्टर</string>
     <string name="teleprompter_my_scripts">मेरी स्क्रिप्ट</string>
     <string name="teleprompter_recent_scripts">हाल की स्क्रिप्ट</string>
-    <string name="teleprompter_scripts_total">कुल: %d स्क्रिप्ट</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">कुल: %d स्क्रिप्ट</item>
+        <item quantity="other">कुल: %d स्क्रिप्टें</item>
+    </plurals>
     <string name="teleprompter_empty">कोई स्क्रिप्ट नहीं, नीचे दाईं ओर + नया पर क्लिक करें</string>
-    <plurals name="teleprompter_word_count"><item quantity="one">%d शब्द</item><item quantity="other">%d शब्द</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="one">%d वर्ण</item><item quantity="other">%d वर्ण</item></plurals>
     <string name="teleprompter_new_script">नई स्क्रिप्ट</string>
     <string name="teleprompter_edit_script">स्क्रिप्ट संपादित करें</string>
     <string name="teleprompter_title_hint">स्क्रिप्ट शीर्षक</string>
@@ -61,7 +64,7 @@
     <string name="teleprompter_log_created_title">नई स्क्रिप्ट: %1$s</string>
     <string name="teleprompter_log_updated_title">स्क्रिप्ट अपडेट: %1$s</string>
     <string name="teleprompter_log_deleted_title">स्क्रिप्ट हटाई: %1$s</string>
-    <string name="teleprompter_log_created_desc">स्क्रिप्ट “%1$s” बनाई गई (%2$d शब्द)</string>
-    <string name="teleprompter_log_updated_desc">स्क्रिप्ट “%1$s” अपडेट की गई (%2$d शब्द)</string>
+    <string name="teleprompter_log_created_desc">स्क्रिप्ट “%1$s” बनाई गई (%2$d वर्ण)</string>
+    <string name="teleprompter_log_updated_desc">स्क्रिप्ट “%1$s” अपडेट की गई (%2$d वर्ण)</string>
     <string name="teleprompter_log_deleted_desc">स्क्रिप्ट “%1$s” हटाई गई</string>
 </resources>

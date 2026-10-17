@@ -33,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.component.AgentComponent
 import com.shifenmiao.base.components.CenterErrorBox
@@ -91,7 +92,7 @@ fun AgentScreen(
                         }
                     }
                 ) {
-                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack, contentDescription = "Back")
+                    Icon(com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack, contentDescription = stringResource(R.string.back_button))
                 }
                 if (isAdmin && !chatUIState.showHistory && !isPreview) {
                     IconButton(

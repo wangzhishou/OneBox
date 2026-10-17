@@ -934,4 +934,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">A letöltés elkezdődött</string>
+    <string name="color_info_tab">Színinfó</string>
+    <string name="color_shading_tab">Árnyalás</string>
 </resources>

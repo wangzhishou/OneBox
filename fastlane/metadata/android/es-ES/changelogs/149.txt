@@ -1,0 +1,3 @@
+• Traducciones, reglas plurales y formatos de fecha mejorados
+• Texto truncado corregido en Tarjeta de texto, juegos de mesa, Colores y Editor de marcado
+• Calculadora de préstamos y formatos de foto de identificación localizados; mejoras en reintento de comentarios y estados de IA

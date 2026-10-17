@@ -44,7 +44,7 @@ fun LoanSummaryCard(
     ) {
         // 副标题：还款方式
         Text(
-            text = result.method.label,
+            text = stringResource(result.method.labelRes),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
         )

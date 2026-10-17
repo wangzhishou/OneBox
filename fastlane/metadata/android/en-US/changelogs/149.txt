@@ -1,0 +1,3 @@
+• Improved translations, plural rules and date formats across the app
+• Fixed truncated text in Text Card, board games, Color Tools and Markup editor
+• Localized the loan calculator and ID photo specs; improved comment retry and AI status text

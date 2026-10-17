@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Mulai mengetik kode Anda…</string>
+    <string name="code_editor_toolbar_undo">Urungkan</string>
+    <string name="code_editor_toolbar_redo">Ulangi</string>
+    <string name="code_editor_toolbar_find">Temukan</string>
+    <string name="code_editor_toolbar_copy">Salin</string>
+    <string name="code_editor_toolbar_paste">Tempel</string>
+    <string name="code_editor_toolbar_select_all">Pilih semua</string>
+    <string name="code_editor_toolbar_word_wrap">Bungkus baris</string>
 </resources>

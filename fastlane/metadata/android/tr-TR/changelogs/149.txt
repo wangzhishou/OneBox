@@ -1,0 +1,3 @@
+• Çeviriler, çoğul kuralları ve tarih biçimleri iyileştirildi
+• Metin Kartı, masa oyunları, Renk Araçları ve İşaretleme düzenleyicisindeki kesilen metinler düzeltildi
+• Kredi hesaplayıcı ve vesikalık fotoğraf özellikleri yerelleştirildi; yorum yeniden denemesi ve AI durum metinleri iyileştirildi

@@ -99,4 +99,9 @@
     <string name="textcard_draw_width">Độ dày</string>
     <string name="textcard_editing_selection">Đang điều chỉnh: văn bản đã chọn</string>
     <string name="textcard_clear_selection_style">Xóa kiểu</string>
+    <string name="textcard_underline">Gạch chân</string>
+    <string name="textcard_strikethrough">Gạch ngang</string>
+    <string name="textcard_text_background">Nền văn bản</string>
+    <string name="textcard_text_outline">Viền</string>
+    <string name="textcard_outline_width">Độ dày viền</string>
 </resources>

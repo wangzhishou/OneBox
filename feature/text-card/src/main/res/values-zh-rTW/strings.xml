@@ -99,4 +99,9 @@
     <string name="textcard_draw_width">粗細</string>
     <string name="textcard_editing_selection">正在調整：選取的文字</string>
     <string name="textcard_clear_selection_style">清除樣式</string>
+    <string name="textcard_underline">底線</string>
+    <string name="textcard_strikethrough">刪除線</string>
+    <string name="textcard_text_background">文字背景</string>
+    <string name="textcard_text_outline">描邊</string>
+    <string name="textcard_outline_width">描邊粗細</string>
 </resources>

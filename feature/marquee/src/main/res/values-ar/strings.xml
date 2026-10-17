@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">الوضع الأفقي مقفل</string>
+    <string name="marquee_fullscreen_landscape_locked_label">قفل الوضع الأفقي</string>
+    <string name="marquee_fullscreen_follow_rotation">اتباع التدوير</string>
+</resources>

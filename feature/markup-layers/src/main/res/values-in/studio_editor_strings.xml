@@ -4,7 +4,9 @@
     <string name="studio_projects_empty">Proyek tersimpan menyimpan gambar asli, lapisan, masker, dan efek agar siap diedit.</string>
     <string name="studio_recent_files">Gambar terbaru</string>
     <string name="studio_recent_files_empty">Tidak ada gambar terbaru</string>
-    <string name="studio_project_layers">%1$d lapisan</string>
+    <plurals name="studio_project_layers">
+        <item quantity="other">%1$d lapisan</item>
+    </plurals>
     <string name="studio_project_updated">Diperbarui %1$s</string>
     <string name="studio_project_open">Buka proyek %1$s</string>
     <string name="studio_project_delete">Hapus proyek %1$s</string>

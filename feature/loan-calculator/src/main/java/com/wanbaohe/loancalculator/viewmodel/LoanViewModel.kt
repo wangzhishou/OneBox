@@ -3,10 +3,12 @@ package com.wanbaohe.loancalculator.viewmodel
 import java.util.Locale
 import com.shifenmiao.model.money.MoneyFormat
 import com.shifenmiao.model.money.AppCurrency
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.wanbaohe.loancalculator.R
 import com.wanbaohe.loancalculator.domain.LoanCalculator
 import com.wanbaohe.loancalculator.domain.LoanResult
 import com.wanbaohe.loancalculator.domain.RepaymentMethod
@@ -48,14 +50,21 @@ class LoanViewModel : ViewModel() {
     var result by mutableStateOf<LoanResult?>(null)
         private set
 
-    /** 输入校验错误信息（各字段独立） */
-    var amountError by mutableStateOf<String?>(null)
+    /** 输入校验错误资源（各字段独立） */
+    @get:StringRes
+    var amountError by mutableStateOf<Int?>(null)
         private set
-    var termError by mutableStateOf<String?>(null)
+
+    @get:StringRes
+    var termError by mutableStateOf<Int?>(null)
         private set
-    var rateError by mutableStateOf<String?>(null)
+
+    @get:StringRes
+    var rateError by mutableStateOf<Int?>(null)
         private set
-    var methodError by mutableStateOf<String?>(null)
+
+    @get:StringRes
+    var methodError by mutableStateOf<Int?>(null)
         private set
 
     // ── 输入更新 ──────────────────────────────────────────────────────────────
@@ -95,20 +104,20 @@ class LoanViewModel : ViewModel() {
 
         val principalFen = amount.yuanToFen()
         if (principalFen <= 0) {
-            amountError = "请输入有效的贷款金额"
+            amountError = R.string.loan_input_error_amount
             valid = false
         }
         if (termMonths <= 0) {
-            termError = "请选择贷款期数"
+            termError = R.string.loan_input_error_term
             valid = false
         }
         val rate = annualRate.toDoubleOrNull()
         if (rate == null || rate <= 0.0) {
-            rateError = "请输入有效的年利率"
+            rateError = R.string.loan_input_error_rate
             valid = false
         }
         if (repaymentMethod == null) {
-            methodError = "请选择还款方式"
+            methodError = R.string.loan_input_error_method
             valid = false
         }
 

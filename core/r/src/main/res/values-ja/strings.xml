@@ -731,7 +731,7 @@
     <string name="feedback_submit">送信</string>
     <string name="feedback_title_hint">タイトル</string>
     <string name="feedback_content_hint">説明</string>
-    <string name="feedback_placeholder">問題を詳しく説明してください。より早く対応できます〜</string>
+    <string name="feedback_placeholder">問題を詳しく説明してください。より早く対応できます</string>
     <string name="fields_required">必須項目を入力してください。</string>
     <string name="feedback_failed">送信に失敗しました。後でもう一度お試しください。</string>
     <string name="feedback_onSuccess">フィードバックを受け取りました！改善にご協力いただきありがとうございます❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">プッシュ成功</string>
     <string name="agent_push_failed">プッシュ失敗</string>
     <string name="nav_add">追加</string>
-    <string name="nav_create_new_task">新しいタスク</string>
+    <string name="nav_create_new_task">作成</string>
     <string name="nav_new_qr_code">スキャン</string>
     <string name="nav_notebook">メモ</string>
     <string name="nav_todo_list">やること</string>
@@ -1570,7 +1570,9 @@
     <string name="password_vault_description">サイト、アプリ、ドアコードのパスワードを安全に保管します。</string>
     <string name="comment">コメント</string>
     <string name="comments_title">コメント</string>
-    <string name="comments_count_format">%1$d件のコメント</string>
+    <plurals name="comments_count_format">
+        <item quantity="other">%1$d件のコメント</item>
+    </plurals>
     <string name="comment_hint">コメントを書く…</string>
     <string name="reply_hint">%1$sに返信…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1584,7 @@
     <string name="comment_loading_more">さらに読み込み中…</string>
     <string name="comment_load_failed_format">コメントの読み込みに失敗しました（%1$d）</string>
     <string name="comment_network_error">ネットワークエラー。もう一度お試しください。</string>
+    <string name="comment_retry">再試行</string>
     <string name="comment_empty">まだフィードバックはありません。ぜひご意見をお聞かせください。</string>
     <string name="comment_end_marker">— これ以上ありません —</string>
     <string name="comment_send">送信</string>
@@ -1834,4 +1837,5 @@
     <string name="byok_login_hint_subtitle">自分の API キーで AI チャットを無料で利用</string>
     <string name="byok_login_hint_title">登録したくない場合</string>
     <string name="donate_earn_points">投げ銭でポイントを獲得</string>
+    <string name="expand">展開</string>
 </resources>

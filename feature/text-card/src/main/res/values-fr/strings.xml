@@ -7,7 +7,7 @@
     <string name="textcard_canvas_xiaohongshu_desc">Idéal pour publier sur Xiaohongshu</string>
     <string name="textcard_canvas_wechat">Image WeChat</string>
     <string name="textcard_canvas_wechat_desc">Idéal pour illustrer un article WeChat</string>
-    <string name="textcard_canvas_custom">Taille personnalisée</string>
+    <string name="textcard_canvas_custom">Sur mesure</string>
     <string name="textcard_canvas_custom_desc">Saisir largeur et hauteur personnalisées (px)</string>
     <string name="textcard_custom_size_title">Taille de canevas personnalisée</string>
     <string name="textcard_canvas_width">Largeur (px)</string>
@@ -99,4 +99,9 @@
     <string name="textcard_draw_width">Épaisseur</string>
     <string name="textcard_editing_selection">Ajustement : texte sélectionné</string>
     <string name="textcard_clear_selection_style">Effacer le style</string>
+    <string name="textcard_underline">Souligné</string>
+    <string name="textcard_strikethrough">Barré</string>
+    <string name="textcard_text_background">Arrière-plan du texte</string>
+    <string name="textcard_text_outline">Contour</string>
+    <string name="textcard_outline_width">Épaisseur du contour</string>
 </resources>

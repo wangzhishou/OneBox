@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -52,8 +53,9 @@ fun OperateBar(
     val showComment = onCommentClick != null
     val resolvedCommentCount = if (showComment) commentCount ?: 0 else null
     val commentDescription = if (resolvedCommentCount != null) {
-        stringResource(
-            com.shifenmiao.core.R.string.comments_count_format,
+        pluralStringResource(
+            com.shifenmiao.core.R.plurals.comments_count_format,
+            resolvedCommentCount,
             resolvedCommentCount,
         )
     } else {

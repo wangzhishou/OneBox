@@ -79,7 +79,7 @@ fun BaseSettingItem(
             } ?: ""
         }
 
-        ProfileSetting.OpenSource -> {
+        ProfileSetting.UpdateSetting -> {
             val release = remember {
                 EntryPointAccessors.fromApplication(
                     context = context.applicationContext,

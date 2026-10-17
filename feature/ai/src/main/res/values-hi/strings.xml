@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">create_list क्रिया के लिए tasks पैरामीटर ज़रूरी है (आइटम शीर्षकों की सरणी)</string>
     <string name="agent_tool_manage_todo_param_tasks">आइटम शीर्षकों की सरणी, create_list के लिए ज़रूरी, जैसे [\"AI वीडियो एडिटिंग सीखें\", \"12 किताबें पढ़ें\"]</string>
     <string name="agent_tool_manage_todo_list_created">सूची \"%1$s\" बनाई गई, %2$d आइटम के साथ</string>
+    <string name="ai_chat_attachment_idle_image">तैयार · %1$s → संपीड़न के बाद लगभग %2$dKB · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">तैयार · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">जाँच हो रही है...</string>
+    <string name="ai_chat_attachment_resizing">आकार बदला जा रहा है...</string>
+    <string name="ai_chat_attachment_converting">फ़ॉर्मैट बदला जा रहा है...</string>
+    <string name="ai_chat_attachment_compressing">संपीड़न हो रहा है...</string>
+    <string name="ai_chat_attachment_encoding">एन्कोडिंग हो रही है...</string>
+    <string name="ai_chat_attachment_uploading">अपलोड हो रहा है...</string>
+    <string name="ai_chat_attachment_error">विफल: %1$s</string>
+    <string name="ai_chat_go_to_top">ऊपर जाएँ</string>
 </resources>

@@ -3,7 +3,14 @@
     <string name="teleprompter_title">ملقّن النصوص</string>
     <string name="teleprompter_my_scripts">نصوصي</string>
     <string name="teleprompter_recent_scripts">النصوص الأخيرة</string>
-    <string name="teleprompter_scripts_total">المجموع: %d نصوص</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="zero">المجموع: %d نصوص</item>
+        <item quantity="one">المجموع: %d نص</item>
+        <item quantity="two">المجموع: %d نصان</item>
+        <item quantity="few">المجموع: %d نصوص</item>
+        <item quantity="many">المجموع: %d نصًا</item>
+        <item quantity="other">المجموع: %d نص</item>
+    </plurals>
     <string name="teleprompter_empty">لا يوجد نص، انقر على + في أسفل اليمين</string>
     <string name="teleprompter_empty_title">لا توجد نصوص بعد</string>
     <string name="teleprompter_empty_description">أنشئ نصًّا يدويًّا، أو أخبر الذكاء الاصطناعي بما تحتاجه ودعه يصوغه لك</string>
@@ -11,9 +18,9 @@
     <string name="teleprompter_empty_ai_desc">صِف المشهد والطول ودع الذكاء الاصطناعي يكتبه</string>
     <string name="teleprompter_empty_go_ai">الكتابة بالذكاء الاصطناعي</string>
     <string name="teleprompter_ai_assist_title">مساعد نصوص الملقّن</string>
-    <string name="teleprompter_ai_assist_prompt">أنت مساعد نصوص الملقّن الخاص بالمستخدم\'. عندما يصف المستخدم مشهدًا أو مدة أو موضوعًا، أنشئ نصًّا أو حدّثه باستخدام أداة manage_teleprompter. اكتب جملًا منطوقة قصيرة مناسبة للقراءة بصوت مرتفع، وطابق المدة المطلوبة. أكّد بإيجاز العنوان وعدد الكلمات بعد الإنشاء.</string>
+    <string name="teleprompter_ai_assist_prompt">أنت مساعد نصوص الملقّن الخاص بالمستخدم\'. عندما يصف المستخدم مشهدًا أو مدة أو موضوعًا، أنشئ نصًّا أو حدّثه باستخدام أداة manage_teleprompter. اكتب جملًا منطوقة قصيرة مناسبة للقراءة بصوت مرتفع، وطابق المدة المطلوبة. أكّد بإيجاز العنوان وعدد الأحرف بعد الإنشاء.</string>
     <string name="teleprompter_ai_assist_fill_in">اكتب نص افتتاحي مدته 30 ثانية واحفظه في ملقّن النصوص</string>
-    <plurals name="teleprompter_word_count"><item quantity="zero">%d كلمة</item><item quantity="one">%d كلمة</item><item quantity="two">%d كلمتان</item><item quantity="few">%d كلمات</item><item quantity="many">%d كلمة</item><item quantity="other">%d كلمة</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="zero">%d حرف</item><item quantity="one">%d حرف</item><item quantity="two">%d حرفان</item><item quantity="few">%d أحرف</item><item quantity="many">%d حرفًا</item><item quantity="other">%d حرف</item></plurals>
     <string name="teleprompter_new_script">نص جديد</string>
     <string name="teleprompter_edit_script">تعديل النص</string>
     <string name="teleprompter_title_hint">عنوان النص</string>
@@ -60,7 +67,7 @@
     <string name="teleprompter_log_created_title">نص جديد: %1$s</string>
     <string name="teleprompter_log_updated_title">تحديث النص: %1$s</string>
     <string name="teleprompter_log_deleted_title">حذف النص: %1$s</string>
-    <string name="teleprompter_log_created_desc">تم إنشاء النص “%1$s” (%2$d كلمة)</string>
-    <string name="teleprompter_log_updated_desc">تم تحديث النص “%1$s” (%2$d كلمة)</string>
+    <string name="teleprompter_log_created_desc">تم إنشاء النص “%1$s” (%2$d حرف)</string>
+    <string name="teleprompter_log_updated_desc">تم تحديث النص “%1$s” (%2$d حرف)</string>
     <string name="teleprompter_log_deleted_desc">تم حذف النص “%1$s”</string>
 </resources>

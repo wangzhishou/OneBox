@@ -807,7 +807,7 @@
     <string name="feedback_submit">確認提交</string>
     <string name="feedback_title_hint">標題</string>
     <string name="feedback_content_hint">描述</string>
-    <string name="feedback_placeholder">請詳細描述你遇到的問題，幫助我們更快解決~</string>
+    <string name="feedback_placeholder">請詳細描述你遇到的問題，幫助我們更快解決</string>
     <string name="fields_required">請檢查必填欄位</string>
     <string name="feedback_failed">提交失敗，請稍後重試！</string>
     <string name="feedback_onSuccess">回饋已收到！感謝你幫助我們改進產品 ❤️</string>
@@ -1475,7 +1475,7 @@
     <string name="prompt_push_success">提示詞同步成功</string>
     <string name="prompt_push_failed">提示詞同步失敗</string>
     <string name="nav_add">新增</string>
-    <string name="nav_create_new_task">建立新任務</string>
+    <string name="nav_create_new_task">建立</string>
     <string name="nav_new_qr_code">掃一掃</string>
     <string name="nav_notebook">記事本</string>
     <string name="nav_todo_list">待辦事項</string>
@@ -1708,7 +1708,9 @@
     <string name="auth_code_cancelled">已取消驗證</string>
     <string name="comment">留言</string>
     <string name="comments_title">留言</string>
-    <string name="comments_count_format">共 %1$d 則留言</string>
+    <plurals name="comments_count_format">
+        <item quantity="other">共 %1$d 則留言</item>
+    </plurals>
     <string name="comment_close">關閉</string>
     <string name="comment_loading">留言載入中…</string>
     <string name="comment_empty">還沒有收到回饋，歡迎留下你的建議</string>
@@ -1727,6 +1729,7 @@
     <string name="comment_send_failed">留言傳送失敗</string>
     <string name="comment_load_failed_format">留言載入失敗 (%1$d)</string>
     <string name="comment_network_error">網路異常，請稍後重試</string>
+    <string name="comment_retry">重試</string>
     <string name="comment_cancel_reply">取消回覆</string>
     <string name="comment_hint">告訴 AI，你遇到的問題或想要的功能…</string>
     <string name="comment_too_long_format">留言不能超過 %1$d 字</string>
@@ -1835,4 +1838,5 @@
     <string name="profile_item_ai_memory">AI 記憶</string>
     <string name="profile_item_ai_skill">AI 技能</string>
     <string name="profile_item_local_models">本機模型</string>
+    <string name="expand">展開</string>
 </resources>

@@ -50,4 +50,7 @@
     <string name="date_picker_title">Seleccionar fecha</string>
     <string name="time_range_picker_title">Seleccionar intervalo de tiempo</string>
     <string name="time_picker_title">Seleccionar hora</string>
+    <string name="date_picker_apply">Aplicar</string>
+    <string name="date_picker_input_title">Introduce la fecha</string>
+    <string name="date_picker_input_hint">Consejo: pulsa Aplicar después de introducir la fecha</string>
 </resources>

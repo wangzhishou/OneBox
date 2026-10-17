@@ -731,7 +731,7 @@
     <string name="feedback_submit">Senden</string>
     <string name="feedback_title_hint">Titel</string>
     <string name="feedback_content_hint">Beschreibung</string>
-    <string name="feedback_placeholder">Bitte beschreiben Sie das Problem detailliert, damit wir schneller helfen können~</string>
+    <string name="feedback_placeholder">Bitte beschreiben Sie das Problem detailliert, damit wir schneller helfen können</string>
     <string name="fields_required">Bitte füllen Sie die Pflichtfelder aus.</string>
     <string name="feedback_failed">Übermittlung fehlgeschlagen. Bitte versuchen Sie es später erneut.</string>
     <string name="feedback_onSuccess">Feedback erhalten! Vielen Dank, dass Sie uns helfen, besser zu werden ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">Push erfolgreich</string>
     <string name="agent_push_failed">Push fehlgeschlagen</string>
     <string name="nav_add">Hinzufügen</string>
-    <string name="nav_create_new_task">Neue Aufgabe</string>
+    <string name="nav_create_new_task">Erstellen</string>
     <string name="nav_new_qr_code">Scannen</string>
     <string name="nav_notebook">Notiz</string>
     <string name="nav_todo_list">To-dos</string>
@@ -1570,7 +1570,10 @@
     <string name="password_vault_description">Passwörter für Websites, Apps und Türcodes sicher speichern.</string>
     <string name="comment">Kommentar</string>
     <string name="comments_title">Kommentare</string>
-    <string name="comments_count_format">%1$d Kommentare</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d Kommentar</item>
+        <item quantity="other">%1$d Kommentare</item>
+    </plurals>
     <string name="comment_hint">Kommentar schreiben…</string>
     <string name="reply_hint">Antworten auf %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1585,7 @@
     <string name="comment_loading_more">Mehr laden…</string>
     <string name="comment_load_failed_format">Kommentare konnten nicht geladen werden (%1$d)</string>
     <string name="comment_network_error">Netzwerkfehler. Bitte versuchen Sie es erneut.</string>
+    <string name="comment_retry">Erneut versuchen</string>
     <string name="comment_empty">Noch kein Feedback. Teilen Sie gerne Ihre Gedanken.</string>
     <string name="comment_end_marker">— Keine weiteren —</string>
     <string name="comment_send">Senden</string>
@@ -1844,4 +1848,5 @@ Tipp: Wenn du „Für immer ausblenden“ wählst, kannst du mich später unter 
     <string name="byok_login_hint_subtitle">Mit eigenem API-Schlüssel kostenlos KI-Chat nutzen</string>
     <string name="byok_login_hint_title">Möchten Sie sich nicht anmelden?</string>
     <string name="donate_earn_points">Mit einer Spende Punkte erhalten</string>
+    <string name="expand">Erweitern</string>
 </resources>

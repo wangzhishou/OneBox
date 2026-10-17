@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">Kağıtları yenile</string>
     <string name="textcard_editing_selection">Düzenleniyor: seçili metin</string>
     <string name="textcard_clear_selection_style">Stili temizle</string>
+    <string name="textcard_underline">Altı çizili</string>
+    <string name="textcard_strikethrough">Üstü çizili</string>
+    <string name="textcard_text_background">Metin arka planı</string>
+    <string name="textcard_text_outline">Kontur</string>
+    <string name="textcard_outline_width">Kontur kalınlığı</string>
 </resources>

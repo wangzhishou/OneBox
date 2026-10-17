@@ -72,4 +72,6 @@
     <string name="permission_required_message">تحتاج خدمة نقل الملفات إلى إذن التخزين لقراءة الملفات وكتابتها. يُرجى منح الإذن.</string>
     <string name="grant_permission">منح الإذن</string>
     <string name="cancel">إلغاء</string>
+    <string name="server_ip_address_error">تعذر الحصول على عنوان IP. تحقق من اتصال الشبكة</string>
+    <string name="server_start_failed">فشل بدء الخدمة</string>
 </resources>

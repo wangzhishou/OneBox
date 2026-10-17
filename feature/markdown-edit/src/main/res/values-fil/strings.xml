@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">Lapad</string>
     <string name="original_width">Orihinal na lapad: %1$dpx</string>
     <string name="markdown_placeholder">Magsimulang mag-type...</string>
+    <string name="markdown_editor_source_placeholder">Source ng Markdown...</string>
+    <string name="markdown_editor_toolbar_undo">Bawiin</string>
+    <string name="markdown_editor_toolbar_redo">Ulitin</string>
+    <string name="markdown_editor_toolbar_heading_1">Heading 1</string>
+    <string name="markdown_editor_toolbar_heading_2">Heading 2</string>
+    <string name="markdown_editor_toolbar_heading_3">Heading 3</string>
+    <string name="markdown_editor_toolbar_bold">Bold</string>
+    <string name="markdown_editor_toolbar_italic">Italic</string>
+    <string name="markdown_editor_toolbar_strikethrough">Strikethrough</string>
+    <string name="markdown_editor_toolbar_inline_code">Inline code</string>
+    <string name="markdown_editor_toolbar_bullet_list">Listahang may bullet</string>
+    <string name="markdown_editor_toolbar_ordered_list">Listahang may numero</string>
+    <string name="markdown_editor_toolbar_task_list">Listahan ng gawain</string>
+    <string name="markdown_editor_toolbar_blockquote">Sipi</string>
+    <string name="markdown_editor_toolbar_code_block">Bloke ng code</string>
+    <string name="markdown_editor_toolbar_link">Link</string>
+    <string name="markdown_editor_toolbar_image">Larawan</string>
+    <string name="markdown_editor_toolbar_divider">Separator</string>
+    <string name="markdown_editor_toolbar_copy">Kopyahin</string>
+    <string name="markdown_editor_toolbar_paste">I-paste</string>
+    <string name="markdown_editor_toolbar_select_all">Piliin lahat</string>
+    <string name="markdown_editor_toolbar_view_source">Tingnan ang source ng Markdown</string>
 </resources>

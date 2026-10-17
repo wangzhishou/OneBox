@@ -1,26 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources><!-- 贷款计算器 -->
     <string name="loan_calc_title">Loan Calculator</string>
-    <string name="loan_calc_amount_label">Amount of loan ($)</string>
+    <string name="loan_calc_amount_label">Amount of loan</string>
     <string name="loan_calc_amount_hint">Please enter the amount.</string>
     <string name="loan_calc_term_label">Loan term</string>
     <string name="loan_calc_term_hint">Selection</string>
     <string name="loan_calc_rate_label">Annual interest rate (%)</string>
     <string name="loan_calc_rate_hint">Enter annual interest rate</string>
+    <string name="loan_calc_monthly_rate_label">Monthly interest rate (%)</string>
+    <string name="loan_calc_monthly_rate_hint">Enter monthly interest rate</string>
     <string name="loan_calc_method_label">Method of repayment</string>
     <string name="loan_calc_method_hint">Selection</string>
     <string name="loan_calc_start">Start Calculating</string>
     <string name="loan_calc_cancel">Cancel</string>
 
     <!-- 还款方式 -->
-    <string name="loan_method_equal_installment">Just wait.</string>
-    <string name="loan_method_equal_installment_desc">Monthly supply, principal, interest</string>
-    <string name="loan_method_equal_payment">Equivalent</string>
-    <string name="loan_method_equal_payment_desc">Monthly provision is the same, principal increases and interest decreases monthly</string>
-    <string name="loan_method_equal_principal">Equivalent principal</string>
-    <string name="loan_method_equal_principal_desc">Monthly decrease in monthly provision, same principal per month and monthly decrease in interest</string>
-    <string name="loan_method_interest_first">Let\'s put it down.</string>
-    <string name="loan_method_interest_first_desc">Monthly fixed interest and full principal due</string>
+    <string name="loan_method_equal_installment">Fixed principal and interest</string>
+    <string name="loan_method_equal_installment_desc">Monthly payment, principal, and interest stay the same each month</string>
+    <string name="loan_method_equal_payment">Equal monthly payments</string>
+    <string name="loan_method_equal_payment_desc">Monthly payments stay the same, while principal increases and interest decreases each month</string>
+    <string name="loan_method_equal_principal">Equal principal payments</string>
+    <string name="loan_method_equal_principal_desc">Monthly payments decrease, while principal stays the same and interest decreases each month</string>
+    <string name="loan_method_interest_first">Interest first, principal later</string>
+    <string name="loan_method_interest_first_desc">Fixed interest is paid monthly, with the full principal due at maturity</string>
 
     <!-- 计算结果 -->
     <string name="loan_result_monthly_payment">Monthly average repayments</string>
@@ -28,7 +30,7 @@
     <string name="loan_result_total_repayment">Total repayments</string>
     <string name="loan_result_schedule_title">Repayment plan</string>
     <string name="loan_result_month">Period</string>
-    <string name="loan_result_monthly_col">Month repayment</string>
+    <string name="loan_result_monthly_col">Monthly payment</string>
     <string name="loan_result_principal_col">Principal</string>
     <string name="loan_result_interest_col">Interest</string>
     <string name="loan_result_remaining_col">Remaining principal</string>
@@ -37,8 +39,16 @@
     <string name="loan_input_error_rate">Enter a valid annual rate of interest</string>
     <string name="loan_input_error_method">Please choose how to repay.</string>
 
-    <!-- 期数选择（月） -->
-    <string name="loan_term_months">%1$d months</string>
-    <string name="loan_term_years">%1$d years (%2$d months)</string>
+    <!-- 期数选择 -->
+    <plurals name="loan_term_months">
+        <item quantity="one">%1$d month</item>
+        <item quantity="other">%1$d months</item>
+    </plurals>
+    <plurals name="loan_term_years_count">
+        <item quantity="one">%1$d year</item>
+        <item quantity="other">%1$d years</item>
+    </plurals>
+    <string name="loan_term_years">%1$s (%2$s)</string>
+    <string name="loan_term_years_months">%1$s %2$s</string>
     <string name="loan_term_picker_title">Select loan term</string>
 </resources>

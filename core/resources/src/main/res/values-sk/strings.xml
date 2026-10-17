@@ -925,4 +925,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Sťahovanie sa začalo</string>
+    <string name="color_info_tab">Info o farbe</string>
+    <string name="color_shading_tab">Tieňovanie</string>
 </resources>

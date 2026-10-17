@@ -825,7 +825,7 @@
     <string name="feedback_submit">Confirmer l\'envoi</string>
     <string name="feedback_title_hint">Titre</string>
     <string name="feedback_content_hint">Description</string>
-    <string name="feedback_placeholder">Décrivez votre problème en détail pour nous aider à le résoudre plus rapidement~</string>
+    <string name="feedback_placeholder">Décrivez votre problème en détail pour nous aider à le résoudre plus rapidement</string>
     <string name="fields_required">Veuillez vérifier les champs obligatoires</string>
     <string name="feedback_failed">Échec de l\'envoi, veuillez réessayer plus tard !</string>
     <string name="feedback_onSuccess">Retour bien reçu ! Merci de nous aider à améliorer le produit ❤️</string>
@@ -1494,7 +1494,7 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="prompt_push_success">Synchronisation des prompts réussie</string>
     <string name="prompt_push_failed">Échec de la synchronisation des prompts</string>
     <string name="nav_add">Ajouter</string>
-    <string name="nav_create_new_task">Créer une nouvelle tâche</string>
+    <string name="nav_create_new_task">Créer</string>
     <string name="nav_new_qr_code">Scanner</string>
     <string name="nav_notebook">Bloc-notes</string>
     <string name="nav_todo_list">Tâches</string>
@@ -1732,7 +1732,10 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="auth_code_cancelled">Vérification annulée</string>
     <string name="comment">Commentaire</string>
     <string name="comments_title">Commentaire</string>
-    <string name="comments_count_format">%1$d commentaires au total</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d commentaire au total</item>
+        <item quantity="other">%1$d commentaires au total</item>
+    </plurals>
     <string name="comment_close">Fermer</string>
     <string name="comment_loading">Chargement des commentaires…</string>
     <string name="comment_empty">Aucun retour reçu pour le moment, n\'hésitez pas à laisser votre suggestion</string>
@@ -1751,6 +1754,7 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="comment_send_failed">Échec de l\'envoi du message</string>
     <string name="comment_load_failed_format">Échec du chargement des messages (%1$d)</string>
     <string name="comment_network_error">Erreur réseau, veuillez réessayer plus tard</string>
+    <string name="comment_retry">Réessayer</string>
     <string name="comment_cancel_reply">Annuler la réponse</string>
     <string name="comment_hint">Dites à l\'IA le problème rencontré ou la fonctionnalité souhaitée…</string>
     <string name="comment_too_long_format">Le message ne peut pas dépasser %1$d caractères</string>
@@ -1832,4 +1836,5 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="time_due_in_days">Expire dans %d jours</string>
     <string name="time_due_on">Expiration : %s</string>
     <string name="card_more_actions">Plus d\'actions</string>
+    <string name="expand">Développer</string>
 </resources>

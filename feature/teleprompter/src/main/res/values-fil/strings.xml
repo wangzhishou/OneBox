@@ -3,9 +3,12 @@
     <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Aking Script</string>
     <string name="teleprompter_recent_scripts">Mga kamakailang script</string>
-    <string name="teleprompter_scripts_total">Kabuuan: %d script</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">Kabuuan: %d script</item>
+        <item quantity="other">Kabuuan: %d script</item>
+    </plurals>
     <string name="teleprompter_empty">Walang script, i-click ang kanang ibaba + bago</string>
-    <plurals name="teleprompter_word_count"><item quantity="one">%d salita</item><item quantity="other">%d salita</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="one">%d titik</item><item quantity="other">%d titik</item></plurals>
     <string name="teleprompter_new_script">Bagong Script</string>
     <string name="teleprompter_edit_script">I-edit ang Script</string>
     <string name="teleprompter_title_hint">Pamagat ng script</string>
@@ -61,7 +64,7 @@
     <string name="teleprompter_log_created_title">Bagong script: %1$s</string>
     <string name="teleprompter_log_updated_title">In-update ang script: %1$s</string>
     <string name="teleprompter_log_deleted_title">Tinanggal na script: %1$s</string>
-    <string name="teleprompter_log_created_desc">Ginawa ang script na “%1$s” (%2$d salita)</string>
-    <string name="teleprompter_log_updated_desc">Na-update ang script na “%1$s” (%2$d salita)</string>
+    <string name="teleprompter_log_created_desc">Ginawa ang script na “%1$s” (%2$d titik)</string>
+    <string name="teleprompter_log_updated_desc">Na-update ang script na “%1$s” (%2$d titik)</string>
     <string name="teleprompter_log_deleted_desc">Tinanggal ang script na “%1$s”</string>
 </resources>

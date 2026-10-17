@@ -29,6 +29,7 @@ import com.wanbaohe.setting.prompt.component.SystemPromptManagementComponent
 import com.wanbaohe.setting.prompt.screen.SystemPromptManagementContent
 import com.wanbaohe.setting.skill.component.SkillManagementComponent
 import com.wanbaohe.setting.skill.screen.SkillManagementContent
+import com.wanbaohe.settings.R
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineMemory
 import com.t8rin.imagetoolbox.core.resources.icons.line.LinePrompt
@@ -59,7 +60,7 @@ fun AIPersonalizationScreen(
         listOf(
             PersonalizationTabInfo(
                 key = PersonalizationTab.Prompt,
-                titleRes = CoreR.string.profile_item_ai_reply_style,
+                titleRes = R.string.ai_personalization_tab_prompts,
                 icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LinePrompt,
             ),
             PersonalizationTabInfo(

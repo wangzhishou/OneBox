@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">Genişlik</string>
     <string name="original_width">Orijinal genişlik: %1$dpx</string>
     <string name="markdown_placeholder">Yazmaya başlayın...</string>
+    <string name="markdown_editor_source_placeholder">Markdown kaynak kodu...</string>
+    <string name="markdown_editor_toolbar_undo">Geri al</string>
+    <string name="markdown_editor_toolbar_redo">Yinele</string>
+    <string name="markdown_editor_toolbar_heading_1">Başlık 1</string>
+    <string name="markdown_editor_toolbar_heading_2">Başlık 2</string>
+    <string name="markdown_editor_toolbar_heading_3">Başlık 3</string>
+    <string name="markdown_editor_toolbar_bold">Kalın</string>
+    <string name="markdown_editor_toolbar_italic">İtalik</string>
+    <string name="markdown_editor_toolbar_strikethrough">Üstü çizili</string>
+    <string name="markdown_editor_toolbar_inline_code">Satır içi kod</string>
+    <string name="markdown_editor_toolbar_bullet_list">Madde işaretli liste</string>
+    <string name="markdown_editor_toolbar_ordered_list">Numaralı liste</string>
+    <string name="markdown_editor_toolbar_task_list">Görev listesi</string>
+    <string name="markdown_editor_toolbar_blockquote">Alıntı</string>
+    <string name="markdown_editor_toolbar_code_block">Kod bloğu</string>
+    <string name="markdown_editor_toolbar_link">Bağlantı</string>
+    <string name="markdown_editor_toolbar_image">Görsel</string>
+    <string name="markdown_editor_toolbar_divider">Ayırıcı</string>
+    <string name="markdown_editor_toolbar_copy">Kopyala</string>
+    <string name="markdown_editor_toolbar_paste">Yapıştır</string>
+    <string name="markdown_editor_toolbar_select_all">Tümünü seç</string>
+    <string name="markdown_editor_toolbar_view_source">Markdown kaynak kodunu görüntüle</string>
 </resources>

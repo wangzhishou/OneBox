@@ -17,6 +17,7 @@ import com.shifenmiao.model.transfer.ChatSession
 import com.shifenmiao.model.transfer.MessageType
 import com.shifenmiao.model.transfer.ServerState
 import com.shifenmiao.model.transfer.TransferConfig
+import com.wanbaohe.file_transfer.R
 import com.wanbaohe.file_transfer.server.FileTransferService
 import com.wanbaohe.file_transfer.util.NetworkUtils
 import com.wanbaohe.file_transfer.util.QRCodeGenerator
@@ -301,7 +302,7 @@ class FileTransferComponent @AssistedInject internal constructor(
 
         // 检查网络
         if (!isNetworkAvailable()) {
-            _serverState.value = ServerState.Error("网络不可用")
+            _serverState.value = ServerState.Error(context.getString(R.string.network_unavailable))
             return
         }
 

@@ -1024,4 +1024,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Stahování zahájeno</string>
+    <string name="color_info_tab">Info o barvě</string>
+    <string name="color_shading_tab">Stínování</string>
 </resources>

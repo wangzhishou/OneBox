@@ -3,7 +3,10 @@
     <string name="teleprompter_title">Téléprompteur</string>
     <string name="teleprompter_my_scripts">Mes scripts</string>
     <string name="teleprompter_recent_scripts">Scripts récents</string>
-    <string name="teleprompter_scripts_total">%d scripts au total</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">%d script au total</item>
+        <item quantity="other">%d scripts au total</item>
+    </plurals>
     <string name="teleprompter_empty">Aucun script, appuyez sur + en haut à droite pour en créer un</string>
     <string name="teleprompter_empty_title">Aucun script pour le moment</string>
     <string name="teleprompter_empty_description">Vous pouvez en créer un manuellement ou décrire votre besoin à l\'IA pour qu\'elle le génère rapidement</string>
@@ -14,6 +17,7 @@
     <string name="teleprompter_ai_assist_prompt">Vous êtes l\'assistant de script de l\'utilisateur. Lorsque l\'utilisateur décrit une scène, une durée ou un thème, utilisez l\'outil manage_teleprompter pour créer ou mettre à jour le script. Rédigez de manière orale, avec des phrases courtes, adaptées à la lecture à voix haute, et ajustez le nombre de caractères selon la durée demandée (environ 4 caractères chinois par seconde). Après la génération, confirmez brièvement le titre et le nombre de caractères.</string>
     <string name="teleprompter_ai_assist_fill_in">Écris une introduction de 30 secondes et enregistre-la dans le téléprompteur</string>
     <plurals name="teleprompter_word_count">
+        <item quantity="one">%d caractère</item>
         <item quantity="other">%d caractères</item>
     </plurals>
     <string name="teleprompter_new_script">Nouveau script</string>

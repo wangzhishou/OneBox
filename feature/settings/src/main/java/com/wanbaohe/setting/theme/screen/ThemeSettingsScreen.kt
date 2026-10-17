@@ -109,6 +109,7 @@ import com.wanbaohe.setting.theme.component.ThemeEditMode
 import com.wanbaohe.setting.theme.component.ThemeSettingsComponent
 import com.wanbaohe.setting.theme.component.ThemeSettingsEvent
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
 import kotlin.math.roundToInt
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTheme
 import com.t8rin.imagetoolbox.core.resources.icons.Check
@@ -1468,6 +1469,12 @@ private fun ColorSystemCard(
     onExpressiveThemeChange: (Boolean) -> Unit,
 ) {
     val context = LocalContext.current
+    val contrastFormatter = remember {
+        NumberFormat.getNumberInstance().apply {
+            minimumFractionDigits = 1
+            maximumFractionDigits = 2
+        }
+    }
 
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
@@ -1574,7 +1581,9 @@ private fun ColorSystemCard(
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
-                    text = ((contrastLevel * 100).roundToInt() / 100.0).toString(),
+                    text = contrastFormatter.format(
+                        (contrastLevel * 100).roundToInt() / 100.0
+                    ),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.SemiBold,

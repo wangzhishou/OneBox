@@ -1038,4 +1038,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Descărcarea a început</string>
+    <string name="color_info_tab">Info culoare</string>
+    <string name="color_shading_tab">Umbrire</string>
 </resources>

@@ -3,7 +3,9 @@
     <string name="teleprompter_title">提词器</string>
     <string name="teleprompter_my_scripts">我的文稿</string>
     <string name="teleprompter_recent_scripts">最近文稿</string>
-    <string name="teleprompter_scripts_total">共 %d 篇文稿</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="other">共 %d 篇文稿</item>
+    </plurals>
     <string name="teleprompter_empty">暂无文稿，点击右上角 + 新建</string>
     <string name="teleprompter_empty_title">还没有文稿</string>
     <string name="teleprompter_empty_description">你可以手动新建一篇，也可以告诉 AI 你的需求，让它帮你快速生成</string>

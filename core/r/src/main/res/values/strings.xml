@@ -840,7 +840,7 @@
     <string name="feedback_submit">Submit</string>
     <string name="feedback_title_hint">Title</string>
     <string name="feedback_content_hint">Description</string>
-    <string name="feedback_placeholder">Please describe the issue in detail so we can help faster~</string>
+    <string name="feedback_placeholder">Please describe the issue in detail so we can help faster</string>
     <string name="fields_required">Please fill in required fields.</string>
     <string name="feedback_failed">Submission failed. Please try again later.</string>
     <string name="feedback_onSuccess">Feedback received! Thank you for helping us improve ❤️</string>
@@ -1528,7 +1528,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
 
     <!-- Bottom Navigation - Add Menu -->
     <string name="nav_add">Add</string>
-    <string name="nav_create_new_task">New Task</string>
+    <string name="nav_create_new_task">Create</string>
     <string name="nav_new_qr_code">Scan</string>
     <string name="nav_notebook">Note</string>
     <string name="nav_todo_list">To-Do</string>
@@ -1824,7 +1824,10 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <!-- Comments / feedback -->
     <string name="comment">Comment</string>
     <string name="comments_title">Comments</string>
-    <string name="comments_count_format">%1$d comments</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d comment</item>
+        <item quantity="other">%1$d comments</item>
+    </plurals>
     <string name="comment_hint">Tell AI about a problem or feature you want…</string>
     <string name="reply_hint">Reply to %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1836,6 +1839,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="comment_loading_more">Loading more…</string>
     <string name="comment_load_failed_format">Failed to load comments (%1$d)</string>
     <string name="comment_network_error">Network error. Please try again.</string>
+    <string name="comment_retry">Retry</string>
     <string name="comment_empty">No feedback yet. Feel free to share your thoughts.</string>
     <string name="comment_end_marker">— No more —</string>
     <string name="comment_send">Send</string>
@@ -2012,4 +2016,5 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="time_due_in_days">Due in %d days</string>
     <string name="time_due_on">Due: %s</string>
     <string name="card_more_actions">More actions</string>
+    <string name="expand">Expand</string>
 </resources>

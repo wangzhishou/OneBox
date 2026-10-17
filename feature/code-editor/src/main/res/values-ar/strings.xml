@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">ابدأ بكتابة الكود…</string>
+    <string name="code_editor_toolbar_undo">تراجع</string>
+    <string name="code_editor_toolbar_redo">إعادة</string>
+    <string name="code_editor_toolbar_find">بحث</string>
+    <string name="code_editor_toolbar_copy">نسخ</string>
+    <string name="code_editor_toolbar_paste">لصق</string>
+    <string name="code_editor_toolbar_select_all">تحديد الكل</string>
+    <string name="code_editor_toolbar_word_wrap">التفاف النص</string>
 </resources>

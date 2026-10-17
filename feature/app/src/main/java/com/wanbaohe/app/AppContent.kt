@@ -28,6 +28,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.utils.getString
 import kotlinx.coroutines.launch
 import com.shifenmiao.core.R
+import com.wanbaohe.app.R as AppR
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.login.BindPhoneSheet
 import com.shifenmiao.login.ModalBottomSheetLogin
@@ -482,12 +483,26 @@ private fun StreamingRobotController(
         val agentStatusHint: String? = if (isChatActiveOutsideView && streamingText.isEmpty()) {
             when (val s = agentToolCallStatus) {
                 is AgentToolCallUIState.WaitingUserInput ->
-                    if (s.requestType == "CONFIRMATION") "需要你确认操作" else "需要你回答问题"
-                is AgentToolCallUIState.Planning -> "规划工具调用中…"
-                is AgentToolCallUIState.Executing ->
-                    s.currentToolName?.let { "执行: $it" } ?: "工具执行中…"
-                is AgentToolCallUIState.WaitingLLM -> "等待 AI 回复…"
-                is AgentToolCallUIState.MaxIterationsReached -> "等待你的指示"
+                    if (s.requestType == "CONFIRMATION") {
+                        stringResource(R.string.robot_hint_waiting_confirmation)
+                    } else {
+                        stringResource(R.string.robot_hint_waiting_input)
+                    }
+
+                is AgentToolCallUIState.Planning -> stringResource(R.string.robot_hint_planning)
+                is AgentToolCallUIState.Executing -> {
+                    val toolName = s.currentToolName
+                    if (toolName != null) {
+                        stringResource(AppR.string.robot_hint_executing_tool, toolName)
+                    } else {
+                        stringResource(R.string.robot_hint_executing)
+                    }
+                }
+
+                is AgentToolCallUIState.WaitingLLM -> stringResource(R.string.robot_hint_waiting_llm)
+                is AgentToolCallUIState.MaxIterationsReached ->
+                    stringResource(R.string.robot_hint_max_iterations)
+
                 is AgentToolCallUIState.Idle -> null
             }
         } else null

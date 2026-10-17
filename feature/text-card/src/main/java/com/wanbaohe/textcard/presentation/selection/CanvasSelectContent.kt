@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
@@ -243,7 +245,15 @@ private fun CustomCanvasCard(
             Text(
                 text = stringResource(R.string.textcard_canvas_custom),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(horizontal = 32.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = MaterialTheme.typography.labelSmall.fontSize,
+                    maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    stepSize = MaterialTheme.typography.labelSmall.fontSize / 4,
+                )
             )
             Text(
                 text = stringResource(R.string.textcard_canvas_custom_desc),

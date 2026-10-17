@@ -839,4 +839,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">S\'ha iniciat la baixada</string>
+    <string name="color_info_tab">Info de color</string>
+    <string name="color_shading_tab">Ombrejat</string>
 </resources>

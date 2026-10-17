@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">배경 새로 고침</string>
     <string name="textcard_editing_selection">편집 중: 선택한 텍스트</string>
     <string name="textcard_clear_selection_style">스타일 지우기</string>
+    <string name="textcard_underline">밑줄</string>
+    <string name="textcard_strikethrough">취소선</string>
+    <string name="textcard_text_background">텍스트 배경</string>
+    <string name="textcard_text_outline">윤곽선</string>
+    <string name="textcard_outline_width">윤곽선 두께</string>
 </resources>

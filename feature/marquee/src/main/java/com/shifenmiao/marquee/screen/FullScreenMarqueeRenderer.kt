@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.model.marquee.MarqueePresentationMode
 import com.shifenmiao.model.marquee.MarqueeSettings
+import java.text.DateFormat
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
@@ -518,6 +520,7 @@ private fun ClockFullScreenText(
         }
     }
 
+    val locale = LocalConfiguration.current.locales[0]
     val calendar = remember(currentTime) {
         java.util.Calendar.getInstance().apply { timeInMillis = currentTime }
     }
@@ -538,12 +541,9 @@ private fun ClockFullScreenText(
         }
     }
 
-    val dateText = remember(currentTime) {
+    val dateText = remember(currentTime, showDate, locale) {
         if (showDate) {
-            val year = calendar.get(java.util.Calendar.YEAR)
-            val month = calendar.get(java.util.Calendar.MONTH) + 1
-            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
-            String.format(java.util.Locale.getDefault(), "%d年%d月%d日", year, month, day)
+            DateFormat.getDateInstance(DateFormat.LONG, locale).format(calendar.time)
         } else ""
     }
 

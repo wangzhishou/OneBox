@@ -731,7 +731,7 @@
     <string name="feedback_submit">Isumite</string>
     <string name="feedback_title_hint">Pamagat</string>
     <string name="feedback_content_hint">Paglalarawan</string>
-    <string name="feedback_placeholder">Pakilarawan nang detalyado ang isyu upang mas mabilis kaming makatulong~</string>
+    <string name="feedback_placeholder">Pakilarawan nang detalyado ang isyu upang mas mabilis kaming makatulong</string>
     <string name="fields_required">Mangyaring punan ang mga kinakailangang field.</string>
     <string name="feedback_failed">Nabigo ang pagsumite. Mangyaring subukan muli mamaya.</string>
     <string name="feedback_onSuccess">Natanggap ang feedback! Salamat sa pagtulong sa amin na mapabuti ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">Matagumpay ang push</string>
     <string name="agent_push_failed">Nabigo ang push</string>
     <string name="nav_add">Idagdag</string>
-    <string name="nav_create_new_task">Bagong Gawain</string>
+    <string name="nav_create_new_task">Gumawa</string>
     <string name="nav_new_qr_code">I-scan</string>
     <string name="nav_notebook">Tala</string>
     <string name="nav_todo_list">Gawain</string>
@@ -1570,7 +1570,10 @@
     <string name="password_vault_description">Ligtas na iimbak ang mga password para sa mga site, app, at door codes.</string>
     <string name="comment">Komento</string>
     <string name="comments_title">Mga komento</string>
-    <string name="comments_count_format">%1$d na komento</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d komento</item>
+        <item quantity="other">%1$d na komento</item>
+    </plurals>
     <string name="comment_hint">Sumulat ng komento…</string>
     <string name="reply_hint">Tumugon kay %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1585,7 @@
     <string name="comment_loading_more">Naglo-load ng higit pa…</string>
     <string name="comment_load_failed_format">Hindi na-load ang mga komento (%1$d)</string>
     <string name="comment_network_error">Error sa network. Pakisubukan muli.</string>
+    <string name="comment_retry">Subukan muli</string>
     <string name="comment_empty">Wala pang feedback. Malayang magbahagi ng iyong mga saloobin.</string>
     <string name="comment_end_marker">— Wala na —</string>
     <string name="comment_send">Ipadala</string>
@@ -1844,4 +1848,5 @@ Tip: kapag pinili mo ang \"Itago Magpakailanman\", maaari mo akong ibalik sa Mga
     <string name="byok_login_hint_subtitle">Gamitin ang sarili mong API key para sa libreng AI chat</string>
     <string name="byok_login_hint_title">Ayaw mong mag-sign up?</string>
     <string name="donate_earn_points">Mag-donate para makakuha ng puntos</string>
+    <string name="expand">Palawakin</string>
 </resources>

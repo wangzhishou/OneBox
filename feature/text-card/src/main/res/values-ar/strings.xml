@@ -99,4 +99,9 @@
     <string name="textcard_draw_width">سماكة الخط</string>
     <string name="textcard_editing_selection">تعديل: النص المحدد</string>
     <string name="textcard_clear_selection_style">مسح النمط</string>
+    <string name="textcard_underline">تسطير</string>
+    <string name="textcard_strikethrough">يتوسطه خط</string>
+    <string name="textcard_text_background">خلفية النص</string>
+    <string name="textcard_text_outline">الحدود</string>
+    <string name="textcard_outline_width">سُمك الحدود</string>
 </resources>

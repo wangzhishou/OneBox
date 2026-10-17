@@ -72,4 +72,6 @@
     <string name="permission_required_message">Dịch vụ truyền tệp cần quyền truy cập bộ nhớ để đọc và ghi tệp, vui lòng cấp quyền.</string>
     <string name="grant_permission">Cấp quyền</string>
     <string name="cancel">Hủy</string>
+    <string name="server_ip_address_error">Không thể lấy địa chỉ IP. Kiểm tra kết nối mạng của bạn</string>
+    <string name="server_start_failed">Không thể khởi động dịch vụ</string>
 </resources>

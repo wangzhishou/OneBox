@@ -12,7 +12,7 @@
     <!-- Cores e movimento (global) -->
     <string name="theme_color_system_section">Cores e movimento</string>
     <string name="theme_palette_style_label">Estilo de cor</string>
-    <string name="theme_palette_style_hint">Muda como toda a paleta é gerada a partir da cor principal. Expressive é a mais viva.</string>
+    <string name="theme_palette_style_hint">Muda como toda a paleta é gerada a partir da cor principal. Expressivo é o mais vivo.</string>
     <string name="theme_contrast_label">Contraste</string>
     <string name="theme_color_spec_2025">Cores vivas</string>
     <string name="theme_color_spec_2025_hint">Deixa todas as cores mais intensas e saturadas (novo esquema de cores).</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">Descrição</string>
     <string name="ai_engine_protocol_label">Protocolo de Solicitação</string>
     <string name="ai_engine_protocol_openai">API OpenAI Chat/completions</string>
-    <string name="ai_engine_protocol_responses">API OpenAI Responses</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Compatível com Anthropic</string>
     <string name="ai_engine_protocol_proxy">Proxy do aplicativo</string>
     <string name="ai_engine_protocol_local_on_device">No dispositivo (sem rede)</string>
@@ -327,8 +327,8 @@
     <string name="ai_engine_protocol_pikafish">Motor de xadrez Pikafish</string>
     <string name="theme_preset_glass_border_alpha">Opacidade da Borda de Vidro</string>
     <string name="theme_preset_glass_border_alpha_hint">Valores menores suavizam a borda; zero a oculta. O plano de fundo não muda.</string>
-    <string name="custom_background_ai_generate">Gerar com AI</string>
-    <string name="custom_background_ai_title">Imagem de Fundo com AI</string>
+    <string name="custom_background_ai_generate">Gerar com IA</string>
+    <string name="custom_background_ai_title">Imagem de Fundo com IA</string>
     <string name="custom_background_ai_hint">Descreva o plano de fundo, ex.: floresta enevoada ao amanhecer</string>
     <string name="custom_background_ai_action">Gerar</string>
     <string name="custom_background_ai_points_hint">%1$d pontos por geração</string>
@@ -336,7 +336,7 @@
     <string name="custom_background_ai_running">Geração em andamento, aguarde</string>
     <string name="custom_background_ai_generating">Gerando…</string>
     <string name="ai_feature_settings_context_compaction_toggle_title">Compactação inteligente de contexto</string>
-    <string name="ai_feature_settings_context_compaction_toggle_desc">Quando o contexto do Agente se aproxima do limite do modelo, a conversa anterior é resumida pela AI e mantida como um resumo, em vez de ser descartada. Quando desativado, as mensagens anteriores são truncadas diretamente.</string>
+    <string name="ai_feature_settings_context_compaction_toggle_desc">Quando o contexto do Agente se aproxima do limite do modelo, a conversa anterior é resumida pela IA e mantida como um resumo, em vez de ser descartada. Quando desativado, as mensagens anteriores são truncadas diretamente.</string>
     <string name="ai_engine_add_jev_engine">Adicionar Motor Jev</string>
     <string name="ai_engine_name_auto_hint">Chave exclusiva deste serviço, preenchida automaticamente a partir do nome de exibição; normalmente não é preciso alterar.</string>
     <string name="ai_engine_more_options">Mais opções</string>
@@ -344,13 +344,13 @@
     <string name="ai_working_model_status_available">Rota atual: disponível</string>
     <string name="ai_engine_jev_proxy_hint">Insira sua chave de API do Jev e passe no teste de conexão para conectar diretamente; você também pode usá-lo imediatamente sem chave.</string>
     <string name="ai_engine_jev_list_empty">Nenhum motor Jev ainda. Toque no ícone no canto superior direito para adicionar um.</string>
-    <string name="memory_global_switch_title">Ativar Memória da AI</string>
-    <string name="memory_global_switch_subtitle">Interruptor geral: quando desativado, as memórias não são injetadas e a AI não pode gravar memórias</string>
+    <string name="memory_global_switch_title">Ativar Memória da IA</string>
+    <string name="memory_global_switch_subtitle">Interruptor geral: quando desativado, as memórias não são injetadas e a IA não pode gravar memórias</string>
     <string name="memory_profile_section">Perfil</string>
-    <string name="memory_profile_supporting">Mantido por você, sempre injetado; a AI apenas o lê</string>
-    <string name="memory_profile_empty">Nenhuma entrada de perfil ainda. Adicione fatos sobre você que a AI deve sempre saber.</string>
+    <string name="memory_profile_supporting">Mantido por você, sempre injetado; a IA apenas o lê</string>
+    <string name="memory_profile_empty">Nenhuma entrada de perfil ainda. Adicione fatos sobre você que a IA deve sempre saber.</string>
     <string name="memory_log_section">Registro de Memória</string>
-    <string name="memory_log_supporting">Entradas gravadas pela AI ou por você, agrupadas por data</string>
+    <string name="memory_log_supporting">Entradas gravadas pela IA ou por você, agrupadas por data</string>
     <string name="memory_log_empty">Nenhuma entrada de registro ainda.</string>
     <string name="memory_add_entry">Adicionar</string>
     <string name="memory_add_entry_title">Adicionar Memória</string>
@@ -363,10 +363,10 @@
     <string name="memory_log_cleared">Registro de memória limpo</string>
     <string name="memory_source_conversation">de %1$s</string>
     <string name="memory_entry_too_long">O conteúdo excede o limite de %1$d caracteres</string>
-    <string name="skill_global_switch_title">Ativar Habilidades da AI</string>
-    <string name="skill_global_switch_subtitle">Interruptor geral: quando desativado, a lista de habilidades não é injetada e a AI não pode carregar habilidades</string>
+    <string name="skill_global_switch_title">Ativar Habilidades da IA</string>
+    <string name="skill_global_switch_subtitle">Interruptor geral: quando desativado, a lista de habilidades não é injetada e a IA não pode carregar habilidades</string>
     <string name="skill_list_section">Habilidades</string>
-    <string name="skill_list_supporting">A AI carrega as instruções completas de uma habilidade sob demanda pela ferramenta use_skill</string>
+    <string name="skill_list_supporting">A IA carrega as instruções completas de uma habilidade sob demanda pela ferramenta use_skill</string>
     <string name="skill_empty">Nenhuma habilidade instalada.</string>
     <string name="skill_import_clipboard">Importar da área de transferência</string>
     <string name="skill_import_file">Importar de arquivo</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">Deixe em branco para gerar a partir da chave do modelo</string>
     <string name="ai_engine_name_edit_hint">Chave única do serviço; os modelos acompanham ao renomear — normalmente deixe como está</string>
     <string name="ai_engine_title_hint">Nome exibido nas listas e no chat; pode ser alterado a qualquer momento</string>
+    <string name="ai_personalization_tab_prompts">Prompts</string>
 </resources>

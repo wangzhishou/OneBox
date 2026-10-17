@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">create_list 작업에는 tasks 매개변수(항목 제목 배열)가 필요합니다</string>
     <string name="agent_tool_manage_todo_param_tasks">항목 제목 배열로 create_list에 필수입니다. 예: [\"AI 영상 편집 배우기\", \"책 12권 읽기\"]</string>
     <string name="agent_tool_manage_todo_list_created">\"%1$s\" 목록을 만들었습니다(항목 %2$d개)</string>
+    <string name="ai_chat_attachment_idle_image">준비됨 · %1$s → 압축 후 약 %2$dKB · ~%3$d토큰</string>
+    <string name="ai_chat_attachment_idle_file">준비됨 · %1$s · ~%2$d토큰</string>
+    <string name="ai_chat_attachment_checking">확인 중...</string>
+    <string name="ai_chat_attachment_resizing">크기 조정 중...</string>
+    <string name="ai_chat_attachment_converting">형식 변환 중...</string>
+    <string name="ai_chat_attachment_compressing">압축 중...</string>
+    <string name="ai_chat_attachment_encoding">인코딩 중...</string>
+    <string name="ai_chat_attachment_uploading">업로드 중...</string>
+    <string name="ai_chat_attachment_error">실패: %1$s</string>
+    <string name="ai_chat_go_to_top">맨 위로 이동</string>
 </resources>

@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">Aksi create_list memerlukan parameter tasks (array judul item)</string>
     <string name="agent_tool_manage_todo_param_tasks">Array judul item, wajib untuk create_list, mis. [\"Belajar editing video AI\", \"Baca 12 buku\"]</string>
     <string name="agent_tool_manage_todo_list_created">Daftar \"%1$s\" dibuat dengan %2$d item</string>
+    <string name="ai_chat_attachment_idle_image">Siap · %1$s → Sekitar %2$dKB setelah kompresi · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Siap · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Memeriksa...</string>
+    <string name="ai_chat_attachment_resizing">Mengubah ukuran...</string>
+    <string name="ai_chat_attachment_converting">Mengonversi format...</string>
+    <string name="ai_chat_attachment_compressing">Mengompresi...</string>
+    <string name="ai_chat_attachment_encoding">Mengenkode...</string>
+    <string name="ai_chat_attachment_uploading">Mengunggah...</string>
+    <string name="ai_chat_attachment_error">Gagal: %1$s</string>
+    <string name="ai_chat_go_to_top">Kembali ke atas</string>
 </resources>

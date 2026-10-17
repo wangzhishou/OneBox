@@ -194,4 +194,5 @@
     <string name="markup_rasterize_title">تحويل إلى صورة؟</string>
     <string name="markup_rasterize_message">يجب تحويل طبقات النص والأشكال إلى صورة قبل استخدام المرشّحات. بعد التحويل، لن يمكن تعديل إعدادات النص أو الأشكال، لكن يمكنك استعادتها عبر التراجع.</string>
     <string name="markup_rasterize_failed">فشل تحويل الطبقة</string>
+    <string name="markup_tool_text_style">نمط النص</string>
 </resources>

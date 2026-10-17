@@ -1984,4 +1984,6 @@
     <string name="sticker_ai_empty">先描述貼紙內容</string>
     <string name="sticker_ai_generating">生成中…</string>
     <string name="download_started">開始下載</string>
+    <string name="color_info_tab">顏色資訊</string>
+    <string name="color_shading_tab">色彩陰影</string>
 </resources>

@@ -1984,4 +1984,6 @@
     <string name="font_noto_sans_jp">Noto Sans JP</string>
     <string name="font_noto_sans_kr">Noto Sans KR</string>
     <string name="download_started">डाउनलोड शुरू हुआ</string>
+    <string name="color_info_tab">रंग जानकारी</string>
+    <string name="color_shading_tab">रंग छायांकन</string>
 </resources>

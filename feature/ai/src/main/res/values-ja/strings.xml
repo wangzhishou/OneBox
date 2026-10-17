@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">create_list アクションには tasks パラメータ(項目タイトルの配列)が必要です</string>
     <string name="agent_tool_manage_todo_param_tasks">項目タイトルの配列。create_list で必須。例: [\"AI 動画編集を覚える\", \"本を12冊読む\"]</string>
     <string name="agent_tool_manage_todo_list_created">リスト「%1$s」を作成しました(%2$d 件)</string>
+    <string name="ai_chat_attachment_idle_image">準備完了 · %1$s → 圧縮後 約%2$dKB · ~%3$dトークン</string>
+    <string name="ai_chat_attachment_idle_file">準備完了 · %1$s · ~%2$dトークン</string>
+    <string name="ai_chat_attachment_checking">確認中...</string>
+    <string name="ai_chat_attachment_resizing">サイズ変更中...</string>
+    <string name="ai_chat_attachment_converting">形式を変換中...</string>
+    <string name="ai_chat_attachment_compressing">圧縮中...</string>
+    <string name="ai_chat_attachment_encoding">エンコード中...</string>
+    <string name="ai_chat_attachment_uploading">アップロード中...</string>
+    <string name="ai_chat_attachment_error">失敗: %1$s</string>
+    <string name="ai_chat_go_to_top">先頭に戻る</string>
 </resources>

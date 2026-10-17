@@ -24,4 +24,26 @@
 
     <!-- 编辑器占位符 -->
     <string name="markdown_placeholder">输入内容...</string>
+    <string name="markdown_editor_source_placeholder">Markdown 源码...</string>
+    <string name="markdown_editor_toolbar_undo">撤销</string>
+    <string name="markdown_editor_toolbar_redo">重做</string>
+    <string name="markdown_editor_toolbar_heading_1">一级标题</string>
+    <string name="markdown_editor_toolbar_heading_2">二级标题</string>
+    <string name="markdown_editor_toolbar_heading_3">三级标题</string>
+    <string name="markdown_editor_toolbar_bold">粗体</string>
+    <string name="markdown_editor_toolbar_italic">斜体</string>
+    <string name="markdown_editor_toolbar_strikethrough">删除线</string>
+    <string name="markdown_editor_toolbar_inline_code">行内代码</string>
+    <string name="markdown_editor_toolbar_bullet_list">无序列表</string>
+    <string name="markdown_editor_toolbar_ordered_list">有序列表</string>
+    <string name="markdown_editor_toolbar_task_list">任务列表</string>
+    <string name="markdown_editor_toolbar_blockquote">引用</string>
+    <string name="markdown_editor_toolbar_code_block">代码块</string>
+    <string name="markdown_editor_toolbar_link">链接</string>
+    <string name="markdown_editor_toolbar_image">图片</string>
+    <string name="markdown_editor_toolbar_divider">分割线</string>
+    <string name="markdown_editor_toolbar_copy">复制</string>
+    <string name="markdown_editor_toolbar_paste">粘贴</string>
+    <string name="markdown_editor_toolbar_select_all">全选</string>
+    <string name="markdown_editor_toolbar_view_source">查看 Markdown 源码</string>
 </resources>

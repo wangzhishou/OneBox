@@ -26,6 +26,8 @@
     <string name="server_status_running">服务运行中</string>
     <string name="server_status_starting">正在启动…</string>
     <string name="server_status_error">服务出错</string>
+    <string name="server_ip_address_error">无法获取IP地址，请检查网络连接</string>
+    <string name="server_start_failed">服务启动失败</string>
 
     <!-- 操作按钮 -->
     <string name="start_server">启动服务</string>

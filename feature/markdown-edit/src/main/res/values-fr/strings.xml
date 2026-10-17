@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">Largeur</string>
     <string name="original_width">Largeur d\'origine : %1$dpx</string>
     <string name="markdown_placeholder">Saisir le contenu...</string>
+    <string name="markdown_editor_source_placeholder">Code source Markdown...</string>
+    <string name="markdown_editor_toolbar_undo">Annuler</string>
+    <string name="markdown_editor_toolbar_redo">Rétablir</string>
+    <string name="markdown_editor_toolbar_heading_1">Titre 1</string>
+    <string name="markdown_editor_toolbar_heading_2">Titre 2</string>
+    <string name="markdown_editor_toolbar_heading_3">Titre 3</string>
+    <string name="markdown_editor_toolbar_bold">Gras</string>
+    <string name="markdown_editor_toolbar_italic">Italique</string>
+    <string name="markdown_editor_toolbar_strikethrough">Barré</string>
+    <string name="markdown_editor_toolbar_inline_code">Code en ligne</string>
+    <string name="markdown_editor_toolbar_bullet_list">Liste à puces</string>
+    <string name="markdown_editor_toolbar_ordered_list">Liste numérotée</string>
+    <string name="markdown_editor_toolbar_task_list">Liste de tâches</string>
+    <string name="markdown_editor_toolbar_blockquote">Citation</string>
+    <string name="markdown_editor_toolbar_code_block">Bloc de code</string>
+    <string name="markdown_editor_toolbar_link">Lien</string>
+    <string name="markdown_editor_toolbar_image">Image</string>
+    <string name="markdown_editor_toolbar_divider">Séparateur</string>
+    <string name="markdown_editor_toolbar_copy">Copier</string>
+    <string name="markdown_editor_toolbar_paste">Coller</string>
+    <string name="markdown_editor_toolbar_select_all">Tout sélectionner</string>
+    <string name="markdown_editor_toolbar_view_source">Afficher le code source Markdown</string>
 </resources>

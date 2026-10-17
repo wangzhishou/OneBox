@@ -2,7 +2,10 @@
 <resources><string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">My Script</string>
     <string name="teleprompter_recent_scripts">Recent scripts</string>
-    <string name="teleprompter_scripts_total">Total: %d scripts</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">Total: %d script</item>
+        <item quantity="other">Total: %d scripts</item>
+    </plurals>
     <string name="teleprompter_empty">No script, click on bottom right + new</string>
     <string name="teleprompter_empty_title">No scripts yet</string>
     <string name="teleprompter_empty_description">Create one manually, or tell AI what you need and let it draft for you</string>
@@ -10,9 +13,9 @@
     <string name="teleprompter_empty_ai_desc">Describe the scene and length, let AI write it</string>
     <string name="teleprompter_empty_go_ai">Write with AI</string>
     <string name="teleprompter_ai_assist_title">Teleprompter Script Assistant</string>
-    <string name="teleprompter_ai_assist_prompt">You are the user\'s teleprompter script assistant. When the user describes a scene, duration or topic, create or update a script with the manage_teleprompter tool. Write short spoken sentences suited for reading aloud, and match the requested duration. Briefly confirm the title and word count after generating.</string>
+    <string name="teleprompter_ai_assist_prompt">You are the user\'s teleprompter script assistant. When the user describes a scene, duration or topic, create or update a script with the manage_teleprompter tool. Write short spoken sentences suited for reading aloud, and match the requested duration. Briefly confirm the title and character count after generating.</string>
     <string name="teleprompter_ai_assist_fill_in">Write a 30-second opening script and save it to the teleprompter</string>
-    <plurals name="teleprompter_word_count"><item quantity="one">%d word</item><item quantity="other">%d words</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="one">%d character</item><item quantity="other">%d characters</item></plurals>
     <string name="teleprompter_new_script">New Script</string>
     <string name="teleprompter_edit_script">Edit Script</string>
     <string name="teleprompter_title_hint">Script title</string>
@@ -63,7 +66,7 @@
     <string name="teleprompter_log_created_title">New script: %1$s</string>
     <string name="teleprompter_log_updated_title">Update script: %1$s</string>
     <string name="teleprompter_log_deleted_title">Delete script: %1$s</string>
-    <string name="teleprompter_log_created_desc">Created script “%1$s” (%2$d words)</string>
-    <string name="teleprompter_log_updated_desc">Updated script “%1$s” (%2$d words)</string>
+    <string name="teleprompter_log_created_desc">Created script “%1$s” (%2$d characters)</string>
+    <string name="teleprompter_log_updated_desc">Updated script “%1$s” (%2$d characters)</string>
     <string name="teleprompter_log_deleted_desc">Deleted script “%1$s”</string>
 </resources>

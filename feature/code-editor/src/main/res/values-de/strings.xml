@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Tippen Sie Ihren Code…</string>
+    <string name="code_editor_toolbar_undo">Rückgängig</string>
+    <string name="code_editor_toolbar_redo">Wiederholen</string>
+    <string name="code_editor_toolbar_find">Suchen</string>
+    <string name="code_editor_toolbar_copy">Kopieren</string>
+    <string name="code_editor_toolbar_paste">Einfügen</string>
+    <string name="code_editor_toolbar_select_all">Alle auswählen</string>
+    <string name="code_editor_toolbar_word_wrap">Zeilenumbruch</string>
 </resources>

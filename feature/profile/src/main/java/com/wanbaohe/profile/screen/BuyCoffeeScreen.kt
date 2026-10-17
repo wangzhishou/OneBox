@@ -6,8 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -206,6 +208,7 @@ fun ColumnScope.BuyCoffeeBody(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
                         .padding(horizontal = AppTheme.dimens.paddingNormal),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
@@ -354,6 +357,7 @@ private fun FreePathCard(
 ) {
     Column(
         modifier = modifier
+            .fillMaxHeight()
             .glassRegular(
                 shape = RoundedCornerShape(20.dp),
                 color = MaterialTheme.colorScheme.surfaceContainer,
@@ -367,7 +371,8 @@ private fun FreePathCard(
             text = title,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
+            minLines = 2,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
         Text(
@@ -375,7 +380,7 @@ private fun FreePathCard(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             minLines = 2,
-            maxLines = 2,
+            maxLines = 3,
             overflow = TextOverflow.Ellipsis,
         )
     }

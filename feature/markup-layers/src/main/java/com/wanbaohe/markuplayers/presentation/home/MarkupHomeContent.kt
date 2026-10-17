@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,12 +42,14 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import com.shifenmiao.common.ui.BaseScreen
 import com.shifenmiao.base.ui.button.CancelButton
@@ -372,7 +375,13 @@ private fun QuickTaskEntry(
             text = label,
             style = MaterialTheme.typography.labelMedium,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+            autoSize = TextAutoSize.StepBased(
+                minFontSize = 8.sp,
+                maxFontSize = MaterialTheme.typography.labelMedium.fontSize,
+                stepSize = 0.25.sp,
+            )
         )
     }
 }
@@ -448,7 +457,11 @@ private fun SavedProjectsSection(component: MarkupLayersComponent) {
                                 .semantics { contentDescription = openDescription }
                         ) {
                             Text(
-                                text = stringResource(R.string.studio_project_layers, project.layerCount),
+                                text = pluralStringResource(
+                                    R.plurals.studio_project_layers,
+                                    project.layerCount,
+                                    project.layerCount
+                                ),
                                 maxLines = 1
                             )
                         }

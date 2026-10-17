@@ -4,7 +4,10 @@
     <string name="studio_projects_empty">Ang mga naka-save na proyekto ay nagpapanatili ng orihinal na larawan, mga layer, mask, at epekto na handa nang i-edit.</string>
     <string name="studio_recent_files">Mga kamakailang larawan</string>
     <string name="studio_recent_files_empty">Walang kamakailang larawan</string>
-    <string name="studio_project_layers">%1$d na layer</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d na layer</item>
+        <item quantity="other">%1$d na layer</item>
+    </plurals>
     <string name="studio_project_updated">Na-update %1$s</string>
     <string name="studio_project_open">Buksan ang proyekto %1$s</string>
     <string name="studio_project_delete">Tanggalin ang proyekto %1$s</string>

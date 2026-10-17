@@ -12,7 +12,7 @@
     <!-- 色と動き(全体設定) -->
     <string name="theme_color_system_section">色と動き</string>
     <string name="theme_palette_style_label">カラースタイル</string>
-    <string name="theme_palette_style_hint">メインカラーから全体の配色をどう作るかを変えます。Expressive が最も元気な配色です。</string>
+    <string name="theme_palette_style_hint">メインカラーから全体の配色をどう作るかを変えます。「表現力豊か」が最も元気な配色です。</string>
     <string name="theme_contrast_label">コントラスト</string>
     <string name="theme_color_spec_2025">鮮やかな配色</string>
     <string name="theme_color_spec_2025_hint">すべての色がより濃く鮮やかになります(新しい配色仕様)。</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">説明</string>
     <string name="ai_engine_protocol_label">リクエストプロトコル</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Anthropic互換</string>
     <string name="ai_engine_protocol_proxy">アプリプロキシ</string>
     <string name="ai_engine_protocol_local_on_device">端末内（ネットワークなし）</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">空欄にするとモデルキーから自動生成します</string>
     <string name="ai_engine_name_edit_hint">サービス固有のキー。名前を変えるとモデルも追随します。通常はそのままで問題ありません</string>
     <string name="ai_engine_title_hint">リストとチャットに表示される名前。いつでも変更できます</string>
+    <string name="ai_personalization_tab_prompts">プロンプト</string>
 </resources>

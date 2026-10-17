@@ -731,8 +731,8 @@
     <string name="feedback_submit">Enviar</string>
     <string name="feedback_title_hint">Título</string>
     <string name="feedback_content_hint">Descripción</string>
-    <string name="feedback_placeholder">Describe el problema en detalle para que podamos ayudarte más rápido~</string>
-    <string name="fields_required">Por favor, complete los campos obligatorios.</string>
+    <string name="feedback_placeholder">Describe el problema en detalle para que podamos ayudarte más rápido</string>
+    <string name="fields_required">Completa los campos obligatorios.</string>
     <string name="feedback_failed">Error en el envío. Inténtelo de nuevo más tarde.</string>
     <string name="feedback_onSuccess">¡Comentario recibido! Gracias por ayudarnos a mejorar ❤️</string>
     <string name="feedback_title_placeholder">Describe brevemente el problema</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">Envío exitoso</string>
     <string name="agent_push_failed">Envío fallido</string>
     <string name="nav_add">Agregar</string>
-    <string name="nav_create_new_task">Nueva tarea</string>
+    <string name="nav_create_new_task">Crear</string>
     <string name="nav_new_qr_code">Escanear</string>
     <string name="nav_notebook">Nota</string>
     <string name="nav_todo_list">Tareas</string>
@@ -1570,7 +1570,10 @@
     <string name="password_vault_description">Almacena de forma segura contraseñas para sitios, aplicaciones y códigos de puerta.</string>
     <string name="comment">Comentario</string>
     <string name="comments_title">Comentarios</string>
-    <string name="comments_count_format">%1$d comentarios</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d comentario</item>
+        <item quantity="other">%1$d comentarios</item>
+    </plurals>
     <string name="comment_hint">Escribe un comentario…</string>
     <string name="reply_hint">Responder a %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1585,7 @@
     <string name="comment_loading_more">Cargando más…</string>
     <string name="comment_load_failed_format">Error al cargar comentarios (%1$d)</string>
     <string name="comment_network_error">Error de red. Inténtalo de nuevo.</string>
+    <string name="comment_retry">Reintentar</string>
     <string name="comment_empty">Aún no hay comentarios. No dudes en compartir tu opinión.</string>
     <string name="comment_end_marker">— No hay más —</string>
     <string name="comment_send">Enviar</string>
@@ -1844,4 +1848,5 @@ Consejo: si eliges «Ocultar para siempre», podrás devolverme más tarde en Aj
     <string name="byok_login_hint_subtitle">Usa tu propia clave de API para chatear con IA gratis</string>
     <string name="byok_login_hint_title">¿No quieres registrarte?</string>
     <string name="donate_earn_points">Dona para ganar puntos</string>
+    <string name="expand">Expandir</string>
 </resources>

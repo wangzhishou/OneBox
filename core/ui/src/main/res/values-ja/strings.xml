@@ -50,4 +50,7 @@
     <string name="date_picker_title">日付を選択</string>
     <string name="time_range_picker_title">時間範囲を選択</string>
     <string name="time_picker_title">時刻を選択</string>
+    <string name="date_picker_apply">適用</string>
+    <string name="date_picker_input_title">日付を入力</string>
+    <string name="date_picker_input_hint">ヒント：日付を入力したら「適用」をタップしてください</string>
 </resources>

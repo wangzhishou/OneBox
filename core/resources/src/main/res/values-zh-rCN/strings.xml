@@ -1986,4 +1986,6 @@
     <string name="sticker_ai_points_hint">每次生成消耗 %1$d 积分</string>
     <string name="sticker_ai_empty">先描述贴纸内容</string>
     <string name="sticker_ai_generating">生成中…</string>
+    <string name="color_info_tab">颜色信息</string>
+    <string name="color_shading_tab">色彩阴影</string>
 </resources>

@@ -1163,4 +1163,16 @@
     <string name="agent_tool_manage_chess_imported">Game imported: %1$s. The position is fully imported. Give the user the deepLinks; no need to call this tool again</string>
     <string name="agent_tool_manage_chess_import_failed">Import failed: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">Whether AI plays white, i.e. first move (optional for create/import_fen, default false so the human plays white; for import_fen, omit it to let the human play the side to move)</string>
+
+    <!-- AI chat attachment status -->
+    <string name="ai_chat_attachment_idle_image">Ready · %1$s → Approx. %2$dKB after compression · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Ready · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Checking...</string>
+    <string name="ai_chat_attachment_resizing">Resizing...</string>
+    <string name="ai_chat_attachment_converting">Converting format...</string>
+    <string name="ai_chat_attachment_compressing">Compressing...</string>
+    <string name="ai_chat_attachment_encoding">Encoding...</string>
+    <string name="ai_chat_attachment_uploading">Uploading...</string>
+    <string name="ai_chat_attachment_error">Failed: %1$s</string>
+    <string name="ai_chat_go_to_top">Go to top</string>
 </resources>

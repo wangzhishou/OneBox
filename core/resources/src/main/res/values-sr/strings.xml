@@ -836,4 +836,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Преузимање је започето</string>
+    <string name="color_info_tab">Инфо о боји</string>
+    <string name="color_shading_tab">Сенчење</string>
 </resources>

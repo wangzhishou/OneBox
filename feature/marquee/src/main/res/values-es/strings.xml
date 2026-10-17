@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">Modo horizontal bloqueado</string>
+    <string name="marquee_fullscreen_landscape_locked_label">Bloquear modo horizontal</string>
+    <string name="marquee_fullscreen_follow_rotation">Seguir la rotación</string>
+</resources>

@@ -4,7 +4,9 @@
     <string name="studio_projects_empty">儲存專案會保留原圖、圖層、遮色片和效果，方便下次繼續編輯。</string>
     <string name="studio_recent_files">最近圖片</string>
     <string name="studio_recent_files_empty">暫無最近圖片</string>
-    <string name="studio_project_layers">%1$d 個圖層</string>
+    <plurals name="studio_project_layers">
+        <item quantity="other">%1$d 個圖層</item>
+    </plurals>
     <string name="studio_project_updated">更新於 %1$s</string>
     <string name="studio_project_open">開啟專案 %1$s</string>
     <string name="studio_project_delete">刪除專案 %1$s</string>

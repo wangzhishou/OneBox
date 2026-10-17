@@ -1,0 +1,3 @@
+• Übersetzungen, Pluralregeln und Datumsformate verbessert
+• Abgeschnittenen Text in Textkarte, Brettspielen, Farbwerkzeugen und Markup-Editor behoben
+• Kreditrechner und Ausweisfotoformate lokalisiert; Kommentar-Wiederholung und KI-Statusanzeigen verbessert

@@ -50,4 +50,7 @@
     <string name="date_picker_title">Pumili ng Petsa</string>
     <string name="time_range_picker_title">Pumili ng Saklaw ng Oras</string>
     <string name="time_picker_title">Pumili ng Oras</string>
+    <string name="date_picker_apply">Ilapat</string>
+    <string name="date_picker_input_title">Ilagay ang petsa</string>
+    <string name="date_picker_input_hint">Tip: I-tap ang Ilapat pagkatapos ilagay ang petsa</string>
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">Paysage verrouillé</string>
+    <string name="marquee_fullscreen_landscape_locked_label">Verrouiller en paysage</string>
+    <string name="marquee_fullscreen_follow_rotation">Suivre la rotation</string>
+</resources>

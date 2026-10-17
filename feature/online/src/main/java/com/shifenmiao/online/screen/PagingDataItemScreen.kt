@@ -366,10 +366,14 @@ private fun EmptyOrErrorState(
     }
 }
 
+private val HomeGridBottomInset = 16.dp
+
 @Composable
 private fun SkeletonItemGrid(isGrid: Boolean) {
     LazyVerticalStaggeredGrid(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = HomeGridBottomInset),
         columns = gridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalItemSpacing = 16.dp,
@@ -445,7 +449,9 @@ private fun ItemGrid(
 
     LazyVerticalStaggeredGrid(
         state = gridState,
-        modifier = Modifier.fillMaxHeight(),
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(bottom = HomeGridBottomInset),
         columns = gridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalItemSpacing = 16.dp,

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">लैंडस्केप लॉक है</string>
+    <string name="marquee_fullscreen_landscape_locked_label">लैंडस्केप लॉक करें</string>
+    <string name="marquee_fullscreen_follow_rotation">रोटेशन का पालन करें</string>
+</resources>

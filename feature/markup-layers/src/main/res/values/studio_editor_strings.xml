@@ -4,7 +4,10 @@
     <string name="studio_projects_empty">Saved projects keep the original image, layers, masks, and effects ready to edit.</string>
     <string name="studio_recent_files">Recent images</string>
     <string name="studio_recent_files_empty">No recent images</string>
-    <string name="studio_project_layers">%1$d layers</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d layer</item>
+        <item quantity="other">%1$d layers</item>
+    </plurals>
     <string name="studio_project_updated">Updated %1$s</string>
     <string name="studio_project_open">Open project %1$s</string>
     <string name="studio_project_delete">Delete project %1$s</string>

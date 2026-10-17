@@ -50,4 +50,7 @@
     <string name="date_picker_title">Выбор даты</string>
     <string name="time_range_picker_title">Выбор диапазона времени</string>
     <string name="time_picker_title">Выбор времени</string>
+    <string name="date_picker_apply">Применить</string>
+    <string name="date_picker_input_title">Введите дату</string>
+    <string name="date_picker_input_hint">Совет: после ввода даты нажмите «Применить»</string>
 </resources>

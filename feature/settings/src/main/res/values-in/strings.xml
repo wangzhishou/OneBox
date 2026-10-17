@@ -12,7 +12,7 @@
     <!-- Warna dan Gerakan (global) -->
     <string name="theme_color_system_section">Warna dan Gerakan</string>
     <string name="theme_palette_style_label">Gaya warna</string>
-    <string name="theme_palette_style_hint">Mengubah cara seluruh palet terbentuk dari warna utama. Expressive paling hidup.</string>
+    <string name="theme_palette_style_hint">Mengubah cara seluruh palet terbentuk dari warna utama. Ekspresif paling hidup.</string>
     <string name="theme_contrast_label">Kontras</string>
     <string name="theme_color_spec_2025">Warna cerah</string>
     <string name="theme_color_spec_2025_hint">Membuat semua warna lebih pekat dan cerah (skema warna baru).</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">Deskripsi</string>
     <string name="ai_engine_protocol_label">Protokol Permintaan</string>
     <string name="ai_engine_protocol_openai">API OpenAI Chat/completions</string>
-    <string name="ai_engine_protocol_responses">API OpenAI Responses</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Kompatibel dengan Anthropic</string>
     <string name="ai_engine_protocol_proxy">Proxy Aplikasi</string>
     <string name="ai_engine_protocol_local_on_device">Di Perangkat (Tanpa Jaringan)</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">Biarkan kosong untuk membuat dari kunci model</string>
     <string name="ai_engine_name_edit_hint">Kunci layanan yang unik; model ikut berpindah saat diubah namanya — biasanya biarkan apa adanya</string>
     <string name="ai_engine_title_hint">Nama yang tampil di daftar dan chat; bisa diubah kapan saja</string>
+    <string name="ai_personalization_tab_prompts">Prompt</string>
 </resources>

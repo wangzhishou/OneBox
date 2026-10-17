@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">Deskripsyon</string>
     <string name="ai_engine_protocol_label">Request Protocol</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Anthropic-Compatible</string>
     <string name="ai_engine_protocol_proxy">App Proxy</string>
     <string name="ai_engine_protocol_local_on_device">On-Device (No Network)</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">Iwan na blangko para gawin mula sa model key</string>
     <string name="ai_engine_name_edit_hint">Natatanging service key; sumasama ang mga model kapag pinalitan ang pangalan — karaniwang iwan lang</string>
     <string name="ai_engine_title_hint">Pangalang lumalabas sa mga listahan at chat; mababago anumang oras</string>
+    <string name="ai_personalization_tab_prompts">Mga prompt</string>
 </resources>

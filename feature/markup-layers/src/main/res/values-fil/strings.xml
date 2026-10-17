@@ -229,4 +229,5 @@
     <string name="markup_rasterize_title">I-convert sa larawan?</string>
     <string name="markup_rasterize_message">Kailangang i-convert muna sa larawan ang mga text/shape layer bago gumamit ng filter. Pagkatapos ng conversion, hindi na mae-edit ang mga setting ng text/shape, pero maibabalik mo sila gamit ang Undo.</string>
     <string name="markup_rasterize_failed">Nabigo ang conversion ng layer</string>
+    <string name="markup_tool_text_style">Estilo ng teksto</string>
 </resources>

@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">ペーパーを更新</string>
     <string name="textcard_editing_selection">編集中：選択テキスト</string>
     <string name="textcard_clear_selection_style">スタイルをクリア</string>
+    <string name="textcard_underline">下線</string>
+    <string name="textcard_strikethrough">取り消し線</string>
+    <string name="textcard_text_background">文字の背景</string>
+    <string name="textcard_text_outline">縁取り</string>
+    <string name="textcard_outline_width">縁取りの太さ</string>
 </resources>

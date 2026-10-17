@@ -875,7 +875,7 @@
     <string name="feedback_submit">确认提交</string>
     <string name="feedback_title_hint">标题</string>
     <string name="feedback_content_hint">描述</string>
-    <string name="feedback_placeholder">请详细描述你遇到的问题，帮助我们更快解决~</string>
+    <string name="feedback_placeholder">请详细描述你遇到的问题，帮助我们更快解决</string>
     <string name="fields_required">请检查必填字段</string>
     <string name="feedback_failed">提交失败,请稍后重试!</string>
     <string name="feedback_onSuccess">反馈已收到！感谢你帮助我们改进产品 ❤️</string>
@@ -1596,7 +1596,7 @@
 
     <!-- Bottom Navigation - Add Menu -->
     <string name="nav_add">添加</string>
-    <string name="nav_create_new_task">创建新任务</string>
+    <string name="nav_create_new_task">新建</string>
     <string name="nav_new_qr_code">扫一扫</string>
     <string name="nav_notebook">记事本</string>
     <string name="nav_todo_list">待办事项</string>
@@ -1875,7 +1875,9 @@
     <!-- 评论 (strapi-plugin-comments via go-proxy) -->
     <string name="comment">留言</string>
     <string name="comments_title">留言</string>
-    <string name="comments_count_format">共 %1$d 条留言</string>
+    <plurals name="comments_count_format">
+        <item quantity="other">共 %1$d 条留言</item>
+    </plurals>
     <string name="comment_close">关闭</string>
     <string name="comment_loading">留言加载中…</string>
     <string name="comment_empty">还没有收到反馈，欢迎留下你的建议</string>
@@ -1894,6 +1896,7 @@
     <string name="comment_send_failed">留言发送失败</string>
     <string name="comment_load_failed_format">留言加载失败 (%1$d)</string>
     <string name="comment_network_error">网络异常，请稍后重试</string>
+    <string name="comment_retry">重试</string>
     <string name="comment_cancel_reply">取消回复</string>
     <string name="comment_hint">告诉 AI，你遇到的问题或想要的功能…</string>
     <string name="comment_too_long_format">留言不能超过 %1$d 字</string>
@@ -1981,4 +1984,5 @@
     <string name="time_due_in_days">%d天后到期</string>
     <string name="time_due_on">到期：%s</string>
     <string name="card_more_actions">更多操作</string>
+    <string name="expand">展开</string>
 </resources>

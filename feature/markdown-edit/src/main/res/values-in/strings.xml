@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">Lebar</string>
     <string name="original_width">Lebar asli: %1$dpx</string>
     <string name="markdown_placeholder">Mulai mengetik...</string>
+    <string name="markdown_editor_source_placeholder">Kode sumber Markdown...</string>
+    <string name="markdown_editor_toolbar_undo">Urungkan</string>
+    <string name="markdown_editor_toolbar_redo">Ulangi</string>
+    <string name="markdown_editor_toolbar_heading_1">Judul 1</string>
+    <string name="markdown_editor_toolbar_heading_2">Judul 2</string>
+    <string name="markdown_editor_toolbar_heading_3">Judul 3</string>
+    <string name="markdown_editor_toolbar_bold">Tebal</string>
+    <string name="markdown_editor_toolbar_italic">Miring</string>
+    <string name="markdown_editor_toolbar_strikethrough">Coret</string>
+    <string name="markdown_editor_toolbar_inline_code">Kode inline</string>
+    <string name="markdown_editor_toolbar_bullet_list">Daftar berpoin</string>
+    <string name="markdown_editor_toolbar_ordered_list">Daftar bernomor</string>
+    <string name="markdown_editor_toolbar_task_list">Daftar tugas</string>
+    <string name="markdown_editor_toolbar_blockquote">Kutipan</string>
+    <string name="markdown_editor_toolbar_code_block">Blok kode</string>
+    <string name="markdown_editor_toolbar_link">Tautan</string>
+    <string name="markdown_editor_toolbar_image">Gambar</string>
+    <string name="markdown_editor_toolbar_divider">Pembatas</string>
+    <string name="markdown_editor_toolbar_copy">Salin</string>
+    <string name="markdown_editor_toolbar_paste">Tempel</string>
+    <string name="markdown_editor_toolbar_select_all">Pilih semua</string>
+    <string name="markdown_editor_toolbar_view_source">Lihat kode sumber Markdown</string>
 </resources>

@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">La acción create_list requiere el parámetro tasks (matriz de títulos de elementos)</string>
     <string name="agent_tool_manage_todo_param_tasks">Matriz de títulos de elementos, obligatoria para create_list; p. ej. [\"Aprender edición de vídeo con IA\", \"Leer 12 libros\"]</string>
     <string name="agent_tool_manage_todo_list_created">Lista \"%1$s\" creada con %2$d elementos</string>
+    <string name="ai_chat_attachment_idle_image">Listo · %1$s → Aprox. %2$dKB tras compresión · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">Listo · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">Comprobando...</string>
+    <string name="ai_chat_attachment_resizing">Redimensionando...</string>
+    <string name="ai_chat_attachment_converting">Convirtiendo formato...</string>
+    <string name="ai_chat_attachment_compressing">Comprimiendo...</string>
+    <string name="ai_chat_attachment_encoding">Codificando...</string>
+    <string name="ai_chat_attachment_uploading">Subiendo...</string>
+    <string name="ai_chat_attachment_error">Error: %1$s</string>
+    <string name="ai_chat_go_to_top">Volver arriba</string>
 </resources>

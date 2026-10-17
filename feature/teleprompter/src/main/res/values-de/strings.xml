@@ -3,9 +3,12 @@
     <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Mein Skript</string>
     <string name="teleprompter_recent_scripts">Neueste Skripte</string>
-    <string name="teleprompter_scripts_total">Gesamt: %d Skripte</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">Gesamt: %d Skript</item>
+        <item quantity="other">Gesamt: %d Skripte</item>
+    </plurals>
     <string name="teleprompter_empty">Kein Skript, unten rechts auf + tippen für Neues</string>
-    <plurals name="teleprompter_word_count"><item quantity="one">%d Wort</item><item quantity="other">%d Wörter</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="one">%d Zeichen</item><item quantity="other">%d Zeichen</item></plurals>
     <string name="teleprompter_new_script">Neues Skript</string>
     <string name="teleprompter_edit_script">Skript bearbeiten</string>
     <string name="teleprompter_title_hint">Skripttitel</string>
@@ -61,7 +64,7 @@
     <string name="teleprompter_log_created_title">Neues Skript: %1$s</string>
     <string name="teleprompter_log_updated_title">Skript aktualisiert: %1$s</string>
     <string name="teleprompter_log_deleted_title">Skript gelöscht: %1$s</string>
-    <string name="teleprompter_log_created_desc">Skript “%1$s” erstellt (%2$d Wörter)</string>
-    <string name="teleprompter_log_updated_desc">Skript “%1$s” aktualisiert (%2$d Wörter)</string>
+    <string name="teleprompter_log_created_desc">Skript “%1$s” erstellt (%2$d Zeichen)</string>
+    <string name="teleprompter_log_updated_desc">Skript “%1$s” aktualisiert (%2$d Zeichen)</string>
     <string name="teleprompter_log_deleted_desc">Skript “%1$s” gelöscht</string>
 </resources>

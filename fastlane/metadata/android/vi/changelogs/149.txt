@@ -1,0 +1,3 @@
+• Cải thiện bản dịch, quy tắc số nhiều và định dạng ngày
+• Sửa lỗi cắt chữ trong Thẻ văn bản, trò chơi bàn cờ, Công cụ màu và Trình chỉnh sửa markup
+• Bản địa hóa máy tính khoản vay và quy cách ảnh thẻ; cải thiện thử lại bình luận và trạng thái AI

@@ -1,23 +1,40 @@
 package com.wanbaohe.loancalculator.domain
 
+import androidx.annotation.StringRes
+import com.wanbaohe.loancalculator.R
 import kotlin.math.pow
 import kotlin.math.roundToLong
 
 /**
  * 贷款还款方式枚举
  */
-enum class RepaymentMethod(val label: String, val description: String) {
+enum class RepaymentMethod(
+    @StringRes val labelRes: Int,
+    @StringRes val descriptionRes: Int,
+) {
     /** 等本等息：每月还固定本金 + 固定利息（按总利息平摊） */
-    EQUAL_INSTALLMENT("等本等息", "月供、本金、利息每月相同"),
+    EQUAL_INSTALLMENT(
+        R.string.loan_method_equal_installment,
+        R.string.loan_method_equal_installment_desc,
+    ),
 
     /** 等额本息：每月还款额相同，本金逐月递增，利息逐月递减 */
-    EQUAL_PAYMENT("等额本息", "月供每月相同，本金逐月递增，利息逐月递减"),
+    EQUAL_PAYMENT(
+        R.string.loan_method_equal_payment,
+        R.string.loan_method_equal_payment_desc,
+    ),
 
     /** 等额本金：每月还固定本金，利息逐月递减，月供逐月递减 */
-    EQUAL_PRINCIPAL("等额本金", "月供每月递减，本金每月相同，利息每月递减"),
+    EQUAL_PRINCIPAL(
+        R.string.loan_method_equal_principal,
+        R.string.loan_method_equal_principal_desc,
+    ),
 
     /** 先息后本：每月只还利息，到期一次性还清全部本金 */
-    INTEREST_FIRST("先息后本", "每月还固定利息，到期还全部本金");
+    INTEREST_FIRST(
+        R.string.loan_method_interest_first,
+        R.string.loan_method_interest_first_desc,
+    ),
 }
 
 /**

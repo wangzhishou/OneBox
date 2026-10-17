@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Saisissez le code ici…</string>
+    <string name="code_editor_toolbar_undo">Annuler</string>
+    <string name="code_editor_toolbar_redo">Rétablir</string>
+    <string name="code_editor_toolbar_find">Rechercher</string>
+    <string name="code_editor_toolbar_copy">Copier</string>
+    <string name="code_editor_toolbar_paste">Coller</string>
+    <string name="code_editor_toolbar_select_all">Tout sélectionner</string>
+    <string name="code_editor_toolbar_word_wrap">Retour à la ligne</string>
 </resources>

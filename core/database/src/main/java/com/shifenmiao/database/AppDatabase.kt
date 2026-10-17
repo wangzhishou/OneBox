@@ -193,7 +193,7 @@ abstract class AppDatabase : RoomDatabase() {
          * 水位存 AppSharedStorage 的 localeMmkv（key 按语言隔离），每种语言的库各自完成首次 upsert。
          * v1 新增公众号写作风格示例技能。
          */
-        private const val SKILL_PRESET_VERSION = 1
+        private const val SKILL_PRESET_VERSION = 2
 
         /**
          * v1 → v2：同步主键从 (source, remote_id) 全局切换为 (source, document_id)。

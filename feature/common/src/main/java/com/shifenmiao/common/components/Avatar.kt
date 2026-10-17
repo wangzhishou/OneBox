@@ -18,12 +18,14 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.shifenmiao.core.R
 import com.shifenmiao.base.ui.painter.TextPainter
 import com.shifenmiao.base.utils.StringUtils
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
@@ -83,7 +85,7 @@ fun Avatar(
             model = ImageRequest.Builder(LocalContext.current).data(avatar)
                 .crossfade(true).build(),
             placeholder = avatarText,
-            contentDescription = "avatar image",
+            contentDescription = stringResource(R.string.profile_user_info_avatar),
             contentScale = ContentScale.FillWidth,
             modifier = modifier
                 .size(size)

@@ -213,4 +213,5 @@
     <string name="markup_rasterize_title">画像に変換しますか?</string>
     <string name="markup_rasterize_message">テキスト/図形レイヤーはフィルターを使用する前に画像に変換する必要があります。変換後はテキスト/図形の設定を編集できなくなりますが、「元に戻す」で復元できます。</string>
     <string name="markup_rasterize_failed">レイヤーの変換に失敗しました</string>
+    <string name="markup_tool_text_style">テキストスタイル</string>
 </resources>

@@ -149,7 +149,7 @@ fun StackImageItem(
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                        contentDescription = "Expand",
+                        contentDescription = stringResource(com.shifenmiao.core.R.string.expand),
                         modifier = Modifier.rotate(
                             animateFloatAsState(
                                 if (isControlsExpanded) 180f

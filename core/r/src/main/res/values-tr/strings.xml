@@ -731,7 +731,7 @@
     <string name="feedback_submit">Gönder</string>
     <string name="feedback_title_hint">Başlık</string>
     <string name="feedback_content_hint">Açıklama</string>
-    <string name="feedback_placeholder">Lütfen sorunu ayrıntılı olarak açıklayın, böylece daha hızlı yardımcı olabiliriz~</string>
+    <string name="feedback_placeholder">Lütfen sorunu ayrıntılı olarak açıklayın, böylece daha hızlı yardımcı olabiliriz</string>
     <string name="fields_required">Lütfen zorunlu alanları doldurun.</string>
     <string name="feedback_failed">Gönderim başarısız. Lütfen daha sonra tekrar deneyin.</string>
     <string name="feedback_onSuccess">Geri bildiriminiz alındı! Gelişmemize yardımcı olduğunuz için teşekkürler ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">Gönderim başarılı</string>
     <string name="agent_push_failed">Gönderim başarısız</string>
     <string name="nav_add">Ekle</string>
-    <string name="nav_create_new_task">Yeni Görev</string>
+    <string name="nav_create_new_task">Oluştur</string>
     <string name="nav_new_qr_code">Tara</string>
     <string name="nav_notebook">Not</string>
     <string name="nav_todo_list">Yapılacaklar</string>
@@ -1570,7 +1570,10 @@
     <string name="password_vault_description">Siteler, uygulamalar ve kapı kodları için şifreleri güvenle saklayın.</string>
     <string name="comment">Yorum</string>
     <string name="comments_title">Yorumlar</string>
-    <string name="comments_count_format">%1$d yorum</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d yorum</item>
+        <item quantity="other">%1$d yorum</item>
+    </plurals>
     <string name="comment_hint">Yorum yaz…</string>
     <string name="reply_hint">%1$s kullanıcısına yanıt ver…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1585,7 @@
     <string name="comment_loading_more">Daha fazla yükleniyor…</string>
     <string name="comment_load_failed_format">Yorumlar yüklenemedi (%1$d)</string>
     <string name="comment_network_error">Ağ hatası. Lütfen tekrar deneyin.</string>
+    <string name="comment_retry">Tekrar dene</string>
     <string name="comment_empty">Henüz geri bildirim yok. Düşüncelerinizi paylaşmaktan çekinmeyin.</string>
     <string name="comment_end_marker">— Başka yok —</string>
     <string name="comment_send">Gönder</string>
@@ -1844,4 +1848,5 @@
     <string name="byok_login_hint_subtitle">Ücretsiz AI sohbeti için kendi API anahtarınızı kullanın</string>
     <string name="byok_login_hint_title">Kaydolmak istemiyor musunuz?</string>
     <string name="donate_earn_points">Bağış yaparak puan kazanın</string>
+    <string name="expand">Genişlet</string>
 </resources>

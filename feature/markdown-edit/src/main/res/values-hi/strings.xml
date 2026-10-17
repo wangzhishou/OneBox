@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">चौड़ाई</string>
     <string name="original_width">मूल चौड़ाई: %1$dpx</string>
     <string name="markdown_placeholder">टाइप करना शुरू करें...</string>
+    <string name="markdown_editor_source_placeholder">Markdown सोर्स...</string>
+    <string name="markdown_editor_toolbar_undo">पूर्ववत करें</string>
+    <string name="markdown_editor_toolbar_redo">फिर से करें</string>
+    <string name="markdown_editor_toolbar_heading_1">शीर्षक 1</string>
+    <string name="markdown_editor_toolbar_heading_2">शीर्षक 2</string>
+    <string name="markdown_editor_toolbar_heading_3">शीर्षक 3</string>
+    <string name="markdown_editor_toolbar_bold">बोल्ड</string>
+    <string name="markdown_editor_toolbar_italic">इटैलिक</string>
+    <string name="markdown_editor_toolbar_strikethrough">स्ट्राइकथ्रू</string>
+    <string name="markdown_editor_toolbar_inline_code">इनलाइन कोड</string>
+    <string name="markdown_editor_toolbar_bullet_list">बुलेटेड सूची</string>
+    <string name="markdown_editor_toolbar_ordered_list">क्रमांकित सूची</string>
+    <string name="markdown_editor_toolbar_task_list">कार्य सूची</string>
+    <string name="markdown_editor_toolbar_blockquote">उद्धरण</string>
+    <string name="markdown_editor_toolbar_code_block">कोड ब्लॉक</string>
+    <string name="markdown_editor_toolbar_link">लिंक</string>
+    <string name="markdown_editor_toolbar_image">छवि</string>
+    <string name="markdown_editor_toolbar_divider">विभाजक</string>
+    <string name="markdown_editor_toolbar_copy">कॉपी करें</string>
+    <string name="markdown_editor_toolbar_paste">पेस्ट करें</string>
+    <string name="markdown_editor_toolbar_select_all">सभी चुनें</string>
+    <string name="markdown_editor_toolbar_view_source">Markdown सोर्स देखें</string>
 </resources>

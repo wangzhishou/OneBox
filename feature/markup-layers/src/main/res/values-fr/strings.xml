@@ -194,4 +194,5 @@
     <string name="markup_rasterize_title">Convertir en image ?</string>
     <string name="markup_rasterize_message">Les calques de texte/forme doivent d\'abord être convertis en image pour utiliser les filtres. Après conversion, les paramètres de texte/forme ne seront plus modifiables, mais vous pouvez annuler l\'action pour les restaurer.</string>
     <string name="markup_rasterize_failed">Échec de la conversion du calque</string>
+    <string name="markup_tool_text_style">Style de texte</string>
 </resources>

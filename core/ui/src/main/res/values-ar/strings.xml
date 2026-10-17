@@ -50,4 +50,7 @@
         <item>السبت</item>
         <item>الأحد</item>
     </string-array>
+    <string name="date_picker_apply">تطبيق</string>
+    <string name="date_picker_input_title">أدخل التاريخ</string>
+    <string name="date_picker_input_hint">تلميح: اضغط على تطبيق بعد إدخال التاريخ</string>
 </resources>

@@ -4,7 +4,10 @@
     <string name="studio_projects_empty">Os projetos salvos mantêm a imagem original, camadas, máscaras e efeitos prontos para edição.</string>
     <string name="studio_recent_files">Imagens recentes</string>
     <string name="studio_recent_files_empty">Nenhuma imagem recente</string>
-    <string name="studio_project_layers">%1$d camadas</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d camada</item>
+        <item quantity="other">%1$d camadas</item>
+    </plurals>
     <string name="studio_project_updated">Atualizado %1$s</string>
     <string name="studio_project_open">Abrir projeto %1$s</string>
     <string name="studio_project_delete">Excluir projeto %1$s</string>

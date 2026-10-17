@@ -18,6 +18,7 @@ import com.t8rin.imagetoolbox.core.domain.saving.FileController
 import com.t8rin.imagetoolbox.core.domain.saving.FilenameCreator
 import com.t8rin.imagetoolbox.core.domain.saving.model.ImageSaveTarget
 import com.t8rin.imagetoolbox.core.domain.saving.model.SaveResult
+import com.t8rin.imagetoolbox.feature.pdf_tools.R
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.PdfManager
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.model.ExtractPagesAction
 import com.t8rin.imagetoolbox.feature.pdf_tools.domain.model.PdfCreationParams
@@ -130,7 +131,10 @@ class PdfConversionService @Inject constructor(
                     saved += result.toSavedFile().also {
                         recordFileConvert(
                             title = it.fileName,
-                            description = "PDF → ${effectiveInfo.imageFormat.title}",
+                            description = context.getString(
+                                R.string.pdf_conversion_activity_pdf_to_format,
+                                effectiveInfo.imageFormat.title
+                            ),
                             screenRoute = screenRoute,
                             fileUri = it.fileUri,
                             fileName = it.fileName,
@@ -197,7 +201,7 @@ class PdfConversionService @Inject constructor(
             ).also {
                 recordFileConvert(
                     title = it.fileName,
-                    description = "图片 → PDF",
+                    description = context.getString(R.string.pdf_conversion_activity_images_to_pdf),
                     screenRoute = screenRoute,
                     fileUri = it.fileUri,
                     fileName = it.fileName,
@@ -229,7 +233,7 @@ class PdfConversionService @Inject constructor(
             ).also {
                 recordFileConvert(
                     title = it.fileName,
-                    description = "图片 → PDF",
+                    description = context.getString(R.string.pdf_conversion_activity_images_to_pdf),
                     screenRoute = screenRoute,
                     fileUri = it.fileUri,
                     fileName = it.fileName,
@@ -284,7 +288,10 @@ class PdfConversionService @Inject constructor(
                 ).also {
                     recordFileConvert(
                         title = it.fileName,
-                        description = "PDF → ${effectiveInfo.imageFormat.title}",
+                        description = context.getString(
+                            R.string.pdf_conversion_activity_pdf_to_format,
+                            effectiveInfo.imageFormat.title
+                        ),
                         screenRoute = screenRoute,
                         fileUri = it.fileUri,
                         fileName = it.fileName,
@@ -376,7 +383,7 @@ class PdfConversionService @Inject constructor(
         activityLogRecorder.record(
             category = ActivityCategory.FILE_CONVERT,
             title = title.ifEmpty { fileName },
-            appTitle = APP_TITLE,
+            appTitle = context.getString(R.string.pdf_conversion_activity_app_title),
             description = description,
             screenRoute = screenRoute,
             payload = payload,
@@ -400,6 +407,5 @@ class PdfConversionService @Inject constructor(
 
     companion object {
         private const val DOWNLOADS_DIR = "downloads"
-        private const val APP_TITLE = "PDF 工具"
     }
 }

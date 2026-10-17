@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">幅</string>
     <string name="original_width">元の幅: %1$dpx</string>
     <string name="markdown_placeholder">入力を開始...</string>
+    <string name="markdown_editor_source_placeholder">Markdown ソース...</string>
+    <string name="markdown_editor_toolbar_undo">元に戻す</string>
+    <string name="markdown_editor_toolbar_redo">やり直し</string>
+    <string name="markdown_editor_toolbar_heading_1">見出し 1</string>
+    <string name="markdown_editor_toolbar_heading_2">見出し 2</string>
+    <string name="markdown_editor_toolbar_heading_3">見出し 3</string>
+    <string name="markdown_editor_toolbar_bold">太字</string>
+    <string name="markdown_editor_toolbar_italic">斜体</string>
+    <string name="markdown_editor_toolbar_strikethrough">取り消し線</string>
+    <string name="markdown_editor_toolbar_inline_code">インラインコード</string>
+    <string name="markdown_editor_toolbar_bullet_list">箇条書き</string>
+    <string name="markdown_editor_toolbar_ordered_list">番号付きリスト</string>
+    <string name="markdown_editor_toolbar_task_list">タスクリスト</string>
+    <string name="markdown_editor_toolbar_blockquote">引用</string>
+    <string name="markdown_editor_toolbar_code_block">コードブロック</string>
+    <string name="markdown_editor_toolbar_link">リンク</string>
+    <string name="markdown_editor_toolbar_image">画像</string>
+    <string name="markdown_editor_toolbar_divider">区切り線</string>
+    <string name="markdown_editor_toolbar_copy">コピー</string>
+    <string name="markdown_editor_toolbar_paste">貼り付け</string>
+    <string name="markdown_editor_toolbar_select_all">すべて選択</string>
+    <string name="markdown_editor_toolbar_view_source">Markdown ソースを表示</string>
 </resources>

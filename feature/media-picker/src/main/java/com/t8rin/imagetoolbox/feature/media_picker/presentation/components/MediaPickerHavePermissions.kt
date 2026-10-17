@@ -247,7 +247,7 @@ internal fun MediaPickerHavePermissions(
                     val rotation by animateFloatAsState(if (showAlbumThumbnail) 180f else 0f)
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                        contentDescription = "Expand",
+                        contentDescription = stringResource(com.shifenmiao.core.R.string.expand),
                         modifier = Modifier.rotate(rotation)
                     )
                 }

@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Empieza a escribir tu código…</string>
+    <string name="code_editor_toolbar_undo">Deshacer</string>
+    <string name="code_editor_toolbar_redo">Rehacer</string>
+    <string name="code_editor_toolbar_find">Buscar</string>
+    <string name="code_editor_toolbar_copy">Copiar</string>
+    <string name="code_editor_toolbar_paste">Pegar</string>
+    <string name="code_editor_toolbar_select_all">Seleccionar todo</string>
+    <string name="code_editor_toolbar_word_wrap">Ajuste de línea</string>
 </resources>

@@ -286,7 +286,15 @@ private fun NavigationRailLayout(
                 childStack = childStack,
                 currentScreen = currentScreen,
                 rootComponent = rootComponent,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        bottom = if (currentScreen is Screen.NewApp) {
+                            WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+                        } else {
+                            0.dp
+                        }
+                    ),
                 appComponent = appComponent,
             )
         }

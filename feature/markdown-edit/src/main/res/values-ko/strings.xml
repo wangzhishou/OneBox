@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">너비</string>
     <string name="original_width">원본 너비: %1$dpx</string>
     <string name="markdown_placeholder">입력 시작...</string>
+    <string name="markdown_editor_source_placeholder">Markdown 소스...</string>
+    <string name="markdown_editor_toolbar_undo">실행 취소</string>
+    <string name="markdown_editor_toolbar_redo">다시 실행</string>
+    <string name="markdown_editor_toolbar_heading_1">제목 1</string>
+    <string name="markdown_editor_toolbar_heading_2">제목 2</string>
+    <string name="markdown_editor_toolbar_heading_3">제목 3</string>
+    <string name="markdown_editor_toolbar_bold">굵게</string>
+    <string name="markdown_editor_toolbar_italic">기울임꼴</string>
+    <string name="markdown_editor_toolbar_strikethrough">취소선</string>
+    <string name="markdown_editor_toolbar_inline_code">인라인 코드</string>
+    <string name="markdown_editor_toolbar_bullet_list">글머리 기호 목록</string>
+    <string name="markdown_editor_toolbar_ordered_list">번호 매기기 목록</string>
+    <string name="markdown_editor_toolbar_task_list">작업 목록</string>
+    <string name="markdown_editor_toolbar_blockquote">인용</string>
+    <string name="markdown_editor_toolbar_code_block">코드 블록</string>
+    <string name="markdown_editor_toolbar_link">링크</string>
+    <string name="markdown_editor_toolbar_image">이미지</string>
+    <string name="markdown_editor_toolbar_divider">구분선</string>
+    <string name="markdown_editor_toolbar_copy">복사</string>
+    <string name="markdown_editor_toolbar_paste">붙여넣기</string>
+    <string name="markdown_editor_toolbar_select_all">모두 선택</string>
+    <string name="markdown_editor_toolbar_view_source">Markdown 소스 보기</string>
 </resources>

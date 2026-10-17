@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loan_calc_title">Calculateur de prêt</string>
-    <string name="loan_calc_amount_label">Montant du prêt (yuan)</string>
+    <string name="loan_calc_amount_label">Montant du prêt</string>
     <string name="loan_calc_amount_hint">Veuillez saisir le montant</string>
     <string name="loan_calc_term_label">Durée du prêt</string>
     <string name="loan_calc_term_hint">Sélectionner</string>
     <string name="loan_calc_rate_label">Taux d\'intérêt annuel (%)</string>
     <string name="loan_calc_rate_hint">Veuillez saisir le taux d\'intérêt annuel</string>
+    <string name="loan_calc_monthly_rate_label">Taux d\'intérêt mensuel (%)</string>
+    <string name="loan_calc_monthly_rate_hint">Veuillez saisir le taux d\'intérêt mensuel</string>
     <string name="loan_calc_method_label">Mode de remboursement</string>
     <string name="loan_calc_method_hint">Sélectionner</string>
     <string name="loan_calc_start">Commencer le calcul</string>
@@ -32,7 +34,15 @@
     <string name="loan_input_error_term">Veuillez sélectionner la durée du prêt</string>
     <string name="loan_input_error_rate">Veuillez saisir un taux d\'intérêt annuel valide</string>
     <string name="loan_input_error_method">Veuillez choisir le mode de remboursement</string>
-    <string name="loan_term_months">%d mois</string>
-    <string name="loan_term_years">%1$d ans (%2$d mois)</string>
+    <plurals name="loan_term_months">
+        <item quantity="one">%1$d mois</item>
+        <item quantity="other">%1$d mois</item>
+    </plurals>
+    <plurals name="loan_term_years_count">
+        <item quantity="one">%1$d an</item>
+        <item quantity="other">%1$d ans</item>
+    </plurals>
+    <string name="loan_term_years">%1$s (%2$s)</string>
+    <string name="loan_term_years_months">%1$s %2$s</string>
     <string name="loan_term_picker_title">Choisir la durée du prêt</string>
 </resources>

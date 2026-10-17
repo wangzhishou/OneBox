@@ -23,8 +23,10 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBar
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedTopAppBarType
@@ -50,7 +52,7 @@ fun BaseScreen(
                 onGoBack()
             }
         ) {
-            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack, contentDescription = "Back")
+            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack, contentDescription = stringResource(R.string.back_button))
         }
     },
     actions: @Composable (RowScope.() -> Unit?)? = null,
@@ -112,7 +114,7 @@ fun BaseScreen(
                 onGoBack()
             }
         ) {
-            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack, contentDescription = "Back")
+            Icon(com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack, contentDescription = stringResource(R.string.back_button))
         }
     },
     backgroundImage: @Composable (() -> Unit)? = null,

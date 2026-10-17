@@ -50,4 +50,7 @@
         <item>六</item>
         <item>日</item>
     </string-array>
+    <string name="date_picker_apply">套用</string>
+    <string name="date_picker_input_title">請輸入日期</string>
+    <string name="date_picker_input_hint">提示：輸入完成後請點選「套用」</string>
 </resources>

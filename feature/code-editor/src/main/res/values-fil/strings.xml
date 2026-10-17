@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Simulan ang pag-type ng iyong code…</string>
+    <string name="code_editor_toolbar_undo">Bawiin</string>
+    <string name="code_editor_toolbar_redo">Ulitin</string>
+    <string name="code_editor_toolbar_find">Hanapin</string>
+    <string name="code_editor_toolbar_copy">Kopyahin</string>
+    <string name="code_editor_toolbar_paste">I-paste</string>
+    <string name="code_editor_toolbar_select_all">Piliin lahat</string>
+    <string name="code_editor_toolbar_word_wrap">Word wrap</string>
 </resources>

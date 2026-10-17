@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.utils.animation.FancyTransitionEasing
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedIconButton
@@ -121,7 +122,7 @@ fun ExpandableItem(
                 ) {
                     Icon(
                         imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                        contentDescription = "Expand",
+                        contentDescription = stringResource(com.shifenmiao.core.R.string.expand),
                         modifier = Modifier.rotate(rotation),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )

@@ -248,7 +248,7 @@ private fun CollapsedReasoningHeader(message: String) {
         Icon(
             modifier = Modifier.size(22.dp),
             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExpandMore,
-            contentDescription = "Expand",
+            contentDescription = stringResource(com.shifenmiao.core.R.string.expand),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
@@ -286,7 +286,7 @@ private fun ExpandableHeader(
         Icon(
             modifier = Modifier.size(22.dp),
             imageVector = if (isExpanded) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExpandLess else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineExpandMore,
-            contentDescription = if (isExpanded) "Collapse" else "Expand",
+            contentDescription = if (isExpanded) "Collapse" else stringResource(com.shifenmiao.core.R.string.expand),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }

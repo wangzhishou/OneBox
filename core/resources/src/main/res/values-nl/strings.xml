@@ -1616,4 +1616,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Download gestart</string>
+    <string name="color_info_tab">Kleurinfo</string>
+    <string name="color_shading_tab">Kleurtint</string>
 </resources>

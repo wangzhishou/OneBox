@@ -731,7 +731,7 @@
     <string name="feedback_submit">Kirim</string>
     <string name="feedback_title_hint">Judul</string>
     <string name="feedback_content_hint">Deskripsi</string>
-    <string name="feedback_placeholder">Silakan jelaskan masalah secara detail agar kami dapat membantu lebih cepat~</string>
+    <string name="feedback_placeholder">Silakan jelaskan masalah secara detail agar kami dapat membantu lebih cepat</string>
     <string name="fields_required">Silakan isi kolom yang wajib diisi.</string>
     <string name="feedback_failed">Pengiriman gagal. Silakan coba lagi nanti.</string>
     <string name="feedback_onSuccess">Masukan diterima! Terima kasih telah membantu kami meningkatkan ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">Dorongan berhasil</string>
     <string name="agent_push_failed">Dorongan gagal</string>
     <string name="nav_add">Tambah</string>
-    <string name="nav_create_new_task">Tugas Baru</string>
+    <string name="nav_create_new_task">Buat</string>
     <string name="nav_new_qr_code">Pindai</string>
     <string name="nav_notebook">Catatan</string>
     <string name="nav_todo_list">Tugas</string>
@@ -1570,7 +1570,9 @@
     <string name="password_vault_description">Simpan kata sandi untuk situs, aplikasi, dan kode pintu dengan aman.</string>
     <string name="comment">Komentar</string>
     <string name="comments_title">Komentar</string>
-    <string name="comments_count_format">%1$d komentar</string>
+    <plurals name="comments_count_format">
+        <item quantity="other">%1$d komentar</item>
+    </plurals>
     <string name="comment_hint">Tulis komentar…</string>
     <string name="reply_hint">Balas ke %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1584,7 @@
     <string name="comment_loading_more">Memuat lebih banyak…</string>
     <string name="comment_load_failed_format">Gagal memuat komentar (%1$d)</string>
     <string name="comment_network_error">Kesalahan jaringan. Silakan coba lagi.</string>
+    <string name="comment_retry">Coba lagi</string>
     <string name="comment_empty">Belum ada masukan. Silakan bagikan pendapat Anda.</string>
     <string name="comment_end_marker">— Tidak ada lagi —</string>
     <string name="comment_send">Kirim</string>
@@ -1834,4 +1837,5 @@ Tips: jika memilih \"Sembunyikan Selamanya\", kamu bisa memanggilku kembali nant
     <string name="byok_login_hint_subtitle">Gunakan kunci API Anda sendiri untuk chat AI gratis</string>
     <string name="byok_login_hint_title">Tidak ingin mendaftar?</string>
     <string name="donate_earn_points">Berdonasi untuk mendapatkan poin</string>
+    <string name="expand">Perluas</string>
 </resources>

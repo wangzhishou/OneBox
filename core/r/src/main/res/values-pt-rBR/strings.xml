@@ -731,7 +731,7 @@
     <string name="feedback_submit">Enviar</string>
     <string name="feedback_title_hint">Título</string>
     <string name="feedback_content_hint">Descrição</string>
-    <string name="feedback_placeholder">Descreva o problema em detalhes para que possamos ajudar mais rápido~</string>
+    <string name="feedback_placeholder">Descreva o problema em detalhes para que possamos ajudar mais rápido</string>
     <string name="fields_required">Por favor, preencha os campos obrigatórios.</string>
     <string name="feedback_failed">Falha no envio. Tente novamente mais tarde.</string>
     <string name="feedback_onSuccess">Feedback recebido! Obrigado por nos ajudar a melhorar ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">Envio bem-sucedido</string>
     <string name="agent_push_failed">Falha no envio</string>
     <string name="nav_add">Adicionar</string>
-    <string name="nav_create_new_task">Nova Tarefa</string>
+    <string name="nav_create_new_task">Criar</string>
     <string name="nav_new_qr_code">Escanear</string>
     <string name="nav_notebook">Nota</string>
     <string name="nav_todo_list">Tarefas</string>
@@ -1570,7 +1570,10 @@
     <string name="password_vault_description">Armazene com segurança senhas de sites, aplicativos e códigos de porta.</string>
     <string name="comment">Comentário</string>
     <string name="comments_title">Comentários</string>
-    <string name="comments_count_format">%1$d comentários</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d comentário</item>
+        <item quantity="other">%1$d comentários</item>
+    </plurals>
     <string name="comment_hint">Escreva um comentário…</string>
     <string name="reply_hint">Responder a %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1585,7 @@
     <string name="comment_loading_more">Carregando mais…</string>
     <string name="comment_load_failed_format">Falha ao carregar comentários (%1$d)</string>
     <string name="comment_network_error">Erro de rede. Tente novamente.</string>
+    <string name="comment_retry">Tentar novamente</string>
     <string name="comment_empty">Ainda não há feedback. Sinta-se à vontade para compartilhar suas opiniões.</string>
     <string name="comment_end_marker">— Sem mais —</string>
     <string name="comment_send">Enviar</string>
@@ -1844,4 +1848,5 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="byok_login_hint_subtitle">Use sua própria chave de API para conversar com IA grátis</string>
     <string name="byok_login_hint_title">Não quer se cadastrar?</string>
     <string name="donate_earn_points">Faça uma doação e ganhe pontos</string>
+    <string name="expand">Expandir</string>
 </resources>

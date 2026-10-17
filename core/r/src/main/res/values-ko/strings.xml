@@ -731,7 +731,7 @@
     <string name="feedback_submit">제출</string>
     <string name="feedback_title_hint">제목</string>
     <string name="feedback_content_hint">설명</string>
-    <string name="feedback_placeholder">문제를 자세히 설명해 주시면 더 빠르게 도와드릴 수 있습니다~</string>
+    <string name="feedback_placeholder">문제를 자세히 설명해 주시면 더 빠르게 도와드릴 수 있습니다</string>
     <string name="fields_required">필수 항목을 입력해 주세요.</string>
     <string name="feedback_failed">제출에 실패했습니다. 나중에 다시 시도해 주세요.</string>
     <string name="feedback_onSuccess">피드백을 받았습니다! 개선에 도움을 주셔서 감사합니다 ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">푸시 성공</string>
     <string name="agent_push_failed">푸시 실패</string>
     <string name="nav_add">추가</string>
-    <string name="nav_create_new_task">새 작업</string>
+    <string name="nav_create_new_task">만들기</string>
     <string name="nav_new_qr_code">스캔</string>
     <string name="nav_notebook">메모</string>
     <string name="nav_todo_list">할 일</string>
@@ -1570,7 +1570,9 @@
     <string name="password_vault_description">사이트, 앱 및 도어 코드의 비밀번호를 안전하게 저장하세요.</string>
     <string name="comment">댓글</string>
     <string name="comments_title">댓글</string>
-    <string name="comments_count_format">%1$d개의 댓글</string>
+    <plurals name="comments_count_format">
+        <item quantity="other">%1$d개의 댓글</item>
+    </plurals>
     <string name="comment_hint">댓글 작성…</string>
     <string name="reply_hint">%1$s님에게 답글…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1584,7 @@
     <string name="comment_loading_more">더 불러오는 중…</string>
     <string name="comment_load_failed_format">댓글을 불러오지 못했습니다 (%1$d)</string>
     <string name="comment_network_error">네트워크 오류. 다시 시도해 주세요.</string>
+    <string name="comment_retry">재시도</string>
     <string name="comment_empty">아직 피드백이 없습니다. 의견을 자유롭게 남겨 주세요.</string>
     <string name="comment_end_marker">— 더 이상 없음 —</string>
     <string name="comment_send">보내기</string>
@@ -1834,4 +1837,5 @@
     <string name="byok_login_hint_subtitle">내 API 키로 AI 채팅 무료 이용</string>
     <string name="byok_login_hint_title">가입하고 싶지 않으신가요?</string>
     <string name="donate_earn_points">후원하고 포인트 받기</string>
+    <string name="expand">펼치기</string>
 </resources>

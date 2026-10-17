@@ -381,6 +381,8 @@
     <string name="auth_code_settings_immersive_exit">退出沉浸式</string>
     <string name="auth_code_settings_unnamed_item">未命名应用</string>
 
+    <string name="ai_personalization_tab_prompts">提示词</string>
+
     <!-- AI Memory management page -->
     <string name="memory_global_switch_title">启用 AI 记忆</string>
     <string name="memory_global_switch_subtitle">全局总开关：关闭后不注入记忆，AI 也无法写入记忆</string>

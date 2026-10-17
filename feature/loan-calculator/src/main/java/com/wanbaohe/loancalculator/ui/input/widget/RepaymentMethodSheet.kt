@@ -90,14 +90,14 @@ private fun MethodItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = method.label,
+            text = stringResource(method.labelRes),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = method.description,
+            text = stringResource(method.descriptionRes),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,

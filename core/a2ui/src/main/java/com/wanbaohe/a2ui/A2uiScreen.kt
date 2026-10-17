@@ -40,7 +40,7 @@ fun A2uiScreen(
                         EnhancedIconButton(onClick = { component.onGoBack() }) {
                             Icon(
                                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back_button),
                             )
                         }
                     },

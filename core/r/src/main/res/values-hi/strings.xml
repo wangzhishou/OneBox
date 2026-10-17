@@ -731,7 +731,7 @@
     <string name="feedback_submit">सबमिट करें</string>
     <string name="feedback_title_hint">शीर्षक</string>
     <string name="feedback_content_hint">विवरण</string>
-    <string name="feedback_placeholder">कृपया समस्या का विवरण विस्तार से दें ताकि हम तेज़ी से मदद कर सकें~</string>
+    <string name="feedback_placeholder">कृपया समस्या का विवरण विस्तार से दें ताकि हम तेज़ी से मदद कर सकें</string>
     <string name="fields_required">कृपया आवश्यक फ़ील्ड भरें।</string>
     <string name="feedback_failed">सबमिशन विफल रहा। कृपया बाद में पुनः प्रयास करें।</string>
     <string name="feedback_onSuccess">प्रतिक्रिया प्राप्त हुई! सुधार में मदद करने के लिए धन्यवाद ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">भेजना सफल हुआ</string>
     <string name="agent_push_failed">भेजना विफल हुआ</string>
     <string name="nav_add">जोड़ें</string>
-    <string name="nav_create_new_task">नया कार्य</string>
+    <string name="nav_create_new_task">बनाएँ</string>
     <string name="nav_new_qr_code">स्कैन</string>
     <string name="nav_notebook">नोट</string>
     <string name="nav_todo_list">कार्य</string>
@@ -1570,7 +1570,10 @@
     <string name="password_vault_description">साइटों, ऐप्स और दरवाज़े के कोड के लिए पासवर्ड सुरक्षित रूप से संग्रहीत करें।</string>
     <string name="comment">टिप्पणी</string>
     <string name="comments_title">टिप्पणियाँ</string>
-    <string name="comments_count_format">%1$d टिप्पणियाँ</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d टिप्पणी</item>
+        <item quantity="other">%1$d टिप्पणियाँ</item>
+    </plurals>
     <string name="comment_hint">टिप्पणी लिखें…</string>
     <string name="reply_hint">%1$s को उत्तर दें…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1585,7 @@
     <string name="comment_loading_more">और लोड हो रहा है…</string>
     <string name="comment_load_failed_format">टिप्पणियाँ लोड करने में विफल (%1$d)</string>
     <string name="comment_network_error">नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।</string>
+    <string name="comment_retry">पुनः प्रयास करें</string>
     <string name="comment_empty">अभी कोई प्रतिक्रिया नहीं। अपने विचार साझा करने के लिए स्वतंत्र महसूस करें।</string>
     <string name="comment_end_marker">— और नहीं —</string>
     <string name="comment_send">भेजें</string>
@@ -1844,4 +1848,5 @@
     <string name="byok_login_hint_subtitle">मुफ़्त AI चैट के लिए अपनी API कुंजी इस्तेमाल करें</string>
     <string name="byok_login_hint_title">साइन अप नहीं करना चाहते?</string>
     <string name="donate_earn_points">अंक पाने के लिए दान करें</string>
+    <string name="expand">विस्तार करें</string>
 </resources>

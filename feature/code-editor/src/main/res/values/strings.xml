@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Start typing your code…</string>
+    <string name="code_editor_toolbar_undo">Undo</string>
+    <string name="code_editor_toolbar_redo">Redo</string>
+    <string name="code_editor_toolbar_find">Find</string>
+    <string name="code_editor_toolbar_copy">Copy</string>
+    <string name="code_editor_toolbar_paste">Paste</string>
+    <string name="code_editor_toolbar_select_all">Select all</string>
+    <string name="code_editor_toolbar_word_wrap">Word wrap</string>
 </resources>

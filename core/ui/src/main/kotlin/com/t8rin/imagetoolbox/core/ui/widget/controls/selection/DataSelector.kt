@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
@@ -170,7 +171,7 @@ fun <T : Any> DataSelector(
                     ) {
                         Icon(
                             imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineKeyboardArrowDown,
-                            contentDescription = "Expand",
+                            contentDescription = stringResource(com.shifenmiao.core.R.string.expand),
                             modifier = Modifier.rotate(rotation)
                         )
                     }

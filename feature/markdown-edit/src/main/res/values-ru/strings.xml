@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">Ширина</string>
     <string name="original_width">Исходная ширина: %1$dpx</string>
     <string name="markdown_placeholder">Начните вводить...</string>
+    <string name="markdown_editor_source_placeholder">Исходный код Markdown...</string>
+    <string name="markdown_editor_toolbar_undo">Отменить</string>
+    <string name="markdown_editor_toolbar_redo">Повторить</string>
+    <string name="markdown_editor_toolbar_heading_1">Заголовок 1</string>
+    <string name="markdown_editor_toolbar_heading_2">Заголовок 2</string>
+    <string name="markdown_editor_toolbar_heading_3">Заголовок 3</string>
+    <string name="markdown_editor_toolbar_bold">Полужирный</string>
+    <string name="markdown_editor_toolbar_italic">Курсив</string>
+    <string name="markdown_editor_toolbar_strikethrough">Зачёркнутый</string>
+    <string name="markdown_editor_toolbar_inline_code">Код в строке</string>
+    <string name="markdown_editor_toolbar_bullet_list">Маркированный список</string>
+    <string name="markdown_editor_toolbar_ordered_list">Нумерованный список</string>
+    <string name="markdown_editor_toolbar_task_list">Список задач</string>
+    <string name="markdown_editor_toolbar_blockquote">Цитата</string>
+    <string name="markdown_editor_toolbar_code_block">Блок кода</string>
+    <string name="markdown_editor_toolbar_link">Ссылка</string>
+    <string name="markdown_editor_toolbar_image">Изображение</string>
+    <string name="markdown_editor_toolbar_divider">Разделитель</string>
+    <string name="markdown_editor_toolbar_copy">Копировать</string>
+    <string name="markdown_editor_toolbar_paste">Вставить</string>
+    <string name="markdown_editor_toolbar_select_all">Выбрать всё</string>
+    <string name="markdown_editor_toolbar_view_source">Показать исходный код Markdown</string>
 </resources>

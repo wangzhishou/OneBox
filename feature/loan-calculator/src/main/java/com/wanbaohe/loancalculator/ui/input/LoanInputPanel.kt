@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.wanbaohe.loancalculator.R
@@ -50,7 +51,7 @@ fun LoanInputPanel(
             value = viewModel.amount,
             onValueChange = { viewModel.updateAmount(it) },
             hint = stringResource(R.string.loan_calc_amount_hint),
-            errorMessage = viewModel.amountError,
+            errorMessage = viewModel.amountError?.let { stringResource(it) },
         )
         Spacer(Modifier.height(12.dp))
 
@@ -61,14 +62,18 @@ fun LoanInputPanel(
             hint = stringResource(R.string.loan_calc_term_hint),
             isSelector = true,
             onClick = { showTermPicker = true },
-            errorMessage = viewModel.termError,
+            errorMessage = viewModel.termError?.let { stringResource(it) },
         )
         Spacer(Modifier.height(12.dp))
 
         // ── 年利率（带年/月切换下拉）──────────────────────────────────────────
-        // label 只写"年利率"/"月利率"，单位符号由 leadingContent 承载，避免重复显示
+        // 单位符号已包含在 label 中，leadingContent 只显示切换触发器
         LoanInputItem(
-            label = if (isAnnualRate) "年利率" else "月利率",
+            label = if (isAnnualRate) {
+                stringResource(R.string.loan_calc_rate_label)
+            } else {
+                stringResource(R.string.loan_calc_monthly_rate_label)
+            },
             value = viewModel.annualRate,
             onValueChange = { input ->
                 if (isAnnualRate) {
@@ -82,15 +87,16 @@ fun LoanInputPanel(
                     )
                 }
             },
-            hint = if (isAnnualRate)
+            hint = if (isAnnualRate) {
                 stringResource(R.string.loan_calc_rate_hint)
-            else
-                "请输入月利率",
-            errorMessage = viewModel.rateError,
+            } else {
+                stringResource(R.string.loan_calc_monthly_rate_hint)
+            },
+            errorMessage = viewModel.rateError?.let { stringResource(it) },
             leadingContent = {
-                // 年/月切换触发器，显示"（%）▾"
+                // 年/月切换触发器
                 Text(
-                    text = "（%）▾",
+                    text = "▾",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
@@ -102,14 +108,14 @@ fun LoanInputPanel(
                     onDismissRequest = { showRateDropdown = false },
                 ) {
                     DropdownMenuItem(
-                        text = { Text("年利率（%）") },
+                        text = { Text(stringResource(R.string.loan_calc_rate_label)) },
                         onClick = {
                             isAnnualRate = true
                             showRateDropdown = false
                         },
                     )
                     DropdownMenuItem(
-                        text = { Text("月利率（%）") },
+                        text = { Text(stringResource(R.string.loan_calc_monthly_rate_label)) },
                         onClick = {
                             isAnnualRate = false
                             showRateDropdown = false
@@ -123,11 +129,11 @@ fun LoanInputPanel(
         // ── 还款方式（选择行）─────────────────────────────────────────────────
         LoanInputItem(
             label = stringResource(R.string.loan_calc_method_label),
-            value = viewModel.repaymentMethod?.label ?: "",
+            value = viewModel.repaymentMethod?.let { stringResource(it.labelRes) } ?: "",
             hint = stringResource(R.string.loan_calc_method_hint),
             isSelector = true,
             onClick = { showMethodPicker = true },
-            errorMessage = viewModel.methodError,
+            errorMessage = viewModel.methodError?.let { stringResource(it) },
         )
         Spacer(Modifier.height(28.dp))
 
@@ -165,12 +171,24 @@ fun LoanInputPanel(
 }
 
 /** 将月数格式化为友好的期数标签 */
+@Composable
 private fun termLabel(months: Int): String {
     val years = months / 12
     val remainMonths = months % 12
-    return when {
-        years > 0 && remainMonths == 0 -> "${years}年（${months}个月）"
-        years > 0 -> "${years}年${remainMonths}个月"
-        else -> "${months}个月"
+    if (years <= 0) {
+        return pluralStringResource(R.plurals.loan_term_months, months, months)
+    }
+
+    val yearsLabel = pluralStringResource(R.plurals.loan_term_years_count, years, years)
+    val displayedMonths = if (remainMonths == 0) months else remainMonths
+    val monthsLabel = pluralStringResource(
+        R.plurals.loan_term_months,
+        displayedMonths,
+        displayedMonths,
+    )
+    return if (remainMonths == 0) {
+        stringResource(R.string.loan_term_years, yearsLabel, monthsLabel)
+    } else {
+        stringResource(R.string.loan_term_years_months, yearsLabel, monthsLabel)
     }
 }

@@ -1,6 +1,9 @@
 package com.wanbaohe.code.editor.webview
 
+import android.text.TextUtils
+import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.colors.EditorColors
+import com.wanbaohe.code.editor.R
 
 /**
  * CodeEditor HTML 模板生成器
@@ -328,44 +331,44 @@ object CodeEditorHtmlTemplate {
         </div>
 
         <div id="toolbar">
-            <button class="toolbar-btn" data-action="undo" title="撤销">
+            <button class="toolbar-btn" data-action="undo" title="${localized(R.string.code_editor_toolbar_undo)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 10h10a5 5 0 0 1 5 5v0a5 5 0 0 1-5 5H7m-4-10l4-4m-4 4l4 4"/>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-action="redo" title="重做">
+            <button class="toolbar-btn" data-action="redo" title="${localized(R.string.code_editor_toolbar_redo)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 10H11a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h6m4-10l-4-4m4 4l-4 4"/>
                 </svg>
             </button>
             <div class="toolbar-divider"></div>
-            <button class="toolbar-btn" data-action="find" title="查找">
+            <button class="toolbar-btn" data-action="find" title="${localized(R.string.code_editor_toolbar_find)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="7"/>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
             </button>
             <div class="toolbar-divider"></div>
-            <button class="toolbar-btn" data-action="copy" title="复制">
+            <button class="toolbar-btn" data-action="copy" title="${localized(R.string.code_editor_toolbar_copy)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="9" y="9" width="13" height="13" rx="2"/>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-action="paste" title="粘贴">
+            <button class="toolbar-btn" data-action="paste" title="${localized(R.string.code_editor_toolbar_paste)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
                     <rect x="8" y="2" width="8" height="4" rx="1"/>
                 </svg>
             </button>
-            <button class="toolbar-btn" data-action="selectAll" title="全选">
+            <button class="toolbar-btn" data-action="selectAll" title="${localized(R.string.code_editor_toolbar_select_all)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
                     <path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/>
                 </svg>
             </button>
             <div class="toolbar-divider"></div>
-            <button class="toolbar-btn" data-action="toggleWrap" title="换行">
+            <button class="toolbar-btn" data-action="toggleWrap" title="${localized(R.string.code_editor_toolbar_word_wrap)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 6h18M3 12h15a3 3 0 1 1 0 6h-4M16 16l-2 2 2 2M21 18h-3"/>
                 </svg>
@@ -374,20 +377,20 @@ object CodeEditorHtmlTemplate {
 
         <!-- 选区浮层 -->
         <div id="selection-toolbar">
-            <button class="selection-btn" data-action="copy" title="复制">
+            <button class="selection-btn" data-action="copy" title="${localized(R.string.code_editor_toolbar_copy)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="9" y="9" width="13" height="13" rx="2"/>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
                 </svg>
             </button>
-            <button class="selection-btn" data-action="paste" title="粘贴">
+            <button class="selection-btn" data-action="paste" title="${localized(R.string.code_editor_toolbar_paste)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
                     <rect x="8" y="2" width="8" height="4" rx="1"/>
                 </svg>
             </button>
             <div class="toolbar-divider"></div>
-            <button class="selection-btn" data-action="selectAll" title="全选">
+            <button class="selection-btn" data-action="selectAll" title="${localized(R.string.code_editor_toolbar_select_all)}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
                     <path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/>
@@ -400,4 +403,7 @@ object CodeEditorHtmlTemplate {
 </html>
         """.trimIndent()
     }
+
+    private fun localized(resId: Int): String =
+        TextUtils.htmlEncode(AppContext.getString(resId))
 }

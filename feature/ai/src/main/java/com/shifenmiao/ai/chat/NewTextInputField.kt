@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.shifenmiao.model.ai.ChatInputState
 import com.shifenmiao.model.ai.Conversation
@@ -186,7 +187,13 @@ private fun SingleLineLayout(
             contentAlignment = Alignment.CenterStart
         ) {
             if (showPlaceholder) {
-                Text(text = placeholder, style = inputTextStyle, color = placeholderColor)
+                Text(
+                    text = placeholder,
+                    style = inputTextStyle,
+                    color = placeholderColor,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
             ProvideTextStyle(value = inputTextStyle) { innerTextField() }
         }

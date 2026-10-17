@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">横向きに固定中</string>
+    <string name="marquee_fullscreen_landscape_locked_label">横向きに固定</string>
+    <string name="marquee_fullscreen_follow_rotation">回転に合わせる</string>
+</resources>

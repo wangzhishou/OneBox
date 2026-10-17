@@ -488,4 +488,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Lataus aloitettu</string>
+    <string name="color_info_tab">Väritiedot</string>
+    <string name="color_shading_tab">Sävytys</string>
 </resources>

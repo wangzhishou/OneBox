@@ -12,7 +12,7 @@
     <!-- Farben und Bewegung (global) -->
     <string name="theme_color_system_section">Farben und Bewegung</string>
     <string name="theme_palette_style_label">Farbstil</string>
-    <string name="theme_palette_style_hint">Ändert, wie die ganze Farbpalette aus der Hauptfarbe entsteht. Expressive ist am lebendigsten.</string>
+    <string name="theme_palette_style_hint">Ändert, wie die ganze Farbpalette aus der Hauptfarbe entsteht. Expressiv ist am lebendigsten.</string>
     <string name="theme_contrast_label">Kontrast</string>
     <string name="theme_color_spec_2025">Kräftige Farben</string>
     <string name="theme_color_spec_2025_hint">Macht alle Farben satter und leuchtender (neues Farbschema).</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">Beschreibung</string>
     <string name="ai_engine_protocol_label">Anfrageprotokoll</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Anthropic-kompatibel</string>
     <string name="ai_engine_protocol_proxy">App-Proxy</string>
     <string name="ai_engine_protocol_local_on_device">Auf dem Gerät (kein Netzwerk)</string>
@@ -327,8 +327,8 @@
     <string name="ai_engine_protocol_pikafish">Pikafish-Schachengine</string>
     <string name="theme_preset_glass_border_alpha">Deckkraft des Glasrahmens</string>
     <string name="theme_preset_glass_border_alpha_hint">Niedrigere Werte machen den Rahmen weicher; bei null wird er ausgeblendet. Der Hintergrund bleibt unverändert.</string>
-    <string name="custom_background_ai_generate">Mit AI generieren</string>
-    <string name="custom_background_ai_title">AI-Hintergrundbild</string>
+    <string name="custom_background_ai_generate">Mit KI generieren</string>
+    <string name="custom_background_ai_title">KI-Hintergrundbild</string>
     <string name="custom_background_ai_hint">Beschreibe den Hintergrund, z. B. nebliger Wald im Morgengrauen</string>
     <string name="custom_background_ai_action">Generieren</string>
     <string name="custom_background_ai_points_hint">%1$d Punkte pro Generierung</string>
@@ -336,7 +336,7 @@
     <string name="custom_background_ai_running">Generierung läuft, bitte warten</string>
     <string name="custom_background_ai_generating">Wird generiert…</string>
     <string name="ai_feature_settings_context_compaction_toggle_title">Intelligente Kontextverdichtung</string>
-    <string name="ai_feature_settings_context_compaction_toggle_desc">Wenn der Agent-Kontext sich dem Modelllimit nähert, wird die frühere Unterhaltung von der AI zusammengefasst und als Übersicht beibehalten, statt verworfen zu werden. Ist die Option deaktiviert, werden frühere Nachrichten direkt abgeschnitten.</string>
+    <string name="ai_feature_settings_context_compaction_toggle_desc">Wenn der Agent-Kontext sich dem Modelllimit nähert, wird die frühere Unterhaltung von der KI zusammengefasst und als Übersicht beibehalten, statt verworfen zu werden. Ist die Option deaktiviert, werden frühere Nachrichten direkt abgeschnitten.</string>
     <string name="ai_engine_add_jev_engine">Jev-Engine hinzufügen</string>
     <string name="ai_engine_name_auto_hint">Eindeutiger Schlüssel für diesen Dienst, automatisch aus dem Anzeigenamen gefüllt; muss normalerweise nicht geändert werden.</string>
     <string name="ai_engine_more_options">Weitere Optionen</string>
@@ -344,13 +344,13 @@
     <string name="ai_working_model_status_available">Aktuelle Route: verfügbar</string>
     <string name="ai_engine_jev_proxy_hint">Gib deinen Jev-API-Schlüssel ein und bestehe den Verbindungstest, um direkt zu verbinden; du kannst die Engine auch ohne Schlüssel sofort nutzen.</string>
     <string name="ai_engine_jev_list_empty">Noch keine Jev-Engines. Tippe auf das Symbol oben rechts, um eine hinzuzufügen.</string>
-    <string name="memory_global_switch_title">AI-Gedächtnis aktivieren</string>
-    <string name="memory_global_switch_subtitle">Hauptschalter: Wenn deaktiviert, werden Erinnerungen nicht eingefügt und die AI kann keine Erinnerungen schreiben</string>
+    <string name="memory_global_switch_title">KI-Gedächtnis aktivieren</string>
+    <string name="memory_global_switch_subtitle">Hauptschalter: Wenn deaktiviert, werden Erinnerungen nicht eingefügt und die KI kann keine Erinnerungen schreiben</string>
     <string name="memory_profile_section">Profil</string>
-    <string name="memory_profile_supporting">Von dir gepflegt, wird immer eingefügt; die AI liest es nur</string>
-    <string name="memory_profile_empty">Noch keine Profileinträge. Füge Fakten über dich hinzu, die die AI immer kennen soll.</string>
+    <string name="memory_profile_supporting">Von dir gepflegt, wird immer eingefügt; die KI liest es nur</string>
+    <string name="memory_profile_empty">Noch keine Profileinträge. Füge Fakten über dich hinzu, die die KI immer kennen soll.</string>
     <string name="memory_log_section">Erinnerungsprotokoll</string>
-    <string name="memory_log_supporting">Einträge der AI oder von dir, nach Datum gruppiert</string>
+    <string name="memory_log_supporting">Einträge der KI oder von dir, nach Datum gruppiert</string>
     <string name="memory_log_empty">Noch keine Protokolleinträge.</string>
     <string name="memory_add_entry">Hinzufügen</string>
     <string name="memory_add_entry_title">Erinnerung hinzufügen</string>
@@ -363,10 +363,10 @@
     <string name="memory_log_cleared">Erinnerungsprotokoll gelöscht</string>
     <string name="memory_source_conversation">aus %1$s</string>
     <string name="memory_entry_too_long">Inhalt überschreitet das Limit von %1$d Zeichen</string>
-    <string name="skill_global_switch_title">AI-Skills aktivieren</string>
-    <string name="skill_global_switch_subtitle">Hauptschalter: Wenn deaktiviert, wird die Skill-Liste nicht eingefügt und die AI kann keine Skills laden</string>
+    <string name="skill_global_switch_title">KI-Skills aktivieren</string>
+    <string name="skill_global_switch_subtitle">Hauptschalter: Wenn deaktiviert, wird die Skill-Liste nicht eingefügt und die KI kann keine Skills laden</string>
     <string name="skill_list_section">Skills</string>
-    <string name="skill_list_supporting">Die AI lädt die vollständigen Anweisungen eines Skills bei Bedarf über das Werkzeug use_skill</string>
+    <string name="skill_list_supporting">Die KI lädt die vollständigen Anweisungen eines Skills bei Bedarf über das Werkzeug use_skill</string>
     <string name="skill_empty">Keine Skills installiert.</string>
     <string name="skill_import_clipboard">Aus Zwischenablage importieren</string>
     <string name="skill_import_file">Aus Datei importieren</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">Leer lassen, um ihn aus dem Modellschlüssel zu erzeugen</string>
     <string name="ai_engine_name_edit_hint">Eindeutiger Dienstschlüssel; Modelle ziehen bei einer Umbenennung mit – meist unverändert lassen</string>
     <string name="ai_engine_title_hint">Name in Listen und im Chat; jederzeit änderbar</string>
+    <string name="ai_personalization_tab_prompts">Prompts</string>
 </resources>

@@ -213,4 +213,5 @@
     <string name="markup_rasterize_title">Преобразовать в изображение?</string>
     <string name="markup_rasterize_message">Слои текста и фигур нужно сначала преобразовать в изображение, чтобы использовать фильтры. После преобразования параметры текста/фигуры больше нельзя редактировать, но их можно восстановить через «Отменить».</string>
     <string name="markup_rasterize_failed">Не удалось преобразовать слой</string>
+    <string name="markup_tool_text_style">Стиль текста</string>
 </resources>

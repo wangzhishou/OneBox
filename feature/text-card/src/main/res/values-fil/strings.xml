@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">I-refresh ang mga papel</string>
     <string name="textcard_editing_selection">Nag-e-edit: napiling teksto</string>
     <string name="textcard_clear_selection_style">I-clear ang estilo</string>
+    <string name="textcard_underline">Salungguhit</string>
+    <string name="textcard_strikethrough">Strikethrough</string>
+    <string name="textcard_text_background">Background ng teksto</string>
+    <string name="textcard_text_outline">Outline</string>
+    <string name="textcard_outline_width">Kapal ng outline</string>
 </resources>

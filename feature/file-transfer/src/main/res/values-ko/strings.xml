@@ -72,4 +72,6 @@
     <string name="permission_required_message">파일 전송 서비스는 파일을 읽고 쓰기 위해 저장소 권한이 필요합니다. 액세스를 허용해 주세요.</string>
     <string name="grant_permission">권한 부여</string>
     <string name="cancel">취소</string>
+    <string name="server_ip_address_error">IP 주소를 가져올 수 없습니다. 네트워크 연결을 확인하세요</string>
+    <string name="server_start_failed">서비스를 시작하지 못했습니다</string>
 </resources>

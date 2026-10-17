@@ -3,9 +3,12 @@
     <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Meu Roteiro</string>
     <string name="teleprompter_recent_scripts">Roteiros recentes</string>
-    <string name="teleprompter_scripts_total">Total: %d roteiros</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">Total: %d roteiro</item>
+        <item quantity="other">Total: %d roteiros</item>
+    </plurals>
     <string name="teleprompter_empty">Sem roteiro, clique no + no canto inferior direito para criar novo</string>
-    <plurals name="teleprompter_word_count"><item quantity="one">%d palavra</item><item quantity="other">%d palavras</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="one">%d caractere</item><item quantity="other">%d caracteres</item></plurals>
     <string name="teleprompter_new_script">Novo Roteiro</string>
     <string name="teleprompter_edit_script">Editar Roteiro</string>
     <string name="teleprompter_title_hint">Título do roteiro</string>
@@ -61,7 +64,7 @@
     <string name="teleprompter_log_created_title">Novo roteiro: %1$s</string>
     <string name="teleprompter_log_updated_title">Roteiro atualizado: %1$s</string>
     <string name="teleprompter_log_deleted_title">Roteiro excluído: %1$s</string>
-    <string name="teleprompter_log_created_desc">Roteiro “%1$s” criado (%2$d palavras)</string>
-    <string name="teleprompter_log_updated_desc">Roteiro “%1$s” atualizado (%2$d palavras)</string>
+    <string name="teleprompter_log_created_desc">Roteiro “%1$s” criado (%2$d caracteres)</string>
+    <string name="teleprompter_log_updated_desc">Roteiro “%1$s” atualizado (%2$d caracteres)</string>
     <string name="teleprompter_log_deleted_desc">Roteiro “%1$s” excluído</string>
 </resources>

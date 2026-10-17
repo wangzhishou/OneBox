@@ -435,4 +435,5 @@
     <string name="ai_engine_model_display_name_hint">اتركه فارغًا ليُنشأ من مفتاح النموذج</string>
     <string name="ai_engine_name_edit_hint">مفتاح فريد للقسم؛ تنتقل النماذج معه عند إعادة التسمية — اتركه كما هو عادةً</string>
     <string name="ai_engine_title_hint">الاسم الظاهر في القوائم والمحادثة؛ يمكن تغييره في أي وقت</string>
+    <string name="ai_personalization_tab_prompts">المُوجِّهات</string>
 </resources>

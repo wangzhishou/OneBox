@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">已鎖定橫向</string>
+    <string name="marquee_fullscreen_landscape_locked_label">鎖定橫向</string>
+    <string name="marquee_fullscreen_follow_rotation">跟隨旋轉</string>
+</resources>

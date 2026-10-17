@@ -213,4 +213,5 @@
     <string name="markup_rasterize_title">Resme dönüştürülsün mü?</string>
     <string name="markup_rasterize_message">Metin ve şekil katmanları, filtreleri kullanmadan önce resme dönüştürülmelidir. Dönüştürme sonrasında metin/şekil ayarları artık düzenlenemez, ancak Geri Al ile geri yüklenebilir.</string>
     <string name="markup_rasterize_failed">Katman dönüştürme başarısız</string>
+    <string name="markup_tool_text_style">Metin stili</string>
 </resources>

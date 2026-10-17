@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Nhập mã tại đây…</string>
+    <string name="code_editor_toolbar_undo">Hoàn tác</string>
+    <string name="code_editor_toolbar_redo">Làm lại</string>
+    <string name="code_editor_toolbar_find">Tìm</string>
+    <string name="code_editor_toolbar_copy">Sao chép</string>
+    <string name="code_editor_toolbar_paste">Dán</string>
+    <string name="code_editor_toolbar_select_all">Chọn tất cả</string>
+    <string name="code_editor_toolbar_word_wrap">Tự động xuống dòng</string>
 </resources>

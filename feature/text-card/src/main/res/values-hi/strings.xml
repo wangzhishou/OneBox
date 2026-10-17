@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">पेपर बदलें</string>
     <string name="textcard_editing_selection">संपादन: चयनित टेक्स्ट</string>
     <string name="textcard_clear_selection_style">स्टाइल साफ़ करें</string>
+    <string name="textcard_underline">अंडरलाइन</string>
+    <string name="textcard_strikethrough">स्ट्राइकथ्रू</string>
+    <string name="textcard_text_background">टेक्स्ट बैकग्राउंड</string>
+    <string name="textcard_text_outline">आउटलाइन</string>
+    <string name="textcard_outline_width">आउटलाइन की मोटाई</string>
 </resources>

@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">Начните вводить код…</string>
+    <string name="code_editor_toolbar_undo">Отменить</string>
+    <string name="code_editor_toolbar_redo">Повторить</string>
+    <string name="code_editor_toolbar_find">Найти</string>
+    <string name="code_editor_toolbar_copy">Копировать</string>
+    <string name="code_editor_toolbar_paste">Вставить</string>
+    <string name="code_editor_toolbar_select_all">Выбрать всё</string>
+    <string name="code_editor_toolbar_word_wrap">Перенос по словам</string>
 </resources>

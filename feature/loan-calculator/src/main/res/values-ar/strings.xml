@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loan_calc_title">حاسبة القروض</string>
-    <string name="loan_calc_amount_label">مبلغ القرض ($)</string>
+    <string name="loan_calc_amount_label">مبلغ القرض</string>
     <string name="loan_calc_amount_hint">يرجى إدخال المبلغ.</string>
     <string name="loan_calc_term_label">مدة القرض</string>
     <string name="loan_calc_term_hint">اختيار</string>
     <string name="loan_calc_rate_label">معدل الفائدة السنوي (%)</string>
     <string name="loan_calc_rate_hint">أدخل معدل الفائدة السنوي</string>
+    <string name="loan_calc_monthly_rate_label">معدل الفائدة الشهري (%)</string>
+    <string name="loan_calc_monthly_rate_hint">أدخل معدل الفائدة الشهري</string>
     <string name="loan_calc_method_label">طريقة السداد</string>
     <string name="loan_calc_method_hint">اختيار</string>
     <string name="loan_calc_start">بدء الحساب</string>
     <string name="loan_calc_cancel">إلغاء</string>
     <string name="loan_method_equal_installment">الأقساط المتساوية</string>
-    <string name="loan_method_equal_installment_desc">القسط الشهري والقسط الأساسي والفائدة</string>
+    <string name="loan_method_equal_installment_desc">القسط الشهري وأصل الدين والفائدة ثابتة كل شهر</string>
     <string name="loan_method_equal_payment">الدفعات المتساوية</string>
     <string name="loan_method_equal_payment_desc">القسط الشهري ثابت، ويزيد أصل الدين وتنخفض الفائدة شهرياً</string>
     <string name="loan_method_equal_principal">أصل الدين المتساوي</string>
@@ -32,7 +34,23 @@
     <string name="loan_input_error_term">يرجى تحديد مدة القرض</string>
     <string name="loan_input_error_rate">أدخل معدل فائدة سنوياً صالحاً</string>
     <string name="loan_input_error_method">يرجى اختيار طريقة السداد.</string>
-    <string name="loan_term_months">%1$d أشهر</string>
-    <string name="loan_term_years">%1$d سنوات (%2$d أشهر)</string>
+    <plurals name="loan_term_months">
+        <item quantity="zero">%1$d شهر</item>
+        <item quantity="one">%1$d شهر</item>
+        <item quantity="two">%1$d شهرين</item>
+        <item quantity="few">%1$d أشهر</item>
+        <item quantity="many">%1$d شهرًا</item>
+        <item quantity="other">%1$d شهر</item>
+    </plurals>
+    <plurals name="loan_term_years_count">
+        <item quantity="zero">%1$d سنة</item>
+        <item quantity="one">%1$d سنة</item>
+        <item quantity="two">%1$d سنتين</item>
+        <item quantity="few">%1$d سنوات</item>
+        <item quantity="many">%1$d سنةً</item>
+        <item quantity="other">%1$d سنة</item>
+    </plurals>
+    <string name="loan_term_years">%1$s (%2$s)</string>
+    <string name="loan_term_years_months">%1$s %2$s</string>
     <string name="loan_term_picker_title">اختيار مدة القرض</string>
 </resources>

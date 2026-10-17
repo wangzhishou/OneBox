@@ -3,9 +3,12 @@
     <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Senaryom</string>
     <string name="teleprompter_recent_scripts">Son metinler</string>
-    <string name="teleprompter_scripts_total">Toplam: %d metin</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">Toplam: %d metin</item>
+        <item quantity="other">Toplam: %d metin</item>
+    </plurals>
     <string name="teleprompter_empty">Senaryo yok, sağ alttaki + ile yeni ekleyin</string>
-    <plurals name="teleprompter_word_count"><item quantity="one">%d kelime</item><item quantity="other">%d kelime</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="one">%d karakter</item><item quantity="other">%d karakter</item></plurals>
     <string name="teleprompter_new_script">Yeni Senaryo</string>
     <string name="teleprompter_edit_script">Senaryoyu Düzenle</string>
     <string name="teleprompter_title_hint">Senaryo başlığı</string>
@@ -61,7 +64,7 @@
     <string name="teleprompter_log_created_title">Yeni metin: %1$s</string>
     <string name="teleprompter_log_updated_title">Metin güncellendi: %1$s</string>
     <string name="teleprompter_log_deleted_title">Metin silindi: %1$s</string>
-    <string name="teleprompter_log_created_desc">“%1$s” metni oluşturuldu (%2$d kelime)</string>
-    <string name="teleprompter_log_updated_desc">“%1$s” metni güncellendi (%2$d kelime)</string>
+    <string name="teleprompter_log_created_desc">“%1$s” metni oluşturuldu (%2$d karakter)</string>
+    <string name="teleprompter_log_updated_desc">“%1$s” metni güncellendi (%2$d karakter)</string>
     <string name="teleprompter_log_deleted_desc">“%1$s” metni silindi</string>
 </resources>

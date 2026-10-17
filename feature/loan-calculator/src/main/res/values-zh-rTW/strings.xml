@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loan_calc_title">貸款計算器</string>
-    <string name="loan_calc_amount_label">貸款金額（元）</string>
+    <string name="loan_calc_amount_label">貸款金額</string>
     <string name="loan_calc_amount_hint">請輸入金額</string>
     <string name="loan_calc_term_label">貸款期數</string>
     <string name="loan_calc_term_hint">選擇</string>
     <string name="loan_calc_rate_label">年利率（%）</string>
     <string name="loan_calc_rate_hint">請輸入年利率</string>
+    <string name="loan_calc_monthly_rate_label">月利率（%）</string>
+    <string name="loan_calc_monthly_rate_hint">請輸入月利率</string>
     <string name="loan_calc_method_label">還款方式</string>
     <string name="loan_calc_method_hint">選擇</string>
     <string name="loan_calc_start">開始計算</string>
@@ -32,7 +34,13 @@
     <string name="loan_input_error_term">請選擇貸款期數</string>
     <string name="loan_input_error_rate">請輸入有效的年利率</string>
     <string name="loan_input_error_method">請選擇還款方式</string>
-    <string name="loan_term_months">%d 個月</string>
-    <string name="loan_term_years">%1$d 年（%2$d 個月）</string>
+    <plurals name="loan_term_months">
+        <item quantity="other">%1$d 個月</item>
+    </plurals>
+    <plurals name="loan_term_years_count">
+        <item quantity="other">%1$d 年</item>
+    </plurals>
+    <string name="loan_term_years">%1$s（%2$s）</string>
+    <string name="loan_term_years_months">%1$s%2$s</string>
     <string name="loan_term_picker_title">選擇貸款期數</string>
 </resources>

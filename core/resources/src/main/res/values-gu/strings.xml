@@ -53,4 +53,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">ડાઉનલોડ શરૂ થયું</string>
+    <string name="color_info_tab">રંગ માહિતી</string>
+    <string name="color_shading_tab">રંગ શેડિંગ</string>
 </resources>

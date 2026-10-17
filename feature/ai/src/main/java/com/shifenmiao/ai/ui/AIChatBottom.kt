@@ -18,8 +18,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shifenmiao.ai.R
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalIconButton
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineVerticalAlignBottom
@@ -77,7 +79,7 @@ fun BoxScope.AnimatedGoToTopIcon(
         ) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineVerticalAlignBottom,
-                contentDescription = "go to top",
+                contentDescription = stringResource(R.string.ai_chat_go_to_top),
                 modifier = Modifier.size(18.dp)
             )
         }

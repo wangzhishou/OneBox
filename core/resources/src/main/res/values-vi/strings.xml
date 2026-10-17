@@ -1984,4 +1984,6 @@
     <string name="sticker_ai_empty">Hãy mô tả nội dung nhãn dán trước</string>
     <string name="sticker_ai_generating">Đang tạo…</string>
     <string name="download_started">Đã bắt đầu tải xuống</string>
+    <string name="color_info_tab">Thông tin màu</string>
+    <string name="color_shading_tab">Đổ bóng màu</string>
 </resources>

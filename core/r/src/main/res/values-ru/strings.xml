@@ -731,7 +731,7 @@
     <string name="feedback_submit">Отправить</string>
     <string name="feedback_title_hint">Заголовок</string>
     <string name="feedback_content_hint">Описание</string>
-    <string name="feedback_placeholder">Пожалуйста, подробно опишите проблему, чтобы мы могли помочь быстрее~</string>
+    <string name="feedback_placeholder">Пожалуйста, подробно опишите проблему, чтобы мы могли помочь быстрее</string>
     <string name="fields_required">Пожалуйста, заполните обязательные поля.</string>
     <string name="feedback_failed">Не удалось отправить. Пожалуйста, попробуйте позже.</string>
     <string name="feedback_onSuccess">Отзыв получен! Спасибо, что помогаете нам становиться лучше ❤️</string>
@@ -1336,7 +1336,7 @@
     <string name="agent_push_success">Отправка успешна</string>
     <string name="agent_push_failed">Отправка не удалась</string>
     <string name="nav_add">Добавить</string>
-    <string name="nav_create_new_task">Новая задача</string>
+    <string name="nav_create_new_task">Создать</string>
     <string name="nav_new_qr_code">Сканировать</string>
     <string name="nav_notebook">Заметка</string>
     <string name="nav_todo_list">Список дел</string>
@@ -1570,7 +1570,12 @@
     <string name="password_vault_description">Безопасное хранение паролей для сайтов, приложений и кодов дверей.</string>
     <string name="comment">Комментарий</string>
     <string name="comments_title">Комментарии</string>
-    <string name="comments_count_format">%1$d комментариев</string>
+    <plurals name="comments_count_format">
+        <item quantity="one">%1$d комментарий</item>
+        <item quantity="few">%1$d комментария</item>
+        <item quantity="many">%1$d комментариев</item>
+        <item quantity="other">%1$d комментария</item>
+    </plurals>
     <string name="comment_hint">Написать комментарий…</string>
     <string name="reply_hint">Ответить %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1582,6 +1587,7 @@
     <string name="comment_loading_more">Загрузка ещё…</string>
     <string name="comment_load_failed_format">Не удалось загрузить комментарии (%1$d)</string>
     <string name="comment_network_error">Ошибка сети. Попробуйте ещё раз.</string>
+    <string name="comment_retry">Повторить</string>
     <string name="comment_empty">Отзывов пока нет. Поделитесь своими мыслями.</string>
     <string name="comment_end_marker">— Больше нет —</string>
     <string name="comment_send">Отправить</string>
@@ -1864,4 +1870,5 @@
     <string name="byok_login_hint_subtitle">Используйте свой ключ API для бесплатного общения с ИИ</string>
     <string name="byok_login_hint_title">Не хотите регистрироваться?</string>
     <string name="donate_earn_points">Поддержать и получить баллы</string>
+    <string name="expand">Развернуть</string>
 </resources>

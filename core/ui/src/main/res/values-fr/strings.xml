@@ -50,4 +50,7 @@
         <item>Sam</item>
         <item>Dim</item>
     </string-array>
+    <string name="date_picker_apply">Appliquer</string>
+    <string name="date_picker_input_title">Saisissez la date</string>
+    <string name="date_picker_input_hint">Conseil : touchez Appliquer après avoir saisi la date</string>
 </resources>

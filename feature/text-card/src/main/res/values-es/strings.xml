@@ -89,7 +89,7 @@
     <string name="textcard_shape_star">Estrella</string>
     <string name="textcard_shape_filled">Relleno</string>
     <string name="textcard_draw_width">Grosor del trazo</string>
-    <string name="textcard_canvas_custom">Tamaño personalizado</string>
+    <string name="textcard_canvas_custom">Personalizado</string>
     <string name="textcard_canvas_custom_desc">Introduce el ancho × alto personalizado</string>
     <string name="textcard_custom_size_title">Tamaño de lienzo personalizado</string>
     <string name="textcard_canvas_width">Ancho (px)</string>
@@ -97,4 +97,9 @@
     <string name="textcard_refresh_papers">Actualizar fondos</string>
     <string name="textcard_editing_selection">Editando: texto seleccionado</string>
     <string name="textcard_clear_selection_style">Borrar estilo</string>
+    <string name="textcard_underline">Subrayado</string>
+    <string name="textcard_strikethrough">Tachado</string>
+    <string name="textcard_text_background">Fondo del texto</string>
+    <string name="textcard_text_outline">Contorno</string>
+    <string name="textcard_outline_width">Grosor del contorno</string>
 </resources>

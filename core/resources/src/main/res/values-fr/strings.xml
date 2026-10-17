@@ -1984,4 +1984,6 @@
     <string name="sticker_ai_empty">Décrivez d\'abord le contenu de l\'autocollant</string>
     <string name="sticker_ai_generating">Génération en cours…</string>
     <string name="download_started">Téléchargement lancé</string>
+    <string name="color_info_tab">Infos couleur</string>
+    <string name="color_shading_tab">Ombres de couleur</string>
 </resources>

@@ -12,7 +12,7 @@
     <!-- Colores y movimiento (global) -->
     <string name="theme_color_system_section">Colores y movimiento</string>
     <string name="theme_palette_style_label">Estilo de color</string>
-    <string name="theme_palette_style_hint">Cambia cómo se genera toda la paleta a partir del color principal. Expressive es la más viva.</string>
+    <string name="theme_palette_style_hint">Cambia cómo se genera toda la paleta a partir del color principal. Expresivo es el más vivo.</string>
     <string name="theme_contrast_label">Contraste</string>
     <string name="theme_color_spec_2025">Colores vivos</string>
     <string name="theme_color_spec_2025_hint">Hace que todos los colores sean más intensos y saturados (nuevo esquema de color).</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">Descripción</string>
     <string name="ai_engine_protocol_label">Protocolo de solicitud</string>
     <string name="ai_engine_protocol_openai">API de OpenAI Chat/completions</string>
-    <string name="ai_engine_protocol_responses">API de OpenAI Responses</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Compatible con Anthropic</string>
     <string name="ai_engine_protocol_proxy">Proxy de la aplicación</string>
     <string name="ai_engine_protocol_local_on_device">En el dispositivo (sin red)</string>
@@ -155,7 +155,7 @@
     <string name="ai_working_model_fast_desc">Se utiliza para tareas ligeras, respuestas rápidas y escenarios de asistencia. Por ejemplo, generación de títulos, IA de ajedrez chino.</string>
     <string name="ai_working_model_duel_a_title">Modelo A de duelo</string>
     <string name="ai_working_model_duel_a_desc">El primer rol en un duelo de IA.</string>
-    <string name="ai_working_model_duel_b_title">Modelo B de Duel</string>
+    <string name="ai_working_model_duel_b_title">Modelo B de duelo</string>
     <string name="ai_working_model_duel_b_desc">El segundo rol en un duelo de IA.</string>
     <string name="ai_working_model_engine_label">Elegir servicio</string>
     <string name="ai_working_model_model_label">Elegir modelo</string>
@@ -327,8 +327,8 @@
     <string name="ai_engine_protocol_pikafish">Motor de ajedrez Pikafish</string>
     <string name="theme_preset_glass_border_alpha">Opacidad del borde de cristal</string>
     <string name="theme_preset_glass_border_alpha_hint">Los valores bajos suavizan el borde; cero lo oculta. El fondo no cambia.</string>
-    <string name="custom_background_ai_generate">Generar con AI</string>
-    <string name="custom_background_ai_title">Imagen de fondo con AI</string>
+    <string name="custom_background_ai_generate">Generar con IA</string>
+    <string name="custom_background_ai_title">Imagen de fondo con IA</string>
     <string name="custom_background_ai_hint">Describe el fondo, p. ej. Bosque brumoso al amanecer</string>
     <string name="custom_background_ai_action">Generar</string>
     <string name="custom_background_ai_points_hint">%1$d puntos por generación</string>
@@ -336,7 +336,7 @@
     <string name="custom_background_ai_running">Generación en curso, espera por favor</string>
     <string name="custom_background_ai_generating">Generando…</string>
     <string name="ai_feature_settings_context_compaction_toggle_title">Compactación inteligente del contexto</string>
-    <string name="ai_feature_settings_context_compaction_toggle_desc">Cuando el contexto del Agente se acerca al límite del modelo, la AI resume la conversación anterior y la conserva como resumen en lugar de descartarla. Si se desactiva, los mensajes anteriores se truncan directamente.</string>
+    <string name="ai_feature_settings_context_compaction_toggle_desc">Cuando el contexto del Agente se acerca al límite del modelo, la IA resume la conversación anterior y la conserva como resumen en lugar de descartarla. Si se desactiva, los mensajes anteriores se truncan directamente.</string>
     <string name="ai_engine_add_jev_engine">Agregar motor Jev</string>
     <string name="ai_engine_name_auto_hint">Clave única de este servicio, se rellena automáticamente con el nombre visible; normalmente no hace falta cambiarla.</string>
     <string name="ai_engine_more_options">Más opciones</string>
@@ -344,13 +344,13 @@
     <string name="ai_working_model_status_available">Ruta actual: disponible</string>
     <string name="ai_engine_jev_proxy_hint">Introduce tu clave de API de Jev y supera la prueba de conexión para conectarte directamente; también puedes usarlo al instante sin clave.</string>
     <string name="ai_engine_jev_list_empty">Aún no hay motores Jev. Toca el icono de arriba a la derecha para agregar uno.</string>
-    <string name="memory_global_switch_title">Activar memoria de la AI</string>
-    <string name="memory_global_switch_subtitle">Interruptor general: si está desactivado, los recuerdos no se inyectan y la AI no puede escribir recuerdos</string>
+    <string name="memory_global_switch_title">Activar memoria de la IA</string>
+    <string name="memory_global_switch_subtitle">Interruptor general: si está desactivado, los recuerdos no se inyectan y la IA no puede escribir recuerdos</string>
     <string name="memory_profile_section">Perfil</string>
-    <string name="memory_profile_supporting">Lo mantienes tú, siempre se inyecta; la AI solo lo lee</string>
-    <string name="memory_profile_empty">Aún no hay entradas de perfil. Agrega datos sobre ti que quieras que la AI sepa siempre.</string>
+    <string name="memory_profile_supporting">Lo mantienes tú, siempre se inyecta; la IA solo lo lee</string>
+    <string name="memory_profile_empty">Aún no hay entradas de perfil. Agrega datos sobre ti que quieras que la IA sepa siempre.</string>
     <string name="memory_log_section">Registro de memoria</string>
-    <string name="memory_log_supporting">Entradas escritas por la AI o por ti, agrupadas por fecha</string>
+    <string name="memory_log_supporting">Entradas escritas por la IA o por ti, agrupadas por fecha</string>
     <string name="memory_log_empty">Aún no hay entradas en el registro.</string>
     <string name="memory_add_entry">Agregar</string>
     <string name="memory_add_entry_title">Agregar recuerdo</string>
@@ -363,10 +363,10 @@
     <string name="memory_log_cleared">Registro de memoria borrado</string>
     <string name="memory_source_conversation">de %1$s</string>
     <string name="memory_entry_too_long">El contenido supera el límite de %1$d caracteres</string>
-    <string name="skill_global_switch_title">Activar habilidades de la AI</string>
-    <string name="skill_global_switch_subtitle">Interruptor general: si está desactivado, la lista de habilidades no se inyecta y la AI no puede cargar habilidades</string>
+    <string name="skill_global_switch_title">Activar habilidades de la IA</string>
+    <string name="skill_global_switch_subtitle">Interruptor general: si está desactivado, la lista de habilidades no se inyecta y la IA no puede cargar habilidades</string>
     <string name="skill_list_section">Habilidades</string>
-    <string name="skill_list_supporting">La AI carga las instrucciones completas de una habilidad cuando es necesario mediante la herramienta use_skill</string>
+    <string name="skill_list_supporting">La IA carga las instrucciones completas de una habilidad cuando es necesario mediante la herramienta use_skill</string>
     <string name="skill_empty">No hay habilidades instaladas.</string>
     <string name="skill_import_clipboard">Importar del portapapeles</string>
     <string name="skill_import_file">Importar desde archivo</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">Déjalo en blanco para generarlo a partir de la clave del modelo</string>
     <string name="ai_engine_name_edit_hint">Clave única del servicio; los modelos se actualizan al renombrarla. Normalmente, déjala como está.</string>
     <string name="ai_engine_title_hint">Nombre que se muestra en las listas y en el chat; puedes cambiarlo cuando quieras</string>
+    <string name="ai_personalization_tab_prompts">Indicaciones</string>
 </resources>

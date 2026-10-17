@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">가로 모드 잠김</string>
+    <string name="marquee_fullscreen_landscape_locked_label">가로 모드 잠금</string>
+    <string name="marquee_fullscreen_follow_rotation">회전에 맞춤</string>
+</resources>

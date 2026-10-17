@@ -229,4 +229,5 @@
     <string name="markup_rasterize_title">Converter em imagem?</string>
     <string name="markup_rasterize_message">Camadas de texto e forma precisam ser convertidas em imagem antes de usar filtros. Após a conversão, as configurações de texto/forma não poderão mais ser editadas, mas podem ser restauradas com Desfazer.</string>
     <string name="markup_rasterize_failed">Falha ao converter a camada</string>
+    <string name="markup_tool_text_style">Estilo de texto</string>
 </resources>

@@ -72,4 +72,6 @@
     <string name="permission_required_message">Der Dateiübertragungsdienst benötigt Speicherberechtigung, um Dateien zu lesen und zu schreiben. Bitte gewähren Sie Zugriff.</string>
     <string name="grant_permission">Berechtigung erteilen</string>
     <string name="cancel">Abbrechen</string>
+    <string name="server_ip_address_error">IP-Adresse kann nicht abgerufen werden. Prüfe deine Netzwerkverbindung</string>
+    <string name="server_start_failed">Dienst konnte nicht gestartet werden</string>
 </resources>

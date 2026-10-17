@@ -72,4 +72,6 @@
     <string name="permission_required_message">Ang serbisyo ng paglipat ng file ay nangangailangan ng pahintulot sa storage upang magbasa at magsulat ng mga file. Mangyaring bigyan ng access.</string>
     <string name="grant_permission">Ibigay ang Pahintulot</string>
     <string name="cancel">Kanselahin</string>
+    <string name="server_ip_address_error">Hindi makuha ang IP address. Suriin ang koneksiyon sa network</string>
+    <string name="server_start_failed">Nabigong simulan ang serbisyo</string>
 </resources>

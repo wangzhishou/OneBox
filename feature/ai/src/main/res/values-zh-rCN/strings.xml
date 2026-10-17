@@ -1163,4 +1163,16 @@
     <string name="agent_tool_manage_chess_imported">已导入对局: %1$s。局面已完整导入，把 deepLinks 交给用户即可，无需再次调用本工具</string>
     <string name="agent_tool_manage_chess_import_failed">导入失败: %1$s</string>
     <string name="agent_tool_manage_chess_param_ai_as_white">AI 是否执白(先手)(create/import_fen 可选,默认 false 即人类执白先行;import_fen 不传时人类执当前回合方)</string>
+
+    <!-- AI 聊天附件状态 -->
+    <string name="ai_chat_attachment_idle_image">就绪 · %1$s → 压缩后约%2$dKB · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">就绪 · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">检查中...</string>
+    <string name="ai_chat_attachment_resizing">压缩尺寸...</string>
+    <string name="ai_chat_attachment_converting">转换格式...</string>
+    <string name="ai_chat_attachment_compressing">压缩中...</string>
+    <string name="ai_chat_attachment_encoding">编码中...</string>
+    <string name="ai_chat_attachment_uploading">上传中...</string>
+    <string name="ai_chat_attachment_error">失败: %1$s</string>
+    <string name="ai_chat_go_to_top">回到顶部</string>
 </resources>

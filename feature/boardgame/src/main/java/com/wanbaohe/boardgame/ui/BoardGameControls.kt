@@ -17,6 +17,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.wanbaohe.boardgame.model.BoardGameSideOption
@@ -59,7 +61,7 @@ fun BoardGamePillButton(
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
         contentPadding = PaddingValues(
-            horizontal = if (compact) 6.dp else 12.dp,
+            horizontal = if (compact) 4.dp else 12.dp,
             vertical = if (compact) 8.dp else 10.dp,
         ),
     ) {
@@ -77,6 +79,15 @@ fun BoardGamePillButton(
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 style = if (compact) MaterialTheme.typography.labelMedium else MaterialTheme.typography.labelLarge,
+                autoSize = if (compact) {
+                    TextAutoSize.StepBased(
+                        minFontSize = 7.5.sp,
+                        maxFontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        stepSize = 0.25.sp,
+                    )
+                } else {
+                    null
+                },
             )
         }
     }

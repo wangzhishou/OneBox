@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">Breite</string>
     <string name="original_width">Originalbreite: %1$dpx</string>
     <string name="markdown_placeholder">Tippen starten...</string>
+    <string name="markdown_editor_source_placeholder">Markdown-Quelltext...</string>
+    <string name="markdown_editor_toolbar_undo">Rückgängig</string>
+    <string name="markdown_editor_toolbar_redo">Wiederholen</string>
+    <string name="markdown_editor_toolbar_heading_1">Überschrift 1</string>
+    <string name="markdown_editor_toolbar_heading_2">Überschrift 2</string>
+    <string name="markdown_editor_toolbar_heading_3">Überschrift 3</string>
+    <string name="markdown_editor_toolbar_bold">Fett</string>
+    <string name="markdown_editor_toolbar_italic">Kursiv</string>
+    <string name="markdown_editor_toolbar_strikethrough">Durchgestrichen</string>
+    <string name="markdown_editor_toolbar_inline_code">Inline-Code</string>
+    <string name="markdown_editor_toolbar_bullet_list">Aufzählungsliste</string>
+    <string name="markdown_editor_toolbar_ordered_list">Nummerierte Liste</string>
+    <string name="markdown_editor_toolbar_task_list">Aufgabenliste</string>
+    <string name="markdown_editor_toolbar_blockquote">Zitat</string>
+    <string name="markdown_editor_toolbar_code_block">Codeblock</string>
+    <string name="markdown_editor_toolbar_link">Link</string>
+    <string name="markdown_editor_toolbar_image">Bild</string>
+    <string name="markdown_editor_toolbar_divider">Trennlinie</string>
+    <string name="markdown_editor_toolbar_copy">Kopieren</string>
+    <string name="markdown_editor_toolbar_paste">Einfügen</string>
+    <string name="markdown_editor_toolbar_select_all">Alle auswählen</string>
+    <string name="markdown_editor_toolbar_view_source">Markdown-Quelltext anzeigen</string>
 </resources>

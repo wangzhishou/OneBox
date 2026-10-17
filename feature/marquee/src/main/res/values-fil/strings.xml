@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">Naka-lock ang landscape</string>
+    <string name="marquee_fullscreen_landscape_locked_label">I-lock ang landscape</string>
+    <string name="marquee_fullscreen_follow_rotation">Sundin ang pag-ikot</string>
+</resources>

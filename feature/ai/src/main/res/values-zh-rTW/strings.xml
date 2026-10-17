@@ -988,4 +988,14 @@
     <string name="ai_tools_session_memory_hint">在本次對話注入已儲存的記憶，並允許 AI 寫入記憶</string>
     <string name="ai_tools_session_skills">本次對話的技能</string>
     <string name="ai_tools_session_skills_hint">在本次對話顯示可用技能清單，並允許 AI 載入技能</string>
+    <string name="ai_chat_attachment_idle_image">就緒 · %1$s → 壓縮後約%2$dKB · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">就緒 · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">檢查中...</string>
+    <string name="ai_chat_attachment_resizing">調整尺寸中...</string>
+    <string name="ai_chat_attachment_converting">轉換格式中...</string>
+    <string name="ai_chat_attachment_compressing">壓縮中...</string>
+    <string name="ai_chat_attachment_encoding">編碼中...</string>
+    <string name="ai_chat_attachment_uploading">上傳中...</string>
+    <string name="ai_chat_attachment_error">失敗：%1$s</string>
+    <string name="ai_chat_go_to_top">回到頂部</string>
 </resources>

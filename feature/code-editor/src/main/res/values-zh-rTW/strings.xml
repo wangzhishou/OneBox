@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="code_editor_placeholder">在此輸入代碼…</string>
+    <string name="code_editor_toolbar_undo">復原</string>
+    <string name="code_editor_toolbar_redo">重做</string>
+    <string name="code_editor_toolbar_find">尋找</string>
+    <string name="code_editor_toolbar_copy">複製</string>
+    <string name="code_editor_toolbar_paste">貼上</string>
+    <string name="code_editor_toolbar_select_all">全選</string>
+    <string name="code_editor_toolbar_word_wrap">自動換行</string>
 </resources>

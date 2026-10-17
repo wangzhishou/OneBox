@@ -1816,4 +1816,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">Rozpoczęto pobieranie</string>
+    <string name="color_info_tab">Info o kolorze</string>
+    <string name="color_shading_tab">Cieniowanie</string>
 </resources>

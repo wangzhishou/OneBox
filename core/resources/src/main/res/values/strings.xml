@@ -1986,4 +1986,6 @@
     <string name="sticker_ai_points_hint">Each generation costs %1$d points</string>
     <string name="sticker_ai_empty">Describe the sticker first</string>
     <string name="sticker_ai_generating">Generating…</string>
+    <string name="color_info_tab">Color info</string>
+    <string name="color_shading_tab">Color shading</string>
 </resources>

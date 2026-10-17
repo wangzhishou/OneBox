@@ -1,0 +1,3 @@
+• Terjemahan, aturan jamak, dan format tanggal ditingkatkan
+• Teks terpotong diperbaiki di Kartu Teks, permainan papan, Alat Warna, dan Editor Markup
+• Kalkulator pinjaman dan spesifikasi foto identitas dilokalkan; percobaan ulang komentar dan status AI ditingkatkan

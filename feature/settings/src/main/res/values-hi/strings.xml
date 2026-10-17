@@ -12,7 +12,7 @@
     <!-- रंग और मोशन (ग्लोबल) -->
     <string name="theme_color_system_section">रंग और मोशन</string>
     <string name="theme_palette_style_label">रंग शैली</string>
-    <string name="theme_palette_style_hint">यह तय करता है कि मुख्य रंग से पूरी रंग योजना कैसे बने। Expressive सबसे जीवंत है।</string>
+    <string name="theme_palette_style_hint">यह तय करता है कि मुख्य रंग से पूरी रंग योजना कैसे बने। अभिव्यंजक सबसे जीवंत है।</string>
     <string name="theme_contrast_label">कंट्रास्ट</string>
     <string name="theme_color_spec_2025">चमकीले रंग</string>
     <string name="theme_color_spec_2025_hint">सभी रंगों को अधिक गाढ़ा और चमकीला बनाता है (नई रंग योजना)।</string>
@@ -100,7 +100,7 @@
     <string name="ai_engine_description_label">विवरण</string>
     <string name="ai_engine_protocol_label">अनुरोध प्रोटोकॉल</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Anthropic-संगत</string>
     <string name="ai_engine_protocol_proxy">ऐप प्रॉक्सी</string>
     <string name="ai_engine_protocol_local_on_device">डिवाइस पर (कोई नेटवर्क नहीं)</string>
@@ -437,4 +437,5 @@
     <string name="ai_engine_model_display_name_hint">मॉडल कुंजी से बनाने के लिए खाली छोड़ें</string>
     <string name="ai_engine_name_edit_hint">सेवा की विशिष्ट कुंजी; नाम बदलने पर मॉडल भी साथ बदलते हैं — सामान्यतः इसे वैसे ही रहने दें</string>
     <string name="ai_engine_title_hint">सूचियों और चैट में दिखने वाला नाम; कभी भी बदला जा सकता है</string>
+    <string name="ai_personalization_tab_prompts">प्रॉम्प्ट</string>
 </resources>

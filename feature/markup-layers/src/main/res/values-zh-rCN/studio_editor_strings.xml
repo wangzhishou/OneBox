@@ -4,7 +4,9 @@
     <string name="studio_projects_empty">保存项目会保留原图、图层、蒙版和效果，方便下次继续编辑。</string>
     <string name="studio_recent_files">最近图片</string>
     <string name="studio_recent_files_empty">暂无最近图片</string>
-    <string name="studio_project_layers">%1$d 个图层</string>
+    <plurals name="studio_project_layers">
+        <item quantity="other">%1$d 个图层</item>
+    </plurals>
     <string name="studio_project_updated">更新于 %1$s</string>
     <string name="studio_project_open">打开项目 %1$s</string>
     <string name="studio_project_delete">删除项目 %1$s</string>

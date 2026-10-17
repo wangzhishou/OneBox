@@ -114,7 +114,7 @@
     <string name="ai_engine_description_label">描述</string>
     <string name="ai_engine_protocol_label">請求協定</string>
     <string name="ai_engine_protocol_openai">OpenAI Chat/completions API</string>
-    <string name="ai_engine_protocol_responses">OpenAI Responses API</string>
+    <string name="ai_engine_protocol_responses">OpenAI Responses</string>
     <string name="ai_engine_protocol_anthropic">Anthropic 相容</string>
     <string name="ai_engine_protocol_proxy">應用程式代理</string>
     <string name="ai_engine_protocol_local_on_device">端側本地（不走網路）</string>
@@ -437,4 +437,5 @@
     <string name="skill_usage_low">低頻使用</string>
     <string name="skill_usage_never">從未使用</string>
     <string name="skill_usage_regular">經常使用</string>
+    <string name="ai_personalization_tab_prompts">提示詞</string>
 </resources>

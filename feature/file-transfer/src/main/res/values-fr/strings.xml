@@ -72,4 +72,6 @@
     <string name="permission_required_message">Le service de transfert de fichiers nécessite l\'accès au stockage pour lire et écrire des fichiers. Veuillez autoriser.</string>
     <string name="grant_permission">Autoriser</string>
     <string name="cancel">Annuler</string>
+    <string name="server_ip_address_error">Impossible d’obtenir l’adresse IP. Vérifiez la connexion réseau</string>
+    <string name="server_start_failed">Échec du démarrage du service</string>
 </resources>

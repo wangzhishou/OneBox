@@ -18,6 +18,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,10 +43,15 @@ fun TermPickerSheet(
     // 快捷选项：年维度（以月计）+ 常用短期月份
     val termOptions = buildList {
         // 月（短期）
-        listOf(1, 3, 6, 12).forEach { add(it to stringResource(R.string.loan_term_months, it)) }
+        listOf(1, 3, 6, 12).forEach {
+            add(it to pluralStringResource(R.plurals.loan_term_months, it, it))
+        }
         // 年（中长期）
         listOf(2, 3, 5, 10, 15, 20, 25, 30).forEach { years ->
-            add(years * 12 to stringResource(R.string.loan_term_years, years, years * 12))
+            val months = years * 12
+            val yearsLabel = pluralStringResource(R.plurals.loan_term_years_count, years, years)
+            val monthsLabel = pluralStringResource(R.plurals.loan_term_months, months, months)
+            add(months to stringResource(R.string.loan_term_years, yearsLabel, monthsLabel))
         }
     }
 

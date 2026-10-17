@@ -50,4 +50,7 @@
         <item>Sáu</item>
         <item>Chủ nhật</item>
     </string-array>
+    <string name="date_picker_apply">Áp dụng</string>
+    <string name="date_picker_input_title">Nhập ngày</string>
+    <string name="date_picker_input_hint">Mẹo: Nhấn Áp dụng sau khi nhập ngày</string>
 </resources>

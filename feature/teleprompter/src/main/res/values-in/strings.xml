@@ -3,9 +3,11 @@
     <string name="teleprompter_title">Teleprompter</string>
     <string name="teleprompter_my_scripts">Naskah Saya</string>
     <string name="teleprompter_recent_scripts">Skrip terbaru</string>
-    <string name="teleprompter_scripts_total">Total: %d skrip</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="other">Total: %d skrip</item>
+    </plurals>
     <string name="teleprompter_empty">Tidak ada naskah, klik + di kanan bawah untuk membuat baru</string>
-    <plurals name="teleprompter_word_count"><item quantity="other">%d kata</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="other">%d karakter</item></plurals>
     <string name="teleprompter_new_script">Naskah Baru</string>
     <string name="teleprompter_edit_script">Edit Naskah</string>
     <string name="teleprompter_title_hint">Judul naskah</string>
@@ -61,7 +63,7 @@
     <string name="teleprompter_log_created_title">Skrip baru: %1$s</string>
     <string name="teleprompter_log_updated_title">Perbarui skrip: %1$s</string>
     <string name="teleprompter_log_deleted_title">Hapus skrip: %1$s</string>
-    <string name="teleprompter_log_created_desc">Skrip “%1$s” dibuat (%2$d kata)</string>
-    <string name="teleprompter_log_updated_desc">Skrip “%1$s” diperbarui (%2$d kata)</string>
+    <string name="teleprompter_log_created_desc">Skrip “%1$s” dibuat (%2$d karakter)</string>
+    <string name="teleprompter_log_updated_desc">Skrip “%1$s” diperbarui (%2$d karakter)</string>
     <string name="teleprompter_log_deleted_desc">Skrip “%1$s” dihapus</string>
 </resources>

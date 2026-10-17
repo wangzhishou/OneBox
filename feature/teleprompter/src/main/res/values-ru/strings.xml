@@ -3,9 +3,14 @@
     <string name="teleprompter_title">Телесуфлер</string>
     <string name="teleprompter_my_scripts">Мой сценарий</string>
     <string name="teleprompter_recent_scripts">Недавние сценарии</string>
-    <string name="teleprompter_scripts_total">Всего: %d сценариев</string>
+    <plurals name="teleprompter_scripts_total">
+        <item quantity="one">Всего: %d сценарий</item>
+        <item quantity="few">Всего: %d сценария</item>
+        <item quantity="many">Всего: %d сценариев</item>
+        <item quantity="other">Всего: %d сценария</item>
+    </plurals>
     <string name="teleprompter_empty">Нет сценария, нажмите на плюс внизу справа</string>
-    <plurals name="teleprompter_word_count"><item quantity="one">%d слово</item><item quantity="few">%d слова</item><item quantity="many">%d слов</item><item quantity="other">%d слова</item></plurals>
+    <plurals name="teleprompter_word_count"><item quantity="one">%d символ</item><item quantity="few">%d символа</item><item quantity="many">%d символов</item><item quantity="other">%d символа</item></plurals>
     <string name="teleprompter_new_script">Новый сценарий</string>
     <string name="teleprompter_edit_script">Редактировать сценарий</string>
     <string name="teleprompter_title_hint">Название сценария</string>
@@ -61,7 +66,7 @@
     <string name="teleprompter_log_created_title">Новый сценарий: %1$s</string>
     <string name="teleprompter_log_updated_title">Сценарий обновлён: %1$s</string>
     <string name="teleprompter_log_deleted_title">Сценарий удалён: %1$s</string>
-    <string name="teleprompter_log_created_desc">Сценарий «%1$s» создан (%2$d слов)</string>
-    <string name="teleprompter_log_updated_desc">Сценарий «%1$s» обновлён (%2$d слов)</string>
+    <string name="teleprompter_log_created_desc">Сценарий «%1$s» создан (%2$d символов)</string>
+    <string name="teleprompter_log_updated_desc">Сценарий «%1$s» обновлён (%2$d символов)</string>
     <string name="teleprompter_log_deleted_desc">Сценарий «%1$s» удалён</string>
 </resources>

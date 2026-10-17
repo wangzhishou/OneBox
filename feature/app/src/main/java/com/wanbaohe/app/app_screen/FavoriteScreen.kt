@@ -1,5 +1,6 @@
 package com.wanbaohe.app.app_screen
 
+import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -969,14 +971,17 @@ private fun recordDayHeaderText(date: Date): String {
     }
     val sameYear = Calendar.getInstance().get(Calendar.YEAR) ==
         Calendar.getInstance().apply { time = date }.get(Calendar.YEAR)
-    val isZh = Locale.getDefault().language == Locale.CHINESE.language
+    val locale = LocalConfiguration.current.locales[0]
+    val isZh = locale.language == Locale.CHINESE.language
     val pattern = when {
         isZh && sameYear -> "M月d日"
         isZh -> "yyyy年M月d日"
-        sameYear -> "MMM d"
-        else -> "MMM d, yyyy"
+        else -> DateFormat.getBestDateTimePattern(
+            locale,
+            if (sameYear) "MMMd" else "yMMMd",
+        )
     }
-    val dateText = SimpleDateFormat(pattern, Locale.getDefault()).format(date)
+    val dateText = SimpleDateFormat(pattern, locale).format(date)
     return listOfNotNull(dayLabel, dateText).joinToString(" · ")
 }
 

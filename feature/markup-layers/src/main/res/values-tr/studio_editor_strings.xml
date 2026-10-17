@@ -4,7 +4,10 @@
     <string name="studio_projects_empty">Kaydedilen projeler özgün görüntüyü, katmanları, maskeleri ve efektleri düzenlemeye hazır tutar.</string>
     <string name="studio_recent_files">Son görüntüler</string>
     <string name="studio_recent_files_empty">Son görüntü yok</string>
-    <string name="studio_project_layers">%1$d katman</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d katman</item>
+        <item quantity="other">%1$d katman</item>
+    </plurals>
     <string name="studio_project_updated">%1$s güncellendi</string>
     <string name="studio_project_open">%1$s projesini aç</string>
     <string name="studio_project_delete">%1$s projesini sil</string>

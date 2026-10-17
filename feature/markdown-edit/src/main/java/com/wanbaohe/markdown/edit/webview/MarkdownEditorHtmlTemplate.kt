@@ -1,6 +1,9 @@
 package com.wanbaohe.markdown.edit.webview
 
+import android.text.TextUtils
+import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.model.colors.EditorColors
+import com.wanbaohe.markdown.edit.R
 
 /**
  * Milkdown 编辑器 HTML 模板生成器
@@ -662,11 +665,11 @@ object MarkdownEditorHtmlTemplate {
         </div>
         
         <div id="source-container">
-            <textarea id="source-textarea" placeholder="Markdown 源码..."></textarea>
+            <textarea id="source-textarea" placeholder="${localized(R.string.markdown_editor_source_placeholder)}"></textarea>
         </div>
         <div id="toolbar" style="display: none;">
             $toolbarExtras
-            ${TOOLBAR_HTML}
+            ${toolbarHtml()}
         </div>
     </div>
     
@@ -761,76 +764,79 @@ object MarkdownEditorHtmlTemplate {
         """.trimIndent()
     }
 
-    private const val TOOLBAR_HTML = """
-        <button class="toolbar-btn" data-action="undo" title="撤销">
+    private fun localized(resId: Int): String =
+        TextUtils.htmlEncode(AppContext.getString(resId))
+
+    private fun toolbarHtml(): String = """
+        <button class="toolbar-btn" data-action="undo" title="${localized(R.string.markdown_editor_toolbar_undo)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h10a5 5 0 0 1 5 5v0a5 5 0 0 1-5 5H7m-4-10l4-4m-4 4l4 4"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="redo" title="重做">
+        <button class="toolbar-btn" data-action="redo" title="${localized(R.string.markdown_editor_toolbar_redo)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10H11a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h6m4-10l-4-4m4 4l-4 4"/></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="heading1" title="一级标题">
+        <button class="toolbar-btn" data-action="heading1" title="${localized(R.string.markdown_editor_toolbar_heading_1)}">
             <svg viewBox="0 0 24 24" fill="currentColor"><text x="4" y="18" font-size="14" font-weight="bold">H1</text></svg>
         </button>
-        <button class="toolbar-btn" data-action="heading2" title="二级标题">
+        <button class="toolbar-btn" data-action="heading2" title="${localized(R.string.markdown_editor_toolbar_heading_2)}">
             <svg viewBox="0 0 24 24" fill="currentColor"><text x="4" y="18" font-size="14" font-weight="bold">H2</text></svg>
         </button>
-        <button class="toolbar-btn" data-action="heading3" title="三级标题">
+        <button class="toolbar-btn" data-action="heading3" title="${localized(R.string.markdown_editor_toolbar_heading_3)}">
             <svg viewBox="0 0 24 24" fill="currentColor"><text x="4" y="18" font-size="14" font-weight="bold">H3</text></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="bold" title="粗体">
+        <button class="toolbar-btn" data-action="bold" title="${localized(R.string.markdown_editor_toolbar_bold)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="italic" title="斜体">
+        <button class="toolbar-btn" data-action="italic" title="${localized(R.string.markdown_editor_toolbar_italic)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="strikethrough" title="删除线">
+        <button class="toolbar-btn" data-action="strikethrough" title="${localized(R.string.markdown_editor_toolbar_strikethrough)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4H9a3 3 0 0 0-3 3v0a3 3 0 0 0 3 3h6"/><path d="M8 20h7a3 3 0 0 0 3-3v0a3 3 0 0 0-3-3H6"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="code" title="行内代码">
+        <button class="toolbar-btn" data-action="code" title="${localized(R.string.markdown_editor_toolbar_inline_code)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="bulletList" title="无序列表">
+        <button class="toolbar-btn" data-action="bulletList" title="${localized(R.string.markdown_editor_toolbar_bullet_list)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="4" cy="18" r="1.5" fill="currentColor"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="orderedList" title="有序列表">
+        <button class="toolbar-btn" data-action="orderedList" title="${localized(R.string.markdown_editor_toolbar_ordered_list)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="8" fill="currentColor">1</text><text x="2" y="14" font-size="8" fill="currentColor">2</text><text x="2" y="20" font-size="8" fill="currentColor">3</text></svg>
         </button>
-        <button class="toolbar-btn" data-action="taskList" title="任务列表">
+        <button class="toolbar-btn" data-action="taskList" title="${localized(R.string.markdown_editor_toolbar_task_list)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="M5 8l1 1 2-2"/><line x1="12" y1="8" x2="21" y2="8"/><rect x="3" y="13" width="6" height="6" rx="1"/><line x1="12" y1="16" x2="21" y2="16"/></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="blockquote" title="引用">
+        <button class="toolbar-btn" data-action="blockquote" title="${localized(R.string.markdown_editor_toolbar_blockquote)}">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="codeBlock" title="代码块">
+        <button class="toolbar-btn" data-action="codeBlock" title="${localized(R.string.markdown_editor_toolbar_code_block)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="8 10 6 12 8 14"/><polyline points="16 10 18 12 16 14"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="link" title="链接">
+        <button class="toolbar-btn" data-action="link" title="${localized(R.string.markdown_editor_toolbar_link)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="image" title="图片">
+        <button class="toolbar-btn" data-action="image" title="${localized(R.string.markdown_editor_toolbar_image)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="hr" title="分割线">
+        <button class="toolbar-btn" data-action="hr" title="${localized(R.string.markdown_editor_toolbar_divider)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="copy" title="复制">
+        <button class="toolbar-btn" data-action="copy" title="${localized(R.string.markdown_editor_toolbar_copy)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="paste" title="粘贴">
+        <button class="toolbar-btn" data-action="paste" title="${localized(R.string.markdown_editor_toolbar_paste)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="selectAll" title="全选">
+        <button class="toolbar-btn" data-action="selectAll" title="${localized(R.string.markdown_editor_toolbar_select_all)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M21 16v3a2 2 0 0 1-2 2h-3"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>
         </button>
         <div class="toolbar-divider"></div>
-        <button class="toolbar-btn" data-action="toggleSource" title="查看 Markdown 源码">
+        <button class="toolbar-btn" data-action="toggleSource" title="${localized(R.string.markdown_editor_toolbar_view_source)}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9.5 13.5 7.5 15.5 9.5 17.5"/><polyline points="14.5 13.5 16.5 15.5 14.5 17.5"/></svg>
         </button>
     """

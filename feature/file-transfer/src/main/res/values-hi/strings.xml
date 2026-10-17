@@ -72,4 +72,6 @@
     <string name="permission_required_message">फ़ाइल स्थानांतरण सेवा को फ़ाइलें पढ़ने और लिखने के लिए स्टोरेज अनुमति की आवश्यकता है। कृपया अनुमति दें।</string>
     <string name="grant_permission">अनुमति दें</string>
     <string name="cancel">रद्द करें</string>
+    <string name="server_ip_address_error">IP पता प्राप्त नहीं हो सका। नेटवर्क कनेक्शन जांचें</string>
+    <string name="server_start_failed">सेवा शुरू करने में विफल</string>
 </resources>

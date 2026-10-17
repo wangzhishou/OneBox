@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marquee_fullscreen_landscape_locked">Querformat gesperrt</string>
+    <string name="marquee_fullscreen_landscape_locked_label">Querformat sperren</string>
+    <string name="marquee_fullscreen_follow_rotation">Drehung folgen</string>
+</resources>

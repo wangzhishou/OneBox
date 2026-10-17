@@ -75,7 +75,7 @@ fun AIChatModalBottomSheet(
                 ) {
                     Icon(
                         com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack,
-                        contentDescription = "Back"
+                        contentDescription = stringResource(CoreR.string.back_button)
                     )
                 }
             }

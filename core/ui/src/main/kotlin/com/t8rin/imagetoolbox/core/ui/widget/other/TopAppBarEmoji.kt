@@ -139,7 +139,7 @@ fun ThemeQuickSettingsButton(
         IconButton(onClick = { expanded = true }) {
             Icon(
                 imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineTheme,
-                contentDescription = "Theme Settings",
+                contentDescription = stringResource(R.string.theme_settings_title),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

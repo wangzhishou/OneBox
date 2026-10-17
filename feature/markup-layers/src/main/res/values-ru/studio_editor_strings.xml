@@ -4,7 +4,12 @@
     <string name="studio_projects_empty">Сохранённые проекты хранят исходное изображение, слои, маски и эффекты готовыми к редактированию.</string>
     <string name="studio_recent_files">Недавние изображения</string>
     <string name="studio_recent_files_empty">Нет недавних изображений</string>
-    <string name="studio_project_layers">Слоёв: %1$d</string>
+    <plurals name="studio_project_layers">
+        <item quantity="one">%1$d слой</item>
+        <item quantity="few">%1$d слоя</item>
+        <item quantity="many">%1$d слоёв</item>
+        <item quantity="other">%1$d слоя</item>
+    </plurals>
     <string name="studio_project_updated">Обновлено %1$s</string>
     <string name="studio_project_open">Открыть проект %1$s</string>
     <string name="studio_project_delete">Удалить проект %1$s</string>

@@ -790,7 +790,7 @@
     <string name="feedback_submit">إرسال</string>
     <string name="feedback_title_hint">العنوان</string>
     <string name="feedback_content_hint">الوصف</string>
-    <string name="feedback_placeholder">يُرجى وصف المشكلة بالتفصيل حتى نتمكن من المساعدة بشكل أسرع~</string>
+    <string name="feedback_placeholder">يُرجى وصف المشكلة بالتفصيل حتى نتمكن من المساعدة بشكل أسرع</string>
     <string name="fields_required">يُرجى تعبئة الحقول المطلوبة.</string>
     <string name="feedback_failed">فشل الإرسال. يُرجى المحاولة مرة أخرى لاحقاً.</string>
     <string name="feedback_onSuccess">تم استلام ملاحظاتك! شكراً لمساعدتنا على التحسين ❤️</string>
@@ -1429,7 +1429,7 @@
     <string name="agent_push_success">تم الدفع بنجاح</string>
     <string name="agent_push_failed">فشل الدفع</string>
     <string name="nav_add">إضافة</string>
-    <string name="nav_create_new_task">مهمة جديدة</string>
+    <string name="nav_create_new_task">إنشاء</string>
     <string name="nav_new_qr_code">مسح</string>
     <string name="nav_notebook">ملاحظة</string>
     <string name="nav_todo_list">المهام</string>
@@ -1674,7 +1674,14 @@
     <string name="password_vault_description">خزّن كلمات مرور المواقع والتطبيقات ورموز الأبواب بأمان.</string>
     <string name="comment">تعليق</string>
     <string name="comments_title">التعليقات</string>
-    <string name="comments_count_format">%1$d من التعليقات</string>
+    <plurals name="comments_count_format">
+        <item quantity="zero">%1$d تعليقات</item>
+        <item quantity="one">%1$d تعليق</item>
+        <item quantity="two">%1$d تعليقان</item>
+        <item quantity="few">%1$d تعليقات</item>
+        <item quantity="many">%1$d تعليقًا</item>
+        <item quantity="other">%1$d تعليق</item>
+    </plurals>
     <string name="comment_hint">أخبر الذكاء الاصطناعي بمشكلة أو ميزة تريدها…</string>
     <string name="reply_hint">الرد على %1$s…</string>
     <string name="comment_char_counter_format">%1$d / %2$d</string>
@@ -1686,6 +1693,7 @@
     <string name="comment_loading_more">جارٍ تحميل المزيد…</string>
     <string name="comment_load_failed_format">فشل تحميل التعليقات (%1$d)</string>
     <string name="comment_network_error">خطأ في الشبكة. يرجى المحاولة مرة أخرى.</string>
+    <string name="comment_retry">إعادة المحاولة</string>
     <string name="comment_empty">لا توجد ملاحظات بعد. شاركنا أفكارك بحرية.</string>
     <string name="comment_end_marker">— لا مزيد —</string>
     <string name="comment_send">إرسال</string>
@@ -1883,4 +1891,5 @@
     <string name="byok_login_hint_subtitle">استخدم مفتاح API الخاص بك لمحادثة ذكاء اصطناعي مجانية</string>
     <string name="byok_login_hint_title">لا ترغب في التسجيل؟</string>
     <string name="donate_earn_points">تبرّع لتحصل على نقاط</string>
+    <string name="expand">توسيع</string>
 </resources>

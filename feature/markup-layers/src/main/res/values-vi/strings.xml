@@ -194,4 +194,5 @@
     <string name="markup_rasterize_title">Chuyển đổi thành ảnh?</string>
     <string name="markup_rasterize_message">Lớp văn bản/hình dạng cần được chuyển đổi thành ảnh trước khi sử dụng bộ lọc. Sau khi chuyển đổi, không thể chỉnh sửa tham số văn bản/hình dạng nữa, có thể khôi phục bằng hoàn tác.</string>
     <string name="markup_rasterize_failed">Chuyển đổi lớp thất bại</string>
+    <string name="markup_tool_text_style">Kiểu văn bản</string>
 </resources>

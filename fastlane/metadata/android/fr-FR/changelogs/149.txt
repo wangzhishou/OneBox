@@ -1,0 +1,3 @@
+• Traductions, règles de pluriel et formats de date améliorés
+• Correction du texte tronqué dans la Carte de texte, les jeux de société, les Outils couleur et l’éditeur de balisage
+• Calculatrice de prêt et formats de photo d’identité localisés ; amélioration des nouvelles tentatives de commentaires et des statuts de l’IA

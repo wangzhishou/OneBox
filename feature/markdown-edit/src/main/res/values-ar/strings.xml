@@ -15,4 +15,26 @@
     <string name="markdown_image_resize_width">العرض</string>
     <string name="original_width">العرض الأصلي: %1$dpx</string>
     <string name="markdown_placeholder">ابدأ الكتابة...</string>
+    <string name="markdown_editor_source_placeholder">مصدر Markdown...</string>
+    <string name="markdown_editor_toolbar_undo">تراجع</string>
+    <string name="markdown_editor_toolbar_redo">إعادة</string>
+    <string name="markdown_editor_toolbar_heading_1">عنوان 1</string>
+    <string name="markdown_editor_toolbar_heading_2">عنوان 2</string>
+    <string name="markdown_editor_toolbar_heading_3">عنوان 3</string>
+    <string name="markdown_editor_toolbar_bold">غامق</string>
+    <string name="markdown_editor_toolbar_italic">مائل</string>
+    <string name="markdown_editor_toolbar_strikethrough">يتوسطه خط</string>
+    <string name="markdown_editor_toolbar_inline_code">رمز ضمن السطر</string>
+    <string name="markdown_editor_toolbar_bullet_list">قائمة نقطية</string>
+    <string name="markdown_editor_toolbar_ordered_list">قائمة مرقمة</string>
+    <string name="markdown_editor_toolbar_task_list">قائمة المهام</string>
+    <string name="markdown_editor_toolbar_blockquote">اقتباس</string>
+    <string name="markdown_editor_toolbar_code_block">كتلة رمز</string>
+    <string name="markdown_editor_toolbar_link">رابط</string>
+    <string name="markdown_editor_toolbar_image">صورة</string>
+    <string name="markdown_editor_toolbar_divider">فاصل</string>
+    <string name="markdown_editor_toolbar_copy">نسخ</string>
+    <string name="markdown_editor_toolbar_paste">لصق</string>
+    <string name="markdown_editor_toolbar_select_all">تحديد الكل</string>
+    <string name="markdown_editor_toolbar_view_source">عرض مصدر Markdown</string>
 </resources>

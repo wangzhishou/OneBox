@@ -987,4 +987,14 @@
     <string name="agent_tool_manage_todo_missing_tasks">يتطلب إجراء create_list المعامل tasks (مصفوفة عناوين العناصر)</string>
     <string name="agent_tool_manage_todo_param_tasks">مصفوفة عناوين العناصر، مطلوبة لإجراء create_list، مثال: [\"تعلّم مونتاج الفيديو بالذكاء الاصطناعي\", \"قراءة 12 كتابًا\"]</string>
     <string name="agent_tool_manage_todo_list_created">تم إنشاء القائمة \"%1$s\" مع %2$d عنصرًا</string>
+    <string name="ai_chat_attachment_idle_image">جاهز · %1$s → نحو %2$dKB بعد الضغط · ~%3$dtokens</string>
+    <string name="ai_chat_attachment_idle_file">جاهز · %1$s · ~%2$dtokens</string>
+    <string name="ai_chat_attachment_checking">جارٍ الفحص...</string>
+    <string name="ai_chat_attachment_resizing">جارٍ تغيير الحجم...</string>
+    <string name="ai_chat_attachment_converting">جارٍ تحويل التنسيق...</string>
+    <string name="ai_chat_attachment_compressing">جارٍ الضغط...</string>
+    <string name="ai_chat_attachment_encoding">جارٍ الترميز...</string>
+    <string name="ai_chat_attachment_uploading">جارٍ الرفع...</string>
+    <string name="ai_chat_attachment_error">فشل: %1$s</string>
+    <string name="ai_chat_go_to_top">العودة إلى الأعلى</string>
 </resources>

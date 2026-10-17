@@ -89,7 +89,7 @@ class FileTransferService : Service() {
         try {
             val ipAddress = NetworkUtils.getLocalIpAddress(this)
             if (ipAddress == null) {
-                _serverState.value = ServerState.Error("无法获取IP地址，请检查网络连接")
+                _serverState.value = ServerState.Error(getString(R.string.server_ip_address_error))
                 return
             }
 
@@ -106,7 +106,7 @@ class FileTransferService : Service() {
             startForeground(NOTIFICATION_ID, createNotification(accessUrl))
 
         } catch (e: Exception) {
-            _serverState.value = ServerState.Error(e.message ?: "服务启动失败")
+            _serverState.value = ServerState.Error(e.message ?: getString(R.string.server_start_failed))
             server?.stop()
             server = null
         }

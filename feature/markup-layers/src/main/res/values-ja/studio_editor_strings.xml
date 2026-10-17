@@ -4,7 +4,9 @@
     <string name="studio_projects_empty">保存済みプロジェクトは元の画像、レイヤー、マスク、エフェクトを編集可能な状態で保持します。</string>
     <string name="studio_recent_files">最近の画像</string>
     <string name="studio_recent_files_empty">最近の画像はありません</string>
-    <string name="studio_project_layers">%1$d レイヤー</string>
+    <plurals name="studio_project_layers">
+        <item quantity="other">%1$d レイヤー</item>
+    </plurals>
     <string name="studio_project_updated">%1$s に更新</string>
     <string name="studio_project_open">プロジェクト %1$s を開く</string>
     <string name="studio_project_delete">プロジェクト %1$s を削除</string>

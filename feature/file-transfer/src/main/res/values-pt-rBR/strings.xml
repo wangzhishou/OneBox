@@ -72,4 +72,6 @@
     <string name="permission_required_message">O serviço de transferência de arquivos precisa de permissão de armazenamento para ler e escrever arquivos. Por favor, conceda acesso.</string>
     <string name="grant_permission">Conceder Permissão</string>
     <string name="cancel">Cancelar</string>
+    <string name="server_ip_address_error">Não foi possível obter o endereço IP. Verifique a conexão de rede</string>
+    <string name="server_start_failed">Falha ao iniciar o serviço</string>
 </resources>

@@ -358,7 +358,7 @@ private fun BottomNavigationTabItem(
                     stepSize = 0.5.sp,
                 ),
                 textAlign = TextAlign.Center,
-                overflow = TextOverflow.Clip,
+                overflow = TextOverflow.Ellipsis,
                 color = if (isSelected) selectedContentColor else unselectedContentColor,
             )
         }

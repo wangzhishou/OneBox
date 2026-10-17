@@ -1777,4 +1777,6 @@
     <string name="app_developer">Malik Mukhametzyanov</string>
     <string name="app_developer_nick">T8RIN</string>
     <string name="download_started">பதிவிறக்கம் தொடங்கியது</string>
+    <string name="color_info_tab">வண்ண தகவல்</string>
+    <string name="color_shading_tab">வண்ண நிழல்</string>
 </resources>

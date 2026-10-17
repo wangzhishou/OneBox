@@ -37,6 +37,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -50,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -199,6 +201,7 @@ private fun CommentsSheetContent(
             isMutating = isMutating,
             focusCommentId = component.focusCommentId,
             onLoadMore = component::loadMore,
+            onRetry = component::loadFirstPage,
             onReply = component::setReplyTarget,
             onCancelReply = component::clearReplyTarget,
             onDelete = { c -> component.deleteComment(c.id) },
@@ -236,8 +239,9 @@ private fun CommentsSheetHeader(
         onClose = onClose,
         endContent = {
             Text(
-                text = AppContext.getContext().getString(
-                    com.shifenmiao.core.R.string.comments_count_format,
+                text = pluralStringResource(
+                    com.shifenmiao.core.R.plurals.comments_count_format,
+                    total,
                     total,
                 ),
                 style = MaterialTheme.typography.labelSmall,
@@ -260,6 +264,7 @@ private fun CommentsList(
     isMutating: Boolean,
     focusCommentId: Int,
     onLoadMore: () -> Unit,
+    onRetry: () -> Unit,
     onReply: (Comment?) -> Unit,
     onCancelReply: () -> Unit,
     onDelete: (Comment) -> Unit,
@@ -310,12 +315,20 @@ private fun CommentsList(
                 .padding(32.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(
-                text = errorMessage,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = errorMessage,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+                TextButton(onClick = onRetry) {
+                    Text(
+                        text = AppContext.getString(com.shifenmiao.core.R.string.comment_retry),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+            }
         }
     } else if (comments.isEmpty()) {
         EmptyFeedbackState(

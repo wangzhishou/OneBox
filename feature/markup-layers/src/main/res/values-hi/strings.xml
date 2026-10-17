@@ -229,4 +229,5 @@
     <string name="markup_rasterize_title">छवि में बदलें?</string>
     <string name="markup_rasterize_message">फ़िल्टर उपयोग करने से पहले टेक्स्ट/शेप लेयर को छवि में बदलना होगा। बदलने के बाद टेक्स्ट/शेप सेटिंग्स संपादित नहीं की जा सकतीं, लेकिन आप पूर्ववत (Undo) से उन्हें वापस ला सकते हैं।</string>
     <string name="markup_rasterize_failed">लेयर रूपांतरण विफल</string>
+    <string name="markup_tool_text_style">टेक्स्ट स्टाइल</string>
 </resources>
