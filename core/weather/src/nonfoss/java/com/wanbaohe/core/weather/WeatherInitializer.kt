@@ -20,13 +20,14 @@ object WeatherInitializer {
             val privateKey = if (isDebug) BuildConfig.QWeatherDebugPrivateKey else BuildConfig.QWeatherReleasePrivateKey
             val projectId = if (isDebug) BuildConfig.QWeatherDebugProjectId else BuildConfig.QWeatherReleaseProjectId
             val keyId = if (isDebug) BuildConfig.QWeatherDebugKeyId else BuildConfig.QWeatherReleaseKeyId
+            val developerId = if (isDebug) BuildConfig.QWeatherDebugDeveloperId else BuildConfig.QWeatherReleaseDeveloperId
 
-            if (privateKey.isBlank() || projectId.isBlank() || keyId.isBlank()) {
+            if (privateKey.isBlank() || projectId.isBlank() || keyId.isBlank() || developerId.isBlank()) {
                 Log.w("WeatherInitializer", "QWeather credentials not configured, weather disabled")
                 return
             }
 
-            val jwt = JWTGenerator(privateKey, projectId, keyId)
+            val jwt = JWTGenerator(privateKey, projectId, keyId, developerId)
             QWeather.getInstance(context, "nm5rk6wehm.re.qweatherapi.com")
                 .setTokenGenerator(jwt)
                 .setLogEnable(isDebug)

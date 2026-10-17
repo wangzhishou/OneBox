@@ -40,6 +40,7 @@ internal fun ObservationTimeBar(
     modifier: Modifier = Modifier
 ) {
     if (weather == null) return
+    if (weather.obsTime.isBlank() && weather.updateTime.isBlank()) return
     val onSurface = MaterialTheme.colorScheme.onSurface
 
     Row(

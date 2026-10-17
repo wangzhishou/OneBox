@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.shifenmiao.model.ModelProvider.AppJson
+import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -56,4 +57,37 @@ class WeatherDataCache(
             preferences[key] = json
         }
     }
+
+    suspend fun getPlaceWeather(cacheKey: String): PlaceWeather? {
+        val key = stringPreferencesKey(placeKey(cacheKey))
+        val json = context.weatherDataStore.data.map { preferences ->
+            preferences[key]
+        }.first() ?: return null
+        val cached = runCatching { AppJson.decodeFromString<CachedPlaceWeather>(json) }.getOrNull()
+            ?: return null
+        if (System.currentTimeMillis() - cached.timestamp > validDuration) {
+            context.weatherDataStore.edit { preferences -> preferences.remove(key) }
+            return null
+        }
+        return cached.data
+    }
+
+    suspend fun savePlaceWeather(cacheKey: String, weather: PlaceWeather) {
+        val key = stringPreferencesKey(placeKey(cacheKey))
+        val json = AppJson.encodeToString(
+            CachedPlaceWeather(weather, System.currentTimeMillis())
+        )
+        context.weatherDataStore.edit { preferences ->
+            preferences[key] = json
+        }
+    }
 }
+
+private fun placeKey(cacheKey: String): String =
+    "place2_" + cacheKey.replace(Regex("[^A-Za-z0-9._-]"), "_")
+
+@Serializable
+private data class CachedPlaceWeather(
+    val data: PlaceWeather = PlaceWeather(),
+    val timestamp: Long = 0L,
+)

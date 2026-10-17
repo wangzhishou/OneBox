@@ -1,7 +1,9 @@
 package com.wanbaohe.core.weather.data.source
 
+import android.content.Context
 import com.wanbaohe.core.weather.domain.model.CityInfo
 import com.wanbaohe.core.weather.domain.model.DailyWeatherInfo
+import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
 
 /**
@@ -9,7 +11,9 @@ import com.wanbaohe.core.weather.domain.model.WeatherInfo
  * 上层 WeatherRepository 按常规失败路径降级处理。
  * 签名必须与 src/nonfoss 的真实实现保持一致。
  */
-class QWeatherDataSource {
+class QWeatherDataSource(
+    @Suppress("unused") context: Context,
+) {
 
     suspend fun geoCityLookup(lat: Double, lon: Double): Result<CityInfo> =
         Result.failure(UnsupportedOperationException("QWeather SDK not available in foss build"))
@@ -21,5 +25,8 @@ class QWeatherDataSource {
         Result.failure(UnsupportedOperationException("QWeather SDK not available in foss build"))
 
     suspend fun getWeatherNow(cityId: String): Result<WeatherInfo> =
+        Result.failure(UnsupportedOperationException("QWeather SDK not available in foss build"))
+
+    suspend fun getPlaceWeather(lat: Double, lon: Double): Result<PlaceWeather> =
         Result.failure(UnsupportedOperationException("QWeather SDK not available in foss build"))
 }

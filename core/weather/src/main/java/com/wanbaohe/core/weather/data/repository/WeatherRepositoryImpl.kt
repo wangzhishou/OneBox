@@ -1,18 +1,23 @@
 package com.wanbaohe.core.weather.data.repository
 
+import android.content.Context
 import com.wanbaohe.core.weather.WeatherInitializer
 import com.wanbaohe.core.weather.data.cache.LocationCityCache
+import com.wanbaohe.core.weather.data.weatherLocale
 import com.wanbaohe.core.weather.data.cache.WeatherDataCache
 import com.wanbaohe.core.weather.data.source.QWeatherDataSource
 import com.wanbaohe.core.weather.domain.model.CityInfo
 import com.wanbaohe.core.weather.domain.model.DailyWeatherInfo
+import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
+import java.math.RoundingMode
 import com.wanbaohe.core.weather.domain.repository.WeatherRepository
 
 class WeatherRepositoryImpl(
     private val dataSource: QWeatherDataSource,
     private val cityCache: LocationCityCache,
-    private val weatherCache: WeatherDataCache
+    private val weatherCache: WeatherDataCache,
+    private val context: Context,
 ) : WeatherRepository {
 
     init {
@@ -66,6 +71,20 @@ class WeatherRepositoryImpl(
         } else {
             Result.failure(weatherResult.exceptionOrNull()!!)
         }
+    }
+
+    override suspend fun getPlaceWeather(lat: Double, lon: Double): Result<PlaceWeather> {
+        val cacheKey = placeCacheKey(lat, lon)
+        weatherCache.getPlaceWeather(cacheKey)?.let { return Result.success(it) }
+        val result = dataSource.getPlaceWeather(lat, lon)
+        result.onSuccess { weatherCache.savePlaceWeather(cacheKey, it) }
+        return result
+    }
+
+    private fun placeCacheKey(lat: Double, lon: Double): String {
+        val latitude = lat.toBigDecimal().setScale(2, RoundingMode.HALF_UP)
+        val longitude = lon.toBigDecimal().setScale(2, RoundingMode.HALF_UP)
+        return "$latitude,$longitude|${context.weatherLocale().toLanguageTag()}"
     }
 }
 

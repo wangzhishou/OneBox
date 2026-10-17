@@ -62,10 +62,8 @@ import com.wanbaohe.altitude.ui.ElevationGaugeSection
 import com.wanbaohe.altitude.ui.LocationInfoCard
 import com.wanbaohe.altitude.ui.ObservationTimeBar
 import com.wanbaohe.altitude.ui.SaveNoteDialog
-import com.wanbaohe.altitude.ui.SmallDetailCards
 import com.wanbaohe.altitude.ui.TrendBarChartSection
-import com.wanbaohe.altitude.ui.WeatherCard
-import com.wanbaohe.altitude.ui.WeatherDetailsCard
+import com.wanbaohe.altitude.ui.WeatherBoard
 import com.wanbaohe.altitude.ui.altitudeHistoryItems
 import kotlinx.coroutines.launch
 import com.shifenmiao.core.R as CoreR
@@ -226,12 +224,16 @@ private fun ColumnScope.InstrumentTab(
                 LocationInfoCard(cityInfo = cityInfo)
             }
 
-            // 4~6. 天气相关卡片
-            val weatherInfo = state.weatherInfo
-            if (weatherInfo != null) {
-                WeatherCard(weather = weatherInfo)
-                WeatherDetailsCard(weather = weatherInfo)
-                SmallDetailCards(weather = weatherInfo)
+            // 4. 天气：和海拔同页，某一段没有数据就不画
+            val placeWeather = state.placeWeather
+            if (placeWeather != null) {
+                WeatherBoard(place = placeWeather)
+            } else if (state.weatherUnavailable) {
+                Text(
+                    text = stringResource(CoreR.string.altitude_weather_unavailable),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
             }
 
             // 观测/更新时间（参与截图）

@@ -19,7 +19,7 @@ afterEvaluate {
 dependencies {
     // 专有 SDK 按 flavor 注入, foss 变体不携带
     listOf("onebox", "xiaomi", "yyb", "oppo", "vivo", "huawei", "google").forEach { flavor ->
-        add("${flavor}Api", files("libs/QWeather_Public_Android_V5.2.2.jar"))
+        add("${flavor}Api", files("libs/QWeather_Public_Android_V5.3.0.jar"))
     }
 
     // Core dependencies usually present

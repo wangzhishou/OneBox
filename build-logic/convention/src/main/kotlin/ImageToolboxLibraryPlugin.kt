@@ -102,9 +102,11 @@ class ImageToolboxLibraryPlugin : Plugin<Project> {
                     "QWeatherReleasePrivateKey",
                     "QWeatherReleaseProjectId",
                     "QWeatherReleaseKeyId",
+                    "QWeatherReleaseDeveloperId",
                     "QWeatherDebugPrivateKey",
                     "QWeatherDebugProjectId",
                     "QWeatherDebugKeyId",
+                    "QWeatherDebugDeveloperId",
                 ).forEach { field ->
                     val key = field.replaceFirstChar { it.lowercase() }
                     defaultConfig.buildConfigField("String", field, properties.getProperty(key).toBuildConfigStringLiteral())

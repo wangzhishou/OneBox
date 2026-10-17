@@ -40,5 +40,7 @@ data class WeatherInfo(
     /** 云量，百分比数值。可能为空 */
     val cloud: String = "",
     /** 露点温度。可能为空 */
-    val dew: String = ""
+    val dew: String = "",
+    /** 紫外线指数。可能为空 */
+    val uvIndex: String = ""
 )

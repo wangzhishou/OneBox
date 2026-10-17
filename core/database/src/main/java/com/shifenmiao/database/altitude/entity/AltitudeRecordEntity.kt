@@ -54,6 +54,10 @@ data class AltitudeRecordEntity(
     val weatherCloud: String = "",
     val weatherVis: String = "",
     val weatherPrecip: String = "",
+    val weatherIcon: String = "",
+    val weatherUv: String = "",
+    val weatherAqi: String = "",
+    val weatherAqiCategory: String = "",
 
     /** 用户备注 */
     val note: String = "",

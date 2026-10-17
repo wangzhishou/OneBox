@@ -21,8 +21,10 @@ object WeatherModule {
 
     @Provides
     @Singleton
-    fun provideQWeatherDataSource(): QWeatherDataSource {
-        return QWeatherDataSource()
+    fun provideQWeatherDataSource(
+        @ApplicationContext context: Context,
+    ): QWeatherDataSource {
+        return QWeatherDataSource(context)
     }
 
     @Provides
@@ -54,8 +56,9 @@ object WeatherModule {
     fun provideWeatherRepository(
         dataSource: QWeatherDataSource,
         cityCache: LocationCityCache,
-        weatherCache: WeatherDataCache
+        weatherCache: WeatherDataCache,
+        @ApplicationContext context: Context,
     ): WeatherRepository {
-        return WeatherRepositoryImpl(dataSource, cityCache, weatherCache)
+        return WeatherRepositoryImpl(dataSource, cityCache, weatherCache, context)
     }
 }

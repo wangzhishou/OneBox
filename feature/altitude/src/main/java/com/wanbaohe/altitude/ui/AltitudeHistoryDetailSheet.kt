@@ -130,6 +130,18 @@ fun AltitudeHistoryDetailSheet(
                             WeatherCard(weather = weatherInfo)
                             WeatherDetailsCard(weather = weatherInfo)
                             SmallDetailCards(weather = weatherInfo)
+                            if (snapshot.aqi.isNotBlank() || snapshot.aqiCategory.isNotBlank()) {
+                                Text(
+                                    text = listOf(
+                                        snapshot.aqi.takeIf { it.isNotBlank() }?.let {
+                                            stringResource(CoreR.string.altitude_aqi_value, it)
+                                        },
+                                        snapshot.aqiCategory.takeIf { it.isNotBlank() },
+                                    ).filterNotNull().joinToString(" · "),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                            }
 
                             // ── 5. 观测时间（复用 ObservationTimeBar）────
                             ObservationTimeBar(weather = weatherInfo)

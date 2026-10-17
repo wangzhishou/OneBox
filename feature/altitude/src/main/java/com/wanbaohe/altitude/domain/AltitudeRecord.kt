@@ -2,6 +2,7 @@ package com.wanbaohe.altitude.domain
 
 import com.shifenmiao.core.R as CoreR
 import com.shifenmiao.interfaces.singleton.AppContext
+import com.wanbaohe.core.weather.domain.model.AirQuality
 import com.wanbaohe.core.weather.domain.model.CityInfo
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
 
@@ -101,7 +102,11 @@ data class WeatherSnapshot(
     val dew: String = "",
     val cloud: String = "",
     val vis: String = "",
-    val precip: String = ""
+    val precip: String = "",
+    val icon: String = "",
+    val uvIndex: String = "",
+    val aqi: String = "",
+    val aqiCategory: String = "",
 ) {
     val brief: String
         get() = forecast.ifBlank {
@@ -133,7 +138,9 @@ data class WeatherSnapshot(
         dew = dew,
         cloud = cloud,
         vis = vis,
-        precip = precip
+        precip = precip,
+        icon = icon,
+        uvIndex = uvIndex,
     )
 }
 

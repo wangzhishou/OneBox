@@ -64,6 +64,16 @@ internal fun SmallDetailCards(
                 modifier = Modifier.weight(1f)
             )
         }
+        if (weather.uvIndex.isNotBlank()) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                SmallCard(
+                    label = stringResource(CoreR.string.altitude_uv_index),
+                    value = weather.uvIndex,
+                    unit = "",
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
     }
 }
 

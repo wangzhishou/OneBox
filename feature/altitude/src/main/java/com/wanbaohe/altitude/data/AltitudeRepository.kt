@@ -70,8 +70,12 @@ private fun AltitudeRecordEntity.toDomain() = AltitudeRecord(
         dew = weatherDew,
         cloud = weatherCloud,
         vis = weatherVis,
-        precip = weatherPrecip
-    ).takeIf { it.brief.isNotBlank() || it.obsTime.isNotBlank() },
+        precip = weatherPrecip,
+        icon = weatherIcon,
+        uvIndex = weatherUv,
+        aqi = weatherAqi,
+        aqiCategory = weatherAqiCategory,
+    ).takeIf { it.brief.isNotBlank() || it.obsTime.isNotBlank() || it.icon.isNotBlank() },
     note = note,
     recordedAt = recordedAt
 )
@@ -105,6 +109,10 @@ private fun AltitudeRecord.toEntity() = AltitudeRecordEntity(
     weatherCloud = weatherSnapshot?.cloud.orEmpty(),
     weatherVis = weatherSnapshot?.vis.orEmpty(),
     weatherPrecip = weatherSnapshot?.precip.orEmpty(),
+    weatherIcon = weatherSnapshot?.icon.orEmpty(),
+    weatherUv = weatherSnapshot?.uvIndex.orEmpty(),
+    weatherAqi = weatherSnapshot?.aqi.orEmpty(),
+    weatherAqiCategory = weatherSnapshot?.aqiCategory.orEmpty(),
     note = note,
     recordedAt = recordedAt
 )

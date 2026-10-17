@@ -1213,6 +1213,16 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="altitude_detail_pressure">Pressure</string>
     <string name="altitude_detail_note">Note</string>
     <string name="altitude_detail_time">Recorded At</string>
+    <string name="altitude_daily">7-day forecast</string>
+    <string name="altitude_air_quality">Air quality</string>
+    <string name="altitude_primary_pollutant">Primary pollutant: %1$s</string>
+    <string name="altitude_life_indices">Lifestyle indices</string>
+    <string name="altitude_uv_index">UV index</string>
+    <string name="altitude_weather_source">Weather data by QWeather</string>
+    <string name="altitude_weather_unavailable">Weather is unavailable</string>
+    <string name="altitude_precip_probability">%1$s%%</string>
+    <string name="altitude_temp_value">%1$s°</string>
+    <string name="altitude_aqi_value">AQI %1$s</string>
 
 
     <!-- Speed Test -->

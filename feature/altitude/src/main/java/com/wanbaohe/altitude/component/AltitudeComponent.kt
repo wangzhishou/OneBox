@@ -20,7 +20,9 @@ import com.wanbaohe.altitude.domain.AltitudeSource
 import com.wanbaohe.altitude.domain.AltitudeUnit
 import com.wanbaohe.altitude.domain.CitySnapshot
 import com.wanbaohe.altitude.domain.WeatherSnapshot
+import com.wanbaohe.core.weather.domain.model.AirQuality
 import com.wanbaohe.core.weather.domain.model.CityInfo
+import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
 import com.wanbaohe.core.weather.domain.repository.WeatherRepository
 import dagger.assisted.Assisted
@@ -81,6 +83,10 @@ data class AltitudeUiState(
     val cityInfo: CityInfo? = null,
     /** 当前天气信息 */
     val weatherInfo: WeatherInfo? = null,
+    /** 实况、预报、空气、预警聚合 */
+    val placeWeather: PlaceWeather? = null,
+    /** 天气请求失败且没有可展示的数据 */
+    val weatherUnavailable: Boolean = false,
     /** 底部选中标签页索引：0=INSTRUMENT, 1=HISTORY, 2=BOOKMARKS */
     val selectedTab: Int = 0,
     /** 当前选中的历史记录（详情底部弹窗） */
@@ -189,12 +195,19 @@ class AltitudeComponent @AssistedInject internal constructor(
         componentScope.launch {
             val lon = _uiState.value.longitude ?: return@launch
             val lat = _uiState.value.latitude ?: return@launch
-            weatherRepository.getWeatherAtLocation(lat, lon)
-                .onSuccess { weatherInfo ->
-                    _uiState.value = _uiState.value.copy(weatherInfo = weatherInfo)
+            weatherRepository.getPlaceWeather(lat, lon)
+                .onSuccess { place ->
+                    _uiState.value = _uiState.value.copy(
+                        placeWeather = place,
+                        weatherInfo = place.current,
+                        weatherUnavailable = false,
+                    )
                 }
                 .onFailure { e ->
                     makeLog("Weather error: ${e.message}")
+                    if (_uiState.value.placeWeather == null) {
+                        _uiState.value = _uiState.value.copy(weatherUnavailable = true)
+                    }
                 }
         }
     }
@@ -267,7 +280,7 @@ class AltitudeComponent @AssistedInject internal constructor(
                     latitude = uiState.latitude,
                     longitude = uiState.longitude,
                     citySnapshot = uiState.cityInfo?.toSnapshot(),
-                    weatherSnapshot = uiState.weatherInfo?.toSnapshot(),
+                    weatherSnapshot = uiState.weatherInfo?.toSnapshot(uiState.placeWeather?.air),
                     note = note.trim()
                 )
             )
@@ -389,7 +402,7 @@ private fun CityInfo.toSnapshot() = CitySnapshot(
     utcOffset = utcOffset
 )
 
-private fun WeatherInfo.toSnapshot() = WeatherSnapshot(
+private fun WeatherInfo.toSnapshot(air: AirQuality?) = WeatherSnapshot(
     forecast = buildString {
         if (text.isNotBlank()) append(text)
         if (temp.isNotBlank()) {
@@ -415,6 +428,10 @@ private fun WeatherInfo.toSnapshot() = WeatherSnapshot(
     dew = dew,
     cloud = cloud,
     vis = vis,
-    precip = precip
+    precip = precip,
+    icon = icon,
+    uvIndex = uvIndex,
+    aqi = air?.aqi.orEmpty(),
+    aqiCategory = air?.category.orEmpty(),
 )
 
