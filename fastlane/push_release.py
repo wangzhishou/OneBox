@@ -21,6 +21,7 @@ import os
 import re
 import sys
 
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 from push_listing import make_service, resolve_key
@@ -142,10 +143,16 @@ def main():
             body={"track": args.track, "releases": [release]},
         ).execute()
         # 有未决政策问题的应用不允许 API 直接送审:changesNotSentForReview=True 先提交,
-        # 再到 Play Console 的 Publishing overview 点 "Send for review" 统一送审
-        edits.commit(
-            packageName=args.package, editId=edit_id, changesNotSentForReview=True
-        ).execute()
+        # 再到 Play Console 的 Publishing overview 点 "Send for review" 统一送审。
+        # 自动送审的应用则拒绝该参数,收到这一明确错误后在同一 edit 上重试。
+        try:
+            edits.commit(
+                packageName=args.package, editId=edit_id, changesNotSentForReview=True
+            ).execute()
+        except HttpError as e:
+            if e.resp.status != 400 or "Changes are sent for review automatically" not in str(e):
+                raise
+            edits.commit(packageName=args.package, editId=edit_id).execute()
         print(f"edit committed: {release['name']} 已发布到 {args.track} ({args.status})")
     finally:
         # dry-run 或任何中途失败:删除未提交的 edit,不改动线上
