@@ -1,6 +1,7 @@
 package com.wanbaohe.markuplayers.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -23,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -47,7 +50,6 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import androidx.compose.material.icons.Icons as MaterialIcons
-import androidx.compose.material.icons.outlined.OpenInFull
 import androidx.compose.material.icons.outlined.RotateRight
 import androidx.compose.material.icons.outlined.Straighten
 
@@ -186,6 +188,11 @@ fun BoxWithConstraintsScope.EditBox(
         )
         val chromeScale = (localTransform.scale * canvasScale).coerceAtLeast(0.01f)
         val inverseScale = 1f / chromeScale
+        // 标记外观不随图层变换:缩放由 inverseScale 抵消、旋转由 counterRotation 抵消,
+        // 缩放/旋转选中区域时标记大小与朝向恒定。
+        // 偏移 = 半个热区(把标记中心压在角/边上,中心锚定对任何缩放都不变)
+        // + 外扩距离 × inverseScale(屏幕外扩距离恒定)。
+        val counterRotation = -localTransform.rotation
         // 选框动效与图文卡片一致:就地编辑态不隐藏,弱化显示(alphaScale 0.4)
         AnimatedSelectionBorder(
             isVisible = isSelected,
@@ -199,21 +206,20 @@ fun BoxWithConstraintsScope.EditBox(
             var startDistance by remember { mutableStateOf(1f) }
             var startAngle by remember { mutableStateOf(0f) }
 
-            // 标准选框:三角缩放(右上角让给删除),两侧改文字框宽,顶部旋转
-            // OpenInFull 是 ↙↗ 方向双箭头;左上/右下角需要 ↖↘ 方向,图标旋转 90°
+            // 标准选框:三个角缩放(右上角让给删除),两侧改文字框宽,顶部旋转。
+            // 缩放标记为矩形方块(类似裁剪角块),中心压在角点上
             listOf(
-                Triple(Alignment.TopStart, Offset(-24f, -24f), 90f),
-                Triple(Alignment.BottomStart, Offset(-24f, 24f), 0f),
-                Triple(Alignment.BottomEnd, Offset(24f, 24f), 90f),
-            ).forEach { (corner, offset, iconRotation) ->
+                Triple(Alignment.TopStart, -1, -1),
+                Triple(Alignment.BottomStart, -1, 1),
+                Triple(Alignment.BottomEnd, 1, 1),
+            ).forEach { (corner, signX, signY) ->
                 LayerTransformHandle(
-                    icon = MaterialIcons.Outlined.OpenInFull,
                     description = stringResource(R.string.studio_layer_scale),
                     alignment = corner,
-                    offsetX = offset.x.dp * inverseScale,
-                    offsetY = offset.y.dp * inverseScale,
+                    offsetX = (signX * HANDLE_HALF_DP).dp,
+                    offsetY = (signY * HANDLE_HALF_DP).dp,
                     inverseScale = inverseScale,
-                    iconRotation = iconRotation,
+                    counterRotation = counterRotation,
                     onStart = { root ->
                         startTransform = localTransform
                         centerRoot = elementCoordinates?.localToRoot(
@@ -232,14 +238,17 @@ fun BoxWithConstraintsScope.EditBox(
                         )
                     },
                     onEnd = finish
-                )
+                ) {
+                    HandleBlock()
+                }
             }
             LayerTransformHandle(
-                icon = MaterialIcons.Outlined.RotateRight,
                 description = stringResource(R.string.studio_layer_rotate),
                 alignment = Alignment.TopCenter,
-                offsetY = (-40).dp * inverseScale,
+                // 旋转手柄中心恒定在顶边中点上方 16dp(屏幕距离)
+                offsetY = -(HANDLE_HALF_DP.dp + 16.dp * inverseScale),
                 inverseScale = inverseScale,
+                counterRotation = counterRotation,
                 onStart = { root ->
                     startTransform = localTransform
                     centerRoot = elementCoordinates?.localToRoot(
@@ -258,18 +267,21 @@ fun BoxWithConstraintsScope.EditBox(
                     )
                 },
                 onEnd = finish
-            )
+            ) {
+                HandleIcon(MaterialIcons.Outlined.RotateRight)
+            }
             resizeConfig?.let { config ->
                 listOf(-1, 1).forEach { edge ->
                     var startRoot by remember { mutableStateOf(Offset.Zero) }
                     var axisRoot by remember { mutableStateOf(Offset(1f, 0f)) }
                     var startSize by remember { mutableStateOf(IntSize.Zero) }
                     LayerTransformHandle(
-                        icon = MaterialIcons.Outlined.Straighten,
                         description = stringResource(R.string.studio_layer_resize_width),
                         alignment = if (edge < 0) Alignment.CenterStart else Alignment.CenterEnd,
-                        offsetX = (edge * 32).dp * inverseScale,
+                        // 改框宽手柄中心恒定在边中点外 8dp(屏幕距离)
+                        offsetX = (edge * (HANDLE_HALF_DP + 8f * inverseScale)).dp,
                         inverseScale = inverseScale,
+                        counterRotation = counterRotation,
                         onStart = { root ->
                             startRoot = root
                             startSize = boxSize
@@ -300,7 +312,9 @@ fun BoxWithConstraintsScope.EditBox(
                             config.onResize(width, startSize.height.toFloat(), left, top)
                         },
                         onEnd = finish
-                    )
+                    ) {
+                        HandleIcon(MaterialIcons.Outlined.Straighten)
+                    }
                 }
             }
         }
@@ -309,10 +323,12 @@ fun BoxWithConstraintsScope.EditBox(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = 24.dp * inverseScale, y = (-24).dp * inverseScale)
+                    // 删除按钮中心压在右上角点上,缩放/旋转下位置恒定
+                    .offset(x = HANDLE_HALF_DP.dp, y = (-HANDLE_HALF_DP).dp)
                     .graphicsLayer {
                         scaleX = inverseScale
                         scaleY = inverseScale
+                        rotationZ = counterRotation
                     }
                     .size(48.dp)
                     .clip(CircleShape)
@@ -335,19 +351,22 @@ fun BoxWithConstraintsScope.EditBox(
     }
 }
 
+/** 手柄热区半宽:标记中心压在角/边上时的对齐补偿量 */
+private const val HANDLE_HALF_DP = 24
+
 /** Root coordinates avoid feedback from a handle moving as its layer is transformed. */
 @Composable
 private fun BoxScope.LayerTransformHandle(
-    icon: ImageVector,
     description: String,
     alignment: Alignment,
     inverseScale: Float,
+    counterRotation: Float,
     offsetX: Dp = 0.dp,
     offsetY: Dp = 0.dp,
-    iconRotation: Float = 0f,
     onStart: (Offset) -> Unit,
     onDrag: (Offset) -> Unit,
     onEnd: () -> Unit,
+    visual: @Composable BoxScope.() -> Unit,
 ) {
     var coordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
     val currentOnStart by rememberUpdatedState(onStart)
@@ -361,6 +380,7 @@ private fun BoxScope.LayerTransformHandle(
             .graphicsLayer {
                 scaleX = inverseScale
                 scaleY = inverseScale
+                rotationZ = counterRotation
             }
             .size(48.dp)
             .onGloballyPositioned { coordinates = it }
@@ -394,22 +414,38 @@ private fun BoxScope.LayerTransformHandle(
                         if (dragging) currentOnEnd()
                     }
                 }
-            }
+            },
+        content = visual
+    )
+}
+
+/** 缩放标记视觉:矩形方块(类似裁剪角块),细白边主色填充 */
+@Composable
+private fun HandleBlock() {
+    val shape = RoundedCornerShape(2.dp)
+    Box(
+        modifier = Modifier
+            .size(13.5.dp)
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.primaryContainer, shape)
+            .border(1.dp, Color.White, shape)
+    )
+}
+
+/** 圆形图标手柄视觉(旋转/改文字框宽):主色圆底 + onPrimaryContainer 图标 */
+@Composable
+private fun HandleIcon(icon: ImageVector) {
+    Box(
+        modifier = Modifier.size(24.dp).clip(CircleShape)
+            .background(MaterialTheme.colorScheme.primaryContainer),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier.size(24.dp).clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier
-                    .size(18.dp)
-                    .graphicsLayer { rotationZ = iconRotation }
-            )
-        }
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.size(18.dp)
+        )
     }
 }
 
