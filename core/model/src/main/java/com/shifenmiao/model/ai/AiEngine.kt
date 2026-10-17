@@ -299,6 +299,22 @@ data class AiEngine(
                     fileUploadStrategy = FileUploadStrategy.BASE64
                 )
 
+                AiProvider.Requesty -> AiEngine(
+                    name = AiProvider.Requesty.value,
+                    iconName = "SmartToy",
+                    title = AppContext.getString(R.string.ai_engine_seed_requesty_title),
+                    description = "",
+                    requestUrl = UrlConstants.REQUESTY_AI_BASE_URL,
+                    requestPath = UrlConstants.REQUESTY_TEXT_COMPLETIONS_ENDPOINT,
+                    proxyUrl = "",
+                    proxyPath = "",
+                    authorizationCode = "",
+                    model = AiModel.getDefaultModelForProvider(AiProvider.Requesty),
+                    requestProtocol = AiRequestProtocol.OPENAI_COMPATIBLE,
+                    stream = true,
+                    fileUploadStrategy = FileUploadStrategy.BASE64
+                )
+
                 // 智谱 / MiniMax(仅海外渠道): 代理路径经 defaultProxyPathFor 走 Go 网关
                 AiProvider.ZhiPu -> AiEngine(
                     name = AiProvider.ZhiPu.value,
