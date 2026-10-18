@@ -29,7 +29,7 @@ package com.t8rin.documentscanner.models
  */
 class Document(
     val originalPhotoFilePath: String,
-    private val originalPhotoWidth: Int,
+    val originalPhotoWidth: Int,
     val originalPhotoHeight: Int,
     var corners: Quad
 )

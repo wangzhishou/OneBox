@@ -20,6 +20,7 @@ package com.t8rin.documentscanner
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.hardware.camera2.CameraCharacteristics
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -29,8 +30,12 @@ import androidx.activity.result.contract.ActivityResultContract
  * 与 [androidx.activity.result.contract.ActivityResultContracts.TakePicture] 相同,
  * 额外带上各家系统相机认的后置镜头参数。
  *
- * ACTION_IMAGE_CAPTURE 没有公开的镜头参数。国内相机(小米、华为、荣耀、OPPO、vivo)
- * 在参数缺省时默认打开前置。Camera1 的后置是 0,前置是 1。
+ * ACTION_IMAGE_CAPTURE 没有公开的镜头参数,而国内相机(小米、华为、荣耀、OPPO、vivo、三星)
+ * 在参数缺省时可能默认打开前置(S22/23/24 系列实测:不带参数必开前置)。这里把几套
+ * 流传中的约定一起带上:
+ * - Camera1 的 `android.intent.extras.CAMERA_FACING`:0 = 后置,1 = 前置;
+ * - CameraCharacteristics 的 `android.intent.extras.LENS_FACING_BACK`:1 = 后置;
+ * - 三星相机认的字符串 `camerafacing`:`"back"` = 后置,`"front"` = 前置(实测 `"rear"` 无效)。
  */
 internal class TakeBackCameraPicture : ActivityResultContract<Uri, Boolean>() {
 
@@ -46,12 +51,18 @@ internal class TakeBackCameraPicture : ActivityResultContract<Uri, Boolean>() {
     }
 
     private fun Intent.putBackCameraExtras() {
+        // Camera1 约定
         putExtra(EXTRA_CAMERA_FACING, CAMERA_FACING_BACK)
+
+        // Camera2 / CameraCharacteristics 约定
+        putExtra(EXTRA_LENS_FACING_BACK, CameraCharacteristics.LENS_FACING_BACK)
+
+        // Google 系相机与 Assistant 的开关
         putExtra(EXTRA_USE_FRONT_CAMERA, false)
         putExtra(EXTRA_ASSISTANT_USE_FRONT_CAMERA, false)
-        putExtra(EXTRA_LENS_FACING_FRONT, 0)
-        putExtra(EXTRA_SAMSUNG_CAMERA_FACING, "rear")
-        putExtra(EXTRA_SAMSUNG_PREVIOUS_MODE, "Photo")
+
+        // 三星等厂商相机读的字符串参数
+        putExtra(EXTRA_OEM_CAMERA_FACING, OEM_CAMERA_FACING_BACK)
 
         when (Build.MANUFACTURER.lowercase()) {
             "huawei" -> {
@@ -67,12 +78,12 @@ internal class TakeBackCameraPicture : ActivityResultContract<Uri, Boolean>() {
 
     private companion object {
         const val CAMERA_FACING_BACK = 0
+        const val OEM_CAMERA_FACING_BACK = "back"
         const val EXTRA_CAMERA_FACING = "android.intent.extras.CAMERA_FACING"
+        const val EXTRA_LENS_FACING_BACK = "android.intent.extras.LENS_FACING_BACK"
         const val EXTRA_USE_FRONT_CAMERA = "android.intent.extra.USE_FRONT_CAMERA"
         const val EXTRA_ASSISTANT_USE_FRONT_CAMERA = "com.google.assistant.extra.USE_FRONT_CAMERA"
-        const val EXTRA_LENS_FACING_FRONT = "android.intent.extras.LENS_FACING_FRONT"
-        const val EXTRA_SAMSUNG_CAMERA_FACING = "camerafacing"
-        const val EXTRA_SAMSUNG_PREVIOUS_MODE = "previous_mode"
+        const val EXTRA_OEM_CAMERA_FACING = "camerafacing"
         const val EXTRA_DEFAULT_CAMERA = "default_camera"
         const val EXTRA_DEFAULT_MODE = "default_mode"
     }

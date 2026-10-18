@@ -34,20 +34,31 @@ import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineCameraAlt
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
 import com.t8rin.imagetoolbox.core.utils.getString
+import java.util.concurrent.atomic.AtomicBoolean
 
 private class DocumentScannerImpl(
     private val context: ComponentActivity,
     private val scanner: DocumentScannerDelegate,
-    private val scannerLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>
+    private val scannerLauncher: ManagedActivityResultLauncher<Intent, ActivityResult>,
+    private val isScanInFlight: AtomicBoolean
 ) : DocumentScanner {
 
     override fun scan() {
+        // 扫描页正在前台:连点"开始扫描"会叠出两个扫描页,各自再拉一次相机
+        if (isScanInFlight.get()) return
+
         ContextUtils.requestPermissionAndExecute(
             permissionRequest = PermissionRequest.CAMERA,
             context = context,
             permissions = arrayOf(android.Manifest.permission.CAMERA),
             onGranted = {
-                scannerLauncher.launch(scanner.createDocumentScanIntent())
+                if (!isScanInFlight.compareAndSet(false, true)) return@requestPermissionAndExecute
+                runCatching {
+                    scannerLauncher.launch(scanner.createDocumentScanIntent())
+                }.onFailure {
+                    isScanInFlight.set(false)
+                    AppToastHost.showFailureToast(it)
+                }
             },
             onDenied = {
                 AppToastHost.showToast(
@@ -109,9 +120,12 @@ internal fun rememberDocumentScannerImpl(
         )
     }
 
+    val scanInFlight = remember { AtomicBoolean(false) }
+
     val scannerLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        scanInFlight.set(false)
         scanner.handleDocumentScanIntentResult(result)
     }
 
@@ -119,7 +133,8 @@ internal fun rememberDocumentScannerImpl(
         DocumentScannerImpl(
             context = context,
             scanner = scanner,
-            scannerLauncher = scannerLauncher
+            scannerLauncher = scannerLauncher,
+            isScanInFlight = scanInFlight
         )
     }
 }

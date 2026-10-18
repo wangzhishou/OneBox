@@ -17,4 +17,5 @@
 
 <resources>
     <string name="image_with_cropper">Original Image With Cropper</string>
+    <string name="document_scan_captured_image_unreadable">Couldn\'t read the photo you just took, please scan again</string>
 </resources>

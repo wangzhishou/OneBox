@@ -22,8 +22,10 @@ package com.t8rin.documentscanner
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.PointF
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -109,6 +111,24 @@ class DocumentScannerActivity : AppCompatActivity() {
     private var shouldApplyButtonColors = false
     private var contentWidth = 0
     private var contentHeight = 0
+
+    /**
+     * @property captureFilePath 本次拍照要写入的文件。相机启动前就定好,
+     * 进程被系统回收重建后还要靠它把相机结果文件找回来。
+     */
+    private var captureFilePath: String = ""
+
+    /**
+     * @property waitingForCapture 相机已经拉起、正在等结果。
+     * 进程被回收后重建时靠它判断"不要再开一次相机"。
+     */
+    private var waitingForCapture = false
+
+    /**
+     * @property retakePhotoFilePath 重拍时被替换下来的旧照片。
+     * 等新照片真的读出来了再删,免得用户在相机里取消后照片就没了。
+     */
+    private var retakePhotoFilePath: String? = null
 
     /**
      * called when activity is created
@@ -281,13 +301,36 @@ class DocumentScannerActivity : AppCompatActivity() {
         completeDocumentScanButton.onClick { onClickDone() }
         retakePhotoButton.onClick { onClickRetake() }
 
-        // open camera, so user can snap document photo
-        try {
+        // 相机在别的进程里,低内存时本进程随时会被系统回收;重建时千万不要再把相机拉一遍,
+        // 等相机结果自己投递过来即可(裁剪页则按保存的状态重画)。
+        if (savedInstanceState != null && restoreState(savedInstanceState)) {
+            document?.let { restoredDocument ->
+                // 预览尺寸依赖窗口 insets,等布局跑完再拼裁剪页
+                findViewById<View>(R.id.document_scanner_root).post {
+                    if (isFinishing || isDestroyed) return@post
+                    showRestoredCropPage(restoredDocument)
+                }
+            }
+        } else {
+            // open camera, so user can snap document photo
             openCamera()
-        } catch (exception: Throwable) {
-            finishIntentWithError(
-                "error opening camera: ${exception.message}"
-            )
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        currentDocumentWithLiveCorners()?.let { currentDocument ->
+            outState.putBundle(STATE_CURRENT_DOCUMENT, currentDocument.toStateBundle())
+        }
+        outState.putParcelableArrayList(
+            STATE_DOCUMENTS,
+            ArrayList(documents.map { it.toStateBundle() })
+        )
+        outState.putString(STATE_CAPTURE_FILE_PATH, captureFilePath)
+        outState.putBoolean(STATE_WAITING_FOR_CAPTURE, waitingForCapture)
+        retakePhotoFilePath?.let {
+            outState.putString(STATE_RETAKE_PHOTO_FILE_PATH, it)
         }
     }
 
@@ -355,107 +398,263 @@ class DocumentScannerActivity : AppCompatActivity() {
     }
 
     /**
-     * Set document to null since we're capturing a new document, and open the camera. If the
-     * user captures a photo successfully document gets updated.
-     */
-    /**
-     * @property photoFilePath the photo file path
-     */
-    private lateinit var photoFilePath: String
-
-    /**
      * @property startForResult used to launch camera
      */
     private val startForResult = registerForActivityResult(
         TakeBackCameraPicture()
     ) { isSuccess ->
+        val capturedFilePath = captureFilePath
+        waitingForCapture = false
+
         if (isSuccess) {
-            // send back photo file path on capture success
-            val originalPhotoPath = photoFilePath
-            // user takes photo
-
-            // if maxNumDocuments is 3 and this is the 3rd photo, hide the new photo button since
-            // we reach the allowed limit
-            if (documents.size == maxNumDocuments - 1) {
-                val newPhotoButton: CircleButton = findViewById(R.id.new_photo_button)
-                newPhotoButton.isClickable = false
-                newPhotoButton.visibility = View.INVISIBLE
-            }
-
-            // get bitmap from photo file path
-            val photo: Bitmap = try {
-                ImageUtil().getImageFromFilePath(originalPhotoPath)
-            } catch (exception: Throwable) {
-                File(originalPhotoPath).delete()
-                finishIntentWithError(
-                    "unable to read captured image: ${exception.message}"
-                )
-                return@registerForActivityResult
-            }
-
-            // get document corners by detecting them, or falling back to photo corners with
-            // slight margin if we can't find the corners
-            val corners = try {
-                val (topLeft, topRight, bottomLeft, bottomRight) = getDocumentCorners(photo)
-                Quad(topLeft, topRight, bottomRight, bottomLeft)
-            } catch (exception: Throwable) {
-                finishIntentWithError(
-                    "unable to get document corners: ${exception.message}"
-                )
-                return@registerForActivityResult
-            }
-
-            document = Document(originalPhotoPath, photo.width, photo.height, corners)
-
-            if (letUserAdjustCrop) {
-                // user is allowed to move corners to make corrections
-                try {
-                    // set preview image height based off of photo dimensions
-                    imageView.setImagePreviewBounds(
-                        photo,
-                        contentWidth.takeIf { it > 0 } ?: screenWidth,
-                        contentHeight.takeIf { it > 0 } ?: screenHeight
-                    )
-
-                    // display original photo, so user can adjust detected corners
-                    imageView.setImage(photo)
-
-                    // document corner points are in original image coordinates, so we need to
-                    // scale and move the points to account for blank space (caused by photo and
-                    // photo container having different aspect ratios)
-                    val cornersInImagePreviewCoordinates = corners
-                        .mapOriginalToPreviewImageCoordinates(
-                            imageView.imagePreviewBounds,
-                            imageView.imagePreviewBounds.height() / photo.height
-                        )
-
-                    // display cropper, and allow user to move corners
-                    imageView.setCropper(cornersInImagePreviewCoordinates)
-                } catch (exception: Throwable) {
-                    finishIntentWithError(
-                        "unable get image preview ready: ${exception.message}"
-                    )
-                    return@registerForActivityResult
-                }
-            } else {
-                // user isn't allowed to move corners, so accept automatically detected corners
-                document?.let { document ->
-                    documents.add(document)
-                }
-
-                // create cropped document image, and return file path to complete document scan
-                cropDocumentAndFinishIntent()
-            }
+            onPhotoCaptured(capturedFilePath)
         } else {
             // delete the photo since the user didn't finish taking the photo
-            File(photoFilePath).delete()
+            File(capturedFilePath).delete()
+            retakePhotoFilePath = null
+
             // user exits camera
             // complete document scan if this is the first document since we can't go to crop view
             // until user takes at least 1 photo
-            if (documents.isEmpty()) {
+            if (document == null && documents.isEmpty()) {
                 onClickCancel()
             }
         }
+    }
+
+    /**
+     * 相机拍完回来了:读图、找文档角点,然后交给裁剪页。
+     *
+     * @param capturedFilePath the photo file the camera just wrote
+     */
+    private fun onPhotoCaptured(capturedFilePath: String) {
+        val photo: Bitmap = try {
+            readCapturedPhoto(capturedFilePath)
+        } catch (exception: Throwable) {
+            Log.w(TAG, "unable to read captured image: $capturedFilePath", exception)
+            File(capturedFilePath).delete()
+            finishIntentWithError(
+                getString(R.string.document_scan_captured_image_unreadable)
+            )
+            return
+        }
+
+        // get document corners by detecting them, or falling back to photo corners with
+        // slight margin if we can't find the corners
+        val corners = try {
+            val (topLeft, topRight, bottomLeft, bottomRight) = getDocumentCorners(photo)
+            Quad(topLeft, topRight, bottomRight, bottomLeft)
+        } catch (exception: Throwable) {
+            File(capturedFilePath).delete()
+            finishIntentWithError(
+                "unable to get document corners: ${exception.message}"
+            )
+            return
+        }
+
+        // 新照片已经读出来了,这一页也还没有入列,这时才能删掉重拍前的旧照片
+        retakePhotoFilePath?.let { File(it).delete() }
+        retakePhotoFilePath = null
+
+        document = Document(capturedFilePath, photo.width, photo.height, corners)
+
+        if (letUserAdjustCrop) {
+            showCropView(photo, corners)
+        } else {
+            // user isn't allowed to move corners, so accept automatically detected corners
+            document?.let { document ->
+                documents.add(document)
+            }
+
+            // create cropped document image, and return file path to complete document scan
+            cropDocumentAndFinishIntent()
+        }
+    }
+
+    /**
+     * 读相机写出来的照片。
+     *
+     * 系统相机(三星实测、友商也遇到过)可能在结果回调之后才把文件刷完,回调时文件还是 0 字节,
+     * 直接解码就报 "Unable to decode image"。这里要求"解码期间文件长度不变"才算读到,
+     * 否则隔一会重试。
+     *
+     * @param capturedFilePath the photo file the camera just wrote
+     * @return the photo bitmap
+     */
+    private fun readCapturedPhoto(capturedFilePath: String): Bitmap {
+        val capturedFile = File(capturedFilePath)
+        var lastError: Throwable? = null
+
+        repeat(CaptureReadAttempts) { attempt ->
+            if (attempt > 0) Thread.sleep(CaptureReadRetryDelayMs)
+
+            val lengthBeforeRead = capturedFile.length()
+            if (lengthBeforeRead <= 0L) {
+                lastError = Throwable("captured image is empty - $capturedFilePath")
+                return@repeat
+            }
+
+            val photo: Bitmap? = try {
+                ImageUtil().getImageFromFilePath(capturedFilePath)
+            } catch (exception: Throwable) {
+                lastError = exception
+                null
+            }
+
+            if (photo != null && capturedFile.length() == lengthBeforeRead) {
+                return photo
+            }
+        }
+
+        throw lastError ?: Throwable("unable to read captured image - $capturedFilePath")
+    }
+
+    /**
+     * 进程被回收后重建:把已经拍好的那一页重新画出来。原图不在了就重拍。
+     *
+     * @param restoredDocument the document restored from savedInstanceState
+     */
+    private fun showRestoredCropPage(restoredDocument: Document) {
+        val photo: Bitmap = try {
+            ImageUtil().getImageFromFilePath(restoredDocument.originalPhotoFilePath)
+        } catch (exception: Throwable) {
+            Log.w(
+                TAG,
+                "unable to restore captured image: ${restoredDocument.originalPhotoFilePath}",
+                exception
+            )
+            document = null
+            openCamera(pageNumber = documents.size)
+            return
+        }
+
+        document = Document(
+            restoredDocument.originalPhotoFilePath,
+            photo.width,
+            photo.height,
+            restoredDocument.corners
+        )
+        showCropView(photo, restoredDocument.corners)
+    }
+
+    /**
+     * 把拍到的照片显示到裁剪页
+     *
+     * @param photo the captured photo
+     * @param corners the document corners in original photo coordinates
+     */
+    private fun showCropView(photo: Bitmap, corners: Quad) {
+        try {
+            // set preview image height based off of photo dimensions
+            imageView.setImagePreviewBounds(
+                photo,
+                contentWidth.takeIf { it > 0 } ?: screenWidth,
+                contentHeight.takeIf { it > 0 } ?: screenHeight
+            )
+
+            // display original photo, so user can adjust detected corners
+            imageView.setImage(photo)
+
+            // document corner points are in original image coordinates, so we need to
+            // scale and move the points to account for blank space (caused by photo and
+            // photo container having different aspect ratios)
+            imageView.setCropper(
+                corners.mapOriginalToPreviewImageCoordinates(
+                    imageView.imagePreviewBounds,
+                    imageView.imagePreviewBounds.height() / photo.height
+                )
+            )
+        } catch (exception: Throwable) {
+            finishIntentWithError(
+                "unable get image preview ready: ${exception.message}"
+            )
+            return
+        }
+
+        refreshAddPhotoButton()
+    }
+
+    /**
+     * 都已经拍到上限了就把"再来一页"的按钮收起来
+     */
+    private fun refreshAddPhotoButton() {
+        val newPhotoButton: CircleButton = findViewById(R.id.new_photo_button)
+        val canAddAnotherPage = documents.size + 1 < maxNumDocuments
+        newPhotoButton.isEnabled = canAddAnotherPage
+        newPhotoButton.visibility = if (canAddAnotherPage) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun restoreState(state: Bundle): Boolean {
+        state.getBundle(STATE_CURRENT_DOCUMENT)?.let { document = it.toDocument() }
+        state.getParcelableArrayList<Bundle>(STATE_DOCUMENTS)?.forEach { savedDocument ->
+            savedDocument.toDocument()?.let(documents::add)
+        }
+        captureFilePath = state.getString(STATE_CAPTURE_FILE_PATH).orEmpty()
+        retakePhotoFilePath = state.getString(STATE_RETAKE_PHOTO_FILE_PATH)
+        waitingForCapture = state.getBoolean(STATE_WAITING_FOR_CAPTURE, false)
+
+        // 既没有拍好的照片、也没有在等相机结果,等于没恢复出什么
+        if (document == null && !waitingForCapture) return false
+
+        refreshAddPhotoButton()
+        return true
+    }
+
+    /**
+     * 裁剪页上的角点还在 imageView 里(用户可能拖过),保存时取实时位置
+     */
+    private fun currentDocumentWithLiveCorners(): Document? {
+        val currentDocument = document ?: return null
+        if (currentDocument.originalPhotoHeight <= 0) return currentDocument
+
+        val previewCorners = runCatching { imageView.corners }.getOrNull()
+            ?: return currentDocument
+        val previewBounds = runCatching { imageView.imagePreviewBounds }.getOrNull()
+            ?: return currentDocument
+        if (previewBounds.height() <= 0f) return currentDocument
+
+        currentDocument.corners = previewCorners.mapPreviewToOriginalImageCoordinates(
+            previewBounds,
+            previewBounds.height() / currentDocument.originalPhotoHeight
+        )
+        return currentDocument
+    }
+
+    private fun Document.toStateBundle(): Bundle = Bundle().apply {
+        putString(STATE_DOCUMENT_PATH, originalPhotoFilePath)
+        putInt(STATE_DOCUMENT_WIDTH, originalPhotoWidth)
+        putInt(STATE_DOCUMENT_HEIGHT, originalPhotoHeight)
+        putFloatArray(
+            STATE_DOCUMENT_CORNERS,
+            floatArrayOf(
+                corners.topLeftCorner.x,
+                corners.topLeftCorner.y,
+                corners.topRightCorner.x,
+                corners.topRightCorner.y,
+                corners.bottomRightCorner.x,
+                corners.bottomRightCorner.y,
+                corners.bottomLeftCorner.x,
+                corners.bottomLeftCorner.y
+            )
+        )
+    }
+
+    private fun Bundle.toDocument(): Document? {
+        val photoFilePath = getString(STATE_DOCUMENT_PATH) ?: return null
+        val corners = getFloatArray(STATE_DOCUMENT_CORNERS) ?: return null
+        if (corners.size != SavedCornerCount * 2) return null
+
+        return Document(
+            originalPhotoFilePath = photoFilePath,
+            originalPhotoWidth = getInt(STATE_DOCUMENT_WIDTH),
+            originalPhotoHeight = getInt(STATE_DOCUMENT_HEIGHT),
+            corners = Quad(
+                PointF(corners[0], corners[1]),
+                PointF(corners[2], corners[3]),
+                PointF(corners[4], corners[5]),
+                PointF(corners[6], corners[7])
+            )
+        )
     }
 
     /**
@@ -468,17 +667,28 @@ class DocumentScannerActivity : AppCompatActivity() {
         val photoFile: File = FileUtil().createImageFile(this, pageNumber)
 
         // store the photo file path, and send it back once the photo is saved
-        photoFilePath = photoFile.absolutePath
+        captureFilePath = photoFile.absolutePath
 
-        // photo gets saved to this file path
-        // open camera
-        startForResult.launch(
-            FileProvider.getUriForFile(
-                this,
-                "${packageName}.DocumentScannerFileProvider",
-                photoFile
+        try {
+            // photo gets saved to this file path
+            // open camera
+            startForResult.launch(
+                FileProvider.getUriForFile(
+                    this,
+                    "${packageName}.DocumentScannerFileProvider",
+                    photoFile
+                )
             )
-        )
+        } catch (exception: Throwable) {
+            File(captureFilePath).delete()
+            captureFilePath = ""
+            finishIntentWithError(
+                "error opening camera: ${exception.message}"
+            )
+            return
+        }
+
+        waitingForCapture = true
     }
 
     /**
@@ -489,17 +699,23 @@ class DocumentScannerActivity : AppCompatActivity() {
     private fun addSelectedCornersAndOriginalPhotoPathToDocuments() {
         // only add document it's not null (the current document photo capture, and corner
         // detection are successful)
-        document?.let { document ->
-            // convert corners from image preview coordinates to original photo coordinates
-            // (original image is probably bigger than the preview image)
-            val cornersInOriginalImageCoordinates = imageView.corners
-                .mapPreviewToOriginalImageCoordinates(
-                    imageView.imagePreviewBounds,
-                    imageView.imagePreviewBounds.height() / document.originalPhotoHeight
-                )
-            document.corners = cornersInOriginalImageCoordinates
-            documents.add(document)
+        val currentDocument = document ?: return
+
+        // 同一张照片只入列一次:拍照中途取消回来后再点完成/加一页不会重复裁剪
+        if (documents.any { it.originalPhotoFilePath == currentDocument.originalPhotoFilePath }) {
+            return
         }
+
+        // convert corners from image preview coordinates to original photo coordinates
+        // (original image is probably bigger than the preview image)
+        val previewCorners = runCatching { imageView.corners }.getOrNull() ?: return
+        val cornersInOriginalImageCoordinates = previewCorners
+            .mapPreviewToOriginalImageCoordinates(
+                imageView.imagePreviewBounds,
+                imageView.imagePreviewBounds.height() / currentDocument.originalPhotoHeight
+            )
+        currentDocument.corners = cornersInOriginalImageCoordinates
+        documents.add(currentDocument)
     }
 
     /**
@@ -526,8 +742,8 @@ class DocumentScannerActivity : AppCompatActivity() {
      * case the original document photo isn't good, and they need to take it again.
      */
     private fun onClickRetake() {
-        // we're going to retake the photo, so delete the one we just took
-        document?.let { document -> File(document.originalPhotoFilePath).delete() }
+        // 先别删当前这张:万一用户在相机里取消,裁剪页还得留着它
+        retakePhotoFilePath = document?.originalPhotoFilePath
         openCamera()
     }
 
@@ -546,6 +762,12 @@ class DocumentScannerActivity : AppCompatActivity() {
      * all document photos.
      */
     private fun cropDocumentAndFinishIntent() {
+        // nothing to crop: treat as cancel, don't return an empty result
+        if (documents.isEmpty()) {
+            onClickCancel()
+            return
+        }
+
         val croppedImageResults = arrayListOf<String>()
         for ((pageNumber, document) in documents.withIndex()) {
             // crop document photo by using corners
@@ -571,6 +793,7 @@ class DocumentScannerActivity : AppCompatActivity() {
                 finishIntentWithError(
                     "unable to save cropped image: ${exception.message}"
                 )
+                return
             }
         }
 
@@ -594,5 +817,25 @@ class DocumentScannerActivity : AppCompatActivity() {
             Intent().putExtra("error", errorMessage)
         )
         finish()
+    }
+
+    private companion object {
+        const val TAG = "DocumentScanner"
+
+        // 系统相机可能晚于结果回调才写完文件,给几次重试
+        const val CaptureReadAttempts = 5
+        const val CaptureReadRetryDelayMs = 200L
+
+        const val SavedCornerCount = 4
+
+        const val STATE_CURRENT_DOCUMENT = "currentDocument"
+        const val STATE_DOCUMENTS = "savedDocuments"
+        const val STATE_CAPTURE_FILE_PATH = "captureFilePath"
+        const val STATE_WAITING_FOR_CAPTURE = "waitingForCapture"
+        const val STATE_RETAKE_PHOTO_FILE_PATH = "retakePhotoFilePath"
+        const val STATE_DOCUMENT_PATH = "documentPath"
+        const val STATE_DOCUMENT_WIDTH = "documentWidth"
+        const val STATE_DOCUMENT_HEIGHT = "documentHeight"
+        const val STATE_DOCUMENT_CORNERS = "documentCorners"
     }
 }
