@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OneBox</string>
-    <string name="app_copyright">حقوق النشر © 2024 OneBox</string>
+    <string name="app_copyright">حقوق النشر © 2026 OneBox</string>
     <string name="app_description">تطبيق واحد يضم أكثر من 90 أداة — تحرير الصور، ودردشة الذكاء الاصطناعي، والإنتاجية، وألعاب مصغّرة. كل شيء في صندوق واحد.</string>
     <string name="app_description_download_des">\n\nGoogle Play: https://play.google.com/store/apps/details?id=com.shifenmiao.app\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
@@ -752,8 +752,8 @@
     <string name="profile_item_local_models">النماذج على الجهاز</string>
     <string name="profile_item_ai_usage">الاستخدام</string>
     <string name="profile_item_ai_reply_style">مُوجِّهات النظام</string>
-    <string name="profile_item_ai_memory">ذاكرة الذكاء الاصطناعي</string>
-    <string name="profile_item_ai_skill">مهارات الذكاء الاصطناعي</string>
+    <string name="profile_item_ai_memory">ذاكرة AI</string>
+    <string name="profile_item_ai_skill">مهارات AI</string>
     <string name="profile_item_ai_personalization">المُوجِّهات والتخصيص</string>
     <string name="profile_item_tts_settings">تحويل النص إلى كلام</string>
     <string name="profile_item_image_generation_settings">توليد الصور وتحريرها</string>
@@ -1893,4 +1893,49 @@
     <string name="byok_login_hint_title">لا ترغب في التسجيل؟</string>
     <string name="donate_earn_points">تبرّع لتحصل على نقاط</string>
     <string name="expand">توسيع</string>
+    <string name="ai_chat_error_title_offline">لا يوجد اتصال بالشبكة</string>
+    <string name="ai_chat_error_desc_offline">يرجى التحقق من Wi-Fi أو بيانات الجوال ثم إعادة المحاولة.</string>
+    <string name="ai_chat_error_title_network">تعذر الاتصال بالخادم</string>
+    <string name="ai_chat_error_desc_network">يبدو أن الشبكة غير مستقرة، يرجى إعادة المحاولة لاحقًا.</string>
+    <string name="ai_chat_error_title_timeout">انتهت مهلة الطلب</string>
+    <string name="ai_chat_error_desc_timeout">استغرق الخادم وقتًا طويلاً للاستجابة، يرجى إعادة المحاولة لاحقًا.</string>
+    <string name="ai_chat_error_title_auth">انتهت صلاحية حالة تسجيل الدخول</string>
+    <string name="ai_chat_error_desc_auth">يرجى تسجيل الدخول مرة أخرى ثم إعادة المحاولة.</string>
+    <string name="ai_chat_error_title_points">النقاط غير كافية</string>
+    <string name="ai_chat_error_desc_points">بعد شحن النقاط يمكنك متابعة استخدام هذا النموذج.</string>
+    <string name="ai_chat_error_title_payment">الحصة غير كافية</string>
+    <string name="ai_chat_error_desc_payment">تم استنفاد حصة الحساب الحالي، يرجى التحقق من حصة مزود الخدمة.</string>
+    <string name="ai_chat_error_title_forbidden">الوصول مقيّد</string>
+    <string name="ai_chat_error_desc_forbidden">لا يملك الحساب الحالي إذنًا لاستخدام هذه الميزة.</string>
+    <string name="ai_chat_error_title_rate_limited">الطلبات متكررة جدًا</string>
+    <string name="ai_chat_error_desc_rate_limited">يرجى الانتظار قليلاً ثم المحاولة مرة أخرى.</string>
+    <string name="ai_chat_error_title_content_filtered">تم اعتراض المحتوى بواسطة سياسة الأمان</string>
+    <string name="ai_chat_error_desc_content_filtered">يرجى تعديل الصياغة ثم إعادة المحاولة.</string>
+    <string name="ai_chat_error_title_server">الخدمة غير متاحة مؤقتًا</string>
+    <string name="ai_chat_error_desc_server">حدثت مشكلة في الخادم، يرجى المحاولة لاحقًا.</string>
+    <string name="ai_chat_error_title_client">لم يكتمل الطلب</string>
+    <string name="ai_chat_error_desc_client">يرجى التحقق من المدخلات ثم إعادة المحاولة.</string>
+    <string name="ai_chat_error_title_empty">لم يتم استلام رد</string>
+    <string name="ai_chat_error_desc_empty">لم يُرجع النموذج أي محتوى، يرجى إعادة المحاولة.</string>
+    <string name="ai_chat_error_title_interrupted">انقطع الاتصال</string>
+    <string name="ai_chat_error_desc_interrupted">لم يكتمل الرد، يرجى إعادة المحاولة.</string>
+    <string name="ai_chat_error_title_unknown">فشل الطلب</string>
+    <string name="ai_chat_error_desc_unknown">يرجى إعادة المحاولة؛ إذا استمر الفشل، يمكنك تبديل النموذج أو المحاولة لاحقًا.</string>
+    <string name="ai_chat_error_action_get_points">الحصول على النقاط</string>
+    <string name="ai_chat_error_action_switch_model">تبديل النموذج</string>
+    <string name="ai_chat_error_details">تفاصيل الخطأ</string>
+    <string name="ai_chat_error_details_hide">طي التفاصيل</string>
+    <string name="ai_chat_error_copy">نسخ</string>
+    <string name="ai_chat_error_copied">تم النسخ</string>
+    <string name="ai_chat_usage_tokens">%1$s رموز</string>
+    <string name="altitude_daily">توقعات 7 أيام</string>
+    <string name="altitude_air_quality">جودة الهواء</string>
+    <string name="altitude_primary_pollutant">الملوث الرئيسي: %1$s</string>
+    <string name="altitude_life_indices">مؤشرات الحياة</string>
+    <string name="altitude_uv_index">الأشعة فوق البنفسجية</string>
+    <string name="altitude_weather_source">بيانات الطقس من QWeather</string>
+    <string name="altitude_weather_unavailable">الطقس غير متاح حالياً</string>
+    <string name="altitude_precip_probability">%1$s%%</string>
+    <string name="altitude_temp_value">%1$s°</string>
+    <string name="altitude_aqi_value">جودة الهواء %1$s</string>
 </resources>

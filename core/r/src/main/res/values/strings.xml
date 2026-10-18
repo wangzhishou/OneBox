@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OneBox</string>
-    <string name="app_copyright">Copyright © 2024 OneBox</string>
+    <string name="app_copyright">Copyright © 2026 OneBox</string>
     <string name="app_description"><![CDATA[One app, 90+ tools — image editing, AI chat, productivity, mini-games. Everything in one box.]]></string>
     <string name="app_description_download_des"><![CDATA[\n\nDownload: https://gitcode.com/wangzhishou/OneBox/releases\nGitHub: https://github.com/wangzhishou/OneBox]]></string>
     <string name="app_launcher_name">OneBox</string>
@@ -426,6 +426,7 @@
     <string name="ai_chat_menu_show_avatar">Show Avatar</string>
     <string name="ai_chat_delete_title">Confirm deletion?</string>
     <string name="ai_chat_menu_show_tokens">Show Tokens</string>
+    <string name="ai_chat_usage_tokens">%1$s Tokens</string>
     <string name="ai_chat_menu_show_voice">Voice Settings</string>
     <string name="demo_title">Demo</string>
     <string name="ai_chat_release_to_cancel">Release to cancel</string>

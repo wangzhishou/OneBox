@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">万宝盒</string>
-    <string name="app_copyright">Copyright © 2024万宝盒</string>
+    <string name="app_copyright">Copyright © 2026万宝盒</string>
     <string name="app_description"><![CDATA[一个 App，90+ 工具：图像处理、AI 聊天、效率工具、小游戏——全部装进一个盒子。]]></string>
     <string name="app_description_download_des"><![CDATA[\n\n下载：https://gitcode.com/wangzhishou/OneBox/releases\n开源：https://github.com/wangzhishou/OneBox]]></string>
     <string name="app_launcher_name">万宝盒</string>
@@ -453,6 +453,7 @@
     <string name="ai_chat_menu_show_avatar">显示头像</string>
     <string name="ai_chat_delete_title">是否确认删除？</string>
     <string name="ai_chat_menu_show_tokens">显示Tokens</string>
+    <string name="ai_chat_usage_tokens">%1$s Tokens</string>
     <string name="ai_chat_menu_show_voice">声音设置</string>
     <string name="demo_title">演示测试</string>
     <string name="ai_chat_release_to_cancel">松手取消</string>

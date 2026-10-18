@@ -218,7 +218,7 @@
     <string name="dsh_feedback_current_positive">التقييم الحالي: 👍 مفيد</string>
     <string name="dsh_feedback_current_negative">التقييم الحالي: 👎 غير مفيد</string>
     <string name="dsh_deliverables_more">+%1$d ملف</string>
-    <string name="dsh_lan_section">الاتصال المباشر بالشبكة المحلية</string>
+    <string name="dsh_lan_section">الشبكة المحلية</string>
     <string name="dsh_remote_section">البوابة البعيدة</string>
     <string name="dsh_tab_cloud">الترحيل السحابي</string>
     <string name="dsh_lan_intro">اتصل بـ DSH مباشرةً عبر الشبكة المحلية</string>
