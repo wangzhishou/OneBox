@@ -26,7 +26,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.Insets
@@ -368,7 +367,7 @@ class DocumentScannerActivity : AppCompatActivity() {
      * @property startForResult used to launch camera
      */
     private val startForResult = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
+        TakeBackCameraPicture()
     ) { isSuccess ->
         if (isSuccess) {
             // send back photo file path on capture success
