@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -143,11 +143,12 @@ private fun EditorToolRailItem(
             modifier = Modifier.size(22.dp)
         )
         Spacer(Modifier.height(2.dp))
-        Text(
+        // 竖栏很窄,长译名(裁切/调色等)按可用宽度自动降字号,避免被硬裁
+        EditorToolLabel(
             text = tool.label,
-            style = MaterialTheme.typography.labelSmall,
             color = contentColor,
-            maxLines = 1
+            // 竖栏宽度由最长标签撑开,这里封顶,超长译名改为降字号而不是把浮动竖栏撑得更宽
+            modifier = Modifier.widthIn(max = 56.dp)
         )
     }
 }

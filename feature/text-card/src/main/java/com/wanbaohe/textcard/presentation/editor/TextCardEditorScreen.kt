@@ -64,6 +64,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.dialogs.ExitWithoutSavingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.dialogs.LoadingDialog
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AiStickerGeneration
 import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorRailTool
+import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorToolLabel
 import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorToolRail
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerToolSheet
 import com.t8rin.imagetoolbox.core.ui.widget.editor.VerticalDraggable
@@ -443,11 +444,10 @@ private fun BottomTab(
             modifier = Modifier.size(22.dp)
         )
         Spacer(Modifier.height(2.dp))
-        Text(
+        // 长标签(背景/文字设置等)按可用宽度自动降字号,整词显示不被硬裁
+        EditorToolLabel(
             text = stringResource(panel.labelRes()),
-            style = MaterialTheme.typography.labelSmall,
-            color = contentColor,
-            maxLines = 1
+            color = contentColor
         )
     }
 }

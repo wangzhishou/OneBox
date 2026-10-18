@@ -119,6 +119,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.transparencyChecker
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
+import com.t8rin.imagetoolbox.core.ui.widget.editor.EditorToolLabel
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.model.MarkupLayer
 import com.wanbaohe.markuplayers.domain.model.NormalizedRect
@@ -1950,11 +1951,10 @@ private fun EditorToolItem(
             modifier = Modifier.size(22.dp)
         )
         Spacer(Modifier.height(2.dp))
-        Text(
+        // 长标签(基础工具/文本样式等)按可用宽度自动降字号,整词显示不被硬裁
+        EditorToolLabel(
             text = stringResource(tool.titleRes),
-            style = MaterialTheme.typography.labelSmall,
-            color = contentColor,
-            maxLines = 1
+            color = contentColor
         )
     }
 }
