@@ -52,7 +52,8 @@ class DocumentScannerTile : QuickTile(
 )
 
 class TextRecognitionTile : QuickTile(
-    tileAction = OpenScreen(Screen.RecognizeText())
+    // 本地 Tesseract 识别已下线，改走服务端 OCR（OcrDocument）
+    tileAction = OpenScreen(Screen.OcrDocument())
 )
 
 class ResizeAndConvertTile : QuickTile(

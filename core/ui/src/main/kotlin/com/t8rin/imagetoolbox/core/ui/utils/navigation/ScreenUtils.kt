@@ -604,8 +604,13 @@ internal object ScreenConstantsImpl : ScreenConstants {
             if (!decodedUrl.startsWith(DEEP_LINKS_PREFIX)) {
                 return NewApp()
             }
-            // Extract the path (screen name) after the prefix
-            val path = decodedUrl.substringAfter(DEEP_LINKS_PREFIX).substringBefore("?")
+            // Extract the path (screen name) after the prefix, skipping the optional host segment.
+            // onebox://screen/Filter -> Filter；onebox://Filter 也兼容
+            val path = decodedUrl
+                .substringAfter(DEEP_LINKS_PREFIX)
+                .substringBefore("?")
+                .substringAfter('/')
+                .trim()
             // Extract query parameters if they exist
             val queryParams = if (decodedUrl.contains("?")) {
                 val queryString = decodedUrl.substringAfter("?")
@@ -623,17 +628,23 @@ internal object ScreenConstantsImpl : ScreenConstants {
             // Convert query parameters to ScreenParams
             val title = URLDecoder.decode(queryParams["title"] ?: "", StandardCharsets.UTF_8.toString())
             val description = URLDecoder.decode(queryParams["description"] ?: "", StandardCharsets.UTF_8.toString())
+            val screenUrl = queryParams["url"]?.let {
+                URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
+            }
             val screenParams = ScreenParams(
                 id = queryParams["id"]?.toIntOrNull() ?: queryParams["ida"]?.toIntOrNull() ?: -1,
                 title = title,
                 description = description,
+                url = screenUrl?.takeIf { it.isNotBlank() },
                 isScreen = queryParams["isScreen"]?.toIntOrNull() == 1
             )
             when (path) {
                 "BlogDetail" -> return Screen.BlogDetail(
                     screenParams = screenParams
                 )
+                // WebView / MiniProgram 必须有 url，裸路由打开空白页没有意义，回首页
                 "MiniProgram" -> {
+                    if (screenParams.url.isNullOrBlank()) return NewApp()
                     return MiniProgram(
                         dataItem = DataItem(
                             id = screenParams.id,
@@ -643,6 +654,7 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     )
                 }
                 "WebView" -> {
+                    if (screenParams.url.isNullOrBlank()) return NewApp()
                     return WebView(
                         webViewParams = WebViewParams(
                             title = screenParams.title,
@@ -754,11 +766,8 @@ internal object ScreenConstantsImpl : ScreenConstants {
                     Screen.AIDuelChatScreen(),
                     Screen.Teleprompter(),
                     Screen.AiDetect(),
-                    RecognizeText(),
                     AIGCImage(),
-                    Screen.Prompt(),
                     Screen.AIHistoryCenter(),
-                    Screen.FileExplorer(),
                     Screen.Altitude,
                     Screen.SpeedTest,
                     Screen.DshClient,

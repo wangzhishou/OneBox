@@ -5,7 +5,9 @@ import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.interfaces.singleton.AppContext
+import com.shifenmiao.model.DataItem
 import com.shifenmiao.model.HomeTabKey
+import com.shifenmiao.model.webview.WebViewParams
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.ScreenCallback
 import java.util.Locale
@@ -101,7 +103,11 @@ object AppNavigationRegistry {
             HomeTabKey.AGENT -> {
                 titleRes = com.shifenmiao.core.R.string.home_tab_agent_title
                 descriptionRes = com.shifenmiao.core.R.string.home_tab_agent_description
-                extraAliases = listOf("agents", "ai_agent", "智能体", "AI 智能体")
+                // AgentScreen/AgentDetail 需要完整的 Agent/ChatObject 参数，裸路由统一落到智能体 tab
+                extraAliases = listOf(
+                    "agents", "ai_agent", "智能体", "AI 智能体",
+                    "agentscreen", "agent_screen", "agentdetail", "agent_detail"
+                )
             }
             HomeTabKey.PROMPT -> {
                 titleRes = com.shifenmiao.core.R.string.home_tab_prompt_title
@@ -477,6 +483,328 @@ object AppNavigationRegistry {
                 screen = Screen.Notification,
                 aliases = listOf("notification", "notifications", "message_center", "消息中心", "消息", "通知")
             ),
+            // 上游/历史页面：ChildProvider 里都有对应容器，深链应直达而不是掉回首页
+            staticScreen(
+                screen = Screen.Settings(),
+                aliases = listOf("settings", "设置"),
+                titleOverride = resolveText(com.shifenmiao.core.R.string.settings, "Settings"),
+                descriptionOverride = "打开设置页"
+            ),
+            staticScreen(
+                screen = Screen.LibrariesInfo,
+                aliases = listOf("libraries", "libraries_info", "open_source_libraries", "开源库", "开源许可"),
+                titleOverride = "开源许可",
+                descriptionOverride = "查看 App 使用的开源库与许可"
+            ),
+            staticScreen(
+                screen = Screen.Reorderable(),
+                aliases = listOf(
+                    "reorderable", "reorderable_category", "manage_categories",
+                    "分类管理", "管理分类"
+                )
+            ),
+            staticScreen(
+                screen = Screen.BuyCoffee(),
+                aliases = listOf("buy_coffee", "coffee", "donate", "打赏", "支持作者")
+            ),
+            staticScreen(
+                screen = Screen.UserInfo(),
+                aliases = listOf("user_info", "profile_user_info", "个人信息", "账号信息")
+            ),
+            staticScreen(
+                screen = Screen.Demo(),
+                aliases = listOf("demo", "demo_screen", "演示", "演示测试")
+            ),
+            // 底部主入口页（tab）：不在 Screen.entries 里，深链按页面打开
+            staticScreen(
+                screen = Screen.Profile(),
+                aliases = listOf("profile", "my", "mine", "我的", "个人中心")
+            ),
+            staticScreen(
+                screen = Screen.Online(),
+                aliases = listOf("online", "activity_log", "favorites", "发现", "活动记录", "收藏")
+            ),
+            staticScreen(
+                screen = Screen.Search(),
+                aliases = listOf("search", "搜索")
+            ),
+            // 设置子页与工具子页：不在 Screen.entries 里，但都是无参可渲染页面
+            staticScreen(
+                screen = Screen.DataSync,
+                aliases = listOf("data_sync", "sync", "backup_sync", "数据同步", "备份同步")
+            ),
+            staticScreen(
+                screen = Screen.AboutUs(),
+                aliases = listOf("about", "about_us", "关于", "关于我们")
+            ),
+            staticScreen(
+                screen = Screen.AboutAIModel,
+                aliases = listOf("about_ai_model", "ai_model_about", "关于AI模型")
+            ),
+            staticScreen(
+                screen = Screen.EditPrompt(),
+                aliases = listOf("edit_prompt", "编辑提示词")
+            ),
+            staticScreen(
+                screen = Screen.StartEntrySettings,
+                aliases = listOf("start_entry_settings", "start_page", "启动页", "启动页设置")
+            ),
+            staticScreen(
+                screen = Screen.LocalModelManagement,
+                aliases = listOf("local_model_management", "local_models", "本地模型")
+            ),
+            staticScreen(
+                screen = Screen.AuthCodeSettings,
+                aliases = listOf("auth_code_settings", "验证码设置")
+            ),
+            staticScreen(
+                screen = Screen.TokenUsage,
+                aliases = listOf("token_usage", "ai_usage", "用量统计")
+            ),
+            staticScreen(
+                screen = Screen.AIPersonalization,
+                aliases = listOf("ai_personalization", "AI个性化")
+            ),
+            staticScreen(
+                screen = Screen.TTSSettings,
+                aliases = listOf("tts_settings", "voice_settings", "语音设置")
+            ),
+            staticScreen(
+                screen = Screen.ImageGenerationSettings,
+                aliases = listOf("image_generation_settings", "生图设置")
+            ),
+            staticScreen(
+                screen = Screen.VipLevel(),
+                aliases = listOf("vip_level", "vip", "会员等级")
+            ),
+            staticScreen(
+                screen = Screen.A2UI,
+                aliases = listOf("a2ui", "生成式UI")
+            ),
+            staticScreen(
+                screen = Screen.IChingHistory,
+                aliases = listOf("iching_history", "易经历史")
+            ),
+            staticScreen(
+                screen = Screen.BlessingWallRecord,
+                aliases = listOf("blessing_wall_record", "祈福墙记录")
+            ),
+            staticScreen(
+                screen = Screen.MeshGradients,
+                aliases = listOf("mesh_gradients", "网格渐变")
+            ),
+            staticScreen(
+                screen = Screen.LifeTimeSettings,
+                aliases = listOf("life_time_settings", "lifetime_settings", "人生设置")
+            ),
+            staticScreen(
+                screen = Screen.LifeTimeAddEvent,
+                aliases = listOf("life_time_add_event", "lifetime_add_event", "人生添加事件")
+            ),
+            staticScreen(
+                screen = Screen.LifeTimeWelcome,
+                aliases = listOf("life_time_welcome", "lifetime_welcome")
+            ),
+            staticScreen(
+                screen = Screen.LifeTimeAddMilestone,
+                aliases = listOf("life_time_add_milestone", "人生里程碑")
+            ),
+            staticScreen(
+                screen = Screen.LifeTimeAddCountdown,
+                aliases = listOf("life_time_add_countdown", "人生倒数日")
+            ),
+            staticScreen(
+                screen = Screen.CreateAIAgent(),
+                aliases = listOf("create_ai_agent", "新建智能体")
+            ),
+            staticScreen(
+                screen = Screen.CreateAIChatPrompt(),
+                aliases = listOf("create_ai_chat_prompt", "新建提示词")
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "poem_search",
+                canonicalName = "screen.poem_search",
+                title = "诗词搜索",
+                description = "按关键词检索中国古诗词（可选 q 参数）",
+                aliases = listOf("poemsearch", "poem_search", "search_poem", "诗词搜索"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "poem_search"
+                ),
+                screenBuilder = { params ->
+                    Screen.PoemSearch(
+                        initialQuery = (params["q"] ?: params["query"])?.takeIf { it.isNotBlank() }
+                    )
+                }
+            ),
+            staticScreen(
+                screen = Screen.OcrDocument(),
+                // 本地文本识别（RecognizeText）已下线，旧入口统一落到服务端 OCR 页
+                aliases = listOf(
+                    "recognize_text", "recognizetext", "text_recognition", "ocr",
+                    "文本识别", "文字识别"
+                )
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "library_details",
+                canonicalName = "screen.library_details",
+                title = "开源库详情",
+                description = "查看指定开源库的许可与说明，缺参数时回开源库列表",
+                aliases = listOf("librarydetails", "library_details"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "library_details"
+                ),
+                screenBuilder = { params ->
+                    val libraryName = params["name"] ?: params["library_name"]
+                    val htmlDescription = params["description"] ?: params["html_description"]
+                    if (libraryName.isNullOrBlank() || htmlDescription.isNullOrBlank()) {
+                        // 深链不带库名/说明时没有可展示的详情，退回开源库列表
+                        Screen.LibrariesInfo
+                    } else {
+                        Screen.LibraryDetails(
+                            name = libraryName,
+                            htmlDescription = htmlDescription
+                        )
+                    }
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "web_view",
+                canonicalName = "screen.web_view",
+                title = "网页",
+                description = "用内置浏览器打开指定 URL（需带 url 参数）",
+                aliases = listOf("webview", "web_view", "h5"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "web_view"
+                ),
+                screenBuilder = { params ->
+                    val url = params["url"].orEmpty()
+                    if (url.isBlank()) {
+                        // 缺 url 时打开空白 WebView 没有意义，回首页
+                        Screen.NewApp()
+                    } else {
+                        Screen.WebView(
+                            WebViewParams(
+                                title = params["title"].orEmpty(),
+                                url = url
+                            )
+                        )
+                    }
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "mini_program",
+                canonicalName = "screen.mini_program",
+                title = "小程序",
+                description = "打开指定小程序（需带 url 参数）",
+                aliases = listOf("miniprogram", "mini_program"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "mini_program"
+                ),
+                screenBuilder = { params ->
+                    val url = params["url"].orEmpty()
+                    if (url.isBlank()) {
+                        Screen.NewApp()
+                    } else {
+                        Screen.MiniProgram(
+                            DataItem(
+                                id = params["id"]?.toIntOrNull() ?: -1,
+                                title = params["title"].orEmpty(),
+                                description = params["description"].orEmpty(),
+                                url = url
+                            )
+                        )
+                    }
+                }
+            ),
+            // 必须带 id 的详情页：带参数直达，裸路由回父级列表，避免深链无反馈
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "system_prompt_detail",
+                canonicalName = "screen.system_prompt_detail",
+                title = "系统提示词详情",
+                description = "查看/编辑指定系统提示词（需带 prompt_id），缺参数时回系统提示词管理",
+                aliases = listOf("systempromptdetail", "system_prompt_detail"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "system_prompt_detail"
+                ),
+                screenBuilder = { params ->
+                    val promptId = (params["prompt_id"] ?: params["id"])?.toIntOrNull()
+                    if (promptId == null) {
+                        Screen.SystemPromptManagement
+                    } else {
+                        Screen.SystemPromptDetail(promptId = promptId)
+                    }
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "skill_detail",
+                canonicalName = "screen.skill_detail",
+                title = "技能详情",
+                description = "查看/编辑指定技能（需带 skill_id），缺参数时回技能管理",
+                aliases = listOf("skilldetail", "skill_detail"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "skill_detail"
+                ),
+                screenBuilder = { params ->
+                    val skillId = (params["skill_id"] ?: params["id"])?.takeIf { it.isNotBlank() }
+                    if (skillId == null) {
+                        Screen.SkillManagement
+                    } else {
+                        Screen.SkillDetail(skillId = skillId)
+                    }
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "life_time_milestone_detail",
+                canonicalName = "screen.life_time_milestone_detail",
+                title = "人生里程碑详情",
+                description = "查看指定里程碑（需带 milestone_id），缺参数时回人生",
+                aliases = listOf("lifetimemilestonedetail", "life_time_milestone_detail"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "life_time_milestone_detail"
+                ),
+                screenBuilder = { params ->
+                    val milestoneId = (params["milestone_id"] ?: params["id"])?.toLongOrNull()
+                    if (milestoneId == null) {
+                        Screen.LifeTime
+                    } else {
+                        Screen.LifeTimeMilestoneDetail(milestoneId = milestoneId)
+                    }
+                }
+            ),
+            AppNavigationTarget(
+                targetType = AppNavigationTargetType.SCREEN,
+                routeKey = "life_time_countdown_detail",
+                canonicalName = "screen.life_time_countdown_detail",
+                title = "人生倒数日详情",
+                description = "查看指定倒数日（需带 countdown_id），缺参数时回人生",
+                aliases = listOf("lifetimecountdowndetail", "life_time_countdown_detail"),
+                deeplink = buildStructuredDeeplink(
+                    AppNavigationTargetType.SCREEN,
+                    "life_time_countdown_detail"
+                ),
+                screenBuilder = { params ->
+                    val countdownId = (params["countdown_id"] ?: params["id"])?.toLongOrNull()
+                    if (countdownId == null) {
+                        Screen.LifeTime
+                    } else {
+                        Screen.LifeTimeCountdownDetail(countdownId = countdownId)
+                    }
+                }
+            ),
             AppNavigationTarget(
                 targetType = AppNavigationTargetType.SCREEN,
                 routeKey = "mark_todo_router",
@@ -557,6 +885,7 @@ object AppNavigationRegistry {
                 description = "打开文件浏览器，支持直接定位到指定目录或文件",
                 aliases = listOf(
                     "filebrowser", "files", "explorer",
+                    "file_explorer", "fileexplorer",
                     "file_browser", "文件管理", "文件浏览器"
                 ),
                 deeplink = buildStructuredDeeplink(
@@ -700,9 +1029,19 @@ object AppNavigationRegistry {
         )
 
     val screenTargets: List<AppNavigationTarget> by lazy {
-        // extraScreenTargets 在前，同名时覆盖 Screen.entries 中的默认注册
-        (extraScreenTargets + Screen.entries.map(::staticScreen))
-            .distinctBy { it.routeKey }
+        // extraScreenTargets 在前，同名时以它的 screenBuilder 为准，但保留两边全部别名：
+        // 否则 entries 里的类名别名（如 MarkTodoRouter）会被 distinctBy 丢掉，
+        // onebox://screen/<类名> 就只能回退到 Screen.valueOf。
+        val merged = LinkedHashMap<String, AppNavigationTarget>()
+        (extraScreenTargets + Screen.entries.map(::staticScreen)).forEach { target ->
+            val existing = merged[target.routeKey]
+            merged[target.routeKey] = if (existing == null) {
+                target
+            } else {
+                existing.copy(aliases = (existing.aliases + target.aliases).distinct())
+            }
+        }
+        merged.values.toList()
     }
 
     val allTargets: List<AppNavigationTarget> by lazy {
@@ -795,11 +1134,14 @@ object AppNavigationRegistry {
 
     private fun staticScreen(
         screen: Screen,
-        aliases: List<String> = emptyList()
+        aliases: List<String> = emptyList(),
+        titleOverride: String? = null,
+        descriptionOverride: String? = null
     ): AppNavigationTarget {
         val className = screen::class.simpleName.orEmpty()
-        val title = resolveText(screen.title, screen.name.ifBlank { className.ifBlank { screen.routeKey } })
-        val description = screen.description.ifBlank {
+        val title = titleOverride
+            ?: resolveText(screen.title, screen.name.ifBlank { className.ifBlank { screen.routeKey } })
+        val description = descriptionOverride ?: screen.description.ifBlank {
             resolveText(screen.subtitle, "")
         }
         return AppNavigationTarget(

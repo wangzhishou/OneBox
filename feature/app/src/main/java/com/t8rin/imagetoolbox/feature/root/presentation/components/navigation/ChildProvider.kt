@@ -17,6 +17,7 @@
 
 package com.t8rin.imagetoolbox.feature.root.presentation.components.navigation
 
+import android.net.Uri
 import com.arkivanov.decompose.ComponentContext
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.component.AIDuelChatComponent
@@ -43,6 +44,7 @@ import com.shifenmiao.lifetime.component.LifeTimeWelcomeComponent
 import com.shifenmiao.login.viewModel.LoginComponent
 import com.shifenmiao.marktodo.screenLogic.MarkTodoRouterComponent
 import com.shifenmiao.marquee.screenLogic.MarqueeComponent
+import com.shifenmiao.model.HomeTabKey
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.Conversation
 import com.shifenmiao.online.component.CreateHtmlComponent
@@ -118,6 +120,7 @@ import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.Na
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.PaletteTools
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.PdfTools
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.PickColorFromImage
+import com.t8rin.logger.makeLog
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.ResizeAndConvert
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.ScanCode
 import com.t8rin.imagetoolbox.feature.root.presentation.components.navigation.NavigationChild.ScanQrCode
@@ -201,7 +204,42 @@ class ChildProvider @Inject constructor(
         componentContext: ComponentContext,
         appComponent: AppComponent,
         loginComponent: LoginComponent
-    ): NavigationChild = when (config) {
+    ): NavigationChild {
+        // 遗留/已下线的屏幕入口统一改投现行页面，避免落到最后的兜底分支：
+        // - RecognizeText：本地 Tesseract 文本识别已由服务端 OCR（OcrDocument）替代
+        // - FileExplorer：与 FileBrowser 重复，仅保留一个文件浏览入口
+        // - Prompt / EditPrompt：提示词入口已由 NewApp 的提示词 tab 承载
+        // - Settings：上游设置页已并入 Profile
+        // - Main / App：旧首页壳，现由 NewApp 承载
+        // 深链（onebox://screen/...）与旧内容卡 miniProgramId 都可能命中这些屏幕。
+        val effectiveConfig: Screen = when (config) {
+            is Screen.RecognizeText -> Screen.OcrDocument()
+
+            is Screen.FileExplorer -> Screen.FileBrowser(
+                initialUri = config.screenParams?.url
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let(Uri::parse)
+            )
+
+            is Screen.Prompt, is Screen.EditPrompt -> Screen.NewApp(HomeTabKey.PROMPT)
+
+            is Screen.Settings -> Screen.Profile()
+
+            Screen.Main, Screen.App -> Screen.NewApp()
+
+            else -> config
+        }
+
+        if (effectiveConfig !== config) {
+            return createChild(
+                config = effectiveConfig,
+                componentContext = componentContext,
+                appComponent = appComponent,
+                loginComponent = loginComponent
+            )
+        }
+
+        return when (config) {
 
         Screen.DataSync -> NavigationChild.DataSync(
             lifeFactories.get().dataSyncComponentFactory(
@@ -1540,7 +1578,18 @@ class ChildProvider @Inject constructor(
             )
         )
 
-        else -> throw IllegalArgumentException("Unknown screen: $config")
+            else -> {
+                // 兜底：未映射的屏幕不再抛异常（会触发全局崩溃层），记录日志后回首页。
+                // 新增 Screen 时请在上方补显式分支，避免悄悄降级。
+                "Unknown screen, fallback to home: $config".makeLog("ChildProvider")
+                createChild(
+                    config = Screen.NewApp(),
+                    componentContext = componentContext,
+                    appComponent = appComponent,
+                    loginComponent = loginComponent
+                )
+            }
+        }
     }
 }
 
