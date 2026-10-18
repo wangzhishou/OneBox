@@ -32,7 +32,7 @@
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Sélectionner plusieurs fichiers</string>
     <string name="demo_navigation_deeplink_example_home_default">Accueil (onglet par défaut)</string>
     <string name="demo_navigation_deeplink_example_home_text">Accueil · Onglet Enregistrements</string>
-    <string name="demo_navigation_deeplink_example_home_app">Accueil · Onglet Applications</string>
+    <string name="demo_navigation_deeplink_example_home_app">Accueil · Onglet Outils</string>
     <string name="demo_navigation_deeplink_example_home_agent">Accueil · Onglet Agents</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Accueil · Onglet Prompts</string>
     <string name="demo_navigation_deeplink_example_home_web">Accueil · Onglet Sites web</string>
@@ -1693,14 +1693,15 @@ Astuce : après avoir choisi « Quitter définitivement », vous pourrez me rapp
     <string name="ai_chat_message_content_missing">Contenu du message manquant</string>
     <string name="ai_execution_paused_friendly_summary">L\'IA a effectué plusieurs appels d\'outils et pourrait avoir besoin d\'étapes supplémentaires pour terminer la tâche. Le contenu généré a été enregistré, vous pouvez choisir de continuer ou d\'arrêter.</string>
     <string name="ai_execution_action_continue_execution">Continuer l\'exécution</string>
+    <string name="home_tab_tools">Outils</string>
     <string name="home_tab_web_title">URL</string>
     <string name="home_tab_tags_manage">Gestion des tags</string>
     <string name="home_chip_all">Tout</string>
     <string name="home_chip_close">Réduire les filtres</string>
     <string name="home_tab_text_title">Notes</string>
     <string name="home_tab_text_description">Ouvrir l\'onglet « Notes » de l\'accueil pour consulter les notes, documents et autres contenus créés localement</string>
-    <string name="home_tab_app_title">Applications</string>
-    <string name="home_tab_app_description">Ouvrir l\'onglet « Applications » de l\'accueil pour parcourir les outils et mini-applications courants</string>
+    <string name="home_tab_app_title">Outils</string>
+    <string name="home_tab_app_description">Ouvrir l\'onglet « Outils » de l\'accueil pour parcourir les outils et mini-applications courants</string>
     <string name="home_tab_agent_title">Agents</string>
     <string name="home_tab_agent_description">Ouvrir l\'onglet « Agents » de l\'accueil pour parcourir les agents IA disponibles</string>
     <string name="home_tab_prompt_title">Prompts</string>

@@ -32,7 +32,7 @@
     <string name="demo_navigation_deeplink_example_pick_multiple_files">選擇多個檔案</string>
     <string name="demo_navigation_deeplink_example_home_default">首頁（預設 Tab）</string>
     <string name="demo_navigation_deeplink_example_home_text">首頁 · 記錄 Tab</string>
-    <string name="demo_navigation_deeplink_example_home_app">首頁 · 應用 Tab</string>
+    <string name="demo_navigation_deeplink_example_home_app">首頁 · 工具 Tab</string>
     <string name="demo_navigation_deeplink_example_home_agent">首頁 · 智能體 Tab</string>
     <string name="demo_navigation_deeplink_example_home_prompt">首頁 · 提示詞 Tab</string>
     <string name="demo_navigation_deeplink_example_home_web">首頁 · 網址 Tab</string>
@@ -1669,14 +1669,15 @@
     <string name="ai_chat_message_content_missing">訊息內容缺失</string>
     <string name="ai_execution_paused_friendly_summary">AI 已執行多輪工具呼叫，可能需要更多步驟來完成任務。已生成的內容已儲存，你可以選擇繼續或結束。</string>
     <string name="ai_execution_action_continue_execution">繼續執行</string>
+    <string name="home_tab_tools">工具</string>
     <string name="home_tab_web_title">網址</string>
     <string name="home_tab_tags_manage">標籤管理</string>
     <string name="home_chip_all">全部</string>
     <string name="home_chip_close">收合篩選</string>
     <string name="home_tab_text_title">記錄</string>
     <string name="home_tab_text_description">開啟首頁「記錄」Tab，查看本機建立的筆記、文件等內容</string>
-    <string name="home_tab_app_title">應用</string>
-    <string name="home_tab_app_description">開啟首頁「應用」Tab，瀏覽常用工具與小應用</string>
+    <string name="home_tab_app_title">工具</string>
+    <string name="home_tab_app_description">開啟首頁「工具」Tab，瀏覽常用工具與小應用</string>
     <string name="home_tab_agent_title">智慧代理</string>
     <string name="home_tab_agent_description">開啟首頁「智慧代理」Tab，瀏覽可用的 AI 智慧代理</string>
     <string name="home_tab_prompt_title">提示詞</string>

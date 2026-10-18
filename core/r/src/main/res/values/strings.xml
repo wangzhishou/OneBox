@@ -1748,6 +1748,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_execution_action_continue_execution">Continue execution</string>
 
     <!-- Home tabs (OnlineScreen) -->
+    <string name="home_tab_tools">Tools</string>
     <string name="home_tab_web_title">Websites</string>
     <string name="home_tab_tags_manage">Manage tags</string>
     <string name="home_chip_all">All</string>
@@ -1886,7 +1887,7 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="demo_navigation_deeplink_section_home_tab">Home tab deeplinks</string>
     <string name="demo_navigation_deeplink_example_home_default">Home (default tab)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Home · Agents tab</string>
-    <string name="demo_navigation_deeplink_example_home_app">Home · Apps tab</string>
+    <string name="demo_navigation_deeplink_example_home_app">Home · Tools tab</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Home · Prompts tab</string>
     <string name="demo_navigation_deeplink_example_home_text">Home · Notes tab</string>
     <string name="demo_navigation_deeplink_example_home_web">Home · Web tab</string>
@@ -1894,8 +1895,8 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <!-- Home tabs (OnlineScreen) -->
     <string name="home_tab_agent_title">Agents</string>
     <string name="home_tab_agent_description">Open the Agents tab on Home to browse available AI agents.</string>
-    <string name="home_tab_app_title">Apps</string>
-    <string name="home_tab_app_description">Open the Apps tab on Home to browse common tools and mini apps.</string>
+    <string name="home_tab_app_title">Tools</string>
+    <string name="home_tab_app_description">Open the Tools tab on Home to browse common tools and mini apps.</string>
     <string name="home_tab_prompt_title">Prompts</string>
     <string name="home_tab_prompt_description">Open the Prompts tab on Home to browse and manage AI prompts.</string>
     <string name="home_tab_text_title">Notes</string>

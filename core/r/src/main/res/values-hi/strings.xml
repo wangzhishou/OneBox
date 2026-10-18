@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">संदेश की सामग्री उपलब्ध नहीं है</string>
     <string name="ai_execution_paused_friendly_summary">AI ने टूल कॉल के कई दौर चलाए हैं और समाप्त करने के लिए और अधिक चरणों की आवश्यकता हो सकती है। उत्पन्न सामग्री सहेजी गई है — आप जारी रख सकते हैं या रोक सकते हैं।</string>
     <string name="ai_execution_action_continue_execution">निष्पादन जारी रखें</string>
+    <string name="home_tab_tools">टूल्स</string>
     <string name="home_tab_web_title">वेबसाइटें</string>
     <string name="home_tab_tags_manage">टैग प्रबंधित करें</string>
     <string name="home_chip_all">सभी</string>
@@ -1614,14 +1615,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">होम टैब डीपलिंक्स</string>
     <string name="demo_navigation_deeplink_example_home_default">होम (डिफ़ॉल्ट टैब)</string>
     <string name="demo_navigation_deeplink_example_home_agent">होम · एजेंट्स टैब</string>
-    <string name="demo_navigation_deeplink_example_home_app">होम · ऐप्स टैब</string>
+    <string name="demo_navigation_deeplink_example_home_app">होम · टूल्स टैब</string>
     <string name="demo_navigation_deeplink_example_home_prompt">होम · प्रॉम्प्ट्स टैब</string>
     <string name="demo_navigation_deeplink_example_home_text">होम · नोट्स टैब</string>
     <string name="demo_navigation_deeplink_example_home_web">होम · वेब टैब</string>
     <string name="home_tab_agent_title">एजेंट्स</string>
     <string name="home_tab_agent_description">उपलब्ध AI एजेंट्स देखने के लिए होम पर एजेंट्स टैब खोलें।</string>
-    <string name="home_tab_app_title">ऐप्स</string>
-    <string name="home_tab_app_description">सामान्य टूल्स और मिनी ऐप्स देखने के लिए होम पर ऐप्स टैब खोलें।</string>
+    <string name="home_tab_app_title">टूल्स</string>
+    <string name="home_tab_app_description">सामान्य टूल्स और मिनी ऐप्स देखने के लिए होम पर टूल्स टैब खोलें।</string>
     <string name="home_tab_prompt_title">प्रॉम्प्ट्स</string>
     <string name="home_tab_prompt_description">AI प्रॉम्प्ट्स देखने और प्रबंधित करने के लिए होम पर प्रॉम्प्ट्स टैब खोलें।</string>
     <string name="home_tab_text_title">नोट्स</string>

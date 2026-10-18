@@ -32,7 +32,7 @@
     <string name="demo_navigation_deeplink_example_pick_multiple_files">Chọn nhiều tệp</string>
     <string name="demo_navigation_deeplink_example_home_default">Trang chủ (Tab mặc định)</string>
     <string name="demo_navigation_deeplink_example_home_text">Trang chủ · Tab ghi chép</string>
-    <string name="demo_navigation_deeplink_example_home_app">Trang chủ · Tab ứng dụng</string>
+    <string name="demo_navigation_deeplink_example_home_app">Trang chủ · Tab công cụ</string>
     <string name="demo_navigation_deeplink_example_home_agent">Trang chủ · Tab tác nhân</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Trang chủ · Tab gợi ý</string>
     <string name="demo_navigation_deeplink_example_home_web">Trang chủ · Tab trang web</string>
@@ -1693,14 +1693,15 @@ Mẹo nhỏ: Sau khi chọn \"Thoát vĩnh viễn\", bạn cũng có thể gọi
     <string name="ai_chat_message_content_missing">Thiếu nội dung tin nhắn</string>
     <string name="ai_execution_paused_friendly_summary">AI đã thực hiện nhiều lượt gọi công cụ, có thể cần thêm các bước để hoàn thành tác vụ. Nội dung đã tạo đã được lưu, bạn có thể chọn tiếp tục hoặc kết thúc.</string>
     <string name="ai_execution_action_continue_execution">Tiếp tục thực hiện</string>
+    <string name="home_tab_tools">Công cụ</string>
     <string name="home_tab_web_title">URL</string>
     <string name="home_tab_tags_manage">Quản lý thẻ</string>
     <string name="home_chip_all">Tất cả</string>
     <string name="home_chip_close">Thu gọn bộ lọc</string>
     <string name="home_tab_text_title">Ghi chú</string>
     <string name="home_tab_text_description">Mở tab「Ghi chú」ở trang chủ để xem ghi chú, tài liệu đã tạo cục bộ</string>
-    <string name="home_tab_app_title">Ứng dụng</string>
-    <string name="home_tab_app_description">Mở tab「Ứng dụng」ở trang chủ để duyệt các công cụ và tiện ích thường dùng</string>
+    <string name="home_tab_app_title">Công cụ</string>
+    <string name="home_tab_app_description">Mở tab「Công cụ」ở trang chủ để duyệt các công cụ và tiện ích thường dùng</string>
     <string name="home_tab_agent_title">Tác nhân AI</string>
     <string name="home_tab_agent_description">Mở tab「Tác nhân AI」ở trang chủ để duyệt các tác nhân AI khả dụng</string>
     <string name="home_tab_prompt_title">Câu lệnh</string>

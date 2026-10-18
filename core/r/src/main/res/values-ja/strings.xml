@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">メッセージの内容がありません</string>
     <string name="ai_execution_paused_friendly_summary">AIが複数回のツール呼び出しを実行しました。完了にはさらに手順が必要な場合があります。生成された内容は保存済みです。続行または停止できます。</string>
     <string name="ai_execution_action_continue_execution">実行を続行</string>
+    <string name="home_tab_tools">ツール</string>
     <string name="home_tab_web_title">ウェブサイト</string>
     <string name="home_tab_tags_manage">タグを管理</string>
     <string name="home_chip_all">すべて</string>
@@ -1613,14 +1614,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">ホームタブのディープリンク</string>
     <string name="demo_navigation_deeplink_example_home_default">ホーム（デフォルトタブ）</string>
     <string name="demo_navigation_deeplink_example_home_agent">ホーム・エージェントタブ</string>
-    <string name="demo_navigation_deeplink_example_home_app">ホーム・アプリタブ</string>
+    <string name="demo_navigation_deeplink_example_home_app">ホーム・ツールタブ</string>
     <string name="demo_navigation_deeplink_example_home_prompt">ホーム・プロンプトタブ</string>
     <string name="demo_navigation_deeplink_example_home_text">ホーム・ノートタブ</string>
     <string name="demo_navigation_deeplink_example_home_web">ホーム・ウェブタブ</string>
     <string name="home_tab_agent_title">エージェント</string>
     <string name="home_tab_agent_description">ホームのエージェントタブを開いて、利用可能なAIエージェントを閲覧します。</string>
-    <string name="home_tab_app_title">アプリ</string>
-    <string name="home_tab_app_description">ホームのアプリタブを開いて、一般的なツールやミニアプリを閲覧します。</string>
+    <string name="home_tab_app_title">ツール</string>
+    <string name="home_tab_app_description">ホームのツールタブを開いて、一般的なツールやミニアプリを閲覧します。</string>
     <string name="home_tab_prompt_title">プロンプト</string>
     <string name="home_tab_prompt_description">ホームのプロンプトタブを開いて、AIプロンプトを閲覧・管理します。</string>
     <string name="home_tab_text_title">ノート</string>

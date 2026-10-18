@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">Hindi available ang nilalaman ng mensahe</string>
     <string name="ai_execution_paused_friendly_summary">Ang AI ay nagpatakbo ng maraming round ng tool calls at maaaring kailanganin ng karagdagang hakbang upang matapos. Ang nabuong nilalaman ay nai-save — maaari kang magpatuloy o huminto.</string>
     <string name="ai_execution_action_continue_execution">Ipagpatuloy ang pagpapatakbo</string>
+    <string name="home_tab_tools">Mga Tool</string>
     <string name="home_tab_web_title">Mga Website</string>
     <string name="home_tab_tags_manage">Pamahalaan ang mga tag</string>
     <string name="home_chip_all">Lahat</string>
@@ -1614,14 +1615,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">Home tab deeplinks</string>
     <string name="demo_navigation_deeplink_example_home_default">Home (default na tab)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Home · Agents tab</string>
-    <string name="demo_navigation_deeplink_example_home_app">Home · Apps tab</string>
+    <string name="demo_navigation_deeplink_example_home_app">Home · Mga Tool tab</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Home · Prompts tab</string>
     <string name="demo_navigation_deeplink_example_home_text">Home · Notes tab</string>
     <string name="demo_navigation_deeplink_example_home_web">Home · Web tab</string>
     <string name="home_tab_agent_title">Agents</string>
     <string name="home_tab_agent_description">Buksan ang Agents tab sa Home upang mag-browse ng mga available na AI agents.</string>
-    <string name="home_tab_app_title">Apps</string>
-    <string name="home_tab_app_description">Buksan ang Apps tab sa Home upang mag-browse ng mga karaniwang tool at mini apps.</string>
+    <string name="home_tab_app_title">Mga Tool</string>
+    <string name="home_tab_app_description">Buksan ang Mga Tool tab sa Home upang mag-browse ng mga karaniwang tool at mini apps.</string>
     <string name="home_tab_prompt_title">Prompts</string>
     <string name="home_tab_prompt_description">Buksan ang Prompts tab sa Home upang mag-browse at pamahalaan ang mga AI prompts.</string>
     <string name="home_tab_text_title">Notes</string>

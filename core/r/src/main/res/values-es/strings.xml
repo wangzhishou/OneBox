@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">Contenido del mensaje no disponible</string>
     <string name="ai_execution_paused_friendly_summary">La IA ha ejecutado múltiples rondas de llamadas a herramientas y puede necesitar más pasos para terminar. El contenido generado se ha guardado: puedes continuar o detenerte.</string>
     <string name="ai_execution_action_continue_execution">Continuar ejecución</string>
+    <string name="home_tab_tools">Herramientas</string>
     <string name="home_tab_web_title">Sitios web</string>
     <string name="home_tab_tags_manage">Gestionar etiquetas</string>
     <string name="home_chip_all">Todo</string>
@@ -1614,14 +1615,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">Enlaces profundos de la pestaña Inicio</string>
     <string name="demo_navigation_deeplink_example_home_default">Inicio (pestaña predeterminada)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Inicio · pestaña Agentes</string>
-    <string name="demo_navigation_deeplink_example_home_app">Inicio · pestaña Apps</string>
+    <string name="demo_navigation_deeplink_example_home_app">Inicio · pestaña Herramientas</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Inicio · pestaña Prompts</string>
     <string name="demo_navigation_deeplink_example_home_text">Inicio · pestaña Notas</string>
     <string name="demo_navigation_deeplink_example_home_web">Inicio · pestaña Web</string>
     <string name="home_tab_agent_title">Agentes</string>
     <string name="home_tab_agent_description">Abre la pestaña Agentes en Inicio para explorar los agentes de IA disponibles.</string>
-    <string name="home_tab_app_title">Apps</string>
-    <string name="home_tab_app_description">Abre la pestaña Apps en Inicio para explorar herramientas comunes y mini aplicaciones.</string>
+    <string name="home_tab_app_title">Herramientas</string>
+    <string name="home_tab_app_description">Abre la pestaña Herramientas en Inicio para explorar herramientas comunes y mini aplicaciones.</string>
     <string name="home_tab_prompt_title">Prompts</string>
     <string name="home_tab_prompt_description">Abre la pestaña Prompts en Inicio para explorar y gestionar los prompts de IA.</string>
     <string name="home_tab_text_title">Notas</string>

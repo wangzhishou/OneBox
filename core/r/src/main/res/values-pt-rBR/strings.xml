@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">Conteúdo da mensagem indisponível</string>
     <string name="ai_execution_paused_friendly_summary">A IA executou várias rodadas de chamadas de ferramentas e pode precisar de mais etapas para concluir. O conteúdo gerado foi salvo — você pode continuar ou parar.</string>
     <string name="ai_execution_action_continue_execution">Continuar execução</string>
+    <string name="home_tab_tools">Ferramentas</string>
     <string name="home_tab_web_title">Sites</string>
     <string name="home_tab_tags_manage">Gerenciar tags</string>
     <string name="home_chip_all">Todos</string>
@@ -1614,14 +1615,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">Links diretos da aba Início</string>
     <string name="demo_navigation_deeplink_example_home_default">Início (aba padrão)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Início · aba Agentes</string>
-    <string name="demo_navigation_deeplink_example_home_app">Início · aba Apps</string>
+    <string name="demo_navigation_deeplink_example_home_app">Início · aba Ferramentas</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Início · aba Prompts</string>
     <string name="demo_navigation_deeplink_example_home_text">Início · aba Notas</string>
     <string name="demo_navigation_deeplink_example_home_web">Início · aba Web</string>
     <string name="home_tab_agent_title">Agentes</string>
     <string name="home_tab_agent_description">Abra a aba Agentes no Início para navegar pelos agentes de IA disponíveis.</string>
-    <string name="home_tab_app_title">Apps</string>
-    <string name="home_tab_app_description">Abra a aba Apps no Início para navegar por ferramentas comuns e mini apps.</string>
+    <string name="home_tab_app_title">Ferramentas</string>
+    <string name="home_tab_app_description">Abra a aba Ferramentas no Início para navegar por ferramentas comuns e mini apps.</string>
     <string name="home_tab_prompt_title">Prompts</string>
     <string name="home_tab_prompt_description">Abra a aba Prompts no Início para navegar e gerenciar prompts de IA.</string>
     <string name="home_tab_text_title">Notas</string>

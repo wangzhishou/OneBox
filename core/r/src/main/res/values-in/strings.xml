@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">Konten pesan tidak tersedia</string>
     <string name="ai_execution_paused_friendly_summary">AI telah menjalankan beberapa putaran panggilan alat dan mungkin memerlukan lebih banyak langkah untuk menyelesaikannya. Konten yang dihasilkan telah disimpan — Anda dapat melanjutkan atau berhenti.</string>
     <string name="ai_execution_action_continue_execution">Lanjutkan eksekusi</string>
+    <string name="home_tab_tools">Alat</string>
     <string name="home_tab_web_title">Situs Web</string>
     <string name="home_tab_tags_manage">Kelola tag</string>
     <string name="home_chip_all">Semua</string>
@@ -1613,14 +1614,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">Tautan dalam tab Beranda</string>
     <string name="demo_navigation_deeplink_example_home_default">Beranda (tab default)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Beranda · tab Agen</string>
-    <string name="demo_navigation_deeplink_example_home_app">Beranda · tab Aplikasi</string>
+    <string name="demo_navigation_deeplink_example_home_app">Beranda · tab Alat</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Beranda · tab Prompt</string>
     <string name="demo_navigation_deeplink_example_home_text">Beranda · tab Catatan</string>
     <string name="demo_navigation_deeplink_example_home_web">Beranda · tab Web</string>
     <string name="home_tab_agent_title">Agen</string>
     <string name="home_tab_agent_description">Buka tab Agen di Beranda untuk menjelajahi agen AI yang tersedia.</string>
-    <string name="home_tab_app_title">Aplikasi</string>
-    <string name="home_tab_app_description">Buka tab Aplikasi di Beranda untuk menjelajahi alat umum dan aplikasi mini.</string>
+    <string name="home_tab_app_title">Alat</string>
+    <string name="home_tab_app_description">Buka tab Alat di Beranda untuk menjelajahi alat umum dan aplikasi mini.</string>
     <string name="home_tab_prompt_title">Prompt</string>
     <string name="home_tab_prompt_description">Buka tab Prompt di Beranda untuk menjelajahi dan mengelola prompt AI.</string>
     <string name="home_tab_text_title">Catatan</string>

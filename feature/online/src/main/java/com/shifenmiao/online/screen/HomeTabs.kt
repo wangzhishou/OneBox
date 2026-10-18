@@ -42,7 +42,7 @@ internal val homeTabs: List<HomeTab> = listOf(
     ),
     HomeTab(
         key = HomeTabKey.APP,
-        titleRes = CoreR.string.type_default,
+        titleRes = CoreR.string.home_tab_tools,
         kind = HomeTabKind.ListByType(ListItemType.NORMAL),
     ),
     HomeTab(

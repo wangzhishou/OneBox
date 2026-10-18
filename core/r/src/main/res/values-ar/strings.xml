@@ -1605,6 +1605,7 @@
     <string name="ai_chat_message_content_missing">محتوى الرسالة مفقود</string>
     <string name="ai_execution_paused_friendly_summary">نفّذ الذكاء الاصطناعي عدة جولات من استدعاءات الأدوات وقد يحتاج إلى خطوات إضافية لإكمال المهمة. تم حفظ المحتوى المُنشأ — يمكنك المتابعة أو الإيقاف.</string>
     <string name="ai_execution_action_continue_execution">متابعة التنفيذ</string>
+    <string name="home_tab_tools">الأدوات</string>
     <string name="home_tab_web_title">المواقع</string>
     <string name="home_tab_tags_manage">إدارة الوسوم</string>
     <string name="home_chip_all">الكل</string>
@@ -1728,14 +1729,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">الروابط العميقة لتبويب الرئيسية</string>
     <string name="demo_navigation_deeplink_example_home_default">الرئيسية (التبويب الافتراضي)</string>
     <string name="demo_navigation_deeplink_example_home_agent">الرئيسية · تبويب الوكلاء</string>
-    <string name="demo_navigation_deeplink_example_home_app">الرئيسية · تبويب التطبيقات</string>
+    <string name="demo_navigation_deeplink_example_home_app">الرئيسية · تبويب الأدوات</string>
     <string name="demo_navigation_deeplink_example_home_prompt">الرئيسية · تبويب المُوجِّهات</string>
     <string name="demo_navigation_deeplink_example_home_text">الرئيسية · تبويب الملاحظات</string>
     <string name="demo_navigation_deeplink_example_home_web">الرئيسية · تبويب الويب</string>
     <string name="home_tab_agent_title">الوكلاء</string>
     <string name="home_tab_agent_description">افتح تبويب الوكلاء في الرئيسية لتصفّح وكلاء الذكاء الاصطناعي المتاحين.</string>
-    <string name="home_tab_app_title">التطبيقات</string>
-    <string name="home_tab_app_description">افتح تبويب التطبيقات في الرئيسية لتصفّح الأدوات الشائعة والتطبيقات المصغّرة.</string>
+    <string name="home_tab_app_title">الأدوات</string>
+    <string name="home_tab_app_description">افتح تبويب الأدوات في الرئيسية لتصفّح الأدوات الشائعة والتطبيقات المصغّرة.</string>
     <string name="home_tab_prompt_title">المُوجِّهات</string>
     <string name="home_tab_prompt_description">افتح تبويب المُوجِّهات في الرئيسية لتصفّح مُوجِّهات الذكاء الاصطناعي وإدارتها.</string>
     <string name="home_tab_text_title">الملاحظات</string>

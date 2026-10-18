@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">Содержимое сообщения недоступно</string>
     <string name="ai_execution_paused_friendly_summary">ИИ выполнил несколько раундов вызовов инструментов, и для завершения может потребоваться больше шагов. Сгенерированный контент сохранен — вы можете продолжить или остановиться.</string>
     <string name="ai_execution_action_continue_execution">Продолжить выполнение</string>
+    <string name="home_tab_tools">Инструменты</string>
     <string name="home_tab_web_title">Веб-сайты</string>
     <string name="home_tab_tags_manage">Управление тегами</string>
     <string name="home_chip_all">Все</string>
@@ -1616,14 +1617,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">Глубокие ссылки на вкладку «Главная»</string>
     <string name="demo_navigation_deeplink_example_home_default">Главная (вкладка по умолчанию)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Главная · Вкладка «Агенты»</string>
-    <string name="demo_navigation_deeplink_example_home_app">Главная · Вкладка «Приложения»</string>
+    <string name="demo_navigation_deeplink_example_home_app">Главная · Вкладка «Инструменты»</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Главная · Вкладка «Промпты»</string>
     <string name="demo_navigation_deeplink_example_home_text">Главная · Вкладка «Заметки»</string>
     <string name="demo_navigation_deeplink_example_home_web">Главная · Вкладка «Веб»</string>
     <string name="home_tab_agent_title">Агенты</string>
     <string name="home_tab_agent_description">Откройте вкладку «Агенты» на главной странице, чтобы просмотреть доступных ИИ-агентов.</string>
-    <string name="home_tab_app_title">Приложения</string>
-    <string name="home_tab_app_description">Откройте вкладку «Приложения» на главной странице, чтобы просмотреть распространенные инструменты и мини-приложения.</string>
+    <string name="home_tab_app_title">Инструменты</string>
+    <string name="home_tab_app_description">Откройте вкладку «Инструменты» на главной странице, чтобы просмотреть распространенные инструменты и мини-приложения.</string>
     <string name="home_tab_prompt_title">Промпты</string>
     <string name="home_tab_prompt_description">Откройте вкладку «Промпты» на главной странице, чтобы просмотреть и управлять ИИ-промптами.</string>
     <string name="home_tab_text_title">Заметки</string>

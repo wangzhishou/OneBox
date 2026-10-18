@@ -288,7 +288,7 @@ private fun CreationIcon(
 private fun listTypeDisplayName(listType: ListItemType): String = stringResource(
     when (listType) {
         ListItemType.NOTE -> R.string.record_tab_title
-        ListItemType.NORMAL -> R.string.type_default
+        ListItemType.NORMAL -> R.string.home_tab_tools
         ListItemType.AGENT -> R.string.type_agent
         ListItemType.PROMPT -> R.string.type_prompt
         ListItemType.HTML -> R.string.home_tab_web_title

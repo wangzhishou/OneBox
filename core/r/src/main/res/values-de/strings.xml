@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">Nachrichteninhalt nicht verfügbar</string>
     <string name="ai_execution_paused_friendly_summary">Die KI hat mehrere Runden von Tool-Aufrufen ausgeführt und benötigt möglicherweise weitere Schritte, um abzuschließen. Der generierte Inhalt wurde gespeichert – Sie können fortfahren oder stoppen.</string>
     <string name="ai_execution_action_continue_execution">Ausführung fortsetzen</string>
+    <string name="home_tab_tools">Werkzeuge</string>
     <string name="home_tab_web_title">Websites</string>
     <string name="home_tab_tags_manage">Tags verwalten</string>
     <string name="home_chip_all">Alle</string>
@@ -1614,14 +1615,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">Home-Tab Deeplinks</string>
     <string name="demo_navigation_deeplink_example_home_default">Home (Standard-Tab)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Home · Agents-Tab</string>
-    <string name="demo_navigation_deeplink_example_home_app">Home · Apps-Tab</string>
+    <string name="demo_navigation_deeplink_example_home_app">Home · Tools-Tab</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Home · Prompts-Tab</string>
     <string name="demo_navigation_deeplink_example_home_text">Home · Notizen-Tab</string>
     <string name="demo_navigation_deeplink_example_home_web">Home · Web-Tab</string>
     <string name="home_tab_agent_title">Agents</string>
     <string name="home_tab_agent_description">Öffnen Sie den Agents-Tab auf Home, um verfügbare KI-Agenten zu durchsuchen.</string>
-    <string name="home_tab_app_title">Apps</string>
-    <string name="home_tab_app_description">Öffnen Sie den Apps-Tab auf Home, um gängige Tools und Mini-Apps zu durchsuchen.</string>
+    <string name="home_tab_app_title">Werkzeuge</string>
+    <string name="home_tab_app_description">Öffnen Sie den Tools-Tab auf Home, um gängige Tools und Mini-Apps zu durchsuchen.</string>
     <string name="home_tab_prompt_title">Prompts</string>
     <string name="home_tab_prompt_description">Öffnen Sie den Prompts-Tab auf Home, um KI-Prompts zu durchsuchen und zu verwalten.</string>
     <string name="home_tab_text_title">Notizen</string>

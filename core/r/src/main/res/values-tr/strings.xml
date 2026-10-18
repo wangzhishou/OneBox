@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">Mesaj içeriği kullanılamıyor</string>
     <string name="ai_execution_paused_friendly_summary">AI birden fazla araç çağrısı turu gerçekleştirdi ve bitirmek için daha fazla adıma ihtiyaç duyabilir. Oluşturulan içerik kaydedildi — devam edebilir veya durdurabilirsiniz.</string>
     <string name="ai_execution_action_continue_execution">Yürütmeye devam et</string>
+    <string name="home_tab_tools">Araçlar</string>
     <string name="home_tab_web_title">Web Siteleri</string>
     <string name="home_tab_tags_manage">Etiketleri yönet</string>
     <string name="home_chip_all">Tümü</string>
@@ -1614,14 +1615,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">Ana sayfa sekmesi derin bağlantıları</string>
     <string name="demo_navigation_deeplink_example_home_default">Ana sayfa (varsayılan sekme)</string>
     <string name="demo_navigation_deeplink_example_home_agent">Ana sayfa · Ajanlar sekmesi</string>
-    <string name="demo_navigation_deeplink_example_home_app">Ana sayfa · Uygulamalar sekmesi</string>
+    <string name="demo_navigation_deeplink_example_home_app">Ana sayfa · Araçlar sekmesi</string>
     <string name="demo_navigation_deeplink_example_home_prompt">Ana sayfa · Komutlar sekmesi</string>
     <string name="demo_navigation_deeplink_example_home_text">Ana sayfa · Notlar sekmesi</string>
     <string name="demo_navigation_deeplink_example_home_web">Ana sayfa · Web sekmesi</string>
     <string name="home_tab_agent_title">Ajanlar</string>
     <string name="home_tab_agent_description">Mevcut AI ajanlarını görmek için Ana sayfadaki Ajanlar sekmesini açın.</string>
-    <string name="home_tab_app_title">Uygulamalar</string>
-    <string name="home_tab_app_description">Yaygın araçları ve mini uygulamaları görmek için Ana sayfadaki Uygulamalar sekmesini açın.</string>
+    <string name="home_tab_app_title">Araçlar</string>
+    <string name="home_tab_app_description">Yaygın araçları ve mini uygulamaları görmek için Ana sayfadaki Araçlar sekmesini açın.</string>
     <string name="home_tab_prompt_title">Komutlar</string>
     <string name="home_tab_prompt_description">AI komutlarını görmek ve yönetmek için Ana sayfadaki Komutlar sekmesini açın.</string>
     <string name="home_tab_text_title">Notlar</string>

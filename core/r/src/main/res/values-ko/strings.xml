@@ -1503,6 +1503,7 @@
     <string name="ai_chat_message_content_missing">메시지 내용 없음</string>
     <string name="ai_execution_paused_friendly_summary">AI가 여러 차례 도구 호출을 실행했으며 완료하려면 추가 단계가 필요할 수 있습니다. 생성된 내용이 저장되었습니다 — 계속하거나 중지할 수 있습니다.</string>
     <string name="ai_execution_action_continue_execution">계속 실행</string>
+    <string name="home_tab_tools">도구</string>
     <string name="home_tab_web_title">웹사이트</string>
     <string name="home_tab_tags_manage">태그 관리</string>
     <string name="home_chip_all">전체</string>
@@ -1613,14 +1614,14 @@
     <string name="demo_navigation_deeplink_section_home_tab">홈 탭 딥링크</string>
     <string name="demo_navigation_deeplink_example_home_default">홈 (기본 탭)</string>
     <string name="demo_navigation_deeplink_example_home_agent">홈 · 에이전트 탭</string>
-    <string name="demo_navigation_deeplink_example_home_app">홈 · 앱 탭</string>
+    <string name="demo_navigation_deeplink_example_home_app">홈 · 도구 탭</string>
     <string name="demo_navigation_deeplink_example_home_prompt">홈 · 프롬프트 탭</string>
     <string name="demo_navigation_deeplink_example_home_text">홈 · 메모 탭</string>
     <string name="demo_navigation_deeplink_example_home_web">홈 · 웹 탭</string>
     <string name="home_tab_agent_title">에이전트</string>
     <string name="home_tab_agent_description">홈에서 에이전트 탭을 열어 사용 가능한 AI 에이전트를 둘러보세요.</string>
-    <string name="home_tab_app_title">앱</string>
-    <string name="home_tab_app_description">홈에서 앱 탭을 열어 일반적인 도구와 미니 앱을 둘러보세요.</string>
+    <string name="home_tab_app_title">도구</string>
+    <string name="home_tab_app_description">홈에서 도구 탭을 열어 일반적인 도구와 미니 앱을 둘러보세요.</string>
     <string name="home_tab_prompt_title">프롬프트</string>
     <string name="home_tab_prompt_description">홈에서 프롬프트 탭을 열어 AI 프롬프트를 둘러보고 관리하세요.</string>
     <string name="home_tab_text_title">메모</string>
