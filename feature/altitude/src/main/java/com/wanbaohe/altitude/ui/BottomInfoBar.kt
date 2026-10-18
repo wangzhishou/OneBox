@@ -30,6 +30,9 @@ import com.wanbaohe.core.weather.domain.model.WeatherInfo
 import com.shifenmiao.core.R as CoreR
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineShare
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineSave
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * 观测时间 + 更新时间信息（参与截图）
@@ -40,8 +43,12 @@ internal fun ObservationTimeBar(
     modifier: Modifier = Modifier
 ) {
     if (weather == null) return
-    if (weather.obsTime.isBlank() && weather.updateTime.isBlank()) return
+    val observation = displayClock(weather.obsTime)
+    val updated = displayClock(weather.updateTime)
+    if (observation.isBlank() && updated.isBlank()) return
     val onSurface = MaterialTheme.colorScheme.onSurface
+    val label = MaterialTheme.typography.labelSmall
+    val labelColor = onSurface.copy(alpha = 0.5f)
 
     Row(
         modifier = modifier
@@ -53,26 +60,45 @@ internal fun ObservationTimeBar(
         Canvas(modifier = Modifier.size(6.dp)) {
             drawCircle(color = Color(0xFF4CAF50))
         }
-        Spacer(Modifier.width(8.dp))
-        Text(
-            text = "${stringResource(CoreR.string.altitude_observation)}: ${weather.obsTime.takeLast(5)}",
-            style = MaterialTheme.typography.labelSmall,
-            color = onSurface.copy(alpha = 0.5f)
-        )
-        Spacer(Modifier.width(8.dp))
-        Text(
-            text = "|",
-            style = MaterialTheme.typography.labelSmall,
-            color = onSurface.copy(alpha = 0.2f)
-        )
-        Spacer(Modifier.width(8.dp))
-        Text(
-            text = "${stringResource(CoreR.string.altitude_updated)}: ${weather.updateTime.takeLast(5)}",
-            style = MaterialTheme.typography.labelSmall,
-            color = onSurface.copy(alpha = 0.5f)
-        )
+        if (observation.isNotBlank()) {
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "${stringResource(CoreR.string.altitude_observation)}: $observation",
+                style = label,
+                color = labelColor
+            )
+        }
+        if (observation.isNotBlank() && updated.isNotBlank()) {
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "|",
+                style = label,
+                color = onSurface.copy(alpha = 0.2f)
+            )
+        }
+        if (updated.isNotBlank()) {
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "${stringResource(CoreR.string.altitude_updated)}: $updated",
+                style = label,
+                color = labelColor
+            )
+        }
     }
 }
+
+/** 今天只显示时分，更早的带上月日。认不出日期时取末尾 5 位。 */
+private fun displayClock(raw: String): String {
+    val value = raw.trim()
+    if (value.isEmpty()) return ""
+    val match = CLOCK_IN_TEXT.find(value) ?: return value.takeLast(5)
+    val date = "${match.groupValues[1]}-${match.groupValues[2]}-${match.groupValues[3]}"
+    val clock = match.groupValues[4]
+    val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    return if (date == today) clock else "${match.groupValues[2]}-${match.groupValues[3]} $clock"
+}
+
+private val CLOCK_IN_TEXT = Regex("""(\d{4})-(\d{2})-(\d{2})[ T](\d{2}:\d{2})""")
 
 /**
  * 分享 + 保存按钮栏（不参与截图）

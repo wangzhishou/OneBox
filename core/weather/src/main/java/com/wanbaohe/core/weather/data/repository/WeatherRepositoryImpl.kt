@@ -11,6 +11,7 @@ import com.wanbaohe.core.weather.domain.model.CityInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.wanbaohe.core.weather.domain.model.DailyWeatherInfo
+import com.wanbaohe.core.weather.domain.model.LatestPlace
 import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
 import java.math.RoundingMode
@@ -92,11 +93,28 @@ class WeatherRepositoryImpl(
     }
 
     override suspend fun getPlaceWeather(lat: Double, lon: Double): Result<PlaceWeather> {
+        val now = System.currentTimeMillis()
         val cacheKey = placeCacheKey(lat, lon)
-        weatherCache.getPlaceWeather(cacheKey)?.let { return Result.success(it) }
+        val cached = weatherCache.peekPlaceWeather(cacheKey)
+        if (cached != null && weatherCache.isFresh(cached.timestamp, now)) {
+            return Result.success(cached.data.withClientUpdatedAt(cached.timestamp))
+        }
         val result = dataSource.getPlaceWeather(lat, lon)
-        result.onSuccess { weatherCache.savePlaceWeather(cacheKey, it) }
+        if (result.isSuccess) {
+            val weather = result.getOrThrow()
+            weatherCache.savePlaceWeather(cacheKey, weather)
+            return Result.success(weather.withClientUpdatedAt(now))
+        }
+        if (cached != null) {
+            return Result.success(cached.data.withClientUpdatedAt(cached.timestamp))
+        }
         return result
+    }
+
+    override suspend fun latestPlace(): LatestPlace? = weatherCache.latestPlace()
+
+    override suspend fun rememberLatestPlace(city: CityInfo, place: PlaceWeather, updatedAt: Long) {
+        weatherCache.saveLatest(LatestPlace(city = city, place = place, updatedAt = updatedAt))
     }
 
     private fun placeCacheKey(lat: Double, lon: Double): String {

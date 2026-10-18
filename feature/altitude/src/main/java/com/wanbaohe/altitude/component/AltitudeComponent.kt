@@ -28,11 +28,13 @@ import com.wanbaohe.core.weather.domain.repository.WeatherRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 
 
 private const val TREND_LIMIT = 50
@@ -160,6 +162,9 @@ class AltitudeComponent @AssistedInject internal constructor(
     private var savedWeatherFallbackStarted = false
 
     init {
+        componentScope.launch(ioDispatcher) {
+            restoreLatestWeather()
+        }
         if (gpsSource.hasPermission()) {
             startGpsTracking()
             startBarometerFallback()
@@ -171,27 +176,41 @@ class AltitudeComponent @AssistedInject internal constructor(
         repository.getAll()
             .onEach { records ->
                 val trend = records.take(TREND_LIMIT).reversed().map { it.altitudeMeters }
-                val current = _uiState.value
-                if (current.locationPermissionGranted) {
-                    _uiState.value = current.copy(history = records, trendPoints = trend)
-                } else {
-                    showSavedAltitude(current.copy(history = records, trendPoints = trend), records.firstOrNull())
-                    if (networkCityFailed) {
-                        fallbackSavedWeather(records.firstOrNull())
-                    }
+                _uiState.update { current ->
+                    val base = current.copy(history = records, trendPoints = trend)
+                    if (current.locationPermissionGranted) base else base.withSavedAltitude(records.firstOrNull())
+                }
+                if (!_uiState.value.locationPermissionGranted && networkCityFailed) {
+                    fallbackSavedWeather(records.firstOrNull())
                 }
             }
             .catch { }
             .launchIn(componentScope)
     }
 
+    /** 进页面先摆上次成功的天气，刷新失败时也留着。已有更新的结果就不覆盖。 */
+    private suspend fun restoreLatestWeather() {
+        val latest = weatherRepository.latestPlace() ?: return
+        val place = latest.place.withClientUpdatedAt(latest.updatedAt)
+        if (place.current.temp.isBlank() && place.current.text.isBlank()) return
+        _uiState.update { current ->
+            if (current.placeWeather != null) return@update current
+            current.copy(
+                cityInfo = latest.city.takeIf { it.name.isNotBlank() } ?: current.cityInfo,
+                placeWeather = place,
+                weatherInfo = place.current,
+                weatherUnavailable = false,
+            )
+        }
+    }
+
     /**
      * 没有定位权限时，海拔数字可以先摆上次保存的读数。
-     * 天气不跟这条记录走，改由 [requestCurrentCityWeather] 按当前城市拉取。
+     * 天气不跟这条记录走，保留当前已经展示的缓存。
      */
-    private fun showSavedAltitude(base: AltitudeUiState, record: AltitudeRecord?) {
+    private fun AltitudeUiState.withSavedAltitude(record: AltitudeRecord?): AltitudeUiState {
         if (record == null) {
-            _uiState.value = base.copy(
+            return copy(
                 currentAltitudeMeters = null,
                 accuracyMeters = 0f,
                 latitude = null,
@@ -199,9 +218,8 @@ class AltitudeComponent @AssistedInject internal constructor(
                 altitudeSource = null,
                 isAcquiring = false,
             )
-            return
         }
-        _uiState.value = base.copy(
+        return copy(
             currentAltitudeMeters = record.altitudeMeters,
             accuracyMeters = record.accuracyMeters,
             latitude = record.latitude,
@@ -224,8 +242,10 @@ class AltitudeComponent @AssistedInject internal constructor(
             val record = _uiState.value.history.firstOrNull()
             if (record?.latitude != null && record.longitude != null) {
                 fallbackSavedWeather(record)
-            } else if (_uiState.value.placeWeather == null) {
-                _uiState.value = _uiState.value.copy(weatherUnavailable = true)
+            } else {
+                _uiState.update { state ->
+                    if (state.placeWeather == null) state.copy(weatherUnavailable = true) else state
+                }
             }
         }
     }
@@ -237,8 +257,12 @@ class AltitudeComponent @AssistedInject internal constructor(
         savedWeatherFallbackStarted = true
         componentScope.launch(ioDispatcher) {
             val city = weatherRepository.getCityAtLocation(lat, lon).getOrNull() ?: run {
-                if (!_uiState.value.locationPermissionGranted && _uiState.value.placeWeather == null) {
-                    _uiState.value = _uiState.value.copy(weatherUnavailable = true)
+                _uiState.update { state ->
+                    if (!state.locationPermissionGranted && state.placeWeather == null) {
+                        state.copy(weatherUnavailable = true)
+                    } else {
+                        state
+                    }
                 }
                 return@launch
             }
@@ -248,63 +272,64 @@ class AltitudeComponent @AssistedInject internal constructor(
 
     private suspend fun publishCityWeather(city: CityInfo) {
         if (_uiState.value.locationPermissionGranted) return
-        _uiState.value = _uiState.value.copy(cityInfo = city)
         val place = weatherRepository.getPlaceWeather(city.lat, city.lon)
         if (_uiState.value.locationPermissionGranted) return
-        place.onSuccess {
-            _uiState.value = _uiState.value.copy(
-                placeWeather = it,
-                weatherInfo = it.current,
-                weatherUnavailable = false,
-            )
-        }.onFailure {
-            if (_uiState.value.placeWeather == null && !_uiState.value.locationPermissionGranted) {
-                _uiState.value = _uiState.value.copy(weatherUnavailable = true)
+        applyConfirmedSnapshot(city, place) { !_uiState.value.locationPermissionGranted }
+    }
+
+    /**
+     * 城市和天气一起请求。只有这份天气确认属于该城市时才替换当前快照。
+     * 请求失败时保留原来的城市、天气和更新时间。
+     */
+    private fun fetchPlaceSnapshot(lat: Double, lon: Double) {
+        componentScope.launch(ioDispatcher) {
+            val cityDeferred = async { weatherRepository.getCityAtLocation(lat, lon).getOrNull() }
+            val weatherDeferred = async { weatherRepository.getPlaceWeather(lat, lon) }
+            val city = cityDeferred.await()
+            val weather = weatherDeferred.await()
+            if (city != null) makeLog("City: ${city.name}, ${city}")
+            weather.exceptionOrNull()?.let { makeLog("Weather error: ${it.message}") }
+            applyConfirmedSnapshot(city, weather) { stillAt(lat, lon) }
+        }
+    }
+
+    private suspend fun applyConfirmedSnapshot(
+        city: CityInfo?,
+        weather: Result<PlaceWeather>,
+        stillValid: () -> Boolean,
+    ) {
+        if (!stillValid()) return
+        val place = weather.getOrNull()
+        val confirmedCity = city?.takeIf { it.name.isNotBlank() || it.id.isNotBlank() }
+        if (place != null && confirmedCity != null) {
+            if (!stillValid()) return
+            _uiState.update { state ->
+                state.copy(
+                    cityInfo = confirmedCity,
+                    placeWeather = place,
+                    weatherInfo = place.current,
+                    weatherUnavailable = false,
+                )
             }
+            val updatedAt = place.clientUpdatedAtMillis()
+            if (updatedAt > 0L) {
+                weatherRepository.rememberLatestPlace(confirmedCity, place, updatedAt)
+            }
+            return
         }
-    }
-
-    /**
-     * 获取城市信息并更新到 UI 状态
-     */
-    private fun fetchCityInfo() {
-        val lon = _uiState.value.longitude ?: return
-        val lat = _uiState.value.latitude ?: return
-        componentScope.launch {
-            weatherRepository.getCityAtLocation(lat, lon)
-                .onSuccess { cityInfo ->
-                    if (!stillAt(lat, lon)) return@onSuccess
-                    makeLog("City: ${cityInfo.name}, ${cityInfo}")
-                    _uiState.value = _uiState.value.copy(cityInfo = cityInfo)
-                }
-                .onFailure { e ->
-                    makeLog("City error: ${e.message}")
-                }
+        if (place != null) {
+            _uiState.update { state ->
+                if (state.placeWeather != null) state
+                else state.copy(
+                    placeWeather = place,
+                    weatherInfo = place.current,
+                    weatherUnavailable = false,
+                )
+            }
+            return
         }
-    }
-
-    /**
-     * 获取当前天气信息并更新到 UI 状态
-     */
-    private fun fetchWeatherNow() {
-        val lon = _uiState.value.longitude ?: return
-        val lat = _uiState.value.latitude ?: return
-        componentScope.launch {
-            weatherRepository.getPlaceWeather(lat, lon)
-                .onSuccess { place ->
-                    if (!stillAt(lat, lon)) return@onSuccess
-                    _uiState.value = _uiState.value.copy(
-                        placeWeather = place,
-                        weatherInfo = place.current,
-                        weatherUnavailable = false,
-                    )
-                }
-                .onFailure { e ->
-                    makeLog("Weather error: ${e.message}")
-                    if (_uiState.value.placeWeather == null && stillAt(lat, lon)) {
-                        _uiState.value = _uiState.value.copy(weatherUnavailable = true)
-                    }
-                }
+        _uiState.update { state ->
+            if (state.placeWeather == null) state.copy(weatherUnavailable = true) else state
         }
     }
 
@@ -327,8 +352,7 @@ class AltitudeComponent @AssistedInject internal constructor(
         if (placeKey == lastWeatherPlaceKey && now - lastWeatherFetchMs < WEATHER_THROTTLE_MS) return
         lastWeatherPlaceKey = placeKey
         lastWeatherFetchMs = now
-        fetchCityInfo()
-        fetchWeatherNow()
+        fetchPlaceSnapshot(lat, lon)
     }
 
     // ─── 事件 ──────────────────────────────────────────────────────────────
