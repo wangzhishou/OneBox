@@ -52,6 +52,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -665,14 +666,20 @@ fun RobotReasoningHeader(
                         style = MaterialTheme.typography.titleSmall,
                         color = contentColor,
                     )
-                    if (!expanded && reasoningHeader.preview.isNotBlank()) {
+                    if (!expanded) {
+                        // 折叠态第二行始终占一行高度。预览从空到有内容时不再把下面的消息顶下去。
+                        val previewStyle = MaterialTheme.typography.bodySmall
+                        val previewHeight = with(LocalDensity.current) {
+                            previewStyle.lineHeight.toDp()
+                        }
                         Text(
                             text = reasoningHeader.preview,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = if (isStreaming) {
-                                contentColor.copy(alpha = 0.85f)
-                            } else {
-                                contentColor
+                            modifier = Modifier.height(previewHeight),
+                            style = previewStyle,
+                            color = when {
+                                reasoningHeader.preview.isBlank() -> Color.Transparent
+                                isStreaming -> contentColor.copy(alpha = 0.85f)
+                                else -> contentColor
                             },
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis

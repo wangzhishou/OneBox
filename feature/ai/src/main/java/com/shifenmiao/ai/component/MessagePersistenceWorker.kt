@@ -49,7 +49,12 @@ class MessagePersistenceWorker(
 ) {
     companion object {
         /** Token 预警阈值 */
-        const val TOKEN_WARNING_THRESHOLD = 10_000
+        const val TOKEN_WARNING_THRESHOLD = 20_000
+
+        /**
+         * 同一会话只提示一次。超过阈值后每轮结束都弹，会盖住输入区。
+         */
+        private val warnedConversationIds = mutableSetOf<String>()
     }
 
     /**
@@ -345,15 +350,20 @@ class MessagePersistenceWorker(
         }
     }
 
-    /** Token 预警 */
+    /**
+     * Token 预警。同一会话越过阈值后只提示一次，避免每轮结束都挡住聊天。
+     */
     fun checkAndWarnTokenUsage() {
         val totalTokens = sharedState.answerMessageEntity.value.totalTokens
-        if (totalTokens >= TOKEN_WARNING_THRESHOLD) {
-            sharedState.componentScope.launch(Dispatchers.Main) {
-                ActionUtils.showToast(
-                    sharedState.applicationContext.getString(R.string.ai_chat_token_warning, totalTokens)
-                )
-            }
+        if (totalTokens < TOKEN_WARNING_THRESHOLD) return
+        val conversationId = sharedState.conversation.value.id
+        synchronized(warnedConversationIds) {
+            if (!warnedConversationIds.add(conversationId)) return
+        }
+        sharedState.componentScope.launch(Dispatchers.Main) {
+            ActionUtils.showToast(
+                sharedState.applicationContext.getString(R.string.ai_chat_token_warning, totalTokens)
+            )
         }
     }
 
