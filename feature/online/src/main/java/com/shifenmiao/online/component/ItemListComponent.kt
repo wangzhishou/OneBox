@@ -35,15 +35,13 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 class ItemListComponent @AssistedInject internal constructor(
@@ -145,9 +143,6 @@ class ItemListComponent @AssistedInject internal constructor(
 
     data class CommentsChild(val component: CommentsComponent)
 
-    private val _scrollToTopEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
-    val scrollToTopEvent: SharedFlow<Unit> = _scrollToTopEvent.asSharedFlow()
-
     private val _myArticleItems = MutableStateFlow<List<ItemWithCategoriesAndStats>>(emptyList())
     val myArticleItems: StateFlow<List<ItemWithCategoriesAndStats>> = _myArticleItems.asStateFlow()
 
@@ -179,6 +174,23 @@ class ItemListComponent @AssistedInject internal constructor(
         }
     }
 
+    /**
+     * 视口还停在列表头部时为 true。
+     * 同步写入会让 Room Paging 以当前卡片为锚重载，并把锚点放进新窗口中间，
+     * 最新的条目就排到视口上方。头部跟随期间刷新从列表开头取，见 [HeadFollowPagingSource]。
+     */
+    private val followsHeadFlags = ConcurrentHashMap<PageKey, AtomicBoolean>()
+
+    private fun followsHeadFlag(listType: Int, chipCategoryId: Int?): AtomicBoolean =
+        followsHeadFlags.computeIfAbsent(PageKey(listType, chipCategoryId)) { AtomicBoolean(true) }
+
+    fun followsHead(listType: ListItemType, chipCategoryId: Int?): Boolean =
+        followsHeadFlag(listType.id, chipCategoryId).get()
+
+    fun setFollowsHead(listType: ListItemType, chipCategoryId: Int?, follows: Boolean) {
+        followsHeadFlag(listType.id, chipCategoryId).set(follows)
+    }
+
     private fun buildItemsFlow(
         listType: ListItemType,
         chipCategoryId: Int?,
@@ -190,8 +202,11 @@ class ItemListComponent @AssistedInject internal constructor(
                 initialLoadSize = 40,
             ),
             pagingSourceFactory = {
-                appDatabase.itemEntityDao()
-                    .pagingSourceByListTypeAndOptionalCategory(listType.id, chipCategoryId)
+                HeadFollowPagingSource(
+                    delegate = appDatabase.itemEntityDao()
+                        .pagingSourceByListTypeAndOptionalCategory(listType.id, chipCategoryId),
+                    refreshFromHead = { followsHeadFlag(listType.id, chipCategoryId).get() },
+                )
             },
         ).flow
             .map { paging ->

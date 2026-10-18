@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,11 +40,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -233,6 +239,7 @@ fun PagingDataItemScreen(
                     pagingItems = pagingItems,
                     isGrid = isGrid,
                     listType = listType,
+                    chipCategoryId = selectedChipId,
                     onCategoryBadgeTap = ::onCategoryBadgeTap,
                     onManualCreate = { onNavigator(createScreen) },
                     onAiCreate = aiCreateAction,
@@ -415,6 +422,7 @@ private fun ItemGrid(
     pagingItems: LazyPagingItems<ItemWithCategoriesAndStats>,
     isGrid: Boolean,
     listType: ListItemType,
+    chipCategoryId: Int?,
     onCategoryBadgeTap: (Int?) -> Unit,
     onManualCreate: () -> Unit,
     onAiCreate: () -> Unit,
@@ -432,11 +440,16 @@ private fun ItemGrid(
     val isNoteTab = listType == ListItemType.NOTE
     val cardMaxTitleLines = if (isNoteTab) 2 else 1
 
-    LaunchedEffect(itemListComponent) {
-        itemListComponent.scrollToTopEvent.collect {
-            gridState.animateScrollToItem(0)
-        }
+    val headPin = remember(listType.id, chipCategoryId) { HeadPin() }
+    val headFollow = remember(listType.id, chipCategoryId) {
+        HeadFollowConnection(
+            atHead = { gridState.isAtListHead() },
+            onUserSettled = { atHead ->
+                itemListComponent.setFollowsHead(listType, chipCategoryId, atHead)
+            },
+        )
     }
+    PinListToNewestHead(headPin, gridState, pagingItems, itemListComponent, listType, chipCategoryId)
 
     DeleteConfirmDialog(
         onDelete = {
@@ -451,6 +464,7 @@ private fun ItemGrid(
         state = gridState,
         modifier = Modifier
             .fillMaxHeight()
+            .nestedScroll(headFollow)
             .padding(bottom = HomeGridBottomInset),
         columns = gridColumns(isGrid),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -522,6 +536,93 @@ private fun ItemGrid(
                 )
             }
         }
+    }
+}
+
+/**
+ * 打开后同步写回时，列表还停在头部就把下一次测量钉在第 0 项。
+ *
+ * 卡片有稳定 key，数据一变，瀑布流会把视口留在原来那张卡片上。
+ * 刷新窗口如果以那张卡片为中心，最新的就在它上面。这里在测量前声明
+ * 「这次从第 0 项排」，用的是条目下标，不是像素坐标。
+ * 完全贴顶才算头部：第 0 项还露着但已经滑出一段，不算。
+ * 人离开头部后（[ItemListComponent.followsHead] 为 false）就不再钉。
+ */
+@Composable
+private fun PinListToNewestHead(
+    gate: HeadPin,
+    gridState: LazyStaggeredGridState,
+    pagingItems: LazyPagingItems<ItemWithCategoriesAndStats>,
+    itemListComponent: ItemListComponent,
+    listType: ListItemType,
+    chipCategoryId: Int?,
+) {
+    val refreshLoad = pagingItems.loadState.refresh
+    val itemCount = pagingItems.itemCount
+    val headId = pagingItems.peek(0)?.item?.id
+    // 在组合阶段读取，滑动结束会重组并再跑一次 SideEffect。
+    // 只在 SideEffect 里读的话，这次刷新赶上滑动时 armed 会悬着，落点出来也不补。
+    val scrolling = gridState.isScrollInProgress
+    SideEffect {
+        if (refreshLoad is LoadState.Loading) gate.sawLoading = true
+        if (refreshLoad is LoadState.NotLoading && gate.sawLoading) {
+            gate.sawLoading = false
+            gate.armed = true
+        }
+        val atHead = gridState.isAtListHead()
+        // 静止时按真实视口同步标记：进程恢复到中部、轻微下滑、读屏滚动都写得上。
+        // 滑动过程中先不动，等落点再定；落点不在头部就放弃这次 pin。
+        if (!scrolling) {
+            itemListComponent.setFollowsHead(listType, chipCategoryId, atHead)
+        }
+        if (!atHead || scrolling || itemCount == 0 || headId == null) {
+            if (!atHead && !scrolling) {
+                gate.armed = false
+                if (headId != null) gate.lastHeadId = headId
+            }
+            return@SideEffect
+        }
+        // 初次出现只记下头部，不打断第一次布局。
+        // 贴顶时 index 和 offset 都是 0，这一次请求会丢掉上次布局记住的 key。
+        // 第 0 项还露着但有偏移时不会走到这里（已经不算头部）。
+        val headChanged = headId != gate.lastHeadId
+        if (gate.armed || (headChanged && gate.lastHeadId != null)) {
+            gridState.requestScrollToItem(0)
+        }
+        gate.armed = false
+        gate.lastHeadId = headId
+    }
+}
+
+/** 第 0 项贴住容器起点。只看 index 会把「第一张还露着、但已经往上滑了一截」当成还在头部。 */
+private fun LazyStaggeredGridState.isAtListHead(): Boolean =
+    firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
+
+private class HeadPin {
+    var sawLoading: Boolean = false
+    var armed: Boolean = false
+    var lastHeadId: Int? = null
+}
+
+/** 手指滑离贴顶位置就停止跟随；滑回贴顶或惯性落在贴顶上再恢复。 */
+private class HeadFollowConnection(
+    private val atHead: () -> Boolean,
+    private val onUserSettled: (Boolean) -> Unit,
+) : NestedScrollConnection {
+    override fun onPostScroll(
+        consumed: Offset,
+        available: Offset,
+        source: NestedScrollSource,
+    ): Offset {
+        if (source == NestedScrollSource.UserInput && consumed != Offset.Zero) {
+            onUserSettled(atHead())
+        }
+        return Offset.Zero
+    }
+
+    override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
+        onUserSettled(atHead())
+        return Velocity.Zero
     }
 }
 
