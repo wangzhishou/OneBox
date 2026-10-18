@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import com.smarttoolfactory.colordetector.parser.ColorNameParser
@@ -242,7 +243,9 @@ private fun ColorEditableField(
                         if (!it.isFocused) onLoseFocus()
                     },
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    // 色值是多段数字,在 RTL 段落里会被 bidi 反序(71, 93, 146 -> 146, 93, 71),强制 LTR 显示
+                    textDirection = TextDirection.Ltr
                 ),
                 singleLine = true,
                 visualTransformation = visualTransformation,
