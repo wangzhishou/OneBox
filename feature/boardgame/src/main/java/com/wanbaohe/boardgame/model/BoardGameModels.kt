@@ -64,7 +64,7 @@ data class AiPickerItem(
     val trailingIcon: ImageVector? = null,
 )
 
-/** 历史卡片一方的玩家:圆形字标 + 名字 */
+/** 历史卡片一方的玩家:颜色圆点 + 名字,方名写在名字下面。 */
 data class GameCardPlayer(
     val badge: String,
     val name: String,

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -252,18 +254,35 @@ private fun PlayerBadge(
     player: GameCardPlayer,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier.widthIn(max = 96.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        // 圆只表示执子颜色。Black / White / Schwarz 这类词塞不进 40dp,会裁成 Blac。
         Box(
             modifier = Modifier
                 .size(40.dp)
                 .background(player.badgeBackground, CircleShape)
                 .border(1.dp, player.badgeBorder, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(player.badge, color = player.badgeColor, fontWeight = FontWeight.Bold)
-        }
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(player.name, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
+        Text(
+            text = player.name,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            text = player.badge,
+            color = player.badgeColor,
+            style = MaterialTheme.typography.labelSmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 

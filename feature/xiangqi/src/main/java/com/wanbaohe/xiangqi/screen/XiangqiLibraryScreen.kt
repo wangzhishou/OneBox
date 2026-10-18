@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -36,6 +37,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
@@ -201,19 +204,13 @@ private fun GameCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.2f), CircleShape)
-                            .border(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.3f), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(stringResource(R.string.xiangqi_side_red), color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(redName, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
-                }
+                SideMark(
+                    label = stringResource(R.string.xiangqi_side_red),
+                    name = redName,
+                    color = MaterialTheme.colorScheme.error,
+                    background = MaterialTheme.colorScheme.error.copy(alpha = 0.2f),
+                    border = MaterialTheme.colorScheme.error.copy(alpha = 0.3f),
+                )
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -224,19 +221,13 @@ private fun GameCard(
                     Box(modifier = Modifier.weight(1f).height(1.dp).background(Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f), Color.Transparent))))
                 }
 
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
-                            .border(1.dp, MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(stringResource(R.string.xiangqi_side_black), color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Bold)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(blackName, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
-                }
+                SideMark(
+                    label = stringResource(R.string.xiangqi_side_black),
+                    name = blackName,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    background = MaterialTheme.colorScheme.primaryContainer,
+                    border = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f),
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -382,6 +373,45 @@ private fun GameCard(
                 showRenameDialog = false
                 onRename(newTitle)
             },
+        )
+    }
+}
+
+@Composable
+private fun SideMark(
+    label: String,
+    name: String,
+    color: Color,
+    background: Color,
+    border: Color,
+) {
+    Column(
+        modifier = Modifier.widthIn(max = 96.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(background, CircleShape)
+                .border(1.dp, border, CircleShape),
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = name,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            text = label,
+            color = color,
+            style = MaterialTheme.typography.labelSmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
         )
     }
 }
