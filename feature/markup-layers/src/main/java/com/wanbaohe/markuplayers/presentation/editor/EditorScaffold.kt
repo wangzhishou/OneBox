@@ -491,7 +491,6 @@ fun EditorScaffold(
     StickerToolSheet(
         visible = showStickerSheet,
         onDismiss = { showStickerSheet = false },
-        dragHandle = {},
         onStickerClick = { source ->
             component.addLayer(MarkupLayer(type = LayerType.Sticker(source)))
         },

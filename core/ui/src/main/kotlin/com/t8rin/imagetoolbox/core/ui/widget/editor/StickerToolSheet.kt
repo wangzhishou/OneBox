@@ -7,7 +7,6 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -55,7 +54,6 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineTrendingUp
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedChip
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalBottomSheet
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedModalSheetDragHandle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
@@ -66,7 +64,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.system.OnePrimaryButton
 
 /**
  * 贴纸素材共享弹层(自 markup-layers 上移 core/ui,参数化确认动作):
- * 顶部分类 Tab(可横滑)+ 5 列素材网格。
+ * 头部走 [EnhancedModalBottomSheet] 标题重载(拖动条 + 居中标题 + 右上关闭,
+ * 与「形状/图层」等面板同款),下方分类 Tab(可横滑)+ 5 列素材网格。
  * 「表情」走 core emoji 表;装饰/边框/潮流动态列出 assets/stickers/<dir> 下的
  * 内置 SVG(新增素材免改代码);「AI 生成贴纸」由宿主经 [aiGeneration] 注入
  * 生成逻辑(登录/积分预检在宿主 onGenerate 外包,本组件不引 core/base),
@@ -79,11 +78,11 @@ fun StickerToolSheet(
     onDismiss: () -> Unit,
     onStickerClick: (StickerSource) -> Unit,
     aiGeneration: AiStickerGeneration? = null,
-    dragHandle: @Composable ColumnScope.() -> Unit = { EnhancedModalSheetDragHandle() },
 ) {
+    // 头部统一走标题重载(拖动条 + 居中标题 + 右上关闭),与图片创作「形状/图层」等面板一致
     EnhancedModalBottomSheet(
         visible = visible,
-        dragHandle = dragHandle,
+        title = stringResource(R.string.sticker_panel_title),
         onDismiss = { onDismiss() },
         sheetContent = {
             StickerPanel(
@@ -120,13 +119,10 @@ private fun StickerPanel(
             // 键盘弹出时弹层整体上移,AI 生成贴纸的输入框不被遮挡
             .navigationBarsPadding()
             .imePadding()
-            .padding(horizontal = 16.dp),
+            // 留白:左右 16dp(与形状面板一致),顶部紧接着 Sheet 头部、底部给手势条留空
+            .padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(
-            text = stringResource(R.string.sticker_panel_title),
-            style = MaterialTheme.typography.titleMedium
-        )
         CategoryTabRow(
             selected = currentCategory,
             onSelect = { category = it.name }
@@ -141,7 +137,6 @@ private fun StickerPanel(
             )
             else -> EmojiStickerGrid(onStickerClick = onStickerClick)
         }
-        Spacer(Modifier.height(8.dp))
     }
 }
 
