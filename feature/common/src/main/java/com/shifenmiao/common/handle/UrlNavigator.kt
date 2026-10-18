@@ -7,6 +7,9 @@ import android.webkit.MimeTypeMap
 import androidx.compose.runtime.compositionLocalOf
 import androidx.core.net.toUri
 import com.shifenmiao.common.handle.navigation.AppNavigationRegistry
+import com.shifenmiao.common.handle.navigation.AppNavigationResolvedTarget
+import com.shifenmiao.common.handle.navigation.AppNavigationTargetType
+import com.shifenmiao.common.handle.navigation.DeeplinkRecentRecorder
 import com.shifenmiao.common.handle.navigation.ItemDeeplinkResolver
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.image.ImageViewerInfo
@@ -320,13 +323,20 @@ private fun handleInternalNavigation(
     context: Context,
     onNavigate: (Screen) -> Unit
 ): Boolean {
-    ItemDeeplinkResolver.resolve(url = url, context = context)?.let { resolvedScreen ->
-        onNavigate(resolvedScreen)
+    ItemDeeplinkResolver.resolveTracked(url = url, context = context)?.let { tracked ->
+        onNavigate(tracked.screen)
+        DeeplinkRecentRecorder.recordItem(tracked.itemId)
         return true
     }
 
     AppNavigationRegistry.resolveDeeplink(url)?.let { resolved ->
-        onNavigate(resolved.buildScreen())
+        val screen = resolved.buildScreen()
+        onNavigate(screen)
+        if (resolved.targetType == AppNavigationTargetType.SCREEN) {
+            DeeplinkRecentRecorder.recordScreen(screen.id) {
+                entryScreenId(resolved)
+            }
+        }
         return true
     }
 
@@ -344,5 +354,11 @@ private fun handleInternalNavigation(
     if (shouldTreatAsUnknown) return false
 
     onNavigate(legacyScreen)
+    DeeplinkRecentRecorder.recordScreen(legacyScreen.id)
     return true
+}
+
+/** 不带参数时这条路由会落到的入口屏；和实际打开的屏相同就不用再查一次。 */
+private fun entryScreenId(resolved: AppNavigationResolvedTarget): Int {
+    return runCatching { resolved.target.screenBuilder(emptyMap()).id }.getOrDefault(0)
 }

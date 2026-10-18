@@ -6,6 +6,8 @@ import android.provider.DocumentsContract
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import com.shifenmiao.common.handle.navigation.AppNavigationRegistry
+import com.shifenmiao.common.handle.navigation.AppNavigationTargetType
+import com.shifenmiao.common.handle.navigation.DeeplinkRecentRecorder
 import com.shifenmiao.common.handle.navigation.ItemDeeplinkResolver
 import com.shifenmiao.model.image.ImageViewerInfo
 import com.t8rin.imagetoolbox.core.data.utils.SafUriUtils
@@ -54,8 +56,19 @@ internal class DefaultScanCodeResultResolver @Inject constructor(
     }
 
     private fun resolveInternalScreen(url: String): Screen? {
-        ItemDeeplinkResolver.resolve(url = url, context = context)?.let { return it }
-        AppNavigationRegistry.resolveDeeplink(url)?.let { return it.buildScreen() }
+        ItemDeeplinkResolver.resolveTracked(url = url, context = context)?.let { tracked ->
+            DeeplinkRecentRecorder.recordItem(tracked.itemId)
+            return tracked.screen
+        }
+        AppNavigationRegistry.resolveDeeplink(url)?.let { resolved ->
+            val screen = resolved.buildScreen()
+            if (resolved.targetType == AppNavigationTargetType.SCREEN) {
+                DeeplinkRecentRecorder.recordScreen(screen.id) {
+                    resolved.target.screenBuilder(emptyMap()).id
+                }
+            }
+            return screen
+        }
 
         val legacyScreen = Screen.valueOf(url)
         val normalizedRoute = Uri.decode(url)
@@ -68,7 +81,9 @@ internal class DefaultScanCodeResultResolver @Inject constructor(
             normalizedRoute.isNotBlank() &&
             normalizedRoute.lowercase(Locale.ROOT) !in setOf("newapp", "new_app", "main")
 
-        return legacyScreen.takeUnless { shouldTreatAsUnknown }
+        if (shouldTreatAsUnknown) return null
+        DeeplinkRecentRecorder.recordScreen(legacyScreen.id)
+        return legacyScreen
     }
 
     private fun looksLikeInternalDeeplink(raw: String): Boolean {

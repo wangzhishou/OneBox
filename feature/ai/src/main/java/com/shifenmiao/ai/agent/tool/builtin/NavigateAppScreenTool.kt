@@ -7,9 +7,11 @@ import com.shifenmiao.ai.agent.tool.AgentToolResult
 import com.shifenmiao.ai.agent.tool.AgentToolTextProvider
 import com.shifenmiao.ai.agent.tool.AppNavigationCatalogRepository
 import com.shifenmiao.ai.agent.tool.InteractiveAgentTool
+import com.shifenmiao.ai.agent.tool.NavigationCatalogTargetType
 import com.shifenmiao.ai.agent.tool.ScreenNavigationToolSupport
 import com.shifenmiao.model.toJsonElement
 import com.shifenmiao.common.handle.ItemScreenAction
+import com.shifenmiao.common.handle.navigation.DeeplinkRecentRecorder
 import com.shifenmiao.model.ModelProvider.AppJson
 import com.shifenmiao.model.ai.ToolParameterProperty
 import com.shifenmiao.model.ai.ToolParameters
@@ -93,6 +95,14 @@ class NavigateAppScreenTool @Inject constructor(
                 content = textProvider.string(R.string.agent_tool_navigate_target_not_found),
                 isError = true
             )
+
+            when (target.targetType) {
+                NavigationCatalogTargetType.ITEM ->
+                    target.itemId?.let(DeeplinkRecentRecorder::recordItem)
+                NavigationCatalogTargetType.SCREEN ->
+                    DeeplinkRecentRecorder.recordScreen(target.screen.id) { target.entryScreenId }
+                NavigationCatalogTargetType.ACTION -> Unit
+            }
 
             val defaultAwaitResult = true
             val shouldAwait = (params.waitForResult ?: defaultAwaitResult) && target.supportsResultCallback

@@ -281,6 +281,21 @@ interface ItemEntityDao {
         updateClickStat(id, now)
     }
 
+    /**
+     * 按目录项的屏幕 id（存在 mini_program_id）点查一条。
+     * 只查指定 list_type，避免博客 id、小程序 id 和屏幕 id 撞号。
+     * 同一屏幕有多条时优先离线条目（首页工具卡）。
+     */
+    @Query(
+        """
+        SELECT id FROM item
+        WHERE list_type = :listType AND mini_program_id = :miniProgramId
+        ORDER BY is_online ASC, id ASC
+        LIMIT 1
+        """
+    )
+    suspend fun findItemIdByMiniProgramId(listType: Int, miniProgramId: String): Int?
+
     // ── Category CRUD ────────────────────────────────────────────────────
 
     @Query("SELECT * FROM category WHERE name = :name LIMIT 1")

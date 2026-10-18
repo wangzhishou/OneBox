@@ -121,6 +121,12 @@ class AppNavigationCatalogRepository @Inject constructor(
             ?: AppNavigationRegistry.resolveByTitle(identifier)?.let(::AppNavigationResolvedTarget)
             ?: return null
 
+        val screen = resolved.buildScreen()
+        val entryScreenId = if (resolved.targetType == AppNavigationTargetType.SCREEN) {
+            runCatching { resolved.target.screenBuilder(emptyMap()).id }.getOrDefault(screen.id)
+        } else {
+            0
+        }
         return NavigationTargetResolution(
             targetType = when (resolved.targetType) {
                 AppNavigationTargetType.SCREEN -> NavigationCatalogTargetType.SCREEN
@@ -133,8 +139,9 @@ class AppNavigationCatalogRepository @Inject constructor(
             routeKey = resolved.routeKey,
             canonicalName = resolved.canonicalName,
             deeplink = resolved.deeplink,
-            screen = resolved.buildScreen(),
+            screen = screen,
             supportsResultCallback = resolved.supportsResultCallback,
+            entryScreenId = entryScreenId,
             callbackScreenBuilder = resolved.target.callbackScreenBuilder?.let { builder ->
                 { onResult -> builder(resolved.params, onResult) }
             }
@@ -279,6 +286,8 @@ data class NavigationTargetResolution(
     val deeplink: String,
     val screen: Screen,
     val supportsResultCallback: Boolean,
-    val callbackScreenBuilder: (((ScreenCallback) -> Screen))? = null
+    val callbackScreenBuilder: (((ScreenCallback) -> Screen))? = null,
+    /** 屏幕深链不带参数时的入口屏 id，详情页对不上目录项时用来记最近访问。 */
+    val entryScreenId: Int = 0,
 )
 

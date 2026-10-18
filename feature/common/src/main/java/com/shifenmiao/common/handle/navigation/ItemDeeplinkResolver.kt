@@ -32,7 +32,13 @@ object ItemDeeplinkResolver {
             uri.host.equals(UrlConstants.DEEP_LINK_HOST_ITEM, ignoreCase = true)
     }
 
-    fun resolve(url: String, context: Context): Screen? {
+    fun resolve(url: String, context: Context): Screen? = resolveTracked(url, context)?.screen
+
+    /**
+     * 与 [resolve] 相同，但带回已查到的 itemId，供深链补记最近访问。
+     * 不再额外查库。
+     */
+    fun resolveTracked(url: String, context: Context): TrackedItemDeeplink? {
         val request = parse(url) ?: return null
         val entryPoint = EntryPointAccessors.fromApplication(
             context.applicationContext,
@@ -51,7 +57,7 @@ object ItemDeeplinkResolver {
         request: ParsedItemDeeplink,
         appDatabase: AppDatabase,
         dataDraftHelper: DataDraftHelper
-    ): Screen? {
+    ): TrackedItemDeeplink? {
         val itemDao = appDatabase.itemEntityDao()
         val itemWithCategories = when {
             request.itemId != null -> itemDao.getItemWithCategoriesById(request.itemId).firstOrNull()
@@ -81,14 +87,15 @@ object ItemDeeplinkResolver {
             listType = itemWithCategories.item.listType,
         )
 
-        return when (request.action) {
+        val screen = when (request.action) {
             ItemScreenAction.OPEN -> ItemScreenResolver.resolveForOpen(
                 itemWithCategories,
                 agent = resource.agent,
                 prompt = resource.prompt,
             ).screen
             ItemScreenAction.EDIT -> ItemScreenResolver.resolveForEdit(itemWithCategories.item, dataDraftHelper).screen
-        }
+        } ?: return null
+        return TrackedItemDeeplink(screen = screen, itemId = itemWithCategories.item.id)
     }
 
     fun parse(url: String): ParsedItemDeeplink? {
@@ -134,6 +141,11 @@ object ItemDeeplinkResolver {
         val itemId: Int?,
         val routeKey: String?,
         val action: ItemScreenAction
+    )
+
+    data class TrackedItemDeeplink(
+        val screen: Screen,
+        val itemId: Int,
     )
 }
 
