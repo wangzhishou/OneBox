@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -36,6 +38,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.boardgame.ui.BoardCueMotion
+import com.wanbaohe.boardgame.ui.drawPulsingDot
+import com.wanbaohe.boardgame.ui.rememberBoardCueMotion
 import com.wanbaohe.chess.domain.GameArbiter
 import com.wanbaohe.chess.domain.model.BoardPoint
 import com.wanbaohe.chess.domain.model.BoardState
@@ -106,6 +111,7 @@ fun ChessBoard(
                 GameArbiter.findKing(boardState, boardState.sideToMove)
             } else null
         }
+        val motion = rememberBoardCueMotion()
 
         GlassSurface(
             modifier = Modifier.fillMaxSize(),
@@ -130,26 +136,28 @@ fun ChessBoard(
                             topLeft = Offset(x, y),
                             size = androidx.compose.ui.geometry.Size(cellPx, cellPx),
                         )
-                        // 高亮层:上一步 > 将军 > 选中
+                        // 高亮层:上一步 > 将军 > 选中。对局时上一步和候选点改由上层动画画。
                         when (point) {
-                            lastMove?.first, lastMove?.second -> drawRect(
-                                color = lastMoveColor.copy(alpha = 0.35f),
-                                topLeft = Offset(x, y),
-                                size = androidx.compose.ui.geometry.Size(cellPx, cellPx),
-                            )
+                            lastMove?.first, lastMove?.second -> if (forExport) {
+                                drawRect(
+                                    color = lastMoveColor.copy(alpha = 0.35f),
+                                    topLeft = Offset(x, y),
+                                    size = Size(cellPx, cellPx),
+                                )
+                            }
                             inCheckPoint -> drawRect(
                                 color = checkColor.copy(alpha = 0.4f),
                                 topLeft = Offset(x, y),
-                                size = androidx.compose.ui.geometry.Size(cellPx, cellPx),
+                                size = Size(cellPx, cellPx),
                             )
                             selectedPoint -> drawRect(
                                 color = selectedColor.copy(alpha = 0.4f),
                                 topLeft = Offset(x, y),
-                                size = androidx.compose.ui.geometry.Size(cellPx, cellPx),
+                                size = Size(cellPx, cellPx),
                             )
                         }
                         // 候选落点:空格小圆点,吃子格圆环
-                        if (point in candidateTargets) {
+                        if (forExport && point in candidateTargets) {
                             val center = Offset(x + cellPx / 2, y + cellPx / 2)
                             if (boardState.pieceAt(point) == null) {
                                 drawCircle(color = candidateColor.copy(alpha = 0.45f), radius = cellPx * 0.14f, center = center)
@@ -158,13 +166,24 @@ fun ChessBoard(
                                     color = candidateColor.copy(alpha = 0.55f),
                                     radius = cellPx * 0.44f,
                                     center = center,
-                                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = cellPx * 0.07f),
+                                    style = Stroke(width = cellPx * 0.07f),
                                 )
                             }
                         }
                         }
                     }
                 }
+            }
+            if (!forExport && (candidateTargets.isNotEmpty() || lastMove != null)) {
+                ChessCueLayer(
+                    boardState = boardState,
+                    candidateTargets = candidateTargets,
+                    lastMove = lastMove,
+                    bottomSide = bottomSide,
+                    paddingPx = paddingPx,
+                    cellPx = cellPx,
+                    motion = motion,
+                )
             }
 
             // 坐标标注:底行 a-h(贴底)、左列 1-8(贴左)
@@ -285,6 +304,77 @@ fun ChessBoard(
                             fontSize = 15.sp,
                         )
                     }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ChessCueLayer(
+    boardState: BoardState,
+    candidateTargets: Set<BoardPoint>,
+    lastMove: Pair<BoardPoint, BoardPoint>?,
+    bottomSide: Side,
+    paddingPx: Float,
+    cellPx: Float,
+    motion: BoardCueMotion,
+) {
+    val dotColor = MaterialTheme.colorScheme.tertiaryContainer
+    val dotEdge = MaterialTheme.colorScheme.onTertiaryContainer
+    Canvas(Modifier.fillMaxSize()) {
+        val move = lastMove
+        if (move != null) {
+            val glow = motion.glow
+            val stroke = 1.15.dp.toPx()
+            val inset = stroke / 2f + 1.dp.toPx()
+            for (displayRank in 0 until BoardPoint.RANK_COUNT) {
+                for (displayFile in 0 until BoardPoint.FILE_COUNT) {
+                    val point = displayPointToBoardPoint(displayFile, displayRank, bottomSide)
+                    if (point != move.first && point != move.second) continue
+                    val topLeft = Offset(paddingPx + displayFile * cellPx, paddingPx + displayRank * cellPx)
+                    val alpha = if (point == move.second) 0.28f + 0.16f * glow else 0.16f + 0.1f * glow
+                    drawRect(
+                        color = LAST_MOVE_TINT.copy(alpha = alpha),
+                        topLeft = Offset(topLeft.x + inset, topLeft.y + inset),
+                        size = Size(cellPx - inset * 2f, cellPx - inset * 2f),
+                        style = Stroke(width = stroke),
+                    )
+                }
+            }
+        }
+        if (candidateTargets.isEmpty()) return@Canvas
+        val hint = motion.hint
+        for (displayRank in 0 until BoardPoint.RANK_COUNT) {
+            for (displayFile in 0 until BoardPoint.FILE_COUNT) {
+                val point = displayPointToBoardPoint(displayFile, displayRank, bottomSide)
+                if (point !in candidateTargets) continue
+                val center = Offset(
+                    paddingPx + displayFile * cellPx + cellPx / 2f,
+                    paddingPx + displayRank * cellPx + cellPx / 2f,
+                )
+                if (boardState.pieceAt(point) == null) {
+                    drawPulsingDot(
+                        center = center,
+                        baseRadius = cellPx * 0.16f,
+                        color = dotColor,
+                        hint = hint,
+                        edgeColor = dotEdge,
+                        edgeWidth = 1.5.dp.toPx(),
+                    )
+                } else {
+                    val phase = hint.coerceIn(0f, 1f)
+                    drawCircle(
+                        color = dotColor.copy(alpha = 0.28f + 0.2f * phase),
+                        radius = cellPx * 0.36f,
+                        center = center,
+                    )
+                    drawCircle(
+                        color = dotEdge.copy(alpha = 0.35f + 0.15f * phase),
+                        radius = cellPx * 0.4f,
+                        center = center,
+                        style = Stroke(width = cellPx * 0.045f),
+                    )
                 }
             }
         }

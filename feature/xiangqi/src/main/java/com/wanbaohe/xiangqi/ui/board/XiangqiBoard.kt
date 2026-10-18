@@ -38,6 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.boardgame.ui.BoardCueMotion
+import com.wanbaohe.boardgame.ui.drawMoveHalo
+import com.wanbaohe.boardgame.ui.drawPulsingDot
+import com.wanbaohe.boardgame.ui.rememberBoardCueMotion
 import com.wanbaohe.xiangqi.domain.model.BoardPoint
 import com.wanbaohe.xiangqi.domain.model.BoardState
 import com.wanbaohe.xiangqi.domain.model.Piece
@@ -59,6 +63,7 @@ fun XiangqiBoard(
     boardAspectRatio: Float = 9f / 10f,
     forExport: Boolean = false,
 ) {
+    val motion = rememberBoardCueMotion()
     BoxWithConstraints(
         modifier = modifier
             .aspectRatio(boardAspectRatio)
@@ -201,6 +206,17 @@ fun XiangqiBoard(
                 val boardHeightPx = boardMaxHeight - paddingPx * 2
                 val hGapPx = boardHeightPx / 9f
                 val vGapPx = boardWidthPx / 8f
+                if (!forExport && (candidateTargets.isNotEmpty() || lastMove != null)) {
+                    XiangqiCueLayer(
+                        candidateTargets = candidateTargets,
+                        lastMove = lastMove,
+                        bottomSide = bottomSide,
+                        paddingPx = paddingPx,
+                        vGapPx = vGapPx,
+                        hGapPx = hGapPx,
+                        motion = motion,
+                    )
+                }
                 
                 for (displayRank in 0 until BoardPoint.RANK_COUNT) {
                     for (displayFile in 0 until BoardPoint.FILE_COUNT) {
@@ -226,23 +242,26 @@ fun XiangqiBoard(
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            when {
-                                isLastMoveTo -> LastMoveRing(
-                                    pieceSize = pieceSize,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f),
-                                    width = 3.dp,
-                                )
-                                isLastMoveFrom -> LastMoveRing(
-                                    pieceSize = pieceSize,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.35f),
-                                    width = 2.dp,
-                                )
-                                isCandidate -> Box(
-                                    modifier = Modifier
-                                        .size(pieceSize * 0.4f)
-                                        .clip(CircleShape)
-                                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
-                                )
+                            // 对局里的闪烁和高光画在上层 Canvas;导出 GIF 时停在静止的一帧。
+                            if (forExport) {
+                                when {
+                                    isLastMoveTo -> LastMoveRing(
+                                        pieceSize = pieceSize,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f),
+                                        width = 3.dp,
+                                    )
+                                    isLastMoveFrom -> LastMoveRing(
+                                        pieceSize = pieceSize,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.35f),
+                                        width = 2.dp,
+                                    )
+                                    isCandidate -> Box(
+                                        modifier = Modifier
+                                            .size(pieceSize * 0.4f)
+                                            .clip(CircleShape)
+                                            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
+                                    )
+                                }
                             }
                         }
 
@@ -300,6 +319,54 @@ fun XiangqiBoard(
         }
     }
 }
+
+@Composable
+private fun XiangqiCueLayer(
+    candidateTargets: Set<BoardPoint>,
+    lastMove: Pair<BoardPoint, BoardPoint>?,
+    bottomSide: Side,
+    paddingPx: Float,
+    vGapPx: Float,
+    hGapPx: Float,
+    motion: BoardCueMotion,
+) {
+    val dotColor = MaterialTheme.colorScheme.tertiaryContainer
+    val dotEdge = MaterialTheme.colorScheme.onTertiaryContainer
+    val haloColor = MaterialTheme.colorScheme.onPrimaryContainer
+    Canvas(Modifier.fillMaxSize()) {
+        val radius = xiangqiPieceDiameter(vGapPx, hGapPx) / 2f
+        fun centerOf(point: BoardPoint): Offset {
+            val (file, rank) = boardPointToDisplay(point, bottomSide)
+            return Offset(paddingPx + file * vGapPx, paddingPx + rank * hGapPx)
+        }
+        if (candidateTargets.isNotEmpty()) {
+            val hint = motion.hint
+            candidateTargets.forEach { point ->
+                if (point == lastMove?.first || point == lastMove?.second) return@forEach
+                drawPulsingDot(
+                    center = centerOf(point),
+                    baseRadius = radius * 0.42f,
+                    color = dotColor,
+                    hint = hint,
+                    edgeColor = dotEdge,
+                    edgeWidth = 1.5.dp.toPx(),
+                )
+            }
+        }
+        val move = lastMove ?: return@Canvas
+        val glow = motion.glow
+        val stroke = 1.15.dp.toPx()
+        drawMoveHalo(centerOf(move.first), radius, haloColor, glow, stroke, strong = false)
+        drawMoveHalo(centerOf(move.second), radius, haloColor, glow, stroke, strong = true)
+    }
+}
+
+private fun boardPointToDisplay(point: BoardPoint, bottomSide: Side): Pair<Int, Int> =
+    if (bottomSide == Side.RED) {
+        point.file to point.rank
+    } else {
+        BoardPoint.FILE_COUNT - 1 - point.file to BoardPoint.RANK_COUNT - 1 - point.rank
+    }
 
 private fun displayPointToBoardPoint(displayFile: Int, displayRank: Int, bottomSide: Side): BoardPoint =
     if (bottomSide == Side.RED) {

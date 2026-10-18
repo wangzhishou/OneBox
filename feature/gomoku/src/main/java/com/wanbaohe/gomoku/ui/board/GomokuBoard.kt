@@ -27,7 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntOffset
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
+import com.wanbaohe.boardgame.ui.BoardCueMotion
 import com.wanbaohe.boardgame.ui.boardPaddingForPieces
+import com.wanbaohe.boardgame.ui.drawMoveHalo
+import com.wanbaohe.boardgame.ui.drawPulsingDot
+import com.wanbaohe.boardgame.ui.rememberBoardCueMotion
 import com.wanbaohe.gomoku.domain.model.BoardPoint
 import com.wanbaohe.gomoku.domain.model.BoardState
 import com.wanbaohe.gomoku.domain.model.Side
@@ -58,6 +62,7 @@ fun GomokuBoard(
     lastMove: BoardPoint? = null,
     forExport: Boolean = false,
 ) {
+    val motion = rememberBoardCueMotion()
     BoxWithConstraints(
         modifier = modifier.aspectRatio(1f)
     ) {
@@ -122,6 +127,16 @@ fun GomokuBoard(
 
             // 棋子与交互层
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = AbsoluteAlignment.TopLeft) {
+                if (!forExport && (candidateTargets.isNotEmpty() || lastMove != null)) {
+                    GomokuCueLayer(
+                        candidateTargets = candidateTargets,
+                        lastMove = lastMove,
+                        bottomSide = bottomSide,
+                        paddingPx = paddingPx,
+                        gapPx = gapPx,
+                        motion = motion,
+                    )
+                }
 
                 for (displayRank in 0 until BoardPoint.RANK_COUNT) {
                     for (displayFile in 0 until BoardPoint.FILE_COUNT) {
@@ -151,19 +166,14 @@ fun GomokuBoard(
                             contentAlignment = Alignment.Center
                         ) {
                             when {
-                                // 上一步高亮:空心圆环
-                                isLastMove -> Box(
+                                // 导出 GIF 用静止圆环;对局里改由上层动画画。
+                                forExport && isLastMove -> Box(
                                     modifier = Modifier
                                         .size(stoneSize * 1.15f)
                                         .clip(CircleShape)
-                                        .border(
-                                            2.dp,
-                                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = if (forExport) 1f else 0.6f),
-                                            CircleShape,
-                                        )
+                                        .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer, CircleShape)
                                 )
-                                // 候选落点:半透明小点
-                                isCandidate -> Box(
+                                forExport && isCandidate -> Box(
                                     modifier = Modifier
                                         .size(stoneSize * 0.35f)
                                         .clip(CircleShape)
@@ -206,6 +216,50 @@ fun GomokuBoard(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun GomokuCueLayer(
+    candidateTargets: Set<BoardPoint>,
+    lastMove: BoardPoint?,
+    bottomSide: Side,
+    paddingPx: Float,
+    gapPx: Float,
+    motion: BoardCueMotion,
+) {
+    val dotColor = MaterialTheme.colorScheme.tertiaryContainer
+    val dotEdge = MaterialTheme.colorScheme.onTertiaryContainer
+    val haloColor = MaterialTheme.colorScheme.onPrimaryContainer
+    Canvas(Modifier.fillMaxSize()) {
+        val radius = gapPx * STONE_TO_GAP_RATIO / 2f
+        fun centerOf(point: BoardPoint): Offset {
+            val display = boardPointToDisplay(point, bottomSide)
+            return Offset(paddingPx + display.first * gapPx, paddingPx + display.second * gapPx)
+        }
+        if (candidateTargets.isNotEmpty()) {
+            val hint = motion.hint
+            candidateTargets.forEach { point ->
+                if (point == lastMove) return@forEach
+                drawPulsingDot(
+                    center = centerOf(point),
+                    baseRadius = radius * 0.38f,
+                    color = dotColor,
+                    hint = hint,
+                    edgeColor = dotEdge,
+                    edgeWidth = 1.5.dp.toPx(),
+                )
+            }
+        }
+        val move = lastMove ?: return@Canvas
+        drawMoveHalo(
+            center = centerOf(move),
+            radius = radius,
+            color = haloColor,
+            glow = motion.glow,
+            strokeWidth = 1.15.dp.toPx(),
+            strong = true,
+        )
     }
 }
 
