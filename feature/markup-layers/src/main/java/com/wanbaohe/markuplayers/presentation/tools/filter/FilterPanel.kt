@@ -43,7 +43,8 @@ import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Dots
 import com.t8rin.imagetoolbox.core.ui.utils.helper.LocalFilterPreviewModelProvider
 import com.t8rin.imagetoolbox.core.ui.utils.helper.toCoil
-import com.t8rin.imagetoolbox.core.ui.widget.glass.glassDense
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
+import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.image.Picture
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.wanbaohe.markuplayers.R
@@ -52,7 +53,8 @@ import com.wanbaohe.markuplayers.presentation.screenLogic.MarkupLayersComponent
 import com.t8rin.imagetoolbox.core.resources.R as CoreR
 
 /**
- * 滤镜横滚面板(半浮动层):玻璃卡片浮在画布底部、底部 Tab 栏上方,不遮挡画布主体。
+ * 滤镜横滚面板(半浮动层):实底卡片浮在画布底部、底部 Tab 栏上方,不遮挡画布主体;
+ * 底色与图层面板/画笔浮条一致用不透明实底,避免内容透上来让缩略图和文案看不清。
  * 顶部目标指示行显示当前作用目标(选中图层名 / 背景图);首项「原图」= 清除当前目标
  * 滤镜;中间为「简单效果」分组([UiFilter.sortedGroupedEntries] 首组)的滤镜缩略图
  * (与 AddFiltersSheet 目录同源的默认静态预览图 + coil transformation,面板打开一次渲染、
@@ -82,7 +84,13 @@ fun FilterPanel(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .glassDense(shape = ShapeDefaults.extraLarge)
+            // 不透明底:面板浮在画布/内容之上,缩略图与「作用目标」文案必须清晰可读。
+            // 与图层面板、画笔浮条、缩放胶囊同一套做法(GlassStyle.None = 实底,不吃背景)。
+            .glassBackground(
+                style = GlassStyle.None,
+                shape = ShapeDefaults.extraLarge,
+                color = MaterialTheme.colorScheme.surfaceContainerLow
+            )
             // 吞掉落在卡片空白处的点按,避免穿透成画布的「点空白取消选择」
             .pointerInput(Unit) { detectTapGestures { } }
             .padding(vertical = 10.dp)
