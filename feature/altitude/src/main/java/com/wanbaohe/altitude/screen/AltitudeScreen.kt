@@ -14,14 +14,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -50,7 +48,6 @@ import com.t8rin.imagetoolbox.core.ui.utils.capturable.CaptureController
 import com.t8rin.imagetoolbox.core.ui.utils.capturable.capturable
 import com.t8rin.imagetoolbox.core.ui.utils.capturable.rememberCaptureController
 import com.t8rin.imagetoolbox.core.ui.utils.provider.LocalComponentActivity
-import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCard
 import com.wanbaohe.altitude.component.AltitudeComponent
 import com.wanbaohe.altitude.component.AltitudeUiState
 import com.wanbaohe.altitude.domain.AltitudeRecord
@@ -66,8 +63,6 @@ import com.wanbaohe.altitude.ui.WeatherBoard
 import com.wanbaohe.altitude.ui.altitudeHistoryItems
 import kotlinx.coroutines.launch
 import com.shifenmiao.core.R as CoreR
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineLocationOn
-import com.t8rin.imagetoolbox.core.resources.icons.line.LineLocationOff
 
 /**
  * 海拔仪主屏幕 — Material3 极致扁平化仪表盘设计
@@ -129,7 +124,7 @@ fun AltitudeScreen(component: AltitudeComponent) {
             0 -> InstrumentTab(
                 state = state,
                 captureController = captureController,
-                showPermissionCard = !permissionGranted,
+                showLocationGrant = !permissionGranted,
                 isPermissionPermanentlyDenied = isPermanentlyDenied,
                 onRequestPermission = { permissionLauncher.launch(locationPermissions) },
                 onOpenSettings = {
@@ -185,7 +180,7 @@ fun AltitudeScreen(component: AltitudeComponent) {
 private fun ColumnScope.InstrumentTab(
     state: AltitudeUiState,
     captureController: CaptureController,
-    showPermissionCard: Boolean,
+    showLocationGrant: Boolean,
     isPermissionPermanentlyDenied: Boolean,
     onRequestPermission: () -> Unit,
     onOpenSettings: () -> Unit,
@@ -200,14 +195,6 @@ private fun ColumnScope.InstrumentTab(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        if (showPermissionCard) {
-            LocationPermissionCard(
-                isPermanentlyDenied = isPermissionPermanentlyDenied,
-                onRequestPermission = onRequestPermission,
-                onOpenSettings = onOpenSettings,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
         // ── 可截图区域（卡片 + 观测时间，不含按钮）──────────
         Column(
             modifier = Modifier
@@ -215,8 +202,16 @@ private fun ColumnScope.InstrumentTab(
                 .capturable(captureController),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // 1. 海拔仪表盘
-            ElevationGaugeSection(state = state)
+            // 1. 海拔仪表盘。未授权时按钮就在这张卡片上。
+            ElevationGaugeSection(
+                state = state,
+                onRequestLocation = if (showLocationGrant) {
+                    if (isPermissionPermanentlyDenied) onOpenSettings else onRequestPermission
+                } else {
+                    null
+                },
+                locationAccessPermanentlyDenied = isPermissionPermanentlyDenied,
+            )
 
             // 2. 趋势柱状图
             if (state.trendPoints.size >= 2) {
@@ -409,66 +404,4 @@ private fun AltitudeDialogs(
             component.shareBitmap(bitmap = bitmap, onComplete = {})
         }
     )
-}
-
-// ─── 权限卡片 ───────────────────────────────────────────────────────────
-
-/**
- * 友好的定位权限申请卡片
- */
-@Composable
-private fun LocationPermissionCard(
-    isPermanentlyDenied: Boolean,
-    onRequestPermission: () -> Unit,
-    onOpenSettings: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    GlassCard(
-        modifier = modifier,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Icon(
-                imageVector = if (isPermanentlyDenied) com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLocationOff
-                else com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLocationOn,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.size(32.dp)
-            )
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(CoreR.string.altitude_location_permission_title),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = if (isPermanentlyDenied)
-                        stringResource(CoreR.string.altitude_location_permission_denied)
-                    else
-                        stringResource(CoreR.string.altitude_location_permission_description),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-                Spacer(Modifier.height(12.dp))
-                FilledTonalButton(
-                    onClick = if (isPermanentlyDenied) onOpenSettings else onRequestPermission,
-                    colors = AppTheme.colors.filledTonalButtonColors()
-                ) {
-                    Text(
-                        text = if (isPermanentlyDenied)
-                            stringResource(CoreR.string.altitude_open_settings)
-                        else
-                            stringResource(CoreR.string.altitude_grant_permission)
-                    )
-                }
-            }
-        }
-    }
 }

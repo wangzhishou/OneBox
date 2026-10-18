@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shifenmiao.theme.AppTheme
 import com.wanbaohe.altitude.component.AltitudeUiState
 import com.wanbaohe.altitude.domain.AltitudeSource
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
@@ -54,6 +56,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineWaterDrop
 @Composable
 internal fun ElevationGaugeSection(
     state: AltitudeUiState,
+    onRequestLocation: (() -> Unit)? = null,
+    locationAccessPermanentlyDenied: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val animatedMeters by animateFloatAsState(
@@ -275,6 +279,25 @@ internal fun ElevationGaugeSection(
                         text = "${stringResource(CoreR.string.altitude_detail_accuracy)}: ±${"%.1f".format(state.accuracyMeters)} m",
                         style = MaterialTheme.typography.labelSmall,
                         color = onSurface.copy(alpha = 0.45f)
+                    )
+                }
+            }
+
+            if (onRequestLocation != null && !state.locationPermissionGranted) {
+                Spacer(Modifier.height(12.dp))
+                FilledTonalButton(
+                    onClick = onRequestLocation,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = AppTheme.colors.filledTonalButtonColors(),
+                ) {
+                    Text(
+                        text = stringResource(
+                            if (locationAccessPermanentlyDenied) {
+                                CoreR.string.altitude_open_settings
+                            } else {
+                                CoreR.string.altitude_grant_permission
+                            }
+                        )
                     )
                 }
             }

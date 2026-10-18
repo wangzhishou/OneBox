@@ -5,8 +5,11 @@ import com.wanbaohe.core.weather.WeatherInitializer
 import com.wanbaohe.core.weather.data.cache.LocationCityCache
 import com.wanbaohe.core.weather.data.weatherLocale
 import com.wanbaohe.core.weather.data.cache.WeatherDataCache
+import com.wanbaohe.core.weather.data.location.NetworkCityLocator
 import com.wanbaohe.core.weather.data.source.QWeatherDataSource
 import com.wanbaohe.core.weather.domain.model.CityInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.wanbaohe.core.weather.domain.model.DailyWeatherInfo
 import com.wanbaohe.core.weather.domain.model.PlaceWeather
 import com.wanbaohe.core.weather.domain.model.WeatherInfo
@@ -45,6 +48,21 @@ class WeatherRepositoryImpl(
             return Result.failure(IllegalArgumentException("city name is blank"))
         }
         return dataSource.geoCityLookupByName(safeName)
+    }
+
+    override suspend fun getCityFromNetwork(): Result<CityInfo> = withContext(Dispatchers.IO) {
+        val hit = NetworkCityLocator.locate()
+            ?: return@withContext Result.failure(IllegalStateException("network city unavailable"))
+        val latitude = hit.latitude
+        val longitude = hit.longitude
+        if (latitude != null && longitude != null) {
+            return@withContext getCityAtLocation(latitude, longitude)
+        }
+        val name = hit.name?.trim().orEmpty()
+        if (name.isEmpty()) {
+            return@withContext Result.failure(IllegalStateException("network city unavailable"))
+        }
+        getCityByName(name)
     }
 
     override suspend fun getDailyForecast(cityId: String, days: Int): Result<List<DailyWeatherInfo>> {

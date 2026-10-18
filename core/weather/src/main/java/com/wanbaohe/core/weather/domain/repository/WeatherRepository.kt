@@ -12,6 +12,12 @@ interface WeatherRepository {
     /** 按城市名(中文/英文/拼音或 LocationID)反查城市信息 */
     suspend fun getCityByName(name: String): Result<CityInfo>
 
+    /**
+     * 用出口 IP 判断当前城市，不需要定位权限。
+     * 国内解析城市名，海外解析经纬度，再交给和风反查。
+     */
+    suspend fun getCityFromNetwork(): Result<CityInfo>
+
     /** 指定城市的逐日天气预报,days 取 1-7 */
     suspend fun getDailyForecast(cityId: String, days: Int): Result<List<DailyWeatherInfo>>
 
