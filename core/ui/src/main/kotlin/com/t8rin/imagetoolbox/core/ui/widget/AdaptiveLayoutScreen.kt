@@ -115,7 +115,8 @@ fun AdaptiveLayoutScreen(
     ),
     listState: LazyListState = rememberLazyListState(),
     placeControlsSeparately: Boolean = false,
-    portraitTopPadding: Dp = 0.dp
+    portraitTopPadding: Dp = 0.dp,
+    imagePreviewBackgroundColor: Color = Color.Unspecified,
 ) {
     val isPortrait by isPortraitOrientationAsState()
     val settingsState = LocalSettingsState.current
@@ -289,6 +290,7 @@ fun AdaptiveLayoutScreen(
                                         internalHeight = internalHeight,
                                         imageState = imageState,
                                         onStateChange = { imageState = it },
+                                        backgroundColor = imagePreviewBackgroundColor,
                                         imageBlock = imagePreview,
                                         onGloballyPositioned = {
                                             if (!isScrolled) {

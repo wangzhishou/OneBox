@@ -22,10 +22,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,6 +43,7 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -140,73 +144,78 @@ internal fun Base64ToolsTiles(component: Base64ToolsComponent) {
         } else {
             GlassSurface(
                 modifier = Modifier
-                    .padding(
-                        horizontal = 12.dp
-                    )
-                    .padding(
-                        top = 4.dp,
-                        bottom = 8.dp
-                    ),
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, bottom = 8.dp),
                 style = GlassStyle.Regular,
                 shape = ShapeDefaults.extremeLarge
             ) {
-                Text(
-                    text = stringResource(R.string.base_64_actions),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(8.dp)
-                )
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 14.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    pasteTile(CircleShape)
-                    importTile(CircleShape)
+                    Text(
+                        text = stringResource(R.string.base_64_actions),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        pasteTile(CircleShape)
+                        importTile(CircleShape)
 
-                    Tile(
-                        onClick = {
-                            val text = buildAnnotatedString {
-                                append(component.base64String)
-                            }
-                            if (component.base64String.isBase64()) {
-                                Clipboard.copy(text)
-                            } else {
-                                AppToastHost.showToast(
-                                    message = context.getString(R.string.copy_not_a_valid_base_64),
-                                    icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Base64
+                        Tile(
+                            onClick = {
+                                val text = buildAnnotatedString {
+                                    append(component.base64String)
+                                }
+                                if (component.base64String.isBase64()) {
+                                    Clipboard.copy(text)
+                                } else {
+                                    AppToastHost.showToast(
+                                        message = context.getString(R.string.copy_not_a_valid_base_64),
+                                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.Base64
+                                    )
+                                }
+                            },
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
+                            textRes = R.string.copy_base_64
+                        )
+
+                        val shareText = {
+                            component.shareText(AppToastHost::showConfetti)
+                        }
+
+                        Tile(
+                            onClick = shareText,
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
+                            textRes = R.string.share_base_64
+                        )
+
+                        val saveLauncher = rememberFileCreator(
+                            mimeType = MimeType.Txt,
+                            onSuccess = { uri ->
+                                component.saveContentToTxt(
+                                    uri = uri,
+                                    onResult = component::parseFileSaveResult
                                 )
                             }
-                        },
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ContentCopy,
-                        textRes = R.string.copy_base_64
-                    )
+                        )
 
-                    val shareText = {
-                        component.shareText(AppToastHost::showConfetti)
+                        Tile(
+                            onClick = {
+                                saveLauncher.make(component.generateTextFilename())
+                            },
+                            icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
+                            textRes = R.string.save_base_64
+                        )
                     }
-
-                    Tile(
-                        onClick = shareText,
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineShare,
-                        textRes = R.string.share_base_64
-                    )
-
-                    val saveLauncher = rememberFileCreator(
-                        mimeType = MimeType.Txt,
-                        onSuccess = { uri ->
-                            component.saveContentToTxt(
-                                uri = uri,
-                                onResult = component::parseFileSaveResult
-                            )
-                        }
-                    )
-
-                    Tile(
-                        onClick = {
-                            saveLauncher.make(component.generateTextFilename())
-                        },
-                        icon = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSave,
-                        textRes = R.string.save_base_64
-                    )
                 }
             }
         }
@@ -224,7 +233,8 @@ private fun RowScope.Tile(
     if (isButton) {
         val tooltipState = rememberTooltipState()
         Box(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.Center
         ) {
             TooltipBox(
                 positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
@@ -239,16 +249,23 @@ private fun RowScope.Tile(
             ) {
                 GlassSurface(
                     onClick = onClick,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
                     style = GlassStyle.Thin,
                     shape = CircleShape,
                     color = MaterialTheme.colorScheme.secondaryContainer
                 ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = stringResource(id = textRes),
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
                 }
             }
         }

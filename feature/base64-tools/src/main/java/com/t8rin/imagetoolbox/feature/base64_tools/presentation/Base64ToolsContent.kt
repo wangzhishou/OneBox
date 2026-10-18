@@ -34,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -194,6 +195,7 @@ fun Base64ToolsContent(
             }
         },
         showImagePreviewAsStickyHeader = component.base64String.isNotEmpty(),
+        imagePreviewBackgroundColor = Color.Transparent,
         controls = {
             if (isPortrait) Spacer(Modifier.height(AppTheme.dimens.spaceSmall))
             Base64ToolsTiles(component)
