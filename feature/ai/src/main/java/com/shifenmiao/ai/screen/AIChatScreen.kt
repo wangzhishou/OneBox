@@ -47,7 +47,6 @@ import com.shifenmiao.ai.a2ui.A2uiRendererImpl
 import com.shifenmiao.ai.component.AIChatComponent
 import com.shifenmiao.ai.component.AgentToolCallUIState
 import com.shifenmiao.ai.component.ChatErrorMessage
-import com.shifenmiao.ai.component.RobotDirectErrorContent
 import com.shifenmiao.ai.component.RobotMessageFooter
 import com.shifenmiao.ai.component.ToolCallHistoryCard
 import com.shifenmiao.ai.logic.ChatInputComponent
@@ -536,17 +535,11 @@ fun ChatMessagesList(
                                 )
                             },
                             onRobotError = { errorItem ->
-                                if (errorItem.isDirectConnection) {
-                                    RobotDirectErrorContent(
-                                        errorMessage = errorItem.errorMessage
-                                    )
-                                } else {
-                                    ChatErrorMessage(
-                                        appComponent = appComponent,
-                                        aiChatComponent = aiChatComponent,
-                                        errorMessage = errorItem.errorMessage
-                                    )
-                                }
+                                ChatErrorMessage(
+                                    appComponent = appComponent,
+                                    aiChatComponent = aiChatComponent,
+                                    error = errorItem.error,
+                                )
                             }
                         )
                     }

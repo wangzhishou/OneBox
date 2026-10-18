@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +29,7 @@ import com.shifenmiao.model.DataItem
 import com.shifenmiao.model.wechat.Wechat
 import com.shifenmiao.storage.AppSharedStorage
 import com.shifenmiao.theme.AppTheme
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.coloredGlass
 
@@ -113,18 +112,11 @@ fun MiniProgramScreen(
                         }
                         Spacer(modifier = Modifier.padding(AppTheme.dimens.paddingNormal))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(
+                            GlassCheckbox(
                                 checked = rememberChoice,
                                 onCheckedChange = {
                                     rememberChoice = it
                                 },
-                                colors = CheckboxDefaults.colors(
-                                    uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = 0.5f
-                                    ),
-                                    checkedColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    checkmarkColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
                             )
                             Text(
                                 text = stringResource(R.string.remember_choice),

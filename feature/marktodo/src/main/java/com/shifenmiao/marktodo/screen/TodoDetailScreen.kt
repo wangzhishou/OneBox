@@ -44,6 +44,7 @@ import com.shifenmiao.marktodo.model.TodoDetailUiEvent
 import com.shifenmiao.marktodo.model.TodoTask
 import com.shifenmiao.marktodo.screenLogic.TodoDetailComponent
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassStyle
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxDangerButton
@@ -257,7 +258,7 @@ private fun TodoDetailContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(OneBoxDesignSystem.itemSpacing)
         ) {
-            androidx.compose.material3.Checkbox(
+            GlassCheckbox(
                 checked = task.isCompleted,
                 onCheckedChange = { onToggleComplete() }
             )

@@ -180,6 +180,12 @@ data class ChatCompletionChunk(
     var errorCode: Int = 0,
     @SerialName("error_msg")
     var errorMsg: String = "",
+    /**
+     * 稳定的错误语义标识(网关 `error.code`,或客户端内部 NETWORK_OFFLINE 等)。
+     * UI 按它选择错误卡片类型,不按文案分支。
+     */
+    @SerialName("error_code_name")
+    var errorCodeName: String = "",
     @SerialName("is_end")
     var isEnd: Boolean = false,
 ) : Parcelable

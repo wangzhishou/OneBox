@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -49,12 +51,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shifenmiao.common.ui.BaseScreen
@@ -253,7 +264,7 @@ private fun ConnectScreen(component: DshRootComponent, uiState: DshUiState) {
     }
 }
 
-/** 分焦点 tab 行:三段等宽,选中态 primary 圆角 pill */
+/** 分焦点 tab 行:三段等宽。短文案单行;长文案按词均衡拆成两行并居中,避免末词孤行。 */
 @Composable
 private fun ConnectTabRow(selected: ConnectTab, onSelect: (ConnectTab) -> Unit) {
     val tabs = listOf(
@@ -261,42 +272,231 @@ private fun ConnectTabRow(selected: ConnectTab, onSelect: (ConnectTab) -> Unit) 
         ConnectTab.Remote to R.string.dsh_remote_section,
         ConnectTab.Cloud to R.string.dsh_tab_cloud
     )
-    Row(
+    val labels = tabs.map { stringResource(it.second) }
+    val textMeasurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    // 选中态是 SemiBold,按更宽的字重测量,切段后选中也不会再被挤出
+    val measureStyle = LocalTextStyle.current.merge(
+        TextStyle(fontSize = 14.sp, fontWeight = FontWeight.SemiBold, lineHeight = 18.sp)
+    )
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
             .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f))
             .padding(4.dp)
     ) {
-        tabs.forEach { (tab, labelRes) ->
-            val isSelected = tab == selected
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(
-                        if (isSelected) {
-                            AppTheme.colors.getPrimaryColor().copy(alpha = 0.15f)
+        val textBudgetPx = with(density) { (maxWidth / tabs.size - 12.dp).roundToPx() } - 2
+        val laidOut = labels.map { label ->
+            balancedTwoLine(label, textMeasurer, measureStyle, textBudgetPx)
+        }
+        val wrapped = laidOut.any { '\n' in it }
+        // 两行行高 + 上下 padding,多留 4dp,避免字面贴边被裁
+        val twoLineHeight = with(density) { 18.sp.toDp() } * 2 + 20.dp
+        Row(modifier = Modifier.fillMaxWidth()) {
+            tabs.forEachIndexed { index, (tab, _) ->
+                val isSelected = tab == selected
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .then(if (wrapped) Modifier.height(twoLineHeight) else Modifier)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(
+                            if (isSelected) {
+                                AppTheme.colors.getPrimaryColor().copy(alpha = 0.15f)
+                            } else {
+                                Color.Transparent
+                            }
+                        )
+                        .clickable { onSelect(tab) }
+                        .padding(horizontal = 6.dp, vertical = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = laidOut[index],
+                        color = if (isSelected) {
+                            AppTheme.colors.getPrimaryColor()
                         } else {
-                            Color.Transparent
-                        }
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = measureStyle.merge(
+                            TextStyle(
+                                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                                textAlign = TextAlign.Center,
+                            )
+                        ),
                     )
-                    .clickable { onSelect(tab) }
-                    .padding(vertical = 8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(labelRes),
-                    fontSize = 14.sp,
-                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (isSelected) {
-                        AppTheme.colors.getPrimaryColor()
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
-                    }
-                )
+                }
             }
         }
+    }
+}
+
+/**
+ * 等宽格子里的长文案:整句放得下就单行;否则在空格处拆成两行,
+ * 取两行宽度最接近、且各自都放得下的切法。没有合适切法时保持原文,交给默认换行。
+ */
+private fun balancedTwoLine(
+    text: String,
+    measurer: TextMeasurer,
+    style: TextStyle,
+    maxWidthPx: Int,
+): String {
+    if (maxWidthPx <= 0) return text
+    if (measurer.measure(text, style = style, maxLines = 1, softWrap = false).size.width <= maxWidthPx) {
+        return text
+    }
+    var best: String? = null
+    var bestDiff = Int.MAX_VALUE
+    text.forEachIndexed { index, c ->
+        if (c != ' ' && c != '\u00A0') return@forEachIndexed
+        val line1 = text.substring(0, index).trimEnd()
+        val line2 = text.substring(index + 1).trimStart()
+        if (line1.isEmpty() || line2.isEmpty()) return@forEachIndexed
+        val width1 = measurer.measure(line1, style = style, maxLines = 1, softWrap = false).size.width
+        val width2 = measurer.measure(line2, style = style, maxLines = 1, softWrap = false).size.width
+        if (width1 > maxWidthPx || width2 > maxWidthPx) return@forEachIndexed
+        val diff = kotlin.math.abs(width1 - width2)
+        if (diff < bestDiff) {
+            bestDiff = diff
+            best = "$line1\n$line2"
+        }
+    }
+    return best ?: text
+}
+
+/**
+ * 两个操作按钮:各自按单行内容宽度测量,半宽放得下就等宽并排,否则各占一整行。
+ * 文案始终单行,不在按钮里折断。
+ */
+@Composable
+private fun CloudActionButtons(
+    scanLabel: String,
+    generateLabel: String,
+    scanEnabled: Boolean,
+    generateEnabled: Boolean,
+    onScan: () -> Unit,
+    onGenerate: () -> Unit,
+) {
+    val spacing = 8.dp
+    SubcomposeLayout(modifier = Modifier.fillMaxWidth()) { constraints ->
+        val spacingPx = spacing.roundToPx()
+        // 测量单行固有宽度。父级在滚动容器里高度无界,这里收成有限值,避免子组件拒绝无限约束。
+        val loose = Constraints(
+            minWidth = 0,
+            maxWidth = constraints.maxWidth.coerceAtMost(10_000),
+            minHeight = 0,
+            maxHeight = constraints.maxHeight.coerceAtMost(10_000),
+        )
+        val scanIntrinsic = subcompose("scan-intrinsic") {
+            CloudRelayActionButton(
+                icon = Icons.Outlined.QrCodeScanner,
+                label = scanLabel,
+                enabled = scanEnabled,
+                onClick = onScan,
+            )
+        }.first().measure(loose).width
+        val generateIntrinsic = subcompose("generate-intrinsic") {
+            CloudRelayActionButton(
+                icon = Icons.Outlined.CloudQueue,
+                label = generateLabel,
+                enabled = generateEnabled,
+                onClick = onGenerate,
+            )
+        }.first().measure(loose).width
+        val half = ((constraints.maxWidth - spacingPx) / 2).coerceAtLeast(0)
+        val sideBySide = scanIntrinsic <= half && generateIntrinsic <= half
+        if (sideBySide) {
+            val halfConstraints = Constraints(
+                minWidth = half,
+                maxWidth = half,
+                minHeight = 0,
+                maxHeight = constraints.maxHeight.coerceAtMost(10_000),
+            )
+            val scan = subcompose("scan") {
+                CloudRelayActionButton(
+                    icon = Icons.Outlined.QrCodeScanner,
+                    label = scanLabel,
+                    enabled = scanEnabled,
+                    onClick = onScan,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }.first().measure(halfConstraints)
+            val generate = subcompose("generate") {
+                CloudRelayActionButton(
+                    icon = Icons.Outlined.CloudQueue,
+                    label = generateLabel,
+                    enabled = generateEnabled,
+                    onClick = onGenerate,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }.first().measure(halfConstraints)
+            val height = maxOf(scan.height, generate.height)
+            layout(constraints.maxWidth, height) {
+                scan.placeRelative(0, (height - scan.height) / 2)
+                generate.placeRelative(half + spacingPx, (height - generate.height) / 2)
+            }
+        } else {
+            val full = Constraints(
+                minWidth = constraints.maxWidth,
+                maxWidth = constraints.maxWidth,
+                minHeight = 0,
+                maxHeight = constraints.maxHeight.coerceAtMost(10_000),
+            )
+            val scan = subcompose("scan-full") {
+                CloudRelayActionButton(
+                    icon = Icons.Outlined.QrCodeScanner,
+                    label = scanLabel,
+                    enabled = scanEnabled,
+                    onClick = onScan,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }.first().measure(full)
+            val generate = subcompose("generate-full") {
+                CloudRelayActionButton(
+                    icon = Icons.Outlined.CloudQueue,
+                    label = generateLabel,
+                    enabled = generateEnabled,
+                    onClick = onGenerate,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }.first().measure(full)
+            val height = scan.height + spacingPx + generate.height
+            layout(constraints.maxWidth, height) {
+                scan.placeRelative(0, 0)
+                generate.placeRelative(0, scan.height + spacingPx)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CloudRelayActionButton(
+    icon: ImageVector,
+    label: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(18.dp)
+        )
+        Spacer(Modifier.width(6.dp))
+        Text(
+            text = label,
+            maxLines = 1,
+            softWrap = false,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 
@@ -589,51 +789,24 @@ private fun CloudRelaySection(
             }
             return@Column
         }
-        // 扫码连接(推荐)与生成绑定码(CLI 兜底)并列
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            OutlinedButton(
-                onClick = {
-                    scanPermissionDenied = false
-                    scanLauncher.launch(null)
-                },
-                modifier = Modifier.weight(1f),
-                enabled = !cloud.claiming
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.QrCodeScanner,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    stringResource(
-                        if (cloud.claiming) R.string.dsh_cloud_claiming
-                        else R.string.dsh_cloud_scan_connect
-                    )
-                )
-            }
-            OutlinedButton(
-                onClick = onGenerateCode,
-                modifier = Modifier.weight(1f),
-                enabled = !cloud.requesting
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.CloudQueue,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    stringResource(
-                        if (cloud.requesting) R.string.dsh_cloud_generating_code
-                        else R.string.dsh_cloud_generate_code
-                    )
-                )
-            }
-        }
+        // 扫码(推荐)与生成绑定码(CLI 兜底):各自单行放得下就并排,否则整行堆叠,避免半宽把文案折断
+        CloudActionButtons(
+            scanLabel = stringResource(
+                if (cloud.claiming) R.string.dsh_cloud_claiming
+                else R.string.dsh_cloud_scan_connect
+            ),
+            generateLabel = stringResource(
+                if (cloud.requesting) R.string.dsh_cloud_generating_code
+                else R.string.dsh_cloud_generate_code
+            ),
+            scanEnabled = !cloud.claiming,
+            generateEnabled = !cloud.requesting,
+            onScan = {
+                scanPermissionDenied = false
+                scanLauncher.launch(null)
+            },
+            onGenerate = onGenerateCode,
+        )
         if (scanPermissionDenied) {
             Spacer(Modifier.height(4.dp))
             Text(

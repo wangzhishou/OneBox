@@ -9,6 +9,8 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import com.halilibo.richtext.markwon.MarkdownAstNodeParser
+import com.shifenmiao.ai.error.AiChatError
+import com.shifenmiao.ai.error.AiChatErrorFactory
 import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.interfaces.singleton.AppContext
@@ -175,9 +177,7 @@ sealed class MessageUiModel(
 
     data class RobotError(
         override val id: String,
-        val errorMessage: String = AppContext.getString(R.string.ai_error),
-        /** 直连模式下错误以原始 HTTP 信息展示，不走代理错误卡片 */
-        val isDirectConnection: Boolean = false,
+        val error: AiChatError,
     ) : MessageUiModel(id)
 
     data class RobotContainerFooter(
@@ -329,6 +329,33 @@ sealed class MessageUiModel(
         private const val REASONING_COLLAPSE_FOOTER_MIN_CHARS = 1200
 
         /**
+         * DB 读回的消息没有 [MessageEntity.uId](@Ignore)，历史错误行会退回 NORMAL。
+         * 这里用落库时写入的 `finish_reason` 元数据（`error:<status>:<code>`）和旧版
+         * 原始错误文案重新判定 ERROR，保证重启后仍渲染错误卡片。
+         */
+        private fun resolveMessageState(message: MessageEntity): Int {
+            if (message.uId != MessageUIState.NORMAL.value) return message.uId
+            if (message.role == RoleType.USER.value) return message.uId
+            return if (looksLikePersistedError(message)) {
+                MessageUIState.ERROR.value
+            } else {
+                message.uId
+            }
+        }
+
+        private fun looksLikePersistedError(message: MessageEntity): Boolean {
+            if (message.finishReason.startsWith("error:")) return true
+            // 错误行落库时 expired=true; 正常回答为 false。文本特征只用于没有元数据的旧数据。
+            if (!message.expired) return false
+            val text = message.answer.trim()
+            return (text.startsWith("HTTP ") && text.contains("\nURL:")) ||
+                text.startsWith("IO error while") ||
+                text.startsWith("Failed to extract error details") ||
+                text.startsWith("Connection interrupted before the response completed.") ||
+                text.startsWith("连接中断，回答未完成。")
+        }
+
+        /**
          * 将消息实体转换为UI模型列表。
          *
          * @param blockReuseCache 流式状态下用于复用上一轮 parse 出的 [AstNode] 引用，
@@ -359,8 +386,11 @@ sealed class MessageUiModel(
                     showExpandedReasoning = showExpandedReasoning
                 )
             } else {
-                // 根据消息状态处理不同的UI模型
-                when (message.uId) {
+                // 根据消息状态处理不同的UI模型。
+                // uId 是 @Ignore 字段, 从 DB 读回的历史消息恒为 NORMAL; 错误行必须靠
+                // finish_reason 元数据 / 旧版原始错误文案重新识别, 否则重启后错误卡片退化成普通文本。
+                val messageState = resolveMessageState(message)
+                when (messageState) {
                     MessageUIState.LOADING.value -> {
                         // 使用 effectiveCompletionId + 角色后缀确保唯一性，且在 placeholder → DB 切换时保持稳定
                         val idPrefix = "${effectiveCompletionId}_thinking"
@@ -406,7 +436,6 @@ sealed class MessageUiModel(
                         } else {
                             message
                         }
-                        val isDirectConnection = conversation.engine.canChatDirectly()
                         return listOf(
                             RobotContainerFooter(
                                 id = "${idPrefix}_footer",
@@ -415,10 +444,10 @@ sealed class MessageUiModel(
                             ),
                             RobotError(
                                 id = "${idPrefix}_Error",
-                                errorMessage = normalizedMessage.answer.ifBlank {
-                                    AppContext.getString(R.string.ai_error)
-                                },
-                                isDirectConnection = isDirectConnection
+                                error = AiChatErrorFactory.fromStoredMessage(
+                                    message = normalizedMessage.answer,
+                                    meta = normalizedMessage.finishReason,
+                                ),
                             ),
                             RobotContainerHeader(
                                 id = "${idPrefix}_header",

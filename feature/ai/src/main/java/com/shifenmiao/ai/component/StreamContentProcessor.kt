@@ -265,7 +265,9 @@ class StreamContentProcessor(
 
         val newUiModels = messagesCopy.flatMap { message ->
             val isStreaming = message.uId == MessageUIState.STREAMING.value
-            val cacheKey = "${message.completionId}_${message.role}_${if (showExpandedReasoning) 1 else 0}"
+            // uId 决定消息的渲染形态(NORMAL / ERROR / ...); 错误态必须与流式/正常态分开缓存,
+            // 否则本轮流式期间生成的 RobotContent 会被错误消息复用, 错误卡片退化成一坨纯文本.
+            val cacheKey = "${message.completionId}_${message.role}_${message.uId}_${if (showExpandedReasoning) 1 else 0}"
 
             if (!isStreaming && message.uId > 0 && message.id > 0 && cachedMessageUiModels.containsKey(cacheKey)) {
                 cachedMessageUiModels[cacheKey]!!

@@ -15,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.ai.agent.tool.AgentQuestionType
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionItem
 import com.shifenmiao.ai.agent.tool.AgentUserQuestionRequest
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTextFieldVisualPreset
 
@@ -248,7 +248,7 @@ private fun MultipleChoiceRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Checkbox(
+        GlassCheckbox(
             checked = selected,
             onCheckedChange = { onToggle() }
         )

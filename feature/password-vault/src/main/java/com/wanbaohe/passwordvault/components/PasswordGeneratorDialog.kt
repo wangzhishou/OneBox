@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.ui.button.CancelButton
 import com.shifenmiao.base.ui.button.ConfirmButton
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
-import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedCheckbox
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedSlider
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSwitch
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassOutlinedTextField
@@ -42,7 +42,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.Refresh
  * 密码生成器对话框。
  * - 生成结果明文展示:重新生成在 leadingIcon,复制在 trailingIcon
  * - 长度 EnhancedSlider (8-32),选项变更自动重新生成
- * - 字符集 4 个 EnhancedCheckbox,"排除易混淆字符" EnhancedSwitch
+ * - 字符集 4 个 GlassCheckbox,"排除易混淆字符" EnhancedSwitch
  * - "使用此密码"按钮回填
  */
 @Composable
@@ -196,7 +196,7 @@ private fun CharsetToggle(
             .height(36.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        EnhancedCheckbox(
+        GlassCheckbox(
             checked = checked,
             onCheckedChange = onCheckedChange,
         )

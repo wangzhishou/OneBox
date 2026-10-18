@@ -207,6 +207,11 @@ sealed class LlmStreamEvent {
     data class Error(
         val errorCode: Int = 1,
         val errorMessage: String,
+        /**
+         * 稳定的错误语义标识(网关 `error.code`,或客户端内部 NETWORK_OFFLINE 等)。
+         * 缺省为空,老调用方无需改动。
+         */
+        val errorCodeName: String = "",
     ) : LlmStreamEvent()
 
     /**

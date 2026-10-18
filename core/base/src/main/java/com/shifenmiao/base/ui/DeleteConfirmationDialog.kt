@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.shifenmiao.base.manager.DeleteConfirmationManager
 import com.shifenmiao.core.R
 import com.t8rin.imagetoolbox.core.resources.icons.Delete
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 
 /**
  * 高级删除确认对话框，支持"不再提示"选项
@@ -89,7 +89,7 @@ fun AdvancedDeleteConfirmDialog(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Checkbox(
+                        GlassCheckbox(
                             checked = doNotAskAgain,
                             onCheckedChange = { doNotAskAgain = it }
                         )

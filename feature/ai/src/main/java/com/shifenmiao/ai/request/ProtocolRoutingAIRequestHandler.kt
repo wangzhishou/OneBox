@@ -332,7 +332,14 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
         try {
             val response = call.execute()
             if (!response.isSuccessful) {
-                trySend(LlmStreamEvent.Error(errorMessage = AiUtils.extractDetailedErrorInfo(response).errorMsg))
+                val chunk = AiUtils.extractDetailedErrorInfo(response)
+                trySend(
+                    LlmStreamEvent.Error(
+                        errorCode = chunk.errorCode,
+                        errorCodeName = chunk.errorCodeName,
+                        errorMessage = chunk.errorMsg,
+                    )
+                )
                 close()
                 return@callbackFlow
             }
@@ -380,13 +387,26 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
         conversation: Conversation,
         request: LlmTurnRequest
     ): Flow<LlmStreamEvent> = flow {
-        val body = withContext(Dispatchers.IO) {
+        var body = ""
+        val errorChunk = withContext(Dispatchers.IO) {
             val call = createResponsesCall(conversation, request, streaming = false)
             val response = call.execute()
             if (!response.isSuccessful) {
-                throw IOException(AiUtils.extractDetailedErrorInfo(response).errorMsg)
+                AiUtils.extractDetailedErrorInfo(response)
+            } else {
+                body = response.body()?.string().orEmpty()
+                null
             }
-            response.body()?.string().orEmpty()
+        }
+        if (errorChunk != null) {
+            emit(
+                LlmStreamEvent.Error(
+                    errorCode = errorChunk.errorCode,
+                    errorCodeName = errorChunk.errorCodeName,
+                    errorMessage = errorChunk.errorMsg,
+                )
+            )
+            return@flow
         }
         parseResponsesResponse(body).forEach { emit(it) }
     }
@@ -801,7 +821,18 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
                 }
             }
             "error", "response.failed", "response.incomplete" -> {
-                listOf(LlmStreamEvent.Error(errorMessage = json.string("message") ?: payload))
+                val errorObj = json.objectValue("error")
+                    ?: json.objectValue("response")?.objectValue("error")
+                val message = errorObj?.string("message")
+                    ?: json.string("message")
+                    ?: payload
+                listOf(
+                    LlmStreamEvent.Error(
+                        errorCode = 1,
+                        errorCodeName = errorObj?.string("code").orEmpty(),
+                        errorMessage = message,
+                    )
+                )
             }
             else -> emptyList()
         }
@@ -996,9 +1027,10 @@ class ProtocolRoutingAIRequestHandler @Inject constructor(
 
     private fun ChatCompletionChunk.toErrorEvent(): LlmStreamEvent.Error {
         // 兜底: provider 通过 error_msg 字段(而非 finish_reason)下发风控拒绝的场景
-        val contentFilter = AiUtils.isContentFilterRejection(errorMsg)
+        val contentFilter = AiUtils.isContentFilterRejection(errorMsg) || errorCodeName == "CONTENT_FILTERED"
         return LlmStreamEvent.Error(
             errorCode = if (contentFilter) AiUtils.ERROR_CODE_CONTENT_FILTER else errorCode,
+            errorCodeName = if (contentFilter) "CONTENT_FILTERED" else errorCodeName,
             errorMessage = if (contentFilter) {
                 AiUtils.contentFilterErrorMessage()
             } else {

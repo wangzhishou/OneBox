@@ -2,8 +2,6 @@ package com.shifenmiao.login.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -13,6 +11,7 @@ import com.shifenmiao.core.R
 import com.shifenmiao.model.webview.WebViewParams
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 import com.t8rin.imagetoolbox.core.ui.widget.text.HtmlText
 import com.t8rin.imagetoolbox.core.utils.getString
 
@@ -56,15 +55,10 @@ fun UserAgreement(
 fun UserAgreementCheckbox(
     isUserAgreementChecked: MutableState<Boolean>,
 ) {
-    Checkbox(
+    GlassCheckbox(
         checked = isUserAgreementChecked.value,
         onCheckedChange = {
             isUserAgreementChecked.value = it
         },
-        colors = CheckboxDefaults.colors(
-            uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-            checkedColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            checkmarkColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
     )
 }

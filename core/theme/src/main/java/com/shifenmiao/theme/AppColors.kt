@@ -2,6 +2,7 @@ package com.shifenmiao.theme
 
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
@@ -29,6 +30,14 @@ class AppColors {
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.68f)
+    )
+
+    @Composable
+    fun checkboxColors() = CheckboxDefaults.colors().copy(
+        checkedBoxColor = MaterialTheme.colorScheme.primaryContainer,
+        checkedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
+        checkedCheckmarkColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        uncheckedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
     )
 
     @Composable

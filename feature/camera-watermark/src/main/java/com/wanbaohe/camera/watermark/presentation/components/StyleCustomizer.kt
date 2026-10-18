@@ -25,7 +25,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Checkbox
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -326,7 +326,7 @@ private fun TemplateListItem(
     ) {
         // 编辑模式下显示选择框
         if (isEditMode) {
-            Checkbox(
+            GlassCheckbox(
                 checked = isSelectedForDelete,
                 onCheckedChange = { onSelect() },
                 modifier = Modifier.padding(end = 8.dp)

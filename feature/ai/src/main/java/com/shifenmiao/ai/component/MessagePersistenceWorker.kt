@@ -1,5 +1,6 @@
 package com.shifenmiao.ai.component
 
+import com.shifenmiao.ai.error.AiChatError
 import com.shifenmiao.ai.history.withHistorySnapshot
 import com.shifenmiao.ai.service.ConversationTitleSummaryService
 import com.shifenmiao.ai.utils.AiUtils
@@ -169,11 +170,15 @@ class MessagePersistenceWorker(
     /**
      * 渲染错误 UI 并持久化错误消息。
      *
+     * 落库的 `answer` 是面向用户的文案（后台 message 或本地化提示），
+     * 语义分类 / HTTP 状态码写进 `finish_reason`（`error:<status>:<code>`），
+     * 供重启后重新渲染错误卡片；原始 URL / 响应体只进 logcat。
+     *
      * @param skipPoints  true 时跳过积分扣减(用于内容风控拒绝且本轮零产出等
      *                    未产生任何有效内容的场景); 默认 false 保持既有行为。
      */
     suspend fun renderErrorUIForChat(
-        errorMessage: String,
+        error: AiChatError,
         questionMessageEntityList: List<MessageEntity>? = null,
         reasoningTime: Long = 0L,
         skipPoints: Boolean = false,
@@ -184,8 +189,9 @@ class MessagePersistenceWorker(
             )
         }
         sharedState.setAnswerMessage(sharedState.answerMessageEntity.value.copy(
-            answer = errorMessage,
-            reasoningContent = ""
+            answer = error.message,
+            reasoningContent = "",
+            finishReason = error.meta,
         ).also { it.uId = MessageUIState.ERROR.value })
         streamContentProcessor.updatePlaceHolderMessage()
 

@@ -9,31 +9,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -63,6 +55,7 @@ import com.halilibo.richtext.markdown.BasicMarkdown
 import com.halilibo.richtext.ui.RichTextStyle
 import com.halilibo.richtext.ui.a2ui.LocalIsMessageStreaming
 import com.halilibo.richtext.ui.material3.RichText
+import com.shifenmiao.ai.error.AiChatError
 import com.shifenmiao.ai.model.MessageUiModel
 import com.shifenmiao.ai.ui.AIUsageBar
 import com.shifenmiao.base.provider.LocalDataDraftHelper
@@ -75,11 +68,12 @@ import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ListItemType
 import com.shifenmiao.model.ai.AttachmentPayloadDto
+import com.shifenmiao.model.ai.event.MainClickEvent
+import com.shifenmiao.model.ai.event.MainShowType
 import com.shifenmiao.model.image.ImageViewerInfo
 import com.shifenmiao.model.state.LocalChatUIState
 import com.shifenmiao.model.webview.WebViewParams
 import com.shifenmiao.storage.AppSharedStorage
-import com.shifenmiao.storage.RemoteConfigStorage
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.LocalOnNavigate
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
@@ -914,46 +908,6 @@ fun RobotReasoningBlock(
     }
 }
 
-/**
- * 直连模式下的错误展示组件：以原始 HTTP 调试信息形式显示在助手消息卡片内。
- * 与代理协议的 [ChatErrorMessage] 错误卡片区分，直连错误不提供重试/切换等操作按钮。
- */
-@Composable
-fun RobotDirectErrorContent(
-    errorMessage: String,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
-) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .flatGlassCardSegment(
-                segment = GlassCardSegment.Middle,
-                color = backgroundColor,
-            )
-            .padding(horizontal = 12.dp, vertical = 8.dp)
-    ) {
-        GlassSurface(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colorScheme.errorContainer,
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            SelectionContainer {
-                Text(
-                    text = errorMessage,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 400.dp)
-                        .verticalScroll(scrollState)
-                        .padding(12.dp),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-    }
-}
-
 @Composable
 fun ChatLoadingIndicator(
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainerLow
@@ -976,7 +930,7 @@ fun ChatLoadingIndicator(
 fun ChatErrorMessage(
     appComponent: AppComponent,
     aiChatComponent: AIChatComponent,
-    errorMessage: String
+    error: AiChatError,
 ) {
     Column(
         modifier = Modifier
@@ -985,32 +939,17 @@ fun ChatErrorMessage(
                 segment = GlassCardSegment.Middle,
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
             )
-            .padding(horizontal = 12.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
-        ErrorStateContent(
-            errorMessage = errorMessage,
-            onRetry = {
-                aiChatComponent.retryChat()
+        ChatErrorCard(
+            error = error,
+            onRetry = { aiChatComponent.retryChat() },
+            onGetPoints = {
+                appComponent.onRobotClick(
+                    MainClickEvent(type = MainShowType.BUY_COFFEE)
+                )
             },
-            onAISetting = {
-                appComponent.showAIChatSettings()
-            },
-            onAISwitch = {
-                appComponent.showAIModelsModalSheet()
-            },
-            onHelp = {
-                appComponent.hideAIChat()
-                RemoteConfigStorage.getRemoteConfig().helpBlogIds?.let { helpBlogIds ->
-                    if (helpBlogIds.isEmpty()) {
-                        return@let
-                    }
-                    val blogId = helpBlogIds
-                        .getValue(
-                            "AISetting"
-                        )
-                    appComponent.showBlogModalBottomSheet(blogId)
-                }
-            }
+            onSwitchModel = { appComponent.showAIModelsModalSheet() },
         )
     }
 }
@@ -1045,149 +984,4 @@ private fun SuccessStateContent(
     }
     Spacer(modifier = Modifier.height(4.dp))
     MarkdownContent(message = answer)
-}
-
-
-@Composable
-fun ErrorStateContent(
-    errorMessage: String,
-    onRetry: () -> Unit,
-    onAISetting: () -> Unit,
-    onAISwitch: () -> Unit,
-    onHelp: () -> Unit
-) {
-    Spacer(modifier = Modifier.padding(top = AppTheme.dimens.paddingNormal))
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(
-            space = AppTheme.dimens.paddingNormal,
-            alignment = Alignment.Top
-        ),
-    ) {
-        Text(
-            text = stringResource(id = R.string.ai_error),
-            color = MaterialTheme.colorScheme.onErrorContainer,
-            style = MaterialTheme.typography.titleMedium
-        )
-        GlassSurface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.dimens.paddingNormal),
-            color = MaterialTheme.colorScheme.errorContainer,
-            shape = AppTheme.shapes.getSmallShape()
-        ) {
-            SelectionContainer {
-                MarkdownContent(
-                    message = errorMessage,
-                    paddingValues = PaddingValues(AppTheme.dimens.paddingNormal)
-                )
-            }
-        }
-        Text(
-            text = stringResource(id = R.string.ai_error_intro),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Text(
-            text = stringResource(id = R.string.ai_error_network),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall
-        )
-        Text(
-            text = stringResource(id = R.string.ai_error_busy),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall
-        )
-        Text(
-            text = stringResource(id = R.string.ai_error_content),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall
-        )
-        Text(
-            text = stringResource(id = R.string.ai_error_length),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall
-        )
-
-    }
-    Spacer(modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge))
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = AppTheme.dimens.paddingNormal)
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        TextButton(
-            onClick = {
-                onAISetting()
-            },
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSettings,
-                modifier = Modifier.size(12.dp),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Text(
-                text = stringResource(id = R.string.settings_title),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        TextButton(
-            onClick = {
-                onAISwitch()
-            },
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineSwitchAccess,
-                modifier = Modifier.size(12.dp),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Text(
-                text = stringResource(id = R.string.select),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        TextButton(
-            onClick = onRetry,
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.Refresh,
-                modifier = Modifier.size(12.dp),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Text(
-                text = stringResource(id = R.string.button_retry),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        TextButton(
-            onClick = onHelp,
-        ) {
-            Icon(
-                imageVector = com.t8rin.imagetoolbox.core.resources.Icons.Outlined.LineLiveHelp,
-                modifier = Modifier.size(12.dp),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Text(
-                text = stringResource(id = R.string.button_help),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-    }
-    Spacer(modifier = Modifier.padding(top = AppTheme.dimens.paddingNormal))
 }

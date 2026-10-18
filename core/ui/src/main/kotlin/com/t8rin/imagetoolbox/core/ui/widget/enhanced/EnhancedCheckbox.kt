@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import com.shifenmiao.theme.AppTheme
 import kotlin.math.floor
 
 @Composable
@@ -37,7 +38,7 @@ fun EnhancedCheckbox(
     onCheckedChange: ((Boolean) -> Unit)?,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: CheckboxColors = CheckboxDefaults.colors(),
+    colors: CheckboxColors = AppTheme.colors.checkboxColors(),
     interactionSource: MutableInteractionSource? = null
 ) {
     val haptics = LocalHapticFeedback.current

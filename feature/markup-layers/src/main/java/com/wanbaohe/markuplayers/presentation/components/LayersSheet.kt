@@ -23,7 +23,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Checkbox
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCheckbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -361,7 +361,7 @@ private fun LayerRow(
             .clickable(enabled = !locked, onClick = onSelect)
             .padding(horizontal = 4.dp, vertical = 2.dp)
     ) {
-        Checkbox(
+        GlassCheckbox(
             checked = isSelected,
             enabled = !locked,
             onCheckedChange = { onToggleSelection() },

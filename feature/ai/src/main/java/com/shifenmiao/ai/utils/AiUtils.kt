@@ -9,6 +9,7 @@ import com.shifenmiao.database.image.dao.ImageDao
 import com.shifenmiao.model.ModelProvider.AppJson
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.shifenmiao.ai.agent.AgentLoopExecutor
+import com.shifenmiao.ai.error.AiChatErrorFactory
 import com.shifenmiao.model.ai.AIConversationEntryType
 import com.shifenmiao.model.ai.AiEngine
 import com.shifenmiao.model.ai.AiModel
@@ -47,7 +48,6 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonObject
 
 object AiUtils {
 
@@ -630,96 +630,75 @@ object AiUtils {
     }
 
     /**
-     * 从 OkHttp 失败响应中提取精简错误信息。
+     * 从 OkHttp 失败响应中提取**可直接展示**的错误信息，并附带稳定的错误码。
      *
-     * 只保留状态码、请求 URL/Method 和从响应体中解析出的错误描述，
-     * 不再 dump 完整的请求头和响应头（避免信息泄露和 UI 上过于冗长）。
+     * 原始 URL / 响应体会写到 logcat 供排查，UI 只拿 [AiChatErrorFactory] 翻译后的
+     * 后台文案或本地化提示；调用方再把 `errorCodeName` 透传到 UI，用于选择错误卡片。
      */
     fun extractDetailedErrorInfo(response: retrofit2.Response<*>): ChatCompletionChunk {
-        try {
+        return try {
             val statusCode = response.code()
             val statusMessage = response.message()
-            val requestUrl = response.raw().request.url
-            val requestMethod = response.raw().request.method
+            val request = response.raw().request
+            val requestUrl = request.url.toString()
+            val requestMethod = request.method
             val errorBodyString = response.errorBody()?.string().orEmpty()
+
+            makeLog {
+                "AI request failed: HTTP $statusCode $statusMessage\n" +
+                    "$requestMethod $requestUrl\n" +
+                    errorBodyString.take(1000)
+            }
 
             // 服务端联系方式验证门控(二期)预埋: 未验证被拒时弹验证引导, 不渲染原始错误
             if (errorBodyString.contains("ContactVerificationRequired")) {
                 AppEventBus.emit(VerifyContactEvent(source = "AiUtils"))
+                val error = AiChatErrorFactory.contactVerificationRequired(
+                    statusCode = statusCode,
+                    message = AppContext.getString(R.string.verify_contact_ai_desc),
+                )
                 return ChatCompletionChunk(
                     errorCode = statusCode,
-                    errorMsg = AppContext.getString(R.string.verify_contact_ai_desc)
+                    errorMsg = error.message,
+                    errorCodeName = error.code.orEmpty(),
                 )
             }
 
             // 上游内容风控拒绝(如 Xiaomi MiMo 400 content_filter): 本地化文案, 不透传原始英文
             if (isContentFilterRejection(errorBodyString)) {
+                val error = AiChatErrorFactory.contentFiltered()
                 return ChatCompletionChunk(
                     errorCode = ERROR_CODE_CONTENT_FILTER,
-                    errorMsg = contentFilterErrorMessage()
+                    errorMsg = error.message,
+                    errorCodeName = error.code.orEmpty(),
                 )
             }
 
-            // 尝试从 JSON 响应体中解析可读错误描述
-            val errorDetail = parseErrorBody(errorBodyString)
-
-            val conciseError = buildString {
-                append("HTTP $statusCode")
-                if (statusMessage.isNotBlank()) append(" $statusMessage")
-                append('\n')
-                append("URL: $requestMethod $requestUrl")
-                append('\n')
-                if (errorDetail.isNotBlank()) {
-                    append("Error: $errorDetail")
-                }
-            }
-
-            return ChatCompletionChunk(
-                errorCode = statusCode,
-                errorMsg = conciseError
+            val error = AiChatErrorFactory.fromHttpResponse(
+                statusCode = statusCode,
+                statusMessage = statusMessage,
+                method = requestMethod,
+                url = requestUrl,
+                body = errorBodyString,
+                cacheOnlyRequest = request.cacheControl.onlyIfCached,
+            )
+            ChatCompletionChunk(
+                // 合成 504(离线缓存未命中)的 statusCode 被工厂清空, 这里用 1 占位,
+                // 避免把缓存层的假状态码当成服务端错误展示。
+                errorCode = error.statusCode ?: 1,
+                errorMsg = error.message,
+                errorCodeName = error.code.orEmpty(),
             )
         } catch (e: Throwable) {
-            return ChatCompletionChunk(
+            makeLog { "Failed to extract error details: ${e.javaClass.name}: ${e.message}" }
+            val error = AiChatErrorFactory.fromThrowable(e)
+            ChatCompletionChunk(
                 errorCode = -1,
-                errorMsg = "Failed to extract error details: ${e.message}"
+                errorMsg = error.message,
+                errorCodeName = error.code.orEmpty(),
             )
         }
     }
-
-    /**
-     * 从 HTTP error body 中解析可读的错误描述。
-     * 兼容 JSON（含 error.message / message / code 等常见结构）和纯文本两种格式，
-     * 超长内容截断到 500 字符。
-     */
-    private fun parseErrorBody(errorBody: String): String {
-        if (errorBody.isBlank()) return ""
-        return try {
-            val jsonObject = AppJson.parseToJsonElement(errorBody).jsonObject
-            // 优先取 error.message（OpenAI 风格）
-            val errorObj = jsonObject["error"] as? JsonObject
-            fun JsonObject.str(key: String): String? =
-                (this[key] as? JsonPrimitive)?.contentOrNull
-            val message = when {
-                errorObj?.str("message") != null ->
-                    errorObj.str("message")!!
-                errorObj?.str("code") != null ->
-                    "${errorObj.str("code")}: ${errorObj.str("message") ?: "unknown"}"
-                jsonObject.str("message") != null ->
-                    jsonObject.str("message")!!
-                jsonObject.str("code") != null && jsonObject.str("message") != null ->
-                    "${jsonObject.str("code")}: ${jsonObject.str("message")}"
-                jsonObject.str("code") != null ->
-                    "code=${jsonObject.str("code")}"
-                else -> errorBody.take(MAX_ERROR_BODY_LENGTH)
-            }
-            message.take(MAX_ERROR_BODY_LENGTH)
-        } catch (_: Exception) {
-            // 非 JSON 格式（如 HTML 错误页），截断展示
-            errorBody.take(MAX_ERROR_BODY_LENGTH)
-        }
-    }
-
-    private const val MAX_ERROR_BODY_LENGTH = 500
 
     fun processStreamLine(line: String): ChatCompletionChunk? {
         // 先做基础清洗：去掉 BOM / 末尾 \r 等不可见字符。SSE 规范 (W3C EventSource) 允许
@@ -743,6 +722,7 @@ object AiUtils {
                 if (payload.isEmpty()) return null
                 try {
                     val chunk = AppJson.decodeFromString<ChatCompletionChunk>(payload)
+                    extractInStreamError(payload, chunk)?.let { return it }
                     val transformed = transformChatCompletion(chunk)
                     // 某些 provider 在最后一帧只发 usage 或仅带 finish_reason，不再单独
                     // 发 [DONE]。这里识别这两种"隐式结束"信号，主动置 isEnd=true，避免上层
@@ -769,6 +749,7 @@ object AiUtils {
             trimmed.startsWith("{") -> {
                 try {
                     val chunk = AppJson.decodeFromString<ChatCompletionChunk>(trimmed)
+                    extractInStreamError(trimmed, chunk)?.let { return it }
                     val transformed = transformChatCompletion(chunk)
                     val hasFinishReason = transformed.choices.any {
                         val fr = it.finishReason
@@ -789,13 +770,41 @@ object AiUtils {
         }
     }
 
+    /**
+     * 部分 provider 会用 HTTP 200 的 SSE 帧下发错误：
+     * `data: {"error":{"code":"...","message":"..."}}`。
+     * [ChatCompletionChunk] 没有 error 字段，直接 decode 会得到空 choices 的"正常帧"，
+     * 上层最终只会报"连接中断"。这里识别并转成统一错误 chunk。
+     */
+    private fun extractInStreamError(payload: String, chunk: ChatCompletionChunk): ChatCompletionChunk? {
+        if (chunk.errorCode != 0 || chunk.choices.isNotEmpty()) return null
+        val json = runCatching {
+            AppJson.parseToJsonElement(payload) as? JsonObject
+        }.getOrNull() ?: return null
+        val errorObj = json["error"] as? JsonObject ?: return null
+        val message = (errorObj["message"] as? JsonPrimitive)?.contentOrNull
+            ?: (json["message"] as? JsonPrimitive)?.contentOrNull
+            ?: payload
+        val code = (errorObj["code"] as? JsonPrimitive)?.contentOrNull
+            ?: (errorObj["type"] as? JsonPrimitive)?.contentOrNull
+        return ChatCompletionChunk(
+            errorCode = 1,
+            errorMsg = message,
+            errorCodeName = code.orEmpty(),
+            isEnd = true,
+        )
+    }
+
     fun handleStreamingError(
         error: Throwable,
         message: String
     ): ChatCompletionChunk {
+        makeLog { "$message: ${error.javaClass.name}: ${error.message}" }
+        val friendly = AiChatErrorFactory.fromThrowable(error)
         return ChatCompletionChunk(
             errorCode = 1,
-            errorMsg = "$message: ${error.message ?: error.toString()}"
+            errorMsg = friendly.message,
+            errorCodeName = friendly.code.orEmpty(),
         )
     }
 

@@ -14,6 +14,8 @@ import com.shifenmiao.ai.agent.tool.AgentToolRegistry
 import com.shifenmiao.ai.agent.tool.ToolBindingRepository
 import com.shifenmiao.ai.agent.tool.ToolPredicate
 import com.shifenmiao.ai.context.ContextCompactor
+import com.shifenmiao.ai.error.AiChatError
+import com.shifenmiao.ai.error.AiChatErrorFactory
 import com.shifenmiao.ai.logic.ChatInputComponent
 import com.shifenmiao.ai.mediator.MessageRemoteMediator
 import com.shifenmiao.ai.request.LocalLlmSessionManager
@@ -676,12 +678,12 @@ open class AIChatComponent @AssistedInject internal constructor(
     }
 
     private suspend fun renderErrorUIForChat(
-        errorMessage: String,
+        error: AiChatError,
         questionMessageEntityList: List<MessageEntity>? = null,
         skipPoints: Boolean = false
     ) {
         messagePersistenceWorker.renderErrorUIForChat(
-            errorMessage = errorMessage,
+            error = error,
             questionMessageEntityList = questionMessageEntityList,
             reasoningTime = streamContentProcessor.reasoningTime,
             skipPoints = skipPoints
@@ -855,7 +857,9 @@ open class AIChatComponent @AssistedInject internal constructor(
                 // 直接走错误 UI, 不进入 Agent Loop / 完成持久化路径(避免为失败轮次扣积分)。
                 // 首轮不自动重试 —— fetchAndSaveMessages 已落库, 重试可能产生重复消息。
                 renderErrorUIForChat(
-                    applicationContext.getString(R.string.ai_chat_stream_interrupted),
+                    AiChatErrorFactory.interrupted(
+                        applicationContext.getString(R.string.ai_chat_stream_interrupted)
+                    ),
                     questionMessageEntityList
                 )
                 return
@@ -916,14 +920,16 @@ open class AIChatComponent @AssistedInject internal constructor(
                     persistInterruptedChat()
                 }
                 else -> {
-                    val errorMessage = when {
-                        isWatchdogTimeout -> applicationContext.getString(R.string.agent_stream_timeout)
-                        e is LlmStreamAbortedException -> applicationContext.getString(
-                            R.string.ai_chat_stream_interrupted
+                    val error = when {
+                        isWatchdogTimeout -> AiChatErrorFactory.timeout(
+                            applicationContext.getString(R.string.agent_stream_timeout)
                         )
-                        else -> buildChatErrorMessage(e)
+                        e is LlmStreamAbortedException -> AiChatErrorFactory.interrupted(
+                            applicationContext.getString(R.string.ai_chat_stream_interrupted)
+                        )
+                        else -> AiChatErrorFactory.fromThrowable(e)
                     }
-                    renderErrorUIForChat(errorMessage, questionMessageEntityList)
+                    renderErrorUIForChat(error, questionMessageEntityList)
                 }
             }
         }
@@ -950,7 +956,11 @@ open class AIChatComponent @AssistedInject internal constructor(
                 val skipPoints = streamEvent.errorCode == AiUtils.ERROR_CODE_CONTENT_FILTER &&
                     nothingProduced
                 renderErrorUIForChat(
-                    streamEvent.errorMessage,
+                    AiChatErrorFactory.fromStreamError(
+                        errorCode = streamEvent.errorCode,
+                        errorCodeName = streamEvent.errorCodeName,
+                        errorMessage = streamEvent.errorMessage,
+                    ),
                     questionMessageEntityList,
                     skipPoints = skipPoints
                 )
@@ -996,7 +1006,9 @@ open class AIChatComponent @AssistedInject internal constructor(
                     _answerMessageEntity.value.reasoningContent.isNotBlank()
                 if (!hasVisibleAssistantOutput && !agentLoopOrchestrator.hasAccumulatedToolCalls()) {
                     renderErrorUIForChat(
-                        applicationContext.getString(R.string.ai_chat_empty_response_error),
+                        AiChatErrorFactory.emptyResponse(
+                            applicationContext.getString(R.string.ai_chat_empty_response_error)
+                        ),
                         questionMessageEntityList
                     )
                     return
@@ -1279,27 +1291,6 @@ open class AIChatComponent @AssistedInject internal constructor(
     }
 
     fun continueAgentLoop() = agentLoopOrchestrator.continueAgentLoop()
-
-    /**
-     * 把流式/Agent Loop 阶段的异常转成最终展示给用户的错误文本。
-     *
-     * 仅在 [executeStreamingChat] 的兜底 catch 中调用，此时异常 message 经常是
-     * Java 内部 NPE（"key == null || value == null" 之类），对用户没有可读性，
-     * 但对开发定位又极有价值 —— 因此把异常类型 + 栈首帧拼到 message 后面。
-     */
-    private fun buildChatErrorMessage(e: Throwable): String {
-        val base = e.message?.takeIf { it.isNotBlank() }
-            ?: "${e.javaClass.simpleName} (no message)"
-        val origin = e.stackTrace.firstOrNull { frame ->
-            !frame.className.startsWith("kotlin.coroutines") &&
-                !frame.className.startsWith("kotlinx.coroutines")
-        }
-        val tail = origin?.let { frame ->
-            "${e.javaClass.simpleName} @ ${frame.className}.${frame.methodName}" +
-                "(${frame.fileName}:${frame.lineNumber})"
-        } ?: e.javaClass.simpleName
-        return "$base · $tail"
-    }
 
     override fun onModelChanged(aiModel: AiModel) {
         // 进入聊天页 / 切换模型后,若当前是端侧引擎则后台预热(大内存设备才生效),

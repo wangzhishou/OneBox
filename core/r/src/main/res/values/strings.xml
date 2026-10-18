@@ -1781,6 +1781,42 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="ai_empty_response_error">The model returned no content. Please try again.</string>
     <string name="ai_chat_stream_interrupted">Connection interrupted before the response completed. Please try again.</string>
 
+    <!-- AI chat error card -->
+    <string name="ai_chat_error_title_offline">No internet connection</string>
+    <string name="ai_chat_error_desc_offline">Check your Wi-Fi or mobile data, then try again.</string>
+    <string name="ai_chat_error_title_network">Can\'t reach the server</string>
+    <string name="ai_chat_error_desc_network">The network seems unstable. Please try again in a moment.</string>
+    <string name="ai_chat_error_title_timeout">Request timed out</string>
+    <string name="ai_chat_error_desc_timeout">The server took too long to respond. Please try again.</string>
+    <string name="ai_chat_error_title_auth">Session expired</string>
+    <string name="ai_chat_error_desc_auth">Please log in again to continue.</string>
+    <string name="ai_chat_error_title_points">Not enough points</string>
+    <string name="ai_chat_error_desc_points">Top up points to keep using this model.</string>
+    <string name="ai_chat_error_title_payment">Quota exceeded</string>
+    <string name="ai_chat_error_desc_payment">The account has no remaining quota. Check the provider billing settings.</string>
+    <string name="ai_chat_error_title_forbidden">Access restricted</string>
+    <string name="ai_chat_error_desc_forbidden">This account doesn\'t have permission to use this feature.</string>
+    <string name="ai_chat_error_title_rate_limited">Too many requests</string>
+    <string name="ai_chat_error_desc_rate_limited">Please wait a moment before trying again.</string>
+    <string name="ai_chat_error_title_content_filtered">Blocked by safety policy</string>
+    <string name="ai_chat_error_desc_content_filtered">Rephrase your message and try again.</string>
+    <string name="ai_chat_error_title_server">Service unavailable</string>
+    <string name="ai_chat_error_desc_server">Something went wrong on the server. Please try again later.</string>
+    <string name="ai_chat_error_title_client">Request couldn\'t be completed</string>
+    <string name="ai_chat_error_desc_client">Check your input and try again.</string>
+    <string name="ai_chat_error_title_empty">No response received</string>
+    <string name="ai_chat_error_desc_empty">The model returned nothing. Please try again.</string>
+    <string name="ai_chat_error_title_interrupted">Connection interrupted</string>
+    <string name="ai_chat_error_desc_interrupted">The response was cut off. Please try again.</string>
+    <string name="ai_chat_error_title_unknown">Request failed</string>
+    <string name="ai_chat_error_desc_unknown">Please try again. If it keeps failing, switch models or try again later.</string>
+    <string name="ai_chat_error_action_get_points">Get points</string>
+    <string name="ai_chat_error_action_switch_model">Switch model</string>
+    <string name="ai_chat_error_details">Details</string>
+    <string name="ai_chat_error_details_hide">Hide details</string>
+    <string name="ai_chat_error_copy">Copy</string>
+    <string name="ai_chat_error_copied">Copied</string>
+
     <!-- AI content / execution details -->
     <string name="ai_content_notice_short">AI-generated</string>
     <string name="ai_execution_input_label">Input parameters</string>
