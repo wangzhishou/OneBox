@@ -51,15 +51,16 @@ class QWeatherDataSource(
     private val context: Context,
 ) {
 
-    suspend fun geoCityLookup(lat: Double, lon: Double): Result<CityInfo> =
-        suspendCancellableCoroutine { continuation ->
+    suspend fun geoCityLookup(lat: Double, lon: Double): Result<CityInfo> {
+        val client = QWeather.instance ?: return sdkUnavailable()
+        return suspendCancellableCoroutine { continuation ->
             val lonRoundingMode = lon.toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
             val latRoundingMode = lat.toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
             val location = "$lonRoundingMode,$latRoundingMode"
             val parameter = GeoCityLookupParameter(location)
                 .lang(preferredLang())
 
-            QWeather.instance.geoCityLookup(parameter, object : Callback<GeoCityLookupResponse?> {
+            client.geoCityLookup(parameter, object : Callback<GeoCityLookupResponse?> {
                 override fun onSuccess(response: GeoCityLookupResponse?) {
                     val locationResult = response?.location?.firstOrNull()
                     if (locationResult != null) {
@@ -96,14 +97,16 @@ class QWeatherDataSource(
                 }
             })
         }
+    }
 
-    suspend fun geoCityLookupByName(name: String): Result<CityInfo> =
-        suspendCancellableCoroutine { continuation ->
+    suspend fun geoCityLookupByName(name: String): Result<CityInfo> {
+        val client = QWeather.instance ?: return sdkUnavailable()
+        return suspendCancellableCoroutine { continuation ->
             val parameter = GeoCityLookupParameter(name)
                 .lang(preferredLang())
                 .number(1)
 
-            QWeather.instance.geoCityLookup(parameter, object : Callback<GeoCityLookupResponse?> {
+            client.geoCityLookup(parameter, object : Callback<GeoCityLookupResponse?> {
                 override fun onSuccess(response: GeoCityLookupResponse?) {
                     val locationResult = response?.location?.firstOrNull()
                     if (locationResult != null) {
@@ -140,9 +143,11 @@ class QWeatherDataSource(
                 }
             })
         }
+    }
 
-    suspend fun getWeatherDaily(cityId: String, days: Int): Result<List<DailyWeatherInfo>> =
-        suspendCancellableCoroutine { continuation ->
+    suspend fun getWeatherDaily(cityId: String, days: Int): Result<List<DailyWeatherInfo>> {
+        val client = QWeather.instance ?: return sdkUnavailable()
+        return suspendCancellableCoroutine { continuation ->
             val parameter = WeatherParameter(cityId)
                 .lang(preferredLang())
                 .unit(QWeatherUnit.METRIC)
@@ -185,86 +190,95 @@ class QWeatherDataSource(
             }
 
             if (days <= 3) {
-                QWeather.instance.weather3d(parameter, callback)
+                client.weather3d(parameter, callback)
             } else {
-                QWeather.instance.weather7d(parameter, callback)
+                client.weather7d(parameter, callback)
             }
         }
+    }
 
-    suspend fun getPlaceWeather(lat: Double, lon: Double): Result<PlaceWeather> = coroutineScope {
-        val latitude = round2(lat)
-        val longitude = round2(lon)
-        val current = async { weatherCurrent(latitude, longitude) }
-        val hourly = async { weatherHourly(latitude, longitude) }
-        val daily = async { weatherDaily(latitude, longitude) }
-        val air = async { airCurrent(latitude, longitude) }
-        val alerts = async { weatherAlerts(latitude, longitude) }
-        val indices = async { lifeIndices(longitude, latitude) }
-        val minutely = async { minutelySummary(longitude, latitude) }
+    suspend fun getPlaceWeather(lat: Double, lon: Double): Result<PlaceWeather> {
+        if (QWeather.instance == null) return sdkUnavailable()
+        return coroutineScope {
+            val latitude = round2(lat)
+            val longitude = round2(lon)
+            val current = async { weatherCurrent(latitude, longitude) }
+            val hourly = async { weatherHourly(latitude, longitude) }
+            val daily = async { weatherDaily(latitude, longitude) }
+            val air = async { airCurrent(latitude, longitude) }
+            val alerts = async { weatherAlerts(latitude, longitude) }
+            val indices = async { lifeIndices(longitude, latitude) }
+            val minutely = async { minutelySummary(longitude, latitude) }
 
-        val currentResult = current.await()
-        if (currentResult.isFailure) {
-            return@coroutineScope Result.failure(
-                currentResult.exceptionOrNull() ?: IllegalStateException("Weather data is empty")
+            val currentResult = current.await()
+            if (currentResult.isFailure) {
+                return@coroutineScope Result.failure(
+                    currentResult.exceptionOrNull() ?: IllegalStateException("Weather data is empty")
+                )
+            }
+            Result.success(
+                PlaceWeather(
+                    current = currentResult.getOrThrow(),
+                    hourly = hourly.await().getOrDefault(emptyList()),
+                    daily = daily.await().getOrDefault(emptyList()),
+                    air = air.await().getOrNull(),
+                    alerts = alerts.await().getOrDefault(emptyList()),
+                    indices = indices.await().getOrDefault(emptyList()),
+                    minutelySummary = minutely.await().getOrDefault(""),
+                )
             )
         }
-        Result.success(
-            PlaceWeather(
-                current = currentResult.getOrThrow(),
-                hourly = hourly.await().getOrDefault(emptyList()),
-                daily = daily.await().getOrDefault(emptyList()),
-                air = air.await().getOrNull(),
-                alerts = alerts.await().getOrDefault(emptyList()),
-                indices = indices.await().getOrDefault(emptyList()),
-                minutelySummary = minutely.await().getOrDefault(""),
-            )
-        )
     }
 
     private suspend fun weatherCurrent(lat: Double, lon: Double): Result<WeatherInfo> {
+        val client = QWeather.instance ?: return sdkUnavailable()
         val parameter = WeatherCurrentParameter(lat, lon)
             .localTime(true)
             .lang(preferredLang())
         return awaitCall<WeatherCurrentResponse> { callback ->
-            QWeather.instance.weatherCurrent(parameter, callback)
+            client.weatherCurrent(parameter, callback)
         }.mapCatching { response -> response.toWeatherInfo(context.weatherLocale()) }
     }
 
     private suspend fun weatherHourly(lat: Double, lon: Double): Result<List<HourlyForecast>> {
+        val client = QWeather.instance ?: return sdkUnavailable()
         val parameter = WeatherHourlyParameter(lat, lon)
             .hours(24)
             .localTime(true)
             .lang(preferredLang())
         return awaitCall<WeatherForecastHourlyResponse> { callback ->
-            QWeather.instance.weatherForecastHourly(parameter, callback)
+            client.weatherForecastHourly(parameter, callback)
         }.map { response ->
             response.hours.orEmpty().map { it.toHourlyForecast() }
         }
     }
 
     private suspend fun weatherDaily(lat: Double, lon: Double): Result<List<DailyOutlook>> {
+        val client = QWeather.instance ?: return sdkUnavailable()
         val parameter = WeatherDailyParameter(lat, lon)
             .days(7)
             .localTime(true)
             .lang(preferredLang())
         return awaitCall<WeatherForecastDailyResponse> { callback ->
-            QWeather.instance.weatherForecastDaily(parameter, callback)
+            client.weatherForecastDaily(parameter, callback)
         }.map { response ->
             response.days.orEmpty().map { it.toDailyOutlook() }
         }
     }
 
     private suspend fun airCurrent(lat: Double, lon: Double): Result<AirQuality?> {
+        val client = QWeather.instance ?: return sdkUnavailable()
         val parameter = AirV1Parameter(lat, lon).setLang(preferredLang())
         return awaitCall<AirV1CurrentResponse> { callback ->
-            QWeather.instance.airCurrent(parameter, callback)
+            client.airCurrent(parameter, callback)
         }.map { response -> response.indexes.orEmpty().preferredIndex()?.toAirQuality() }
     }
 
     private suspend fun weatherAlerts(lat: Double, lon: Double): Result<List<WeatherAlertItem>> {
+        val client = QWeather.instance ?: return sdkUnavailable()
         val parameter = WeatherAlertCurrentParameter(lat, lon, true).setLang(preferredLang())
         return awaitCall<WeatherAlertCurrentResponse> { callback ->
-            QWeather.instance.weatherAlertCurrent(parameter, callback)
+            client.weatherAlertCurrent(parameter, callback)
         }.map { response ->
             response.alerts.orEmpty().mapNotNull { alert ->
                 val headline = alert.headline.orEmpty()
@@ -287,8 +301,9 @@ class QWeatherDataSource(
             Indices.FLU,
             Indices.TRA,
         ).lang(preferredLang())
+        val client = QWeather.instance ?: return sdkUnavailable()
         return awaitCall<IndicesDailyResponse> { callback ->
-            QWeather.instance.indices1d(parameter, callback)
+            client.indices1d(parameter, callback)
         }.map { response ->
             response.daily.orEmpty().mapNotNull { item ->
                 val name = item.name.orEmpty()
@@ -301,9 +316,10 @@ class QWeatherDataSource(
 
     /** 分钟降水的 location 串是经度,纬度，构造参数顺序与实况接口相反。 */
     private suspend fun minutelySummary(lon: Double, lat: Double): Result<String> {
+        val client = QWeather.instance ?: return sdkUnavailable()
         val parameter = MinutelyParameter(lon, lat).lang(preferredLang())
         return awaitCall<MinutelyResponse> { callback ->
-            QWeather.instance.minutely(parameter, callback)
+            client.minutely(parameter, callback)
         }.map { response ->
             val raining = response.minutely.orEmpty().any { item ->
                 (item.precip?.toDoubleOrNull() ?: 0.0) > 0.0
@@ -359,13 +375,14 @@ class QWeatherDataSource(
         }
     }
 
-    suspend fun getWeatherNow(cityId: String): Result<WeatherInfo> =
-        suspendCancellableCoroutine { continuation ->
+    suspend fun getWeatherNow(cityId: String): Result<WeatherInfo> {
+        val client = QWeather.instance ?: return sdkUnavailable()
+        return suspendCancellableCoroutine { continuation ->
             val parameter = WeatherParameter(cityId)
                 .lang(preferredLang())
                 .unit(QWeatherUnit.METRIC)
 
-            QWeather.instance.weatherNow(parameter, object : Callback<WeatherNowResponse?> {
+            client.weatherNow(parameter, object : Callback<WeatherNowResponse?> {
                 override fun onSuccess(response: WeatherNowResponse?) {
                     val now = response?.now
                     if (response != null && now != null) {
@@ -406,7 +423,11 @@ class QWeatherDataSource(
                 }
             })
         }
+    }
 }
+
+private fun <T> sdkUnavailable(): Result<T> =
+    Result.failure(IllegalStateException("QWeather SDK is not initialized"))
 
 private fun WeatherCurrentResponse.toWeatherInfo(locale: Locale): WeatherInfo {
     val condition = condition
