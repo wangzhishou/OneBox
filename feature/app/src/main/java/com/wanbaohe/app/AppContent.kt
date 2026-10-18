@@ -278,9 +278,7 @@ private fun AppOverlayHost(
                 onNavigateToAddEngine = {
                     rootComponent.loginComponent.hideLoginModal()
                     appComponent.onNavigate(
-                        com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings(
-                            com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings.Type.AddEngine()
-                        )
+                        com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen.AISettings()
                     )
                 }
             )

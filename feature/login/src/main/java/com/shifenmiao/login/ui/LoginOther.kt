@@ -46,6 +46,7 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineChevronRight
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineKey
 import com.t8rin.imagetoolbox.core.ui.utils.helper.AppToastHost
 import com.t8rin.imagetoolbox.core.ui.widget.enhanced.EnhancedAlertDialog
+import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassTonalButton
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxLeadingIconBadge
 import com.t8rin.imagetoolbox.core.ui.widget.system.OneBoxListItem
 import dagger.hilt.android.EntryPointAccessors
@@ -146,7 +147,7 @@ fun LoginOther(
 
         Spacer(modifier = Modifier.height(8.dp))
         if (channelConfig.enableGms || CoreUtils.isOneBoxDebug()) {
-            TextButton(
+            GlassTonalButton(
                 enabled = !loginState.isLoggingIn,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,16 +161,11 @@ fun LoginOther(
                         googleConfirmFunction.invoke()
                     }
                 },
-                colors = ButtonColors(
-                    containerColor = Color(0xFFFFFFFF),
-                    contentColor = Color(0xFF3C4043),
-                    disabledContainerColor = Color(0xFFFFFFFF),
-                    disabledContentColor = Color(0xFF9AA0A6)
-                )
+                colors = AppTheme.colors.getSecondaryContainerButtonColors(),
             ) {
                 if (loginState.isLoggingIn) {
                     CircularProgressIndicator(
-                        color = Color(0xFF3C4043),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .height(24.dp)

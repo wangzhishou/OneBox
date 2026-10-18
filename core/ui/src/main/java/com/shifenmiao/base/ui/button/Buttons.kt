@@ -84,6 +84,7 @@ fun ConfirmButton(
 fun SecondaryButton(
     text: String = "",
     modifier: Modifier = Modifier,
+    enable: Boolean = true,
     icon: @Composable (() -> Unit)? = null,
     style: TextStyle = MaterialTheme.typography.bodyLarge,
     onClick: () -> Unit = {},
@@ -92,6 +93,7 @@ fun SecondaryButton(
         text = text,
         onClick = onClick,
         modifier = modifier,
+        enabled = enable,
         leadingIcon = icon,
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer,

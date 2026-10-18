@@ -229,7 +229,7 @@ enum class GlassTextFieldVisualPreset(
  * @param visualPreset       输入框专用视觉档位：安静 / 平衡 / 更显眼
  * @param glassColor         玻璃叠加色调（传入不透明原色，alpha 内部控制）；
  *                           传入 [Color.Unspecified] 时使用默认毛玻璃底色
- * @param glassBorderWidth   玻璃描边宽度，默认 1 dp
+ * @param glassBorderWidth   玻璃描边宽度，默认 0.5 dp
  * @param focusedAlphaBoost  聚焦时底色加深幅度，默认 0.12f
  */
 @Composable
@@ -260,7 +260,7 @@ fun GlassOutlinedTextField(
     style: GlassStyle = GlassStyle.Medium,
     visualPreset: GlassTextFieldVisualPreset = GlassTextFieldVisualPreset.Balanced,
     glassColor: Color = Color.Unspecified,
-    glassBorderWidth: Dp = 1.dp,
+    glassBorderWidth: Dp = 0.68.dp,
     focusedAlphaBoost: Float = 0.06f,
     contentPadding: PaddingValues? = null,
 ) {
@@ -739,17 +739,18 @@ private fun Modifier.modernGlassTextFieldContainer(
         else -> lerp(restingStroke, colorScheme.onPrimaryContainer, focusProgress)
     }
     // 线宽始终是 borderWidth, 聚焦不加粗。关玻璃用实线描边, 不跟玻璃透明度走。
+    // 静止描边比实线再淡一档, 边界还认得出, 但不抢页面。
     val strokeAlpha = if (isGlassActive) {
         when {
             !enabled -> 0.22f
             isError -> 0.62f
-            else -> 0.9f + focusProgress * 0.08f
+            else -> 0.78f + focusProgress * 0.08f
         } * glassBaseAlpha * visualPreset.strokeMultiplier.coerceIn(0.94f, 1.06f)
     } else {
         when {
             !enabled -> 0.55f
             isError -> 1f
-            else -> 0.92f
+            else -> 0.68f
         }
     }
     val strokeColor = strokeHue.copy(alpha = strokeAlpha.coerceIn(0f, 1f))
