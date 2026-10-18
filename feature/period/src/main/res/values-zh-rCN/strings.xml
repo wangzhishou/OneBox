@@ -79,7 +79,7 @@
     <string name="period_symptom_acne">痘痘</string>
     <string name="period_symptom_edema">水肿</string>
 
-    <string name="period_stats_range_6m">近 6 个月</string>
+    <string name="period_stats_range_6m">半年</string>
     <string name="period_stats_range_day">日</string>
     <string name="period_stats_range_week">周</string>
     <string name="period_stats_range_month">月</string>

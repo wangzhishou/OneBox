@@ -72,7 +72,7 @@
     <string name="period_symptom_appetite_change">تغيّر الشهية</string>
     <string name="period_symptom_acne">حب الشباب</string>
     <string name="period_symptom_edema">انتفاخ</string>
-    <string name="period_stats_range_6m">آخر 6 أشهر</string>
+    <string name="period_stats_range_6m">6 أشهر</string>
     <string name="period_stats_range_day">يوم</string>
     <string name="period_stats_range_week">أسبوع</string>
     <string name="period_stats_range_month">شهر</string>

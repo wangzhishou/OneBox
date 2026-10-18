@@ -72,7 +72,7 @@
     <string name="period_symptom_appetite_change">Cambio de apetito</string>
     <string name="period_symptom_acne">Acné</string>
     <string name="period_symptom_edema">Hinchazón</string>
-    <string name="period_stats_range_6m">Últimos 6 meses</string>
+    <string name="period_stats_range_6m">6 meses</string>
     <string name="period_stats_range_day">Día</string>
     <string name="period_stats_range_week">Semana</string>
     <string name="period_stats_range_month">Mes</string>

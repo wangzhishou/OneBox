@@ -72,7 +72,7 @@
     <string name="period_symptom_appetite_change">食欲の変化</string>
     <string name="period_symptom_acne">肌荒れ</string>
     <string name="period_symptom_edema">むくみ</string>
-    <string name="period_stats_range_6m">過去6か月</string>
+    <string name="period_stats_range_6m">半年</string>
     <string name="period_stats_range_day">日</string>
     <string name="period_stats_range_week">週</string>
     <string name="period_stats_range_month">月</string>

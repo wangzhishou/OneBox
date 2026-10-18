@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -37,7 +38,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.shifenmiao.base.ui.empty.EmptyStateGuide
 import com.shifenmiao.base.ui.empty.EmptyStateGuideAction
 import com.shifenmiao.common.ui.BaseScreen
@@ -534,12 +537,30 @@ private fun PeriodStatsContent(
                 PeriodStatsRange.WEEK to stringResource(R.string.period_stats_range_week),
                 PeriodStatsRange.MONTH to stringResource(R.string.period_stats_range_month),
             )
+            val rangeLabelStyle = MaterialTheme.typography.labelLarge
             GlassSegmentedButtonRow(
                 options = rangeOptions,
                 selectedOption = rangeOptions.first { it.first == range },
                 onOptionSelected = { onRangeChange(it.first) },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(it.second) },
+                label = { option ->
+                    // 四段等宽,长文案折行会把整行撑高且左对齐。单行居中,放不下再缩小字号。
+                    Text(
+                        text = option.second,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp),
+                        style = rangeLabelStyle,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                        overflow = TextOverflow.Ellipsis,
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 11.sp,
+                            maxFontSize = rangeLabelStyle.fontSize,
+                            stepSize = 0.5.sp,
+                        ),
+                    )
+                },
                 selectedColor = colors.accent,
                 selectedContentColor = colors.onAccent,
             )

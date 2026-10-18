@@ -72,7 +72,7 @@
     <string name="period_symptom_appetite_change">식욕 변화</string>
     <string name="period_symptom_acne">여드름</string>
     <string name="period_symptom_edema">부종</string>
-    <string name="period_stats_range_6m">최근 6개월</string>
+    <string name="period_stats_range_6m">6개월</string>
     <string name="period_stats_range_day">일</string>
     <string name="period_stats_range_week">주</string>
     <string name="period_stats_range_month">월</string>

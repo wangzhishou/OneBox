@@ -79,7 +79,7 @@
     <string name="period_symptom_acne">Acne</string>
     <string name="period_symptom_edema">Bloating</string>
 
-    <string name="period_stats_range_6m">Last 6 months</string>
+    <string name="period_stats_range_6m">6 months</string>
     <string name="period_stats_range_day">Day</string>
     <string name="period_stats_range_week">Week</string>
     <string name="period_stats_range_month">Month</string>

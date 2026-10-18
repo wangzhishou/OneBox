@@ -72,7 +72,7 @@
     <string name="period_symptom_appetite_change">Pagbabago ng gana sa pagkain</string>
     <string name="period_symptom_acne">Tagihawat</string>
     <string name="period_symptom_edema">Pagmamaga ng tiyan</string>
-    <string name="period_stats_range_6m">Huling 6 na buwan</string>
+    <string name="period_stats_range_6m">6 buwan</string>
     <string name="period_stats_range_day">Araw</string>
     <string name="period_stats_range_week">Linggo</string>
     <string name="period_stats_range_month">Buwan</string>

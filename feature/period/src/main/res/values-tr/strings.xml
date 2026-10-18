@@ -72,7 +72,7 @@
     <string name="period_symptom_appetite_change">İştah değişimi</string>
     <string name="period_symptom_acne">Akne</string>
     <string name="period_symptom_edema">Şişkinlik</string>
-    <string name="period_stats_range_6m">Son 6 ay</string>
+    <string name="period_stats_range_6m">6 ay</string>
     <string name="period_stats_range_day">Gün</string>
     <string name="period_stats_range_week">Hafta</string>
     <string name="period_stats_range_month">Ay</string>

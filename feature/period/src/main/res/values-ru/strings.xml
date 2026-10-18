@@ -72,7 +72,7 @@
     <string name="period_symptom_appetite_change">Изменение аппетита</string>
     <string name="period_symptom_acne">Акне</string>
     <string name="period_symptom_edema">Вздутие</string>
-    <string name="period_stats_range_6m">Последние 6 месяцев</string>
+    <string name="period_stats_range_6m">6 мес.</string>
     <string name="period_stats_range_day">День</string>
     <string name="period_stats_range_week">Неделя</string>
     <string name="period_stats_range_month">Месяц</string>
