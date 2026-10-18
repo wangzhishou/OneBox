@@ -3,6 +3,7 @@ package com.wanbaohe.markuplayers.data.project
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.provider.OpenableColumns
 import android.system.ErrnoException
 import android.system.Os
@@ -13,6 +14,7 @@ import com.t8rin.imagetoolbox.core.filters.presentation.model.UiFilter
 import com.t8rin.imagetoolbox.core.filters.presentation.serialization.UiFilterCodec
 import com.t8rin.imagetoolbox.core.settings.domain.model.FontType
 import com.t8rin.imagetoolbox.core.ui.widget.editor.StickerSource
+import com.t8rin.logger.makeLog
 import com.wanbaohe.markuplayers.domain.model.LayerEffect
 import com.wanbaohe.markuplayers.domain.model.LayerType
 import com.wanbaohe.markuplayers.domain.project.MarkupDocument
@@ -34,6 +36,8 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.roundToInt
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,7 +95,9 @@ class MarkupProjectStore @Inject constructor(
             readProject(id, directories, cancellation)
         } else null
         val durable = normalizeDocument(document, directories, cancellation)
-        val thumbnailPath = thumbnail?.let { storeBitmap(it, directories, cancellation) }
+        // 缩略图只是项目列表的预览图:编码失败不能拖垮整次保存(否则自动保存会被
+        // 顶掉并弹出"项目保存失败"),失败时沿用上一次的缩略图。
+        val thumbnailPath = thumbnail?.let { storeThumbnail(it, directories, cancellation) }
             ?: previous?.summary?.thumbnailPath
         val project = StoredMarkupProject(
             summary = MarkupProjectSummary(
@@ -243,6 +249,43 @@ class MarkupProjectStore @Inject constructor(
         }
     }
 
+    /**
+     * 项目列表缩略图:只用于 176dp 卡片,按长边 [ThumbnailSide] 缩放后再落盘。全尺寸
+     * PNG 每次自动保存都要编码几 MB、`assets/` 也会被历史缩略图撑大,顺带让编码更容易
+     * 在内存紧张时失败。失败(含编码失败)只返回 null,由调用方沿用旧缩略图。
+     */
+    private fun storeThumbnail(
+        bitmap: Bitmap,
+        directories: Directories,
+        cancellation: CoroutineContext,
+    ): String? {
+        var sourceCopy: Bitmap? = null
+        var scaledCopy: Bitmap? = null
+        return try {
+            val source = bitmap.encodable() ?: return null
+            if (source !== bitmap) sourceCopy = source
+            val longest = maxOf(source.width, source.height)
+            val scaled = if (longest > ThumbnailSide) {
+                val scale = ThumbnailSide.toFloat() / longest
+                Bitmap.createScaledBitmap(
+                    source,
+                    (source.width * scale).roundToInt().coerceAtLeast(1),
+                    (source.height * scale).roundToInt().coerceAtLeast(1),
+                    true
+                ).also { if (it !== source) scaledCopy = it }
+            } else source
+            storeBitmap(scaled, directories, cancellation)
+        } catch (cancelled: CancellationException) {
+            throw cancelled
+        } catch (failure: Throwable) {
+            failure.makeLog(LogTag)
+            null
+        } finally {
+            scaledCopy?.recycle()
+            sourceCopy?.recycle()
+        }
+    }
+
     private fun storeBitmap(
         bitmap: Bitmap,
         directories: Directories,
@@ -251,26 +294,50 @@ class MarkupProjectStore @Inject constructor(
         if (bitmap.isRecycled || bitmap.width <= 0 || bitmap.height <= 0) {
             throw IOException("Cannot persist an invalid bitmap")
         }
-        // 硬件位图(HARDWARE config)不能直接编码,先回读成软件位图
-        val encodable = if (bitmap.config == Bitmap.Config.HARDWARE) {
-            bitmap.copy(Bitmap.Config.ARGB_8888, false)
-                ?: throw IOException("Could not read back a hardware bitmap")
-        } else bitmap
+        val encodable = bitmap.encodable()
+            ?: throw IOException("Could not read back a ${bitmap.config} bitmap")
         try {
-            return writeAsset("png", directories, cancellation) { output ->
+            return writeAsset(
+                extension = "png",
+                directories = directories,
+                cancellation = cancellation,
+                // 编码期间不做取消检查:Bitmap.compress 经 JNI 回调 OutputStream.write,
+                // 框架会吞掉并清除 Java 异常再让 compress 返回 false,取消会被伪装成
+                //「编码失败」。取消改由下面的 ensureActive() 在编码前后兜底。
+                interruptible = false,
+            ) { output ->
                 if (!encodable.compress(Bitmap.CompressFormat.PNG, 100, output)) {
-                    throw IOException("Could not encode bitmap")
+                    // 位图编码失败前先确认是不是任务被取消(自动保存被新的编辑顶掉),
+                    // 取消必须以 CancellationException 抛出,不能报成保存失败。
+                    cancellation.ensureActive()
+                    throw IOException(
+                        "Could not encode ${encodable.width}x${encodable.height} bitmap"
+                    )
                 }
+                cancellation.ensureActive()
             }
         } finally {
             if (encodable !== bitmap) encodable.recycle()
         }
     }
 
+    /**
+     * 只有软件位图能被 [Bitmap.compress] 稳定编码:硬件位图没有可读像素,ALPHA_8 在
+     * 框架里直接返回 false。这里先回读成 ARGB_8888,无需转换时返回自身(调用方不得 recycle)。
+     * HARDWARE 从 API 26 才有,低版本直接引用枚举常量会 NoSuchFieldError。
+     */
+    private fun Bitmap.encodable(): Bitmap? = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+            config == Bitmap.Config.HARDWARE -> copy(Bitmap.Config.ARGB_8888, false)
+        config == Bitmap.Config.ALPHA_8 -> copy(Bitmap.Config.ARGB_8888, false)
+        else -> this
+    }
+
     private fun writeAsset(
         extension: String,
         directories: Directories,
         cancellation: CoroutineContext,
+        interruptible: Boolean = true,
         write: (OutputStream) -> Unit,
     ): String {
         val pending = File(directories.assets, ".pending-${UUID.randomUUID()}.part")
@@ -279,7 +346,10 @@ class MarkupProjectStore @Inject constructor(
         try {
             val digest = MessageDigest.getInstance("SHA-256")
             FileOutputStream(pending).use { fileOutput ->
-                val output = DigestOutputStream(CancellableOutput(fileOutput, cancellation), digest)
+                val output = DigestOutputStream(
+                    if (interruptible) CancellableOutput(fileOutput, cancellation) else fileOutput,
+                    digest
+                )
                 write(output)
                 output.flush()
                 cancellation.ensureActive()
@@ -540,6 +610,12 @@ class MarkupProjectStore @Inject constructor(
 
     private data class Directories(val projects: File, val assets: File)
 
+    /**
+     * 逐块检查取消的写入流,只用于文件拷贝这类纯 Java 写入路径。
+     * 严禁传给 [Bitmap.compress]:它经由 JNI 调 [OutputStream.write],框架会吞掉并清除
+     * 这里抛出的异常(android.graphics.CreateJavaOutputStreamAdaptor 里 ExceptionClear
+     * 后返回 false),取消/IO 错误都会被伪装成"编码失败"。
+     */
     private class CancellableOutput(
         output: OutputStream,
         private val cancellation: CoroutineContext,
@@ -558,6 +634,10 @@ class MarkupProjectStore @Inject constructor(
     private companion object {
         const val CopyBufferSize = 64 * 1024
         const val MaxProjectBytes = 32 * 1024 * 1024
+
+        /** 项目列表缩略图长边上限(卡片 176dp,3x 屏约 528px) */
+        const val ThumbnailSide = 640
+        const val LogTag = "MarkupProjectStore"
         val ExtensionPattern = Regex("[a-z0-9]{1,10}")
         val AssetPattern = Regex("[a-f0-9]{64}\\.[a-z0-9]{1,10}")
     }
