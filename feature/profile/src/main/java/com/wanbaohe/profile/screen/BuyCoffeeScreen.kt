@@ -2,6 +2,7 @@ package com.wanbaohe.profile.screen
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.selection.selectable
@@ -37,8 +40,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -404,27 +409,20 @@ fun PaymentOptionsSelector(
     onOptionSelected: (PaymentMethod<PrePayResponse>) -> Unit
 ) {
     var selectedPayment by remember { mutableStateOf(paymentOptions.firstOrNull()) }
-    if (selectedPayment == null) return
+    val current = selectedPayment ?: return
     Row(
         Modifier
             .selectableGroup()
             .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         paymentOptions.forEach { option ->
-            val selected = selectedPayment?.id == option.id
+            val selected = current.id == option.id
             Row(
                 modifier = Modifier
                     .weight(1f)
-                    .glassRegular(
-                        shape = RoundedCornerShape(16.dp),
-                        color = if (selected) {
-                            MaterialTheme.colorScheme.primaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.surfaceContainer
-                        }
-                    )
+                    .clip(RoundedCornerShape(12.dp))
                     .selectable(
                         selected = selected,
                         onClick = {
@@ -433,30 +431,49 @@ fun PaymentOptionsSelector(
                         },
                         role = Role.RadioButton,
                     )
-                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                    .padding(vertical = 4.dp),
+                horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(selected = selected, onClick = null)
-                Icon(
-                    painter = painterResource(id = option.getIcon()),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(24.dp),
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = option.displayName,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = if (selected) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
-                    },
-                )
+                if (option.iconIncludesLabel) {
+                    // 支付宝/微信徽标自带底板+图标+文案, 徽标本身就是选项内容:
+                    // 不再重复渲染 displayName, 只按 120x52 原比例展示, 选中与否由 radio 表达
+                    Image(
+                        painter = painterResource(id = option.getIcon()),
+                        contentDescription = option.displayName,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .weight(1f, fill = false)
+                            .widthIn(max = 120.dp)
+                            .aspectRatio(PAY_BADGE_ASPECT_RATIO),
+                    )
+                } else {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Icon(
+                        painter = painterResource(id = option.getIcon()),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(24.dp),
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = option.displayName,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = if (selected) {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
+                    )
+                }
             }
         }
     }
 }
+
+/** 支付宝/微信品牌徽标的宽高比(向量资源 120x52) */
+private const val PAY_BADGE_ASPECT_RATIO = 120f / 52f
 
 @Composable
 fun BuildLoginSlider(

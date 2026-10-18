@@ -20,6 +20,9 @@ class WechatPay : PaymentMethod<PrePayResponse> {
     override val displayName: String
         get() = "微信"
 
+    override val iconIncludesLabel: Boolean
+        get() = true
+
     override fun getIcon(): Int {
         return R.drawable.wechatpay
     }
