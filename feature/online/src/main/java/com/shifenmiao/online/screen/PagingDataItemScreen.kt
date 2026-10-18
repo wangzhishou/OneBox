@@ -559,7 +559,9 @@ private fun PinListToNewestHead(
 ) {
     val refreshLoad = pagingItems.loadState.refresh
     val itemCount = pagingItems.itemCount
-    val headId = pagingItems.peek(0)?.item?.id
+    // itemCount == 0 时 peek(0) 会走到 ItemSnapshotList 的越界分支。
+    // 网格目前只在有条目时组合，这里仍挡住空列表。
+    val headId = if (itemCount > 0) pagingItems.peek(0)?.item?.id else null
     // 在组合阶段读取，滑动结束会重组并再跑一次 SideEffect。
     // 只在 SideEffect 里读的话，这次刷新赶上滑动时 armed 会悬着，落点出来也不补。
     val scrolling = gridState.isScrollInProgress
@@ -594,7 +596,10 @@ private fun PinListToNewestHead(
     }
 }
 
-/** 第 0 项贴住容器起点。只看 index 会把「第一张还露着、但已经往上滑了一截」当成还在头部。 */
+/**
+ * 第 0 项贴住容器起点。只看 index 会把「第一张还露着、但已经往上滑了一截」当成还在头部。
+ * 偏移不为 0 就不跟。若以后要留几 dp 容差，单次 requestScrollToItem 清不掉记住的 key，需要连调两次。
+ */
 private fun LazyStaggeredGridState.isAtListHead(): Boolean =
     firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
 
