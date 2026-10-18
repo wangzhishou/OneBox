@@ -451,7 +451,7 @@ private fun CardDescription(
         modifier = modifier
             .fillMaxWidth()
             .then(if (overflows) Modifier.fadedBottomEdge() else Modifier),
-        textAlign = TextAlign.Left,
+        textAlign = TextAlign.Start,
         style = descriptionStyle,
         color = color,
         minLines = 3,

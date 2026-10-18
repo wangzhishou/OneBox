@@ -318,8 +318,9 @@ fun VerticalStaggeredCard(
 
     // 仅在传入搜索词时计算高亮(复用搜索卡片的同款高亮配色), 否则保持原样
     val highlightKeywordNonBlank = highlightKeyword?.takeIf { it.isNotBlank() }
-    val highlightColor = MaterialTheme.colorScheme.onErrorContainer
-    val highlightBackgroundColor = MaterialTheme.colorScheme.errorContainer
+    // 命中词高亮用主题强调色,不要用 errorContainer —— 红底读起来像报错。
+    val highlightColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val highlightBackgroundColor = MaterialTheme.colorScheme.primaryContainer
     val highlightedTitle = remember(title, highlightKeywordNonBlank, highlightColor, highlightBackgroundColor) {
         highlightKeywordNonBlank?.let {
             StringUtils.getHighlightedDescription(title, it, highlightColor, highlightBackgroundColor)

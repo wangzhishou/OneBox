@@ -16,6 +16,15 @@ import com.shifenmiao.core.R
  */
 object TimeFormatter {
 
+    private val BIDI_CONTROLS = Regex("[\\u200E\\u200F\\u061C\\u202A-\\u202E\\u2066-\\u2069]")
+
+    /**
+     * 纯数字日期在 RTL 段落里会被双向算法按段重排(如 07/10/2026 显示成 072026/10/)。
+     * 去掉 ICU 插入的方向标记,再用 LRI/PDI 隔离成一段 LTR 文本,保证阿语界面也按原样显示。
+     */
+    private fun ltrIsolated(text: String): String =
+        "\u2066" + BIDI_CONTROLS.replace(text, "") + "\u2069"
+
     /** 将 Date 格式化为相对时间描述 */
     @Composable
     fun formatRelativeTime(date: Date): String {
@@ -35,7 +44,9 @@ object TimeFormatter {
                 val days = (diff / TimeUnit.DAYS.toMillis(1)).toInt()
                 pluralStringResource(R.plurals.favorite_time_days_ago, days, days)
             }
-            else -> DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(date)
+            else -> ltrIsolated(
+                DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(date)
+            )
         }
     }
 
@@ -48,11 +59,12 @@ object TimeFormatter {
      */
     fun formatDate(timestamp: Long, pattern: String? = null): String {
         return try {
-            if (pattern != null) {
+            val formatted = if (pattern != null) {
                 java.text.SimpleDateFormat(pattern, Locale.getDefault()).format(Date(timestamp))
             } else {
                 DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(Date(timestamp))
             }
+            ltrIsolated(formatted)
         } catch (e: Exception) {
             ""
         }
@@ -108,8 +120,10 @@ object TimeFormatter {
      */
     fun formatDateTime(timestamp: Long): String {
         return try {
-            DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault())
-                .format(Date(timestamp))
+            ltrIsolated(
+                DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault())
+                    .format(Date(timestamp))
+            )
         } catch (e: Exception) {
             ""
         }

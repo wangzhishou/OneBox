@@ -15,6 +15,15 @@ import java.util.concurrent.TimeUnit
 
 object DateUtils {
 
+    private val BIDI_CONTROLS = Regex("[\\u200E\\u200F\\u061C\\u202A-\\u202E\\u2066-\\u2069]")
+
+    /**
+     * 纯数字日期在 RTL 段落里会被双向算法重排(25/09/2026 → 2026/09/25 或更乱)。
+     * 去掉 ICU 插入的方向标记,再用 LRI/PDI 隔离成一段 LTR 文本。
+     */
+    private fun ltrIsolated(text: String): String =
+        "\u2066" + BIDI_CONTROLS.replace(text, "") + "\u2069"
+
     private val resourceProvider: ResourceProvider
 
     init {
@@ -70,7 +79,7 @@ object DateUtils {
                 DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
                     .withLocale(Locale.getDefault())
             }.withZone(ZoneId.systemDefault())
-            formatter.format(instant)
+            ltrIsolated(formatter.format(instant))
         } catch (e: Exception) {
             ""
         }

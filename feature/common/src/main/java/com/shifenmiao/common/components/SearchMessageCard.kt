@@ -43,8 +43,9 @@ fun SearchMessageCard(
     // Existing color calculations remain the same
     val colorTuple = ColorBuilder.getColorContainerById(id, null)
     val textColor = MaterialTheme.colorScheme.contentColorFor(colorTuple.primary)
-    val highlightColor = MaterialTheme.colorScheme.onErrorContainer
-    val highlightBackgroundColor = MaterialTheme.colorScheme.errorContainer
+    // 命中词高亮用主题强调色,不要用 errorContainer —— 红底读起来像报错。
+    val highlightColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val highlightBackgroundColor = MaterialTheme.colorScheme.primaryContainer
     val (backgroundColor, tagContainerColor) = remember(id) {
         Triple(
             colorTuple.primary,
@@ -120,7 +121,7 @@ fun SearchMessageCard(
         Spacer(modifier = Modifier.height(AppTheme.dimens.spaceNormal))
         Text(
             text = highlightedDescription,
-            textAlign = TextAlign.Left,
+            textAlign = TextAlign.Start,
             style = MaterialTheme.typography.labelSmall,
             color = textColor,
             maxLines = 3,

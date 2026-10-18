@@ -16,8 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.shifenmiao.base.ui.ActionButton
 import com.shifenmiao.base.ui.DeleteConfirmDialog
+import com.shifenmiao.core.R
 import com.shifenmiao.database.ai.entity.MessageEntity
 import com.shifenmiao.theme.AppTheme
 import com.t8rin.imagetoolbox.core.ui.utils.helper.Clipboard
@@ -77,7 +79,7 @@ fun AIUsageBar(
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = message.totalTokens.toString() + " Tokens",
+            text = stringResource(R.string.ai_chat_usage_tokens, message.totalTokens.toString()),
             style = MaterialTheme.typography.labelSmall.copy(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )

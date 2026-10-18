@@ -153,6 +153,8 @@ private fun DrawerNavigationContainer(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val uiState by appComponent.uiState.collectAsState()
     val scope = rememberCoroutineScope()
+    // 抽屉固定从右侧滑出(外层强制 Rtl),但页面内容要跟随语言:阿语 RTL、其余 LTR。
+    val contentLayoutDirection = LocalLayoutDirection.current
 
     val onCloseDrawer = remember(scope, appComponent, drawerState) {
         {
@@ -181,7 +183,7 @@ private fun DrawerNavigationContainer(
             },
             gesturesEnabled = uiState.showDrawer
         ) {
-            LocalLayoutDirection.ProvidesValue(LayoutDirection.Ltr) {
+            LocalLayoutDirection.ProvidesValue(contentLayoutDirection) {
                 content()
                 MainBackHandler(
                     drawerState = drawerState,
@@ -224,16 +226,14 @@ private fun NavigationBottomLayout(
     tabEntries: List<Screen>,
 ) {
     val isKeyboardOpen = rememberIsKeyboardOpen()
-    LocalLayoutDirection.ProvidesValue(LayoutDirection.Ltr) {
-        BottomNavigationLayout(
-            childStack = childStack,
-            rootComponent = rootComponent,
-            navigationState = navigationState,
-            tabEntries = tabEntries,
-            isKeyboardOpen = isKeyboardOpen,
-            appComponent = appComponent,
-        )
-    }
+    BottomNavigationLayout(
+        childStack = childStack,
+        rootComponent = rootComponent,
+        navigationState = navigationState,
+        tabEntries = tabEntries,
+        isKeyboardOpen = isKeyboardOpen,
+        appComponent = appComponent,
+    )
 }
 
 @Composable
