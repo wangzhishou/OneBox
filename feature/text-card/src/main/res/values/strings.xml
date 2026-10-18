@@ -3,10 +3,10 @@
     <string name="textcard_title">Text Card</string>
     <string name="textcard_select_canvas_title">Choose Canvas</string>
     <string name="textcard_select_canvas_hint">Pick a canvas size to start your text card</string>
-    <string name="textcard_canvas_xiaohongshu">Xiaohongshu Post</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Best for Xiaohongshu posts</string>
-    <string name="textcard_canvas_wechat">WeChat Article</string>
-    <string name="textcard_canvas_wechat_desc">Best for WeChat official accounts</string>
+    <string name="textcard_canvas_portrait">Portrait Post</string>
+    <string name="textcard_canvas_portrait_desc">Best for social media posts</string>
+    <string name="textcard_canvas_square">Square Post</string>
+    <string name="textcard_canvas_square_desc">Best for feeds and covers</string>
     <string name="textcard_canvas_custom">Custom Size</string>
     <string name="textcard_canvas_custom_desc">Enter custom width × height</string>
     <string name="textcard_custom_size_title">Custom Canvas Size</string>

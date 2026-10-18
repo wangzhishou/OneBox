@@ -3,10 +3,10 @@
     <string name="textcard_title">Текстовая карточка</string>
     <string name="textcard_select_canvas_title">Выбор холста</string>
     <string name="textcard_select_canvas_hint">Выберите размер холста и начните создавать текстовую карточку</string>
-    <string name="textcard_canvas_xiaohongshu">Пост Xiaohongshu</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Подходит для постов Xiaohongshu</string>
-    <string name="textcard_canvas_wechat">Статья WeChat</string>
-    <string name="textcard_canvas_wechat_desc">Подходит для официальных аккаунтов WeChat</string>
+    <string name="textcard_canvas_portrait">Портрет</string>
+    <string name="textcard_canvas_portrait_desc">Подходит для постов в соцсетях</string>
+    <string name="textcard_canvas_square">Квадрат</string>
+    <string name="textcard_canvas_square_desc">Подходит для лент и обложек</string>
     <string name="textcard_start_create">Начать создание</string>
     <string name="textcard_back">Назад</string>
     <string name="textcard_save">Сохранить</string>

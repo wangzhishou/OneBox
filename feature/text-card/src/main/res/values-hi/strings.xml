@@ -3,10 +3,10 @@
     <string name="textcard_title">टेक्स्ट कार्ड</string>
     <string name="textcard_select_canvas_title">कैनवास चुनें</string>
     <string name="textcard_select_canvas_hint">अपना टेक्स्ट कार्ड शुरू करने के लिए कैनवास आकार चुनें</string>
-    <string name="textcard_canvas_xiaohongshu">Xiaohongshu पोस्ट</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Xiaohongshu पोस्ट के लिए उपयुक्त</string>
-    <string name="textcard_canvas_wechat">WeChat लेख</string>
-    <string name="textcard_canvas_wechat_desc">WeChat आधिकारिक खातों के लिए उपयुक्त</string>
+    <string name="textcard_canvas_portrait">पोर्ट्रेट</string>
+    <string name="textcard_canvas_portrait_desc">सोशल मीडिया पोस्ट के लिए उपयुक्त</string>
+    <string name="textcard_canvas_square">स्क्वायर</string>
+    <string name="textcard_canvas_square_desc">फ़ीड और कवर के लिए उपयुक्त</string>
     <string name="textcard_start_create">बनाना शुरू करें</string>
     <string name="textcard_back">वापस</string>
     <string name="textcard_save">सहेजें</string>

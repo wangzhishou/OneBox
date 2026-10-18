@@ -3,10 +3,10 @@
     <string name="textcard_title">텍스트 카드</string>
     <string name="textcard_select_canvas_title">캔버스 선택</string>
     <string name="textcard_select_canvas_hint">캔버스 크기를 선택하고 텍스트 카드를 만들어 보세요</string>
-    <string name="textcard_canvas_xiaohongshu">Xiaohongshu 게시물</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Xiaohongshu 게시물에 적합</string>
-    <string name="textcard_canvas_wechat">WeChat 아티클</string>
-    <string name="textcard_canvas_wechat_desc">WeChat 공식 계정에 적합</string>
+    <string name="textcard_canvas_portrait">세로형 게시물</string>
+    <string name="textcard_canvas_portrait_desc">SNS 게시물에 적합</string>
+    <string name="textcard_canvas_square">정사각형 게시물</string>
+    <string name="textcard_canvas_square_desc">피드와 커버에 적합</string>
     <string name="textcard_start_create">만들기 시작</string>
     <string name="textcard_back">뒤로</string>
     <string name="textcard_save">저장</string>

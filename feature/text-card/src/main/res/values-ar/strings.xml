@@ -3,10 +3,10 @@
     <string name="textcard_title">بطاقة نصية</string>
     <string name="textcard_select_canvas_title">اختر اللوحة</string>
     <string name="textcard_select_canvas_hint">اختر مقاس اللوحة لبدء بطاقتك النصية</string>
-    <string name="textcard_canvas_xiaohongshu">منشور Xiaohongshu</string>
-    <string name="textcard_canvas_xiaohongshu_desc">الأنسب لمنشورات Xiaohongshu</string>
-    <string name="textcard_canvas_wechat">مقال WeChat</string>
-    <string name="textcard_canvas_wechat_desc">الأنسب لحسابات WeChat الرسمية</string>
+    <string name="textcard_canvas_portrait">منشور عمودي</string>
+    <string name="textcard_canvas_portrait_desc">الأنسب لمنشورات وسائل التواصل الاجتماعي</string>
+    <string name="textcard_canvas_square">منشور مربع</string>
+    <string name="textcard_canvas_square_desc">الأنسب للخلاصات والأغلفة</string>
     <string name="textcard_canvas_custom">مقاس مخصص</string>
     <string name="textcard_canvas_custom_desc">أدخل العرض × الارتفاع المخصصين</string>
     <string name="textcard_custom_size_title">مقاس اللوحة المخصص</string>

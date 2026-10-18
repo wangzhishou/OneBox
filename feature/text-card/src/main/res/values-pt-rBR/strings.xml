@@ -3,10 +3,10 @@
     <string name="textcard_title">Cartão de texto</string>
     <string name="textcard_select_canvas_title">Escolher tela</string>
     <string name="textcard_select_canvas_hint">Escolha um tamanho de tela para começar seu cartão de texto</string>
-    <string name="textcard_canvas_xiaohongshu">Publicação do Xiaohongshu</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Ideal para publicações no Xiaohongshu</string>
-    <string name="textcard_canvas_wechat">Artigo do WeChat</string>
-    <string name="textcard_canvas_wechat_desc">Ideal para contas oficiais do WeChat</string>
+    <string name="textcard_canvas_portrait">Retrato</string>
+    <string name="textcard_canvas_portrait_desc">Ideal para redes sociais</string>
+    <string name="textcard_canvas_square">Quadrado</string>
+    <string name="textcard_canvas_square_desc">Ideal para feeds e capas</string>
     <string name="textcard_start_create">Começar a criar</string>
     <string name="textcard_back">Voltar</string>
     <string name="textcard_save">Salvar</string>

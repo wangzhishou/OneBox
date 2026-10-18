@@ -3,10 +3,10 @@
     <string name="textcard_title">Kard ng Teksto</string>
     <string name="textcard_select_canvas_title">Piliin ang Canvas</string>
     <string name="textcard_select_canvas_hint">Pumili ng laki ng canvas para simulan ang iyong text card</string>
-    <string name="textcard_canvas_xiaohongshu">Xiaohongshu Post</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Angkop para sa mga post sa Xiaohongshu</string>
-    <string name="textcard_canvas_wechat">WeChat Article</string>
-    <string name="textcard_canvas_wechat_desc">Angkop para sa mga opisyal na account ng WeChat</string>
+    <string name="textcard_canvas_portrait">Portrait Post</string>
+    <string name="textcard_canvas_portrait_desc">Angkop para sa social media posts</string>
+    <string name="textcard_canvas_square">Square Post</string>
+    <string name="textcard_canvas_square_desc">Angkop para sa feed at cover</string>
     <string name="textcard_start_create">Simulan ang Paggawa</string>
     <string name="textcard_back">Bumalik</string>
     <string name="textcard_save">I-save</string>

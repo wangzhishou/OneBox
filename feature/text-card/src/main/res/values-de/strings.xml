@@ -3,10 +3,10 @@
     <string name="textcard_title">Textkarte</string>
     <string name="textcard_select_canvas_title">Leinwand wählen</string>
     <string name="textcard_select_canvas_hint">Wähle eine Leinwandgröße für deine Textkarte</string>
-    <string name="textcard_canvas_xiaohongshu">Xiaohongshu-Beitrag</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Ideal für Xiaohongshu-Beiträge</string>
-    <string name="textcard_canvas_wechat">WeChat-Artikel</string>
-    <string name="textcard_canvas_wechat_desc">Ideal für offizielle WeChat-Konten</string>
+    <string name="textcard_canvas_portrait">Hochformat</string>
+    <string name="textcard_canvas_portrait_desc">Ideal für Social-Media-Posts</string>
+    <string name="textcard_canvas_square">Quadratformat</string>
+    <string name="textcard_canvas_square_desc">Ideal für Feeds und Cover</string>
     <string name="textcard_start_create">Erstellen starten</string>
     <string name="textcard_back">Zurück</string>
     <string name="textcard_save">Speichern</string>

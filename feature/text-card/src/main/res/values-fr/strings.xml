@@ -3,10 +3,10 @@
     <string name="textcard_title">Carte image-texte</string>
     <string name="textcard_select_canvas_title">Choisir le canevas</string>
     <string name="textcard_select_canvas_hint">Choisissez la taille de canevas appropriée pour commencer à créer votre carte image-texte</string>
-    <string name="textcard_canvas_xiaohongshu">Image Xiaohongshu</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Idéal pour publier sur Xiaohongshu</string>
-    <string name="textcard_canvas_wechat">Image WeChat</string>
-    <string name="textcard_canvas_wechat_desc">Idéal pour illustrer un article WeChat</string>
+    <string name="textcard_canvas_portrait">Portrait</string>
+    <string name="textcard_canvas_portrait_desc">Idéal pour les réseaux sociaux</string>
+    <string name="textcard_canvas_square">Carré</string>
+    <string name="textcard_canvas_square_desc">Idéal pour les fils et couvertures</string>
     <string name="textcard_canvas_custom">Sur mesure</string>
     <string name="textcard_canvas_custom_desc">Saisir largeur et hauteur personnalisées (px)</string>
     <string name="textcard_custom_size_title">Taille de canevas personnalisée</string>

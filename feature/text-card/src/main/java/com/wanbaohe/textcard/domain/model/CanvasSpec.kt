@@ -6,7 +6,8 @@ import kotlin.math.roundToInt
 
 /**
  * 画布规格:导出位图尺寸即 width × height。
- * 内置小红书/微信两个平台规格 + 用户自定义尺寸([Custom],持久化记忆上次输入)。
+ * 内置竖版 3:4 / 方形 1:1 两个社交尺寸 + 用户自定义尺寸([Custom],持久化记忆上次输入)。
+ * 文案按比例命名,不绑定平台名(海外用户不认识小红书/微信)。
  */
 sealed class CanvasSpec(
     val width: Int,
@@ -16,19 +17,19 @@ sealed class CanvasSpec(
     val ratioLabel: String,
 ) {
 
-    data object Xiaohongshu : CanvasSpec(
+    data object Portrait : CanvasSpec(
         width = 1080,
         height = 1350,
-        titleRes = R.string.textcard_canvas_xiaohongshu,
-        descRes = R.string.textcard_canvas_xiaohongshu_desc,
+        titleRes = R.string.textcard_canvas_portrait,
+        descRes = R.string.textcard_canvas_portrait_desc,
         ratioLabel = "3:4"
     )
 
-    data object WeChat : CanvasSpec(
+    data object Square : CanvasSpec(
         width = 1080,
         height = 1080,
-        titleRes = R.string.textcard_canvas_wechat,
-        descRes = R.string.textcard_canvas_wechat_desc,
+        titleRes = R.string.textcard_canvas_square,
+        descRes = R.string.textcard_canvas_square_desc,
         ratioLabel = "1:1"
     )
 
@@ -59,11 +60,11 @@ sealed class CanvasSpec(
 
     companion object {
         /**
-         * 内置平台规格(自定义规格单独入口)。
-         * 必须 lazy:直接初始化会在「首个被触发的子类是 Xiaohongshu」时
+         * 内置社交尺寸(自定义规格单独入口)。
+         * 必须 lazy:直接初始化会在「首个被触发的子类是 Portrait」时
          * 因类初始化循环(父类 clinit 读取尚在初始化中的子类静态字段)
          * 读到 null。
          */
-        val builtIn: List<CanvasSpec> by lazy { listOf(Xiaohongshu, WeChat) }
+        val builtIn: List<CanvasSpec> by lazy { listOf(Portrait, Square) }
     }
 }

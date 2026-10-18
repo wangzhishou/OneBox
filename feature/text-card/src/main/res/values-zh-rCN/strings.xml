@@ -3,10 +3,10 @@
     <string name="textcard_title">图文卡片</string>
     <string name="textcard_select_canvas_title">选择画布</string>
     <string name="textcard_select_canvas_hint">选择合适的画布尺寸，开始创建你的图文卡片</string>
-    <string name="textcard_canvas_xiaohongshu">小红书贴图</string>
-    <string name="textcard_canvas_xiaohongshu_desc">适合发布到小红书</string>
-    <string name="textcard_canvas_wechat">微信贴图号</string>
-    <string name="textcard_canvas_wechat_desc">适合微信公众号配图</string>
+    <string name="textcard_canvas_portrait">竖版长图</string>
+    <string name="textcard_canvas_portrait_desc">适合小红书笔记与社交分享</string>
+    <string name="textcard_canvas_square">方形贴图</string>
+    <string name="textcard_canvas_square_desc">适合公众号封面与信息流</string>
     <string name="textcard_canvas_custom">自定义尺寸</string>
     <string name="textcard_canvas_custom_desc">输入自定义宽高（px）</string>
     <string name="textcard_custom_size_title">自定义画布尺寸</string>

@@ -3,10 +3,10 @@
     <string name="textcard_title">Kartu Teks</string>
     <string name="textcard_select_canvas_title">Pilih Kanvas</string>
     <string name="textcard_select_canvas_hint">Pilih ukuran kanvas untuk mulai membuat kartu teksmu</string>
-    <string name="textcard_canvas_xiaohongshu">Postingan Xiaohongshu</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Cocok untuk postingan Xiaohongshu</string>
-    <string name="textcard_canvas_wechat">Artikel WeChat</string>
-    <string name="textcard_canvas_wechat_desc">Cocok untuk akun resmi WeChat</string>
+    <string name="textcard_canvas_portrait">Vertikal</string>
+    <string name="textcard_canvas_portrait_desc">Cocok untuk media sosial</string>
+    <string name="textcard_canvas_square">Persegi</string>
+    <string name="textcard_canvas_square_desc">Cocok untuk feed dan sampul</string>
     <string name="textcard_start_create">Mulai Membuat</string>
     <string name="textcard_back">Kembali</string>
     <string name="textcard_save">Simpan</string>

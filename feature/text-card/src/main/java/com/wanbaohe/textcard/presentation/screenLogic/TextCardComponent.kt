@@ -97,7 +97,7 @@ class TextCardComponent @AssistedInject internal constructor(
     val canvas: CanvasSpec? by _canvas
 
     /** 选择画布页中选中的规格(未开始制作前) */
-    private val _pendingCanvas: MutableState<CanvasSpec> = mutableStateOf(CanvasSpec.Xiaohongshu)
+    private val _pendingCanvas: MutableState<CanvasSpec> = mutableStateOf(CanvasSpec.Portrait)
     val pendingCanvas: CanvasSpec by _pendingCanvas
 
     /** 上次自定义画布尺寸(持久化记忆,null = 从未自定义) */

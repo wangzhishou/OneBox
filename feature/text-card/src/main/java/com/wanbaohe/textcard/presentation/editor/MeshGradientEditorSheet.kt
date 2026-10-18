@@ -80,7 +80,7 @@ fun MeshGradientEditorSheet(
         )
     }
     var selectedPoint by remember { mutableStateOf<Pair<Int, Int>?>(null) }
-    val canvas = component.canvas ?: CanvasSpec.Xiaohongshu
+    val canvas = component.canvas ?: CanvasSpec.Portrait
 
     EnhancedModalBottomSheet(
         visible = true,

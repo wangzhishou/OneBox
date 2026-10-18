@@ -3,10 +3,10 @@
     <string name="textcard_title">Thẻ ảnh chữ</string>
     <string name="textcard_select_canvas_title">Chọn khung vẽ</string>
     <string name="textcard_select_canvas_hint">Chọn kích thước khung vẽ phù hợp, bắt đầu tạo thẻ ảnh chữ của bạn</string>
-    <string name="textcard_canvas_xiaohongshu">Ảnh dán Xiaohongshu</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Phù hợp đăng lên Xiaohongshu</string>
-    <string name="textcard_canvas_wechat">Ảnh dán WeChat</string>
-    <string name="textcard_canvas_wechat_desc">Phù hợp làm ảnh minh họa cho WeChat Official Account</string>
+    <string name="textcard_canvas_portrait">Ảnh dọc</string>
+    <string name="textcard_canvas_portrait_desc">Phù hợp đăng mạng xã hội</string>
+    <string name="textcard_canvas_square">Ảnh vuông</string>
+    <string name="textcard_canvas_square_desc">Phù hợp bảng tin và ảnh bìa</string>
     <string name="textcard_canvas_custom">Kích thước tùy chỉnh</string>
     <string name="textcard_canvas_custom_desc">Nhập chiều rộng và chiều cao tùy chỉnh (px)</string>
     <string name="textcard_custom_size_title">Kích thước khung vẽ tùy chỉnh</string>

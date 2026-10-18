@@ -3,10 +3,10 @@
     <string name="textcard_title">Metin Kartı</string>
     <string name="textcard_select_canvas_title">Tuval Seç</string>
     <string name="textcard_select_canvas_hint">Metin kartını oluşturmaya başlamak için bir tuval boyutu seç</string>
-    <string name="textcard_canvas_xiaohongshu">Xiaohongshu Gönderisi</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Xiaohongshu gönderileri için ideal</string>
-    <string name="textcard_canvas_wechat">WeChat Makalesi</string>
-    <string name="textcard_canvas_wechat_desc">WeChat resmi hesapları için ideal</string>
+    <string name="textcard_canvas_portrait">Dikey</string>
+    <string name="textcard_canvas_portrait_desc">Sosyal medya gönderileri için ideal</string>
+    <string name="textcard_canvas_square">Kare</string>
+    <string name="textcard_canvas_square_desc">Akışlar ve kapaklar için ideal</string>
     <string name="textcard_start_create">Oluşturmaya Başla</string>
     <string name="textcard_back">Geri</string>
     <string name="textcard_save">Kaydet</string>

@@ -3,10 +3,10 @@
     <string name="textcard_title">テキストカード</string>
     <string name="textcard_select_canvas_title">キャンバスを選択</string>
     <string name="textcard_select_canvas_hint">キャンバスサイズを選んでテキストカードを作成しましょう</string>
-    <string name="textcard_canvas_xiaohongshu">Xiaohongshu投稿</string>
-    <string name="textcard_canvas_xiaohongshu_desc">Xiaohongshuの投稿に最適</string>
-    <string name="textcard_canvas_wechat">WeChat記事</string>
-    <string name="textcard_canvas_wechat_desc">WeChat公式アカウントに最適</string>
+    <string name="textcard_canvas_portrait">縦長ポスト</string>
+    <string name="textcard_canvas_portrait_desc">SNS投稿に最適</string>
+    <string name="textcard_canvas_square">正方形ポスト</string>
+    <string name="textcard_canvas_square_desc">フィードやカバーに最適</string>
     <string name="textcard_start_create">作成を開始</string>
     <string name="textcard_back">戻る</string>
     <string name="textcard_save">保存</string>
