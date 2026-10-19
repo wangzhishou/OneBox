@@ -13,6 +13,9 @@
     <string name="teleprompter_edit_script">I-edit ang Script</string>
     <string name="teleprompter_title_hint">Pamagat ng script</string>
     <string name="teleprompter_content_hint">Ilagay dito ang nilalaman ng script…</string>
+    <string name="teleprompter_reading_time_seconds">mga %d seg</string>
+    <string name="teleprompter_reading_time_minutes">mga %1$d min %2$d seg</string>
+    <string name="teleprompter_reading_time_minutes_exact">mga %d min</string>
     <string name="teleprompter_save">I-save</string>
     <string name="teleprompter_play">I-play</string>
     <string name="teleprompter_delete">Tanggalin</string>

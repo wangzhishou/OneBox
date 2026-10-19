@@ -15,6 +15,9 @@
     <string name="teleprompter_edit_script">Редактировать сценарий</string>
     <string name="teleprompter_title_hint">Название сценария</string>
     <string name="teleprompter_content_hint">Введите здесь текст сценария…</string>
+    <string name="teleprompter_reading_time_seconds">около %d с</string>
+    <string name="teleprompter_reading_time_minutes">около %1$d мин %2$d с</string>
+    <string name="teleprompter_reading_time_minutes_exact">около %d мин</string>
     <string name="teleprompter_save">Сохранить</string>
     <string name="teleprompter_play">Воспроизвести</string>
     <string name="teleprompter_delete">Удалить</string>

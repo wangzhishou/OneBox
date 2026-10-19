@@ -13,6 +13,9 @@
     <string name="teleprompter_edit_script">Skript bearbeiten</string>
     <string name="teleprompter_title_hint">Skripttitel</string>
     <string name="teleprompter_content_hint">Skriptinhalt hier eingeben…</string>
+    <string name="teleprompter_reading_time_seconds">etwa %d Sek.</string>
+    <string name="teleprompter_reading_time_minutes">etwa %1$d Min. %2$d Sek.</string>
+    <string name="teleprompter_reading_time_minutes_exact">etwa %d Min.</string>
     <string name="teleprompter_save">Speichern</string>
     <string name="teleprompter_play">Abspielen</string>
     <string name="teleprompter_delete">Löschen</string>

@@ -12,6 +12,9 @@
     <string name="teleprompter_edit_script">대본 편집</string>
     <string name="teleprompter_title_hint">대본 제목</string>
     <string name="teleprompter_content_hint">여기에 대본 내용을 입력하세요…</string>
+    <string name="teleprompter_reading_time_seconds">약 %d초</string>
+    <string name="teleprompter_reading_time_minutes">약 %1$d분 %2$d초</string>
+    <string name="teleprompter_reading_time_minutes_exact">약 %d분</string>
     <string name="teleprompter_save">저장</string>
     <string name="teleprompter_play">재생</string>
     <string name="teleprompter_delete">삭제</string>

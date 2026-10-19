@@ -20,6 +20,9 @@
     <string name="teleprompter_edit_script">編輯文稿</string>
     <string name="teleprompter_title_hint">文稿標題</string>
     <string name="teleprompter_content_hint">在此輸入提詞內容…</string>
+    <string name="teleprompter_reading_time_seconds">約 %d 秒</string>
+    <string name="teleprompter_reading_time_minutes">約 %1$d 分 %2$d 秒</string>
+    <string name="teleprompter_reading_time_minutes_exact">約 %d 分鐘</string>
     <string name="teleprompter_save">儲存</string>
     <string name="teleprompter_play">播放</string>
     <string name="teleprompter_delete">刪除</string>

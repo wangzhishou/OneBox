@@ -13,6 +13,9 @@
     <string name="teleprompter_edit_script">Editar Roteiro</string>
     <string name="teleprompter_title_hint">Título do roteiro</string>
     <string name="teleprompter_content_hint">Insira aqui o conteúdo do roteiro…</string>
+    <string name="teleprompter_reading_time_seconds">cerca de %d s</string>
+    <string name="teleprompter_reading_time_minutes">cerca de %1$d min %2$d s</string>
+    <string name="teleprompter_reading_time_minutes_exact">cerca de %d min</string>
     <string name="teleprompter_save">Salvar</string>
     <string name="teleprompter_play">Reproduzir</string>
     <string name="teleprompter_delete">Excluir</string>

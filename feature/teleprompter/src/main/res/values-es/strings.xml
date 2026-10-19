@@ -13,6 +13,9 @@
     <string name="teleprompter_edit_script">Editar guion</string>
     <string name="teleprompter_title_hint">Título del guion</string>
     <string name="teleprompter_content_hint">Introduce aquí el contenido del guion…</string>
+    <string name="teleprompter_reading_time_seconds">unos %d s</string>
+    <string name="teleprompter_reading_time_minutes">unos %1$d min %2$d s</string>
+    <string name="teleprompter_reading_time_minutes_exact">unos %d min</string>
     <string name="teleprompter_save">Guardar</string>
     <string name="teleprompter_play">Reproducir</string>
     <string name="teleprompter_delete">Eliminar</string>

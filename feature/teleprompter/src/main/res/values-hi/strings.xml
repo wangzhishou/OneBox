@@ -13,6 +13,9 @@
     <string name="teleprompter_edit_script">स्क्रिप्ट संपादित करें</string>
     <string name="teleprompter_title_hint">स्क्रिप्ट शीर्षक</string>
     <string name="teleprompter_content_hint">यहाँ स्क्रिप्ट की सामग्री दर्ज करें…</string>
+    <string name="teleprompter_reading_time_seconds">लगभग %d सेकंड</string>
+    <string name="teleprompter_reading_time_minutes">लगभग %1$d मिनट %2$d सेकंड</string>
+    <string name="teleprompter_reading_time_minutes_exact">लगभग %d मिनट</string>
     <string name="teleprompter_save">सहेजें</string>
     <string name="teleprompter_play">चलाएँ</string>
     <string name="teleprompter_delete">हटाएँ</string>

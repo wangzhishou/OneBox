@@ -24,6 +24,9 @@
     <string name="teleprompter_edit_script">Modifier le script</string>
     <string name="teleprompter_title_hint">Titre du script</string>
     <string name="teleprompter_content_hint">Saisissez le contenu du téléprompteur…</string>
+    <string name="teleprompter_reading_time_seconds">env. %d s</string>
+    <string name="teleprompter_reading_time_minutes">env. %1$d min %2$d s</string>
+    <string name="teleprompter_reading_time_minutes_exact">env. %d min</string>
     <string name="teleprompter_save">Enregistrer</string>
     <string name="teleprompter_play">Lire</string>
     <string name="teleprompter_delete">Supprimer</string>

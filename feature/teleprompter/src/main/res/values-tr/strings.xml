@@ -13,6 +13,9 @@
     <string name="teleprompter_edit_script">Senaryoyu Düzenle</string>
     <string name="teleprompter_title_hint">Senaryo başlığı</string>
     <string name="teleprompter_content_hint">Metin içeriğini buraya girin…</string>
+    <string name="teleprompter_reading_time_seconds">yaklaşık %d sn</string>
+    <string name="teleprompter_reading_time_minutes">yaklaşık %1$d dk %2$d sn</string>
+    <string name="teleprompter_reading_time_minutes_exact">yaklaşık %d dk</string>
     <string name="teleprompter_save">Kaydet</string>
     <string name="teleprompter_play">Oynat</string>
     <string name="teleprompter_delete">Sil</string>

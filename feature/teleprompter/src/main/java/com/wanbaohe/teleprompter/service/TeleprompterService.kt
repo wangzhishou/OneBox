@@ -6,6 +6,7 @@ import com.shifenmiao.database.teleprompter.repo.TeleprompterRepository
 import com.shifenmiao.interfaces.singleton.AppContext
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.wanbaohe.teleprompter.R
+import com.wanbaohe.teleprompter.util.countScriptWords
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,7 +44,7 @@ class TeleprompterService @Inject constructor(
             id = scriptId ?: UUID.randomUUID().toString(),
             title = title.trim(),
             content = content,
-            wordCount = countWords(content),
+            wordCount = countScriptWords(content),
             createdAt = now,
             updatedAt = now,
         )
@@ -88,7 +89,4 @@ class TeleprompterService @Inject constructor(
             screenRoute = Screen.Teleprompter().id.toString(),
         )
     }
-
-    private fun countWords(content: String): Int =
-        content.replace("\\s+".toRegex(), "").length
 }

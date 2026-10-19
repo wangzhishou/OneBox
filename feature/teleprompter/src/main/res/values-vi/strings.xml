@@ -22,6 +22,9 @@
     <string name="teleprompter_edit_script">Chỉnh sửa văn bản</string>
     <string name="teleprompter_title_hint">Tiêu đề văn bản</string>
     <string name="teleprompter_content_hint">Nhập nội dung nhắc tại đây…</string>
+    <string name="teleprompter_reading_time_seconds">khoảng %d giây</string>
+    <string name="teleprompter_reading_time_minutes">khoảng %1$d phút %2$d giây</string>
+    <string name="teleprompter_reading_time_minutes_exact">khoảng %d phút</string>
     <string name="teleprompter_save">Lưu</string>
     <string name="teleprompter_play">Phát</string>
     <string name="teleprompter_delete">Xóa</string>

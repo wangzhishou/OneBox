@@ -12,6 +12,9 @@
     <string name="teleprompter_edit_script">スクリプトを編集</string>
     <string name="teleprompter_title_hint">スクリプトタイトル</string>
     <string name="teleprompter_content_hint">ここに原稿の内容を入力…</string>
+    <string name="teleprompter_reading_time_seconds">約 %d 秒</string>
+    <string name="teleprompter_reading_time_minutes">約 %1$d 分 %2$d 秒</string>
+    <string name="teleprompter_reading_time_minutes_exact">約 %d 分</string>
     <string name="teleprompter_save">保存</string>
     <string name="teleprompter_play">再生</string>
     <string name="teleprompter_delete">削除</string>

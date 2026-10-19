@@ -12,6 +12,9 @@
     <string name="teleprompter_edit_script">Edit Naskah</string>
     <string name="teleprompter_title_hint">Judul naskah</string>
     <string name="teleprompter_content_hint">Masukkan isi skrip di sini…</string>
+    <string name="teleprompter_reading_time_seconds">sekitar %d dtk</string>
+    <string name="teleprompter_reading_time_minutes">sekitar %1$d mnt %2$d dtk</string>
+    <string name="teleprompter_reading_time_minutes_exact">sekitar %d mnt</string>
     <string name="teleprompter_save">Simpan</string>
     <string name="teleprompter_play">Putar</string>
     <string name="teleprompter_delete">Hapus</string>

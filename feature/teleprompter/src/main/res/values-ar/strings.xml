@@ -25,6 +25,9 @@
     <string name="teleprompter_edit_script">تعديل النص</string>
     <string name="teleprompter_title_hint">عنوان النص</string>
     <string name="teleprompter_content_hint">أدخل محتوى النص هنا…</string>
+    <string name="teleprompter_reading_time_seconds">حوالي %d ث</string>
+    <string name="teleprompter_reading_time_minutes">حوالي %1$d د %2$d ث</string>
+    <string name="teleprompter_reading_time_minutes_exact">حوالي %d د</string>
     <string name="teleprompter_save">حفظ</string>
     <string name="teleprompter_play">تشغيل</string>
     <string name="teleprompter_delete">حذف</string>

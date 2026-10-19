@@ -20,6 +20,9 @@
     <string name="teleprompter_edit_script">Edit Script</string>
     <string name="teleprompter_title_hint">Script title</string>
     <string name="teleprompter_content_hint">Enter the script content here…</string>
+    <string name="teleprompter_reading_time_seconds">about %d sec</string>
+    <string name="teleprompter_reading_time_minutes">about %1$d min %2$d sec</string>
+    <string name="teleprompter_reading_time_minutes_exact">about %d min</string>
     <string name="teleprompter_save">Save</string>
     <string name="teleprompter_play">Play</string>
     <string name="teleprompter_delete">Delete</string>
