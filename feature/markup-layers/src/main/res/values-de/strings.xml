@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 空状态首页 -->
-    <string name="markup_home_title">Bildstudio</string>
+    <string name="markup_home_title">Bildgenerierung</string>
     <string name="markup_back">Zurück</string>
     <string name="markup_home_tagline">Profi · Schnell · Smart</string>
     <string name="markup_import_hint">Bild importieren, um mit der Bearbeitung zu beginnen</string>

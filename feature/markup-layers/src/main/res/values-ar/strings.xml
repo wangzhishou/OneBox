@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="markup_home_title">استوديو الصور</string>
+    <string name="markup_home_title">إنشاء صورة</string>
     <string name="markup_back">رجوع</string>
     <string name="markup_home_tagline">احترافي · سريع · ذكي</string>
     <string name="markup_import_hint">استورد صورة لبدء التعديل</string>

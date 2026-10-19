@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="markup_home_title">Sáng tạo ảnh</string>
+    <string name="markup_home_title">Sáng tạo hình ảnh</string>
     <string name="markup_back">Quay lại</string>
     <string name="markup_home_tagline">Chuyên nghiệp · Hiệu quả · Thông minh</string>
     <string name="markup_import_hint">Nhập ảnh để bắt đầu chỉnh sửa</string>

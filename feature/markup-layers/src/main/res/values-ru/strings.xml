@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="markup_home_title">Фотостудия</string>
+    <string name="markup_home_title">Создание изображений</string>
     <string name="markup_back">Назад</string>
     <string name="markup_home_tagline">Про · Быстро · Умно</string>
     <string name="markup_import_hint">Импортируйте изображение, чтобы начать редактирование</string>

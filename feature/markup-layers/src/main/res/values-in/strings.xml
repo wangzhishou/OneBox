@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="markup_home_title">Studio Gambar</string>
+    <string name="markup_home_title">Pembuatan Gambar</string>
     <string name="markup_back">Kembali</string>
     <string name="markup_home_tagline">Pro · Cepat · Pintar</string>
     <string name="markup_import_hint">Impor gambar untuk mulai mengedit</string>

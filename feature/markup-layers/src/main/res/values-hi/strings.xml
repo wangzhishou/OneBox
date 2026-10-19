@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 空状态首页 -->
-    <string name="markup_home_title">इमेज स्टूडियो</string>
+    <string name="markup_home_title">छवि निर्माण</string>
     <string name="markup_back">वापस</string>
     <string name="markup_home_tagline">प्रो · तेज़ · स्मार्ट</string>
     <string name="markup_import_hint">एडिटिंग शुरू करने के लिए एक इमेज इंपोर्ट करें</string>

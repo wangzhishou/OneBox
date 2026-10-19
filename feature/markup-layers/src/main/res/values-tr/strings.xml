@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="markup_home_title">Görsel Stüdyosu</string>
+    <string name="markup_home_title">Görsel Oluşturma</string>
     <string name="markup_back">Geri</string>
     <string name="markup_home_tagline">Profesyonel · Hızlı · Akıllı</string>
     <string name="markup_import_hint">Düzenlemeye başlamak için bir görsel içe aktarın</string>

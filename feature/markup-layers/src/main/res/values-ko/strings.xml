@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="markup_home_title">이미지 스튜디오</string>
+    <string name="markup_home_title">이미지 생성</string>
     <string name="markup_back">뒤로</string>
     <string name="markup_home_tagline">프로 · 빠름 · 스마트</string>
     <string name="markup_import_hint">이미지를 가져와 편집을 시작하세요</string>

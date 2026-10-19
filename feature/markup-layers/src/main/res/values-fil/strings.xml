@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 空状态首页 -->
-    <string name="markup_home_title">Image Studio</string>
+    <string name="markup_home_title">Paggawa ng Larawan</string>
     <string name="markup_back">Bumalik</string>
     <string name="markup_home_tagline">Pro · Mabilis · Matalino</string>
     <string name="markup_import_hint">Mag-import ng larawan para magsimulang mag-edit</string>

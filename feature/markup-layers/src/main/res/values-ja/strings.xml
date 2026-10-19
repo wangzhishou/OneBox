@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="markup_home_title">画像スタジオ</string>
+    <string name="markup_home_title">画像作成</string>
     <string name="markup_back">戻る</string>
     <string name="markup_home_tagline">プロ · 高速 · スマート</string>
     <string name="markup_import_hint">画像を読み込んで編集を開始</string>
