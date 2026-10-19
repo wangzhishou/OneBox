@@ -51,7 +51,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 import androidx.compose.material.icons.Icons as MaterialIcons
 import androidx.compose.material.icons.outlined.RotateRight
-import androidx.compose.material.icons.outlined.Straighten
 
 /**
  * One finger moves the selected layer. Explicit handles resize/rotate; multi-touch is never
@@ -313,7 +312,7 @@ fun BoxWithConstraintsScope.EditBox(
                         },
                         onEnd = finish
                     ) {
-                        HandleIcon(MaterialIcons.Outlined.Straighten)
+                        WidthHandle()
                     }
                 }
             }
@@ -445,6 +444,30 @@ private fun HandleIcon(icon: ImageVector) {
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.size(18.dp)
+        )
+    }
+}
+
+/**
+ * 改文字框宽的左右手柄视觉:细长竖向拖拽条,而不是"圆形图标按钮"。
+ * 之前用 Straighten 尺子图标 + 圆底,看起来像一个可点按钮,用户会误以为
+ * 有独立功能;改成拖拽条后更像"拖边"而不是"点按钮"。
+ */
+@Composable
+private fun WidthHandle() {
+    val shape = RoundedCornerShape(5.dp)
+    Box(
+        modifier = Modifier
+            .size(width = 10.dp, height = 26.dp)
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.primaryContainer),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(width = 2.dp, height = 14.dp)
+                .clip(RoundedCornerShape(1.dp))
+                .background(MaterialTheme.colorScheme.onPrimaryContainer)
         )
     }
 }
