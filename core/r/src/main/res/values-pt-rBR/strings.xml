@@ -1896,4 +1896,17 @@ Dica: se escolher \"Ocultar para sempre\", você poderá me trazer de volta depo
     <string name="altitude_precip_probability">%1$s%%</string>
     <string name="altitude_temp_value">%1$s°</string>
     <string name="altitude_aqi_value">Qualidade do ar %1$s</string>
+
+    <plurals name="ai_reasoning_seconds">
+        <item quantity="other">Pensamento profundo (%d segundos)</item>
+    </plurals>
+    <plurals name="ai_chat_token_count">
+        <item quantity="other">%1$s Tokens</item>
+    </plurals>
+    <plurals name="play_points_count">
+        <item quantity="other">Ganhe %s pontos</item>
+    </plurals>
+    <plurals name="token_usage_request_times">
+        <item quantity="other">%d Solicitações</item>
+    </plurals>
 </resources>

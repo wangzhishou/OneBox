@@ -34,7 +34,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import java.util.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -227,11 +226,11 @@ private fun PlayProductCard(
                 )
             }
             Text(
-                text = if (Locale.getDefault().language == "ar") {
-                    pluralStringResource(R.plurals.play_points_count, product.points, product.points)
-                } else {
-                    stringResource(id = R.string.play_points_desc, product.points)
-                },
+                text = pluralStringResource(
+                    R.plurals.play_points_count,
+                    product.points.coerceAtLeast(0),
+                    product.points,
+                ),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center

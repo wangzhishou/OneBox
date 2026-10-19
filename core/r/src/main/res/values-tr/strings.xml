@@ -1896,4 +1896,17 @@
     <string name="altitude_precip_probability">%1$s%%</string>
     <string name="altitude_temp_value">%1$s°</string>
     <string name="altitude_aqi_value">Hava kalitesi %1$s</string>
+
+    <plurals name="ai_reasoning_seconds">
+        <item quantity="other">Derin düşünce (%d saniye)</item>
+    </plurals>
+    <plurals name="ai_chat_token_count">
+        <item quantity="other">%1$s Token</item>
+    </plurals>
+    <plurals name="play_points_count">
+        <item quantity="other">%s puan kazanın</item>
+    </plurals>
+    <plurals name="token_usage_request_times">
+        <item quantity="other">%d İstek</item>
+    </plurals>
 </resources>

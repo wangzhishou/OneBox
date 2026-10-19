@@ -25,17 +25,21 @@ import java.util.Locale
 fun humanFileSize(bytes: Long): String {
     var tempBytes = bytes
     if (-1024 < tempBytes && tempBytes < 1024) {
-        return "$tempBytes B"
+        return ltrIsolated("$tempBytes B")
     }
     val ci: CharacterIterator = StringCharacterIterator("kMGTPE")
     while (tempBytes <= -999950 || tempBytes >= 999950) {
         tempBytes /= 1024
         ci.next()
     }
-    return java.lang.String.format(
+    val formatted = java.lang.String.format(
         Locale.getDefault(),
         "%.1f %cB",
         tempBytes / 1024.0,
         ci.current()
     ).replace(",0", "")
+    return ltrIsolated(formatted)
 }
+
+/** 数字和单位绑在一起,避免从右往左排时 MB 跑到数字前面。 */
+private fun ltrIsolated(text: String): String = "\u2066$text\u2069"

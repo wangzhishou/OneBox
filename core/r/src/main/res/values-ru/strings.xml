@@ -1918,4 +1918,29 @@
     <string name="altitude_precip_probability">%1$s%%</string>
     <string name="altitude_temp_value">%1$s°</string>
     <string name="altitude_aqi_value">Качество воздуха %1$s</string>
+
+    <plurals name="ai_reasoning_seconds">
+        <item quantity="one">Глубокое размышление (%d секунда)</item>
+        <item quantity="few">Глубокое размышление (%d секунды)</item>
+        <item quantity="many">Глубокое размышление (%d секунд)</item>
+        <item quantity="other">Глубокое размышление (%d секунд)</item>
+    </plurals>
+    <plurals name="ai_chat_token_count">
+        <item quantity="one">%s токен</item>
+        <item quantity="few">%s токена</item>
+        <item quantity="many">%s токенов</item>
+        <item quantity="other">%s токенов</item>
+    </plurals>
+    <plurals name="play_points_count">
+        <item quantity="one">Получить %d балл</item>
+        <item quantity="few">Получить %d балла</item>
+        <item quantity="many">Получить %d баллов</item>
+        <item quantity="other">Получить %d баллов</item>
+    </plurals>
+    <plurals name="token_usage_request_times">
+        <item quantity="one">%d запрос</item>
+        <item quantity="few">%d запроса</item>
+        <item quantity="many">%d запросов</item>
+        <item quantity="other">%d запросов</item>
+    </plurals>
 </resources>

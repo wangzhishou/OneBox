@@ -73,7 +73,7 @@ fun ChangeLanguageSheet(
         sheetContent = {
             val entries = remember { context.getLanguages() }
             val selected = remember { context.getCurrentLocaleString() }
-            Box {
+            Box(modifier = Modifier.fillMaxWidth().padding(bottom = 64.dp)) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(4.dp),

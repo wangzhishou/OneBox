@@ -45,9 +45,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import java.util.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,6 +69,8 @@ import com.shifenmiao.common.logic.AppComponent
 import com.shifenmiao.core.R
 import com.shifenmiao.core.constants.UrlConstants
 import com.shifenmiao.model.ListItemType
+import com.shifenmiao.model.node.AstNode
+import com.shifenmiao.model.node.AstText
 import com.shifenmiao.model.ai.AttachmentPayloadDto
 import com.shifenmiao.model.ai.event.MainClickEvent
 import com.shifenmiao.model.ai.event.MainShowType
@@ -82,6 +84,7 @@ import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassCardSegment
 import com.t8rin.imagetoolbox.core.ui.widget.glass.GlassSurface
 import com.t8rin.imagetoolbox.core.ui.widget.glass.flatGlassCardSegment
+import com.t8rin.imagetoolbox.core.ui.widget.text.firstStrongLayoutDirection
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassCardSegment
 import com.t8rin.imagetoolbox.core.utils.appContext
 import io.noties.markwon.plugins.codeblock.CodeBlockClickListener
@@ -658,11 +661,9 @@ fun RobotReasoningHeader(
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = if (Locale.getDefault().language == "ar") {
+                        text = run {
                             val seconds = reasoningHeader.time.coerceIn(0L, Int.MAX_VALUE.toLong()).toInt()
                             pluralStringResource(R.plurals.ai_reasoning_seconds, seconds, seconds)
-                        } else {
-                            stringResource(R.string.ai_reasoning_time, reasoningHeader.time)
                         },
                         style = MaterialTheme.typography.titleSmall,
                         color = contentColor,
@@ -673,18 +674,22 @@ fun RobotReasoningHeader(
                         val previewHeight = with(LocalDensity.current) {
                             previewStyle.lineHeight.toDp()
                         }
-                        Text(
-                            text = reasoningHeader.preview,
-                            modifier = Modifier.height(previewHeight),
-                            style = previewStyle,
-                            color = when {
-                                reasoningHeader.preview.isBlank() -> Color.Transparent
-                                isStreaming -> contentColor.copy(alpha = 0.85f)
-                                else -> contentColor
-                            },
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                        val previewDirection = reasoningHeader.preview.firstStrongLayoutDirection()
+                            ?: LocalLayoutDirection.current
+                        CompositionLocalProvider(LocalLayoutDirection provides previewDirection) {
+                            Text(
+                                text = reasoningHeader.preview,
+                                modifier = Modifier.height(previewHeight),
+                                style = previewStyle,
+                                color = when {
+                                    reasoningHeader.preview.isBlank() -> Color.Transparent
+                                    isStreaming -> contentColor.copy(alpha = 0.85f)
+                                    else -> contentColor
+                                },
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
                     }
                 }
                 Icon(
@@ -743,6 +748,9 @@ fun RobotReasoningContent(
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     leftLine: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.32f),
 ) {
+    val reasoningDirection = remember(reasoningContent.reasoningAstNode) {
+        firstReasoningLiteral(reasoningContent.reasoningAstNode)?.firstStrongLayoutDirection()
+    } ?: LocalLayoutDirection.current
     if (reasoningContent.reasoningAstNode != null) {
         Box(
             modifier = Modifier
@@ -783,6 +791,7 @@ fun RobotReasoningContent(
                             )
                         }
                 ) {
+                    CompositionLocalProvider(LocalLayoutDirection provides reasoningDirection) {
                     RichText(
                         textStyle = MaterialTheme.typography.bodyMedium.copy(
                             fontSize = 13.sp,
@@ -804,6 +813,7 @@ fun RobotReasoningContent(
                             )
                         }
                     }
+                    }
                 }
             }
         }
@@ -823,6 +833,9 @@ fun RobotReasoningBlock(
     // - 中间 block 不收底部圆角；
     // - 只有最后一个 block 负责底部收口；
     // - 左侧竖线在所有 block 中连续贯通，而不是每段都像独立小卡片。
+    val blockDirection = remember(reasoningBlock.node) {
+        firstReasoningLiteral(reasoningBlock.node)?.firstStrongLayoutDirection()
+    } ?: LocalLayoutDirection.current
     val containerBottomPadding = if (reasoningBlock.isLast) 6.dp else 0.dp
     val surfaceShape = when {
         reasoningBlock.isFirst && reasoningBlock.isLast -> RoundedCornerShape(
@@ -881,29 +894,31 @@ fun RobotReasoningBlock(
                             )
                         }
                 ) {
-                    RichText(
-                        textStyle = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 13.sp,
-                            lineHeight = 20.sp
-                        ),
-                        style = RichTextStyle(paragraphSpacing = 0.sp),
-                        contentColor = contentColor,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = 12.dp,
-                                top = contentTopPadding,
-                                bottom = if (reasoningBlock.isLast) 0.dp else contentBottomPadding
-                            )
-                    ) {
-                        CompositionLocalProvider(
-                            LocalIsMessageStreaming provides reasoningBlock.isStreaming
+                    CompositionLocalProvider(LocalLayoutDirection provides blockDirection) {
+                        RichText(
+                            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 13.sp,
+                                lineHeight = 20.sp
+                            ),
+                            style = RichTextStyle(paragraphSpacing = 0.sp),
+                            contentColor = contentColor,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    start = 12.dp,
+                                    top = contentTopPadding,
+                                    bottom = if (reasoningBlock.isLast) 0.dp else contentBottomPadding
+                                )
                         ) {
-                            BasicMarkdown(
-                                reasoningBlock.node,
-                                codeBlockClickListener = codeBlockClickListener,
-                                compactBlocks = true
-                            )
+                            CompositionLocalProvider(
+                                LocalIsMessageStreaming provides reasoningBlock.isStreaming
+                            ) {
+                                BasicMarkdown(
+                                    reasoningBlock.node,
+                                    codeBlockClickListener = codeBlockClickListener,
+                                    compactBlocks = true
+                                )
+                            }
                         }
                     }
                 }
@@ -959,6 +974,31 @@ fun ChatErrorMessage(
             onSwitchModel = { appComponent.showAIModelsModalSheet() },
         )
     }
+}
+
+/** 取思考正文里第一段文字,用来判断这段该从左往右还是从右往左排。 */
+private fun firstReasoningLiteral(node: AstNode?): String? {
+    var current = node
+    var guard = 0
+    while (current != null && guard++ < 400) {
+        val type = current.type
+        if (type is AstText && type.literal.any { !it.isWhitespace() }) {
+            return type.literal
+        }
+        val child = current.links.firstChild
+        if (child != null) {
+            current = child
+            continue
+        }
+        var next = current.links.next
+        var parent = current.links.parent
+        while (next == null && parent != null && parent !== node) {
+            next = parent.links.next
+            parent = parent.links.parent
+        }
+        current = if (parent === node && next == null) null else next
+    }
+    return null
 }
 
 @Composable

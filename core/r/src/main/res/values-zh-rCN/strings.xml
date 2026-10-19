@@ -2034,4 +2034,17 @@
     <string name="time_due_on">到期：%s</string>
     <string name="card_more_actions">更多操作</string>
     <string name="expand">展开</string>
+
+    <plurals name="ai_reasoning_seconds">
+        <item quantity="other">已深度思考(用时 %d 秒)</item>
+    </plurals>
+    <plurals name="ai_chat_token_count">
+        <item quantity="other">%1$s Tokens</item>
+    </plurals>
+    <plurals name="play_points_count">
+        <item quantity="other">获得 %s 积分</item>
+    </plurals>
+    <plurals name="token_usage_request_times">
+        <item quantity="other">%d 请求次数</item>
+    </plurals>
 </resources>

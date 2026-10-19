@@ -36,16 +36,16 @@
     <string name="loan_input_error_method">يرجى اختيار طريقة السداد.</string>
     <plurals name="loan_term_months">
         <item quantity="zero">%1$d شهر</item>
-        <item quantity="one">%1$d شهر</item>
-        <item quantity="two">%1$d شهرين</item>
+        <item quantity="one">شهر واحد</item>
+        <item quantity="two">شهران</item>
         <item quantity="few">%1$d أشهر</item>
         <item quantity="many">%1$d شهرًا</item>
         <item quantity="other">%1$d شهر</item>
     </plurals>
     <plurals name="loan_term_years_count">
         <item quantity="zero">%1$d سنة</item>
-        <item quantity="one">%1$d سنة</item>
-        <item quantity="two">%1$d سنتين</item>
+        <item quantity="one">سنة واحدة</item>
+        <item quantity="two">سنتان</item>
         <item quantity="few">%1$d سنوات</item>
         <item quantity="many">%1$d سنةً</item>
         <item quantity="other">%1$d سنة</item>

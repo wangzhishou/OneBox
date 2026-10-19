@@ -6,7 +6,7 @@
     <string name="studio_recent_files_empty">لا توجد صور حديثة</string>
     <plurals name="studio_project_layers">
         <item quantity="zero">%1$d طبقات</item>
-        <item quantity="one">%1$d طبقة</item>
+        <item quantity="one">طبقة واحدة</item>
         <item quantity="two">طبقتان</item>
         <item quantity="few">%1$d طبقات</item>
         <item quantity="many">%1$d طبقة</item>

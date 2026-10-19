@@ -252,7 +252,7 @@
     <string name="profile_edit_profile">تعديل الملف الشخصي</string>
     <string name="profile_stats_functions">الوظائف</string>
     <string name="profile_stats_points">النقاط</string>
-    <string name="profile_stats_points_play_hint">العب واربح نقاط</string>
+    <string name="profile_stats_points_play_hint">العب واربح نقاطًا</string>
     <string name="profile_stats_files">الملفات</string>
     <string name="profile_boot_button">اقتراح ميزات / الإبلاغ عن مشكلات</string>
     <string name="profile_setting_help">هل تحتاج إلى مساعدة؟ انقر هنا</string>

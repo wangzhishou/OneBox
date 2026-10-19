@@ -3,7 +3,7 @@ package com.t8rin.imagetoolbox.core.ui.widget.theme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,19 +32,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,9 +56,8 @@ import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsM
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalThemeRepository
 import com.t8rin.imagetoolbox.core.ui.widget.glass.glassBackground
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlin.math.abs
-import kotlin.math.roundToInt
 import com.t8rin.imagetoolbox.core.resources.icons.Add
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineTheme
 import com.t8rin.imagetoolbox.core.resources.icons.ContentCopy
@@ -70,8 +69,8 @@ import com.t8rin.imagetoolbox.core.resources.icons.line.LineDarkMode
 import com.t8rin.imagetoolbox.core.resources.icons.Transparency
 import com.t8rin.imagetoolbox.core.resources.icons.line.LineBlurOn
 
-/** 主题卡片固定高度，避免选中/删除图标出现时跳动 */
-private val CARD_FIXED_HEIGHT = 120.dp
+/** 主题卡片固定高度，避免选中/删除图标出现时跳动。两行标题留给阿语等较长名字。 */
+private val CARD_FIXED_HEIGHT = 136.dp
 private val CARD_WIDTH = 64.dp
 private val CARD_SPACING = 8.dp
 
@@ -91,8 +90,7 @@ fun ThemePresetSelector(
     val settingsManager = LocalSettingsManager.current
     val themeRepository = LocalThemeRepository.current
     val scope = rememberCoroutineScope()
-    val scrollState = rememberScrollState()
-    val density = LocalDensity.current
+    val listState = rememberLazyListState()
 
     val allThemes by themeRepository.observeAllThemes()
         .collectAsState(initial = themeRepository.themesSnapshot)
@@ -100,9 +98,6 @@ fun ThemePresetSelector(
 
     // 删除确认状态
     var pendingDeletePreset by remember { mutableStateOf<AppThemePreset?>(null) }
-    var rowWidthPx by remember { mutableIntStateOf(0) }
-    val cardWidthPx = remember(density) { with(density) { CARD_WIDTH.roundToPx() } }
-    val cardSpacingPx = remember(density) { with(density) { CARD_SPACING.roundToPx() } }
 
     // 行内第 0 项是“新建主题”卡片，因此主题索引需要 +1。
     val selectedIndexInRow = remember(activeThemeId, allThemes) {
@@ -110,22 +105,18 @@ fun ThemePresetSelector(
         if (themeIndex >= 0) themeIndex + 1 else -1
     }
 
-    LaunchedEffect(
-        selectedIndexInRow,
-        rowWidthPx,
-    ) {
-        if (selectedIndexInRow < 0 || rowWidthPx <= 0) return@LaunchedEffect
-
-        // 不把 scrollState.maxValue 作为 key: 卡片增删导致 maxValue 变化时,
-        // 不应把正在手动浏览的用户拉回选中项
-        val selectedStartPx = selectedIndexInRow * (cardWidthPx + cardSpacingPx)
-        val selectedCenterPx = selectedStartPx + cardWidthPx / 2f
-        val targetScroll = (selectedCenterPx - rowWidthPx / 2f)
-            .roundToInt()
-            .coerceIn(0, scrollState.maxValue)
-
-        if (abs(scrollState.value - targetScroll) > 1) {
-            scrollState.animateScrollTo(targetScroll)
+    LaunchedEffect(selectedIndexInRow) {
+        if (selectedIndexInRow < 0) return@LaunchedEffect
+        // 选中项已经完整露出来就不动,避免一进页面把「新建」顶出屏幕。
+        snapshotFlow { listState.layoutInfo }
+            .first { it.visibleItemsInfo.isNotEmpty() }
+        val info = listState.layoutInfo
+        val item = info.visibleItemsInfo.find { it.index == selectedIndexInRow }
+        val fullyVisible = item != null &&
+            item.offset >= info.viewportStartOffset &&
+            item.offset + item.size <= info.viewportEndOffset
+        if (!fullyVisible) {
+            listState.animateScrollToItem(selectedIndexInRow)
         }
     }
 
@@ -177,20 +168,21 @@ fun ThemePresetSelector(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // ── 横向滚动主题卡片 ──
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .onSizeChanged { rowWidthPx = it.width }
-                .horizontalScroll(scrollState),
+        // ── 横向滚动主题卡片。停靠时按整张卡片对齐,名字不会停在半个词上。──
+        LazyRow(
+            state = listState,
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(CARD_SPACING),
-        ) {            // ── +新建主题 ──
-            CreateThemeCard(
-                onClick = {
-                    onNavigateToThemeSettings?.invoke()
-                }
-            )
-            allThemes.forEach { preset ->
+            flingBehavior = rememberSnapFlingBehavior(listState),
+        ) {
+            item {
+                CreateThemeCard(
+                    onClick = {
+                        onNavigateToThemeSettings?.invoke()
+                    }
+                )
+            }
+            items(allThemes, key = { it.id }) { preset ->
                 ThemePresetCard(
                     modifier = Modifier,
                     preset = preset,
@@ -314,7 +306,7 @@ fun ThemePresetCard(
             style = MaterialTheme.typography.labelSmall,
             color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
             else MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1, overflow = TextOverflow.Ellipsis,
+            maxLines = 2, overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )

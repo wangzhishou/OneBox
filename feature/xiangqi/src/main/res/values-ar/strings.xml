@@ -187,16 +187,16 @@
     <string name="xiangqi_import_success">تم الاستيراد بنجاح</string>
     <plurals name="xiangqi_import_partial">
         <item quantity="zero">تم استيراد %1$d نقلة، وتخطّي %2$d</item>
-        <item quantity="one">تم استيراد %1$d نقلة، وتخطّي %2$d</item>
-        <item quantity="two">تم استيراد %1$d نقلتين، وتخطّي %2$d</item>
+        <item quantity="one">تم استيراد نقلة واحدة، وتخطّي %2$d</item>
+        <item quantity="two">تم استيراد نقلتين، وتخطّي %2$d</item>
         <item quantity="few">تم استيراد %1$d نقلات، وتخطّي %2$d</item>
         <item quantity="many">تم استيراد %1$d نقلة، وتخطّي %2$d</item>
         <item quantity="other">تم استيراد %1$d نقلة، وتخطّي %2$d</item>
     </plurals>
     <plurals name="xiangqi_ply_count">
         <item quantity="zero">%1$d نقلة</item>
-        <item quantity="one">%1$d نقلة</item>
-        <item quantity="two">%1$d نقلتان</item>
+        <item quantity="one">نقلة واحدة</item>
+        <item quantity="two">نقلتان</item>
         <item quantity="few">%1$d نقلات</item>
         <item quantity="many">%1$d نقلة</item>
         <item quantity="other">%1$d نقلة</item>

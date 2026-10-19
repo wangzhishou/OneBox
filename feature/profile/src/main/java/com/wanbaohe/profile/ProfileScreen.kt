@@ -40,6 +40,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -469,7 +470,7 @@ private fun ProfileStatsRow(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Points card — icon + chevron on top, number + label at bottom (no extra hint line)
+        // 积分卡进的是赚积分的小游戏,卡片上写明,避免看起来像账本入口。
         GlassCard(
             onClick = {
                 ActionUtils.showLogin(source = "points_card_game") {
@@ -478,7 +479,7 @@ private fun ProfileStatsRow(
             },
             modifier = Modifier
                 .weight(1f)
-                .height(112.dp),
+                .height(128.dp),
             colors = tintedGlassCardColors(MaterialTheme.colorScheme.secondaryContainer)
         ) {
             Column(
@@ -522,6 +523,13 @@ private fun ProfileStatsRow(
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                    Text(
+                        text = stringResource(R.string.profile_stats_points_play_hint),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }
@@ -533,7 +541,7 @@ private fun ProfileStatsRow(
             },
             modifier = Modifier
                 .weight(1f)
-                .height(112.dp),
+                .height(128.dp),
             colors = tintedGlassCardColors(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             Column(
