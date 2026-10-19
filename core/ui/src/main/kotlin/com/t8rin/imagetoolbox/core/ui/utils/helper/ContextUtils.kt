@@ -64,7 +64,6 @@ import com.t8rin.imagetoolbox.core.resources.R
 import com.t8rin.imagetoolbox.core.ui.utils.helper.image_vector.toImageBitmap
 import com.t8rin.imagetoolbox.core.ui.utils.navigation.Screen
 import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionStatus
-import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionUtils.askUserToRequestPermissionExplicitly
 import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionUtils.checkPermissions
 import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionUtils.markPermissionRequested
 import com.t8rin.imagetoolbox.core.ui.utils.permission.PermissionUtils.hasPermissionAllowed
@@ -187,24 +186,14 @@ object ContextUtils {
                 )
             }
         )
-        when (state.permissionStatus.values.first()) {
-            PermissionStatus.NOT_GIVEN -> {
-                AppEventBus.emit(requestPermissionEvent)
-            }
-
-            PermissionStatus.DENIED_PERMANENTLY -> {
-                if (PermissionRequest.APK_INSTALL.code == permissionRequest.code) {
-                    AppEventBus.emit(requestPermissionEvent)
-                } else {
-                    askUserToRequestPermissionExplicitly()
-                    Toast.makeText(this, permissionRequest.description, Toast.LENGTH_LONG).show()
-                    onFailed.invoke()
-                }
-            }
-
-            PermissionStatus.ALLOWED -> {
-                onSuccess.invoke()
-            }
+        // 全部已授权才算成功;只要有一个没给就统一请求一次(多权限时不能只看第一个)
+        if (state.permissionStatus.values.all { it == PermissionStatus.ALLOWED }) {
+            onSuccess.invoke()
+        } else {
+            // 曾拒绝过也先真实请求一次:重装/撤销权限后"是否该展示理由"会失真,
+            // 一上来就跳设置会把系统其实还愿意弹框的情况挡在门外。
+            // 真·永久拒绝时系统会立即回调失败,由 AppActivity 统一提示手动授权。
+            AppEventBus.emit(requestPermissionEvent)
         }
     }
 
