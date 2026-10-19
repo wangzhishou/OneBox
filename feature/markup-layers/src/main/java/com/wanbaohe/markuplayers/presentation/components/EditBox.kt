@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.Icons
 import com.t8rin.imagetoolbox.core.resources.icons.Close
 import com.t8rin.imagetoolbox.core.ui.widget.editor.AnimatedSelectionBorder
-import com.t8rin.imagetoolbox.core.ui.widget.editor.HandleDot
 import com.t8rin.imagetoolbox.core.ui.widget.editor.BoxResizeConfig
 import com.wanbaohe.markuplayers.R
 import com.wanbaohe.markuplayers.domain.model.LayerTransform
@@ -207,7 +206,7 @@ fun BoxWithConstraintsScope.EditBox(
             var startAngle by remember { mutableStateOf(0f) }
 
             // 标准选框:三个角缩放(右上角让给删除),两侧改文字框宽,顶部旋转。
-            // 角/边手柄统一用图文卡片同款 HandleDot(白边主色圆点)
+            // 角/边手柄统一用白边主色小方块,左右手柄中心压在边线上
             listOf(
                 Triple(Alignment.TopStart, -1, -1),
                 Triple(Alignment.BottomStart, -1, 1),
@@ -239,7 +238,7 @@ fun BoxWithConstraintsScope.EditBox(
                     },
                     onEnd = finish
                 ) {
-                    HandleDot()
+                    HandleBlock()
                 }
             }
             LayerTransformHandle(
@@ -278,8 +277,8 @@ fun BoxWithConstraintsScope.EditBox(
                     LayerTransformHandle(
                         description = stringResource(R.string.studio_layer_resize_width),
                         alignment = if (edge < 0) Alignment.CenterStart else Alignment.CenterEnd,
-                        // 改框宽手柄中心恒定在边中点外 8dp(屏幕距离)
-                        offsetX = (edge * (HANDLE_HALF_DP + 8f * inverseScale)).dp,
+                        // 改框宽手柄中心压在边线上(与角上手柄同一视觉)
+                        offsetX = (edge * HANDLE_HALF_DP).dp,
                         inverseScale = inverseScale,
                         counterRotation = counterRotation,
                         onStart = { root ->
@@ -313,7 +312,7 @@ fun BoxWithConstraintsScope.EditBox(
                         },
                         onEnd = finish
                     ) {
-                        HandleDot()
+                        HandleBlock()
                     }
                 }
             }
@@ -416,6 +415,19 @@ private fun BoxScope.LayerTransformHandle(
                 }
             },
         content = visual
+    )
+}
+
+/** 缩放标记视觉:矩形方块(类似裁剪角块),细白边主色填充;四角与左右边共用 */
+@Composable
+private fun HandleBlock() {
+    val shape = RoundedCornerShape(2.dp)
+    Box(
+        modifier = Modifier
+            .size(13.5.dp)
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.primaryContainer, shape)
+            .border(1.dp, Color.White, shape)
     )
 }
 
