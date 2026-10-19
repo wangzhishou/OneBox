@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">Mangyaring maglagay ng pamagat</string>
     <string name="confirm">OK</string>
     <string name="free">Libre</string>
+    <string name="price_free">Libre</string>
     <string name="token_price">Tinatayang %s puntos bawat 1000 karakter</string>
     <string name="max_length_error">Lumampas na sa limitasyon ng karakter</string>
     <string name="clear">I-clear</string>

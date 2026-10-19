@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">Пожалуйста, введите название</string>
     <string name="confirm">ОК</string>
     <string name="free">Свободно</string>
+    <string name="price_free">Бесплатно</string>
     <string name="token_price">Прибл. %s баллов за 1000 символов</string>
     <string name="max_length_error">Превышен лимит символов</string>
     <string name="clear">Очистить</string>

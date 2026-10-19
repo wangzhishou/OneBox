@@ -587,7 +587,7 @@ private fun resolveModelTags(model: AiModel): List<Pair<String, Color>> {
             add(stringResource(R.string.ai_model_tag_context) to Color(0xFF3D8B7A))
         }
         if (model.free) {
-            add(stringResource(R.string.free) to Color(0xFF6B7280))
+            add(stringResource(R.string.price_free) to Color(0xFF6B7280))
         } else if (model.basePoints >= 1f) {
             add(stringResource(R.string.ai_model_not_free) to Color(0xFF6B7280))
         }

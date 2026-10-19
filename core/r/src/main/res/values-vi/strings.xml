@@ -622,6 +622,7 @@
     <string name="ai_history_rename_empty">Vui lòng nhập tiêu đề phiên</string>
     <string name="confirm">Xác nhận</string>
     <string name="free">Miễn phí</string>
+    <string name="price_free">Miễn phí</string>
     <string name="token_price">Mỗi 1000 ký tự tiêu tốn khoảng %s điểm</string>
     <string name="max_length_error">Số ký tự vượt quá giới hạn</string>
     <string name="clear">Xóa</string>

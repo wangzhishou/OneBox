@@ -16,7 +16,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import java.util.Locale
 import com.shifenmiao.base.ui.ActionButton
 import com.shifenmiao.base.ui.DeleteConfirmDialog
 import com.shifenmiao.core.R
@@ -79,7 +81,15 @@ fun AIUsageBar(
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = stringResource(R.string.ai_chat_usage_tokens, message.totalTokens.toString()),
+            text = if (Locale.getDefault().language == "ar") {
+                pluralStringResource(
+                    R.plurals.ai_chat_token_count,
+                    message.totalTokens,
+                    message.totalTokens.toString(),
+                )
+            } else {
+                stringResource(R.string.ai_chat_usage_tokens, message.totalTokens.toString())
+            },
             style = MaterialTheme.typography.labelSmall.copy(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )

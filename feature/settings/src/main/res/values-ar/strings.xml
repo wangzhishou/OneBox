@@ -130,7 +130,7 @@
     <string name="ai_engine_edit_action">تعديل</string>
     <string name="ai_engine_delete_action">حذف</string>
     <string name="ai_engine_local_badge">مباشر</string>
-    <string name="ai_engine_remote_badge">عبر وكيل</string>
+    <string name="ai_engine_remote_badge">عبر وسيط</string>
     <string name="ai_engine_delete_confirm_title">حذف الخدمة المحلية</string>
     <string name="ai_engine_delete_confirm_message">هل تريد حذف خدمة النموذج \"%1$s\"؟ إذا لم تبقَ خدمة بالاسم نفسه، فستُحذف أيضاً النماذج المرتبطة بها.</string>
     <string name="ai_engine_delete_success">تم حذف خدمة النموذج \"%1$s\"</string>
@@ -179,7 +179,7 @@
     <string name="ai_working_model_change">اضغط للتغيير</string>
     <string name="ai_working_model_picker_title">اختيار %1$s</string>
     <string name="ai_working_model_status_direct">المسار الحالي: اتصال مباشر موثّق</string>
-    <string name="ai_working_model_status_proxy">المسار الحالي: متاح عبر وكيل</string>
+    <string name="ai_working_model_status_proxy">المسار الحالي: متاح عبر وسيط</string>
     <string name="ai_working_model_status_available">المسار الحالي: متاح</string>
     <string name="ai_working_model_status_unavailable">المسار الحالي: غير متاح — انتقل إلى الإعدادات أولاً</string>
     <string name="ai_engine_api_url">رابط API</string>

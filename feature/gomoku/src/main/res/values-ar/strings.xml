@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="gomoku_library_title">جوموكو</string>
+    <string name="gomoku_library_title">خمسة في صف</string>
     <string name="gomoku_tab_play">لعب</string>
     <string name="gomoku_tab_analyze">تحليل</string>
     <string name="gomoku_tab_library">السجل</string>

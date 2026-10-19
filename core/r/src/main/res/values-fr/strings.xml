@@ -622,6 +622,7 @@
     <string name="ai_history_rename_empty">Veuillez saisir le titre de la session</string>
     <string name="confirm">Confirmer</string>
     <string name="free">Gratuit</string>
+    <string name="price_free">Gratuit</string>
     <string name="token_price">Environ %s points consommés pour 1000 caractères</string>
     <string name="max_length_error">Le nombre de caractères dépasse la limite</string>
     <string name="clear">Effacer</string>

@@ -27,6 +27,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -536,7 +537,12 @@ object ContextUtils {
         }
 
         val locale = when (lang) {
-            "" -> LocaleListCompat.getAdjustedDefault().get(0) ?: Locale.getDefault()
+            // 空 key 是「跟随系统」。per-app locale 会改掉 Locale.getDefault()，
+            // 这里读系统 Configuration，避免副标题显示成应用语言自己。
+            "" -> {
+                val systemLocales = Resources.getSystem().configuration.locales
+                if (systemLocales.isEmpty) Locale.getDefault() else systemLocales[0]
+            }
             else -> Locale.forLanguageTag(lang)
         }
         val displayLocale = if (useDefaultLocale) Locale.getDefault() else locale

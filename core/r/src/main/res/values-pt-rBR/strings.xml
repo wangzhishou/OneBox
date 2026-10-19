@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">Por favor, digite um título</string>
     <string name="confirm">OK</string>
     <string name="free">Livre</string>
+    <string name="price_free">Grátis</string>
     <string name="token_price">Aprox. %s pontos por 1000 caracteres</string>
     <string name="max_length_error">Limite de caracteres excedido</string>
     <string name="clear">Limpar</string>

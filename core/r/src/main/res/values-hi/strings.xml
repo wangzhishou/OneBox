@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">कृपया एक शीर्षक दर्ज करें</string>
     <string name="confirm">ठीक है</string>
     <string name="free">मुक्त</string>
+    <string name="price_free">मुफ़्त</string>
     <string name="token_price">लगभग %s अंक प्रति 1000 अक्षर</string>
     <string name="max_length_error">अक्षर सीमा पार हो गई</string>
     <string name="clear">साफ़ करें</string>

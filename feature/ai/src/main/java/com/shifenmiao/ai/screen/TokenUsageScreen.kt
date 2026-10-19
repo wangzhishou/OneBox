@@ -27,7 +27,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import java.util.Locale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -336,7 +338,12 @@ private fun ModelDistributionItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "${stat.requestCount} ${stringResource(R.string.token_usage_request_count)}",
+                text = if (Locale.getDefault().language == "ar") {
+                    val count = stat.requestCount.coerceIn(0L, Int.MAX_VALUE.toLong()).toInt()
+                    pluralStringResource(R.plurals.token_usage_request_times, count, count)
+                } else {
+                    "${stat.requestCount} ${stringResource(R.string.token_usage_request_count)}"
+                },
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
             )
@@ -416,7 +423,16 @@ private fun TopQueryItem(
         },
         trailingContent = {
             Text(
-                text = "${StringUtils.formatNumber(query.totalTokens)} ${stringResource(R.string.token_usage_tokens_label)}",
+                text = if (Locale.getDefault().language == "ar") {
+                    val count = query.totalTokens.coerceIn(0L, Int.MAX_VALUE.toLong()).toInt()
+                    pluralStringResource(
+                        R.plurals.ai_chat_token_count,
+                        count,
+                        StringUtils.formatNumber(query.totalTokens),
+                    )
+                } else {
+                    "${StringUtils.formatNumber(query.totalTokens)} ${stringResource(R.string.token_usage_tokens_label)}"
+                },
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )

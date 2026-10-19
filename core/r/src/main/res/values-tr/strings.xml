@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">Lütfen bir başlık girin</string>
     <string name="confirm">Tamam</string>
     <string name="free">Serbest</string>
+    <string name="price_free">Ücretsiz</string>
     <string name="token_price">Yaklaşık %s puan / 1000 karakter</string>
     <string name="max_length_error">Karakter sınırı aşıldı</string>
     <string name="clear">Temizle</string>

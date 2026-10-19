@@ -2065,4 +2065,21 @@ Hint: If you choose "Hide Forever", you can bring me back later in Settings > Di
     <string name="time_due_on">Due: %s</string>
     <string name="card_more_actions">More actions</string>
     <string name="expand">Expand</string>
+    <plurals name="ai_reasoning_seconds">
+        <item quantity="one">Deep thought (%d second)</item>
+        <item quantity="other">Deep thought (%d seconds)</item>
+    </plurals>
+    <plurals name="ai_chat_token_count">
+        <item quantity="one">%s Token</item>
+        <item quantity="other">%s Tokens</item>
+    </plurals>
+    <plurals name="play_points_count">
+        <item quantity="one">Get %d point</item>
+        <item quantity="other">Get %d points</item>
+    </plurals>
+    <plurals name="token_usage_request_times">
+        <item quantity="one">%d request</item>
+        <item quantity="other">%d requests</item>
+    </plurals>
+    <string name="price_free">Free</string>
 </resources>

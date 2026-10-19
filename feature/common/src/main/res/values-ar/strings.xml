@@ -38,7 +38,7 @@
     <string name="ai_model_protocol_jev">محرّك الحكم Jev</string>
     <string name="ai_model_route_label">المسار الحالي</string>
     <string name="ai_model_route_direct">موثّق · اتصال مباشر</string>
-    <string name="ai_model_route_proxy">غير موثّق · عبر وكيل التطبيق</string>
+    <string name="ai_model_route_proxy">غير موثّق · عبر وسيط التطبيق</string>
     <string name="data_sync_export_success">تم التصدير بنجاح</string>
     <string name="data_sync_export_failed">فشل التصدير: %1$s</string>
     <string name="data_sync_read_file_failed">تعذّر قراءة الملف: %1$s</string>

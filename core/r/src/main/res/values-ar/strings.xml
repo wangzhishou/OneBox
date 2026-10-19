@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OneBox</string>
-    <string name="app_copyright">حقوق النشر © 2026 OneBox</string>
+    <string name="app_copyright">حقوق النشر ⁦© 2026 OneBox⁩</string>
     <string name="app_description">تطبيق واحد يضم أكثر من 90 أداة — تحرير الصور، ودردشة الذكاء الاصطناعي، والإنتاجية، وألعاب مصغّرة. كل شيء في صندوق واحد.</string>
     <string name="app_description_download_des">\n\nGoogle Play: https://play.google.com/store/apps/details?id=com.shifenmiao.app\nGitHub: https://github.com/wangzhishou/OneBox</string>
     <string name="app_launcher_name">OneBox</string>
@@ -329,7 +329,7 @@
     <string name="buy_coffee_title">تبرّع واكسب نقاطًا</string>
     <string name="donate_mode">طريقة الدفع:</string>
     <string name="donate_recommend">موصى به</string>
-    <string name="donate_confirm">تأكيد والدفع</string>
+    <string name="donate_confirm">تأكيد الدفع</string>
     <string name="pay_wu_mao">كل قرش له قيمة</string>
     <string name="pay_wu_mao_desc">+%d نقطة</string>
     <string name="pay_cola">ابقَ هادئًا وواصل البرمجة</string>
@@ -389,7 +389,7 @@
     <string name="webview_title_feedback">الملاحظات</string>
     <string name="ai_chat_description">يدعم واجهات النماذج اللغوية الكبيرة من بيدو وQwen وMoonshot وغيرها.</string>
     <string name="ai_chat_menu_new_conversation">محادثة جديدة</string>
-    <string name="search_hint">ابحث عن الوظائف، مثل الذكاء الاصطناعي أو الشريط المتحرك أو التقويم…</string>
+    <string name="search_hint">ابحث، مثل: AI، التقويم</string>
     <string name="no_search_result">لا توجد نتائج!</string>
     <string name="privacy_title">سياسة الخصوصية</string>
     <string name="privacy_item_1">إذن التخزين</string>
@@ -594,6 +594,7 @@
     <string name="ai_history_rename_empty">يرجى إدخال عنوان</string>
     <string name="confirm">حسناً</string>
     <string name="free">حر</string>
+    <string name="price_free">مجاني</string>
     <string name="token_price">حوالي %s نقطة لكل 1000 حرف</string>
     <string name="max_length_error">تم تجاوز حد الأحرف</string>
     <string name="clear">مسح</string>
@@ -701,8 +702,8 @@
     <string name="home_created_content_hint">سيظهر محتواك الجديد هنا</string>
     <string name="my_content_empty">لم تنشئ أي محتوى محلي بعد</string>
     <string name="my_content_empty_action_note">الإنشاء في المفكرة</string>
-    <string name="playground_empty_title">لا توجد أفكار بعد</string>
-    <string name="playground_empty_description">كن أول من يشارك فكرته</string>
+    <string name="playground_empty_title">لا توجد طرق لعب بعد</string>
+    <string name="playground_empty_description">كن أول من يشارك طريقة لعب</string>
     <string name="playground_footer_title">شارك فكرتك</string>
     <string name="playground_footer_description">لديك فكرة جيدة؟ اكتب مقالًا واستكشفها معًا</string>
     <string name="favorite_time_just_now">الآن</string>
@@ -1430,7 +1431,7 @@
     <string name="agent_push_failed">فشل الدفع</string>
     <string name="nav_add">إضافة</string>
     <string name="nav_create_new_task">إنشاء</string>
-    <string name="nav_new_qr_code">مسح</string>
+    <string name="nav_new_qr_code">مسح الرمز</string>
     <string name="nav_notebook">ملاحظة</string>
     <string name="nav_todo_list">المهام</string>
     <string name="nav_ai_app">محادثة</string>
@@ -1567,11 +1568,11 @@
     <string name="vip_level_description">اطّلع على مزايا المستوى وتقدّمك.</string>
     <string name="vip_level_current">المستوى الحالي</string>
     <string name="vip_level_total_recharged">إجمالي الإنفاق</string>
-    <string name="vip_level_next_level_progress">تبقّى ¥%s للمستوى التالي</string>
+    <string name="vip_level_next_level_progress">تبقّى شحن ⁦¥%s⁩ للمستوى التالي</string>
     <string name="vip_level_max_reached">وصلت إلى أعلى مستوى</string>
-    <string name="vip_level_recharge_amount">أنفقت ≥ ¥%s</string>
-    <string name="vip_level_recharge_from_zero">أنفقت ¥%s</string>
-    <string name="vip_level_0_name">القادم الجديد</string>
+    <string name="vip_level_recharge_amount">شحن تراكمي ⁦≥¥%s⁩</string>
+    <string name="vip_level_recharge_from_zero">شحن تراكمي ⁦¥%s⁩</string>
+    <string name="vip_level_0_name">زائر</string>
     <string name="vip_level_0_desc">وصلت للتو — ابدأ رحلتك</string>
     <string name="vip_level_1_name">متدرّب</string>
     <string name="vip_level_1_desc">يجرّب البداية ويستكشف OneBox</string>
@@ -1677,8 +1678,8 @@
     <string name="comments_title">التعليقات</string>
     <plurals name="comments_count_format">
         <item quantity="zero">%1$d تعليقات</item>
-        <item quantity="one">%1$d تعليق</item>
-        <item quantity="two">%1$d تعليقان</item>
+        <item quantity="one">تعليق واحد</item>
+        <item quantity="two">تعليقان</item>
         <item quantity="few">%1$d تعليقات</item>
         <item quantity="many">%1$d تعليقًا</item>
         <item quantity="other">%1$d تعليق</item>
@@ -1788,7 +1789,7 @@
     <string name="poem_history">السجل</string>
     <string name="blessing_wall_sub">نقرة كل يوم · والحظ يرافقك</string>
     <string name="profile_item_open_source">مشروع مفتوح المصدر</string>
-    <string name="profile_item_open_source_sub">تصفّح الشيفرة المصدرية — نرحّب بنجومك وملاحظاتك</string>
+    <string name="profile_item_open_source_sub">تصفّح الشيفرة المصدرية — نرحّب بـ Star وملاحظاتك</string>
     <string name="profile_item_support_dev">ادعم المطوّر</string>
     <string name="profile_item_support_dev_sub">اشترِ لي قهوة على Ko-fi ☕</string>
     <string name="profile_item_open_source_latest">أنت على أحدث إصدار</string>
@@ -1799,80 +1800,80 @@
     <string name="app_update_dialog_later">لاحقًا</string>
     <plurals name="d_seconds_ago">
         <item quantity="zero">قبل %d ثانية</item>
-        <item quantity="one">قبل %d ثانية واحدة</item>
-        <item quantity="two">قبل %d ثانيتين</item>
+        <item quantity="one">قبل ثانية واحدة</item>
+        <item quantity="two">قبل ثانيتين</item>
         <item quantity="few">قبل %d ثوانٍ</item>
         <item quantity="many">قبل %d ثانية</item>
         <item quantity="other">قبل %d ثانية</item>
     </plurals>
     <plurals name="d_minutes_ago">
         <item quantity="zero">قبل %d دقيقة</item>
-        <item quantity="one">قبل %d دقيقة واحدة</item>
-        <item quantity="two">قبل %d دقيقتين</item>
+        <item quantity="one">قبل دقيقة واحدة</item>
+        <item quantity="two">قبل دقيقتين</item>
         <item quantity="few">قبل %d دقائق</item>
         <item quantity="many">قبل %d دقيقة</item>
         <item quantity="other">قبل %d دقيقة</item>
     </plurals>
     <plurals name="d_hours_ago">
         <item quantity="zero">قبل %1$d ساعة</item>
-        <item quantity="one">قبل %1$d ساعة واحدة</item>
-        <item quantity="two">قبل %1$d ساعتين</item>
+        <item quantity="one">قبل ساعة واحدة</item>
+        <item quantity="two">قبل ساعتين</item>
         <item quantity="few">قبل %1$d ساعات</item>
         <item quantity="many">قبل %1$d ساعة</item>
         <item quantity="other">قبل %1$d ساعة</item>
     </plurals>
     <plurals name="favorite_usage_count">
         <item quantity="zero">استُخدم %d مرة</item>
-        <item quantity="one">استُخدم %d مرة واحدة</item>
-        <item quantity="two">استُخدم %d مرتين</item>
+        <item quantity="one">استُخدم مرة واحدة</item>
+        <item quantity="two">استُخدم مرتين</item>
         <item quantity="few">استُخدم %d مرات</item>
         <item quantity="many">استُخدم %d مرة</item>
         <item quantity="other">استُخدم %d مرة</item>
     </plurals>
     <plurals name="favorite_time_minutes_ago">
         <item quantity="zero">قبل %d دقيقة</item>
-        <item quantity="one">قبل %d دقيقة واحدة</item>
-        <item quantity="two">قبل %d دقيقتين</item>
+        <item quantity="one">قبل دقيقة واحدة</item>
+        <item quantity="two">قبل دقيقتين</item>
         <item quantity="few">قبل %d دقائق</item>
         <item quantity="many">قبل %d دقيقة</item>
         <item quantity="other">قبل %d دقيقة</item>
     </plurals>
     <plurals name="favorite_time_hours_ago">
         <item quantity="zero">قبل %d ساعة</item>
-        <item quantity="one">قبل %d ساعة واحدة</item>
-        <item quantity="two">قبل %d ساعتين</item>
+        <item quantity="one">قبل ساعة واحدة</item>
+        <item quantity="two">قبل ساعتين</item>
         <item quantity="few">قبل %d ساعات</item>
         <item quantity="many">قبل %d ساعة</item>
         <item quantity="other">قبل %d ساعة</item>
     </plurals>
     <plurals name="favorite_time_days_ago">
         <item quantity="zero">قبل %d يوم</item>
-        <item quantity="one">قبل %d يوم واحد</item>
-        <item quantity="two">قبل %d يومين</item>
+        <item quantity="one">قبل يوم واحد</item>
+        <item quantity="two">قبل يومين</item>
         <item quantity="few">قبل %d أيام</item>
         <item quantity="many">قبل %d يومًا</item>
         <item quantity="other">قبل %d يوم</item>
     </plurals>
     <plurals name="time_minutes_ago_format">
         <item quantity="zero">قبل %1$d دقيقة</item>
-        <item quantity="one">قبل %1$d دقيقة واحدة</item>
-        <item quantity="two">قبل %1$d دقيقتين</item>
+        <item quantity="one">قبل دقيقة واحدة</item>
+        <item quantity="two">قبل دقيقتين</item>
         <item quantity="few">قبل %1$d دقائق</item>
         <item quantity="many">قبل %1$d دقيقة</item>
         <item quantity="other">قبل %1$d دقيقة</item>
     </plurals>
     <plurals name="time_hours_ago_format">
         <item quantity="zero">قبل %1$d ساعة</item>
-        <item quantity="one">قبل %1$d ساعة واحدة</item>
-        <item quantity="two">قبل %1$d ساعتين</item>
+        <item quantity="one">قبل ساعة واحدة</item>
+        <item quantity="two">قبل ساعتين</item>
         <item quantity="few">قبل %1$d ساعات</item>
         <item quantity="many">قبل %1$d ساعة</item>
         <item quantity="other">قبل %1$d ساعة</item>
     </plurals>
     <plurals name="time_days_ago_format">
         <item quantity="zero">قبل %1$d يوم</item>
-        <item quantity="one">قبل %1$d يوم واحد</item>
-        <item quantity="two">قبل %1$d يومين</item>
+        <item quantity="one">قبل يوم واحد</item>
+        <item quantity="two">قبل يومين</item>
         <item quantity="few">قبل %1$d أيام</item>
         <item quantity="many">قبل %1$d يومًا</item>
         <item quantity="other">قبل %1$d يوم</item>
@@ -1938,4 +1939,36 @@
     <string name="altitude_precip_probability">%1$s%%</string>
     <string name="altitude_temp_value">%1$s°</string>
     <string name="altitude_aqi_value">جودة الهواء %1$s</string>
+    <plurals name="ai_reasoning_seconds">
+        <item quantity="zero">تفكير عميق (⁦%d⁩ ثوانٍ)</item>
+        <item quantity="one">تفكير عميق (ثانية واحدة)</item>
+        <item quantity="two">تفكير عميق (ثانيتين)</item>
+        <item quantity="few">تفكير عميق (⁦%d⁩ ثوانٍ)</item>
+        <item quantity="many">تفكير عميق (⁦%d⁩ ثانية)</item>
+        <item quantity="other">تفكير عميق (⁦%d⁩ ثانية)</item>
+    </plurals>
+    <plurals name="ai_chat_token_count">
+        <item quantity="zero">لا رموز</item>
+        <item quantity="one">رمز واحد</item>
+        <item quantity="two">رمزان</item>
+        <item quantity="few">⁦%s⁩ رموز</item>
+        <item quantity="many">⁦%s⁩ رمزًا</item>
+        <item quantity="other">⁦%s⁩ رمزًا</item>
+    </plurals>
+    <plurals name="play_points_count">
+        <item quantity="zero">احصل على ⁦%d⁩ نقطة</item>
+        <item quantity="one">احصل على نقطة واحدة</item>
+        <item quantity="two">احصل على نقطتين</item>
+        <item quantity="few">احصل على ⁦%d⁩ نقاط</item>
+        <item quantity="many">احصل على ⁦%d⁩ نقطة</item>
+        <item quantity="other">احصل على ⁦%d⁩ نقطة</item>
+    </plurals>
+    <plurals name="token_usage_request_times">
+        <item quantity="zero">لا طلبات</item>
+        <item quantity="one">طلب واحد</item>
+        <item quantity="two">طلبان</item>
+        <item quantity="few">⁦%d⁩ طلبات</item>
+        <item quantity="many">⁦%d⁩ طلبًا</item>
+        <item quantity="other">⁦%d⁩ طلبًا</item>
+    </plurals>
 </resources>

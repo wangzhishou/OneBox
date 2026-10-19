@@ -617,6 +617,7 @@
     <string name="ai_history_rename_empty">請輸入會話標題</string>
     <string name="confirm">確定</string>
     <string name="free">免費</string>
+    <string name="price_free">免費</string>
     <string name="token_price">每1000個字大約消耗 %s 積分</string>
     <string name="max_length_error">字數超出了限制</string>
     <string name="clear">清空</string>

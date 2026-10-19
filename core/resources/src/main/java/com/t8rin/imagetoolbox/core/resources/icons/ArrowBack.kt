@@ -35,7 +35,8 @@ val com.t8rin.imagetoolbox.core.resources.Icons.Rounded.ArrowBack: ImageVector b
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
         viewportWidth = 24f,
-        viewportHeight = 24f
+        viewportHeight = 24f,
+        autoMirror = true
     ).apply {
         path(fill = SolidColor(Color.Black)) {
             moveTo(9.8f, 4.23f)

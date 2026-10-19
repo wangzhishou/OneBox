@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">タイトルを入力してください</string>
     <string name="confirm">OK</string>
     <string name="free">フリー</string>
+    <string name="price_free">無料</string>
     <string name="token_price">約 %s ポイント/1000文字</string>
     <string name="max_length_error">文字数制限を超えました</string>
     <string name="clear">クリア</string>

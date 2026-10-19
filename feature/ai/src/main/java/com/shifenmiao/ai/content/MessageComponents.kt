@@ -45,7 +45,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import java.util.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -656,7 +658,12 @@ fun RobotReasoningHeader(
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(R.string.ai_reasoning_time, reasoningHeader.time),
+                        text = if (Locale.getDefault().language == "ar") {
+                            val seconds = reasoningHeader.time.coerceIn(0L, Int.MAX_VALUE.toLong()).toInt()
+                            pluralStringResource(R.plurals.ai_reasoning_seconds, seconds, seconds)
+                        } else {
+                            stringResource(R.string.ai_reasoning_time, reasoningHeader.time)
+                        },
                         style = MaterialTheme.typography.titleSmall,
                         color = contentColor,
                     )

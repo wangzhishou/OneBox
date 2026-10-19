@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">Silakan masukkan judul</string>
     <string name="confirm">OK</string>
     <string name="free">Gratis</string>
+    <string name="price_free">Gratis</string>
     <string name="token_price">Kira-kira %s poin per 1000 karakter</string>
     <string name="max_length_error">Batas karakter terlampaui</string>
     <string name="clear">Bersihkan</string>

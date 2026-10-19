@@ -553,6 +553,7 @@
     <string name="ai_history_rename_empty">제목을 입력하세요</string>
     <string name="confirm">확인</string>
     <string name="free">자유</string>
+    <string name="price_free">무료</string>
     <string name="token_price">약 %s점 / 1000자</string>
     <string name="max_length_error">글자 수 제한 초과</string>
     <string name="clear">지우기</string>

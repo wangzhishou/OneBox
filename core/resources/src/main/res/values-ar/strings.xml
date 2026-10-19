@@ -330,7 +330,7 @@
     <string name="settings_restored">تمت استعادة الإعدادات بنجاح</string>
     <string name="contact_me">اتصل بي</string>
     <string name="font_scale">مقياس الخط</string>
-    <string name="defaultt">الإفتراضي</string>
+    <string name="defaultt">الافتراضي</string>
     <string name="using_large_fonts_warn">قد يؤدي استخدام مقاييس الخطوط الكبيرة إلى حدوث خلل في واجهة المستخدم ولن يتم إصلاحه، استخدمه إذا كنت تريد ذلك فقط</string>
     <string name="randomize_filename">اسم عشوائي للملف</string>
     <string name="randomize_filename_sub">إذا تم تمكين اسم ملف الإخراج فسيكون عشوائيًا بشكل تام</string>

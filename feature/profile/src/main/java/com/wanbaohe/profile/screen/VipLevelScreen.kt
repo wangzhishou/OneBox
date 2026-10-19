@@ -391,7 +391,7 @@ private fun VipLevelItem(
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
-                text = if (levelInfo.requiredAmount == 0) stringResource(R.string.free)
+                text = if (levelInfo.requiredAmount == 0) stringResource(R.string.price_free)
                 else stringResource(com.wanbaohe.profile.R.string.vip_level_required_amount, levelInfo.requiredAmount),
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.SemiBold,
